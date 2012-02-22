@@ -29,20 +29,24 @@
         public function resolveData(& $data)
         {
             assert('$this->model->{$this->attribute} instanceof OwnedMultipleValuesCustomField');
-            $values = $this->model->{$this->attribute}->values;
-            if (count($values) > 0)
+            $customFieldValues = $this->model->{$this->attribute}->values;
+            if (count($customFieldValues) > 0)
             {
-                foreach ($values as $value)
+                foreach ($customFieldValues as $customFieldValue)
                 {
-                    if (isset($value->value) && $value->value != '')
+                    if (isset($customFieldValue->value) && $customFieldValue->value != '')
                     {
-                        $data[$this->attribute][] = $value->value;
+                        $data[$this->attribute]['values'][] = $customFieldValue->value;
                     }
+                }
+                if (!isset($data[$this->attribute]['values']))
+                {
+                    $data[$this->attribute]['values'] = null;
                 }
             }
             else
             {
-                $data[$this->attribute] = null;
+                $data[$this->attribute]['values'] = null;
             }
         }
     }
