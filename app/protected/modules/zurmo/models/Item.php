@@ -29,7 +29,6 @@
         private $insideOnModified;
 
         protected $isSetting = false;
-        protected $isNewModel = false;
 
         // On changing a member value the original value
         // is saved (ie: on change it again the original
@@ -245,6 +244,14 @@
                 }
             }
             return false;
+        }
+
+        /**
+         * @return string of gamificationRulesType Override for a child class as needed.
+         */
+        public static function getGamificationRulesType()
+        {
+            return null;
         }
     }
 ?>

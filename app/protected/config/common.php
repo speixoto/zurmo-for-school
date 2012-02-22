@@ -84,6 +84,9 @@
             'fusioncharts' => array(
                 'class' => 'application.extensions.fusioncharts.fusionCharts',
             ),
+            'gamificationObserver' => array(
+                'class' => 'application.modules.gamification.observers.gamificationObserver',
+            ),
             'minScript' => array(
                 'class' => 'application.extensions.zurmoinc.framework.components.ZurmoExtMinScript',
                 'groupMap' => array(
@@ -233,6 +236,7 @@
             'configuration',
             'contacts',
             'designer',
+            'gamification',
             'home',
             'import',
             'install',

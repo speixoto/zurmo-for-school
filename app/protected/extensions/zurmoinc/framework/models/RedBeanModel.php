@@ -24,9 +24,6 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    $basePath = Yii::app()->getBasePath();
-    require_once("$basePath/../../redbean/rb.php");
-
     /**
      * Abstraction over the top of an application database accessed via
      * <a href="http://www.redbeanphp.com/">RedBean</a>. The base class for
@@ -57,12 +54,18 @@
      * schema on the fly as opposed to Yii's getting attributes from an
      * already existing schema.
      */
-    abstract class RedBeanModel extends CComponent implements Serializable
+    abstract class RedBeanModel extends ObservableComponent implements Serializable
     {
         // Models that have not been saved yet have no id as far
         // as the database is concerned. Until they are saved they are
         // assigned a negative id, so that they have identity.
         private static $nextPseudoId = -1;
+
+        /**
+         * Array of static models. Used by Observers @see ObservableComponent to add events to a class.
+         * @var array
+         */
+        private static $_models = array();
 
         // The id of an unsaved model.
         private $pseudoId;
@@ -95,6 +98,7 @@
         protected $isInGetErrors  = false;
         protected $isValidating   = false;
         protected $isSaving       = false;
+        protected $isNewModel     = false;
 
         // Mapping of Yii validators to validators doing things that
         // are either required for RedBean, or that simply implement
@@ -155,6 +159,39 @@
          * If not specified the related model is independent and is not deleted.
          */
         const OWNED = true;
+
+        /**
+         * Returns the static model of the specified AR class.
+         * The model returned is a static instance of the AR class.
+         * It is provided for invoking class-level methods (something similar to static class methods.)
+         *
+         * EVERY derived AR class must override this method as follows,
+         * <pre>
+         * public static function model($className=__CLASS__)
+         * {
+         *     return parent::model($className);
+         * }
+         * </pre>
+         *
+         * @param string $className active record class name.
+         * @return CActiveRecord active record model instance.
+         */
+        public static function model($className = null)
+        {
+            if($className == null)
+            {
+                $className = get_called_class();
+            }
+            if(isset(self::$_models[$className]))
+            {
+                return self::$_models[$className];
+            }
+            else
+            {
+                $model = self::$_models[$className] = new $className(false);
+                return $model;
+            }
+        }
 
         /**
          * Gets all the models from the database of the named model type.
@@ -337,6 +374,7 @@
         public function __construct($setDefaults = true, RedBean_OODBBean $bean = null, $forceTreatAsCreation = false)
         {
             $this->pseudoId = self::$nextPseudoId--;
+            $this->init();
             if ($bean === null)
             {
                 foreach (array_reverse(RuntimeUtil::getClassHierarchy(get_class($this), 'RedBeanModel')) as $modelClassName)
@@ -1800,13 +1838,75 @@
             }
         }
 
+        /**
+         * This method is invoked before saving a record (after validation, if any).
+         * The default implementation raises the {@link onBeforeSave} event.
+         * You may override this method to do any preparation work for record saving.
+         * Use {@link isNewModel} to determine whether the saving is
+         * for inserting or updating record.
+         * Make sure you call the parent implementation so that the event is raised properly.
+         * @return boolean whether the saving should be executed. Defaults to true.
+         */
         protected function beforeSave()
         {
-            return true;
+            if($this->hasEventHandler('onBeforeSave'))
+            {
+                $event = new CModelEvent($this);
+                $this->onBeforeSave($event);
+                return $event->isValid;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         protected function afterSave()
         {
+            $event = new CEvent($this);
+            $this->onAfterSave($event);
+        }
+
+        /**
+         * This event is raised before the record is saved.
+         * By setting {@link CModelEvent::isValid} to be false, the normal {@link save()} process will be stopped.
+         * @param CModelEvent $event the event parameter
+         * @since 1.0.2
+         */
+        public function onBeforeSave($event)
+        {
+            $this->raiseEvent('onBeforeSave',$event);
+        }
+
+        /**
+         * This event is raised after the record is saved.
+         * @param CEvent $event the event parameter
+         * @since 1.0.2
+         */
+        public function onAfterSave($event)
+        {
+            $this->raiseEvent('onAfterSave',$event);
+        }
+
+        /**
+         * This event is raised before the record is deleted.
+         * By setting {@link CModelEvent::isValid} to be false, the normal {@link delete()} process will be stopped.
+         * @param CModelEvent $event the event parameter
+         * @since 1.0.2
+         */
+        public function onBeforeDelete($event)
+        {
+            $this->raiseEvent('onBeforeDelete',$event);
+        }
+
+        /**
+         * This event is raised after the record is deleted.
+         * @param CEvent $event the event parameter
+         * @since 1.0.2
+         */
+        public function onAfterDelete($event)
+        {
+            $this->raiseEvent('onAfterDelete',$event);
         }
 
         protected function linkBeans()
@@ -1895,17 +1995,51 @@
                 // See comments below on isDeletable.
                 throw new NotSupportedException();
             }
-            $this->beforeDelete();
-            $this->unrestrictedDelete();
-            $this->afterDelete();
+            if($this->beforeDelete())
+            {
+                $deleted = $this->unrestrictedDelete();
+                $this->afterDelete();
+                return $deleted;
+            }
+            else
+            {
+                return false;
+            }
         }
 
+        /**
+         * This method is invoked before deleting a record.
+         * The default implementation raises the {@link onBeforeDelete} event.
+         * You may override this method to do any preparation work for record deletion.
+         * Make sure you call the parent implementation so that the event is raised properly.
+         * @return boolean whether the record should be deleted. Defaults to true.
+         */
         protected function beforeDelete()
         {
+            if($this->hasEventHandler('onBeforeDelete'))
+            {
+                $event = new CModelEvent($this);
+                $this->onBeforeDelete($event);
+                return $event->isValid;
+            }
+            else
+            {
+                return true;
+            }
         }
 
+        /**
+         * This method is invoked after deleting a record.
+         * The default implementation raises the {@link onAfterDelete} event.
+         * You may override this method to do postprocessing after the record is deleted.
+         * Make sure you call the parent implementation so that the event is raised properly.
+         */
         protected function afterDelete()
         {
+            if($this->hasEventHandler('onAfterDelete'))
+            {
+                $this->onAfterDelete(new CEvent($this));
+            }
         }
 
         protected function unrestrictedDelete()
@@ -1924,6 +2058,7 @@
             }
             // The model cannot be used anymore.
             $this->deleted = true;
+            return true;
         }
 
         public function isDeleted()
