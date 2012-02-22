@@ -352,6 +352,11 @@
             return RedBeanModel::makeModel(end($beans), $modelClassName);
         }
 
+        public function getIsNewModel()
+        {
+            return $this->isNewModel;
+        }
+
         /**
          * Constructs a new model.
          * Important:

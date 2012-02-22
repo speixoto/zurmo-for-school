@@ -32,12 +32,25 @@
         public function attachScoringEventsByModelClassName($modelClassName)
         {
             assert('is_string($modelClassName)');
-            $modelClassName::model()->attachEventHandler('onAfterSave', array($this, 'testGamify'));
+            $modelClassName::model()->attachEventHandler('onAfterSave', array($this, 'saveModel'));
         }
 
-        public function testGamify(CEvent $event)
+        public function saveModel(CEvent $event)
         {
             $model = $event->sender;
+            assert('$model instanceof Item');
+            if($model->getIsNewModel())
+            {
+                $scoreType           = 'Create' . get_class($model);
+                $scoreMechanic       = ScoreMechanic::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+            }
+            else
+            {
+                $scoreType           = 'Create' . get_class($model);
+                $scoreMechanic       = ScoreMechanic::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+            }
+            $scoreMechanic->addValue();
+            $scoreMechanic->save();
         }
     }
 ?>

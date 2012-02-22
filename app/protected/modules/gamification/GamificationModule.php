@@ -33,5 +33,10 @@
         {
             return array('configuration', 'zurmo');
         }
+
+        public function getRootModelNames()
+        {
+            return array('ScoreMechanic');
+        }
     }
 ?>
