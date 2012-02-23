@@ -36,7 +36,7 @@
 
         public function getRootModelNames()
         {
-            return array('ScoreMechanic');
+            return array('GameScore', 'GamePoint');
         }
     }
 ?>

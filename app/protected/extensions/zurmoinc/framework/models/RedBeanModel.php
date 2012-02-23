@@ -455,6 +455,7 @@
         protected function constructIncomplete($bean)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
+            $this->init();
         }
 
         public function serialize()

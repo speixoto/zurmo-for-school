@@ -34,12 +34,25 @@
     {
         public function attach($owner)
         {
+            if (Yii::app()->isApplicationInstalled())
+            {
+                $owner->attachEventHandler('onEndRequest', array($this, 'handleGamification'));
+            }
             $owner->attachEventHandler('onEndRequest', array($this, 'handleEndRequest'));
         }
 
         public function handleEndRequest($event)
         {
             exit;
+        }
+
+        /**
+         * Process any points that need to be tabulated based on scoring that occurred during the request.
+         * @param CEvent $event
+         */
+        public function handleGamification($event)
+        {
+            GamePointManager::processDeferredPoints();
         }
     }
 ?>

@@ -29,6 +29,14 @@
      */
     class GamificationScoringObserver extends CComponent
     {
+        protected $gamificationRulesClassName;
+
+        public function __construct($gamificationRulesClassName)
+        {
+            assert('is_string($gamificationRulesClassName)');
+            $this->gamificationRulesClassName = $gamificationRulesClassName;
+        }
+
         public function attachScoringEventsByModelClassName($modelClassName)
         {
             assert('is_string($modelClassName)');
@@ -37,20 +45,43 @@
 
         public function saveModel(CEvent $event)
         {
-            $model = $event->sender;
+            $model                      = $event->sender;
+            $gamificationRulesClassName = $this->gamificationRulesClassName;
             assert('$model instanceof Item');
             if($model->getIsNewModel())
             {
                 $scoreType           = 'Create' . get_class($model);
-                $scoreMechanic       = ScoreMechanic::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+                $category            = $gamificationRulesClassName::SCORE_CATEGORY_CREATE_MODEL;
+                $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             }
             else
             {
-                $scoreType           = 'Create' . get_class($model);
-                $scoreMechanic       = ScoreMechanic::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+                $scoreType           = 'Update' . get_class($model);
+                $category            = $gamificationRulesClassName::SCORE_CATEGORY_UPDATE_MODEL;
+                $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             }
-            $scoreMechanic->addValue();
-            $scoreMechanic->save();
+            $gameScore->addValue();
+            $saved = $gameScore->save();
+            if(!$saved)
+            {
+                throw new NotSupportedException();
+            }
+            $this->addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                                        $this->gamificationRulesClassName, $category);
+        }
+
+        protected function addPointsByGameScore($type, User $user, $gamificationRulesClassName, $category)
+        {
+            assert('is_string($type)');
+            assert('$user->id > 0');
+            assert('is_string($gamificationRulesClassName)');
+            assert('is_string($category)');
+            $pointTypeAndValueData = $gamificationRulesClassName::
+                                        getPointTypeAndValueDataByScoreTypeAndCategory($type, $category);
+            foreach($pointTypeAndValueData as $type => $value)
+            {
+                GamePointManager::addPointsByUserDeferred($user, $type, $value);
+            }
         }
     }
 ?>

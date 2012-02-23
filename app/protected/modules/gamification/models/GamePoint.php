@@ -24,11 +24,67 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ScoreMechanic extends Item
+    /**
+     * Model for game points.
+     */
+    class GamePoint extends Item
     {
+        /**
+         * Used to define the point type as being a user adoption point.
+         * @var String
+         */
+        const TYPE_USER_ADOPTION = 'UserAdoption';
+
         public function __toString()
         {
-            return Yii::t('Default', '(Unnamed)');
+            if (trim($this->type) == '')
+            {
+                return Yii::t('Default', '(Unnamed)');
+            }
+            return $this->type;
+        }
+
+        /**
+         * Given a point type and Item (Either User or Person),  try to find an existing model. If the model does
+         * not exist, create it and populate the Item and type. @return The found or created model.
+         * @param string $type
+         * @param Item $person
+         */
+        public static function resolveToGetByTypeAndPersonId($type, Item $person)
+        {
+            assert('is_string($type)');
+            assert('$person->id > 0');
+            assert('$person instanceof Contact || $person instanceof User');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'type',
+                    'operatorType'         => 'equals',
+                    'value'                => $type,
+                ),
+                2 => array(
+                    'attributeName'        => 'person',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $person->getClassId('Item'),
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GamePoint');
+            $where  = RedBeanModelDataProvider::makeWhere('GamePoint', $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            if (count($models) > 1)
+            {
+                throw new NotSupportedException();
+            }
+            if (count($models) == 0)
+            {
+                $gamePoint = new GamePoint();
+                $gamePoint->type   = $type;
+                $gamePoint->person = $person;
+                return $gamePoint;
+            }
+            return $models[0];
         }
 
         public static function getModuleClassName()
@@ -50,24 +106,24 @@
                     'value',
                 ),
                 'relations' => array(
-                    'user' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'person' => array(RedBeanModel::HAS_ONE, 'Item'),
                 ),
                 'rules' => array(
                     array('type', 		   'required'),
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
                     array('value',     	   'type',    'type' => 'integer'),
-                    array('value', 		   'default', 'value' => 'no-reply@nowhere.com'),
-                    array('user', 		   'required'),
+                    array('value', 		   'default', 'value' => 0),
+                    array('person', 	   'required'),
                 ),
                 'elements' => array(
-                    'user' => 'User',
+                    'person' => 'Person',
                 ),
                 'defaultSortAttribute' => 'type',
                 'noAudit' => array(
                     'type',
                     'value',
-                    'user',
+                    'person',
                 ),
             );
             return $metadata;
@@ -79,11 +135,12 @@
         }
 
         /**
-         * Add a single point of value to the value count.
+         * Add specified value.
          */
-        public function addValue()
+        public function addValue($value)
         {
-            $this->value = $this->value + 1;
+            assert('is_int($value)');
+            $this->value = $this->value + $value;
         }
     }
 ?>

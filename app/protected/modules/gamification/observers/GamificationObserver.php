@@ -51,7 +51,7 @@
                             $gamificationScoringObserverClassName = $gamificationRulesClassName::getScoringObserverName();
                             if($gamificationScoringObserverClassName != null)
                             {
-                                $scoringObserver = new $gamificationScoringObserverClassName();
+                                $scoringObserver = new $gamificationScoringObserverClassName($gamificationRulesClassName);
                                 $scoringObserver->attachScoringEventsByModelClassName($modelClassName);
                             }
                         }

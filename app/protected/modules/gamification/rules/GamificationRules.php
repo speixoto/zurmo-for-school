@@ -29,12 +29,41 @@
      */
     class GamificationRules
     {
+        const SCORE_CATEGORY_CREATE_MODEL = 'CreateModel';
+
+        const SCORE_CATEGORY_UPDATE_MODEL = 'UpdateModel';
+
         /**
          * @returns The observer name used for scoring.
          */
         public static function getScoringObserverName()
         {
             return 'GamificationScoringObserver';
+        }
+
+        public static function getPointTypeAndValueDataByScoreTypeAndCategory($type, $category)
+        {
+            assert('is_string($type)');
+            assert('is_string($category)');
+            $methodName = 'getPointTypesAndValuesFor' . $category;
+            if(method_exists(get_called_class(), $methodName))
+            {
+                return static::$methodName();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public static function getPointTypesAndValuesForCreateModel()
+        {
+            return array(GamePoint::TYPE_USER_ADOPTION => 10);
+        }
+
+        public static function getPointTypesAndValuesForUpdateModel()
+        {
+            return array(GamePoint::TYPE_USER_ADOPTION => 10);
         }
     }
 ?>
