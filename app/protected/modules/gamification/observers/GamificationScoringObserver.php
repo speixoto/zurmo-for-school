@@ -64,7 +64,7 @@
             $saved = $gameScore->save();
             if(!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
             GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
                                                 $gamificationRulesClassName, $category);

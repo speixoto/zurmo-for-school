@@ -25,32 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Attaches events to the WebUser as needed for gamification.
+     * Exception thrown when a model that is expected to save ok, fails to save.
      */
-    class WebUserAfterLoginGamificationBehavior extends CBehavior
+    class FailedToSaveModelException extends CException
     {
-        public function attach($owner)
-        {
-            $owner->attachEventHandler('onAfterLogin', array($this, 'handleScoreLogin'));
-        }
-
-        /**
-         * The login of a user is a scored game event.  This method processes this.
-         * @param CEvent $event
-         */
-        public function handleScoreLogin($event)
-        {
-            $scoreType           = 'LoginUser';
-            $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
-            $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
-            $gameScore->addValue();
-            $saved = $gameScore->save();
-            if(!$saved)
-            {
-                throw new FailedToSaveModelException();
-            }
-            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
-                                                'GamificationRules', $category);
-        }
-     }
+    }
 ?>
