@@ -192,6 +192,11 @@
                 'allowAutoLogin' => true,
                 'class'          => 'WebUser',
                 'loginUrl'       => array('zurmo/default/login'),
+        'behaviors' => array(
+            'onAfterLogin' => array(
+                'class' => 'application.modules.gamification.behaviors.WebUserAfterLoginGamificationBehavior'
+            ),
+        ),
             ),
             'widgetFactory' => array(
                 'widgets' => array(

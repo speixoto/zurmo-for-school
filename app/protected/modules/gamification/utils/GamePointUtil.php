@@ -25,52 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Base class defining rules for gamification behavior.
+     * Helper class for working with game points.
      */
-    class GamificationRules
+    class GamePointUtil
     {
-        const SCORE_CATEGORY_CREATE_MODEL = 'CreateModel';
-
-        const SCORE_CATEGORY_UPDATE_MODEL = 'UpdateModel';
-
-        const SCORE_CATEGORY_LOGIN_USER   = 'LoginUser';
-
-        /**
-         * @returns The observer name used for scoring.
-         */
-        public static function getScoringObserverName()
-        {
-            return 'GamificationScoringObserver';
-        }
-
-        public static function getPointTypeAndValueDataByScoreTypeAndCategory($type, $category)
+        public static function addPointsByGameScore($type, User $user, $gamificationRulesClassName, $category)
         {
             assert('is_string($type)');
+            assert('$user->id > 0');
+            assert('is_string($gamificationRulesClassName)');
             assert('is_string($category)');
-            $methodName = 'getPointTypesAndValuesFor' . $category;
-            if(method_exists(get_called_class(), $methodName))
+            $pointTypeAndValueData = $gamificationRulesClassName::
+                                        getPointTypeAndValueDataByScoreTypeAndCategory($type, $category);
+            foreach($pointTypeAndValueData as $type => $value)
             {
-                return static::$methodName();
+                GamePointManager::addPointsByUserDeferred($user, $type, $value);
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public static function getPointTypesAndValuesForCreateModel()
-        {
-            return array(GamePoint::TYPE_USER_ADOPTION => 10);
-        }
-
-        public static function getPointTypesAndValuesForUpdateModel()
-        {
-            return array(GamePoint::TYPE_USER_ADOPTION => 10);
-        }
-
-        public static function getPointTypesAndValuesForLoginUser()
-        {
-            return array(GamePoint::TYPE_USER_ADOPTION => 5);
         }
     }
 ?>

@@ -25,41 +25,24 @@
      ********************************************************************************/
 
     /**
-     * Observer class for attaching events to a class.  These events are then used to trigger scoring.
+     * Attaches events to the WebUser as needed for gamification.
      */
-    class GamificationScoringObserver extends CComponent
+    class WebUserAfterLoginGamificationBehavior extends CBehavior
     {
-        protected $gamificationRulesClassName;
-
-        public function __construct($gamificationRulesClassName)
+        public function attach($owner)
         {
-            assert('is_string($gamificationRulesClassName)');
-            $this->gamificationRulesClassName = $gamificationRulesClassName;
+            $owner->attachEventHandler('onAfterLogin', array($this, 'handleScoreLogin'));
         }
 
-        public function attachScoringEventsByModelClassName($modelClassName)
+        /**
+         * The login of a user is a scored game event.  This method processes this.
+         * @param CEvent $event
+         */
+        public function handleScoreLogin($event)
         {
-            assert('is_string($modelClassName)');
-            $modelClassName::model()->attachEventHandler('onAfterSave', array($this, 'saveModel'));
-        }
-
-        public function saveModel(CEvent $event)
-        {
-            $model                      = $event->sender;
-            $gamificationRulesClassName = $this->gamificationRulesClassName;
-            assert('$model instanceof Item');
-            if($model->getIsNewModel())
-            {
-                $scoreType           = 'Create' . get_class($model);
-                $category            = $gamificationRulesClassName::SCORE_CATEGORY_CREATE_MODEL;
-                $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
-            }
-            else
-            {
-                $scoreType           = 'Update' . get_class($model);
-                $category            = $gamificationRulesClassName::SCORE_CATEGORY_UPDATE_MODEL;
-                $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
-            }
+            $scoreType           = 'LoginUser';
+            $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
+            $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             $gameScore->addValue();
             $saved = $gameScore->save();
             if(!$saved)
@@ -67,7 +50,7 @@
                 throw new NotSupportedException();
             }
             GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
-                                                $gamificationRulesClassName, $category);
+                                                'GamificationRules', $category);
         }
-    }
+     }
 ?>
