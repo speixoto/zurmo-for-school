@@ -25,22 +25,36 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with game points.
+     * Base class defining rules for game levels
      */
-    class GamePointUtil
+    abstract class GameLevelRules
     {
-        public static function addPointsByGameScore($type, User $user, $gamificationRulesClassName, $category)
+        /**
+         * Defines the last level for the level type.
+         * @var integer
+         */
+        protected static $lastLevel;
+
+        /**
+         * Array of data that provides the point value required to move up to each level.
+         * @var array
+         */
+        protected static $levelPointMap = array();
+
+        /**
+         * @param integer $level
+         */
+        public static function isLastLevel($level)
         {
-            assert('is_string($type)');
-            assert('$user->id > 0');
-            assert('is_string($gamificationRulesClassName)');
-            assert('is_string($category)');
-            $pointTypeAndValueData = $gamificationRulesClassName::
-                                        getPointTypeAndValueDataByScoreTypeAndCategory($type, $category);
-            foreach($pointTypeAndValueData as $type => $value)
-            {
-                Yii::app()->gameHelper->addPointsByUserDeferred($user, $type, $value);
-            }
+            throw new NotImplementedException();
+        }
+
+        /**
+         * @param integer $level
+         */
+        public static function getMinimumPointsForLevel($level)
+        {
+            throw new NotImplementedException();
         }
     }
 ?>

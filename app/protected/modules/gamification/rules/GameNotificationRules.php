@@ -25,22 +25,18 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with game points.
+     * A  NotificationRules to manage game changes requiring a notification to go out.
      */
-    class GamePointUtil
+    class GameNotificationRules extends NotificationRules
     {
-        public static function addPointsByGameScore($type, User $user, $gamificationRulesClassName, $category)
+        public static function getDisplayName()
         {
-            assert('is_string($type)');
-            assert('$user->id > 0');
-            assert('is_string($gamificationRulesClassName)');
-            assert('is_string($category)');
-            $pointTypeAndValueData = $gamificationRulesClassName::
-                                        getPointTypeAndValueDataByScoreTypeAndCategory($type, $category);
-            foreach($pointTypeAndValueData as $type => $value)
-            {
-                Yii::app()->gameHelper->addPointsByUserDeferred($user, $type, $value);
-            }
+            return Yii::t('Default', 'A game notification');
+        }
+
+        public static function getType()
+        {
+            return 'Game';
         }
     }
 ?>

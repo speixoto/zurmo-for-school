@@ -25,11 +25,11 @@
      ********************************************************************************/
 
     /**
-     * Manages point tabulation through a single page request. As scores are added, the point information is
+     *  Helps with game logic exuected during a page request. As scores are added, the point information is
      * tabulated in the GamePointManager so it can then update persistent storage in a single request at the end
      * of the page request.
      */
-    class GamePointManager extends CComponent
+    class GameHelper extends CApplicationComponent
     {
         private static $pointTypesAndValuesByUserIdToAdd = array();
 
@@ -72,7 +72,7 @@
                     foreach($typeAndValues as $type => $value)
                     {
                         $gamePoint      = GamePoint::
-                                            resolveToGetByTypeAndPersonId($type, User::getById($userId));
+                                            resolveToGetByTypeAndPerson($type, User::getById($userId));
                         $gamePoint->addValue($value);
                         $saved          = $gamePoint->save();
                         if(!$saved)
@@ -80,6 +80,34 @@
                             throw new NotSupportedException();
                         }
                     }
+                }
+            }
+        }
+
+        public static function resolveLevelChange()
+        {
+            $currentGameLevel    = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
+            $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL,
+                                                                                              $currentGameLevel);
+            $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL,
+                                                                                    $currentGameLevel);
+            if($nextLevel !== false &&
+               GamePoint::doesUserExceedPoints(Yii::app()->user->userModel, $nextLevelPointValue))
+            {
+                $currentGameLevel->value = $nextLevel;
+                $saved = $currentGameLevel->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                if($currentGameLevel->value != 1)
+                {
+                    $message                    = new NotificationMessage();
+                    $message->textContent       = Yii::t('Default', 'You have reached a new level: {level}. Congratulations.',
+                                                                    array('{level}' => $nextLevel));
+                    $rules                      = new GameNotificationRules();
+                    $rules->addUser(Yii::app()->user->userModel);
+                    NotificationsUtil::submit($message, $rules);
                 }
             }
         }

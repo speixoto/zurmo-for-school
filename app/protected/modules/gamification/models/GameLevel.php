@@ -25,15 +25,15 @@
      ********************************************************************************/
 
     /**
-     * Model for game points.
+     * Model for game levels.
      */
-    class GamePoint extends Item
+    class GameLevel extends Item
     {
         /**
-         * Used to define the point type as being a user adoption point.
+         * Used to define the level type as being general, which means it is a total of all point groups
          * @var String
          */
-        const TYPE_USER_ADOPTION = 'UserAdoption';
+        const TYPE_GENERAL = 'General';
 
         public function __toString()
         {
@@ -50,7 +50,7 @@
          * @param string $type
          * @param Item $person
          */
-        public static function resolveToGetByTypeAndPerson($type, Item $person)
+        public static function resolveByTypeAndPerson($type, Item $person)
         {
             assert('is_string($type)');
             assert('$person->id > 0');
@@ -70,8 +70,8 @@
                 ),
             );
             $searchAttributeData['structure'] = '1 and 2';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GamePoint');
-            $where  = RedBeanModelDataProvider::makeWhere('GamePoint', $searchAttributeData, $joinTablesAdapter);
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameLevel');
+            $where  = RedBeanModelDataProvider::makeWhere('GameLevel', $searchAttributeData, $joinTablesAdapter);
             $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
             if (count($models) > 1)
             {
@@ -79,10 +79,11 @@
             }
             if (count($models) == 0)
             {
-                $gamePoint = new GamePoint();
-                $gamePoint->type   = $type;
-                $gamePoint->person = $person;
-                return $gamePoint;
+                $gameLevel = new GameLevel();
+                $gameLevel->type   = $type;
+                $gameLevel->person = $person;
+                $gameLevel->value  = 1;
+                return $gameLevel;
             }
             return $models[0];
         }
@@ -141,36 +142,6 @@
         {
             assert('is_int($value)');
             $this->value = $this->value + $value;
-        }
-
-        /**
-         * Given a user and a number, determine if a user's existing total points exceeds the specified number.
-         * If so, return true, otherwise return false.
-         * @param User $user
-         * @param Integer $points
-         */
-        public static function doesUserExceedPoints(User $user, $points)
-        {
-            assert('$user->id > 0');
-            assert('is_int($points)');
-            try
-            {
-                $sql  = "select sum(value) sum from gamepoint where person_item_id = " .
-                        $user->getClassId('Item') . " group by person_item_id";
-                $data = R::getRow($sql);
-                if($data['sum'] > $points)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (RedBean_Exception_SQL $e)
-            {
-                return false;
-            }
         }
     }
 ?>

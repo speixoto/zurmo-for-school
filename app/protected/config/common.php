@@ -84,6 +84,9 @@
             'fusioncharts' => array(
                 'class' => 'application.extensions.fusioncharts.fusionCharts',
             ),
+            'gameHelper' => array(
+                'class' => 'application.modules.gamification.components.gameHelper',
+            ),
             'gamificationObserver' => array(
                 'class' => 'application.modules.gamification.observers.gamificationObserver',
             ),

@@ -36,7 +36,7 @@
 
         public function getRootModelNames()
         {
-            return array('GameScore', 'GamePoint');
+            return array('GameScore', 'GamePoint', 'GameLevel');
         }
     }
 ?>
