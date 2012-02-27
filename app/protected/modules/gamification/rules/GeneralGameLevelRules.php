@@ -33,13 +33,13 @@
          * Defines the last level for the level type.
          * @var integer
          */
-        protected static $lastLevel     = 6;
+        private static $lastLevel     = 6;
 
         /**
          * Array of data that provides the point value required to move up to each level.
          * @var array
          */
-        protected static $levelPointMap = array( 1 => 0,
+        private static $levelPointMap = array(   1 => 0,
                                                  2 => 100,
                                                  3 => 500,
                                                  4 => 2000,
@@ -47,12 +47,31 @@
                                                  6 => 6000);
 
         /**
+        * Can be used by application component to override and set last level value.
+        * @param integer $level
+        */
+        public static function setLastLevel($level)
+        {
+            assert('is_int($level)');
+            self::$lastLevel = $level;
+        }
+
+       /**
+        * Can be used by application component to override and set level point map.
+        * @param array $levelPointMap
+        */
+        public static function setLevelPointMap($levelPointMap)
+        {
+            assert('is_array($levelPointMap)');
+            self::$levelPointMap = $levelPointMap;
+        }
+        /**
          * @param integer $level
          */
         public static function isLastLevel($level)
         {
             assert('is_int($level)');
-            if($level == static::$lastLevel)
+            if($level == self::$lastLevel)
             {
                 return true;
             }
@@ -65,9 +84,9 @@
         public static function getMinimumPointsForLevel($level)
         {
             assert('is_int($level)');
-            if(isset(static::$levelPointMap[$level]))
+            if(isset(self::$levelPointMap[$level]))
             {
-                return static::$levelPointMap[$level];
+                return self::$levelPointMap[$level];
             }
             throw new NotSupportedException();
         }

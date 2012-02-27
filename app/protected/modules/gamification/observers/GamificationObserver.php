@@ -48,12 +48,8 @@
                         {
                             $gamificationRulesType      = $modelClassName::getGamificationRulesType();
                             $gamificationRulesClassName = $gamificationRulesType . 'Rules';
-                            $gamificationScoringObserverClassName = $gamificationRulesClassName::getScoringObserverName();
-                            if($gamificationScoringObserverClassName != null)
-                            {
-                                $scoringObserver = new $gamificationScoringObserverClassName($gamificationRulesClassName);
-                                $scoringObserver->attachScoringEventsByModelClassName($modelClassName);
-                            }
+                            $rules                      = new $gamificationRulesClassName();
+                            $rules->attachScoringEventsByModelClassName($modelClassName);
                         }
                     }
                     catch(NotSupportedException $e)

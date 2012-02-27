@@ -66,7 +66,7 @@
                 //currently we only support the general level type
                 throw new NotImplementedException();
             }
-            if(!GeneralGameLevelRules::isLastLevel($level->value))
+            if(!GeneralGameLevelRules::isLastLevel((int)$level->value))
             {
                 return $level->value + 1;
             }

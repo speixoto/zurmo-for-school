@@ -332,6 +332,7 @@
 
         public function handleLoadGamification($event)
         {
+            Yii::app()->gameHelper;
             Yii::app()->gamificationObserver; //runs init();
         }
      }

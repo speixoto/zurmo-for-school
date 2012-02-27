@@ -30,18 +30,6 @@
     abstract class GameLevelRules
     {
         /**
-         * Defines the last level for the level type.
-         * @var integer
-         */
-        protected static $lastLevel;
-
-        /**
-         * Array of data that provides the point value required to move up to each level.
-         * @var array
-         */
-        protected static $levelPointMap = array();
-
-        /**
          * @param integer $level
          */
         public static function isLastLevel($level)

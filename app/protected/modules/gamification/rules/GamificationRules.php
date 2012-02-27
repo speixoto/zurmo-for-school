@@ -35,12 +35,40 @@
 
         const SCORE_CATEGORY_LOGIN_USER   = 'LoginUser';
 
-        /**
-         * @returns The observer name used for scoring.
-         */
-        public static function getScoringObserverName()
+        const SCORE_CATEGORY_MASS_EDIT    = 'MassEdit';
+
+        const SCORE_CATEGORY_SEARCH       = 'Search';
+
+        public function attachScoringEventsByModelClassName($modelClassName)
         {
-            return 'GamificationScoringObserver';
+            assert('is_string($modelClassName)');
+            $modelClassName::model()->attachEventHandler('onAfterSave', array($this, 'scoreOnSaveModel'));
+        }
+
+        public function scoreOnSaveModel(CEvent $event)
+        {
+            $model                      = $event->sender;
+            assert('$model instanceof Item');
+            if($model->getIsNewModel())
+            {
+                $scoreType           = 'Create' . get_class($model);
+                $category            = static::SCORE_CATEGORY_CREATE_MODEL;
+                $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+            }
+            else
+            {
+                $scoreType           = 'Update' . get_class($model);
+                $category            = static::SCORE_CATEGORY_UPDATE_MODEL;
+                $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+            }
+            $gameScore->addValue();
+            $saved = $gameScore->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                                                get_called_class(), $category);
         }
 
         public static function getPointTypeAndValueDataByScoreTypeAndCategory($type, $category)
@@ -71,6 +99,48 @@
         public static function getPointTypesAndValuesForLoginUser()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 5);
+        }
+
+        public static function getPointTypesAndValuesForSearch()
+        {
+            return array(GamePoint::TYPE_USER_ADOPTION => 5);
+        }
+
+        public static function getPointTypesAndValuesForMassEdit()
+        {
+            return array(GamePoint::TYPE_USER_ADOPTION => 5);
+        }
+
+        public static function scoreOnSearchModels($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            $scoreType           = 'Search' . $modelClassName;
+            $category            = static::SCORE_CATEGORY_SEARCH;
+            $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+            $gameScore->addValue();
+            $saved               = $gameScore->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                                                'GamificationRules', $category);
+        }
+
+        public static function scoreOnMassEditModels($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            $scoreType           = 'MassEdit' . $modelClassName;
+            $category            = static::SCORE_CATEGORY_MASS_EDIT;
+            $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+            $gameScore->addValue();
+            $saved               = $gameScore->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                                                'GamificationRules', $category);
         }
     }
 ?>

@@ -31,7 +31,23 @@
      */
     class GameHelper extends CApplicationComponent
     {
+        public $enabled = true;
+
         private static $pointTypesAndValuesByUserIdToAdd = array();
+
+        public function init()
+        {
+            $this->initCustom();
+        }
+
+        /**
+         * Override as needed to customize various aspects of gamification.  A few examples of things you can do here:
+         * GeneralGameLevelRules::setLastLevel(100);
+           GeneralGameLevelRules::setLevelPointMap($newLevelPointMap);
+         */
+        public function initCustom()
+        {
+        }
 
         /**
          * Given a user, point type, and value, store the information in the @see $pointTypesAndValuesByUserIdToAdd
@@ -45,7 +61,6 @@
             assert('$user->id > 0');
             assert('is_string($type)');
             assert('is_int($value)');
-            echo 'aaaaa';
             if(!isset(self::$pointTypesAndValuesByUserIdToAdd[$user->id][$type]))
             {
                 self::$pointTypesAndValuesByUserIdToAdd[$user->id][$type] = $value;
@@ -63,8 +78,12 @@
          * Process any points that have been added to @see $pointTypesAndValuesByUserIdToAdd throughout the page
          * request.
          */
-        public static function processDeferredPoints()
+        public function processDeferredPoints()
         {
+            if(!$this->enabled)
+            {
+                return;
+            }
             foreach(self::$pointTypesAndValuesByUserIdToAdd as $userId => $typeAndValues)
             {
                 if($typeAndValues != null)
@@ -84,8 +103,12 @@
             }
         }
 
-        public static function resolveLevelChange()
+        public function resolveLevelChange()
         {
+            if(!$this->enabled)
+            {
+                return;
+            }
             $currentGameLevel    = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
             $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL,
                                                                                               $currentGameLevel);
@@ -109,6 +132,28 @@
                     $rules->addUser(Yii::app()->user->userModel);
                     NotificationsUtil::submit($message, $rules);
                 }
+            }
+        }
+
+        public function triggerSearchModelsEvent($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            if (is_subclass_of($modelClassName, 'Item') && $modelClassName::getGamificationRulesType() != null)
+            {
+                $gamificationRulesType      = $modelClassName::getGamificationRulesType();
+                $gamificationRulesClassName = $gamificationRulesType . 'Rules';
+                $gamificationRulesClassName::scoreOnSearchModels($modelClassName);
+            }
+        }
+
+        public function triggerMassEditEvent($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            if (is_subclass_of($modelClassName, 'Item') && $modelClassName::getGamificationRulesType() != null)
+            {
+                $gamificationRulesType      = $modelClassName::getGamificationRulesType();
+                $gamificationRulesClassName = $gamificationRulesType . 'Rules';
+                $gamificationRulesClassName::scoreOnMassEditModels($modelClassName);
             }
         }
     }

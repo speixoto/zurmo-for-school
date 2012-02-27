@@ -167,6 +167,7 @@
         {
             assert('$searchModel != null');
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
+            static::resolveToTriggerOnSearchEvents($listModelClassName);
             if (!empty($_GET['filteredListId']) && empty($_POST['search']))
             {
                 $filteredListId = (int)$_GET['filteredListId'];
@@ -189,6 +190,15 @@
                     $stateMetadataAdapterClassName);
             }
             return $dataProvider;
+        }
+
+        protected function resolveToTriggerOnSearchEvents($listModelClassName)
+        {
+            $pageVariableName = $listModelClassName . '_page';
+            if(isset($_GET[$pageVariableName]) && $_GET[$pageVariableName] == null)
+            {
+                Yii::app()->gameHelper->triggerSearchModelsEvent($listModelClassName);
+            }
         }
 
         protected function getDataProviderByResolvingSelectAllFromGet(
@@ -255,6 +265,7 @@
                     if ($passedOwnerValidation)
                     {
                         MassEditInsufficientPermissionSkipSavingUtil::clear($modelClassName);
+                        Yii::app()->gameHelper->triggerMassEditEvent(get_class($listModel));
                         $this->saveMassEdit(
                             get_class($listModel),
                             $modelClassName,
