@@ -29,15 +29,17 @@
      */
     class GamificationRules
     {
-        const SCORE_CATEGORY_CREATE_MODEL = 'CreateModel';
+        const SCORE_CATEGORY_CREATE_MODEL          = 'CreateModel';
 
-        const SCORE_CATEGORY_UPDATE_MODEL = 'UpdateModel';
+        const SCORE_CATEGORY_UPDATE_MODEL          = 'UpdateModel';
 
-        const SCORE_CATEGORY_LOGIN_USER   = 'LoginUser';
+        const SCORE_CATEGORY_LOGIN_USER            = 'LoginUser';
 
-        const SCORE_CATEGORY_MASS_EDIT    = 'MassEdit';
+        const SCORE_CATEGORY_MASS_EDIT             = 'MassEdit';
 
-        const SCORE_CATEGORY_SEARCH       = 'Search';
+        const SCORE_CATEGORY_SEARCH                = 'Search';
+
+        const SCORE_CATEGORY_TIME_SENSITIVE_ACTION = 'TimeSensitiveAction';
 
         public function attachScoringEventsByModelClassName($modelClassName)
         {
@@ -109,6 +111,11 @@
         public static function getPointTypesAndValuesForMassEdit()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 5);
+        }
+
+        public static function getPointTypesAndValuesForTimeSensitiveAction()
+        {
+            return array(GamePoint::TYPE_USER_ADOPTION => 20);
         }
 
         public static function scoreOnSearchModels($modelClassName)
