@@ -155,5 +155,10 @@
         {
             return true;
         }
+
+        public static function getGamificationRulesType()
+        {
+            return 'Gamification';
+        }
     }
 ?>
