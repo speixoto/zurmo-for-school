@@ -34,6 +34,8 @@
 
         private $dynamicAttributeNames = array();
 
+        private $attributeNamesThatCanBeSplitUsingDelimiter = array();
+
         public function __construct(RedBeanModel $model)
         {
             parent::__construct($model);
@@ -47,6 +49,11 @@
                                                      FormModelUtil::DELIMITER . $attributeData['elementType'];
                 }
             }
+        }
+
+        protected function addAttributeNamesThatCanBeSplitUsingDelimiter($value)
+        {
+            $this->attributeNamesThatCanBeSplitUsingDelimiter[] = $value;
         }
 
         /**
@@ -130,6 +137,13 @@
             $metadata = parent::getMetadata();
             $dynamicAttributeToElementTypes = static::getDynamicAttributeToElementTypes();
             foreach ($this->dynamicAttributeNames as $attributeName)
+            {
+                $delimiter                      = FormModelUtil::DELIMITER;
+                list($realAttributeName, $type) = explode($delimiter, $attributeName);
+                assert('$dynamicAttributeToElementTypes[$type] != null');
+                $metadata[get_called_class()]['elements'][$attributeName] = $dynamicAttributeToElementTypes[$type];
+            }
+            foreach ($this->attributeNamesThatCanBeSplitUsingDelimiter as $attributeName)
             {
                 $delimiter                      = FormModelUtil::DELIMITER;
                 list($realAttributeName, $type) = explode($delimiter, $attributeName);
@@ -221,6 +235,21 @@
                     $nonDyanmicAttributeValues[$name] = $value;
                 }
             }
+            //Dropdowns can be searched on as mulit-selects.  This below foreach resolves the issue of needing to show
+            //multiple values in the dropdown.
+            foreach ($values as $name => $value)
+            {
+                if ($value != null && $this->model->isAttribute($name) && $this->model->isRelation($name))
+                {
+                    $relationModelClassName = $this->model->getRelationModelClassName($name);
+                    if (($relationModelClassName == 'CustomField' ||
+                       is_subclass_of($relationModelClassName, 'CustomField') && isset($value['value']) &&
+                       is_array($value['value']) && count($value['value']) > 0))
+                    {
+                        $this->model->$name->value = $value['value'];
+                    }
+                }
+            }
             parent::setAttributes($nonDyanmicAttributeValues, $safeOnly);
         }
 
@@ -239,8 +268,6 @@
             $parts                      = explode($delimiter, $name);
             if (isset($parts[1]) && $parts[1] != null)
             {
-                //also wanted to check for safety:
-                //&& in_array($name, $this->dynamicAttributeNames) but that cant be done statically.
                 if (in_array($parts[1], static::getDynamicAttributeTypes()))
                 {
                     return true;

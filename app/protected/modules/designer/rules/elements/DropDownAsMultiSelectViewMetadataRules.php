@@ -24,9 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    //Todo: finish class, and rework as needed.  Currently a stub as we complete
-    //notifications and scheduler.
-    class EmailMessage
+    class DropDownAsMultiSelectViewMetadataRules
     {
+        /**
+         * Renders dropdowns as multi-select except for contact/lead state.  Temporary until attributes that
+         * rely on 'states' such as LeadState or ContactState can allow for multi-select search.
+         */
+        public static function resolveElementMetadata($elementInformation, & $elementMetadata)
+        {
+            $elementclassname = $elementInformation['type'] . 'Element';
+            if (($elementclassname == 'DropDownElement' ||
+                is_subclass_of($elementclassname, 'DropDownElement')) &&
+                $elementclassname != 'MultiSelectDropDownElement' &&
+                !is_subclass_of($elementclassname, 'MultiSelectDropDownElement')
+                )
+            {
+                if (!is_subclass_of($elementclassname, 'ContactStateDropDownElement') &&
+                    $elementclassname != 'ContactStateDropDownElement')
+                {
+                    $elementMetadata['type']     = 'DropDownAsMultiSelect';
+                    $elementMetadata['addBlank'] = true;
+                }
+            }
+        }
     }
 ?>

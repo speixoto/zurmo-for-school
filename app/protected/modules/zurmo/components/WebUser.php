@@ -55,6 +55,15 @@
                     return parent::__get($attributeName);
                 }
             }
+            catch (NotFoundException $e)
+            {
+                if (Yii::app()->isApplicationInstalled())
+                {
+                    //Perhaps the username has changed, clear session and logout user.
+                    Yii::app()->getSession()->destroy();
+                    Yii::app()->request->redirect(Yii::app()->homeUrl);
+                }
+            }
             catch (CException $e)
             {
             }

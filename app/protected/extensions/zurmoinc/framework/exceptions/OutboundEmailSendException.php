@@ -25,16 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Component for working with outbound and inbound email transport
+     * Exception thrown when there is problem sending an email message
      */
-    class ZurmoEmailHelper extends CApplicationComponent
+    class OutboundEmailSendException extends CException
     {
-        /**
-         * Send an email message using outbound email transport
-         * @param EmailMessage $email
-         */
-        public function send(EmailMessage $email)
-        {
-        }
     }
 ?>

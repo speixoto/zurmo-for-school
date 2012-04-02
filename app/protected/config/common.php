@@ -73,7 +73,7 @@
                 'charset'        => 'utf8',
             ),
             'emailHelper' => array(
-                'class'       => 'application.modules.zurmo.components.ZurmoEmailHelper',
+                'class'       => 'application.modules.emailMessages.components.EmailHelper',
             ),
             'errorHandler' => array(
                 'errorAction' => 'zurmo/default/error',
@@ -169,7 +169,7 @@
                 'timeZone'             => 'America/Chicago',
             ),
             'request' => array(
-                'enableCsrfValidation' => false,
+                'enableCsrfValidation' => true,
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
             ),
             'urlManager' => array (
@@ -244,6 +244,7 @@
             'configuration',
             'contacts',
             'designer',
+            'emailMessages',
             'gamification',
             'home',
             'import',

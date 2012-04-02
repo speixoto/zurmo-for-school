@@ -30,9 +30,9 @@
     // DON'T MAKE A MESS!
     return array(
         'Apache'
-            => 'Apache',
+            => 'Apache', // Same Word Translated
         'APC'
-            => 'APC',
+            => 'APC', // Same Word Translated
         'Below you will find the results of the system check. If any required ' .
         'services are not setup correctly, you will need to make sure they are ' .
         'installed correctly before you can continue.'
@@ -59,6 +59,10 @@
             => 'Dienstleistungen installiert mit Erfolg',
         'Creating super user.'
             => 'Erstellen Super User',
+        'Ctype extension is loaded.'
+            => 'Die Erweiterung ctype ist geladen.',
+        'Ctype extension is not loaded.'
+            => 'Die Erweiterung ctype ist nicht geladen',
         'Curl'
             => 'Curl',
         'Database admin password'
@@ -93,6 +97,10 @@
             => 'Datenbank max_sp_recursion_depth Größe erfüllt Mindestanforderung',
         'Database name'
             => 'Name der Datenbank',
+        'Database optimizer_search_depth size meets requirement.'
+            => 'Der Einstellwert optimizer_search_depth erfüllt die Anforderungen.',
+        'Database optimizer_search_depth value is {searchDepth}. It is required to be set to 0.'
+            => 'Der einstellwert optimizer_search_depth ist {searchDepth}. Der Wert muss 0 sein.',
         'Database password'
             => 'Datenbankkennwort',
         'Database schema creation complete.'
@@ -119,6 +127,8 @@
             => 'Freezing Datenbank',
         'Host name where Zurmo will be installed.'
             => 'Der Name des Hosts, auf dem Zurmo installiert werden soll.',
+        'If this website is in production mode, please remove the app/test.php file.'
+            => 'Wenn diese Web-Seite in Produktion ist, entfernen Sie bitte die Datei app/test.php.',
         'In all likelihood, these items were supplied to you by your Web Host. '.
         'If you do not have this information, then you will need to contact them ' .
         'before you can continue. If you\'re all ready...'
@@ -178,6 +188,10 @@
             => 'Ach nein!',
         'PASS'
             => 'PASS',
+        'PCRE extension is loaded.'
+            => 'Die PCRE-Erweiterung ist geladen.',
+        'PCRE extension is not loaded.'
+            => 'Die PCRE ist nicht geladen.',
         'PHP'
             => 'PHP',
         'PHP date.timezone is not set.'
@@ -200,6 +214,8 @@
             => 'PHP upload_max_filesize ist:',
         'PHP upload_max_filesize value meets minimum requirement.'
             => 'PHP upload_max_filesize erfüllt Mindestanforderung.',
+        'Please delete all files from assets folder on server.'
+            => 'Bitte löschen Sie alle Dateien im Ordner Assets.',
         'Rebuilding Permissions.'
             => 'Rekonstruktion von Berechtigungen.',
         'Recheck System'
@@ -224,6 +240,10 @@
             => 'SOAP ist installiert.',
         'SOAP is not installed.'
             => 'SOAP ist nicht installiert.',
+        'SPL extension is loaded.'
+            => 'Die SPL-Erweiterung ist geladen.',
+        'SPL extension is not loaded.'
+            => 'Die SPL-Erweiterung ist nicht geladen.',
         'Starting database schema creation.'
             => 'Erstellung von Datenbank-Schemata.',
         'Starting schema update process.'

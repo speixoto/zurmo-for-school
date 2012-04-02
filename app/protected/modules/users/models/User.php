@@ -30,7 +30,7 @@
         {
             assert('is_string($username)');
             assert('$username != ""');
-            $bean = R::findOne('_user', "username = '$username'");
+            $bean = R::findOne('_user', "username = :username ", array(':username' => $username));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -545,10 +545,11 @@
                     'username',
                 ),
                 'relations' => array(
-                    'currency' => array(RedBeanModel::HAS_ONE,             'Currency'),
-                    'groups'   => array(RedBeanModel::MANY_MANY,           'Group'),
-                    'manager'  => array(RedBeanModel::HAS_ONE,             'User'),
-                    'role'     => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
+                    'currency'   => array(RedBeanModel::HAS_ONE,             'Currency'),
+                    'groups'     => array(RedBeanModel::MANY_MANY,           'Group'),
+                    'manager'    => array(RedBeanModel::HAS_ONE,             'User'),
+                    'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
+                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'User'),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',

@@ -50,7 +50,6 @@
             $adaptedMetadata = array('clauses' => array(), 'structure' => '');
             $clauseCount = 1;
             $structure = '';
-
             foreach ($this->metadata as $attributeName => $value)
             {
                 //If attribute is a pseudo attribute on the SearchForm
@@ -173,10 +172,30 @@
                         {
                             $relatedValue = $relatedValue['value'];
                         }
+                        elseif (($this->model->$attributeName instanceof RedBeanManyToManyRelatedModels ||
+                                $this->model->$attributeName instanceof RedBeanOneToManyRelatedModels ) &&
+                               is_array($relatedValue) && count($relatedValue) > 0)
+                        {
+                            //Continue on using relatedValue as is.
+                        }
                         elseif ($this->model->$attributeName->$relatedAttributeName instanceof RedBeanModels &&
                                is_array($relatedValue) && count($relatedValue) > 0)
                         {
                             //Continue on using relatedValue as is.
+                        }
+                        elseif ($this->model->$attributeName instanceof CustomField && count($relatedValue) > 0)
+                        {
+                            //Handle scenario where the UI posts or sends a get string with an empty value from
+                            //a multi-select field.
+                            if (count($relatedValue) == 1 && $relatedValue[0] == null)
+                            {
+                                break;
+                            }
+                            //Continue on using relatedValue as is.
+                            if ($operatorType == null)
+                            {
+                                $operatorType = 'oneOf';
+                            }
                         }
                         else
                         {
@@ -187,13 +206,30 @@
                     {
                         if ($this->model->isRelation($attributeName))
                         {
+                            if ($this->model->$attributeName instanceof RedBeanOneToManyRelatedModels ||
+                               $this->model->$attributeName instanceof RedBeanManyToManyRelatedModels)
+                            {
+                                $relationModelClassName = $this->model->getRelationModelClassName($attributeName);
+                                $modelForTypeOperations = new $relationModelClassName(false);
+                            }
+                            else
+                            {
+                                $modelForTypeOperations = $this->model->$attributeName;
+                            }
                             if ($operatorType == null)
                             {
                                 $operatorType = ModelAttributeToOperatorTypeUtil::getOperatorType(
-                                                $this->model->$attributeName, $relatedAttributeName);
+                                                $modelForTypeOperations, $relatedAttributeName);
                             }
-                            $relatedValue  = ModelAttributeToCastTypeUtil::resolveValueForCast(
-                                                $this->model->$attributeName, $relatedAttributeName, $relatedValue);
+                            if (is_array($relatedValue) && $this->model->$attributeName instanceof CustomField)
+                            {
+                                //do nothing, the cast is fine as is. Maybe eventually remove this setting of cast.
+                            }
+                            else
+                            {
+                                $relatedValue  = ModelAttributeToCastTypeUtil::resolveValueForCast(
+                                                 $modelForTypeOperations, $relatedAttributeName, $relatedValue);
+                            }
                             if ($this->model->$attributeName instanceof RedBeanModel)
                             {
                                 $mixedType = ModelAttributeToMixedTypeUtil::getType(

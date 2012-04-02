@@ -28,6 +28,11 @@
     {
         public function attach($owner)
         {
+            if (Yii::app()->apiRequest->isApiRequest())
+            {
+                $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
+            }
+
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
             if (Yii::app()->apiRequest->isApiRequest())
             {
@@ -44,7 +49,6 @@
                 if (!Yii::app()->isApplicationInstalled())
                 {
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstanceFolderCheck'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleTidyCheck'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstallCheck'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
@@ -106,23 +110,6 @@
             if (!$instanceFoldersServiceHelper->runCheckAndGetIfSuccessful())
             {
                 echo $instanceFoldersServiceHelper->getMessage();
-                Yii::app()->end(0, false);
-            }
-        }
-
-        /**
-        * This check is required during installation since if you do not have the extension for tidy installed,
-        * the page will not load properly to install the application since debug is true before the install is
-        * complete.
-        * @param $event
-        */
-        public function handleTidyCheck($event)
-        {
-            $tidyServiceHelper = new TidyServiceHelper();
-            if (!$tidyServiceHelper->runCheckAndGetIfSuccessful())
-            {
-                echo $tidyServiceHelper->getMessage() . "<br/>";
-                echo 'http://php.net/manual/en/book.tidy.php';
                 Yii::app()->end(0, false);
             }
         }
