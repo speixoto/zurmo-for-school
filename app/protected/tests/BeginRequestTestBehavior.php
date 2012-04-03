@@ -29,8 +29,6 @@
         public function attach($owner)
         {
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-            // We don't need this, db is already setup in TestSUite.php line 104!
-            //$owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
         }
 
         /**
@@ -41,7 +39,7 @@
         {
             try
             {
-                $filesToInclude = GeneralCache::getEntry('filesToIncludeForTests3');
+                $filesToInclude = GeneralCache::getEntry('filesToIncludeForTests');
             }
             catch (NotFoundException $e)
             {
@@ -53,18 +51,12 @@
                 {
                     $filesToInclude[$totalFilesToIncludeFromModules + $key] = $file;
                 }
-                GeneralCache::cacheEntry('filesToIncludeForTests3', $filesToInclude);
+                GeneralCache::cacheEntry('filesToIncludeForTests', $filesToInclude);
             }
             foreach ($filesToInclude as $file)
             {
                 Yii::import($file);
             }
-        }
-        public function handleSetupDatabaseConnection($event)
-        {
-            RedBeanDatabase::setup(Yii::app()->db->connectionString,
-                                   Yii::app()->db->username,
-                                   Yii::app()->db->password);
         }
     }
 ?>

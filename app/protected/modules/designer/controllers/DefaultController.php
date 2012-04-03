@@ -40,7 +40,7 @@
          */
         public function filterModuleClassName($filterChain)
         {
-            if(isset($_GET['moduleClassName']))
+            if (isset($_GET['moduleClassName']))
             {
                 $moduleClassNames = array();
                 $modules = Module::getModuleObjects();
@@ -54,7 +54,8 @@
                 }
                 if (!in_array($_GET['moduleClassName'], $moduleClassNames))
                 {
-                    $message = Yii::t('Default', "The requested {moduleClassName} module does not exist", array('moduleClassName'=>$_GET['moduleClassName']));
+                    $message = Yii::t('Default', 'The requested {moduleClassName} module does not exist',
+                                                 array('moduleClassName' => $_GET['moduleClassName']));
                     throw new DesignerModuleClassNameNotFoundException($message);
                 }
             }

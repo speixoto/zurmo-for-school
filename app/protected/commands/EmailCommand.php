@@ -34,19 +34,19 @@
         {
             return <<<EOD
     USAGE
-      zurmoc email <action-name>   --username=user
-                                   --toAddress=address
-                                   --subject=subject
-                                   --textContent=content
-                                   --htmlContent=content
-                                   --host=host
-                                   --port=port
-                                   --outboundUsername=username
-                                   --outboundPassword=password
+      zurmoc email <action-name>   --username=user             // Not Coding Standard
+                                   --toAddress=address         // Not Coding Standard
+                                   --subject=subject           // Not Coding Standard
+                                   --textContent=content       // Not Coding Standard
+                                   --htmlContent=content       // Not Coding Standard
+                                   --host=host                 // Not Coding Standard
+                                   --port=port                 // Not Coding Standard
+                                   --outboundUsername=username // Not Coding Standard
+                                   --outboundPassword=password // Not Coding Standard
 
     DESCRIPTION
       Send an email messages.  Use double quotes to to make a sentence for a subject or content
-      An example is --subject="Welcome to Zurmo"
+      An example is --subject="Welcome to Zurmo"               // Not Coding Standard
 
     PARAMETERS
      * action-name: The action to use. Currently supports 'send'
@@ -95,19 +95,19 @@ EOD;
         {
             $this->usageError('The specified username does not exist.');
         }
-        if($host != null)
+        if ($host != null)
         {
             Yii::app()->emailHelper->outboundHost = $host;
         }
-        if($port != null)
+        if ($port != null)
         {
             Yii::app()->emailHelper->outboundPort = $port;
         }
-        if($outboundUsername != null)
+        if ($outboundUsername != null)
         {
             Yii::app()->emailHelper->outboundUsername = $outboundUsername;
         }
-        if($outboundUsername != null)
+        if ($outboundUsername != null)
         {
             Yii::app()->emailHelper->outboundPassword = $outboundPassword;
         }
@@ -139,13 +139,13 @@ EOD;
         $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
         $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
         $validated                 = $emailMessage->validate();
-        if(!$validated)
+        if (!$validated)
         {
             $this->addErrorsAsUsageErrors($emailMessage->getErrors());
         }
         Yii::app()->emailHelper->sendImmediately($emailMessage);
 
-        if(!$emailMessage->hasSendError())
+        if (!$emailMessage->hasSendError())
         {
             echo Yii::t('Default', 'Message successfully sent') . "\n";
         }
@@ -155,11 +155,12 @@ EOD;
             echo $emailMessage->error     . "\n";
         }
         $saved = $emailMessage->save();
-        if(!$saved)
+        if (!$saved)
         {
             throw new NotSupportedException();
         }
     }
+
     protected function addErrorsAsUsageErrors(array $errors)
     {
         foreach ($errors as $errorData)

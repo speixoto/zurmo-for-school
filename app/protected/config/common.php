@@ -73,7 +73,7 @@
                 'charset'        => 'utf8',
             ),
             'emailHelper' => array(
-                'class'       => 'application.modules.emailmessages.components.EmailHelper',
+                'class'       => 'application.modules.emailMessages.components.EmailHelper',
             ),
             'errorHandler' => array(
                 'errorAction' => 'zurmo/default/error',
@@ -233,7 +233,7 @@
             'configuration',
             'contacts',
             'designer',
-            'emailmessages',
+            'emailMessages',
             'home',
             'import',
             'install',
@@ -257,7 +257,7 @@
 
         'params' => array(
             'redBeanVersion'    => '1.3',
-            'yiiVersion'        => '1.1.8',
+            'yiiVersion'        => '1.1.10',
             'supportedLanguages' => array(
                 'en' => 'English',
                 'es' => 'Spanish',

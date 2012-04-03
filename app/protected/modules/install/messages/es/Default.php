@@ -30,9 +30,9 @@
     // DON'T MAKE A MESS!
     return array(
         'Apache'
-            => 'Apache',
+            => 'Apache', // Same Word Translated
         'APC'
-            => 'APC',
+            => 'APC', // Same Word Translated
         'Below you will find the results of the system check. If any required ' .
         'services are not setup correctly, you will need to make sure they are ' .
         'installed correctly before you can continue.'
@@ -58,6 +58,10 @@
             => 'Servicios correctamente instalado',
         'Creating super user.'
             => 'Creando super usuario.',
+        'Ctype extension is loaded.'
+            => 'El ctype extensión está cargada.',
+        'Ctype extension is not loaded.'
+            => 'El ctype extensión no está cargada.',
         'Curl'
             => 'Curl',
         'Database admin password'
@@ -184,6 +188,10 @@
             => '¡Oh no!',
         'PASS'
             => 'EXITOSA',
+        'PCRE extension is loaded.'
+            => 'La extensión PCRE está cargado.',
+        'PCRE extension is not loaded.'
+            => 'La extensión PCRE no está cargada.',
         'PHP'
             => 'PHP',
         'PHP date.timezone is not set.'
@@ -232,6 +240,10 @@
             => 'SOAP está instalado.',
         'SOAP is not installed.'
             => 'SOAP no está instalado.',
+        'SPL extension is loaded.'
+            => 'La extensión del SPL se ha cargado.',
+        'SPL extension is not loaded.'
+            => 'La extensión del SPL no está cargada.',
         'Starting database schema creation.'
             => 'Creación de esquemas de bases de datos.',
         'Starting schema update process.'
@@ -298,10 +310,14 @@
             => 'Ha especificado un usuario existente. Si desea utilizar este usuario, entonces no ' .
                'especifica el nombre de usuario admin y la contraseña de la base de datos. , ' .
                'O elegir un nombre de usuario de base de datos que no existe.',
+        'Your ZurmoCRM software is outdated, new stable release available:'
+            => 'Su versión de Zumo es obsoleto, una nueva versión estable está disponible:',
         'Zurmo administrative password. The username is `super`.  You can change this later.'
             => 'Zurmo contraseña administrativa. El usuario es `super. Se puede cambiar esto más adelante.',
         'Zurmo Installation'
             => 'Instalación de zurmo',
+        'Zurmo Version'
+            => 'Version de Zurmo',
         '{folderPath} is missing.'
             => '{folderPath} falta',
         '{folderPath} is not writable.'
