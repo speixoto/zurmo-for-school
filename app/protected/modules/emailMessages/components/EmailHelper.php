@@ -207,6 +207,15 @@
             {
                 $mailer->addAddressByType($recipient->toAddress, $recipient->toName, $recipient->type);
             }
+
+            if(isset($emailMessage->files) && !empty($emailMessage->files))
+            {
+                foreach ($emailMessage->files as $file)
+                {
+                    $attachment = $this->mailer->attachDynamicContent($file->fileContent->content, $file->name, $file->type);
+                    $emailMessage->attach($attachment);
+                }
+            }
         }
 
         protected function sendEmail(Mailer $mailer, EmailMessage $emailMessage)

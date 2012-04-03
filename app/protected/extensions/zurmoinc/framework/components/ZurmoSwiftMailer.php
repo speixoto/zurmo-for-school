@@ -55,6 +55,20 @@
         }
 
         /**
+         * Create Swift_Attachment based on dynamic content(for example when content
+         * is stored in database), filename and type.
+         *
+         * @param binary $content
+         * @param string $filename, for example 'image.png'
+         * @param string $contentType, for example 'application/octet-stream'
+         * @see SwiftMailer::attachment()
+         */
+        public function attachDynamicContent($content, $filename, $contentType)
+        {
+            return Swift_Attachment::newInstance($content, $filename, $contentType);
+        }
+
+        /**
          * Override to support adding sendResponseLog messages
          * (non-PHPdoc)
          * @see SwiftMailer::send()
