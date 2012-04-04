@@ -109,6 +109,7 @@
             {
                 return;
             }
+            //todo: refactor to resolve more than just GENERAL.. do the sub categories first...
             $currentGameLevel    = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
             $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL,
                                                                                               $currentGameLevel);
