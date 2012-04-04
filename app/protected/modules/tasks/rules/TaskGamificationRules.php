@@ -29,7 +29,7 @@
      */
     class TaskGamificationRules extends GamificationRules
     {
-        const SCORE_CATEGORY_COMPLETED_TASK_ON_TIME = 'CompletedTaskOnTime';
+        const SCORE_TYPE_COMPLETED_TASK_ON_TIME = 'CompletedTaskOnTime';
 
         public function attachScoringEventsByModelClassName($modelClassName)
         {
@@ -50,7 +50,7 @@
 
                 if($completedTimestamp <= $dueTimestamp)
                 {
-                    $scoreType           = 'CompletedTaskOnTime';
+                    $scoreType           = static::SCORE_TYPE_COMPLETED_TASK_ON_TIME;
                     $category            = static::SCORE_CATEGORY_TIME_SENSITIVE_ACTION;
                     $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
                     $gameScore->addValue();

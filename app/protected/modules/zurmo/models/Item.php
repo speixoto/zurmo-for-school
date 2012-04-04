@@ -88,7 +88,7 @@
         public function delete()
         {
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_DELETED, strval($this), $this);
-            parent::delete();
+            return parent::delete();
         }
 
         // Makes Item appear on the stack so that auditing can ensure

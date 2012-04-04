@@ -2032,7 +2032,7 @@
             {
                 // If the model was never saved
                 // then it doesn't need to be deleted.
-                return;
+                return false;
             }
             $modelClassName = get_called_class();
             if (!$modelClassName::isTypeDeletable() ||
