@@ -80,6 +80,9 @@
             'fusioncharts' => array(
                 'class' => 'application.extensions.fusioncharts.fusionCharts',
             ),
+            'imap' => array(
+                'class'       => 'application.modules.emailMessages.components.ZurmoImap',
+            ),
             'minScript' => array(
                 'class' => 'application.extensions.zurmoinc.framework.components.ZurmoExtMinScript',
                 'groupMap' => array(

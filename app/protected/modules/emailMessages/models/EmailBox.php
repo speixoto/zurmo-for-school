@@ -85,6 +85,11 @@
                     $folder->type     = EmailFolder::TYPE_OUTBOX_ERROR;
                     $folder->emailBox = $box;
                     $box->folders->add($folder);
+                    $folder           = new EmailFolder();
+                    $folder->name     = EmailFolder::getDefaultOutboxErrorName();
+                    $folder->type     = EmailFolder::TYPE_INBOX;
+                    $folder->emailBox = $box;
+                    $box->folders->add($folder);
                     $saved            = $box->save();
                     assert('$saved');
                 }

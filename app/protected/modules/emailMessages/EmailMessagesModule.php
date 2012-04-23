@@ -77,6 +77,13 @@
                         'route'            => '/emailMessages/default/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'Inbound Email Configuration',
+                        'descriptionLabel' => 'Manage Email Configuration',
+                        'route'            => '/emailMessages/default/inboundConfigurationEdit',
+                        'right'            => self::RIGHT_ACCESS_CONFIGURATION,
+                    ),
                 ),
             );
             return $metadata;
@@ -110,6 +117,26 @@
         public static function hasPermissions()
         {
             return true;
+        }
+
+        /**
+        * Get last Zurmo Stable version from global configuration property.
+        */
+        public static function getLastImapDropboxCheckTime()
+        {
+            $lastImapDropboxCheckTime = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'lastImapDropboxCheckTime');
+            return $lastImapDropboxCheckTime;
+        }
+
+        /**
+         * Set lastZurmoStableVersion global pconfiguration property.
+         * @param string $zurmoVersion
+         */
+        public static function setLastImapDropboxCheckTime($lastImapDropboxCheckTime)
+        {
+            assert('isset($lastImapDropboxCheckTime)');
+            assert('$lastImapDropboxCheckTime != ""');
+            ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', 'lastImapDropboxCheckTime', $lastImapDropboxCheckTime);
         }
     }
 ?>

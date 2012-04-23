@@ -325,7 +325,7 @@
          * address.  @see EmailHelper::defaultFromAddress
          * @param User $user
          */
-        public function resolveFromAddressByUser(User$user)
+        public function resolveFromAddressByUser(User $user)
         {
             assert('$user->id >0');
             if ($user->primaryEmail->emailAddress == null)

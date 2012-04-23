@@ -240,6 +240,14 @@
         }
 
         /**
+        * @returns true if IMAP extension is loaded, or false if not loaded.
+        */
+        public static function checkImap()
+        {
+            return extension_loaded("imap");
+        }
+
+        /**
         * @returns true if all $_SERVER variable are loaded correctly, otherwise return false.
         * Required by Yii framework.
         */

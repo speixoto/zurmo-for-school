@@ -161,6 +161,117 @@ EOD;
         }
     }
 
+    /**
+    * Execute the action.
+    * @param array command line parameters specific for this command
+    */
+    public function actionImapRead($host,
+                                   $username,
+                                   $password,
+                                   $port = 143,
+                                   $ssl = false,
+                                   $folder='INBOX')
+    {
+        Yii::import('application.extensions.imap.ZurmoImap');
+        Yii::app()->user->userModel = User::getByUsername('super');
+        if (!isset($host))
+        {
+            $this->usageError('You must specify imap host.');
+        }
+        if (!isset($username))
+        {
+            $this->usageError('A username must be specified.');
+        }
+        if (!isset($password))
+        {
+            $this->usageError('A passowrd must be specified.');
+        }
+
+        echo "\n";
+        echo 'Fetching emails:' . "\n";
+
+        $imap = new ZurmoImap($host, $username, $password, $port);
+        $imap->connect();
+        $messages = $imap->getMessages();
+
+        if (count($messages))
+        {
+            echo "Saving " . count($messages) . " emails. \n";
+            foreach ($messages as $message)
+            {
+                $emailMessage = new EmailMessage();
+                $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                $emailMessage->subject = $message['subject'];
+
+                $emailContent              = new EmailMessageContent();
+                $emailContent->textContent = $message['body']['text'];
+                $emailContent->htmlContent = $message['body']['html'];
+                $emailMessage->content     = $emailContent;
+
+                $sender                    = new EmailMessageSender();
+                $sender->fromAddress       = $message['from']['email'];
+                $sender->fromName          = $message['from']['name'];
+                $emailMessage->sender      = $sender;
+
+                foreach($message['to'] as $to)
+                {
+                    $recipient                 = new EmailMessageRecipient();
+                    $recipient->toAddress      = $to['email'];
+                    $recipient->toName         = $to['name'];
+                    $recipient->type           = EmailMessageRecipient::TYPE_TO;
+                    $emailMessage->recipients->add($recipient);
+                }
+
+                $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+                $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_INBOX);
+
+                if (!empty($message['attachments']))
+                {
+                    foreach($message['attachments'] as $attachment)
+                    {
+                        if (!$attachment['is_attachment'])
+                        {
+                            continue;
+                        }
+                        $fileContent          = new FileContent();
+                        $fileContent->content = $attachment['attachment'];
+                        $file                 = new EmailFileModel();
+                        $file->fileContent    = $fileContent;
+                        $file->name           = $attachment['filename'];
+                        $file->type           = ZurmoFileHelper::getMimeType($attachment['filename']);
+                        $file->size           = strlen($attachment['attachment']);
+                        $saved                = $file->save();
+                        assert('$saved'); // Not Coding Standard
+                        $emailMessage->files->add($file);
+                    }
+                }
+                $validated                 = $emailMessage->validate();
+                if (!$validated)
+                {
+                    $this->addErrorsAsUsageErrors($emailMessage->getErrors());
+                }
+                $saved = $emailMessage->save();
+
+                try {
+                    if (!$saved)
+                    {
+                        throw new NotSupportedException();
+                    }
+                    echo Yii::t('Default', 'New message successfully saved.') . "\n";
+                }
+                catch (NotSupportedException $e)
+                {
+                    echo Yii::t('Default', 'Message could not be saved..') . "\n";
+                }
+            }
+        }
+        else
+        {
+            echo "There are no new emails on server. \n";
+        }
+
+    }
+
     protected function addErrorsAsUsageErrors(array $errors)
     {
         foreach ($errors as $errorData)
