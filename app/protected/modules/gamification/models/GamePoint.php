@@ -33,7 +33,15 @@
          * Used to define the point type as being a user adoption point.
          * @var String
          */
-        const TYPE_USER_ADOPTION = 'UserAdoption';
+        const TYPE_USER_ADOPTION      = 'User Adoption';
+
+        const TYPE_SALES              = 'Sales';
+
+        const TYPE_NEW_BUSINESS       = 'New Business';
+
+        const TYPE_ACCOUNT_MANAGEMENT = 'Account Management';
+
+        const TYPE_COMMUNICATION      = 'Communication';
 
         public function __toString()
         {

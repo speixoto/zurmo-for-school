@@ -49,17 +49,17 @@
 
         public function scoreOnSaveModel(CEvent $event)
         {
-            $model                      = $event->sender;
+            $model                   = $event->sender;
             assert('$model instanceof Item');
             if($model->getIsNewModel())
             {
-                $scoreType           = 'Create' . get_class($model);
+                $scoreType           = static::resolveCreateScoreTypeByModel($model);
                 $category            = static::SCORE_CATEGORY_CREATE_MODEL;
                 $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             }
             else
             {
-                $scoreType           = 'Update' . get_class($model);
+                $scoreType           = static::resolveUpdateScoreTypeByModel($model);
                 $category            = static::SCORE_CATEGORY_UPDATE_MODEL;
                 $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             }
@@ -69,8 +69,18 @@
             {
                 throw new FailedToSaveModelException();
             }
-            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
-                                                get_called_class(), $category);
+                GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                               static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
+        }
+
+        protected static function resolveCreateScoreTypeByModel($model)
+        {
+            return 'Create' . get_class($model);
+        }
+
+        protected static function resolveUpdateScoreTypeByModel($model)
+        {
+            return 'Update' . get_class($model);
         }
 
         public static function getPointTypeAndValueDataByScoreTypeAndCategory($type, $category)
@@ -131,7 +141,7 @@
                 throw new FailedToSaveModelException();
             }
             GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
-                                                'GamificationRules', $category);
+                           static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
         }
 
         public static function scoreOnMassEditModels($modelClassName)
@@ -147,7 +157,7 @@
                 throw new FailedToSaveModelException();
             }
             GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
-                                                'GamificationRules', $category);
+                           static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
         }
     }
 ?>

@@ -135,7 +135,7 @@
 
         public static function getGamificationRulesType()
         {
-            return 'Gamification';
+            return 'ContactGamification';
         }
     }
 ?>

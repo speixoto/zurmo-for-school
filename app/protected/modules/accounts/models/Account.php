@@ -172,7 +172,7 @@
 
         public static function getGamificationRulesType()
         {
-            return 'Gamification';
+            return 'AccountGamification';
         }
     }
 ?>

@@ -110,19 +110,26 @@
                 return;
             }
             //todo: refactor to resolve more than just GENERAL.. do the sub categories first...
+
+            //reduce everything to a factor of 1, instead of 5 or 10 to start . makes it easier to understand magnitudes
+
+
             $currentGameLevel    = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
             $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL,
                                                                                               $currentGameLevel);
             $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL,
                                                                                     $currentGameLevel);
+
+
+
             //todo: the 'does user exceed points is not as simple as matching points. we have to look at the
             //GameLevel type,  SalesGameLevelRules::getScoreTypesToIncludePointsFor
             //so in SalesGameLevelRules or actually TimeManagementGameLevelRules we would need to know
-            //SCORE_TYPE_COMPLETED_TASK_ON_TIME is a type, but SCORE_CATEGORY_TIME_SENSITIVE_ACTION is a category.
+            //SCORE_TYPE_COMPLETED_TASK_ON_TIME is a type, but SCORE_CATEGORY_TIME_SENSITIVE_ACTION (Time Management) is a category.
 
-            //where do the cateogry search and mass updatea fall under for sub category?
+            //where do the cateogry search and mass updatea fall under for sub category? - under user adoption which is just part of general
             //
-                                                                                    
+
              //is the idea of sub-categories to only pull specific types or categories? otherwise it falls under general?
 
             if($nextLevel !== false &&

@@ -25,18 +25,36 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with game points.
+     * Class defining rules for Meeting gamification behavior.
      */
-    class GamePointUtil
+    class MeetingGamificationRules extends GamificationRules
     {
-        public static function addPointsByGameScore($type, User $user, $pointTypeAndValueData)
+        protected static function resolveCreateScoreTypeByModel($model)
         {
-            assert('is_string($type)');
-            assert('$user->id > 0');
-            foreach($pointTypeAndValueData as $type => $value)
+            if($model->category->value == 'Call')
             {
-                Yii::app()->gameHelper->addPointsByUserDeferred($user, $type, $value);
+                return 'CreateCall';
             }
+            return parent::resolveCreateScoreTypeByModel($model);
+        }
+
+        protected static function resolveUpdateScoreTypeByModel($model)
+        {
+            if($model->category->value == 'Call')
+            {
+                return 'UpdateCall';
+            }
+            return parent::resolveCreateScoreTypeByModel($model);
+        }
+
+        public static function getPointTypesAndValuesForCreateModel()
+        {
+            return array(GamePoint::TYPE_COMMUNICATION => 10);
+        }
+
+        public static function getPointTypesAndValuesForUpdateModel()
+        {
+            return array(GamePoint::TYPE_COMMUNICATION => 10);
         }
     }
 ?>

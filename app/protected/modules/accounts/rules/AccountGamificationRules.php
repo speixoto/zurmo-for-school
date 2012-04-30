@@ -25,18 +25,18 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with game points.
+     * Class defining rules for Account gamification behavior.
      */
-    class GamePointUtil
+    class AccountGamificationRules extends GamificationRules
     {
-        public static function addPointsByGameScore($type, User $user, $pointTypeAndValueData)
+        public static function getPointTypesAndValuesForCreateModel()
         {
-            assert('is_string($type)');
-            assert('$user->id > 0');
-            foreach($pointTypeAndValueData as $type => $value)
-            {
-                Yii::app()->gameHelper->addPointsByUserDeferred($user, $type, $value);
-            }
+            return array(GamePoint::TYPE_NEW_BUSINESS => 10);
+        }
+
+        public static function getPointTypesAndValuesForUpdateModel()
+        {
+            return array(GamePoint::TYPE_ACCOUNT_MANAGEMENT => 10);
         }
     }
 ?>

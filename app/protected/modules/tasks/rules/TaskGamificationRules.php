@@ -60,9 +60,19 @@
                         throw new FailedToSaveModelException();
                     }
                     GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
-                                                        get_called_class(), $category);
+                                   getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
                 }
             }
+        }
+
+        public static function getPointTypesAndValuesForCreateModel()
+        {
+            return array(GamePoint::TYPE_TIME_MANAGEMENT => 10);
+        }
+
+        public static function getPointTypesAndValuesForUpdateModel()
+        {
+            return array(GamePoint::TYPE_TIME_MANAGEMENT => 10);
         }
     }
 ?>

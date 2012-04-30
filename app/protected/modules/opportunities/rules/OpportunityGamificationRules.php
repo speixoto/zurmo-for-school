@@ -25,32 +25,45 @@
      ********************************************************************************/
 
     /**
-     * Attaches events to the WebUser as needed for gamification.
+     * Class defining rules for Opportunity gamification behavior.
      */
-    class WebUserAfterLoginGamificationBehavior extends CBehavior
+    class OpportunityGamificationRules extends GamificationRules
     {
-        public function attach($owner)
+        const SCORE_CATEGORY_WIN_OPPORTUNITY = 'WinOpportunity';
+
+        public function scoreOnSaveModel(CEvent $event)
         {
-            $owner->attachEventHandler('onAfterLogin', array($this, 'handleScoreLogin'));
+            parent::scoreOnSaveModel($event);
+            if (array_key_exists('value', $event->sender->stage->originalAttributeValues) &&
+                $event->sender->stage->value == 'Closed Won')
+            {
+                $scoreType = 'WinOpportunity';
+                $category  = static::SCORE_CATEGORY_WIN_OPPORTUNITY;
+                $gameScore = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+                $gameScore->addValue();
+                $saved = $gameScore->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                               getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
+            }
         }
 
-        /**
-         * The login of a user is a scored game event.  This method processes this.
-         * @param CEvent $event
-         */
-        public function handleScoreLogin($event)
+        public static function getPointTypesAndValuesForCreateModel()
         {
-            $scoreType           = 'LoginUser';
-            $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
-            $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
-            $gameScore->addValue();
-            $saved = $gameScore->save();
-            if(!$saved)
-            {
-                throw new FailedToSaveModelException();
-            }
-                GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
-                               GamificationRules::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
+            return array(GamePoint::TYPE_SALES => 10);
         }
-     }
+
+        public static function getPointTypesAndValuesForUpdateModel()
+        {
+            return array(GamePoint::TYPE_SALES => 10);
+        }
+
+        public static function getPointTypesAndValuesForWinOpportunity()
+        {
+            return array(GamePoint::TYPE_SALES => 50);
+        }
+    }
 ?>
