@@ -35,6 +35,12 @@
 
         const SCORE_CATEGORY_CONVERT_LEAD         = 'ConvertLead';
 
+        const SCORE_TYPE_CREATE_LEAD              = 'CreateLead';
+
+        const SCORE_TYPE_UPDATE_LEAD              = 'UpdateLead';
+
+        const SCORE_TYPE_CONVERT_LEAD             = 'ConvertLead';
+
         public function scoreOnSaveModel(CEvent $event)
         {
             if(!LeadsUtil::isStateALead &&
@@ -55,7 +61,7 @@
 
         protected function scoreOnSaveWhereLeadIsConverted(CEvent $event)
         {
-            $scoreType = 'ConvertLead';
+            $scoreType = static::SCORE_TYPE_CONVERT_LEAD;
             $category  = static::SCORE_CATEGORY_CONVERT_LEAD;
             $gameScore = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             $gameScore->addValue();
@@ -74,13 +80,13 @@
             assert('$model instanceof Item');
             if($model->getIsNewModel())
             {
-                $scoreType           = 'CreateLead';
+                $scoreType           = static::SCORE_TYPE_CREATE_LEAD;
                 $category            = static::SCORE_CATEGORY_CREATE_LEAD;
                 $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             }
             else
             {
-                $scoreType           = 'UpdateLead';
+                $scoreType           = static::SCORE_TYPE_UPDATE_LEAD;
                 $category            = static::SCORE_CATEGORY_UPDATE_LEAD;
                 $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             }

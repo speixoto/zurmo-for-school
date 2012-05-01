@@ -49,6 +49,29 @@
         {
         }
 
+
+        public function triggerSearchModelsEvent($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            if (is_subclass_of($modelClassName, 'Item') && $modelClassName::getGamificationRulesType() != null)
+            {
+                $gamificationRulesType      = $modelClassName::getGamificationRulesType();
+                $gamificationRulesClassName = $gamificationRulesType . 'Rules';
+                $gamificationRulesClassName::scoreOnSearchModels($modelClassName);
+            }
+        }
+
+        public function triggerMassEditEvent($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            if (is_subclass_of($modelClassName, 'Item') && $modelClassName::getGamificationRulesType() != null)
+            {
+                $gamificationRulesType      = $modelClassName::getGamificationRulesType();
+                $gamificationRulesClassName = $gamificationRulesType . 'Rules';
+                $gamificationRulesClassName::scoreOnMassEditModels($modelClassName);
+            }
+        }
+
         /**
          * Given a user, point type, and value, store the information in the @see $pointTypesAndValuesByUserIdToAdd
          * data array to be processed later at the end of the page request by @see processDeferredPoints
@@ -109,31 +132,24 @@
             {
                 return;
             }
-            //todo: refactor to resolve more than just GENERAL.. do the sub categories first...
+            static::resolveLevelChangeByType(GameLevel::TYPE_SALES);
+            static::resolveLevelChangeByType(GameLevel::TYPE_NEW_BUSINESS);
+            static::resolveLevelChangeByType(GameLevel::TYPE_ACCOUNT_MANAGEMENT);
+            static::resolveLevelChangeByType(GameLevel::TYPE_COMMUNICATION);
+            static::resolveLevelChangeByType(GameLevel::TYPE_GENERAL);
+        }
 
-            //reduce everything to a factor of 1, instead of 5 or 10 to start . makes it easier to understand magnitudes
-
-
-            $currentGameLevel    = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
-            $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL,
+        protected function resolveLevelChangeByType($levelType)
+        {
+            assert('is_string($levelType)');
+            $currentGameLevel    = GameLevel::resolveByTypeAndPerson($levelType, Yii::app()->user->userModel);
+            $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel($levelType,
                                                                                               $currentGameLevel);
-            $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL,
+            $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
                                                                                     $currentGameLevel);
 
-
-
-            //todo: the 'does user exceed points is not as simple as matching points. we have to look at the
-            //GameLevel type,  SalesGameLevelRules::getScoreTypesToIncludePointsFor
-            //so in SalesGameLevelRules or actually TimeManagementGameLevelRules we would need to know
-            //SCORE_TYPE_COMPLETED_TASK_ON_TIME is a type, but SCORE_CATEGORY_TIME_SENSITIVE_ACTION (Time Management) is a category.
-
-            //where do the cateogry search and mass updatea fall under for sub category? - under user adoption which is just part of general
-            //
-
-             //is the idea of sub-categories to only pull specific types or categories? otherwise it falls under general?
-
             if($nextLevel !== false &&
-               GamePoint::doesUserExceedPoints(Yii::app()->user->userModel, $nextLevelPointValue))
+               GamePoint::doesUserExceedPoints(Yii::app()->user->userModel, $nextLevelPointValue, $levelType))
             {
                 $currentGameLevel->value = $nextLevel;
                 $saved = $currentGameLevel->save();
@@ -144,8 +160,9 @@
                 if($currentGameLevel->value != 1)
                 {
                     $message                    = new NotificationMessage();
-                    $message->textContent       = Yii::t('Default', 'You have reached a new level: {level}. Congratulations.',
-                                                                    array('{level}' => $nextLevel));
+                    $message->textContent       = Yii::t('Default', 'You have reached a new {levelType} level: {level}. Congratulations.',
+                                                                    array('{levelType}' => $levelType,
+                                                                          '{level}' => $nextLevel));
                     $rules                      = new GameNotificationRules();
                     $rules->addUser(Yii::app()->user->userModel);
                     NotificationsUtil::submit($message, $rules);
@@ -153,25 +170,70 @@
             }
         }
 
-        public function triggerSearchModelsEvent($modelClassName)
+        public function resolveNewBadges()
         {
-            assert('is_string($modelClassName)');
-            if (is_subclass_of($modelClassName, 'Item') && $modelClassName::getGamificationRulesType() != null)
+            if(!$this->enabled)
             {
-                $gamificationRulesType      = $modelClassName::getGamificationRulesType();
-                $gamificationRulesClassName = $gamificationRulesType . 'Rules';
-                $gamificationRulesClassName::scoreOnSearchModels($modelClassName);
+                return;
             }
-        }
-
-        public function triggerMassEditEvent($modelClassName)
-        {
-            assert('is_string($modelClassName)');
-            if (is_subclass_of($modelClassName, 'Item') && $modelClassName::getGamificationRulesType() != null)
+            $userBadgesByType     = GameBadge::getAllByPersonIndexedByType(Yii::app()->user->userModel);
+            $userPointsByType     = GamePoint::getAllByPersonIndexedByType(Yii::app()->user->userModel);
+            $userScoresByType     = GameScore::getAllByPersonIndexedByType(Yii::app()->user->userModel);
+            $badgeRulesClassNames = GameBadgeRules::getBadgeRulesData();
+            foreach($badgeRulesClassNames as $badgeRulesClassName)
             {
-                $gamificationRulesType      = $modelClassName::getGamificationRulesType();
-                $gamificationRulesClassName = $gamificationRulesType . 'Rules';
-                $gamificationRulesClassName::scoreOnMassEditModels($modelClassName);
+                $newBadge    = false;
+                $gradeChange = false;
+                $badgeGrade  = $badgeRulesClassName::
+                               badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType);
+                if($badgeGrade > 0)
+                {
+                    if(isset($userBadgesByType[$badgeRulesClassName::getType()]))
+                    {
+                        $badge            = $userBadgesByType[$badgeRulesClassName::getType()];
+                        if($badgeGrade > $badge->grade)
+                        {
+                            $badge->grade = $badgeGrade;
+                            $saved        = $gameBadge->save();
+                            if(!$saved)
+                            {
+                                throw new NotSupportedException();
+                            }
+                            $gradeChange  = true;
+                        }
+                    }
+                    else
+                    {
+                        $gameBadge         = new GameBadge();
+                        $gameBadge->type   = $badgeRulesClassName::getType();
+                        $gameBadge->person = Yii::app()->user->userModel;
+                        $gameBadge->grade  = 1;
+                        $saved             = $gameBadge->save();
+                        if(!$saved)
+                        {
+                            throw new NotSupportedException();
+                        }
+                        $newBadge          = true;
+                    }
+                    if($gradeChange || $newBadge)
+                    {
+                        GameBadge::processBonusPoints($gameBadge, Yii::app()->user->userModel);
+                        $message                    = new NotificationMessage();
+                        if($newBadge)
+                        {
+                            $message->textContent   = Yii::t('Default', 'You have received a new badge: {badgeDisplayName}. Congratulations.',
+                                                             array('{badgeDisplayName}' => $badgeRulesClassName::getDisplayName()));
+                        }
+                        elseif($gradeChange)
+                        {
+                            $message->textContent   = Yii::t('Default', 'You have received a badge upgrade for: {badgeDisplayName}. Congratulations.',
+                                                             array('{badgeDisplayName}' => $badgeRulesClassName::getDisplayName()));
+                        }
+                        $rules                      = new GameNotificationRules();
+                        $rules->addUser(Yii::app()->user->userModel);
+                        NotificationsUtil::submit($message, $rules);
+                    }
+                }
             }
         }
     }

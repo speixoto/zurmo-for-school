@@ -25,40 +25,25 @@
      ********************************************************************************/
 
     /**
-     * Model for game levels.
+     * Model for game badges
      */
-    class GameLevel extends Item
+    class GameBadge extends Item
     {
-        /**
-         * Used to define the level type as being general, which means it is a total of all point groups
-         * @var String
-         */
-        const TYPE_GENERAL            = 'General';
-
-        const TYPE_SALES              = 'Sales';
-
-        const TYPE_NEW_BUSINESS       = 'NewBusiness';
-
-        const TYPE_ACCOUNT_MANAGEMENT = 'AccountManagement';
-
-        const TYPE_COMMUNICATION      = 'Communication';
-
         public function __toString()
         {
             if (trim($this->type) == '')
             {
                 return Yii::t('Default', '(Unnamed)');
             }
-            return $this->type;
+            return $this->type . ' ' . $this->grade;
         }
 
         /**
-         * Given a point type and Item (Either User or Person),  try to find an existing model. If the model does
-         * not exist, create it and populate the Item and type. @return The found or created model.
-         * @param string $type
+         * Given a Item (Either User or Person),  Try to find an existing models and index the returning array by
+         * badge type.
          * @param Item $person
          */
-        public static function resolveByTypeAndPerson($type, Item $person)
+        public static function getAllByPersonIndexedByType(Item $person)
         {
             assert('is_string($type)');
             assert('$person->id > 0');
@@ -66,34 +51,22 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'        => 'type',
-                    'operatorType'         => 'equals',
-                    'value'                => $type,
-                ),
-                2 => array(
                     'attributeName'        => 'person',
                     'relatedAttributeName' => 'id',
                     'operatorType'         => 'equals',
                     'value'                => $person->getClassId('Item'),
                 ),
             );
-            $searchAttributeData['structure'] = '1 and 2';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameLevel');
-            $where  = RedBeanModelDataProvider::makeWhere('GameLevel', $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
-            if (count($models) > 1)
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameBadge');
+            $where             = RedBeanModelDataProvider::makeWhere('GameBadge', $searchAttributeData, $joinTablesAdapter);
+            $models            = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            $indexedModels     = array();
+            foreach($models as $gameBadge)
             {
-                throw new NotSupportedException();
+                $indexedModels[$gameBadge->type] = $gameBadge;
             }
-            if (count($models) == 0)
-            {
-                $gameLevel = new GameLevel();
-                $gameLevel->type   = $type;
-                $gameLevel->person = $person;
-                $gameLevel->value  = 1;
-                return $gameLevel;
-            }
-            return $models[0];
+            return $indexedModels;
         }
 
         public static function getModuleClassName()
@@ -112,17 +85,18 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'type',
-                    'value',
+                    'grade',
                 ),
                 'relations' => array(
-                    'person' => array(RedBeanModel::HAS_ONE, 'Item'),
+                    'person'       => array(RedBeanModel::HAS_ONE, 'Item'),
                 ),
                 'rules' => array(
                     array('type', 		   'required'),
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
-                    array('value',     	   'type',    'type' => 'integer'),
-                    array('value', 		   'default', 'value' => 0),
+                    array('grade', 		   'required'),
+                    array('grade',     	   'type',    'type' => 'integer'),
+                    array('grade', 		   'default', 'value' => 1),
                     array('person', 	   'required'),
                 ),
                 'elements' => array(
@@ -131,7 +105,6 @@
                 'defaultSortAttribute' => 'type',
                 'noAudit' => array(
                     'type',
-                    'value',
                     'person',
                 ),
             );
@@ -143,13 +116,33 @@
             return true;
         }
 
-        /**
-         * Add specified value.
-         */
-        public function addValue($value)
+        public static function processBonusPoints(GameBadge $gameBadge, User $user)
         {
-            assert('is_int($value)');
-            $this->value = $this->value + $value;
+            assert('$gameBadge->id > 0');
+            $gameBadgeRulesClassName = $gameBadge->type . 'GameBadgeRules';
+            $gamePoint = null;
+            if($gameBadge->isNewModel() && $gameBadgeRulesClassName::hasBonusPointsOnCreation())
+            {
+                $type           = $gameBadgeRulesClassName::getNewBonusPointType();
+                $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
+                $value          = $gameBadgeRulesClassName::getNewBonusPointValue();
+            }
+            elseif(!$gameBadge->isNewModel() && array_key_exists('grade', $this->originalAttributeValues) &&
+            $gameBadgeRulesClassName::hasBonusPointsOnGradeChange())
+            {
+                $type           = $gameBadgeRulesClassName::getGradeBonusPointType();
+                $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
+                $value          = $gameBadgeRulesClassName::getGradeBonusPointValue($gameBadge->grade);
+            }
+            if($gamePoint != null)
+            {
+                $gamePoint->addValue($value);
+                $saved          = $gamePoint->save();
+                if(!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+            }
         }
     }
 ?>

@@ -81,6 +81,37 @@
             return $models[0];
         }
 
+        /**
+         * Given a Item (Either User or Person),  Try to find an existing models and index the returning array by
+         * score type.
+         * @param Item $person
+         */
+        public static function getAllByPersonIndexedByType(Item $person)
+        {
+            assert('is_string($type)');
+            assert('$person->id > 0');
+            assert('$person instanceof Contact || $person instanceof User');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'person',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $person->getClassId('Item'),
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameScore');
+            $where             = RedBeanModelDataProvider::makeWhere('GameScore', $searchAttributeData, $joinTablesAdapter);
+            $models            = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            $indexedModels     = array();
+            foreach($models as $gameScore)
+            {
+                $indexedModels[$gameScore->type] = $gameScore;
+            }
+            return $indexedModels;
+        }
+
         public static function getModuleClassName()
         {
             return 'GamificationModule';

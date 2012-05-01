@@ -25,39 +25,53 @@
      ********************************************************************************/
 
     /**
-     * Called when Yii::app->end(0, false) is called. You should always call end
-     * with the second parameter set to false. This behavior exists so that during
-     * unit tests this behavior can be switched for a behavior that raises an
-     * exception instead of exiting.
+     * Model for game points.
      */
-    class EndRequestBehavior extends CBehavior
+    class GamePointTransaction extends RedBeanModel
     {
-        public function attach($owner)
+        public static function getModuleClassName()
         {
-            if (Yii::app()->isApplicationInstalled())
-            {
-                $owner->attachEventHandler('onEndRequest', array($this, 'handleGamification'));
-            }
-            $owner->attachEventHandler('onEndRequest', array($this, 'handleEndRequest'));
+            return 'GamificationModule';
         }
 
-        public function handleEndRequest($event)
+        public static function canSaveMetadata()
         {
-            exit;
+            return false;
         }
 
-        /**
-         * Process any points that need to be tabulated based on scoring that occurred during the request.
-         * @param CEvent $event
-         */
-        public function handleGamification($event)
+        public static function getDefaultMetadata()
         {
-            if(Yii::app()->user->userModel != null)
-            {
-                Yii::app()->gameHelper->processDeferredPoints();
-                Yii::app()->gameHelper->resolveNewBadges();
-                Yii::app()->gameHelper->resolveLevelChange();
-            }
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'value',
+                    'createdDateTime',
+                ),
+                'relations' => array(
+                ),
+                'rules' => array(
+                    array('value',     	   	  'type',    'type' => 'integer'),
+                    array('value', 		      'default', 'value' => 0),
+                    array('createdDateTime',  'required'),
+                    array('createdDateTime',  'readOnly'),
+                    array('createdDateTime',  'type', 'type' => 'datetime'),
+                    array('createdByUser',    'readOnly'),
+                ),
+                'elements' => array(
+                    'createdDateTime'  => 'DateTime',
+                ),
+                'defaultSortAttribute' => 'type',
+                'noAudit' => array(
+                    'value',
+                    'createdDateTime',
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
         }
     }
 ?>

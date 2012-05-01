@@ -31,13 +31,15 @@
     {
         const SCORE_CATEGORY_WIN_OPPORTUNITY = 'WinOpportunity';
 
+        const SCORE_TYPE_WIN_OPPORTUNITY     = 'WinOpportunity';
+
         public function scoreOnSaveModel(CEvent $event)
         {
             parent::scoreOnSaveModel($event);
             if (array_key_exists('value', $event->sender->stage->originalAttributeValues) &&
                 $event->sender->stage->value == 'Closed Won')
             {
-                $scoreType = 'WinOpportunity';
+                $scoreType = static::SCORE_TYPE_WIN_OPPORTUNITY;
                 $category  = static::SCORE_CATEGORY_WIN_OPPORTUNITY;
                 $gameScore = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
                 $gameScore->addValue();

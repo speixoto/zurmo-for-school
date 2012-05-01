@@ -29,11 +29,15 @@
      */
     class MeetingGamificationRules extends GamificationRules
     {
+        const SCORE_TYPE_CREATE_CALL = 'CreateCall';
+
+        const SCORE_TYPE_UPDATE_CALL = 'UpdateCall';
+
         protected static function resolveCreateScoreTypeByModel($model)
         {
             if($model->category->value == 'Call')
             {
-                return 'CreateCall';
+                return static::SCORE_TYPE_CREATE_CALL;
             }
             return parent::resolveCreateScoreTypeByModel($model);
         }
@@ -42,7 +46,7 @@
         {
             if($model->category->value == 'Call')
             {
-                return 'UpdateCall';
+                return static::SCORE_TYPE_UPDATE_CALL;
             }
             return parent::resolveCreateScoreTypeByModel($model);
         }

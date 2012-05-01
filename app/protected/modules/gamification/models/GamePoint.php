@@ -33,13 +33,13 @@
          * Used to define the point type as being a user adoption point.
          * @var String
          */
-        const TYPE_USER_ADOPTION      = 'User Adoption';
+        const TYPE_USER_ADOPTION      = 'UserAdoption';
 
         const TYPE_SALES              = 'Sales';
 
-        const TYPE_NEW_BUSINESS       = 'New Business';
+        const TYPE_NEW_BUSINESS       = 'NewBusiness';
 
-        const TYPE_ACCOUNT_MANAGEMENT = 'Account Management';
+        const TYPE_ACCOUNT_MANAGEMENT = 'AccountManagement';
 
         const TYPE_COMMUNICATION      = 'Communication';
 
@@ -95,6 +95,37 @@
             return $models[0];
         }
 
+        /**
+         * Given a Item (Either User or Person),  Try to find an existing models and index the returning array by
+         * point type.
+         * @param Item $person
+         */
+        public static function getAllByPersonIndexedByType(Item $person)
+        {
+            assert('is_string($type)');
+            assert('$person->id > 0');
+            assert('$person instanceof Contact || $person instanceof User');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'person',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $person->getClassId('Item'),
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GamePoint');
+            $where             = RedBeanModelDataProvider::makeWhere('GamePoint', $searchAttributeData, $joinTablesAdapter);
+            $models            = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            $indexedModels     = array();
+            foreach($models as $gamePoint)
+            {
+                $indexedModels[$gamePoint->type] = $gamePoint;
+            }
+            return $indexedModels;
+        }
+
         public static function getModuleClassName()
         {
             return 'GamificationModule';
@@ -114,7 +145,8 @@
                     'value',
                 ),
                 'relations' => array(
-                    'person' => array(RedBeanModel::HAS_ONE, 'Item'),
+                    'person'       => array(RedBeanModel::HAS_ONE, 'Item'),
+                    'transactions' => array(RedBeanModel::HAS_MANY, 'GamePointTransaction', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('type', 		   'required'),
@@ -149,6 +181,9 @@
         {
             assert('is_int($value)');
             $this->value = $this->value + $value;
+            $gamePointTransaction        = new GamePointTransaction();
+            $gamePointTransaction->value = $value;
+            $this->transactions->add($gamePointTransaction);
         }
 
         /**
@@ -157,15 +192,17 @@
          * @param User $user
          * @param Integer $points
          */
-        public static function doesUserExceedPoints(User $user, $points)
+        public static function doesUserExceedPoints(User $user, $points, $levelType)
         {
             assert('$user->id > 0');
             assert('is_int($points)');
+            assert('is_string($levelType)');
             try
             {
-                $sql  = "select sum(value) sum from gamepoint where person_item_id = " .
-                        $user->getClassId('Item') . " group by person_item_id";
-                $data = R::getRow($sql);
+                $wherePart = static::getPointTypeSqlWherePartByLevelType($levelType);
+                $sql       = "select sum(value) sum from gamepoint where " . $wherePart . " person_item_id = " .
+                             $user->getClassId('Item') . " group by person_item_id";
+                $data      = R::getRow($sql);
                 if($data['sum'] > $points)
                 {
                     return true;
@@ -178,6 +215,23 @@
             catch (RedBean_Exception_SQL $e)
             {
                 return false;
+            }
+        }
+
+        protected static function getPointTypeSqlWherePartByLevelType($levelType)
+        {
+            assert('is_string($levelType)');
+            if($pointType != null)
+            {
+                if(!defined(static::$levelType))
+                {
+                    throw NotSupportedException();
+                }
+                return ' type = "' . $levelType . '" and ';
+            }
+            else
+            {
+                return null;
             }
         }
     }

@@ -39,15 +39,11 @@
         public static function getNextLevelPointValueByTypeAndCurrentLevel($type, GameLevel $level)
         {
             assert('is_string($type)');
-            if($type != GameLevel::TYPE_GENERAL)
-            {
-                //currently we only support the general level type
-                throw new NotImplementedException();
-            }
             $nextLevel = self::getNextLevelByTypeAndCurrentLevel($type, $level);
             if($nextLevel !== false)
             {
-                return GeneralGameLevelRules::getMinimumPointsForLevel($nextLevel);
+                $className = GameLevel::TYPE_GENERAL . 'GameLevelRules';
+                return $className::getMinimumPointsForLevel($nextLevel);
             }
             return false;
         }
@@ -61,12 +57,8 @@
         public static function getNextLevelByTypeAndCurrentLevel($type, GameLevel $level)
         {
             assert('is_string($type)');
-            if($type != GameLevel::TYPE_GENERAL)
-            {
-                //currently we only support the general level type
-                throw new NotImplementedException();
-            }
-            if(!GeneralGameLevelRules::isLastLevel((int)$level->value))
+            $className = GameLevel::TYPE_GENERAL . 'GameLevelRules';
+            if(!$className::isLastLevel((int)$level->value))
             {
                 return $level->value + 1;
             }
