@@ -2885,6 +2885,11 @@
             return $models;
         }
 
+        public static function getModuleClassName()
+        {
+            return null;
+        }
+
         /**
          * Given an array of data, create stringified content.
          * @param array $values
