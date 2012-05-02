@@ -35,9 +35,31 @@
 
         private static $pointTypesAndValuesByUserIdToAdd = array();
 
+        /**
+         * Determines whether scoring models on save should occur or be skipped.  Import or mass edit are examples
+         * of when the scoring is muted as it would create unuseful scores.
+         * @var boolean
+         */
+        protected $scoringModelsOnSaveIsMuted = false;
+
         public function init()
         {
             $this->initCustom();
+        }
+
+        public function isScoringModelsOnSaveMuted()
+        {
+            return $this->scoringModelsOnSaveIsMuted;
+        }
+
+        public function muteScoringModelsOnSave()
+        {
+            $this->scoringModelsOnSaveIsMuted = true;
+        }
+
+        public function unmuteScoringModelsOnSave()
+        {
+            $this->scoringModelsOnSaveIsMuted = false;
         }
 
         /**
@@ -69,6 +91,17 @@
                 $gamificationRulesType      = $modelClassName::getGamificationRulesType();
                 $gamificationRulesClassName = $gamificationRulesType . 'Rules';
                 $gamificationRulesClassName::scoreOnMassEditModels($modelClassName);
+            }
+        }
+
+        public function triggerImportEvent($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            if (is_subclass_of($modelClassName, 'Item') && $modelClassName::getGamificationRulesType() != null)
+            {
+                $gamificationRulesType      = $modelClassName::getGamificationRulesType();
+                $gamificationRulesClassName = $gamificationRulesType . 'Rules';
+                $gamificationRulesClassName::scoreOnImportModels($modelClassName);
             }
         }
 

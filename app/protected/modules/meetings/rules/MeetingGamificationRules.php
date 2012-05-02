@@ -35,7 +35,7 @@
 
         protected static function resolveCreateScoreTypeByModel($model)
         {
-            if($model->category->value == 'Call')
+            if($model->category->value == Meeting::getCategoryCallValue())
             {
                 return static::SCORE_TYPE_CREATE_CALL;
             }
@@ -44,7 +44,7 @@
 
         protected static function resolveUpdateScoreTypeByModel($model)
         {
-            if($model->category->value == 'Call')
+            if($model->category->value == Meeting::getCategoryCallValue())
             {
                 return static::SCORE_TYPE_UPDATE_CALL;
             }

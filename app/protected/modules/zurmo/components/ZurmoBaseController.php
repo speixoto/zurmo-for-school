@@ -274,6 +274,7 @@
                             $_GET[$modelClassName . '_page'],
                             $pageSize
                         );
+                        //cancel diminish of save scoring
                         if ($selectedRecordCount > $pageSize)
                         {
                             $view = new $pageViewClassName($this,
@@ -382,6 +383,7 @@
          */
         protected function saveMassEdit($modelClassName, $postVariableName, $selectedRecordCount, $dataProvider, $page, $pageSize)
         {
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
             $modelsToSave = $this->getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
             foreach ($modelsToSave as $modelToSave)
             {
@@ -402,6 +404,7 @@
                         $modelClassName, $modelToSave->id, $modelToSave->name);
                 }
             }
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
         }
 
         /**

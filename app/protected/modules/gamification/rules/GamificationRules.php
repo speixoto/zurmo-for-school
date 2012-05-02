@@ -39,6 +39,8 @@
 
         const SCORE_CATEGORY_SEARCH                = 'Search';
 
+        const SCORE_CATEGORY_IMPORT                = 'Import';
+
         const SCORE_CATEGORY_TIME_SENSITIVE_ACTION = 'TimeSensitiveAction';
 
         public function attachScoringEventsByModelClassName($modelClassName)
@@ -51,6 +53,10 @@
         {
             $model                   = $event->sender;
             assert('$model instanceof Item');
+            if(Yii::app()->gameHelper->isScoringModelsOnSaveMuted())
+            {
+                return;
+            }
             if($model->getIsNewModel())
             {
                 $scoreType           = static::resolveCreateScoreTypeByModel($model);
@@ -123,6 +129,11 @@
             return array(GamePoint::TYPE_USER_ADOPTION => 5);
         }
 
+        public static function getPointTypesAndValuesForImport()
+        {
+            return array(GamePoint::TYPE_USER_ADOPTION => 10);
+        }
+
         public static function getPointTypesAndValuesForTimeSensitiveAction()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 20);
@@ -149,6 +160,22 @@
             assert('is_string($modelClassName)');
             $scoreType           = 'MassEdit' . $modelClassName;
             $category            = static::SCORE_CATEGORY_MASS_EDIT;
+            $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+            $gameScore->addValue();
+            $saved               = $gameScore->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                           static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
+        }
+
+        public static function scoreOnImportModels($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            $scoreType           = 'Import' . $modelClassName;
+            $category            = static::SCORE_CATEGORY_IMPORT;
             $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
             $gameScore->addValue();
             $saved               = $gameScore->save();

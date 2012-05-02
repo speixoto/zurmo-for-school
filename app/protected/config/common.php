@@ -51,7 +51,7 @@
                 'class' => 'application.modules.api.components.ZurmoApiHelper',
             ),
             'browser' => array(
-                'class'          => 'application.extensions.zurmoinc.framework.components.Browser',
+                'class' => 'application.extensions.zurmoinc.framework.components.Browser',
             ),
             'clientScript' => array(
                 'class' => 'ClientScript',

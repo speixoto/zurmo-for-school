@@ -32,6 +32,15 @@
             return self::getSubset(null, null, null, "name = '$name'");
         }
 
+        /**
+         * @return value of what is considered the 'closed won' stage. It could be in the future named something else
+         * or changed by the user.  This api will be expanded to handle that.  By default it will return 'Closed Won'
+         */
+        public static function getStageClosedWonValue()
+        {
+            return 'Closed Won';
+        }
+
         public function __toString()
         {
             try

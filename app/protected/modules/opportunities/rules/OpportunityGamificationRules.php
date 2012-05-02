@@ -37,7 +37,7 @@
         {
             parent::scoreOnSaveModel($event);
             if (array_key_exists('value', $event->sender->stage->originalAttributeValues) &&
-                $event->sender->stage->value == 'Closed Won')
+                $event->sender->stage->value == Opportunity::getStageClosedWonValue())
             {
                 $scoreType = static::SCORE_TYPE_WIN_OPPORTUNITY;
                 $category  = static::SCORE_CATEGORY_WIN_OPPORTUNITY;

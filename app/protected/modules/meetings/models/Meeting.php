@@ -42,6 +42,15 @@
             }
         }
 
+        /**
+         * @return value of what is considered the 'call' type. It could be in the future named something else
+         * or changed by the user.  This api will be expanded to handle that.  By default it will return 'Call'
+         */
+        public static function getCategoryCallValue()
+        {
+            return 'Call';
+        }
+
         public static function getModuleClassName()
         {
             return 'MeetingsModule';
