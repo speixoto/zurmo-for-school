@@ -88,7 +88,6 @@
          */
         public static function getAllByPersonIndexedByType(Item $person)
         {
-            assert('is_string($type)');
             assert('$person->id > 0');
             assert('$person instanceof Contact || $person instanceof User');
             $searchAttributeData = array();

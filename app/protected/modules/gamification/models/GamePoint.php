@@ -102,7 +102,6 @@
          */
         public static function getAllByPersonIndexedByType(Item $person)
         {
-            assert('is_string($type)');
             assert('$person->id > 0');
             assert('$person instanceof Contact || $person instanceof User');
             $searchAttributeData = array();
@@ -221,18 +220,33 @@
         protected static function getPointTypeSqlWherePartByLevelType($levelType)
         {
             assert('is_string($levelType)');
-            if($pointType != null)
-            {
-                if(!defined(static::$levelType))
-                {
-                    throw NotSupportedException();
-                }
-                return ' type = "' . $levelType . '" and ';
-            }
-            else
+            if($levelType == GameLevel::TYPE_GENERAL || $levelType == null)
             {
                 return null;
             }
+            else
+            {
+                $pointType = $levelType;
+                //$pointType = self::getPointTypeByLevelType($levelType);
+                return ' type = "' . $pointType . '" and ';
+            }
         }
+/**
+        protected static function getPointTypeByLevelType($levelType)
+        {
+            assert('is_string($levelType)');
+            if($levelType == GameLevel::TYPE_SALES)
+            {
+                return static::TYPE_SALES;
+            }
+        const TYPE_SALES              = 'Sales';
+
+        const TYPE_NEW_BUSINESS       = 'NewBusiness';
+
+        const TYPE_ACCOUNT_MANAGEMENT = 'AccountManagement';
+
+        const TYPE_COMMUNICATION      = 'Communication';
+        }
+        **/
     }
 ?>

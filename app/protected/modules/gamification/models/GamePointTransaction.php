@@ -55,7 +55,6 @@
                     array('createdDateTime',  'required'),
                     array('createdDateTime',  'readOnly'),
                     array('createdDateTime',  'type', 'type' => 'datetime'),
-                    array('createdByUser',    'readOnly'),
                 ),
                 'elements' => array(
                     'createdDateTime'  => 'DateTime',
