@@ -126,13 +126,13 @@
             assert('$gameBadge->id > 0');
             $gameBadgeRulesClassName = $gameBadge->type . 'GameBadgeRules';
             $gamePoint = null;
-            if($gameBadge->isNewModel() && $gameBadgeRulesClassName::hasBonusPointsOnCreation())
+            if($gameBadge->getIsNewModel() && $gameBadgeRulesClassName::hasBonusPointsOnCreation())
             {
                 $type           = $gameBadgeRulesClassName::getNewBonusPointType();
                 $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
                 $value          = $gameBadgeRulesClassName::getNewBonusPointValue();
             }
-            elseif(!$gameBadge->isNewModel() && array_key_exists('grade', $this->originalAttributeValues) &&
+            elseif(!$gameBadge->getIsNewModel() && array_key_exists('grade', $gameBadge->originalAttributeValues) &&
             $gameBadgeRulesClassName::hasBonusPointsOnGradeChange())
             {
                 $type           = $gameBadgeRulesClassName::getGradeBonusPointType();

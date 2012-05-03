@@ -51,15 +51,15 @@
             {
                 $scoreType = static::SCORE_TYPE_WIN_OPPORTUNITY;
                 $category  = static::SCORE_CATEGORY_WIN_OPPORTUNITY;
-                $gameScore = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+                $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
                 $gameScore->addValue();
                 $saved = $gameScore->save();
                 if(!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
-                GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
-                               getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
+                GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                               getPointTypeAndValueDataByCategory($category));
             }
         }
 

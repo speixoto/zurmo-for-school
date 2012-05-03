@@ -99,7 +99,7 @@
         }
 
         /**
-         * @expects NotSupportedException
+         * @expectedException NotSupportedException
          * @depends testNotificationsBoxResolvesCorrectly
          */
         public function testCannotCreateBoxWithNotificationName()

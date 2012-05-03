@@ -43,7 +43,11 @@
 
         public function scoreOnSaveModel(CEvent $event)
         {
-            if(!LeadsUtil::isStateALead &&
+            if(Yii::app()->gameHelper->isScoringModelsOnSaveMuted())
+            {
+                return;
+            }
+            if(!LeadsUtil::isStateALead($event->sender->state) &&
                 array_key_exists('name', $event->sender->state->originalAttributeValues) &&
                 LeadsUtil::isStateALeadByStateName($event->sender->state->originalAttributeValues['name']))
             {
@@ -63,15 +67,15 @@
         {
             $scoreType = static::SCORE_TYPE_CONVERT_LEAD;
             $category  = static::SCORE_CATEGORY_CONVERT_LEAD;
-            $gameScore = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
             $gameScore->addValue();
             $saved = $gameScore->save();
             if(!$saved)
             {
                 throw new FailedToSaveModelException();
             }
-            GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
-                           getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
+            GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                           getPointTypeAndValueDataByCategory($category));
         }
 
         protected function scoreOnSaveWhereStateIsLead(CEvent $event)
@@ -82,13 +86,13 @@
             {
                 $scoreType           = static::SCORE_TYPE_CREATE_LEAD;
                 $category            = static::SCORE_CATEGORY_CREATE_LEAD;
-                $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+                $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
             }
             else
             {
                 $scoreType           = static::SCORE_TYPE_UPDATE_LEAD;
                 $category            = static::SCORE_CATEGORY_UPDATE_LEAD;
-                $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+                $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
             }
             $gameScore->addValue();
             $saved = $gameScore->save();
@@ -96,8 +100,8 @@
             {
                 throw new FailedToSaveModelException();
             }
-                GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
-                               static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
+                GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                               static::$gameScore->type, ($category));
         }
 
         public static function getPointTypesAndValuesForCreateModel()

@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AccountEditAndDetailsViewTest extends ZurmoBaseTest
+    class GamePointUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -32,22 +32,21 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public function testSetAndGetMetadata()
+        public function tearDown()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
+            parent::tearDown();
+            Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
+        }
 
-            $user = UserTestHelper::createBasicUser('Steven');
-
-            $account = new Account();
-            $view = new AccountEditAndDetailsView('Details', 'whatever', 'whatever', $account);
-            $originalMetadata = AccountEditAndDetailsView::getMetadata($user);
-            $metadataIn = $originalMetadata;
-            $metadataIn['perUser']['junk1'] = 'stuff1';
-            $metadataIn['global'] ['junk2'] = 'stuff2';
-            $view->setMetadata($metadataIn, $user);
-            $metadataOut = AccountEditAndDetailsView::getMetadata($user);
-            $this->assertNotEquals($originalMetadata, $metadataOut);
-            $this->assertEquals   ($metadataIn,       $metadataOut);
+        public function testaddPointsByPointData()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $this->assertEquals(array(), Yii::app()->gameHelper->getDeferredPointTypesAndValuesByUserIdToAdd());
+            $pointTypeAndValueData = array('some type' => 400);
+            GamePointUtil::addPointsByPointData(Yii::app()->user->userModel, $pointTypeAndValueData);
+            $compareData = array(Yii::app()->user->userModel->id => $pointTypeAndValueData);
+            $this->assertEquals($compareData, Yii::app()->gameHelper->getDeferredPointTypesAndValuesByUserIdToAdd());
         }
     }
 ?>

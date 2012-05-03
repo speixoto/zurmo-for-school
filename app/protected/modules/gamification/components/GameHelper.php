@@ -52,6 +52,16 @@
             $this->initCustom();
         }
 
+        public function resetDeferredPointTypesAndValuesByUserIdToAdd()
+        {
+            self::$pointTypesAndValuesByUserIdToAdd = array();
+        }
+
+        public function getDeferredPointTypesAndValuesByUserIdToAdd()
+        {
+            return self::$pointTypesAndValuesByUserIdToAdd;
+        }
+
         public function isScoringModelsOnSaveMuted()
         {
             return $this->scoringModelsOnSaveIsMuted;

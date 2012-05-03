@@ -48,7 +48,7 @@
         public static function setLastLevel($level)
         {
             assert('is_int($level)');
-            self::$lastLevel = $level;
+            static::$lastLevel = $level;
         }
 
        /**
@@ -58,7 +58,7 @@
         public static function setLevelPointMap($levelPointMap)
         {
             assert('is_array($levelPointMap)');
-            self::$levelPointMap = $levelPointMap;
+            static::$levelPointMap = $levelPointMap;
         }
         /**
          * @param integer $level
@@ -66,7 +66,7 @@
         public static function isLastLevel($level)
         {
             assert('is_int($level)');
-            if($level == self::$lastLevel)
+            if($level == static::$lastLevel)
             {
                 return true;
             }
@@ -79,9 +79,9 @@
         public static function getMinimumPointsForLevel($level)
         {
             assert('is_int($level)');
-            if(isset(self::$levelPointMap[$level]))
+            if(isset(static::$levelPointMap[$level]))
             {
-                return self::$levelPointMap[$level];
+                return static::$levelPointMap[$level];
             }
             throw new NotSupportedException();
         }

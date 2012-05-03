@@ -35,6 +35,8 @@
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             Currency::resetCaches();  //php only cache
+            Yii::app()->gameHelper;
+            Yii::app()->gamificationObserver; //runs init();
         }
 
         public static function tearDownAfterClass()

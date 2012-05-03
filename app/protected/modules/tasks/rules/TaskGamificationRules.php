@@ -55,15 +55,15 @@
                 {
                     $scoreType           = static::SCORE_TYPE_COMPLETED_TASK_ON_TIME;
                     $category            = static::SCORE_CATEGORY_TIME_SENSITIVE_ACTION;
-                    $gameScore           = GameScore::resolveToGetByTypeAndUser($scoreType, Yii::app()->user->userModel);
+                    $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
                     $gameScore->addValue();
                     $saved = $gameScore->save();
                     if(!$saved)
                     {
                         throw new FailedToSaveModelException();
                     }
-                    GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
-                                   getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
+                    GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                                   getPointTypeAndValueDataByCategory($category));
                 }
             }
         }

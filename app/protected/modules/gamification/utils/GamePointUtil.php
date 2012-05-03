@@ -30,16 +30,14 @@
     class GamePointUtil
     {
         /**
-         * Given a score type and an array of point values indexed by point types, add points for the specified user.
+         * Given an array of point values indexed by point types, add points for the specified user.
          * This will call a method to add points in a deferred way. This means that at the end of the request all
          * deferred points will be added at once.  This is done to improve performance.
-         * @param string $type
          * @param User $user
          * @param array $pointTypeAndValueData
          */
-        public static function addPointsByGameScoreTypeAndPointData($type, User $user, $pointTypeAndValueData)
+        public static function addPointsByPointData(User $user, $pointTypeAndValueData)
         {
-            assert('is_string($type)');
             assert('$user->id > 0');
             assert('is_array($pointTypeAndValueData)');
             foreach($pointTypeAndValueData as $type => $value)

@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AccountEditAndDetailsViewTest extends ZurmoBaseTest
+    class GameLevelTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -32,22 +32,41 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public function testSetAndGetMetadata()
+        public function setUp()
         {
+            parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+        }
 
+        public function testCreateAndGetGameLevelById()
+        {
             $user = UserTestHelper::createBasicUser('Steven');
+            $gameLevel             = new GameLevel();
+            $gameLevel->person     = $user;
+            $gameLevel->type       = 'SomeType';
+            $gameLevel->value      = 10;
+            $this->assertTrue($gameLevel->save());
+            $id = $gameLevel->id;
+            unset($gameLevel);
+            $gameLevel = GameLevel::getById($id);
+            $this->assertEquals('SomeType',  $gameLevel->type);
+            $this->assertEquals(10,          $gameLevel->value);
+            $this->assertEquals($user,       $gameLevel->person);
+        }
 
-            $account = new Account();
-            $view = new AccountEditAndDetailsView('Details', 'whatever', 'whatever', $account);
-            $originalMetadata = AccountEditAndDetailsView::getMetadata($user);
-            $metadataIn = $originalMetadata;
-            $metadataIn['perUser']['junk1'] = 'stuff1';
-            $metadataIn['global'] ['junk2'] = 'stuff2';
-            $view->setMetadata($metadataIn, $user);
-            $metadataOut = AccountEditAndDetailsView::getMetadata($user);
-            $this->assertNotEquals($originalMetadata, $metadataOut);
-            $this->assertEquals   ($metadataIn,       $metadataOut);
+        /**
+         * @depends testCreateAndGetGameLevelById
+         */
+        public function testResolveByTypeAndPerson()
+        {
+            Yii::app()->user->userModel = User::getByUsername('steven');
+            $gameLevel                  = GameLevel::resolveByTypeAndPerson('SomeType',  Yii::app()->user->userModel);
+            $this->assertEquals('SomeType',                     $gameLevel->type);
+            $this->assertEquals(10,                             $gameLevel->value);
+            $this->assertEquals(Yii::app()->user->userModel,    $gameLevel->person);
+
+            $gameLevel = GameLevel::resolveByTypeAndPerson('SomeType2',  Yii::app()->user->userModel);
+            $this->assertTrue($gameLevel->id < 0);
         }
     }
 ?>

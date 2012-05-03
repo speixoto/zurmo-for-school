@@ -63,6 +63,18 @@
             return $this->type;
         }
 
+        public function __set($attributeName, $value)
+        {
+            if ($attributeName == 'value')
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                parent::__set($attributeName, $value);
+            }
+        }
+
         /**
          * Given a point type and Item (Either User or Person),  try to find an existing model. If the model does
          * not exist, create it and populate the Item and type. @return The found or created model.
@@ -163,7 +175,7 @@
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
                     array('value',     	   'type',    'type' => 'integer'),
-                    array('value', 		   'default', 'value' => 0),
+                    array('value', 		   'required'),
                     array('person', 	   'required'),
                 ),
                 'elements' => array(
@@ -190,9 +202,9 @@
         public function addValue($value)
         {
             assert('is_int($value)');
-            $this->value = $this->value + $value;
-            $gamePointTransaction        = new GamePointTransaction();
-            $gamePointTransaction->value = $value;
+            $this->unrestrictedSet('value', $this->value + $value);
+            $gamePointTransaction                   = new GamePointTransaction();
+            $gamePointTransaction->value            = $value;
             $this->transactions->add($gamePointTransaction);
         }
 
@@ -237,11 +249,11 @@
         protected static function getPointTypeWherePartByLevelType($levelType)
         {
             assert('is_string($levelType) && $levelType != null');
-            if(!in_array($levelType, $levelType::TYPE_GENERAL,
-                                     $levelType::TYPE_SALES,
-                                     $levelType::TYPE_NEW_BUSINESS,
-                                     $levelType::TYPE_ACCOUNT_MANAGEMENT,
-                                     $levelType::TYPE_COMMUNICATION))
+            if(!in_array($levelType, array(GameLevel::TYPE_GENERAL,
+                                     GameLevel::TYPE_SALES,
+                                     GameLevel::TYPE_NEW_BUSINESS,
+                                     GameLevel::TYPE_ACCOUNT_MANAGEMENT,
+                                     GameLevel::TYPE_COMMUNICATION)))
             {
                 throw new NotSupportedException();
             }

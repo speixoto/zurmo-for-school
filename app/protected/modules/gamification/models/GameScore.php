@@ -44,7 +44,7 @@
          * @param string $type
          * @param Item $person
          */
-        public static function resolveToGetByTypeAndUser($type,  Item $person)
+        public static function resolveToGetByTypeAndPerson($type,  Item $person)
         {
             assert('is_string($type)');
             assert('$person->id > 0');
