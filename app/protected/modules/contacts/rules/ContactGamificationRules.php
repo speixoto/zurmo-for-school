@@ -70,7 +70,7 @@
             {
                 throw new FailedToSaveModelException();
             }
-            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+            GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
                            getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
         }
 
@@ -96,7 +96,7 @@
             {
                 throw new FailedToSaveModelException();
             }
-                GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
                                static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
         }
 

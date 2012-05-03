@@ -31,6 +31,11 @@
      */
     class GameHelper extends CApplicationComponent
     {
+        /**
+         * Is gamification enabled or not for the application. When using the command line application, this is set
+         * to false for example.
+         * @var boolean
+         */
         public $enabled = true;
 
         private static $pointTypesAndValuesByUserIdToAdd = array();
@@ -72,6 +77,9 @@
         }
 
 
+        /**
+         * @param string $modelClassName
+         */
         public function triggerSearchModelsEvent($modelClassName)
         {
             assert('is_string($modelClassName)');
@@ -83,6 +91,9 @@
             }
         }
 
+        /**
+         * @param string $modelClassName
+         */
         public function triggerMassEditEvent($modelClassName)
         {
             assert('is_string($modelClassName)');
@@ -94,6 +105,9 @@
             }
         }
 
+        /**
+         * @param string $modelClassName
+         */
         public function triggerImportEvent($modelClassName)
         {
             assert('is_string($modelClassName)');
@@ -159,6 +173,9 @@
             }
         }
 
+        /**
+         * Called at the end of the page request.  Processes anylevel changes for the current user.
+         */
         public function resolveLevelChange()
         {
             if(!$this->enabled)
@@ -174,7 +191,7 @@
 
         protected function resolveLevelChangeByType($levelType)
         {
-            assert('is_string($levelType)');
+            assert('is_string($levelType) && $levelType != null');
             $currentGameLevel    = GameLevel::resolveByTypeAndPerson($levelType, Yii::app()->user->userModel);
             $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel($levelType,
                                                                                               $currentGameLevel);
@@ -182,7 +199,7 @@
                                                                                     $currentGameLevel);
 
             if($nextLevel !== false &&
-               GamePoint::doesUserExceedPoints(Yii::app()->user->userModel, $nextLevelPointValue, $levelType))
+               GamePoint::doesUserExceedPointsByLevelType(Yii::app()->user->userModel, $nextLevelPointValue, $levelType))
             {
                 $currentGameLevel->value = $nextLevel;
                 $saved = $currentGameLevel->save();
@@ -203,6 +220,9 @@
             }
         }
 
+        /**
+         * Called at the end of the page request.  Processes any new badges or badge grade changes for the current user.
+         */
         public function resolveNewBadges()
         {
             if(!$this->enabled)

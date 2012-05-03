@@ -30,17 +30,28 @@
     class GamePoint extends Item
     {
         /**
-         * Used to define the point type as being a user adoption point.
          * @var String
          */
         const TYPE_USER_ADOPTION      = 'UserAdoption';
 
+        /**
+         * @var String
+         */
         const TYPE_SALES              = 'Sales';
 
+        /**
+         * @var String
+         */
         const TYPE_NEW_BUSINESS       = 'NewBusiness';
 
+        /**
+         * @var String
+         */
         const TYPE_ACCOUNT_MANAGEMENT = 'AccountManagement';
 
+        /**
+         * @var String
+         */
         const TYPE_COMMUNICATION      = 'Communication';
 
         public function __toString()
@@ -191,14 +202,14 @@
          * @param User $user
          * @param Integer $points
          */
-        public static function doesUserExceedPoints(User $user, $points, $levelType)
+        public static function doesUserExceedPointsByLevelType(User $user, $points, $levelType)
         {
             assert('$user->id > 0');
             assert('is_int($points)');
-            assert('is_string($levelType)');
+            assert('is_string($levelType) && $levelType != null');
             try
             {
-                $wherePart = static::getPointTypeSqlWherePartByLevelType($levelType);
+                $wherePart = static::getPointTypeWherePartByLevelType($levelType);
                 $sql       = "select sum(value) sum from gamepoint where " . $wherePart . " person_item_id = " .
                              $user->getClassId('Item') . " group by person_item_id";
                 $data      = R::getRow($sql);
@@ -217,36 +228,32 @@
             }
         }
 
-        protected static function getPointTypeSqlWherePartByLevelType($levelType)
+        /**
+         * Given a level type, get the corresponding where sql part to filter by point type if applicable.  Level types
+         * match point types for now, so if the level type is not valid then it will thrown an exception.
+         * @param string $levelType
+         * @throws NotSupportedException
+         */
+        protected static function getPointTypeWherePartByLevelType($levelType)
         {
-            assert('is_string($levelType)');
-            if($levelType == GameLevel::TYPE_GENERAL || $levelType == null)
+            assert('is_string($levelType) && $levelType != null');
+            if(!in_array($levelType, $levelType::TYPE_GENERAL,
+                                     $levelType::TYPE_SALES,
+                                     $levelType::TYPE_NEW_BUSINESS,
+                                     $levelType::TYPE_ACCOUNT_MANAGEMENT,
+                                     $levelType::TYPE_COMMUNICATION))
+            {
+                throw new NotSupportedException();
+            }
+            if($levelType == GameLevel::TYPE_GENERAL)
             {
                 return null;
             }
             else
             {
                 $pointType = $levelType;
-                //$pointType = self::getPointTypeByLevelType($levelType);
                 return ' type = "' . $pointType . '" and ';
             }
         }
-/**
-        protected static function getPointTypeByLevelType($levelType)
-        {
-            assert('is_string($levelType)');
-            if($levelType == GameLevel::TYPE_SALES)
-            {
-                return static::TYPE_SALES;
-            }
-        const TYPE_SALES              = 'Sales';
-
-        const TYPE_NEW_BUSINESS       = 'NewBusiness';
-
-        const TYPE_ACCOUNT_MANAGEMENT = 'AccountManagement';
-
-        const TYPE_COMMUNICATION      = 'Communication';
-        }
-        **/
     }
 ?>

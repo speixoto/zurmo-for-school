@@ -50,7 +50,7 @@
         public static function getBadgeRulesData()
         {
             $badgeRulesData       = array();
-            $modules = Module::getModuleObjects();
+            $modules              = Module::getModuleObjects();
             foreach ($modules as $module)
             {
                 $rulesClassNames = $module::getAllClassNamesByPathFolder('rules.badges');
@@ -66,6 +66,13 @@
             return $badgeRulesData;
         }
 
+        /**
+         * Given a user's points and scores, determine if the user should have this badge.  And if so, which 'grade'
+         * the badge should be.
+         * @param array $userPointsByType
+         * @param array $userScoresByType
+         * @return integer.  Returns 0 if the user should not have this badge.
+         */
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
             assert('is_array($userPointsByType)');
@@ -73,31 +80,56 @@
             throw new NotImplementedException();
         }
 
+        /**
+         * For a given badge, when it is first received by a user, are there bonus points?
+         * @return boolean.
+         */
         public static function hasBonusPointsOnCreation()
         {
             return false;
         }
 
+        /**
+         * For a given badge, when it has a grade change for a user, are there bonus points?
+         * @return boolean.
+         */
         public static function hasBonusPointsOnGradeChange()
         {
             return false;
         }
 
+        /**
+         * Implement in child class.
+         * @return null if no bonus points for receiving the badge, or returns integer.
+         */
         public static function getNewBonusPointType()
         {
             throw new NotImplementedException();
         }
 
+        /**
+         * Implement in child class.
+         * @return null if no bonus points for changing the grade of a badge, or returns integer.
+         */
         public static function getNewBonusPointValue()
         {
             throw new NotImplementedException();
         }
 
+        /**
+         * Implement in child class.
+         * @return Point type of the bonus points.
+         */
         public static function getGradeBonusPointType()
         {
             throw new NotImplementedException();
         }
 
+        /**
+         * Implement in child class.
+         * @param integer $grade
+         * @return integer of point value based on specified grade.
+         */
         public static function getGradeBonusPointValue($grade)
         {
             assert('is_int($grade)');

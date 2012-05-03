@@ -35,12 +35,24 @@
          */
         const TYPE_GENERAL            = 'General';
 
+        /**
+         * @var String
+         */
         const TYPE_SALES              = 'Sales';
 
+        /**
+         * @var String
+         */
         const TYPE_NEW_BUSINESS       = 'NewBusiness';
 
+        /**
+         * @var String
+         */
         const TYPE_ACCOUNT_MANAGEMENT = 'AccountManagement';
 
+        /**
+         * @var String
+         */
         const TYPE_COMMUNICATION      = 'Communication';
 
         public function __toString()

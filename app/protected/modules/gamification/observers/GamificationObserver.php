@@ -33,6 +33,9 @@
     {
         public $enabled = true;
 
+        /**
+         * Initialize the observer if gamification is enabled.  Attachs scoring events to model classes as needed.
+         */
         public function init()
         {
             if($this->enabled)

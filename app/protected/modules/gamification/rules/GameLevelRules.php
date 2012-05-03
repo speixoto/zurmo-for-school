@@ -30,11 +30,47 @@
     abstract class GameLevelRules
     {
         /**
+         * Defines the last level for the level type.
+         * @var integer
+         */
+        protected static $lastLevel     = null;
+
+        /**
+         * Array of data that provides the point value required to move up to each level.
+         * @var array
+         */
+        protected static $levelPointMap = array();
+
+       /**
+        * Can be used by application component to override and set last level value.
+        * @param integer $level
+        */
+        public static function setLastLevel($level)
+        {
+            assert('is_int($level)');
+            self::$lastLevel = $level;
+        }
+
+       /**
+        * Can be used by application component to override and set level point map.
+        * @param array $levelPointMap
+        */
+        public static function setLevelPointMap($levelPointMap)
+        {
+            assert('is_array($levelPointMap)');
+            self::$levelPointMap = $levelPointMap;
+        }
+        /**
          * @param integer $level
          */
         public static function isLastLevel($level)
         {
-            throw new NotImplementedException();
+            assert('is_int($level)');
+            if($level == self::$lastLevel)
+            {
+                return true;
+            }
+            return false;
         }
 
         /**
@@ -42,7 +78,12 @@
          */
         public static function getMinimumPointsForLevel($level)
         {
-            throw new NotImplementedException();
+            assert('is_int($level)');
+            if(isset(self::$levelPointMap[$level]))
+            {
+                return self::$levelPointMap[$level];
+            }
+            throw new NotSupportedException();
         }
     }
 ?>

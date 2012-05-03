@@ -38,6 +38,9 @@
             $modelClassName::model()->attachEventHandler('onAfterSave', array($this, 'scoreCompletedOnTime'));
         }
 
+        /**
+         * @param CEvent $event
+         */
         public function scoreCompletedOnTime(CEvent $event)
         {
             $model                      = $event->sender;
@@ -59,22 +62,31 @@
                     {
                         throw new FailedToSaveModelException();
                     }
-                    GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                    GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
                                    getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
                 }
             }
         }
 
+        /**
+         * @see parent::getPointTypesAndValuesForCreateModel()
+         */
         public static function getPointTypesAndValuesForCreateModel()
         {
             return array(GamePoint::TYPE_TIME_MANAGEMENT => 10);
         }
 
+        /**
+         * @see parent::getPointTypesAndValuesForUpdateModel()
+         */
         public static function getPointTypesAndValuesForUpdateModel()
         {
             return array(GamePoint::TYPE_TIME_MANAGEMENT => 10);
         }
 
+        /**
+         * @see parent::getPointTypesAndValuesForTimeSensitiveAction()
+         */
         public static function getPointTypesAndValuesForTimeSensitiveAction()
         {
             return array(GamePoint::TYPE_TIME_MANAGEMENT => 20);

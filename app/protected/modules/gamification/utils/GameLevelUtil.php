@@ -42,7 +42,7 @@
             $nextLevel = self::getNextLevelByTypeAndCurrentLevel($type, $level);
             if($nextLevel !== false)
             {
-                $className = GameLevel::TYPE_GENERAL . 'GameLevelRules';
+                $className = $type . 'GameLevelRules';
                 return $className::getMinimumPointsForLevel($nextLevel);
             }
             return false;
@@ -57,7 +57,7 @@
         public static function getNextLevelByTypeAndCurrentLevel($type, GameLevel $level)
         {
             assert('is_string($type)');
-            $className = GameLevel::TYPE_GENERAL . 'GameLevelRules';
+            $className = $type . 'GameLevelRules';
             if(!$className::isLastLevel((int)$level->value))
             {
                 return $level->value + 1;

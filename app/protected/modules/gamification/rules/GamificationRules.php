@@ -29,26 +29,63 @@
      */
     class GamificationRules
     {
+        /**
+         * Score category used for when a model is created
+         * @var string
+         */
         const SCORE_CATEGORY_CREATE_MODEL          = 'CreateModel';
 
+        /**
+         * Score category used for when a model is updated
+         * @var string
+         */
         const SCORE_CATEGORY_UPDATE_MODEL          = 'UpdateModel';
 
+        /**
+         * Score category used for when a user logs into the system.
+         * @var string
+         */
         const SCORE_CATEGORY_LOGIN_USER            = 'LoginUser';
 
+        /**
+         * Score category used for when a user performs a mass edit in a module
+         * @var string
+         */
         const SCORE_CATEGORY_MASS_EDIT             = 'MassEdit';
 
+        /**
+         * Score category used for when a user searches in a module
+         * @var string
+         */
         const SCORE_CATEGORY_SEARCH                = 'Search';
 
+        /**
+         * Score category used for when a user imports into a module
+         * @var string
+         */
         const SCORE_CATEGORY_IMPORT                = 'Import';
 
+        /**
+         * Score category used for when a user performs a time sensitive action such as completing a task before the
+         * due date.
+         * @var string
+         */
         const SCORE_CATEGORY_TIME_SENSITIVE_ACTION = 'TimeSensitiveAction';
 
+        /**
+         * Given a model class name attach scoring events to that class. Every model will then invoke the scoring event.
+         * @param string $modelClassName
+         */
         public function attachScoringEventsByModelClassName($modelClassName)
         {
             assert('is_string($modelClassName)');
             $modelClassName::model()->attachEventHandler('onAfterSave', array($this, 'scoreOnSaveModel'));
         }
 
+        /**
+         * Given a event, perform the onSave score logic for a model ($event->sender)
+         * @param CEvent $event
+         */
         public function scoreOnSaveModel(CEvent $event)
         {
             $model                   = $event->sender;
@@ -75,7 +112,7 @@
             {
                 throw new FailedToSaveModelException();
             }
-                GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
                                static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
         }
 
@@ -89,6 +126,12 @@
             return 'Update' . get_class($model);
         }
 
+        /**
+         * Given a score type and score category @return the corresponding point type and value as an array indexed
+         * by the point type.
+         * @param string $type
+         * @param string $category
+         */
         public static function getPointTypeAndValueDataByScoreTypeAndCategory($type, $category)
         {
             assert('is_string($type)');
@@ -104,41 +147,65 @@
             }
         }
 
+        /**
+         * @return Point type/value data for generically creating a model.
+         */
         public static function getPointTypesAndValuesForCreateModel()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 10);
         }
 
+        /**
+         * @return Point type/value data for generically updating a model.
+         */
         public static function getPointTypesAndValuesForUpdateModel()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 10);
         }
 
+        /**
+         * @return Point type/value data for a user logging in.
+         */
         public static function getPointTypesAndValuesForLoginUser()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 5);
         }
 
+        /**
+         * @return Point type/value data for a user searching in a module.
+         */
         public static function getPointTypesAndValuesForSearch()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 5);
         }
 
+        /**
+         * @return Point type/value data for a user performing a mass update in a module.
+         */
         public static function getPointTypesAndValuesForMassEdit()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 5);
         }
 
+        /**
+         * @return Point type/value data for a user importing into a module
+         */
         public static function getPointTypesAndValuesForImport()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 10);
         }
 
+        /**
+         * @return Point type/value data for a user performing a time-sensitive action
+         */
         public static function getPointTypesAndValuesForTimeSensitiveAction()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 20);
         }
 
+        /**
+         * @param string $modelClassName
+         */
         public static function scoreOnSearchModels($modelClassName)
         {
             assert('is_string($modelClassName)');
@@ -151,10 +218,13 @@
             {
                 throw new FailedToSaveModelException();
             }
-            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+            GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
                            static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
         }
 
+        /**
+         * @param string $modelClassName
+         */
         public static function scoreOnMassEditModels($modelClassName)
         {
             assert('is_string($modelClassName)');
@@ -167,10 +237,13 @@
             {
                 throw new FailedToSaveModelException();
             }
-            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+            GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
                            static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
         }
 
+        /**
+         * @param string $modelClassName
+         */
         public static function scoreOnImportModels($modelClassName)
         {
             assert('is_string($modelClassName)');
@@ -183,7 +256,7 @@
             {
                 throw new FailedToSaveModelException();
             }
-            GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+            GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
                            static::getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
         }
     }

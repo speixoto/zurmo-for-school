@@ -25,27 +25,25 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with game points.
+     * Rules for the account management level type.
      */
-    class GamePointUtil
+    class AccountManagementGameLevelRules extends GameLevelRules
     {
         /**
-         * Given a score type and an array of point values indexed by point types, add points for the specified user.
-         * This will call a method to add points in a deferred way. This means that at the end of the request all
-         * deferred points will be added at once.  This is done to improve performance.
-         * @param string $type
-         * @param User $user
-         * @param array $pointTypeAndValueData
+         * Defines the last level for the level type.
+         * @var integer
          */
-        public static function addPointsByGameScoreTypeAndPointData($type, User $user, $pointTypeAndValueData)
-        {
-            assert('is_string($type)');
-            assert('$user->id > 0');
-            assert('is_array($pointTypeAndValueData)');
-            foreach($pointTypeAndValueData as $type => $value)
-            {
-                Yii::app()->gameHelper->addPointsByUserDeferred($user, $type, $value);
-            }
-        }
+        protected static $lastLevel     = 6;
+
+        /**
+         * Array of data that provides the point value required to move up to each level.
+         * @var array
+         */
+        protected static $levelPointMap = array( 1 => 0,
+                                                 2 => 100,
+                                                 3 => 500,
+                                                 4 => 2000,
+                                                 5 => 4000,
+                                                 6 => 6000);
     }
 ?>

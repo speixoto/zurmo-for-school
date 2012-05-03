@@ -29,10 +29,20 @@
      */
     class OpportunityGamificationRules extends GamificationRules
     {
+        /**
+         * @var string
+         */
         const SCORE_CATEGORY_WIN_OPPORTUNITY = 'WinOpportunity';
 
+        /**
+         * @var string
+         */
         const SCORE_TYPE_WIN_OPPORTUNITY     = 'WinOpportunity';
 
+        /**
+         * (non-PHPdoc)
+         * @see GamificationRules::scoreOnSaveModel()
+         */
         public function scoreOnSaveModel(CEvent $event)
         {
             parent::scoreOnSaveModel($event);
@@ -48,21 +58,30 @@
                 {
                     throw new FailedToSaveModelException();
                 }
-                GamePointUtil::addPointsByGameScore($gameScore->type, Yii::app()->user->userModel,
+                GamePointUtil::addPointsByGameScoreTypeAndPointData($gameScore->type, Yii::app()->user->userModel,
                                getPointTypeAndValueDataByScoreTypeAndCategory($gameScore->type, $category));
             }
         }
 
+        /**
+         * @see parent::getPointTypesAndValuesForCreateModel()
+         */
         public static function getPointTypesAndValuesForCreateModel()
         {
             return array(GamePoint::TYPE_SALES => 10);
         }
 
+        /**
+         * @see parent::getPointTypesAndValuesForUpdateModel()
+         */
         public static function getPointTypesAndValuesForUpdateModel()
         {
             return array(GamePoint::TYPE_SALES => 10);
         }
 
+        /**
+         * @return Point type/value data for a user changing the stage of an opportunity to 'Closed Won'
+         */
         public static function getPointTypesAndValuesForWinOpportunity()
         {
             return array(GamePoint::TYPE_SALES => 50);

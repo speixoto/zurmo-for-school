@@ -115,6 +115,12 @@
             return true;
         }
 
+        /**
+         * Given a user and a gameBadge, process the bonus points, if applicable for the badge. This will also
+         * process grade change points for the given badge.
+         * @param GameBadge $gameBadge
+         * @param User $user
+         */
         public static function processBonusPoints(GameBadge $gameBadge, User $user)
         {
             assert('$gameBadge->id > 0');

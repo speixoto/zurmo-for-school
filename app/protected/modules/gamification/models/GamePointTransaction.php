@@ -25,7 +25,8 @@
      ********************************************************************************/
 
     /**
-     * Model for game points.
+     * Model for game point transactions.  This model is used to record date/time information for when points
+     * are received.  Utilized by game leaderboard.
      */
     class GamePointTransaction extends OwnedModel
     {
