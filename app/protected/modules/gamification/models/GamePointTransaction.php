@@ -27,7 +27,7 @@
     /**
      * Model for game points.
      */
-    class GamePointTransaction extends RedBeanModel
+    class GamePointTransaction extends OwnedModel
     {
         public static function getModuleClassName()
         {
@@ -59,7 +59,7 @@
                 'elements' => array(
                     'createdDateTime'  => 'DateTime',
                 ),
-                'defaultSortAttribute' => 'type',
+                'defaultSortAttribute' => 'value',
                 'noAudit' => array(
                     'value',
                     'createdDateTime',
@@ -68,9 +68,9 @@
             return $metadata;
         }
 
-        public static function isTypeDeletable()
+        public function onCreated()
         {
-            return true;
+            $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
         }
     }
 ?>
