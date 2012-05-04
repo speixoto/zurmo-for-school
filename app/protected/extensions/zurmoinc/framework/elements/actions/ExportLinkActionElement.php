@@ -45,15 +45,6 @@
             Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionDropDown', "
                 $('#" . $gridId . "-exportAction').live('click', function()
                     {
-                        if ($('#" . $gridId . "-selectAll').val() == '')
-                        {
-                            if ($('#" . $gridId . "-selectedIds').val() == '')
-                            {
-                                alert('" . Yii::t('Default', 'You must select at least one record') . "');
-                                $(this).val('');
-                                return false;
-                            }
-                        }
                         var options =
                         {
                             url : $.fn.yiiGridView.getUrl('" . $gridId . "')
@@ -67,9 +58,8 @@
                         {
                             options.url = options.url +'/'+ 'export';
                         }
-                        addListViewSelectedIdsAndSelectAllToUrl('" . $gridId . "', options);
-                        var data = '' + 'export=' + '&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
-                        "url = $.param.querystring(options.url, data);
+                        var data = '' + 'export' + '&ajax=&" . $this->getPageVarName() . "=1';  // Not Coding Standard
+                        var url = $.param.querystring(options.url, data);
                         window.location.href = url;
                         return false;
                     }
