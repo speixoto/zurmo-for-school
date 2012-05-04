@@ -25,25 +25,55 @@
      ********************************************************************************/
 
     /**
-     * Rules for the sales level type.
+     * Base class for sub-level rules
      */
-    class SalesGameLevelRules extends SubLevelGameLevelRules
+    abstract class SubLevelGameLevelRules extends GameLevelRules
     {
-        /**
-         * Defines the last level for the level type.
-         * @var integer
-         */
-        protected static $lastLevel     = 6;
+        public static function hasBonusPointsOnLevelChange()
+        {
+            return true;
+        }
 
-        /**
-         * Array of data that provides the point value required to move up to each level.
-         * @var array
-         */
-        protected static $levelPointMap = array( 1 => 0,
-                                                 2 => 100,
-                                                 3 => 500,
-                                                 4 => 2000,
-                                                 5 => 4000,
-                                                 6 => 6000);
+        public static function getLevelBonusPointType()
+        {
+            return GamePoint::TYPE_USER_ADOPTION;
+        }
+
+        public static function getLevelBonusPointValue($level)
+        {
+            assert('is_int($level)');
+            if($level == 1)
+            {
+                return 100;
+            }
+            elseif($level == 1)
+            {
+                return 110;
+            }
+            elseif($level == 2)
+            {
+                return 110;
+            }
+            elseif($level == 3)
+            {
+                return 130;
+            }
+            elseif($level == 4)
+            {
+                return 140;
+            }
+            elseif($level == 5)
+            {
+                return 150;
+            }
+            elseif($level == 6)
+            {
+                return 160;
+            }
+            elseif($level == 7)
+            {
+                return 170;
+            }
+        }
     }
 ?>

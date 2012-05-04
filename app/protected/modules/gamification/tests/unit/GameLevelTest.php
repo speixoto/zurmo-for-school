@@ -68,5 +68,44 @@
             $gameLevel = GameLevel::resolveByTypeAndPerson('SomeType2',  Yii::app()->user->userModel);
             $this->assertTrue($gameLevel->id < 0);
         }
+
+        /**
+         * @depends testResolveByTypeAndPerson
+         */
+        public function testProcessBonusPointsOnLevelChange()
+        {
+            Yii::app()->user->userModel = User::getByUsername('steven');
+
+            $gamePoint = GamePoint::resolveToGetByTypeAndPerson(GamePoint::TYPE_USER_ADOPTION,  Yii::app()->user->userModel);
+            $this->assertEquals(GamePoint::TYPE_USER_ADOPTION, $gamePoint->type);
+            $this->assertEquals(0,                            $gamePoint->value);
+
+            //Testing a level that does not give bonus points.
+            $gameLevel             = new GameLevel();
+            $gameLevel->person     = Yii::app()->user->userModel;
+            $gameLevel->type       = GameLevel::TYPE_SALES;
+            $gameLevel->value      = 1;
+            $this->assertTrue($gameLevel->save());
+            GameLevel::processBonusPointsOnLevelChange($gameLevel, Yii::app()->user->userModel);
+
+            //Test that bonus points were actually received.
+            $gamePoint = GamePoint::resolveToGetByTypeAndPerson(GamePoint::TYPE_USER_ADOPTION,  Yii::app()->user->userModel);
+            $this->assertEquals(GamePoint::TYPE_USER_ADOPTION, $gamePoint->type);
+            $this->assertEquals(100,                           $gamePoint->value);
+
+            //Now get the GameLevel again, and make sure it works for level 2
+
+            $gameLevel             = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_SALES, Yii::app()->user->userModel);
+            $gameLevel->person     = Yii::app()->user->userModel;
+            $gameLevel->type       = GameLevel::TYPE_SALES;
+            $gameLevel->value      = 2;
+            $this->assertTrue($gameLevel->save());
+            GameLevel::processBonusPointsOnLevelChange($gameLevel, Yii::app()->user->userModel);
+
+            //Test that bonus points were actually received.
+            $gamePoint = GamePoint::resolveToGetByTypeAndPerson(GamePoint::TYPE_USER_ADOPTION,  Yii::app()->user->userModel);
+            $this->assertEquals(GamePoint::TYPE_USER_ADOPTION, $gamePoint->type);
+            $this->assertEquals(210,                           $gamePoint->value);
+        }
     }
 ?>

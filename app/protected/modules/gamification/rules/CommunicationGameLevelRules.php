@@ -27,7 +27,7 @@
     /**
      * Rules for the communication level type.
      */
-    class CommunicationGameLevelRules extends GameLevelRules
+    class CommunicationGameLevelRules extends SubLevelGameLevelRules
     {
         /**
          * Defines the last level for the level type.

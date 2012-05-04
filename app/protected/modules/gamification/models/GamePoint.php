@@ -67,7 +67,7 @@
         {
             if ($attributeName == 'value')
             {
-                throw new NotSupportedException();
+                $this->addValue($value);
             }
             else
             {
@@ -175,6 +175,7 @@
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
                     array('value',     	   'type',    'type' => 'integer'),
+                    array('value',         'numerical', 'min' => 1),
                     array('value', 		   'required'),
                     array('person', 	   'required'),
                 ),

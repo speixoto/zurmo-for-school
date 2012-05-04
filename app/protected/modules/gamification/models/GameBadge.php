@@ -96,6 +96,7 @@
                     array('grade', 		   'required'),
                     array('grade',     	   'type',    'type' => 'integer'),
                     array('grade', 		   'default', 'value' => 1),
+                    array('grade',         'numerical', 'min' => 1),
                     array('person', 	   'required'),
                 ),
                 'elements' => array(
@@ -121,25 +122,26 @@
          * @param GameBadge $gameBadge
          * @param User $user
          */
-        public static function processBonusPoints(GameBadge $gameBadge, User $user)
+        public static function processBonusPoints(GameBadge $gameBadge, User $user, $gradeChangeOrNewBadge)
         {
             assert('$gameBadge->id > 0');
+            assert("$gradeChangeOrNewBadge == 'GradeChange' || $gradeChangeOrNewBadge == 'NewBadge'");
             $gameBadgeRulesClassName = $gameBadge->type . 'GameBadgeRules';
             $gamePoint = null;
-            if($gameBadge->getIsNewModel() && $gameBadgeRulesClassName::hasBonusPointsOnCreation())
+            if($gradeChangeOrNewBadge == 'NewBadge' && $gameBadgeRulesClassName::hasBonusPointsOnCreation())
             {
                 $type           = $gameBadgeRulesClassName::getNewBonusPointType();
                 $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
                 $value          = $gameBadgeRulesClassName::getNewBonusPointValue();
             }
-            elseif(!$gameBadge->getIsNewModel() && array_key_exists('grade', $gameBadge->originalAttributeValues) &&
+            elseif($gradeChangeOrNewBadge == 'GradeChange' &&
             $gameBadgeRulesClassName::hasBonusPointsOnGradeChange())
             {
                 $type           = $gameBadgeRulesClassName::getGradeBonusPointType();
                 $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
                 $value          = $gameBadgeRulesClassName::getGradeBonusPointValue($gameBadge->grade);
             }
-            if($gamePoint != null)
+            if($gamePoint != null && $value > 0)
             {
                 $gamePoint->addValue($value);
                 $saved          = $gamePoint->save();

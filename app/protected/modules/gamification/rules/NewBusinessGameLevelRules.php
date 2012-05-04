@@ -27,7 +27,7 @@
     /**
      * Rules for the new business level type.
      */
-    class NewBusinessGameLevelRules extends GameLevelRules
+    class NewBusinessGameLevelRules extends SubLevelGameLevelRules
     {
         /**
          * Defines the last level for the level type.

@@ -137,8 +137,10 @@
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
                     array('value',     	   'type',    'type' => 'integer'),
-                    array('value', 		   'default', 'value' => 0),
-                    array('person', 		   'required'),
+                    array('value', 		   'default', 'value' => 1),
+                    array('value',         'numerical', 'min' => 1),
+                    array('value',         'required'),
+                    array('person', 	   'required'),
                 ),
                 'elements' => array(
                     'person' => 'Person',

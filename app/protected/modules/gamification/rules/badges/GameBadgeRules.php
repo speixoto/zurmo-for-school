@@ -86,7 +86,7 @@
          */
         public static function hasBonusPointsOnCreation()
         {
-            return false;
+            return true;
         }
 
         /**
@@ -95,16 +95,15 @@
          */
         public static function hasBonusPointsOnGradeChange()
         {
-            return false;
+            return true;
         }
 
         /**
-         * Implement in child class.
          * @return null if no bonus points for receiving the badge, or returns integer.
          */
         public static function getNewBonusPointType()
         {
-            throw new NotImplementedException();
+            return GamePoint::TYPE_USER_ADOPTION;
         }
 
         /**
@@ -113,27 +112,76 @@
          */
         public static function getNewBonusPointValue()
         {
-            throw new NotImplementedException();
+            return 50;
         }
 
         /**
-         * Implement in child class.
          * @return Point type of the bonus points.
          */
         public static function getGradeBonusPointType()
         {
-            throw new NotImplementedException();
+            return GamePoint::TYPE_USER_ADOPTION;
         }
 
         /**
-         * Implement in child class.
          * @param integer $grade
          * @return integer of point value based on specified grade.
          */
         public static function getGradeBonusPointValue($grade)
         {
             assert('is_int($grade)');
-            throw new NotImplementedException();
+            if($grade == 1)
+            {
+                return 50;
+            }
+            elseif($grade == 2)
+            {
+                return 150;
+            }
+            elseif($grade == 3)
+            {
+                return 300;
+            }
+            elseif($grade == 4)
+            {
+                return 500;
+            }
+            elseif($grade == 5)
+            {
+                return 750;
+            }
+            elseif($grade == 6)
+            {
+                return 1000;
+            }
+            elseif($grade == 7)
+            {
+                return 1250;
+            }
+            elseif($grade == 8)
+            {
+                return 1500;
+            }
+            elseif($grade == 9)
+            {
+                return 1750;
+            }
+            elseif($grade == 10)
+            {
+                return 2000;
+            }
+            elseif($grade == 11)
+            {
+                return 2250;
+            }
+            elseif($grade == 12)
+            {
+                return 2500;
+            }
+            elseif($grade == 13)
+            {
+                return 3000;
+            }
         }
     }
 ?>

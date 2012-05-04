@@ -217,6 +217,7 @@
                 {
                     throw new FailedToSaveModelException();
                 }
+                GameLevel::processBonusPointsOnLevelChange($currentGameLevel, Yii::app()->user->userModel);
                 if($currentGameLevel->value != 1)
                 {
                     $message                    = new NotificationMessage();
@@ -280,7 +281,15 @@
                     }
                     if($gradeChange || $newBadge)
                     {
-                        GameBadge::processBonusPoints($gameBadge, Yii::app()->user->userModel);
+                        if($gradeChange)
+                        {
+                            $gradeChangeOrNewBadge = 'GradeChange';
+                        }
+                        else
+                        {
+                            $gradeChangeOrNewBadge = 'NewBadge';
+                        }
+                        GameBadge::processBonusPoints($gameBadge, Yii::app()->user->userModel, $gradeChangeOrNewBadge);
                         $message                    = new NotificationMessage();
                         if($newBadge)
                         {

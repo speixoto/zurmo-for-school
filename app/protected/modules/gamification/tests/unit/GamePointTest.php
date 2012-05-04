@@ -63,7 +63,6 @@
 
         /**
          * @depends testCreateAndGetGamePointById
-         * @expectedException NotSupportedException
          */
         public function testCreateGamePointSettingValueDirectly()
         {

@@ -134,7 +134,9 @@
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
                     array('value',     	   'type',    'type' => 'integer'),
-                    array('value', 		   'default', 'value' => 0),
+                    array('value', 		   'default', 'value' => 1),
+                    array('value',         'numerical', 'min' => 1),
+                    array('value',         'required'),
                     array('person', 	   'required'),
                 ),
                 'elements' => array(
@@ -143,7 +145,6 @@
                 'defaultSortAttribute' => 'type',
                 'noAudit' => array(
                     'type',
-                    'value',
                     'person',
                 ),
             );
@@ -162,6 +163,34 @@
         {
             assert('is_int($value)');
             $this->value = $this->value + $value;
+        }
+
+        /**
+         * Given a user and a gameLevel, process the bonus points, if applicable for the badge. This will also
+         * process grade change points for the given badge.
+         * @param GameBadge $gameBadge
+         * @param User $user
+         */
+        public static function processBonusPointsOnLevelChange(GameLevel $gameLevel, User $user)
+        {
+            assert('$gameLevel->id > 0');
+            $gameLevelRulesClassName = $gameLevel->type . 'GameLevelRules';
+            $gamePoint = null;
+            if($gameLevelRulesClassName::hasBonusPointsOnLevelChange())
+            {
+                $type           = $gameLevelRulesClassName::getLevelBonusPointType();
+                $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
+                $value          = $gameLevelRulesClassName::getLevelBonusPointValue($gameLevel->value);
+            }
+            if($gamePoint != null && $value > 0)
+            {
+                $gamePoint->addValue($value);
+                $saved          = $gamePoint->save();
+                if(!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+            }
         }
     }
 ?>

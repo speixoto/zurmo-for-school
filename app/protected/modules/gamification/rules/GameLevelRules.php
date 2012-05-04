@@ -85,5 +85,29 @@
             }
             throw new NotSupportedException();
         }
+
+        public static function hasBonusPointsOnLevelChange()
+        {
+            return false;
+        }
+
+        /**
+         * Override in child if you want to have bonus points. This will define what point type the bonus points
+         * are applied towards
+         */
+        public static function getLevelBonusPointType()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Override in child if you want to have bonus points. This will return the bonus points applicable given
+         * a $level
+         */
+        public static function getLevelBonusPointValue($level)
+        {
+            assert('is_int($level)');
+            throw new NotImplementedException();
+        }
     }
 ?>

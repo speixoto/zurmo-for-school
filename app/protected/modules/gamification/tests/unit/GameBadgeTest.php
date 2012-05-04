@@ -75,15 +75,22 @@
         {
             Yii::app()->user->userModel = User::getByUsername('steven');
 
+            $gamePoint = GamePoint::resolveToGetByTypeAndPerson(GamePoint::TYPE_USER_ADOPTION,  Yii::app()->user->userModel);
+            $this->assertEquals(GamePoint::TYPE_USER_ADOPTION, $gamePoint->type);
+            $this->assertEquals(0,                             $gamePoint->value);
+
             //Testing a badge that does not give bonus points.
             $gameBadge             = new GameBadge();
             $gameBadge->person     = Yii::app()->user->userModel;
-            $gameBadge->type       = 'SomeTypeZ';
+            $gameBadge->type       = 'CreateLead';
             $gameBadge->grade      = 1;
             $this->assertTrue($gameBadge->save());
-            GameBadge::processBonusPoints($gameBadge, Yii::app()->user->userModel);
+            GameBadge::processBonusPoints($gameBadge, Yii::app()->user->userModel, 'NewBadge');
 
-            //todo: test a badge that does give bonus points.
+            //Test that bonus points were actually received.
+            $gamePoint = GamePoint::resolveToGetByTypeAndPerson(GamePoint::TYPE_USER_ADOPTION,  Yii::app()->user->userModel);
+            $this->assertEquals(GamePoint::TYPE_USER_ADOPTION, $gamePoint->type);
+            $this->assertEquals(50,                           $gamePoint->value);
         }
     }
 ?>

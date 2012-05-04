@@ -113,7 +113,7 @@
         protected $isInGetErrors          = false;
         protected $isValidating           = false;
         protected $isSaving               = false;
-        protected $isNewModel     = false;
+        protected $isNewModel             = false;
 
         /**
          * Can this model be saved when save is called from a related model?  True if it can, false if it cannot.

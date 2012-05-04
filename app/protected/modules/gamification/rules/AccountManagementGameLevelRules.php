@@ -27,7 +27,7 @@
     /**
      * Rules for the account management level type.
      */
-    class AccountManagementGameLevelRules extends GameLevelRules
+    class AccountManagementGameLevelRules extends SubLevelGameLevelRules
     {
         /**
          * Defines the last level for the level type.
