@@ -156,7 +156,6 @@
             //Test create field list.
             $this->resetPostArray();
             $this->setGetArray(array('moduleClassName' => 'AccountsModule'));
-            $this->runControllerWithNoExceptionsAndGetContent('designer/default/attributeCreate');
 
             //View creation screen, then create custom field for each custom field type.
             $this->createCheckBoxCustomFieldByModule            ('AccountsModule', 'checkbox');

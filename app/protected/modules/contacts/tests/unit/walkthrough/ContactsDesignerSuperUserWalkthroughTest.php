@@ -154,7 +154,6 @@
 
             //Test create field list.
             $this->setGetArray(array('moduleClassName' => 'ContactsModule'));
-            $this->runControllerWithNoExceptionsAndGetContent('designer/default/attributeCreate');
 
             //View creation screen, then create custom field for each custom field type.
             $this->createCheckBoxCustomFieldByModule            ('ContactsModule', 'checkbox');
