@@ -184,7 +184,7 @@
             $data = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::ASYNCHRONOUS_THRESHOLD)
+                if ($totalItems <= ExportModule::$asynchronusTreshold)
                 {
                     // Output csv file directly to user browser
                     $formattedData = $dataProvider->getData();
