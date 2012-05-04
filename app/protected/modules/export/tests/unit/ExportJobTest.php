@@ -43,7 +43,7 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $numberOfUserNotifications = Notification::getUnreadCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel);
+            $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel);
 
             $account = new Account();
             $account->owner       = $super;
@@ -105,7 +105,7 @@
             $this->assertEquals($output, $fileModel->fileContent->content);
 
             // Check if user got notification message, and if its type is ExportProcessCompleted
-            $this->assertEquals($numberOfUserNotifications + 1, Notification::getUnreadCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
+            $this->assertEquals($numberOfUserNotifications + 1, Notification::getCountByTypeAndUser('ExportProcessCompleted', Yii::app()->user->userModel));
         }
     }
 ?>

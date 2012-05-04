@@ -49,7 +49,7 @@
 
         public static function getRecommendedRunFrequencyContent()
         {
-            return Yii::t('Default', 'Every 5 minutes.');
+            return Yii::t('Default', 'Every 2 minutes.');
         }
 
         /**
@@ -59,7 +59,7 @@
         */
         public static function getRunTimeThresholdInSeconds()
         {
-            return 10;
+            return 300;
         }
 
         public function run()

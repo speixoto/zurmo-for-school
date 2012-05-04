@@ -25,35 +25,26 @@
      ********************************************************************************/
 
     /**
-     * Class to render link to mass edit from a listview.
+     * Class to render link to export from a listview.
      */
-    class MassEditLinkActionElement extends LinkActionElement
+    class ExportLinkActionElement extends LinkActionElement
     {
         public function getActionType()
         {
-            return 'MassEdit';
+            return 'Export';
         }
 
         public function render()
         {
             $gridId = $this->getListViewGridId();
-            $name   = $gridId . '-massAction';
+            $name   = $gridId . '-exportAction';
             $htmlOptions = array(
                 'name' => $name,
                 'id'   => $name,
             );
-            Yii::app()->clientScript->registerScript($gridId . '-listViewMassActionDropDown', "
-                $('#" . $gridId . "-massAction').live('click', function()
+            Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionDropDown', "
+                $('#" . $gridId . "-exportAction').live('click', function()
                     {
-                        if ($('#" . $gridId . "-selectAll').val() == '')
-                        {
-                            if ($('#" . $gridId . "-selectedIds').val() == '')
-                            {
-                                alert('" . Yii::t('Default', 'You must select at least one record') . "');
-                                $(this).val('');
-                                return false;
-                            }
-                        }
                         var options =
                         {
                             url : $.fn.yiiGridView.getUrl('" . $gridId . "')
@@ -61,15 +52,14 @@
                         if(options.url.split( '?' ).length == 2)
                         {
                             options.url.split( '?' )[0];
-                            options.url = options.url.split( '?' )[0] +'/'+ 'massEdit' + '?' + options.url.split( '?' )[1];
+                            options.url = options.url.split( '?' )[0] +'/'+ 'export' + '?' + options.url.split( '?' )[1];
                         }
                         else
                         {
-                            options.url = options.url +'/'+ 'massEdit';
+                            options.url = options.url +'/'+ 'export';
                         }
-                        addListViewSelectedIdsAndSelectAllToUrl('" . $gridId . "', options);
-                        var data = '' + 'massEdit=' + '&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
-                        "url = $.param.querystring(options.url, data);
+                        var data = '' + 'export' + '&ajax=&" . $this->getPageVarName() . "=1';  // Not Coding Standard
+                        var url = $.param.querystring(options.url, data);
                         window.location.href = url;
                         return false;
                     }
@@ -80,7 +70,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Update');
+            return Yii::t('Default', 'Export');
         }
 
         protected function getListViewGridId()
@@ -103,7 +93,7 @@
 
         protected function getDefaultRoute()
         {
-            return $this->moduleId . '/' . $this->controllerId . '/massEdit/';
+            return $this->moduleId . '/' . $this->controllerId . '/export/';
         }
     }
 ?>

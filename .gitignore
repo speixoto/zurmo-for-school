@@ -12,7 +12,7 @@ protected/data
 protected/runtime
 redbean
 yii
-syntax: glob
+
 app/protected/tests/unit/timeit.dat
 app/protected/tests/unit/results.txt
 glob:testresults/functional/
@@ -27,7 +27,4 @@ app/protected/config/debug.php
 app/protected/config/perInstanceTest.php
 app/protected/config/debugTest.php
 app/report
-.git
-.DS_Store
-.settings
-README.md
+

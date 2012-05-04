@@ -50,10 +50,10 @@
                     $output .= self::arraytoCsv($row);
                 }
             }
-
             if ($download)
             {
                 Yii::app()->request->sendFile($exportFilename, $output, self::$mimeType, false);
+                exit;
             }
             else
             {

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -24,29 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ErrorView extends View
+    /**
+     * 'Export' takes the user to a page that will download an exported file from the listview results.
+     */
+    class ExportActionSecurity extends ActionSecurity
     {
-        private $message;
-
-        public function __construct($message)
+        protected function getRightToCheck()
         {
-            assert('is_string($message)');
-            assert('"$message" != ""');
-            $this->message = $message;
-        }
-
-        protected function renderContent()
-        {
-            $errorExplanation1 = Yii::t('Default', 'An error has occurred. Please click');
-            $errorExplanation2 = Yii::t('Default', 'here');
-            $errorExplanation3 = Yii::t('Default', 'to continue to the home page. If the error persists please contact your administrator.');
-            $error = Yii::app()->format->text($this->message);
-            $homeUrl = Yii::app()->request->hostInfo . "/" . ltrim(Yii::app()->request->scriptUrl, '/');
-            $content = '<p>'                                                                         .
-                       "$errorExplanation1 <a href=\"{$homeUrl}\">$errorExplanation2</a> $errorExplanation3" .
-                       '</p>'                                                                        .
-                       "<div>$error</div>";
-            return $content;
+            return array('ExportModule', ExportModule::RIGHT_ACCESS_EXPORT);
         }
     }
 ?>
