@@ -447,7 +447,7 @@
 
             //Check if the account name exists after the search is performed on the basis of the
             //custom fields added to the accounts module.
-            $this->assertTrue(strpos($content, "Displaying 1-1 of 1 result(s).") > 0);
+            //$this->assertTrue(strpos($content, "Displaying 1-1 of 1 result(s).") > 0); //removed until we show the count again in the listview.
             $this->assertTrue(strpos($content, "myNewAccount") > 0);
         }
 
@@ -741,7 +741,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default');
 
             //Assert that the edit account exits after the edit and is diaplayed on the search page.
-            $this->assertTrue(strpos($content, "Displaying 1-1 of 1 result(s).") > 0);
+            //$this->assertTrue(strpos($content, "Displaying 1-1 of 1 result(s).") > 0); //removed until we show the count again in the listview.
             $this->assertTrue(strpos($content, "myEditAccount") > 0);
         }
 
@@ -761,7 +761,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default');
 
             //Assert that the edit account exits after the edit and is diaplayed on the search page.
-            $this->assertTrue(strpos($content, "Displaying 1-1 of 1 result(s).") > 0);
+            //$this->assertTrue(strpos($content, "Displaying 1-1 of 1 result(s).") > 0); //removed until we show the count again in the listview.
             $this->assertTrue(strpos($content, "myEditAccount") > 0);
         }
 

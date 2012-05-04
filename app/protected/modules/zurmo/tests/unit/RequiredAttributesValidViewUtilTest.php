@@ -114,7 +114,7 @@
 
         public function testResolveToSetAsMissingRequiredAttributesByModelClassName()
         {
-            RequiredAttributesValidViewUtil::resolveToSetAsMissingRequiredAttributesByModelClassName('Contact', 'owner');
+            RequiredAttributesValidViewUtil::resolveToSetAsMissingRequiredAttributesByModelClassName('Contact', 'lastName');
             $booleanTest = RequiredAttributesValidViewUtil::isViewMissingRequiredAttributes('ContactsModule', 'ContactEditAndDetailsView');
             $this->assertFalse($booleanTest);
 

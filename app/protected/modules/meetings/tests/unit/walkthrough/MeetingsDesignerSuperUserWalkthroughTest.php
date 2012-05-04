@@ -177,28 +177,6 @@
                                       'LayoutPanelsTypeForm' => array('type' => FormLayout::PANELS_DISPLAY_TYPE_ALL)));
             $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
             $this->assertFalse(strpos($content, 'Layout saved successfully') === false);
-
-            //Add all fields to UpcomingMeetingsForAccountRelatedListView.
-            $this->setGetArray(array('moduleClassName' => 'MeetingsModule',
-                                     'viewClassName'   => 'UpcomingMeetingsForAccountRelatedListView'));
-            $layout = MeetingsDesignerWalkthroughHelperUtil::getMeetingsRelatedListViewLayoutWithAllStandardAndCustomFieldsPlaced();
-            $this->setPostArray(array('save'  => 'Save', 'layout' => $layout));
-            $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
-            $this->assertFalse(strpos($content, 'Layout saved successfully') === false);
-
-            $this->setGetArray(array('moduleClassName' => 'MeetingsModule',
-                                     'viewClassName'   => 'UpcomingMeetingsForContactRelatedListView'));
-            $layout = MeetingsDesignerWalkthroughHelperUtil::getMeetingsRelatedListViewLayoutWithAllStandardAndCustomFieldsPlaced();
-            $this->setPostArray(array('save'  => 'Save', 'layout' => $layout));
-            $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
-            $this->assertFalse(strpos($content, 'Layout saved successfully') === false);
-
-            $this->setGetArray(array('moduleClassName' => 'MeetingsModule',
-                                     'viewClassName'   => 'UpcomingMeetingsForOpportunityRelatedListView'));
-            $layout = MeetingsDesignerWalkthroughHelperUtil::getMeetingsRelatedListViewLayoutWithAllStandardAndCustomFieldsPlaced();
-            $this->setPostArray(array('save'  => 'Save', 'layout' => $layout));
-            $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
-            $this->assertFalse(strpos($content, 'Layout saved successfully') === false);
         }
 
         /**
