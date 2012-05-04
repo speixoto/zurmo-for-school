@@ -28,27 +28,22 @@
 </tr>
 <tr>
   <td>verifyTextPresent</td>
-  <td>Contacts: Home</td>
+  <td>Create New</td>
   <td></td>
 </tr>
 <tr>
   <td>verifyTextPresent</td>
-  <td>Advanced Search</td>
+  <td>Advanced</td>
   <td></td>
 </tr>
 <tr>
   <td>type</td>
-  <td>ContactsSearchForm_fullName</td>
+  <td>ContactsSearchForm_anyMixedAttributes</td>
   <td>Jane ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>search</td>
-  <td></td>
-</tr>
-<tr>
   <td>waitForTextPresent</td>
-  <td>Displaying 1-1 of 1 result</td>
+  <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
@@ -68,17 +63,17 @@
 </tr>
 <tr>
   <td>waitForTextPresent</td>
-  <td>Contacts: Jinny Jane ${randomSuffix}</td>
+  <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
   <td>clickAndWait</td>
-  <td>//div[contains(@class, 'UpcomingMeetingsForContactRelatedListView')]/div[1]/a</td>
+  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div[1]/div/a</td>
   <td></td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
-  <td>Meetings: (Unnamed)</td>
+  <td>Create a New Meeting</td>
   <td></td>
 </tr>
 <tr>
@@ -165,18 +160,8 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>type</td>
-  <td>Account_name</td>
+  <td>AccountsSearchForm_anyMixedAttributes</td>
   <td>my account ${randomSuffix}</td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>search</td>
-  <td></td>
-</tr>
-<tr>
-  <td>waitForTextPresent</td>
-  <td>Displaying 1-1 of 1 result(s).</td>
-  <td></td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -185,7 +170,7 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>click</td>
-  <td>link=my account ${randomSuffix}</td>
+  <td>//div[@id='list-viewmodal']/table/tbody/tr/td[1]/a</td>
   <td></td>
 </tr><tr>
   <td>waitForValue</td>
@@ -204,18 +189,8 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>type</td>
-  <td>Opportunity_name</td>
+  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
   <td>Test Opportunity ${randomSuffix}</td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>search</td>
-  <td></td>
-</tr>
-<tr>
-  <td>waitForTextPresent</td>
-  <td>Displaying 1-1 of 1 result(s).</td>
-  <td></td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -224,7 +199,7 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>click</td>
-  <td>link=Test Opportunity ${randomSuffix}</td>
+  <td>//div[@id='list-viewmodal']/table/tbody/tr/td[1]/a</td>
   <td></td>
 </tr>
 <tr>
@@ -249,23 +224,8 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>type</td>
-  <td>User_firstName</td>
-  <td>Sam</td>
-</tr>
-<tr>
-  <td>type</td>
-  <td>User_lastName</td>
-  <td>Smith</td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>search</td>
-  <td></td>
-</tr>
-<tr>
-  <td>waitForTextPresent</td>
-  <td>Displaying 1-1 of 1 result(s).</td>
-  <td></td>
+  <td>UsersSearchForm_anyMixedAttributes</td>
+  <td>Sam Smith</td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -299,7 +259,7 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>waitForTextPresent</td>
-  <td>Meetings: Project kick-off contact ${randomSuffix}</td>
+  <td>Project kick-off contact ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
@@ -354,7 +314,7 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>waitForTextPresent</td>
-  <td>Meetings: Project kick-off new contact ${randomSuffix}</td>
+  <td>Project kick-off new contact ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
@@ -389,12 +349,12 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>verifyTextPresent</td>
-  <td>Contacts: Home</td>
+  <td>Create New</td>
   <td></td>
 </tr>
 <tr>
   <td>verifyTextPresent</td>
-  <td>Advanced Search</td>
+  <td>Advanced</td>
   <td></td>
 </tr>
 <tr>
@@ -403,13 +363,8 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>Jane ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>search</td>
-  <td></td>
-</tr>
-<tr>
   <td>waitForTextPresent</td>
-  <td>Displaying 1-1 of 1 result</td>
+  <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
@@ -429,14 +384,14 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>waitForTextPresent</td>
-  <td>Contacts: Jinny Jane ${randomSuffix}</td>
+  <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
-<tr>
+<!--tr>
   <td>verifyTextNotPresent</td>
   <td>Project kick-off new contact ${randomSuffix}</td>
   <td></td>
-</tr>
+</tr-->
 </tbody></table>
 </body>
 </html>
