@@ -33,17 +33,18 @@
          * Defines the last level for the level type.
          * @var integer
          */
-        protected static $lastLevel     = 6;
+        protected static $lastLevel     = 7;
 
         /**
          * Array of data that provides the point value required to move up to each level.
          * @var array
          */
-        protected static $levelPointMap = array( 1 => 0,
-                                                 2 => 100,
-                                                 3 => 500,
-                                                 4 => 2000,
-                                                 5 => 4000,
-                                                 6 => 6000);
+        protected static $levelPointMap = array( 1  => 100,
+                                                 2  => 210,
+                                                 3  => 330,
+                                                 4  => 460,
+                                                 5  => 600,
+                                                 6  => 750,
+                                                 7  => 910);
     }
 ?>

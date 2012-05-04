@@ -195,6 +195,7 @@
             static::resolveLevelChangeByType(GameLevel::TYPE_SALES);
             static::resolveLevelChangeByType(GameLevel::TYPE_NEW_BUSINESS);
             static::resolveLevelChangeByType(GameLevel::TYPE_ACCOUNT_MANAGEMENT);
+            static::resolveLevelChangeByType(GameLevel::TYPE_TIME_MANAGEMENT);
             static::resolveLevelChangeByType(GameLevel::TYPE_COMMUNICATION);
             static::resolveLevelChangeByType(GameLevel::TYPE_GENERAL);
         }

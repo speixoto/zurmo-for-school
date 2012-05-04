@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Rules for the account management level type.
+     * Rules for the time management level type.
      */
-    class AccountManagementGameLevelRules extends SubLevelGameLevelRules
+    class TimeManagementGameLevelRules extends SubLevelGameLevelRules
     {
         /**
          * Defines the last level for the level type.

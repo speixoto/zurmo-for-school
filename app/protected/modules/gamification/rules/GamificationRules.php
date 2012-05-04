@@ -167,7 +167,7 @@
          */
         public static function getPointTypesAndValuesForLoginUser()
         {
-            return array(GamePoint::TYPE_USER_ADOPTION => 5);
+            return array(GamePoint::TYPE_USER_ADOPTION => 10);
         }
 
         /**
@@ -183,7 +183,7 @@
          */
         public static function getPointTypesAndValuesForMassEdit()
         {
-            return array(GamePoint::TYPE_USER_ADOPTION => 5);
+            return array(GamePoint::TYPE_USER_ADOPTION => 15);
         }
 
         /**
@@ -191,7 +191,7 @@
          */
         public static function getPointTypesAndValuesForImport()
         {
-            return array(GamePoint::TYPE_USER_ADOPTION => 10);
+            return array(GamePoint::TYPE_USER_ADOPTION => 25);
         }
 
         /**
@@ -199,7 +199,7 @@
          */
         public static function getPointTypesAndValuesForTimeSensitiveAction()
         {
-            return array(GamePoint::TYPE_USER_ADOPTION => 20);
+            return array(GamePoint::TYPE_USER_ADOPTION => 10);
         }
 
         /**

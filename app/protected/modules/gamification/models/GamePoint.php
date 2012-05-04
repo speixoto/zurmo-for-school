@@ -54,6 +54,11 @@
          */
         const TYPE_COMMUNICATION      = 'Communication';
 
+        /**
+         * @var String
+         */
+        const TYPE_TIME_MANAGEMENT      = 'TimeManagement';
+
         public function __toString()
         {
             if (trim($this->type) == '')
@@ -254,6 +259,7 @@
                                      GameLevel::TYPE_SALES,
                                      GameLevel::TYPE_NEW_BUSINESS,
                                      GameLevel::TYPE_ACCOUNT_MANAGEMENT,
+                                     GameLevel::TYPE_TIME_MANAGEMENT,
                                      GameLevel::TYPE_COMMUNICATION)))
             {
                 throw new NotSupportedException();

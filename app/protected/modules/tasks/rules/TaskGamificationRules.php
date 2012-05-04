@@ -89,7 +89,7 @@
          */
         public static function getPointTypesAndValuesForTimeSensitiveAction()
         {
-            return array(GamePoint::TYPE_TIME_MANAGEMENT => 20);
+            return array(GamePoint::TYPE_TIME_MANAGEMENT => 10);
         }
     }
 ?>

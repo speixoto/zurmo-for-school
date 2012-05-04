@@ -25,74 +25,72 @@
      ********************************************************************************/
 
     /**
-     * Class for defining the badge associated with creating a new lead
+     * Base class for defining the badge associated with mass editing models
      */
-    class CreateLeadGameBadgeRules extends GameBadgeRules
+    abstract class MassEditModelsGameBadgeRules extends GameBadgeRules
     {
-        public static function getDisplayName()
-        {
-            return Yii::t('Default', 'Creating LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
+        public static function badgeGradeUserShouldHaveByPointsAndScoresByModelClassName(
+                               $userPointsByType, $userScoresByType, $modelClassName)
         {
             assert('is_array($userPointsByType)');
             assert('is_array($userScoresByType)');
-            if(isset($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]))
+            assert('is_string($modelClassName');
+            $elementName = 'Search' . $modelClassName;
+            if(isset($userScoresByType[$elementName]))
             {
-                if($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 1)
+                if($userScoresByType[$elementName]->value < 1)
                 {
                     return 0;
                 }
-                if($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 2)
+                if($userScoresByType[$elementName]->value < 2)
                 {
                     return 1;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 6)
+                elseif($userScoresByType[$elementName]->value < 6)
                 {
                     return 2;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 11)
+                elseif($userScoresByType[$elementName]->value < 11)
                 {
                     return 3;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 26)
+                elseif($userScoresByType[$elementName]->value < 21)
                 {
                     return 4;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 51)
+                elseif($userScoresByType[$elementName]->value < 31)
                 {
                     return 5;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 76)
+                elseif($userScoresByType[$elementName]->value < 41)
                 {
                     return 6;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 101)
+                elseif($userScoresByType[$elementName]->value < 51)
                 {
                     return 7;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 126)
+                elseif($userScoresByType[$elementName]->value < 61)
                 {
                     return 8;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 151)
+                elseif($userScoresByType[$elementName]->value < 71)
                 {
                     return 9;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 176)
+                elseif($userScoresByType[$elementName]->value < 81)
                 {
                     return 10;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 201)
+                elseif($userScoresByType[$elementName]->value < 91)
                 {
                     return 11;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 226)
+                elseif($userScoresByType[$elementName]->value < 101)
                 {
                     return 12;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value >= 250)
+                elseif($userScoresByType[$elementName]->value >= 125)
                 {
                     return 13;
                 }

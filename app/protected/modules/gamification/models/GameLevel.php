@@ -55,6 +55,11 @@
          */
         const TYPE_COMMUNICATION      = 'Communication';
 
+        /**
+         * @var String
+         */
+        const TYPE_TIME_MANAGEMENT      = 'TimeManagement';
+
         public function __toString()
         {
             if (trim($this->type) == '')

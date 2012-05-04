@@ -25,26 +25,18 @@
      ********************************************************************************/
 
     /**
-     * Rules for the account management level type.
+     * Class for defining the badge associated with searching opportunities
      */
-    class AccountManagementGameLevelRules extends SubLevelGameLevelRules
+    class SearchOpportunitiesGameBadgeRules extends SearchModelsGameBadgeRules
     {
-        /**
-         * Defines the last level for the level type.
-         * @var integer
-         */
-        protected static $lastLevel     = 7;
+        public static function getDisplayName()
+        {
+            return Yii::t('Default', 'Searching OpportunitiesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+        }
 
-        /**
-         * Array of data that provides the point value required to move up to each level.
-         * @var array
-         */
-        protected static $levelPointMap = array( 1  => 100,
-                                                 2  => 210,
-                                                 3  => 330,
-                                                 4  => 460,
-                                                 5  => 600,
-                                                 6  => 750,
-                                                 7  => 910);
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
+        {
+            return static::badgeGradeUserShouldHaveByPointsAndScoresByModelClassName($userPointsByType, $userScoresByType, 'Opportunity');
+        }
     }
 ?>

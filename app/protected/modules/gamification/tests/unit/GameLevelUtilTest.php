@@ -62,6 +62,12 @@
 
             $gameLevel = new GameLevel();
             $gameLevel->value = 1;
+            $this->assertEquals(2, GameLevelUtil::getNextLevelByTypeAndCurrentLevel(GameLevel::TYPE_TIME_MANAGEMENT, $gameLevel));
+            $gameLevel->value = 2;
+            $this->assertEquals(3, GameLevelUtil::getNextLevelByTypeAndCurrentLevel(GameLevel::TYPE_TIME_MANAGEMENT, $gameLevel));
+
+            $gameLevel = new GameLevel();
+            $gameLevel->value = 1;
             $this->assertEquals(2, GameLevelUtil::getNextLevelByTypeAndCurrentLevel(GameLevel::TYPE_COMMUNICATION, $gameLevel));
             $gameLevel->value = 2;
             $this->assertEquals(3, GameLevelUtil::getNextLevelByTypeAndCurrentLevel(GameLevel::TYPE_COMMUNICATION, $gameLevel));
@@ -74,9 +80,9 @@
 
             $gameLevel        = new GameLevel();
             $gameLevel->value = 1;
-            $this->assertEquals(100, GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL, $gameLevel));
-            $gameLevel->value = 2;
             $this->assertEquals(500, GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL, $gameLevel));
+            $gameLevel->value = 2;
+            $this->assertEquals(1000, GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL, $gameLevel));
         }
     }
 ?>
