@@ -27,8 +27,10 @@
     /**
      * Export module walkthrough tests.
      */
-    class ExportWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class UsersSuperUserExportWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        protected static $asynchronusTreshold;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -36,8 +38,14 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            //Setup test data owned by the super user.
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            self::$asynchronusTreshold = ExportModule::$asynchronusTreshold;
+            ExportModule::$asynchronusTreshold = 3;
+        }
+
+        public static function tearDownAfterClass()
+        {
+            ExportModule::$asynchronusTreshold = self::$asynchronusTreshold;
+            parent::tearDownAfterClass();
         }
 
         /**
@@ -46,43 +54,37 @@
         public function testDownloadDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            for ($i = 0; $i <= 3; $i++)
+            for ($i = 0; $i < 2; $i++)
             {
-                AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
+                UserTestHelper::createBasicUser('aUser' . $i);
             }
 
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
-            $this->setGetArray(array('Account_page' => '1', 'export' => '', 'ajax' => ''));
-            $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/list');
+            $this->setGetArray(array('User_page' => '1', 'export' => '', 'ajax' => ''));
+            $this->runControllerWithExitExceptionAndGetContent('users/default/export');
 
             $this->setGetArray(array(
-                'AccountsSearchForm' => array(
+                'UsersSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
-                    'anyMixedAttributes'      => '',
-                    'name'                    => 'superAccount',
-                    'officePhone'             => ''
+                    'anyMixedAttributes'      => 'aUser',
                 ),
-                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
-                'Account_page'   => '1',
+                'User_page'   => '1',
                 'export'         => '',
                 'ajax'           => '')
             );
-            $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $this->runControllerWithRedirectExceptionAndGetContent('users/default/export');
 
             // No mathces
             $this->setGetArray(array(
-                'AccountsSearchForm' => array(
+                'UsersSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
-                    'anyMixedAttributes'      => '',
-                    'name'                    => 'missingName',
-                    'officePhone'             => ''
+                    'anyMixedAttributes'      => 'missingOne',
                 ),
-                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
-                'Account_page' => '1',
+                'User_page' => '1',
                 'export'       => '',
                 'ajax'         => '')
             );
-            $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+            $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
         }
 
         /**
@@ -91,21 +93,25 @@
         public function testAsynchronousDownloadDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $accounts = Account::getAll();
-            if (count($accounts))
+
+            $users = User::getAll();
+            if (count($users))
             {
-                foreach ($accounts as $account)
+                foreach ($users as $user)
                 {
-                    $account->delete();
+                    if ($user->id !== $super->id)
+                    {
+                        $user->delete();
+                    }
                 }
             }
-            for ($i = 0; $i <= (ExportModule::ASYNCHRONOUS_THRESHOLD + 1); $i++)
+            for ($i = 0; $i <= (ExportModule::$asynchronusTreshold + 1); $i++)
             {
-                AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
+                UserTestHelper::createBasicUser('aUser' . $i);
             }
 
-            $this->setGetArray(array('Account_page' => '1', 'export' => '', 'ajax' => ''));
-                    $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+            $this->setGetArray(array('User_page' => '1', 'export' => '', 'ajax' => ''));
+                    $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
 
             // Start background job
             $job = new ExportJob();
@@ -116,7 +122,7 @@
             $fileModel = $exportItems[0]->exportFileModel;
             $this->assertEquals(1, $exportItems[0]->isCompleted);
             $this->assertEquals('csv', $exportItems[0]->exportFileType);
-            $this->assertEquals('accounts', $exportItems[0]->exportFileName);
+            $this->assertEquals('users', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
             $this->assertEquals(1, count(Notification::getAll()));
