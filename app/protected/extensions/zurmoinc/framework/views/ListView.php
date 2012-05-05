@@ -267,7 +267,11 @@
 
         protected function getCGridViewAfterAjaxUpdate()
         {
-            return 'js:function(id, data) {processAjaxSuccessError(id, data);}';
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                        var $data = $(data);
+                        jQuery.globalEval($data.filter("script").last().text());
+                    }';
         }
 
         /**

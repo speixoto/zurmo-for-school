@@ -90,7 +90,8 @@
 
         /**
          * Renders the bottom panel of the layout. Includes the search button
-         * and the advanced search link that opens/closes the second panel
+         * and the advanced search link that opens/closes the second panel. Using click.clear namespace to
+         * avoid collision with the binding from clearform.
          * @return A string containing the element's content.
          */
         protected function renderFormBottomPanel()
@@ -105,27 +106,32 @@
                 CClientScript::POS_END
             );
             Yii::app()->clientScript->registerScript('search', "
+                $('#clear-search-link" . $this->gridIdSuffix . "').removeAttr('clearForm');
                 $('#clear-search-link" . $this->gridIdSuffix . "').clearform(
                     {
                         form: '#" . $this->getSearchFormId() . "'
                     }
                 );
-                $('#more-search-link" . $this->gridIdSuffix . "').click( function()
-                    {
-                        $('.search-view-1').toggle();
-                        return false;
-                    }
-                );
-                $('#cancel-advanced-search').click(function(){
-                    $('.search-view-1').hide();
-                });
-                $('#clear-search-link" . $this->gridIdSuffix . "').click( function()
+                $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
+                $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function()
                     {
                         $(this).closest('form').submit();
                         return false;
                     }
                 );
-                $('#search-advanced-search').click( function()
+                $('#more-search-link" . $this->gridIdSuffix . "').unbind('click');
+                $('#more-search-link" . $this->gridIdSuffix . "').bind('click',  function(event)
+                    {
+                        $('.search-view-1').toggle();
+                        return false;
+                    }
+                );
+                $('#cancel-advanced-search').unbind('click');
+                $('#cancel-advanced-search').bind('click', function(event){
+                    $('.search-view-1').hide();
+                });
+                $('#search-advanced-search').unbind('click');
+                $('#search-advanced-search').bind('click', function(event)
                     {
                         $('.search-view-0').children(\"input[type='text']\").val('');
                         $('.search-view-1').hide();
@@ -133,7 +139,8 @@
                         return false;
                     }
                 );
-                $('#" . $this->getSearchFormId() . "').submit(function()
+                $('#" . $this->getSearchFormId() . "').unbind('submit');
+                $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
                     {
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectAll').val(null);
@@ -141,8 +148,8 @@
                         {
                             data: $(this).serialize() + '&" . $this->listModelClassName . "_page=&" . // Not Coding Standard
                             $this->listModelClassName . "_sort=" .
-                            $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' " . // Not Coding Standard
-                        "}
+                            $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
+                         }
                         );
                         return false;
                     }

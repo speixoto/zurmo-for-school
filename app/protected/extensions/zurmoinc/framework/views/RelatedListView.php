@@ -143,6 +143,18 @@
                 );
         }
 
+        /**
+         * Override to not run global eval, since it causes doubling up of ajax requests on the pager.
+         * (non-PHPdoc)
+         * @see ListView::getCGridViewAfterAjaxUpdate()
+         */
+        protected function getCGridViewAfterAjaxUpdate()
+        {
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                    }';
+        }
+
         public function getTitle()
         {
             if (!empty($this->viewData['title']))

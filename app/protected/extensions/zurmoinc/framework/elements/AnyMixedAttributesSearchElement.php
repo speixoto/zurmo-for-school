@@ -109,13 +109,14 @@
             $inputId = $this->getEditableInputId();
             $script   = " basicSearchQueued = 0;";
             $script  .= " basicSearchOldValue = '';";
+            $script  .= "   $('#" . $inputId . "').removeAttr('clearForm'); ";
             $script  .= "   $('#" . $inputId . "').clearform(
                                 {
                                     form: '#" . $this->form->getId() . "',
 
                                 }
                             );
-                            $('#" . $inputId . "').bind('change keyup', function(event) {
+                            var basicSearchHandler = function(event) {
                                 if($(this).val() != '')
                                 {
                                     if(basicSearchOldValue != $(this).val())
@@ -126,7 +127,9 @@
                                         setTimeout('searchByQueuedSearch(\"" . $inputId . "\")',1000);
                                     }
                                 }
-                            });
+                            }
+                            $('#" . $inputId . "').unbind('input propertychange');
+                            $('#" . $inputId . "').bind('input propertychange', basicSearchHandler);
                             ";
             Yii::app()->clientScript->registerScript('basicSearchAjaxSubmit', $script);
         }
