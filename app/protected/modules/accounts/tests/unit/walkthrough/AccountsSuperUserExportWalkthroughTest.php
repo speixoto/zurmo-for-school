@@ -64,7 +64,8 @@
 
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
             $this->setGetArray(array('Account_page' => '1', 'export' => '', 'ajax' => ''));
-            $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $this->assertEquals('Testing download.', $response);
 
             $this->setGetArray(array(
                 'AccountsSearchForm' => array(
@@ -78,7 +79,8 @@
                 'export'         => '',
                 'ajax'           => '')
             );
-            $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $this->assertEquals('Testing download.', $response);
 
             // No mathces
             $this->setGetArray(array(

@@ -63,7 +63,8 @@
 
             $this->runControllerWithNoExceptionsAndGetContent('contacts/default/list');
             $this->setGetArray(array('Contact_page' => '1', 'export' => '', 'ajax' => ''));
-            $this->runControllerWithExitExceptionAndGetContent('contacts/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('contacts/default/export');
+            $this->assertEquals('Testing download.', $response);
 
             $this->setGetArray(array(
                 'ContactsSearchForm' => array(
@@ -77,7 +78,8 @@
                 'export'         => '',
                 'ajax'           => '')
             );
-            $this->runControllerWithExitExceptionAndGetContent('contacts/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('contacts/default/export');
+            $this->assertEquals('Testing download.', $response);
 
             // No mathces
             $this->setGetArray(array(

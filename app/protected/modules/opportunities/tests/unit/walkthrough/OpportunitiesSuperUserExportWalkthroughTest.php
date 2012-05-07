@@ -63,7 +63,8 @@
 
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/list');
             $this->setGetArray(array('Opportunity_page' => '1', 'export' => '', 'ajax' => ''));
-            $this->runControllerWithExitExceptionAndGetContent('opportunities/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/export');
+            $this->assertEquals('Testing download.', $response);
 
             $this->setGetArray(array(
                 'OpportunitiesSearchForm' => array(
@@ -76,7 +77,8 @@
                 'export'         => '',
                 'ajax'           => '')
             );
-            $this->runControllerWithExitExceptionAndGetContent('opportunities/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/export');
+            $this->assertEquals('Testing download.', $response);
 
             // No mathces
             $this->setGetArray(array(

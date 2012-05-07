@@ -39,7 +39,7 @@
             Yii::app()->user->userModel = $super;
 
             self::$asynchronusTreshold = ExportModule::$asynchronusTreshold;
-            ExportModule::$asynchronusTreshold = 3;
+            ExportModule::$asynchronusTreshold = 5;
         }
 
         public static function tearDownAfterClass()
@@ -54,25 +54,38 @@
         public function testDownloadDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            for ($i = 0; $i < 2; $i++)
+            $users = User::getAll();
+            if (count($users))
+            {
+                foreach ($users as $user)
+                {
+                    if ($user->id !== $super->id)
+                    {
+                        $user->delete();
+                    }
+                }
+            }
+            for ($i = 0; $i <= (ExportModule::$asynchronusTreshold - 3); $i++)
             {
                 UserTestHelper::createBasicUser('aUser' . $i);
             }
 
             $this->runControllerWithNoExceptionsAndGetContent('users/default/list');
             $this->setGetArray(array('User_page' => '1', 'export' => '', 'ajax' => ''));
-            $this->runControllerWithExitExceptionAndGetContent('users/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('users/default/export');
+            $this->assertEquals('Testing download.', $response);
 
             $this->setGetArray(array(
                 'UsersSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
-                    'anyMixedAttributes'      => 'aUser',
+                    'anyMixedAttributes'      => '',
                 ),
-                'User_page'   => '1',
+                'User_page'      => '1',
                 'export'         => '',
                 'ajax'           => '')
             );
-            $this->runControllerWithRedirectExceptionAndGetContent('users/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('users/default/export');
+            $this->assertEquals('Testing download.', $response);
 
             // No mathces
             $this->setGetArray(array(
