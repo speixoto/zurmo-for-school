@@ -24,45 +24,40 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamePointUtilTest extends ZurmoBaseTest
+    /**
+     * Gamification Module
+     * Walkthrough for the super user of all possible controller actions.
+     * Since this is a super user, he should have access to all controller actions
+     * without any exceptions being thrown.
+     */
+    class GamificationSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function tearDown()
-        {
-            parent::tearDown();
-            Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
-        }
-
-        public function testaddPointsByPointData()
-        {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $this->assertEquals(array(), Yii::app()->gameHelper->getDeferredPointTypesAndValuesByUserIdToAdd());
-            $pointTypeAndValueData = array('some type' => 400);
-            GamePointUtil::addPointsByPointData(Yii::app()->user->userModel, $pointTypeAndValueData);
-            $compareData = array(Yii::app()->user->userModel->id => $pointTypeAndValueData);
-            $this->assertEquals($compareData, Yii::app()->gameHelper->getDeferredPointTypesAndValuesByUserIdToAdd());
         }
 
-        public function testGetUserLeaderboardData()
+        public function testSuperUserAllDefaultControllerActions()
         {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            $pointTypeAndValueData = array('some type' => 400);
-            GamePointUtil::addPointsByPointData(Yii::app()->user->userModel, $pointTypeAndValueData);
-            Yii::app()->gameHelper->processDeferredPoints();
-            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_WEEKLY);
-            $this->assertTrue(count($data) > 0);
-            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_MONTHLY);
-            $this->assertTrue(count($data) > 0);
-            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL);
-            $this->assertTrue(count($data) > 0);
+            //Test all default controller actions that do not require any POST/GET variables to be passed.
+            //This does not include portlet controller actions.
+            $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/leaderboard');
+            $this->assertfalse(strpos($content, 'Leaderboard') === false);
+            $this->setGetArray(array(
+                'type' => GamePointUtil::LEADERBOARD_TYPE_WEEKLY));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/leaderboard');
+            $this->assertfalse(strpos($content, 'Leaderboard') === false);
+            $this->setGetArray(array(
+                'type' => GamePointUtil::LEADERBOARD_TYPE_MONTHLY));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('gamification/default/leaderboard');
+            $this->assertfalse(strpos($content, 'Leaderboard') === false);
+            $this->setGetArray(array(
+                'type' => GamePointUtil::LEADERBOARD_TYPE_OVERALL));
         }
     }
 ?>

@@ -38,5 +38,20 @@
         {
             return array('GameScore', 'GamePoint', 'GameLevel', 'GamePointTransaction', 'GameBadge');
         }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array();
+            $metadata['global'] = array(
+                'userHeaderMenuItems' => array(
+                        array(
+                            'label' => 'Leaderboard',
+                            'url' => array('/gamification/default/leaderboard'),
+                            'order' => 2,
+                        ),
+                ),
+            );
+            return $metadata;
+        }
     }
 ?>

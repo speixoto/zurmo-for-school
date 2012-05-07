@@ -24,45 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper functionality for working with Strings
-     */
-    class StringUtil
+    class LeaderboardOverallLinkActionElement extends EditLinkActionElement
     {
-        /**
-         * Given a string and a length, return the chopped string if it is larger than the length.
-         * @param string $string
-         * @param integer $length
-         */
-        public static function getChoppedStringContent($string, $length)
+        protected function getDefaultLabel()
         {
-            assert('is_string($string)');
-            assert('is_int($length)');
-            if(strlen($string) > $length)
-            {
-                return substr($string, 0, ($length - 3)) . '...';
-            }
-            else
-            {
-                return $string;
-            }
+            return Yii::t('Default', 'Overall');
         }
 
-        /**
-         * Given an integer, resolve the integer with an ordinal suffix and return the content as as string.
-         * @param integer $number
-         */
-        public static function resolveOrdinalIntegerAsStringContent($number)
+        protected function getDefaultRoute()
         {
-            assert('is_int($integer)');
-            $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
-            if (($number %100) >= 11 && ($number%100) <= 13)
-            {
-               return $number. 'th';
-            }
-            else
-            {
-               return $number. $ends[$number % 10];
-            }
+            return Yii::app()->createUrl(
+                $this->moduleId . '/' . $this->controllerId . '/leaderboard/',
+                array('type' => GamePointUtil::LEADERBOARD_TYPE_OVERALL));
         }
     }
+?>

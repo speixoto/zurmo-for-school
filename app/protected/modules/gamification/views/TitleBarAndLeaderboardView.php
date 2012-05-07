@@ -24,45 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper functionality for working with Strings
-     */
-    class StringUtil
+    class TitleBarAndLeaderboardView extends GridView
     {
-        /**
-         * Given a string and a length, return the chopped string if it is larger than the length.
-         * @param string $string
-         * @param integer $length
-         */
-        public static function getChoppedStringContent($string, $length)
+        public function __construct(
+            $controllerId,
+            $moduleId,
+            $leaderboardData,
+            $activeActionElementType
+            )
         {
-            assert('is_string($string)');
-            assert('is_int($length)');
-            if(strlen($string) > $length)
-            {
-                return substr($string, 0, ($length - 3)) . '...';
-            }
-            else
-            {
-                return $string;
-            }
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
+            assert('is_array($leaderboardData)');
+            assert('is_string($activeActionElementType)');
+            parent::__construct(2, 1);
+            $this->setView(new TitleBarView(Yii::t('Default', 'Leaderboard'), null, 1), 0, 0);
+            $this->setView(new LeaderboardView($controllerId, $moduleId, $leaderboardData, $activeActionElementType), 1, 0);
         }
 
-        /**
-         * Given an integer, resolve the integer with an ordinal suffix and return the content as as string.
-         * @param integer $number
-         */
-        public static function resolveOrdinalIntegerAsStringContent($number)
+        public function isUniqueToAPage()
         {
-            assert('is_int($integer)');
-            $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
-            if (($number %100) >= 11 && ($number%100) <= 13)
-            {
-               return $number. 'th';
-            }
-            else
-            {
-               return $number. $ends[$number % 10];
-            }
+            return true;
         }
     }
+?>

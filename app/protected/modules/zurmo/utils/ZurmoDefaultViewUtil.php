@@ -118,7 +118,7 @@
 
         protected static function getAndResolveUserMenuItemsForHeader()
         {
-            $userMenuItems             = MenuUtil::getAccessibleUserHeaderMenuForCurrentUser();
+            $userMenuItems             = MenuUtil::getAccessibleOrderedUserHeaderMenuForCurrentUser();
             return $userMenuItems;
         }
 

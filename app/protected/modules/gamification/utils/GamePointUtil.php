@@ -29,6 +29,12 @@
      */
     class GamePointUtil
     {
+        const LEADERBOARD_TYPE_WEEKLY = 'Weekly Leaderboard';
+
+        const LEADERBOARD_TYPE_MONTHLY = 'Monthly Leaderboard';
+
+        const LEADERBOARD_TYPE_OVERALL = 'Overall Leaderboard';
+
         /**
          * Given an array of point values indexed by point types, add points for the specified user.
          * This will call a method to add points in a deferred way. This means that at the end of the request all
@@ -43,6 +49,91 @@
             foreach($pointTypeAndValueData as $type => $value)
             {
                 Yii::app()->gameHelper->addPointsByUserDeferred($user, $type, $value);
+            }
+        }
+
+        public static function getUserLeaderboardData($type)
+        {
+            assert('is_string($type)');
+            $sql             = static::makeUserLeaderboardSqlQuery($type);
+            $rows            = R::getAll($sql);
+            $rank            = 1;
+            $leaderboardData = array();
+            foreach ($rows as $row)
+            {
+                $leaderboardData[$row['userid']] = array(
+                    'rank'         => StringUtil::resolveOrdinalIntegerAsStringContent($rank),
+                    'userLabel'    => strval(User::getById(intval($row['userid']))),
+                    'points'       => intval($row['points'])
+                );
+                $rank ++;
+            }
+            return $leaderboardData;
+        }
+
+        protected static function makeUserLeaderboardSqlQuery($type)
+        {
+            assert('is_string($type)');
+            $quote                     = DatabaseCompatibilityUtil::getQuote();
+            $where                     = null;
+            $selectDistinct            = false;
+            $orderBy                   = "points desc";
+            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('GamePointTransaction');
+            static::resolveLeaderboardWhereClausesByType($type, $joinTablesAdapter, $where);
+            $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $sumPart                   = "{$quote}gamepointtransaction{$quote}.{$quote}value{$quote} ";
+            $selectQueryAdapter->addClause('_user', 'id', 'userid');
+            $selectQueryAdapter->addSummationClause($sumPart, 'points');
+            $joinTablesAdapter->addFromTableAndGetAliasName('gamepoint', 'gamepoint_id', 'gamepointtransaction');
+            $joinTablesAdapter->addFromTableAndGetAliasName('permitable', 'person_item_id', 'gamepoint', 'item_id');
+            $joinTablesAdapter->addFromTableAndGetAliasName('_user', 'id', 'permitable', 'permitable_id');
+            $groupBy                   = "{$quote}_user{$quote}.{$quote}id{$quote}";
+            $sql                       = SQLQueryUtil::makeQuery('gamepointtransaction', $selectQueryAdapter,
+                                                                 $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
+            return $sql;
+        }
+
+        protected static function resolveLeaderboardWhereClausesByType($type,
+                                                                       RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                                                       & $where)
+        {
+            if($type == static::LEADERBOARD_TYPE_OVERALL)
+            {
+                //Nothing to add to the where clause.
+                return;
+            }
+            $quote = DatabaseCompatibilityUtil::getQuote();
+            $today = MixedDateTimeTypesSearchFormAttributeMappingRules::calculateNewDateByDaysFromNow(0);
+            if($type == static::LEADERBOARD_TYPE_WEEKLY)
+            {
+
+                $todayMinusSevenDays   = MixedDateTimeTypesSearchFormAttributeMappingRules::calculateNewDateByDaysFromNow(-7);
+                $greaterThanValue      = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($todayMinusSevenDays);
+                $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
+                if ($where != null)
+                {
+                    $where = '(' . $where . ') and ';
+                }
+                $where .= "{$quote}gamepointtransaction{$quote}.{$quote}createdDateTime{$quote} >= '" . $greaterThanValue . "'";
+                $where .= " and ";
+                $where .= "{$quote}gamepointtransaction{$quote}.{$quote}createdDateTime{$quote} <= '" . $lessThanValue . "'";
+            }
+            elseif($type == static::LEADERBOARD_TYPE_MONTHLY)
+            {
+                $todayMinusThirtyDays  = MixedDateTimeTypesSearchFormAttributeMappingRules::calculateNewDateByDaysFromNow(-30);
+                $greaterThanValue      = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($todayMinusThirtyDays);
+                $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
+                if ($where != null)
+                {
+                    $where = '(' . $where . ') and ';
+                }
+                $where .= "{$quote}gamepointtransaction{$quote}.{$quote}createdDateTime{$quote} >= '" . $greaterThanValue . "'";
+                $where .= " and ";
+                $where .= "{$quote}gamepointtransaction{$quote}.{$quote}createdDateTime{$quote} <= '" . $lessThanValue . "'";
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
         }
     }

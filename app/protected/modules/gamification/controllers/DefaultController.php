@@ -24,45 +24,43 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper functionality for working with Strings
-     */
-    class StringUtil
+    class GamificationDefaultController extends ZurmoBaseController
     {
-        /**
-         * Given a string and a length, return the chopped string if it is larger than the length.
-         * @param string $string
-         * @param integer $length
-         */
-        public static function getChoppedStringContent($string, $length)
+        public function actionIndex()
         {
-            assert('is_string($string)');
-            assert('is_int($length)');
-            if(strlen($string) > $length)
-            {
-                return substr($string, 0, ($length - 3)) . '...';
-            }
-            else
-            {
-                return $string;
-            }
+            $this->actionLeaderboard();
         }
 
-        /**
-         * Given an integer, resolve the integer with an ordinal suffix and return the content as as string.
-         * @param integer $number
-         */
-        public static function resolveOrdinalIntegerAsStringContent($number)
+        public function actionLeaderboard($type = null)
         {
-            assert('is_int($integer)');
-            $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
-            if (($number %100) >= 11 && ($number%100) <= 13)
+            if($type == null)
             {
-               return $number. 'th';
+                $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
+            }
+            if($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
+            {
+                $activeActionElementType = 'LeaderboardWeeklyLink';
+            }
+            elseif($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
+            {
+                $activeActionElementType = 'LeaderboardMonthlyLink';
+            }
+            elseif($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
+            {
+                $activeActionElementType = 'LeaderboardOverallLink';
             }
             else
             {
-               return $number. $ends[$number % 10];
+                throw new NotSupportedException();
             }
+            $view = new TitleBarAndLeaderboardView(
+                            $this->getId(),
+                            $this->getModule()->getId(),
+                            GamePointUtil::getUserLeaderboardData($type),
+                            $activeActionElementType);
+            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
+                                            makeStandardViewForCurrentUser($this, $view));
+            echo $view->render();
         }
     }
+?>
