@@ -259,7 +259,7 @@
                         if($badgeGrade > $badge->grade)
                         {
                             $badge->grade = $badgeGrade;
-                            $saved        = $gameBadge->save();
+                            $saved        = $badge->save();
                             if(!$saved)
                             {
                                 throw new NotSupportedException();
