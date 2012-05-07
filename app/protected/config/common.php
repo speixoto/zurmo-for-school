@@ -81,10 +81,10 @@
                 'class' => 'application.extensions.fusioncharts.fusionCharts',
             ),
             'gameHelper' => array(
-                'class' => 'application.modules.gamification.components.gameHelper',
+                'class' => 'application.modules.gamification.components.GameHelper',
             ),
             'gamificationObserver' => array(
-                'class' => 'application.modules.gamification.observers.gamificationObserver',
+                'class' => 'application.modules.gamification.observers.GamificationObserver',
             ),
             'minScript' => array(
                 'class' => 'application.extensions.zurmoinc.framework.components.ZurmoExtMinScript',
