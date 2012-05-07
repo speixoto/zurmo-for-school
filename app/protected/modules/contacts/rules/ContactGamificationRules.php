@@ -48,8 +48,9 @@
                 return;
             }
             if(!LeadsUtil::isStateALead($event->sender->state) &&
-                array_key_exists('name', $event->sender->state->originalAttributeValues) &&
-                LeadsUtil::isStateALeadByStateName($event->sender->state->originalAttributeValues['name']))
+                array_key_exists('state', $event->sender->originalAttributeValues) &&
+                $event->sender->originalAttributeValues['state'][1] > 0 &&
+                LeadsUtil::isStateALeadByStateName($event->sender->originalAttributeValues['state'][2]))
             {
                 $this->scoreOnSaveWhereLeadIsConverted($event);
             }
@@ -75,7 +76,7 @@
                 throw new FailedToSaveModelException();
             }
             GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
-                           getPointTypeAndValueDataByCategory($category));
+                           static::getPointTypeAndValueDataByCategory($category));
         }
 
         protected function scoreOnSaveWhereStateIsLead(CEvent $event)
@@ -100,8 +101,8 @@
             {
                 throw new FailedToSaveModelException();
             }
-                GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
-                               static::$gameScore->type, ($category));
+            GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                           static::getPointTypeAndValueDataByCategory($category));
         }
 
         public static function getPointTypesAndValuesForCreateModel()

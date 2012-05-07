@@ -125,7 +125,7 @@
         public static function processBonusPoints(GameBadge $gameBadge, User $user, $gradeChangeOrNewBadge)
         {
             assert('$gameBadge->id > 0');
-            assert("$gradeChangeOrNewBadge == 'GradeChange' || $gradeChangeOrNewBadge == 'NewBadge'");
+            assert('$gradeChangeOrNewBadge == "GradeChange" || $gradeChangeOrNewBadge == "NewBadge"');
             $gameBadgeRulesClassName = $gameBadge->type . 'GameBadgeRules';
             $gamePoint = null;
             if($gradeChangeOrNewBadge == 'NewBadge' && $gameBadgeRulesClassName::hasBonusPointsOnCreation())
