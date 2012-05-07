@@ -199,6 +199,7 @@
         {
             assert('$searchModel != null');
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
+            static::resolveToTriggerOnSearchEvents($listModelClassName);
             if (!empty($_GET['filteredListId']) && empty($_POST['search']))
             {
                 $filteredListId = (int)$_GET['filteredListId'];
@@ -221,6 +222,15 @@
                     $stateMetadataAdapterClassName);
             }
             return $dataProvider;
+        }
+
+        protected function resolveToTriggerOnSearchEvents($listModelClassName)
+        {
+            $pageVariableName = $listModelClassName . '_page';
+            if(isset($_GET[$pageVariableName]) && $_GET[$pageVariableName] == null)
+            {
+                Yii::app()->gameHelper->triggerSearchModelsEvent($listModelClassName);
+            }
         }
 
         protected function getDataProviderByResolvingSelectAllFromGet(
@@ -287,6 +297,7 @@
                     if ($passedOwnerValidation)
                     {
                         MassEditInsufficientPermissionSkipSavingUtil::clear($modelClassName);
+                        Yii::app()->gameHelper->triggerMassEditEvent(get_class($listModel));
                         $this->saveMassEdit(
                             get_class($listModel),
                             $modelClassName,
@@ -295,6 +306,7 @@
                             $_GET[$modelClassName . '_page'],
                             $pageSize
                         );
+                        //cancel diminish of save scoring
                         if ($selectedRecordCount > $pageSize)
                         {
                             $view = new $pageViewClassName(ZurmoDefaultViewUtil::
@@ -404,6 +416,7 @@
          */
         protected function saveMassEdit($modelClassName, $postVariableName, $selectedRecordCount, $dataProvider, $page, $pageSize)
         {
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
             $modelsToSave = $this->getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
             foreach ($modelsToSave as $modelToSave)
             {
@@ -424,6 +437,7 @@
                         $modelClassName, $modelToSave->id, $modelToSave->name);
                 }
             }
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
         }
 
         /**

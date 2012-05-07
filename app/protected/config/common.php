@@ -51,7 +51,7 @@
                 'class' => 'application.modules.api.components.ZurmoApiHelper',
             ),
             'browser' => array(
-                'class'          => 'application.extensions.zurmoinc.framework.components.Browser',
+                'class' => 'application.extensions.zurmoinc.framework.components.Browser',
             ),
             'clientScript' => array(
                 'class' => 'ClientScript',
@@ -79,6 +79,12 @@
             ),
             'fusioncharts' => array(
                 'class' => 'application.extensions.fusioncharts.fusionCharts',
+            ),
+            'gameHelper' => array(
+                'class' => 'application.modules.gamification.components.gameHelper',
+            ),
+            'gamificationObserver' => array(
+                'class' => 'application.modules.gamification.observers.gamificationObserver',
             ),
             'minScript' => array(
                 'class' => 'application.extensions.zurmoinc.framework.components.ZurmoExtMinScript',
@@ -191,6 +197,11 @@
                 'allowAutoLogin' => true,
                 'class'          => 'WebUser',
                 'loginUrl'       => array('zurmo/default/login'),
+        'behaviors' => array(
+            'onAfterLogin' => array(
+                'class' => 'application.modules.gamification.behaviors.WebUserAfterLoginGamificationBehavior'
+            ),
+        ),
             ),
             'widgetFactory' => array(
                 'widgets' => array(
@@ -240,6 +251,7 @@
             'designer',
             'emailMessages',
             'export',
+            'gamification',
             'home',
             'import',
             'install',

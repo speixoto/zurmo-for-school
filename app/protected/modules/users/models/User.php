@@ -95,7 +95,7 @@
             $modelClassName = 'Person';
             $this->deleteOwnedRelatedModels  ($modelClassName);
             $this->deleteForeignRelatedModels($modelClassName);
-            parent::unrestrictedDelete();
+            return parent::unrestrictedDelete();
         }
 
         /**
@@ -238,8 +238,12 @@
 
         protected function beforeDelete()
         {
-            parent::beforeDelete();
+            if(!parent::beforeDelete())
+            {
+                return false;
+            }
             ReadPermissionsOptimizationUtil::userBeingDeleted($this);
+            return true;
         }
 
         protected function logAuditEventsListForCreatedAndModifed($newModel)

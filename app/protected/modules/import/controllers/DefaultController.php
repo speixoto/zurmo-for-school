@@ -326,13 +326,17 @@
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
                                                            $config);
             $sequentialProcess    = new ImportCreateUpdateModelsSequentialProcess($import, $dataProvider);
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
             $sequentialProcess->run($step, $nextParams);
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             $nextStep             = $sequentialProcess->getNextStep();
             $route                = $this->getModule()->getId() . '/' . $this->getId() . '/step6';
             if ($sequentialProcess->isComplete())
             {
-                $importCompleteView = $this->makeImportCompleteView($import, $importWizardForm, true);
-                $sequenceView       = new ContainedViewCompleteSequentialProcessView($importCompleteView);
+                $importingIntoModelClassName = $unserializedData['importRulesType'] . 'ImportRules';
+                Yii::app()->gameHelper->triggerImportEvent($importingIntoModelClassName::getModelClassName());
+                $importCompleteView          = $this->makeImportCompleteView($import, $importWizardForm, true);
+                $sequenceView                = new ContainedViewCompleteSequentialProcessView($importCompleteView);
             }
             else
             {
