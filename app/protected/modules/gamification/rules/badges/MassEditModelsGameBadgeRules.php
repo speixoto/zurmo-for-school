@@ -34,7 +34,7 @@
         {
             assert('is_array($userPointsByType)');
             assert('is_array($userScoresByType)');
-            assert('is_string($modelClassName');
+            assert('is_string($modelClassName)');
             $elementName = 'Search' . $modelClassName;
             if(isset($userScoresByType[$elementName]))
             {
