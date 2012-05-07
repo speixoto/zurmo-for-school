@@ -184,7 +184,7 @@
             $data = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::ASYNCHRONOUS_THRESHOLD)
+                if ($totalItems <= ExportModule::$asynchronusTreshold)
                 {
                     // Output csv file directly to user browser
                     $formattedData = $dataProvider->getData();
@@ -220,6 +220,24 @@
                 );
             }
             $this->redirect(array($this->getId() . '/index'));
+        }
+
+        protected static function getModelAndCatchNotFoundAndDisplayError($modelClassName, $id)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_int($id)');
+            try
+            {
+                return $modelClassName::getById($id);
+            }
+            catch(NotFoundException $e)
+            {
+                $messageContent  = Yii::t('Default', 'The record you are trying to access does not exist.');
+                $messageView     = new ModelNotFoundView($messageContent);
+                $view            = new ModelNotFoundPageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
         }
     }
 ?>

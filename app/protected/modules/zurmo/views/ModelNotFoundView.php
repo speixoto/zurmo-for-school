@@ -24,30 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Module to manage exports
-     */
-    class ExportModule extends SecurableModule
+    class ModelNotFoundView extends View
     {
-        const RIGHT_ACCESS_EXPORT = 'Access Export Tool';
+        protected $failureMessageContent;
 
-        // Used to determine if data will be exported directly in browser
-        // or to be exported via asynchronous via background job.
-        public static $asynchronusTreshold = 2500;
-
-        public function getDependencies()
+        public function __construct($failureMessageContent)
         {
-           return array('zurmo');
+            assert('is_string($failureMessageContent)');
+            $this->failureMessageContent = $failureMessageContent;
         }
 
-        public function getRootModelNames()
+        protected function renderContent()
         {
-            return array('ExportItem', 'ExportFileModel');
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_EXPORT;
+            return '<h2>' . $this->failureMessageContent . '</h2>';
         }
     }
 ?>

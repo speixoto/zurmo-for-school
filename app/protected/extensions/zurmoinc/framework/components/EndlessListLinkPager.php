@@ -77,8 +77,9 @@
             $gridId =  $this->getOwner()->getId();
             $pagerId = $gridId . "-endless-page";
             Yii::app()->clientScript->registerScript('pagerEndlessLink', "
-                $('body').undelegate('click', '#" . $pagerId . "');
-                $('#" . $pagerId . "').click(function()
+                //$('body').undelegate('click', '#" . $pagerId . "');
+                $('#" . $pagerId . "').unbind('click');
+                $('#" . $pagerId . "').bind('click', function(event)
                     {
                         $.fn.yiiGridView.update('" . $gridId . "',
                         {
@@ -97,7 +98,7 @@
                                 if(settings.afterAjaxUpdate !== undefined)
                                     settings.afterAjaxUpdate(id, data);
                                 $('#'+id).removeClass(settings.loadingClass);
-                                $.fn.yiiGridView.selectCheckedRows(id);
+                                //$.fn.yiiGridView.selectCheckedRows(id);
                             },
                         });
                         return false;

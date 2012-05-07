@@ -160,7 +160,7 @@
                 foreach ($notifications as $notification)
                 {
                         $content .= '<div class="single-notification">';
-                        $content .= self::renderListViewContent($notification);
+                        $content .= self::renderShortenedListViewContent($notification);
                         $content .= CHtml::link("Delete<span class='icon'></span>", "#",
                                                 array("class"   => "remove",
                                                       "onClick" => "deleteNotificationFromAjaxListView(this, " . $notification->id . ")"));
@@ -174,7 +174,7 @@
             return $content;
         }
 
-        public static function renderListViewContent(Notification $notification)
+        public static function renderShortenedListViewContent(Notification $notification)
         {
             $content = strval($notification);
             if($content != null)
@@ -191,6 +191,28 @@
                 {
                     $content .= '<div>' . Yii::app()->format->text(StringUtil::
                                             getChoppedStringContent($notification->notificationMessage->textContent, 136)) .
+                                '</div>';
+                }
+            }
+            return $content;
+        }
+
+        public static function renderListViewContent(Notification $notification)
+        {
+            $content = strval($notification);
+            if($content != null)
+            {
+                $content = '<h4>' . $content . '</h4>';
+            }
+            if ($notification->notificationMessage->id > 0)
+            {
+                if ($notification->notificationMessage->htmlContent != null)
+                {
+                    $content .= '<div>' . Yii::app()->format->raw($notification->notificationMessage->htmlContent). '</div>';
+                }
+                elseif ($notification->notificationMessage->textContent != null)
+                {
+                    $content .= '<div>' . Yii::app()->format->text($notification->notificationMessage->textContent) .
                                 '</div>';
                 }
             }

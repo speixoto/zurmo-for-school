@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -109,13 +109,14 @@
             $inputId = $this->getEditableInputId();
             $script   = " basicSearchQueued = 0;";
             $script  .= " basicSearchOldValue = '';";
+            $script  .= "   $('#" . $inputId . "').removeAttr('clearForm'); ";
             $script  .= "   $('#" . $inputId . "').clearform(
                                 {
                                     form: '#" . $this->form->getId() . "',
 
                                 }
                             );
-                            $('#" . $inputId . "').bind('change keyup', function(event) {
+                            var basicSearchHandler = function(event) {
                                 if($(this).val() != '')
                                 {
                                     if(basicSearchOldValue != $(this).val())
@@ -126,7 +127,9 @@
                                         setTimeout('searchByQueuedSearch(\"" . $inputId . "\")',1000);
                                     }
                                 }
-                            });
+                            }
+                            $('#" . $inputId . "').unbind('input propertychange');
+                            $('#" . $inputId . "').bind('input propertychange', basicSearchHandler);
                             ";
             Yii::app()->clientScript->registerScript('basicSearchAjaxSubmit', $script);
         }

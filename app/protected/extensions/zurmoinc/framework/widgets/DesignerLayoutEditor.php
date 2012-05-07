@@ -154,7 +154,7 @@
 
         protected function getPanelSettingsDisplay($title, $detailViewOnly, $locked, $panelIdName)
         {
-            assert('is_bool($locked)');
+            assert('is_bool($locked) || $locked == null');
             $content  = '<div class="panel-settings modal-settings" title="'. Yii::t('Default', 'Panel Settings') .'">';
             $content .= '<div class="wide form">';
             $content .= '<table>';

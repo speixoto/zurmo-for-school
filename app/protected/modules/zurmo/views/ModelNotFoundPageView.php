@@ -24,30 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Module to manage exports
-     */
-    class ExportModule extends SecurableModule
+    class ModelNotFoundPageView extends ZurmoPageView
     {
-        const RIGHT_ACCESS_EXPORT = 'Access Export Tool';
-
-        // Used to determine if data will be exported directly in browser
-        // or to be exported via asynchronous via background job.
-        public static $asynchronusTreshold = 2500;
-
-        public function getDependencies()
+        public function __construct(View $view)
         {
-           return array('zurmo');
+            parent::__construct(ZurmoDefaultViewUtil::makeErrorViewForCurrentUser(Yii::app()->controller, $view));
         }
 
-        public function getRootModelNames()
+        protected function getSubtitle()
         {
-            return array('ExportItem', 'ExportFileModel');
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_EXPORT;
+            return Yii::t('Default', 'Missing Record');
         }
     }
 ?>

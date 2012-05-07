@@ -102,7 +102,7 @@
             if ($this->language != '' && $this->language != 'en')
             {
                 $this->registerScriptFile($this->i18nScriptFile);
-                $js = "jQuery(function(){jQuery('#{$id}').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['{$this->language}'], {$options}));})";
+                $js = "jQuery(function(){jQuery('#{$id}').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['{$this->language}'], {$options}));});";
             }
             $js .= 'addSpansToDatesOnCalendar("' . $id . '");';
             $cs = Yii::app()->getClientScript();

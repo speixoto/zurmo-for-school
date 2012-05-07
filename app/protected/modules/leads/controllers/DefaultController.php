@@ -72,7 +72,7 @@
 
         public function actionDetails($id)
         {
-            $contact = Contact::getById(intval($id));
+            $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
             if (!LeadsUtil::isStateALead($contact->state))
             {

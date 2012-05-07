@@ -25,29 +25,47 @@
      ********************************************************************************/
 
     /**
-     * Module to manage exports
+     * Element used to allow user to delete a notification.  Utilized from the list view only.
      */
-    class ExportModule extends SecurableModule
+    class DeleteNotificationElement extends Element implements DerivedElementInterface
     {
-        const RIGHT_ACCESS_EXPORT = 'Access Export Tool';
-
-        // Used to determine if data will be exported directly in browser
-        // or to be exported via asynchronous via background job.
-        public static $asynchronusTreshold = 2500;
-
-        public function getDependencies()
+        protected function renderEditable()
         {
-           return array('zurmo');
+            throw NotSupportedException();
         }
 
-        public function getRootModelNames()
+        protected function renderControlEditable()
         {
-            return array('ExportItem', 'ExportFileModel');
+            throw NotSupportedException();
         }
 
-        public static function getAccessRight()
+        /**
+         * Todo: implement.
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
         {
-            return self::RIGHT_ACCESS_EXPORT;
+            throw NotImplementedException();
+        }
+
+        protected function renderLabel()
+        {
+            return Yii::t('Default', 'Delete Notification');
+        }
+
+        public static function getDisplayName()
+        {
+            return Yii::t('Default', 'Delete Notification');
+        }
+
+        /**
+         * Get the attributeNames of attributes used in
+         * the derived element.
+         * @return array of model attributeNames used.
+         */
+        public static function getModelAttributeNames()
+        {
+            return array();
         }
     }
 ?>
