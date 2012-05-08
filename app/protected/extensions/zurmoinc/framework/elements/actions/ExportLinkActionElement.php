@@ -45,6 +45,11 @@
             Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionDropDown', "
                 $('#" . $gridId . "-exportAction').live('click', function()
                     {
+                        if ($('.items:contains(\'".Yii::t('Default', 'No results found.')."\')').length > 0)
+                        {
+                            alert('" . Yii::t('Default', 'No items to export.') . "');
+                            return false;
+                        }
                         var options =
                         {
                             url : $.fn.yiiGridView.getUrl('" . $gridId . "')
