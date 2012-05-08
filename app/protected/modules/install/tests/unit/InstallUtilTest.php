@@ -56,12 +56,12 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            Yii::app()->gameHelper->enabled = false;
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
         }
 
         public static function tearDownAfterClass()
         {
-            Yii::app()->gameHelper->enabled = true;
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             parent::tearDownAfterClass();
         }
 

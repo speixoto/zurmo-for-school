@@ -67,7 +67,7 @@
                 $this->debugConfigContents = file_get_contents($this->debugFile);
                 unlink($this->debugFile);
             }
-            Yii::app()->gameHelper->enabled = false;
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
         }
 
         public function teardown()
@@ -89,7 +89,7 @@
             {
                 unlink($this->debugFile);
             }
-            Yii::app()->gameHelper->enabled = true;
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             parent::teardown();
         }
 
