@@ -280,6 +280,25 @@
             }
         }
 
+        public function testIsStateALeadByStateName()
+        {
+            $allContactStates = ContactState::GetAll();
+            $this->assertGreaterThan(1, count($allContactStates));
+            foreach ($allContactStates as $contactState)
+            {
+                if ($contactState->id < ContactsUtil::getStartingStateId())
+                {
+                    $isStateALeadByStateNameCorrect = true;
+                }
+                else
+                {
+                    $isStateALeadByStateNameCorrect = false;
+                }
+                $isStateALead = LeadsUtil::isStateALeadByStateName($contactState->name);
+                $this->assertEquals($isStateALead, $isStateALeadByStateNameCorrect);
+            }
+        }
+
         public function testGetLeadStateDataFromStartingStateKeyedByIdAndLabelByLanguage()
         {
             $newStates        = ContactState::getByName('New');
