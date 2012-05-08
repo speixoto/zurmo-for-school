@@ -59,8 +59,8 @@
                 {
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstanceFolderCheck'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstallCheck'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+                    //$owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
+                    //$owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
                 }
                 else
                 {
