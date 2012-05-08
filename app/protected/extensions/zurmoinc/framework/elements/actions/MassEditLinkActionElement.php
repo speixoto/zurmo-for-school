@@ -43,7 +43,8 @@
                 'id'   => $name,
             );
             Yii::app()->clientScript->registerScript($gridId . '-listViewMassActionDropDown', "
-                $('#" . $gridId . "-massAction').live('click', function()
+                $('#" . $gridId . "-massAction').unbind('click.action');
+                $('#" . $gridId . "-massAction').bind('click.action', function()
                     {
                         if ($('#" . $gridId . "-selectAll').val() == '')
                         {

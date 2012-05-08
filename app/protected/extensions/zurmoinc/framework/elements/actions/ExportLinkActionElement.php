@@ -43,12 +43,17 @@
                 'id'   => $name,
             );
             Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionDropDown', "
-                $('#" . $gridId . "-exportAction').live('click', function()
+                $('#" . $gridId . "-exportAction').unbind('click.action');
+                $('#" . $gridId . "-exportAction').bind('click.action', function()
                     {
-                        if ($('.items:contains(\'".Yii::t('Default', 'No results found.')."\')').length > 0)
+                        if ($('#" . $gridId . "-selectAll').val() == '')
                         {
-                            alert('" . Yii::t('Default', 'No items to export.') . "');
-                            return false;
+                            if ($('#" . $gridId . "-selectedIds').val() == '')
+                            {
+                                alert('" . Yii::t('Default', 'You must select at least one record') . "');
+                                $(this).val('');
+                                return false;
+                            }
                         }
                         var options =
                         {
@@ -63,8 +68,9 @@
                         {
                             options.url = options.url +'/'+ 'export';
                         }
-                        var data = '' + 'export' + '&ajax=&" . $this->getPageVarName() . "=1';  // Not Coding Standard
-                        var url = $.param.querystring(options.url, data);
+                        addListViewSelectedIdsAndSelectAllToUrl('" . $gridId . "', options);
+                        var data = '' + 'export=' + '&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
+                        "url = $.param.querystring(options.url, data);
                         window.location.href = url;
                         return false;
                     }
