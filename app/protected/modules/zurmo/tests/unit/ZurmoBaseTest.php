@@ -37,12 +37,19 @@
             Currency::resetCaches();  //php only cache
             Yii::app()->gameHelper;
             Yii::app()->gamificationObserver; //runs init();
+            Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
         }
 
         public static function tearDownAfterClass()
         {
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             parent::tearDownAfterClass();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
         }
 
         protected static function startOutputBuffer()

@@ -52,6 +52,19 @@
             $this->superUserPassword = 'super';
         }
 
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            Yii::app()->gameHelper->enabled = false;
+        }
+
+        public static function tearDownAfterClass()
+        {
+            Yii::app()->gameHelper->enabled = true;
+            parent::tearDownAfterClass();
+        }
+
         public function setup()
         {
             RedBeanDatabase::close();

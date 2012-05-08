@@ -67,6 +67,7 @@
                 $this->debugConfigContents = file_get_contents($this->debugFile);
                 unlink($this->debugFile);
             }
+            Yii::app()->gameHelper->enabled = false;
         }
 
         public function teardown()
@@ -88,6 +89,7 @@
             {
                 unlink($this->debugFile);
             }
+            Yii::app()->gameHelper->enabled = true;
             parent::teardown();
         }
 
