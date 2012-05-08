@@ -582,6 +582,10 @@
                 'noExport' => array(
                     'hash'
                 ),
+                'noApiExport' => array(
+                    'hash'
+                ),
+
             );
             return $metadata;
         }
