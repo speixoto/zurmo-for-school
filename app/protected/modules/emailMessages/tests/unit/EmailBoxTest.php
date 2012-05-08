@@ -99,21 +99,7 @@
         }
 
         /**
-         * @expectedException NotSupportedException
          * @depends testNotificationsBoxResolvesCorrectly
-         */
-        public function testCannotCreateBoxWithNotificationName()
-        {
-            $super                      = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            //Try to make a box with the reserved name EmailBox::NOTIFICATIONS_NAME
-            $box = new EmailBox();
-            $box->name = EmailBox::NOTIFICATIONS_NAME;
-        }
-
-        /**
-         * @depends testCannotCreateBoxWithNotificationName
          */
         public function testSetAndGetMailbox()
         {

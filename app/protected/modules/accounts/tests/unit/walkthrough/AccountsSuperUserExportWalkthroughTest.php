@@ -104,6 +104,8 @@
         public function testAsynchronousDownloadDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $notificationsBeforeCount        = count(Notification::getAll());
+            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
             $accounts = Account::getAll();
             if (count($accounts))
             {
@@ -132,8 +134,8 @@
             $this->assertEquals('accounts', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
-            $this->assertEquals(1, count(Notification::getAll()));
-            $this->assertEquals(1, count(NotificationMessage::getAll()));
+            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
+            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
         }
     }
 ?>
