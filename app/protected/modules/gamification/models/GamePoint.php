@@ -231,7 +231,7 @@
                 $sql       = "select sum(value) sum from gamepoint where " . $wherePart . " person_item_id = " .
                              $user->getClassId('Item') . " group by person_item_id";
                 $data      = R::getRow($sql);
-                if($data['sum'] > $points)
+                if($data != null && $data['sum'] > $points)
                 {
                     return true;
                 }

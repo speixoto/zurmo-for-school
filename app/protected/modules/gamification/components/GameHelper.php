@@ -181,6 +181,7 @@
                     }
                 }
             }
+            $this->resetDeferredPointTypesAndValuesByUserIdToAdd();
         }
 
         /**
