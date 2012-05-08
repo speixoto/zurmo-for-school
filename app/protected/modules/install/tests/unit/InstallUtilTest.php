@@ -55,7 +55,6 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
             Yii::app()->gameHelper->muteScoringModelsOnSave();
         }
 
