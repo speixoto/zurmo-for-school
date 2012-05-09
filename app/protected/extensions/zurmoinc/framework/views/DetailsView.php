@@ -396,7 +396,7 @@
          */
         protected function getLessPanelsLinkLabel()
         {
-            return Yii::t('Default', 'Less Details');
+            return Yii::t('Default', 'Fewer Details');
         }
     }
 ?>
