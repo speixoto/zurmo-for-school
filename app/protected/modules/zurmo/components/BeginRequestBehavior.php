@@ -236,7 +236,7 @@
 
                 if (!$isUrlAllowedToGuests)
                 {
-                    $message = Yii::t('Default', 'Login required.');
+                    $message = Yii::t('Default', 'Sign in required.');
                     $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
                     Yii::app()->apiHelper->sendResponse($result);
                     exit;
