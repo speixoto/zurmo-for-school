@@ -50,6 +50,7 @@
                                                  $value,
                                                  $dropDownArray,
                                                  $htmlOptions);
+            $content       = CHtml::tag('div', array('class' => 'beforeToolTip'), $content);
             $content      .= self::renderTooltipContent();
             return $content;
         }
