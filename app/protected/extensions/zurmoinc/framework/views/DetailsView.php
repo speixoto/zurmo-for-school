@@ -152,6 +152,7 @@
                 $errorSummaryContent = null;
             }
             $formLayout = new DetailsViewFormLayout($metadataWithRenderedElements, $maxCellsPerRow, $errorSummaryContent);
+            $formLayout->labelsHaveOwnCells($this->doesLabelHaveOwnCell());
             $formLayout->setMorePanelsLinkLabel($this->getMorePanelsLinkLabel());
             $formLayout->setLessPanelsLinkLabel($this->getLessPanelsLinkLabel());
             return $formLayout->render();
@@ -235,6 +236,15 @@
 
             }
             return $maxCellsPresent;
+        }
+
+        /**
+         * @return true if the label has its own TD next to the TD of the input. Override if the label is on
+         * top of the input, in which case it does not need its own cell.
+         */
+        protected function doesLabelHaveOwnCell()
+        {
+            return true;
         }
 
         /**

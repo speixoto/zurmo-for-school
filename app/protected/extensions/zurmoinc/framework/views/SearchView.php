@@ -201,7 +201,7 @@
         {
             $metadata       = self::getMetadata();
             $maxCellsPerRow = $this->getMaxCellsPerRow();
-            $content        = '';//'<table>';
+            $content        = '';
             $content       .= TableUtil::getColGroupContent($this->getColumnCount($metadata['global']));
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)

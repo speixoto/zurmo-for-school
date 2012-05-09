@@ -156,5 +156,10 @@
                         });}"
                 ));
         }
+
+        protected function doesLabelHaveOwnCell()
+        {
+            return false;
+        }
     }
 ?>

@@ -46,6 +46,17 @@
          */
         protected $lessPanelsLinkLabel;
 
+        protected $labelsHaveOwnCells = true;
+
+        /**
+         * Set the labels to have their own cells or not.
+         * @param boolean $hasOwnCells
+         */
+        public function labelsHaveOwnCells($hasOwnCells)
+        {
+            assert('is_bool($hasOwnCells)');
+            $this->labelsHaveOwnCells = $hasOwnCells;
+        }
 
         /**
          * Render a form layout.
@@ -67,7 +78,7 @@
                 $content .= $this->renderDivTagByPanelNumber($panelNumber);
                 $content .= $this->renderPanelHeaderByPanelNumberAndPanel($panelNumber, $panel);
                 $content .= '<table>';
-                $content .= TableUtil::getColGroupContent($this->getMaximumColumnCountForAllPanels());
+                $content .= TableUtil::getColGroupContent($this->getMaximumColumnCountForAllPanels(), $this->labelsHaveOwnCells);
                 $content .= '<tbody>';
 
                 foreach ($panel['rows'] as $row)
