@@ -27,7 +27,7 @@
     /**
     * Test RedBeanModelToApiDataUtil functions.
     */
-    class RedBeanModelToApiDataUtilTest extends BaseTest
+    class RedBeanModelToApiDataUtilTest extends ZurmoBaseTest
     {
         public $freeze = false;
 
