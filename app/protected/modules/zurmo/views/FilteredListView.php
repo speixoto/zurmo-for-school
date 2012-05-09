@@ -103,7 +103,7 @@
                 $this->controllerId,
                 $this->moduleId,
                 null,
-                array('label' => Yii::t('Default', 'Create New'))
+                array('label' => Yii::t('Default', 'Create'))
             );
 
             $editLink = CHtml::link(Yii::t('Default', 'Edit'), '#',

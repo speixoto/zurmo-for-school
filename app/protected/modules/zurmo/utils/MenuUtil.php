@@ -160,7 +160,7 @@
             $user            = Yii::app()->user->userModel;
             $modules         = Module::getModuleObjects();
             $createMenuItems = array(
-                        'label' => Yii::t('Default', 'Create New'),
+                        'label' => Yii::t('Default', 'Create'),
                         'url'   => null,
                         'items' => array());
             foreach ($modules as $module)

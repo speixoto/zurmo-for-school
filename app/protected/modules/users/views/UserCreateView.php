@@ -232,7 +232,7 @@
 
         protected function getNewModelTitleLabel()
         {
-            return Yii::t('Default', 'Create a New UsersModuleSingularLabel',
+            return Yii::t('Default', 'Create UsersModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
         }
     }
