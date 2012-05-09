@@ -151,8 +151,6 @@
             => 'Nouveau Groupe',
         'Create Groups'
             => 'Créer Groupes',
-        'Create New'
-            => 'Crée',
         'Create Role'
             => 'Créer Rôle',
         'Create Roles'
@@ -303,14 +301,14 @@
             => 'Vue liste',
         'Load'
             => 'Télécharger',
-        'Login'
+        'Sign in'
             => 'Connexion',
-        'Login required.'
-            => 'Login requis.',
-        'Logout'
+        'Sign in required.'
+            => 'Connexion requise.',
+        'Sign out'
             => 'Déconnexion',
-        'Logout failed.'
-            => 'Logout échoué.',
+        'Sign out failed.'
+            => 'La déconnexion a échouée.',
         'Longitude'
             => 'Longitude',
         'Manage Active Languages'

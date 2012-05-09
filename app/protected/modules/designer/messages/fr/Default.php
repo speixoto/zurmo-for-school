@@ -83,8 +83,8 @@
             => 'Case à cocher',
         'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 x field2) / field3'
             => 'Créer une formule calculée à partir d\'autres données.  Utilisez le Nom Formule ci-dessous de la colonne Champs Disponibles pour créer votre formule. Example: (champ1 x champ2) / champ3',
-        'Create Field'
-            => 'Ajouter un champ',
+        'Create Custom Field'
+            => 'Ajouter un champ personnalisé',
         'Custom Fields'
             => 'Champs personnalisés',
         'Decimal'

@@ -160,14 +160,12 @@
             => 'Demodaten wird geladen. Bitte warten.',
         'Locking Installation.'
             => 'Sperren der Installations-Seite',
-        'Login'
-            => 'Anmeldung',
         'Mbstring is installed.'
             => 'Mbstring ist installiert.',
         'Mbstring is not installed.'
             => 'Mbstring ist nicht installiert.',
-        'Memcache'
-            => 'Memcache',
+        'Memcache extension'
+            => 'Memcache ??',
         'Memcache host'
             => 'Memcache host',
         'Memcache host name. Default is 127.0.0.1'

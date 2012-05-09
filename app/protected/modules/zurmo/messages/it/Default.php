@@ -45,14 +45,14 @@
             => 'Grafico a torta 3D',
         '3D Vertical Bar Graph'
             => 'Grafico a barre verticale 3D',
-        '<b>Zurmo</b> is a <b>Customer Relationship Management</b> system by <b>Zurmo Inc.</b>'
-            => '<b>Zurmo</b> è un sistema di <b>Customer Relationship Management</b> creato da <b>Zurmo Inc.</b>',
-        '<b>Zurmo</b> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.'
-            => '<b>Zurmo</b> è è rilasciato sotto la licenza GPL3.  Potete leggere la licenza <a href="http://www.zurmo.org/license">qui</a>.',
-        '<b>Zurmo</b> uses the following great Open Source tools and frameworks:'
-            => '<b>Zurmo</b> utilizza i seguenti strumenti e framework di Open Source:',
+        '<strong>Zurmo</strong> is a <strong>Customer Relationship Management</strong> system by <strong>Zurmo Inc.</strong>'
+            => '<strong>Zurmo</strong> è un sistema di <strong>Customer Relationship Management</strong> creato da <strong>Zurmo Inc.</strong>',
+        '<strong>Zurmo</strong> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.'
+            => '<strong>Zurmo</strong> è rilasciato sotto la licenza GPL3.  Potete leggere la licenza <a href="http://www.zurmo.org/license">qui</a>.',
+        '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
+            => '<strong>Zurmo</strong> utilizza i seguenti strumenti e framework di Open Source:',
         'About'
-            => 'Chi siamo',
+            => 'Tutto su Zurmo',
         'Access Administration Tab'
             => 'Accesso Amministrazione',
         'Access Currency Configuration'
@@ -151,8 +151,6 @@
             => 'Nuovo Gruppo',
         'Create Groups'
             => 'Crea Gruppi',
-        'Create New'
-            => 'Crea',
         'Create Role'
             => 'Nuovo Ruolo',
         'Create Roles'
@@ -301,13 +299,13 @@
             => 'Vista Elenco',
         'Load'
             => 'Carica',
-        'Login'
+        'Sign in'
             => 'Accedi',
-        'Login required.'
+        'Sign in required.'
             => 'Login obbligatorio.',
-        'Logout'
-            => 'Eschi',
-        'Logout failed.'
+        'Sign out'
+            => 'Esci',
+        'Sign out failed.'
             => 'Logout fallito.',
         'Longitude'
             => 'Longitudine',
@@ -521,8 +519,8 @@
             => 'Ci sono campi obbligatori mancante del layout: {view}.  Prego di contattare il amministratore.',
         'This action is only available in debug mode.'
             => 'Questa azione é solamente disponibile nel modo di debug.',
-        'This is <b>version {zurmoVersion}</b> of <b>Zurmo</b>.'
-            => 'Voi utilizzate la <b>versione {zurmoVersion}</b> di <b>Zurmo</b>.',
+        'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.'
+            => 'Voi utilizzate la <strong>versione {zurmoVersion}</strong> di <strong>Zurmo</strong>.',
         'This name is reserved. Please pick a different name.'
             => 'Questo nome e riservato.  Prego di scegliere un altro nome.',
         'Time zone'
@@ -545,10 +543,10 @@
             => 'Nome utente',
         'Value'
             => 'Valore',
-        'Visit <b>Zurmo Inc.</b> at {url}.'
-            => 'Visita <b>Zurmo Inc.</b> a {url}.',
-        'Visit the <b>Zurmo Open Source Project</b> at {url}.'
-            => 'Visita il <b>Zurmo Open Source Project</b> a {url}.',
+        'Visit <strong>Zurmo Inc.</strong> at {url}.'
+            => 'Visita <strong>Zurmo Inc.</strong> a {url}.',
+        'Visit the <strong>Zurmo Open Source Project</strong> at {url}.'
+            => 'Visita il <strong>Zurmo Open Source Project</strong> a {url}.',
         'Website'
             => 'Sito web',
         'Welcome'

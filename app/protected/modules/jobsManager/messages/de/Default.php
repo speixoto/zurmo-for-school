@@ -77,9 +77,9 @@
             => 'Registrierungsdatei für {jobDisplayName}',
         'Job Name'
             => 'Name der Arbeit',
-        'Jobs Manager'
+        'Job Manager'
             => 'System-Tasks',
-        'Jobs Manager: Home'
+        'Job Manager: Home'
             => 'System-Tasks: Home',
         'Last Completed Run'
             => 'Letzten Lauf',

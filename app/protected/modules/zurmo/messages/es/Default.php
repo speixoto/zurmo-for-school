@@ -151,8 +151,6 @@
             => 'Crear grupo',
         'Create Groups'
             => 'Crear grupos',
-        'Create New'
-            => 'Crear nuevo',
         'Create Role'
             => 'Crear role',
         'Create Roles'
@@ -303,13 +301,13 @@
             => 'Vista de lista',
         'Load'
             => 'Cargar',
-        'Login'
-            => 'Acceder',
-        'Login required.'
-            => 'Login requerido.',
-        'Logout'
+        'Sign in'
+            => 'Iniciar sesión',
+        'Sign in required.'
+            => 'Inicio de sesión requerido.',
+        'Sign out'
             => 'Salir',
-        'Logout failed.'
+        'Sign out failed.'
             => 'Error de salido.',
         'Longitude'
             => 'Longitud',

@@ -65,8 +65,8 @@
             => 'Registro de Cambios',
         'Changed'
             => 'Cambiado',
-        'Clear Search'
-            => 'Restablecer Búsqueda',
+        'Clear'
+            => 'Borrar',
         'Create'
             => 'Crear',
         'Created By User'
@@ -181,10 +181,16 @@
             => 'Ahora',
         'of'
             => 'de',
-        'On'
+        'Off(visibility)'
+            => 'Apagado',
+        'On(date)'
             => 'El',
+        'On(visibility)'
+            => 'Encendido',
         'Opted Out'
             => 'Excluido',
+        'Options'
+            => 'Opciones',
         'or'
             => 'o',
         'Panel'
@@ -255,8 +261,8 @@
             => 'Escriba para encontrar una etiqueta',
         'Unknown'
             => 'Desconocido',
-        'Update Selected'
-            => 'Actualización Seleccionada',
+        'Update'
+            => 'Actualización',
         'updated successfully.'
             => 'Actualizado con éxito',
         'Updating'

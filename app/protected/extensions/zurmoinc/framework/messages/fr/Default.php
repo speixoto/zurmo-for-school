@@ -65,7 +65,7 @@
             => 'Log de modifications',
         'Changed'
             => 'Modifié',
-        'Clear Search'
+        'Clear'
             => 'Effacer',
         'Create'
             => 'Créer',
@@ -181,10 +181,16 @@
             => 'Maintenant',
         'of'
             => 'sur',
-        'On'
+        'Off(visibility)'
+            => 'Éteint',
+        'On(date)'
             => 'Le',
+        'On(visibility)'
+            => 'Actif',
         'Opted Out'
             => 'Opt out',
+        'Options'
+            => 'Options',
         'or'
             => 'ou',
         'Panel'
@@ -255,8 +261,8 @@
             => 'Tapez pour retrouver un nuage de mots-clefs',
         'Unknown'
             => 'Inconnu',
-        'Update Selected'
-            => 'Actualiser les données',
+        'Update'
+            => 'Actualiser',
         'updated successfully.'
             => 'mise à jour complète.',
         'Updating'

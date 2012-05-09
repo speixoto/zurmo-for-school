@@ -52,7 +52,7 @@
         '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
             => '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:',
         'About Zurmo'
-            => 'über Zurmo',
+            => 'Über Zurmo',
         'Access Administration Tab'
             => 'Zugang Administration Tab',
         'Access Currency Configuration'
@@ -151,8 +151,6 @@
             => 'Gruppe erstellen',
         'Create Groups'
             => 'Gruppen erstellen',
-        'Create New'
-            => 'Neu erstellen',
         'Create Role'
             => 'Role erstellen',
         'Create Roles'
@@ -303,13 +301,13 @@
             => 'Listenansicht',
         'Load'
             => 'Laden',
-        'Login'
+        'Sign in'
             => 'Anmelden',
-        'Login required.'
+        'Sign in required.'
             => 'Login erforderlich.',
-        'Logout'
+        'Sign out'
             => 'Abmelden',
-        'Logout failed.'
+        'Sign out failed.'
             => 'Fehler bei der Abmeldung.',
         'Longitude'
             => 'Länge',
