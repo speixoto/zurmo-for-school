@@ -1017,6 +1017,81 @@ footer, header, hgroup, menu, nav, section {
     top:3px;
 }
 
+
+#ListViewMassActionMenu{
+    position: absolute;
+    float:right;
+    right:150px;
+    top:8px;
+    > li{
+        list-style:none !important;
+        > a{
+            padding:0 10px;
+            display:block;
+            line-height:23px;
+            background:red;
+            .radius(4px);
+            font-size:13px;
+            color:#333333;
+            background:#CCCCCC;
+            .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
+            font-weight:bold;
+            border:1px solid #DCDCDC;
+            .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
+            #gradient > .vertical(#e0e0e0, #c6c6c6);
+
+
+            :after{
+                content: "▾";
+                margin-left:10px;
+            }
+        }
+    }
+    ul{
+        list-style:none !important;
+        margin-top:-8px;
+        margin-left:0px;
+        .headerDropDown();
+    }
+}
+
+#ListViewExportActionMenu{
+    position: absolute;
+    float:right;
+    right:40px;
+    top:8px;
+    > li{
+        list-style:none !important;
+        > a{
+            padding:0 10px;
+            display:block;
+            line-height:23px;
+            background:red;
+            .radius(4px);
+            font-size:13px;
+            color:#333333;
+            background:#CCCCCC;
+            .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
+            font-weight:bold;
+            border:1px solid #DCDCDC;
+            .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
+            #gradient > .vertical(#e0e0e0, #c6c6c6);
+
+
+            :after{
+                content: "▾";
+                margin-left:10px;
+            }
+        }
+    }
+    ul{
+        list-style:none !important;
+        margin-top:-8px;
+        margin-left:0px;
+        .headerDropDown();
+    }
+}
+
 /*=Footer*/
 #FooterView{
     margin:20px 40px;
@@ -1487,7 +1562,7 @@ div.wide.form{
     position: absolute;
     left: -9999px;
 }
-#FilteredListView, .select-all-options, .summary{
+#FilteredListView, .summary{
     /*@TODO check what this component do - for now its hidden cause its not in design*/
     display:none;
 }
@@ -1640,8 +1715,8 @@ div.wide.form{
         }
     }
     #permissions-module{
-    	margin-bottom:15px;
-    	position:relative !important;
+        margin-bottom:15px;
+        position:relative !important;
         //width:100% !important;
         float:left !important;
         .buffer{
@@ -1653,20 +1728,20 @@ div.wide.form{
         }
     }
     .col-0, .col-2{
-		width:15%;
-	}
-	.col-1, .col-3{
-		width:35%;
-	}
+        width:15%;
+    }
+    .col-1, .col-3{
+        width:35%;
+    }
 }
 
 .wide.form{
-	.col-0{
-		width:30%;
-	}
-	.col-1{
-		width:70%;
-	}
+    .col-0{
+        width:30%;
+    }
+    .col-1{
+        width:70%;
+    }
 }
 
 
@@ -1676,13 +1751,13 @@ div.wide.form{
     .clearfix();
     position: relative;
    .panel{
-		float:left;
-		width:70%;
-		display:block;
-		table{
-			width:100% !important;
-		}
-	}
+        float:left;
+        width:70%;
+        display:block;
+        table{
+            width:100% !important;
+        }
+    }
     table{
         border-bottom:none;
         margin-bottom:15px;
@@ -1706,9 +1781,9 @@ div.wide.form{
         //margin-bottom:15px;
     }
     #permissions-module{
-    	position:absolute;
-    	right:15px;
-    	top:15px;
+        position:absolute;
+        right:15px;
+        top:15px;
         width:30%;
         float:right;
         h3{
@@ -1967,7 +2042,7 @@ div.wide.form{
         color:#525252;
     }
     th, td{
-    	font-weight:600;
+        font-weight:600;
         padding:0 0 15px 0;
     }
      //for opt in email checkboxes
@@ -2000,7 +2075,7 @@ div.wide.form{
     float:right;
     width:auto;
     .view-toolbar{
-    	position:absolute;
+        position:absolute;
         right:0;
         top:0;
         border:none;
@@ -2069,12 +2144,12 @@ div.wide.form{
 }
 
 #NoteInlineEditView{
-	.col-0{
-		width:100%;
-	}
-	.col-1{
-		width:0%;
-	}
+    .col-0{
+        width:100%;
+    }
+    .col-1{
+        width:0%;
+    }
     .wide.form{
         padding:0;
         margin:0;
@@ -2305,9 +2380,9 @@ div.hasHalfs{
     .twoFifths{
        width:36.5%;
     }
-    
+
     .fifth + .twoFifths{
-    	margin-right:4%;
+        margin-right:4%;
     }
 
     .half{
@@ -2579,7 +2654,7 @@ div.hasHalfs{
     .latest-activity-toolbar,
     .filter-latest-activities-bar{
          label{
-         	cursor:pointer;
+             cursor:pointer;
                 padding-top:0;
                 border:none;
                 background:none;

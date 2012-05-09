@@ -78,8 +78,8 @@
         protected function getArray()
         {
             $data = array(
-                        '' => Yii::t('Default', 'Off'),
-                        1  => Yii::t('Default', 'On')
+                        '' => Yii::t('Default', 'Off{visibility}', array('{visibility}' => null)),
+                        1  => Yii::t('Default', 'On{visibility}', array('{visibility}' => null))
                     );
 
             return $data;

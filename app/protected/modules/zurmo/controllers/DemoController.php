@@ -24,20 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class JobsUtilTest extends ZurmoBaseTest
+    Yii::import('application.modules.zurmo.controllers.DefaultController', true);
+    class ZurmoDemoController extends ZurmoDefaultController
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
 
-        public function testResolveStringContentByType()
+        /**
+         * Special method to load demo data for testing user interface pagination.  This will load enough data to
+         * test each type of pagination.  Use this for development only.
+         */
+        public function actionLoadPaginationDemoData()
         {
-            $content = JobsUtil::resolveStringContentByType('Monitor');
-            $this->assertEquals('Monitor Job', $content);
-            $content = JobsUtil::resolveStringContentByType('NotRealJob');
-            $this->assertEquals('(Unnamed)', $content);
+            if(Yii::app()->user->userModel->username != 'super')
+            {
+                throw new NotSupportedException();
+            }
+            UserInterfaceDevelopmentUtil::makePaginationData();
         }
     }
 ?>

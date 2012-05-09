@@ -216,7 +216,7 @@
             else
             {
                 Yii::app()->user->setFlash('notification',
-                    Yii::t('Default', 'There are no data to export.')
+                    Yii::t('Default', 'There is no data to export.')
                 );
             }
             $this->redirect(array($this->getId() . '/index'));

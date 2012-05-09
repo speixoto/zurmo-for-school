@@ -171,7 +171,7 @@
 
         protected function getLessPanelsLinkLabel()
         {
-            return Yii::t('Default', 'Less Options');
+            return Yii::t('Default', 'Fewer Options');
         }
     }
 ?>

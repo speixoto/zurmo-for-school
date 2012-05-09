@@ -143,7 +143,6 @@
                 $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
                     {
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
-                        $('#" . $this->gridId . $this->gridIdSuffix . "-selectAll').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
                         {
                             data: $(this).serialize() + '&" . $this->listModelClassName . "_page=&" . // Not Coding Standard

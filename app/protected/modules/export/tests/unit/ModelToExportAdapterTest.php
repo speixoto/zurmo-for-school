@@ -27,7 +27,7 @@
     /**
     * Test RedBeanModelAttributeValueToExportValueAdapter functions.
     */
-    class ModelToExportAdapterTest extends BaseTest
+    class ModelToExportAdapterTest extends ZurmoBaseTest
     {
         public $freeze = false;
 

@@ -267,7 +267,7 @@
         {
             if ($this->lessPanelsLinkLabel == null)
             {
-                Yii::t('Default', 'Less Options');
+                Yii::t('Default', 'Fewer Options');
             }
             else
             {
