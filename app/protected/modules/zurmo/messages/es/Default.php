@@ -45,14 +45,14 @@
             => 'Gráfico circular 3D',
         '3D Vertical Bar Graph'
             => 'Histograma 3D',
-        '<b>Zurmo</b> is a <b>Customer Relationship Management</b> system by <b>Zurmo Inc.</b>'
-            => '<b>Zurmo</b> es un systema de <b>Customer Relationship Management</b> de <b>Zurmo Inc.</b>',
-        '<b>Zurmo</b> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.'
-            => '<b>Zurmo</ b> está licenciado bajo la licencia GPLv3. Usted puede leer la licencia <a href="http://www.zurmo.org/license">aquí</ a>.',
-        '<b>Zurmo</b> uses the following great Open Source tools and frameworks:'
-            => '<b>Zurmo</ b> utiliza las siguientes herramientas de Open Source y frameworks:',
-        'About'
-            => 'Sobre',
+        '<strong>Zurmo</strong> is a <strong>Customer Relationship Management</strong> system by <strong>Zurmo Inc.</strong>'
+            => '<strong>Zurmo</strong> es un systema de <strong>Customer Relationship Management</strong> de <strong>Zurmo Inc.</strong>',
+        '<strong>Zurmo</strong> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.'
+            => '<strong>Zurmo</strong> está licenciado bajo la licencia GPLv3. Usted puede leer la licencia <a href="http://www.zurmo.org/license">aquí</a>.',
+        '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
+            => '<strong>Zurmo</strong> utiliza las siguientes herramientas de Open Source y frameworks:',
+        'About Zurmo'
+            => 'Sobre Zurmo',
         'Access Administration Tab'
             => 'Acceso a Administración',
         'Access Currency Configuration'
@@ -523,8 +523,8 @@
             => 'Campos obligatorios faltan en la siguiente diseño: {vista}. Por favor, contacte con su administrador.',
         'This action is only available in debug mode.'
             => 'Esta acción sólo está disponible en modo debug.',
-        'This is <b>version {zurmoVersion}</b> of <b>Zurmo</b>.'
-            => 'Está utilizando el <b>version {zurmoVersion}</b> de <b>Zurmo</b>.',
+        'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.'
+            => 'Está utilizando el <strong>version {zurmoVersion}</strong> de <strong>Zurmo</strong>.',
         'This name is reserved. Please pick a different name.'
             => 'Este nombre está reservado. Por favor, elija un nombre distinto.',
         'Time zone'
@@ -549,10 +549,10 @@
             => 'Valor',
         'Values'
             => 'Valores',
-        'Visit <b>Zurmo Inc.</b> at {url}.'
-            => 'Visitar <b>Zurmo Inc.</b> en {url}',
-        'Visit the <b>Zurmo Open Source Project</b> at {url}.'
-            => 'Visitar el <b>Proyecto Zurmo Open Source</b> en {url}.',
+        'Visit <strong>Zurmo Inc.</strong> at {url}.'
+            => 'Visitar <strong>Zurmo Inc.</strong> en {url}',
+        'Visit the <strong>Zurmo Open Source Project</strong> at {url}.'
+            => 'Visitar el <strong>Proyecto Zurmo Open Source</strong> en {url}.',
         'Website'
             => 'Sitio web',
         'Welcome'
