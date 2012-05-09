@@ -112,7 +112,7 @@
             $customFieldValue->value = 'Cloud 3';
             $testItem->tagCloud->values->add($customFieldValue);
 
-            $createStamp         = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $createStamp         = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $this->assertTrue($testItem->save());
             $id = $testItem->id;
             $testItem->forget();
@@ -163,13 +163,18 @@
 
                 $testItem->getAttributeLabel('user')              => null,
                 $testItem->getAttributeLabel('owner')             => 'super',
-                $testItem->getAttributeLabel('createdDateTime')   => $createStamp,
-                $testItem->getAttributeLabel('modifiedDateTime')  => $createStamp,
                 $testItem->getAttributeLabel('createdByUser')     => 'super',
                 $testItem->getAttributeLabel('modifiedByUser')    => 'super',
                 $testItem->getAttributeLabel('multiDropDown')     => 'Multi 1, Multi 3',
                 $testItem->getAttributeLabel('tagCloud')          => 'Cloud 2, Cloud 3',
             );
+
+            // Because small delay in IO operation, allow tresholds
+            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('createdDateTime')]), '', 2);
+            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('modifiedDateTime')]), '', 2);
+            unset($data[$testItem->getAttributeLabel('createdDateTime')]);
+            unset($data[$testItem->getAttributeLabel('modifiedDateTime')]);
+
             $this->assertEquals($compareData, $data);
         }
 
@@ -212,7 +217,7 @@
             $testItem->owner         = $super;
             $testItem->currencyValue = $currencyValue;
             $testItem->dropDown->value = $values[1];
-            $createStamp             = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $createStamp             = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $this->assertTrue($testItem->save());
             $id = $testItem->id;
             $testItem->forget();
@@ -264,11 +269,16 @@
 
                 $testItem->getAttributeLabel('user')              => null,
                 $testItem->getAttributeLabel('owner')             => 'super',
-                $testItem->getAttributeLabel('createdDateTime')   => $createStamp,
-                $testItem->getAttributeLabel('modifiedDateTime')  => $createStamp,
                 $testItem->getAttributeLabel('createdByUser')     => 'super',
                 $testItem->getAttributeLabel('modifiedByUser')    => 'super',
             );
+
+            // Because small delay in IO operation, allow tresholds
+            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('createdDateTime')]), '', 2);
+            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('modifiedDateTime')]), '', 2);
+            unset($data[$testItem->getAttributeLabel('createdDateTime')]);
+            unset($data[$testItem->getAttributeLabel('modifiedDateTime')]);
+
             $this->assertEquals($compareData, $data);
         }
 
@@ -319,7 +329,7 @@
             $testItem->hasMany->add($testItem3_1);
             $testItem->hasMany->add($testItem3_2);
             $testItem->hasOneAlso    = $testItem4;
-            $createStamp             = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $createStamp             = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $this->assertTrue($testItem->save());
             $id = $testItem->id;
             $testItem->forget();
@@ -372,11 +382,16 @@
 
                 $testItem->getAttributeLabel('user')              => null,
                 $testItem->getAttributeLabel('owner')             => 'super',
-                $testItem->getAttributeLabel('createdDateTime')   => $createStamp,
-                $testItem->getAttributeLabel('modifiedDateTime')  => $createStamp,
                 $testItem->getAttributeLabel('createdByUser')     => 'super',
                 $testItem->getAttributeLabel('modifiedByUser')    => 'super',
             );
+
+            // Because small delay in IO operation, allow tresholds
+            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('createdDateTime')]), '', 2);
+            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('modifiedDateTime')]), '', 2);
+            unset($data[$testItem->getAttributeLabel('createdDateTime')]);
+            unset($data[$testItem->getAttributeLabel('modifiedDateTime')]);
+
             $this->assertEquals($compareData, $data);
         }
     }
