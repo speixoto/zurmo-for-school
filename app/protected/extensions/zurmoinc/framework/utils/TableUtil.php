@@ -46,7 +46,7 @@
             {
                 $col_class = $i;
                 //$content .= '<col style="width:15%" /><col style="width:' . $width . '%" />';
-                 $content .= '<col class="col-'.$col_class.'" /><col class="col-'.++$col_class.'" />';
+                $content .= '<col class="col-'.$col_class.'" /><col class="col-'.++$col_class.'" />';				
             }
             $content .= '</colgroup>';
             return $content;
