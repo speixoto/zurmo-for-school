@@ -423,7 +423,7 @@
         {
             if($this->supportsMixedSearch())
             {
-                return array('anyMixedAttributes' => Yii::t('Default', 'Any Mixed Fields'));
+                return array('anyMixedAttributes' => Yii::t('Default', 'Basic Search Fields'));
             }
             return array();
         }
