@@ -67,7 +67,7 @@
                                              ' active users is controlled by group rights.');
             $content     = '<span id="user-status-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= Yii::t('Default', '?') . '</span>';
-            $qtip = new ZurmoTip();
+            $qtip = new ZurmoTip(array('options' => array('position' => array('corner' => array('target' => 'bottomLeft', 'tooltip' => 'topRight')))));
             $qtip->addQTip("#user-status-tooltip");
             return $content;
         }
