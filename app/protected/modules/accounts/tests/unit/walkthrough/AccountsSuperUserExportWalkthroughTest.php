@@ -57,15 +57,24 @@
         public function testDownloadDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $accounts = array();
             for ($i = 0; $i < 2; $i++)
             {
-                AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
+                $accounts[] = AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
             }
 
+            // Provide no ids and without selectALl options.
+            // This should be result with error and redirect to module page.
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
-            $this->setGetArray(array('Account_page' => '1', 'export' => '', 'ajax' => ''));
-            $response = $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
-            $this->assertEquals('Testing download.', $response);
+            $this->setGetArray(array(
+                'Account_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '',
+                'selectedIds' => '')
+            );
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+            $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
 
             $this->setGetArray(array(
                 'AccountsSearchForm' => array(
@@ -75,6 +84,8 @@
                     'officePhone'             => ''
                 ),
                 'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
+                'selectAll' => '1',
+                'selectedIds' => '',
                 'Account_page'   => '1',
                 'export'         => '',
                 'ajax'           => '')
@@ -82,7 +93,24 @@
             $response = $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
             $this->assertEquals('Testing download.', $response);
 
-            // No mathces
+            $this->setGetArray(array(
+                'AccountsSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                    'name'                    => '',
+                    'officePhone'             => ''
+                ),
+                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
+                'selectAll' => '',
+                'selectedIds' => "{$accounts[0]->id},{$accounts[1]->id}",
+                'Account_page'   => '1',
+                'export'         => '',
+                'ajax'           => '')
+            );
+            $response = $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $this->assertEquals('Testing download.', $response);
+
+            // No matches
             $this->setGetArray(array(
                 'AccountsSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
@@ -92,10 +120,13 @@
                 ),
                 'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
                 'Account_page' => '1',
+                'selectAll' => '1',
+                'selectedIds' => '',
                 'export'       => '',
                 'ajax'         => '')
             );
-            $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+            $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
         }
 
         /**
@@ -114,14 +145,72 @@
                     $account->delete();
                 }
             }
+            $accounts = array();
             for ($i = 0; $i <= (ExportModule::$asynchronusTreshold + 1); $i++)
             {
-                AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
+                $accounts[] = AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
             }
 
-            $this->setGetArray(array('Account_page' => '1', 'export' => '', 'ajax' => ''));
-                    $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+            $this->setGetArray(array(
+                'Account_page' => '1',
+                'export' => '',
+                'selectAll' => '1',
+                'selectedIds' => '',
+                'ajax' => ''));
 
+            $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+
+            // Start background job
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItems = ExportItem::getAll();
+            $this->assertEquals(1, count($exportItems));
+            $fileModel = $exportItems[0]->exportFileModel;
+            $this->assertEquals(1, $exportItems[0]->isCompleted);
+            $this->assertEquals('csv', $exportItems[0]->exportFileType);
+            $this->assertEquals('accounts', $exportItems[0]->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
+            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+
+            // Check export job, when many ids are selected.
+            // This will probably never happen, but we need test for this case too.
+            $notificationsBeforeCount        = count(Notification::getAll());
+            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+
+            // Now test case when multiple ids are selected
+            $exportItems = ExportItem::getAll();
+            if (count($exportItems))
+            {
+                foreach ($exportItems as $exportItem)
+                {
+                    $exportItem->delete();
+                }
+            }
+
+            $selectedIds = "";
+            foreach($accounts as $account)
+            {
+                $selectedIds .= $account->id . ",";
+            }
+            $this->setGetArray(array(
+                'AccountsSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                    'name'                    => '',
+                    'officePhone'             => ''
+                ),
+                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
+                'selectAll' => '',
+                'selectedIds' => "$selectedIds",
+                'Account_page'   => '1',
+                'export'         => '',
+                'ajax'           => '')
+            );
+
+            $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
             // Start background job
             $job = new ExportJob();
             $this->assertTrue($job->run());

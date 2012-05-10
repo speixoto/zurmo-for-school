@@ -221,7 +221,8 @@
             }
             else
             {
-                return count(explode(",", $_GET['selectedIds'])); // Not Coding Standard
+                return count(array_filter(explode(",", trim($_GET['selectedIds'], " ,")))); // Not Coding Standard
+                //return count(explode(",", trim($_GET['selectedIds'], ', '))); // Not Coding Standard
             }
         }
 
