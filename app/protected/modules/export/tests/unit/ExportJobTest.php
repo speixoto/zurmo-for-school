@@ -73,6 +73,7 @@
             $exportItem->isCompleted = 0;
             $exportItem->exportFileType = 'csv';
             $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
             $exportItem->serializedData = serialize($dataProvider);
             $this->assertTrue($exportItem->save());
 

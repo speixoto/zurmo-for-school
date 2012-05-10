@@ -56,13 +56,37 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
 
+            $contacts = array();
             for ($i = 0; $i < 2; $i++)
             {
-                ContactTestHelper::createContactWithAccountByNameForOwner('superContact' . $i, $super, $account);
+                $contacts[] = ContactTestHelper::createContactWithAccountByNameForOwner('superContact' . $i, $super, $account);
             }
 
             $this->runControllerWithNoExceptionsAndGetContent('contacts/default/list');
-            $this->setGetArray(array('Contact_page' => '1', 'export' => '', 'ajax' => ''));
+            $this->setGetArray(array(
+                'Contact_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '',
+                'selectedIds' => '')
+            );
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
+            $this->assertTrue(strstr($response, 'contacts/default/index') !== false);
+
+            $this->setGetArray(array(
+                'ContactsSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                    'fullName'                => 'superContact',
+                    'officePhone'             => ''
+                ),
+                'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
+                'Contact_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
+                'selectAll' => '1',
+                'selectedIds' => '',)
+            );
             $response = $this->runControllerWithExitExceptionAndGetContent('contacts/default/export');
             $this->assertEquals('Testing download.', $response);
 
@@ -76,7 +100,9 @@
                 'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
                 'Contact_page'   => '1',
                 'export'         => '',
-                'ajax'           => '')
+                'ajax'           => '',
+                'selectAll' => '',
+                'selectedIds' => "{$contacts[0]->id},{$contacts[1]->id}")
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('contacts/default/export');
             $this->assertEquals('Testing download.', $response);
@@ -92,9 +118,12 @@
                 'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
                 'Contact_page' => '1',
                 'export'       => '',
-                'ajax'         => '')
+                'ajax'         => '',
+                'selectAll' => '1',
+                'selectedIds' => '',)
             );
-            $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
+            $this->assertTrue(strstr($response, 'contacts/default/index') !== false);
         }
 
         /**
@@ -115,14 +144,72 @@
                     $contact->delete();
                 }
             }
+            $contacts = array();
             for ($i = 0; $i <= (ExportModule::$asynchronusTreshold + 1); $i++)
             {
-                ContactTestHelper::createContactWithAccountByNameForOwner('superContact' . $i, $super, $account);
+                $contacts[] = ContactTestHelper::createContactWithAccountByNameForOwner('superContact' . $i, $super, $account);
             }
 
-            $this->setGetArray(array('Contact_page' => '1', 'export' => '', 'ajax' => ''));
-                    $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
+            $this->setGetArray(array(
+                'Contact_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '1',
+                'selectedIds' => '')
+            );
+            $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
 
+            // Start background job
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItems = ExportItem::getAll();
+            $this->assertEquals(1, count($exportItems));
+            $fileModel = $exportItems[0]->exportFileModel;
+            $this->assertEquals(1, $exportItems[0]->isCompleted);
+            $this->assertEquals('csv', $exportItems[0]->exportFileType);
+            $this->assertEquals('contacts', $exportItems[0]->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
+            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+
+            // Check export job, when many ids are selected.
+            // This will probably never happen, but we need test for this case too.
+            $notificationsBeforeCount        = count(Notification::getAll());
+            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+
+            // Now test case when multiple ids are selected
+            $exportItems = ExportItem::getAll();
+            if (count($exportItems))
+            {
+                foreach ($exportItems as $exportItem)
+                {
+                    $exportItem->delete();
+                }
+            }
+
+            $selectedIds = "";
+            foreach($contacts as $contact)
+            {
+                $selectedIds .= $contact->id . ",";
+            }
+            $this->setGetArray(array(
+                'ContactsSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                    'fullName'                => '',
+                    'officePhone'             => ''
+                ),
+                'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
+                'Contact_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
+                'selectAll' => '',
+                'selectedIds' => "$selectedIds")
+            );
+
+            $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
             // Start background job
             $job = new ExportJob();
             $this->assertTrue($job->run());

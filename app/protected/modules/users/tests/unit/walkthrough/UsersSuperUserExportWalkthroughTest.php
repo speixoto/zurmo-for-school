@@ -65,15 +65,22 @@
                     }
                 }
             }
+            $users = array();
             for ($i = 0; $i <= (ExportModule::$asynchronusTreshold - 3); $i++)
             {
-                UserTestHelper::createBasicUser('aUser' . $i);
+                $users[] = UserTestHelper::createBasicUser('aUser' . $i);
             }
 
             $this->runControllerWithNoExceptionsAndGetContent('users/default/list');
-            $this->setGetArray(array('User_page' => '1', 'export' => '', 'ajax' => ''));
-            $response = $this->runControllerWithExitExceptionAndGetContent('users/default/export');
-            $this->assertEquals('Testing download.', $response);
+            $this->setGetArray(array(
+                'User_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '',
+                'selectedIds' => '')
+            );
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
+            $this->assertTrue(strstr($response, 'users/default/index') !== false);
 
             $this->setGetArray(array(
                 'UsersSearchForm' => array(
@@ -82,7 +89,23 @@
                 ),
                 'User_page'      => '1',
                 'export'         => '',
-                'ajax'           => '')
+                'ajax'           => '',
+                'selectAll' => '1',
+                'selectedIds' => '',)
+            );
+            $response = $this->runControllerWithExitExceptionAndGetContent('users/default/export');
+            $this->assertEquals('Testing download.', $response);
+
+            $this->setGetArray(array(
+                'UsersSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                ),
+                'User_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
+                'selectAll' => '',
+                'selectedIds' => "{$users[0]->id},{$users[1]->id}")
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('users/default/export');
             $this->assertEquals('Testing download.', $response);
@@ -95,9 +118,12 @@
                 ),
                 'User_page' => '1',
                 'export'       => '',
-                'ajax'         => '')
+                'ajax'         => '',
+                'selectAll' => '1',
+                'selectedIds' => '',)
             );
-            $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
+            $this->assertTrue(strstr($response, 'users/default/index') !== false);
         }
 
         /**
@@ -118,13 +144,20 @@
                     }
                 }
             }
+            $users = array();
             for ($i = 0; $i <= (ExportModule::$asynchronusTreshold + 1); $i++)
             {
-                UserTestHelper::createBasicUser('aUser' . $i);
+                $users[] = UserTestHelper::createBasicUser('aUser' . $i);
             }
 
-            $this->setGetArray(array('User_page' => '1', 'export' => '', 'ajax' => ''));
-                    $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
+            $this->setGetArray(array(
+                'User_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '1',
+                'selectedIds' => '')
+            );
+            $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
 
             // Start background job
             $job = new ExportJob();
@@ -140,6 +173,54 @@
 
             $this->assertEquals(1, count(Notification::getAll()));
             $this->assertEquals(1, count(NotificationMessage::getAll()));
+
+            // Check export job, when many ids are selected.
+            // This will probably never happen, but we need test for this case too.
+            $notificationsBeforeCount        = count(Notification::getAll());
+            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+
+            // Now test case when multiple ids are selected
+            $exportItems = ExportItem::getAll();
+            if (count($exportItems))
+            {
+                foreach ($exportItems as $exportItem)
+                {
+                    $exportItem->delete();
+                }
+            }
+
+            $selectedIds = "";
+            foreach($users as $user)
+            {
+                $selectedIds .= $user->id . ",";
+            }
+            $this->setGetArray(array(
+                'UsersSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                ),
+                'User_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
+                'selectAll' => '',
+                'selectedIds' => "$selectedIds")
+            );
+
+            $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
+            // Start background job
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItems = ExportItem::getAll();
+            $this->assertEquals(1, count($exportItems));
+            $fileModel = $exportItems[0]->exportFileModel;
+            $this->assertEquals(1, $exportItems[0]->isCompleted);
+            $this->assertEquals('csv', $exportItems[0]->exportFileType);
+            $this->assertEquals('users', $exportItems[0]->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
+            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
         }
     }
 ?>

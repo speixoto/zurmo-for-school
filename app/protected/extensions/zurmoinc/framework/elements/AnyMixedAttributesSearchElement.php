@@ -128,8 +128,8 @@
                                     }
                                 }
                             }
-                            $('#" . $inputId . "').unbind('input propertychange');
-                            $('#" . $inputId . "').bind('input propertychange', basicSearchHandler);
+                            $('#" . $inputId . "').unbind('input propertychange keyup');
+                            $('#" . $inputId . "').bind('input propertychange keyup', basicSearchHandler);
                             ";
             Yii::app()->clientScript->registerScript('basicSearchAjaxSubmit', $script);
         }

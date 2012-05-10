@@ -74,10 +74,25 @@
                         //continue;
                     }
 
-                    $dataProvider = unserialize($exportItem->serializedData);
-                    $formattedData = $dataProvider->getData();
+                    $unSerialzedData = unserialize($exportItem->serializedData);
+                    if ($unSerialzedData instanceOf RedBeanModelDataProvider)
+                    {
+                        $formattedData = $unSerialzedData->getData();
+                    }
+                    else
+                    {
+                        $formattedData = array();
+                        foreach ($unSerialzedData as $idToExport)
+                        {
+
+                            $model = call_user_func(array($exportItem->modelClassName, 'getById'), intval($idToExport));
+                            $formattedData[] = $model;
+                        }
+                    }
+
                     if ($exportItem->exportFileType == 'csv')
                     {
+
                         foreach ($formattedData as $model)
                         {
                             $modelToExportAdapter  = new ModelToExportAdapter($model);
@@ -111,6 +126,7 @@
                             $rules                      = new ExportProcessCompletedNotificationRules();
                             NotificationsUtil::submit($message, $rules);
                         }
+
                     }
                 }
             }
