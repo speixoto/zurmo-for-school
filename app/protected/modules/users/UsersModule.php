@@ -71,9 +71,9 @@
         public static function getUntranslatedRightsLabels()
         {
             $labels                                = array();
-            $labels[self::RIGHT_LOGIN_VIA_WEB]     = 'Sign out Via Web';
-            $labels[self::RIGHT_LOGIN_VIA_MOBILE]  = 'Sign out Via Mobile';
-            $labels[self::RIGHT_LOGIN_VIA_WEB_API] = 'Sign out Via Web API';
+            $labels[self::RIGHT_LOGIN_VIA_WEB]     = 'Sign in Via Web';
+            $labels[self::RIGHT_LOGIN_VIA_MOBILE]  = 'Sign in Via Mobile';
+            $labels[self::RIGHT_LOGIN_VIA_WEB_API] = 'Sign in Via Web API';
             return array_merge(parent::getUntranslatedRightsLabels(), $labels);
         }
 

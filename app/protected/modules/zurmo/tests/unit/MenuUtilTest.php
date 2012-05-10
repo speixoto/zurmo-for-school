@@ -139,7 +139,7 @@
             AccountsModule::setMetadata($metadata);
             $menuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
             $compareData = array(
-                'label' => 'Create New',
+                'label' => 'Create',
                 'url'   => null,
                 'items' => array(
                         array(
