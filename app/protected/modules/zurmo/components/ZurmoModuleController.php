@@ -178,7 +178,7 @@
                 Yii::app()->user->userModel->id,
                 $filteredListClassName
             );
-            $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
 
             if (!$dataProvider)
             {
