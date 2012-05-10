@@ -156,7 +156,7 @@
         {
             $title       = Yii::t('Default', 'The Monitor Job runs constantly making sure all jobs are running properly.');
             $content     = '<span id="active-monitor-job-tooltip" class="tooltip" title="' . $title . '">';
-            $content    .= Yii::t('Default', 'What is the Monitor Job?') . '</span>';
+            $content    .= Yii::t('Default', '?') . '</span>';
             $qtip = new ZurmoTip();
             $qtip->addQTip("#active-monitor-job-tooltip");
             return $content;

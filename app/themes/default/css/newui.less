@@ -1517,6 +1517,9 @@ a.simple-select{
 }
 
 
+
+
+
 /*=Search Scope box, and accoutn list*/
 /*Checkboxes*/
 label.hasCheckBox{
@@ -1728,10 +1731,10 @@ div.wide.form{
         }
     }
     .col-0, .col-2{
-        width:15%;
+        width:15% !important;
     }
     .col-1, .col-3{
-        width:35%;
+        width:35% !important;
     }
 }
 
@@ -1744,6 +1747,9 @@ div.wide.form{
     }
 }
 
+.AdministrativeArea .panel{
+    width:100% !important;
+}
 
 
 
@@ -1932,6 +1938,44 @@ div.wide.form{
         }
     }
 }
+
+.beforeOptOutCheckBox{
+	float:left;
+	width:100%;
+	div{
+		margin-right:80px !important;
+		width:auto;
+	}
+}
+.beforeOptOutCheckBox + .hasCheckBox{
+	float: right;
+	margin:0 0 0 -80px !important;
+	position:relative;
+	left:10px;
+	width: 80px;
+}
+
+
+
+
+
+.beforeToolTip{
+	float:left;
+	width:100%;
+	.dk_container{
+		margin-right:30px !important;
+		width:auto;
+		float:none;
+	}
+}
+.beforeToolTip + .tooltip{
+	float: right;
+	margin:5px 0 0 -30px !important;
+	position:relative;
+}
+
+
+
 
 /*=View AccountView (before editing, portlets and such)*/
 .SecuredPortletFrameView{
@@ -2598,17 +2642,11 @@ div.hasHalfs{
         .clearfix();
     }
     .latest-activity-toolbar{
-        //position: absolute;
-        //top:-27px;
-        //left:150px;
-
         border-bottom:1px solid #DFDFDF;
         padding:10px 15px;
         #gradient > .vertical(#f6f6f6, #ededed);
         .b-shadow(inset 0 1px 0 0 #ffffff);
-
         > div{
-           // float:left;
             &:first-child{
                 border-right:2px solid @themeColor;
                 padding-right:10px;
@@ -2616,14 +2654,14 @@ div.hasHalfs{
             }
         }
         #LatestActivitiesConfigurationForm_ownedByFilter{
-            float:left;
-            label{
-            }
+            //float:left;
+            //text-align:left;
+            display:inline-block;
         }
         #LatestActivitiesConfigurationForm_rollup{
-            float:left;
-            label{
-            }
+            //float:left;
+        	//text-align:left;
+        	display:inline-block;
         }
         #filter-latest-activities-link{
             color:@themeColor !important;
@@ -2634,21 +2672,6 @@ div.hasHalfs{
                  color:@themeColor2  !important;
              }
         }
-        /*#activities-rollup-tooltip{
-            width:15px;
-            height:15px;
-            line-height:14px;
-            margin-top:-4px;
-            display:inline-block;
-            background:#fff;
-            .radius(10px);
-            border:1px solid #ccc;
-            color:#545454;
-            font-weight:bold;
-            text-align:center;
-            cursor:pointer;
-            vertical-align:middle;
-        }*/
     }
 
     .latest-activity-toolbar,
