@@ -95,8 +95,11 @@
 
                         foreach ($formattedData as $model)
                         {
-                            $modelToExportAdapter  = new ModelToExportAdapter($model);
-                            $data[] = $modelToExportAdapter->getData();
+                            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+                            {
+                                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                                $data[] = $modelToExportAdapter->getData();
+                            }
                         }
                         $output = ExportItemToCsvFileUtil::export($data);
 
@@ -126,7 +129,6 @@
                             $rules                      = new ExportProcessCompletedNotificationRules();
                             NotificationsUtil::submit($message, $rules);
                         }
-
                     }
                 }
             }

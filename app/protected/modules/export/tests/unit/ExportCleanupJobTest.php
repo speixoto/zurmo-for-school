@@ -40,6 +40,7 @@
             $exportItem->isCompleted = 0;
             $exportItem->exportFileType = 'csv';
             $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
             $exportItem->serializedData = serialize(array('test', 'test2'));
             $this->assertTrue($exportItem->save());
 
@@ -68,6 +69,7 @@
             $exportItem2->isCompleted = 0;
             $exportItem2->exportFileType = 'csv';
             $exportItem2->exportFileName = 'test';
+            $exportItem2->modelClassName = 'Account';
             $exportItem2->serializedData = serialize(array('test', 'test2'));
             $this->assertTrue($exportItem2->save());
 
