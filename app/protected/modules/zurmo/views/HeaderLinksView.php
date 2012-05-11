@@ -114,8 +114,7 @@
             $count    = Notification::getCountByUser(Yii::app()->user->userModel);
             $imageSourceUrl = Yii::app()->baseUrl . '/themes/default/images/loading.gif';
             $content  .= "<a id=\"notifications-flyout-link\" href=\"#\" class=\"notifications-link unread\">";
-            $content  .= "<span id='notifications-link' class='tooltip'>" .
-                            Yii::t('Default', '{count}', array('{count}' => $count))."</span></a>";
+            $content  .= "<span id='notifications-link' class='tooltip'>" . $count ."</span></a>";
             $content  .= CHtml::tag('div',
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
                                     CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');

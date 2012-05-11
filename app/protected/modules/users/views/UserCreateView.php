@@ -232,8 +232,7 @@
 
         protected function getNewModelTitleLabel()
         {
-            return Yii::t('Default', 'Create UsersModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
+            return Yii::t('Default', 'Create User');
         }
     }
 ?>

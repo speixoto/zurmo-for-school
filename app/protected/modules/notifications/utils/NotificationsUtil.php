@@ -169,7 +169,7 @@
             }
             else
             {
-                $content .= Yii::t('Default', '<div class="single-notification">There are no recent notifications.</div>');
+                $content .= '<div class="single-notification">' . Yii::t('Default', 'There are no recent notifications.') . '</div>';
             }
             return $content;
         }

@@ -41,7 +41,7 @@
 
             $importModelClassName      = ImportRulesUtil::getImportRulesClassNameByType($this->model->importRulesType);
             $importRulesLabel          = $importModelClassName::getDisplayLabel();
-            $label                     = Yii::t('Default', '<h3>Who can read and write the new {importRulesLabel}</h3>',
+            $label                     = '<h3>' . Yii::t('Default', 'Who can read and write the new {importRulesLabel}' . '</h3>',
                                                 array('{importRulesLabel}' => $importRulesLabel));
             $element                   = new ExplicitReadWriteModelPermissionsElement($this->model,
                                              'explicitReadWriteModelPermissions', $form);
