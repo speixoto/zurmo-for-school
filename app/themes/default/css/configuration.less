@@ -98,10 +98,19 @@
 			#gradient > .vertical(#f9f9f9, #f4f4f4);
 		}
 }
-
+#ConfigureModulesMenuView,
+.DesignerPageMenuView{
+	.clearfix();
+}
 .configuration-list{
 	list-style:none;
 	.clearfix();
+	float:left;
+	width:100%;
+	&:after{
+		//display:none;
+		//clear:none;
+	}
 	li{
 		//.clearfix();
 		.box-sizing();
@@ -142,7 +151,7 @@
 	}
 }
 table.configuration-list{
-	.clearfix;
+	.clearfix();
 	h4{
 		margin:0 0 0 0;
 		display:inline-block;
