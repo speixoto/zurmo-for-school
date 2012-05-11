@@ -101,9 +101,9 @@
 
 .configuration-list{
 	list-style:none;
-	.clearfix;
+	.clearfix();
 	li{
-		.clearfix;
+		//.clearfix();
 		.box-sizing();
 		width:100%;
 		float:left;
@@ -121,7 +121,6 @@
 			border-top:none;
 			margin-top:none;
 		}
-		
 		h4{
 			margin:0 0 0 0;
 			display:inline-block;
@@ -149,16 +148,11 @@ table.configuration-list{
 		display:inline-block;
 	}
 	tbody > tr > td{
-		//padding:20px 15px !important;
 		position:relative !important;
-		//background:red;
 	}
 	tr td:last-child a{
 		.zButton();
 		float:right;
-		//position: absolute;
-		//right:15px;
-		//top:14px;
 		&:before{
 			content: "n";
 			.symbly(16px);
