@@ -178,12 +178,12 @@
                 Yii::app()->user->userModel->id,
                 $filteredListClassName
             );
-            $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
 
             if (!$dataProvider)
             {
                 $idsToExport = array_filter(explode(",", trim($_GET['selectedIds'], " ,")));
             }
+            $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
 
             $data = array();
             if ($totalItems > 0)
@@ -196,8 +196,11 @@
                         $modelsToExport = $dataProvider->getData();
                         foreach ($modelsToExport as $model)
                         {
-                            $modelToExportAdapter  = new ModelToExportAdapter($model);
-                            $data[] = $modelToExportAdapter->getData();
+                            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+                            {
+                                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                                $data[] = $modelToExportAdapter->getData();
+                            }
                         }
                     }
                     else
@@ -205,13 +208,25 @@
                         foreach ($idsToExport as $idToExport)
                         {
                             $model = $modelClassName::getById(intval($idToExport));
-                            $modelToExportAdapter  = new ModelToExportAdapter($model);
-                            $data[] = $modelToExportAdapter->getData();
+                            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+                            {
+                                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                                $data[] = $modelToExportAdapter->getData();
+                            }
                         }
                     }
                     // Output data
-                    $fileName = $this->getModule()->getName() . ".csv";
-                    $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
+                    if (count($data))
+                    {
+                        $fileName = $this->getModule()->getName() . ".csv";
+                        $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
+                    }
+                    else
+                    {
+                        Yii::app()->user->setFlash('notification',
+                            Yii::t('Default', 'There is no data to export. The reason might be because you do not have sufficient permissions.')
+                        );
+                    }
                 }
                 else
                 {
