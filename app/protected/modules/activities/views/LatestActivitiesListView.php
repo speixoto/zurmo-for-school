@@ -192,7 +192,8 @@
         protected function renderConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-            $content = '<div class="horizontal-line latest-activity-toolbar">';
+            $content      = null;
+            $innerContent = null;
             if($this->showOwnedByFilter)
             {
                 $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
@@ -200,9 +201,7 @@
                                                                                           $form);
                 $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_ownedByFilter">{content}</div>';
                 $ownedByFilterContent      = $element->render();
-
-
-                $content .= $ownedByFilterContent;
+                $innerContent             .= $ownedByFilterContent;
             }
             if($this->showRollUpToggle)
             {
@@ -210,12 +209,17 @@
                                                                                        'rollup', $form);
                 $element->editableTemplate = '{content}';
                 $rollupElementContent      = $element->render();
-                $content .= '<div id="LatestActivitiesConfigurationForm_rollup">' . $rollupElementContent . '</div>';
+                $innerContent .= '<div id="LatestActivitiesConfigurationForm_rollup">' . $rollupElementContent . '</div>';
             }
-            $content .= CHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
-            $content .= '</div>' . "\n";
-
-            if($this->configurationForm->filteredByModelName == LatestActivitiesConfigurationForm::FILTERED_BY_ALL)
+            if($innerContent != null)
+            {
+                $content .= '<div class="horizontal-line latest-activity-toolbar">';
+                $content .= $innerContent;
+                $content .= CHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
+                $content .= '</div>' . "\n";
+            }
+            if($innerContent != null &&
+               $this->configurationForm->filteredByModelName == LatestActivitiesConfigurationForm::FILTERED_BY_ALL)
             {
                 $startingStyle = "display:none";
             }

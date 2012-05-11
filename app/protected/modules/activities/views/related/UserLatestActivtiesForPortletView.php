@@ -51,8 +51,22 @@
         protected function makeLatestActivitiesConfigurationForm()
         {
             $form                = new LatestActivitiesConfigurationForm();
-            $form->ownedByFilter = intval(Yii::app()->user->userModel->id);
+            $form->ownedByFilter = intval($this->params['relationModel']->id);
             return $form;
+        }
+
+        /**
+         * Override to ensure the user id is properly set in the Id parameter.
+         * (non-PHPdoc)
+         * @see LatestActivtiesForPortletView::getPortletDetailsUrl()
+         */
+        protected function getPortletDetailsUrl()
+        {
+            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
+                                                        array_merge($_GET, array( 'portletId' =>
+                                                                                    $this->params['portletId'],
+                                                            'uniqueLayoutId' => $this->uniqueLayoutId,
+                                                            'id' => $this->params['relationModel']->id)));
         }
 
         protected function getDataProvider($uniquePageId, $form)
