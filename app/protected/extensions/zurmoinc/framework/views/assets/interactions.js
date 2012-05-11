@@ -1,10 +1,5 @@
 $(window).ready(function(){
-	
-	
-	//$('#layout-container').css({width: 700});
-	
-	
-	
+
     //main menu flyouts or mbmenu releacment
     $( '.nav > .parent' ).hover(
         function(){
