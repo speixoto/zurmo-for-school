@@ -71,7 +71,6 @@
             $modelClassName,
             $dataProvider,
             $selectedIds,
-            $selectAll,
             $gridIdSuffix = null
         )
         {

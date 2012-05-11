@@ -104,7 +104,6 @@
                 $this->getModule()->getPluralCamelCasedName(),
                 $dataProvider,
                 GetUtil::resolveSelectedIdsFromGet(),
-                GetUtil::resolveSelectAllFromGet(),
                 $filteredListData,
                 $filteredListId,
                 $title
@@ -130,7 +129,6 @@
                 $this->getModule()->getPluralCamelCasedName(),
                 $dataProvider,
                 GetUtil::resolveSelectedIdsFromGet(),
-                GetUtil::resolveSelectAllFromGet(),
                 $actionBarViewClassName
             );
         }

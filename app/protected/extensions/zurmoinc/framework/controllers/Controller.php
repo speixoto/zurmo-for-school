@@ -117,8 +117,7 @@
                 $listModel,
                 $moduleClassName,
                 $dataProvider,
-                GetUtil::resolveSelectedIdsFromGet(),
-                GetUtil::resolveSelectAllFromGet()
+                GetUtil::resolveSelectedIdsFromGet()
             );
         }
 
