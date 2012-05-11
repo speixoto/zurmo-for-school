@@ -169,17 +169,21 @@
             {
                 $searchForm = null;
             }
-
             $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
-            $dataProvider = $this->makeSearchFilterListDataProvider(
+
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 $searchForm,
                 $modelClassName,
-                $filteredListClassName,
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                $stateMetadataAdapterClassName
+                $filteredListClassName
             );
-            $totalItems = $dataProvider->getTotalItemCount();
+            $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
+
+            if (!$dataProvider)
+            {
+                $idsToExport = array_filter(explode(",", trim($_GET['selectedIds'], " ,")));
+            }
 
             $data = array();
             if ($totalItems > 0)
@@ -187,11 +191,23 @@
                 if ($totalItems <= ExportModule::$asynchronusTreshold)
                 {
                     // Output csv file directly to user browser
-                    $formattedData = $dataProvider->getData();
-                    foreach ($formattedData as $model)
+                    if ($dataProvider)
                     {
-                        $modelToExportAdapter  = new ModelToExportAdapter($model);
-                        $data[] = $modelToExportAdapter->getData();
+                        $modelsToExport = $dataProvider->getData();
+                        foreach ($modelsToExport as $model)
+                        {
+                            $modelToExportAdapter  = new ModelToExportAdapter($model);
+                            $data[] = $modelToExportAdapter->getData();
+                        }
+                    }
+                    else
+                    {
+                        foreach ($idsToExport as $idToExport)
+                        {
+                            $model = $modelClassName::getById(intval($idToExport));
+                            $modelToExportAdapter  = new ModelToExportAdapter($model);
+                            $data[] = $modelToExportAdapter->getData();
+                        }
                     }
                     // Output data
                     $fileName = $this->getModule()->getName() . ".csv";
@@ -199,14 +215,25 @@
                 }
                 else
                 {
+
+                    if ($dataProvider)
+                    {
+                        $serializedData = serialize($dataProvider);
+                    }
+                    else
+                    {
+                        $serializedData = serialize($idsToExport);
+                    }
+
                     // Create background job
                     $exportItem = new ExportItem();
-                    $exportItem->isCompleted = 0;
-                    $exportItem->exportFileType = 'csv';
-                    $exportItem->exportFileName = $this->getModule()->getName();
-                    $exportItem->serializedData = serialize($dataProvider);
+                    $exportItem->isCompleted     = 0;
+                    $exportItem->exportFileType  = 'csv';
+                    $exportItem->exportFileName  = $this->getModule()->getName();
+                    $exportItem->modelClassName = $modelClassName;
+                    $exportItem->serializedData  = $serializedData;
                     $exportItem->save();
-
+                    $exportItem->forget();
                     Yii::app()->user->setFlash('notification',
                         Yii::t('Default', 'A large amount of data has been requested for export.  You will receive  ' .
                         'a notification with the download link when the export is complete.')

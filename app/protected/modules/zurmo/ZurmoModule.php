@@ -94,7 +94,7 @@
                         'order' => 6,
                     ),
                     array(
-                        'label' => 'Forum',
+                        'label' => 'Forums',
                         'url' => 'http://zurmo.org/forums/',
                         'order' => 7,
                     ),

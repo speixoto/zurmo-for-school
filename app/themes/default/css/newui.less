@@ -597,8 +597,6 @@ footer, header, hgroup, menu, nav, section {
             border:1px solid #DCDCDC;
             .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
             #gradient > .vertical(#e0e0e0, #c6c6c6);
-
-
             :after{
                 content: "▾";
                 margin-left:10px;
@@ -904,14 +902,32 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-.view-toolbar a{
-    .view-toolbar-link();
-    position:relative;
-    text-indent:20px;
-}
-
-.view-toolbar a:first-child{
-    border-left:none;
+.view-toolbar{
+	> a,
+	.parent > a{
+	    .view-toolbar-link();
+	    position:relative;
+	    text-indent:20px;
+	    border-left: 1px solid #bababa;
+	}
+	.parent > a:after{
+    	content: "▾";
+    	margin-left:10px;
+    }
+	> ul, > a{
+		display:inline-block;
+	}
+	ul{
+		list-style:none;
+	}
+	.parent > ul{
+		margin-top:-2px;
+        .headerDropDown();
+        left:auto;
+	}
+	> a:first-child{
+   		border-left:none;
+   }
 }
 
 .view-toolbar-icons(@size: @recentlyViewedIconSize){
@@ -940,6 +956,7 @@ footer, header, hgroup, menu, nav, section {
     .view-toolbar-icons();
     top:3px;
 }
+#ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before{
     content: "2";
     .view-toolbar-icons();
@@ -990,7 +1007,6 @@ footer, header, hgroup, menu, nav, section {
     .view-toolbar-icons();
     top:3px;
 }
-
 .icon-user-details:before{
     content: "e";
     .view-toolbar-icons();
@@ -1017,7 +1033,7 @@ footer, header, hgroup, menu, nav, section {
     top:3px;
 }
 
-
+/*
 #ListViewMassActionMenu{
     position: absolute;
     float:right;
@@ -1039,8 +1055,6 @@ footer, header, hgroup, menu, nav, section {
             border:1px solid #DCDCDC;
             .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
             #gradient > .vertical(#e0e0e0, #c6c6c6);
-
-
             :after{
                 content: "▾";
                 margin-left:10px;
@@ -1076,8 +1090,6 @@ footer, header, hgroup, menu, nav, section {
             border:1px solid #DCDCDC;
             .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
             #gradient > .vertical(#e0e0e0, #c6c6c6);
-
-
             :after{
                 content: "▾";
                 margin-left:10px;
@@ -1091,6 +1103,8 @@ footer, header, hgroup, menu, nav, section {
         .headerDropDown();
     }
 }
+*/
+
 
 /*=Footer*/
 #FooterView{
@@ -1517,6 +1531,9 @@ a.simple-select{
 }
 
 
+
+
+
 /*=Search Scope box, and accoutn list*/
 /*Checkboxes*/
 label.hasCheckBox{
@@ -1728,10 +1745,10 @@ div.wide.form{
         }
     }
     .col-0, .col-2{
-        width:15%;
+        width:15% !important;
     }
     .col-1, .col-3{
-        width:35%;
+        width:35% !important;
     }
 }
 
@@ -1744,8 +1761,21 @@ div.wide.form{
     }
 }
 
+.AdministrativeArea .panel{
+    width:100% !important;
+}
 
 
+
+.attributesContainer{
+	min-height: 260px;
+/*	float:left;
+	.clearfix();
+	display:block;
+	width:100%;	
+	position:relative;*/
+	padding-bottom:15px;
+}
 
 #edit-form{
     .clearfix();
@@ -1754,6 +1784,10 @@ div.wide.form{
         float:left;
         width:70%;
         display:block;
+        
+       
+	.clearfix();
+        
         table{
             width:100% !important;
         }
@@ -1932,6 +1966,44 @@ div.wide.form{
         }
     }
 }
+
+.beforeOptOutCheckBox{
+	float:left;
+	width:100%;
+	div{
+		margin-right:80px !important;
+		width:auto;
+	}
+}
+.beforeOptOutCheckBox + .hasCheckBox{
+	float: right;
+	margin:0 0 0 -80px !important;
+	position:relative;
+	left:10px;
+	width: 80px;
+}
+
+
+
+
+
+.beforeToolTip{
+	float:left;
+	width:100%;
+	.dk_container{
+		margin-right:30px !important;
+		width:auto;
+		float:none;
+	}
+}
+.beforeToolTip + .tooltip{
+	float: right;
+	margin:5px 0 0 -30px !important;
+	position:relative;
+}
+
+
+
 
 /*=View AccountView (before editing, portlets and such)*/
 .SecuredPortletFrameView{
@@ -2380,7 +2452,17 @@ div.hasHalfs{
     .twoFifths{
        width:36.5%;
     }
-
+    
+    .threeFifths{
+       width:55.5%;
+       margin-right:4%;
+    }
+    
+    .fourFifths{
+       width:73%;
+       margin-right:4%;
+    }
+    
     .fifth + .twoFifths{
         margin-right:4%;
     }
@@ -2598,17 +2680,11 @@ div.hasHalfs{
         .clearfix();
     }
     .latest-activity-toolbar{
-        //position: absolute;
-        //top:-27px;
-        //left:150px;
-
         border-bottom:1px solid #DFDFDF;
         padding:10px 15px;
         #gradient > .vertical(#f6f6f6, #ededed);
         .b-shadow(inset 0 1px 0 0 #ffffff);
-
         > div{
-           // float:left;
             &:first-child{
                 border-right:2px solid @themeColor;
                 padding-right:10px;
@@ -2616,14 +2692,14 @@ div.hasHalfs{
             }
         }
         #LatestActivitiesConfigurationForm_ownedByFilter{
-            float:left;
-            label{
-            }
+            //float:left;
+            //text-align:left;
+            display:inline-block;
         }
         #LatestActivitiesConfigurationForm_rollup{
-            float:left;
-            label{
-            }
+            //float:left;
+        	//text-align:left;
+        	display:inline-block;
         }
         #filter-latest-activities-link{
             color:@themeColor !important;
@@ -2634,21 +2710,6 @@ div.hasHalfs{
                  color:@themeColor2  !important;
              }
         }
-        /*#activities-rollup-tooltip{
-            width:15px;
-            height:15px;
-            line-height:14px;
-            margin-top:-4px;
-            display:inline-block;
-            background:#fff;
-            .radius(10px);
-            border:1px solid #ccc;
-            color:#545454;
-            font-weight:bold;
-            text-align:center;
-            cursor:pointer;
-            vertical-align:middle;
-        }*/
     }
 
     .latest-activity-toolbar,

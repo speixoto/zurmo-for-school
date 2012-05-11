@@ -85,8 +85,10 @@
                                                                 )
                                                             );
             $content .= $formStart;
+            $content .= '<div class="attributesContainer">';
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderRightSideContent($form);
+            $content .= '</div>';
             $content .= $this->renderAfterFormLayout($form);
             $actionElementContent = $this->renderActionElementBar(true);
             if($actionElementContent != null)
