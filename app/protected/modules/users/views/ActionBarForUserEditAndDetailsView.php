@@ -69,6 +69,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'DetailsLink',
+                                'label' => "eval:Yii::t('Default', 'Profile')",
                                 'htmlOptions' => array( 'class' => 'icon-user-details' )
                             ),
                             array('type' => 'EditLink',

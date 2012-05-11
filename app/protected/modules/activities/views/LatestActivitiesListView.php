@@ -66,6 +66,12 @@
          */
         protected $showRollUpToggle = true;
 
+        /**
+         * True to show the owned by filter option.
+         * @var boolean
+         */
+        protected $showOwnedByFilter = true;
+
         protected $params;
 
         public function __construct(RedBeanModelsDataProvider $dataProvider,
@@ -186,14 +192,18 @@
         protected function renderConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-            $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
-                                                                                      'ownedByFilter',
-                                                                                      $form);
-            $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_ownedByFilter">{content}</div>';
-            $ownedByFilterContent      = $element->render();
+            $content = '<div class="horizontal-line latest-activity-toolbar">';
+            if($this->showOwnedByFilter)
+            {
+                $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
+                                                                                          'ownedByFilter',
+                                                                                          $form);
+                $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_ownedByFilter">{content}</div>';
+                $ownedByFilterContent      = $element->render();
 
-            $content  = '<div class="horizontal-line latest-activity-toolbar">';
-            $content .= $ownedByFilterContent;
+
+                $content .= $ownedByFilterContent;
+            }
             if($this->showRollUpToggle)
             {
                 $element                   = new LatestActivitiesRollUpFilterRadioElement($this->configurationForm,

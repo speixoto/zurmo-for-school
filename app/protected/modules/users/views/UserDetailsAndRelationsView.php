@@ -24,15 +24,82 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserDetailsAndRelationsView extends GridView
+    class UserDetailsAndRelationsView extends DetailsAndRelationsView
     {
         protected $cssClasses =  array( 'AdministrativeArea' );
 
-        public function __construct($controllerId, $moduleId, User $user, $params)
+        public function isUniqueToAPage()
         {
-            parent::__construct(2, 1);
-            $this->setView(new ActionBarForUserEditAndDetailsView ($controllerId, $moduleId, $user, 'DetailsLink'), 0, 0);
-            $this->setView(new UserDetailsView ($controllerId, $moduleId, $user), 1, 0);
+            return true;
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'leftTopView' => array(
+                        'viewClassName' => 'UserDetailsView',
+                    ),
+                    'leftBottomView' => array(
+                        'showAsTabbed' => false,
+                        'columns' => array(
+                            array(
+                                'rows' => array(
+                                    array(
+                                        'type' => 'UserLatestActivtiesForPortlet'
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    /**
+                    'rightTopView' => array(
+                        'columns' => array(
+                            array(
+                                'rows' => array(
+                                    array(
+                                        'type' => 'UpcomingMeetingsForAccountCalendar',
+                                    ),
+                                    array(
+                                        'type' => 'OpenTasksForAccountRelatedList',
+                                    ),
+                                    array(
+                                        'type' => 'ContactsForAccountRelatedList',
+                                    ),
+                                    array(
+                                        'type' => 'OpportunitiesForAccountRelatedList',
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    **/
+                )
+            );
+            return $metadata;
+        }
+
+        protected function renderLeftAndRightGridViewContent($leftTopView, $leftBottomView, $rightTopView, $renderRightSide)
+        {
+            assert('$leftTopView instanceof View');
+            assert('$leftBottomView instanceof View');
+            assert('$rightTopView instanceof View || $rightTopView == null');
+            assert('is_bool($renderRightSide)');
+            $leftVerticalGridView  = new GridView(3, 1);
+            $leftVerticalGridView->setView(new ActionBarForUserEditAndDetailsView ($this->controllerId,
+                                                                                   $this->moduleId,
+                                                                                   $this->params['relationModel'],
+                                                                                   'DetailsLink'), 0, 0);
+            $leftVerticalGridView->setView($leftTopView, 1, 0);
+            $leftVerticalGridView->setView($leftBottomView, 2, 0);
+            $content = $leftVerticalGridView->render();
+            if ($renderRightSide)
+            {
+                $rightVerticalGridView  = new GridView(1, 1);
+                $rightVerticalGridView->setView($rightTopView, 0, 0);
+                $content .= $rightVerticalGridView->render();
+            }
+            return $content;
         }
     }
 ?>
