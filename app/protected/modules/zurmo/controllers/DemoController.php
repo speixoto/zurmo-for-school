@@ -24,30 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ContactEditAndDetailsViewTest extends ZurmoBaseTest
+    Yii::import('application.modules.zurmo.controllers.DefaultController', true);
+    class ZurmoDemoController extends ZurmoDefaultController
     {
-        public static function setUpBeforeClass()
+
+        /**
+         * Special method to load demo data for testing user interface pagination.  This will load enough data to
+         * test each type of pagination.  Use this for development only.
+         */
+        public function actionLoadPaginationDemoData()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testSetAndGetMetadata()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
-
-            $user = UserTestHelper::createBasicUser('Steven');
-
-            $contact = new Contact();
-            $view = new ContactEditAndDetailsView('Details', 'whatever', 'whatever', $contact);
-            $originalMetadata = ContactEditAndDetailsView::getMetadata($user);
-            $metadataIn = $originalMetadata;
-            $metadataIn['perUser']['junk1'] = 'stuff1';
-            $metadataIn['global'] ['junk2'] = 'stuff2';
-            $view->setMetadata($metadataIn, $user);
-            $metadataOut = ContactEditAndDetailsView::getMetadata($user);
-            $this->assertNotEquals($originalMetadata, $metadataOut);
-            $this->assertEquals   ($metadataIn,       $metadataOut);
+            if(Yii::app()->user->userModel->username != 'super')
+            {
+                throw new NotSupportedException();
+            }
+            UserInterfaceDevelopmentUtil::makePaginationData();
         }
     }
 ?>

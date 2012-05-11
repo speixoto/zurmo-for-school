@@ -73,7 +73,7 @@
         {
             $moduleClassName = static::getModuleClassName();
             $moduleLabel     = $moduleClassName::getModuleLabelByTypeAndLanguage('PluralLowerCase');
-            return Yii::t('Default', 'No {moduleLabel} found', array('{moduleLabel}' => $moduleLabel));
+            return Yii::t('Default', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
         }
 
         protected function getGridViewWidgetPath()

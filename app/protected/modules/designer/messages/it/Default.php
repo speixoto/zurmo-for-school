@@ -83,8 +83,8 @@
             => 'Check box',
         'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 x field2) / field3'
             => 'Creare una formula calcoli sui valori di altri campi.  Usate il nome Formula sotto della colonna. Campi Disponibili per creare vostra formula. Per esempio: campo1 x campo2) / campo3',
-        'Create Field'
-            => 'Crea un campo',
+        'Create Custom Field'
+            => 'Crea un campo personalizzato',
         'Custom Fields'
             => 'Campi personalizzati',
         'Decimal'

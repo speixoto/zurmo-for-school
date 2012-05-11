@@ -31,6 +31,8 @@
     return array(
         'Activities'
             => 'Aktivitäten',
+        'Activity'
+            => 'Aktivität',
         'Activity Items'
             => 'Aktivität Elemente',
         'All Activities'
@@ -43,10 +45,8 @@
             => 'Bezug',
         'Related to'
             => 'In Bezug auf',
-        'Roll Up Off'
-            => 'Roll Up Off',
-        'Roll Up On'
-            => 'Roll Up aktivieren',
+        'Roll Up'
+            => 'Roll Up',
         'Show more'
             => 'Mehr schauen',
         'Summary'

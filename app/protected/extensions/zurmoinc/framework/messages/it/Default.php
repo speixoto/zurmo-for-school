@@ -65,8 +65,8 @@
             => 'Log cambiamenti',
         'Changed'
             => 'Cambiato',
-        'Clear Search'
-            => 'Azzera',
+        'Clear'
+            => 'Cancella',
         'Create'
             => 'Crea',
         'Created By User'
@@ -160,9 +160,9 @@
         'Module Name'
             => 'Nome del modulo',
         'More Details'
-            => 'Ulteriori Dettagli',
+            => 'Altre informazioni',
         'More Options'
-            => 'Ulteriori opzioni',
+            => 'Altre opzioni',
         'My List View'
             => 'La mia vista elenco',
         'Name'
@@ -181,10 +181,16 @@
             => 'Adesso',
         'of'
             => 'de',
-        'On'
+        'Off(visibility)'
+            => 'Disattivato',
+        'On(date)'
             => 'Il',
+        'On(visibility)'
+            => 'Attivato',
         'Opted Out'
             => 'Opt out',
+        'Options'
+            => 'Opzioni',
         'or'
             => 'o',
         'Panel'
@@ -255,7 +261,7 @@
             => 'Digitare per trovare un tag.',
         'Unknown'
             => 'Ignoto ',
-        'Update Selected'
+        'Update'
             => 'Aggiorna',
         'updated successfully.'
             => 'aggiornato con successo.',

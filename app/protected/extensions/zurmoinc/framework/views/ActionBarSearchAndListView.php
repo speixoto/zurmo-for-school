@@ -30,7 +30,7 @@
     class ActionBarSearchAndListView extends GridView
     {
         public function __construct($controllerId, $moduleId, ModelForm $searchModel, RedBeanModel $listModel,
-                                    $moduleName, CDataProvider $dataProvider, $selectedIds, $selectAll,
+                                    $moduleName, CDataProvider $dataProvider, $selectedIds,
                                     $actionBarViewClassName)
         {
             assert('is_string($controllerId)');
@@ -42,7 +42,7 @@
             $searchView          = new $searchViewClassName($searchModel, get_class($listModel));
             $listViewClassName   = $moduleName . 'ListView';
             $listView            = new $listViewClassName($controllerId, $moduleId,
-                                       get_class($listModel), $dataProvider, $selectedIds, $selectAll);
+                                       get_class($listModel), $dataProvider, $selectedIds);
             $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
                                                                $listView->getGridViewId(),
                                                                $dataProvider->getPagination()->pageVar,

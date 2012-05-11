@@ -597,8 +597,6 @@ footer, header, hgroup, menu, nav, section {
             border:1px solid #DCDCDC;
             .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
             #gradient > .vertical(#e0e0e0, #c6c6c6);
-
-
             :after{
                 content: "▾";
                 margin-left:10px;
@@ -904,14 +902,32 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-.view-toolbar a{
-    .view-toolbar-link();
-    position:relative;
-    text-indent:20px;
-}
-
-.view-toolbar a:first-child{
-    border-left:none;
+.view-toolbar{
+	> a,
+	.parent > a{
+	    .view-toolbar-link();
+	    position:relative;
+	    text-indent:20px;
+	    border-left: 1px solid #bababa;
+	}
+	.parent > a:after{
+    	content: "▾";
+    	margin-left:10px;
+    }
+	> ul, > a{
+		display:inline-block;
+	}
+	ul{
+		list-style:none;
+	}
+	.parent > ul{
+		margin-top:-2px;
+        .headerDropDown();
+        left:auto;
+	}
+	> a:first-child{
+   		border-left:none;
+   }
 }
 
 .view-toolbar-icons(@size: @recentlyViewedIconSize){
@@ -940,6 +956,7 @@ footer, header, hgroup, menu, nav, section {
     .view-toolbar-icons();
     top:3px;
 }
+#ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before{
     content: "2";
     .view-toolbar-icons();
@@ -990,7 +1007,6 @@ footer, header, hgroup, menu, nav, section {
     .view-toolbar-icons();
     top:3px;
 }
-
 .icon-user-details:before{
     content: "e";
     .view-toolbar-icons();
@@ -1016,6 +1032,79 @@ footer, header, hgroup, menu, nav, section {
     .view-toolbar-icons();
     top:3px;
 }
+
+/*
+#ListViewMassActionMenu{
+    position: absolute;
+    float:right;
+    right:150px;
+    top:8px;
+    > li{
+        list-style:none !important;
+        > a{
+            padding:0 10px;
+            display:block;
+            line-height:23px;
+            background:red;
+            .radius(4px);
+            font-size:13px;
+            color:#333333;
+            background:#CCCCCC;
+            .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
+            font-weight:bold;
+            border:1px solid #DCDCDC;
+            .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
+            #gradient > .vertical(#e0e0e0, #c6c6c6);
+            :after{
+                content: "▾";
+                margin-left:10px;
+            }
+        }
+    }
+    ul{
+        list-style:none !important;
+        margin-top:-8px;
+        margin-left:0px;
+        .headerDropDown();
+    }
+}
+
+#ListViewExportActionMenu{
+    position: absolute;
+    float:right;
+    right:40px;
+    top:8px;
+    > li{
+        list-style:none !important;
+        > a{
+            padding:0 10px;
+            display:block;
+            line-height:23px;
+            background:red;
+            .radius(4px);
+            font-size:13px;
+            color:#333333;
+            background:#CCCCCC;
+            .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
+            font-weight:bold;
+            border:1px solid #DCDCDC;
+            .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
+            #gradient > .vertical(#e0e0e0, #c6c6c6);
+            :after{
+                content: "▾";
+                margin-left:10px;
+            }
+        }
+    }
+    ul{
+        list-style:none !important;
+        margin-top:-8px;
+        margin-left:0px;
+        .headerDropDown();
+    }
+}
+*/
+
 
 /*=Footer*/
 #FooterView{
@@ -1114,6 +1203,9 @@ table.items th{
 .checkbox-column{
     width:35px;
     text-align:center;
+    .hasCheckBox{
+    	margin-top:-4px;
+    }
 }
 .button-column{
     width:25px;
@@ -1442,6 +1534,9 @@ a.simple-select{
 }
 
 
+
+
+
 /*=Search Scope box, and accoutn list*/
 /*Checkboxes*/
 label.hasCheckBox{
@@ -1487,7 +1582,7 @@ div.wide.form{
     position: absolute;
     left: -9999px;
 }
-#FilteredListView, .select-all-options, .summary{
+#FilteredListView, .summary{
     /*@TODO check what this component do - for now its hidden cause its not in design*/
     display:none;
 }
@@ -1640,8 +1735,8 @@ div.wide.form{
         }
     }
     #permissions-module{
-    	margin-bottom:15px;
-    	position:relative !important;
+        margin-bottom:15px;
+        position:relative !important;
         //width:100% !important;
         float:left !important;
         .buffer{
@@ -1653,36 +1748,53 @@ div.wide.form{
         }
     }
     .col-0, .col-2{
-		width:15%;
-	}
-	.col-1, .col-3{
-		width:35%;
-	}
+        width:15% !important;
+    }
+    .col-1, .col-3{
+        width:35% !important;
+    }
 }
 
 .wide.form{
-	.col-0{
-		width:30%;
-	}
-	.col-1{
-		width:70%;
-	}
+    .col-0{
+        width:30%;
+    }
+    .col-1{
+        width:70%;
+    }
+}
+
+.AdministrativeArea .panel{
+    width:100% !important;
 }
 
 
 
+.attributesContainer{
+	min-height: 260px;
+/*	float:left;
+	.clearfix();
+	display:block;
+	width:100%;	
+	position:relative;*/
+	padding-bottom:15px;
+}
 
 #edit-form{
     .clearfix();
     position: relative;
    .panel{
-		float:left;
-		width:70%;
-		display:block;
-		table{
-			width:100% !important;
-		}
-	}
+        float:left;
+        width:70%;
+        display:block;
+        
+       
+	.clearfix();
+        
+        table{
+            width:100% !important;
+        }
+    }
     table{
         border-bottom:none;
         margin-bottom:15px;
@@ -1706,9 +1818,9 @@ div.wide.form{
         //margin-bottom:15px;
     }
     #permissions-module{
-    	position:absolute;
-    	right:15px;
-    	top:15px;
+        position:absolute;
+        right:15px;
+        top:15px;
         width:30%;
         float:right;
         h3{
@@ -1858,6 +1970,44 @@ div.wide.form{
     }
 }
 
+.beforeOptOutCheckBox{
+	float:left;
+	width:100%;
+	div{
+		margin-right:80px !important;
+		width:auto;
+	}
+}
+.beforeOptOutCheckBox + .hasCheckBox{
+	float: right;
+	margin:0 0 0 -80px !important;
+	position:relative;
+	left:10px;
+	width: 80px;
+}
+
+
+
+
+
+.beforeToolTip{
+	float:left;
+	width:100%;
+	.dk_container{
+		margin-right:30px !important;
+		width:auto;
+		float:none;
+	}
+}
+.beforeToolTip + .tooltip{
+	float: right;
+	margin:5px 0 0 -30px !important;
+	position:relative;
+}
+
+
+
+
 /*=View AccountView (before editing, portlets and such)*/
 .SecuredPortletFrameView{
     .juiportlet-widget-head h3{
@@ -1878,7 +2028,7 @@ div.wide.form{
         vertical-align:top;
     }
     td, th{
-        padding:2px 5px 2px 10px !important;
+        padding:0 5px 0 10px !important;
     }
     p{
         color:#545454 !important;
@@ -1905,6 +2055,10 @@ div.wide.form{
         position: relative;
         top:2px;
         margin-right:3px;
+    }
+    .hasCheckBox{
+    	margin-top:0;
+    	margin-left:0;
     }
 }
 .mapcanvas{
@@ -1967,7 +2121,7 @@ div.wide.form{
         color:#525252;
     }
     th, td{
-    	font-weight:600;
+        font-weight:600;
         padding:0 0 15px 0;
     }
      //for opt in email checkboxes
@@ -2000,7 +2154,7 @@ div.wide.form{
     float:right;
     width:auto;
     .view-toolbar{
-    	position:absolute;
+        position:absolute;
         right:0;
         top:0;
         border:none;
@@ -2069,6 +2223,12 @@ div.wide.form{
 }
 
 #NoteInlineEditView{
+    .col-0{
+        width:100%;
+    }
+    .col-1{
+        width:0%;
+    }
     .wide.form{
         padding:0;
         margin:0;
@@ -2300,8 +2460,18 @@ div.hasHalfs{
        width:36.5%;
     }
     
+    .threeFifths{
+       width:55.5%;
+       margin-right:4%;
+    }
+    
+    .fourFifths{
+       width:73%;
+       margin-right:4%;
+    }
+    
     .fifth + .twoFifths{
-    	margin-right:4%;
+        margin-right:4%;
     }
 
     .half{
@@ -2517,17 +2687,11 @@ div.hasHalfs{
         .clearfix();
     }
     .latest-activity-toolbar{
-        //position: absolute;
-        //top:-27px;
-        //left:150px;
-
         border-bottom:1px solid #DFDFDF;
         padding:10px 15px;
         #gradient > .vertical(#f6f6f6, #ededed);
         .b-shadow(inset 0 1px 0 0 #ffffff);
-
         > div{
-           // float:left;
             &:first-child{
                 border-right:2px solid @themeColor;
                 padding-right:10px;
@@ -2535,14 +2699,14 @@ div.hasHalfs{
             }
         }
         #LatestActivitiesConfigurationForm_ownedByFilter{
-            float:left;
-            label{
-            }
+            //float:left;
+            //text-align:left;
+            display:inline-block;
         }
         #LatestActivitiesConfigurationForm_rollup{
-            float:left;
-            label{
-            }
+            //float:left;
+        	//text-align:left;
+        	display:inline-block;
         }
         #filter-latest-activities-link{
             color:@themeColor !important;
@@ -2553,26 +2717,12 @@ div.hasHalfs{
                  color:@themeColor2  !important;
              }
         }
-        /*#activities-rollup-tooltip{
-            width:15px;
-            height:15px;
-            line-height:14px;
-            margin-top:-4px;
-            display:inline-block;
-            background:#fff;
-            .radius(10px);
-            border:1px solid #ccc;
-            color:#545454;
-            font-weight:bold;
-            text-align:center;
-            cursor:pointer;
-            vertical-align:middle;
-        }*/
     }
 
     .latest-activity-toolbar,
     .filter-latest-activities-bar{
          label{
+             cursor:pointer;
                 padding-top:0;
                 border:none;
                 background:none;

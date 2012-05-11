@@ -56,13 +56,36 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
 
+            $opportunities = array();
             for ($i = 0; $i < 2; $i++)
             {
-                OpportunityTestHelper::createOpportunityWithAccountByNameForOwner('superOpp' . $i, $super, $account);
+                $opportunities[] = OpportunityTestHelper::createOpportunityWithAccountByNameForOwner('superOpp' . $i, $super, $account);
             }
 
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/list');
-            $this->setGetArray(array('Opportunity_page' => '1', 'export' => '', 'ajax' => ''));
+            $this->setGetArray(array(
+                'Opportunity_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '',
+                'selectedIds' => '')
+            );
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
+            $this->assertTrue(strstr($response, 'opportunities/default/index') !== false);
+
+            $this->setGetArray(array(
+                'OpportunitiesSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                    'name'                    => 'superOpp',
+                    'officePhone'             => ''
+                ),
+                'Opportunity_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
+                'selectAll' => '1',
+                'selectedIds' => '',)
+            );
             $response = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/export');
             $this->assertEquals('Testing download.', $response);
 
@@ -75,7 +98,9 @@
                 ),
                 'Opportunity_page'   => '1',
                 'export'         => '',
-                'ajax'           => '')
+                'ajax'           => '',
+                'selectAll' => '',
+                'selectedIds' => "{$opportunities[0]->id},{$opportunities[1]->id}")
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/export');
             $this->assertEquals('Testing download.', $response);
@@ -90,9 +115,12 @@
                 ),
                 'Opportunity_page' => '1',
                 'export'       => '',
-                'ajax'         => '')
+                'ajax'         => '',
+                'selectAll' => '1',
+                'selectedIds' => '',)
             );
-            $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
+            $this->assertTrue(strstr($response, 'opportunities/default/index') !== false);
         }
 
         /**
@@ -102,6 +130,8 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount2', $super);
+            $notificationsBeforeCount        = count(Notification::getAll());
+            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
 
             $opportunities = Opportunity::getAll();
             if (count($opportunities))
@@ -111,13 +141,20 @@
                     $opportunity->delete();
                 }
             }
+            $opportunities = array();
             for ($i = 0; $i <= (ExportModule::$asynchronusTreshold + 1); $i++)
             {
-                OpportunityTestHelper::createOpportunityWithAccountByNameForOwner('opportunity' . $i, $super, $account);
+                $opportunities[] = OpportunityTestHelper::createOpportunityWithAccountByNameForOwner('opportunity' . $i, $super, $account);
             }
 
-            $this->setGetArray(array('Opportunity_page' => '1', 'export' => '', 'ajax' => ''));
-                    $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
+            $this->setGetArray(array(
+                'Opportunity_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '1',
+                'selectedIds' => '')
+            );
+            $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
 
             // Start background job
             $job = new ExportJob();
@@ -131,8 +168,58 @@
             $this->assertEquals('opportunities', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
-            $this->assertEquals(1, count(Notification::getAll()));
-            $this->assertEquals(1, count(NotificationMessage::getAll()));
+            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
+            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+
+            // Check export job, when many ids are selected.
+            // This will probably never happen, but we need test for this case too.
+            $notificationsBeforeCount        = count(Notification::getAll());
+            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+
+            // Now test case when multiple ids are selected
+            $exportItems = ExportItem::getAll();
+            if (count($exportItems))
+            {
+                foreach ($exportItems as $exportItem)
+                {
+                    $exportItem->delete();
+                }
+            }
+
+            $selectedIds = "";
+            foreach($opportunities as $opportunity)
+            {
+                $selectedIds .= $opportunity->id . ",";
+            }
+            $this->setGetArray(array(
+                'OpportunitiesSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                    'name'                    => '',
+                    'officePhone'             => ''
+                ),
+                'Opportunity_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
+                'selectAll' => '',
+                'selectedIds' => "$selectedIds")
+            );
+
+            $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
+            // Start background job
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItems = ExportItem::getAll();
+            $this->assertEquals(1, count($exportItems));
+            $fileModel = $exportItems[0]->exportFileModel;
+            $this->assertEquals(1, $exportItems[0]->isCompleted);
+            $this->assertEquals('csv', $exportItems[0]->exportFileType);
+            $this->assertEquals('opportunities', $exportItems[0]->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+
+            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
+            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
         }
     }
 ?>

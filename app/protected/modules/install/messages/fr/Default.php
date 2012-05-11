@@ -160,14 +160,12 @@
             => 'Création des données de démonstration.  Veuillez patienter.',
         'Locking Installation.'
             => 'Verrouillage de la page d\'installation',
-        'Login'
-            => 'Connexion',
         'Mbstring is installed.'
             => 'Mbstring est installé.',
         'Mbstring is not installed.'
             => 'Mbstring n\'est pas installé.',
-        'Memcache'
-            => 'Memcache',
+        'Memcache extension'
+            => 'Memcache ??',
         'Memcache host'
             => 'Nom d\'hôte Memcache',
         'Memcache host name. Default is 127.0.0.1'

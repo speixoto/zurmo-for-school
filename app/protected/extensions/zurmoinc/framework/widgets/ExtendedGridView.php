@@ -32,11 +32,7 @@
      */
     class ExtendedGridView extends CGridView
     {
-        protected $selectAllOptionsCssClass = 'select-all-options';
-
         public $template = "{selectRowsSelectors}{summary}\n{items}\n{pager}";
-
-        public $selectAll;
 
         /**
          * Override to have proper XHTML compliant space value
@@ -47,45 +43,6 @@
          * Override to have proper XHTML compliant space value
          */
         public $blankDisplay = '&#160;';
-
-        /**
-         * Override to display select all/none optional
-         * dropdown.
-         */
-        public function renderSelectRowsSelectors()
-        {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/ListViewUtils.js'
-                    ),
-                CClientScript::POS_END
-            );
-            if (($count = $this->dataProvider->getItemCount()) <= 0)
-            {
-                return;
-            }
-            if ($this->selectableRows > 1)
-            {
-                $allLink = CHtml::link(Yii::t('Default', 'All'), '#', array('id'   => $this->id . '-select-all-rows-link'));
-                $noneLink = CHtml::link(Yii::t('Default', 'None'), '#', array('id' => $this->id . '-select-none-rows-link'));
-                Yii::app()->clientScript->registerScript($this->id . '-listViewSelectAllOptions', "
-                    $('#" . $this->id . "-select-all-rows-link').live('click', function()
-                        {
-                            selectAllResults('" . $this->id . "', '" . $this->id . "-rowSelector');
-                            return false;
-                        }
-                    );
-                    $('#" . $this->id . "-select-none-rows-link').live('click', function()
-                        {
-                            selectNoneResults('" . $this->id . "', '" . $this->id . "-rowSelector');
-                            return false;
-                        }
-                    );
-                ");
-                echo '<div class="' . $this->selectAllOptionsCssClass . '">' . Yii::t('Default', 'Select') . ':&#160;' . $allLink
-                . '&#160;|&#160;' . $noneLink . '</div>' . "\n";
-            }
-        }
 
         /**
          * Renders the top pager content

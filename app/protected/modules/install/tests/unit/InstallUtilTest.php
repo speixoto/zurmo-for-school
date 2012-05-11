@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class InstallUtilTest extends BaseTest
+    class InstallUtilTest extends ZurmoBaseTest
     {
         protected $hostname;
         protected $rootUsername;
@@ -50,6 +50,18 @@
                 $this->temporaryDatabaseName = 'zurmo_wacky';
             }
             $this->superUserPassword = 'super';
+        }
+
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
+        }
+
+        public static function tearDownAfterClass()
+        {
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+            parent::tearDownAfterClass();
         }
 
         public function setup()

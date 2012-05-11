@@ -77,9 +77,9 @@
             => 'Fichier log pour {jobDisplayName}',
         'Job Name'
             => 'Nom du Job',
-        'Jobs Manager'
+        'Job Manager'
             => 'Tâches système',
-        'Jobs Manager: Home'
+        'Job Manager: Home'
             => 'Tâches système: Home',
         'Last Completed Run'
             => 'Dernière exécution',

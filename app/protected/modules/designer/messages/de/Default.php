@@ -83,7 +83,7 @@
             => 'Ankreuzfeld',
         'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 x field2) / field3'
             => 'Erstellen Sie eine mathematische Formel, die aus anderen Bereichen berechnet wird. Verwenden Sie die Formel-Name aus dem Verfügbare Felder Gitter unten, um Ihre Formel zu erstellen. Beispiel Formel:(feld1 x feld2) / feld3',
-        'Create Field'
+        'Create Custom Field'
             => 'Feld erstellen',
         'Custom Fields'
             => 'Benutzerdefinierte Felder',

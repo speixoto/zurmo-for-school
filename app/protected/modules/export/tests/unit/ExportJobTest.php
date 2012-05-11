@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ExportJobTest extends BaseTest
+    class ExportJobTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -73,6 +73,7 @@
             $exportItem->isCompleted = 0;
             $exportItem->exportFileType = 'csv';
             $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
             $exportItem->serializedData = serialize($dataProvider);
             $this->assertTrue($exportItem->save());
 

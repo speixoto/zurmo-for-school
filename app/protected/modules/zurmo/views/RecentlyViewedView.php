@@ -39,7 +39,7 @@
 
         protected function renderContent()
         {
-            $content = Yii::t('Default', '<h3>Recently Viewed</h3>');
+            $content = '<h3>' . Yii::t('Default', 'Recently Viewed') . '</h3>';
 
             $content .= '<ul>';
 

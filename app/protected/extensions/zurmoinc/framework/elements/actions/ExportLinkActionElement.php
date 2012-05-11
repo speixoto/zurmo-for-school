@@ -36,14 +36,43 @@
 
         public function render()
         {
-            $gridId = $this->getListViewGridId();
-            $name   = $gridId . '-exportAction';
-            $htmlOptions = array(
-                'name' => $name,
-                'id'   => $name,
-            );
-            Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionDropDown', "
-                $('#" . $gridId . "-exportAction').live('click', function()
+            $gridId         = $this->getListViewGridId();
+            $selectedName   = $gridId . '-exportActionSelected';
+            $allName        = $gridId . '-exportActionAll';
+            Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionUpdateSelected', "
+                $('#" . $gridId . "-exportActionSelected').unbind('click.action');
+                $('#" . $gridId . "-exportActionSelected').bind('click.action', function()
+                    {
+                        if ($('#" . $gridId . "-selectedIds').val() == '')
+                        {
+                            alert('" . Yii::t('Default', 'You must select at least one record') . "');
+                            $(this).val('');
+                            return false;
+                        }
+                        var options =
+                        {
+                            url : $.fn.yiiGridView.getUrl('" . $gridId . "')
+                        }
+                        if(options.url.split( '?' ).length == 2)
+                        {
+                            options.url.split( '?' )[0];
+                            options.url = options.url.split( '?' )[0] +'/'+ 'export' + '?' + options.url.split( '?' )[1];
+                        }
+                        else
+                        {
+                            options.url = options.url +'/'+ 'export';
+                        }
+                        addListViewSelectedIdsToUrl('" . $gridId . "', options);
+                        var data = '' + 'export=' + '&selectAll=&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
+                        "url = $.param.querystring(options.url, data);
+                        window.location.href = url;
+                        return false;
+                    }
+                );
+            ");
+            Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionUpdateAll', "
+                $('#" . $gridId . "-exportActionAll').unbind('click.action');
+                $('#" . $gridId . "-exportActionAll').bind('click.action', function()
                     {
                         var options =
                         {
@@ -58,14 +87,33 @@
                         {
                             options.url = options.url +'/'+ 'export';
                         }
-                        var data = '' + 'export' + '&ajax=&" . $this->getPageVarName() . "=1';  // Not Coding Standard
-                        var url = $.param.querystring(options.url, data);
+                        var data = '' + 'export=' + '&selectAll=1&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
+                        "url = $.param.querystring(options.url, data);
                         window.location.href = url;
                         return false;
                     }
                 );
             ");
-            return CHtml::Link($this->getLabel(), '#', $htmlOptions);
+            $menuItems = array('label' => $this->getLabel(), 'url' => null,
+                                    'items' => array(
+                                        array(	'label'   => Yii::t('Default', 'Selected'),
+                                                'url'     => '#',
+                                                'itemOptions' => array( 'id'   => $selectedName,
+                                                                        'name' => $selectedName)),
+                                        array(	'label'   => Yii::t('Default', 'All Results'),
+                                                'url'	  => '#',
+                                                'itemOptions' => array( 'id'   => $allName,
+                                                                        'name' => $allName))));
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ActionMenu");
+            $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
+                'htmlOptions' => array('id' => 'ListViewExportActionMenu'),
+                'items'                   => array($menuItems),
+                'navContainerClass'       => 'nav-single-container',
+                'navBarClass'             => 'nav-single-bar',
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['ActionMenu'];
         }
 
         protected function getDefaultLabel()

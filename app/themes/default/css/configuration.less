@@ -101,9 +101,9 @@
 
 .configuration-list{
 	list-style:none;
-	.clearfix;
+	.clearfix();
 	li{
-		.clearfix;
+		//.clearfix();
 		.box-sizing();
 		width:100%;
 		float:left;
@@ -121,7 +121,6 @@
 			border-top:none;
 			margin-top:none;
 		}
-		
 		h4{
 			margin:0 0 0 0;
 			display:inline-block;
@@ -149,15 +148,11 @@ table.configuration-list{
 		display:inline-block;
 	}
 	tbody > tr > td{
-		padding:20px 15px !important;
-		position:relative;
+		position:relative !important;
 	}
 	tr td:last-child a{
 		.zButton();
 		float:right;
-		position: absolute;
-		right:15px;
-		top:14px;
 		&:before{
 			content: "n";
 			.symbly(16px);
@@ -282,10 +277,10 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			position: absolute;
-			left: 15px;
-			top:-1px;
+			position: relative;
+			top:-3px;
 			font-weight:100 !important;
+			line-height:100% !important;
 		}
 	}
 	td.level-2{ 
@@ -293,9 +288,11 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			position: absolute;
+			/*position: absolute;
 			left: 45px;
-			top:-1px;
+			top:-1px;*/
+			position: relative;
+			top:-3px;
 		}	
 	}
 	td.level-3{ 
@@ -303,9 +300,11 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			position: absolute;
+			/*position: absolute;
 			left: 75px;
-			top:-1px;
+			top:-1px;*/
+			position: relative;
+			top:-3px;
 		}	
 	}
 	td.level-4{ 
@@ -313,9 +312,11 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			position: absolute;
+			/*position: absolute;
 			left: 105px;
-			top:-1px;
+			top:-1px;*/
+			position: relative;
+			top:-3px;
 		}	
 	}
 	td.level-5{ 
@@ -323,9 +324,11 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			position: absolute;
+			/*position: absolute;
 			left: 135px;
-			top:-1px;
+			top:-1px;*/
+			position: relative;
+			top:-3px;
 		}	
 	}
 	td.level-6{ 
@@ -343,9 +346,11 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			position: absolute;
+			/*position: absolute;
 			left: 195px;
-			top:-1px;
+			top:-1px;*/
+			position: relative;
+			top:-3px;
 		}	
 	}
 	td.level-8{ 
@@ -363,9 +368,11 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			position: absolute;
+			/*position: absolute;
 			left: 255px;
-			top:-1px;
+			top:-1px;*/
+			position: relative;
+			top:-3px;
 		}	
 	}
 	td.level-10{ 
@@ -373,9 +380,11 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			position: absolute;
+			/*position: absolute;
 			left: 285px;
-			top:-1px;
+			top:-1px;*/
+			position: relative;
+			top:-3px;
 		}	
 	}
 }
@@ -419,7 +428,10 @@ table.configuration-list{
 		border-top:none;
 	}
 }
-
+#active-monitor-job-tooltip{
+	position: absolute;
+	margin-top:9px;
+}
 /*Languages*/
 #LanguagesCollectionView{
 	form{
@@ -546,7 +558,13 @@ table.configuration-list{
 }
 
 /*Users*/
-
+#UsersListView{
+	position:relative;
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+	
+}
 #UsersPageView{
 	.AdministrativeArea.AppContent {
 		#ActionBarSearchAndListView{
@@ -575,14 +593,18 @@ table.configuration-list{
 		}
 	}
 	table.items{
-		float:left;
+		//float:left;
 	}
 	.panel{
 		width:100% !important;
+		.box-sizing();
 		table{
 			margin-right:15px;
+			.box-sizing();
 		}
-		
+	}
+	#edit-form{
+		padding-right:30px;
 	}
 }
 .panelTitle{
@@ -610,6 +632,11 @@ table.configuration-list{
 }
 	
 /*Email Config*/
+#OutboundEmailConfigurationEditAndDetailsView{
+	.panel{
+		width:100% !important;
+	}
+}
 #SendATestEmailToButton{
 	.zButton;
 }
@@ -621,9 +648,6 @@ table.configuration-list{
 	float:left;
 	> div{
 		margin-right:130px;
-		> input{
-			
-		}
 	}
 	
 	& + span{

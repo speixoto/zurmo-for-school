@@ -27,19 +27,15 @@
     /**
      * Export module walkthrough tests.
      */
-    class AccountsSuperUserExportWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class AccountsRegularUserExportWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
     {
         protected static $asynchronusTreshold;
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
             //Setup test data owned by the super user.
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', Yii::app()->user->userModel);
 
             self::$asynchronusTreshold = ExportModule::$asynchronusTreshold;
             ExportModule::$asynchronusTreshold = 3;
@@ -57,11 +53,40 @@
         public function testDownloadDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
             $accounts = array();
             for ($i = 0; $i < 2; $i++)
             {
                 $accounts[] = AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
             }
+
+            // Check if access is denied if user doesn't have access privileges at all to export actions
+            Yii::app()->user->userModel = User::getByUsername('nobody');
+            $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+
+            // Provide no ids and without selectALl options.
+            // This should be result with error and redirect to module page.
+            $this->runControllerShouldResultInAccessFailureAndGetContent('accounts/default/list');
+            $this->setGetArray(array(
+                'Account_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '',
+                'selectedIds' => '')
+            );
+            $this->runControllerShouldResultInAccessFailureAndGetContent('accounts/default/export');
+
+            // Check if user have access to module action, but not to export action
+            //Now test peon with elevated rights to accounts
+            $nobody->setRight('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+            $nobody->setRight('AccountsModule', AccountsModule::RIGHT_CREATE_ACCOUNTS);
+            $nobody->setRight('AccountsModule', AccountsModule::RIGHT_DELETE_ACCOUNTS);
+            $nobody->setRight('ExportModule', ExportModule::RIGHT_ACCESS_EXPORT);
+            $this->assertTrue($nobody->save());
+
+            // Check if access is denied if user doesn't have access privileges at all to export actions
+            $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            Yii::app()->user->userModel = User::getByUsername('nobody');
 
             // Provide no ids and without selectALl options.
             // This should be result with error and redirect to module page.
@@ -81,6 +106,53 @@
                     'anyMixedAttributesScope' => array(0 =>'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superAccount',
+                    'officePhone'             => ''
+                ),
+                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
+                'selectAll' => '1',
+                'selectedIds' => '',
+                'Account_page'   => '1',
+                'export'         => '',
+                'ajax'           => '')
+            );
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+            $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
+
+            $this->setGetArray(array(
+                'AccountsSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                    'name'                    => '',
+                    'officePhone'             => ''
+                ),
+                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
+                'selectAll' => '',
+                'selectedIds' => "{$accounts[0]->id},{$accounts[1]->id}",
+                'Account_page'   => '1',
+                'export'         => '',
+                'ajax'           => '')
+            );
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+            $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
+            $this->assertContains('There is no data to export. The reason might be because you do not have sufficient permissions.',
+                Yii::app()->user->getFlash('notification'));
+
+            //give nobody access to read and write
+            Yii::app()->user->userModel = $super;
+            foreach ($accounts as $account)
+            {
+                $account->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
+                $account->owner = $nobody;
+                $this->assertTrue($account->save());
+            }
+
+            //Now the nobody user should be able to access the edit view and still the details view.
+            Yii::app()->user->userModel = $nobody;
+            $this->setGetArray(array(
+                'AccountsSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributes'      => '',
+                    'name'                    => '',
                     'officePhone'             => ''
                 ),
                 'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
@@ -127,104 +199,6 @@
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
             $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
-        }
-
-        /**
-        * Walkthrough test for synchronous download
-        */
-        public function testAsynchronousDownloadDefaultControllerActions()
-        {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $notificationsBeforeCount        = count(Notification::getAll());
-            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
-            $accounts = Account::getAll();
-            if (count($accounts))
-            {
-                foreach ($accounts as $account)
-                {
-                    $account->delete();
-                }
-            }
-            $accounts = array();
-            for ($i = 0; $i <= (ExportModule::$asynchronusTreshold + 1); $i++)
-            {
-                $accounts[] = AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
-            }
-
-            $this->setGetArray(array(
-                'Account_page' => '1',
-                'export' => '',
-                'selectAll' => '1',
-                'selectedIds' => '',
-                'ajax' => ''));
-
-            $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
-
-            // Start background job
-            $job = new ExportJob();
-            $this->assertTrue($job->run());
-
-            $exportItems = ExportItem::getAll();
-            $this->assertEquals(1, count($exportItems));
-            $fileModel = $exportItems[0]->exportFileModel;
-            $this->assertEquals(1, $exportItems[0]->isCompleted);
-            $this->assertEquals('csv', $exportItems[0]->exportFileType);
-            $this->assertEquals('accounts', $exportItems[0]->exportFileName);
-            $this->assertTrue($fileModel instanceOf ExportFileModel);
-
-            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
-            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
-
-            // Check export job, when many ids are selected.
-            // This will probably never happen, but we need test for this case too.
-            $notificationsBeforeCount        = count(Notification::getAll());
-            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
-
-            // Now test case when multiple ids are selected
-            $exportItems = ExportItem::getAll();
-            if (count($exportItems))
-            {
-                foreach ($exportItems as $exportItem)
-                {
-                    $exportItem->delete();
-                }
-            }
-
-            $selectedIds = "";
-            foreach($accounts as $account)
-            {
-                $selectedIds .= $account->id . ",";
-            }
-            $this->setGetArray(array(
-                'AccountsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
-                    'anyMixedAttributes'      => '',
-                    'name'                    => '',
-                    'officePhone'             => ''
-                ),
-                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
-                'selectAll' => '',
-                'selectedIds' => "$selectedIds",
-                'Account_page'   => '1',
-                'export'         => '',
-                'ajax'           => '')
-            );
-
-            $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
-            // Start background job
-            $job = new ExportJob();
-            $this->assertTrue($job->run());
-
-            $exportItems = ExportItem::getAll();
-            $this->assertEquals(1, count($exportItems));
-            $fileModel = $exportItems[0]->exportFileModel;
-            $this->assertEquals(1, $exportItems[0]->isCompleted);
-            $this->assertEquals('csv', $exportItems[0]->exportFileType);
-            $this->assertEquals('accounts', $exportItems[0]->exportFileName);
-            $this->assertTrue($fileModel instanceOf ExportFileModel);
-
-            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
-            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
         }
     }
 ?>

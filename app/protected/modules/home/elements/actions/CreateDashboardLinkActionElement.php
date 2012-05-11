@@ -33,7 +33,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Create a Dashboard');
+            return Yii::t('Default', 'Create Dashboard');
         }
 
         protected function getDefaultRoute()

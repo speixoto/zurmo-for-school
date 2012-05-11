@@ -56,16 +56,8 @@
 
         /**
          * Array of model ids. Each id is for a different row checked off
-         * @see selectAll
          */
         protected $selectedIds;
-
-        /**
-         * True/false whether to select the entire results of a list view display or not.
-         * If set to true, then the selectedIds value will become null.
-         * @see selectedIds
-         */
-        protected $selectAll;
 
         private $resolvedMetadata;
 
@@ -79,12 +71,10 @@
             $modelClassName,
             $dataProvider,
             $selectedIds,
-            $selectAll,
             $gridIdSuffix = null
         )
         {
             assert('is_array($selectedIds)');
-            assert('is_bool($selectAll)');
             assert('is_string($modelClassName)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
@@ -92,7 +82,6 @@
             $this->dataProvider           = $dataProvider;
             $this->rowsAreSelectable      = true;
             $this->selectedIds            = $selectedIds;
-            $this->selectAll              = $selectAll;
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridId                 = 'list-view';
         }
@@ -114,7 +103,6 @@
             if ($this->rowsAreSelectable)
             {
                 $content .= CHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
-                $content .= CHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectAll', $this->selectAll) . "\n";
             }
             return $content;
         }
@@ -138,16 +126,15 @@
                 'htmlOptions' => array(
                     'class' => 'cgrid-view'
                 ),
-                'loadingCssClass' => 'cgrid-view-loading',
-                'dataProvider' => $this->getDataProvider(),
-                'selectableRows' => $this->getCGridViewSelectableRowsCount(),
-                'selectAll' => $this->selectAll,
-                'pager' => $this->getCGridViewPagerParams(),
+                'loadingCssClass'  => 'cgrid-view-loading',
+                'dataProvider'     => $this->getDataProvider(),
+                'selectableRows'   => $this->getCGridViewSelectableRowsCount(),
+                'pager'            => $this->getCGridViewPagerParams(),
                 'beforeAjaxUpdate' => $this->getCGridViewBeforeAjaxUpdate(),
                 'afterAjaxUpdate'  => $this->getCGridViewAfterAjaxUpdate(),
-                'cssFile' => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
-                'columns' => $columns,
-                'nullDisplay' => '&#160;',
+                'cssFile'          => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
+                'columns'          => $columns,
+                'nullDisplay'	   => '&#160;',
                 'showTableOnEmpty' => $this->getShowTableOnEmpty(),
                 'emptyText'		   => $this->getEmptyText(),
                 'template'         => "\n{items}\n{pager}",
@@ -190,16 +177,8 @@
             $columns = array();
             if ($this->rowsAreSelectable)
             {
-                if ($this->selectAll)
-                {
-                    $checked = 'true';
-                    $checkBoxHtmlOptions = array('disabled' => 'disabled');
-                }
-                else
-                {
-                    $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
-                    $checkBoxHtmlOptions = array();
-                }
+                $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
+                $checkBoxHtmlOptions = array();
                 $firstColumn = array(
                     'class'               => 'CheckBoxColumn',
                     'checked'             => $checked,
@@ -257,7 +236,7 @@
         {
             if ($this->rowsAreSelectable)
             {
-                return 'js:function(id, options) {addListViewSelectedIdsAndSelectAllToUrl(id, options);}';
+                return 'js:function(id, options) {addListViewSelectedIdsToUrl(id, options);}';
             }
             else
             {

@@ -59,7 +59,7 @@
                     throw new FailedToSaveModelException();
                 }
                 GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
-                               getPointTypeAndValueDataByCategory($category));
+                               static::getPointTypeAndValueDataByCategory($category));
             }
         }
 

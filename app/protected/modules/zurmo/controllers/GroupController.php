@@ -78,7 +78,7 @@
 
         public function actionCreate()
         {
-            $title           = Yii::t('Default', 'Create a New Group');
+            $title           = Yii::t('Default', 'Create Group');
             $breadcrumbLinks = array($title);
             $titleBarAndCreateView = new GroupActionBarAndEditView($this->getId(), $this->getModule()->getId(),
                                                                    $this->attemptToSaveModelFromPost(new Group()));

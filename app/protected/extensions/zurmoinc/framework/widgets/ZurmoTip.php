@@ -39,7 +39,7 @@
             }
             else
             {
-                $this->options['style'] = array_merge($this->options['style'], $this->getZurmoStyle());
+                $this->options['style'] = array_merge($this->getZurmoStyle(), $this->options['style']);
             }
         }
 
@@ -51,7 +51,7 @@
               'color'      => '',
               'textAlign'  => '',
               'border' => '',
-              'tip'       => 'bottomLeft',
+              //'tip'       => 'bottomLeft',
               //'name'      =>  'qtip',
             );
         }

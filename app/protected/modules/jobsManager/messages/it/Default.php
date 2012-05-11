@@ -77,9 +77,9 @@
             => 'Registro per job {jobDisplayName}',
         'Job Name'
             => 'Nome job',
-        'Jobs Manager'
+        'Job Manager'
             => 'Gestione dei jobs',
-        'Jobs Manager: Home'
+        'Job Manager: Home'
             => 'Gestione dei jobs: Home',
         'Last Completed Run'
             => 'Ultima esecuzione',

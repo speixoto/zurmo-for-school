@@ -181,6 +181,7 @@
                     }
                 }
             }
+            $this->resetDeferredPointTypesAndValuesByUserIdToAdd();
         }
 
         /**
@@ -255,11 +256,11 @@
                 {
                     if(isset($userBadgesByType[$badgeRulesClassName::getType()]))
                     {
-                        $badge            = $userBadgesByType[$badgeRulesClassName::getType()];
-                        if($badgeGrade > $badge->grade)
+                        $gameBadge        = $userBadgesByType[$badgeRulesClassName::getType()];
+                        if($badgeGrade > $gameBadge->grade)
                         {
-                            $badge->grade = $badgeGrade;
-                            $saved        = $badge->save();
+                            $gameBadge->grade = $badgeGrade;
+                            $saved        = $gameBadge->save();
                             if(!$saved)
                             {
                                 throw new NotSupportedException();

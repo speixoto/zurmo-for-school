@@ -67,6 +67,8 @@
             => 'Minimale Kennwortlänge',
         'Minimum Username Length'
             => 'Minimale Länge des Benutzernamens',
+        'My Profile'
+            => 'Mein Profil',
         'Password Expires'
             => 'Kennwort abläuft',
         'Password Expiry Days'

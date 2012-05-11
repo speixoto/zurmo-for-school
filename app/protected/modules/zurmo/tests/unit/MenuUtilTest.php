@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MenuUtilTest extends BaseTest
+    class MenuUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -139,7 +139,7 @@
             AccountsModule::setMetadata($metadata);
             $menuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
             $compareData = array(
-                'label' => 'Create New',
+                'label' => 'Create',
                 'url'   => null,
                 'items' => array(
                         array(

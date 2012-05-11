@@ -65,8 +65,8 @@
             => 'Änderungsprotokoll',
         'Changed'
             => 'Geändert',
-        'Clear Search'
-            => 'Suche löschen',
+        'Clear'
+            => 'Löschen',
         'Create'
             => 'Erstellen',
         'Created By User'
@@ -181,10 +181,16 @@
             => 'Jetzt',
         'of'
             => 'von',
-        'On'
+        'Off(visibility)'
+            => 'Deaktiviert',
+        'On(date)'
             => 'Am',
+        'On(visibility)'
+            => 'Eingeschaltet',
         'Opted Out'
             => 'Opted Out',
+        'Options'
+            => 'Optionen',
         'or'
             => 'oder',
         'Panel'
@@ -255,8 +261,8 @@
             => 'Schreiben, um ein tab zu finden',
         'Unknown'
             => 'unbekannt',
-        'Update Selected'
-            => 'Aktualisierung ausgewählt',
+        'Update'
+            => 'Aktualisieren',
         'updated successfully.'
             => 'erfolgreich aktualisiert.',
         'Updating'

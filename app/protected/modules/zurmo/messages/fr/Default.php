@@ -45,14 +45,14 @@
             => 'Secteur 3D',
         '3D Vertical Bar Graph'
             => 'Histogramme 3D',
-        '<b>Zurmo</b> is a <b>Customer Relationship Management</b> system by <b>Zurmo Inc.</b>'
-            => '<b>Zurmo</b> est un système <b>Customer Relationship Management</b> crée par <b>Zurmo Inc.</b>',
-        '<b>Zurmo</b> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.'
-            => '<b>Zurmo</b> est licensé sous le GPLv3.  Vous pouvez lire la license <a href="http://www.zurmo.org/license">ici</a>.',
-        '<b>Zurmo</b> uses the following great Open Source tools and frameworks:'
-            => '<b>Zurmo</b> utilize les outils et cadres Open Source suivants:',
-        'About'
-            => 'À propos de zurmo',
+        '<strong>Zurmo</strong> is a <strong>Customer Relationship Management</strong> system by <strong>Zurmo Inc.</strong>'
+            => '<strong>Zurmo</strong> est un système <strong>Customer Relationship Management</strong> crée par <strong>Zurmo Inc.</strong>',
+        '<strong>Zurmo</strong> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.'
+            => '<strong>Zurmo</strong> est licensé sous le GPLv3.  Vous pouvez lire la license <a href="http://www.zurmo.org/license">ici</a>.',
+        '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
+            => '<strong>Zurmo</strong> utilize les outils et cadres Open Source suivants:',
+        'About Zurmo'
+            => 'À propos de Zurmo',
         'Access Administration Tab'
             => 'Accès Administration',
         'Access Currency Configuration'
@@ -151,8 +151,6 @@
             => 'Nouveau Groupe',
         'Create Groups'
             => 'Créer Groupes',
-        'Create New'
-            => 'Crée',
         'Create Role'
             => 'Créer Rôle',
         'Create Roles'
@@ -303,14 +301,6 @@
             => 'Vue liste',
         'Load'
             => 'Télécharger',
-        'Login'
-            => 'Connexion',
-        'Login required.'
-            => 'Login requis.',
-        'Logout'
-            => 'Déconnexion',
-        'Logout failed.'
-            => 'Logout échoué.',
         'Longitude'
             => 'Longitude',
         'Manage Active Languages'
@@ -477,6 +467,14 @@
             => 'Auto-généré',
         'Shipping Address'
             => 'Adresse de livraison',
+        'Sign in'
+            => 'Connexion',
+        'Sign in required.'
+            => 'Connexion requise.',
+        'Sign out'
+            => 'Déconnexion',
+        'Sign out failed.'
+            => 'La déconnexion a échouée.',
         'Size'
             => 'Taille',
         'skipped because you do not have sufficient permissions.'
@@ -523,8 +521,8 @@
             => 'Il manque le(s) champ(s) obligatoire(s) suivant dans le fichier: {view}.  Veuillez contacter votre administrateur système.',
         'This action is only available in debug mode.'
             => 'Cette action est seulement disponible en mode debug.',
-        'This is <b>version {zurmoVersion}</b> of <b>Zurmo</b>.'
-            => 'Vous utilisez la <b>version {zurmoVersion}</b> de <b>Zurmo</b>.',
+        'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.'
+            => 'Vous utilisez la <strong>version {zurmoVersion}</strong> de <strong>Zurmo</strong>.',
         'This name is reserved. Please pick a different name.'
             => 'Ce nom est réservé.  Veuillez choisir un nom différent.',
         'Time zone'
@@ -549,10 +547,10 @@
             => 'Valeur',
         'Values'
             => 'Valeurs',
-        'Visit <b>Zurmo Inc.</b> at {url}.'
-            => 'Visitez <b>Zurmo Inc.</b>: {url}.',
-        'Visit the <b>Zurmo Open Source Project</b> at {url}.'
-            => 'Visitez le <b>Project Zurmo Open Source</b>: {url}.',
+        'Visit <strong>Zurmo Inc.</strong> at {url}.'
+            => 'Visitez <strong>Zurmo Inc.</strong>: {url}.',
+        'Visit the <strong>Zurmo Open Source Project</strong> at {url}.'
+            => 'Visitez le <strong>Project Zurmo Open Source</strong>: {url}.',
         'Website'
             => 'Site web',
         'Welcome'
@@ -569,8 +567,6 @@
             => 'Vous avez tenté d\'accéder à une page dont vous n\'avez pas accès.',
         'You must have at least one active currency.'
             => 'Vous devez avoir au moins une devise active.',
-        'Your Profile'
-            => 'Votre Profil',
         'Your RedBean version is currentVersion and it should be acceptableVersion.'
             => 'Votre version de RedBean est currentVersion et doit être acceptableVersion.',
         'Your Yii version is currentVersion and it should be acceptableVersion.'

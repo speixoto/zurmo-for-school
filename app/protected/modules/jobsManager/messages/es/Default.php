@@ -77,9 +77,9 @@
             => 'Archivo de registro para {jobDisplayName}',
         'Job Name'
             => 'Nombre del trabajo',
-        'Jobs Manager'
+        'Job Manager'
             => 'Tareas del sistema',
-        'Jobs Manager: Home'
+        'Job Manager: Home'
             => 'Tareas del sistema: Inicio',
         'Last Completed Run'
             => 'Última ejecución',

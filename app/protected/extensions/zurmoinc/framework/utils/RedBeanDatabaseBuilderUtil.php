@@ -123,7 +123,14 @@
                     {
                         if(!$model->delete())
                         {
-                            $messageLogger->addErrorMessage("*** Deleting the sample " .  get_class($model) . " failed. It would not delete.");
+                            if($model->id < 0)
+                            {
+                                $messageLogger->addInfoMessage(get_class($model) . " Not Deleted but never saved so this is ok. (Most likely it is a - Has Many Owned)");
+                            }
+                            else
+                            {
+                                $messageLogger->addErrorMessage("*** Deleting the sample " .  get_class($model) . " failed. It would not delete.");
+                            }
                         }
                         else
                         {

@@ -46,7 +46,7 @@
             $model                      = $event->sender;
             assert('$model instanceof Item');
             if(!$model->getIsNewModel() && array_key_exists('completed', $model->originalAttributeValues) &&
-                $model->completed == true)
+                $model->completed == true && $model->dueDateTime != null)
             {
                 $completedTimestamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->completedDateTime);
                 $dueTimestamp       = DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->dueDateTime);
@@ -63,7 +63,7 @@
                         throw new FailedToSaveModelException();
                     }
                     GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
-                                   getPointTypeAndValueDataByCategory($category));
+                                   static::getPointTypeAndValueDataByCategory($category));
                 }
             }
         }

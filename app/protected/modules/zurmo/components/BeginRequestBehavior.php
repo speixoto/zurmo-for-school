@@ -59,8 +59,8 @@
                 {
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstanceFolderCheck'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstallCheck'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+                    //$owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
+                    //$owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
                 }
                 else
                 {
@@ -236,7 +236,7 @@
 
                 if (!$isUrlAllowedToGuests)
                 {
-                    $message = Yii::t('Default', 'Login required.');
+                    $message = Yii::t('Default', 'Sign in required.');
                     $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
                     Yii::app()->apiHelper->sendResponse($result);
                     exit;
