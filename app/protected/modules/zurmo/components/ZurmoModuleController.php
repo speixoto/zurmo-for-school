@@ -208,8 +208,8 @@
                     $exportItem->save();
 
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'Export will be done in background, due to huge amount od data you requested ' .
-                        'to export. You will receive notification, after export process is completed, with download link.')
+                        Yii::t('Default', 'A large amount of data has been requested for export.  You will receive  ' .
+                        'a notification with the download link when the export is complete.')
                     );
                 }
             }

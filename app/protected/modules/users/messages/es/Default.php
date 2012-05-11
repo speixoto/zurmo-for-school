@@ -67,6 +67,8 @@
             => 'Largo mínimo de la contraseña',
         'Minimum Username Length'
             => 'Largo mínimo de nombre de usuario',
+        'My Profile'
+            => 'Mi Perfil',
         'Password Expires'
             => 'Vencimiento de la contraseña',
         'Password Expiry Days'

@@ -160,7 +160,7 @@
         'Module Name'
             => 'Nom du Module',
         'More Details'
-            => 'Plus de dtails',
+            => 'Plus de détails',
         'More Options'
             => 'Plus d\'options',
         'My List View'

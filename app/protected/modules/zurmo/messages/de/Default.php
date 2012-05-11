@@ -301,14 +301,6 @@
             => 'Listenansicht',
         'Load'
             => 'Laden',
-        'Sign in'
-            => 'Anmelden',
-        'Sign in required.'
-            => 'Login erforderlich.',
-        'Sign out'
-            => 'Abmelden',
-        'Sign out failed.'
-            => 'Fehler bei der Abmeldung.',
         'Longitude'
             => 'Länge',
         'Manage Active Languages'
@@ -475,6 +467,14 @@
             => 'Selbstgeneriert',
         'Shipping Address'
             => 'Liefer-Adresse',
+        'Sign in'
+            => 'Anmelden',
+        'Sign in required.'
+            => 'Login erforderlich.',
+        'Sign out'
+            => 'Abmelden',
+        'Sign out failed.'
+            => 'Fehler bei der Abmeldung.',
         'Size'
             => 'Größe',
         'skipped because you do not have sufficient permissions.'
@@ -567,8 +567,6 @@
             => 'Sie haben keinen Zugriff auf die Seite.',
         'You must have at least one active currency.'
             => 'Sie müssen mindestens eine aktive Währung haben.',
-        'Your Profile'
-            => 'Ihr Profil',
         'Your RedBean version is currentVersion and it should be acceptableVersion.'
             => 'Ihre RedBean Version ist currentVersion und sollte acceptableVersion sein',
         'Your Yii version is currentVersion and it should be acceptableVersion.'

@@ -299,14 +299,6 @@
             => 'Vista Elenco',
         'Load'
             => 'Carica',
-        'Sign in'
-            => 'Accedi',
-        'Sign in required.'
-            => 'Login obbligatorio.',
-        'Sign out'
-            => 'Esci',
-        'Sign out failed.'
-            => 'Logout fallito.',
         'Longitude'
             => 'Longitudine',
         'Manage Active Languages'
@@ -473,6 +465,14 @@
             => 'Autogenerato',
         'Shipping Address'
             => 'Indirizzo di consegna',
+        'Sign in'
+            => 'Accedi',
+        'Sign in required.'
+            => 'Login obbligatorio.',
+        'Sign out'
+            => 'Esci',
+        'Sign out failed.'
+            => 'Logout fallito.',
         'Size'
             => 'Dimensione',
         'skipped because you do not have sufficient permissions.'
@@ -563,8 +563,6 @@
             => 'Non si è autorizzati a visualizzare questa pagina.',
         'You must have at least one active currency.'
             => 'Ha bisogno di almeno una valuta attiva.',
-        'Your Profile'
-            => 'Suo Profile',
         'Your RedBean version is currentVersion and it should be acceptableVersion.'
             => 'Suo versione di RedBean è currentVersion e dovrebbe essere acceptableVersion.',
         'Your Yii version is currentVersion and it should be acceptableVersion.'

@@ -301,14 +301,6 @@
             => 'Vista de lista',
         'Load'
             => 'Cargar',
-        'Sign in'
-            => 'Iniciar sesión',
-        'Sign in required.'
-            => 'Inicio de sesión requerido.',
-        'Sign out'
-            => 'Salir',
-        'Sign out failed.'
-            => 'Error de salido.',
         'Longitude'
             => 'Longitud',
         'Manage Active Languages'
@@ -475,6 +467,14 @@
             => 'Autogenerado',
         'Shipping Address'
             => 'Dirección de envío',
+        'Sign in'
+            => 'Iniciar sesión',
+        'Sign in required.'
+            => 'Inicio de sesión requerido.',
+        'Sign out'
+            => 'Salir',
+        'Sign out failed.'
+            => 'Error de salido.',
         'Size'
             => 'Tamaño',
         'skipped because you do not have sufficient permissions.'
@@ -567,8 +567,6 @@
             => 'Ha intentado acceder a una página que no tiene acceso.',
         'You must have at least one active currency.'
             => 'Debe tener al menos una divisa activa.',
-        'Your Profile'
-            => 'Su Perfil',
         'Your RedBean version is currentVersion and it should be acceptableVersion.'
             => 'Su versión de RedBean es currentVersion y debe ser acceptableVersion.',
         'Your Yii version is currentVersion and it should be acceptableVersion.'

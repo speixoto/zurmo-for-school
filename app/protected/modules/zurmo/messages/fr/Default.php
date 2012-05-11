@@ -301,14 +301,6 @@
             => 'Vue liste',
         'Load'
             => 'Télécharger',
-        'Sign in'
-            => 'Connexion',
-        'Sign in required.'
-            => 'Connexion requise.',
-        'Sign out'
-            => 'Déconnexion',
-        'Sign out failed.'
-            => 'La déconnexion a échouée.',
         'Longitude'
             => 'Longitude',
         'Manage Active Languages'
@@ -475,6 +467,14 @@
             => 'Auto-généré',
         'Shipping Address'
             => 'Adresse de livraison',
+        'Sign in'
+            => 'Connexion',
+        'Sign in required.'
+            => 'Connexion requise.',
+        'Sign out'
+            => 'Déconnexion',
+        'Sign out failed.'
+            => 'La déconnexion a échouée.',
         'Size'
             => 'Taille',
         'skipped because you do not have sufficient permissions.'
@@ -567,8 +567,6 @@
             => 'Vous avez tenté d\'accéder à une page dont vous n\'avez pas accès.',
         'You must have at least one active currency.'
             => 'Vous devez avoir au moins une devise active.',
-        'Your Profile'
-            => 'Votre Profil',
         'Your RedBean version is currentVersion and it should be acceptableVersion.'
             => 'Votre version de RedBean est currentVersion et doit être acceptableVersion.',
         'Your Yii version is currentVersion and it should be acceptableVersion.'
