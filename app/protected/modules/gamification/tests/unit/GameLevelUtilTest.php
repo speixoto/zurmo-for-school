@@ -84,5 +84,13 @@
             $gameLevel->value = 2;
             $this->assertEquals(1000, GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel(GameLevel::TYPE_GENERAL, $gameLevel));
         }
+
+        public function testGetUserStatisticsData()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $data = GameLevelUtil::getUserStatisticsData($super);
+            $this->assertEquals(6, count($data));
+        }
     }
 ?>

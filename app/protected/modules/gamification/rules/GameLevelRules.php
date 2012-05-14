@@ -109,5 +109,13 @@
             assert('is_int($level)');
             throw new NotImplementedException();
         }
+
+        /**
+         * Override in child to have a display label for the type of level.
+         */
+        public static function getDisplayLabel()
+        {
+            throw new NotImplementedException();
+        }
     }
 ?>

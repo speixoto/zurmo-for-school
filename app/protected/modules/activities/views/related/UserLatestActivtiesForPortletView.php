@@ -36,6 +36,8 @@
         {
             assert('is_array($viewData) || $viewData == null');
             assert('isset($params["portletId"])');
+            assert('isset($params["relationModuleId"])');
+            assert('isset($params["relationModel"])');
             assert('is_string($uniqueLayoutId)');
             $this->moduleId       = 'users';
             $this->viewData       = $viewData;

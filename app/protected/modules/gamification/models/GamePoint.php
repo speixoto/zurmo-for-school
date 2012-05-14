@@ -225,25 +225,25 @@
             assert('$user->id > 0');
             assert('is_int($points)');
             assert('is_string($levelType) && $levelType != null');
-            try
+            $data = self::getSummationPointsDataByLevelTypeAndUser($user, $levelType);
+            if($data != null && $data['sum'] > $points)
             {
-                $wherePart = static::getPointTypeWherePartByLevelType($levelType);
-                $sql       = "select sum(value) sum from gamepoint where " . $wherePart . " person_item_id = " .
-                             $user->getClassId('Item') . " group by person_item_id";
-                $data      = R::getRow($sql);
-                if($data != null && $data['sum'] > $points)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            catch (RedBean_Exception_SQL $e)
+            else
             {
                 return false;
             }
+        }
+
+        public static function getSummationPointsDataByLevelTypeAndUser(User $user, $levelType)
+        {
+            assert('$user->id > 0');
+            assert('is_string($levelType) && $levelType != null');
+            $wherePart = static::getPointTypeWherePartByLevelType($levelType);
+            $sql       = "select sum(value) sum from gamepoint where " . $wherePart . " person_item_id = " .
+                         $user->getClassId('Item') . " group by person_item_id";
+            return R::getRow($sql);
         }
 
         /**

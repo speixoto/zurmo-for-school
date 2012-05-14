@@ -26,8 +26,6 @@
 
     class UserDetailsAndRelationsView extends DetailsAndRelationsView
     {
-        protected $cssClasses =  array( 'AdministrativeArea' );
-
         public function isUniqueToAPage()
         {
             return true;
@@ -52,28 +50,23 @@
                             )
                         )
                     ),
-                    /**
                     'rightTopView' => array(
                         'columns' => array(
                             array(
                                 'rows' => array(
                                     array(
-                                        'type' => 'UpcomingMeetingsForAccountCalendar',
+                                        'type' => 'UserLeaderboardRankingForPortlet'
                                     ),
                                     array(
-                                        'type' => 'OpenTasksForAccountRelatedList',
+                                        'type' => 'UserGamificationStatisticsForPortlet'
                                     ),
                                     array(
-                                        'type' => 'ContactsForAccountRelatedList',
+                                        'type' => 'UserBadgesForPortlet'
                                     ),
-                                    array(
-                                        'type' => 'OpportunitiesForAccountRelatedList',
-                                    )
                                 )
                             )
                         )
                     )
-                    **/
                 )
             );
             return $metadata;
@@ -85,13 +78,12 @@
             assert('$leftBottomView instanceof View');
             assert('$rightTopView instanceof View || $rightTopView == null');
             assert('is_bool($renderRightSide)');
-            $leftVerticalGridView  = new GridView(3, 1);
-            $leftVerticalGridView->setView(new ActionBarForUserEditAndDetailsView ($this->controllerId,
-                                                                                   $this->moduleId,
-                                                                                   $this->params['relationModel'],
-                                                                                   'DetailsLink'), 0, 0);
-            $leftVerticalGridView->setView($leftTopView, 1, 0);
-            $leftVerticalGridView->setView($leftBottomView, 2, 0);
+            $actionView = new ActionBarForUserEditAndDetailsView ($this->controllerId, $this->moduleId,
+                                                                  $this->params['relationModel'], 'DetailsLink');
+            $content  = $actionView->render();
+            $leftVerticalGridView  = new GridView(2, 1);
+            $leftVerticalGridView->setView($leftTopView, 0, 0);
+            $leftVerticalGridView->setView($leftBottomView, 1, 0);
             $content = $leftVerticalGridView->render();
             if ($renderRightSide)
             {

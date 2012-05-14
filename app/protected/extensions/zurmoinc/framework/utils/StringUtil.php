@@ -52,17 +52,17 @@
          * Given an integer, resolve the integer with an ordinal suffix and return the content as as string.
          * @param integer $number
          */
-        public static function resolveOrdinalIntegerAsStringContent($number)
+        public static function resolveOrdinalIntegerAsStringContent($integer)
         {
             assert('is_int($integer)');
             $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
-            if (($number %100) >= 11 && ($number%100) <= 13)
+            if (($integer %100) >= 11 && ($integer%100) <= 13)
             {
-               return $number. 'th';
+               return $integer. 'th';
             }
             else
             {
-               return $number. $ends[$number % 10];
+               return $integer. $ends[$integer % 10];
             }
         }
     }

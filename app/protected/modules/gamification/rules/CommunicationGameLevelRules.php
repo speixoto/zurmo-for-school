@@ -46,5 +46,10 @@
                                                  5  => 600,
                                                  6  => 750,
                                                  7  => 910);
+
+        public static function getDisplayLabel()
+        {
+            return Yii::t('Default', 'Communication');
+        }
     }
 ?>

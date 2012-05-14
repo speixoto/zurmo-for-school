@@ -25,31 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Rules for the sales level type.
+     * Class defines rules for a miscellaneous portlet or mixed content used in a details and relation view.
+     * portlets.
      */
-    class SalesGameLevelRules extends SubLevelGameLevelRules
+    class MixedForDetailsPortletRules extends PortletRules
     {
-        /**
-         * Defines the last level for the level type.
-         * @var integer
-         */
-        protected static $lastLevel     = 7;
-
-        /**
-         * Array of data that provides the point value required to move up to each level.
-         * @var array
-         */
-        protected static $levelPointMap = array( 1  => 100,
-                                                 2  => 210,
-                                                 3  => 330,
-                                                 4  => 460,
-                                                 5  => 600,
-                                                 6  => 750,
-                                                 7  => 910);
-
-        public static function getDisplayLabel()
-        {
-            return Yii::t('Default', 'Sales');
-        }
     }
 ?>

@@ -64,5 +64,77 @@
             }
             return false;
         }
+
+        /**
+         * Given a user, return level information including total points, what level the user is at for each level type,
+         * and how many points until the user reaches the next of each level type.
+         * @param unknown_type $user
+         */
+        public static function getUserStatisticsData(User $user)
+        {
+            $statisticsData   = array();
+            $statisticsData[] = self::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_GENERAL);
+            $statisticsData[] = self::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_SALES);
+            $statisticsData[] = self::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_NEW_BUSINESS);
+            $statisticsData[] = self::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_ACCOUNT_MANAGEMENT);
+            $statisticsData[] = self::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_TIME_MANAGEMENT);
+            $statisticsData[] = self::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_COMMUNICATION);
+            return $statisticsData;
+        }
+
+        protected static function getStatisticsDataForAGivenLevelType(User $user, $levelType)
+        {
+            assert('is_string($levelType) && $levelType != null');
+            $rulesClassName      = $levelType . 'GameLevelRules';
+            $currentGameLevel    = GameLevel::resolveByTypeAndPerson($levelType, $user);
+            $currentPointsData   = GamePoint::getSummationPointsDataByLevelTypeAndUser($user, $levelType);
+            if($currentPointsData != null)
+            {
+                $currentPoints = $currentPointsData['sum'];
+            }
+            else
+            {
+                $currentPoints = 0;
+            }
+            $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel($levelType,
+                                                                                              $currentGameLevel);
+            $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
+                                                                                    $currentGameLevel);
+            //If the user has not reached level one, the model has not been saved yet
+            if($currentGameLevel->id < 0)
+            {
+                $nextLevelPercentageComplete = 0;
+                $trueCurrentGameLevel        = 0;
+            }
+            elseif($nextLevel !== false)
+            {
+                $currentLevelMinimumPointValue   = $rulesClassName::getMinimumPointsForLevel(intval($currentGameLevel->value));
+                $pointsCollectedTowardsNextLevel = ($currentPoints - $currentLevelMinimumPointValue);
+                if($pointsCollectedTowardsNextLevel == 0)
+                {
+                    $nextLevelPercentageComplete = 0;
+                }
+                else
+                {
+                    $nextLevelPercentageComplete =
+                    ($pointsCollectedTowardsNextLevel / ($nextLevelPointValue - $currentLevelMinimumPointValue)) * 100;
+                }
+                $trueCurrentGameLevel        = $currentGameLevel->value;
+            }
+            else
+            {
+                $nextLevelPercentageComplete = null;
+                $trueCurrentGameLevel        = $currentGameLevel->value;
+            }
+
+
+            $rankingData = array(
+                'level'                       => (int)$trueCurrentGameLevel,
+                'points'                      => (int)$currentPoints,
+                'nextLevelPercentageComplete' => round($nextLevelPercentageComplete, 2),
+                'levelTypeLabel'              => $rulesClassName::getDisplayLabel(),
+            );
+            return $rankingData;
+        }
     }
 ?>

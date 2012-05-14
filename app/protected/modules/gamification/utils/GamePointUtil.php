@@ -62,7 +62,7 @@
             foreach ($rows as $row)
             {
                 $leaderboardData[$row['userid']] = array(
-                    'rank'         => StringUtil::resolveOrdinalIntegerAsStringContent($rank),
+                    'rank'         => StringUtil::resolveOrdinalIntegerAsStringContent(intval($rank)),
                     'userLabel'    => strval(User::getById(intval($row['userid']))),
                     'points'       => intval($row['points'])
                 );
@@ -135,6 +135,42 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        public static function getUserRankingData(User $user)
+        {
+            $weeklyData  = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_WEEKLY);
+            $monthlyData = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_MONTHLY);
+            $overallData = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL);
+            $rankingData = array();
+            if(isset($weeklyData[$user->id]))
+            {
+                $rankLabel = $weeklyData[$user->id]['rank'];
+            }
+            else
+            {
+                $rankLabel = '--';
+            }
+            $rankingData[] = array('typeLabel' => Yii::t('Default', 'Weekly'), 'rank' => $rankLabel);
+            if(isset($monthlyData[$user->id]))
+            {
+                $rankLabel = $monthlyData[$user->id]['rank'];
+            }
+            else
+            {
+                $rankLabel = '--';
+            }
+            $rankingData[] = array('typeLabel' => Yii::t('Default', 'Monthly'), 'rank' => $rankLabel);
+            if(isset($overallData[$user->id]))
+            {
+                $rankLabel = $overallData[$user->id]['rank'];
+            }
+            else
+            {
+                $rankLabel = '--';
+            }
+            $rankingData[] = array('typeLabel' => Yii::t('Default', 'Overall'), 'rank' => $rankLabel);
+            return $rankingData;
         }
     }
 ?>

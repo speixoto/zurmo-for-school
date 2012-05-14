@@ -64,5 +64,13 @@
             $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL);
             $this->assertTrue(count($data) > 0);
         }
+
+        public function testGetUserRankingData()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $data = GamePointUtil::getUserRankingData($super);
+            $this->assertEquals(3, count($data));
+        }
     }
 ?>
