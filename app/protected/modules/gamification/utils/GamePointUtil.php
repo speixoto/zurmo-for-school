@@ -40,7 +40,7 @@
         {
             assert('$user->id > 0');
             assert('is_array($pointTypeAndValueData)');
-            foreach($pointTypeAndValueData as $type => $value)
+            foreach ($pointTypeAndValueData as $type => $value)
             {
                 Yii::app()->gameHelper->addPointsByUserDeferred($user, $type, $value);
             }

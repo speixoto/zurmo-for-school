@@ -190,7 +190,7 @@
             }
 
             $selectedIds = "";
-            foreach($contacts as $contact)
+            foreach ($contacts as $contact)
             {
                 $selectedIds .= $contact->id . ",";
             }

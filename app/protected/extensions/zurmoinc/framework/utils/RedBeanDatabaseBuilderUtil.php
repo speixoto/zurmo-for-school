@@ -121,9 +121,9 @@
                 {
                     if (!$model->isDeleted())
                     {
-                        if(!$model->delete())
+                        if (!$model->delete())
                         {
-                            if($model->id < 0)
+                            if ($model->id < 0)
                             {
                                 $messageLogger->addInfoMessage(get_class($model) . " Not Deleted but never saved so this is ok. (Most likely it is a - Has Many Owned)");
                             }

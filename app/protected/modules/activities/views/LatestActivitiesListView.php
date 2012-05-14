@@ -194,7 +194,7 @@
 
             $content  = '<div class="horizontal-line latest-activity-toolbar">';
             $content .= $ownedByFilterContent;
-            if($this->showRollUpToggle)
+            if ($this->showRollUpToggle)
             {
                 $element                   = new LatestActivitiesRollUpFilterRadioElement($this->configurationForm,
                                                                                        'rollup', $form);
@@ -205,7 +205,7 @@
             $content .= CHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
             $content .= '</div>' . "\n";
 
-            if($this->configurationForm->filteredByModelName == LatestActivitiesConfigurationForm::FILTERED_BY_ALL)
+            if ($this->configurationForm->filteredByModelName == LatestActivitiesConfigurationForm::FILTERED_BY_ALL)
             {
                 $startingStyle = "display:none";
             }

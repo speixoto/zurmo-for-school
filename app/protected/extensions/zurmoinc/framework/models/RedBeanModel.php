@@ -202,11 +202,11 @@
          */
         public static function model($className = null)
         {
-            if($className == null)
+            if ($className == null)
             {
                 $className = get_called_class();
             }
-            if(isset(self::$_models[$className]))
+            if (isset(self::$_models[$className]))
             {
                 return self::$_models[$className];
             }
@@ -1560,7 +1560,7 @@
          * proceeding to non-validated models.
          * @see RedBeanModel
          * @param $ignoreRequiredValidator - set to true in scenarios where you want to validate everything but the
-         * 									 the required validator.  An example is a search form.
+         *                                   the required validator.  An example is a search form.
          */
         public function validate(array $attributeNames = null, $ignoreRequiredValidator = false)
         {
@@ -1895,7 +1895,7 @@
          */
         protected function beforeSave()
         {
-            if($this->hasEventHandler('onBeforeSave'))
+            if ($this->hasEventHandler('onBeforeSave'))
             {
                 $event = new CModelEvent($this);
                 $this->onBeforeSave($event);
@@ -2041,7 +2041,7 @@
                 // See comments below on isDeletable.
                 throw new NotSupportedException();
             }
-            if($this->beforeDelete())
+            if ($this->beforeDelete())
             {
                 $deleted = $this->unrestrictedDelete();
                 $this->afterDelete();
@@ -2062,7 +2062,7 @@
          */
         protected function beforeDelete()
         {
-            if($this->hasEventHandler('onBeforeDelete'))
+            if ($this->hasEventHandler('onBeforeDelete'))
             {
                 $event = new CModelEvent($this);
                 $this->onBeforeDelete($event);
@@ -2082,7 +2082,7 @@
          */
         protected function afterDelete()
         {
-            if($this->hasEventHandler('onAfterDelete'))
+            if ($this->hasEventHandler('onAfterDelete'))
             {
                 $this->onAfterDelete(new CEvent($this));
             }

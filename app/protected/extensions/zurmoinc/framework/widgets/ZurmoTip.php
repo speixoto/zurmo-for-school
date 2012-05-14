@@ -33,7 +33,7 @@
         public function __construct($params = array())
         {
             parent::__construct($params);
-            if(!isset($this->options['style']))
+            if (!isset($this->options['style']))
             {
                 $this->options['style'] = $this->getZurmoStyle();
             }

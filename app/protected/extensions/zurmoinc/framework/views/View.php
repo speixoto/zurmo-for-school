@@ -113,10 +113,9 @@
             }
             else
             {
-				$reflection = new ReflectionClass( $calledClass );
-				$classFile = $reflection->getFileName();
+                $reflection = new ReflectionClass( $calledClass );
+                $classFile = $reflection->getFileName();
                 return "<!--Called in: $classFile--><div $id $classes>$content</div>";
-				
             }
         }
 

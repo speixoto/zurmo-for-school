@@ -135,14 +135,14 @@
                     'person' => array(RedBeanModel::HAS_ONE, 'Item'),
                 ),
                 'rules' => array(
-                    array('type', 		   'required'),
+                    array('type',          'required'),
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
-                    array('value',     	   'type',    'type' => 'integer'),
-                    array('value', 		   'default', 'value' => 1),
+                    array('value',         'type',    'type' => 'integer'),
+                    array('value',         'default', 'value' => 1),
                     array('value',         'numerical', 'min' => 1),
                     array('value',         'required'),
-                    array('person', 	   'required'),
+                    array('person',        'required'),
                 ),
                 'elements' => array(
                     'person' => 'Person',
@@ -181,17 +181,17 @@
             assert('$gameLevel->id > 0');
             $gameLevelRulesClassName = $gameLevel->type . 'GameLevelRules';
             $gamePoint = null;
-            if($gameLevelRulesClassName::hasBonusPointsOnLevelChange())
+            if ($gameLevelRulesClassName::hasBonusPointsOnLevelChange())
             {
                 $type           = $gameLevelRulesClassName::getLevelBonusPointType();
                 $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
                 $value          = $gameLevelRulesClassName::getLevelBonusPointValue($gameLevel->value);
             }
-            if($gamePoint != null && $value > 0)
+            if ($gamePoint != null && $value > 0)
             {
                 $gamePoint->addValue($value);
                 $saved          = $gamePoint->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new NotSupportedException();
                 }

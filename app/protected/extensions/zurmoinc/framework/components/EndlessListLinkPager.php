@@ -46,7 +46,7 @@
          */
         protected function createPageButtons()
         {
-            if(($pageCount=$this->getPageCount())<=1)
+            if (($pageCount=$this->getPageCount())<=1)
                 return array();
 
             list($beginPage,$endPage)=$this->getPageRange();
@@ -54,7 +54,7 @@
             $buttons = array();
 
             // next page
-            if(($page = $currentPage+1)>=$pageCount-1)
+            if (($page = $currentPage+1)>=$pageCount-1)
             {
                 $page = $pageCount-1;
             }
@@ -70,7 +70,7 @@
          */
         protected function createPageButton($label, $page, $class, $hidden, $selected)
         {
-            if($hidden || $selected)
+            if ($hidden || $selected)
             {
                 $class.=' '.($hidden ? self::CSS_HIDDEN_PAGE : self::CSS_SELECTED_PAGE);
             }
@@ -95,7 +95,7 @@
                                 });
                                 var \$data = $(data);
                                 jQuery.globalEval(\$data.filter('script').last().text());
-                                if(settings.afterAjaxUpdate !== undefined)
+                                if (settings.afterAjaxUpdate !== undefined)
                                     settings.afterAjaxUpdate(id, data);
                                 $('#'+id).removeClass(settings.loadingClass);
                                 //$.fn.yiiGridView.selectCheckedRows(id);

@@ -53,7 +53,7 @@
         {
             $content  = null;
             $content .= $this->renderBeforeTableContent();
-            if(count($this->attributesCollection) > 0)
+            if (count($this->attributesCollection) > 0)
             {
                 $content .= '<div>';
                 $content .= $this->renderTitleContent();

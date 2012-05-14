@@ -244,7 +244,7 @@
                             Yii::t('Default', ArrayUtil::getArrayValue($panel, 'title')) . '&#160;</span>';
                 if ($this->canMovePanels)
                 {
-                    if(!ArrayUtil::getArrayValue($panel, 'locked'))
+                    if (!ArrayUtil::getArrayValue($panel, 'locked'))
                     {
                         $content .= '<span class="panel-handle-icon ui-icon ui-icon-arrow-4">&#160;</span>';
                     }
@@ -260,7 +260,7 @@
                 $content .= '<div class="sortable-row-list-container">';
                 if ($this->canMoveRows)
                 {
-                    if(!ArrayUtil::getArrayValue($panel, 'locked'))
+                    if (!ArrayUtil::getArrayValue($panel, 'locked'))
                     {
                         $content .= '<ul class="sortable-row-list sortable-row-list-helper sortable-row-connector">';
                     }
@@ -278,7 +278,7 @@
                     $content .= '<li class="ui-state-default">';
                     if ($this->canMoveRows)
                     {
-                        if(!ArrayUtil::getArrayValue($panel, 'locked'))
+                        if (!ArrayUtil::getArrayValue($panel, 'locked'))
                         {
                             $content .= '<span class="row-handle-icon ui-icon ui-icon-arrow-4">&#160;</span>';
                         }
@@ -297,7 +297,7 @@
                             $cssClassName                = 'layout-double-column';
                             $cssCellMergeIconClassName   = 'ui-icon-circle-minus';
                         }
-                        if(!ArrayUtil::getArrayValue($panel, 'locked'))
+                        if (!ArrayUtil::getArrayValue($panel, 'locked'))
                         {
                             $content .= '<div class="' . $cssClassName . ' droppable-cell-container droppable-cell-container-helper ui-state-hover">';
                         }
@@ -324,7 +324,7 @@
                                 }
                                 else
                                 {
-                                    if(!ArrayUtil::getArrayValue($panel, 'locked'))
+                                    if (!ArrayUtil::getArrayValue($panel, 'locked'))
                                     {
                                          $content .= 'class="movable-cell-element cell-element">';
                                     }
@@ -333,7 +333,7 @@
                                         $content .= 'class="cell-element">';
                                     }
                                 }
-                                if(!ArrayUtil::getArrayValue($panel, 'locked'))
+                                if (!ArrayUtil::getArrayValue($panel, 'locked'))
                                 {
                                      $content .= '<span class="cell-handle-icon ui-icon ui-icon-arrow-4">&#160;</span>';
                                 }
@@ -344,7 +344,7 @@
                                 }
                                 if ($this->canRemoveElement())
                                 {
-                                    if(!ArrayUtil::getArrayValue($panel, 'locked'))
+                                    if (!ArrayUtil::getArrayValue($panel, 'locked'))
                                     {
                                         $content .= '<span class="cell-element-icon ui-icon ui-icon-trash">&#160;</span>';
                                     }
@@ -364,7 +364,7 @@
                         }
                         $content .= '</div>';
                     }
-                    if(!ArrayUtil::getArrayValue($panel, 'locked'))
+                    if (!ArrayUtil::getArrayValue($panel, 'locked'))
                     {
                         $content .= '<span class="row-element-icon ui-icon ui-icon-trash">&#160;</span>';
                     }

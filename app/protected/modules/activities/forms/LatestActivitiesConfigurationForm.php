@@ -86,7 +86,7 @@
             return array(
                 array('filteredByModelName', 'type',    'type' => 'string'),
                 array('rollup',              'boolean'),
-                array('ownedByFilter', 		 'type',    'type' => 'string')
+                array('ownedByFilter',       'type',    'type' => 'string')
             );
         }
     }

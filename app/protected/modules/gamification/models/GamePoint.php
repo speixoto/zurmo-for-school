@@ -146,7 +146,7 @@
             $where             = RedBeanModelDataProvider::makeWhere('GamePoint', $searchAttributeData, $joinTablesAdapter);
             $models            = self::getSubset($joinTablesAdapter, null, null, $where, null);
             $indexedModels     = array();
-            foreach($models as $gamePoint)
+            foreach ($models as $gamePoint)
             {
                 $indexedModels[$gamePoint->type] = $gamePoint;
             }
@@ -176,13 +176,13 @@
                     'transactions' => array(RedBeanModel::HAS_MANY, 'GamePointTransaction', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('type', 		   'required'),
+                    array('type',          'required'),
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
-                    array('value',     	   'type',    'type' => 'integer'),
+                    array('value',         'type',    'type' => 'integer'),
                     array('value',         'numerical', 'min' => 1),
-                    array('value', 		   'required'),
-                    array('person', 	   'required'),
+                    array('value',         'required'),
+                    array('person',        'required'),
                 ),
                 'elements' => array(
                     'person' => 'Person',
@@ -231,7 +231,7 @@
                 $sql       = "select sum(value) sum from gamepoint where " . $wherePart . " person_item_id = " .
                              $user->getClassId('Item') . " group by person_item_id";
                 $data      = R::getRow($sql);
-                if($data != null && $data['sum'] > $points)
+                if ($data != null && $data['sum'] > $points)
                 {
                     return true;
                 }
@@ -255,7 +255,7 @@
         protected static function getPointTypeWherePartByLevelType($levelType)
         {
             assert('is_string($levelType) && $levelType != null');
-            if(!in_array($levelType, array(GameLevel::TYPE_GENERAL,
+            if (!in_array($levelType, array(GameLevel::TYPE_GENERAL,
                                      GameLevel::TYPE_SALES,
                                      GameLevel::TYPE_NEW_BUSINESS,
                                      GameLevel::TYPE_ACCOUNT_MANAGEMENT,
@@ -264,7 +264,7 @@
             {
                 throw new NotSupportedException();
             }
-            if($levelType == GameLevel::TYPE_GENERAL)
+            if ($levelType == GameLevel::TYPE_GENERAL)
             {
                 return null;
             }

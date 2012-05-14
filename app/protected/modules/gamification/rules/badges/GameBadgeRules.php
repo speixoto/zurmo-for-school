@@ -130,55 +130,55 @@
         public static function getGradeBonusPointValue($grade)
         {
             assert('is_int($grade)');
-            if($grade == 1)
+            if ($grade == 1)
             {
                 return 50;
             }
-            elseif($grade == 2)
+            elseif ($grade == 2)
             {
                 return 150;
             }
-            elseif($grade == 3)
+            elseif ($grade == 3)
             {
                 return 300;
             }
-            elseif($grade == 4)
+            elseif ($grade == 4)
             {
                 return 500;
             }
-            elseif($grade == 5)
+            elseif ($grade == 5)
             {
                 return 750;
             }
-            elseif($grade == 6)
+            elseif ($grade == 6)
             {
                 return 1000;
             }
-            elseif($grade == 7)
+            elseif ($grade == 7)
             {
                 return 1250;
             }
-            elseif($grade == 8)
+            elseif ($grade == 8)
             {
                 return 1500;
             }
-            elseif($grade == 9)
+            elseif ($grade == 9)
             {
                 return 1750;
             }
-            elseif($grade == 10)
+            elseif ($grade == 10)
             {
                 return 2000;
             }
-            elseif($grade == 11)
+            elseif ($grade == 11)
             {
                 return 2250;
             }
-            elseif($grade == 12)
+            elseif ($grade == 12)
             {
                 return 2500;
             }
-            elseif($grade == 13)
+            elseif ($grade == 13)
             {
                 return 3000;
             }

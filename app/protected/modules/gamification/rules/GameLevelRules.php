@@ -66,7 +66,7 @@
         public static function isLastLevel($level)
         {
             assert('is_int($level)');
-            if($level == static::$lastLevel)
+            if ($level == static::$lastLevel)
             {
                 return true;
             }
@@ -79,7 +79,7 @@
         public static function getMinimumPointsForLevel($level)
         {
             assert('is_int($level)');
-            if(isset(static::$levelPointMap[$level]))
+            if (isset(static::$levelPointMap[$level]))
             {
                 return static::$levelPointMap[$level];
             }

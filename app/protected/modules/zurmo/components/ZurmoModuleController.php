@@ -272,7 +272,7 @@
             {
                 return $modelClassName::getById($id);
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 $messageContent  = Yii::t('Default', 'The record you are trying to access does not exist.');
                 $messageView     = new ModelNotFoundView($messageContent);

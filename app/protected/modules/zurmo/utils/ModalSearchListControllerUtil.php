@@ -50,7 +50,7 @@
             $className           = $controller->getModule()->getPluralCamelCasedName() . 'ModalSearchAndListView';
             $modelClassName      = $controller->getModule()->getPrimaryModelName();
             $searchViewClassName = $className::getSearchViewClassName();
-            if($searchViewClassName::getModelForMetadataClassName() != null)
+            if ($searchViewClassName::getModelForMetadataClassName() != null)
             {
                  $formModelClassName   = $searchViewClassName::getModelForMetadataClassName();
                  $model                = new $modelClassName(false);

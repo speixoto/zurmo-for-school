@@ -45,19 +45,19 @@
             list($beginPage,$endPage) = $this->getPageRange();
             $currentPage = $this->getCurrentPage(false); // currentPage is calculated in getPageRange()
             $buttons[] = $this->createPageButton($this->firstPageLabel, 0, self::CSS_FIRST_PAGE, true, true);
-            if(($pageCount = $this->getPageCount())<=1)
+            if (($pageCount = $this->getPageCount())<=1)
             {
                 return $buttons;
             }
             // prev page
-            if(($page = $currentPage-1) < 0)
+            if (($page = $currentPage-1) < 0)
             {
                 $page = 0;
             }
             $buttons[]= $this->createPageButtonNoLinkIfHidden($this->prevPageLabel, $page, self::CSS_PREVIOUS_PAGE, $currentPage <= 0, false);
 
             // next page
-            if(($page=$currentPage+1)>=$pageCount-1)
+            if (($page=$currentPage+1)>=$pageCount-1)
             {
                 $page = $pageCount-1;
             }
@@ -78,11 +78,11 @@
          */
         protected function createPageButtonNoLinkIfHidden($label, $page, $class, $hidden, $selected)
         {
-            if($hidden || $selected)
+            if ($hidden || $selected)
             {
                 $class .= ' ' . ($hidden ? self::CSS_HIDDEN_PAGE : self::CSS_SELECTED_PAGE);
             }
-            if(!$hidden)
+            if (!$hidden)
             {
                 return '<li class="' . $class . '">' . CHtml::link($label, $this->createPageUrl($page)) . '</li>';
             }

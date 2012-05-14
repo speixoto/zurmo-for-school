@@ -62,7 +62,7 @@
 
         protected function resolveUserCountForItem(Item $item)
         {
-            if($item->name == Group::EVERYONE_GROUP_NAME)
+            if ($item->name == Group::EVERYONE_GROUP_NAME)
             {
                 return User::getCount();
             }

@@ -36,61 +36,61 @@
             assert('is_array($userScoresByType)');
             assert('is_string($modelClassName)');
             $elementName = 'Search' . $modelClassName;
-            if(isset($userScoresByType[$elementName]))
+            if (isset($userScoresByType[$elementName]))
             {
-                if($userScoresByType[$elementName]->value < 1)
+                if ($userScoresByType[$elementName]->value < 1)
                 {
                     return 0;
                 }
-                if($userScoresByType[$elementName]->value < 2)
+                if ($userScoresByType[$elementName]->value < 2)
                 {
                     return 1;
                 }
-                elseif($userScoresByType[$elementName]->value < 11)
+                elseif ($userScoresByType[$elementName]->value < 11)
                 {
                     return 2;
                 }
-                elseif($userScoresByType[$elementName]->value < 26)
+                elseif ($userScoresByType[$elementName]->value < 26)
                 {
                     return 3;
                 }
-                elseif($userScoresByType[$elementName]->value < 51)
+                elseif ($userScoresByType[$elementName]->value < 51)
                 {
                     return 4;
                 }
-                elseif($userScoresByType[$elementName]->value < 76)
+                elseif ($userScoresByType[$elementName]->value < 76)
                 {
                     return 5;
                 }
-                elseif($userScoresByType[$elementName]->value < 101)
+                elseif ($userScoresByType[$elementName]->value < 101)
                 {
                     return 6;
                 }
-                elseif($userScoresByType[$elementName]->value < 126)
+                elseif ($userScoresByType[$elementName]->value < 126)
                 {
                     return 7;
                 }
-                elseif($userScoresByType[$elementName]->value < 151)
+                elseif ($userScoresByType[$elementName]->value < 151)
                 {
                     return 8;
                 }
-                elseif($userScoresByType[$elementName]->value < 176)
+                elseif ($userScoresByType[$elementName]->value < 176)
                 {
                     return 9;
                 }
-                elseif($userScoresByType[$elementName]->value < 201)
+                elseif ($userScoresByType[$elementName]->value < 201)
                 {
                     return 10;
                 }
-                elseif($userScoresByType[$elementName]->value < 226)
+                elseif ($userScoresByType[$elementName]->value < 226)
                 {
                     return 11;
                 }
-                elseif($userScoresByType[$elementName]->value < 251)
+                elseif ($userScoresByType[$elementName]->value < 251)
                 {
                     return 12;
                 }
-                elseif($userScoresByType[$elementName]->value >= 300)
+                elseif ($userScoresByType[$elementName]->value >= 300)
                 {
                     return 13;
                 }

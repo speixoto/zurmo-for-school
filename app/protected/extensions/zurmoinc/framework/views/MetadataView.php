@@ -60,7 +60,7 @@
         {
             if ( $renderInForm == true ){
                 $actionContent = $this->renderActionElementBar($renderInForm);
-                if($actionContent != null)
+                if ($actionContent != null)
                 {
                     $content  = '<div class="view-toolbar-container clearfix"><div class="portlet-toolbar">';
                     $content .= $actionContent;

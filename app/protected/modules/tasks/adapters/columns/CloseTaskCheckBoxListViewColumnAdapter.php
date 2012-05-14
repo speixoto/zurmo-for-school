@@ -39,7 +39,7 @@
 
         protected function resolveToRenderCheckBox($modelClassName, $modelId)
         {
-            if(!ActionSecurityUtil::canCurrentUserPerformAction( 'Edit', new $modelClassName(false)))
+            if (!ActionSecurityUtil::canCurrentUserPerformAction( 'Edit', new $modelClassName(false)))
             {
                 return '';
             }
@@ -51,7 +51,7 @@
             Yii::app()->clientScript->registerScript('closeTaskCheckBoxScript', "
                 function closeOpenTaskByCheckBoxClick(checkboxId, modelId)
                 {
-                    if($('#' + checkboxId).attr('checked') == 'checked')
+                    if ($('#' + checkboxId).attr('checked') == 'checked')
                     {
                         $('#' + checkboxId).attr('disabled', true);
                         $('#' + checkboxId).parents('td').children().css('text-decoration', 'line-through');

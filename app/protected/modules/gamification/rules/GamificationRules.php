@@ -90,11 +90,11 @@
         {
             $model                   = $event->sender;
             assert('$model instanceof Item');
-            if(Yii::app()->gameHelper->isScoringModelsOnSaveMuted())
+            if (Yii::app()->gameHelper->isScoringModelsOnSaveMuted())
             {
                 return;
             }
-            if($model->getIsNewModel())
+            if ($model->getIsNewModel())
             {
                 $scoreType           = static::resolveCreateScoreTypeByModel($model);
                 $category            = static::SCORE_CATEGORY_CREATE_MODEL;
@@ -108,7 +108,7 @@
             }
             $gameScore->addValue();
             $saved = $gameScore->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -136,7 +136,7 @@
         {
             assert('is_string($category)');
             $methodName = 'getPointTypesAndValuesFor' . $category;
-            if(method_exists(get_called_class(), $methodName))
+            if (method_exists(get_called_class(), $methodName))
             {
                 return static::$methodName();
             }
@@ -213,7 +213,7 @@
             $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
             $gameScore->addValue();
             $saved               = $gameScore->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -232,7 +232,7 @@
             $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
             $gameScore->addValue();
             $saved               = $gameScore->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -251,7 +251,7 @@
             $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
             $gameScore->addValue();
             $saved               = $gameScore->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

@@ -36,7 +36,7 @@
             $content = '<colgroup>';
             if ($columnCount == 1)
             {
-                if($labelsHaveOwnCells)
+                if ($labelsHaveOwnCells)
                 {
                     $content .= '<col class="col-0" /><col class="col-1" />';
                 }
@@ -45,9 +45,9 @@
                     $content .= '<col class="col-0" />';
                 }
             }
-            elseif($columnCount == 2)
+            elseif ($columnCount == 2)
             {
-                if($labelsHaveOwnCells)
+                if ($labelsHaveOwnCells)
                 {
                     $content .= '<col class="col-0" /><col class="col-1" />';
                     $content .= '<col class="col-2" /><col class="col-3" />';

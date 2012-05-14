@@ -339,7 +339,7 @@
 
         protected static function getGroupsOrderedByNonDeletablesFirst($includeEveryoneGroup = true)
         {
-            if($includeEveryoneGroup)
+            if ($includeEveryoneGroup)
             {
                 $groups = array(Group::getByName(Group::EVERYONE_GROUP_NAME),
                                 Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME));

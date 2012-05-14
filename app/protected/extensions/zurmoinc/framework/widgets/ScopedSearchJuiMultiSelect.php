@@ -43,28 +43,28 @@
             $id     = $this->inputId;
             // Begin Not Coding Standard
             $script = '$("#' . $id . '").bind("multiselectclick", function(event, ui){
-                            if($("#' . $id . '").multiselect("widget").find(":checkbox:checked").length == 0)
+                            if ($("#' . $id . '").multiselect("widget").find(":checkbox:checked").length == 0)
                             {
                                 $("#' . $id . '").multiselect("widget").find(":checkbox").each(function(){
-                                    if(this.value == "All" && !this.checked)
+                                    if (this.value == "All" && !this.checked)
                                     {
                                         this.click();
                                     }
                                 });
                             }
-                            if(ui.value == "All" && ui.checked)
+                            if (ui.value == "All" && ui.checked)
                             {
                                 $("#' . $id . '").multiselect("widget").find(":checkbox").each(function(){
-                                    if(this.value != "All" && this.checked)
+                                    if (this.value != "All" && this.checked)
                                     {
                                         this.click();
                                     }
                                 });
                             }
-                            else if(ui.value != "All" && ui.checked)
+                            else if (ui.value != "All" && ui.checked)
                             {
                                 $("#' . $id . '").multiselect("widget").find(":checkbox").each(function(){
-                                    if(this.value == "All" && this.checked)
+                                    if (this.value == "All" && this.checked)
                                     {
                                         this.click();
                                     }

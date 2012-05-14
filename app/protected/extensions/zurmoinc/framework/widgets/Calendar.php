@@ -120,9 +120,9 @@
         protected function renderEvents($id)
         {
             $script = "var calendarEvents = {}; \n";
-            if(count($this->dayEvents) > 0)
+            if (count($this->dayEvents) > 0)
             {
-                foreach($this->dayEvents as $event)
+                foreach ($this->dayEvents as $event)
                 {
                     $script .= "calendarEvents[new Date('" . $event['date'] . "')] = new CalendarEvent('" . $event['label'] . "', '" . $event['className'] . "'); \n";
                 }

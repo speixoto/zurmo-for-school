@@ -62,7 +62,7 @@ jQuery('#{$this->id}_all').live('click', function()
     var checked = this.checked;
 
     //custom checkbox style
-    if(this.checked){
+    if (this.checked){
         jQuery(this).parent().addClass('c_on');
     } else {
         jQuery(this).parent().removeClass('c_on');
@@ -74,7 +74,7 @@ jQuery('#{$this->id}_all').live('click', function()
         updateListViewSelectedIds('{$this->grid->id}', $(this).val(), checked);
 
         //custom checkbox style
-        if(this.checked){
+        if (this.checked){
             jQuery(this).parent().addClass('c_on');
         } else {
             jQuery(this).parent().removeClass('c_on');
@@ -87,12 +87,12 @@ jQuery("input[name='$name']").live('click', function()
     updateListViewSelectedIds('{$this->grid->id}', $(this).val(), $(this).attr('checked'));
 
     //custom checkbox style
-    if( jQuery('#{$this->id}_all').attr( 'checked') === 'checked' ){
+    if ( jQuery('#{$this->id}_all').attr( 'checked') === 'checked' ){
         jQuery('#{$this->id}_all').parent().addClass('c_on');
     } else {
         jQuery('#{$this->id}_all').parent().removeClass('c_on');
     }
-    if( this.checked ){
+    if ( this.checked ){
         jQuery(this).parent().addClass('c_on');
     } else {
         jQuery(this).parent().removeClass('c_on');
@@ -136,11 +136,11 @@ END;
          */
         protected function renderDataCellContent($row,$data)
         {
-            if($this->value !== null)
+            if ($this->value !== null)
             {
                 $value = $this->evaluateExpression($this->value,array('data' => $data, 'row' => $row));
             }
-            else if($this->name !== null)
+            elseif ($this->name !== null)
             {
                 $value = CHtml::value($data,$this->name);
             }
@@ -150,7 +150,7 @@ END;
             }
 
             $checked = false;
-            if($this->checked !== null)
+            if ($this->checked !== null)
             {
                 $checked = $this->evaluateExpression($this->checked,array('data' => $data, 'row' => $row));
             }

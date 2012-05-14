@@ -102,7 +102,7 @@
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderAfterFormLayout($form);
             $actionElementContent = $this->renderActionElementBar(true);
-            if($actionElementContent != null)
+            if ($actionElementContent != null)
             {
                 $content .= '<div class="view-toolbar-container clearfix">';
                 $content .= $actionElementContent;

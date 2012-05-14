@@ -85,7 +85,7 @@
                     $searchAttributesData =     // Not Coding Standard
                         $mashableActivityRules->resolveSearchAttributesDataByRelatedItemIds($relationItemIds);
                 }
-                elseif(count($relationItemIds) == 1)
+                elseif (count($relationItemIds) == 1)
                 {
                     $searchAttributesData =    // Not Coding Standard
                         $mashableActivityRules->resolveSearchAttributesDataByRelatedItemId($relationItemIds[0]);
@@ -110,7 +110,7 @@
             assert('is_array($searchAttributesData)');
             assert('$ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL ||
                     $ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER');
-            if($ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER)
+            if ($ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER)
             {
                 $clauseCount = count($searchAttributesData['clauses']);
                 $searchAttributesData['clauses'][] = array(
@@ -118,7 +118,7 @@
                         'operatorType'         => 'equals',
                         'value'                => Yii::app()->user->userModel->id,
                 );
-                if($clauseCount == 0)
+                if ($clauseCount == 0)
                 {
                     $searchAttributesData['structure'] = '0';
                 }

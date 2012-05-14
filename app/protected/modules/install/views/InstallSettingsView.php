@@ -104,10 +104,9 @@
                 }
                 $content .= '</tbody>';
             }
-			$content .= '</table>';
-			
-			$element  = new SaveButtonActionElement($this->controllerId, $this->moduleId,
-                                                        null, array('label' => Yii::t('Default', 'Install')));            
+            $content .= '</table>';
+            $element  = new SaveButtonActionElement($this->controllerId, $this->moduleId,
+                                                        null, array('label' => Yii::t('Default', 'Install')));
             $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">' . $element->render() . '</div></div>';
             return $content;
         }

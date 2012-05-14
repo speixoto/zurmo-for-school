@@ -51,8 +51,8 @@
                 'relations' => array(
                 ),
                 'rules' => array(
-                    array('value',     	   	  'type',    'type' => 'integer'),
-                    array('value', 		      'default', 'value' => 0),
+                    array('value',            'type',    'type' => 'integer'),
+                    array('value',            'default', 'value' => 0),
                     array('createdDateTime',  'required'),
                     array('createdDateTime',  'readOnly'),
                     array('createdDateTime',  'type', 'type' => 'datetime'),

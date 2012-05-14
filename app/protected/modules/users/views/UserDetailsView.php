@@ -181,7 +181,7 @@
 
         protected function renderTitleContent()
         {
-            if($this->model->id > 0)
+            if ($this->model->id > 0)
             {
                 return '<h1>' . strval($this->model) . '</h1>';
             }
@@ -194,7 +194,7 @@
         protected function renderAfterFormLayoutForDetailsContent()
         {
             $content = parent::renderAfterFormLayoutForDetailsContent();
-            if($content != null)
+            if ($content != null)
             {
                 $content .= '<br/>';
             }

@@ -70,7 +70,7 @@
                         'elements' => array(
                             array('type'           => 'EditLink',
                                 'resolveToDisplay' => 'canModifyName',
-                                'label'			   => "eval:Yii::t('Default', 'Edit')", //was GENERAL..
+                                'label'            => "eval:Yii::t('Default', 'Edit')", //was GENERAL..
                                 'htmlOptions' => array('class' => 'icon-edit')
                             ),
                             array(
@@ -108,7 +108,7 @@
         protected function resolveActionElementInformationDuringRender(& $elementInformation)
         {
             parent::resolveActionElementInformationDuringRender($elementInformation);
-            if($elementInformation['type'] == $this->activeActionElementType)
+            if ($elementInformation['type'] == $this->activeActionElementType)
             {
                 $elementInformation['htmlOptions']['class'] .= ' active';
             }

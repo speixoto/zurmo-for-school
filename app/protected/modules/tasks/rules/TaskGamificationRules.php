@@ -45,20 +45,20 @@
         {
             $model                      = $event->sender;
             assert('$model instanceof Item');
-            if(!$model->getIsNewModel() && array_key_exists('completed', $model->originalAttributeValues) &&
+            if (!$model->getIsNewModel() && array_key_exists('completed', $model->originalAttributeValues) &&
                 $model->completed == true && $model->dueDateTime != null)
             {
                 $completedTimestamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->completedDateTime);
                 $dueTimestamp       = DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->dueDateTime);
 
-                if($completedTimestamp <= $dueTimestamp)
+                if ($completedTimestamp <= $dueTimestamp)
                 {
                     $scoreType           = static::SCORE_TYPE_COMPLETED_TASK_ON_TIME;
                     $category            = static::SCORE_CATEGORY_TIME_SENSITIVE_ACTION;
                     $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
                     $gameScore->addValue();
                     $saved = $gameScore->save();
-                    if(!$saved)
+                    if (!$saved)
                     {
                         throw new FailedToSaveModelException();
                     }

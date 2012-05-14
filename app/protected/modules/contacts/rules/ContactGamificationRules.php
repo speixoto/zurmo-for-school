@@ -43,11 +43,11 @@
 
         public function scoreOnSaveModel(CEvent $event)
         {
-            if(Yii::app()->gameHelper->isScoringModelsOnSaveMuted())
+            if (Yii::app()->gameHelper->isScoringModelsOnSaveMuted())
             {
                 return;
             }
-            if(!LeadsUtil::isStateALead($event->sender->state) &&
+            if (!LeadsUtil::isStateALead($event->sender->state) &&
                 array_key_exists('state', $event->sender->originalAttributeValues) &&
                 $event->sender->originalAttributeValues['state'][1] > 0 &&
                 LeadsUtil::isStateALeadByStateName($event->sender->originalAttributeValues['state'][2]))
@@ -71,7 +71,7 @@
             $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
             $gameScore->addValue();
             $saved = $gameScore->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -83,7 +83,7 @@
         {
             $model                   = $event->sender;
             assert('$model instanceof Item');
-            if($model->getIsNewModel())
+            if ($model->getIsNewModel())
             {
                 $scoreType           = static::SCORE_TYPE_CREATE_LEAD;
                 $category            = static::SCORE_CATEGORY_CREATE_LEAD;
@@ -97,7 +97,7 @@
             }
             $gameScore->addValue();
             $saved = $gameScore->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

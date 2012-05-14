@@ -104,7 +104,7 @@
             $where             = RedBeanModelDataProvider::makeWhere('GameScore', $searchAttributeData, $joinTablesAdapter);
             $models            = self::getSubset($joinTablesAdapter, null, null, $where, null);
             $indexedModels     = array();
-            foreach($models as $gameScore)
+            foreach ($models as $gameScore)
             {
                 $indexedModels[$gameScore->type] = $gameScore;
             }
@@ -133,14 +133,14 @@
                     'person' => array(RedBeanModel::HAS_ONE, 'Item'),
                 ),
                 'rules' => array(
-                    array('type', 		   'required'),
+                    array('type',          'required'),
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
-                    array('value',     	   'type',    'type' => 'integer'),
-                    array('value', 		   'default', 'value' => 1),
+                    array('value',         'type',    'type' => 'integer'),
+                    array('value',         'default', 'value' => 1),
                     array('value',         'numerical', 'min' => 1),
                     array('value',         'required'),
-                    array('person', 	   'required'),
+                    array('person',        'required'),
                 ),
                 'elements' => array(
                     'person' => 'Person',

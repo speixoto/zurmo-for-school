@@ -40,7 +40,7 @@
         {
             assert('is_string($type)');
             $nextLevel = self::getNextLevelByTypeAndCurrentLevel($type, $level);
-            if($nextLevel !== false)
+            if ($nextLevel !== false)
             {
                 $className = $type . 'GameLevelRules';
                 return $className::getMinimumPointsForLevel($nextLevel);
@@ -58,7 +58,7 @@
         {
             assert('is_string($type)');
             $className = $type . 'GameLevelRules';
-            if(!$className::isLastLevel((int)$level->value))
+            if (!$className::isLastLevel((int)$level->value))
             {
                 return $level->value + 1;
             }

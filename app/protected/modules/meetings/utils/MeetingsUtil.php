@@ -32,13 +32,13 @@
             $content .= '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
             $content .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
             $localEndDateTime = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->endDateTime);
-            if($localEndDateTime != null)
+            if ($localEndDateTime != null)
             {
                 $content .= ' - ' . $localEndDateTime;
             }
             $content .= '<br/>';
             $content .= self::renderActivityItemsContentsExcludingContacts($meeting);
-            if(count($meeting->activityItems) > 0)
+            if (count($meeting->activityItems) > 0)
             {
                 $contactsContent = null;
                 $contactLabels = self::getExistingContactRelationsLabels($meeting->activityItems);
@@ -52,7 +52,7 @@
                 }
                 $content .= $contactsContent . '<br/>';
             }
-            if($meeting->description != null)
+            if ($meeting->description != null)
             {
                 $content .= '<br/>';
                 $content .= Yii::t('Default', 'Description') . ':<br/>';
@@ -131,7 +131,7 @@
                     }
                 }
             }
-            if($content != null)
+            if ($content != null)
             {
                 $content .= '<br/>';
             }

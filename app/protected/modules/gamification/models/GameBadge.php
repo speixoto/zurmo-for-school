@@ -61,7 +61,7 @@
             $where             = RedBeanModelDataProvider::makeWhere('GameBadge', $searchAttributeData, $joinTablesAdapter);
             $models            = self::getSubset($joinTablesAdapter, null, null, $where, null);
             $indexedModels     = array();
-            foreach($models as $gameBadge)
+            foreach ($models as $gameBadge)
             {
                 $indexedModels[$gameBadge->type] = $gameBadge;
             }
@@ -90,14 +90,14 @@
                     'person'       => array(RedBeanModel::HAS_ONE, 'Item'),
                 ),
                 'rules' => array(
-                    array('type', 		   'required'),
+                    array('type',          'required'),
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
-                    array('grade', 		   'required'),
-                    array('grade',     	   'type',    'type' => 'integer'),
-                    array('grade', 		   'default', 'value' => 1),
+                    array('grade',         'required'),
+                    array('grade',         'type',    'type' => 'integer'),
+                    array('grade',         'default', 'value' => 1),
                     array('grade',         'numerical', 'min' => 1),
-                    array('person', 	   'required'),
+                    array('person',        'required'),
                 ),
                 'elements' => array(
                     'person' => 'Person',
@@ -128,24 +128,24 @@
             assert('$gradeChangeOrNewBadge == "GradeChange" || $gradeChangeOrNewBadge == "NewBadge"');
             $gameBadgeRulesClassName = $gameBadge->type . 'GameBadgeRules';
             $gamePoint = null;
-            if($gradeChangeOrNewBadge == 'NewBadge' && $gameBadgeRulesClassName::hasBonusPointsOnCreation())
+            if ($gradeChangeOrNewBadge == 'NewBadge' && $gameBadgeRulesClassName::hasBonusPointsOnCreation())
             {
                 $type           = $gameBadgeRulesClassName::getNewBonusPointType();
                 $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
                 $value          = $gameBadgeRulesClassName::getNewBonusPointValue();
             }
-            elseif($gradeChangeOrNewBadge == 'GradeChange' &&
+            elseif ($gradeChangeOrNewBadge == 'GradeChange' &&
             $gameBadgeRulesClassName::hasBonusPointsOnGradeChange())
             {
                 $type           = $gameBadgeRulesClassName::getGradeBonusPointType();
                 $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
                 $value          = $gameBadgeRulesClassName::getGradeBonusPointValue($gameBadge->grade);
             }
-            if($gamePoint != null && $value > 0)
+            if ($gamePoint != null && $value > 0)
             {
                 $gamePoint->addValue($value);
                 $saved          = $gamePoint->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new NotSupportedException();
                 }

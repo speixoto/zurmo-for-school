@@ -38,61 +38,61 @@
         {
             assert('is_array($userPointsByType)');
             assert('is_array($userScoresByType)');
-            if(isset($userScoresByType['CreateContact']))
+            if (isset($userScoresByType['CreateContact']))
             {
-                if($userScoresByType['CreateContact']->value < 1)
+                if ($userScoresByType['CreateContact']->value < 1)
                 {
                     return 0;
                 }
-                if($userScoresByType['CreateContact']->value < 2)
+                if ($userScoresByType['CreateContact']->value < 2)
                 {
                     return 1;
                 }
-                elseif($userScoresByType['CreateContact']->value < 6)
+                elseif ($userScoresByType['CreateContact']->value < 6)
                 {
                     return 2;
                 }
-                elseif($userScoresByType['CreateContact']->value < 11)
+                elseif ($userScoresByType['CreateContact']->value < 11)
                 {
                     return 3;
                 }
-                elseif($userScoresByType['CreateContact']->value < 26)
+                elseif ($userScoresByType['CreateContact']->value < 26)
                 {
                     return 4;
                 }
-                elseif($userScoresByType['CreateContact']->value < 51)
+                elseif ($userScoresByType['CreateContact']->value < 51)
                 {
                     return 5;
                 }
-                elseif($userScoresByType['CreateContact']->value < 76)
+                elseif ($userScoresByType['CreateContact']->value < 76)
                 {
                     return 6;
                 }
-                elseif($userScoresByType['CreateContact']->value < 101)
+                elseif ($userScoresByType['CreateContact']->value < 101)
                 {
                     return 7;
                 }
-                elseif($userScoresByType['CreateContact']->value < 126)
+                elseif ($userScoresByType['CreateContact']->value < 126)
                 {
                     return 8;
                 }
-                elseif($userScoresByType['CreateContact']->value < 151)
+                elseif ($userScoresByType['CreateContact']->value < 151)
                 {
                     return 9;
                 }
-                elseif($userScoresByType['CreateContact']->value < 176)
+                elseif ($userScoresByType['CreateContact']->value < 176)
                 {
                     return 10;
                 }
-                elseif($userScoresByType['CreateContact']->value < 201)
+                elseif ($userScoresByType['CreateContact']->value < 201)
                 {
                     return 11;
                 }
-                elseif($userScoresByType['CreateContact']->value < 226)
+                elseif ($userScoresByType['CreateContact']->value < 226)
                 {
                     return 12;
                 }
-                elseif($userScoresByType['CreateContact']->value >= 250)
+                elseif ($userScoresByType['CreateContact']->value >= 250)
                 {
                     return 13;
                 }

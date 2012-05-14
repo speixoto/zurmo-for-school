@@ -94,7 +94,7 @@
             }
             $content .= '</div>';
             $content .= $this->renderDesignerLayoutEditorWidget();
-			 $content .= $this->renderNotificationBar('NotificationBar');
+            $content .= $this->renderNotificationBar('NotificationBar');
             $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
             $content .= $this->renderCancelLink();
             $content .= $this->renderSaveLayoutButton('NotificationBar');

@@ -38,61 +38,61 @@
         {
             assert('is_array($userPointsByType)');
             assert('is_array($userScoresByType)');
-            if(isset($userScoresByType['CreateAccount']))
+            if (isset($userScoresByType['CreateAccount']))
             {
-                if($userScoresByType['CreateAccount']->value < 1)
+                if ($userScoresByType['CreateAccount']->value < 1)
                 {
                     return 0;
                 }
-                if($userScoresByType['CreateAccount']->value < 2)
+                if ($userScoresByType['CreateAccount']->value < 2)
                 {
                     return 1;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 6)
+                elseif ($userScoresByType['CreateAccount']->value < 6)
                 {
                     return 2;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 11)
+                elseif ($userScoresByType['CreateAccount']->value < 11)
                 {
                     return 3;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 26)
+                elseif ($userScoresByType['CreateAccount']->value < 26)
                 {
                     return 4;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 51)
+                elseif ($userScoresByType['CreateAccount']->value < 51)
                 {
                     return 5;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 76)
+                elseif ($userScoresByType['CreateAccount']->value < 76)
                 {
                     return 6;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 101)
+                elseif ($userScoresByType['CreateAccount']->value < 101)
                 {
                     return 7;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 126)
+                elseif ($userScoresByType['CreateAccount']->value < 126)
                 {
                     return 8;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 151)
+                elseif ($userScoresByType['CreateAccount']->value < 151)
                 {
                     return 9;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 176)
+                elseif ($userScoresByType['CreateAccount']->value < 176)
                 {
                     return 10;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 201)
+                elseif ($userScoresByType['CreateAccount']->value < 201)
                 {
                     return 11;
                 }
-                elseif($userScoresByType['CreateAccount']->value < 226)
+                elseif ($userScoresByType['CreateAccount']->value < 226)
                 {
                     return 12;
                 }
-                elseif($userScoresByType['CreateAccount']->value >= 250)
+                elseif ($userScoresByType['CreateAccount']->value >= 250)
                 {
                     return 13;
                 }

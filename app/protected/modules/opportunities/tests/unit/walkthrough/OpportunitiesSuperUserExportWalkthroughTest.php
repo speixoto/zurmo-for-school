@@ -187,7 +187,7 @@
             }
 
             $selectedIds = "";
-            foreach($opportunities as $opportunity)
+            foreach ($opportunities as $opportunity)
             {
                 $selectedIds .= $opportunity->id . ",";
             }

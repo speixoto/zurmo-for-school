@@ -33,7 +33,7 @@
         public function actionCreateTest($type)
         {
             $message                    = new NotificationMessage();
-            if($type == 1)
+            if ($type == 1)
             {
                 $message->textContent       = 'text content';
                 $message->htmlContent       = 'html content';

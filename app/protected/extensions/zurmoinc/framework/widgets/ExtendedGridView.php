@@ -49,16 +49,16 @@
          */
         public function renderTopPager()
         {
-            if(!$this->enablePagination)
+            if (!$this->enablePagination)
             {
                 return;
             }
             $pager = array();
             $class = 'TopLinkPager';
-            if(is_array($this->pager))
+            if (is_array($this->pager))
             {
                 $pager = $this->pager;
-                if(isset($pager['class']))
+                if (isset($pager['class']))
                 {
                     throw new NotSupportedException();
                 }
@@ -68,7 +68,7 @@
                 throw new NotSupportedException();
             }
             $pager['pages'] = $this->dataProvider->getPagination();
-            if($pager['pages']->getPageCount() > 1)
+            if ($pager['pages']->getPageCount() > 1)
             {
                 echo '<div class="'.$this->pagerCssClass.'">';
                 $this->widget($class,$pager);
@@ -81,16 +81,16 @@
          */
         public function renderBottomPager()
         {
-            if(!$this->enablePagination)
+            if (!$this->enablePagination)
             {
                 return;
             }
             $pager = array();
             $class = 'BottomLinkPager';
-            if(is_array($this->pager))
+            if (is_array($this->pager))
             {
                 $pager = $this->pager;
-                if(isset($pager['class']))
+                if (isset($pager['class']))
                 {
                     throw new NotSupportedException();
                 }
@@ -100,7 +100,7 @@
                 throw new NotSupportedException();
             }
             $pager['pages'] = $this->dataProvider->getPagination();
-            if($pager['pages']->getPageCount() > 1)
+            if ($pager['pages']->getPageCount() > 1)
             {
                 echo '<div class="'.$this->pagerCssClass.'">';
                 $this->widget($class,$pager);
@@ -115,20 +115,20 @@
          */
         public function renderPager()
         {
-            if(!$this->enablePagination)
+            if (!$this->enablePagination)
             {
                 return;
             }
             $pager = array();
             $class = 'CLinkPager';
-            if(is_string($this->pager))
+            if (is_string($this->pager))
             {
                 $class=$this->pager;
             }
-            elseif(is_array($this->pager))
+            elseif (is_array($this->pager))
             {
                 $pager = $this->pager;
-                if(isset($pager['class']))
+                if (isset($pager['class']))
                 {
                     $class=$pager['class'];
                     unset($pager['class']);

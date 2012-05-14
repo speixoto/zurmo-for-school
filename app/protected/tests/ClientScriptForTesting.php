@@ -42,23 +42,23 @@
          */
         public function getPackageBaseUrl($name)
         {
-            if(!isset($this->coreScripts[$name]))
+            if (!isset($this->coreScripts[$name]))
             {
                 return false;
             }
             $package = $this->coreScripts[$name];
-            if(isset($package['baseUrl']))
+            if (isset($package['baseUrl']))
             {
                 $baseUrl = $package['baseUrl'];
                 echo 'grapes:' . $baseUrl . "\n";
-                if($baseUrl === '' || $baseUrl[0] !== '/' && strpos($baseUrl, '://') === false)
+                if ($baseUrl === '' || $baseUrl[0] !== '/' && strpos($baseUrl, '://') === false)
                 {
                     //do not return because it will render a slash in front of the actual url
                     //$baseUrl=Yii::app()->getRequest()->getBaseUrl().'/'.$baseUrl;
                 }
                 $baseUrl = rtrim($baseUrl, '/');
             }
-            else if(isset($package['basePath']))
+            elseif (isset($package['basePath']))
             {
                 $baseUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias($package['basePath']));
             }

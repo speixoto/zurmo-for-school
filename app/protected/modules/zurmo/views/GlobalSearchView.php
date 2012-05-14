@@ -49,7 +49,7 @@
 
         protected function renderGlobalSearchContent()
         {
-            if(count($this->moduleNamesAndLabelsAndAll) == 1)
+            if (count($this->moduleNamesAndLabelsAndAll) == 1)
             {
                 return null;
             }
