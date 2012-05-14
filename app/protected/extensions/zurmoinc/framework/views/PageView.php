@@ -246,8 +246,8 @@
             $cs->registerMetaTag('text/html; charset=UTF-8', null, 'Content-Type'); // Not Coding Standard
 
             $specialCss = '<link rel="stylesheet/less" type="text/css" href="' . Yii::app()->baseUrl . '/' . $theme . '/css/newui.less"/>';
-			$ieCss = '<!--[if lt IE 10]><link rel="stylesheet/less" type="text/css" href="' . Yii::app()->baseUrl . '/' . $theme . '/css/ie.less"/><![endif]-->';
-			
+      $ieCss = '<!--[if lt IE 10]><link rel="stylesheet/less" type="text/css" href="' . Yii::app()->baseUrl . '/' . $theme . '/css/ie.less"/><![endif]-->';
+
             if (MINIFY_SCRIPTS)
             {
                 Yii::app()->minScript->generateScriptMap('css');
@@ -288,9 +288,9 @@
                 $cs->registerLinkTag('shortcut icon', null, Yii::app()->baseUrl . '/' . $defaultTheme . '/ico/favicon.ico');
             }
             return '<head>' .
-            	   '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' .
-            	   $specialCss .
-            	   $ieCss .
+                 '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' .
+                 $specialCss .
+                 $ieCss .
                    "<title>$title</title>"  .
                    '</head>';
         }
@@ -377,7 +377,7 @@
          */
         public static function getScriptFilesThatLoadOnAllPages()
         {
-            //return array();
+            return array();
         }
     }
 ?>
