@@ -29,10 +29,6 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-        '{quantity} MeetingsModulePluralLabel'
-            => '{quantity} MeetingsModulePluralLabel',
-        '{quantity} MeetingsModuleSingularLabel'
-            => '{quantity} MeetingsModuleSingularLabel',
         'Access MeetingsModulePluralLabel'
             => 'Accesso MeetingsModulePluralLabel',
         'Attendees'
@@ -78,6 +74,10 @@
         'Type a ContactsModuleSingularLowerCaseLabel or LeadsModuleSingularLowerCaseLabel: name or email address'
             => 'Digita un ContactsModuleSingularLowerCaseLabel o LeadsModuleSingularLowerCaseLabel: nome o indirizzo e-mail',
         'Upcoming MeetingsModulePluralLabel'
-            => 'MeetingsModulePluralLabel Prossimi',
+            => 'Prossimi MeetingsModulePluralLabel',
+        '{quantity} MeetingsModulePluralLabel'
+            => '{quantity} MeetingsModulePluralLabel',
+        '{quantity} MeetingsModuleSingularLabel'
+            => '{quantity} MeetingsModuleSingularLabel',
     );
 ?>

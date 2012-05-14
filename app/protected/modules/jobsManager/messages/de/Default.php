@@ -75,12 +75,12 @@
             => 'Job Log',
         'Job Log for {jobDisplayName}'
             => 'Registrierungsdatei für {jobDisplayName}',
-        'Job Name'
-            => 'Name der Arbeit',
         'Job Manager'
             => 'System-Tasks',
         'Job Manager: Home'
             => 'System-Tasks: Home',
+        'Job Name'
+            => 'Name der Arbeit',
         'Last Completed Run'
             => 'Letzten Lauf',
         'Manage Scheduled Jobs'

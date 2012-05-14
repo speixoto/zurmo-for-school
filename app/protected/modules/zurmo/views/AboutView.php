@@ -141,8 +141,7 @@
                                  '{version}' => $redBeanVersion));
             $content .= '</li>';
             $content .= '<li>';
-            $content .= Yii::t('Default', '{url} (with Yii)',
-                           array('{url}'     => '<a href="http://www.jquery.com">jQuery JavaScript Framework</a>'));
+            $content .= '<a href="http://www.jquery.com">jQuery JavaScript Framework</a> (with Yii)';
             $content .= '</li>';
             $content .= '</ul></p></div>
 

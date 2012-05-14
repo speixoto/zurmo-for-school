@@ -185,10 +185,10 @@
             => 'Nächste 7 Tage',
         'No'
             => 'Nein',
-        'No {moduleLabelPluralLowerCase} found'
-            => 'Keine Ergebnisse gefunden',
         'No import processes found.'
             => 'Kein Import-Prozesse gefunden',
+        'No {moduleLabelPluralLowerCase} found'
+            => 'Keine Ergebnisse gefunden',
         'None'
             => 'Keiner',
         'Now'

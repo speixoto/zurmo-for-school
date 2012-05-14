@@ -75,12 +75,12 @@
             => 'Registro dei jobs',
         'Job Log for {jobDisplayName}'
             => 'Registro per job {jobDisplayName}',
-        'Job Name'
-            => 'Nome job',
         'Job Manager'
             => 'Gestione dei jobs',
         'Job Manager: Home'
             => 'Gestione dei jobs: Home',
+        'Job Name'
+            => 'Nome job',
         'Last Completed Run'
             => 'Ultima esecuzione',
         'Manage Scheduled Jobs'

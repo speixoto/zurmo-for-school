@@ -75,12 +75,12 @@
             => 'Archivo de registro',
         'Job Log for {jobDisplayName}'
             => 'Archivo de registro para {jobDisplayName}',
-        'Job Name'
-            => 'Nombre del trabajo',
         'Job Manager'
             => 'Tareas del sistema',
         'Job Manager: Home'
             => 'Tareas del sistema: Inicio',
+        'Job Name'
+            => 'Nombre del trabajo',
         'Last Completed Run'
             => 'Última ejecución',
         'Manage Scheduled Jobs'

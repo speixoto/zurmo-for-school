@@ -43,8 +43,8 @@
             => 'Lista de las notificaciones',
         'Text Content'
             => 'Contenido del texto',
-        'There are no recent notifications'
-            => 'No hay notificaciones recientes',
+        'There are no recent notifications.'
+            => 'No hay notificaciones recientes.',
         'View All Notifications'
             => 'Ver todas las notificaciones',
         'You have a new notification'

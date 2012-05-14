@@ -42,7 +42,7 @@
                 $this->getArray(),
                 $this->getEditableHtmlOptions()
             );
-            return Yii::t('Default', 'Roll up') . ':' . $content . ' ' . self::renderHelpContent();
+            return Yii::t('Default', 'Roll Up') . ':' . $content . ' ' . self::renderHelpContent();
         }
 
         protected function renderControlNonEditable()

@@ -53,7 +53,7 @@
             => '<strong>Zurmo</strong> utilizza i seguenti strumenti e framework di Open Source:',
         'A large amount of data has been requested for export.  You will receive a notification with the download link when the export is complete.'
             => 'C\'è una grande quantità di dati ad esportare',
-        'About'
+        'About Zurmo'
             => 'Tutto su Zurmo',
         'Access Administration Tab'
             => 'Accesso Amministrazione',
@@ -567,6 +567,8 @@
             => 'Nome utente',
         'Value'
             => 'Valore',
+        'Values'
+            => 'Valori',
         'Visit <strong>Zurmo Inc.</strong> at {url}.'
             => 'Visita <strong>Zurmo Inc.</strong> a {url}.',
         'Visit the <strong>Zurmo Open Source Project</strong> at {url}.'

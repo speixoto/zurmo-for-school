@@ -43,8 +43,8 @@
             => 'Liste der Benachrichtigungen',
         'Text Content'
             => 'Textinhalt',
-        'There are no recent notifications'
-            => 'Keine aktuellen Meldungen',
+        'There are no recent notifications.'
+            => 'Keine aktuellen Meldungen.',
         'View All Notifications'
             => 'Alle Benachrichtigungen anzeigen',
         'You have a new notification'

@@ -75,12 +75,12 @@
             => 'Fichier log',
         'Job Log for {jobDisplayName}'
             => 'Fichier log pour {jobDisplayName}',
-        'Job Name'
-            => 'Nom du Job',
         'Job Manager'
             => 'Tâches système',
         'Job Manager: Home'
             => 'Tâches système: Home',
+        'Job Name'
+            => 'Nom du Job',
         'Last Completed Run'
             => 'Dernière exécution',
         'Manage Scheduled Jobs'
