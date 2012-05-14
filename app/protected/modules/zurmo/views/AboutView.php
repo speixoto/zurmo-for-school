@@ -89,8 +89,41 @@
                                 </ul>
                             </div>
                         </div>';
-
-            $content .= '<div id="rightCol"><div><h3>App Info</h3><p>';
+            $content .= '<div id="rightCol">
+            		<div>
+                    	<h3>Get Social with Zurmo</h3>
+                        <ul class="social-links clearfix">
+                            <li>
+                                <a href="https://www.facebook.com/pages/Zurmo/117701404997971" class="facebook" title="zurmo on facebook" target="_blank">
+                                    <span>Zurmo CRM on Facebook</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://twitter.com/ZurmoCRM" class="twitter" title="zurmo on twitter" target="_blank">
+                                    <span>Zurmo CRM on Twitter</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.linkedin.com/company/zurmo-open-source" class="linkedin" title="zurmo on linkedin" target="_blank">
+                                    <span>Zurmo CRM on LinkedIn</span>
+                                </a>
+                            </li>
+                            <li><a href="https://bitbucket.org/zurmo/" class="bitbucket" title="zurmo on bitbucket" target="_blank">
+                                <span>Zurmo CRM on BitBucket</span>
+                            </a></li>
+                            <li>
+                                <a href="https://www.pivotaltracker.com/projects/380027" class="pivotal" title="zurmo on pivotal tracker" target="_blank">
+                                    <span>Zurmo CRM on Pivotal Tracker</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://zurmo.org/feed" class="rss" title="zurmo rss" target="_blank">
+                                    <span>Zurmo CRM RSS</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+            <div><h3>App Info</h3><p>';
             $content .= Yii::t('Default', 'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.',
                         array('{zurmoVersion}' => $zurmoVersion));
             $content .= '</p>';
@@ -143,40 +176,6 @@
                     }).render().setUser("ZurmoCRM").start();
                     </script>
                 </div>
-
-                <div>
-                    <h3>Get Social with Zurmo</h3>
-                        <ul class="social-links clearfix">
-                            <li>
-                                <a href="https://www.facebook.com/pages/Zurmo/117701404997971" class="facebook" title="zurmo on facebook" target="_blank">
-                                    <span>Zurmo CRM on Facebook</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://twitter.com/ZurmoCRM" class="twitter" title="zurmo on twitter" target="_blank">
-                                    <span>Zurmo CRM on Twitter</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://www.linkedin.com/company/zurmo-open-source" class="linkedin" title="zurmo on linkedin" target="_blank">
-                                    <span>Zurmo CRM on LinkedIn</span>
-                                </a>
-                            </li>
-                            <li><a href="https://bitbucket.org/zurmo/" class="bitbucket" title="zurmo on bitbucket" target="_blank">
-                                <span>Zurmo CRM on BitBucket</span>
-                            </a></li>
-                            <li>
-                                <a href="https://www.pivotaltracker.com/projects/380027" class="pivotal" title="zurmo on pivotal tracker" target="_blank">
-                                    <span>Zurmo CRM on Pivotal Tracker</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://zurmo.org/feed" class="rss" title="zurmo rss" target="_blank">
-                                    <span>Zurmo CRM RSS</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
             </div>
 
             <div id="aboutContactDetails">
