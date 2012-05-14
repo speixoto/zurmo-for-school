@@ -77,14 +77,16 @@
             => 'Prego di mappare almeno una valuta del pick list per ogni livello.',
         'Available Fields:'
             => 'Campi disponibile:',
+        'Available Modules'
+            => 'Moduli disponibili',
         'Calculated Number'
             => 'Campo Calcolato',
         'Check Box'
             => 'Check box',
         'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 x field2) / field3'
             => 'Creare una formula calcoli sui valori di altri campi.  Usate il nome Formula sotto della colonna. Campi Disponibili per creare vostra formula. Per esempio: campo1 x campo2) / campo3',
-        'Create Custom Field'
-            => 'Crea un campo personalizzato',
+        'Create Field'
+            => 'Crea un campo',
         'Custom Fields'
             => 'Campi personalizzati',
         'Decimal'
@@ -201,6 +203,8 @@
             => 'Salva',
         'Search View'
             => 'Vista ricerca',
+        'Select a field type'
+            => 'Selezionare il tipo di campo',
         'Show If'
             => 'Valore dipendente',
         'Tag Cloud'
@@ -225,6 +229,8 @@
             => 'URL',
         'You can only have at most 4 pick-lists selected.'
             => 'Potete avere al massimo 4 picklists.',
+        'You must first select a field type'
+            => 'È necessario selezionare un tipo di campo',
         'You must have at least one field placed in order to save a layout.'
             => 'Il layout deve contenire al meno 1 campo.',
         'You must have at least one panel in order to save a layout.'

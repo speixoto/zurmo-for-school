@@ -53,12 +53,6 @@
             => 'Inaktive Benutzer können sich nicht anmelden über die Web-, Mobil-oder Web-API. Anmeldung für aktive Benutzer wird durch Gruppenrechte kontrolliert.',
         'Inherited Value:'
             => 'Vererbte Wert:',
-        'Login Via Mobile'
-            => 'Anmelden via Mobile',
-        'Login Via Web'
-            => 'Anmelden via Web',
-        'Login Via Web API'
-            => 'Anmelden via Web API',
         'Manage Users'
             => 'Benutzer verwalten',
         'Manager'
@@ -75,6 +69,12 @@
             => 'Kennwort Ablauf Tage',
         'Profile'
             => 'Profil',
+        'Sign in Via Mobile'
+            => 'Anmelden via Mobile',
+        'Sign in Via Web'
+            => 'Anmelden via Web',
+        'Sign in Via Web API'
+            => 'Anmelden via Web API',
         'The password is too short. Minimum length is {minimumLength}.'
             => 'Das Kennwort ist zu kurz. Minimale Länge ist {minimumLength}.',
         'The password must have at least one lowercase letter'
@@ -97,5 +97,7 @@
             => 'Benutzer Suche',
         'Users'
             => 'Benutzern',
+        'Users Home'
+            => 'Startseite Benutzerkonto',
     );
 ?>

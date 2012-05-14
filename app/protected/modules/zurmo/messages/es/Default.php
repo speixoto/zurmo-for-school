@@ -51,6 +51,8 @@
             => '<strong>Zurmo</strong> está licenciado bajo la licencia GPLv3. Usted puede leer la licencia <a href="http://www.zurmo.org/license">aquí</a>.',
         '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
             => '<strong>Zurmo</strong> utiliza las siguientes herramientas de Open Source y frameworks:',
+        'A large amount of data has been requested for export.  You will receive a notification with the download link when the export is complete.'
+            => 'Una gran cantidad de datos se ha solicitado para la exportación. Recibirá una notificación con el enlace de descarga cuando la exportación se ha completado.',
         'About Zurmo'
             => 'Sobre Zurmo',
         'Access Administration Tab'
@@ -105,6 +107,8 @@
             => 'Estado',
         'Any Street'
             => 'Calle',
+        'Application Name'
+            => 'Nombre de systema',
         'are required.'
             => 'son obligatorios.',
         'Are you sure you want to remove this group?'
@@ -141,6 +145,8 @@
             => 'Código',
         'Configuration'
             => 'Configuración',
+        'Configure'
+            => 'Configurar',
         'Convert'
             => 'Convertir',
         'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
@@ -221,12 +227,14 @@
             => 'Servicios Financieros',
         'First Name'
             => 'Primer nombre',
+        'Forums'
+            => 'Foros',
+        'Global and Basic Search Fields'
+            => 'Campos de búsqueda global y simples',
         'Global Configuration'
             => 'Configuración global',
         'Global configuration saved successfully.'
             => 'Configuración global guardado con éxito.',
-        'Global Search Fields'
-            => 'Los campos de búsqueda global',
         'Go to Search'
             => 'Ir a la búsqueda',
         'Group'
@@ -239,6 +247,8 @@
             => 'Derechos de grupo',
         'Groups'
             => 'Grupos',
+        'Groups Home'
+            => 'Inicio de Grupos',
         'here'
             => 'aquí',
         'Home'
@@ -325,6 +335,8 @@
             => 'Miembros',
         'Menu'
             => 'Menú',
+        'Missing Record'
+            => 'Archivo falta',
         'Missing Required Fields'
             => 'Los campos obligatorios se colocará en el punto de vista',
         'Mobile Phone'
@@ -435,12 +447,16 @@
             => 'Volver al menú de administración',
         'Rights'
             => 'Derechos',
+        'Rights and Permissions'
+            => 'Permisos y derechos de seguridad',
         'Rights Saved Successfully.'
             => 'Derechos guardado correctamente.',
         'Role'
             => 'Role',
         'Roles'
             => 'Roles',
+        'Roles Home'
+            => 'Inicio de Roles',
         'Salutation'
             => 'Saludo',
         'Save Changes'
@@ -465,6 +481,8 @@
             => 'Seleccione un role',
         'Self-Generated'
             => 'Autogenerado',
+        'Settings'
+            => 'Configuración',
         'Shipping Address'
             => 'Dirección de envío',
         'Sign in'
@@ -513,12 +531,16 @@
             => 'La moneda no se ha eliminado porque está en uso.',
         'The ID specified was invalid.'
             => ' ID no válido.',
+        'The record you are trying to access does not exist.'
+            => 'El registro que está intentando acceder no existe.',
         'The status specified is invalid.'
             => 'El estatus especificado no es válido.',
         'There are no recently viewed items.'
             => 'No hay elementons recientemente vistos',
         'There are required fields missing from the following layout: {view}.  Please contact your administrator.'
             => 'Campos obligatorios faltan en la siguiente diseño: {vista}. Por favor, contacte con su administrador.',
+        'There is no data to export.'
+            => 'No hay datos para exportar.',
         'This action is only available in debug mode.'
             => 'Esta acción sólo está disponible en modo debug.',
         'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.'

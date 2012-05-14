@@ -77,14 +77,16 @@
             => 'Au moins une valeur de la liste déroulante doit être mappée pour chaque niveau.',
         'Available Fields:'
             => 'Champs disponibles:',
+        'Available Modules'
+            => 'Modules disponibles',
         'Calculated Number'
             => 'Champs disponibles:',
         'Check Box'
             => 'Case à cocher',
         'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 x field2) / field3'
             => 'Créer une formule calculée à partir d\'autres données.  Utilisez le Nom Formule ci-dessous de la colonne Champs Disponibles pour créer votre formule. Example: (champ1 x champ2) / champ3',
-        'Create Custom Field'
-            => 'Ajouter un champ personnalisé',
+        'Create Field'
+            => 'Ajouter un champ',
         'Custom Fields'
             => 'Champs personnalisés',
         'Decimal'
@@ -201,6 +203,8 @@
             => 'Publier',
         'Search View'
             => 'Vue recherche',
+        'Select a field type'
+            => 'Sélectionnez le type de champ',
         'Show If'
             => 'Valeur dépendante',
         'Tag Cloud'
@@ -225,6 +229,8 @@
             => 'URL',
         'You can only have at most 4 pick-lists selected.'
             => 'Vous pouvez avoir au maximum 4 listes déroulantes.',
+        'You must first select a field type'
+            => 'Veuillez d\'abord choisir le type du champ.',
         'You must have at least one field placed in order to save a layout.'
             => 'Le layout doit contenir au moins 1 champ.',
         'You must have at least one panel in order to save a layout.'

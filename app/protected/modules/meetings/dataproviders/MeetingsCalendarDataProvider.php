@@ -59,11 +59,11 @@
             {
                 if($item['quantity'] == 1)
                 {
-                    $label = Yii::t('Default', '{quantity} Meeting', array('{quantity}' => $item['quantity']));
+                    $label = Yii::t('Default', '{quantity} MeetingsModuleSingularLabel', array('{quantity}' => $item['quantity']));
                 }
                 else
                 {
-                    $label = Yii::t('Default', '{quantity} Meetings', array('{quantity}' => $item['quantity']));
+                    $label = Yii::t('Default', '{quantity} MeetingsModulePluralLabel', array('{quantity}' => $item['quantity']));
                 }
                 $data[$key]['label']     = $label;
                 if($item['quantity'] > 5)

@@ -35,6 +35,8 @@
             => 'Aggiungi una NotesModuleSingularLabel su',
         'Create NotesModulePluralLabel'
             => 'Crea NotesModulePluralLabel',
+        'Create NotesModuleSingularLabel'
+            => 'Crea NotesModuleSingularLabel',
         'Delete NotesModulePluralLabel'
             => 'Elimina NotesModulePluralLabel',
         'Note'

@@ -31,12 +31,16 @@
     return array(
         'Access TasksModulePluralLabel'
             => 'Accesso TasksModulePluralLabel',
+        'Close Task Check Box'
+            => 'Chiude Compito check box',
         'Completed'
             => 'Completato',
         'Completed On'
             => 'Data chiusura',
         'Create TasksModulePluralLabel'
             => 'Crea TasksModulePluralLabel',
+        'Create TasksModuleSingularLabel'
+            => 'Crea TasksModuleSingularLabel',
         'Delete TasksModulePluralLabel'
             => 'Elimina TasksModulePluralLabel',
         'Due On'

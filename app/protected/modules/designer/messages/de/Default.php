@@ -77,13 +77,15 @@
             => 'Mindestens eine Auswahlliste Wert muss für jede verwendete Ebene abgebildet werden.',
         'Available Fields:'
             => 'Verfügbare Felder:',
+        'Available Modules'
+            => 'Verfügbaren Modulen',
         'Calculated Number'
             => 'Berechnetes Feld',
         'Check Box'
             => 'Ankreuzfeld',
         'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 x field2) / field3'
             => 'Erstellen Sie eine mathematische Formel, die aus anderen Bereichen berechnet wird. Verwenden Sie die Formel-Name aus dem Verfügbare Felder Gitter unten, um Ihre Formel zu erstellen. Beispiel Formel:(feld1 x feld2) / feld3',
-        'Create Custom Field'
+        'Create Field'
             => 'Feld erstellen',
         'Custom Fields'
             => 'Benutzerdefinierte Felder',
@@ -201,6 +203,8 @@
             => 'Layout speichern',
         'Search View'
             => 'Suche anzeigen',
+        'Select a field type'
+            => 'Wählen Sie das Feld Typ',
         'Show If'
             => 'Zeigen, ob',
         'Tag Cloud'
@@ -225,6 +229,8 @@
             => 'URL',
         'You can only have at most 4 pick-lists selected.'
             => 'Sie können bis zu 4 Auswahllisten haben.',
+        'You must first select a field type'
+            => 'Bitte wählen Sie zuerst den Feldtyp.',
         'You must have at least one field placed in order to save a layout.'
             => 'Das Layout muss mindestens 1 Feld haben.',
         'You must have at least one panel in order to save a layout.'

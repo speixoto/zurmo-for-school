@@ -49,7 +49,7 @@
             );");
 			$content = null;
 			$content .= '<div class="add-custom-field">';
-			$content .= '<h1>' . Yii::t('Default', 'Create Custom Field') . '</h1>';
+			$content .= '<h1>' . Yii::t('Default', 'Create Field') . '</h1>';
 			$content .= '<div>';
 			$content .= $dropDownContent . $linkContent;
 			$content .= '</div></div>';

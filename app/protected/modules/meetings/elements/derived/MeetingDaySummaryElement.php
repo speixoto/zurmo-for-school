@@ -57,7 +57,7 @@
 
         public static function getDisplayName()
         {
-            return Yii::t('Default', 'Meeting Day Summary');
+            return Yii::t('Default', 'MeetingsModuleSingularLabel Day Summary');
         }
 
         /**

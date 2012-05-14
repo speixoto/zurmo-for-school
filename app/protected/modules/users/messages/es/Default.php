@@ -53,12 +53,6 @@
             => 'Los usuarios inactivos no pueden iniciar sesión en el uso de la web, móvil o web API. Inicio de sesión de usuarios activos es controlado por los derechos de grupo.',
         'Inherited Value:'
             => 'Valor heredado:',
-        'Login Via Mobile'
-            => 'Conexión móvil',
-        'Login Via Web'
-            => 'Conexión Web',
-        'Login Via Web API'
-            => 'Conexión Web API',
         'Manage Users'
             => 'Administrar Usuarios',
         'Manager'
@@ -75,6 +69,12 @@
             => 'Vida útil mínima de las contraseñas',
         'Profile'
             => 'Perfil',
+        'Sign in Via Mobile'
+            => 'Conexión móvil',
+        'Sign in Via Web'
+            => 'Conexión Web',
+        'Sign in Via Web API'
+            => 'Conexión Web API',
         'The password is too short. Minimum length is {minimumLength}.'
             => 'La contraseña es demasiado corta. Largo mínimo es {minimumLength}.',
         'The password must have at least one lowercase letter'
@@ -97,5 +97,7 @@
             => 'Busqueda de Usuarios',
         'Users'
             => 'Usuarios',
+        'Users Home'
+            => 'Accueil Utilisateurs',
     );
 ?>

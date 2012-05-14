@@ -51,6 +51,8 @@
             => '<strong>Zurmo</strong> est licensé sous le GPLv3.  Vous pouvez lire la license <a href="http://www.zurmo.org/license">ici</a>.',
         '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
             => '<strong>Zurmo</strong> utilize les outils et cadres Open Source suivants:',
+        'A large amount of data has been requested for export.  You will receive a notification with the download link when the export is complete.'
+            => 'Il y a une grande quantité de données pour export.  Lorsque le processus d\'exportation sera terminé, vous recevrez une notification avec un lien direct à votre fichier.',
         'About Zurmo'
             => 'À propos de Zurmo',
         'Access Administration Tab'
@@ -105,6 +107,8 @@
             => 'État/Dépt',
         'Any Street'
             => 'Rue',
+        'Application Name'
+            => 'Nom du système',
         'are required.'
             => 'sont obligatoires.',
         'Are you sure you want to remove this group?'
@@ -141,6 +145,8 @@
             => 'Code',
         'Configuration'
             => 'Configuration',
+        'Configure'
+            => 'Configurer',
         'Convert'
             => 'Convertir',
         'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
@@ -221,12 +227,14 @@
             => 'Finance',
         'First Name'
             => 'Prénom',
+        'Forums'
+            => 'Forums',
+        'Global and Basic Search Fields'
+            => 'Champs recherche globale et simple',
         'Global Configuration'
             => 'Configuration globale',
         'Global configuration saved successfully.'
             => 'Configuration globale sauvegardée.',
-        'Global Search Fields'
-            => 'Champs recherche globale',
         'Go to Search'
             => 'à la Recherche',
         'Group'
@@ -239,6 +247,8 @@
             => 'Droits de sécurité',
         'Groups'
             => 'Groupes',
+        'Groups Home'
+            => 'Accueil Groupes',
         'here'
             => 'ici',
         'Home'
@@ -325,6 +335,8 @@
             => 'Filiales',
         'Menu'
             => 'Menu',
+        'Missing Record'
+            => 'Donnée manquante',
         'Missing Required Fields'
             => 'Les champs obligatoires doivent être placés dans la vue',
         'Mobile Phone'
@@ -435,12 +447,16 @@
             => 'Retour au menu administrateur',
         'Rights'
             => 'Droits',
+        'Rights and Permissions'
+            => 'Droits de sécurité et Permissions',
         'Rights Saved Successfully.'
             => 'Droits sauvegardés.',
         'Role'
             => 'Rôle',
         'Roles'
             => 'Rôles',
+        'Roles Home'
+            => 'Accueil Rôles ',
         'Salutation'
             => 'Civilité',
         'Save Changes'
@@ -465,6 +481,8 @@
             => 'Selectionner un rôle',
         'Self-Generated'
             => 'Auto-généré',
+        'Settings'
+            => 'Paramètres',
         'Shipping Address'
             => 'Adresse de livraison',
         'Sign in'
@@ -513,12 +531,16 @@
             => 'Impossible de supprimer la devise car elle est actuellement utilisée.',
         'The ID specified was invalid.'
             => 'ID invalide.',
+        'The record you are trying to access does not exist.'
+            => 'Cette donnée n\'existe pas.',
         'The status specified is invalid.'
             => 'La valeur du statut spécifié n\'est pas valide.',
         'There are no recently viewed items.'
             => 'Aucun éléments récents.',
         'There are required fields missing from the following layout: {view}.  Please contact your administrator.'
             => 'Il manque le(s) champ(s) obligatoire(s) suivant dans le fichier: {view}.  Veuillez contacter votre administrateur système.',
+        'There is no data to export.'
+            => 'Il n\'y a pas de données à exporter.',
         'This action is only available in debug mode.'
             => 'Cette action est seulement disponible en mode debug.',
         'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.'

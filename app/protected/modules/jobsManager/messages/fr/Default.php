@@ -89,6 +89,8 @@
             => 'Message',
         'Monitor Job'
             => 'Suivi des tâches système',
+        'New stable Zurmo release available'
+            => 'Une nouvelle version stable de Zurmo est disponible.',
         'Not Running'
             => 'Inactif',
         'Recommended Frequency'
