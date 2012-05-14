@@ -34,6 +34,7 @@
             //Create some extra users
             SecurityTestHelper::createUsers();
             $nobody    = UserTestHelper::createBasicUser('nobody');
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function testSearch()
@@ -59,7 +60,9 @@
             foreach ($accounts as $account)
             {
                 $account->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
+                ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $nobody);
                 $this->assertTrue($account->save());
+
             }
 
             Yii::app()->user->userModel = $nobody;
