@@ -285,31 +285,31 @@ a.remove:hover .icon:after {
 }
 /*
 .juiportlet-widget.OpenTasksForAccountRelatedListView{
-	h3:before{
-		.juiportlet-header-icon();
-		content: 'X';
-	}
+    h3:before{
+        .juiportlet-header-icon();
+        content: 'X';
+    }
 }
 
 .juiportlet-widget.UpcomingMeetingsForAccountRelatedListView{
-	h3:before{
-		.juiportlet-header-icon();
-		content: 'X';
-	}
+    h3:before{
+        .juiportlet-header-icon();
+        content: 'X';
+    }
 }
 
 .juiportlet-widget.NoteInlineEditForPortletView{
-	h3:before{
-		.juiportlet-header-icon();
-		content: 'X';
-	}
+    h3:before{
+        .juiportlet-header-icon();
+        content: 'X';
+    }
 }
 
 .juiportlet-widget.AccountLatestActivtiesForPortletView{
-	h3:before{
-		.juiportlet-header-icon();
-		content: 'X';
-	}
+    h3:before{
+        .juiportlet-header-icon();
+        content: 'X';
+    }
 }
 */
 #ZurmoLogo {
@@ -1004,8 +1004,8 @@ table.configuration-list tr td:last-child a:before {
   content: "∟";
   font-size: 30px;
   /*position: absolute;
-			left: 45px;
-			top:-1px;*/
+            left: 45px;
+            top:-1px;*/
 
   position: relative;
   top: -3px;
@@ -1023,8 +1023,8 @@ table.configuration-list tr td:last-child a:before {
   content: "∟";
   font-size: 30px;
   /*position: absolute;
-			left: 75px;
-			top:-1px;*/
+            left: 75px;
+            top:-1px;*/
 
   position: relative;
   top: -3px;
@@ -1042,8 +1042,8 @@ table.configuration-list tr td:last-child a:before {
   content: "∟";
   font-size: 30px;
   /*position: absolute;
-			left: 105px;
-			top:-1px;*/
+            left: 105px;
+            top:-1px;*/
 
   position: relative;
   top: -3px;
@@ -1061,8 +1061,8 @@ table.configuration-list tr td:last-child a:before {
   content: "∟";
   font-size: 30px;
   /*position: absolute;
-			left: 135px;
-			top:-1px;*/
+            left: 135px;
+            top:-1px;*/
 
   position: relative;
   top: -3px;
@@ -1096,8 +1096,8 @@ table.configuration-list tr td:last-child a:before {
   content: "∟";
   font-size: 30px;
   /*position: absolute;
-			left: 195px;
-			top:-1px;*/
+            left: 195px;
+            top:-1px;*/
 
   position: relative;
   top: -3px;
@@ -1131,8 +1131,8 @@ table.configuration-list tr td:last-child a:before {
   content: "∟";
   font-size: 30px;
   /*position: absolute;
-			left: 255px;
-			top:-1px;*/
+            left: 255px;
+            top:-1px;*/
 
   position: relative;
   top: -3px;
@@ -1150,8 +1150,8 @@ table.configuration-list tr td:last-child a:before {
   content: "∟";
   font-size: 30px;
   /*position: absolute;
-			left: 285px;
-			top:-1px;*/
+            left: 285px;
+            top:-1px;*/
 
   position: relative;
   top: -3px;
@@ -1377,8 +1377,8 @@ table.configuration-list tr td:last-child a:before {
 .has-lang-label input + span {
   background: url(../images/lang-label.png) left top no-repeat;
   /*
-		float:left;
-		*/
+        float:left;
+        */
 
   display: inline-block;
   position: relative;
@@ -2070,13 +2070,13 @@ table.configuration-list tr td:last-child a:before {
 .fileupload-processing .fileupload-loading {
   display: block;
 }
-/* Fix for IE 6: 
+/* Fix for IE 6:
 *html .fileinput-button {
   line-height: 22px;
   margin: 1px -3px 0 0;
 }
 */
-/* Fix for IE 7: 
+/* Fix for IE 7:
 *+html .fileinput-button {
   margin: 1px 0 0 0;
 }*/
@@ -2093,9 +2093,9 @@ table.configuration-list tr td:last-child a:before {
                     <input id="ImportWizardForm_file" type="file" name="ImportWizardForm_file">
                 </label>&nbsp;Max upload size: 32MB
             </div>
-            
+
             <div class="clear"></div>
-            
+
             <div class="fileupload-content">
             <table class="files">
                 <tbody>
@@ -2103,7 +2103,7 @@ table.configuration-list tr td:last-child a:before {
                         <td class="preview"></td>
                         <td class="name">zurmo-stable-0.6.2.8a690dd17d3a.csv</td>
                         <td class="size">11.68 MB</td>
-                        
+
                         <td class="progress">
                             <div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
                                 <div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right" style="width: 100%; "></div>
@@ -5930,10 +5930,10 @@ div.wide.form label.hasCheckBox {
 .attributesContainer {
   min-height: 260px;
   /*	float:left;
-	.clearfix();
-	display:block;
-	width:100%;	
-	position:relative;*/
+    .clearfix();
+    display:block;
+    width:100%;
+    position:relative;*/
 
   padding-bottom: 15px;
 }
@@ -7113,12 +7113,12 @@ div.hasHalfs .twoThirds {
   padding-right: 10px;
   margin-right: 10px;
 }
-.LatestActivitiesListView .latest-activity-toolbar #LatestActivitiesConfigurationForm_ownedByFilter,
-.LatestActivitiesView .latest-activity-toolbar #LatestActivitiesConfigurationForm_ownedByFilter {
+.LatestActivitiesListView .latest-activity-toolbar #LatestActivitiesConfigurationForm_ownedByFilter_area,
+.LatestActivitiesView .latest-activity-toolbar #LatestActivitiesConfigurationForm_ownedByFilter_area {
   display: inline-block;
 }
-.LatestActivitiesListView .latest-activity-toolbar #LatestActivitiesConfigurationForm_rollup,
-.LatestActivitiesView .latest-activity-toolbar #LatestActivitiesConfigurationForm_rollup {
+.LatestActivitiesListView .latest-activity-toolbar #LatestActivitiesConfigurationForm_rollup_area,
+.LatestActivitiesView .latest-activity-toolbar #LatestActivitiesConfigurationForm_rollup_area {
   display: inline-block;
 }
 .LatestActivitiesListView .latest-activity-toolbar #filter-latest-activities-link,

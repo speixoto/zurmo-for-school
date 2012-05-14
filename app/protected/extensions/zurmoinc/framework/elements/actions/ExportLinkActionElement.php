@@ -98,12 +98,10 @@
                                     'items' => array(
                                         array(  'label'   => Yii::t('Default', 'Selected'),
                                                 'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $selectedName,
-                                                                        'name' => $selectedName)),
+                                                'itemOptions' => array( 'id'   => $selectedName)),
                                         array(  'label'   => Yii::t('Default', 'All Results'),
                                                 'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $allName,
-                                                                        'name' => $allName))));
+                                                'itemOptions' => array( 'id'   => $allName))));
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(

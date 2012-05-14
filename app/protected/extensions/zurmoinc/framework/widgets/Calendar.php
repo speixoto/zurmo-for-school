@@ -59,8 +59,8 @@
          */
         public function run()
         {
-            list($name, $id) = $this->resolveNameID();
-
+            //Invalid HTML using a name on a div
+            //list($name, $id) = $this->resolveNameID();
             if (isset($this->htmlOptions['id']))
             {
                 $id = $this->htmlOptions['id'];
@@ -69,21 +69,14 @@
             {
                 $this->htmlOptions['id'] = $id;
             }
-
+            //Invalid HTML using a name on a div
             if (isset($this->htmlOptions['name']))
             {
-                $name = $this->htmlOptions['name'];
-            }
-            else
-            {
-                $this->htmlOptions['name'] = $name;
+                unset($this->htmlOptions['name']);
             }
             $id = $this->htmlOptions['id'] = $this->htmlOptions['id'].'_container';
-            $this->htmlOptions['name'] = $this->htmlOptions['name'].'_container';
-
 
             echo CHtml::tag('div', $this->htmlOptions, '');
-
             //renderEvents before the datePicker.
             $this->renderEvents($id);
 

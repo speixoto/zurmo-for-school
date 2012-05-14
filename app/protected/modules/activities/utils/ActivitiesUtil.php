@@ -66,7 +66,7 @@
             }
             if (get_class($model) == 'Task')
             {
-                $modelDisplayString = '<span style="text-decoration:line-through;">' . $modelDisplayString . '<span>';
+                $modelDisplayString = '<span style="text-decoration:line-through;">' . $modelDisplayString . '</span>';
             }
             $params = array('label' => $modelDisplayString, 'redirectUrl' => $redirectUrl);
             $moduleClassName = $model->getModuleClassName();
