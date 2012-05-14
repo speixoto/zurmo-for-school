@@ -39,7 +39,7 @@
                 $redBeanVersion = '&lt; 1.2.9.1';
             }
             $content  = '<div>
-                            <h1>Zurmo - <span>version ' . $zurmoVersion . '</span></h1>';
+                            <h1>Zurmo Open Source CRM</span></h1>';
 
             $content .= '<div id="aboutText" class="clearfix">
                             <div id="leftCol">
@@ -90,7 +90,7 @@
                             </div>
                         </div>';
 
-            $content .= '<div id="rightCol"><div><h3>App Info</h3><p>';
+            $content .= '<div id="rightCol"><div><h3>Application Info</h3><p>';
             $content .= Yii::t('Default', 'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.',
                         array('{zurmoVersion}' => $zurmoVersion));
             $content .= '</p>';
