@@ -121,7 +121,7 @@
             {
                 return false;
             }
-            if($elementInformation['type'] == 'MassEditLink' && !$this->listViewRowsAreSelectable)
+            if ($elementInformation['type'] == 'MassEditLink' && !$this->listViewRowsAreSelectable)
             {
                 return false;
             }

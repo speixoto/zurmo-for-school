@@ -141,7 +141,7 @@
             assert('$user->id > 0');
             assert('is_string($type)');
             assert('is_int($value)');
-            if(!isset(self::$pointTypesAndValuesByUserIdToAdd[$user->id][$type]))
+            if (!isset(self::$pointTypesAndValuesByUserIdToAdd[$user->id][$type]))
             {
                 self::$pointTypesAndValuesByUserIdToAdd[$user->id][$type] = $value;
             }
@@ -160,21 +160,21 @@
          */
         public function processDeferredPoints()
         {
-            if(!$this->enabled)
+            if (!$this->enabled)
             {
                 return;
             }
-            foreach(self::$pointTypesAndValuesByUserIdToAdd as $userId => $typeAndValues)
+            foreach (self::$pointTypesAndValuesByUserIdToAdd as $userId => $typeAndValues)
             {
-                if($typeAndValues != null)
+                if ($typeAndValues != null)
                 {
-                    foreach($typeAndValues as $type => $value)
+                    foreach ($typeAndValues as $type => $value)
                     {
                         $gamePoint      = GamePoint::
                                             resolveToGetByTypeAndPerson($type, User::getById($userId));
                         $gamePoint->addValue($value);
                         $saved          = $gamePoint->save();
-                        if(!$saved)
+                        if (!$saved)
                         {
                             throw new NotSupportedException();
                         }
@@ -189,7 +189,7 @@
          */
         public function resolveLevelChange()
         {
-            if(!$this->enabled)
+            if (!$this->enabled)
             {
                 return;
             }
@@ -210,17 +210,17 @@
             $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
                                                                                     $currentGameLevel);
 
-            if($nextLevel !== false &&
+            if ($nextLevel !== false &&
                GamePoint::doesUserExceedPointsByLevelType(Yii::app()->user->userModel, $nextLevelPointValue, $levelType))
             {
                 $currentGameLevel->value = $nextLevel;
                 $saved = $currentGameLevel->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
                 GameLevel::processBonusPointsOnLevelChange($currentGameLevel, Yii::app()->user->userModel);
-                if($currentGameLevel->value != 1)
+                if ($currentGameLevel->value != 1)
                 {
                     $message                    = new NotificationMessage();
                     $message->textContent       = Yii::t('Default', 'You have reached a new {levelType} level: {level}. Congratulations.',
@@ -238,7 +238,7 @@
          */
         public function resolveNewBadges()
         {
-            if(!$this->enabled)
+            if (!$this->enabled)
             {
                 return;
             }
@@ -246,22 +246,22 @@
             $userPointsByType     = GamePoint::getAllByPersonIndexedByType(Yii::app()->user->userModel);
             $userScoresByType     = GameScore::getAllByPersonIndexedByType(Yii::app()->user->userModel);
             $badgeRulesClassNames = GameBadgeRules::getBadgeRulesData();
-            foreach($badgeRulesClassNames as $badgeRulesClassName)
+            foreach ($badgeRulesClassNames as $badgeRulesClassName)
             {
                 $newBadge    = false;
                 $gradeChange = false;
                 $badgeGrade  = $badgeRulesClassName::
                                badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType);
-                if($badgeGrade > 0)
+                if ($badgeGrade > 0)
                 {
-                    if(isset($userBadgesByType[$badgeRulesClassName::getType()]))
+                    if (isset($userBadgesByType[$badgeRulesClassName::getType()]))
                     {
                         $gameBadge        = $userBadgesByType[$badgeRulesClassName::getType()];
-                        if($badgeGrade > $gameBadge->grade)
+                        if ($badgeGrade > $gameBadge->grade)
                         {
                             $gameBadge->grade = $badgeGrade;
                             $saved        = $gameBadge->save();
-                            if(!$saved)
+                            if (!$saved)
                             {
                                 throw new NotSupportedException();
                             }
@@ -275,15 +275,15 @@
                         $gameBadge->person = Yii::app()->user->userModel;
                         $gameBadge->grade  = 1;
                         $saved             = $gameBadge->save();
-                        if(!$saved)
+                        if (!$saved)
                         {
                             throw new NotSupportedException();
                         }
                         $newBadge          = true;
                     }
-                    if($gradeChange || $newBadge)
+                    if ($gradeChange || $newBadge)
                     {
-                        if($gradeChange)
+                        if ($gradeChange)
                         {
                             $gradeChangeOrNewBadge = 'GradeChange';
                         }
@@ -293,12 +293,12 @@
                         }
                         GameBadge::processBonusPoints($gameBadge, Yii::app()->user->userModel, $gradeChangeOrNewBadge);
                         $message                    = new NotificationMessage();
-                        if($newBadge)
+                        if ($newBadge)
                         {
                             $message->textContent   = Yii::t('Default', 'You have received a new badge: {badgeDisplayName}. Congratulations.',
                                                              array('{badgeDisplayName}' => $badgeRulesClassName::getDisplayName()));
                         }
-                        elseif($gradeChange)
+                        elseif ($gradeChange)
                         {
                             $message->textContent   = Yii::t('Default', 'You have received a badge upgrade for: {badgeDisplayName}. Congratulations.',
                                                              array('{badgeDisplayName}' => $badgeRulesClassName::getDisplayName()));

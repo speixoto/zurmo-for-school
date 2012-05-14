@@ -377,7 +377,7 @@
          */
         public static function getScriptFilesThatLoadOnAllPages()
         {
-            return array();
+            //return array();
         }
     }
 ?>

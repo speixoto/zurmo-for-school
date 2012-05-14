@@ -225,7 +225,7 @@
         protected function resolveToTriggerOnSearchEvents($listModelClassName)
         {
             $pageVariableName = $listModelClassName . '_page';
-            if(isset($_GET[$pageVariableName]) && $_GET[$pageVariableName] == null)
+            if (isset($_GET[$pageVariableName]) && $_GET[$pageVariableName] == null)
             {
                 Yii::app()->gameHelper->triggerSearchModelsEvent($listModelClassName);
             }

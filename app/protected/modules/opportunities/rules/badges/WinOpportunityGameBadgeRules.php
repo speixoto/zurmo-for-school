@@ -38,61 +38,61 @@
         {
             assert('is_array($userPointsByType)');
             assert('is_array($userScoresByType)');
-            if(isset($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]))
+            if (isset($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]))
             {
-                if($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 1)
+                if ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 1)
                 {
                     return 0;
                 }
-                if($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 2)
+                if ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 2)
                 {
                     return 1;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 4)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 4)
                 {
                     return 2;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 6)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 6)
                 {
                     return 3;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 11)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 11)
                 {
                     return 4;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 21)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 21)
                 {
                     return 5;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 31)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 31)
                 {
                     return 6;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 41)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 41)
                 {
                     return 7;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 51)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 51)
                 {
                     return 8;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 61)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 61)
                 {
                     return 9;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 71)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 71)
                 {
                     return 10;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 81)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 81)
                 {
                     return 11;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 91)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value < 91)
                 {
                     return 12;
                 }
-                elseif($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value >= 100)
+                elseif ($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value >= 100)
                 {
                     return 13;
                 }

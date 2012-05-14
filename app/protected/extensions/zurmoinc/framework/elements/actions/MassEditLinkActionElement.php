@@ -53,7 +53,7 @@
                         {
                             url : $.fn.yiiGridView.getUrl('" . $gridId . "')
                         }
-                        if(options.url.split( '?' ).length == 2)
+                        if (options.url.split( '?' ).length == 2)
                         {
                             options.url.split( '?' )[0];
                             options.url = options.url.split( '?' )[0] +'/'+ 'massEdit' + '?' + options.url.split( '?' )[1];
@@ -78,7 +78,7 @@
                         {
                             url : $.fn.yiiGridView.getUrl('" . $gridId . "')
                         }
-                        if(options.url.split( '?' ).length == 2)
+                        if (options.url.split( '?' ).length == 2)
                         {
                             options.url.split( '?' )[0];
                             options.url = options.url.split( '?' )[0] +'/'+ 'massEdit' + '?' + options.url.split( '?' )[1];
@@ -96,12 +96,12 @@
             ");
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                                     'items' => array(
-                                        array(	'label'   => Yii::t('Default', 'Selected'),
+                                        array(  'label'   => Yii::t('Default', 'Selected'),
                                                 'url'     => '#',
                                                 'itemOptions' => array( 'id'   => $selectedName,
                                                                         'name' => $selectedName)),
-                                        array(	'label'   => Yii::t('Default', 'All Results'),
-                                                'url'	  => '#',
+                                        array(  'label'   => Yii::t('Default', 'All Results'),
+                                                'url'     => '#',
                                                 'itemOptions' => array( 'id'   => $allName,
                                                                         'name' => $allName))));
             $cClipWidget = new CClipWidget();

@@ -191,7 +191,7 @@
             }
 
             $selectedIds = "";
-            foreach($accounts as $account)
+            foreach ($accounts as $account)
             {
                 $selectedIds .= $account->id . ",";
             }

@@ -425,7 +425,7 @@
 
         protected function beforeDelete()
         {
-            if(!parent::beforeDelete())
+            if (!parent::beforeDelete())
             {
                 return false;
             }

@@ -44,7 +44,7 @@
                 'buttons' => array(
                     'update' => array(
                     'url' => $url,
-                    'imageUrl'	      => false,
+                    'imageUrl'        => false,
                     'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
                     'options'         => array('class' => 'pencil', 'title' => 'Update'),
                     'label'           => '!'

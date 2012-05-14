@@ -133,7 +133,7 @@
         public static function activeCheckBox($model, $attribute, $htmlOptions = array())
         {
             self::resolveNameID($model,$attribute,$htmlOptions);
-            if(isset($htmlOptions['disabled']))
+            if (isset($htmlOptions['disabled']))
             {
                 $disabledClass = ' disabled';
             }
@@ -141,16 +141,16 @@
             {
                 $disabledClass = '';
             }
-            if(!isset($htmlOptions['value']))
+            if (!isset($htmlOptions['value']))
             {
                 $htmlOptions['value']=1;
             }
-            if(!isset($htmlOptions['checked']) && self::resolveValue($model,$attribute)==$htmlOptions['value'])
+            if (!isset($htmlOptions['checked']) && self::resolveValue($model,$attribute)==$htmlOptions['value'])
             {
                 $htmlOptions['checked']='checked';
             }
             self::clientChange('click',$htmlOptions);
-            if(array_key_exists('uncheckValue',$htmlOptions))
+            if (array_key_exists('uncheckValue',$htmlOptions))
             {
                 $uncheck=$htmlOptions['uncheckValue'];
                 unset($htmlOptions['uncheckValue']);
@@ -171,14 +171,14 @@
          */
         public static function checkBox($name,$checked=false,$htmlOptions=array())
         {
-            if($checked)
+            if ($checked)
                 $htmlOptions['checked']='checked';
             else
                 unset($htmlOptions['checked']);
             $value=isset($htmlOptions['value']) ? $htmlOptions['value'] : 1;
             self::clientChange('click',$htmlOptions);
 
-            if(array_key_exists('uncheckValue',$htmlOptions))
+            if (array_key_exists('uncheckValue',$htmlOptions))
             {
                 $uncheck=$htmlOptions['uncheckValue'];
                 unset($htmlOptions['uncheckValue']);
@@ -186,10 +186,10 @@
             else
                 $uncheck=null;
 
-            if($uncheck!==null)
+            if ($uncheck!==null)
             {
                 // add a hidden field so that if the radio button is not selected, it still submits a value
-                if(isset($htmlOptions['id']) && $htmlOptions['id']!==false)
+                if (isset($htmlOptions['id']) && $htmlOptions['id']!==false)
                     $uncheckOptions=array('id'=>self::ID_PREFIX.$htmlOptions['id']);
                 else
                     $uncheckOptions=array('id'=>false);

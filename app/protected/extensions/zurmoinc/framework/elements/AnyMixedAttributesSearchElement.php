@@ -52,7 +52,7 @@
         {
             $htmlOptions             = array('class'   => 'input-hint',
                                              'onfocus' => '$(this).removeClass("input-hint"); $(this).val("");',
-                                             'size'	   => 80,
+                                             'size'    => 80,
                                              'value'   => Yii::t('Default', 'Start typing to search'));
             return array_merge(parent::getHtmlOptions(), $htmlOptions);
         }
@@ -117,9 +117,9 @@
                                 }
                             );
                             var basicSearchHandler = function(event) {
-                                if($(this).val() != '')
+                                if ($(this).val() != '')
                                 {
-                                    if(basicSearchOldValue != $(this).val())
+                                    if (basicSearchOldValue != $(this).val())
                                     {
                                         basicSearchOldValue = $(this).val();
                                         basicSearchQueued = basicSearchQueued  + 1;

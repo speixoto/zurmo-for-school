@@ -191,7 +191,7 @@
             }
 
             $selectedIds = "";
-            foreach($leads as $lead)
+            foreach ($leads as $lead)
             {
                 $selectedIds .= $lead->id . ",";
             }

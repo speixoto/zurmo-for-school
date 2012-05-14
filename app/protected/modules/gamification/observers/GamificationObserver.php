@@ -38,7 +38,7 @@
          */
         public function init()
         {
-            if($this->enabled)
+            if ($this->enabled)
             {
                 $modules = Module::getModuleObjects();
                 foreach ($modules as $module)
@@ -55,7 +55,7 @@
                             $rules->attachScoringEventsByModelClassName($modelClassName);
                         }
                     }
-                    catch(NotSupportedException $e)
+                    catch (NotSupportedException $e)
                     {
                     }
                 }

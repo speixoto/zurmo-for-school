@@ -54,7 +54,7 @@
                 $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
                 $gameScore->addValue();
                 $saved = $gameScore->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }

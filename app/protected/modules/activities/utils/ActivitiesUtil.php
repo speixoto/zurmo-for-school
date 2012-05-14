@@ -64,7 +64,7 @@
             {
                 $modelDisplayString = substr($modelDisplayString, 0, 200) . '...';
             }
-            if(get_class($model) == 'Task')
+            if (get_class($model) == 'Task')
             {
                 $modelDisplayString = '<span style="text-decoration:line-through;">' . $modelDisplayString . '<span>';
             }

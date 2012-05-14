@@ -97,7 +97,7 @@
         protected function resolveActionElementInformationDuringRender(& $elementInformation)
         {
             parent::resolveActionElementInformationDuringRender($elementInformation);
-            if($elementInformation['type'] == $this->activeActionElementType)
+            if ($elementInformation['type'] == $this->activeActionElementType)
             {
                 $elementInformation['htmlOptions']['class'] .= ' active';
             }

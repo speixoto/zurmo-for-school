@@ -79,7 +79,7 @@
         protected function getGridViewWidgetPath()
         {
             $resolvedMetadata = $this->getResolvedMetadata();
-            if(isset($resolvedMetadata['global']['gridViewType']) &&
+            if (isset($resolvedMetadata['global']['gridViewType']) &&
                      $resolvedMetadata['global']['gridViewType'] == RelatedListView::GRID_VIEW_TYPE_STACKED)
              {
                  return 'ext.zurmoinc.framework.widgets.StackedExtendedGridView';

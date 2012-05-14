@@ -96,7 +96,7 @@
          */
         public static function resolveGlobalSearchScopeFromGetData($get)
         {
-            if(!isset($get['globalSearchScope']) || in_array('All', $get['globalSearchScope']))
+            if (!isset($get['globalSearchScope']) || in_array('All', $get['globalSearchScope']))
             {
                 return null;
             }

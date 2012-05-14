@@ -70,7 +70,7 @@
                                           getGlobalSearchScopingModuleNamesAndLabelsDataByUser(
                                           Yii::app()->user->userModel);
             $compareData                = array(
-                                            'accounts'	    => 'Accounts',
+                                            'accounts'      => 'Accounts',
                                             'contacts'      => 'Contacts',
                                             'leads'         => 'Leads',
                                             'opportunities' => 'Opportunities',
@@ -99,7 +99,7 @@
             //At this point because the data is was cleared after billy saved, it should show Accounts.
             $scopeModulesAndLabels      = GlobalSearchUtil::
                                           getGlobalSearchScopingModuleNamesAndLabelsDataByUser($billy);
-            $compareData                = array('accounts'	    => 'Accounts');
+            $compareData                = array('accounts'      => 'Accounts');
             $this->assertEquals($compareData, $scopeModulesAndLabels);
         }
     }

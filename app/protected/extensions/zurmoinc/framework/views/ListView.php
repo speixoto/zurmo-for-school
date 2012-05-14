@@ -134,9 +134,9 @@
                 'afterAjaxUpdate'  => $this->getCGridViewAfterAjaxUpdate(),
                 'cssFile'          => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
                 'columns'          => $columns,
-                'nullDisplay'	   => '&#160;',
+                'nullDisplay'      => '&#160;',
                 'showTableOnEmpty' => $this->getShowTableOnEmpty(),
-                'emptyText'		   => $this->getEmptyText(),
+                'emptyText'        => $this->getEmptyText(),
                 'template'         => "\n{items}\n{pager}",
             );
         }
@@ -204,7 +204,7 @@
                             $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
                             $columnAdapter  = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
                             $column = $columnAdapter->renderGridViewData();
-                            if(!isset($column['class']))
+                            if (!isset($column['class']))
                             {
                                 $column['class'] = 'DataColumn';
                             }
@@ -224,7 +224,7 @@
 
         protected function getResolvedMetadata()
         {
-            if($this->resolvedMetadata != null)
+            if ($this->resolvedMetadata != null)
             {
                 return $this->resolvedMetadata;
             }
@@ -306,7 +306,7 @@
                 'buttons' => array(
                     'update' => array(
                     'url' => $url,
-                    'imageUrl'	      => false,
+                    'imageUrl'        => false,
                     'options'         => array('class' => 'pencil', 'title' => 'Update'),
                     'label'           => '!'
                     ),

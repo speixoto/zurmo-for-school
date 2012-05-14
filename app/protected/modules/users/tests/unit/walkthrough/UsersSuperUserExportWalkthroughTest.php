@@ -190,7 +190,7 @@
             }
 
             $selectedIds = "";
-            foreach($users as $user)
+            foreach ($users as $user)
             {
                 $selectedIds .= $user->id . ",";
             }

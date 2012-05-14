@@ -232,7 +232,7 @@
                     }
                     //$content .= '</tr>';
                 }
-                if($key == 1)
+                if ($key == 1)
                 {
                     $content .= '<div class="view-toolbar-container clearfix">';
                     $content .= '<div class="form-toolbar">';

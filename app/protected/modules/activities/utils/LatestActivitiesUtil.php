@@ -86,7 +86,7 @@
                     $searchAttributesData =     // Not Coding Standard
                         $mashableActivityRules->resolveSearchAttributesDataByRelatedItemIds($relationItemIds);
                 }
-                elseif(count($relationItemIds) == 1)
+                elseif (count($relationItemIds) == 1)
                 {
                     $searchAttributesData =    // Not Coding Standard
                         $mashableActivityRules->resolveSearchAttributesDataByRelatedItemId($relationItemIds[0]);
@@ -128,7 +128,7 @@
                         'operatorType'         => 'equals',
                         'value'                => $userId,
                 );
-                if($clauseCount == 0)
+                if ($clauseCount == 0)
                 {
                     $searchAttributesData['structure'] = '0';
                 }

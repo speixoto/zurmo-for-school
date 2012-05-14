@@ -35,7 +35,7 @@
         */
         public function renderItems()
         {
-            if($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty)
+            if ($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty)
             {
                 echo "<table class=\"{$this->itemsCssClass}\">\n";
                 ob_start();
@@ -60,7 +60,7 @@
             $n = count($data);
             echo "<tbody>\n";
 
-            if($n > 0)
+            if ($n > 0)
             {
                 for($row=0;$row<$n;++$row)
                     $this->renderTableRow($row);
@@ -80,12 +80,12 @@
          */
         public function renderTableRow($row)
         {
-            if($this->rowCssClassExpression!==null)
+            if ($this->rowCssClassExpression!==null)
             {
                 $data=$this->dataProvider->data[$row];
                 echo '<tr class="'.$this->evaluateExpression($this->rowCssClassExpression,array('row'=>$row,'data'=>$data)).'">';
             }
-            else if(is_array($this->rowCssClass) && ($n=count($this->rowCssClass))>0)
+            elseif (is_array($this->rowCssClass) && ($n=count($this->rowCssClass))>0)
             {
                 echo '<tr class="'.$this->rowCssClass[$row%$n].'">';
             }
@@ -94,9 +94,9 @@
                 echo '<tr>';
             }
             echo '<td>';
-            foreach($this->columns as $column)
+            foreach ($this->columns as $column)
             {
-                if($column instanceof CGridColumn)
+                if ($column instanceof CGridColumn)
                 {
                     $column->attachBehavior('stackedDataCell', new StackedGridColumnBehavior());
                     $column->renderStackedDataCell($row);

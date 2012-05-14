@@ -38,61 +38,61 @@
         {
             assert('is_array($userPointsByType)');
             assert('is_array($userScoresByType)');
-            if(isset($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]))
+            if (isset($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]))
             {
-                if($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 1)
+                if ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 1)
                 {
                     return 0;
                 }
-                if($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 2)
+                if ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 2)
                 {
                     return 1;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 6)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 6)
                 {
                     return 2;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 11)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 11)
                 {
                     return 3;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 26)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 26)
                 {
                     return 4;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 51)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 51)
                 {
                     return 5;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 76)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 76)
                 {
                     return 6;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 101)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 101)
                 {
                     return 7;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 126)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 126)
                 {
                     return 8;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 151)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 151)
                 {
                     return 9;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 176)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 176)
                 {
                     return 10;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 201)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 201)
                 {
                     return 11;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 226)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value < 226)
                 {
                     return 12;
                 }
-                elseif($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value >= 250)
+                elseif ($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value >= 250)
                 {
                     return 13;
                 }

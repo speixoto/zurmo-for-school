@@ -34,7 +34,7 @@
          */
         public function actionLoadPaginationDemoData()
         {
-            if(Yii::app()->user->userModel->username != 'super')
+            if (Yii::app()->user->userModel->username != 'super')
             {
                 throw new NotSupportedException();
             }

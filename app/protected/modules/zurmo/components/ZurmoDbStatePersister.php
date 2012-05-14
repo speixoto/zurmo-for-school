@@ -36,7 +36,7 @@
             {
                 $content = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'globalState');
                 $content = unserialize($content);
-                if($content)
+                if ($content)
                 {
                     return $content;
                 }

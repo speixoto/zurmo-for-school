@@ -88,7 +88,7 @@
             {
                 $this->inputId = $this->getId() . 'inputName';
             }
-            if(count($this->dataAndLabels) == 0)
+            if (count($this->dataAndLabels) == 0)
             {
                 throw new NotSupportedException();
             }

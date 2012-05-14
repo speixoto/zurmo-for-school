@@ -58,7 +58,7 @@
                             $portletRules = PortletRulesFactory::createPortletRulesByView($className);
                             if ($portletRules != null && $portletRules->allowOnDashboard())
                             {
-                                if($portletRules->allowMultiplePlacementOnDashboard() ||
+                                if ($portletRules->allowMultiplePlacementOnDashboard() ||
                                    (!$portletRules->allowMultiplePlacementOnDashboard() &&
                                     !in_array($portletRules->getType(), $placedViewTypes)))
                                 {
@@ -90,7 +90,7 @@
         {
             $portlets        = Portlet::getByLayoutId($this->uniqueLayoutId);
             $placedViewTypes = array();
-            foreach($portlets as $portlet)
+            foreach ($portlets as $portlet)
             {
                 $placedViewTypes[] = $portlet->viewType;
             }

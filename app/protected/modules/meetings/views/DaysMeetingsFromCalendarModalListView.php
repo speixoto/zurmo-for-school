@@ -119,7 +119,7 @@
         protected function getGridViewWidgetPath()
         {
             $resolvedMetadata = $this->getResolvedMetadata();
-            if(isset($resolvedMetadata['global']['gridViewType']) &&
+            if (isset($resolvedMetadata['global']['gridViewType']) &&
                      $resolvedMetadata['global']['gridViewType'] == RelatedListView::GRID_VIEW_TYPE_STACKED)
              {
                  return 'ext.zurmoinc.framework.widgets.StackedExtendedGridView';
@@ -158,7 +158,7 @@
                 )
                 );
             $searchAttributeData['structure'] = '(1 and 2)';
-            if($this->ownerOnly)
+            if ($this->ownerOnly)
             {
                 $searchAttributeData['clauses'][3] =
                 array(
@@ -169,7 +169,7 @@
                 $searchAttributeData['structure'] = '(1 and 2 and 3)';
             }
             //The assertion above ensures that either ownerOnly or relationModel is populated but not both.
-            if($this->relationModel != null)
+            if ($this->relationModel != null)
             {
                 $searchAttributeData['clauses'][3] =
                 array(

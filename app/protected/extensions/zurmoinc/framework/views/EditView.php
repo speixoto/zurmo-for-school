@@ -46,7 +46,7 @@
             $content  = '<div>';
             $content .= $this->renderTitleContent();
             $maxCellsPresentInAnyRow = $this->resolveMaxCellsPresentInAnyRow($this->getFormLayoutMetadata());
-            if($maxCellsPresentInAnyRow > 1)
+            if ($maxCellsPresentInAnyRow > 1)
             {
                 $class = "wide double-column form";
             }
@@ -68,7 +68,7 @@
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderAfterFormLayout($form);
             $actionToolBarContent = $this->renderActionElementBar(true);
-            if($actionToolBarContent != null)
+            if ($actionToolBarContent != null)
             {
                 $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
                 $content .= $actionToolBarContent;

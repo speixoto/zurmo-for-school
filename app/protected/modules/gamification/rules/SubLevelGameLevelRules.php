@@ -42,35 +42,35 @@
         public static function getLevelBonusPointValue($level)
         {
             assert('is_int($level)');
-            if($level == 1)
+            if ($level == 1)
             {
                 return 100;
             }
-            elseif($level == 1)
+            elseif ($level == 1)
             {
                 return 110;
             }
-            elseif($level == 2)
+            elseif ($level == 2)
             {
                 return 110;
             }
-            elseif($level == 3)
+            elseif ($level == 3)
             {
                 return 130;
             }
-            elseif($level == 4)
+            elseif ($level == 4)
             {
                 return 140;
             }
-            elseif($level == 5)
+            elseif ($level == 5)
             {
                 return 150;
             }
-            elseif($level == 6)
+            elseif ($level == 6)
             {
                 return 160;
             }
-            elseif($level == 7)
+            elseif ($level == 7)
             {
                 return 170;
             }

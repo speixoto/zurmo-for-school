@@ -158,9 +158,9 @@
         {
             assert('is_string($stateName)');
             $leadStatesData = self::getLeadStateDataFromStartingStateOnAndKeyedById();
-            foreach($leadStatesData as $leadStateName)
+            foreach ($leadStatesData as $leadStateName)
             {
-                if($stateName == $leadStateName)
+                if ($stateName == $leadStateName)
                 {
                     return true;
                 }

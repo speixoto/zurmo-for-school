@@ -38,61 +38,61 @@
         {
             assert('is_array($userPointsByType)');
             assert('is_array($userScoresByType)');
-            if(isset($userScoresByType['CreateTask']))
+            if (isset($userScoresByType['CreateTask']))
             {
-                if($userScoresByType['CreateTask']->value < 1)
+                if ($userScoresByType['CreateTask']->value < 1)
                 {
                     return 0;
                 }
-                if($userScoresByType['CreateTask']->value < 2)
+                if ($userScoresByType['CreateTask']->value < 2)
                 {
                     return 1;
                 }
-                elseif($userScoresByType['CreateTask']->value < 11)
+                elseif ($userScoresByType['CreateTask']->value < 11)
                 {
                     return 2;
                 }
-                elseif($userScoresByType['CreateTask']->value < 26)
+                elseif ($userScoresByType['CreateTask']->value < 26)
                 {
                     return 3;
                 }
-                elseif($userScoresByType['CreateTask']->value < 51)
+                elseif ($userScoresByType['CreateTask']->value < 51)
                 {
                     return 4;
                 }
-                elseif($userScoresByType['CreateTask']->value < 76)
+                elseif ($userScoresByType['CreateTask']->value < 76)
                 {
                     return 5;
                 }
-                elseif($userScoresByType['CreateTask']->value < 101)
+                elseif ($userScoresByType['CreateTask']->value < 101)
                 {
                     return 6;
                 }
-                elseif($userScoresByType['CreateTask']->value < 126)
+                elseif ($userScoresByType['CreateTask']->value < 126)
                 {
                     return 7;
                 }
-                elseif($userScoresByType['CreateTask']->value < 151)
+                elseif ($userScoresByType['CreateTask']->value < 151)
                 {
                     return 8;
                 }
-                elseif($userScoresByType['CreateTask']->value < 176)
+                elseif ($userScoresByType['CreateTask']->value < 176)
                 {
                     return 9;
                 }
-                elseif($userScoresByType['CreateTask']->value < 201)
+                elseif ($userScoresByType['CreateTask']->value < 201)
                 {
                     return 10;
                 }
-                elseif($userScoresByType['CreateTask']->value < 226)
+                elseif ($userScoresByType['CreateTask']->value < 226)
                 {
                     return 11;
                 }
-                elseif($userScoresByType['CreateTask']->value < 251)
+                elseif ($userScoresByType['CreateTask']->value < 251)
                 {
                     return 12;
                 }
-                elseif($userScoresByType['CreateTask']->value >= 300)
+                elseif ($userScoresByType['CreateTask']->value >= 300)
                 {
                     return 13;
                 }
