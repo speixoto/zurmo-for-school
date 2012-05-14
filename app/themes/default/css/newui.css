@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+  padding: 0;
+}
 /*Imports*/
 .zButton {
   cursor: pointer;
@@ -18,16 +22,12 @@
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -88,8 +88,6 @@
   margin: 0px 20px 20px 0px;
   padding: 0;
   border: 1px solid #CCC;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff;
   -moz-box-shadow: inset 0 0 0 2px #ffffff;
   -o-box-shadow: inset 0 0 0 2px #ffffff;
@@ -104,8 +102,6 @@
   background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5);
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -129,8 +125,6 @@
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
   -moz-box-shadow: inset 0 1px 0 0 #ffffff;
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
@@ -168,8 +162,6 @@ a.remove .icon:after {
   display: block;
   float: right;
   color: #A7A7A7;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -283,35 +275,6 @@ a.remove:hover .icon:after {
   top: 6px;
   content: 'e';
 }
-/*
-.juiportlet-widget.OpenTasksForAccountRelatedListView{
-    h3:before{
-        .juiportlet-header-icon();
-        content: 'X';
-    }
-}
-
-.juiportlet-widget.UpcomingMeetingsForAccountRelatedListView{
-    h3:before{
-        .juiportlet-header-icon();
-        content: 'X';
-    }
-}
-
-.juiportlet-widget.NoteInlineEditForPortletView{
-    h3:before{
-        .juiportlet-header-icon();
-        content: 'X';
-    }
-}
-
-.juiportlet-widget.AccountLatestActivtiesForPortletView{
-    h3:before{
-        .juiportlet-header-icon();
-        content: 'X';
-    }
-}
-*/
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
   width: 170px;
@@ -329,8 +292,6 @@ a.remove:hover .icon:after {
   background-image: -o-linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
   background-image: linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#f6f6f6', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -399,16 +360,12 @@ a.remove:hover .icon:after {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -487,16 +444,12 @@ a.remove:hover .icon:after {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -678,16 +631,12 @@ a.remove:hover .icon:after {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -752,16 +701,12 @@ table.configuration-list tr td:last-child a {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -862,16 +807,12 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -923,12 +864,6 @@ table.configuration-list tr td:last-child a:before {
 #JobsCollectionView table br,
 .SecurityTreeListView table br {
   display: none;
-}
-#LanguagesCollectionView table tr:last-child td,
-#CurrenciesCollectionView table tr:last-child td,
-#JobsCollectionView table tr:last-child td,
-.SecurityTreeListView table tr:last-child td {
-  border-bottom: none;
 }
 #LanguagesCollectionView table td,
 #CurrenciesCollectionView table td,
@@ -1003,10 +938,6 @@ table.configuration-list tr td:last-child a:before {
 .SecurityTreeListView td.level-2:before {
   content: "∟";
   font-size: 30px;
-  /*position: absolute;
-            left: 45px;
-            top:-1px;*/
-
   position: relative;
   top: -3px;
 }
@@ -1022,10 +953,6 @@ table.configuration-list tr td:last-child a:before {
 .SecurityTreeListView td.level-3:before {
   content: "∟";
   font-size: 30px;
-  /*position: absolute;
-            left: 75px;
-            top:-1px;*/
-
   position: relative;
   top: -3px;
 }
@@ -1041,10 +968,6 @@ table.configuration-list tr td:last-child a:before {
 .SecurityTreeListView td.level-4:before {
   content: "∟";
   font-size: 30px;
-  /*position: absolute;
-            left: 105px;
-            top:-1px;*/
-
   position: relative;
   top: -3px;
 }
@@ -1060,10 +983,6 @@ table.configuration-list tr td:last-child a:before {
 .SecurityTreeListView td.level-5:before {
   content: "∟";
   font-size: 30px;
-  /*position: absolute;
-            left: 135px;
-            top:-1px;*/
-
   position: relative;
   top: -3px;
 }
@@ -1095,10 +1014,6 @@ table.configuration-list tr td:last-child a:before {
 .SecurityTreeListView td.level-7:before {
   content: "∟";
   font-size: 30px;
-  /*position: absolute;
-            left: 195px;
-            top:-1px;*/
-
   position: relative;
   top: -3px;
 }
@@ -1130,10 +1045,6 @@ table.configuration-list tr td:last-child a:before {
 .SecurityTreeListView td.level-9:before {
   content: "∟";
   font-size: 30px;
-  /*position: absolute;
-            left: 255px;
-            top:-1px;*/
-
   position: relative;
   top: -3px;
 }
@@ -1149,10 +1060,6 @@ table.configuration-list tr td:last-child a:before {
 .SecurityTreeListView td.level-10:before {
   content: "∟";
   font-size: 30px;
-  /*position: absolute;
-            left: 285px;
-            top:-1px;*/
-
   position: relative;
   top: -3px;
 }
@@ -1239,8 +1146,6 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -1255,8 +1160,6 @@ table.configuration-list tr td:last-child a:before {
   color: #333333;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1268,8 +1171,6 @@ table.configuration-list tr td:last-child a:before {
 }
 #currency-collection-form .portlet-toolbar a:active {
   color: #656565;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -1278,15 +1179,11 @@ table.configuration-list tr td:last-child a:before {
 }
 #currency-collection-form .portlet-toolbar input {
   color: #FFF;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
   -moz-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
   -o-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
@@ -1309,8 +1206,6 @@ table.configuration-list tr td:last-child a:before {
 }
 #currency-collection-form .portlet-toolbar input:active {
   color: #FFF !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1328,8 +1223,6 @@ table.configuration-list tr td:last-child a:before {
   margin: 0;
   padding: 0;
   border: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -1376,10 +1269,6 @@ table.configuration-list tr td:last-child a:before {
 }
 .has-lang-label input + span {
   background: url(../images/lang-label.png) left top no-repeat;
-  /*
-        float:left;
-        */
-
   display: inline-block;
   position: relative;
   left: 1px;
@@ -1388,8 +1277,6 @@ table.configuration-list tr td:last-child a:before {
   width: 80px;
   text-align: center;
   border-right: 1px solid #cccccc;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1423,16 +1310,12 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1532,16 +1415,12 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1609,16 +1488,12 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1724,8 +1599,6 @@ table.configuration-list tr td:last-child a:before {
   margin: 0;
   border: none;
   background: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -1763,8 +1636,6 @@ table.configuration-list tr td:last-child a:before {
   padding: 0 0 15px 0 !important;
   border: 0 !important;
   background: none !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -1787,8 +1658,6 @@ table.configuration-list tr td:last-child a:before {
   margin: 0;
   border: 0 !important;
   background: none !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -1928,16 +1797,12 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2070,123 +1935,6 @@ table.configuration-list tr td:last-child a:before {
 .fileupload-processing .fileupload-loading {
   display: block;
 }
-/* Fix for IE 6:
-*html .fileinput-button {
-  line-height: 22px;
-  margin: 1px -3px 0 0;
-}
-*/
-/* Fix for IE 7:
-*+html .fileinput-button {
-  margin: 1px 0 0 0;
-}*/
-/*
-<td colspan="3">
-    <div class="file-upload-box">
-        <div id="fileUploadyw1" class="ui-widget">
-            <div class="fileupload-buttonbar">
-                <label class="fileinput-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary ui-state-hover" role="button">
-                    <span class="ui-button-icon-primary ui-icon ui-icon-plusthick"></span>
-                    <span class="ui-button-text">
-                        <span>Add File</span>
-                    </span>
-                    <input id="ImportWizardForm_file" type="file" name="ImportWizardForm_file">
-                </label>&nbsp;Max upload size: 32MB
-            </div>
-
-            <div class="clear"></div>
-
-            <div class="fileupload-content">
-            <table class="files">
-                <tbody>
-                    <tr class="template-upload" style="">
-                        <td class="preview"></td>
-                        <td class="name">zurmo-stable-0.6.2.8a690dd17d3a.csv</td>
-                        <td class="size">11.68 MB</td>
-
-                        <td class="progress">
-                            <div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-                                <div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right" style="width: 100%; "></div>
-                            </div>
-                        </td>
-                        <td class="start"></td>
-                        <td class="cancel">
-                            <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" title="Cancel">
-                                <span class="ui-button-icon-primary ui-icon ui-icon-cancel"></span>
-                                <span class="ui-button-text">Cancel</span>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-</div>
-</div>
-<script id="template-upload" type="text/x-jquery-tmpl">
-    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
-        <td class="preview"></td>
-        <td class="name">${name}</td>
-        <td class="size">${sizef}</td>
-        {{if error}}
-            <td class="error" colspan="2">${error}</td>
-        {{else}}
-            <td class="progress"><div></div></td>
-            <td class="start"><button>Start</button></td>
-        {{/if}}
-        <td class="cancel"><button>Cancel</button></td>
-    </tr>
-</script>
-<script id="template-download" type="text/x-jquery-tmpl">
-    <tr class="template-download{{if error}} ui-state-error{{/if}}">
-        {{if error}}
-            <td class="error" colspan="4">${error}</td>
-        {{else}}
-            <input name="fileId[]" type="hidden" value="${id}"/>
-            <td class="name" colspan="4">${name}</td>
-            <td class="size">${size}</td>
-            <td class="delete">
-                <button data-url="/index.php/import/default/deleteFile&id=${id}">Delete</button>
-            </td>
-        {{/if}}
-
-    </tr>
-</script>
-
-</div></td>
-*//**
- * CSS styles for forms generated by yiic.
- *
- * The styles can be applied to the following form structure:
- *
- * <div class="form">
- *     <div class="row">
- *         <label for="inputid">xyz</label>
- *         <input name="inputid" id="inputid" type="text" />
- *         <p class="hint">hint text</p>
- *     </div>
- *     <div class="row">
- *         <label for="inputid">xyz</label>
- *         <input name="inputid" id="inputid" type="text" />
- *         <p class="hint">hint text</p>
- *     </div>
- *     <div class="row buttons">
- *         <label for="inputid">xyz</label>
- *         <input name="inputid" id="inputid" type="text" />
- *         <p class="hint">hint text</p>
- *     </div>
- * </div>
- *
- * The above code will render the labels and input fields in separate lines.
- * In order to render them in the same line, please use the "wide" form as follows,
- *
- * <div class="wide form">
- *     ......
- * </div>
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2010 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 div.form input,
 div.form textarea,
 div.form select {
@@ -2198,19 +1946,6 @@ div.form fieldset {
   margin: 0 0 10px 0;
   -moz-border-radius: 7px;
 }
-/*
- div.form label
- {
- font-weight: bold;
- font-size: 0.9em;
- display: block;
- }
-
- div.form .row
- {
- margin: 5px 0;
- }
- */
 div.form .hint {
   margin: 0;
   padding: 0;
@@ -2237,8 +1972,6 @@ div.form input.error,
 div.form textarea.error,
 div.form select.error {
   border-color: #CC0000;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
   -moz-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
   -o-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
@@ -2278,8 +2011,6 @@ div.form .errorMessage {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
@@ -2331,8 +2062,6 @@ div.wide.form .errorMessage {
   background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5);
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
   -o-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
@@ -2397,8 +2126,6 @@ div.wide.form .errorMessage {
   font-size: 14px;
   font-weight: bold;
   color: #DFDFDF;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: #000000 0 1px 0;
   -moz-text-shadow: #000000 0 1px 0;
   -o-text-shadow: #000000 0 1px 0;
@@ -2413,6 +2140,9 @@ div.wide.form .errorMessage {
   border-spacing: 0;
   border-collapse: collapse;
   background: #fff;
+}
+.ui-datepicker .ui-datepicker-calendar th {
+  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left -35px repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-calendar th:last-child {
   border-right: 1px solid #BBB;
@@ -2429,8 +2159,6 @@ div.wide.form .errorMessage {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding-top: 3px;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -2447,8 +2175,6 @@ div.wide.form .errorMessage {
   font-size: 9px;
   text-transform: uppercase;
   line-height: 20px;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -2463,6 +2189,11 @@ div.wide.form .errorMessage {
   border-style: solid;
   border-width: 1px 1px 0 0;
   border-top: 1px solid #bbb !important;
+  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left top repeat-x !important;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month {
+  background-image: none;
+  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left bottom repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
   color: #B3B3B3;
@@ -2503,16 +2234,12 @@ div.wide.form .errorMessage {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2546,16 +2273,12 @@ div.wide.form .errorMessage {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2576,8 +2299,6 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-timepicker-div dt {
   font-weight: bold;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -2656,16 +2377,6 @@ div.wide.form .errorMessage {
 .ui-datepicker .calendar-events-6 span:before {
   content: "‧‧‧\202F‧‧‧";
 }
-.ui-datepicker .ui-datepicker-calendar th {
-  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left -35px repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-calendar td {
-  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left top repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month {
-  background-image: none;
-  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left bottom repeat-x !important;
-}
 .token-input-list {
   position: relative;
 }
@@ -2693,8 +2404,6 @@ ul.token-input-list {
   border-radius: 3px;
   font-size: 12px;
   color: #999;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -2706,8 +2415,6 @@ ul.token-input-list {
   box-sizing: border-box;
 }
 ul.token-input-list:focus {
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px #262877;
   -moz-box-shadow: 0 0 1px 1px #262877;
   -o-box-shadow: 0 0 1px 1px #262877;
@@ -2716,8 +2423,6 @@ ul.token-input-list:focus {
 }
 ul.token-input-list input[type="text"] {
   border: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   -o-box-shadow: none !important;
@@ -2754,8 +2459,6 @@ li.token-input-token {
   border-radius: 3px;
   float: left;
   white-space: nowrap;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -2783,8 +2486,6 @@ li.token-input-token p {
 li.token-input-selected-token {
   background-color: #7bb730;
   color: #fff !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -2814,8 +2515,6 @@ div.token-input-dropdown {
   border-radius: 0 0 3px 3px;
   font-size: 12px;
   color: #999;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -2896,16 +2595,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -3004,8 +2699,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   width: 100% !important;
   min-height: 60px !important;
   color: #262877 !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -3074,12 +2767,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   list-style-type: none;
   clear: both;
   margin: 5px 5px 5px 20px;
-  height: 60px;
 }
 .sortable-row-list-container ul > li {
   min-height: 60px;
   margin-bottom: 5px;
-  padding: 0 10px;
+  padding: 5px;
 }
 .sortable-row-list {
   color: #262877 !important;
@@ -3165,7 +2857,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   display: block;
 }
 .ui-icon-arrow-4:after {
-  content: "K";
+  content: "(";
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoSymblyRegular", sans-serif;
@@ -3173,8 +2865,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   display: block;
   float: right;
   color: #A7A7A7;
-  margin: 0;
-  padding: 0 2px;
+  margin: -2px 5px 0 0;
+  padding: 0;
 }
 .ui-icon-wrench {
   display: block;
@@ -3211,8 +2903,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   position: fixed;
   z-index: 1000;
   margin-top: 15px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 15px 0 #000000;
   -moz-box-shadow: 0 0 15px 0 #000000;
   -o-box-shadow: 0 0 15px 0 #000000;
@@ -3295,8 +2985,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 #layout-container .ui-widget-header .ui-state-active {
   z-index: 9999;
   color: #212121;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px #262877;
   -moz-box-shadow: 0 0 1px 1px #262877;
   -o-box-shadow: 0 0 1px 1px #262877;
@@ -3354,8 +3042,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-family: "ZurmoSymblyRegular", sans-serif;
   text-indent: 0 !important;
   color: #A7A7A7;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: 0 1px 0 #ffffff;
   -moz-text-shadow: 0 1px 0 #ffffff;
   -o-text-shadow: 0 1px 0 #ffffff;
@@ -3388,16 +3074,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -3445,8 +3127,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -3471,18 +3151,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   cursor: pointer;
   vertical-align: middle;
 }
-* {
-  margin: 0;
-  padding: 0;
-}
 @font-face {
   font-family: 'ZurmoSymblyRegular';
   src: url('../fonts/zurmosymblyregular-regular-webfont.eot');
-  src: url('../fonts/zurmosymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmosymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmosymblyregular-regular-webfont.ttf') format('truetype'), url('../fonts/zurmosymblyregular-regular-webfont.svg#ZurmoSymblyRegular') format('svg');
+  src: url('../fonts/zurmosymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmosymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmosymblyregular-regular-webfont.ttf') format('truetype');
   font-weight: normal;
-  font-style: normal;
+  font-style: normal;/*url('../fonts/zurmosymblyregular-regular-webfont.svg#ZurmoSymblyRegular') format('svg');*/
 }
 /*=Variables*/
+/*blue theme*/
 /*=Functions*/
 /*=For modern browsers */
 .clearfix {
@@ -3528,8 +3205,6 @@ h4,
 h5,
 h6 {
   color: #262877;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -3596,8 +3271,6 @@ section {
   background-image: -o-linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
   background-image: linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#f6f6f6', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -3651,8 +3324,6 @@ section {
   border-top: none !important;
   border-right: none !important;
   border-bottom: none !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   -o-box-shadow: none !important;
@@ -3700,16 +3371,12 @@ section {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -3757,13 +3424,6 @@ section {
 #HeaderLinksView ul {
   list-style: none;
 }
-#HeaderLinksView div > ul {
-  /*float:right;
-    margin-left:10px;
-    padding-left:10px;
-    position: relative;*/
-
-}
 #HeaderLinksView li {
   position: relative;
   overflow: visible;
@@ -3794,8 +3454,6 @@ section {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -3830,22 +3488,6 @@ section {
   float: left;
   display: inline-block;
   background-color: none !important;
-  /*
-    span{
-        font-size:10px;
-        font-weight:bold;
-        display: block;
-        text-align:center;
-        margin-top:0px;
-        .radius(0) !important;
-        background-color:none !important;
-        border:none !important;
-    }
-    span#notifications-link.tooltip{
-        background-color:none !important;
-    }
-    */
-
 }
 .notifications-link.unread #notifications-link.tooltip {
   color: #ff0000 !important;
@@ -3888,8 +3530,6 @@ section {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -3978,8 +3618,6 @@ section {
 #GlobalSearchView {
   height: 40px;
   background: url(../images/header-bar-2.png) left top repeat-x;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -moz-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -o-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
@@ -4027,8 +3665,6 @@ section {
   height: 100%;
   margin: 0 40px 0 40px;
   background: #ffffff url(../images/nav.png) left top repeat-y;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -4074,8 +3710,6 @@ section {
   font-size: 13px;
   color: #333333;
   background: #CCCCCC;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -4083,8 +3717,6 @@ section {
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   font-weight: bold;
   border: 1px solid #DCDCDC;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08);
   -moz-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08);
   -o-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08);
@@ -4126,8 +3758,6 @@ section {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -4177,10 +3807,6 @@ section {
   -o-border-radius: 0 0 0 5px;
   border-radius: 0 0 0 5px;
 }
-.AppNavigation ul {
-  /*margin-left:15px;*/
-
-}
 .AppNavigation li {
   list-style: none;
 }
@@ -4200,8 +3826,6 @@ section {
   background: #fefefe url(../images/sidebar-gradient.png) left top repeat-x;
   border: 1px solid #ccc;
   width: 160px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 5px 5px rgba(153, 153, 153, 0.25);
   -moz-box-shadow: 0 0 5px 5px rgba(153, 153, 153, 0.25);
   -o-box-shadow: 0 0 5px 5px rgba(153, 153, 153, 0.25);
@@ -4248,8 +3872,6 @@ section {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -4273,8 +3895,6 @@ section {
 /*#MenuView .parent >*/
 #MenuView li.active > a span,
 #MenuView a:hover span {
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
@@ -4333,8 +3953,6 @@ section {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -4404,8 +4022,6 @@ section {
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoSymblyRegular", sans-serif;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
   -o-text-shadow: none !important;
@@ -4435,6 +4051,13 @@ section {
 }
 #RecentlyViewedView li.type-MeetingsModule em:before {
   content: "U";
+}
+#RecentlyViewedView li.type-NotesModule em {
+  padding-left: 4px;
+  padding-top: 1px;
+}
+#RecentlyViewedView li.type-NotesModule em:before {
+  content: "3";
 }
 /*=Content*/
 .AppContent {
@@ -4469,8 +4092,6 @@ section {
   border-radius: 4px;
   float: left;
   margin: 20px 0 15px 0;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -4536,8 +4157,6 @@ section {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -4582,7 +4201,7 @@ section {
   content: "!";
 }
 .icon-create:before {
-  content: "w";
+  content: "Y";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoSymblyRegular", sans-serif;
@@ -4612,6 +4231,23 @@ section {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   top: 3px;
+}
+#ListViewExportActionMenu .parent > a:before,
+.icon-export:before {
+  content: ")";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoSymblyRegular", sans-serif;
+  padding: 0 0 0 0;
+  margin: 0 10px 0 0;
+  line-height: 100%;
+  position: absolute;
+  text-indent: -20px;
+  top: 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  top: 4px;
 }
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before {
@@ -4854,77 +4490,6 @@ section {
   box-sizing: border-box;
   top: 3px;
 }
-/*
-#ListViewMassActionMenu{
-    position: absolute;
-    float:right;
-    right:150px;
-    top:8px;
-    > li{
-        list-style:none !important;
-        > a{
-            padding:0 10px;
-            display:block;
-            line-height:23px;
-            background:red;
-            .radius(4px);
-            font-size:13px;
-            color:#333333;
-            background:#CCCCCC;
-            .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
-            font-weight:bold;
-            border:1px solid #DCDCDC;
-            .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
-            #gradient > .vertical(#e0e0e0, #c6c6c6);
-            :after{
-                content: "▾";
-                margin-left:10px;
-            }
-        }
-    }
-    ul{
-        list-style:none !important;
-        margin-top:-8px;
-        margin-left:0px;
-        .headerDropDown();
-    }
-}
-
-#ListViewExportActionMenu{
-    position: absolute;
-    float:right;
-    right:40px;
-    top:8px;
-    > li{
-        list-style:none !important;
-        > a{
-            padding:0 10px;
-            display:block;
-            line-height:23px;
-            background:red;
-            .radius(4px);
-            font-size:13px;
-            color:#333333;
-            background:#CCCCCC;
-            .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
-            font-weight:bold;
-            border:1px solid #DCDCDC;
-            .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
-            #gradient > .vertical(#e0e0e0, #c6c6c6);
-            :after{
-                content: "▾";
-                margin-left:10px;
-            }
-        }
-    }
-    ul{
-        list-style:none !important;
-        margin-top:-8px;
-        margin-left:0px;
-        .headerDropDown();
-    }
-}
-*/
 /*=Footer*/
 #FooterView {
   margin: 20px 40px;
@@ -4976,10 +4541,6 @@ table.items td {
 }
 table.items {
   width: 100%;
-  /*border-right:none;
-    border-left:none;
-    border-bottom:none;*/
-
 }
 table.items td,
 table.items th {
@@ -5086,8 +4647,6 @@ table.items thead tr:hover {
 /*forms*/
 .form input[type="checkbox"] {
   margin: 0 0 10px 0 !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -5095,8 +4654,6 @@ table.items thead tr:hover {
   box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
 }
 .form input[type="checkbox"]:focus {
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px #262877;
   -moz-box-shadow: 0 0 1px 1px #262877;
   -o-box-shadow: 0 0 1px 1px #262877;
@@ -5118,8 +4675,6 @@ table.items thead tr:hover {
   color: #999;
   text-indent: 6px;
   line-height: 24px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -5134,8 +4689,6 @@ table.items thead tr:hover {
 .form input[type="password"]:focus,
 .form select.multiple:focus,
 .form textarea:focus {
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px #262877;
   -moz-box-shadow: 0 0 1px 1px #262877;
   -o-box-shadow: 0 0 1px 1px #262877;
@@ -5167,8 +4720,6 @@ table.items thead tr:hover {
 .form form {
   padding: 15px;
   border: 1px solid #CCC;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
@@ -5188,10 +4739,6 @@ table.items thead tr:hover {
   background-image: linear-gradient(top, #ffffff, #f5f5f5);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
-.form label {
-  /*padding-top:8px;*/
-
-}
 .AppContent label {
   font-size: 12px !important;
   color: #666;
@@ -5199,10 +4746,6 @@ table.items thead tr:hover {
   margin-bottom: 4px;
 }
 /*=Form Edit Account*/
-.col-0 {
-  /*width:15% !important;*/
-
-}
 .modal-view-toolbar,
 .form-toolbar {
   padding-top: 13px;
@@ -5225,8 +4768,6 @@ table.items thead tr:hover {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -5242,8 +4783,6 @@ table.items thead tr:hover {
   color: #333333;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -5257,8 +4796,6 @@ table.items thead tr:hover {
 .modal-view-toolbar a:active,
 .form-toolbar a:active {
   color: #656565;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -5268,15 +4805,11 @@ table.items thead tr:hover {
 .modal-view-toolbar input,
 .form-toolbar input {
   color: #FFF;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
   -moz-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
   -o-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
@@ -5301,8 +4834,6 @@ table.items thead tr:hover {
 .modal-view-toolbar input:active,
 .form-toolbar input:active {
   color: #FFF !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -5325,8 +4856,6 @@ table.items thead tr:hover {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -5339,8 +4868,6 @@ table.items thead tr:hover {
   color: #656565;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -5370,8 +4897,6 @@ table.items thead tr:hover {
 }
 .portlet-toolbar a:active {
   color: #656565;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -5381,8 +4906,6 @@ table.items thead tr:hover {
 a.simple-select {
   color: #262877 !important;
   background: none !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none  !important;
   -moz-box-shadow: none  !important;
   -o-box-shadow: none  !important;
@@ -5402,20 +4925,12 @@ a.simple-select:before {
   content: "" !important;
 }
 /*=Popup Modals*/
-/*
-.ui-dialog-titlebar {
-    padding:0;
-    margin:0;
-}
-*/
 .ui-dialog {
   overflow: visible;
   padding: 0 !important;
   margin: 0 !important;
   border: 1px solid #CCCCCC;
   background: #fff;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
   -moz-box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
   -o-box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
@@ -5428,8 +4943,6 @@ a.simple-select:before {
   padding: 0;
   margin: 0;
   border: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -5438,8 +4951,6 @@ a.simple-select:before {
 }
 .ui-dialog .wide.form form {
   border: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -5458,8 +4969,6 @@ a.simple-select:before {
   font-size: 15px;
   font-weight: bold;
   color: #262877;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -5478,8 +4987,6 @@ a.simple-select:before {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
   -moz-box-shadow: inset 0 1px 0 0 #ffffff;
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
@@ -5495,10 +5002,6 @@ a.simple-select:before {
   padding: 0 !important;
   margin: 0 !important;
   z-index: 11000;
-}
-.ui-dialog .ui-dialog-content {
-  /*padding:15px;*/
-
 }
 .ui-dialog .ui-dialog-titlebar-close {
   position: absolute;
@@ -5595,14 +5098,10 @@ div.wide.form label.hasCheckBox {
 }
 #FilteredListView,
 .summary {
-  /*@TODO check what this component do - for now its hidden cause its not in design*/
-
   display: none;
 }
 .ZurmoSearchView {
   padding: 0;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
@@ -5626,8 +5125,6 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -5654,8 +5151,6 @@ div.wide.form label.hasCheckBox {
   margin-bottom: 20px;
 }
 .cgrid-view {
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
@@ -5663,8 +5158,6 @@ div.wide.form label.hasCheckBox {
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
 }
 .juiportlet-widget-content .cgrid-view {
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -5704,8 +5197,6 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 0;
   -o-border-radius: 0;
   border-radius: 0;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -5750,16 +5241,12 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -5801,8 +5288,6 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -5816,8 +5301,6 @@ div.wide.form label.hasCheckBox {
 .search-view-1 #cancel-advanced-search {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   color: #656565;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
   -o-text-shadow: none;
@@ -5829,7 +5312,7 @@ div.wide.form label.hasCheckBox {
   border-top: 1px solid #CCCCCC;
 }
 .ui-multiselect-menu {
-  padding: 10px;
+  padding: 10px !important;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -5841,8 +5324,6 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -5874,8 +5355,6 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -5929,12 +5408,6 @@ div.wide.form label.hasCheckBox {
 }
 .attributesContainer {
   min-height: 260px;
-  /*	float:left;
-    .clearfix();
-    display:block;
-    width:100%;
-    position:relative;*/
-
   padding-bottom: 15px;
 }
 #edit-form {
@@ -6196,16 +5669,16 @@ div.wide.form label.hasCheckBox {
   color: #262877 !important;
 }
 .details-table .map-link {
-  display: block;
-  margin-top: 3px;
+  display: inline-block;
+  margin-left: 6px;
 }
 .details-table .map-link:before {
-  content: "L";
+  content: "K";
   font-weight: normal;
-  font-size: 20px;
+  font-size: 26px;
   font-family: "ZurmoSymblyRegular", sans-serif;
   position: relative;
-  top: 2px;
+  top: 4px;
   margin-right: 3px;
 }
 .details-table .hasCheckBox {
@@ -6240,8 +5713,6 @@ div.wide.form label.hasCheckBox {
   margin-right: 20px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -6264,8 +5735,6 @@ div.wide.form label.hasCheckBox {
 .EditAndDetailsView > div .form form {
   border: none;
   background: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -6291,8 +5760,6 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
   -moz-box-shadow: inset 0 1px 0 0 #ffffff;
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
@@ -6391,8 +5858,6 @@ div.wide.form label.hasCheckBox {
   right: 0;
   top: 0;
   border: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -6423,16 +5888,12 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -6463,8 +5924,6 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -6484,8 +5943,6 @@ div.wide.form label.hasCheckBox {
   padding: 5px 10px 5px 10px;
   margin: 0 2px;
   line-height: normal;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
   -o-text-shadow: none;
@@ -6541,8 +5998,6 @@ div.wide.form label.hasCheckBox {
   padding: 0;
   margin: 0;
   border: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -6576,8 +6031,6 @@ div.wide.form label.hasCheckBox {
 #NoteInlineEditView form {
   background: none;
   border: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -6612,8 +6065,6 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -6626,8 +6077,6 @@ div.wide.form label.hasCheckBox {
   color: #333333;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -6639,8 +6088,6 @@ div.wide.form label.hasCheckBox {
 }
 #NoteInlineEditView form input[type="submit"]:active {
   color: #656565;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -6876,7 +6323,6 @@ div.hasParallelFields .twoThirds,
 div.hasHalfs .twoThirds {
   width: 64%;
 }
-/*@TODO: this class should be changes to something more specific, like juiportlet-with-editing or similar*/
 .juiportlet-widget td {
   padding-left: 0 !important;
 }
@@ -6980,8 +6426,6 @@ div.hasHalfs .twoThirds {
 }
 .pager li > a:active {
   color: #656565;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -7017,8 +6461,6 @@ div.hasHalfs .twoThirds {
 .pager .hidden {
   color: #ddd;
   background: #efefef;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 8px 2px #ccc !important;
   -moz-box-shadow: inset 0 0 8px 2px #ccc !important;
   -o-box-shadow: inset 0 0 8px 2px #ccc !important;
@@ -7099,8 +6541,6 @@ div.hasHalfs .twoThirds {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
   -moz-box-shadow: inset 0 1px 0 0 #ffffff;
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
@@ -7126,8 +6566,6 @@ div.hasHalfs .twoThirds {
   color: #262877 !important;
   margin-left: 20px;
   text-decoration: underline;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -7211,8 +6649,6 @@ div.hasHalfs .twoThirds {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
   -moz-box-shadow: inset 0 1px 0 0 #ffffff;
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
@@ -7295,8 +6731,6 @@ div.hasHalfs .twoThirds {
 }
 .vertical-forward-pager:active {
   color: #656565;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -7345,15 +6779,11 @@ div.hasHalfs .twoThirds {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
   -moz-box-shadow: inset 0 1px 0 0 #ffffff;
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
@@ -7397,8 +6827,6 @@ div.hasHalfs .twoThirds {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -7464,8 +6892,6 @@ div.hasHalfs .twoThirds {
   color: #999;
   text-indent: 0;
   line-height: 24px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -7480,8 +6906,6 @@ div.hasHalfs .twoThirds {
   position: relative;
 }
 .dk_container:focus {
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px #262877;
   -moz-box-shadow: 0 0 1px 1px #262877;
   -o-box-shadow: 0 0 1px 1px #262877;
@@ -7508,8 +6932,6 @@ div.hasHalfs .twoThirds {
   border-color: #ccc;
 }
 .dk_open {
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 1px 1px #262877;
   -moz-box-shadow: 0 0 1px 1px #262877;
   -o-box-shadow: 0 0 1px 1px #262877;
@@ -7519,8 +6941,6 @@ div.hasHalfs .twoThirds {
 }
 /* The outer container of the options */
 .dk_options {
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
   -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
   -o-box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
@@ -7639,8 +7059,6 @@ div.hasHalfs .twoThirds {
 #LeadConvertView .DetailsView > div {
   border: none !important;
   background: none !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -7650,8 +7068,6 @@ div.hasHalfs .twoThirds {
 #LeadConvertView #edit-form {
   border: none !important;
   background: none !important;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -7714,16 +7130,12 @@ div.hasHalfs .twoThirds {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  /*color, x, y blur*/
-
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -7763,8 +7175,6 @@ div.hasHalfs .twoThirds {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
   -moz-box-shadow: inset 0 1px 0 0 #ffffff;
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
@@ -7776,8 +7186,6 @@ div.hasHalfs .twoThirds {
   margin-right: 0;
   margin-bottom: 20px;
   border: 1px solid #ccc;
-  /*x, y, blur, spread, color*/
-
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -7810,7 +7218,7 @@ div.hasHalfs .twoThirds {
 #AboutView #rightCol {
   float: right;
   width: 30%;
-  margin: 90px 15px 50px 0;
+  margin: 15px 15px 50px 0;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -7819,6 +7227,7 @@ div.hasHalfs .twoThirds {
   padding: 8px 10px;
   background: #F4F4F4;
   margin-bottom: 15px;
+  float: left;
 }
 #AboutView #aboutContactDetails {
   width: 100%;
@@ -7851,9 +7260,10 @@ div.hasHalfs .twoThirds {
   list-style: none;
   padding: 0 !important;
   margin: 15px 0 !important;
+  float: right;
 }
 #AboutView .social-links li {
-  margin: 0 5px 0 0;
+  margin: 0 0 0 5px;
   float: left;
 }
 #AboutView .social-links a {
@@ -7891,4 +7301,8 @@ div.hasHalfs .twoThirds {
 }
 #AboutView .pivotal span {
   background-position: 100% bottom !important;
+}
+/*tasks portlet on dashboard*/
+.TasksMyListView .checkbox-column .hasCheckBox {
+  margin-left: 0;
 }
