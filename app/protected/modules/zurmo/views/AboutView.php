@@ -89,9 +89,7 @@
                                 </ul>
                             </div>
                         </div>';
-            $content .= '<div id="rightCol">
-            		<div>
-                    	<h3>Get Social with Zurmo</h3>
+            $content .= '<div id="rightCol" class="clearfix">
                         <ul class="social-links clearfix">
                             <li>
                                 <a href="https://www.facebook.com/pages/Zurmo/117701404997971" class="facebook" title="zurmo on facebook" target="_blank">
@@ -122,7 +120,6 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>
             <div><h3>App Info</h3><p>';
             $content .= Yii::t('Default', 'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.',
                         array('{zurmoVersion}' => $zurmoVersion));
