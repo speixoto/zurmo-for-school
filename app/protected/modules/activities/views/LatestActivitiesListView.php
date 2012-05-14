@@ -192,20 +192,14 @@
         protected function renderConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-            $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
-                                                                                      'ownedByFilter',
-                                                                                      $form);
-            $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_ownedByFilter_area">{content}</div>';
-            $ownedByFilterContent      = $element->render();
-
-            $content  = '<div class="horizontal-line latest-activity-toolbar">';
-            $content .= $ownedByFilterContent;
-            if ($this->showRollUpToggle)
+            $content      = null;
+            $innerContent = null;
+            if($this->showOwnedByFilter)
             {
                 $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
                                                                                           'ownedByFilter',
                                                                                           $form);
-                $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_ownedByFilter">{content}</div>';
+                $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_ownedByFilter_area">{content}</div>';
                 $ownedByFilterContent      = $element->render();
                 $innerContent             .= $ownedByFilterContent;
             }
@@ -215,7 +209,7 @@
                                                                                        'rollup', $form);
                 $element->editableTemplate = '{content}';
                 $rollupElementContent      = $element->render();
-                $content .= '<div id="LatestActivitiesConfigurationForm_rollup_area">' . $rollupElementContent . '</div>';
+                $innerContent .= '<div id="LatestActivitiesConfigurationForm_rollup_area">' . $rollupElementContent . '</div>';
             }
             if($innerContent != null)
             {
