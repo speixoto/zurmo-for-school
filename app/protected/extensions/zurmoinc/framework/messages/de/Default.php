@@ -37,16 +37,22 @@
             => 'Dateien hinzufügen',
         'Add Item'
             => 'Element hinzufügen',
+        'Advanced'
+            => 'Erweiterte Suche',
         'Advanced Search'
             => 'Erweiterte Suche',
         'After'
             => 'Nach',
         'All'
             => 'Alle',
+        'All Results'
+            => 'Alle Exporte',
         'and'
             => 'und',
         'Basic Search'
             => 'Einfache Suche',
+        'Basic Search Fields'
+            => 'Grund Suche Felder',
         'Before'
             => 'Vor',
         'Between'
@@ -99,8 +105,14 @@
             => 'Portlet bearbeiten',
         'Error'
             => 'Fehler',
+        'Export'
+            => 'Exportieren',
         'Fahrenheit'
             => 'Fahrenheit',
+        'Fewer Details'
+            => 'Weniger Details',
+        'Fewer Options'
+            => 'Weniger Optionen',
         'Filtered Lists'
             => 'Gefilterte Listen',
         'First character must be a lower case letter'
@@ -173,6 +185,8 @@
             => 'Nächste 7 Tage',
         'No'
             => 'Nein',
+        'No {moduleLabelPluralLowerCase} found'
+            => 'Keine Ergebnisse gefunden',
         'No import processes found.'
             => 'Kein Import-Prozesse gefunden',
         'None'
@@ -181,11 +195,11 @@
             => 'Jetzt',
         'of'
             => 'von',
-        'Off(visibility)'
+        'Off{visibility}'
             => 'Deaktiviert',
-        'On(date)'
+        'On{date}'
             => 'Am',
-        'On(visibility)'
+        'On{visibility}'
             => 'Eingeschaltet',
         'Opted Out'
             => 'Opted Out',
@@ -219,6 +233,8 @@
             => 'Zweite',
         'Select'
             => 'Wählen',
+        'Selected'
+            => 'Ausgewählt',
         'selected for updating.'
             => 'Ausgewählt zur Aktualisierung',
         'Serialized Data'
@@ -229,6 +245,8 @@
                'Ändern Sie die Datensätze, die sie zum ersten Mal verwenden',
         'Start'
             => 'Anfang',
+        'Start typing to search'
+            => 'Geben Sie hier Ihren Suchbegriff ein',
         'Tab'
             => 'Tab',
         'The file did not exist'

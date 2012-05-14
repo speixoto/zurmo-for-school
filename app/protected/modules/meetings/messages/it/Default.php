@@ -29,6 +29,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '{quantity} MeetingsModulePluralLabel'
+            => '{quantity} MeetingsModulePluralLabel',
+        '{quantity} MeetingsModuleSingularLabel'
+            => '{quantity} MeetingsModuleSingularLabel',
         'Access MeetingsModulePluralLabel'
             => 'Accesso MeetingsModulePluralLabel',
         'Attendees'
@@ -39,6 +43,8 @@
             => 'Categoria',
         'Create MeetingsModulePluralLabel'
             => 'Crea MeetingsModulePluralLabel',
+        'Create MeetingsModuleSingularLabel'
+            => 'Crea MeetingsModuleSingularLabel',
         'Delete MeetingsModulePluralLabel'
             => 'Elimina MeetingsModulePluralLabel',
         'End Time'
@@ -57,8 +63,12 @@
             => 'MeetingsModulePluralLabel per ContactsModuleSingularLabel',
         'MeetingsModulePluralLabel For OpportunitiesModuleSingularLabel'
             => 'MeetingsModulePluralLabel per OpportunitiesModuleSingularLabel',
+        'MeetingsModulePluralLabel On {displayStringTime}'
+            => 'MeetingsModulePluralLabel Il {displayStringTime}',
         'MeetingsModuleSingularLabel'
             => 'MeetingsModuleSingularLabel',
+        'MeetingsModuleSingularLabel Day Summary'
+            => 'Sommario delle MeetingsModulePluralLabel',
         'My Upcoming MeetingsModulePluralLabel'
             => 'Le miei MeetingsModulePluralLabel',
         'Related ContactsModulePluralLabel and LeadsModulePluralLabel'

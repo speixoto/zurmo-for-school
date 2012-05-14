@@ -147,8 +147,8 @@
             => 'Installation Output:',
         'is installed, but the version is unknown.'
             => 'ist installiert, aber die Version ist unbekannt.',
-        'is not installed'
-            => 'ist nicht installiert',
+        'is not installed.'
+            => 'ist nicht installiert.',
         'It is highly recommended that all optional services are installed and ' .
         'working before continuing.'
             => 'Es wird dringend empfohlen, dass alle optionalen Dienste installiert sind und funktionieren, bevor Sie fortfahren.',
@@ -165,7 +165,7 @@
         'Mbstring is not installed.'
             => 'Mbstring ist nicht installiert.',
         'Memcache extension'
-            => 'Memcache ??',
+            => 'Memcache Extension',
         'Memcache host'
             => 'Memcache host',
         'Memcache host name. Default is 127.0.0.1'

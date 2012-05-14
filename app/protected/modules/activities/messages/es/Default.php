@@ -35,10 +35,16 @@
             => 'Actividad',
         'Activity Items'
             => 'Elementos de actividad',
+        'Activity Summary'
+            => 'Actividades recientes',
         'All Activities'
             => 'Todas las actividades',
+        'Latest Activities'
+            => 'Resumen de las actividades',
         'Latest Date Time'
             => 'Última fecha/hora',
+        'Mine'
+            => 'A mí',
         'No Activities found.'
             => 'Actividades no encontradas',
         'Related'
@@ -51,5 +57,9 @@
             => 'Mostrar más',
         'Summary'
             => 'Sumario',
+        'Turn roll up on to see activities from related records.'
+            => 'Activar enrollar para ver las actividades conectadas.',
+        'View'
+            => 'Vista',
     );
 ?>

@@ -89,6 +89,8 @@
             => 'Nachricht',
         'Monitor Job'
             => 'Job überwachen',
+        'New stable Zurmo release available'
+            => 'Eine neue stabile Version von Zurmo ist verfügar.',
         'Not Running'
             => 'Inaktiv',
         'Recommended Frequency'

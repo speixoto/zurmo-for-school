@@ -77,14 +77,16 @@
             => 'Por lo menos un valor se debe asignar para cada nivel',
         'Available Fields:'
             => 'Campos disponibles:',
+        'Available Modules'
+            => 'Resumen de las actividades',
         'Calculated Number'
             => 'Campo calculado',
         'Check Box'
             => 'Check box',
         'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 x field2) / field3'
             => 'Crear una fórmula de cálculo de los valores de otros campos. Use el nombre de la columna en los Campos de fórmula disponibles para crear la fórmula. Por ejemplo: (campo1 x campo2) / campo3',
-        'Create Custom Field'
-            => 'Crear campo personalizado',
+        'Create Field'
+            => 'Crear campo',
         'Custom Fields'
             => 'Campos personalizados',
         'Decimal'
@@ -201,6 +203,8 @@
             => 'Publicar',
         'Search View'
             => 'Vista de búsqueda',
+        'Select a field type'
+            => 'Seleccionar el tipo de campo',
         'Show If'
             => 'Valor depende',
         'Tag Cloud'
@@ -225,6 +229,8 @@
             => 'URL',
         'You can only have at most 4 pick-lists selected.'
             => 'Puede tener hasta 4 listas desplegables.',
+        'You must first select a field type'
+            => 'Por favor, elija primero el tipo del campo.',
         'You must have at least one field placed in order to save a layout.'
             => 'El diseño debe contener al menos un campo.',
         'You must have at least one panel in order to save a layout.'

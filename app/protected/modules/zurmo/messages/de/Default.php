@@ -51,6 +51,8 @@
             => '<strong> Zurmo </strong> ist unter der GPLv3 lizenziert. Sie können die Lizenz <a href="http://www.zurmo.org/license"> hier lesen</a>',
         '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
             => '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:',
+        'A large amount of data has been requested for export.  You will receive a notification with the download link when the export is complete.'
+            => 'Viele Daten hat für den Export angefordert worden. Sie erhalten eine Benachrichtigung mit dem Download-Link, wenn der Export abgeschlossen ist.',
         'About Zurmo'
             => 'Über Zurmo',
         'Access Administration Tab'
@@ -105,6 +107,8 @@
             => 'Staat',
         'Any Street'
             => 'Straße',
+        'Application Name'
+            => 'Systemname',
         'are required.'
             => 'Sind Erforderlich.',
         'Are you sure you want to remove this group?'
@@ -141,6 +145,8 @@
             => 'Code',
         'Configuration'
             => 'Konfiguration',
+        'Configure'
+            => 'Konfigurieren',
         'Convert'
             => 'Konvertieren',
         'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
@@ -221,12 +227,14 @@
             => 'Finanzdienstleistung',
         'First Name'
             => 'Vorname',
+        'Forums'
+            => 'Forums',
+        'Global and Basic Search Fields'
+            => 'Globale und einfache Suche Felder',
         'Global Configuration'
             => 'Globale Konfiguration',
         'Global configuration saved successfully.'
             => 'Globale Konfiguration wurde erfolgreich gespeichert.',
-        'Global Search Fields'
-            => 'Die globale Suche Felder',
         'Go to Search'
             => 'Zugang Suche',
         'Group'
@@ -239,6 +247,8 @@
             => 'Gruppe Rechte',
         'Groups'
             => 'Gruppen',
+        'Groups Home'
+            => 'Gruppen Startseite',
         'here'
             => 'hier',
         'Home'
@@ -325,6 +335,8 @@
             => 'Mitglieder',
         'Menu'
             => 'Menü',
+        'Missing Record'
+            => 'tei fehlt',
         'Missing Required Fields'
             => 'Fehlende Pflichtangaben',
         'Mobile Phone'
@@ -435,12 +447,16 @@
             => 'Zurück zu Admin Menü',
         'Rights'
             => 'Rechte',
+        'Rights and Permissions'
+            => 'Berechtigungen und Sicherheit Rechte',
         'Rights Saved Successfully.'
             => 'Rechte erfolgreich gespeichert.',
         'Role'
             => 'Rolle',
         'Roles'
             => 'Rollen',
+        'Roles Home'
+            => 'Berechtigungen und Sicherheit Rechte',
         'Salutation'
             => 'Begrüßung',
         'Save Changes'
@@ -465,6 +481,8 @@
             => 'Wählen Sie eine Rolle',
         'Self-Generated'
             => 'Selbstgeneriert',
+        'Settings'
+            => 'Einstellungen',
         'Shipping Address'
             => 'Liefer-Adresse',
         'Sign in'
@@ -513,12 +531,16 @@
             => 'Die Währung wurde nicht gelöscht, weil es in Gebrauch ist.',
         'The ID specified was invalid.'
             => 'ID ist ungültig.',
+        'The record you are trying to access does not exist.'
+            => 'Der Datensatz existiert nicht.',
         'The status specified is invalid.'
             => 'Der Status ist ungültig.',
         'There are no recently viewed items.'
             => 'Es gibt keine kürzlich angesehenen Artikel',
         'There are required fields missing from the following layout: {view}.  Please contact your administrator.'
             => 'Pflichtfelder fehlen in der folgenden Aufbau: {view}. Bitte kontaktieren Sie Ihren Administrator',
+        'There is no data to export.'
+            => 'Es gibt keine Daten zu exportieren.',
         'This action is only available in debug mode.'
             => 'Diese Aktion ist nur im Debug-Modus zur Verfügung.',
         'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.'
