@@ -46,7 +46,7 @@
             $checkboxId = 'closeTask' . $modelId;
             $content    = '"<label class=\'hasCheckBox\'>" . CHtml::checkBox("' . $checkboxId . '", false,
                                        array("class" => "close-task-checkbox",
-                                             "onClick" => "closeOpenTaskByCheckBoxClick(\'' . $checkboxId . '\', \'' . $modelId . '\')")) . "</label>"';
+                                             "onclick" => "closeOpenTaskByCheckBoxClick(\'' . $checkboxId . '\', \'' . $modelId . '\')")) . "</label>"';
 
             Yii::app()->clientScript->registerScript('closeTaskCheckBoxScript', "
                 function closeOpenTaskByCheckBoxClick(checkboxId, modelId)

@@ -842,6 +842,15 @@ footer, header, hgroup, menu, nav, section {
             content: "U";
         }
     }
+    li.type-NotesModule{
+        em{
+            padding-left:4px;
+            padding-top:1px;
+        }
+        em:before{
+            content: "3";
+        }
+    }
 }
 
 /*=Content*/
@@ -903,30 +912,30 @@ footer, header, hgroup, menu, nav, section {
 }
 
 .view-toolbar{
-	> a,
-	.parent > a{
-	    .view-toolbar-link();
-	    position:relative;
-	    text-indent:20px;
-	    border-left: 1px solid #bababa;
-	}
-	.parent > a:after{
-    	content: "▾";
-    	margin-left:10px;
+    > a,
+    .parent > a{
+        .view-toolbar-link();
+        position:relative;
+        text-indent:20px;
+        border-left: 1px solid #bababa;
     }
-	> ul, > a{
-		display:inline-block;
-	}
-	ul{
-		list-style:none;
-	}
-	.parent > ul{
-		margin-top:-2px;
+    .parent > a:after{
+        content: "▾";
+        margin-left:10px;
+    }
+    > ul, > a{
+        display:inline-block;
+    }
+    ul{
+        list-style:none;
+    }
+    .parent > ul{
+        margin-top:-2px;
         .headerDropDown();
         left:auto;
-	}
-	> a:first-child{
-   		border-left:none;
+    }
+    > a:first-child{
+           border-left:none;
    }
 }
 
@@ -1210,7 +1219,7 @@ table.items th{
     width:35px;
     text-align:center;
     .hasCheckBox{
-    	margin-top:-4px;
+        margin-top:-4px;
     }
 }
 .button-column{
@@ -1777,13 +1786,13 @@ div.wide.form{
 
 
 .attributesContainer{
-	min-height: 260px;
+    min-height: 260px;
 /*	float:left;
-	.clearfix();
-	display:block;
-	width:100%;	
-	position:relative;*/
-	padding-bottom:15px;
+    .clearfix();
+    display:block;
+    width:100%;
+    position:relative;*/
+    padding-bottom:15px;
 }
 
 #edit-form{
@@ -1793,10 +1802,10 @@ div.wide.form{
         float:left;
         width:70%;
         display:block;
-        
-       
-	.clearfix();
-        
+
+
+    .clearfix();
+
         table{
             width:100% !important;
         }
@@ -1977,19 +1986,19 @@ div.wide.form{
 }
 
 .beforeOptOutCheckBox{
-	float:left;
-	width:100%;
-	div{
-		margin-right:80px !important;
-		width:auto;
-	}
+    float:left;
+    width:100%;
+    div{
+        margin-right:80px !important;
+        width:auto;
+    }
 }
 .beforeOptOutCheckBox + .hasCheckBox{
-	float: right;
-	margin:0 0 0 -80px !important;
-	position:relative;
-	left:10px;
-	width: 80px;
+    float: right;
+    margin:0 0 0 -80px !important;
+    position:relative;
+    left:10px;
+    width: 80px;
 }
 
 
@@ -1997,18 +2006,18 @@ div.wide.form{
 
 
 .beforeToolTip{
-	float:left;
-	width:100%;
-	.dk_container{
-		margin-right:30px !important;
-		width:auto;
-		float:none;
-	}
+    float:left;
+    width:100%;
+    .dk_container{
+        margin-right:30px !important;
+        width:auto;
+        float:none;
+    }
 }
 .beforeToolTip + .tooltip{
-	float: right;
-	margin:5px 0 0 -30px !important;
-	position:relative;
+    float: right;
+    margin:5px 0 0 -30px !important;
+    position:relative;
 }
 
 
@@ -2064,8 +2073,8 @@ div.wide.form{
         margin-right:3px;
     }
     .hasCheckBox{
-    	margin-top:0;
-    	margin-left:0;
+        margin-top:0;
+        margin-left:0;
     }
 }
 .mapcanvas{
@@ -2466,17 +2475,17 @@ div.hasHalfs{
     .twoFifths{
        width:36.5%;
     }
-    
+
     .threeFifths{
        width:55.5%;
        margin-right:4%;
     }
-    
+
     .fourFifths{
        width:73%;
        margin-right:4%;
     }
-    
+
     .fifth + .twoFifths{
         margin-right:4%;
     }
@@ -2705,15 +2714,15 @@ div.hasHalfs{
                 margin-right:10px;
             }
         }
-        #LatestActivitiesConfigurationForm_ownedByFilter{
+        #LatestActivitiesConfigurationForm_ownedByFilter_area{
             //float:left;
             //text-align:left;
             display:inline-block;
         }
-        #LatestActivitiesConfigurationForm_rollup{
+        #LatestActivitiesConfigurationForm_rollup_area{
             //float:left;
-        	//text-align:left;
-        	display:inline-block;
+            //text-align:left;
+            display:inline-block;
         }
         #filter-latest-activities-link{
             color:@themeColor !important;
@@ -3131,14 +3140,14 @@ div.hasHalfs{
 }
 /*=About*/
 #AboutView{
-	position: relative;
-	 #ZurmoLogo{
-    	width:300px;
-    	strong{
-    		float:right;
-    		margin-top:26px;
-    	}
-	}
+    position: relative;
+     #ZurmoLogo{
+        width:300px;
+        strong{
+            float:right;
+            margin-top:26px;
+        }
+    }
     h1{
         text-indent:15px;
         font-size:15px;
@@ -3156,39 +3165,39 @@ div.hasHalfs{
         #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
     }
     #aboutText{
-    	position: relative;	
+        position: relative;
     }
     #leftCol{
-    	padding:15px 0 0 15px;
-    	width:65%;
-    	float:left;
-    	.box-sizing();
-    	> div{
-        	margin-bottom:20px;
+        padding:15px 0 0 15px;
+        width:65%;
+        float:left;
+        .box-sizing();
+        > div{
+            margin-bottom:20px;
        }
     }
     #rightCol{
-    	float:right;
-    	width:30%;
-    	margin:90px 15px 50px 0;
-    	.box-sizing();
-    	> div {
-	    	padding: 8px 10px;
-			background: #F4F4F4;
-			margin-bottom:15px;
-		}
+        float:right;
+        width:30%;
+        margin:90px 15px 50px 0;
+        .box-sizing();
+        > div {
+            padding: 8px 10px;
+            background: #F4F4F4;
+            margin-bottom:15px;
+        }
     }
     #aboutContactDetails{
-    	width:100%;
-    	float:left;
-    	padding:15px 0 5px 0;
-    	text-align:center;
-    	font-size:11px;
-    	position: absolute;
-    	bottom:0;
-    	span{
-    		margin: 0 10px;
-    	}
+        width:100%;
+        float:left;
+        padding:15px 0 5px 0;
+        text-align:center;
+        font-size:11px;
+        position: absolute;
+        bottom:0;
+        span{
+            margin: 0 10px;
+        }
     }
     p, ul{
         font-size:12px;
@@ -3204,57 +3213,57 @@ div.hasHalfs{
         padding-left:20px;
     }
     .social-links{
-    	list-style:none; 
-    	padding:0 !important;
-    	margin:15px 0 !important;
+        list-style:none;
+        padding:0 !important;
+        margin:15px 0 !important;
     }
     .social-links li{
-    	margin:0 5px 0 0;
-		float:left;
-	}
-	.social-links a{
-		color: #fff;
-		font-size: 12px;
-		text-indent: 0;
-		display: block;
-	}
-	.social-links a:hover span{
-		background-position-y: 0 !important;
-	}
-	.social-links span{
-		background: url(../images/sprite-socialicons.png) 0 bottom no-repeat;
-		height: 22px;
-		width: 22px;
-		display: inline-block;
-		line-height: 22px;
-		text-indent: -9999px;
-		margin-right: 5px;
-	}
-	.facebook span{
-		background-position: -88px bottom !important;
-	}
-	.twitter span{
-		background-position: -22px bottom !important;
-	}
-	.linkedin span{
-		background-position: -66px bottom !important;
-	}
-	.rss span{
-		background-position: 0 bottom !important;
-	}
-	.bitbucket span{
-		background-position: -132px bottom !important;
-	}
-	.pivotal span{
-		background-position: 100% bottom !important;
-	}
+        margin:0 5px 0 0;
+        float:left;
+    }
+    .social-links a{
+        color: #fff;
+        font-size: 12px;
+        text-indent: 0;
+        display: block;
+    }
+    .social-links a:hover span{
+        background-position-y: 0 !important;
+    }
+    .social-links span{
+        background: url(../images/sprite-socialicons.png) 0 bottom no-repeat;
+        height: 22px;
+        width: 22px;
+        display: inline-block;
+        line-height: 22px;
+        text-indent: -9999px;
+        margin-right: 5px;
+    }
+    .facebook span{
+        background-position: -88px bottom !important;
+    }
+    .twitter span{
+        background-position: -22px bottom !important;
+    }
+    .linkedin span{
+        background-position: -66px bottom !important;
+    }
+    .rss span{
+        background-position: 0 bottom !important;
+    }
+    .bitbucket span{
+        background-position: -132px bottom !important;
+    }
+    .pivotal span{
+        background-position: 100% bottom !important;
+    }
 }
 
 /*tasks portlet on dashboard*/
 .TasksMyListView{
-	.checkbox-column{
-		.hasCheckBox{
-			margin-left:0;
-		}
-	}
+    .checkbox-column{
+        .hasCheckBox{
+            margin-left:0;
+        }
+    }
 }

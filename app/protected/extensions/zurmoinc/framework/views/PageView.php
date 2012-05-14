@@ -215,9 +215,12 @@
         {
             $themeUrl = Yii::app()->baseUrl . '/themes';
             $theme    = Yii::app()->theme->name;
+            if (!MINIFY_SCRIPTS)
+            {
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/less-1.2.0.min.js'));
+            }
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/interactions.js'));
@@ -245,24 +248,23 @@
             $cs = Yii::app()->getClientScript();
             $cs->registerMetaTag('text/html; charset=UTF-8', null, 'Content-Type'); // Not Coding Standard
 
-            $specialCss = '<link rel="stylesheet/less" type="text/css" href="' . Yii::app()->baseUrl . '/' . $theme . '/css/newui.less"/>';
-			$ieCss = '<!--[if lt IE 10]><link rel="stylesheet/less" type="text/css" href="' . Yii::app()->baseUrl . '/' . $theme . '/css/ie.less"/><![endif]-->';
-			
-            if (MINIFY_SCRIPTS)
+            $specialCssContent = null;
+            if (!MINIFY_SCRIPTS)
             {
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" href="' .
+                                      Yii::app()->baseUrl . '/' . $theme . '/css/newui.less"/>';
+                $specialCssContent .= '<!--[if lt IE 10]><link rel="stylesheet/less" type="text/css" href="' .
+                                      Yii::app()->baseUrl . '/' . $theme . '/css/ie.less"/><![endif]-->';
+            }
+            else
+            {
+                $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/newui.css');
                 Yii::app()->minScript->generateScriptMap('css');
                 if (!YII_DEBUG && !defined('IS_TEST'))
                 {
                     Yii::app()->minScript->generateScriptMap('js');
                 }
             }
-
-            //$cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/screen.css', 'screen, projection');
-            //$cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/print.css', 'print');
-            //$cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/theme.css');
-            //$cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/newui.css');
-            //$cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/newui.less');
-
             if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 8)
             {
                 $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css' . '/ie.css', 'screen, projection');
@@ -288,11 +290,10 @@
                 $cs->registerLinkTag('shortcut icon', null, Yii::app()->baseUrl . '/' . $defaultTheme . '/ico/favicon.ico');
             }
             return '<head>' .
-            	   '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' .
-            	   $specialCss .
-            	   $ieCss .
-                   "<title>$title</title>"  .
-                   '</head>';
+                 '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' .
+                  $specialCssContent .
+                  "<title>$title</title>"  .
+                  '</head>';
         }
 
         /**
@@ -377,7 +378,7 @@
          */
         public static function getScriptFilesThatLoadOnAllPages()
         {
-            //return array();
+            return array();
         }
     }
 ?>

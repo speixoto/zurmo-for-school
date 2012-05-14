@@ -42,7 +42,7 @@
             $checkboxId = 'closeTask' . $modelId;
             $content    = 'CHtml::link("Delete<span class=\'icon\'></span>", "#",
                                        array("class" => "remove",
-                                             "onClick" => "deleteNotificationFromListView(this, \'' . $modelId . '\')"))';
+                                             "onclick" => "deleteNotificationFromListView(this, \'' . $modelId . '\')"))';
             Yii::app()->clientScript->registerScript('deleteNotificationFromListViewScript', "
                 function deleteNotificationFromListView(element, modelId)
                 {

@@ -163,7 +163,7 @@
                         $content .= self::renderShortenedListViewContent($notification);
                         $content .= CHtml::link("Delete<span class='icon'></span>", "#",
                                                 array("class"   => "remove",
-                                                      "onClick" => "deleteNotificationFromAjaxListView(this, " . $notification->id . ")"));
+                                                      "onclick" => "deleteNotificationFromAjaxListView(this, " . $notification->id . ")"));
                         $content .= '</div>';
                 }
             }

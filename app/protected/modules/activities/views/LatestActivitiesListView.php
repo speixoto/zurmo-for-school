@@ -192,9 +192,15 @@
         protected function renderConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-            $content      = null;
-            $innerContent = null;
-            if($this->showOwnedByFilter)
+            $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
+                                                                                      'ownedByFilter',
+                                                                                      $form);
+            $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_ownedByFilter_area">{content}</div>';
+            $ownedByFilterContent      = $element->render();
+
+            $content  = '<div class="horizontal-line latest-activity-toolbar">';
+            $content .= $ownedByFilterContent;
+            if ($this->showRollUpToggle)
             {
                 $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
                                                                                           'ownedByFilter',
@@ -209,7 +215,7 @@
                                                                                        'rollup', $form);
                 $element->editableTemplate = '{content}';
                 $rollupElementContent      = $element->render();
-                $innerContent .= '<div id="LatestActivitiesConfigurationForm_rollup">' . $rollupElementContent . '</div>';
+                $content .= '<div id="LatestActivitiesConfigurationForm_rollup_area">' . $rollupElementContent . '</div>';
             }
             if($innerContent != null)
             {
@@ -231,7 +237,7 @@
             $element                       = new LatestActivitiesMashableFilterRadioElement($this->configurationForm,
                                                                                       'filteredByModelName',
                                                                                       $form);
-            $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_filteredByModelName">{content}</div>';
+            $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_filteredByModelName_area">{content}</div>';
             $content .= $element->render();
             $content .= '</div>' . "\n";
             return $content;
@@ -249,20 +255,20 @@
                     'update' => '#' . $this->uniquePageId,
             ));
             Yii::app()->clientScript->registerScript($this->uniquePageId, "
-            $('#LatestActivitiesConfigurationForm_rollup').buttonset();
-            $('#LatestActivitiesConfigurationForm_ownedByFilter').buttonset();
-            $('#LatestActivitiesConfigurationForm_filteredByModelName').buttonset();
-            $('#LatestActivitiesConfigurationForm_rollup').change(function()
+            $('#LatestActivitiesConfigurationForm_rollup_area').buttonset();
+            $('#LatestActivitiesConfigurationForm_ownedByFilter_area').buttonset();
+            $('#LatestActivitiesConfigurationForm_filteredByModelName_area').buttonset();
+            $('#LatestActivitiesConfigurationForm_rollup_area').change(function()
                 {
                     " . $ajaxSubmitScript . "
                 }
             );
-            $('#LatestActivitiesConfigurationForm_ownedByFilter').change(function()
+            $('#LatestActivitiesConfigurationForm_ownedByFilter_area').change(function()
                 {
                     " . $ajaxSubmitScript . "
                 }
             );
-            $('#LatestActivitiesConfigurationForm_filteredByModelName').change(function()
+            $('#LatestActivitiesConfigurationForm_filteredByModelName_area').change(function()
                 {
                     " . $ajaxSubmitScript . "
                 }
