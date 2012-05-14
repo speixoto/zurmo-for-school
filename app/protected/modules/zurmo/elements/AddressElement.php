@@ -74,7 +74,7 @@
             }
             if (!empty($postalCode))
             {
-                $content .= Yii::app()->format->text($postalCode) . "<br/>\n";
+                $content .= Yii::app()->format->text($postalCode);
             }
             if (!empty($country))
             {
