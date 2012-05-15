@@ -27,15 +27,16 @@
     /**
      * Export module walkthrough tests.
      */
-    class AccountsRegularUserExportWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
+    class LeadsRegularUserExportWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
     {
         protected static $asynchronusTreshold;
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            //Setup test data owned by the super user.
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', Yii::app()->user->userModel);
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
 
             self::$asynchronusTreshold = ExportModule::$asynchronusTreshold;
             ExportModule::$asynchronusTreshold = 3;
@@ -54,34 +55,24 @@
         public function testDownloadDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
 
-            $accounts = array();
+            $leads = array();
             for ($i = 0; $i < 2; $i++)
             {
-                $accounts[] = AccountTestHelper::createAccountByNameForOwner('superAccount' . $i, $super);
+                $leads[] = LeadTestHelper::createLeadWithAccountByNameForOwner('superContact' . $i, $super, $account);
             }
 
             // Check if access is denied if user doesn't have access privileges at all to export actions
             Yii::app()->user->userModel = User::getByUsername('nobody');
             $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
-
-            // Provide no ids and without selectALl options.
-            // This should be result with error and redirect to module page.
-            $this->runControllerShouldResultInAccessFailureAndGetContent('accounts/default/list');
-            $this->setGetArray(array(
-                'Account_page' => '1',
-                'export' => '',
-                'ajax' => '',
-                'selectAll' => '',
-                'selectedIds' => '')
-            );
-            $this->runControllerShouldResultInAccessFailureAndGetContent('accounts/default/export');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('leads/default/list');
 
             // Check if user have access to module action, but not to export action
-            //Now test peon with elevated rights to accounts
-            $nobody->setRight('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
-            $nobody->setRight('AccountsModule', AccountsModule::RIGHT_CREATE_ACCOUNTS);
-            $nobody->setRight('AccountsModule', AccountsModule::RIGHT_DELETE_ACCOUNTS);
+            // Now test peon with elevated rights to accounts
+            $nobody->setRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS);
+            $nobody->setRight('LeadsModule', LeadsModule::RIGHT_CREATE_LEADS);
+            $nobody->setRight('LeadsModule', LeadsModule::RIGHT_DELETE_LEADS);
             $nobody->setRight('ExportModule', ExportModule::RIGHT_ACCESS_EXPORT);
             $this->assertTrue($nobody->save());
 
@@ -89,117 +80,118 @@
             $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
             Yii::app()->user->userModel = User::getByUsername('nobody');
 
-            // Provide no ids and without selectALl options.
-            // This should be result with error and redirect to module page.
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
+            $this->runControllerWithNoExceptionsAndGetContent('leads/default/list');
+
+
             $this->setGetArray(array(
-                'Account_page' => '1',
+                'Contact_page' => '1',
                 'export' => '',
                 'ajax' => '',
                 'selectAll' => '',
                 'selectedIds' => '')
             );
-            $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
-            $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('leads/default/export');
+            $this->assertTrue(strstr($response, 'leads/default/index') !== false);
 
             $this->setGetArray(array(
-                'AccountsSearchForm' => array(
+                'LeadsSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
                     'anyMixedAttributes'      => '',
-                    'name'                    => 'superAccount',
+                    'fullName'                => 'superContact',
                     'officePhone'             => ''
                 ),
-                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
+                'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
+                'Contact_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
                 'selectAll' => '1',
-                'selectedIds' => '',
-                'Account_page'   => '1',
-                'export'         => '',
-                'ajax'           => '')
+                'selectedIds' => '')
             );
-            $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
-            $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('leads/default/export');
+            $this->assertTrue(strstr($response, 'leads/default/index') !== false);
 
             $this->setGetArray(array(
-                'AccountsSearchForm' => array(
+                'LeadsSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
                     'anyMixedAttributes'      => '',
-                    'name'                    => '',
+                    'fullName'                => 'superContact',
                     'officePhone'             => ''
                 ),
-                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
-                'selectAll' => '',
-                'selectedIds' => "{$accounts[0]->id},{$accounts[1]->id}",
-                'Account_page'   => '1',
+                'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
+                'Contact_page'   => '1',
                 'export'         => '',
-                'ajax'           => '')
+                'ajax'           => '',
+                'selectAll' => '',
+                'selectedIds' => "{$leads[0]->id},{$leads[1]->id}")
             );
-            $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
-            $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('leads/default/export');
+            $this->assertTrue(strstr($response, 'leads/default/index') !== false);
             $this->assertContains('There is no data to export.',
                 Yii::app()->user->getFlash('notification'));
 
             //give nobody access to read and write
             Yii::app()->user->userModel = $super;
-            foreach ($accounts as $account)
+            foreach ($leads as $lead)
             {
-                $account->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
-                ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $nobody);
-                $this->assertTrue($account->save());
+                $lead->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
+                ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($lead, $nobody);
+                $this->assertTrue($lead->save());
             }
-
             //Now the nobody user should be able to access the edit view and still the details view.
             Yii::app()->user->userModel = $nobody;
+
             $this->setGetArray(array(
-                'AccountsSearchForm' => array(
+                'LeadsSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
                     'anyMixedAttributes'      => '',
-                    'name'                    => '',
+                    'fullName'                => 'superContact',
                     'officePhone'             => ''
                 ),
-                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
-                'selectAll' => '1',
-                'selectedIds' => '',
-                'Account_page'   => '1',
+                'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
+                'Contact_page'   => '1',
                 'export'         => '',
-                'ajax'           => '')
+                'ajax'           => '',
+                'selectAll' => '1',
+                'selectedIds' => '')
             );
-            $response = $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('leads/default/export');
             $this->assertEquals('Testing download.', $response);
 
             $this->setGetArray(array(
-                'AccountsSearchForm' => array(
+                'LeadsSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
                     'anyMixedAttributes'      => '',
-                    'name'                    => '',
+                    'fullName'                => 'superContact',
                     'officePhone'             => ''
                 ),
-                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
+                'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
+                'Contact_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
                 'selectAll' => '',
-                'selectedIds' => "{$accounts[0]->id},{$accounts[1]->id}",
-                'Account_page'   => '1',
-                'export'         => '',
-                'ajax'           => '')
+                'selectedIds' => "{$leads[0]->id},{$leads[1]->id}")
             );
-            $response = $this->runControllerWithExitExceptionAndGetContent('accounts/default/export');
+            $response = $this->runControllerWithExitExceptionAndGetContent('leads/default/export');
             $this->assertEquals('Testing download.', $response);
 
-            // No matches
+
+            // No mathces
             $this->setGetArray(array(
-                'AccountsSearchForm' => array(
+                'LeadsSearchForm' => array(
                     'anyMixedAttributesScope' => array(0 =>'All'),
                     'anyMixedAttributes'      => '',
-                    'name'                    => 'missingName',
+                    'fullName'                => 'missingName',
                     'officePhone'             => ''
                 ),
-                'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
-                'Account_page' => '1',
-                'selectAll' => '1',
-                'selectedIds' => '',
+                'multiselect_ContactsSearchForm_anyMixedAttributesScope' => 'All',
+                'Contact_page' => '1',
                 'export'       => '',
-                'ajax'         => '')
+                'ajax'         => '',
+                'selectAll' => '1',
+                'selectedIds' => '',)
             );
-            $response = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
-            $this->assertTrue(strstr($response, 'accounts/default/index') !== false);
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('leads/default/export');
+            $this->assertTrue(strstr($response, 'leads/default/index') !== false);
         }
     }
 ?>
