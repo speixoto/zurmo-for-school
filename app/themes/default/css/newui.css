@@ -3113,6 +3113,16 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   input[type="button"] {
     height: 26px;
   }
+  .panel .has-date-select a:before,
+  #permissions-module .has-date-select a:before,
+  .panel .has-model-select a:before,
+  #permissions-module .has-model-select a:before,
+  .panel .has-date-select button:before,
+  #permissions-module .has-date-select button:before,
+  .panel .has-model-select button:before,
+  #permissions-module .has-model-select button:before {
+    top: -3px;
+  }
 }
 .qtip,
 .zTip {
@@ -5689,6 +5699,11 @@ div.wide.form label.hasCheckBox {
   width: 600px;
   height: 400px;
 }
+/*=tasks portelt*/
+.OpenTasksRelatedListView .button-column,
+.OpenTasksRelatedListView .checkbox-column {
+  height: auto !important;
+}
 /*=For single meeting, contact etc..*/
 .AppContent.TableOfContentsView,
 .AppContent.SecuredEditAndDetailsView {
@@ -5929,6 +5944,7 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  margin-top: -8px;
   padding-top: 3px;
   padding-bottom: 3px;
   display: none;
