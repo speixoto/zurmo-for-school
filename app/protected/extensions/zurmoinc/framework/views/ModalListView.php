@@ -66,9 +66,11 @@
          */
         protected function getCGridViewAfterAjaxUpdate()
         {
+            // Begin Not Coding Standard
             return 'js:function(id, data) {
                         processAjaxSuccessError(id, data);
                     }';
+            // End Not Coding Standard
         }
 
         public function getLinkString($attributeString)

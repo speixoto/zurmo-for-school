@@ -93,6 +93,7 @@
             $this->renderEvents($id);
 
             //Add beforeShowDate as options
+            // Begin Not Coding Standard
             $this->options['beforeShowDay'] = "js:function(date) {
                 var event = calendarEvents[date];
                 if (event) {
@@ -102,6 +103,7 @@
                     return [true, '', ''];
                 }
             }";
+            // End Not Coding Standard
             $options = CJavaScript::encode($this->options);
             $js = "jQuery('#{$id}').datepicker($options);";
             if ($this->language != '' && $this->language != 'en')

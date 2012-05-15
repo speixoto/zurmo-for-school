@@ -192,7 +192,7 @@
         protected static function getZurmoVersionDisplayContent()
         {
             $zurmoVersion = VERSION;
-            if(substr($zurmoVersion, -2) == '()')
+            if (substr($zurmoVersion, -2) == '()')
             {
                 $zurmoVersion = substr($zurmoVersion, 0, -2);
             }

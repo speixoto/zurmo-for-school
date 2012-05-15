@@ -44,6 +44,7 @@
                 return '';
             }
             $checkboxId = 'closeTask' . $modelId;
+            // Begin Not Coding Standard
             $content    = '"<label class=\'hasCheckBox\'>" . CHtml::checkBox("' . $checkboxId . '", false,
                                        array("class" => "close-task-checkbox",
                                              "onclick" => "closeOpenTaskByCheckBoxClick(\'' . $checkboxId . '\', \'' . $modelId . '\')")) . "</label>"';
@@ -74,6 +75,7 @@
                     }
                 }
             ", CClientScript::POS_END);
+            // End Not Coding Standard
             return $content;
         }
 

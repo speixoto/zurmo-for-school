@@ -40,6 +40,7 @@
         protected function resolveToRenderDeleteLink($modelId)
         {
             $checkboxId = 'closeTask' . $modelId;
+            // Begin Not Coding Standard
             $content    = 'CHtml::link("Delete<span class=\'icon\'></span>", "#",
                                        array("class" => "remove",
                                              "onclick" => "deleteNotificationFromListView(this, \'' . $modelId . '\')"))';
@@ -62,6 +63,7 @@
                         });
                 }
             ", CClientScript::POS_END);
+            // End Not Coding Standard
             return $content;
         }
     }

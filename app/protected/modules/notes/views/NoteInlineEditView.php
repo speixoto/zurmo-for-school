@@ -144,6 +144,7 @@
          */
         protected function renderConfigSaveAjax($formName)
         {
+            // Begin Not Coding Standard
             return CHtml::ajax(array(
                     'type' => 'POST',
                     'data' => 'js:$("#' . $formName . '").serialize()',
@@ -155,6 +156,7 @@
                             $(this).find('.pager').find('.first').find('a').click();
                         });}"
                 ));
+            // End Not Coding Standard
         }
 
         protected function doesLabelHaveOwnCell()

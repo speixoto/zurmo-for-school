@@ -49,7 +49,8 @@
          */
         public function attachEvents($events)
         {
-            foreach ($events as $event) {
+            foreach ($events as $event)
+            {
                 if ($event['component'] == get_class($this))
                 {
                     parent::attachEventHandler($event['name'], $event['handler']);
@@ -95,7 +96,8 @@
          */
         public function detachEventHandler($name,$handler)
         {
-            foreach (self::$_events as $index => $event) {
+            foreach (self::$_events as $index => $event)
+            {
                 if ($event['name'] == $name && $event['handler'] == $handler)
                 {
                     unset(self::$_events[$index]);

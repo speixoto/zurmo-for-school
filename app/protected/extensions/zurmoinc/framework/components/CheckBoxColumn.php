@@ -56,6 +56,7 @@
             {
                 $one = '';
             }
+            // Begin Not Coding Standard
             $js = <<<END
 jQuery('#{$this->id}_all').live('click', function()
 {
@@ -64,7 +65,9 @@ jQuery('#{$this->id}_all').live('click', function()
     //custom checkbox style
     if (this.checked){
         jQuery(this).parent().addClass('c_on');
-    } else {
+    }
+    else
+    {
         jQuery(this).parent().removeClass('c_on');
     }
 
@@ -76,7 +79,9 @@ jQuery('#{$this->id}_all').live('click', function()
         //custom checkbox style
         if (this.checked){
             jQuery(this).parent().addClass('c_on');
-        } else {
+        }
+        else
+        {
             jQuery(this).parent().removeClass('c_on');
         }
     });
@@ -89,16 +94,22 @@ jQuery("input[name='$name']").live('click', function()
     //custom checkbox style
     if ( jQuery('#{$this->id}_all').attr( 'checked') === 'checked' ){
         jQuery('#{$this->id}_all').parent().addClass('c_on');
-    } else {
+    }
+    else
+    {
         jQuery('#{$this->id}_all').parent().removeClass('c_on');
     }
-    if ( this.checked ){
+    if ( this.checked )
+    {
         jQuery(this).parent().addClass('c_on');
-    } else {
+    }
+    else
+    {
         jQuery(this).parent().removeClass('c_on');
     }
 });
 END;
+            // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $js);
         }
 

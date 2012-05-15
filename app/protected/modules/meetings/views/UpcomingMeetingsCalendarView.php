@@ -71,6 +71,7 @@
 
         protected function getOnChangeMonthScript()
         {
+            // Begin Not Coding Standard
             return "js:function(year, month, inst) {
                 //Call to render new events
                 $.ajax({
@@ -90,10 +91,12 @@
                     }
                 });
             }";
+            // End Not Coding Standard
         }
 
         protected function getOnSelectScript()
         {
+            // Begin Not Coding Standard
             return "js:function(dateText, inst) {
                 $.ajax({
                     url      : $.param.querystring('" . $this->getPortletSelectDayUrl() . "', '&displayStringTime=' + dateText + '&stringTime=' + $('#calendarSelectedDate" . $this->uniqueLayoutId . "').val()),
@@ -111,6 +114,7 @@
                     }
                 });
             }";
+            // End Not Coding Standard
         }
 
         protected function getPortletChangeMonthUrl()

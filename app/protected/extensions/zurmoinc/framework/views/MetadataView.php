@@ -58,7 +58,8 @@
          */
         protected function renderViewToolBar($renderInForm = true)
         {
-            if ( $renderInForm == true ){
+            if ( $renderInForm == true )
+            {
                 $actionContent = $this->renderActionElementBar($renderInForm);
                 if ($actionContent != null)
                 {

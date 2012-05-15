@@ -64,7 +64,7 @@
                 {
                     return 5;
                 }
-                elseif($userScoresByType['CreateNote']->value < 101)
+                elseif ($userScoresByType['CreateNote']->value < 101)
                 {
                     return 6;
                 }

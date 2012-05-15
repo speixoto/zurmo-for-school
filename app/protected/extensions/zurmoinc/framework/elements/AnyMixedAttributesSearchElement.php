@@ -116,7 +116,8 @@
 
                                 }
                             );
-                            var basicSearchHandler = function(event) {
+                            var basicSearchHandler = function(event)
+                            {
                                 if ($(this).val() != '')
                                 {
                                     if (basicSearchOldValue != $(this).val())

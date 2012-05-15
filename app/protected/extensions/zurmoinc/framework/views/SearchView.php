@@ -99,6 +99,7 @@
             $moreSearchOptionsLink = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             $clearSearchLink = CHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
             $cs = Yii::app()->getClientScript();
+            // Begin Not Coding Standard
             $cs->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/FormUtils.js'
@@ -154,6 +155,7 @@
                     }
                 );
             " . $this->getExtraRenderFormBottomPanelScriptPart());
+            // End Not Coding Standard
             $startingDivStyle = null;
             if ($this->hideAllSearchPanelsToStart)
             {

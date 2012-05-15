@@ -103,7 +103,7 @@
             $content .= '<div class="hasHalfs">';
             $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'state', true)      . "\n";
             $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'postalCode', true) . "\n";
-			$content .= '</div>';
+      $content .= '</div>';
             $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'country')          . "\n";
             return '<div class="address-fields">'.$content.'</div>';
         }
@@ -119,12 +119,12 @@
             $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
             $textField   = $form->textField($model, $attribute, $htmlOptions);
             $error       = $form->error    ($model, $attribute);
-            if($model->$attribute != null)
+            if ($model->$attribute != null)
             {
                  $label = null;
             }
             $halfClassString = null;
-            if($renderAsHalfSize)
+            if ($renderAsHalfSize)
             {
                 $halfClassString = ' half';
             }

@@ -762,7 +762,7 @@
             }
             //Add everyone group
             $everyoneGroupId = Group::getByName(Group::EVERYONE_GROUP_NAME)->id;
-            if(!in_array("G" . $everyoneGroupId, $mungeIds) && $everyoneGroupId > 0)
+            if (!in_array("G" . $everyoneGroupId, $mungeIds) && $everyoneGroupId > 0)
             {
                 $mungeIds[] = "G" . $everyoneGroupId;
             }
