@@ -84,7 +84,7 @@
                                     <li>Justin Ferguson  - Documentation</li>
                                     <li>Theresa Neil     - User Interface Design</li>
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
-                                    <li>Sacha Telegenhof - Language Infrastructure</li>
+                                    <li>Sacha Telgenhof  - Language Infrastructure</li>
                                     <li>Holy Xing  	     - Chinese Translation</li>
                                 </ul>
                             </div>
