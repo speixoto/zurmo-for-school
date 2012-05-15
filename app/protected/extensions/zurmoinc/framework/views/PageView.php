@@ -252,7 +252,7 @@
             if (!MINIFY_SCRIPTS)
             {
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" href="' .
-                                      Yii::app()->baseUrl . '/' . $theme . '/css/newui.less"/>';
+                                      Yii::app()->baseUrl . '/' . $theme . '/css/less/newui.less"/>';
                 $specialCssContent .= '<!--[if lt IE 10]><link rel="stylesheet/less" type="text/css" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/css/ie.less"/><![endif]-->';
             }
