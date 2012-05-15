@@ -46,6 +46,7 @@
             Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             parent::tearDownAfterClass();
         }
+
         public function testLogAuditForOwnedMultipleValuesCustomField()
         {
             Yii::app()->user->userModel = User::getByUsername('jimmy');

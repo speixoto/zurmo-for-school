@@ -120,7 +120,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'  => 'ConfigurationLink',
-                                  'label' => "eval:Yii::t('Default', 'Cancel')",),
+                                  'label' => "eval:Yii::t('Default', 'Cancel')"),
                             array('type'  => 'SaveButton',
                                   'htmlOptions' => array('id' => 'save-collection', 'name' => 'save-collection')),
                         ),

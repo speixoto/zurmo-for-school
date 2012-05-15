@@ -181,7 +181,7 @@
 
             if (!$dataProvider)
             {
-                $idsToExport = array_filter(explode(",", trim($_GET['selectedIds'], " ,")));
+                $idsToExport = array_filter(explode(",", trim($_GET['selectedIds'], " ,"))); // Not Coding Standard
             }
             $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
 
@@ -230,7 +230,6 @@
                 }
                 else
                 {
-
                     if ($dataProvider)
                     {
                         $serializedData = serialize($dataProvider);

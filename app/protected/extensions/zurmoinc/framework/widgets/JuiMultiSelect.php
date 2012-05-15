@@ -102,7 +102,7 @@
             $this->registerClientScripts();
             $this->registerCssFile();
             $htmlOptions = array_merge($this->htmlOptions, array('id' => $this->inputId, 'multiple' => true));
-            echo CHtml::listBox($this->inputName, $this->selectedValue,$this->dataAndLabels, $htmlOptions);
+            echo CHtml::listBox($this->inputName, $this->selectedValue, $this->dataAndLabels, $htmlOptions);
             if (empty($this->options))
             {
                 $options = null;

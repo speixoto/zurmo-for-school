@@ -105,7 +105,7 @@
             $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'postalCode', true) . "\n";
       $content .= '</div>';
             $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'country')          . "\n";
-            return '<div class="address-fields">'.$content.'</div>';
+            return '<div class="address-fields">' . $content . '</div>';
         }
 
         protected function renderEditableAddressTextField($model, $form, $inputNameIdPrefix, $attribute,

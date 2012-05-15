@@ -87,7 +87,6 @@
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/jquery.dropkick-1.0.0.js'));
         }
 
-
         /**
          * Renders the bottom panel of the layout. Includes the search button
          * and the advanced search link that opens/closes the second panel. Using click.clear namespace to

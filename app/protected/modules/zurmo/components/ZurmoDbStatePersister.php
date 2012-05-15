@@ -41,9 +41,7 @@
                     return $content;
                 }
             }
-
             return null;
-
         }
 
         /**

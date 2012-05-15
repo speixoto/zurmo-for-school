@@ -33,7 +33,7 @@
                 'header'      => '',
                 'value'       => $this->resolveToRenderDeleteLink('$data->' . 'id'),
                 'type'        => 'raw',
-                'htmlOptions' => array('class'=>'delete-notification-column')
+                'htmlOptions' => array('class' => 'delete-notification-column')
             );
         }
 

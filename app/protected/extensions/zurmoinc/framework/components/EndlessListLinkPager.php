@@ -34,6 +34,7 @@
             parent::init();
             $this->htmlOptions['class'] = 'endless-list-pager';
         }
+
         /**
          * Set the header to empty
          * @var string

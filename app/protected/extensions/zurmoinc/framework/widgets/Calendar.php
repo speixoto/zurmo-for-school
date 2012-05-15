@@ -121,7 +121,6 @@
             $cs->registerScript(__CLASS__. '#' . $id, $js);
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('ext.zurmoinc.framework.widgets.assets'));
             $cs->registerScriptFile($baseScriptUrl . '/calendar/Calendar.js', CClientScript::POS_END);
-
         }
 
         protected function renderEvents($id)

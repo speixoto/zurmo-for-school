@@ -73,7 +73,6 @@
             {
                 $this->redirect(array($this->getId() . '/editPolicies', 'id' => $id));
             }
-
         }
 
         public function actionCreate()

@@ -77,7 +77,7 @@
          * @param string $name Event name
          * @param mixed $handler Event handler
          */
-        public function attachEventHandler($name,$handler)
+        public function attachEventHandler($name, $handler)
         {
             self::$_events[] = array(
                 'component' => get_class($this),
@@ -94,7 +94,7 @@
          * @param mixed $handler Event handler
          * @return bool
          */
-        public function detachEventHandler($name,$handler)
+        public function detachEventHandler($name, $handler)
         {
             foreach (self::$_events as $index => $event)
             {

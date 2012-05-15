@@ -86,7 +86,6 @@
              }
 
             return parent::getGridViewWidgetPath();
-
         }
 
         protected function makeSearchAttributeData()

@@ -169,7 +169,7 @@ END;
             $name                     = $options['name'];
             unset($options['name']);
             $options['value']         = $value;
-            $options['id']            = $this->id.'_'.$row;
+            $options['id']            = $this->id . '_' . $row;
             echo CHtml::tag("label",
                             array("class" => "hasCheckBox"),
                             CHtml::checkBox($name,$checked,$options));

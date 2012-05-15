@@ -78,7 +78,7 @@
 
             $this->setGetArray(array(
                 'AccountsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superAccount',
                     'officePhone'             => ''
@@ -95,14 +95,14 @@
 
             $this->setGetArray(array(
                 'AccountsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => '',
                     'officePhone'             => ''
                 ),
                 'multiselect_AccountsSearchForm_anyMixedAttributesScope' => 'All',
                 'selectAll' => '',
-                'selectedIds' => "{$accounts[0]->id},{$accounts[1]->id}",
+                'selectedIds' => "{$accounts[0]->id}, {$accounts[1]->id}",
                 'Account_page'   => '1',
                 'export'         => '',
                 'ajax'           => '')
@@ -113,7 +113,7 @@
             // No matches
             $this->setGetArray(array(
                 'AccountsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => 'missingName',
                     'officePhone'             => ''
@@ -197,7 +197,7 @@
             }
             $this->setGetArray(array(
                 'AccountsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => '',
                     'officePhone'             => ''

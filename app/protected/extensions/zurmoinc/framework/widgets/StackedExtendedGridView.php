@@ -40,7 +40,7 @@
                 echo "<table class=\"{$this->itemsCssClass}\">\n";
                 ob_start();
                 $this->renderTableBody();
-                $body=ob_get_clean();
+                $body = ob_get_clean();
                 $this->renderTableFooter();
                 echo $body; // TFOOT must appear before TBODY according to the standard.
                 echo "</table>";
@@ -62,7 +62,7 @@
 
             if ($n > 0)
             {
-                for($row=0; $row < $n; ++$row)
+                for($row = 0; $row < $n; ++$row)
                 {
                     $this->renderTableRow($row);
                 }
@@ -82,14 +82,14 @@
          */
         public function renderTableRow($row)
         {
-            if ($this->rowCssClassExpression!==null)
+            if ($this->rowCssClassExpression !== null)
             {
-                $data=$this->dataProvider->data[$row];
-                echo '<tr class="'.$this->evaluateExpression($this->rowCssClassExpression,array('row'=>$row,'data'=>$data)).'">';
+                $data = $this->dataProvider->data[$row];
+                echo '<tr class = "' . $this->evaluateExpression($this->rowCssClassExpression, array('row' => $row, 'data' => $data)) . '">';
             }
-            elseif (is_array($this->rowCssClass) && ($n=count($this->rowCssClass))>0)
+            elseif (is_array($this->rowCssClass) && ($n = count($this->rowCssClass)) > 0)
             {
-                echo '<tr class="'.$this->rowCssClass[$row%$n].'">';
+                echo '<tr class="' . $this->rowCssClass[$row%$n] . '">';
             }
             else
             {

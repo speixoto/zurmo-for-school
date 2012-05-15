@@ -132,7 +132,7 @@
 
         public static function activeCheckBox($model, $attribute, $htmlOptions = array())
         {
-            self::resolveNameID($model,$attribute,$htmlOptions);
+            self::resolveNameID($model, $attribute, $htmlOptions);
             if (isset($htmlOptions['disabled']))
             {
                 $disabledClass = ' disabled';
@@ -143,63 +143,63 @@
             }
             if (!isset($htmlOptions['value']))
             {
-                $htmlOptions['value']=1;
+                $htmlOptions['value'] = 1;
             }
-            if (!isset($htmlOptions['checked']) && self::resolveValue($model,$attribute)==$htmlOptions['value'])
+            if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
             {
-                $htmlOptions['checked']='checked';
+                $htmlOptions['checked'] = 'checked';
             }
-            self::clientChange('click',$htmlOptions);
-            if (array_key_exists('uncheckValue',$htmlOptions))
+            self::clientChange('click', $htmlOptions);
+            if (array_key_exists('uncheckValue', $htmlOptions))
             {
-                $uncheck=$htmlOptions['uncheckValue'];
+                $uncheck = $htmlOptions['uncheckValue'];
                 unset($htmlOptions['uncheckValue']);
             }
             else
             {
                 $uncheck = '0';
             }
-            $hiddenOptions = isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
-            $hidden = $uncheck !== null ? self::hiddenField($htmlOptions['name'],$uncheck,$hiddenOptions) : '';
+            $hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+            $hidden = $uncheck !== null ? self::hiddenField($htmlOptions['name'], $uncheck, $hiddenOptions) : '';
             return $hidden . CHtml::tag("label", array("class" => "hasCheckBox" . $disabledClass),
-                   self::activeInputField('checkbox',$model,$attribute,$htmlOptions));
+                   self::activeInputField('checkbox', $model,$attribute,$htmlOptions));
         }
 
         /**
          * Override to add proper styling to checkboxes.
          * @see CHtml::checkBox
          */
-        public static function checkBox($name,$checked=false,$htmlOptions=array())
+        public static function checkBox($name, $checked = false, $htmlOptions = array())
         {
             if ($checked)
                 $htmlOptions['checked']='checked';
             else
                 unset($htmlOptions['checked']);
-            $value=isset($htmlOptions['value']) ? $htmlOptions['value'] : 1;
-            self::clientChange('click',$htmlOptions);
+            $value = isset($htmlOptions['value']) ? $htmlOptions['value'] : 1;
+            self::clientChange('click', $htmlOptions);
 
-            if (array_key_exists('uncheckValue',$htmlOptions))
+            if (array_key_exists('uncheckValue', $htmlOptions))
             {
-                $uncheck=$htmlOptions['uncheckValue'];
+                $uncheck = $htmlOptions['uncheckValue'];
                 unset($htmlOptions['uncheckValue']);
             }
             else
-                $uncheck=null;
+                $uncheck = null;
 
-            if ($uncheck!==null)
+            if ($uncheck !== null)
             {
                 // add a hidden field so that if the radio button is not selected, it still submits a value
-                if (isset($htmlOptions['id']) && $htmlOptions['id']!==false)
-                    $uncheckOptions=array('id'=>self::ID_PREFIX.$htmlOptions['id']);
+                if (isset($htmlOptions['id']) && $htmlOptions['id'] !== false)
+                    $uncheckOptions = array('id' => self::ID_PREFIX . $htmlOptions['id']);
                 else
-                    $uncheckOptions=array('id'=>false);
-                $hidden=self::hiddenField($name,$uncheck,$uncheckOptions);
+                    $uncheckOptions = array('id' => false);
+                $hidden =self::hiddenField($name, $uncheck, $uncheckOptions);
             }
             else
-                $hidden='';
+                $hidden = '';
 
             // add a hidden field so that if the checkbox  is not selected, it still submits a value
-            return $hidden . CHtml::tag("label", array("class" => "hasCheckBox"), self::inputField('checkbox',$name,$value,$htmlOptions));
+            return $hidden . CHtml::tag("label", array("class" => "hasCheckBox"), self::inputField('checkbox', $name, $value, $htmlOptions));
         }
     }
 ?>

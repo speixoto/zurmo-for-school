@@ -53,7 +53,6 @@
             );
         }
 
-
         /**
          * Override to handle security/access resolution on links.
          */

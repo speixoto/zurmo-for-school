@@ -84,7 +84,6 @@
                         $formattedData = array();
                         foreach ($unSerialzedData as $idToExport)
                         {
-
                             $model = call_user_func(array($exportItem->modelClassName, 'getById'), intval($idToExport));
                             $formattedData[] = $model;
                         }
@@ -92,7 +91,6 @@
 
                     if ($exportItem->exportFileType == 'csv')
                     {
-
                         foreach ($formattedData as $model)
                         {
                             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))

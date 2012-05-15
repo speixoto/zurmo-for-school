@@ -319,6 +319,7 @@
             $autoCompleteResults = ContactAutoCompleteUtil::getByPartialName($term, $pageSize, 'LeadsStateMetadataAdapter');
             echo CJSON::encode($autoCompleteResults);
         }
+
         protected function makeEditAndDetailsView($model, $renderType)
         {
             assert('$model != null');

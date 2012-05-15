@@ -48,11 +48,10 @@
 
         protected function renderContent()
         {
-
             $imagePath = Yii::app()->baseUrl . '/themes/default/images/';
             $homeUrl   = Yii::app()->createUrl('home/default');
             $content   = '<div class="clearfix"><div id="corp-logo">';
-            $content  .= '<a href="' . $homeUrl . '"><img src="' . $imagePath. 'Zurmo_logo.png" alt="Zurmo Logo"/></a>';
+            $content  .= '<a href="' . $homeUrl . '"><img src="' . $imagePath . 'Zurmo_logo.png" alt="Zurmo Logo"/></a>';
             if ($this->applicationName != null)
             {
                 $content  .= CHtml::tag('span', array(), $this->applicationName);
@@ -85,7 +84,6 @@
             $finalMenuItems[0]['items'] = $menuItems;
             return $finalMenuItems;
         }
-
 
         protected static function renderHeaderMenuContent($menuItems, $menuId)
         {

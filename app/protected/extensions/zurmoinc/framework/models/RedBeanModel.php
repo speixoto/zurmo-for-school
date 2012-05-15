@@ -1921,7 +1921,7 @@
          */
         public function onBeforeSave($event)
         {
-            $this->raiseEvent('onBeforeSave',$event);
+            $this->raiseEvent('onBeforeSave', $event);
         }
 
         /**
@@ -1931,7 +1931,7 @@
          */
         public function onAfterSave($event)
         {
-            $this->raiseEvent('onAfterSave',$event);
+            $this->raiseEvent('onAfterSave', $event);
         }
 
         /**
@@ -1942,7 +1942,7 @@
          */
         public function onBeforeDelete($event)
         {
-            $this->raiseEvent('onBeforeDelete',$event);
+            $this->raiseEvent('onBeforeDelete', $event);
         }
 
         /**
@@ -1952,7 +1952,7 @@
          */
         public function onAfterDelete($event)
         {
-            $this->raiseEvent('onAfterDelete',$event);
+            $this->raiseEvent('onAfterDelete', $event);
         }
 
         protected function linkBeans()

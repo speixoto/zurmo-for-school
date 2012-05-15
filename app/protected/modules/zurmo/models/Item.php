@@ -189,7 +189,6 @@
             return false;
         }
 
-
         /**
          * Used for testing only. In scenarios where you need to test beforeDelete but can't because beforeDelete is
          * protected

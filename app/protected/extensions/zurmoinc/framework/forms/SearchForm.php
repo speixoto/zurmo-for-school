@@ -71,6 +71,7 @@
         {
             $this->attributeNamesThatCanBeSplitUsingDelimiter[] = $value;
         }
+
         public function setAnyMixedAttributesScope($anyMixedAttributesScope)
         {
             $this->anyMixedAttributesScope = $anyMixedAttributesScope;

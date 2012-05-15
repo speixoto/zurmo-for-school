@@ -33,7 +33,7 @@
                 'header'      => Yii::t('Default' , 'Close'),
                 'value'       => $this->resolveToRenderCheckBox('Task', '$data->' . 'id'),
                 'type'        => 'raw',
-                'htmlOptions' => array('class'=>'checkbox-column')
+                'htmlOptions' => array('class' => 'checkbox-column')
             );
         }
 
@@ -78,8 +78,6 @@
             // End Not Coding Standard
             return $content;
         }
-
-        //todo make sure live actually works on paged tassks
-
+        //todo make sure live actually works on paged tasks
     }
 ?>

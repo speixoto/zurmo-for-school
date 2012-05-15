@@ -70,7 +70,7 @@
                 $content .= '</div></div>';
             }
             $content .= $this->renderFormLayout();
-            $content .= '<p>'.$this->renderAfterFormLayoutForDetailsContent().'</p>';
+            $content .= '<p>' . $this->renderAfterFormLayoutForDetailsContent() . '</p>';
             $content .= '</div>';
             return $content;
         }
@@ -233,7 +233,6 @@
                         $maxCellsPresent = $maxCellsPresentInThisRow;
                     }
                 }
-
             }
             return $maxCellsPresent;
         }

@@ -43,7 +43,7 @@
             assert('$this->model->{$this->attribute} instanceof Email');
             $addressModel = $this->model->{$this->attribute};
             $content      = $this->renderEditableEmailAddressTextField    ($addressModel, $this->form, $this->attribute, 'emailAddress') . "\n";
-            $content      = CHtml::tag('div', array('class' => 'beforeOptOutCheckBox'), '<div>'.$content.'</div>');
+            $content      = CHtml::tag('div', array('class' => 'beforeOptOutCheckBox'), '<div>' . $content . '</div>');
             $content     .= $this->renderEditableEmailAddressCheckBoxField($addressModel, $this->form, $this->attribute, 'optOut') . "\n";
             return $content;
         }

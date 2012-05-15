@@ -27,7 +27,6 @@
     Yii::import('application.modules.zurmo.controllers.DefaultController', true);
     class ZurmoDemoController extends ZurmoDefaultController
     {
-
         /**
          * Special method to load demo data for testing user interface pagination.  This will load enough data to
          * test each type of pagination.  Use this for development only.

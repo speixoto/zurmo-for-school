@@ -42,10 +42,10 @@
         protected function createPageButtons()
         {
             $buttons = array();
-            list($beginPage,$endPage) = $this->getPageRange();
+            list($beginPage, $endPage) = $this->getPageRange();
             $currentPage = $this->getCurrentPage(false); // currentPage is calculated in getPageRange()
             $buttons[] = $this->createPageButton($this->firstPageLabel, 0, self::CSS_FIRST_PAGE, true, true);
-            if (($pageCount = $this->getPageCount())<=1)
+            if (($pageCount = $this->getPageCount()) <= 1)
             {
                 return $buttons;
             }
@@ -57,9 +57,9 @@
             $buttons[]= $this->createPageButtonNoLinkIfHidden($this->prevPageLabel, $page, self::CSS_PREVIOUS_PAGE, $currentPage <= 0, false);
 
             // next page
-            if (($page=$currentPage+1)>=$pageCount-1)
+            if (($page = $currentPage + 1) >= $pageCount - 1)
             {
-                $page = $pageCount-1;
+                $page = $pageCount - 1;
             }
             $buttons[]= $this->createPageButtonNoLinkIfHidden($this->nextPageLabel, $page, self::CSS_NEXT_PAGE, $currentPage >= $pageCount-1, false);
 
@@ -90,7 +90,6 @@
             {
                 return '<li class="' . $class . '">' . $label . '</li>';
             }
-
         }
     }
 ?>
