@@ -39,7 +39,6 @@
          */
         public static function makeStandardViewForCurrentUser(CController $controller, View $containedView)
         {
-
             if (static::$showRecentlyViewed)
             {
                 $verticalColumns = 2;

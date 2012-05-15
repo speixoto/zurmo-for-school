@@ -144,22 +144,22 @@
                 $testItem->getAttributeLabel('hasOneAlso')        => null,
 
                 'Primary Email - Email Address' => null,
-                'Primary Email - Is Invalid' => null,
-                'Primary Email - Opt Out' => null,
+                'Primary Email - Is Invalid'    => null,
+                'Primary Email - Opt Out'       => null,
 
-                'Primary Address - City' => null,
-                'Primary Address - Country' => null,
-                'Primary Address - Invalid' => null,
-                'Primary Address - Latitude' => null,
-                'Primary Address - Longitude' => null,
+                'Primary Address - City'        => null,
+                'Primary Address - Country'     => null,
+                'Primary Address - Invalid'     => null,
+                'Primary Address - Latitude'    => null,
+                'Primary Address - Longitude'   => null,
                 'Primary Address - Postal Code' => null,
-                'Primary Address - Street 1' => null,
-                'Primary Address - Street 2' => null,
-                'Primary Address - State' => null,
+                'Primary Address - Street 1'    => null,
+                'Primary Address - Street 2'    => null,
+                'Primary Address - State'       => null,
 
                 'Secondary Email - Email Address' => null,
-                'Secondary Email - Is Invalid' => null,
-                'Secondary Email - Opt Out' => null,
+                'Secondary Email - Is Invalid'    => null,
+                'Secondary Email - Opt Out'       => null,
 
                 $testItem->getAttributeLabel('user')              => null,
                 $testItem->getAttributeLabel('owner')             => 'super',
@@ -202,22 +202,22 @@
             $this->assertEquals('USD', $currencyValue->currency->code);
 
             $testItem = new ExportTestModelItem();
-            $testItem->firstName     = 'Bob2';
-            $testItem->lastName      = 'Bob2';
-            $testItem->boolean       = true;
-            $testItem->date          = '2002-04-03';
-            $testItem->dateTime      = '2002-04-03 02:00:43';
-            $testItem->float         = 54.22;
-            $testItem->integer       = 10;
-            $testItem->phone         = '21313213';
-            $testItem->string        = 'aString';
-            $testItem->textArea      = 'Some Text Area';
-            $testItem->url           = 'http://www.asite.com';
-            $testItem->email       = 'a@a.com';
-            $testItem->owner         = $super;
-            $testItem->currencyValue = $currencyValue;
+            $testItem->firstName       = 'Bob2';
+            $testItem->lastName        = 'Bob2';
+            $testItem->boolean         = true;
+            $testItem->date            = '2002-04-03';
+            $testItem->dateTime        = '2002-04-03 02:00:43';
+            $testItem->float           = 54.22;
+            $testItem->integer         = 10;
+            $testItem->phone           = '21313213';
+            $testItem->string          = 'aString';
+            $testItem->textArea        = 'Some Text Area';
+            $testItem->url             = 'http://www.asite.com';
+            $testItem->email           = 'a@a.com';
+            $testItem->owner           = $super;
+            $testItem->currencyValue   = $currencyValue;
             $testItem->dropDown->value = $values[1];
-            $createStamp             = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            $createStamp               = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $this->assertTrue($testItem->save());
             $id = $testItem->id;
             $testItem->forget();
@@ -250,22 +250,22 @@
                 $testItem->getAttributeLabel('hasOneAlso')        => null,
 
                 'Primary Email - Email Address' => null,
-                'Primary Email - Is Invalid' => null,
-                'Primary Email - Opt Out' => null,
+                'Primary Email - Is Invalid'    => null,
+                'Primary Email - Opt Out'       => null,
 
-                'Primary Address - City' => null,
-                'Primary Address - Country' => null,
-                'Primary Address - Invalid' => null,
-                'Primary Address - Latitude' => null,
-                'Primary Address - Longitude' => null,
+                'Primary Address - City'        => null,
+                'Primary Address - Country'     => null,
+                'Primary Address - Invalid'     => null,
+                'Primary Address - Latitude'    => null,
+                'Primary Address - Longitude'   => null,
                 'Primary Address - Postal Code' => null,
-                'Primary Address - Street 1' => null,
-                'Primary Address - Street 2' => null,
-                'Primary Address - State' => null,
+                'Primary Address - Street 1'    => null,
+                'Primary Address - Street 2'    => null,
+                'Primary Address - State'       => null,
 
                 'Secondary Email - Email Address' => null,
-                'Secondary Email - Is Invalid' => null,
-                'Secondary Email - Opt Out' => null,
+                'Secondary Email - Is Invalid'    => null,
+                'Secondary Email - Opt Out'       => null,
 
                 $testItem->getAttributeLabel('user')              => null,
                 $testItem->getAttributeLabel('owner')             => 'super',
@@ -322,7 +322,7 @@
             $testItem->string        = 'aString';
             $testItem->textArea      = 'Some Text Area';
             $testItem->url           = 'http://www.asite.com';
-            $testItem->email       = 'a@a.com';
+            $testItem->email         = 'a@a.com';
             $testItem->owner         = $super;
             $testItem->currencyValue = $currencyValue;
             $testItem->hasOne        = $testItem2;
@@ -359,26 +359,26 @@
                 $testItem->getAttributeLabel('radioDropDown')     => null,
                 $testItem->getAttributeLabel('multiDropDown')     => null,
                 $testItem->getAttributeLabel('tagCloud')          => null,
-                $testItem->getAttributeLabel('hasOne') . " - name"   => strval($testItem2),
-                $testItem->getAttributeLabel('hasOneAlso') . " - name" => strval($testItem4),
+                $testItem->getAttributeLabel('hasOne') . " - Name"   => strval($testItem2),
+                $testItem->getAttributeLabel('hasOneAlso') . " - Name" => strval($testItem4),
 
                 'Primary Email - Email Address' => null,
-                'Primary Email - Is Invalid' => null,
-                'Primary Email - Opt Out' => null,
+                'Primary Email - Is Invalid'    => null,
+                'Primary Email - Opt Out'       => null,
 
-                'Primary Address - City' => null,
-                'Primary Address - Country' => null,
-                'Primary Address - Invalid' => null,
-                'Primary Address - Latitude' => null,
-                'Primary Address - Longitude' => null,
+                'Primary Address - City'        => null,
+                'Primary Address - Country'     => null,
+                'Primary Address - Invalid'     => null,
+                'Primary Address - Latitude'    => null,
+                'Primary Address - Longitude'   => null,
                 'Primary Address - Postal Code' => null,
-                'Primary Address - Street 1' => null,
-                'Primary Address - Street 2' => null,
-                'Primary Address - State' => null,
+                'Primary Address - Street 1'    => null,
+                'Primary Address - Street 2'    => null,
+                'Primary Address - State'       => null,
 
                 'Secondary Email - Email Address' => null,
-                'Secondary Email - Is Invalid' => null,
-                'Secondary Email - Opt Out' => null,
+                'Secondary Email - Is Invalid'    => null,
+                'Secondary Email - Opt Out'       => null,
 
                 $testItem->getAttributeLabel('user')              => null,
                 $testItem->getAttributeLabel('owner')             => 'super',

@@ -290,7 +290,7 @@
                 $cs->registerLinkTag('shortcut icon', null, Yii::app()->baseUrl . '/' . $defaultTheme . '/ico/favicon.ico');
             }
             return '<head>' .
-                 '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' .
+                 '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' . // Not Coding Standard
                   $specialCssContent .
                   "<title>$title</title>"  .
                   '</head>';

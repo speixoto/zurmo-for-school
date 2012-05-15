@@ -54,7 +54,7 @@
             {
                 $class = "wide form";
             }
-            $content .= '<div class="' . $class. '">';
+            $content .= '<div class="' . $class . '">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',

@@ -45,7 +45,7 @@
             {
                 return array();
             }
-            list($beginPage,$endPage)  = $this->getPageRange();
+            list($beginPage, $endPage)  = $this->getPageRange();
             $currentPage               = $this->getCurrentPage(false);
             $buttons                   = array();
             if (($currentPage +1) == $pageCount)

@@ -72,6 +72,7 @@
             $searchAndListView = new $className(
                 $controller->getId(),
                 $controller->getModule()->getId(),
+                $controller->getAction()->getId(),
                 $modalListLinkProvider,
                 $searchModel,
                 $model,

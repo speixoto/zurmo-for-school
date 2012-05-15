@@ -60,6 +60,7 @@
             assert('is_array($levelPointMap)');
             static::$levelPointMap = $levelPointMap;
         }
+
         /**
          * @param integer $level
          */

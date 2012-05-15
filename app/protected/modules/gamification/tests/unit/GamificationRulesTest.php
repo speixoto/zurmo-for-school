@@ -103,7 +103,5 @@
             $this->assertEquals(4, count($models));
             $this->assertEquals('CreateAccount', $models['CreateAccount']->type);
         }
-
-
     }
 ?>

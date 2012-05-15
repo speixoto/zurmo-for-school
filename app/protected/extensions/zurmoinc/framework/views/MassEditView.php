@@ -175,7 +175,6 @@
                     $enableInputsScript   .= "$('#" . $id . "').prev().removeClass('disabled-select-element'); \n";
                     $disableInputsScript  .= "$('#" . $id . "').attr('disabled', 'disabled'); \n";
                     $disableInputsScript  .= "$('#" . $id . "').prev().addClass('disabled-select-element'); \n";
-
                 }
                 elseif ($elementInformation['type'] == 'TagCloud')
                 {

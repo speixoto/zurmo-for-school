@@ -25,6 +25,7 @@
      ********************************************************************************/
 
     Yii::import('application.extensions.qtip.QTip');
+
     /**
      * Override to suppport the Zurmo styling for the QTip.
      */

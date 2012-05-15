@@ -83,8 +83,9 @@
                                     <li>Evan Fazio       - Gamification</li>
                                     <li>Justin Ferguson  - Documentation</li>
                                     <li>Theresa Neil     - User Interface Design</li>
+                                    <li>Mandy Robinson   - Icons</li>
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
-                                    <li>Sacha Telegenhof - Language Infrastructure</li>
+                                    <li>Sacha Telgenhof  - Language Infrastructure</li>
                                     <li>Holy Xing  	     - Chinese Translation</li>
                                 </ul>
                             </div>
@@ -192,7 +193,7 @@
         protected static function getZurmoVersionDisplayContent()
         {
             $zurmoVersion = VERSION;
-            if(substr($zurmoVersion, -2) == '()')
+            if (substr($zurmoVersion, -2) == '()')
             {
                 $zurmoVersion = substr($zurmoVersion, 0, -2);
             }

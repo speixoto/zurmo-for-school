@@ -168,14 +168,14 @@
                 $metadata  = $module::getShortCutsCreateMenuItems();
                 $menuItems = MenuUtil::resolveModuleMenuForAccess(get_class($module), $metadata, $user);
                 $menuItems = self::resolveMenuItemsForLanguageLocalization($menuItems, get_class($module));
-                if(!empty($menuItems))
+                if (!empty($menuItems))
                 {
                     $createMenuItems['items'] = array_merge($createMenuItems['items'],
                                                    self::resolveMenuItemsForLanguageLocalization
                                                        ($menuItems, get_class($module)));
                 }
             }
-            if(empty($createMenuItems['items']))
+            if (empty($createMenuItems['items']))
             {
                 return array();
             }
@@ -216,7 +216,7 @@
             foreach ($modules as $module)
             {
                 $metadata = $module::getMetadata();
-                if(!empty($metadata['global']['headerMenuItems']))
+                if (!empty($metadata['global']['headerMenuItems']))
                 {
                     $menuItems = MenuUtil::resolveModuleMenuForAccess(  get_class($module),
                                                                         $metadata['global']['headerMenuItems'],
@@ -231,7 +231,7 @@
         }
 
         protected static function orderHeaderMenuItems($a, $b) {
-            if(!isset($a['order']))
+            if (!isset($a['order']))
             {
                 $aOrder = 1;
             }
@@ -239,7 +239,7 @@
             {
                 $aOrder = $a['order'];
             }
-            if(!isset($b['order']))
+            if (!isset($b['order']))
             {
                 $bOrder = 1;
             }

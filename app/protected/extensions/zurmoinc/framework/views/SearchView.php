@@ -87,7 +87,6 @@
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/jquery.dropkick-1.0.0.js'));
         }
 
-
         /**
          * Renders the bottom panel of the layout. Includes the search button
          * and the advanced search link that opens/closes the second panel. Using click.clear namespace to
@@ -99,6 +98,7 @@
             $moreSearchOptionsLink = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             $clearSearchLink = CHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
             $cs = Yii::app()->getClientScript();
+            // Begin Not Coding Standard
             $cs->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/FormUtils.js'
@@ -154,6 +154,7 @@
                     }
                 );
             " . $this->getExtraRenderFormBottomPanelScriptPart());
+            // End Not Coding Standard
             $startingDivStyle = null;
             if ($this->hideAllSearchPanelsToStart)
             {

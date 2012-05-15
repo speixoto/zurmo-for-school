@@ -49,7 +49,8 @@
          */
         public function attachEvents($events)
         {
-            foreach ($events as $event) {
+            foreach ($events as $event)
+            {
                 if ($event['component'] == get_class($this))
                 {
                     parent::attachEventHandler($event['name'], $event['handler']);
@@ -76,7 +77,7 @@
          * @param string $name Event name
          * @param mixed $handler Event handler
          */
-        public function attachEventHandler($name,$handler)
+        public function attachEventHandler($name, $handler)
         {
             self::$_events[] = array(
                 'component' => get_class($this),
@@ -93,9 +94,10 @@
          * @param mixed $handler Event handler
          * @return bool
          */
-        public function detachEventHandler($name,$handler)
+        public function detachEventHandler($name, $handler)
         {
-            foreach (self::$_events as $index => $event) {
+            foreach (self::$_events as $index => $event)
+            {
                 if ($event['name'] == $name && $event['handler'] == $handler)
                 {
                     unset(self::$_events[$index]);

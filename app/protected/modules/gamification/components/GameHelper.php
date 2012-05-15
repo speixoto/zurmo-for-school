@@ -86,7 +86,6 @@
         {
         }
 
-
         /**
          * @param string $modelClassName
          */
@@ -150,8 +149,6 @@
                 self::$pointTypesAndValuesByUserIdToAdd[$user->id][$type] =
                 self::$pointTypesAndValuesByUserIdToAdd[$user->id][$type] + $value;
             }
-
-
         }
 
         /**

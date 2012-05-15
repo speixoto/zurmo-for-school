@@ -34,6 +34,7 @@
             parent::init();
             $this->htmlOptions['class'] = 'endless-list-pager';
         }
+
         /**
          * Set the header to empty
          * @var string
@@ -46,8 +47,10 @@
          */
         protected function createPageButtons()
         {
-            if (($pageCount=$this->getPageCount())<=1)
+            if (($pageCount = $this->getPageCount()) <= 1)
+            {
                 return array();
+            }
 
             list($beginPage,$endPage)=$this->getPageRange();
             $currentPage=$this->getCurrentPage(false); // currentPage is calculated in getPageRange()
@@ -76,6 +79,7 @@
             }
             $gridId =  $this->getOwner()->getId();
             $pagerId = $gridId . "-endless-page";
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('pagerEndlessLink', "
                 //$('body').undelegate('click', '#" . $pagerId . "');
                 $('#" . $pagerId . "').unbind('click');
@@ -104,6 +108,7 @@
                         return false;
                     }
                 );");
+            // End Not Coding Standard
             $nextPage = $page + 1;
             $htmlOptions = array('id' => $pagerId, 'class' => 'vertical-forward-pager');
             return '<li class="' . $class . '">' . CHtml::link($label, '#', $htmlOptions) . '</li>';

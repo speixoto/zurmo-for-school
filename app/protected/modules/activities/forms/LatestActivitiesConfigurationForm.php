@@ -72,7 +72,6 @@
          */
         public $filteredByModelName = self::FILTERED_BY_ALL;
 
-
         /**
          * Filtered by models that implement the MashableActivityInterface and by what models the current user has
          * rights to see, this array contains the model class names as the indexes and the translated model labels

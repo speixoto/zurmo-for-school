@@ -50,7 +50,6 @@
             {
                 $this->setView(new GroupEditAndDetailsView ('Edit', $controllerId, $moduleId, $group), 0, 0);
             }
-
         }
     }
 ?>

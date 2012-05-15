@@ -54,7 +54,7 @@
                 if ($baseUrl === '' || $baseUrl[0] !== '/' && strpos($baseUrl, '://') === false)
                 {
                     //do not return because it will render a slash in front of the actual url
-                    //$baseUrl=Yii::app()->getRequest()->getBaseUrl().'/'.$baseUrl;
+                    //$baseUrl = Yii::app()->getRequest()->getBaseUrl() . '/' . $baseUrl;
                 }
                 $baseUrl = rtrim($baseUrl, '/');
             }

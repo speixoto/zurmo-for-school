@@ -113,18 +113,18 @@
             $script  .= "   $('#" . $inputId . "').clearform(
                                 {
                                     form: '#" . $this->form->getId() . "',
-
                                 }
                             );
-                            var basicSearchHandler = function(event) {
+                            var basicSearchHandler = function(event)
+                            {
                                 if ($(this).val() != '')
                                 {
                                     if (basicSearchOldValue != $(this).val())
                                     {
                                         basicSearchOldValue = $(this).val();
                                         basicSearchQueued = basicSearchQueued  + 1;
-                                        setTimeout('basicSearchQueued = basicSearchQueued - 1',900);
-                                        setTimeout('searchByQueuedSearch(\"" . $inputId . "\")',1000);
+                                        setTimeout('basicSearchQueued = basicSearchQueued - 1', 900);
+                                        setTimeout('searchByQueuedSearch(\"" . $inputId . "\")', 1000);
                                     }
                                 }
                             }

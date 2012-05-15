@@ -230,7 +230,8 @@
             return $headerMenuItems;
         }
 
-        protected static function orderHeaderMenuItems($a, $b) {
+        protected static function orderHeaderMenuItems($a, $b)
+        {
             if (!isset($a['order']))
             {
                 $aOrder = 1;

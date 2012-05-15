@@ -98,7 +98,7 @@
          */
         public function onAfterLogin($event)
         {
-            $this->raiseEvent('onAfterLogin',$event);
+            $this->raiseEvent('onAfterLogin', $event);
         }
 
         protected function beforeLogout()

@@ -177,7 +177,7 @@
         public static function renderShortenedListViewContent(Notification $notification)
         {
             $content = strval($notification);
-            if($content != null)
+            if ($content != null)
             {
                 $content = '<h4>' . StringUtil::getChoppedStringContent($content, 68) . '</h4>';
             }
@@ -200,7 +200,7 @@
         public static function renderListViewContent(Notification $notification)
         {
             $content = strval($notification);
-            if($content != null)
+            if ($content != null)
             {
                 $content = '<h4>' . $content . '</h4>';
             }

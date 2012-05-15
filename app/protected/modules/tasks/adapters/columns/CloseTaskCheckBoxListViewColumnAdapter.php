@@ -33,7 +33,7 @@
                 'header'      => Yii::t('Default' , 'Close'),
                 'value'       => $this->resolveToRenderCheckBox('Task', '$data->' . 'id'),
                 'type'        => 'raw',
-                'htmlOptions' => array('class'=>'checkbox-column')
+                'htmlOptions' => array('class' => 'checkbox-column')
             );
         }
 
@@ -44,6 +44,7 @@
                 return '';
             }
             $checkboxId = 'closeTask' . $modelId;
+            // Begin Not Coding Standard
             $content    = '"<label class=\'hasCheckBox\'>" . CHtml::checkBox("' . $checkboxId . '", false,
                                        array("class" => "close-task-checkbox",
                                              "onclick" => "closeOpenTaskByCheckBoxClick(\'' . $checkboxId . '\', \'' . $modelId . '\')")) . "</label>"';
@@ -74,10 +75,9 @@
                     }
                 }
             ", CClientScript::POS_END);
+            // End Not Coding Standard
             return $content;
         }
-
-        //todo make sure live actually works on paged tassks
-
+        //todo make sure live actually works on paged tasks
     }
 ?>
