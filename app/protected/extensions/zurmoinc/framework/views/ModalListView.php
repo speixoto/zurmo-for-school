@@ -31,12 +31,16 @@
     {
         protected $modalListLinkProvider;
 
-        public function __construct($controllerId, $moduleId, $modelClassName, $modalListLinkProvider, $dataProvider, $gridIdSuffix = null)
+        protected $actionId;
+
+        public function __construct($controllerId, $moduleId, $actionId, $modelClassName, $modalListLinkProvider, $dataProvider, $gridIdSuffix = null)
         {
             assert('$modalListLinkProvider instanceof ModalListLinkProvider');
+            assert('is_string($actionId)');
             parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, array(), $gridIdSuffix);
             $this->modalListLinkProvider = $modalListLinkProvider;
             $this->rowsAreSelectable     = false;
+            $this->actionId              = $actionId;
         }
 
         /**
@@ -54,7 +58,7 @@
                     'prevPageLabel'    => '<span>previous</span>',
                     'nextPageLabel'    => '<span>next</span>',
                     'paginationParams' => GetUtil::getData(),
-                    'route'            => $this->getGridViewActionRoute('modalList', $this->moduleId),
+                    'route'            => $this->getGridViewActionRoute($this->actionId, $this->moduleId),
                     'class'            => 'SimpleListLinkPager',
                 );
         }
