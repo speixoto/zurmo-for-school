@@ -34,7 +34,7 @@
         public function __construct($controllerId, $moduleId, $modelClassName, $modalListLinkProvider, $dataProvider, $gridIdSuffix = null)
         {
             assert('$modalListLinkProvider instanceof ModalListLinkProvider');
-            parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, array(), false, $gridIdSuffix);
+            parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, array(), $gridIdSuffix);
             $this->modalListLinkProvider = $modalListLinkProvider;
             $this->rowsAreSelectable     = false;
         }
