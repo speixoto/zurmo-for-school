@@ -146,8 +146,8 @@
             => 'Log da installazione:',
         'is installed, but the version is unknown.'
             => 'è installato, ma la versione non è conosciuta.',
-        'is not installed'
-            => 'non è installato',
+        'is not installed.'
+            => 'non è installato.',
         'It is highly recommended that all optional services are installed and ' .
         'working before continuing.'
             => 'È molto consigliato installare tutti i servizi opzionali ' .
@@ -165,7 +165,7 @@
         'Mbstring is not installed.'
             => 'Mbstring non è installato.',
         'Memcache extension'
-            => 'Memcache ??',
+            => 'Estensione Memcache',
         'Memcache host'
             => 'Host Memcache',
         'Memcache host name. Default is 127.0.0.1'

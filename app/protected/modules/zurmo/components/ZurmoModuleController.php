@@ -224,7 +224,7 @@
                     else
                     {
                         Yii::app()->user->setFlash('notification',
-                            Yii::t('Default', 'There is no data to export. The reason might be because you do not have sufficient permissions.')
+                            Yii::t('Default', 'There is no data to export.')
                         );
                     }
                 }
@@ -250,7 +250,7 @@
                     $exportItem->save();
                     $exportItem->forget();
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'A large amount of data has been requested for export.  You will receive  ' .
+                        Yii::t('Default', 'A large amount of data has been requested for export.  You will receive ' .
                         'a notification with the download link when the export is complete.')
                     );
                 }

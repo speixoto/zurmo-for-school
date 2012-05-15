@@ -75,12 +75,12 @@
             => 'Job Log',
         'Job Log for {jobDisplayName}'
             => 'Registrierungsdatei für {jobDisplayName}',
-        'Job Name'
-            => 'Name der Arbeit',
         'Job Manager'
             => 'System-Tasks',
         'Job Manager: Home'
             => 'System-Tasks: Home',
+        'Job Name'
+            => 'Name der Arbeit',
         'Last Completed Run'
             => 'Letzten Lauf',
         'Manage Scheduled Jobs'
@@ -89,6 +89,8 @@
             => 'Nachricht',
         'Monitor Job'
             => 'Job überwachen',
+        'New stable Zurmo release available'
+            => 'Eine neue stabile Version von Zurmo ist verfügar.',
         'Not Running'
             => 'Inaktiv',
         'Recommended Frequency'

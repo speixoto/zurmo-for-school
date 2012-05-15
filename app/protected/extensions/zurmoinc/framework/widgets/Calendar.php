@@ -53,6 +53,18 @@
 
         protected $dataProvider;
 
+        public $cssFile ='css/jquery-ui.css';
+
+        /**
+         * Initialize the Calendar Widget
+         */
+        public function init()
+        {
+            $this->themeUrl = Yii::app()->baseUrl . '/themes';
+            $this->theme    = Yii::app()->theme->name;
+            parent::init();
+        }
+
         /**
          * This function overrides the run method from CJuiDatePicker and fixes the jQuery issue for the Datepicker showing
          * wrong language in the portlet views popup.

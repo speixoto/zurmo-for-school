@@ -51,7 +51,9 @@
             => '<strong>Zurmo</strong> è rilasciato sotto la licenza GPL3.  Potete leggere la licenza <a href="http://www.zurmo.org/license">qui</a>.',
         '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
             => '<strong>Zurmo</strong> utilizza i seguenti strumenti e framework di Open Source:',
-        'About'
+        'A large amount of data has been requested for export.  You will receive a notification with the download link when the export is complete.'
+            => 'C\'è una grande quantità di dati ad esportare',
+        'About Zurmo'
             => 'Tutto su Zurmo',
         'Access Administration Tab'
             => 'Accesso Amministrazione',
@@ -105,6 +107,8 @@
             => 'Provincia',
         'Any Street'
             => 'Via',
+        'Application Name'
+            => 'Nome dell\'applicazione',
         'are required.'
             => 'sono richiesti.',
         'Are you sure you want to remove this group?'
@@ -141,6 +145,8 @@
             => 'Codice',
         'Configuration'
             => 'Configurazine',
+        'Configure'
+            => 'Configura',
         'Convert'
             => 'Converti',
         'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
@@ -221,6 +227,10 @@
             => 'Servizi finanziari',
         'First Name'
             => 'Nome',
+        'Forums'
+            => 'Forum',
+        'Global and Basic Search Fields'
+            => 'Campi di ricerca globale e semplice',
         'Global Configuration'
             => 'Configurazione globale',
         'Global configuration saved successfully.'
@@ -237,6 +247,8 @@
             => 'Diritti dei Gruppi',
         'Groups'
             => 'Gruppi',
+        'Groups Home'
+            => 'Gruppi Home',
         'here'
             => 'qui',
         'Home'
@@ -323,6 +335,8 @@
             => 'Membri',
         'Menu'
             => 'Menù',
+        'Missing Record'
+            => 'Record mancante',
         'Missing Required Fields'
             => 'Campi obbligatori mancanti',
         'Mobile Phone'
@@ -433,12 +447,16 @@
             => 'Ritorno al Menù Admin',
         'Rights'
             => 'Diritti',
+        'Rights and Permissions'
+            => 'Diritti e Privilegi',
         'Rights Saved Successfully.'
             => 'Diritti modificati con successo.',
         'Role'
             => 'Ruolo',
         'Roles'
             => 'Ruoli',
+        'Roles Home'
+            => 'Ruoli Home',
         'Salutation'
             => 'Saluto',
         'Save Changes'
@@ -463,6 +481,8 @@
             => 'Selezionate un ruolo',
         'Self-Generated'
             => 'Autogenerato',
+        'Settings'
+            => 'Parametri',
         'Shipping Address'
             => 'Indirizzo di consegna',
         'Sign in'
@@ -511,12 +531,16 @@
             => 'La valuta non fu eliminata perché é in uso.',
         'The ID specified was invalid.'
             => 'ID non è valido.',
+        'The record you are trying to access does not exist.'
+            => 'Questo record è stato cancellato.',
         'The status specified is invalid.'
             => 'Il stato specificate non é valido.',
         'There are no recently viewed items.'
             => 'Non ci sono elementi di ultime visite.',
         'There are required fields missing from the following layout: {view}.  Please contact your administrator.'
             => 'Ci sono campi obbligatori mancante del layout: {view}.  Prego di contattare il amministratore.',
+        'There is no data to export.'
+            => 'Non ci sono dati da esportare.',
         'This action is only available in debug mode.'
             => 'Questa azione é solamente disponibile nel modo di debug.',
         'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.'
@@ -543,6 +567,8 @@
             => 'Nome utente',
         'Value'
             => 'Valore',
+        'Values'
+            => 'Valori',
         'Visit <strong>Zurmo Inc.</strong> at {url}.'
             => 'Visita <strong>Zurmo Inc.</strong> a {url}.',
         'Visit the <strong>Zurmo Open Source Project</strong> at {url}.'

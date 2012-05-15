@@ -77,19 +77,19 @@
                             <div>
                                 <h3>Special Thanks</h3>
                                 <ul>
-                                    <li>Nev Delap  		 - Infrastructure</li>
                                     <li>Camilo Calderón  - Documentation</li>
+                                    <li>Nev Delap  		 - Infrastructure</li>
                                     <li>Ramin Farmani    - Farsi Translation</li>
                                     <li>Evan Fazio       - Gamification</li>
                                     <li>Justin Ferguson  - Documentation</li>
                                     <li>Theresa Neil     - User Interface Design</li>
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
                                     <li>Sacha Telegenhof - Language Infrastructure</li>
-                                    <liHoly Xing  	     - Chinese Translation</li>
+                                    <li>Holy Xing  	     - Chinese Translation</li>
                                 </ul>
                             </div>
                         </div>';
-            $content .= '<div id="rightCol" class="clearfix">
+            $content .= '<div id="rightCol">
                         <ul class="social-links clearfix">
                             <li>
                                 <a href="https://www.facebook.com/pages/Zurmo/117701404997971" class="facebook" title="zurmo on facebook" target="_blank">
@@ -120,7 +120,7 @@
                                 </a>
                             </li>
                         </ul>
-            <div><h3>App Info</h3><p>';
+            <div><h3>Application Info</h3><p>';
             $content .= Yii::t('Default', 'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.',
                         array('{zurmoVersion}' => $zurmoVersion));
             $content .= '</p>';
@@ -138,8 +138,7 @@
                                  '{version}' => $redBeanVersion));
             $content .= '</li>';
             $content .= '<li>';
-            $content .= Yii::t('Default', '{url} (with Yii)',
-                           array('{url}'     => '<a href="http://www.jquery.com">jQuery JavaScript Framework</a>'));
+            $content .= '<a href="http://www.jquery.com">jQuery JavaScript Framework</a> (with Yii)';
             $content .= '</li>';
             $content .= '</ul></p></div>
 

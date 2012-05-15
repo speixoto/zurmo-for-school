@@ -37,16 +37,22 @@
             => 'Caricare file',
         'Add Item'
             => 'Aggiungere',
+        'Advanced'
+            => 'Avanzata',
         'Advanced Search'
             => 'Ricerca avanzata',
         'After'
             => 'Dopo',
         'All'
             => 'Tutti',
+        'All Results'
+            => 'Lista completa',
         'and'
             => 'e',
         'Basic Search'
             => 'Ricerca',
+        'Basic Search Fields'
+            => 'Campi di ricerca semplice',
         'Before'
             => 'Prima',
         'Between'
@@ -99,8 +105,14 @@
             => 'Modifica il portlet',
         'Error'
             => 'Errore',
+        'Export'
+            => 'Esporta',
         'Fahrenheit'
             => 'Fahrenheit',
+        'Fewer Details'
+            => 'Meno dettagli',
+        'Fewer Options'
+            => 'Meno opzioni',
         'Filtered Lists'
             => 'Liste filtrate',
         'First character must be a lower case letter'
@@ -175,17 +187,19 @@
             => 'No',
         'No import processes found.'
             => 'Nessuno processo di importazione trovato.',
+        'No {moduleLabelPluralLowerCase} found'
+            => 'Nessun risultato trovato',
         'None'
             => 'Ninguno',
         'Now'
             => 'Adesso',
         'of'
             => 'de',
-        'Off(visibility)'
+        'Off{visibility}'
             => 'Disattivato',
-        'On(date)'
+        'On{date}'
             => 'Il',
-        'On(visibility)'
+        'On{visibility}'
             => 'Attivato',
         'Opted Out'
             => 'Opt out',
@@ -219,6 +233,8 @@
             => 'Secondo',
         'Select'
             => 'Seleziona',
+        'Selected'
+            => 'Dati selezionati',
         'selected for updating.'
             => 'selezionato',
         'Serialized Data'
@@ -229,6 +245,8 @@
                 'Provare di cambiare i record con questi valori.' ,
         'Start'
             => 'Inizio',
+        'Start typing to search'
+            => 'Ricerca',
         'Tab'
             => 'Tab',
         'The file did not exist'

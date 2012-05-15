@@ -5,11 +5,6 @@
 		br{
 			display:none;
 		}
-		tr:last-child{
-			td{
-				border-bottom:none;
-			}	
-		}
 		td, th{
 			border-bottom:1px solid #DFDFDF;
 			padding:10px !important;
@@ -22,7 +17,6 @@
 		}
 	}
 }
-
 
 .back-to-app-menu-item span{
 	vertical-align:middle;
@@ -41,26 +35,19 @@
 			border-spacing: 1px;
 			width:100%;
 		}
-		
 		table th,
 		table td{
 			border: 1px solid #DFDFDF;
 			vertical-align:middle;
 			padding:10px;
 		}
-		
-		
 		table tbody,
 		table tbody tr:last-child,
 		table tbody tr:last-child td{
 			border-bottom: none;
 		}
-		
 		table thead tr th:last-child,
-		table tbody tr td:last-child{
-			//padding-right:15px;
-		}
-		
+		table tbody tr td:last-child{}
 		table th{
 			font-weight:bold !important;
 			height:35px;
@@ -138,6 +125,7 @@
 		}
 	}
 }
+
 table.configuration-list{
 	.clearfix();
 	h4{
@@ -161,13 +149,13 @@ table.configuration-list{
 }
 
 /*Groups*/
-
 .ActionBarForSecurityTreeListView,
 #ActionBarForGroupsEditAndDetailsView{
 	.view-toolbar{
 		margin-top:0;
 	}
 }
+
 .AdministrativeArea{
 	#edit-form{
 		table{
@@ -203,9 +191,7 @@ table.configuration-list{
 .AdministrativeArea.AppContent{
 	padding-right:0;
 }
-.AdministrativeArea.AppContent .DetailsView > div{
-	
-}
+
 .multiselect-holder{
 	width:675px;
 	margin:0 auto;
@@ -227,10 +213,12 @@ table.configuration-list{
 		.symbly(22px);
 	}
 }
+
 .multiselect-left, .multiselect-right{
 	float:left;
 	width: 300px;
 }
+
 .multiselect-nav{
 	float:left;
 	padding:0 15px;
@@ -248,11 +236,9 @@ table.configuration-list{
 .SecurityTreeListView{
 	.tableTreeView();
 	padding-bottom:10px !important;
-	
 	> div{
 		padding-bottom:0 !important;
 	}
-	
 	table{
 		tr:first-child{
 			th{
@@ -266,9 +252,7 @@ table.configuration-list{
 			}
 		}
 	}
-	
 	td.level-0{ padding-left:10px !important;}
-	
 	td.level-1{
 		padding-left:45px !important;
 		&:before{
@@ -285,9 +269,6 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			/*position: absolute;
-			left: 45px;
-			top:-1px;*/
 			position: relative;
 			top:-3px;
 		}	
@@ -297,9 +278,6 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			/*position: absolute;
-			left: 75px;
-			top:-1px;*/
 			position: relative;
 			top:-3px;
 		}	
@@ -309,9 +287,6 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			/*position: absolute;
-			left: 105px;
-			top:-1px;*/
 			position: relative;
 			top:-3px;
 		}	
@@ -321,9 +296,6 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			/*position: absolute;
-			left: 135px;
-			top:-1px;*/
 			position: relative;
 			top:-3px;
 		}	
@@ -343,9 +315,6 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			/*position: absolute;
-			left: 195px;
-			top:-1px;*/
 			position: relative;
 			top:-3px;
 		}	
@@ -365,9 +334,6 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			/*position: absolute;
-			left: 255px;
-			top:-1px;*/
 			position: relative;
 			top:-3px;
 		}	
@@ -377,9 +343,6 @@ table.configuration-list{
 		&:before{
 			content: "∟";
 			font-size: 30px;
-			/*position: absolute;
-			left: 285px;
-			top:-1px;*/
 			position: relative;
 			top:-3px;
 		}	
@@ -425,10 +388,12 @@ table.configuration-list{
 		border-top:none;
 	}
 }
+
 #active-monitor-job-tooltip{
 	position: absolute;
 	margin-top:9px;
 }
+
 /*Languages*/
 #LanguagesCollectionView{
 	form{
@@ -461,11 +426,13 @@ table.configuration-list{
 		margin-bottom:5px;
 	}
 }
+
 #CurrenciesCollectionView{
 	.form form{
 		padding: 0;
 	}
 }
+
 #CurrencyCreateView{
 	margin:0;
 	padding:0;
@@ -476,7 +443,6 @@ table.configuration-list{
 		display:none !important;
 	}
 }
-
 
 /*Breadcrumbs*/
 .breadcrumbs{
@@ -495,6 +461,7 @@ table.configuration-list{
 		}
 	}
 }
+
 .multi-select-checkbox-input{
 	.clearfix;
 	width:100%;
@@ -503,11 +470,8 @@ table.configuration-list{
 	.hasCheckBox{
 		margin:0 10px 0 0 !important;
 	}
-	
-	label{
-		//margin:0 !important;
-	}
 }
+
 .has-lang-label{
 	input{
 		position: relative;
@@ -515,9 +479,6 @@ table.configuration-list{
 	}
 	input + span{
 		background:url(../images/lang-label.png) left top no-repeat;
-		/*
-		float:left;
-		*/
 		display:inline-block;
 		position: relative;
 		left:1px;
@@ -534,9 +495,6 @@ table.configuration-list{
 	> div{
 		padding:15px 15px 15px 15px;
 		position:relative;
-		&:after{
-			//display:none;
-		}
 	}
 	.dk_container{
 		width:75%;
@@ -560,8 +518,8 @@ table.configuration-list{
 	float: left;
 	width: 100%;
 	margin-bottom: 20px;
-	
 }
+
 #UsersPageView{
 	.AdministrativeArea.AppContent {
 		#ActionBarSearchAndListView{
@@ -571,12 +529,6 @@ table.configuration-list{
 	.DetailsView{
 		table{
 			margin-left:8px;
-		}
-		table tr:first-child{
-			th{
-				//font-weight:bold !important;
-				//color:@themeColor;
-			}
 		}
 		td{
 			text-align:left;
@@ -588,9 +540,6 @@ table.configuration-list{
 			color: #666;
 			font-weight: 400 !important;
 		}
-	}
-	table.items{
-		//float:left;
 	}
 	.panel{
 		width:100% !important;
@@ -604,6 +553,7 @@ table.configuration-list{
 		padding-right:30px;
 	}
 }
+
 .panelTitle{
 	padding-left:15px;
 	padding-top:30px;
@@ -616,6 +566,7 @@ table.configuration-list{
 		}
 	}
 }
+
 /*Audit Modal*/
 #AuditEventsModalListView{
 	tr{
@@ -634,19 +585,21 @@ table.configuration-list{
 		width:100% !important;
 	}
 }
+
 #SendATestEmailToButton{
 	.zButton;
 }
+
 #TestEmailMessageView{
 	padding:15px;
 }
+
 #send-test-email-field{
 	width:100%;
 	float:left;
 	> div{
 		margin-right:130px;
 	}
-	
 	& + span{
 		float:left;
 		width:130px;
@@ -688,6 +641,7 @@ table.configuration-list{
 		}
 	}
 }
+
 /*step 2*/
 #ImportWizardUploadFileView{
 	.hasCheckBox{
@@ -696,8 +650,8 @@ table.configuration-list{
 			margin:5px 0 0 10px !important;
 		}
 	}
-	
 }
+
 /*=Step 4,Mapping view*/
 #ImportWizardMappingView{
 	#edit-form{
@@ -731,7 +685,6 @@ table.configuration-list{
 	tr td:last-child{
 		padding-right:15px;
 	}
-	
 	table tr:last-child{
 		td{
 			border-bottom: none;
@@ -741,7 +694,6 @@ table.configuration-list{
 	.view-toolbar-container{
 		padding-bottom:15px;
 	}
-	
 	.mapping-rules{
 		table, td, th, input, label{
 			margin:0 !important;
@@ -765,8 +717,8 @@ table.configuration-list{
 		}
 	}
 }
-/*=Step 5, process details*/
 
+/*=Step 5, process details*/
 #ImportWizardDataAnalysisCompleteView{
 	> div{
 		margin:0;
@@ -780,8 +732,6 @@ table.configuration-list{
 		}
 	}
 }
-
-
 
 #ImportWizardImportRulesView{
 	.radio-input{
@@ -818,6 +768,7 @@ table.configuration-list{
 		display:block;
 	}
 }
+
 #ImportWizardCreateUpdateModelsCompleteView{
 	> div{
 		padding:0 !important;
@@ -827,7 +778,6 @@ table.configuration-list{
 		.b-shadow(none);
 	}
 	table{
-		//margin-top:15px;
 		border-bottom:1px solid #DFDFDF !important;
 	}
 	table tr:first-child{
@@ -841,9 +791,6 @@ table.configuration-list{
 		padding:10px 15px !important;
 		font-weight:normal !important;
 	}
-	tr td:first-child{
-		
-	}
 	th{
 		text-align:left;
 		font-size: 12px !important;
@@ -851,17 +798,18 @@ table.configuration-list{
 		font-weight: 400 !important;
 	}
 }
+
 .ui-progressbar{
 	 background: url(../images/ajax-loader.gif) left top no-repeat;
 }
+
 #SequentialProcessView{
 	.process-container-view{
-		//background:pink;
 		margin:0;
 		padding:0;
 	}
 }
+
 #ImportErrorsListView{
 	margin-bottom:15px;
 }
-

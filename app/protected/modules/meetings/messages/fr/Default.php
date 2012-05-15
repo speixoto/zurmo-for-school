@@ -39,6 +39,8 @@
             => 'Catégorie',
         'Create MeetingsModulePluralLabel'
             => 'Créer MeetingsModulePluralLabel',
+        'Create MeetingsModuleSingularLabel'
+            => 'Créer MeetingsModuleSingularLabel',
         'Delete MeetingsModulePluralLabel'
             => 'Supprimer MeetingsModulePluralLabel',
         'End Time'
@@ -57,8 +59,12 @@
             => 'MeetingsModulePluralLabel pour ContactsModuleSingularLabel',
         'MeetingsModulePluralLabel For OpportunitiesModuleSingularLabel'
             => 'MeetingsModulePluralLabel pour OpportunitiesModuleSingularLabel',
+        'MeetingsModulePluralLabel On {displayStringTime}'
+            => 'MeetingsModulePluralLabel Le {displayStringTime}',
         'MeetingsModuleSingularLabel'
             => 'MeetingsModuleSingularLabel',
+        'MeetingsModuleSingularLabel Day Summary'
+            => 'Sommaire des MeetingsModulePluralLabel',
         'My Upcoming MeetingsModulePluralLabel'
             => 'Mes Prochains MeetingsModulePluralLabel',
         'Related ContactsModulePluralLabel and LeadsModulePluralLabel'
@@ -69,5 +75,9 @@
             => 'Tapez un ContactsModuleSingularLowerCaseLabel ou LeadsModuleSingularLowerCaseLabel: nom ou adresse email',
         'Upcoming MeetingsModulePluralLabel'
             => 'Prochains MeetingsModulePluralLabel',
+        '{quantity} MeetingsModulePluralLabel'
+            => '{quantity} MeetingsModulePluralLabel',
+        '{quantity} MeetingsModuleSingularLabel'
+            => '{quantity} MeetingsModuleSingularLabel',
     );
 ?>

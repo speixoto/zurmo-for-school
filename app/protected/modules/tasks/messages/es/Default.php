@@ -31,12 +31,16 @@
     return array(
         'Access TasksModulePluralLabel'
             => 'Acceso a TasksModulePluralLabel',
+        'Close Task Check Box'
+            => 'Cerrar casilla de verificación de tareas',
         'Completed'
             => 'Terminado',
         'Completed On'
             => 'Completó el',
         'Create TasksModulePluralLabel'
             => 'Crear TasksModulePluralLabel',
+        'Create TasksModuleSingularLabel'
+            => 'Crear TasksModuleSingularLabel',
         'Delete TasksModulePluralLabel'
             => 'Eliminar TasksModulePluralLabel',
         'Due On'

@@ -161,7 +161,7 @@
         protected function renderSelectLink()
         {
             $id = $this->getIdForSelectLink();
-            $content = CHtml::ajaxLink('<span>' . Yii::t('Default', 'Select' . '</span>'),
+            $content = CHtml::ajaxLink('<span>' . Yii::t('Default', 'Select') . '</span>',
                 Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'. static::$modalActionId .'/', array(
                 'modalTransferInformation' => $this->getModalTransferInformation()
                 )), array(

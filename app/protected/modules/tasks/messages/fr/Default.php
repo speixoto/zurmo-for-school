@@ -31,12 +31,16 @@
     return array(
         'Access TasksModulePluralLabel'
             => 'Accès aux TasksModulePluralLabel',
+        'Close Task Check Box'
+            => 'Clore Tâche case à cocher',
         'Completed'
             => 'Réalisée',
         'Completed On'
             => 'Réalisé le',
         'Create TasksModulePluralLabel'
             => 'Créer TasksModulePluralLabel',
+        'Create TasksModuleSingularLabel'
+            => 'Créer TasksModuleSingularLabel',
         'Delete TasksModulePluralLabel'
             => 'Supprimer TasksModulePluralLabel',
         'Due On'

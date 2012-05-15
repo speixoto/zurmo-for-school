@@ -53,12 +53,6 @@
             => 'Les utilisateurs inactifs ne peuvent pas connecter par le web, mobile, ni API.  La connexion des utilisateurs est contrôlée par les droits de sécurité des groupes.',
         'Inherited Value:'
             => 'Valeur héritée',
-        'Login Via Mobile'
-            => 'Connexion mobile',
-        'Login Via Web'
-            => 'Connexion par le Web',
-        'Login Via Web API'
-            => 'Connexion API',
         'Manage Users'
             => 'Gestion des utilisateurs',
         'Manager'
@@ -75,6 +69,12 @@
             => 'Durée de vie minimale des mots de passe',
         'Profile'
             => 'Profil',
+        'Sign in Via Mobile'
+            => 'Connexion mobile',
+        'Sign in Via Web'
+            => 'Connexion par le Web',
+        'Sign in Via Web API'
+            => 'Connexion API',
         'The password is too short. Minimum length is {minimumLength}.'
             => 'Le mot de passe doit comprendre {minimumLength} charatères minimum.',
         'The password must have at least one lowercase letter'
@@ -97,5 +97,7 @@
             => 'Recherche d\'utilisateurs',
         'Users'
             => 'Utilisateurs',
+        'Users Home'
+            => 'Inicio de Usuarios',
     );
 ?>

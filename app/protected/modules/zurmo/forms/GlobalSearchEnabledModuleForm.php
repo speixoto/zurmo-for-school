@@ -42,7 +42,7 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'globalSearchAttributeNames'  => Yii::t('Default', 'Global and Module Search Fields'),
+                'globalSearchAttributeNames'  => Yii::t('Default', 'Global and Basic Search Fields'),
             ));
         }
     }

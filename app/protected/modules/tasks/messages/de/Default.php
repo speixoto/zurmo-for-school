@@ -31,12 +31,16 @@
     return array(
         'Access TasksModulePluralLabel'
             => 'Zugang TasksModulePluralLabel',
+        'Close Task Check Box'
+            => 'Schließen Kontrollkästchen Aufgabe',
         'Completed'
             => 'Abgeschlossen',
         'Completed On'
             => 'Abgeschlossen am',
         'Create TasksModulePluralLabel'
             => 'TasksModulePluralLabel erstellen',
+        'Create TasksModuleSingularLabel'
+            => 'TasksModuleSingularLabel erstellen',
         'Delete TasksModulePluralLabel'
             => 'TasksModulePluralLabel löschen',
         'Due On'

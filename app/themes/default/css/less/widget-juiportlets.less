@@ -42,7 +42,6 @@
 	.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12)); /*999*/
 }
 
-
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head {
 	overflow: hidden;
 	width: 100%;
@@ -56,9 +55,6 @@
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
 	float: left;
 	position: relative;
-}
-
-.juiportlet-columns .juiportlet-widget .juiportlet-widget-content {
 }
 
 .juiportlet-widget-head{
@@ -87,7 +83,6 @@ a.remove {
 		color:#A7A7A7;
 		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
 	}
-	
 	&:hover{
 		.icon:after{
 			color:@themeColor;
@@ -122,13 +117,14 @@ a.remove {
 .juiportlet-widget-head a.collapse {
 	float: left;
 	display: inline;
-	background: url(../images/portlet-minimize.png) 14px 50% no-repeat;
+	background: url(../../images/portlet-minimize.png) 14px 50% no-repeat;
 	width: 14px;
 	height: 40px;
 	text-indent: -9999em;
 	margin:0 8px;
 	outline: none;
 }
+
 .juiportlet-widget-placeholder {
 	border: 2px dashed #262877;
 }
@@ -138,7 +134,7 @@ a.remove {
 }
 
 .juiportlet-widget-content{
-	padding:0 0 0 0; //was 10px 0
+	padding:0 0 0 0;
 }
 
 .juiportlet-widget-content li{
@@ -165,10 +161,10 @@ a.remove {
 		}
     }
 }
+
 .juiportlet-widget-content table.items tbody tr:last-child td{
 	border-bottom:none;
 }
-
 
 /*ICONS..*/
 .juiportlet-header-icon{
@@ -179,6 +175,7 @@ a.remove {
 	position:absolute;
 	top:6px;
 }
+
 .juiportlet-widget.OpportunitiesForAccountRelatedListView{
 	h3{
 		text-indent:30px;
@@ -188,6 +185,7 @@ a.remove {
 		}
 	}
 }
+
 .juiportlet-widget.ContactsForAccountRelatedListView{
 	h3{
 		text-indent:30px;
@@ -197,32 +195,3 @@ a.remove {
 		}
 	}
 }
-/*
-.juiportlet-widget.OpenTasksForAccountRelatedListView{
-	h3:before{
-		.juiportlet-header-icon();
-		content: 'X';
-	}
-}
-
-.juiportlet-widget.UpcomingMeetingsForAccountRelatedListView{
-	h3:before{
-		.juiportlet-header-icon();
-		content: 'X';
-	}
-}
-
-.juiportlet-widget.NoteInlineEditForPortletView{
-	h3:before{
-		.juiportlet-header-icon();
-		content: 'X';
-	}
-}
-
-.juiportlet-widget.AccountLatestActivtiesForPortletView{
-	h3:before{
-		.juiportlet-header-icon();
-		content: 'X';
-	}
-}
-*/
