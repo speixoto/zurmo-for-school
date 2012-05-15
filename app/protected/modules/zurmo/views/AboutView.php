@@ -77,21 +77,21 @@
                             <div>
                                 <h3>Special Thanks</h3>
                                 <ul>
-                                    <li>Nev Delap  		 - Infrastructure</li>
                                     <li>Camilo Calderón  - Documentation</li>
+                                    <li>Nev Delap  		 - Infrastructure</li>
                                     <li>Ramin Farmani    - Farsi Translation</li>
                                     <li>Evan Fazio       - Gamification</li>
                                     <li>Justin Ferguson  - Documentation</li>
                                     <li>Theresa Neil     - User Interface Design</li>
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
                                     <li>Sacha Telegenhof - Language Infrastructure</li>
-                                    <liHoly Xing  	     - Chinese Translation</li>
+                                    <li>Holy Xing  	     - Chinese Translation</li>
                                 </ul>
                             </div>
                         </div>';
             $content .= '<div id="rightCol">
-            		<div>
-                    	<h3>Get Social with Zurmo</h3>
+                    <div>
+                        <h3>Get Social with Zurmo</h3>
                         <ul class="social-links clearfix">
                             <li>
                                 <a href="https://www.facebook.com/pages/Zurmo/117701404997971" class="facebook" title="zurmo on facebook" target="_blank">
