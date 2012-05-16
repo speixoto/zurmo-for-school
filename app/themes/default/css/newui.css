@@ -6045,7 +6045,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
 }
 #NoteInlineEditView .has-model-select a {
-  top: 11px;
+  top: 11px !important;
 }
 #NoteInlineEditView .has-model-select a:before {
   top: 4px;
@@ -6054,7 +6054,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
 }
 #NoteInlineEditView .has-date-select button {
-  top: 11px;
+  top: 11px !important;
 }
 #NoteInlineEditView .has-date-select button:before {
   top: 1px;
@@ -6259,7 +6259,7 @@ div.wide.form label.hasCheckBox {
 #inline-edit-form .permissions-box select {
   margin-top: 6px;
 }
-/*Temp Addreess Fields*/
+/*=Temp Addreess Fields*/
 div.overlay-label-field {
   position: relative;
   padding-bottom: 15px;
@@ -7120,6 +7120,12 @@ div.hasHalfs .twoThirds {
 }
 #LeadConvertView #AccountConvertToView > div {
   margin-right: 0;
+}
+#LeadConvertView .has-model-select {
+  position: relative;
+}
+#LeadConvertView .has-model-select a {
+  top: 1px !important;
 }
 .lead-conversion-actions {
   padding: 10px;
