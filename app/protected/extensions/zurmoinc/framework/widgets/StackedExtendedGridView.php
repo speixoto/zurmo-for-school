@@ -62,7 +62,7 @@
 
             if ($n > 0)
             {
-                for($row = 0; $row < $n; ++$row)
+                for ($row = 0; $row < $n; ++$row)
                 {
                     $this->renderTableRow($row);
                 }

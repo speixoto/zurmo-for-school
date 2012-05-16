@@ -101,28 +101,28 @@
 
             $this->setGetArray(array(
                 'UsersSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                 ),
                 'User_page'      => '1',
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('users/default/export');
             $this->assertEquals('Testing download.', $response);
 
             $this->setGetArray(array(
                 'UsersSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                 ),
                 'User_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '',
-                'selectedIds' => "{$users[0]->id},{$users[1]->id}")
+                'selectedIds' => "{$users[0]->id}, {$users[1]->id}")
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('users/default/export');
             $this->assertEquals('Testing download.', $response);
@@ -130,14 +130,14 @@
             // No mathces
             $this->setGetArray(array(
                 'UsersSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => 'missingOne',
                 ),
                 'User_page' => '1',
                 'export'       => '',
                 'ajax'         => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('users/default/export');
             $this->assertTrue(strstr($response, 'users/default/index') !== false);

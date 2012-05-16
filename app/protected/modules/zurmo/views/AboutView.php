@@ -38,6 +38,7 @@
             {
                 $redBeanVersion = '&lt; 1.2.9.1';
             }
+            // Begin Not Coding Standard
             $content  = '<div>
                             <h1>Zurmo Open Source CRM</span></h1>';
 
@@ -78,7 +79,7 @@
                                 <h3>Special Thanks</h3>
                                 <ul>
                                     <li>Camilo Calderón  - Documentation</li>
-                                    <li>Nev Delap  		 - Infrastructure</li>
+                                    <li>Nev Delap        - Infrastructure</li>
                                     <li>Ramin Farmani    - Farsi Translation</li>
                                     <li>Evan Fazio       - Gamification</li>
                                     <li>Justin Ferguson  - Documentation</li>
@@ -86,7 +87,7 @@
                                     <li>Mandy Robinson   - Icons</li>
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
                                     <li>Sacha Telgenhof  - Language Infrastructure</li>
-                                    <li>Holy Xing  	     - Chinese Translation</li>
+                                    <li>Holy Xing  .     - Chinese Translation</li>
                                 </ul>
                             </div>
                         </div>';
@@ -183,10 +184,8 @@
                 </p>
             </div>';
 
-
-
             $content .= '</div></div>';
-
+            // End Not Coding Standard
             return $content;
         }
 
@@ -201,7 +200,3 @@
         }
     }
 ?>
-
-
-
-
