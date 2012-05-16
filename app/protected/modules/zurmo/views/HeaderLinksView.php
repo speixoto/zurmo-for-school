@@ -118,6 +118,7 @@
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
                                     CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
             Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
+                $('#notifications-flyout-link').unbind('click');
                 $('#notifications-flyout-link').bind('click', function()
                 {
                     if ($('#notifications-flyout').css('display') == 'none')
