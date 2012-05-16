@@ -29,6 +29,7 @@
         protected $hostname;
         protected $rootUsername;
         protected $rootPassword;
+        protected $databasePort;
         protected $existingDatabaseName;
         protected $temporaryDatabaseName;
         protected $superUserPassword;
@@ -37,11 +38,12 @@
         {
             parent::__construct();
             $matches = array();
-            assert(preg_match("/host=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+            assert(preg_match("/host=([^;]+);port=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
             $this->hostname              = $matches[1];
             $this->rootUsername          = Yii::app()->db->username;
             $this->rootPassword          = Yii::app()->db->password;
-            $this->existingDatabaseName  = $matches[2];
+            $this->databasePort          = $matches[2];
+            $this->existingDatabaseName  = $matches[3];
             $this->temporaryDatabaseName = "zurmo_wacky";
             if ($this->rootUsername == 'zurmo')
             {
@@ -188,12 +190,12 @@
 
         public function testCheckDatabase_mysql()
         {
-            InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, '10.5.5', $expectedVersion);
-            $this->assertFalse (InstallUtil::checkDatabase('mysql',  $this->hostname, $this->rootUsername, $this->rootPassword, '7.0.0  ', $actualVersion));
+            InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort,'10.5.5', $expectedVersion);
+            $this->assertFalse (InstallUtil::checkDatabase('mysql',  $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, '7.0.0  ', $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue  (InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $expectedVersion, $actualVersion));
+            $this->assertTrue  (InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, $expectedVersion, $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue  (InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, '5.0.0', $actualVersion));
+            $this->assertTrue  (InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, '5.0.0', $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
         }
 
@@ -326,6 +328,7 @@
                                                                                $this->hostname,
                                                                                $this->rootUsername,
                                                                                $this->rootPassword,
+                                                                               $this->databasePort,
                                                                                $minimumRequireBytes,
                                                                                $actualBytes));
         }
@@ -341,6 +344,7 @@
                                                                              $this->hostname,
                                                                              $this->rootUsername,
                                                                              $this->rootPassword,
+                                                                             $this->databasePort,
                                                                              $minimumRequiredMaxSpRecursionDepth,
                                                                              $maxSpRecursionDepth));
         }
@@ -356,6 +360,7 @@
                                                                 $this->hostname,
                                                                 $this->rootUsername,
                                                                 $this->rootPassword,
+                                                                $this->databasePort,
                                                                 $minimumRequiredThreadStackValue,
                                                                 $threadStackValue));
         }
@@ -370,6 +375,7 @@
                                                             $this->hostname,
                                                             $this->rootUsername,
                                                             $this->rootPassword,
+                                                            $this->databasePort,
                                                             $optimizerSearchDepth));
         }
 
@@ -385,6 +391,7 @@
                                                                           $this->temporaryDatabaseName,
                                                                           $this->rootUsername,
                                                                           $this->rootPassword,
+                                                                          $this->databasePort,
                                                                           $notAllowedDatabaseCollations,
                                                                           $databaseDefaultCollation));
         }
@@ -397,7 +404,8 @@
             $this->assertNotNull(DatabaseCompatibilityUtil::isDatabaseStrictMode('mysql',
                                                                                  $this->hostname,
                                                                                  $this->rootUsername,
-                                                                                 $this->rootPassword));
+                                                                                 $this->rootPassword,
+                                                                                 $this->databasePort));
         }
 
         /**
@@ -411,6 +419,7 @@
                                                                        $this->temporaryDatabaseName,
                                                                        $this->rootUsername,
                                                                        $this->rootPassword,
+                                                                       $this->databasePort,
                                                                        $logBinValue));
         }
 
@@ -426,6 +435,7 @@
                                                                             $this->temporaryDatabaseName,
                                                                             $this->rootUsername,
                                                                             $this->rootPassword,
+                                                                            $this->databasePort,
                                                                             $logBinTrustFunctionCreatorsValue));
         }
 
@@ -447,9 +457,9 @@
             // This test cannot run as saltdev. It is therefore skipped on the server.
             if ($this->rootUsername == 'root')
             {
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase    ('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->temporaryDatabaseName));
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->temporaryDatabaseName, 'wacko', 'wacked'));
-                InstallUtil::connectToDatabase('mysql', $this->hostname, 'wacky', $this->rootUsername, $this->rootPassword);
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase    ('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, $this->temporaryDatabaseName));
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, $this->temporaryDatabaseName, 'wacko', 'wacked'));
+                InstallUtil::connectToDatabase('mysql', $this->hostname, 'wacky', $this->rootUsername, $this->rootPassword, $this->databasePort);
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
                 $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger);
@@ -538,7 +548,7 @@
             try
             {
                 InstallUtil::writeConfiguration($instanceRoot,
-                                                'mysql', 'databases.r-us.com', 'wacky', 'wacko', 'wacked',
+                                                'mysql', 'databases.r-us.com', 'wacky', 'wacko', 'wacked', 3306,
                                                 'memcache.jason.com', 5432, false,
                                                 'es',
                                                 'perInstanceTest.php', 'debugTest.php',
@@ -551,7 +561,7 @@
                                        $debugConfiguration);
                 $this->assertRegExp   ('/\$language         = \'es\';/',
                                        $perInstanceConfiguration);
-                $this->assertRegExp   ('/\$connectionString = \'mysql:host=databases.r-us.com;dbname=wacky\';/', // Not Coding Standard
+                $this->assertRegExp   ('/\$connectionString = \'mysql:host=databases.r-us.com;port=3306;dbname=wacky\';/', // Not Coding Standard
                                        $perInstanceConfiguration);
                 $this->assertRegExp   ('/\$username         = \'wacko\';/',
                                        $perInstanceConfiguration);
@@ -620,6 +630,7 @@
             $form->databaseName      = $this->temporaryDatabaseName;
             $form->databaseUsername  = $this->rootUsername;
             $form->databasePassword  = $this->rootPassword;
+            $form->databasePort      = $this->databasePort;
             $form->superUserPassword = $this->superUserPassword;
             if (!$memcacheOn)
             {
@@ -653,7 +664,7 @@
             $this->assertEquals('super', $user->username);
 
             //Check if config files is updated.
-            $this->assertRegExp   ('/\$connectionString = \'mysql:host='.$this->hostname.';dbname='.$this->temporaryDatabaseName.'\';/', // Not Coding Standard
+            $this->assertRegExp   ('/\$connectionString = \'mysql:host='.$this->hostname.';port='.$this->databasePort.';dbname='.$this->temporaryDatabaseName.'\';/', // Not Coding Standard
                                    $perInstanceConfiguration);
             $this->assertRegExp   ('/\$username         = \''.$this->rootUsername.'\';/',  // Not Coding Standard
                                    $perInstanceConfiguration);
