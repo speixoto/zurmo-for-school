@@ -39,28 +39,21 @@
             parent::__construct();
             $matches = array();
 
-            $databaseName = "";
-            $hostname     = "";
-            if (preg_match("/host=([^;]+);port=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString))
+            assert(preg_match("/host=([^;]+);(?:port=([^;]+);)?dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+            if ($matches[2] != '')
             {
-                preg_match("/host=([^;]+);port=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches);
-                $databaseName = $matches[3];
-                $databasePort = $matches[2];
+                $this->databasePort      = intval($matches[2]);
             }
-            elseif (preg_match("/host=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString))
+            else
             {
-                preg_match("/host=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches);
-                $databaseName = $matches[2];
-                $databasePort = 3306;
+                $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString(Yii::app()->db->connectionString);
+                $this->databasePort = DatabaseCompatibilityUtil::getDatabaseDefaultPort($databaseType);
             }
-            $hostname = $matches[1];
-            assert($databaseName != '' && $hostname != ''); // Not Coding Standard
 
-            $this->hostname              = $hostname;
+            $this->hostname              = $matches[1];
             $this->rootUsername          = Yii::app()->db->username;
             $this->rootPassword          = Yii::app()->db->password;
-            $this->databasePort          = $databasePort;
-            $this->existingDatabaseName  = $databaseName;
+            $this->existingDatabaseName  = $matches[3];
             $this->temporaryDatabaseName = "zurmo_wacky";
             if ($this->rootUsername == 'zurmo')
             {

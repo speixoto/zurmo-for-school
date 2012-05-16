@@ -38,11 +38,21 @@
         {
             parent::__construct();
             $matches = array();
-            assert(preg_match("/host=([^;]+);port=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+
+            assert(preg_match("/host=([^;]+);(?:port=([^;]+);)?dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+            if ($matches[2] != '')
+            {
+                $this->databasePort      = intval($matches[2]);
+            }
+            else
+            {
+                $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString(Yii::app()->db->connectionString);
+                $this->databasePort = DatabaseCompatibilityUtil::getDatabaseDefaultPort($databaseType);
+            }
+
             $this->hostname              = $matches[1];
             $this->rootUsername          = Yii::app()->db->username;
             $this->rootPassword          = Yii::app()->db->password;
-            $this->databasePort          = $matches[2];
             $this->existingDatabaseName  = $matches[3];
             $this->temporaryDatabaseName = "zurmo_wacky";
             if ($this->rootUsername == 'zurmo')

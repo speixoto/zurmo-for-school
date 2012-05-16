@@ -692,7 +692,7 @@
             assert('is_string($host)         && $host != ""');
             assert('is_string($rootUsername) && $rootUsername != ""');
             assert('is_string($rootPassword) && $rootPassword != ""');
-            assert('is_string($port)         && $port != ""');
+            assert('is_int($port)            && $port != ""');
             switch ($databaseType)
             {
                 case 'mysql':
@@ -730,7 +730,7 @@
             assert('is_string($host)         && $host         != ""');
             assert('is_string($rootUsername) && $rootUsername != ""');
             assert('is_string($rootPassword) && $rootPassword != ""');
-            assert('is_string($port)         && $port != ""');
+            assert('is_int($port)            && $port != ""');
             assert('is_string($databaseName) && $databaseName != ""');
             switch ($databaseType)
             {
@@ -769,7 +769,7 @@
             assert('is_string($host)         && $host         != ""');
             assert('is_string($rootUsername) && $rootUsername != ""');
             assert('is_string($rootPassword) && $rootPassword != ""');
-            assert('is_string($port)         && $port != ""');
+            assert('is_int($port)            && $port != ""');
             assert('is_string($username)     && $username     != ""');
             switch ($databaseType)
             {
@@ -834,7 +834,7 @@
             assert('is_string($host)         && $host         != ""');
             assert('is_string($rootUsername) && $rootUsername != ""');
             assert('is_string($rootPassword) && $rootPassword != ""');
-            assert('is_string($port)         && $port != ""');
+            assert('is_int($port)            && $port != ""');
             assert('is_string($databaseName) && $databaseName != ""');
             switch ($databaseType)
             {
@@ -878,7 +878,7 @@
             assert('is_string($host)         && $host         != ""');
             assert('is_string($rootUsername) && $rootUsername != ""');
             assert('is_string($rootPassword) && $rootPassword != ""');
-            assert('is_string($port)         && $port != ""');
+            assert('is_int($port)            && $port != ""');
             assert('is_string($databaseName) && $databaseName != ""');
             assert('is_string($username)     && $username     != ""');
             assert('is_string($password)');
@@ -910,19 +910,8 @@
          */
         public static function getDatabaseNameFromConnectionString()
         {
-            $databaseName = "";
-            if (preg_match("/host=([^;]+);port=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString))
-            {
-                preg_match("/host=([^;]+);port=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches);
-                $databaseName = $matches[3];
-            }
-            elseif (preg_match("/host=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString))
-            {
-                $databaseName = preg_match("/host=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches);
-                $databaseName = $matches[2];
-            }
-            assert($databaseName != ''); // Not Coding Standard
-            return $databaseName;
+            assert(preg_match("/host=([^;]+);(?:port=([^;]+);)?dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+            return $matches[3];
         }
 
         public static function getTableRowsCountTotal()
@@ -944,6 +933,22 @@
                 $totalCount = $totalCount + $row['count'];
             }
             return $totalCount;
+        }
+
+        /**
+         * Get port on which database is running by default, depending on database type
+         * @param string $databaseType
+         */
+        public static function getDatabaseDefaultPort($databaseType = 'mysql')
+        {
+            if ($databaseType == 'mysql')
+            {
+                return 3306;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

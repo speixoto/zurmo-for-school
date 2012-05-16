@@ -628,7 +628,7 @@
             assert('is_string($databaseName) && $databaseName != ""');
             assert('is_string($username)     && $username     != ""');
             assert('is_string($password)');
-            assert('is_string($port)');
+            assert('is_string($port) || is_int($port)');
             assert('is_string($memcacheHost) || $memcacheHost == null');
             assert('(is_int   ($memcachePort) && $memcachePort >= 1024) || $memcachePort == null');
             assert('is_string($language)     && $language     != ""');
@@ -672,7 +672,7 @@
             $contents = preg_replace('/\$language\s*=\s*\'[a-z]+\';/', // Not Coding Standard
                                      "\$language         = '$language';",
                                      $contents);
-            $contents = preg_replace('/\$connectionString\s*=\s*\'[a-z]+:host=[^;]+;dbname=[^;]+;/', // Not Coding Standard
+            $contents = preg_replace('/\$connectionString\s*=\s*\'[a-z]+:host=[^;]+;port=[^;]+;dbname=[^;]+;/', // Not Coding Standard
                                    "\$connectionString = '$databaseType:host=$databaseHost;port=$port;dbname=$databaseName';", // Not Coding Standard
                                      $contents);
             $contents = preg_replace('/\$username\s*=\s*\'[^\']+\';/', // Not Coding Standard
