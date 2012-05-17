@@ -28,7 +28,7 @@
 </tr>
 <tr>
   <td>verifyTextPresent</td>
-  <td>Create New</td>
+  <td>Create</td>
   <td></td>
 </tr>
 <tr>
@@ -40,6 +40,11 @@
   <td>type</td>
   <td>OpportunitiesSearchForm_anyMixedAttributes</td>
   <td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>keyUp</td>
+  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+  <td>\10</td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -73,7 +78,7 @@
 </tr>
 <tr>
   <td>waitForTextPresent</td>
-  <td>Create a New Meeting</td>
+  <td>Create Meeting</td>
   <td></td>
 </tr>
 <tr>
@@ -199,6 +204,11 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
+  <td>keyUp</td>
+  <td>AccountsSearchForm_anyMixedAttributes</td>
+  <td>\10</td>
+</tr>
+<tr>
   <td>waitForTextPresent</td>
   <td>my account ${randomSuffix}</td>
   <td></td>
@@ -239,6 +249,11 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>Sam Smith</td>
 </tr>
 <tr>
+  <td>keyUp</td>
+  <td>UsersSearchForm_anyMixedAttributes</td>
+  <td>\10</td>
+</tr>
+<tr>
   <td>waitForTextPresent</td>
   <td>Sam Smith</td>
   <td></td>
@@ -264,8 +279,18 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Project kick-off opportunity ${randomSuffix}</td>
+  <td>waitForTextPresent</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>//div[@id='UpcomingMeetingsForOpportunityCalendarView']/div[2]/div/div/a[2]/span</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>//div[@id='UpcomingMeetingsForOpportunityCalendarView']/div[2]/div/table/tbody/tr[2]/td[3]/a</td>
   <td></td>
 </tr>
 <tr>
@@ -274,9 +299,19 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Telephone</td>
+  <td>clickAndWait</td>
+  <td>//div[@id='days-meetings-list-view']/table/tbody/tr[1]/td/div/h3/span/a</td>
   <td></td>
+</tr>
+<tr>
+  <td>waitForTextPresent</td>
+  <td>Project kick-off opportunity ${randomSuffix}</td>
+  <td></td>
+</tr>
+<tr>
+  <td>verifyValue</td>
+  <td>Meeting_location</td>
+  <td>Telephone</td>
 </tr>
 <tr>
   <td>verifyTextPresent</td>
@@ -304,11 +339,6 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Edit</td>
-  <td></td>
-</tr>
-<tr>
   <td>type</td>
   <td>Meeting_name</td>
   <td>Project kick-off new opportunity ${randomSuffix}</td>
@@ -321,6 +351,31 @@ This is kept pending for now as there is a need to figure out as to how to captu
 <tr>
   <td>clickAndWait</td>
   <td>save</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForTextPresent</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>//div[@id='UpcomingMeetingsForOpportunityCalendarView']/div[2]/div/div/a[2]/span</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>//div[@id='UpcomingMeetingsForOpportunityCalendarView']/div[2]/div/table/tbody/tr[2]/td[3]/a</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForTextPresent</td>
+  <td>Project kick-off new opportunity ${randomSuffix}</td>
+  <td></td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>//div[@id='days-meetings-list-view']/table/tbody/tr[1]/td/div/h3/span/a</td>
   <td></td>
 </tr>
 <tr>
@@ -360,7 +415,7 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>verifyTextPresent</td>
-  <td>Create New</td>
+  <td>Create</td>
   <td></td>
 </tr>
 <tr>
@@ -372,6 +427,11 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>type</td>
   <td>OpportunitiesSearchForm_anyMixedAttributes</td>
   <td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>keyUp</td>
+  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+  <td>\10</td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -398,11 +458,21 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>Test Opportunity ${randomSuffix}</td>
   <td></td>
 </tr>
-<!--tr>
+<tr>
+  <td>click</td>
+  <td>//div[@id='UpcomingMeetingsForOpportunityCalendarView']/div[2]/div/div/a[2]/span</td>
+  <td></td>
+</tr>
+<tr>
+  <td>click</td>
+  <td>//div[@id='UpcomingMeetingsForOpportunityCalendarView']/div[2]/div/table/tbody/tr[2]/td[3]/a</td>
+  <td></td>
+</tr>
+<tr>
   <td>verifyTextNotPresent</td>
   <td>Project kick-off new opportunity ${randomSuffix}</td>
   <td></td>
-</tr-->
+</tr>
 </tbody></table>
 </body>
 </html>

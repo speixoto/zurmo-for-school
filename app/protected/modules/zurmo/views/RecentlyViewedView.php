@@ -43,7 +43,7 @@
 
             $content .= '<ul>';
 
-            foreach($this->recentlyViewedItems as $recentlyViewedItem)
+            foreach ($this->recentlyViewedItems as $recentlyViewedItem)
             {
                 $content .= '<li class="type-' . $recentlyViewedItem['moduleClassName'] . '">' . $recentlyViewedItem['link'] . '</li>';
             }

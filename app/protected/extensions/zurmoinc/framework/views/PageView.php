@@ -215,7 +215,7 @@
         {
             $themeUrl = Yii::app()->baseUrl . '/themes';
             $theme    = Yii::app()->theme->name;
-            if (!MINIFY_SCRIPTS)
+            if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
@@ -249,7 +249,7 @@
             $cs->registerMetaTag('text/html; charset=UTF-8', null, 'Content-Type'); // Not Coding Standard
 
             $specialCssContent = null;
-            if (!MINIFY_SCRIPTS)
+            if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/css/less/newui.less"/>';
@@ -259,6 +259,9 @@
             else
             {
                 $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/newui.css');
+            }
+            if (MINIFY_SCRIPTS)
+            {
                 Yii::app()->minScript->generateScriptMap('css');
                 if (!YII_DEBUG && !defined('IS_TEST'))
                 {

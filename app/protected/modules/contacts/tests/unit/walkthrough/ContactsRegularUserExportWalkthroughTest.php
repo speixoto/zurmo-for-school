@@ -93,7 +93,7 @@
 
             $this->setGetArray(array(
                 'ContactsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'superContact',
                     'officePhone'             => ''
@@ -103,14 +103,14 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
             $this->assertTrue(strstr($response, 'contacts/default/index') !== false);
 
             $this->setGetArray(array(
                 'ContactsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'superContact',
                     'officePhone'             => ''
@@ -120,7 +120,7 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '',
-                'selectedIds' => "{$contacts[0]->id},{$contacts[1]->id}")
+                'selectedIds' => "{$contacts[0]->id}, {$contacts[1]->id}")
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
             $this->assertTrue(strstr($response, 'contacts/default/index') !== false);
@@ -140,7 +140,7 @@
 
             $this->setGetArray(array(
                 'ContactsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'superContact',
                     'officePhone'             => ''
@@ -150,14 +150,14 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('contacts/default/export');
             $this->assertEquals('Testing download.', $response);
 
             $this->setGetArray(array(
                 'ContactsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'superContact',
                     'officePhone'             => ''
@@ -167,7 +167,7 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '',
-                'selectedIds' => "{$contacts[0]->id},{$contacts[1]->id}")
+                'selectedIds' => "{$contacts[0]->id}, {$contacts[1]->id}")
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('contacts/default/export');
             $this->assertEquals('Testing download.', $response);
@@ -175,7 +175,7 @@
             // No mathces
             $this->setGetArray(array(
                 'ContactsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'missingName',
                     'officePhone'             => ''
@@ -185,7 +185,7 @@
                 'export'       => '',
                 'ajax'         => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/export');
             $this->assertTrue(strstr($response, 'contacts/default/index') !== false);

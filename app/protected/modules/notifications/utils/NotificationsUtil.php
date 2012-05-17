@@ -121,7 +121,7 @@
                 {
                     Yii::app()->emailHelper->sendImmediately($emailMessage);
                 }
-                catch(CException $e)
+                catch (CException $e)
                 {
                     //Not sure what to do yet when catching an exception here. Currently ignoring gracefully.
                 }

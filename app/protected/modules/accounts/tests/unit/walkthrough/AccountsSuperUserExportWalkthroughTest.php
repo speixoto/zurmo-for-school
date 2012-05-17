@@ -193,7 +193,7 @@
             $selectedIds = "";
             foreach ($accounts as $account)
             {
-                $selectedIds .= $account->id . ",";
+                $selectedIds .= $account->id . ","; // Not Coding Standard
             }
             $this->setGetArray(array(
                 'AccountsSearchForm' => array(

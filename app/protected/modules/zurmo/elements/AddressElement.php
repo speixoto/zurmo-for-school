@@ -78,7 +78,7 @@
             }
             if (!empty($country))
             {
-                $content .= Yii::app()->format->text($country);
+                $content .= "<br/>\n" . Yii::app()->format->text($country);
             }
             if (!$invalid && $addressModel->makeAddress() != '')
             {

@@ -95,7 +95,7 @@
 
             $this->setGetArray(array(
                 'OpportunitiesSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superOpp',
                     'officePhone'             => ''
@@ -104,14 +104,14 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
             $this->assertTrue(strstr($response, 'opportunities/default/index') !== false);
 
             $this->setGetArray(array(
                 'OpportunitiesSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superOpp',
                     'officePhone'             => ''
@@ -120,7 +120,7 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '',
-                'selectedIds' => "{$opportunities[0]->id},{$opportunities[1]->id}")
+                'selectedIds' => "{$opportunities[0]->id}, {$opportunities[1]->id}")
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
             $this->assertTrue(strstr($response, 'opportunities/default/index') !== false);
@@ -140,7 +140,7 @@
 
             $this->setGetArray(array(
                 'OpportunitiesSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superOpp',
                     'officePhone'             => ''
@@ -149,14 +149,14 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/export');
             $this->assertEquals('Testing download.', $response);
 
             $this->setGetArray(array(
                 'OpportunitiesSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superOpp',
                     'officePhone'             => ''
@@ -165,16 +165,15 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '',
-                'selectedIds' => "{$opportunities[0]->id},{$opportunities[1]->id}")
+                'selectedIds' => "{$opportunities[0]->id}, {$opportunities[1]->id}")
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/export');
             $this->assertEquals('Testing download.', $response);
 
-
             // No mathces
             $this->setGetArray(array(
                 'OpportunitiesSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'name'                    => 'missingName',
                     'officePhone'             => ''
@@ -183,7 +182,7 @@
                 'export'       => '',
                 'ajax'         => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/export');
             $this->assertTrue(strstr($response, 'opportunities/default/index') !== false);
