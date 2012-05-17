@@ -78,6 +78,7 @@
                             <div>
                                 <h3>Special Thanks</h3>
                                 <ul>
+                                    <li>Richard Baldwin  - CRM Processes</li>
                                     <li>Camilo Calderón  - Documentation</li>
                                     <li>Nev Delap        - Infrastructure</li>
                                     <li>Ramin Farmani    - Farsi Translation</li>
@@ -87,7 +88,7 @@
                                     <li>Mandy Robinson   - Icons</li>
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
                                     <li>Sacha Telgenhof  - Language Infrastructure</li>
-                                    <li>Holy Xing  .     - Chinese Translation</li>
+                                    <li>Holy Xing        - Chinese Translation</li>
                                 </ul>
                             </div>
                         </div>';
