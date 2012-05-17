@@ -139,7 +139,7 @@
                                                                       $this->databaseHostname,
                                                                       $this->databaseAdminUsername,
                                                                       $this->databaseAdminPassword,
-                                                                      $this->databasePort);
+                                                                      (int)$this->databasePort);
                     if ($connectionResult !== true)
                     {
                         $this->addError('databaseAdminUsername', Yii::t('Default', 'Error code:') . " " .
@@ -150,7 +150,7 @@
                                                                              $this->databaseHostname,
                                                                              $this->databaseAdminUsername,
                                                                              $this->databaseAdminPassword,
-                                                                             $this->databasePort,
+                                                                             (int)$this->databasePort,
                                                                              $this->databaseUsername);
                     if ($userExistsResult === true)
                     {
@@ -163,7 +163,7 @@
                                                                              $this->databaseHostname,
                                                                              $this->databaseAdminUsername,
                                                                              $this->databaseAdminPassword,
-                                                                             $this->databasePort,
+                                                                             (int)$this->databasePort,
                                                                              $this->databaseName);
                     if ($databaseExistsResult === true)
                     {
@@ -176,7 +176,7 @@
                                                                              $this->databaseHostname,
                                                                              $this->databaseAdminUsername,
                                                                              $this->databaseAdminPassword,
-                                                                             $this->databasePort,
+                                                                             (int)$this->databasePort,
                                                                              $this->databaseName);
                     if ($createDatabaseResult === false)
                     {
@@ -188,7 +188,7 @@
                                                                              $this->databaseHostname,
                                                                              $this->databaseAdminUsername,
                                                                              $this->databaseAdminPassword,
-                                                                             $this->databasePort,
+                                                                             (int)$this->databasePort,
                                                                              $this->databaseName,
                                                                              $this->databaseUsername,
                                                                              $this->databasePassword);
@@ -205,7 +205,7 @@
                                                                              $this->databaseHostname,
                                                                              $this->databaseUsername,
                                                                              $this->databasePassword,
-                                                                             $this->databasePort);
+                                                                             (int)$this->databasePort);
                     if ($connectionResult !== true)
                     {
                         $this->addError('databaseUsername', Yii::t('Default', 'Error code:') . " " .
@@ -216,7 +216,7 @@
                                                                              $this->databaseHostname,
                                                                              $this->databaseUsername,
                                                                              $this->databasePassword,
-                                                                             $this->databasePort,
+                                                                             (int)$this->databasePort,
                                                                              $this->databaseName);
                     if ($databaseExistsResult !== true)
                     {

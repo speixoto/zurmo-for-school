@@ -133,6 +133,16 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'databasePort', 'type' => 'Text',
+                                                      'description' => Yii::t('Default', 'Database port.')),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'databaseAdminUsername', 'type' => 'Text',
                                                       'description' => Yii::t('Default', 'Leave this blank unless you ' .
                                                       'would like to create the user and database for Zurmo to run in.')),
