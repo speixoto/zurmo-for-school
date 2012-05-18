@@ -28,9 +28,7 @@ $(window).ready(function(){
         }
     );
 
-
     function resizeWhiteArea(){
-
         /*Resizes the app to fill the browser's window case smaller'*/
         var viewportHeight = $(window).height();
         var wrapperDivHeight = $('body > div').outerHeight(true)
@@ -65,9 +63,6 @@ $(window).ready(function(){
 
     resizeWhiteArea();
 
-
-
-
     /*Label overlays input, address fields*/
     $(".overlay-label-field input").live('focus', function(){
         $(this).prev().fadeOut(100);
@@ -93,42 +88,4 @@ $(window).ready(function(){
             }
         });
     });
-
-    /*Checkboxes
-     from: http://webdesign.maratz.com/lab/fancy-checkboxes-and-radio-buttons/jquery.html
-     * */
-    function setupCheckboxes( $context ) {
-        if ( $('input:checkbox', $context ).length ) {
-            $('input:checkbox', $context ).each(function(){
-                $(this).parent().removeClass('c_on');
-            });
-            $('label input:checked', $context ).each(function(){
-                $(this).parent('label').addClass('c_on');
-            });
-        }
-
-        $('label', $context[0] ).
-            live( 'click', { $inputContext:$(this).content  },
-                function( event ){
-                    if ( $('input:checkbox', event.data.$inputContext ).length ) {
-                        $('input:checkbox', event.data.$inputContext ).each(function(){
-                            $(this).parent().removeClass('c_on');
-                        });
-                        $('label input:checked', event.data.$inputContext ).each(function(){
-                            $(this).parent('label').addClass('c_on');
-                        });
-                    }
-            });
-    }
-
-
-    //we're doing that because the multiselect widget isn't generated yet..
-    window.setTimeout(
-        function setCheckboxes(){
-            setupCheckboxes( $('#search-form') );
-            setupCheckboxes( $('#app-search') );
-        },
-    1000 );
-
-
 });
