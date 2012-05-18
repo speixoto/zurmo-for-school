@@ -82,7 +82,7 @@
                 $content .= '<tr>';
                 $content .= '<td>' . $leaderboardData['rank'] . '</td>';
                 $content .= '<td>' . $leaderboardData['userLabel'] . '</td>';
-                $content .= '<td>' . $leaderboardData['points'] . '</td>';
+                $content .= '<td><span class="points">' . $leaderboardData['points'] . '</span></td>';
                 $content .= '</tr>';
             }
             $content .= '</tbody>';
