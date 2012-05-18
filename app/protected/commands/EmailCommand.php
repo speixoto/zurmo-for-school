@@ -46,7 +46,8 @@
 
     DESCRIPTION
       Send an email messages.  Use double quotes to to make a sentence for a subject or content
-      An example is --subject="Welcome to Zurmo"               // Not Coding Standard
+      An example is --subject="Welcome to Zurmo"
+      Note: If the outbound settings are not provided, command will attempt to use any saved setting in Zurmo.
 
     PARAMETERS
      * action-name: The action to use. Currently supports 'send'
