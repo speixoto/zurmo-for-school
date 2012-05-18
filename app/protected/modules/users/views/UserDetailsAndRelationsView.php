@@ -84,7 +84,7 @@
             $leftVerticalGridView  = new GridView(2, 1);
             $leftVerticalGridView->setView($leftTopView, 0, 0);
             $leftVerticalGridView->setView($leftBottomView, 1, 0);
-            $content = $leftVerticalGridView->render();
+            $content .= $leftVerticalGridView->render();
             if ($renderRightSide)
             {
                 $rightVerticalGridView  = new GridView(1, 1);
