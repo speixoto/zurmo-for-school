@@ -82,7 +82,6 @@
 
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/list');
 
-
             $this->setGetArray(array(
                 'Contact_page' => '1',
                 'export' => '',
@@ -95,7 +94,7 @@
 
             $this->setGetArray(array(
                 'LeadsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'superContact',
                     'officePhone'             => ''
@@ -112,7 +111,7 @@
 
             $this->setGetArray(array(
                 'LeadsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'superContact',
                     'officePhone'             => ''
@@ -122,7 +121,7 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '',
-                'selectedIds' => "{$leads[0]->id},{$leads[1]->id}")
+                'selectedIds' => "{$leads[0]->id}, {$leads[1]->id}")
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('leads/default/export');
             $this->assertTrue(strstr($response, 'leads/default/index') !== false);
@@ -142,7 +141,7 @@
 
             $this->setGetArray(array(
                 'LeadsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'superContact',
                     'officePhone'             => ''
@@ -159,7 +158,7 @@
 
             $this->setGetArray(array(
                 'LeadsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'superContact',
                     'officePhone'             => ''
@@ -169,16 +168,15 @@
                 'export'         => '',
                 'ajax'           => '',
                 'selectAll' => '',
-                'selectedIds' => "{$leads[0]->id},{$leads[1]->id}")
+                'selectedIds' => "{$leads[0]->id}, {$leads[1]->id}")
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('leads/default/export');
             $this->assertEquals('Testing download.', $response);
 
-
             // No mathces
             $this->setGetArray(array(
                 'LeadsSearchForm' => array(
-                    'anyMixedAttributesScope' => array(0 =>'All'),
+                    'anyMixedAttributesScope' => array(0 => 'All'),
                     'anyMixedAttributes'      => '',
                     'fullName'                => 'missingName',
                     'officePhone'             => ''
@@ -188,7 +186,7 @@
                 'export'       => '',
                 'ajax'         => '',
                 'selectAll' => '1',
-                'selectedIds' => '',)
+                'selectedIds' => '')
             );
             $response = $this->runControllerWithRedirectExceptionAndGetUrl('leads/default/export');
             $this->assertTrue(strstr($response, 'leads/default/index') !== false);

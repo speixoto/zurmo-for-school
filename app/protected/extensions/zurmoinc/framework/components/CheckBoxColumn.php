@@ -145,15 +145,15 @@ END;
          * (non-PHPdoc)
          * @see CCheckBoxColumn::renderDataCellContent()
          */
-        protected function renderDataCellContent($row,$data)
+        protected function renderDataCellContent($row, $data)
         {
             if ($this->value !== null)
             {
-                $value = $this->evaluateExpression($this->value,array('data' => $data, 'row' => $row));
+                $value = $this->evaluateExpression($this->value, array('data' => $data, 'row' => $row));
             }
             elseif ($this->name !== null)
             {
-                $value = CHtml::value($data,$this->name);
+                $value = CHtml::value($data, $this->name);
             }
             else
             {
@@ -163,7 +163,7 @@ END;
             $checked = false;
             if ($this->checked !== null)
             {
-                $checked = $this->evaluateExpression($this->checked,array('data' => $data, 'row' => $row));
+                $checked = $this->evaluateExpression($this->checked, array('data' => $data, 'row' => $row));
             }
             $options                  = $this->checkBoxHtmlOptions;
             $name                     = $options['name'];
@@ -172,7 +172,7 @@ END;
             $options['id']            = $this->id . '_' . $row;
             echo CHtml::tag("label",
                             array("class" => "hasCheckBox"),
-                            CHtml::checkBox($name,$checked,$options));
+                            CHtml::checkBox($name, $checked, $options));
         }
     }
 ?>

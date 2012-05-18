@@ -52,12 +52,12 @@
                 return array();
             }
 
-            list($beginPage,$endPage)=$this->getPageRange();
-            $currentPage=$this->getCurrentPage(false); // currentPage is calculated in getPageRange()
+            list($beginPage, $endPage) = $this->getPageRange();
+            $currentPage = $this->getCurrentPage(false); // currentPage is calculated in getPageRange()
             $buttons = array();
 
             // next page
-            if (($page = $currentPage+1)>=$pageCount-1)
+            if (($page = $currentPage + 1) >= $pageCount - 1)
             {
                 $page = $pageCount-1;
             }
