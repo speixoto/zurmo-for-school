@@ -102,8 +102,8 @@
         {
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/FormUtils.js'
-                    ),
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
+                    ) . '/FormUtils.js',
                 CClientScript::POS_END
             );
             $inputId = $this->getEditableInputId();

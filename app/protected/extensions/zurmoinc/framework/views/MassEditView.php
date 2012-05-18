@@ -217,7 +217,7 @@ $('#{$checkBoxHtmlOptions['id']}').click(function()
 );
 END;
             Yii::app()->clientScript->registerScript($checkBoxHtmlOptions['id'], $massEditScript);
-            return "<th><label class=\"hasCheckBox\">" . CHtml::checkBox("MassEdit[" . $elementInformation['attributeName'] . "]", $checked, $checkBoxHtmlOptions) ."</label></th>  \n";
+            return "<th>" . ZurmoHtml::checkBox("MassEdit[" . $elementInformation['attributeName'] . "]", $checked, $checkBoxHtmlOptions) ."</th>  \n";
         }
 
         public static function getDesignerRulesType()

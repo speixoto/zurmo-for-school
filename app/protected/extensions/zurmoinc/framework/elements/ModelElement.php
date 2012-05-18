@@ -89,8 +89,8 @@
             $cs->registerCoreScript('bbq');
             $cs->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets') . '/Modal.js'
-                    ),
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets')
+                    ) . '/Modal.js',
                 CClientScript::POS_END
             );
             $idInputHtmlOptions = array(

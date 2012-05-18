@@ -97,27 +97,6 @@ $(window).ready(function(){
     /*Checkboxes
      from: http://webdesign.maratz.com/lab/fancy-checkboxes-and-radio-buttons/jquery.html
      * */
-
-
-    $('input:checkbox').each(function(){
-        if ( $( this ).is(':checked') ) {
-            $(this).parent().addClass('c_on');
-        }
-        $(this).bind( 'change', checkMyState );
-    });
-
-
-    function checkMyState(event){
-        if (  $(event.target).is('input')  ){
-            if (  $(event.target).is(':checked')  ){
-                $(this).parent().addClass('c_on');
-            } else {
-                $(this).parent().removeClass('c_on');
-            }
-        }
-    }
-
-
     function setupCheckboxes( $context ) {
         if ( $('input:checkbox', $context ).length ) {
             $('input:checkbox', $context ).each(function(){

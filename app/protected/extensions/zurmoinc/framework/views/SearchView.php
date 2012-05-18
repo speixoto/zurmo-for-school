@@ -81,10 +81,10 @@
         {
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/dropDownInteractions.js'));
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js');
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/jquery.dropkick-1.0.0.js'));
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js');
         }
 
         /**
@@ -101,8 +101,8 @@
             // Begin Not Coding Standard
             $cs->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/FormUtils.js'
-                    ),
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
+                    ) . '/FormUtils.js',
                 CClientScript::POS_END
             );
             Yii::app()->clientScript->registerScript('search', "

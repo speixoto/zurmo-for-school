@@ -75,11 +75,6 @@
         {
             $this->themeUrl = Yii::app()->baseUrl . '/themes';
             $this->theme    = Yii::app()->theme->name;
-            if ($this->baseUrl === null)
-            {
-                $this->baseUrl = Yii::app()->getAssetManager()->publish(
-                                 Yii::getPathOfAlias('ext.zurmoinc.framework.widgets.assets'));
-            }
             if ($this->inputId == null)
             {
                 $this->inputId = $this->getId() . 'inputId';
@@ -118,7 +113,9 @@
 
         protected function registerClientScripts()
         {
-            Yii::app()->getClientScript()->registerScriptFile($this->baseUrl . '/juiMultiSelect/jquery.multiselect.js');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.widgets.assets')) . '/juiMultiSelect/jquery.multiselect.js');
         }
 
         protected function registerCssFile()
