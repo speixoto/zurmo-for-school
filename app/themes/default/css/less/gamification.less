@@ -1,0 +1,32 @@
+#LeaderboardView{
+	.items{
+		td:first-child, th:first-child{
+			padding-left:15px;
+		}
+	}
+}
+.icon-leaderboard-weekly:before{
+	content:"w";
+    .view-toolbar-icons();
+    padding-top: 1px;
+}
+.icon-leaderboard-monthly:before{
+	content:"w";
+    .view-toolbar-icons();
+    padding-top: 1px;
+}
+.icon-leaderboard-overall:before{
+	content:"t";
+    .view-toolbar-icons();
+    padding-top: 1px;
+}
+.points{
+	display:block;
+	float:left;
+	background:@themeColor2;
+	color:#fff;
+	.b-shadow(~"0 0 8px 0 #666, inset 0 0 0 1px #fff");
+	padding:3px 6px;
+	text-align:center;
+	.radius(6px);
+}
