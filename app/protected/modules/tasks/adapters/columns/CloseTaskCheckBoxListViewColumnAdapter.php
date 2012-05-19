@@ -55,6 +55,8 @@
                     if ($('#' + checkboxId).attr('checked') == 'checked')
                     {
                         $('#' + checkboxId).attr('disabled', true);
+                        $('#' + checkboxId).parent().addClass('c_on');
+                        $('#' + checkboxId).parent().addClass('disabled');
                         $('#' + checkboxId).parents('td').children().css('text-decoration', 'line-through');
                         $.ajax({
                             url : '" . Yii::app()->createUrl('tasks/default/closeTask') . "?id=' + modelId,
