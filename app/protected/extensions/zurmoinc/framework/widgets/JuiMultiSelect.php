@@ -96,7 +96,10 @@
         {
             $this->registerClientScripts();
             $this->registerCssFile();
-            $htmlOptions = array_merge($this->htmlOptions, array('id' => $this->inputId, 'multiple' => true));
+            $htmlOptions = array_merge($this->htmlOptions,
+                array('id'       => $this->inputId,
+                      'multiple' => true,
+                      'style'    => 'display:none;'));
             echo CHtml::listBox($this->inputName, $this->selectedValue, $this->dataAndLabels, $htmlOptions);
             if (empty($this->options))
             {
@@ -126,7 +129,8 @@
         protected function renderJavaScript($options)
         {
             assert('$options == null || is_string($options)');
-            $content = " $('#{$this->inputId}').multiselect({$options}); setupCheckboxStyling($('#{$this->inputId}').parent())";
+            $content = "$('#{$this->inputId}').multiselect({$options}); " .
+                       "setupCheckboxStyling($('#{$this->inputId}').parent())";
             return $content;
         }
     }
