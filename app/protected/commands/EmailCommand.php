@@ -32,17 +32,18 @@
     {
         public function getHelp()
         {
+            // Begin Not Coding Standard
             return <<<EOD
     USAGE
-      zurmoc email <action-name>   --username=user             // Not Coding Standard
-                                   --toAddress=address         // Not Coding Standard
-                                   --subject=subject           // Not Coding Standard
-                                   --textContent=content       // Not Coding Standard
-                                   --htmlContent=content       // Not Coding Standard
-                                   --host=host                 // Not Coding Standard
-                                   --port=port                 // Not Coding Standard
-                                   --outboundUsername=username // Not Coding Standard
-                                   --outboundPassword=password // Not Coding Standard
+      zurmoc email <action-name>   --username=user
+                                   --toAddress=address
+                                   --subject=subject
+                                   --textContent=content
+                                   --htmlContent=content
+                                   --host=host
+                                   --port=port
+                                   --outboundUsername=username
+                                   --outboundPassword=password
 
     DESCRIPTION
       Send an email messages.  Use double quotes to to make a sentence for a subject or content
@@ -64,6 +65,7 @@
      * outboundPassword: optional outbound password setting. Otherwise system setting will be used.
 
 EOD;
+    // End Not Coding Standard
     }
 
     /**
