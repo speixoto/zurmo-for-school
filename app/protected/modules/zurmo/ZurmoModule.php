@@ -55,7 +55,7 @@
             // modules, and because ZurmoModule is the root of the module
             // dependence hierarchy it needed concern itself, other than
             // with the models that are specific to itself.
-            return array('NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet', 'CustomFieldData',
+            return array('AuditEvent', 'NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet', 'CustomFieldData',
                          'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata');
         }
 
