@@ -51,7 +51,7 @@
             $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
                                                  makeStandardViewForCurrentUser($this->controller, $messageView));
             echo $view->render();
-            Yii::app()->end(0, false);
+            return false;
         }
     }
 ?>

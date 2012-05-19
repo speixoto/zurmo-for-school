@@ -42,8 +42,8 @@
 
         public function __construct($controllerId, $moduleId, $modelClassName)
         {
-            assert('is_string($controllerId');
-            assert('is_string($moduleId');
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
             assert('is_string($modelClassName)');
             $this->controllerId   = $controllerId;
             $this->moduleId       = $moduleId;
