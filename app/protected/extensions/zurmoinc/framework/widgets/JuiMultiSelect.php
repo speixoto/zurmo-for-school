@@ -126,7 +126,7 @@
         protected function renderJavaScript($options)
         {
             assert('$options == null || is_string($options)');
-            $content = " $('#{$this->inputId}').multiselect({$options}); styleMultiSelectCheckboxes($('#{$this->inputId}').parent())";
+            $content = " $('#{$this->inputId}').multiselect({$options}); setupCheckboxStyling($('#{$this->inputId}').parent())";
             return $content;
         }
     }

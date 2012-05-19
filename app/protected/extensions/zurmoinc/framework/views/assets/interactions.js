@@ -88,4 +88,39 @@ $(window).ready(function(){
             }
         });
     });
+   //we're doing that because the multiselect widget isn't generated yet..
+   window.setTimeout(
+       function setCheckboxes(){
+           setupCheckboxStyling( $('#search-form') );
+           setupCheckboxStyling( $('#app-search') );
+       },
+   1000 );
 });
+
+/*
+ * Checkboxes
+ * from: http://webdesign.maratz.com/lab/fancy-checkboxes-and-radio-buttons/jquery.html
+ *
+ */
+function setupCheckboxStyling( $context ) {
+   if ( $('input:checkbox', $context ).length ) {
+       $('input:checkbox', $context ).each(function(){
+           $(this).parent().removeClass('c_on');
+       });
+       $('label input:checked', $context ).each(function(){
+           $(this).parent('label').addClass('c_on');
+       });
+   }
+   $('label', $context[0] ).
+       live( 'click', { $inputContext:$(this).content  },
+           function( event ){
+               if ( $('input:checkbox', event.data.$inputContext ).length ) {
+                   $('input:checkbox', event.data.$inputContext ).each(function(){
+                       $(this).parent().removeClass('c_on');
+                   });
+                   $('label input:checked', event.data.$inputContext ).each(function(){
+                       $(this).parent('label').addClass('c_on');
+                   });
+               }
+       });
+}
