@@ -217,13 +217,13 @@
             $theme    = Yii::app()->theme->name;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/less-1.2.0.min.js'));
+                Yii::app()->clientScript->registerScriptFile(
+                    Yii::app()->getAssetManager()->publish(
+                        Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/less-1.2.0.min.js');
             }
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/interactions.js'));
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/interactions.js');
             return '<?xml version="1.0" encoding="utf-8"?>'.
                    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' .
                    '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">';
@@ -254,7 +254,7 @@
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/css/less/newui.less"/>';
                 $specialCssContent .= '<!--[if lt IE 10]><link rel="stylesheet/less" type="text/css" href="' .
-                                      Yii::app()->baseUrl . '/' . $theme . '/css/ie.less"/><![endif]-->';
+                                      Yii::app()->baseUrl . '/' . $theme . '/css/less/ie.less"/><![endif]-->';
             }
             else
             {
@@ -381,7 +381,15 @@
          */
         public static function getScriptFilesThatLoadOnAllPages()
         {
-            return array();
+            $scriptData = array();
+            if(MINIFY_SCRIPTS)
+            {
+                foreach(Yii::app()->minScript->usingAjaxShouldNotIncludeJsPathAliasesAndFileNames as $data)
+                {
+                   $scriptData[] = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias($data[0])) . $data[1];
+                }
+            }
+            return $scriptData;
         }
     }
 ?>

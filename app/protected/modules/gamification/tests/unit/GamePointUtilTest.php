@@ -48,5 +48,29 @@
             $compareData = array(Yii::app()->user->userModel->id => $pointTypeAndValueData);
             $this->assertEquals($compareData, Yii::app()->gameHelper->getDeferredPointTypesAndValuesByUserIdToAdd());
         }
+
+        public function testGetUserLeaderboardData()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $pointTypeAndValueData = array('some type' => 400);
+            GamePointUtil::addPointsByPointData(Yii::app()->user->userModel, $pointTypeAndValueData);
+            Yii::app()->gameHelper->processDeferredPoints();
+            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_WEEKLY);
+            $this->assertTrue(count($data) > 0);
+            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_MONTHLY);
+            $this->assertTrue(count($data) > 0);
+            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL);
+            $this->assertTrue(count($data) > 0);
+        }
+
+        public function testGetUserRankingData()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $data = GamePointUtil::getUserRankingData($super);
+            $this->assertEquals(3, count($data));
+        }
     }
 ?>

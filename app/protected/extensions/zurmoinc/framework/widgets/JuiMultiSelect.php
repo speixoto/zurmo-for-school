@@ -75,11 +75,6 @@
         {
             $this->themeUrl = Yii::app()->baseUrl . '/themes';
             $this->theme    = Yii::app()->theme->name;
-            if ($this->baseUrl === null)
-            {
-                $this->baseUrl = Yii::app()->getAssetManager()->publish(
-                                 Yii::getPathOfAlias('ext.zurmoinc.framework.widgets.assets'));
-            }
             if ($this->inputId == null)
             {
                 $this->inputId = $this->getId() . 'inputId';
@@ -101,7 +96,10 @@
         {
             $this->registerClientScripts();
             $this->registerCssFile();
-            $htmlOptions = array_merge($this->htmlOptions, array('id' => $this->inputId, 'multiple' => true));
+            $htmlOptions = array_merge($this->htmlOptions,
+                array('id'       => $this->inputId,
+                      'multiple' => true,
+                      'style'    => 'display:none;'));
             echo CHtml::listBox($this->inputName, $this->selectedValue, $this->dataAndLabels, $htmlOptions);
             if (empty($this->options))
             {
@@ -118,7 +116,9 @@
 
         protected function registerClientScripts()
         {
-            Yii::app()->getClientScript()->registerScriptFile($this->baseUrl . '/juiMultiSelect/jquery.multiselect.js');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.widgets.assets')) . '/juiMultiSelect/jquery.multiselect.js');
         }
 
         protected function registerCssFile()
@@ -129,7 +129,8 @@
         protected function renderJavaScript($options)
         {
             assert('$options == null || is_string($options)');
-            $content = " $('#{$this->inputId}').multiselect({$options});";
+            $content = "$('#{$this->inputId}').multiselect({$options}); " .
+                       "setupCheckboxStyling($('#{$this->inputId}').parent())";
             return $content;
         }
     }

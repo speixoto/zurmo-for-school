@@ -44,6 +44,16 @@
          */
         public $blankDisplay = '&#160;';
 
+        //extendedGridView
+
+        public function init()
+        {
+            $this->baseScriptUrl = Yii::app()->getAssetManager()->publish(
+                                        Yii::getPathOfAlias('application.extensions.zurmoinc.framework.widgets.assets'))
+                                        . '/extendedGridView';
+            parent::init();
+        }
+
         /**
          * Renders the top pager content
          */

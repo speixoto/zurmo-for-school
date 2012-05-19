@@ -162,10 +162,12 @@
                         array(
                             'label' => 'My Profile',
                             'url' => array('/users/default/profile'),
+                            'order' => 1,
                         ),
                         array(
                             'label' => 'Sign out',
                             'url' => array('/zurmo/default/logout'),
+                            'order' => 3,
                         ),
                 ),
                 'designerMenuItems' => array(

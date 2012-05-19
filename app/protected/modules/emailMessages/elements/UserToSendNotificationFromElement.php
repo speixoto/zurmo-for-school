@@ -43,6 +43,7 @@
                                                  $value,
                                                  $dropDownArray,
                                                  $htmlOptions);
+            $content       = CHtml::tag('div', array('class' => 'beforeToolTip'), $content);
             $content      .= self::renderTooltipContent();
             return $content;
         }
@@ -58,7 +59,7 @@
                                              'as coming from a super administrative user.');
             $content     = '&#160;<span id="send-notifications-from-user-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= '?</span>';
-            $qtip = new ZurmoTip();
+            $qtip = new ZurmoTip(array('options' => array('position' => array('corner' => array('target' => 'bottomLeft', 'tooltip' => 'topRight')))));
             $qtip->addQTip("#send-notifications-from-user-tooltip");
             return $content;
         }

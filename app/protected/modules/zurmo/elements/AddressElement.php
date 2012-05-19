@@ -141,8 +141,8 @@
             assert('$addressModel instanceof Address');
             Yii::app()->getClientScript()->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets') . '/Modal.js'
-                    ),
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets')
+                    ) . '/Modal.js',
                 CClientScript::POS_END
             );
             $mapRenderUrl = Yii::app()->mappingHelper->resolveMappingLinkUrl(array(

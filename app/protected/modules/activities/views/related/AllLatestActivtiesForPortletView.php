@@ -77,7 +77,7 @@
             return Yii::app()->createUrl('/' . $this->moduleId . '/default/index');
         }
 
-            protected function getDataProvider($uniquePageId, $form)
+        protected function getDataProvider($uniquePageId, $form)
         {
             assert('is_string($uniquePageId)');
             assert('$form instanceOf LatestActivitiesConfigurationForm');

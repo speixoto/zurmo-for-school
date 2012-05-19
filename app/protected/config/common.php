@@ -100,6 +100,8 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/widget-juiportlets.css',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/newui.css',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/jquery-multiselect.css',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fileUpload/css/jquery.fileupload-ui.css',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css'
                     ),
 
                     'js' => array(
@@ -108,8 +110,8 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.ba-bbq.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jui/js/jquery-ui.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/qtip/assets/jquery.qtip-1.0.0-rc3.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/extendedGridView/jquery.yiigridview.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fusionChart/jquery.fusioncharts.js',
-
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/elements/assets/Modal.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/FormUtils.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/ListViewUtils.js',
@@ -119,8 +121,40 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/rssReader/jquery.zrssfeed.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/juiportlets/JuiPortlets.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/jnotify/jquery.jnotify.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/juiMultiSelect/jquery.multiselect.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fileUpload/jquery.fileupload.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fileUpload/jquery.fileupload-ui.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fileUpload/jquery.tmpl.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fileUpload/jquery.iframe-transport.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/calendar/Calendar.js'
                     )
-                )
+                ),
+                //Add scripts here that do not need to load when using an ajax request such as a modal search box.  The scripts
+                //are already loaded in the minified script that loads on every page.
+                'usingAjaxShouldNotIncludeJsPathAliasesAndFileNames' => array(
+                    array('system.web.js.source', 										'/jquery.min.js'),
+                    array('system.web.js.source', 										'/jquery.yii.js'),
+                    array('system.web.js.source', 										'/jquery.ba-bbq.js'),
+                    array('system.web.js.source', 										'/jui/js/jquery-ui.min.js'),
+                    array('application.extensions.qtip.assets', 						'/jquery.qtip-1.0.0-rc3.min.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/extendedGridView/jquery.yiigridview.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/fusionChart/jquery.fusioncharts.js'),
+                    array('application.extensions.zurmoinc.framework.elements.assets',  '/Modal.js'),
+                    array('application.extensions.zurmoinc.framework.views.assets', 	'/FormUtils.js'),
+                    array('application.extensions.zurmoinc.framework.views.assets', 	'/ListViewUtils.js'),
+                    array('application.extensions.zurmoinc.framework.views.assets', 	'/interactions.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/rssReader/jquery.zrssfeed.min.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/juiportlets/JuiPortlets.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/jnotify/jquery.jnotify.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/juiMultiSelect/jquery.multiselect.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/fileUpload/jquery.fileupload.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/fileUpload/jquery.fileupload-ui.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/fileUpload/jquery.tmpl.min.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/fileUpload/jquery.iframe-transport.js'),
+                    array('application.extensions.timepicker.assets',                   '/jquery-ui-timepicker-addon.min.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/calendar/Calendar.js')
+                ),
             ),
             'languageHelper' => array(
                 'class'          => 'application.modules.zurmo.components.ZurmoLanguageHelper',

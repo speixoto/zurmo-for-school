@@ -135,6 +135,7 @@
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
   float: left;
   position: relative;
+  margin-left: 15px;
 }
 .juiportlet-widget-head {
   border-bottom: 1px solid #CCC;
@@ -3175,6 +3176,76 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-align: center;
   cursor: pointer;
   vertical-align: middle;
+}
+#LeaderboardView .items td:first-child,
+#LeaderboardView .items th:first-child {
+  padding-left: 15px;
+}
+.icon-leaderboard-weekly:before {
+  content: "w";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoSymblyRegular", sans-serif;
+  padding: 0 0 0 0;
+  margin: 0 10px 0 0;
+  line-height: 100%;
+  position: absolute;
+  text-indent: -20px;
+  top: 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-top: 1px;
+}
+.icon-leaderboard-monthly:before {
+  content: "w";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoSymblyRegular", sans-serif;
+  padding: 0 0 0 0;
+  margin: 0 10px 0 0;
+  line-height: 100%;
+  position: absolute;
+  text-indent: -20px;
+  top: 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-top: 1px;
+}
+.icon-leaderboard-overall:before {
+  content: "t";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoSymblyRegular", sans-serif;
+  padding: 0 0 0 0;
+  margin: 0 10px 0 0;
+  line-height: 100%;
+  position: absolute;
+  text-indent: -20px;
+  top: 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-top: 1px;
+}
+.points {
+  display: block;
+  float: left;
+  background: #7bb730;
+  color: #fff;
+  -webkit-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  -moz-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  -o-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  -ms-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  padding: 3px 6px;
+  text-align: center;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  border-radius: 6px;
 }
 @font-face {
   font-family: 'ZurmoSymblyRegular';
@@ -7248,7 +7319,7 @@ div.hasHalfs .twoThirds {
   position: relative;
 }
 #AboutView #leftCol {
-  padding: 15px 0 0 15px;
+  padding: 15px 0 50px 15px;
   width: 65%;
   float: left;
   -moz-box-sizing: border-box;
