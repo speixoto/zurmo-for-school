@@ -32,14 +32,31 @@
     {
         public $controller;
 
+        public $stateMetadataAdapterClassName = null;
+
         protected function preFilter($filterChain)
         {
             if(isset($_POST['ajax']))
             {
                 return true;
             }
-            $modelClassName = $this->controller->getModule()->getPrimaryModelName();
-            if($modelClassName::getCount() != 0)
+            $modelClassName    = $this->controller->getModule()->getPrimaryModelName();
+
+            if ($this->stateMetadataAdapterClassName != null)
+            {
+                $stateClassName       = $this->stateMetadataAdapterClassName;
+                $metadata             = array('clauses' => array(), 'structure' => '');
+                $stateMetadataAdapter = new $stateClassName($metadata);
+                $metadata             = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
+                $joinTablesAdapter    = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+                $where                = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
+            }
+            else
+            {
+                $joinTablesAdapter = null;
+                $where             = null;
+            }
+            if($modelClassName::getCount($joinTablesAdapter, $where) != 0)
             {
                 return true;
             }

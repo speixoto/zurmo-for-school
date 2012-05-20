@@ -180,6 +180,9 @@
 
         public function actionModalList()
         {
+                                Yii::app()->user->setFlash('notification',
+                        Yii::t('Default', 'Global configuration saved successfully.')
+                    );
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
                                             $_GET['modalTransferInformation']['sourceNameFieldId']
