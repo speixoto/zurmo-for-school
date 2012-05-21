@@ -305,11 +305,11 @@
                             $gameNotification->user     = Yii::app()->user->userModel;
                             if ($newBadge)
                             {
-                                $gameNotification->setNewBadgeByType($badgeType);
+                                $gameNotification->setNewBadgeByType($gameBadge->type);
                             }
                             elseif ($gradeChange)
                             {
-                                $gameNotification->setBadgeGradeChangeByTypeAndNewGrade($badgeType, $newGrade);
+                                $gameNotification->setBadgeGradeChangeByTypeAndNewGrade($gameBadge->type, $gameBadge->grade);
                             }
                             $saved = $gameNotification->save();
                             if(!$saved)
