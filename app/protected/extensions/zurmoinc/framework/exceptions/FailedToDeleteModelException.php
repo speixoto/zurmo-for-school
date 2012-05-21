@@ -25,18 +25,9 @@
      ********************************************************************************/
 
     /**
-     * A  NotificationRules to manage game changes requiring a notification to go out.
+     * Exception thrown when a model that is expected to delete ok, fails to delete.
      */
-    class GameNotificationRules extends NotificationRules
+    class FailedToDeleteModelException extends CException
     {
-        public static function getDisplayName()
-        {
-            return Yii::t('Default', 'A game notification');
-        }
-
-        public static function getType()
-        {
-            return 'Game';
-        }
     }
 ?>

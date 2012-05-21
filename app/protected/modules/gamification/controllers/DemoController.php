@@ -24,34 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Module for managing the gamification of Zurmo
-     */
-    class GamificationModule extends Module
+    Yii::import('application.modules.gamification.controllers.DefaultController', true);
+    class GamificationDemoController extends GamificationDefaultController
     {
-        public function getDependencies()
+        /**
+         * Special method to load each type of game notification.  New badge, badge grade change, and level up.
+         */
+        public function actionLoadGameNotificationsSampler()
         {
-            return array('configuration', 'zurmo');
-        }
+            if (Yii::app()->user->userModel->username != 'super')
+            {
+                throw new NotSupportedException();
+            }
+            //Level up notification
+            $gameNotification           = new GameNotification();
+            $gameNotification->user     = Yii::app()->user->userModel;
+            $gameNotification->setLevelChangeByNextLevel(2);
+            $saved                      = $gameNotification->save();
 
-        public function getRootModelNames()
-        {
-            return array('GameScore', 'GamePoint', 'GameLevel', 'GamePointTransaction', 'GameBadge', 'GameNotification');
-        }
+            //New badge notification
+            $gameNotification           = new GameNotification();
+            $gameNotification->user     = Yii::app()->user->userModel;
+            $gameNotification->setNewBadgeByType('LoginUser');
+            $saved                      = $gameNotification->save();
 
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'userHeaderMenuItems' => array(
-                        array(
-                            'label' => 'Leaderboard',
-                            'url' => array('/gamification/default/leaderboard'),
-                            'order' => 2,
-                        ),
-                ),
-            );
-            return $metadata;
+            //Badge grade up notification
+            $gameNotification           = new GameNotification();
+            $gameNotification->user     = Yii::app()->user->userModel;
+            $gameNotification->setBadgeGradeChangeByTypeAndNewGrade('LoginUser', 5);
+            $saved                      = $gameNotification->save();
         }
     }
 ?>

@@ -38,6 +38,13 @@
          */
         public $enabled = true;
 
+        /**
+         * Turn off if you do not want modal notifications to be utilized.  Selenium testing for example needs this
+         * off otherwise it will be difficult to execute functional tests correctly.
+         * @var boolean
+         */
+        public $modalNotificationsEnabled = true;
+
         private static $pointTypesAndValuesByUserIdToAdd = array();
 
         /**
@@ -217,15 +224,17 @@
                     throw new FailedToSaveModelException();
                 }
                 GameLevel::processBonusPointsOnLevelChange($currentGameLevel, Yii::app()->user->userModel);
-                if ($currentGameLevel->value != 1)
+                if ($currentGameLevel->value != 1 && $levelType == GameLevel::TYPE_GENERAL &&
+                    $this->modalNotificationsEnabled)
                 {
-                    $message                    = new NotificationMessage();
-                    $message->textContent       = Yii::t('Default', 'You have reached a new {levelType} level: {level}. Congratulations.',
-                                                                    array('{levelType}' => $levelType,
-                                                                          '{level}' => $nextLevel));
-                    $rules                      = new GameNotificationRules();
-                    $rules->addUser(Yii::app()->user->userModel);
-                    NotificationsUtil::submit($message, $rules);
+                    $gameNotification           = new GameNotification();
+                    $gameNotification->user     = Yii::app()->user->userModel;
+                    $gameNotification->setLevelChangeByNextLevel($nextLevel);
+                    $saved = $gameNotification->save();
+                    if(!$saved)
+                    {
+                        throw new FailedToSaveModelException();
+                    }
                 }
             }
         }
@@ -257,7 +266,7 @@
                         if ($badgeGrade > $gameBadge->grade)
                         {
                             $gameBadge->grade = $badgeGrade;
-                            $saved        = $gameBadge->save();
+                            $saved            = $gameBadge->save();
                             if (!$saved)
                             {
                                 throw new NotSupportedException();
@@ -289,20 +298,25 @@
                             $gradeChangeOrNewBadge = 'NewBadge';
                         }
                         GameBadge::processBonusPoints($gameBadge, Yii::app()->user->userModel, $gradeChangeOrNewBadge);
-                        $message                    = new NotificationMessage();
-                        if ($newBadge)
+
+                        if($this->modalNotificationsEnabled)
                         {
-                            $message->textContent   = Yii::t('Default', 'You have received a new badge: {badgeDisplayName}. Congratulations.',
-                                                             array('{badgeDisplayName}' => $badgeRulesClassName::getDisplayName()));
+                            $gameNotification           = new GameNotification();
+                            $gameNotification->user     = Yii::app()->user->userModel;
+                            if ($newBadge)
+                            {
+                                $gameNotification->setNewBadgeByType($badgeType);
+                            }
+                            elseif ($gradeChange)
+                            {
+                                $gameNotification->setBadgeGradeChangeByTypeAndNewGrade($badgeType, $newGrade);
+                            }
+                            $saved = $gameNotification->save();
+                            if(!$saved)
+                            {
+                                throw new FailedToSaveModelException();
+                            }
                         }
-                        elseif ($gradeChange)
-                        {
-                            $message->textContent   = Yii::t('Default', 'You have received a badge upgrade for: {badgeDisplayName}. Congratulations.',
-                                                             array('{badgeDisplayName}' => $badgeRulesClassName::getDisplayName()));
-                        }
-                        $rules                      = new GameNotificationRules();
-                        $rules->addUser(Yii::app()->user->userModel);
-                        NotificationsUtil::submit($message, $rules);
                     }
                 }
             }
