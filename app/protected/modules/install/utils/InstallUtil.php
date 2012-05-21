@@ -567,11 +567,14 @@
         }
 
         /**
-         * Auto builds the database.
+         * Auto builds the database.  Must manually set AuditEvent first to avoid issues building the AuditEvent
+         * table. This is because AuditEvent is specially optimized during this build process to reduce how
+         * long this takes to do.
          */
         public static function autoBuildDatabase(& $messageLogger)
         {
-            $rootModels = array();
+            $rootModels   = array();
+            $rootModels[] = 'AuditEvent';
             foreach (Module::getModuleObjects() as $module)
             {
                 $moduleAndDependenciesRootModelNames = $module->getRootModelNamesIncludingDependencies();
