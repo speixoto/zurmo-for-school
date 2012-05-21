@@ -98,7 +98,7 @@
         'Remove the api test entry script for production use.'
             => 'Rimuove il script test API per produzione.',
         'Reset'
-            => 'Reset',
+            => 'Reset', // Same Word Translated
         'Return to Job Manager'
             => 'Ritorno a Gestione dei jobs',
         'Scheduled jobs are stuck'

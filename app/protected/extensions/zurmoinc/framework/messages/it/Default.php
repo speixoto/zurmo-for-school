@@ -66,7 +66,7 @@
         'Cell Settings'
             => 'Configurazione delle celle',
         'Celsius'
-            => 'Celcius',
+            => 'Celcius', // Same Word Translated
         'Change Log'
             => 'Log cambiamenti',
         'Changed'
@@ -108,7 +108,7 @@
         'Export'
             => 'Esporta',
         'Fahrenheit'
-            => 'Fahrenheit',
+            => 'Fahrenheit', // Same Word Translated
         'Fewer Details'
             => 'Meno dettagli',
         'Fewer Options'
@@ -124,7 +124,7 @@
         'firstDateTime must occur before secondDateTime'
             => 'firstDateTime deve essere avanti de secondDateTime',
         'Float'
-            => 'Float',
+            => 'Float', // Same Word Translated
         'from'
             => 'de',
         'Full Name'
@@ -134,7 +134,7 @@
         'Hour'
             => 'Ora',
         'Info'
-            => 'Info',
+            => 'Info', // Same Word Translated
         'Inline Edit View'
             => 'Vista Modifica Inline',
         'Integer'
@@ -184,7 +184,7 @@
         'Next 7 Days'
             => 'Prossimi 7 giorni',
         'No'
-            => 'No',
+            => 'No', // Same Word Translated
         'No import processes found.'
             => 'Nessuno processo di importazione trovato.',
         'No {moduleLabelPluralLowerCase} found'
@@ -216,7 +216,7 @@
         'Radio Drop Down'
             => 'Eelementi del bottone radio',
         'record'
-            => 'record',
+            => 'record', // Same Word Translated
         'records'
             => 'record',
         'Remove'
@@ -238,7 +238,7 @@
         'selected for updating.'
             => 'selezionato',
         'Serialized Data'
-            => 'Serialized Data',
+            => 'Dati Serializati',
         'Some values cannot be removed because they are currently in use. ' .
         'Try changing the records that use them first.'
             => 'Ci sono valori che non possono essere rimuovi perchè sono attualmente uttilizzato. ' .
@@ -248,7 +248,7 @@
         'Start typing to search'
             => 'Ricerca',
         'Tab'
-            => 'Tab',
+            => 'Tab', // Same Word Translated
         'The file did not exist'
             => 'il file non esiste.',
         'There was an error uploading the file.'

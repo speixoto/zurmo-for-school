@@ -50,7 +50,7 @@
         '<strong>Zurmo</strong> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.'
             => '<strong> Zurmo </strong> ist unter der GPLv3 lizenziert. Sie können die Lizenz <a href="http://www.zurmo.org/license"> hier lesen</a>',
         '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
-            => '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:',
+            => '<strong>Zurmo</strong> nutzt die folgenden wunderbaren Open Source Tools und Frameworks:',
         'A large amount of data has been requested for export.  You will receive a notification with the download link when the export is complete.'
             => 'Viele Daten hat für den Export angefordert worden. Sie erhalten eine Benachrichtigung mit dem Download-Link, wenn der Export abgeschlossen ist.',
         'About Zurmo'
@@ -80,7 +80,7 @@
         'Address'
             => 'Adresse',
         'Admin'
-            => 'Admin',
+            => 'Admin', // Same Word Translated
         'Alert'
             => 'Alarm',
         'Allow'
@@ -126,7 +126,7 @@
         'Automotive'
             => 'Autoindustrie',
         'Banking'
-            => 'Banking',
+            => 'Banking', // Same Word Translated
         'Business Services'
             => 'Handelsdienstleistungen',
         'Cancel'
@@ -142,7 +142,7 @@
         'Close'
             => 'schließen',
         'Code'
-            => 'Code',
+            => 'Code', // Same Word Translated
         'Configuration'
             => 'Konfiguration',
         'Configure'
@@ -200,7 +200,7 @@
         'Description'
             => 'Beschreibung',
         'Dr.'
-            => 'Dr.',
+            => 'Dr.', // Same Word Translated
         'Email Address'
             => 'E-Mail Adresse',
         'Energy'
@@ -228,7 +228,7 @@
         'First Name'
             => 'Vorname',
         'Forums'
-            => 'Forums',
+            => 'Forums', // Same Word Translated
         'Global and Basic Search Fields'
             => 'Globale und einfache Suche Felder',
         'Global Configuration'
@@ -392,7 +392,7 @@
         'Only Items I Own'
             => 'Nur meine Objekte',
         'Opt Out'
-            => 'Opt Out',
+            => 'Opt Out', // Same Word Translated
         'Owner'
             => 'Besitzer',
         'Owner and users in'
@@ -438,7 +438,7 @@
         'Recently Viewed'
             => 'Zuletzt angesehen',
         'Recycled'
-            => 'Recycled',
+            => 'Recycled', // Same Word Translated
         'Remember me next time'
             => 'Benutzername Behalten',
         'Retail'
@@ -510,7 +510,7 @@
         'State'
             => 'Staat',
         'Status'
-            => 'Status',
+            => 'Status', // Same Word Translated
         'Street 1'
             => 'Straße 1',
         'Street 2'
@@ -594,10 +594,10 @@
         'Your Yii version is currentVersion and it should be acceptableVersion.'
             => 'Ihre Yii-Version ist currentVersion und sollte acceptableVersion',
         'ZurmoCRM'
-            => 'ZurmoCRM',
+            => 'ZurmoCRM', // Same Word Translated
         '{url} (installed with Yii)'
-            => '{url} (installed with Yii)',
+            => '{url} (installed with Yii)', // Same Word Translated
         '{url} (version {version} is installed)'
-            => '{url} (version {version} is installed)',
+            => '{url} (version {version} is installed)', // Same Word Translated
     );
 ?>
