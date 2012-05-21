@@ -72,7 +72,6 @@
             ));
             $adapter = new GameNotificationToModalContentAdapter($notification);
             echo CHtml::tag('div', array(), $adapter->getIconCssName());
-            echo CHtml::tag('div', array(), Yii::t('Default', 'Congratulations'));
             echo CHtml::tag('div', array(), $adapter->getMessageContent());
             echo '<br/>';
             echo CHtml::link(Yii::t('Default', 'Continue'), '#',

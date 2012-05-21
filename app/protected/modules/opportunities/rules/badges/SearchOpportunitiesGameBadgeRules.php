@@ -29,9 +29,10 @@
      */
     class SearchOpportunitiesGameBadgeRules extends SearchModelsGameBadgeRules
     {
-        public static function getDisplayName()
+        public static function getPassiveDisplayLabel($value)
         {
-            return Yii::t('Default', 'Searching OpportunitiesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            return Yii::t('Default', '{value} OpportunitiesModuleSingularLabel searches completed',
+                    array_merge(array('{value}' =>  $value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)

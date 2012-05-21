@@ -29,9 +29,10 @@
      */
     class MassEditContactsGameBadgeRules extends MassEditModelsGameBadgeRules
     {
-        public static function getDisplayName()
+        public static function getPassiveDisplayLabel($value)
         {
-            return Yii::t('Default', 'Mass Update ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            return Yii::t('Default', '{value} ContactsModulePluralLabel mass updated',
+                    array_merge(array('{value}' =>  $value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)

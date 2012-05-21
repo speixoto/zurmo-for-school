@@ -68,23 +68,25 @@
             $data = $this->getAndValidateUnserializedData();
             if($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
             {
-                $content  = '<h2>' . Yii::t('Default', 'You have reached a new level.') . '</h2>';
-                $content .= Yii::t('Default', 'Level {nextLevel}', array('{nextLevel}' => $data['nextLevel']));
+                $content  = '<h2>' . Yii::t('Default', 'Congratulations!') . '</h2>';
+                $content .= '<h3>' . Yii::t('Default', 'You have reached level {nextLevel}.',
+                                            array('{nextLevel}' => $data['nextLevel'])) . '</h3>';
                 return $content;
             }
             elseif($data['type'] == GameNotification::TYPE_NEW_BADGE)
             {
                 $gameBadgeRulesClassName = $data['badgeType'] . 'GameBadgeRules';
-                $content  = '<h2>' . Yii::t('Default', 'You have received a new badge.') . '</h2>';
-                $content .= $gameBadgeRulesClassName::getDisplayName();
+                $value                   = $gameBadgeRulesClassName::getItemCountByGrade(1);
+                $content  = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
+                $content  = '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
                 return $content;
             }
             elseif($data['type'] == GameNotification::TYPE_BADGE_GRADE_CHANGE)
             {
                 $gameBadgeRulesClassName = $data['badgeType'] . 'GameBadgeRules';
-                $content  = '<h2>' . Yii::t('Default', 'One of your badges has been upgraded.') . '</h2>';
-                $content .= $gameBadgeRulesClassName::getDisplayName();
-                //todo: show the display label for the grade change $data['newGrade']
+                $value                   = $gameBadgeRulesClassName::getItemCountByGrade($data['newGrade']);
+                $content  = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
+                $content  = '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
                 return $content;
             }
             else
