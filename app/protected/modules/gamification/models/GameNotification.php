@@ -59,7 +59,7 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameNotification');
             $where  = RedBeanModelDataProvider::makeWhere('GameNotification', $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, 'gamenotification.id desc');
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, 'gamenotification.id asc');
             return $models;
         }
 
