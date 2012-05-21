@@ -86,7 +86,7 @@
         'Manage Scheduled Jobs'
             => 'Gestion des tâches système',
         'Message'
-            => 'Message',
+            => 'Message', // Same Word Translated
         'Monitor Job'
             => 'Suivi des tâches système',
         'New stable Zurmo release available'

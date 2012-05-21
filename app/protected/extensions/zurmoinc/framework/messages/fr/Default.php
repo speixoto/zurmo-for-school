@@ -66,7 +66,7 @@
         'Cell Settings'
             => 'Paramètres des cellules',
         'Celsius'
-            => 'Celsius',
+            => 'Celsius', // Same Word Translated
         'Change Log'
             => 'Log de modifications',
         'Changed'
@@ -86,7 +86,7 @@
         'CustomManagement class needs to be extended.'
             => 'La classe CustomManagement doit être étendue.',
         'Date'
-            => 'Date',
+            => 'Date', // Same Word Translated
         'Date Time'
             => 'Date/Heure',
         'Default Value'
@@ -108,7 +108,7 @@
         'Export'
             => 'Exporter',
         'Fahrenheit'
-            => 'Fahrenheit',
+            => 'Fahrenheit', // Same Word Translated
         'Fewer Details'
             => 'Moins de détails',
         'Fewer Options'
@@ -124,7 +124,7 @@
         'firstDateTime must occur before secondDateTime'
             => 'firstDateTime doit être avant secondDateTime',
         'Float'
-            => 'Float',
+            => 'Float', // Same Word Translated
         'from'
             => 'de',
         'Full Name'
@@ -158,7 +158,7 @@
         'Max upload size: {maxSize}'
             => 'Taille max de téléchargement: {maxSize}',
         'Minute'
-            => 'Minute',
+            => 'Minute', // Same Word Translated
         'Missing the attribute labels.'
             => 'Il manque les étiquettes d\'attribut.',
         'Model Class Name'
@@ -204,7 +204,7 @@
         'Opted Out'
             => 'Opt out',
         'Options'
-            => 'Options',
+            => 'Options', // Same Word Translated
         'or'
             => 'ou',
         'Panel'
@@ -238,7 +238,7 @@
         'selected for updating.'
             => 'sélectionnée(s).',
         'Serialized Data'
-            => 'Serialized Data',
+            => 'Données Serializées', // Same Word Translated
         'Some values cannot be removed because they are currently in use. ' .
         'Try changing the records that use them first.'
             => 'Certain éléments ne peuvent être supprimés car ils sont actuellement utilisés. ' .
@@ -272,9 +272,9 @@
         'Tomorrow'
             => 'Demain',
         'total'
-            => 'total',
+            => 'total', // Same Word Translated
         'Type'
-            => 'Type',
+            => 'Type', // Same Word Translated
         'Type to find a tag'
             => 'Tapez pour retrouver un nuage de mots-clefs',
         'Unknown'

@@ -68,7 +68,7 @@
         'Access Roles Tab'
             => 'Accès aux Rôles',
         'Active'
-            => 'Active',
+            => 'Active', // Same Word Translated
         'Active currencies can be used when creating new records and as a default currency for a user.'
             => 'Les devises actives sont disponibles pour créer de nouveaux enregistrements et comme devise de défault pour un utilisateur.',
         'Active languages can be used by users. The system language and any language in use by a user cannot be inactivated'
@@ -142,9 +142,9 @@
         'Close'
             => 'Fermer',
         'Code'
-            => 'Code',
+            => 'Code', // Same Word Translated
         'Configuration'
-            => 'Configuration',
+            => 'Configuration', // Same Word Translated
         'Configure'
             => 'Configurer',
         'Convert'
@@ -198,9 +198,9 @@
         'Department'
             => 'Département',
         'Description'
-            => 'Description',
+            => 'Description', // Same Word Translated
         'Dr.'
-            => 'Dr.',
+            => 'Dr.', // Same Word Translated
         'Email Address'
             => 'Addresse e-mail',
         'Energy'
@@ -228,7 +228,7 @@
         'First Name'
             => 'Prénom',
         'Forums'
-            => 'Forums',
+            => 'Forums', // Same Word Translated
         'Global and Basic Search Fields'
             => 'Champs recherche globale et simple',
         'Global Configuration'
@@ -302,7 +302,7 @@
         'Last Updated'
             => 'Dernière Modification',
         'Latitude'
-            => 'Latitude',
+            => 'Latitude', // Same Word Translated
         'List Filters'
             => 'Filtres',
         'List page size'
@@ -312,7 +312,7 @@
         'Load'
             => 'Télécharger',
         'Longitude'
-            => 'Longitude',
+            => 'Longitude', // Same Word Translated
         'Manage Active Languages'
             => 'Gestion des langues',
         'Manage Currency Configuration'
@@ -334,7 +334,7 @@
         'Members'
             => 'Filiales',
         'Menu'
-            => 'Menu',
+            => 'Menu', // Same Word Translated
         'Missing Record'
             => 'Donnée manquante',
         'Missing Required Fields'
@@ -378,7 +378,7 @@
         'Not Set - Ad-hoc / Owner'
             => 'Défaut - de circonstance / resp. du compte',
         'Notifications'
-            => 'Notifications',
+            => 'Notifications', // Same Word Translated
         'Office Fax'
             => 'Fax de bureau',
         'Office Phone'
@@ -406,7 +406,7 @@
         'Password'
             => 'Mot de passe',
         'Permissions'
-            => 'Permissions',
+            => 'Permissions', // Same Word Translated
         'Permitable'
             => 'Permis',
         'Please provide data.'
@@ -594,7 +594,7 @@
         'Your Yii version is currentVersion and it should be acceptableVersion.'
             => 'Votre version de Yii est currentVersion et doit être acceptableVersion.',
         'ZurmoCRM'
-            => 'ZurmoCRM',
+            => 'ZurmoCRM', // Same Word Translated
         '{url} (installed with Yii)'
             => '{url} (installé avec Yii)',
         '{url} (version {version} is installed)'

@@ -48,7 +48,7 @@
         'Enforce Strong Passwords'
             => 'Erzwingen sicherer Kennwörter',
         'Hash'
-            => 'Hash',
+            => 'Hash', // Same Word Translated
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Inaktive Benutzer können sich nicht anmelden über die Web-, Mobil-oder Web-API. Anmeldung für aktive Benutzer wird durch Gruppenrechte kontrolliert.',
         'Inherited Value:'
@@ -56,7 +56,7 @@
         'Manage Users'
             => 'Benutzer verwalten',
         'Manager'
-            => 'Manager',
+            => 'Manager', // Same Word Translated
         'Minimum Password Length'
             => 'Minimale Kennwortlänge',
         'Minimum Username Length'

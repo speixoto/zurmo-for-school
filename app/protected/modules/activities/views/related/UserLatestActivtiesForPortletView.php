@@ -65,7 +65,7 @@
         protected function getPortletDetailsUrl()
         {
             return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
-                                                        array_merge($_GET, array( 'portletId' =>
+                                                        array_merge(GetUtil::getData(), array( 'portletId' =>
                                                                                     $this->params['portletId'],
                                                             'uniqueLayoutId' => $this->uniqueLayoutId,
                                                             'id' => $this->params['relationModel']->id)));

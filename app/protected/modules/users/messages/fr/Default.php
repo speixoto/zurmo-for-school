@@ -48,7 +48,7 @@
         'Enforce Strong Passwords'
             => 'Exiger mot de passe fort',
         'Hash'
-            => 'Hash',
+            => 'Hash', // Same Word Translated
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Les utilisateurs inactifs ne peuvent pas connecter par le web, mobile, ni API.  La connexion des utilisateurs est contrôlée par les droits de sécurité des groupes.',
         'Inherited Value:'

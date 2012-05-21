@@ -80,7 +80,7 @@
         'Address'
             => 'Dirección',
         'Admin'
-            => 'Admin',
+            => 'Admin', // Same Word Translated
         'Alert'
             => 'Alerta',
         'Allow'
@@ -200,7 +200,7 @@
         'Description'
             => 'Descripción',
         'Dr.'
-            => 'Dr.',
+            => 'Dr.', // Same Word Translated
         'Email Address'
             => 'Dirección de email',
         'Energy'
@@ -384,7 +384,7 @@
         'Office Phone'
             => 'Teléfono de la Oficina',
         'Oh no!'
-            => 'Oh no!',
+            => 'Oh no!', // Same Word Translated
         'Once a day, early in the morning.'
             => 'Una vez al día, por la mañana temprano.',
         'Once a week, early in the morning.'
@@ -408,7 +408,7 @@
         'Permissions'
             => 'Permisos',
         'Permitable'
-            => 'Permitable',
+            => 'Permitable', // Same Word Translated
         'Please provide data.'
             => 'Por favor, facilite los datos.',
         'Please use FireFox, Chrome, or Internet Explorer.'
@@ -452,9 +452,9 @@
         'Rights Saved Successfully.'
             => 'Derechos guardado correctamente.',
         'Role'
-            => 'Role',
+            => 'Role', // Same Word Translated
         'Roles'
-            => 'Roles',
+            => 'Roles', // Same Word Translated
         'Roles Home'
             => 'Inicio de Roles',
         'Salutation'
@@ -594,7 +594,7 @@
         'Your Yii version is currentVersion and it should be acceptableVersion.'
             => 'Su versión de Yii es currentVersion y debe ser acceptableVersion',
         'ZurmoCRM'
-            => 'ZurmoCRM',
+            => 'ZurmoCRM', // Same Word Translated
         '{url} (installed with Yii)'
             => '{url} (instalado con Yii)',
         '{url} (version {version} is installed)'

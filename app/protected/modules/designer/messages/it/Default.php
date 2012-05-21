@@ -96,7 +96,7 @@
         'Dependent Pick Lists'
             => 'Picklists dipendenti',
         'Designer'
-            => 'Designer',
+            => 'Designer', // Same Word Translated
         'Designer Home'
             => 'Designer',
         'Designer Tool'
@@ -138,7 +138,7 @@
         'First select level {number}'
             => 'Primo, scegliete livello {number}',
         'Formula'
-            => 'Formula',
+            => 'Formula', // Same Word Translated
         'Formula Name'
             => 'Nome Formula',
         'General'
@@ -150,7 +150,7 @@
         'Layout saved successfully.'
             => 'Layout salvato con successo',
         'Layouts'
-            => 'Layouts',
+            => 'Layouts', // Same Word Translated
         'Level: {number}'
             => 'Livello: {number}',
         'Manage module fields, layouts, and labels.'
@@ -182,7 +182,7 @@
         'Phone'
             => 'Telefono',
         'Pick List'
-            => 'Pick List',
+            => 'Pick List', // Same Word Translated
         'Pick List Value Translations'
             => 'Traduzioni dei valori del pick list',
         'Pick List Values'
@@ -226,7 +226,7 @@
         'Track Audit Log'
             => 'Audit questo campo',
         'URL'
-            => 'URL',
+            => 'URL', // Same Word Translated
         'You can only have at most 4 pick-lists selected.'
             => 'Potete avere al massimo 4 picklists.',
         'You must first select a field type'

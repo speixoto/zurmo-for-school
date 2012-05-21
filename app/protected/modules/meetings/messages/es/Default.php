@@ -52,7 +52,7 @@
         'Meetings'
             => 'Reuniones',
         'MeetingsModulePluralLabel'
-            => 'MeetingsModulePluralLabel',
+            => 'MeetingsModulePluralLabel', // Same Word Translated
         'MeetingsModulePluralLabel For AccountsModuleSingularLabel'
             => 'MeetingsModulePluralLabel para AccountsModuleSingularLabel',
         'MeetingsModulePluralLabel For ContactsModuleSingularLabel'
@@ -62,7 +62,7 @@
         'MeetingsModulePluralLabel On {displayStringTime}'
             => 'MeetingsModulePluralLabel el {displayStringTime}',
         'MeetingsModuleSingularLabel'
-            => 'MeetingsModuleSingularLabel',
+            => 'MeetingsModuleSingularLabel', // Same Word Translated
         'MeetingsModuleSingularLabel Day Summary'
             => 'Resumen de MeetingsModulePluralLabel',
         'My Upcoming MeetingsModulePluralLabel'
@@ -76,8 +76,8 @@
         'Upcoming MeetingsModulePluralLabel'
             => 'Próximos MeetingsModulePluralLabel',
         '{quantity} MeetingsModulePluralLabel'
-            => '{quantity} MeetingsModulePluralLabel',
+            => '{quantity} MeetingsModulePluralLabel', // Same Word Translated
         '{quantity} MeetingsModuleSingularLabel'
-            => '{quantity} MeetingsModuleSingularLabel',
+            => '{quantity} MeetingsModuleSingularLabel', // Same Word Translated
     );
 ?>
