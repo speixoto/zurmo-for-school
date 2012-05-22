@@ -47,7 +47,8 @@
 
         public static function getPassiveDisplayLabel($value)
         {
-            return Yii::t('Default', '{value} Calls created', array('{value}' =>  $value));
+            return Yii::t('Default', '{n} Call created|{n} Calls created',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)

@@ -31,8 +31,8 @@
     {
         public static function getPassiveDisplayLabel($value)
         {
-            return Yii::t('Default', '{value} OpportunitiesModuleSingularLabel searches completed',
-                    array_merge(array('{value}' =>  $value), LabelUtil::getTranslationParamsForAllModules()));
+            return Yii::t('Default', '{n} OpportunitiesModuleSingularLabel search completed|{n} OpportunitiesModuleSingularLabel searches completed',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)

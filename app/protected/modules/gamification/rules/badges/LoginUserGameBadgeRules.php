@@ -47,8 +47,8 @@
 
         public static function getPassiveDisplayLabel($value)
         {
-            return Yii::t('Default', '{value} Zurmo logins',
-                          array('{value}' =>  $value));
+            return Yii::t('Default', '{n} Zurmo login|{n} Zurmo logins',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)

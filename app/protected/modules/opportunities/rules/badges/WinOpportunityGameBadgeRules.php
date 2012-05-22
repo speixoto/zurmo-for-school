@@ -47,8 +47,8 @@
 
         public static function getPassiveDisplayLabel($value)
         {
-            return Yii::t('Default', '{value} OpportunitiesModulePluralLabel won',
-                    array_merge(array('{value}' =>  $value), LabelUtil::getTranslationParamsForAllModules()));
+            return Yii::t('Default', '{n} OpportunitiesModuleSingularLabel won|{n} OpportunitiesModulePluralLabel won',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
 
