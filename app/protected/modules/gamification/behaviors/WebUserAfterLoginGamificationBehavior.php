@@ -40,7 +40,7 @@
          */
         public function handleScoreLogin($event)
         {
-            if(Yii::app()->gamificationObserver->enabled)
+            if (Yii::app()->gamificationObserver->enabled)
             {
                 $scoreType           = 'LoginUser';
                 $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;

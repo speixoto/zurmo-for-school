@@ -619,7 +619,7 @@
          * Writes configuration to debug.php and phpInstance.php.
          */
         public static function writeConfiguration($instanceRoot,
-                                                  $databaseType, $databaseHost, $databaseName, $username, $password,$port,
+                                                  $databaseType, $databaseHost, $databaseName, $username, $password, $port,
                                                   $memcacheHost = null, $memcachePort = null, $minifyScripts = true,
                                                   $language,
                                                   $perInstanceFilename = 'perInstance.php', $debugFilename = 'debug.php',

@@ -33,19 +33,19 @@
 
         public function actionLeaderboard($type = null)
         {
-            if($type == null)
+            if ($type == null)
             {
                 $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
             }
-            if($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
+            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
             {
                 $activeActionElementType = 'LeaderboardWeeklyLink';
             }
-            elseif($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
+            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
             {
                 $activeActionElementType = 'LeaderboardMonthlyLink';
             }
-            elseif($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
+            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
             {
                 $activeActionElementType = 'LeaderboardOverallLink';
             }

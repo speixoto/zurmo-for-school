@@ -382,9 +382,9 @@
         public static function getScriptFilesThatLoadOnAllPages()
         {
             $scriptData = array();
-            if(MINIFY_SCRIPTS)
+            if (MINIFY_SCRIPTS)
             {
-                foreach(Yii::app()->minScript->usingAjaxShouldNotIncludeJsPathAliasesAndFileNames as $data)
+                foreach (Yii::app()->minScript->usingAjaxShouldNotIncludeJsPathAliasesAndFileNames as $data)
                 {
                    $scriptData[] = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias($data[0])) . $data[1];
                 }

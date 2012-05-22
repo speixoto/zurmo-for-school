@@ -66,7 +66,7 @@
                     'userLabel'    => strval(User::getById(intval($row['userid']))),
                     'points'       => intval($row['points'])
                 );
-                $rank ++;
+                $rank++;
             }
             return $leaderboardData;
         }
@@ -97,16 +97,15 @@
                                                                        RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                                                        & $where)
         {
-            if($type == static::LEADERBOARD_TYPE_OVERALL)
+            if ($type == static::LEADERBOARD_TYPE_OVERALL)
             {
                 //Nothing to add to the where clause.
                 return;
             }
             $quote = DatabaseCompatibilityUtil::getQuote();
             $today = MixedDateTimeTypesSearchFormAttributeMappingRules::calculateNewDateByDaysFromNow(0);
-            if($type == static::LEADERBOARD_TYPE_WEEKLY)
+            if ($type == static::LEADERBOARD_TYPE_WEEKLY)
             {
-
                 $todayMinusSevenDays   = MixedDateTimeTypesSearchFormAttributeMappingRules::calculateNewDateByDaysFromNow(-7);
                 $greaterThanValue      = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($todayMinusSevenDays);
                 $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
@@ -118,7 +117,7 @@
                 $where .= " and ";
                 $where .= "{$quote}gamepointtransaction{$quote}.{$quote}createdDateTime{$quote} <= '" . $lessThanValue . "'";
             }
-            elseif($type == static::LEADERBOARD_TYPE_MONTHLY)
+            elseif ($type == static::LEADERBOARD_TYPE_MONTHLY)
             {
                 $todayMinusThirtyDays  = MixedDateTimeTypesSearchFormAttributeMappingRules::calculateNewDateByDaysFromNow(-30);
                 $greaterThanValue      = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($todayMinusThirtyDays);
@@ -143,7 +142,7 @@
             $monthlyData = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_MONTHLY);
             $overallData = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL);
             $rankingData = array();
-            if(isset($weeklyData[$user->id]))
+            if (isset($weeklyData[$user->id]))
             {
                 $rankLabel = $weeklyData[$user->id]['rank'];
             }
@@ -152,7 +151,7 @@
                 $rankLabel = '--';
             }
             $rankingData[] = array('typeLabel' => Yii::t('Default', 'Weekly'), 'rank' => $rankLabel);
-            if(isset($monthlyData[$user->id]))
+            if (isset($monthlyData[$user->id]))
             {
                 $rankLabel = $monthlyData[$user->id]['rank'];
             }
@@ -161,7 +160,7 @@
                 $rankLabel = '--';
             }
             $rankingData[] = array('typeLabel' => Yii::t('Default', 'Monthly'), 'rank' => $rankLabel);
-            if(isset($overallData[$user->id]))
+            if (isset($overallData[$user->id]))
             {
                 $rankLabel = $overallData[$user->id]['rank'];
             }

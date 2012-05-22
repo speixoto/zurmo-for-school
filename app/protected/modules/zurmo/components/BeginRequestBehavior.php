@@ -30,7 +30,6 @@
         {
             if (Yii::app()->apiRequest->isApiRequest())
             {
-
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
                 $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));

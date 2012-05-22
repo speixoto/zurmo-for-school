@@ -88,7 +88,7 @@
             $rulesClassName      = $levelType . 'GameLevelRules';
             $currentGameLevel    = GameLevel::resolveByTypeAndPerson($levelType, $user);
             $currentPointsData   = GamePoint::getSummationPointsDataByLevelTypeAndUser($user, $levelType);
-            if($currentPointsData != null)
+            if ($currentPointsData != null)
             {
                 $currentPoints = $currentPointsData['sum'];
             }
@@ -101,23 +101,22 @@
             $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
                                                                                     $currentGameLevel);
             //If the user has not reached level one, the model has not been saved yet
-            if($currentGameLevel->id < 0)
+            if ($currentGameLevel->id < 0)
             {
                 $nextLevelPercentageComplete = 0;
                 $trueCurrentGameLevel        = 0;
             }
-            elseif($nextLevel !== false)
+            elseif ($nextLevel !== false)
             {
                 $currentLevelMinimumPointValue   = $rulesClassName::getMinimumPointsForLevel(intval($currentGameLevel->value));
                 $pointsCollectedTowardsNextLevel = ($currentPoints - $currentLevelMinimumPointValue);
-                if($pointsCollectedTowardsNextLevel == 0)
+                if ($pointsCollectedTowardsNextLevel == 0)
                 {
                     $nextLevelPercentageComplete = 0;
                 }
                 else
                 {
-                    $nextLevelPercentageComplete =
-                    ($pointsCollectedTowardsNextLevel / ($nextLevelPointValue - $currentLevelMinimumPointValue)) * 100;
+                    $nextLevelPercentageComplete = ($pointsCollectedTowardsNextLevel / ($nextLevelPointValue - $currentLevelMinimumPointValue)) * 100;
                 }
                 $trueCurrentGameLevel        = $currentGameLevel->value;
             }
@@ -126,7 +125,6 @@
                 $nextLevelPercentageComplete = null;
                 $trueCurrentGameLevel        = $currentGameLevel->value;
             }
-
 
             $rankingData = array(
                 'level'                       => (int)$trueCurrentGameLevel,

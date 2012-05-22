@@ -99,13 +99,13 @@
                 assert('is_int($statisticItem["level"])');
                 $content .= '<tr>';
                 $content .= '<td>' . $statisticItem['levelTypeLabel'] . '</td>';
-                if($statisticItem['nextLevelPercentageComplete'] === null)
+                if ($statisticItem['nextLevelPercentageComplete'] === null)
                 {
                     $content .= '<td></td>';
                 }
                 else
                 {
-                    $content .= '<td class="hasPercentCounter"><span class="percentComplete z_'.$statisticItem['nextLevelPercentageComplete'].'">' . $statisticItem['nextLevelPercentageComplete'] . '%</span></td>';
+                    $content .= '<td class="hasPercentCounter"><span class="percentComplete z_' . $statisticItem['nextLevelPercentageComplete'] . '">' . $statisticItem['nextLevelPercentageComplete'] . '%</span></td>';
                 }
                 $content .= '<td><span class="points">' . $statisticItem['points'] . '</span></td>';
                 $content .= '<td>' . $statisticItem['level'] . '</td>';

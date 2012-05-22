@@ -200,7 +200,7 @@
 
         public function testCheckDatabase_mysql()
         {
-            InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort,'10.5.5', $expectedVersion);
+            InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, '10.5.5', $expectedVersion);
             $this->assertFalse (InstallUtil::checkDatabase('mysql',  $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, '7.0.0  ', $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
             $this->assertTrue  (InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, $expectedVersion, $actualVersion));
