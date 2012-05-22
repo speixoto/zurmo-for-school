@@ -39,6 +39,7 @@
         protected $databaseHostname;
         protected $databaseUsername;
         protected $databasePassword;
+        protected $databasePort;
         protected $databaseName;
         protected $superUserPassword;
 
@@ -46,11 +47,22 @@
         {
             parent::setUp();
             $matches = array();
-            assert(preg_match("/host=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+
+            assert(preg_match("/host=([^;]+);(?:port=([^;]+);)?dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+            if ($matches[2] != '')
+            {
+                $this->databasePort      = intval($matches[2]);
+            }
+            else
+            {
+                $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString(Yii::app()->db->connectionString);
+                $this->databasePort = DatabaseCompatibilityUtil::getDatabaseDefaultPort($databaseType);
+            }
+
             $this->databaseHostname          = $matches[1];
             $this->databaseUsername          = Yii::app()->db->username;
             $this->databasePassword          = Yii::app()->db->password;
-            $this->databaseName              = $matches[2];
+            $this->databaseName              = $matches[3];
             $this->superUserPassword         = 'super';
 
             $this->instanceRoot              = INSTANCE_ROOT;
@@ -127,6 +139,7 @@
                     'databaseName'          => '',
                     'databaseUsername'      => '',
                     'databasePassword'      => '',
+                    'databasePort'          => '',
                     'superUserPassword'     => '',
                     'memcacheHostname'      => '',
                     'memcachePortNumber'    => '',
@@ -149,6 +162,7 @@
                     'databaseName'          => $this->databaseName,
                     'databaseUsername'      => $this->databaseUsername,
                     'databasePassword'      => $this->databasePassword,
+                    'databasePort'          => $this->databasePort,
                     'superUserPassword'     => $this->superUserPassword,
                     'memcacheHostname'      => 'localhost',
                     'memcachePortNumber'    => '11211',
@@ -170,6 +184,7 @@
                     'databaseName'          => $this->databaseName,
                     'databaseUsername'      => $this->databaseUsername,
                     'databasePassword'      => $this->databasePassword,
+                    'databasePort'          => $this->databasePort,
                     'superUserPassword'     => $this->superUserPassword,
                     'memcacheHostname'      => 'localhost',
                     'memcachePortNumber'    => '11211',

@@ -86,22 +86,22 @@
         protected function renderBadgeContent()
         {
             $content = null;
-            if(count($this->params['badgeData']) > 0)
+            if (count($this->params['badgeData']) > 0)
             {
                 $rowBadgeCount = 0;
                 $content .= '<div>';
-                foreach($this->params['badgeData'] as $badge)
+                foreach ($this->params['badgeData'] as $badge)
                 {
-                    if($rowBadgeCount == 4)
+                    if ($rowBadgeCount == 4)
                     {
                         $content .= '</div><div>';
                         $rowBadgeCount = 0;
                     }
                     //$badgeClassName = $badge->type . 'GameBadgeRules';
                     //$content .= '<div>' . $badge->type . $badgeClassName::getDisplayName() . '-' . $badge->grade . '</div>';
-				    $content .= '<div class="badge '. $badge->type.'"><div class="gloss"></div>' .
-								'<strong class="badge-icon"></strong><span class="badge-grade">'.$badge->grade.'</span></div>';
-				    $rowBadgeCount ++;
+                    $content .= '<div class="badge ' . $badge->type . '"><div class="gloss"></div>' .
+                                '<strong class="badge-icon"></strong><span class="badge-grade">' . $badge->grade . '</span></div>';
+                    $rowBadgeCount++;
                 }
                 $content .= '</div>';
             }

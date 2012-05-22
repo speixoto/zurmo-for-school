@@ -113,7 +113,7 @@
             }
             else
             {
-                if(YII_DEBUG)
+                if (YII_DEBUG)
                 {
                     $reflection = new ReflectionClass( $calledClass );
                     $classFile = $reflection->getFileName();

@@ -263,7 +263,7 @@
             foreach ($modules as $module)
             {
                 $metadata = $module::getMetadata();
-                if(!empty($metadata['global']['userHeaderMenuItems']))
+                if (!empty($metadata['global']['userHeaderMenuItems']))
                 {
                     $menuItems = MenuUtil::resolveModuleMenuForAccess(  get_class($module),
                                                                         $metadata['global']['userHeaderMenuItems'],
@@ -275,9 +275,9 @@
                 }
             }
             $orderedHeaderMenuItems = array();
-            foreach($headerMenuItems as $item)
+            foreach ($headerMenuItems as $item)
             {
-                if(isset($item['order']))
+                if (isset($item['order']))
                 {
                     $orderedHeaderMenuItems[$item['order']] = $item;
                 }

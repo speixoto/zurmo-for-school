@@ -205,7 +205,7 @@
             assert('$form instanceof ZurmoActiveForm');
             $content      = null;
             $innerContent = null;
-            if($this->showOwnedByFilter)
+            if ($this->showOwnedByFilter)
             {
                 $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
                                                                                           'ownedByFilter',
@@ -214,7 +214,7 @@
                 $ownedByFilterContent      = $element->render();
                 $innerContent             .= $ownedByFilterContent;
             }
-            if($this->showRollUpToggle)
+            if ($this->showRollUpToggle)
             {
                 $element                   = new LatestActivitiesRollUpFilterRadioElement($this->configurationForm,
                                                                                        'rollup', $form);
@@ -222,14 +222,14 @@
                 $rollupElementContent      = $element->render();
                 $innerContent .= '<div id="LatestActivitiesConfigurationForm_rollup_area">' . $rollupElementContent . '</div>';
             }
-            if($innerContent != null)
+            if ($innerContent != null)
             {
                 $content .= '<div class="horizontal-line latest-activity-toolbar">';
                 $content .= $innerContent;
                 $content .= CHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
                 $content .= '</div>' . "\n";
             }
-            if($innerContent != null &&
+            if ($innerContent != null &&
                $this->configurationForm->filteredByModelName == LatestActivitiesConfigurationForm::FILTERED_BY_ALL)
             {
                 $startingStyle = "display:none";

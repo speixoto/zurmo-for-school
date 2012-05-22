@@ -144,29 +144,35 @@
             $content .= '<a href="http://www.jquery.com">jQuery JavaScript Framework</a> (with Yii)';
             $content .= '</li>';
             $content .= '</ul></p></div>
-
                 <div>
                     <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
                     <script>
-                    new TWTR.Widget({
+                    new TWTR.Widget(
+                    {
                       version: 2,
                       type: "profile",
                       rpp: 4,
                       interval: 30000,
                       width: "auto",
                       height: 300,
-                      theme: {
-                        shell: {
+                      theme:
+                      {
+                        shell:
+                        {
                           background: "#f4f4f4",
                           color: "#262777"
-                        },
-                        tweets: {
+                        }
+                        ,
+                        tweets:
+                        {
                           background: "#f4f4f4",
                           color: "#545454",
                           links: "#262777"
                         }
-                      },
-                      features: {
+                      }
+                      ,
+                      features:
+                      {
                         scrollbar: false,
                         loop: false,
                         live: false,

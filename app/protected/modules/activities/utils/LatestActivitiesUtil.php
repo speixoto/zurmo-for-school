@@ -112,9 +112,9 @@
             assert('$ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL ||
                     $ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER ||
                     is_int($ownedByFilter)');
-            if($ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER || is_int($ownedByFilter))
+            if ($ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER || is_int($ownedByFilter))
             {
-                if(is_int($ownedByFilter))
+                if (is_int($ownedByFilter))
                 {
                     $userId = $ownedByFilter;
                 }

@@ -53,7 +53,7 @@
             $metadata = self::getMetadata();
             $leftBottomMetadataForPortlets['global'] = $metadata['global']['leftBottomView'];
             $detailsViewClassName                    = $metadata['global']['leftTopView']['viewClassName'];
-            if(is_subclass_of($detailsViewClassName, 'EditAndDetailsView'))
+            if (is_subclass_of($detailsViewClassName, 'EditAndDetailsView'))
             {
                 $leftTopView    = new $detailsViewClassName('Details',
                                                             $this->params["controllerId"],

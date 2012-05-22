@@ -159,7 +159,7 @@
             {
                 $uncheck = '0';
             }
-            if($model->{$attribute} == 1)
+            if ($model->{$attribute} == 1)
             {
                 $labelClass = ' c_on';
             }
@@ -181,7 +181,7 @@
         {
             if ($checked)
             {
-                $htmlOptions['checked']='checked';
+                $htmlOptions['checked'] = 'checked';
             }
             else
             {
@@ -219,7 +219,7 @@
             }
 
             // add a hidden field so that if the checkbox  is not selected, it still submits a value
-            if($checked)
+            if ($checked)
             {
                 $labelClass = ' c_on';
             }
@@ -236,18 +236,18 @@
          */
         public static function ajaxLink($text, $url, $ajaxOptions = array(), $htmlOptions = array())
         {
-            if(!isset($htmlOptions['href']))
+            if (!isset($htmlOptions['href']))
             {
                 $htmlOptions['href'] = '#';
             }
             $ajaxOptions['url']      = $url;
             $htmlOptions['ajax']     = $ajaxOptions;
             self::clientChange('click', $htmlOptions);
-            if(isset($htmlOptions['namespace']))
+            if (isset($htmlOptions['namespace']))
             {
                 unset($htmlOptions['namespace']);
             }
-            return self::tag('a',$htmlOptions,$text);
+            return self::tag('a', $htmlOptions, $text);
         }
 
         /**
@@ -259,11 +259,11 @@
          */
         protected static function clientChange($event, &$htmlOptions)
         {
-            if(!isset($htmlOptions['submit']) && !isset($htmlOptions['confirm']) && !isset($htmlOptions['ajax']))
+            if (!isset($htmlOptions['submit']) && !isset($htmlOptions['confirm']) && !isset($htmlOptions['ajax']))
             {
                 return;
             }
-            if(isset($htmlOptions['namespace']))
+            if (isset($htmlOptions['namespace']))
             {
                 $namespace = true;
                 $event     = $event . '.' . $htmlOptions['namespace'];
@@ -273,7 +273,7 @@
             {
                 $namespace = false;
             }
-            if(isset($htmlOptions['live']))
+            if (isset($htmlOptions['live']))
             {
                 $live = $htmlOptions['live'];
                 unset($htmlOptions['live']);
@@ -282,7 +282,7 @@
             {
                 $live = self::$liveEvents;
             }
-            if(isset($htmlOptions['return']) && $htmlOptions['return'])
+            if (isset($htmlOptions['return']) && $htmlOptions['return'])
             {
                 $return = 'return true';
             }
@@ -290,17 +290,19 @@
             {
                 $return = 'return false';
             }
-            if(isset($htmlOptions['on' . $event]))
+            if (isset($htmlOptions['on' . $event]))
             {
                 $handler = trim($htmlOptions['on' . $event], ';') . ';';
                 unset($htmlOptions['on' . $event]);
             }
             else
-                $handler='';
-
-            if(isset($htmlOptions['id']))
             {
-                $id=$htmlOptions['id'];
+                $handler = '';
+            }
+
+            if (isset($htmlOptions['id']))
+            {
+                $id = $htmlOptions['id'];
             }
             else
             {
@@ -309,23 +311,23 @@
             $cs = Yii::app()->getClientScript();
             $cs->registerCoreScript('jquery');
 
-            if(isset($htmlOptions['submit']))
+            if (isset($htmlOptions['submit']))
             {
                 $cs->registerCoreScript('yii');
                 $request = Yii::app()->getRequest();
-                if($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
+                if ($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
                 {
-                    $htmlOptions['params'][$request->csrfTokenName]=$request->getCsrfToken();
+                    $htmlOptions['params'][$request->csrfTokenName] = $request->getCsrfToken();
                 }
-                if(isset($htmlOptions['params']))
+                if (isset($htmlOptions['params']))
                 {
-                    $params=CJavaScript::encode($htmlOptions['params']);
+                    $params = CJavaScript::encode($htmlOptions['params']);
                 }
                 else
                 {
-                    $params='{}';
+                    $params = '{}';
                 }
-                if($htmlOptions['submit']!=='')
+                if ($htmlOptions['submit'] !== '')
                 {
                     $url = CJavaScript::quote(self::normalizeUrl($htmlOptions['submit']));
                 }
@@ -333,36 +335,40 @@
                 {
                     $url = '';
                 }
-                $handler .= "jQuery.yii.submitForm(this,'$url',$params);{$return};";
+                $handler .= "jQuery.yii.submitForm(this, '$url', $params);{$return};";
             }
 
-            if(isset($htmlOptions['ajax']))
+            if (isset($htmlOptions['ajax']))
             {
-                $handler.=self::ajax($htmlOptions['ajax'])."{$return};";
+                $handler .= self::ajax($htmlOptions['ajax'])."{$return};";
             }
-            if(isset($htmlOptions['confirm']))
+            if (isset($htmlOptions['confirm']))
             {
-                $confirm='confirm(\''.CJavaScript::quote($htmlOptions['confirm']).'\')';
-                if($handler!=='')
-                    $handler="if($confirm) {".$handler."} else return false;";
-                else
-                    $handler="return $confirm;";
-            }
-
-            if($live)
-            {
-                if($namespace)
+                $confirm = 'confirm(\''.CJavaScript::quote($htmlOptions['confirm']).'\')';
+                if ($handler !== '')
                 {
-                   $cs->registerScript('Yii.CHtml.#' . $id, "$('body').off('$event', '#$id'); $('body').on('$event','#$id',function(){{$handler}});");
+                    $handler = "if($confirm) {" . $handler . "} else return false;";
                 }
                 else
                 {
-                    $cs->registerScript('Yii.CHtml.#' . $id, "$('body').on('$event', '#$id',function(){{$handler}});");
+                    $handler = "return $confirm;";
+                }
+            }
+
+            if ($live)
+            {
+                if ($namespace)
+                {
+                   $cs->registerScript('Yii.CHtml.#' . $id, "$('body').off('$event', '#$id'); $('body').on('$event', '#$id', function(){{$handler}});");
+                }
+                else
+                {
+                    $cs->registerScript('Yii.CHtml.#' . $id, "$('body').on('$event', '#$id', function(){{$handler}});");
                 }
             }
             else
             {
-                if($namespace)
+                if ($namespace)
                 {
                     $cs->registerScript('Yii.CHtml.#' . $id, "$('#$id').off('$event'); $('#$id').on('$event', function(){{$handler}});");
                 }
@@ -370,7 +376,6 @@
                 {
                     $cs->registerScript('Yii.CHtml.#' . $id, "$('#$id').on('$event', function(){{$handler}});");
                 }
-
             }
             unset($htmlOptions['params'],
                   $htmlOptions['submit'],
@@ -388,13 +393,13 @@
         {
             self::resolveNameID($model, $attribute, $htmlOptions);
             $selection = self::resolveValue($model, $attribute);
-            if($model->hasErrors($attribute))
+            if ($model->hasErrors($attribute))
             {
                 self::addErrorCss($htmlOptions);
             }
             $name = $htmlOptions['name'];
             unset($htmlOptions['name']);
-            if(array_key_exists('uncheckValue', $htmlOptions))
+            if (array_key_exists('uncheckValue', $htmlOptions))
             {
                 $uncheck = $htmlOptions['uncheckValue'];
                 unset($htmlOptions['uncheckValue']);
@@ -416,11 +421,11 @@
             $template  = isset($htmlOptions['template'])?$htmlOptions['template']:'{input} {label}';
             $separator = isset($htmlOptions['separator'])?$htmlOptions['separator']:"<br/>\n";
             unset($htmlOptions['template'], $htmlOptions['separator']);
-            if(substr($name,-2)!=='[]')
+            if (substr($name, -2) !== '[]')
             {
                 $name .= '[]';
             }
-            if(isset($htmlOptions['checkAll']))
+            if (isset($htmlOptions['checkAll']))
             {
                 $checkAllLabel     = $htmlOptions['checkAll'];
                 $checkAllLast      = isset($htmlOptions['checkAllLast']) && $htmlOptions['checkAllLast'];
@@ -433,52 +438,54 @@
             $baseID                = self::getIdByName($name);
             $id                    = 0;
             $checkAll              = true;
-            foreach($data as $value => $label)
+            foreach ($data as $value => $label)
             {
                 $checked              = !is_array($select) && !strcmp($value, $select) || is_array($select) && in_array($value, $select);
                 $checkAll             = $checkAll && $checked;
                 $htmlOptions['value'] = $value;
-                $htmlOptions['id']    = $baseID.'_'.$id++;
+                $htmlOptions['id']    = $baseID . '_' . $id++;
                 $option               = self::checkBox($name, $checked, $htmlOptions);
-                if(!isset($labelOptions['class']))
+                if (!isset($labelOptions['class']))
                 {
                     $labelOptions['class'] = null;
                 }
-                if($checked)
+                if ($checked)
                 {
                     $labelOptions['class'] . ' c_on';
                 }
                 $label                = self::label($label, $htmlOptions['id'], $labelOptions);
-                $items[]              = strtr($template, array('{input}' => $option,'{label}' => $label));
+                $items[]              = strtr($template, array('{input}' => $option, '{label}' => $label));
             }
-            if(isset($checkAllLabel))
+            if (isset($checkAllLabel))
             {
                 $htmlOptions['value'] = 1;
                 $htmlOptions['id']    = $id = $baseID . '_all';
-                $option=self::checkBox($id,$checkAll,$htmlOptions);
+                $option   = self::checkBox($id, $checkAll, $htmlOptions);
                 $label    = self::label($checkAllLabel, $id, $labelOptions);
                 $item     = strtr($template, array('{input}' => $option, '{label}' => $label));
-                if($checkAllLast)
+                if ($checkAllLast)
                 {
                     $items[] = $item;
                 }
                 else
                 {
-                    array_unshift($items,$item);
+                    array_unshift($items, $item);
                 }
-                $name = strtr($name,array('['=>'\\[',']'=>'\\]'));
+                $name = strtr($name, array('['=>'\\[',']'=>'\\]')); // Not Coding Standard
                 $js   = <<<EOD
-    $('#$id').click(function() {
+    $('#$id').click(function()
+    {
         $("input[name='$name']").prop('checked', this.checked);
     });
-    $("input[name='$name']").click(function() {
+    $("input[name='$name']").click(function()
+    {
         $('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
     });
     $('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
 EOD;
                 $cs = Yii::app()->getClientScript();
                 $cs->registerCoreScript('jquery');
-                $cs->registerScript($id,$js);
+                $cs->registerScript($id, $js);
             }
             return self::tag('span', array('id' => $baseID), implode($separator, $items));
         }
