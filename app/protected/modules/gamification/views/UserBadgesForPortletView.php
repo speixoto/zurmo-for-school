@@ -97,9 +97,11 @@
                         $content .= '</div><div>';
                         $rowBadgeCount = 0;
                     }
-                    $badgeClassName = $badge->type . 'GameBadgeRules';
-                    $content .= '<div>' . $badge->type . $badgeClassName::getDisplayName() . '-' . $badge->grade . '</div>';
-                    $rowBadgeCount ++;
+                    //$badgeClassName = $badge->type . 'GameBadgeRules';
+                    //$content .= '<div>' . $badge->type . $badgeClassName::getDisplayName() . '-' . $badge->grade . '</div>';
+				    $content .= '<div class="badge '. $badge->type.'"><div class="gloss"></div>' .
+								'<strong class="badge-icon"></strong><span class="badge-grade">'.$badge->grade.'</span></div>';
+				    $rowBadgeCount ++;
                 }
                 $content .= '</div>';
             }
