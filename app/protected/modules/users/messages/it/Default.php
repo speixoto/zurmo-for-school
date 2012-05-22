@@ -48,7 +48,7 @@
         'Enforce Strong Passwords'
             => 'Attuare l\'uso di password forti',
         'Hash'
-            => 'Hash',
+            => 'Hash', // Same Word Translated
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Gli utenti inatyivi no possono login nel web, mobile, o web API.  Il login per gli utente attivi è controllato per i diritti del grupo.',
         'Inherited Value:'
@@ -56,7 +56,7 @@
         'Manage Users'
             => 'Gestione degli Utenti',
         'Manager'
-            => 'Manager',
+            => 'Manager', // Same Word Translated
         'Minimum Password Length'
             => 'Lunghezza minima della password',
         'Minimum Username Length'
@@ -68,7 +68,7 @@
         'Password Expiry Days'
             => 'Giorni de scandenza delle password',
         'Profile'
-            => 'Profile',
+            => 'Profile', // Same Word Translated
         'Sign in Via Mobile'
             => 'Login  mobile',
         'Sign in Via Web'

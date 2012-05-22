@@ -58,7 +58,7 @@
         public $rollup;
 
         /**
-         * Whether to filter latest activity feed by ownership for the current user.
+         * Whether to filter latest activity feed by ownership for the current user.  Can also be a user id that is an integer.
          * Defaults to not filtering on anything, thus showing all available models that implement the
          * MashableActivityInterface.
          * @var string

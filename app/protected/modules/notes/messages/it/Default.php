@@ -44,9 +44,9 @@
         'Notes'
             => 'Note',
         'NotesModulePluralLabel'
-            => 'NotesModulePluralLabel',
+            => 'NotesModulePluralLabel', // Same Word Translated
         'NotesModuleSingularLabel'
-            => 'NotesModuleSingularLabel',
+            => 'NotesModuleSingularLabel', // Same Word Translated
         'Occurred On'
             => 'Avvenuto ',
         'The NotesModulePluralLabel form cannot be displayed.'

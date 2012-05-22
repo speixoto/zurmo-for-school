@@ -24,16 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProfilePageView extends ZurmoPageView
+    class LeaderboardWeeklyLinkActionElement extends EditLinkActionElement
     {
-        public function __construct(CController $controller)
+        protected function getDefaultLabel()
         {
-            parent::__construct(new ZurmoDefaultView($controller, new ProfileView()));
+            return Yii::t('Default', 'Weekly');
         }
 
-        protected function getSubtitle()
+        protected function getDefaultRoute()
         {
-            return Yii::t('Default', 'Profile');
+            return Yii::app()->createUrl(
+                $this->moduleId . '/' . $this->controllerId . '/leaderboard/',
+                array('type' => GamePointUtil::LEADERBOARD_TYPE_WEEKLY));
         }
     }
 ?>

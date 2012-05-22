@@ -36,7 +36,7 @@
         'Html Content'
             => 'Contenu HTML',
         'Notification'
-            => 'Notification',
+            => 'Notification', // Same Word Translated
         'Notification Message'
             => 'Message de notification',
         'Notifications List'

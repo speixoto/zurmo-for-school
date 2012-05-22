@@ -80,7 +80,7 @@
         'Address'
             => 'Indirizzo',
         'Admin'
-            => 'Admin',
+            => 'Admin', // Same Word Translated
         'Alert'
             => 'Allarme',
         'Allow'
@@ -200,7 +200,7 @@
         'Description'
             => 'Descrizione',
         'Dr.'
-            => 'Dr.',
+            => 'Dr.', // Same Word Translated
         'Email Address'
             => 'Indirizzo Email',
         'Energy'
@@ -252,7 +252,7 @@
         'here'
             => 'qui',
         'Home'
-            => 'Home',
+            => 'Home', // Same Word Translated
         'In Progress'
             => 'In corso',
         'Inbound Call'
@@ -404,7 +404,7 @@
         'Parent Role'
             => 'Ruolo Padre',
         'Password'
-            => 'Password',
+            => 'Password', // Same Word Translated
         'Permissions'
             => 'Privilegi',
         'Permitable'
@@ -594,7 +594,7 @@
         'Your Yii version is currentVersion and it should be acceptableVersion.'
             => 'Suo versione di Yii è currentVersion e dovrebbe essere acceptableVersion.',
         'ZurmoCRM'
-            => 'ZurmoCRM',
+            => 'ZurmoCRM', // Same Word Translated
         '{url} (installed with Yii)'
             => '{url} (installato con Yii)',
         '{url} (version {version} is installed)'

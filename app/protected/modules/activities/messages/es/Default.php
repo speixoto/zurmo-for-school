@@ -52,7 +52,7 @@
         'Related to'
             => 'Relacionados con',
         'Roll Up'
-            => 'Roll Up',
+            => 'Roll Up', // Same Word Translated
         'Show more'
             => 'Mostrar más',
         'Summary'

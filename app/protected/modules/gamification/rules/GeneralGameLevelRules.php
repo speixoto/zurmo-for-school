@@ -54,5 +54,10 @@
                                                  13 => 21250,
                                                  14 => 24750,
                                                  15 => 28500);
+
+        public static function getDisplayLabel()
+        {
+            return Yii::t('Default', 'General');
+        }
     }
 ?>

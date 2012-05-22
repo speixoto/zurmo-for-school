@@ -96,17 +96,17 @@
         'Dependent Pick Lists'
             => 'Auswahllisten abhängige ',
         'Designer'
-            => 'Designer',
+            => 'Designer', // Same Word Translated
         'Designer Home'
             => 'Designer Startseite',
         'Designer Tool'
-            => 'Designer Tool',
+            => 'Designer Tool', // Same Word Translated
         'Detail and Edit View'
             => 'Detail und Bearbeiten Ansicht',
         'Details View'
             => 'Detailansicht',
         'Display Name'
-            => 'Display Name',
+            => 'Display Name', // Same Word Translated
         'Dropdown Dependency Mapping'
             => 'Mapping der Dropdown-Liste Abhängigkeit',
         'Each item must be uniquely named'
@@ -150,7 +150,7 @@
         'Layout saved successfully.'
             => 'Layout wurde erfolgreich gespeichert',
         'Layouts'
-            => 'Layouts',
+            => 'Layouts', // Same Word Translated
         'Level: {number}'
             => 'Stufe: {number}',
         'Manage module fields, layouts, and labels.'
@@ -212,7 +212,7 @@
         'Tag Cloud Values'
             => 'Schlagwortwolke Worte',
         'Text'
-            => 'Text',
+            => 'Text', // Same Word Translated
         'Text Area'
             => 'Textbereich',
         'The formula is invalid.'
@@ -226,7 +226,7 @@
         'Track Audit Log'
             => 'Track-Prüfprotokoll',
         'URL'
-            => 'URL',
+            => 'URL', // Same Word Translated
         'You can only have at most 4 pick-lists selected.'
             => 'Sie können bis zu 4 Auswahllisten haben.',
         'You must first select a field type'

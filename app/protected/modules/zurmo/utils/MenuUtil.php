@@ -255,15 +255,39 @@
          * Get accessible user header menu item based for the current user.
          * @return array of menu items.
          */
-        public static function getAccessibleUserHeaderMenuForCurrentUser()
+        public static function getAccessibleOrderedUserHeaderMenuForCurrentUser()
         {
             $user      = Yii::app()->user->userModel;
-            $metadata  = UsersModule::getMetadata();
-            assert('!empty($metadata["global"]["userHeaderMenuItems"])');
-            $menuItems = MenuUtil::resolveModuleMenuForAccess('UsersModule',
-                                                                $metadata['global']['userHeaderMenuItems'],
-                                                                $user);
-            return self::resolveMenuItemsForLanguageLocalization            ($menuItems, 'UsersModule');
+            $modules         = Module::getModuleObjects();
+            $headerMenuItems = array();
+            foreach ($modules as $module)
+            {
+                $metadata = $module::getMetadata();
+                if(!empty($metadata['global']['userHeaderMenuItems']))
+                {
+                    $menuItems = MenuUtil::resolveModuleMenuForAccess(  get_class($module),
+                                                                        $metadata['global']['userHeaderMenuItems'],
+                                                                        $user);
+
+                    $headerMenuItems = array_merge($headerMenuItems,
+                                                   self::resolveMenuItemsForLanguageLocalization
+                                                       ($menuItems, get_class($module)));
+                }
+            }
+            $orderedHeaderMenuItems = array();
+            foreach($headerMenuItems as $item)
+            {
+                if(isset($item['order']))
+                {
+                    $orderedHeaderMenuItems[$item['order']] = $item;
+                }
+                else
+                {
+                    $orderedHeaderMenuItems[] = $item;
+                }
+            }
+            ksort($orderedHeaderMenuItems);
+            return $orderedHeaderMenuItems;
         }
 
         /**
