@@ -30,10 +30,13 @@
         {
             if (Yii::app()->apiRequest->isApiRequest())
             {
+
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
                 $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
@@ -342,6 +345,11 @@
         {
             Yii::app()->gameHelper;
             Yii::app()->gamificationObserver; //runs init();
+        }
+
+        public function handleDisableGamification($event)
+        {
+            Yii::app()->gamificationObserver->enabled = false;
         }
      }
 ?>
