@@ -40,17 +40,20 @@
          */
         public function handleScoreLogin($event)
         {
-            $scoreType           = 'LoginUser';
-            $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
-            $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
-            $gameScore->addValue();
-            $saved = $gameScore->save();
-            if (!$saved)
+            if(Yii::app()->gamificationObserver->enabled)
             {
-                throw new FailedToSaveModelException();
+                $scoreType           = 'LoginUser';
+                $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
+                $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
+                $gameScore->addValue();
+                $saved = $gameScore->save();
+                if (!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                    GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                                   GamificationRules::getPointTypeAndValueDataByCategory($category));
             }
-                GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
-                               GamificationRules::getPointTypeAndValueDataByCategory($category));
         }
      }
 ?>
