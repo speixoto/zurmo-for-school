@@ -94,7 +94,7 @@
                 {
                     if ($rowBadgeCount == 4)
                     {
-                       // $content .= '</div><div>';
+                       	$content .= '</div><div>';
                         $rowBadgeCount = 0;
                     }
                     //$badgeClassName = $badge->type . 'GameBadgeRules';
