@@ -96,7 +96,7 @@
                 assert('is_string($rankingItem["typeLabel"])');
                 $content .= '<tr>';
                 $content .= '<td>' . $rankingItem['typeLabel'] . '</td>';
-                $content .= '<td>' . $rankingItem['rank'] . '</td>';
+                $content .= '<td><span class="ranking">' . $rankingItem['rank'] . '</span></td>';
                 $content .= '</tr>';
             }
             $content .= '</tbody>';

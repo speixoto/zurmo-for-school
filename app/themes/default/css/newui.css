@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
 }
 /*Imports*/
 .zButton {
@@ -3260,6 +3261,29 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -o-border-radius: 6px;
   border-radius: 6px;
 }
+.ranking {
+  display: block;
+  float: left;
+  background: #262877;
+  color: #fff;
+  -webkit-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  -moz-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  -o-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  -ms-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  width: 26px;
+  height: 26px;
+  line-height: 24px;
+  vertical-align: middle;
+  text-align: center;
+  font-weight: bold;
+  font-size: 10px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
 .UserLeaderboardRankingForPortletView tr th:first-child,
 .UserGamificationStatisticsForPortletView tr th:first-child,
 .UserBadgesForPortletView tr th:first-child,
@@ -3482,22 +3506,40 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .hasPercentCounter {
   padding-right: 10px !important;
 }
-.percentComplete {
+.percentHolder {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  font-weight: bold;
-  font-size: 10px;
-  text-indent: 2px;
-  color: #262877;
-  padding: 2px 0;
   display: inline-block;
-  border: 1px solid #f5f5f5;
+  border: 1px solid #ccc;
   -webkit-box-shadow: 0 0 8px 0 rgba(153, 153, 153, 0.5);
   -moz-box-shadow: 0 0 8px 0 rgba(153, 153, 153, 0.5);
   -o-box-shadow: 0 0 8px 0 rgba(153, 153, 153, 0.5);
   -ms-box-shadow: 0 0 8px 0 rgba(153, 153, 153, 0.5);
   box-shadow: 0 0 8px 0 rgba(153, 153, 153, 0.5);
+  width: 100%;
+  height: 16px;
+}
+.percentHolder:hover .percent {
+  display: inline-block;
+}
+.percent {
+  display: none;
+  font-size: 10px;
+  text-indent: 3px;
+  font-weight: bold;
+  line-height: 16px;
+  margin-top: -3px;
+}
+.percentComplete {
+  line-height: 16px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  color: #262877;
+  padding: 2px 0;
+  display: inline-block;
   background-color: #f5f5f5;
   background-image: -webkit-repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(255, 255, 255, 0.8) 5px, rgba(255, 255, 255, 0.8) 4px);
   background-image: -moz-repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(255, 255, 255, 0.8) 5px, rgba(255, 255, 255, 0.8) 4px);

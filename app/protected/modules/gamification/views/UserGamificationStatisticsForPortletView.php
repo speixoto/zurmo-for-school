@@ -105,7 +105,7 @@
                 }
                 else
                 {
-                    $content .= '<td class="hasPercentCounter"><span class="percentComplete z_' . $statisticItem['nextLevelPercentageComplete'] . '">' . $statisticItem['nextLevelPercentageComplete'] . '%</span></td>';
+                    $content .= '<td class="hasPercentCounter"><span class="percentHolder"><span class="percentComplete z_' . $statisticItem['nextLevelPercentageComplete'] . '"><span class="percent">' . $statisticItem['nextLevelPercentageComplete'] . '%</span></span></span></td>';
                 }
                 $content .= '<td><span class="points">' . $statisticItem['points'] . '</span></td>';
                 $content .= '<td>' . $statisticItem['level'] . '</td>';
