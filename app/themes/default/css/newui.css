@@ -27,7 +27,7 @@
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -198,7 +198,7 @@ a.remove:hover .icon:after {
 .juiportlet-widget-head a.collapse {
   float: left;
   display: inline;
-  background: url(../../images/portlet-minimize.png) 14px 50% no-repeat;
+  background: url(../images/portlet-minimize.png) 14px 50% no-repeat;
   width: 14px;
   height: 40px;
   text-indent: -9999em;
@@ -277,7 +277,7 @@ a.remove:hover .icon:after {
   content: 'e';
 }
 #ZurmoLogo {
-  background: url(../../images/ZurmoLogo.png) left top no-repeat;
+  background: url(../images/ZurmoLogo.png) left top no-repeat;
   width: 170px;
   height: 54px;
   margin-bottom: 20px;
@@ -366,7 +366,7 @@ a.remove:hover .icon:after {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -450,7 +450,7 @@ a.remove:hover .icon:after {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -637,7 +637,7 @@ a.remove:hover .icon:after {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -707,7 +707,7 @@ table.configuration-list tr td:last-child a {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -813,7 +813,7 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1159,7 +1159,7 @@ table.configuration-list tr td:last-child a:before {
 }
 #currency-collection-form .portlet-toolbar a {
   color: #333333;
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1316,7 +1316,7 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1427,7 +1427,7 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1500,7 +1500,7 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1809,7 +1809,7 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2080,7 +2080,7 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-header {
   height: 35px;
-  background: #111111 url(../../images/datepicker-header.png) left top repeat-x !important;
+  background: #111111 url(../images/datepicker-header.png) left top repeat-x !important;
   color: #FFF;
   font-weight: bold;
 }
@@ -2149,7 +2149,7 @@ div.wide.form .errorMessage {
   background: #fff;
 }
 .ui-datepicker .ui-datepicker-calendar th {
-  background: #f5f5f5 url(../../images/datepicker-sprite-ie.png) left -35px repeat-x !important;
+  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left -35px repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-calendar th:last-child {
   border-right: 1px solid #BBB;
@@ -2196,11 +2196,11 @@ div.wide.form .errorMessage {
   border-style: solid;
   border-width: 1px 1px 0 0;
   border-top: 1px solid #bbb !important;
-  background: #f5f5f5 url(../../images/datepicker-sprite-ie.png) left top repeat-x !important;
+  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left top repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month {
   background-image: none;
-  background: #f5f5f5 url(../../images/datepicker-sprite-ie.png) left bottom repeat-x !important;
+  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left bottom repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
   color: #B3B3B3;
@@ -2246,7 +2246,7 @@ div.wide.form .errorMessage {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2285,7 +2285,7 @@ div.wide.form .errorMessage {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2313,7 +2313,7 @@ div.wide.form .errorMessage {
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
 }
 .ui-datepicker .ui-slider {
-  background: #111111 url(../../images/datepicker-header.png) left top repeat-x !important;
+  background: #111111 url(../images/datepicker-header.png) left top repeat-x !important;
   height: 4px;
   -webkit-border-radius: 2px !important;
   -moz-border-radius: 2px !important;
@@ -2607,7 +2607,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -3086,7 +3086,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -3182,6 +3182,13 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-align: center;
   cursor: pointer;
   vertical-align: middle;
+}
+@font-face {
+  font-family: 'ZurmoGamificationSymblyRegular-Regular';
+  src: url('../fonts/zurmogamificationsymblyregular-regular.eot');
+  src: url('../fonts/zurmogamificationsymblyregular-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmogamificationsymblyregular-regular.woff') format('woff'), url('../fonts/zurmogamificationsymblyregular-regular.ttf') format('truetype'), url('../fonts/zurmogamificationsymblyregular-regular.svg#zurmogamificationsymblyregular-regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 #LeaderboardView .items td:first-child,
 #LeaderboardView .items th:first-child {
@@ -3323,7 +3330,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .badge .badge-icon {
   font-weight: normal;
   font-size: 50px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   display: block;
   text-align: center;
   color: #262877;
@@ -3346,6 +3353,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border-radius: 6px;
   position: relative;
   z-index: 2;
+}
+.badge .badge-icon:before {
+  position: relative;
+  top: -12px;
 }
 .badge .badge-grade {
   font-size: 11;
@@ -3374,12 +3385,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-indent: -1px;
 }
 .badge .gloss {
-  /*background: -webkit-gradient(
-	                    linear,
-	                    0% 0%, 0% 100%,
-	                    from( rgba( 255, 255, 255, 0.3 ) ),
-	                    to( rgba( 255, 255, 255, 0.1 ) ) );*/
-
   background-color: rgba(255, 255, 255, 0.1);
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0.3)), to(rgba(255, 255, 255, 0.1)));
@@ -3426,56 +3431,47 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border-bottom-right-radius: 120px 20px;
   border-bottom-left-radius: 100px 20px;
 }
-.LoginUser .badge-icon:before {
-  content: "X";
-}
 .CreateAccount .badge-icon:before {
-  content: "X";
+  content: "P";
 }
 .MassEditAccounts .badge-icon:before {
-  content: "X";
+  content: "]";
 }
 .SearchAccounts .badge-icon:before {
-  content: "X";
-}
-.CreateContact .badge-icon:before {
-  content: "X";
-}
-.MassEditContacts .badge-icon:before {
-  content: "X";
+  content: "=";
 }
 .SearchContacts .badge-icon:before {
-  content: "X";
+  content: "%";
 }
 .LoginUser .badge-icon:before {
-  content: "X";
+  content: "E";
 }
 .CreateLead .badge-icon:before {
-  content: "X";
+  content: ".";
 }
 .CreateCall .badge-icon:before {
-  content: "X";
+  content: "W";
 }
 .CreateMeeting .badge-icon:before {
-  content: "X";
+  content: "U";
 }
 .CreateNote .badge-icon:before {
-  content: "X";
+  content: "3";
 }
 .CreateOpportunity .badge-icon:before {
-  content: "X";
+  content: "9";
 }
 .MassEditOpportunity .badge-icon:before {
-  content: "X";
+  content: "[";
 }
 .SearchOpportunity .badge-icon:before {
-  content: "X";
+  content: "+";
 }
 .WinOpportunity .badge-icon:before {
-  content: "X";
+  content: ";";
 }
 .CreateTask .badge-icon:before {
-  content: "X";
+  content: "4";
 }
 /*Percentage Complete*/
 .hasPercentCounter {
@@ -3810,8 +3806,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 @font-face {
   font-family: 'ZurmoSymblyRegular';
-  src: url('../../fonts/zurmosymblyregular-regular-webfont.eot');
-  src: url('../../fonts/zurmosymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../fonts/zurmosymblyregular-regular-webfont.woff') format('woff'), url('../../fonts/zurmosymblyregular-regular-webfont.ttf') format('truetype');
+  src: url('../fonts/zurmosymblyregular-regular-webfont.eot');
+  src: url('../fonts/zurmosymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmosymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmosymblyregular-regular-webfont.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;/*url('../fonts/zurmosymblyregular-regular-webfont.svg#ZurmoSymblyRegular') format('svg');*/
 }
@@ -3912,7 +3908,7 @@ section {
 }
 /*=Login*/
 #LoginPageView > .GridView {
-  background: url(../../images/header-bar-1.png) left top repeat-x;
+  background: url(../images/header-bar-1.png) left top repeat-x;
   padding-top: 38px;
 }
 #LoginView {
@@ -3968,7 +3964,7 @@ section {
   width: 50%;
   padding-right: 10px;
   float: left;
-  background: url(../../images/ZurmoLogo.png) 56px 35px no-repeat;
+  background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
 }
 #LoginView .form {
   width: 50%;
@@ -4033,7 +4029,7 @@ section {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -4053,7 +4049,7 @@ section {
 }
 /*=MastHead*/
 #HeaderLinksView {
-  background: url(../../images/header-bar-1.png) left top repeat-x;
+  background: url(../images/header-bar-1.png) left top repeat-x;
   height: 38px;
 }
 #corp-logo {
@@ -4139,7 +4135,7 @@ section {
   width: 18px;
   height: 16px;
   padding: 0 10px 0 10px;
-  background: url(../../images/notifications-bubble.png) center top no-repeat;
+  background: url(../images/notifications-bubble.png) center top no-repeat;
   border-left: 1px solid #fff;
   border-right: 1px solid #fff;
   float: left;
@@ -4274,7 +4270,7 @@ section {
 }
 #GlobalSearchView {
   height: 40px;
-  background: url(../../images/header-bar-2.png) left top repeat-x;
+  background: url(../images/header-bar-2.png) left top repeat-x;
   -webkit-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -moz-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -o-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
@@ -4296,7 +4292,7 @@ section {
   border-left: none;
   margin: 7px 0 0 -3px;
   float: left;
-  background: url(../../images/search-bar-gradient.png) left top repeat-x;
+  background: url(../images/search-bar-gradient.png) left top repeat-x;
 }
 #globalSearchInput:focus {
   outline: 0;
@@ -4312,7 +4308,7 @@ section {
   width: 40px;
   border: 1px solid #d5d4d4;
   border-right: none;
-  background: url(../../images/search-bar-loopa.png) left top no-repeat;
+  background: url(../images/search-bar-loopa.png) left top no-repeat;
 }
 #globalSearchInput .ui-multiselect-menu {
   min-width: 225px !important;
@@ -4321,7 +4317,7 @@ section {
   min-width: 900px;
   height: 100%;
   margin: 0 40px 0 40px;
-  background: #ffffff url(../../images/nav.png) left top repeat-y;
+  background: #ffffff url(../images/nav.png) left top repeat-y;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -4480,7 +4476,7 @@ section {
   left: 170px;
   top: -20px;
   padding: 5px 5px;
-  background: #fefefe url(../../images/sidebar-gradient.png) left top repeat-x;
+  background: #fefefe url(../images/sidebar-gradient.png) left top repeat-x;
   border: 1px solid #ccc;
   width: 160px;
   -webkit-box-shadow: 0 0 5px 5px rgba(153, 153, 153, 0.25);
@@ -4557,7 +4553,7 @@ section {
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  background-image: url(../../images/main-nav-selected.png);
+  background-image: url(../images/main-nav-selected.png);
   background-repeat: no-repeat;
   background-position-x: 0;
   background-position-y: 0;
@@ -4754,7 +4750,7 @@ section {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 #ActionBarForGroupsTreeListView .view-toolbar,
 #ActionBarSearchAndListView .view-toolbar {
@@ -5160,7 +5156,7 @@ section {
   color: #262877;
 }
 #credit-link {
-  background: url(../../images/Zurmo.png) left top no-repeat;
+  background: url(../images/Zurmo.png) left top no-repeat;
   line-height: 19px;
   display: inline-block;
   margin-left: 10px;
@@ -5218,7 +5214,7 @@ table.items th {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
-  background: url(../../images/table-items-header.png) left top repeat-x;
+  background: url(../images/table-items-header.png) left top repeat-x;
   padding: 0;
 }
 .checkbox-column {
@@ -5438,7 +5434,7 @@ table.items thead tr:hover {
 .modal-view-toolbar a,
 .form-toolbar a {
   color: #333333;
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -5523,7 +5519,7 @@ table.items thead tr:hover {
   border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #bababa;
   color: #656565;
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -5678,7 +5674,7 @@ a.simple-select:before {
   background: none;
 }
 .ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick {
-  background: transparent url(../../images/widget-close-btn.png) left top no-repeat;
+  background: transparent url(../images/widget-close-btn.png) left top no-repeat;
   padding: 0 !important;
   margin: 0 !important;
   width: 30px !important;
@@ -5687,7 +5683,7 @@ a.simple-select:before {
   display: block;
 }
 .ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick:hover {
-  background: transparent url(../../images/widget-close-btn.png) left top no-repeat;
+  background: transparent url(../images/widget-close-btn.png) left top no-repeat;
 }
 .ui-resizable-handle {
   z-index: 0;
@@ -5715,14 +5711,14 @@ a.simple-select:before {
 /*Checkboxes*/
 label.hasCheckBox {
   display: block;
-  background: url(../../images/checkbox.png) left 4px no-repeat;
+  background: url(../images/checkbox.png) left 4px no-repeat;
   width: 16px;
   height: 20px;
   padding: 0;
   margin: 0 0 0 15px;
 }
 label.hasCheckBox.c_on {
-  background: url(../../images/checkbox.png) left -21px no-repeat;
+  background: url(../images/checkbox.png) left -21px no-repeat;
 }
 label.hasCheckBox input {
   position: absolute;
@@ -5743,11 +5739,11 @@ div.wide.form label.hasCheckBox {
 }
 .ui-multiselect-checkboxes label {
   padding-left: 25px;
-  background: url(../../images/checkbox.png) left 4px no-repeat;
+  background: url(../images/checkbox.png) left 4px no-repeat;
   margin-left: 0px;
 }
 .ui-multiselect-checkboxes label.c_on {
-  background: url(../../images/checkbox.png) left -21px no-repeat;
+  background: url(../images/checkbox.png) left -21px no-repeat;
 }
 .ui-multiselect-checkboxes label input {
   position: absolute;
@@ -5867,7 +5863,7 @@ div.wide.form label.hasCheckBox {
   height: 25px;
   border: 1px solid #d5d4d4;
   border-left: none;
-  background: url(../../images/search-bar-gradient.png) left top repeat-x;
+  background: url(../images/search-bar-gradient.png) left top repeat-x;
 }
 .search-view-0 input[type="text"]:focus {
   outline: none !important;
@@ -5903,7 +5899,7 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -5956,7 +5952,7 @@ div.wide.form label.hasCheckBox {
   padding-right: 10px;
 }
 .search-view-1 #cancel-advanced-search {
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   color: #656565;
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
@@ -6211,7 +6207,7 @@ div.wide.form label.hasCheckBox {
   top: 1px !important;
 }
 .has-model-select a {
-  background: url(../../images/dropdown-general.png) left top no-repeat;
+  background: url(../images/dropdown-general.png) left top no-repeat;
   width: 28px;
   height: 24px;
   display: block;
@@ -6240,7 +6236,7 @@ div.wide.form label.hasCheckBox {
   text-indent: -9999px;
 }
 .has-date-select button {
-  background: url(../../images/dropdown-general.png) left top no-repeat;
+  background: url(../images/dropdown-general.png) left top no-repeat;
   width: 28px;
   height: 24px;
   display: block;
@@ -6561,7 +6557,7 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -6772,7 +6768,7 @@ div.wide.form label.hasCheckBox {
   border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #bababa;
   color: #333333;
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -7113,7 +7109,7 @@ div.hasHalfs .twoThirds {
   font-weight: bold;
   display: block;
   padding: 4px 0 4px 0 !important;
-  background: #ffffff url(../../images/view-toolbar-gradient.png) left bottom repeat-x;
+  background: #ffffff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 .pager li > a span {
   display: none;
@@ -7421,7 +7417,7 @@ div.hasHalfs .twoThirds {
   display: block;
   text-align: center;
   padding: 4px 0 4px 0 !important;
-  background: #ffffff url(../../images/view-toolbar-gradient.png) left bottom repeat-x;
+  background: #ffffff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 .vertical-forward-pager:hover {
   color: #7bb730 !important;
@@ -7569,7 +7565,7 @@ div.hasHalfs .twoThirds {
   position: absolute;
   top: -17px;
   right: 6px;
-  background: transparent url(../../images/widget-close-btn.png) left top no-repeat;
+  background: transparent url(../images/widget-close-btn.png) left top no-repeat;
   padding: 0 !important;
   margin: 0 !important;
   width: 30px !important;
@@ -7616,14 +7612,14 @@ div.hasHalfs .twoThirds {
   outline: 0;
 }
 .dk_toggle {
-  background: url(../../images/dropdown-arrow.png) right top no-repeat;
+  background: url(../images/dropdown-arrow.png) right top no-repeat;
   padding-left: 6px;
   display: block !important;
   font-weight: normal !important;
   color: #999 !important;
 }
 .dk_toggle:hover {
-  background: url(../../images/dropdown-arrow.png) right bottom no-repeat;
+  background: url(../images/dropdown-arrow.png) right bottom no-repeat;
 }
 .dk_focus .dk_toggle {
   border-color: #ccc;
@@ -7838,7 +7834,7 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -7979,7 +7975,7 @@ div.hasHalfs .twoThirds {
   background-position-y: 0 !important;
 }
 #AboutView .social-links span {
-  background: url(../../images/sprite-socialicons.png) 0 bottom no-repeat;
+  background: url(../images/sprite-socialicons.png) 0 bottom no-repeat;
   height: 22px;
   width: 22px;
   display: inline-block;
