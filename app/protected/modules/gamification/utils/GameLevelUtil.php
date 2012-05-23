@@ -136,7 +136,7 @@
             $rankingData = array(
                 'level'                       => (int)$trueCurrentGameLevel,
                 'points'                      => (int)$currentPoints,
-                'nextLevelPercentageComplete' => round($nextLevelPercentageComplete, 2),
+                'nextLevelPercentageComplete' => round($nextLevelPercentageComplete),
                 'levelTypeLabel'              => $rulesClassName::getDisplayLabel(),
             );
             return $rankingData;
