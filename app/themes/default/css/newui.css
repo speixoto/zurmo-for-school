@@ -3183,6 +3183,13 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   cursor: pointer;
   vertical-align: middle;
 }
+@font-face {
+  font-family: 'ZurmoGamificationSymblyRegular-Regular';
+  src: url('../fonts/zurmogamificationsymblyregular-regular.eot');
+  src: url('../fonts/zurmogamificationsymblyregular-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmogamificationsymblyregular-regular.woff') format('woff'), url('../fonts/zurmogamificationsymblyregular-regular.ttf') format('truetype'), url('../fonts/zurmogamificationsymblyregular-regular.svg#zurmogamificationsymblyregular-regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 #LeaderboardView .items td:first-child,
 #LeaderboardView .items th:first-child {
   padding-left: 15px;
@@ -3323,7 +3330,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .badge .badge-icon {
   font-weight: normal;
   font-size: 50px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   display: block;
   text-align: center;
   color: #262877;
@@ -3346,6 +3353,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border-radius: 6px;
   position: relative;
   z-index: 2;
+}
+.badge .badge-icon:before {
+  position: relative;
+  top: -12px;
 }
 .badge .badge-grade {
   font-size: 11;
@@ -3374,12 +3385,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-indent: -1px;
 }
 .badge .gloss {
-  /*background: -webkit-gradient(
-	                    linear,
-	                    0% 0%, 0% 100%,
-	                    from( rgba( 255, 255, 255, 0.3 ) ),
-	                    to( rgba( 255, 255, 255, 0.1 ) ) );*/
-
   background-color: rgba(255, 255, 255, 0.1);
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0.3)), to(rgba(255, 255, 255, 0.1)));
@@ -3426,56 +3431,47 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border-bottom-right-radius: 120px 20px;
   border-bottom-left-radius: 100px 20px;
 }
-.LoginUser .badge-icon:before {
-  content: "X";
-}
 .CreateAccount .badge-icon:before {
-  content: "X";
+  content: "P";
 }
 .MassEditAccounts .badge-icon:before {
-  content: "X";
+  content: "]";
 }
 .SearchAccounts .badge-icon:before {
-  content: "X";
-}
-.CreateContact .badge-icon:before {
-  content: "X";
-}
-.MassEditContacts .badge-icon:before {
-  content: "X";
+  content: "=";
 }
 .SearchContacts .badge-icon:before {
-  content: "X";
+  content: "%";
 }
 .LoginUser .badge-icon:before {
-  content: "X";
+  content: "E";
 }
 .CreateLead .badge-icon:before {
-  content: "X";
+  content: ".";
 }
 .CreateCall .badge-icon:before {
-  content: "X";
+  content: "W";
 }
 .CreateMeeting .badge-icon:before {
-  content: "X";
+  content: "U";
 }
 .CreateNote .badge-icon:before {
-  content: "X";
+  content: "3";
 }
 .CreateOpportunity .badge-icon:before {
-  content: "X";
+  content: "9";
 }
 .MassEditOpportunity .badge-icon:before {
-  content: "X";
+  content: "[";
 }
 .SearchOpportunity .badge-icon:before {
-  content: "X";
+  content: "+";
 }
 .WinOpportunity .badge-icon:before {
-  content: "X";
+  content: ";";
 }
 .CreateTask .badge-icon:before {
-  content: "X";
+  content: "4";
 }
 /*Percentage Complete*/
 .hasPercentCounter {
