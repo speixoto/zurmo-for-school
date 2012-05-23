@@ -108,6 +108,12 @@
          */
         public $viewMetadata;
 
+        /**
+         * Set to null so the application worries about the jquery-ui.css.
+         * @var string or null
+         */
+        public $cssFile = null;
+
         protected function canRemoveElement()
         {
             return !$this->mergeRowAndAttributePlacement;

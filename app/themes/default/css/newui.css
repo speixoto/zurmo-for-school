@@ -2865,7 +2865,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   display: block;
 }
 .ui-icon-arrow-4:after {
-  content: "(";
+  content: ")";
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
@@ -3267,14 +3267,13 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .ranking {
   display: block;
-  float: left;
   background: #262877;
   color: #fff;
-  -webkit-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
-  -moz-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
-  -o-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
-  -ms-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
-  box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
+  -webkit-box-shadow: 0 0 8px 0 #666;
+  -moz-box-shadow: 0 0 8px 0 #666;
+  -o-box-shadow: 0 0 8px 0 #666;
+  -ms-box-shadow: 0 0 8px 0 #666;
+  box-shadow: 0 0 8px 0 #666;
   width: 26px;
   height: 26px;
   line-height: 24px;
@@ -4938,7 +4937,7 @@ section {
 }
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before {
-  content: ")";
+  content: "(";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
