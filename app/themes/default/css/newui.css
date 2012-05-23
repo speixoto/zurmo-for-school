@@ -159,7 +159,7 @@ a.remove .icon:after {
   content: "_";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-indent: 0;
   display: block;
   float: right;
@@ -187,7 +187,7 @@ a.remove:hover .icon:after {
   content: "n";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-indent: 0;
   display: block;
   float: right;
@@ -242,7 +242,7 @@ a.remove:hover .icon:after {
 .juiportlet-header-icon {
   font-weight: normal;
   font-size: 32px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   color: #7A7A7A;
   text-indent: -30px;
   line-height: 100%;
@@ -255,7 +255,7 @@ a.remove:hover .icon:after {
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before {
   font-weight: normal;
   font-size: 32px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   color: #7A7A7A;
   text-indent: -30px;
   line-height: 100%;
@@ -269,7 +269,7 @@ a.remove:hover .icon:after {
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   font-weight: normal;
   font-size: 32px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   color: #7A7A7A;
   text-indent: -30px;
   line-height: 100%;
@@ -516,7 +516,7 @@ a.remove:hover .icon:after {
   content: "z";
   font-weight: normal;
   font-size: 21px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   margin-right: 6px;
 }
 #ConfigurationPageView table {
@@ -660,7 +660,7 @@ a.remove:hover .icon:after {
   content: "n";
   font-weight: normal;
   font-size: 16px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   margin-right: 5px;
   position: relative;
   top: 0px;
@@ -727,7 +727,7 @@ table.configuration-list tr td:last-child a:before {
   content: "n";
   font-weight: normal;
   font-size: 16px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   margin-right: 5px;
   position: relative;
   top: 0px;
@@ -822,7 +822,7 @@ table.configuration-list tr td:last-child a:before {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
 }
 .multiselect-holder input[type="button"]:hover {
   color: #7bb730 !important;
@@ -1335,7 +1335,7 @@ table.configuration-list tr td:last-child a:before {
   content: "n";
   font-weight: normal;
   font-size: 16px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   margin-right: 5px;
   position: relative;
   top: 0px;
@@ -1725,7 +1725,7 @@ table.configuration-list tr td:last-child a:before {
 #HomeDashboardPortletSelectionView ul span {
   font-weight: normal;
   font-size: 16px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   color: #fff;
   width: 14px;
   height: 14px;
@@ -1829,7 +1829,7 @@ table.configuration-list tr td:last-child a:before {
   content: "Y";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
 }
 .fileupload-content .files {
   margin-top: 15px;
@@ -1847,7 +1847,7 @@ table.configuration-list tr td:last-child a:before {
   content: "_";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-align: right;
   float: right;
 }
@@ -1855,7 +1855,7 @@ table.configuration-list tr td:last-child a:before {
   content: "_";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
 }
 .fileupload-content .ui-button-text {
   vertical-align: top;
@@ -2829,7 +2829,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "_";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-indent: 0;
   display: block;
   float: right;
@@ -2841,7 +2841,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "S";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-indent: 0;
   display: block;
   float: right;
@@ -2853,7 +2853,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "Y";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-indent: 0;
   display: block;
   float: right;
@@ -2868,7 +2868,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "(";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-indent: 0;
   display: block;
   float: right;
@@ -2883,7 +2883,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "n";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-indent: 0;
   display: block;
   float: right;
@@ -3016,7 +3016,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "o";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   margin-right: 3px;
   position: relative;
   top: 1px;
@@ -3047,7 +3047,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "_";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   text-indent: 0 !important;
   color: #A7A7A7;
   -webkit-text-shadow: 0 1px 0 #ffffff;
@@ -3184,13 +3184,17 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   cursor: pointer;
   vertical-align: middle;
 }
-@font-face {
-  font-family: 'ZurmoGamificationSymblyRegular-Regular';
-  src: url('../fonts/zurmogamificationsymblyregular-regular.eot');
-  src: url('../fonts/zurmogamificationsymblyregular-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmogamificationsymblyregular-regular.woff') format('woff'), url('../fonts/zurmogamificationsymblyregular-regular.ttf') format('truetype'), url('../fonts/zurmogamificationsymblyregular-regular.svg#zurmogamificationsymblyregular-regular') format('svg');
-  font-weight: normal;
-  font-style: normal;
+/*@font-face {
+    font-family: 'ZurmoGamificationSymblyRegular-Regular';
+    src: url('../fonts/zurmogamificationsymblyregular-regular.eot');
+    src: url('../fonts/zurmogamificationsymblyregular-regular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/zurmogamificationsymblyregular-regular.woff') format('woff'),
+         url('../fonts/zurmogamificationsymblyregular-regular.ttf') format('truetype'),
+         url('../fonts/zurmogamificationsymblyregular-regular.svg#zurmogamificationsymblyregular-regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
+*/
 #LeaderboardView .items td:first-child,
 #LeaderboardView .items th:first-child {
   padding-left: 15px;
@@ -3199,7 +3203,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "w";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -3215,7 +3219,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "w";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -3231,7 +3235,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "t";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -3380,7 +3384,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .badge .badge-icon:before {
   position: relative;
-  top: -12px;
+  top: -2px;
 }
 .badge .badge-grade {
   font-size: 11;
@@ -3852,9 +3856,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   width: 100%;
 }
 @font-face {
-  font-family: 'ZurmoSymblyRegular';
-  src: url('../fonts/zurmosymblyregular-regular-webfont.eot');
-  src: url('../fonts/zurmosymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmosymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmosymblyregular-regular-webfont.ttf') format('truetype');
+  font-family: 'ZurmoGamificationSymblyRegular-Regular';
+  src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
+  src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;/*url('../fonts/zurmosymblyregular-regular-webfont.svg#ZurmoSymblyRegular') format('svg');*/
 }
@@ -4309,7 +4313,7 @@ section {
   color: #d4d5e3;
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   margin-top: 1px;
 }
 #settings-header-menu ul {
@@ -4721,7 +4725,7 @@ section {
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
   -o-text-shadow: none !important;
@@ -4888,7 +4892,7 @@ section {
 .icon-edit:before {
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -4904,7 +4908,7 @@ section {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -4920,7 +4924,7 @@ section {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -4937,7 +4941,7 @@ section {
   content: ")";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -4954,7 +4958,7 @@ section {
   content: "2";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -4970,7 +4974,7 @@ section {
   content: "y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -4986,7 +4990,7 @@ section {
   content: "E";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5002,7 +5006,7 @@ section {
   content: "u";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5018,7 +5022,7 @@ section {
   content: "x";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5034,7 +5038,7 @@ section {
   content: "_";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5050,7 +5054,7 @@ section {
   content: "8";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5066,7 +5070,7 @@ section {
   content: "7";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5082,7 +5086,7 @@ section {
   content: "0";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5098,7 +5102,7 @@ section {
   content: "C";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5114,7 +5118,7 @@ section {
   content: "e";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5130,7 +5134,7 @@ section {
   content: "J";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5146,7 +5150,7 @@ section {
   content: "I";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5162,7 +5166,7 @@ section {
   content: "n";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5178,7 +5182,7 @@ section {
   content: "F";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -5333,7 +5337,7 @@ table.items thead tr:hover {
   margin-top: -2px;
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   visibility: hidden;
 }
 .juiportlet-widget .empty {
@@ -5578,7 +5582,7 @@ table.items thead tr:hover {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -6269,7 +6273,7 @@ div.wide.form label.hasCheckBox {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   margin-left: 7px;
   position: relative;
   top: 2px;
@@ -6301,7 +6305,7 @@ div.wide.form label.hasCheckBox {
   content: "U";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   margin-left: 1px;
   position: relative;
   top: 2px;
@@ -6382,7 +6386,7 @@ div.wide.form label.hasCheckBox {
   content: "K";
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   position: relative;
   top: 4px;
   margin-right: 3px;
@@ -6838,7 +6842,7 @@ div.wide.form label.hasCheckBox {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   padding: 0 0 0 0;
   margin: 0 10px 0 0;
   line-height: 100%;
@@ -7178,7 +7182,7 @@ div.hasHalfs .twoThirds {
 .pager .hidden.previous {
   font-weight: normal;
   font-size: 16px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
 }
 .pager .next a:after,
 .pager .hidden.next:after {
@@ -7248,7 +7252,7 @@ div.hasHalfs .twoThirds {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   line-height: 28px;
 }
 .LatestActivitiesListView form,
@@ -7434,7 +7438,7 @@ div.hasHalfs .twoThirds {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   line-height: 28px;
 }
 .LatestActivitiesListView .Task:after,
@@ -7445,7 +7449,7 @@ div.hasHalfs .twoThirds {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   line-height: 28px;
 }
 .LatestActivitiesListView .Meeting:after,
@@ -7456,7 +7460,7 @@ div.hasHalfs .twoThirds {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   line-height: 28px;
 }
 .vertical-forward-pager {
@@ -7480,7 +7484,7 @@ div.hasHalfs .twoThirds {
 .vertical-forward-pager:after {
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoSymblyRegular", sans-serif;
+  font-family: "ZurmoGamificationSymblyRegular-Regular", sans-serif;
   content: "6";
 }
 .vertical-forward-pager span {
