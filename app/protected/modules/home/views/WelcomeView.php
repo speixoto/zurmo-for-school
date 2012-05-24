@@ -24,20 +24,103 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View to display to users upon login.  Shows informatin such as tips, helpful links and ideas of what to do.
+     */
     class WelcomeView extends View
     {
+        protected $tipContent;
+
+        protected $splashImageName;
+
+        protected $hasDashboardAccess;
+
+        protected static function renderHelpfulLinksContent()
+        {
+            $content  = '<div>';
+            $content .= '<h3>' . Yii::t('Default', 'Helpful Links') . '</h3>';
+            $content .= '<ul>';
+            $content .= '<li>' . CHtml::link(Yii::t('Default', 'Join the forum'), 'http://www.zurmo.org/forums') . '</li>';
+            $content .= '<li>' . CHtml::link(Yii::t('Default', 'Read the wiki'),  'http://zurmo.org/wiki') . '</li>';
+            $content .= '<li>' . CHtml::link(Yii::t('Default', 'View a tutorial'), 'http://www.zurmo.org/tutorials') . '</li>';
+            $content .= '<li>' . CHtml::link(Yii::t('Default', 'Watch a video'), 'http://zurmo.org/screencasts') . '</li>';
+            $content .= '</ul>';
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected static function renderSocialLinksContent()
+        {
+            return AboutView::renderSocialLinksContent();
+        }
+
+        public function __construct($tipContent, $splashImageName, $hasDashboardAccess)
+        {
+            assert('is_string($tipContent)');
+            assert('is_array($recommendedActivitiesData)');
+            assert('is_string($splashImageName)');
+            assert('is_bool($hasDashboardAccess)');
+            $this->tipContent                  = $tipContent;
+            $this->splashImageName           = $splashImageName;
+            $this->hasDashboardAccess        = $hasDashboardAccess;
+        }
+
         protected function renderContent()
         {
-            return <<<END
-    <br/>
-    <br/>
-    <br/>
-    <div align='center'>
-    <h2>
-    Welcome to Zurmo. Ask your administrator to turn on the dashboard for you.
-    </h2>
-    </div>
-END;
+            $content  = '<div>';
+            $content .= '<h1>Zurmo Open Source CRM</span></h1>';
+            $content .= '<div id="leftCol">';
+            $content .= static::renderHelpfulLinksContent();
+            $content .= $this->renderTipsContent();
+            $content .= static::renderSocialLinksContent();
+            $content .= '</div>';
+            $content .= '<div id="rightCol">';
+            $content .= $this->renderDashboardLinkContent();
+            $content .= $this->renderSplashImageContent();
+            $content .= $this->renderHideLinkContent();
+            $content .= '</div>';
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected function renderTipsContent()
+        {
+            if($this->tipContent != null)
+            {
+                $content  = '<div>';
+                $content .= '<h3>' . Yii::t('Default', 'Tip of the Day') . '</h3>';
+                $content .= '<ul>';
+                $content .= '<li>' . $this->tipContent . '</li>';
+                $content .= '</ul>';
+                $content .= '</div>';
+                return $content;
+            }
+        }
+
+        protected function renderDashboardLinkContent()
+        {
+            if($this->hasDashboardAccess)
+            {
+                $label    = Yii::t('Default', 'Go to the dashboard');
+                $content  = CHtml::link($label, Yii::app()->createUrl('home/default'));
+                return $content;
+            }
+        }
+
+        protected function renderSplashImageContent()
+        {
+            return 'todo: show image using Chtml::image' . $this->splashImageName;
+        }
+
+        protected function renderHideLinkContent()
+        {
+            if($this->hasDashboardAccess)
+            {
+                $label    = Yii::t('Default', 'Don\'t show me this screen again');
+                $content  = CHtml::link($label, Yii::app()->createUrl('home/default/hideWelcome'));
+                $content .= '<br/><i>(' . Yii::t('Default', 'Don\'t worry you can turn it on again') . ')</i>';
+                return $content;
+            }
         }
     }
 ?>

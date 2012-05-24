@@ -31,7 +31,7 @@
             return array_merge(parent::filters(),
                 array(
                     array(
-                        ZurmoBaseController::RIGHTS_FILTER_PATH . ' - index',
+                        ZurmoBaseController::RIGHTS_FILTER_PATH . ' - index, welcome, hideWelcome',
                         'moduleClassName' => 'HomeModule',
                         'rightName' => HomeModule::RIGHT_ACCESS_DASHBOARDS,
                    ),
@@ -51,6 +51,7 @@
 
         public function actionIndex()
         {
+            echo'aaa';
             if (RightsUtil::doesUserHaveAllowByRightName(
                 'HomeModule',
                 HomeModule::RIGHT_ACCESS_DASHBOARDS,
@@ -60,10 +61,44 @@
             }
             else
             {
-                $view = new HomePageView(ZurmoDefaultViewUtil::
-                                             makeStandardViewForCurrentUser($this, new WelcomeView()));
-                echo $view->render();
+                $this->actionWelcome();
             }
+        }
+
+        public function actionWelcome()
+        {
+            $hasDashboardAccess = true;
+            if (!RightsUtil::doesUserHaveAllowByRightName(
+            'HomeModule',
+            HomeModule::RIGHT_ACCESS_DASHBOARDS,
+            Yii::app()->user->userModel))
+            {
+                $hasDashboardAccess = false;
+            }
+            if(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue(Yii::app()->user->userModel))
+            {
+                //If you can see dashboards, then go there, otherwise stay here since the user has limited access.
+                if($hasDashboardAccess)
+                {
+                    $this->redirect(array($this->getId() . '/index'));
+                }
+            }
+            $tipContent                = ZurmoTipsUtil::getSingleRandomTipContent();
+            $welcomeImageNames         = require(Yii::getPathOfAlias('application.modules.zurmo.utils.ZurmoWelcomeImages') . '.php');
+            $splashImageName           = $welcomeImageNames[array_rand($welcomeImageNames, 1)];
+            $welcomeView               = new WelcomeView($tipContent, $splashImageName, $hasDashboardAccess);
+            $view                      = new HomePageView(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $welcomeView));
+            echo $view->render();
+        }
+
+        public function actionHideWelcome()
+        {
+            $configurationForm = UserConfigurationFormAdapter::
+                                 makeFormFromUserConfigurationByUser(Yii::app()->user->userModel);
+            $configurationForm->hideWelcomeView = true;
+            UserConfigurationFormAdapter::setConfigurationFromForm($configurationForm, Yii::app()->user->userModel);
+            $this->redirect(array($this->getId() . '/index'));
         }
 
         public function actionDashboardDetails($id)
