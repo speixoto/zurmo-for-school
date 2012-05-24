@@ -388,7 +388,7 @@
                     Yii::app()->user->setFlash('notification',
                         Yii::t('Default', 'User configuration saved successfully.')
                     );
-                    $this->redirect(array($this->getId() . '/index'));
+                    $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
                 }
             }
             $titleBarAndEditView = new UserActionBarAndConfigurationEditView(

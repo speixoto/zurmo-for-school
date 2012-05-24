@@ -57,7 +57,6 @@
         public function __construct($tipContent, $splashImageName, $hasDashboardAccess)
         {
             assert('is_string($tipContent)');
-            assert('is_array($recommendedActivitiesData)');
             assert('is_string($splashImageName)');
             assert('is_bool($hasDashboardAccess)');
             $this->tipContent                  = $tipContent;

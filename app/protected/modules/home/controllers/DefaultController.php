@@ -51,7 +51,6 @@
 
         public function actionIndex()
         {
-            echo'aaa';
             if (RightsUtil::doesUserHaveAllowByRightName(
                 'HomeModule',
                 HomeModule::RIGHT_ACCESS_DASHBOARDS,
