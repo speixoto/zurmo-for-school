@@ -197,25 +197,32 @@
             {
                 return;
             }
-            static::resolveLevelChangeByType(GameLevel::TYPE_SALES);
-            static::resolveLevelChangeByType(GameLevel::TYPE_NEW_BUSINESS);
-            static::resolveLevelChangeByType(GameLevel::TYPE_ACCOUNT_MANAGEMENT);
-            static::resolveLevelChangeByType(GameLevel::TYPE_TIME_MANAGEMENT);
-            static::resolveLevelChangeByType(GameLevel::TYPE_COMMUNICATION);
-            static::resolveLevelChangeByType(GameLevel::TYPE_GENERAL);
+            $pointSumsIndexedByType = GamePoint::getSummationPointsDataByUserIndexedByLevelType(Yii::app()->user->userModel);
+            $types                  = array(GameLevel::TYPE_SALES,
+                                            GameLevel::TYPE_NEW_BUSINESS,
+                                            GameLevel::TYPE_ACCOUNT_MANAGEMENT,
+                                            GameLevel::TYPE_TIME_MANAGEMENT,
+                                            GameLevel::TYPE_COMMUNICATION,
+                                            GameLevel::TYPE_GENERAL);
+            $gameLevelsByType       = GameLevel::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, $types);
+            foreach($gameLevelsByType as $type => $gameLevel)
+            {
+                static::resolveLevelChangeByType($type, $gameLevel, $pointSumsIndexedByType);
+            }
         }
 
-        protected function resolveLevelChangeByType($levelType)
+        protected function resolveLevelChangeByType($levelType, GameLevel $currentGameLevel, $pointSumsIndexedByType)
         {
             assert('is_string($levelType) && $levelType != null');
-            $currentGameLevel    = GameLevel::resolveByTypeAndPerson($levelType, Yii::app()->user->userModel);
+            assert('is_array($pointSumsIndexedByType)');
             $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel($levelType,
                                                                                               $currentGameLevel);
             $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
                                                                                     $currentGameLevel);
-
-            if ($nextLevel !== false &&
-               GamePoint::doesUserExceedPointsByLevelType(Yii::app()->user->userModel, $nextLevelPointValue, $levelType))
+            if ($nextLevel !== false
+                && isset($pointSumsIndexedByType[$levelType])
+                && $pointSumsIndexedByType[$levelType] > $nextLevelPointValue
+               )
             {
                 $currentGameLevel->value = $nextLevel;
                 $saved = $currentGameLevel->save();

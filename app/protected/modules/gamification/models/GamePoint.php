@@ -247,6 +247,26 @@
         }
 
         /**
+         * Performance function to grab all summation data by type for a given user.
+         * @param User $user
+         * @return array of summation points indexed by the level type
+         */
+        public static function getSummationPointsDataByUserIndexedByLevelType(User $user)
+        {
+            assert('$user->id > 0');
+            assert('is_string($levelType) && $levelType != null');
+            $sql       = "select type, sum(value) sum from gamepoint where person_item_id = " .
+                         $user->getClassId('Item') . " group by type";
+            $rows      = R::getAll($sql);
+            $indexedData = array();
+            foreach($rows as $row)
+            {
+                $indexedData[$row['type']] = $row['sum'];
+            }
+            return $indexedData;
+        }
+
+        /**
          * Given a level type, get the corresponding where sql part to filter by point type if applicable.  Level types
          * match point types for now, so if the level type is not valid then it will thrown an exception.
          * @param string $levelType
