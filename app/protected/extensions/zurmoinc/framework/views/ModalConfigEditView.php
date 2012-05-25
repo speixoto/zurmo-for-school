@@ -74,22 +74,27 @@
             $cs = Yii::app()->getClientScript();
             $cs->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets') . '/Modal.js'
-                    ),
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets')
+                    ) . '/Modal.js',
                 CClientScript::POS_END
             );
             $cs->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/FormUtils.js'
-                    ),
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
+                    ) . '/FormUtils.js',
                 CClientScript::POS_END
             );
 
             $content .= $formStart;
             $content .= $this->renderFormLayout($form);
-            $content .= '<div class="modal-view-toolbar">';
-            $content .= $this->renderActionElementBar(true);
-            $content .= '</div>';
+            $content .= $this->renderAfterFormLayout($form);
+            $actionElementContent = $this->renderActionElementBar(true);
+            if ($actionElementContent != null)
+            {
+                $content .= '<div class="view-toolbar-container clearfix"><div class="modal-view-toolbar">';
+                $content .= $actionElementContent;
+                $content .= '</div></div>';
+            }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= '</div>';

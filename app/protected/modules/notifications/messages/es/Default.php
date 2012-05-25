@@ -31,12 +31,10 @@
     return array(
         'A simple notification'
             => 'Una simple notificación',
+        'Delete Notification'
+            => 'Eliminar la notificación',
         'Html Content'
             => 'Código HTML',
-        'Is Read'
-            => 'isRead',
-        'Is Read must be set as true or false, not null.'
-            => 'El atributo isRead no puede ser nulo.',
         'Notification'
             => 'Notificación',
         'Notification Message'
@@ -45,8 +43,10 @@
             => 'Lista de las notificaciones',
         'Text Content'
             => 'Contenido del texto',
-        'Unread'
-            => 'No leído',
+        'There are no recent notifications.'
+            => 'No hay notificaciones recientes.',
+        'View All Notifications'
+            => 'Ver todas las notificaciones',
         'You have a new notification'
             => 'Nueva notificación',
     );

@@ -39,7 +39,7 @@
          * True/false to decide if each row in the list view widget
          * will have a checkbox.
          */
-        protected $rowsAreSelectable;
+        protected $rowsAreSelectable = false;
 
         /**
          * Unique identifier of the list view widget. Allows for multiple list view
@@ -56,16 +56,10 @@
 
         /**
          * Array of model ids. Each id is for a different row checked off
-         * @see selectAll
          */
         protected $selectedIds;
 
-        /**
-         * True/false whether to select the entire results of a list view display or not.
-         * If set to true, then the selectedIds value will become null.
-         * @see selectedIds
-         */
-        protected $selectAll;
+        private $resolvedMetadata;
 
         /**
          * Constructs a list view specifying the controller as
@@ -77,12 +71,10 @@
             $modelClassName,
             $dataProvider,
             $selectedIds,
-            $selectAll,
             $gridIdSuffix = null
         )
         {
             assert('is_array($selectedIds)');
-            assert('is_bool($selectAll)');
             assert('is_string($modelClassName)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
@@ -90,7 +82,6 @@
             $this->dataProvider           = $dataProvider;
             $this->rowsAreSelectable      = true;
             $this->selectedIds            = $selectedIds;
-            $this->selectAll              = $selectAll;
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridId                 = 'list-view';
         }
@@ -105,16 +96,25 @@
         {
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ListView");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.ExtendedGridView', $this->getCGridViewParams());
+            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content = $this->renderViewToolBar();
             $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->rowsAreSelectable)
             {
                 $content .= CHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
-                $content .= CHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectAll', $this->selectAll) . "\n";
             }
             return $content;
+        }
+
+        protected function getGridViewWidgetPath()
+        {
+            return 'ext.zurmoinc.framework.widgets.ExtendedGridView';
+        }
+
+        public function getRowsAreSelectable()
+        {
+            return $this->rowsAreSelectable;
         }
 
         protected function getCGridViewParams()
@@ -122,33 +122,50 @@
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
             return array(
-                'id' => $this->gridId . $this->gridIdSuffix,
+                'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
                     'class' => 'cgrid-view'
                 ),
-                'loadingCssClass' => 'cgrid-view-loading',
-                'dataProvider' => $this->getDataProvider(),
-                'selectableRows' => $this->getCGridViewSelectableRowsCount(),
-                'selectAll' => $this->selectAll,
-                'pager' => $this->getCGridViewPagerParams(),
+                'loadingCssClass'  => 'cgrid-view-loading',
+                'dataProvider'     => $this->getDataProvider(),
+                'selectableRows'   => $this->getCGridViewSelectableRowsCount(),
+                'pager'            => $this->getCGridViewPagerParams(),
                 'beforeAjaxUpdate' => $this->getCGridViewBeforeAjaxUpdate(),
                 'afterAjaxUpdate'  => $this->getCGridViewAfterAjaxUpdate(),
-                'cssFile' => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
-                'columns' => $columns,
-                'nullDisplay' => '&#160;',
-                'massActionMenu' => $this->getMassActionMenuForCurrentUser(),
+                'cssFile'          => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
+                'columns'          => $columns,
+                'nullDisplay'      => '&#160;',
+                'showTableOnEmpty' => $this->getShowTableOnEmpty(),
+                'emptyText'        => $this->getEmptyText(),
+                'template'         => "\n{items}\n{pager}",
             );
         }
 
         protected function getCGridViewPagerParams()
         {
             return array(
-                    'cssFile' => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
-                    'firstPageLabel' => '&lt;&lt;',
-                    'prevPageLabel' => '&lt;',
-                    'nextPageLabel' => '&gt;',
-                    'lastPageLabel' => '&gt;&gt;',
+                    'cssFile'          => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
+                    'prevPageLabel'    => '<span>previous</span>',
+                    'nextPageLabel'    => '<span>next</span>',
+                    'class'            => 'EndlessListLinkPager',
+                    'paginationParams' => GetUtil::getData(),
+                    'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
                 );
+        }
+
+        protected function getShowTableOnEmpty()
+        {
+            return true;
+        }
+
+        protected function getEmptyText()
+        {
+            return null;
+        }
+
+        public function getGridViewId()
+        {
+            return $this->gridId . $this->gridIdSuffix;
         }
 
         /**
@@ -160,16 +177,8 @@
             $columns = array();
             if ($this->rowsAreSelectable)
             {
-                if ($this->selectAll)
-                {
-                    $checked = 'true';
-                    $checkBoxHtmlOptions = array('disabled' => 'disabled');
-                }
-                else
-                {
-                    $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
-                    $checkBoxHtmlOptions = array();
-                }
+                $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
+                $checkBoxHtmlOptions = array();
                 $firstColumn = array(
                     'class'               => 'CheckBoxColumn',
                     'checked'             => $checked,
@@ -178,7 +187,12 @@
                 );
                 array_push($columns, $firstColumn);
             }
-            $metadata = $this->resolveMetadata();
+            $lastColumn = $this->getCGridViewLastColumn();
+            if (!empty($lastColumn))
+            {
+                array_push($columns, $lastColumn);
+            }
+            $metadata = $this->getResolvedMetadata();
             foreach ($metadata['global']['panels'] as $panel)
             {
                 foreach ($panel['rows'] as $row)
@@ -189,16 +203,17 @@
                         {
                             $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
                             $columnAdapter  = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
-                            array_push($columns, $columnAdapter->renderGridViewData());
+                            $column = $columnAdapter->renderGridViewData();
+                            if (!isset($column['class']))
+                            {
+                                $column['class'] = 'DataColumn';
+                            }
+                            array_push($columns, $column);
                         }
                     }
                 }
             }
-            $lastColumn = $this->getCGridViewLastColumn();
-            if (!empty($lastColumn))
-            {
-                array_push($columns, $lastColumn);
-            }
+
             return $columns;
         }
 
@@ -207,11 +222,21 @@
             return self::getMetadata();
         }
 
+        protected function getResolvedMetadata()
+        {
+            if ($this->resolvedMetadata != null)
+            {
+                return $this->resolvedMetadata;
+            }
+            $this->resolvedMetadata = $this->resolveMetadata();
+            return $this->resolvedMetadata;
+        }
+
         protected function getCGridViewBeforeAjaxUpdate()
         {
             if ($this->rowsAreSelectable)
             {
-                return 'js:function(id, options) {addListViewSelectedIdsAndSelectAllToUrl(id, options);}';
+                return 'js:function(id, options) {addListViewSelectedIdsToUrl(id, options);}';
             }
             else
             {
@@ -221,7 +246,13 @@
 
         protected function getCGridViewAfterAjaxUpdate()
         {
-            return 'js:function(id, data) {processAjaxSuccessError(id, data);}';
+            // Begin Not Coding Standard
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                        var $data = $(data);
+                        jQuery.globalEval($data.filter("script").last().text());
+                    }';
+            // End Not Coding Standard
         }
 
         /**
@@ -272,11 +303,14 @@
             $url  = 'Yii::app()->createUrl("' . $this->getGridViewActionRoute('edit');
             $url .= '", array("id" => $data->id))';
             return array(
-                'class'           => 'CButtonColumn',
+                'class'           => 'ButtonColumn',
                 'template'        => '{update}',
                 'buttons' => array(
                     'update' => array(
                     'url' => $url,
+                    'imageUrl'        => false,
+                    'options'         => array('class' => 'pencil', 'title' => 'Update'),
+                    'label'           => '!'
                     ),
                 ),
             );
@@ -315,18 +349,6 @@
         public static function getDesignerRulesType()
         {
             return 'ListView';
-        }
-
-        protected function getMassActionMenuForCurrentUser()
-        {
-            if (Right::ALLOW == Yii::app()->user->userModel->getEffectiveRight(
-                    'ZurmoModule', ZurmoModule::RIGHT_BULK_WRITE))
-            {
-                return array(
-                    ''           => Yii::t('Default', 'Perform Action'),
-                    'massEdit'   => Yii::t('Default', 'Update Selected'),
-                );
-            }
         }
 
         /**

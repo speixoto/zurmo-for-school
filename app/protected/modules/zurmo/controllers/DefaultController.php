@@ -103,7 +103,8 @@
 
         public function actionAbout()
         {
-            $view = new AboutPageView($this);
+            $view = new AboutPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, new AboutView()));
             echo $view->render();
         }
 
@@ -123,29 +124,25 @@
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }
-            $titleBarAndEditView = new TitleBarAndConfigurationEditAndDetailsView(
+            $editView = new ZurmoConfigurationEditAndDetailsView(
+                                    'Edit',
                                     $this->getId(),
                                     $this->getModule()->getId(),
-                                    $configurationForm,
-                                    'ZurmoConfigurationEditAndDetailsView',
-                                    'Edit',
-                                    Yii::t('Default', 'Global Configuration')
-            );
-            $view = new ZurmoConfigurationPageView($this, $titleBarAndEditView);
+                                    $configurationForm);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                         makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
-        }
-
-        public function actionRecentlyViewed()
-        {
-            echo AuditEventsRecentlyViewedUtil::getRecentlyViewedAjaxContentByUser(Yii::app()->user->userModel, 10);
         }
 
         public function actionGlobalSearchAutoComplete($term)
         {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+            $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
+            $pageSize  = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
             $autoCompleteResults = ModelAutoCompleteUtil::
-                                   getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel);
+                                   getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
+                                                                       $scopeData);
             echo CJSON::encode($autoCompleteResults);
         }
 
@@ -165,8 +162,7 @@
             {
                 $data = 'No Results Found';
                 $autoCompleteResults[] = array('id'    => '',
-                                               'value' => '',
-                                               'label' => $data,
+                                               'name' => $data
                 );
             }
             echo CJSON::encode($autoCompleteResults);

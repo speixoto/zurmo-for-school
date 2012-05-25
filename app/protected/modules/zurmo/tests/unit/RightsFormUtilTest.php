@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class RightsFormUtilTest extends BaseTest
+    class RightsFormUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -120,6 +120,14 @@
                     ),
                     'RIGHT_ACCESS_CONFIGURATION'   => array(
                         'displayName' => EmailMessagesModule::RIGHT_ACCESS_CONFIGURATION,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ExportModule'  => array(
+                    'RIGHT_ACCESS_EXPORT'   => array(
+                        'displayName' => ExportModule::RIGHT_ACCESS_EXPORT,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -349,19 +357,19 @@
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_WEB'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_WEB,
+                        'displayName' => 'Sign in Via Web',
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_MOBILE'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_MOBILE,
+                        'displayName' => 'Sign in Via Mobile',
                         'explicit'    => Right::ALLOW,
                         'inherited'   => null,
                         'effective'   => Right::ALLOW,
                     ),
                     'RIGHT_LOGIN_VIA_WEB_API'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_WEB_API,
+                        'displayName' => 'Sign in Via Web API',
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -472,6 +480,14 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ExportModule'  => array(
+                    'RIGHT_ACCESS_EXPORT'   => array(
+                        'displayName' => ExportModule::RIGHT_ACCESS_EXPORT,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'HomeModule' => array(
                     'RIGHT_CREATE_DASHBOARDS'   => array(
                         'displayName' => HomeModule::RIGHT_CREATE_DASHBOARDS,
@@ -696,19 +712,19 @@
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_WEB'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_WEB,
+                        'displayName' => 'Sign in Via Web',
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_MOBILE'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_MOBILE,
+                        'displayName' => 'Sign in Via Mobile',
                         'explicit'    => Right::ALLOW,
                         'inherited'   => null,
                         'effective'   => Right::ALLOW,
                     ),
                     'RIGHT_LOGIN_VIA_WEB_API'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_WEB_API,
+                        'displayName' => 'Sign in Via Web API',
                         'explicit'    => null,
                         'inherited'   => Right::ALLOW,
                         'effective'   => Right::ALLOW,
@@ -815,6 +831,14 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ExportModule'  => array(
+                    'RIGHT_ACCESS_EXPORT'   => array(
+                        'displayName' => ExportModule::RIGHT_ACCESS_EXPORT,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'HomeModule' => array(
                     'RIGHT_CREATE_DASHBOARDS'   => array(
                         'displayName' => HomeModule::RIGHT_CREATE_DASHBOARDS,
@@ -1039,19 +1063,19 @@
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_WEB'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_WEB,
+                        'displayName' => 'Sign in Via Web',
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_MOBILE'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_MOBILE,
+                        'displayName' => 'Sign in Via Mobile',
                         'explicit'    => Right::ALLOW,
                         'inherited'   => null,
                         'effective'   => Right::ALLOW,
                     ),
                     'RIGHT_LOGIN_VIA_WEB_API'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_WEB_API,
+                        'displayName' => 'Sign in Via Web API',
                         'explicit'    => null,
                         'inherited'   => Right::ALLOW,
                         'effective'   => Right::ALLOW,
@@ -1157,6 +1181,14 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ExportModule'  => array(
+                    'RIGHT_ACCESS_EXPORT'   => array(
+                        'displayName' => ExportModule::RIGHT_ACCESS_EXPORT,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'HomeModule' => array(
                     'RIGHT_CREATE_DASHBOARDS'   => array(
                         'displayName' => HomeModule::RIGHT_CREATE_DASHBOARDS,
@@ -1381,19 +1413,19 @@
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_WEB'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_WEB,
-                        'explicit'   => Right::DENY,
+                        'displayName' => 'Sign in Via Web',
+                        'explicit'    => Right::DENY,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_MOBILE'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_MOBILE,
+                        'displayName' => 'Sign in Via Mobile',
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
                     ),
                     'RIGHT_LOGIN_VIA_WEB_API'   => array(
-                        'displayName' => UsersModule::RIGHT_LOGIN_VIA_WEB_API,
+                        'displayName' => 'Sign in Via Web API',
                         'explicit'    => Right::ALLOW,
                         'inherited'   => Right::ALLOW,
                         'effective'   => Right::ALLOW,

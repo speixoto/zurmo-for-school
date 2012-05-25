@@ -55,7 +55,7 @@
             // modules, and because ZurmoModule is the root of the module
             // dependence hierarchy it needed concern itself, other than
             // with the models that are specific to itself.
-            return array('NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet', 'CustomFieldData',
+            return array('AuditEvent', 'NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet', 'CustomFieldData',
                          'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata');
         }
 
@@ -88,22 +88,30 @@
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Your Profile',
-                        'route' => 'users/default/profile',
-                    ),
-                    array(
-                        'label' => 'Admin',
-                        'route' => 'configuration',
+                        'label' => 'Settings',
+                        'url' => array('/configuration'),
                         'right' => self::RIGHT_ACCESS_ADMINISTRATION,
+                        'order' => 6,
                     ),
                     array(
-                        'label' => 'About',
-                        'route' => 'zurmo/default/about',
+                        'label' => 'Forums',
+                        'url' => 'http://zurmo.org/forums/',
+                        'order' => 7,
                     ),
                     array(
-                        'label' => 'Logout',
-                        'route' => 'zurmo/default/logout',
+                        'label' => 'About Zurmo',
+                        'url' => array('/zurmo/default/about'),
+                        'order' => 8,
                     ),
+                ),
+                'adminTabMenuItemsModuleOrdering' => array(
+                    'home',
+                    'designer',
+                    'import',
+                    'groups',
+                    'users',
+                    'roles',
+                    'configuration'
                 ),
                 'tabMenuItemsModuleOrdering' => array(
                     'home',

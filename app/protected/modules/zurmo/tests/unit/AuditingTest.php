@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AuditingTest extends BaseTest
+    class AuditingTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -37,6 +37,14 @@
             $user->lastName  = 'Boondog';
             assert($user->save()); // Not Coding Standard
             assert(AuditEvent::getCount() == 4); // Not Coding Standard
+            ContactsModule::loadStartingData();
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
+        }
+
+        public static function tearDownAfterClass()
+        {
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+            parent::tearDownAfterClass();
         }
 
         public function testLogAuditForOwnedMultipleValuesCustomField()
@@ -85,7 +93,7 @@
                 $this->assertRegExp('/[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+ [AP]M, '   .    // Not Coding Standard
                                 'James Boondog, Item Modified, '                      .
                                 'TestOwnedCustomFieldsModel\([0-9]+\), \(None\), '    .    // Not Coding Standard
-                                'Changed Multiple Industries Values from \(None\) to C/',  // Not Coding Standard
+                                'Changed Multiple Industries Values from  to C/',  // Not Coding Standard
                                 ZurmoModule::stringifyAuditEvent($AuditEventsList[1]));
                 $this->assertRegExp('/[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+ [AP]M, '   .    // Not Coding Standard
                                 'James Boondog, Item Modified, '                      .
@@ -487,13 +495,13 @@
             $this->assertEquals(0, count($auditEvents));
 
             //Now create some audit entries for the Item Viewed event.
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, strval($account1), $account1);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, strval($account2), $account2);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, strval($account1), $account1);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account1), 'AccountsModule'), $account1);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account2), 'AccountsModule'), $account2);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account1), 'AccountsModule'), $account1);
 
             //Switch users to add an audit event.
             Yii::app()->user->userModel = User::getByUsername('jimmy');
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, strval($account3), $account3);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account3), 'AccountsModule'), $account3);
             Yii::app()->user->userModel = User::getByUsername('super');
 
             $auditEvents = AuditEvent::getTailDistinctEventsByEventName('Item Viewed', Yii::app()->user->userModel, 5);

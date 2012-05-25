@@ -74,15 +74,15 @@
             }
             if (!empty($postalCode))
             {
-                $content .= Yii::app()->format->text($postalCode) . "<br/>\n";
+                $content .= Yii::app()->format->text($postalCode);
             }
             if (!empty($country))
             {
-                $content .= Yii::app()->format->text($country);
+                $content .= "<br/>\n" . Yii::app()->format->text($country);
             }
             if (!$invalid && $addressModel->makeAddress() != '')
             {
-                $content .= '&#160;' . $this->renderMapLink($addressModel);
+                $content .= $this->renderMapLink($addressModel);
             }
             return $content;
         }
@@ -97,15 +97,19 @@
         {
             assert('$this->model->{$this->attribute} instanceof Address');
             $addressModel = $this->model->{$this->attribute};
-            $content      = '';
-            foreach (array('street1', 'street2', 'city', 'state', 'postalCode', 'country') as $attribute)
-            {
-                $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, $attribute) . "<br/>\n";
-            }
-            return $content;
+            $content  = $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'street1')          . "\n";
+            $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'street2')          . "\n";
+            $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'city')             . "\n";
+            $content .= '<div class="hasHalfs">';
+            $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'state', true)      . "\n";
+            $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'postalCode', true) . "\n";
+      $content .= '</div>';
+            $content .= $this->renderEditableAddressTextField($addressModel, $this->form, $this->attribute, 'country')          . "\n";
+            return '<div class="address-fields">' . $content . '</div>';
         }
 
-        protected function renderEditableAddressTextField($model, $form, $inputNameIdPrefix, $attribute)
+        protected function renderEditableAddressTextField($model, $form, $inputNameIdPrefix, $attribute,
+                                                          $renderAsHalfSize = false)
         {
             $id          = $this->getEditableInputId($inputNameIdPrefix, $attribute);
             $htmlOptions = array(
@@ -115,7 +119,16 @@
             $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
             $textField   = $form->textField($model, $attribute, $htmlOptions);
             $error       = $form->error    ($model, $attribute);
-            return $label . "<br/>\n" . $textField . $error;
+            if ($model->$attribute != null)
+            {
+                 $label = null;
+            }
+            $halfClassString = null;
+            if ($renderAsHalfSize)
+            {
+                $halfClassString = ' half';
+            }
+            return CHtml::tag('div', array('class' => 'overlay-label-field' . $halfClassString), $label . $textField . $error);
         }
 
          /**
@@ -128,8 +141,8 @@
             assert('$addressModel instanceof Address');
             Yii::app()->getClientScript()->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets') . '/Modal.js'
-                    ),
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets')
+                    ) . '/Modal.js',
                 CClientScript::POS_END
             );
             $mapRenderUrl = Yii::app()->mappingHelper->resolveMappingLinkUrl(array(
@@ -137,16 +150,14 @@
                                                                          'latitude'      => $addressModel->latitude,
                                                                          'longitude'     => $addressModel->longitude));
             $id           = $this->getEditableInputId($this->attribute, 'MapLink');
-            $content      = '<span>';
-            $content     .= CHtml::ajaxLink(Yii::t('Default', 'map'), $mapRenderUrl, array(
+            $content      = CHtml::ajaxLink(Yii::t('Default', 'map'), $mapRenderUrl, array(
                                 'onclick'    => '$("#modalContainer").dialog("open"); return false;',
                                 'update'     => '#modalContainer',
                                 'beforeSend' => 'js:function(){$(\'#' . $id . '\').parent().addClass(\'modal-model-select-link\');}',
                                 'complete'   => 'js:function(){$(\'#' . $id . '\').parent().removeClass(\'modal-model-select-link\');}'
                                 ),
-                                array('id' => $id)
+                                array('id' => $id, 'class' => 'map-link')
             );
-            $content     .= '</span>';
             return $content;
         }
 

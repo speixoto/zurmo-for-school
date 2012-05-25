@@ -43,8 +43,8 @@
                     ),
                     'derivedAttributeTypes' => array(
                         'NoteActivityItems',
-                        'Files',
                         'DerivedExplicitReadWriteModelPermissions',
+                        'Files'
                     ),
                     'nonPlaceableAttributeNames' => array(
                         'latestDateTime',
@@ -121,10 +121,47 @@
             {
                 $element->editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
             }
+            elseif ($element instanceOf DerivedExplicitReadWriteModelPermissionsElement)
+            {
+                $element->editableTemplate = '<td colspan="{colspan}">' .
+                                             '<div class="permissions-box">{label}<br/>{content}{error}</div></td>';
+            }
+            elseif ($element instanceOf FilesElement)
+            {
+                $element->editableTemplate = '<td colspan="{colspan}">' .
+                                             '<div class="file-upload-box">{content}{error}</div></td>';
+            }
             else
             {
                 $element->editableTemplate = '<td colspan="{colspan}">{label}<br/>{content}{error}</td>';
             }
+        }
+
+        /**
+         * Override to allow the latest activities portlet, if it exists to be refreshed.
+         * (non-PHPdoc)
+         * @see InlineEditView::renderConfigSaveAjax()
+         */
+        protected function renderConfigSaveAjax($formName)
+        {
+            // Begin Not Coding Standard
+            return CHtml::ajax(array(
+                    'type' => 'POST',
+                    'data' => 'js:$("#' . $formName . '").serialize()',
+                    'url'  =>  $this->getValidateAndSaveUrl(),
+                    'update' => '#' . $this->uniquePageId,
+                    'complete' => "function(XMLHttpRequest, textStatus){
+                        //find if there is a latest activities portlet
+                        $('.LatestActivtiesForPortletView').each(function(){
+                            $(this).find('.pager').find('.first').find('a').click();
+                        });}"
+                ));
+            // End Not Coding Standard
+        }
+
+        protected function doesLabelHaveOwnCell()
+        {
+            return false;
         }
     }
 ?>

@@ -48,7 +48,7 @@
                                 $customField->value = $customFieldData->defaultValue;
                             }
                             elseif ($customField instanceof MultipleValuesCustomField &&
-                                 $customField->values->count() == 0 && $setDefaults)
+                                 $customField->values->count() == 0 && $setDefaults && isset($customFieldData->defaultValue))
                             {
                                 $customFieldValue = new CustomFieldValue();
                                 $customFieldValue->value = $customFieldData->defaultValue;
@@ -70,6 +70,7 @@
         protected function constructIncomplete($bean)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
+            parent::constructIncomplete($bean);
             $metadata = $this->getMetadata();
             foreach ($metadata as $unused => $classMetadata)
             {

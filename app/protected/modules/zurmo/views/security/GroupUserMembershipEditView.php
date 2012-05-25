@@ -34,17 +34,19 @@
          * Constructs a user membershipview specifying the controller as
          * well as the model that will have its details displayed.
          */
-        public function __construct($controllerId, $moduleId, $model, $modelId)
+        public function __construct($controllerId, $moduleId, $model, $modelId, $title)
         {
             assert('$controllerId != null');
             assert('$moduleId != null');
             assert('$model instanceof GroupUserMembershipForm');
             assert('$modelId != null');
+            assert('is_string($title) || $title == null');
             $this->controllerId   = $controllerId;
             $this->moduleId       = $moduleId;
             $this->model          = $model;
             $this->modelClassName = get_class($model);
             $this->modelId        = $modelId;
+            $this->title          = $title;
         }
 
         /**

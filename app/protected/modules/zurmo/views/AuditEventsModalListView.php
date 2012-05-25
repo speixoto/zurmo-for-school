@@ -40,6 +40,32 @@
             return array();
         }
 
+        protected function getCGridViewPagerParams()
+        {
+            return array(
+                    'cssFile'          => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
+                    'prevPageLabel'    => '<span>previous</span>',
+                    'nextPageLabel'    => '<span>next</span>',
+                    'paginationParams' => GetUtil::getData(),
+                    'route'            => $this->getGridViewActionRoute('auditEventsModalList', $this->moduleId),
+                    'class'            => 'SimpleListLinkPager',
+                );
+        }
+
+        /**
+         * Override to not run global eval, since it causes doubling up of ajax requests on the pager.
+         * (non-PHPdoc)
+         * @see ListView::getCGridViewAfterAjaxUpdate()
+         */
+        protected function getCGridViewAfterAjaxUpdate()
+        {
+            // Begin Not Coding Standard
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                    }';
+            // End Not Coding Standard
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(

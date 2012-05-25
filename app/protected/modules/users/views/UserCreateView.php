@@ -224,5 +224,15 @@
         {
             return 'UserCreateView';
         }
+
+        protected function renderTitleContent()
+        {
+            return '<h1>' . $this->getNewModelTitleLabel() . '</h1>';
+        }
+
+        protected function getNewModelTitleLabel()
+        {
+            return Yii::t('Default', 'Create User');
+        }
     }
 ?>

@@ -1,3 +1,9 @@
+UI Design
+UI Design/*
+.hgignore
+app/themes/default/fonts/Originals
+app/.settings
+
 app/assets
 developer/api/html
 error_log
@@ -20,3 +26,7 @@ app/protected/config/debug.php
 app/protected/config/perInstanceTest.php
 app/protected/config/debugTest.php
 app/report
+.git
+.DS_Store
+.settings
+README.md

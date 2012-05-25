@@ -33,6 +33,18 @@
         protected $viewData;
         protected $uniqueLayoutId;
 
+        /**
+         * Signal to use ExtendedGridView
+         * @var integer
+         */
+        const GRID_VIEW_TYPE_NORMAL  = 1;
+
+        /**
+         * Signal to use StackedExtendedGridView
+         * @var integer
+         */
+        const GRID_VIEW_TYPE_STACKED = 2;
+
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('isset($params["controllerId"])');
@@ -50,6 +62,30 @@
             $this->gridId            = 'list-view';
             $this->controllerId      = $this->resolveControllerId();
             $this->moduleId          = $this->resolveModuleId();
+        }
+
+        protected function getShowTableOnEmpty()
+        {
+            return false;
+        }
+
+        protected function getEmptyText()
+        {
+            $moduleClassName = static::getModuleClassName();
+            $moduleLabel     = $moduleClassName::getModuleLabelByTypeAndLanguage('PluralLowerCase');
+            return Yii::t('Default', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
+        }
+
+        protected function getGridViewWidgetPath()
+        {
+            $resolvedMetadata = $this->getResolvedMetadata();
+            if (isset($resolvedMetadata['global']['gridViewType']) &&
+                     $resolvedMetadata['global']['gridViewType'] == RelatedListView::GRID_VIEW_TYPE_STACKED)
+             {
+                 return 'ext.zurmoinc.framework.widgets.StackedExtendedGridView';
+             }
+
+            return parent::getGridViewWidgetPath();
         }
 
         protected function makeSearchAttributeData()
@@ -94,21 +130,30 @@
             );
         }
 
-        /**
-         * TODO
-         */
         protected function getCGridViewPagerParams()
         {
             return array(
                     'cssFile' => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
-                    'firstPageLabel' => '&lt;&lt;',
-                    'prevPageLabel'  => '&lt;',
-                    'nextPageLabel'  => '&gt;',
-                    'lastPageLabel'  => '&gt;&gt;',
-                    'class'          => 'LinkPager',
-                    'paginationParams' => array_merge($_GET, array('portletId' => $this->params['portletId'])),
+                    'prevPageLabel' => '<span>previous</span>',
+                    'nextPageLabel' => '<span>next</span>',
+                    'class'          => 'SimpleListLinkPager',
+                    'paginationParams' => array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId'])),
                     'route'         => 'defaultPortlet/details',
                 );
+        }
+
+        /**
+         * Override to not run global eval, since it causes doubling up of ajax requests on the pager.
+         * (non-PHPdoc)
+         * @see ListView::getCGridViewAfterAjaxUpdate()
+         */
+        protected function getCGridViewAfterAjaxUpdate()
+        {
+            // Begin Not Coding Standard
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                    }';
+            // End Not Coding Standard
         }
 
         public function getTitle()

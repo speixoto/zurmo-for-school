@@ -48,6 +48,18 @@
             $this->moduleId          = $this->resolveModuleId();
         }
 
+        protected function getShowTableOnEmpty()
+        {
+            return false;
+        }
+
+        protected function getEmptyText()
+        {
+            $moduleClassName = static::getModuleClassName();
+            $moduleLabel     = $moduleClassName::getModuleLabelByTypeAndLanguage('PluralLowerCase');
+            return Yii::t('Default', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
+        }
+
         protected function makeSearchAttributeData()
         {
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
@@ -129,15 +141,27 @@
         protected function getCGridViewPagerParams()
         {
             return array(
-                    'cssFile' => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
-                    'firstPageLabel' => '&lt;&lt;',
-                    'prevPageLabel'  => '&lt;',
-                    'nextPageLabel'  => '&gt;',
-                    'lastPageLabel'  => '&gt;&gt;',
-                    'class'          => 'LinkPager',
+                    'cssFile'          => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
+                    'prevPageLabel'    => '<span>previous</span>',
+                    'nextPageLabel'    => '<span>next</span>',
                     'paginationParams' => array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId'])),
-                    'route'         => 'defaultPortlet/myListDetails',
+                    'route'            => 'defaultPortlet/myListDetails',
+                    'class'            => 'SimpleListLinkPager',
                 );
+        }
+
+        /**
+         * Override to not run global eval, since it causes doubling up of ajax requests on the pager.
+         * (non-PHPdoc)
+         * @see ListView::getCGridViewAfterAjaxUpdate()
+         */
+        protected function getCGridViewAfterAjaxUpdate()
+        {
+            // Begin Not Coding Standard
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                    }';
+            // End Not Coding Standard
         }
 
         public function getTitle()

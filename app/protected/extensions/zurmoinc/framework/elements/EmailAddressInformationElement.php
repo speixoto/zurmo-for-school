@@ -42,10 +42,9 @@
         {
             assert('$this->model->{$this->attribute} instanceof Email');
             $addressModel = $this->model->{$this->attribute};
-            $content = null;
-            $content .= $this->renderEditableEmailAddressTextField    ($addressModel, $this->form, $this->attribute, 'emailAddress') . "<br/>\n";
-            $content .= $this->renderEditableEmailAddressCheckBoxField($addressModel, $this->form, $this->attribute, 'optOut') . "<br/>\n";
-            $content .= $this->renderEditableEmailAddressCheckBoxField($addressModel, $this->form, $this->attribute, 'isInvalid') . "<br/>\n";
+            $content      = $this->renderEditableEmailAddressTextField    ($addressModel, $this->form, $this->attribute, 'emailAddress') . "\n";
+            $content      = CHtml::tag('div', array('class' => 'beforeOptOutCheckBox'), '<div>' . $content . '</div>');
+            $content     .= $this->renderEditableEmailAddressCheckBoxField($addressModel, $this->form, $this->attribute, 'optOut') . "\n";
             return $content;
         }
 
@@ -70,7 +69,7 @@
             $label         = $form->labelEx ($model, $attribute, array('for'   => $id));
             $checkBoxField = $form->checkBox($model, $attribute, $htmlOptions);
             $error         = $form->error   ($model, $attribute);
-            return $checkBoxField . $label . $error;
+            return '<div class="hasCheckBox">' . $checkBoxField . $label . $error . '</div>';
         }
 
         /**

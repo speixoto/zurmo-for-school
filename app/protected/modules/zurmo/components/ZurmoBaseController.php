@@ -65,6 +65,14 @@
             parent::__construct($id, $module);
         }
 
+        /**
+         * Override if the module is a nested module such as groups or roles.
+         */
+        public function resolveAndGetModuleId()
+        {
+            return $this->getModule()->getId();
+        }
+
         public static function getRightsFilterPath()
         {
             return static::RIGHTS_FILTER_PATH;
@@ -96,10 +104,32 @@
                 $this->getModule()->getPluralCamelCasedName(),
                 $dataProvider,
                 GetUtil::resolveSelectedIdsFromGet(),
-                GetUtil::resolveSelectAllFromGet(),
                 $filteredListData,
                 $filteredListId,
                 $title
+            );
+        }
+
+        protected function makeActionBarSearchAndListView(
+            $searchModel,
+            $pageSize,
+            $title,
+            $userId,
+            $dataProvider,
+            $actionBarViewClassName = 'SecuredActionBarForSearchAndListView'
+            )
+        {
+            assert('is_string($actionBarViewClassName)');
+            $listModel = $searchModel->getModel();
+            return new ActionBarSearchAndListView(
+                $this->getId(),
+                $this->getModule()->getId(),
+                $searchModel,
+                $listModel,
+                $this->getModule()->getPluralCamelCasedName(),
+                $dataProvider,
+                GetUtil::resolveSelectedIdsFromGet(),
+                $actionBarViewClassName
             );
         }
 
@@ -167,6 +197,7 @@
         {
             assert('$searchModel != null');
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
+            static::resolveToTriggerOnSearchEvents($listModelClassName);
             if (!empty($_GET['filteredListId']) && empty($_POST['search']))
             {
                 $filteredListId = (int)$_GET['filteredListId'];
@@ -189,6 +220,15 @@
                     $stateMetadataAdapterClassName);
             }
             return $dataProvider;
+        }
+
+        protected function resolveToTriggerOnSearchEvents($listModelClassName)
+        {
+            $pageVariableName = $listModelClassName . '_page';
+            if (isset($_GET[$pageVariableName]) && $_GET[$pageVariableName] == null)
+            {
+                Yii::app()->gameHelper->triggerSearchModelsEvent($listModelClassName);
+            }
         }
 
         protected function getDataProviderByResolvingSelectAllFromGet(
@@ -255,6 +295,7 @@
                     if ($passedOwnerValidation)
                     {
                         MassEditInsufficientPermissionSkipSavingUtil::clear($modelClassName);
+                        Yii::app()->gameHelper->triggerMassEditEvent(get_class($listModel));
                         $this->saveMassEdit(
                             get_class($listModel),
                             $modelClassName,
@@ -263,9 +304,11 @@
                             $_GET[$modelClassName . '_page'],
                             $pageSize
                         );
+                        //cancel diminish of save scoring
                         if ($selectedRecordCount > $pageSize)
                         {
-                            $view = new $pageViewClassName($this,
+                            $view = new $pageViewClassName(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this,
                                 $this->makeMassEditProgressView(
                                     $listModel,
                                     1,
@@ -274,7 +317,7 @@
                                     $pageSize,
                                     $title,
                                     null)
-                            );
+                            ));
                             echo $view->render();
                             Yii::app()->end(0, false);
                         }
@@ -371,6 +414,7 @@
          */
         protected function saveMassEdit($modelClassName, $postVariableName, $selectedRecordCount, $dataProvider, $page, $pageSize)
         {
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
             $modelsToSave = $this->getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
             foreach ($modelsToSave as $modelToSave)
             {
@@ -391,6 +435,7 @@
                         $modelClassName, $modelToSave->id, $modelToSave->name);
                 }
             }
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
         }
 
         /**

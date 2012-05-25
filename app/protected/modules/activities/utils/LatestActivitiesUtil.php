@@ -68,10 +68,14 @@
          * @return array $modelClassNamesAndSearchAttributeData
          */
         public static function getSearchAttributesDataByModelClassNamesAndRelatedItemIds($modelClassNames,
-                                                                                        $relationItemIds)
+                                                                                        $relationItemIds,
+                                                                                        $ownedByFilter)
         {
             assert('is_array($modelClassNames)');
             assert('is_array($relationItemIds)');
+            assert('$ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL ||
+                    $ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER ||
+                    is_int($ownedByFilter)');
             $modelClassNamesAndSearchAttributeData = array();
             foreach ($modelClassNames as $modelClassName)
             {
@@ -82,14 +86,57 @@
                     $searchAttributesData =     // Not Coding Standard
                         $mashableActivityRules->resolveSearchAttributesDataByRelatedItemIds($relationItemIds);
                 }
-                else
+                elseif (count($relationItemIds) == 1)
                 {
                     $searchAttributesData =    // Not Coding Standard
                         $mashableActivityRules->resolveSearchAttributesDataByRelatedItemId($relationItemIds[0]);
                 }
+                else
+                {
+                    $searchAttributesData              = array();
+                    $searchAttributesData['clauses']   = array();
+                    $searchAttributesData['structure'] = null;
+                    $searchAttributesData =    // Not Coding Standard
+                        $mashableActivityRules->resolveSearchAttributeDataForLatestActivities($searchAttributesData);
+                }
+                static::resolveSearchAttributesDataByOwnedByFilter($searchAttributesData, $ownedByFilter);
+
                 $modelClassNamesAndSearchAttributeData[] = array($modelClassName => $searchAttributesData);
             }
             return $modelClassNamesAndSearchAttributeData;
+        }
+
+        protected static function resolveSearchAttributesDataByOwnedByFilter(& $searchAttributesData, $ownedByFilter)
+        {
+            assert('is_array($searchAttributesData)');
+            assert('$ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL ||
+                    $ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER ||
+                    is_int($ownedByFilter)');
+            if ($ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER || is_int($ownedByFilter))
+            {
+                if (is_int($ownedByFilter))
+                {
+                    $userId = $ownedByFilter;
+                }
+                else
+                {
+                    $userId = Yii::app()->user->userModel->id;
+                }
+                $clauseCount = count($searchAttributesData['clauses']);
+                $searchAttributesData['clauses'][] = array(
+                        'attributeName'        => 'owner',
+                        'operatorType'         => 'equals',
+                        'value'                => $userId,
+                );
+                if ($clauseCount == 0)
+                {
+                    $searchAttributesData['structure'] = '0';
+                }
+                else
+                {
+                    $searchAttributesData['structure'] = $searchAttributesData['structure'] . ' and ' . ($clauseCount + 1);
+                }
+            }
         }
 
         /**

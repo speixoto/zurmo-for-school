@@ -31,22 +31,22 @@
     return array(
         'A simple notification'
             => 'Une simple notification',
+        'Delete Notification'
+            => 'Supprimer la notification',
         'Html Content'
             => 'Contenu HTML',
-        'Is Read'
-            => 'isRead',
-        'Is Read must be set as true or false, not null.'
-            => 'L\'attribut "isRead" ne peut être nul.',
         'Notification'
-            => 'Notification',
+            => 'Notification', // Same Word Translated
         'Notification Message'
             => 'Message de notification',
         'Notifications List'
             => 'Liste de notifications',
         'Text Content'
             => 'Contenu du texte',
-        'Unread'
-            => 'Non lu',
+        'There are no recent notifications.'
+            => 'Aucune nouvelle notification.',
+        'View All Notifications'
+            => 'Afficher toutes les notifications',
         'You have a new notification'
             => 'Nouvelle notification',
     );

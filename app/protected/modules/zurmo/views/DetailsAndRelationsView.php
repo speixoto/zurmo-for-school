@@ -53,10 +53,19 @@
             $metadata = self::getMetadata();
             $leftBottomMetadataForPortlets['global'] = $metadata['global']['leftBottomView'];
             $detailsViewClassName                    = $metadata['global']['leftTopView']['viewClassName'];
-            $leftTopView    = new $detailsViewClassName(                'Details',
-                                                                        $this->params["controllerId"],
-                                                                        $this->params["relationModuleId"],
-                                                                        $this->params["relationModel"]);
+            if (is_subclass_of($detailsViewClassName, 'EditAndDetailsView'))
+            {
+                $leftTopView    = new $detailsViewClassName('Details',
+                                                            $this->params["controllerId"],
+                                                            $this->params["relationModuleId"],
+                                                            $this->params["relationModel"]);
+            }
+            else
+            {
+                $leftTopView    = new $detailsViewClassName($this->params["controllerId"],
+                                                                            $this->params["relationModuleId"],
+                                                                            $this->params["relationModel"]);
+            }
             $leftBottomView = new ModelRelationsSecuredPortletFrameView($this->controllerId,
                                                                         $this->moduleId,
                                                                         $this->uniqueLayoutId . 'LeftBottomView',
@@ -80,25 +89,27 @@
             else
             {
                 $renderRightSide = false;
+                $rightTopView    = null;
             }
+            return $this->renderLeftAndRightGridViewContent($leftTopView, $leftBottomView, $rightTopView, $renderRightSide);
+        }
+
+        protected function renderLeftAndRightGridViewContent($leftTopView, $leftBottomView, $rightTopView, $renderRightSide)
+        {
+            assert('$leftTopView instanceof View');
+            assert('$leftBottomView instanceof View');
+            assert('$rightTopView instanceof View || $rightTopView == null');
+            assert('is_bool($renderRightSide)');
             $leftVerticalGridView  = new GridView(2, 1);
             $leftVerticalGridView->setView($leftTopView, 0, 0);
             $leftVerticalGridView->setView($leftBottomView, 1, 0);
-
-            $content  = '<table>' . "\n";
-            $content .= '<tr><td>' . "\n";
-            $content .= $leftVerticalGridView->render();
-            $content .= '</td>'. "\n";
+            $content = $leftVerticalGridView->render();
             if ($renderRightSide)
             {
-                $content .= '<td width="300px">' . "\n";
                 $rightVerticalGridView  = new GridView(1, 1);
                 $rightVerticalGridView->setView($rightTopView, 0, 0);
                 $content .= $rightVerticalGridView->render();
-                $content .= '</td>'. "\n";
             }
-            $content .= '</tr>' . "\n";
-            $content .= '</table>' . "\n";
             return $content;
         }
     }

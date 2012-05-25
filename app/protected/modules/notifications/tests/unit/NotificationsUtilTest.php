@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class NotificationsUtilTest extends BaseTest
+    class NotificationsUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -84,7 +84,6 @@
         public function testSubmittingDuplicateNotifications()
         {
             //todo:
-            //dont forget to deal with unread vs. read count issues.
         }
     }
 ?>

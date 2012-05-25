@@ -62,7 +62,7 @@
             $rememberMeLabel    = $form->label        ($this->formModel, 'rememberMe');
             $rememberMeError    = $form->error        ($this->formModel, 'rememberMe');
 
-            $submitButton       = CHtml::submitButton(Yii::t('Default', 'Login'),
+            $submitButton       = CHtml::submitButton(Yii::t('Default', 'Sign in'),
                                                       array('name' => 'Login', 'id' => 'Login'));
 
             $fieldsRequiredLabel = Yii::t('Default', 'Fields with') . ' <span class="required">*</span> ' .
@@ -74,9 +74,9 @@
             $content .= "<div class=\"form\">$formStart"                                            .
                        "<div>$usernameLabel$usernameTextField$usernameError</div>"                 .
                        "<div>$passwordLabel$passwordField$passwordError</div>"                     .
-                       "<div style = 'float:left; padding-right:3px;'>$rememberMeCheckBox</div>"   .
-                       "<div>$rememberMeLabel$rememberMeError</div>"                               .
-                       "<div style = 'clear:both;'>$submitButton</div>"                            .
+                       "<div class=\"remember-me\">$rememberMeCheckBox$rememberMeLabel$rememberMeError</div>"   .
+                       //"<div class=\"clearfix\">$rememberMeLabel$rememberMeError</div>"                               .
+                       "<div>$submitButton</div>"                            .
                        "$formEnd</div>";
 
             return $content;
