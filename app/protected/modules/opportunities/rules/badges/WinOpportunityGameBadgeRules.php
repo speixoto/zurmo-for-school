@@ -58,7 +58,7 @@
             assert('is_array($userScoresByType)');
             if (isset($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]))
             {
-                return static::getBadgeGradeByValue($userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value);
+                return static::getBadgeGradeByValue((int)$userScoresByType[OpportunityGamificationRules::SCORE_TYPE_WIN_OPPORTUNITY]->value);
             }
             return 0;
         }

@@ -57,7 +57,7 @@
             assert('is_array($userScoresByType)');
             if (isset($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]))
             {
-                return static::getBadgeGradeByValue($userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value);
+                return static::getBadgeGradeByValue((int)$userScoresByType[ContactGamificationRules::SCORE_TYPE_CREATE_LEAD]->value);
             }
             return 0;
         }

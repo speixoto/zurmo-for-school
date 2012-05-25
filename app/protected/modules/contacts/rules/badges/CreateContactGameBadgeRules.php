@@ -57,7 +57,7 @@
             assert('is_array($userScoresByType)');
             if (isset($userScoresByType['CreateContact']))
             {
-                return static::getBadgeGradeByValue($userScoresByType['CreateContact']->value);
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateContact']->value);
             }
             return 0;
         }

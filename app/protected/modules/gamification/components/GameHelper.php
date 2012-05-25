@@ -209,11 +209,20 @@
         {
             assert('is_string($levelType) && $levelType != null');
             $currentGameLevel    = GameLevel::resolveByTypeAndPerson($levelType, Yii::app()->user->userModel);
-            $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel($levelType,
-                                                                                              $currentGameLevel);
-            $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
-                                                                                    $currentGameLevel);
 
+            if($currentGameLevel->id < 0)
+            {
+                $className           = $levelType . 'GameLevelRules';
+                $nextLevelPointValue = $className::getMinimumPointsForLevel(1);
+                $nextLevel           = 1;
+            }
+            else
+            {
+                $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel($levelType,
+                                                                                                  $currentGameLevel);
+                $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
+                                                                                        $currentGameLevel);
+            }
             if ($nextLevel !== false &&
                GamePoint::doesUserExceedPointsByLevelType(Yii::app()->user->userModel, $nextLevelPointValue, $levelType))
             {
@@ -224,8 +233,7 @@
                     throw new FailedToSaveModelException();
                 }
                 GameLevel::processBonusPointsOnLevelChange($currentGameLevel, Yii::app()->user->userModel);
-                if ($currentGameLevel->value != 1 && $levelType == GameLevel::TYPE_GENERAL &&
-                    $this->modalNotificationsEnabled)
+                if ($levelType == GameLevel::TYPE_GENERAL && $this->modalNotificationsEnabled)
                 {
                     $gameNotification           = new GameNotification();
                     $gameNotification->user     = Yii::app()->user->userModel;

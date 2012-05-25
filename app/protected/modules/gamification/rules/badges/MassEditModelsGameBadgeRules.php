@@ -54,7 +54,7 @@
             $elementName = 'MassEdit' . $modelClassName;
             if (isset($userScoresByType[$elementName]))
             {
-                return static::getBadgeGradeByValue($userScoresByType[$elementName]->value);
+                return static::getBadgeGradeByValue((int)$userScoresByType[$elementName]->value);
             }
             return 0;
         }

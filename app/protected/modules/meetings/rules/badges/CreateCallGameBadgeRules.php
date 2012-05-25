@@ -57,7 +57,7 @@
             assert('is_array($userScoresByType)');
             if (isset($userScoresByType[MeetingGamificationRules::SCORE_TYPE_CREATE_CALL]))
             {
-                return static::getBadgeGradeByValue($userScoresByType[MeetingGamificationRules::SCORE_TYPE_CREATE_CALL]->value);
+                return static::getBadgeGradeByValue((int)$userScoresByType[MeetingGamificationRules::SCORE_TYPE_CREATE_CALL]->value);
             }
             return 0;
         }
