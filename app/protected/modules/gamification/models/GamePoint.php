@@ -72,7 +72,7 @@
         {
             if ($attributeName == 'value')
             {
-                $this->addValue($value);
+                $this->replaceValue($value);
             }
             else
             {
@@ -215,6 +215,18 @@
         }
 
         /**
+         * Replace value with specified value.
+         */
+        public function replaceValue($value)
+        {
+            assert('is_int($value)');
+            $this->unrestrictedSet('value', $value);
+            $gamePointTransaction                   = new GamePointTransaction();
+            $gamePointTransaction->value            = $value - $this->value;
+            $this->transactions->add($gamePointTransaction);
+        }
+
+        /**
          * Given a user and a number, determine if a user's existing total points exceeds the specified number.
          * If so, return true, otherwise return false.
          * @param User $user
@@ -254,7 +266,6 @@
         public static function getSummationPointsDataByUserIndexedByLevelType(User $user)
         {
             assert('$user->id > 0');
-            assert('is_string($levelType) && $levelType != null');
             $sql       = "select type, sum(value) sum from gamepoint where person_item_id = " .
                          $user->getClassId('Item') . " group by type";
             $rows      = R::getAll($sql);

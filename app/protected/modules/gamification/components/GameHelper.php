@@ -215,34 +215,67 @@
         {
             assert('is_string($levelType) && $levelType != null');
             assert('is_array($pointSumsIndexedByType)');
-            $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel($levelType,
-                                                                                              $currentGameLevel);
-            $nextLevel           = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
-                                                                                    $currentGameLevel);
-            if ($nextLevel !== false
-                && isset($pointSumsIndexedByType[$levelType])
-                && $pointSumsIndexedByType[$levelType] > $nextLevelPointValue
-               )
+            //If the user has not reached level one, the model has not been saved yet
+            if($currentGameLevel->id < 0)
             {
-                $currentGameLevel->value = $nextLevel;
-                $saved = $currentGameLevel->save();
+                $className           = $levelType . 'GameLevelRules';
+                $nextLevelPointValue = $className::getMinimumPointsForLevel(1);
+                $nextLevelValue      = 1;
+            }
+            else
+            {
+                $nextLevelPointValue = GameLevelUtil::getNextLevelPointValueByTypeAndCurrentLevel($levelType,
+                                                                                                  $currentGameLevel);
+                $nextLevelValue      = GameLevelUtil::getNextLevelByTypeAndCurrentLevel($levelType,
+                                                                                        $currentGameLevel);
+            }
+            if ($nextLevelValue !== false &&
+                static::resolveSummationValueByLevelTypeAndPointSums($levelType, $pointSumsIndexedByType) > $nextLevelPointValue)
+            {
+                $currentGameLevel->value = $nextLevelValue;
+                $saved                   = $currentGameLevel->save();
                 if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
                 GameLevel::processBonusPointsOnLevelChange($currentGameLevel, Yii::app()->user->userModel);
-                if ($currentGameLevel->value != 1 && $levelType == GameLevel::TYPE_GENERAL &&
-                    $this->modalNotificationsEnabled)
+                if ($levelType == GameLevel::TYPE_GENERAL && $this->modalNotificationsEnabled)
                 {
-                    $gameNotification           = new GameNotification();
-                    $gameNotification->user     = Yii::app()->user->userModel;
-                    $gameNotification->setLevelChangeByNextLevel($nextLevel);
-                    $saved = $gameNotification->save();
-                    if(!$saved)
-                    {
-                        throw new FailedToSaveModelException();
-                    }
+                    static::processLevelChangeGameNotification($nextLevelValue);
                 }
+            }
+        }
+        protected static function resolveSummationValueByLevelTypeAndPointSums($levelType, $pointSumsIndexedByType)
+        {
+            assert('is_string($levelType) && $levelType != null');
+            assert('is_array($pointSumsIndexedByType)');
+            if($levelType == GameLevel::TYPE_GENERAL)
+            {
+                return array_sum($pointSumsIndexedByType);
+            }
+            else
+            {
+                if(isset($pointSumsIndexedByType[$levelType]))
+                {
+                    return $pointSumsIndexedByType[$levelType];
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        protected static function processLevelChangeGameNotification($nextLevelValue)
+        {
+            assert('is_int($nextLevelValue)');
+            $gameNotification           = new GameNotification();
+            $gameNotification->user     = Yii::app()->user->userModel;
+            $gameNotification->setLevelChangeByNextLevelValue($nextLevelValue);
+            $saved = $gameNotification->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
             }
         }
 

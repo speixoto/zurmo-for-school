@@ -38,7 +38,7 @@
             //Level up notification
             $gameNotification           = new GameNotification();
             $gameNotification->user     = $user;
-            $gameNotification->setLevelChangeByNextLevel(2);
+            $gameNotification->setLevelChangeByNextLevelValue(2);
             $saved                      = $gameNotification->save();
             $this->assertTrue($saved);
 
@@ -69,13 +69,17 @@
             $this->assertEquals(3, count($notifications));
 
             $unserializedData = $notifications[0]->getUnserializedData();
-            $this->assertEquals($unserializedData['type'], GameNotification::TYPE_LEVEL_CHANGE);
+            $this->assertEquals(GameNotification::TYPE_LEVEL_CHANGE, $unserializedData['type']);
+            $this->assertEquals(2, $unserializedData['levelValue']);
 
             $unserializedData = $notifications[1]->getUnserializedData();
-            $this->assertEquals($unserializedData['type'], GameNotification::TYPE_NEW_BADGE);
+            $this->assertEquals(GameNotification::TYPE_NEW_BADGE, $unserializedData['type']);
+            $this->assertEquals('LoginUser', $unserializedData['badgeType']);
 
             $unserializedData = $notifications[2]->getUnserializedData();
-            $this->assertEquals($unserializedData['type'], GameNotification::TYPE_BADGE_GRADE_CHANGE);
+            $this->assertEquals(GameNotification::TYPE_BADGE_GRADE_CHANGE, $unserializedData['type']);
+            $this->assertEquals('LoginUser', $unserializedData['badgeType']);
+            $this->assertEquals(5, $unserializedData['grade']);
         }
 
         /**
