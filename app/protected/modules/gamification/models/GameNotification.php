@@ -101,10 +101,10 @@
          * Sets the serializedData for a notification when a new level is reached
          * @param integer $nextLevel
          */
-        public function setLevelChangeByNextLevel($nextLevel)
+        public function setLevelChangeByNextLevelValue($nextLevelValue)
         {
-            assert('is_int($nextLevel)');
-            $this->serializedData = serialize(array('type' => self::TYPE_LEVEL_CHANGE, 'nextLevel' => $nextLevel));
+            assert('is_int($nextLevelValue)');
+            $this->serializedData = serialize(array('type' => self::TYPE_LEVEL_CHANGE, 'levelValue' => $nextLevelValue));
         }
 
         /**
@@ -128,7 +128,7 @@
             assert('is_int($newGrade)');
             $this->serializedData = serialize(array('type'      => self::TYPE_BADGE_GRADE_CHANGE,
                                                     'badgeType' => $badgeType,
-                                                    'newGrade'  => $newGrade));
+                                                    'grade'     => $newGrade));
         }
 
         public function getUnserializedData()

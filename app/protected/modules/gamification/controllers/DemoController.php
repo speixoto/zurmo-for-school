@@ -39,7 +39,7 @@
             //Level up notification
             $gameNotification           = new GameNotification();
             $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setLevelChangeByNextLevel(2);
+            $gameNotification->setLevelChangeByNextLevelValue(2);
             $saved                      = $gameNotification->save();
 
             //New badge notification
