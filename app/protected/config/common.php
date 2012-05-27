@@ -270,6 +270,7 @@
             'application.extensions.zurmoinc.framework.utils.FileUtil',
             'application.extensions.zurmoinc.framework.utils.GeneralCache',
             'application.extensions.zurmoinc.framework.exceptions.NotFoundException',
+            'application.extensions.zurmoinc.framework.components.ZurmoLocale',
             'application.modules.api.tests.unit.models.*',
             'application.modules.api.tests.unit.forms.*',
             'application.modules.install.serviceHelpers.MemcacheServiceHelper',
