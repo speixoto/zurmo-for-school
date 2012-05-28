@@ -64,12 +64,12 @@
                 if($viewModuleClassName == 'HomeModule')
                 {
                     return "<span>{modelStringContent}</span><br/><span>" .
-                           "{relatedModelsByImportanceContent}</span><span class='less-pronounced-text'>" .
+                           "{relatedModelsByImportanceContent} </span><span class='less-pronounced-text'>" .
                            Yii::t('Default', 'completed by {ownerStringContent}') . "</span>";
                 }
                 else
                 {
-                    return "<span>{modelStringContent}</span><span class='less-pronounced-text'>" .
+                    return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
                            Yii::t('Default', 'completed by {ownerStringContent}') . "</span>";
                 }
             }
@@ -78,7 +78,7 @@
                 if($viewModuleClassName == 'HomeModule' || $viewModuleClassName == 'UserModule')
                 {
                     return "<span>{modelStringContent}</span><br/><span>" .
-                           "{relatedModelsByImportanceContent}</span><span>{extraContent}</span>";
+                           "{relatedModelsByImportanceContent} </span><span>{extraContent}</span>";
                 }
                 else
                 {

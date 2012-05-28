@@ -39,10 +39,9 @@
 
         protected function getMessageContent()
         {
-            return Yii::t('Default', '<h2>"Luke, don\'t give in to hate - that Leads to the dark side."</h2> ' .
-                                     '<i>Obi Wan</i><br/>Luke received sage advice from his Jedi mentor on how ' .
-                                     'important Leads are in the CRM. Turn away from the dark side and use the ' .
-                                     'force to create the first Lead record.');
+            return Yii::t('Default', '<h2>"Lead, follow, or get out of the way."</h2> ' .
+                                     '<i>Thomas Paine</i><br/>Leads are potential clients that should be followed-up ' .
+                                     'on.  Be the first to create a Lead or get out of the way so someone else can.');
         }
 
         /**

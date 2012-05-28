@@ -165,7 +165,16 @@
                     $castedDownmodel = $item->castDown(array($modelDerivationPathToItem));
                     if (get_class($castedDownmodel) == $castDownModelClassName)
                     {
-                        $existingModels[] = strval($castedDownmodel);
+                        if(strval($castedDownmodel) != null)
+                        {
+                            $params          = array('label' => strval($castedDownmodel));
+                            $moduleClassName = $castedDownmodel->getModuleClassName();
+                            $moduleId        = $moduleClassName::getDirectoryName();
+                            $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                            $castedDownmodel->id, $params);
+                            $existingModels[] = $element->render();
+                        }
+
                     }
                 }
                 catch (NotFoundException $e)

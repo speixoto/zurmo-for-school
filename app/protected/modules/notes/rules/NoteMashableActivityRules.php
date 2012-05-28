@@ -60,13 +60,13 @@
             {
                 if($viewModuleClassName == 'HomeModule')
                 {
-                    return "<span>{modelStringContent}</span><br/><span>{relatedModelsByImportanceContent}" .
+                    return "<span>{modelStringContent}</span><br/><span>{relatedModelsByImportanceContent} " .
                            "</span><span class='less-pronounced-text'>" .
                            Yii::t('Default', 'by {ownerStringContent}') . "</span>";
                 }
                 else
                 {
-                    return "<span>{modelStringContent}</span><span class='less-pronounced-text'>" .
+                    return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
                            Yii::t('Default', 'by {ownerStringContent}') . "</span>";
                 }
             }
@@ -74,7 +74,7 @@
             {
                 if($viewModuleClassName == 'HomeModule' || $viewModuleClassName == 'UserModule')
                 {
-                    return "<span>{modelStringContent}</span><br/><span>{relatedModelsByImportanceContent}" .
+                    return "<span>{modelStringContent}</span><br/><span>{relatedModelsByImportanceContent} " .
                            "</span><span>{extraContent}</span>";
                 }
                 else
