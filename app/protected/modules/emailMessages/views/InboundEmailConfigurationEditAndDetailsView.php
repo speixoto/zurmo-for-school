@@ -29,6 +29,11 @@
      */
     class InboundEmailConfigurationEditAndDetailsView extends EditAndDetailsView
     {
+        protected function renderTitleContent()
+        {
+            return '<h1>' . Yii::t('Default', 'Inbound Email Configuration (IMAP)') . '</h1>';
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(

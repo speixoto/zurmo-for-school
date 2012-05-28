@@ -35,41 +35,6 @@
 
         public function testRun()
         {
-            $quote = DatabaseCompatibilityUtil::getQuote();
-            $super                      = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-            $billy                      = User::getByUsername('billy');
-
-            $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-            $outboxFolder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
-            $sentFolder   = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_SENT);
-
-            $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('My Email Message', $super);
-            $emailMessage->folder       = $outboxFolder;
-            $saved                      = $emailMessage->save();
-            $this->assertTrue($saved);
-            $emailMessageId            = $emailMessage->id;
-            $emailMessage->forget();
-            unset($emailMessage);
-
-            $emailMessage2 = EmailMessageTestHelper::createDraftSystemEmail('My Email Message', $super);
-            $emailMessage2->folder      = $outboxFolder;
-            $saved                      = $emailMessage2->save();
-            $this->assertTrue($saved);
-            $emailMessage2Id            = $emailMessage2->id;
-            $emailMessage2->forget();
-            unset($emailMessage2);
-            $this->assertEquals(2, count(EmailMessage::getAll()));
-
-            $job = new ProcessOutboundEmailJob();
-            $this->assertTrue($job->run());
-            $emailMessages = EmailMessage::getAll();
-            $this->assertEquals(2, count($emailMessages));
-
-            $emailMessage   = EmailMessage::getById($emailMessageId);
-            $this->assertEquals($sentFolder, $emailMessage->folder);
-            $emailMessage2  = EmailMessage::getById($emailMessage2Id);
-            $this->assertEquals($sentFolder, $emailMessage2->folder);
         }
     }
 ?>

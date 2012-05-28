@@ -175,7 +175,7 @@ EOD;
                                    $ssl = false,
                                    $folder='INBOX')
     {
-        Yii::import('application.extensions.imap.ZurmoImap');
+        Yii::import('application.modules.emailMessages.components.ZurmoImap');
         Yii::app()->user->userModel = User::getByUsername('super');
         if (!isset($host))
         {
@@ -187,14 +187,19 @@ EOD;
         }
         if (!isset($password))
         {
-            $this->usageError('A passowrd must be specified.');
+            $this->usageError('A passoword must be specified.');
         }
 
         echo "\n";
         echo 'Fetching emails:' . "\n";
 
         $imap = new ZurmoImap($host, $username, $password, $port);
-        $imap->connect();
+        $imap->imapHost = $host;
+        $imap->imapUsername = $username;
+        $imap->imapPassword = $password;
+        $imap->imapPort = $port;
+
+        $res = $imap->connect();
         $messages = $imap->getMessages();
 
         if (count($messages))

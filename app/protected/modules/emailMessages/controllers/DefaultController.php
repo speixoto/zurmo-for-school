@@ -157,15 +157,14 @@
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }
-            $titleBarAndEditView = new TitleBarAndConfigurationEditAndDetailsView(
+            $editView = new InboundEmailConfigurationEditAndDetailsView(
+                                    'Edit',
                                     $this->getId(),
                                     $this->getModule()->getId(),
-                                    $configurationForm,
-                                    'InboundEmailConfigurationEditAndDetailsView',
-                                    'Edit',
-                                    Yii::t('Default', 'Inbound Email Configuration (IMAP)')
-            );
-            $view = new ZurmoConfigurationPageView($this, $titleBarAndEditView);
+                                    $configurationForm);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                         makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
 

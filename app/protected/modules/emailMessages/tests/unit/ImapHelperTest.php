@@ -43,6 +43,9 @@
             $imapMessage->subject = "Test subject";
             $this->assertFalse(ImapHelper::isMessageForwarded($imapMessage));
 
+            $imapMessage->subject = "Forward subject";
+            $this->assertFalse(ImapHelper::isMessageForwarded($imapMessage));
+
             $imapMessage->subject = "Fwd: Test subject";
             $this->assertTrue(ImapHelper::isMessageForwarded($imapMessage));
 
@@ -50,6 +53,9 @@
             $this->assertTrue(ImapHelper::isMessageForwarded($imapMessage));
 
             $imapMessage->subject = "fw: Test subject";
+            $this->assertTrue(ImapHelper::isMessageForwarded($imapMessage));
+
+            $imapMessage->subject = "Fw: Test subject";
             $this->assertTrue(ImapHelper::isMessageForwarded($imapMessage));
         }
 
@@ -144,19 +150,53 @@ To: 'Steve'";
         {
             $user = UserTestHelper::createBasicUser('billy');
             $email = new Email();
-            $email->emailAddress = 'info@example.com';
+            $email->emailAddress = 'billy@example.com';
             $user->primaryEmail = $email;
             $this->assertTrue($user->save());
 
-            // Message is not forwarded
+            //Case 1
+            // User send message to dropbox, via additional to field
+            // This shouldn't be done in practice, but we need to cover it.
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
-            $imapMessage->from = "from@example.com";
+            $imapMessage->fromEmail = "billy@example.com";
             $imapMessage->to = array(
                 array('email' => 'info@example.com'),
+                array('email' => 'dropbox@example.com'),
             );
             $owner = ImapHelper::resolveUserFromEmailAddress($imapMessage);
             $this->assertEquals($user->id, $owner->id);
+
+            // Case 2
+            // User sent CC copy of his email to dropbox
+            // This also shouldn't be done in practice, because email receipt will see dropbox email account,
+            // but we need to cover it.
+            $imapMessage = new ImapMessage();
+            $imapMessage->subject = "Test subject";
+            $imapMessage->fromEmail = "billy@example.com";
+            $imapMessage->to = array(
+                array('email' => 'info@example.com'),
+            );
+            $imapMessage->cc = array(
+                array('email' => 'dropbox@example.com'),
+            );
+            $owner = ImapHelper::resolveUserFromEmailAddress($imapMessage);
+            $this->assertEquals($user->id, $owner->id);
+
+            // Case 3
+            // User sent BCC copy of his email to dropbox
+            $imapMessage = new ImapMessage();
+            $imapMessage->subject = "Test subject";
+            $imapMessage->fromEmail = "billy@example.com";
+            $imapMessage->to = array(
+                array('email' => 'info@example.com'),
+            );
+            $imapMessage->bcc = array(
+                array('email' => 'dropbox@example.com'),
+            );
+            $owner = ImapHelper::resolveUserFromEmailAddress($imapMessage);
+            $this->assertEquals($user->id, $owner->id);
+
 
             // Message is not forwarded
             // This test fails because user is not first in list

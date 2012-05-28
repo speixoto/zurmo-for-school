@@ -36,31 +36,14 @@
         );
         /**
          * For a given email find user.
-         * For now this function works only for emails that are sent directly to user,
-         * or forwarded to dropbox, using .forward directive on Linux systems.
-         * We need to add parser, in case when user forwarded email to dropbox, or
-         * watched email box, via his email client.
-         * @param email message $email
-         * @param boolean $forward
-         * @return array of User $users
+         * Function consider that user sent email to dropbox (To, CC or BCC),
+         * or forwarded email to dropbox, via his email client/
+         * @param ImapMessage $emailMessage
+         * @return User $user
          */
         public static function resolveUserFromEmailAddress(ImapMessage $emailMessage)
         {
-            // Check if email is forwarded or not.
-            $to = false;
-            if (self::isMessageForwarded($emailMessage))
-            {
-                $to['email'] = $emailMessage->from;
-            }
-            else
-            {
-                if (isset($emailMessage->to) && count($emailMessage->to) > 0)
-                {
-                    $to = $emailMessage->to[0];
-                }
-            }
-
-            if ($to)
+            if (isset($emailMessage->fromEmail) && $emailMessage->fromEmail != '')
             {
                 $searchAttributeData = array();
                 $searchAttributeData['clauses'] = array(
@@ -68,7 +51,7 @@
                         'attributeName'        => 'primaryEmail',
                         'relatedAttributeName' => 'emailAddress',
                         'operatorType'         => 'equals',
-                        'value'                => $to['email'],
+                        'value'                => $emailMessage->fromEmail,
                     )
                 );
                 $searchAttributeData['structure'] = '1';
@@ -76,6 +59,7 @@
                 $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
                 $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
             }
+
             if (count($models) == 0)
             {
                 throw new NotFoundException();
@@ -90,25 +74,31 @@
             }
         }
 
+        /**
+         * Get original sender of email message.
+         * @param ImapMessage $emailMessage
+         * @param string $fromAddress
+         */
         public static function resolveFromEmailAddress(ImapMessage $emailMessage)
         {
             // Check if email is forwarded or not.
-            $from = false;
+            $fromAddress = false;
             if (self::isMessageForwarded($emailMessage))
             {
-                $from = self::getOriginalSenderFromForwardedMessage($emailMessage);
+                $fromAddress = self::getOriginalSenderFromForwardedMessage($emailMessage);
             }
             else
             {
-                $from = $emailMessage->from;
+                $fromAddress = $emailMessage->from;
             }
-            return $from;
+            return $fromAddress;
         }
 
         /**
-         * Check if email message is forwarded or not, based on subject.
+         * Check if email message is forwarded or not, based on email subject.
+         * For works only with few emails clients: Gmail, Outlook, ThunderBird, Yahoo
          * @param ImapMessage $emailMessage
-         * @return boolean
+         * @return boolean $isForwrded
          */
         public static function isMessageForwarded(ImapMessage $emailMessage)
         {
@@ -123,9 +113,14 @@
             return $isForwrded;
         }
 
+        /**
+         * Parse email to get original sender(in case of forwarded messages)
+         * @param ImapMessage $emailMessage
+         * @return array $fromAddress
+         */
         public static function getOriginalSenderFromForwardedMessage(ImapMessage $emailMessage)
         {
-            $from = false;
+            $fromAddress = false;
             $pattern = '/^From:\s+(.*?)\s*(?:\[mailto:|<)(.*?)(?:[\]>])$/mi';
 
             // Try first to extract info from text body
@@ -140,10 +135,10 @@
 
             if ($noOfMatches > 0)
             {
-                $from['name'] = $matches[1];
-                $from['email'] = $matches[2];
+                $fromAddress['name'] = $matches[1];
+                $fromAddress['email'] = $matches[2];
             }
-            return $from;
+            return $fromAddress;
         }
     }
 ?>
