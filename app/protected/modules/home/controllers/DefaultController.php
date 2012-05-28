@@ -143,10 +143,9 @@
                     $this->redirect(array('default/dashboardDetails', 'id' => $dashboard->id));
                 }
             }
-            $view = new HomePageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,
-                                             new DashboardTitleBarAndEditView($this->getId(),
-                                                     $this->getModule()->getId(), $dashboard)));
+            $editView = new DashboardEditView($this->getId(), $this->getModule()->getId(), $dashboard,
+                                              Yii::t('Default', 'Create Dashboard'));
+            $view     = new HomePageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
 
@@ -176,10 +175,9 @@
                     $this->redirect(array('default/dashboardDetails', 'id' => $dashboard->id));
                 }
             }
-            $view = new AccountsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,
-                                             new DashboardTitleBarAndEditView($this->getId(),
-                                                     $this->getModule()->getId(), $dashboard)));
+            $editView = new DashboardEditView($this->getId(), $this->getModule()->getId(), $dashboard, strval($dashboard));
+            $view     = new AccountsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
 

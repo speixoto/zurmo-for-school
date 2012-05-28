@@ -106,7 +106,7 @@
             return !$detailViewOnly;
         }
 
-            protected function resolveFormHtmlOptions()
+        protected function resolveFormHtmlOptions()
         {
             $data = array();
             if ($this->viewContainsFileUploadElement)
