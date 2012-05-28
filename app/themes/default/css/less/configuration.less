@@ -40,6 +40,7 @@
 			border: 1px solid #DFDFDF;
 			vertical-align:middle;
 			padding:10px;
+			overflow: hidden;
 		}
 		table tbody,
 		table tbody tr:last-child,
@@ -643,13 +644,22 @@ table.configuration-list{
 	}
 }
 
-/*step 2*/
+/*= step 2*/
 #ImportWizardUploadFileView{
 	.hasCheckBox{
 		margin: 0 !important;
 		& + label{
 			margin:5px 0 0 10px !important;
 		}
+	}
+}
+
+/*= Step 3*/
+#ImportWizardSetModelPermissionsView{
+	#permissions-module{
+		position:relative !important;
+		top:0 !important;
+		right:0 !important;
 	}
 }
 
@@ -671,7 +681,7 @@ table.configuration-list{
 			font-weight: bold !important;
 			height: 35px;
 			line-height: 35px;
-			background: url(../images/table-items-header.png) left top repeat-x;
+			background: url(../../images/table-items-header.png) left top repeat-x;
 			padding: 0 0 0 15px !important;
 			border-top:1px solid #DFDFDF;
 			border-bottom:1px solid #DFDFDF;
@@ -715,6 +725,11 @@ table.configuration-list{
 	#sample-column-header{
 		a{
 			.zLink();
+		}
+	}
+	.has-model-select{
+		a{
+			top:1px;
 		}
 	}
 }
