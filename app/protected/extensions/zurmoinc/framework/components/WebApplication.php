@@ -54,7 +54,7 @@
 
         /**
          * Returns the locale instance.
-         * This overrides the ->getLocale() function.
+         * This overrides the default CApplication->getLocale() function.
          * @param string $localeID the locale ID (e.g. en_US). If null, the {@link getLanguage application language ID} will be used.
          * @return CLocale the locale instance
          */
