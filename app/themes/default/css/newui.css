@@ -66,6 +66,8 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  float: left;
+  width: 100%;
 }
 .juiportlet-widget-column2 {
   padding: 0;
@@ -138,6 +140,9 @@
   position: relative;
   margin-left: 15px;
 }
+.collapse ~ h3 {
+  margin-left: 0;
+}
 .juiportlet-widget-head {
   border-bottom: 1px solid #CCC;
   background: #fff;
@@ -198,7 +203,9 @@ a.remove:hover .icon:after {
 }
 .juiportlet-widget-head a.collapse {
   float: left;
-  display: inline;
+  display: none;
+  /*inline;*/
+
   background: url(../images/portlet-minimize.png) 14px 50% no-repeat;
   width: 14px;
   height: 40px;
@@ -208,9 +215,7 @@ a.remove:hover .icon:after {
 }
 .juiportlet-widget-placeholder {
   border: 2px dashed #262877;
-}
-.juiportlet-widget-placeholder {
-  margin: 20px 20px 20px 2px;
+  margin: 0 20px 20px 2px;
 }
 .juiportlet-widget-content {
   padding: 0 0 0 0;
@@ -530,6 +535,7 @@ a.remove:hover .icon:after {
   border: 1px solid #DFDFDF;
   vertical-align: middle;
   padding: 10px;
+  overflow: hidden;
 }
 #ConfigurationPageView table tbody,
 #ConfigurationPageView table tbody tr:last-child,
@@ -1524,12 +1530,18 @@ table.configuration-list tr td:last-child a:before {
   margin-bottom: 4px;
   margin-left: -10px;
 }
-/*step 2*/
+/*= step 2*/
 #ImportWizardUploadFileView .hasCheckBox {
   margin: 0 !important;
 }
 #ImportWizardUploadFileView .hasCheckBox  + label {
   margin: 5px 0 0 10px !important;
+}
+/*= Step 3*/
+#ImportWizardSetModelPermissionsView #permissions-module {
+  position: relative !important;
+  top: 0 !important;
+  right: 0 !important;
 }
 /*=Step 4,Mapping view*/
 #ImportWizardMappingView #edit-form {
@@ -1601,6 +1613,9 @@ table.configuration-list tr td:last-child a:before {
 #ImportWizardMappingView #sample-column-header a:hover {
   color: #fff !important;
   text-decoration: underline;
+}
+#ImportWizardMappingView .has-model-select a {
+  top: 1px;
 }
 /*=Step 5, process details*/
 #ImportWizardDataAnalysisCompleteView > div {
@@ -1771,6 +1786,10 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   color: #262877;
   margin: 10px 0;
+}
+/*Edit+Add Dashboard*/
+#DashboardEditView .panel {
+  width: 100% !important;
 }
 /*Upload Files Box (in selected account, in Note)*/
 .file-upload-box {
@@ -2172,6 +2191,7 @@ div.wide.form .errorMessage {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  cursor: pointer;
 }
 .ui-datepicker .ui-datepicker-calendar span {
   width: 30px;
@@ -2188,6 +2208,7 @@ div.wide.form .errorMessage {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  cursor: pointer;
 }
 .ui-datepicker .ui-datepicker-calendar td {
   min-width: 30px;
@@ -5215,6 +5236,8 @@ section {
   margin-left: 70px;
 }
 /*=Forms with clearfix issues*/
+#ZurmoConfigurationEditAndDetailsView #edit-form:after,
+#OutboundEmailConfigurationEditAndDetailsView #edit-form:after,
 #MapConfigurationView #edit-form:after,
 #AccountConvertToView #edit-form:after,
 #AccountsMassEditView #edit-form:after {
@@ -7245,6 +7268,10 @@ div.hasHalfs .twoThirds {
   outline: none;
 }
 /*=Latest Activity*/
+.less-pronounced-text {
+  font-style: italic;
+  color: #999;
+}
 .latest-activity-icon {
   position: relative;
   top: -3px;
@@ -7422,12 +7449,13 @@ div.hasHalfs .twoThirds {
   padding-left: 15px !important;
   padding-right: 15px;
 }
-.LatestActivitiesListView .items span,
-.LatestActivitiesView .items span {
+.LatestActivitiesListView .items em,
+.LatestActivitiesView .items em {
   display: inline-block;
   height: 100%;
   padding-right: 15px;
   float: left;
+  font-style: normal;
 }
 .LatestActivitiesListView .Note:after,
 .LatestActivitiesView .Note:after {

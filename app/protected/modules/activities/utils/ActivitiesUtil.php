@@ -69,7 +69,7 @@
             $summaryContentTemplate = $mashableActivityRules->getSummaryContentTemplate($ownedByFilter, $viewModuleClassName);
 
             //Render icon
-            $content  = '<span class="'.get_class($model).'"></span>';
+            $content  = '<em class="'.get_class($model).'"></em>';
             //Render date
             $content .= '<strong>'.DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                             $model->{$orderByAttributeName}, 'long', null) . '</strong><br/>';
