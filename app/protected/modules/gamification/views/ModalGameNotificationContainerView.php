@@ -44,9 +44,11 @@
         {
             $content           = null;
             $index             = 0;
+            $firstDialog       = true;
             foreach($this->gameNotifications as $notification)
             {
-                $content .= self::renderNotificationContent($notification, $index);
+                $content       .= self::renderNotificationContent($notification, $index, $firstDialog);
+                $firstDialog    = false;
                 $index ++;
                 if(!$notification->delete())
                 {
@@ -56,7 +58,7 @@
             return $content;
         }
 
-        protected static function renderNotificationContent($notification, $index)
+        protected static function renderNotificationContent($notification, $index, $modal)
         {
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModalGameNotificationView");
@@ -64,11 +66,12 @@
                 'id' => 'ModalGameNotification' . $index,
                 'options' => array(
                     'autoOpen' => true,
-                    'modal'    => true,
+                    'modal'    => $modal,
                     'height'   => 400,
                     'width'    => 500,
                     'open'     => 'js:function(event, ui) {$(this).parent().children(".ui-dialog-titlebar").hide();}',
                 ),
+                'htmlOptions' => array('class' => 'ModalGameNotification')
             ));
             $adapter = new GameNotificationToModalContentAdapter($notification);
             echo CHtml::tag('div', array(), $adapter->getIconCssName());
