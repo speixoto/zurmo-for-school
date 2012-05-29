@@ -40,7 +40,7 @@
         protected function getMessageContent()
         {
             return Yii::t('Default', '<h2>"Skill is fine, and genius is splendid, but the right Contacts are more ' .
-                                     'valuable than either."</h2><i>- Arthur Conan Doyle, Sr.</i><p>Arthur ' .
+                                     'valuable than either."</h2><i>- Arthur Conan Doyle, Sr.</i><div class="large-icon"></div><p>Arthur ' .
                                      'understands the value of having Contacts in the CRM and it takes little skill ' .
                                      'or genius to create one. Why not be the first to do so.</p>');
         }

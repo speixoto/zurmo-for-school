@@ -40,9 +40,9 @@
         protected function getMessageContent()
         {
             return Yii::t('Default', '<h2>"As we must Account for every idle word, so must we Account for every idle ' .
-                                     'silence."</h2> - <i>Benjamin Franklin</i><br/>Be the first to create an Account and, ' .
+                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Account and, ' .
                                      'as Ben would say, "So must we Account for every company, organization, or ' .
-                                     'customer we interact with."');
+                                     'customer we interact with."</p>');
         }
     }
 ?>
