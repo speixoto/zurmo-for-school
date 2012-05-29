@@ -88,8 +88,7 @@
             }
 
             $messages = Yii::app()->imap->getMessages($criteria, $lastImapCheckTimeStamp);
-print_r($messages);
-exit;
+
             $lastCheckTime = null;
             if (count($messages))
             {
@@ -101,26 +100,39 @@ exit;
                     {
                         $lastCheckTime = $message->createdDate;
                     }
-                    $sender = ImapHelper::getOriginalSenderFromForwardedMessage($message);
 
                     // Get owner for message
                     try {
-                        $user = ImapHelper::resolveUserFromEmailAddress($message);
+                        $emailOwner = ImapHelper::resolveOwnerOfEmailMessage($message);
                         echo Yii::t('Default', 'User email found in database.') . "\n";
                     }
                     catch (CException $e)
                     {
                         // User not found, or few users share same primary email address, so continue with next email
-                        // To-Do:: Mark email as read or deleted!!!
+                        // To-Do:: Email user that user can't be found
                         echo Yii::t('Default', 'User email not in database.') . "\n";
                         continue;
                     }
 
-                    // To-Do: What to do if email is sent to two users in our system, then
-                    // we will add same email to users twice(problem can be solved if we are using user
-                    // email instead dropbox)?
+                    $senderInfo = ImapHelper::resolveEmailSenderFromEmailMessage($message);
+                    if (!$senderInfo)
+                    {
+                        // To-Do:: Email user that sender info can't be extracted
+                        echo Yii::t('Default', 'Sender details can not be found.') . "\n";
+                        continue;
+                    }
+
+                    $receiversInfo = ImapHelper::resolveEmailReceiversFromEmailMessage($message);
+                    if (!$receiversInfo)
+                    {
+                        // To-Do:: Email user that receiver info can't be found
+                        echo Yii::t('Default', 'Receiver(s) details can not be found.') . "\n";
+                        continue;
+                    }
+
                     $emailMessage = new EmailMessage();
-                    $emailMessage->owner   = $user;
+                    $emailMessage->owner   = $emailOwner;
+                    // To-Do: Should we try to extract original subject, in case if message is forwarded.
                     $emailMessage->subject = $message->subject;
 
                     $emailContent              = new EmailMessageContent();
@@ -129,15 +141,15 @@ exit;
                     $emailMessage->content     = $emailContent;
 
                     $sender                    = new EmailMessageSender();
-                    $sender->fromAddress       = $message->fromEmail;
-                    $sender->fromName          = $message->fromName;
+                    $sender->fromAddress       = $senderInfo['email'];
+                    //$sender->fromName          = $message->fromName;
                     $emailMessage->sender      = $sender;
 
-                    foreach($message->to as $to)
+                    foreach($receiversInfo as $receiverInfo)
                     {
                         $recipient                 = new EmailMessageRecipient();
-                        $recipient->toAddress      = $to->email;
-                        $recipient->toName         = $to->name;
+                        $recipient->toAddress      = $receiverInfo['email'];
+                        $recipient->toName         = $receiverInfo['name'];
                         $recipient->type           = EmailMessageRecipient::TYPE_TO;
                         $emailMessage->recipients->add($recipient);
                     }
@@ -153,7 +165,7 @@ exit;
                             {
                                 continue;
                             }
-
+                            echo "Saving attachments. \n";
                             $fileContent          = new FileContent();
                             $fileContent->content = $attachment['attachment'];
                             $file                 = new EmailFileModel();
@@ -169,6 +181,7 @@ exit;
                     $validated                 = $emailMessage->validate();
                     if (!$validated)
                     {
+                        echo "ERROR";
                         // To-Do::What to do if emailMessage couldn't be validated???
                     }
                     $saved = $emailMessage->save();
@@ -182,12 +195,14 @@ exit;
                     }
                     catch (NotSupportedException $e)
                     {
+                        print_r($emailMessage->getErrors());
                         echo Yii::t('Default', 'Message could not be saved..') . "\n";
                         // To-Do::What to do if emailMessage couldn't be saved???
+                        // Should we send some email to email owner?
                     }
                 }
                 if ($lastCheckTime != ''){
-                    EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
+                    //EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
                 }
             }
             else

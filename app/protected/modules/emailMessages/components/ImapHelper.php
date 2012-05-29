@@ -41,7 +41,7 @@
          * @param ImapMessage $emailMessage
          * @return User $user
          */
-        public static function resolveUserFromEmailAddress(ImapMessage $emailMessage)
+        public static function resolveOwnerOfEmailMessage(ImapMessage $emailMessage)
         {
             if (isset($emailMessage->fromEmail) && $emailMessage->fromEmail != '')
             {
@@ -75,25 +75,61 @@
         }
 
         /**
-         * Get original sender of email message.
+         * Get informations from email message, for example sender, receiver, subject...
+         * It is quite different for forwarded messages, because we need to parse email
+         * body to get those information.
          * @param ImapMessage $emailMessage
          * @param string $fromAddress
          */
-        public static function resolveFromEmailAddress(ImapMessage $emailMessage)
+        public static function resolveEmailSenderFromEmailMessage(ImapMessage $emailMessage)
         {
             // Check if email is forwarded or not.
-            $fromAddress = false;
+            $emailSender = false;
             if (self::isMessageForwarded($emailMessage))
             {
-                $fromAddress = self::getOriginalSenderFromForwardedMessage($emailMessage);
+                //Somebody sent email to me, and I forwarded it to dropbox
+                // so, sender is in body_>from field
+                $emailSender = self::resolveEmailSenderFromForwardedEmailMessage($emailMessage);
             }
             else
             {
-                $fromAddress = $emailMessage->from;
+                // I sent email to somebody
+                // soI am sender
+                $emailSender = $emailMessage->fromEmail;
             }
-            return $fromAddress;
+            return $emailSender;
         }
 
+        /**
+        * Get receiver details from email message.
+        * Have to cover two cases: when message is CC-ed or BCC-ed to dropbox,
+        * and when email message is forwarded to dropbox.
+        * 1. If message is CC-ed or BCC-ed to dropbox, receipts can be exctracted from "To" field of email message
+        * 2. If message is forwarded, then email from which message is forwarded to dropbox is receiver
+        * @param ImapMessage $emailMessage
+        * @param array $emailReceivers
+        */
+        public static function resolveEmailReceiversFromEmailMessage(ImapMessage $emailMessage)
+        {
+            // Check if email is forwarded or not.
+            $emailReceivers = false;
+            if (self::isMessageForwarded($emailMessage))
+            {
+                // Somebody sent email to me, I forwarded it to dropbox, so I am receiver
+                $emailReceivers = array(
+                    array(
+                        'email' => $emailMessage->fromEmail,
+                        'name'  => $emailMessage->fromName
+                    )
+                );
+            }
+            else
+            {
+                //I am sending email, so receivers is to
+                $emailReceivers = $emailMessage->to;
+            }
+            return $emailReceivers;
+        }
         /**
          * Check if email message is forwarded or not, based on email subject.
          * For works only with few emails clients: Gmail, Outlook, ThunderBird, Yahoo
@@ -115,30 +151,43 @@
 
         /**
          * Parse email to get original sender(in case of forwarded messages)
+         * For now we extract only from email and name
          * @param ImapMessage $emailMessage
-         * @return array $fromAddress
+         * @return array $emailInfo
          */
-        public static function getOriginalSenderFromForwardedMessage(ImapMessage $emailMessage)
+        public static function resolveEmailSenderFromForwardedEmailMessage(ImapMessage $emailMessage)
         {
-            $fromAddress = false;
-            $pattern = '/^From:\s+(.*?)\s*(?:\[mailto:|<)(.*?)(?:[\]>])$/mi';
+            $emailSender   = false;
+            $pattern = '/^\s*From:\s+(.*?)\s*(?:\[mailto:|<)(.*?)(?:[\]>])\s*$/mi';
 
-            // Try first to extract info from text body
+            $noOfMatches = false;
             if ($emailMessage->textBody != '')
             {
                 $noOfMatches = preg_match($pattern, $emailMessage->textBody, $matches);
             }
             else
             {
+                // It is low probability that we can extract data from html message,
+                // because formats are very different for each email client
                 $noOfMatches = preg_match($pattern, $emailMessage->htmlBody, $matches);
             }
 
+            // Fix this, so we can match email only for example!!!
             if ($noOfMatches > 0)
             {
-                $fromAddress['name'] = $matches[1];
-                $fromAddress['email'] = $matches[2];
+                $emailSender['name'] = $matches[1];
+                $emailSender['email'] = $matches[2];
             }
-            return $fromAddress;
+
+            return $emailSender;
+        }
+
+        // Not used
+        public function extract_from_email($string){
+            // preg_match("/From.*\w+([\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+)/i", $string, $matches);
+            preg_match("/(From|Von).*\w+[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $string, $matches);
+            preg_match("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $matches[0], $matches);
+            return $matches[0];
         }
     }
 ?>

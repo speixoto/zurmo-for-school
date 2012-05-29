@@ -36,7 +36,6 @@
         public function testIsMessageForwarded()
         {
             $imapMessage = new ImapMessage();
-
             $imapMessage->subject = "";
             $this->assertFalse(ImapHelper::isMessageForwarded($imapMessage));
 
@@ -62,11 +61,11 @@
         /**
         * @depends testIsMessageForwarded
         */
-        public function testGetOriginalSenderFromForwardedMessage()
+        public function testResolveEmailSenderFromForwardedEmailMessage()
         {
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
-            $imapMessage->from = "test@example.com";
+            $imapMessage->fromEmail = "test@example.com";
 
             // Outlook format
             $imapMessage->textBody = "
@@ -76,9 +75,9 @@ To: 'Steve'
 Subject: Hello Steve";
 
             $imapMessage->subject = "FW: Test subject";
-            $from = ImapHelper::getOriginalSenderFromForwardedMessage($imapMessage);
-            $this->assertEquals('john@example.com', $from['email']);
-            $this->assertEquals('John Smith', $from['name']);
+            $sender = ImapHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
+            $this->assertEquals('john@example.com', $sender['email']);
+            $this->assertEquals('John Smith', $sender['name']);
 
             //Google format
             $imapMessage->textBody = "
@@ -87,27 +86,27 @@ Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve'";
 
-            $from = ImapHelper::getOriginalSenderFromForwardedMessage($imapMessage);
-            $this->assertEquals('john@example.com', $from['email']);
-            $this->assertEquals('John Smith', $from['name']);
+            $sender = ImapHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
+            $this->assertEquals('john@example.com', $sender['email']);
+            $this->assertEquals('John Smith', $sender['name']);
 
             $imapMessage->textBody = "
 Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve'";
 
-            $from = ImapHelper::getOriginalSenderFromForwardedMessage($imapMessage);
-            $this->assertFalse($from);
+            $sender = ImapHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
+            $this->assertFalse($sender);
         }
 
         /**
-        * @depends testGetOriginalSenderFromForwardedMessage
+        * @depends testResolveEmailSenderFromForwardedEmailMessage
         */
-        public function testResolveFromEmailAddress()
+        public function testResolveEmailSenderFromEmailMessage()
         {
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
-            $imapMessage->from = "test@example.com";
+            $imapMessage->fromEmail = "test@example.com";
 
             // Outlook format
             $imapMessage->textBody = "
@@ -116,11 +115,11 @@ Sent: 02 March 2012 AM 01:23
 To: 'Steve'
 Subject: Hello Steve";
 
-            $from = ImapHelper::resolveFromEmailAddress($imapMessage);
-            $this->assertEquals($imapMessage->from, $from);
+            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $this->assertEquals($imapMessage->fromEmail, $from);
 
             $imapMessage->subject = "FW: Test subject";
-            $from = ImapHelper::resolveFromEmailAddress($imapMessage);
+            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
 
@@ -130,7 +129,7 @@ From: John Smith <john@example.com>
 Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve'";
-            $from = ImapHelper::resolveFromEmailAddress($imapMessage);
+            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
 
@@ -138,15 +137,69 @@ To: 'Steve'";
 Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve'";
-
-            $from = ImapHelper::resolveFromEmailAddress($imapMessage);
+            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertFalse($from);
+
+            $imapMessage = new ImapMessage();
+            $imapMessage->subject = "Fwd: Test subject";
+            $imapMessage->htmlBody = "
+
+            -------- Original Message --------
+            Subject:	Test
+            Date:	Mon, 28 May 2012 15:43:39 +0200
+            From:	John Smith <john@example.com>
+            To: 'Steve'
+            ";
+            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $this->assertEquals('john@example.com', $from['email']);
+            $this->assertEquals('John Smith', $from['name']);
+
+            $imapMessage = new ImapMessage();
+            $imapMessage->subject = "Fwd: Test subject";
+            $imapMessage->textBody = "
+-------- Original Message --------
+Subject: 	Test
+Date: 	Mon, 28 May 2012 15:43:39 +0200
+From: 	John Smith <john@example.com>
+To: 'Steve'
+";
+            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $this->assertEquals('john@example.com', $from['email']);
+            $this->assertEquals('John Smith', $from['name']);
         }
 
         /**
         * @depends testIsMessageForwarded
         */
-        public function testResolveUserFromEmailAddress()
+        public function testResolveEmailReceiverFromEmailMessage()
+        {
+            $imapMessage = new ImapMessage();
+            $imapMessage->subject = "Test subject";
+            $imapMessage->fromEmail = "test@example.com";
+            $imapMessage->to = array(
+                array('email' => 'info@example.com')
+            );
+
+            $receivers = ImapHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
+            $this->assertEquals($imapMessage->to, $receivers);
+
+            // Check with multiple receivers.
+            $imapMessage->to = array(
+                array('email' => 'info2@example.com'),
+                array('email' => 'info@example.com')
+            );
+            $receivers = ImapHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
+            $this->assertEquals($imapMessage->to, $receivers);
+
+            $imapMessage->subject = "FW: Test subject";
+            $receivers = ImapHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
+            $this->assertEquals(array('email' => $imapMessage->fromEmail, 'name' => ''), $receivers);
+        }
+
+        /**
+        * @depends testIsMessageForwarded
+        */
+        public function testResolveOwnerOfEmailMessage()
         {
             $user = UserTestHelper::createBasicUser('billy');
             $email = new Email();
@@ -154,7 +207,6 @@ To: 'Steve'";
             $user->primaryEmail = $email;
             $this->assertTrue($user->save());
 
-            //Case 1
             // User send message to dropbox, via additional to field
             // This shouldn't be done in practice, but we need to cover it.
             $imapMessage = new ImapMessage();
@@ -164,10 +216,9 @@ To: 'Steve'";
                 array('email' => 'info@example.com'),
                 array('email' => 'dropbox@example.com'),
             );
-            $owner = ImapHelper::resolveUserFromEmailAddress($imapMessage);
+            $owner = ImapHelper::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
 
-            // Case 2
             // User sent CC copy of his email to dropbox
             // This also shouldn't be done in practice, because email receipt will see dropbox email account,
             // but we need to cover it.
@@ -180,10 +231,9 @@ To: 'Steve'";
             $imapMessage->cc = array(
                 array('email' => 'dropbox@example.com'),
             );
-            $owner = ImapHelper::resolveUserFromEmailAddress($imapMessage);
+            $owner = ImapHelper::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
 
-            // Case 3
             // User sent BCC copy of his email to dropbox
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
@@ -194,30 +244,16 @@ To: 'Steve'";
             $imapMessage->bcc = array(
                 array('email' => 'dropbox@example.com'),
             );
-            $owner = ImapHelper::resolveUserFromEmailAddress($imapMessage);
+            $owner = ImapHelper::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
-
-
-            // Message is not forwarded
-            // This test fails because user is not first in list
-            // Also what do do if user is in CC or BCC
-            /*
-            $imapMessage = new ImapMessage();
-            $imapMessage->to = array(
-                array('email' => 'aa@example.com'),
-                array('email' => 'info@example.com'),
-            );
-            $owner = ImapHelper::resolveUserFromEmailAddress($imapMessage);
-            $this->assertEquals($user->id, $owner->id);
-            */
 
             // Forwarded message, user should be in from field
             $imapMessage->subject = "Fwd: Test subject";
-            $imapMessage->from = "info@example.com";
+            $imapMessage->fromEmail = "billy@example.com";
             $imapMessage->to = array(
-                array('email' => 'to@example.com'),
+                array('email' => 'dropbox@example.com'),
             );
-            $owner = ImapHelper::resolveUserFromEmailAddress($imapMessage);
+            $owner = ImapHelper::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
         }
     }

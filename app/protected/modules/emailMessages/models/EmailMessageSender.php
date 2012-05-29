@@ -64,7 +64,6 @@
                 'rules' => array(
                     array('fromAddress', 'required'),
                     array('fromAddress', 'email'),
-                    array('fromName',    'required'),
                     array('fromName',    'type',    'type' => 'string'),
                     array('fromName',    'length',  'max' => 64),
                 )
