@@ -803,7 +803,7 @@ footer, header, hgroup, menu, nav, section {
 
 /*=Content*/
 .AppContent{
-    padding:20px 20px 20px 20px;
+    padding:20px 20px 0 20px;
     margin-left:172px;
     margin-bottom:20px;
     #gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #ffffff );
@@ -1430,8 +1430,7 @@ a.simple-select{
     .opacity(50);
 }
 
-/*=Search Scope box, and accoutn list*/
-/*Checkboxes*/
+/*=Checkboxes*/
 label.hasCheckBox{
     display: block;
     background: url(../images/checkbox.png) left 4px no-repeat;
@@ -1478,6 +1477,35 @@ div.wide.form{
     position: absolute;
     left: -9999px;
 }
+
+/*=Search Scope box, and account list*/
+.ZeroModelsYetView{
+	h2{
+		font-family:"Times New Roman", Times, serif;
+		font-style:italic;
+		font-size:52px;
+		line-height:64px;
+		font-weight:normal;
+		padding:15px 50px 15px 0;
+		//text-align:center;
+		background:pink
+	}
+	i{
+		font-size:11px;
+		color:#555;
+		font-weight:bold;
+	}
+	p{
+		font-size:16px;
+		line-height:24px;
+		color:#555;
+		font-weight:bold;
+		padding-left:300px;
+		padding-right:50px;
+		background:pink;
+	}
+}
+
 
 #FilteredListView, .summary{
     display:none;
@@ -2146,7 +2174,7 @@ div.wide.form{
     .GridView + .GridView{
         width:35%;
         .juiportlet-widget{
-            margin-right:20px;
+            //margin-right:20px;
         }
     }
     .UserLatestActivtiesForPortletView{
