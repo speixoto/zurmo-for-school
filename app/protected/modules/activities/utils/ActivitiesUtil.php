@@ -67,9 +67,11 @@
             $mashableActivityRules  = MashableActivityRulesFactory::createMashableActivityRulesByModel(get_class($model));
             $orderByAttributeName   = $mashableActivityRules->getLatestActivitiesOrderByAttributeName();
             $summaryContentTemplate = $mashableActivityRules->getSummaryContentTemplate($ownedByFilter, $viewModuleClassName);
-
+			
+			
+			$content  = '<div class="activity-item">';
             //Render icon
-            $content  = '<em class="'.get_class($model).'"></em>';
+            $content  .= '<em class="'.get_class($model).'"></em>';
             //Render date
             $content .= '<strong>'.DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                             $model->{$orderByAttributeName}, 'long', null) . '</strong><br/>';
@@ -83,6 +85,7 @@
 
             //Render display content
             $content .= self::resolveContentTemplate($summaryContentTemplate, $data);
+			$content .= '</div>';
             return $content;
         }
 
