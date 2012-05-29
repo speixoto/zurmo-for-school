@@ -55,9 +55,9 @@
             $params             = array('label' => $this->getCreateLinkDisplayLabel());
             $createLinkElement  = new CreateLinkActionElement($this->controllerId, $this->moduleId, null, $params);
             $content = '<div>';
-            $content .= '<div>' . $this->getIconName() . '</div>';
-            $content .= '<div>' . $this->getMessageContent() . '</div>';
-            $content .= '<div>' . $createLinkElement->render() . '</div>';
+            $content .= $this->getMessageContent();
+			$content .= '<div>' . $this->getIconName() . '</div>';
+            $content .= $createLinkElement->render();
             $content .= '</div>';
             return $content;
         }

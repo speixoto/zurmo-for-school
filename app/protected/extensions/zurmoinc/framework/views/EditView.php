@@ -43,7 +43,7 @@
          */
         protected function renderContent()
         {
-            $content  = '<div>';
+            $content  = '<div class="wrapper">';
             $content .= $this->renderTitleContent();
             $maxCellsPresentInAnyRow = $this->resolveMaxCellsPresentInAnyRow($this->getFormLayoutMetadata());
             if ($maxCellsPresentInAnyRow > 1)
