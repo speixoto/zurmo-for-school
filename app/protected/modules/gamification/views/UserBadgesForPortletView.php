@@ -107,7 +107,7 @@
             }
             else
             {
-                $content .= Yii::t('Default', 'No achievements earned.');
+                $content .= '<span class="empty">' . Yii::t('Default', 'No achievements earned.') . '</span>';
             }
             return $content;
         }
