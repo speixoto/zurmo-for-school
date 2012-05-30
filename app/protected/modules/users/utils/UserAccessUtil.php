@@ -24,33 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UsersDefaultPortletController extends ZurmoPortletController
+    class UserAccessUtil
     {
-        /**
-         * Override to exclude details
-         * because this action are checked using the
-         * resolveCanCurrentUserAccessAction method.
-         */
-        public function filters()
+        public static function resolveCanCurrentUserAccessAction($userId)
         {
-            $moduleClassName = get_class($this->getModule());
-            $filters = array();
-            if (is_subclass_of($moduleClassName, 'SecurableModule'))
+            if (Yii::app()->user->userModel->id == $userId ||
+                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
-                $filters[] = array(
-                        ZurmoBaseController::RIGHTS_FILTER_PATH .
-                        ' - details',
-                        'moduleClassName' => $moduleClassName,
-                        'rightName' => $moduleClassName::getAccessRight(),
-                );
+                return;
             }
-            return $filters;
-        }
-
-        public function actionDetails($id)
-        {
-            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
-            parent::actionDetails($id);
+            $messageView = new AccessFailureView();
+            $view = new AccessFailurePageView($messageView);
+            echo $view->render();
+            Yii::app()->end(0, false);
         }
     }
 ?>
