@@ -45,8 +45,9 @@
     //$instanceConfig['components']['request']['hostInfo'] = '';
     //$instanceConfig['components']['request']['scriptUrl'] = '';
 
-    $urlManager = array (); //Set any parameters you want to customize url manager.
-    $testApiUrl = '';
+    $urlManager = array (); // Set any parameters you want to customize url manager.
+    $testApiUrl = ''; // Set this url only for in perInstanceTest.php file. It should point to test.php file in app directory, and it is used just for API tests.
+                      // For example if zurmo index page is http://my-site.com/app/index.php, the value should be http://my-site.com/app/test.php
 
     if (is_file(INSTANCE_ROOT . '/protected/config/perInstanceConfig.php'))
     {
