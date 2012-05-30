@@ -181,6 +181,7 @@
                 'importPageSize'           => 50,
                 'dashboardListPageSize'    => 5,
                 'apiListPageSize'          => 10,
+                'unlimitedPageSize'        => 1000000000
             ),
             'performance' => array(
                 'class'          => 'application.extensions.zurmoinc.framework.components.PerformanceMeasurement',
