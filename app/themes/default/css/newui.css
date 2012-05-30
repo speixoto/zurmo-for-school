@@ -3562,6 +3562,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .SearchContacts .badge-icon:before {
   content: "%";
 }
+.SearchOpportunities .badge-icon:before {
+  content: "+";
+}
 .LoginUser .badge-icon:before {
   content: "E";
 }
