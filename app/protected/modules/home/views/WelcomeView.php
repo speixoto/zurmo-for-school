@@ -53,14 +53,15 @@
         {
             return AboutView::renderSocialLinksContent();
         }
-
-        public function __construct($tipContent, $splashImageName, $hasDashboardAccess)
+		
+		//public function __construct($tipContent, $splashImageName, $hasDashboardAccess)
+        public function __construct($tipContent, $hasDashboardAccess)
         {
             assert('is_string($tipContent)');
-            assert('is_string($splashImageName)');
+            //assert('is_string($splashImageName)');
             assert('is_bool($hasDashboardAccess)');
-            $this->tipContent                  = $tipContent;
-            $this->splashImageName           = $splashImageName;
+            $this->tipContent                = $tipContent;
+            //$this->splashImageName           = $splashImageName;
             $this->hasDashboardAccess        = $hasDashboardAccess;
         }
 
@@ -72,9 +73,10 @@
 			$content .= '<div id="welcome-content">';
 			$content .= '<div id="instructions"><div id="welcome-gallery">';
 			$content .= $this->renderSplashImageContent();
-			$content .= '</div><p>It is a long established fact that a reader will be distracted by the readable content of a ' . 
-				'page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less ' . 
-				'normal distribution of letters, as opposed to using</p>';
+			$content .= '</div><p>';
+			$content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, '.
+                               'collect badges, and compete against co-workers while getting your job done.');
+			$content .= '</p>';
 			$content .= $this->renderDashboardLinkContent();
 			$content .= '</div>';
             $content .= static::renderHelpfulLinksContent();
