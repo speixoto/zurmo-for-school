@@ -67,7 +67,7 @@
         protected function renderContent()
         {
             $content  = '<div class="clearfix">';
-            $content .= '<h1>Welcome to Zurmo <span>Open Source CRM</span></h1>';
+            $content .= '<h1>Welcome to Zurmo</h1>';
             $content .= static::renderSocialLinksContent();
 			$content .= '<div id="welcome-content">';
 			$content .= '<div id="instructions"><div id="gallery">';
