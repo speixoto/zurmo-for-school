@@ -158,7 +158,7 @@
             $searchFormClassName   = $this->getSearchFormClassName();
             $filteredListClassName = $this->getModelFilteredListClassName();
             // Set $pageSize to unlimited, because we don't want pagination
-            $pageSize = 0;
+            $pageSize = 1000000000;
             $model = new $modelClassName(false);
 
             if (isset($searchFormClassName))
