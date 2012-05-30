@@ -82,7 +82,7 @@
                     $this->redirect(array($this->getId() . '/index'));
                 }
             }
-            $tipContent                = ZurmoTipsUtil::getSingleRandomTipContent();
+            $tipContent                = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
             $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
             $view                      = new HomePageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $welcomeView));
