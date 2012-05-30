@@ -77,16 +77,16 @@
             {
                 $gameBadgeRulesClassName = $data['badgeType'] . 'GameBadgeRules';
                 $value                   = $gameBadgeRulesClassName::getItemCountByGrade(1);
-                $content  = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
-                $content  = '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
+                $content   = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
+                $content  .= '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
                 return $content;
             }
             elseif($data['type'] == GameNotification::TYPE_BADGE_GRADE_CHANGE)
             {
                 $gameBadgeRulesClassName = $data['badgeType'] . 'GameBadgeRules';
                 $value                   = $gameBadgeRulesClassName::getItemCountByGrade($data['grade']);
-                $content  = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
-                $content  = '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
+                $content   = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
+                $content  .= '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
                 return $content;
             }
             else
