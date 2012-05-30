@@ -69,7 +69,7 @@
             if($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
             {
                 $content  = '<h2>' . Yii::t('Default', 'Congratulations!') . '</h2>';
-                $content .= '<h3>' . Yii::t('Default', 'You have reached level {nextLevel}.',
+                $content .= '<h3>' . Yii::t('Default', 'You have reached level {nextLevel}',
                                             array('{nextLevel}' => $data['levelValue'])) . '</h3>';
                 return $content;
             }

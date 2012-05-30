@@ -3498,7 +3498,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border-bottom-left-radius: 100px 20px;
 }
 .game-badge {
-  margin: 20px auto 20px auto;
+  margin: 15px auto 25px auto;
   width: 200px;
   height: 200px;
   -webkit-border-radius: 28px;
@@ -3530,11 +3530,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .game-badge .badge-icon:before {
   position: relative;
-  top: -10px;
+  top: -30px;
 }
 .game-badge .badge-message {
   position: absolute;
-  bottom: 30px;
+  bottom: 35px;
   left: 0;
   display: block;
   text-align: center;
@@ -3542,6 +3542,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .game-badge .badge-message h3 {
   color: #7bb730 !important;
+  margin-top: 3px;
 }
 .CreateContact .badge-icon:before {
   content: "y";
@@ -4008,6 +4009,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .ModalGameNotification a:focus {
   outline: none;
+}
+.ModalGameNotificationParent {
+  position: fixed;
+  display: block;
+  top: 50%;
+  left: 50%;
+  margin: -175px 0 0 -175px;
+  width: 310px;
+  height: 310px;
 }
 #WelcomeView {
   padding-right: 20px !important;
