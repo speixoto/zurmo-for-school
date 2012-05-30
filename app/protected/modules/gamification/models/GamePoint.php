@@ -220,9 +220,10 @@
         public function replaceValue($value)
         {
             assert('is_int($value)');
+            $oldValue                               = $this->value;
             $this->unrestrictedSet('value', $value);
             $gamePointTransaction                   = new GamePointTransaction();
-            $gamePointTransaction->value            = $value - $this->value;
+            $gamePointTransaction->value            = $value - $oldValue;
             $this->transactions->add($gamePointTransaction);
         }
 
