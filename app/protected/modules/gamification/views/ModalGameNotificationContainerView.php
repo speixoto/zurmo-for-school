@@ -69,7 +69,9 @@
                     'modal'    => $modal,
                     'height'   => 350,
                     'width'    => 350,
+                    'dialogClass' => 'ModalGameNotificationParent',
                     'position' => 'center',
+                    'clearStyle' => true,
                     'open'     => 'js:function(event, ui) {$(this).parent().children(".ui-dialog-titlebar").hide();}',
                 ),
                 'htmlOptions' => array('class' => 'ModalGameNotification')

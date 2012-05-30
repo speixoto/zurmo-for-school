@@ -193,7 +193,7 @@
 }
 
 .game-badge{
-	margin:20px auto 20px auto;
+	margin:15px auto 25px auto;
 	width:200px;
 	height:200px;
 	.radius( 28px );
@@ -207,18 +207,19 @@
 		.radius(27px);
 		&:before{
 			position:relative;
-			top:-10px;
+			top:-30px;
 		}
 	}
 	.badge-message{
 		position:absolute;
-		bottom:30px;
+		bottom:35px;
 		left:0;
 		display:block;
 		text-align:center;
 		width:100%;
 		h3{
 			color:@themeColor2 !important;
+			margin-top:3px;
 		}
 	}
 }
@@ -501,6 +502,15 @@
 			outline:none;	
 		}
 	}
+}
+.ModalGameNotificationParent{
+	position:fixed;
+	display:block;
+	top:50%;
+	left:50%;
+	margin:-175px 0 0 -175px;
+	width:310px;
+	height:310px;
 }
 
 
