@@ -58,10 +58,10 @@
          * @param string $localeID the locale ID (e.g. en_US). If null, the {@link getLanguage application language ID} will be used.
          * @return CLocale the locale instance
          */
-        public function getLocale($localeID=null)
-          {
-              return ZurmoLocale::getInstance($localeID===null?$this->getLanguage():$localeID);
-          }
+        public function getLocale($localeID = null)
+        {
+            return ZurmoLocale::getInstance($localeID === null ? $this->getLanguage() : $localeID);
+        }
 
         /**
          * Override so that the application looks at the controller class name differently.

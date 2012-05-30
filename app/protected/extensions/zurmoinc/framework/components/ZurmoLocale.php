@@ -52,7 +52,7 @@
         public static function getInstance($id)
         {
             static $locales = array();
-            if(isset($locales[$id]))
+            if (isset($locales[$id]))
             {
                 return $locales[$id];
             }
@@ -68,15 +68,15 @@
         public static function getLocaleIDs()
         {
             static $locales;
-            if($locales === null)
+            if ($locales === null)
             {
                 $locales = array();
                 $dataPath = self::$dataPath === null ? YII_PATH . DIRECTORY_SEPARATOR . 'i18n'.DIRECTORY_SEPARATOR . 'data' : self::$dataPath;
                 $folder = @opendir($dataPath);
-                while(($file = @readdir($folder)) !== false)
+                while (($file = @readdir($folder)) !== false)
                 {
                     $fullPath = $dataPath . DIRECTORY_SEPARATOR . $file;
-                    if(substr($file, -4) ==='.php' && is_file($fullPath))
+                    if (substr($file, -4) ==='.php' && is_file($fullPath))
                     {
                         $locales[] = substr($file, 0, -4);
                     }
@@ -98,13 +98,13 @@
             $this->_id = self::getCanonicalID($id);
             $dataPath = self::$dataPath === null ? YII_PATH . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . 'data' : self::$dataPath;
             $dataFile = $dataPath . DIRECTORY_SEPARATOR . $this->_id . '.php';
-            if(is_file($dataFile))
+            if (is_file($dataFile))
             {
                 $this->_data = require($dataFile);
             }
             else
             {
-                throw new CException(Yii::t('yii','Unrecognized locale "{locale}".', array('{locale}' => $id)));
+                throw new CException(Yii::t('yii', 'Unrecognized locale "{locale}".', array('{locale}' => $id)));
             }
          }
 
@@ -121,7 +121,7 @@
          */
         public function getNumberFormatter()
         {
-            if($this->_numberFormatter === null)
+            if ($this->_numberFormatter === null)
             {
                 $this->_numberFormatter = new CNumberFormatter($this);
             }
@@ -133,7 +133,7 @@
          */
         public function getDateFormatter()
         {
-            if($this->_dateFormatter === null)
+            if ($this->_dateFormatter === null)
             {
                 $this->_dateFormatter = new CDateFormatter($this);
             }
@@ -196,9 +196,9 @@
          * @param boolean $standAlone whether the month name should be returned in stand-alone format
          * @return string the month name
          */
-        public function getMonthName($month,$width='wide', $standAlone=false)
+        public function getMonthName($month, $width = 'wide', $standAlone = false)
         {
-            if($standAlone)
+            if ($standAlone)
             {
                 return isset($this->_data['monthNamesSA'][$width][$month]) ? $this->_data['monthNamesSA'][$width][$month] : $this->_data['monthNames'][$width][$month];
             }
@@ -214,9 +214,9 @@
          * @param boolean $standAlone whether the month names should be returned in stand-alone format
          * @return array month names indexed by month values (1-12)
          */
-        public function getMonthNames($width='wide', $standAlone=false)
+        public function getMonthNames($width = 'wide', $standAlone = false)
         {
-            if($standAlone)
+            if ($standAlone)
             {
                 return isset($this->_data['monthNamesSA'][$width]) ? $this->_data['monthNamesSA'][$width] : $this->_data['monthNames'][$width];
             }
@@ -232,9 +232,9 @@
          * @param boolean $standAlone whether the week day name should be returned in stand-alone format
          * @return string the weekday name
          */
-        public function getWeekDayName($day,$width='wide', $standAlone=false)
+        public function getWeekDayName($day, $width = 'wide', $standAlone = false)
         {
-            if($standAlone)
+            if ($standAlone)
             {
                 return isset($this->_data['weekDayNamesSA'][$width][$day]) ? $this->_data['weekDayNamesSA'][$width][$day] : $this->_data['weekDayNames'][$width][$day];
             }
@@ -250,9 +250,9 @@
          * @param boolean $standAlone whether the week day name should be returned in stand-alone format
          * @return array the weekday names indexed by weekday values (0-6, 0 means Sunday, 1 Monday, etc.)
          */
-        public function getWeekDayNames($width='wide', $standAlone=false)
+        public function getWeekDayNames($width = 'wide', $standAlone = false)
         {
-            if($standAlone)
+            if ($standAlone)
             {
                 return isset($this->_data['weekDayNamesSA'][$width]) ? $this->_data['weekDayNamesSA'][$width] : $this->_data['weekDayNames'][$width];
             }
@@ -350,15 +350,15 @@
             {
                 return $this->_data[$category][$id];
             }
-            else if (($category == 'languages') && ($id = $this->getLanguageID($id)) && (isset($this->_data[$category][$id])))
+            elseif (($category == 'languages') && ($id = $this->getLanguageID($id)) && (isset($this->_data[$category][$id])))
             {
                 return $this->_data[$category][$id];
             }
-            else if (($category == 'scripts') && ($id = $this->getScriptID($id)) && (isset($this->_data[$category][$id])))
+            elseif (($category == 'scripts') && ($id = $this->getScriptID($id)) && (isset($this->_data[$category][$id])))
             {
                 return $this->_data[$category][$id];
             }
-            else if (($category == 'territories') && ($id = $this->getTerritoryID($id)) && (isset($this->_data[$category][$id])))
+            elseif (($category == 'territories') && ($id = $this->getTerritoryID($id)) && (isset($this->_data[$category][$id])))
             {
                 return $this->_data[$category][$id];
             }
