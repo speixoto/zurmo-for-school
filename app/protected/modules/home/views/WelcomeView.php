@@ -68,7 +68,7 @@
             $content .= '<div id="welcome-content">';
             $content .= '<div id="instructions"><div id="gallery">';
             $content .= '</div><p>';
-            $content .= Yii::t('Default', 'Using a crm shouldn\'t be a chore. With Zurmo you can earn points, '.
+            $content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, '.
                                'collect badges, and compete against co-workers while getting your job done.');
             $content .= '</p>';
             $content .= $this->renderDashboardLinkContent();
