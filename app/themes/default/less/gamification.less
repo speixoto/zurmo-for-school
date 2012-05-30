@@ -91,6 +91,7 @@
 	}
 }
 
+.game-badge,
 .badge{
 	position: relative;
 	display: inline-block;
@@ -112,7 +113,7 @@
 		position: absolute;
 		top: -1px;
 		left: -1px;
-		border-radius: 7px;
+		.radius(7px);
 		border: solid 1px #CCC;
 		.b-shadow( ~"inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -6px 0 rgba(155,155,155,.7), inset 0 -7px 0 rgba(255,255,255,.3)");
 	}
@@ -148,7 +149,6 @@
 		.radius(50%);
 		line-height:18px;
 		z-index:10;
-		text-align:center;
 	}
 	.gloss {
 	    #gradient > .horizontal( rgba( 255, 255, 255, 0.3 ), rgba( 255, 255, 255, 0.1 ) );
@@ -191,6 +191,39 @@
 	    border-bottom-left-radius: 100px 20px;
 	}
 }
+
+.game-badge{
+	margin:20px auto 20px auto;
+	width:200px;
+	height:200px;
+	.radius( 28px );
+	clear:both;
+	&:after{
+		.radius(28px);
+		.b-shadow( ~"inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -20px 0 rgba(155,155,155,.7), inset 0 -21px 0 rgba(255,255,255,.3)");
+	}
+	.badge-icon{
+	    font-size:199px;
+		.radius(27px);
+		&:before{
+			position:relative;
+			top:-10px;
+		}
+	}
+	.badge-message{
+		position:absolute;
+		bottom:30px;
+		left:0;
+		display:block;
+		text-align:center;
+		width:100%;
+		h3{
+			color:@themeColor2 !important;
+		}
+	}
+}
+
+
 
 .CreateContact{
 	.badge-icon:before{
@@ -286,6 +319,27 @@
 		content: "4";
 	}
 }
+
+.game-level-change{
+	.badge-icon:before{
+		content: ";";
+	}
+}
+
+.game-new-badge{
+	.badge-icon:before{
+		content: ":";
+	}
+}
+
+.game-badge-grade-change{
+	.badge-icon:before{
+		content: "}";
+	}
+}
+                
+                
+
 
 /*Percentage Complete*/
 .hasPercentCounter{
@@ -439,6 +493,8 @@
 .ModalGameNotification{
 	padding:20px;
 	text-align:center;
+	.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
+    #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
 	a{
 		.zButton();
 		&:focus{

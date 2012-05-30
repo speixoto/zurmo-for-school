@@ -2674,6 +2674,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
   color: #262877;
 }
@@ -2759,6 +2763,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
 }
 .cell-element-icon {
@@ -2972,7 +2980,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 #layout-container .ui-widget-header .ui-state-default {
   font-weight: normal;
   border: 1px solid #ccc;
-  box-shadow: inset 0 0 0 2px #ffffff, 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   background-color: #f5f5f5;
   background-repeat: no-repeat;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5));
@@ -3326,6 +3338,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 #UserBadgesForPortletView > div {
   padding: 15px 15px 0 15px;
 }
+.game-badge,
 .badge {
   position: relative;
   display: inline-block;
@@ -3354,9 +3367,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-image: linear-gradient(#f5f5f5, #eeeeee 80%, #eeeeee);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#eeeeee', GradientType=0);
 }
+.game-badge:first-child,
 .badge:first-child {
   margin-left: 0;
 }
+.game-badge:after,
 .badge:after {
   content: ' ';
   width: 100%;
@@ -3364,6 +3379,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   position: absolute;
   top: -1px;
   left: -1px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
   border-radius: 7px;
   border: solid 1px #CCC;
   -webkit-box-shadow: inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -6px 0 rgba(155,155,155,.7), inset 0 -7px 0 rgba(255,255,255,.3);
@@ -3372,6 +3391,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-box-shadow: inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -6px 0 rgba(155,155,155,.7), inset 0 -7px 0 rgba(255,255,255,.3);
   box-shadow: inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -6px 0 rgba(155,155,155,.7), inset 0 -7px 0 rgba(255,255,255,.3);
 }
+.game-badge .badge-icon,
 .badge .badge-icon {
   font-weight: normal;
   font-size: 50px;
@@ -3399,10 +3419,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   position: relative;
   z-index: 2;
 }
+.game-badge .badge-icon:before,
 .badge .badge-icon:before {
   position: relative;
   top: -2px;
 }
+.game-badge .badge-grade,
 .badge .badge-grade {
   font-size: 11;
   position: absolute;
@@ -3426,8 +3448,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border-radius: 50%;
   line-height: 18px;
   z-index: 10;
-  text-align: center;
 }
+.game-badge .gloss,
 .badge .gloss {
   background-color: rgba(255, 255, 255, 0.1);
   background-repeat: repeat-x;
@@ -3474,6 +3496,52 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border-top-left-radius: 27px;
   border-bottom-right-radius: 120px 20px;
   border-bottom-left-radius: 100px 20px;
+}
+.game-badge {
+  margin: 20px auto 20px auto;
+  width: 200px;
+  height: 200px;
+  -webkit-border-radius: 28px;
+  -moz-border-radius: 28px;
+  -ms-border-radius: 28px;
+  -o-border-radius: 28px;
+  border-radius: 28px;
+  clear: both;
+}
+.game-badge:after {
+  -webkit-border-radius: 28px;
+  -moz-border-radius: 28px;
+  -ms-border-radius: 28px;
+  -o-border-radius: 28px;
+  border-radius: 28px;
+  -webkit-box-shadow: inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -20px 0 rgba(155,155,155,.7), inset 0 -21px 0 rgba(255,255,255,.3);
+  -moz-box-shadow: inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -20px 0 rgba(155,155,155,.7), inset 0 -21px 0 rgba(255,255,255,.3);
+  -o-box-shadow: inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -20px 0 rgba(155,155,155,.7), inset 0 -21px 0 rgba(255,255,255,.3);
+  -ms-box-shadow: inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -20px 0 rgba(155,155,155,.7), inset 0 -21px 0 rgba(255,255,255,.3);
+  box-shadow: inset 0 0 1px rgba(155,155,155,.5), inset 0 1px 0 rgba(225,225,225,.5),  inset 0 -20px 0 rgba(155,155,155,.7), inset 0 -21px 0 rgba(255,255,255,.3);
+}
+.game-badge .badge-icon {
+  font-size: 199px;
+  -webkit-border-radius: 27px;
+  -moz-border-radius: 27px;
+  -ms-border-radius: 27px;
+  -o-border-radius: 27px;
+  border-radius: 27px;
+}
+.game-badge .badge-icon:before {
+  position: relative;
+  top: -10px;
+}
+.game-badge .badge-message {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+.game-badge .badge-message h3 {
+  color: #7bb730 !important;
 }
 .CreateContact .badge-icon:before {
   content: "y";
@@ -3522,6 +3590,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .CreateTask .badge-icon:before {
   content: "4";
+}
+.game-level-change .badge-icon:before {
+  content: ";";
+}
+.game-new-badge .badge-icon:before {
+  content: ":";
+}
+.game-badge-grade-change .badge-icon:before {
+  content: "}";
 }
 /*Percentage Complete*/
 .hasPercentCounter {
@@ -3876,6 +3953,20 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .ModalGameNotification {
   padding: 20px;
   text-align: center;
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  background-color: #f5f5f5;
+  background-repeat: no-repeat;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5));
+  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5);
+  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5);
+  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5);
+  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5);
+  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
 .ModalGameNotification a {
   cursor: pointer;
