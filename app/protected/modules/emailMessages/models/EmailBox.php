@@ -86,7 +86,7 @@
                     $folder->emailBox = $box;
                     $box->folders->add($folder);
                     $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultOutboxErrorName();
+                    $folder->name     = EmailFolder::getDefaultInboxName();
                     $folder->type     = EmailFolder::TYPE_INBOX;
                     $folder->emailBox = $box;
                     $box->folders->add($folder);

@@ -202,7 +202,7 @@
                     }
                 }
                 if ($lastCheckTime != ''){
-                    //EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
+                    EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
                 }
             }
             else

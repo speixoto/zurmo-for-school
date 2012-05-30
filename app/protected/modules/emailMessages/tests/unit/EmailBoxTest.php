@@ -59,39 +59,54 @@
             $this->assertEquals(0, count($boxes));
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $this->assertEquals(EmailBox::NOTIFICATIONS_NAME, $box->name);
-            $this->assertEquals(4, $box->folders->count());
+            $this->assertEquals(5, $box->folders->count());
             $this->assertFalse($box->isDeletable());
             $this->assertTrue($box->id > 0);
 
             //After it saves, it should create a Sent folder and an Outbox folder
             $box = EmailBox::getByName(EmailBox::NOTIFICATIONS_NAME);
-            $this->assertEquals(4, $box->folders->count());
+            $this->assertEquals(5, $box->folders->count());
             $folder1 = $box->folders->offsetGet(0);
             $folder2 = $box->folders->offsetGet(1);
             $folder3 = $box->folders->offsetGet(2);
             $folder4 = $box->folders->offsetGet(3);
-            $this->assertTrue($folder1->name == EmailFolder::getDefaultSentName() ||
+            $folder5 = $box->folders->offsetGet(4);
+
+            $this->assertTrue($folder1->name == EmailFolder::getDefaultInboxName() ||
+                              $folder1->name == EmailFolder::getDefaultSentName() ||
                               $folder1->name == EmailFolder::getDefaultOutboxName() ||
                               $folder1->name == EmailFolder::getDefaultDraftName() ||
                               $folder1->name == EmailFolder::getDefaultOutboxErrorName());
-            $this->assertTrue($folder2->name == EmailFolder::getDefaultSentName() ||
+            $this->assertTrue($folder2->name == EmailFolder::getDefaultInboxName() ||
+                              $folder2->name == EmailFolder::getDefaultSentName() ||
                               $folder2->name == EmailFolder::getDefaultOutboxName() ||
                               $folder2->name == EmailFolder::getDefaultDraftName() ||
                               $folder2->name == EmailFolder::getDefaultOutboxErrorName());
-            $this->assertTrue($folder3->name == EmailFolder::getDefaultSentName() ||
+            $this->assertTrue($folder3->name == EmailFolder::getDefaultInboxName() ||
+                              $folder3->name == EmailFolder::getDefaultSentName() ||
                               $folder3->name == EmailFolder::getDefaultOutboxName() ||
                               $folder3->name == EmailFolder::getDefaultDraftName() ||
                               $folder3->name == EmailFolder::getDefaultOutboxErrorName());
-            $this->assertTrue($folder4->name == EmailFolder::getDefaultSentName() ||
+            $this->assertTrue($folder4->name == EmailFolder::getDefaultInboxName() ||
+                              $folder4->name == EmailFolder::getDefaultSentName() ||
                               $folder4->name == EmailFolder::getDefaultOutboxName() ||
                               $folder4->name == EmailFolder::getDefaultDraftName() ||
                               $folder4->name == EmailFolder::getDefaultOutboxErrorName());
+            $this->assertTrue($folder5->name == EmailFolder::getDefaultInboxName() ||
+                              $folder5->name == EmailFolder::getDefaultSentName() ||
+                              $folder5->name == EmailFolder::getDefaultOutboxName() ||
+                              $folder5->name == EmailFolder::getDefaultDraftName() ||
+                              $folder5->name == EmailFolder::getDefaultOutboxErrorName());
             $this->assertNotEquals($folder1->name, $folder2->name);
             $this->assertNotEquals($folder1->name, $folder3->name);
             $this->assertNotEquals($folder1->name, $folder4->name);
+            $this->assertNotEquals($folder1->name, $folder4->name);
             $this->assertNotEquals($folder2->name, $folder3->name);
             $this->assertNotEquals($folder2->name, $folder4->name);
+            $this->assertNotEquals($folder2->name, $folder5->name);
             $this->assertNotEquals($folder3->name, $folder4->name);
+            $this->assertNotEquals($folder3->name, $folder5->name);
+            $this->assertNotEquals($folder4->name, $folder5->name);
 
             $boxes = EmailBox::getAll();
             $this->assertEquals(1, count($boxes));

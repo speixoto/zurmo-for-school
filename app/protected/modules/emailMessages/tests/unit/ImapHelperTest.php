@@ -193,7 +193,13 @@ To: 'Steve'
 
             $imapMessage->subject = "FW: Test subject";
             $receivers = ImapHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
-            $this->assertEquals(array('email' => $imapMessage->fromEmail, 'name' => ''), $receivers);
+            $compareData = array(
+                               array(
+                                   'email' => $imapMessage->fromEmail,
+                                   'name' => ''
+                               )
+                           );
+            $this->assertEquals($compareData, $receivers);
         }
 
         /**

@@ -58,8 +58,7 @@
             $this->assertFalse($saved);
             $compareData = array('folder' => array('name'          => array('Name cannot be blank.'),
                                                    'emailBox'      => array('name' => array('Name cannot be blank.'))),
-                                 'sender' => array('fromAddress'   => array('From Address cannot be blank.'),
-                                                   'fromName'      => array('From Name cannot be blank.')));
+                                 'sender' => array('fromAddress'   => array('From Address cannot be blank.')));
             $this->assertEquals($compareData, $emailMessage->getErrors());
 
             //Set sender, and recipient, and content
@@ -158,8 +157,7 @@
             $this->assertFalse($saved);
             $compareData = array('folder' => array('name'          => array('Name cannot be blank.'),
                                                    'emailBox'      => array('name' => array('Name cannot be blank.'))),
-                                 'sender' => array('fromAddress'   => array('From Address cannot be blank.'),
-                                                   'fromName'      => array('From Name cannot be blank.')));
+                                 'sender' => array('fromAddress'   => array('From Address cannot be blank.')));
             $this->assertEquals($compareData, $emailMessage->getErrors());
 
             //Set sender, and recipient, and content
@@ -215,8 +213,7 @@
             $this->assertFalse($saved);
             $compareData = array('folder' => array('name'          => array('Name cannot be blank.'),
                                                    'emailBox'      => array('name' => array('Name cannot be blank.'))),
-                                 'sender' => array('fromAddress'   => array('From Address cannot be blank.'),
-                                                   'fromName'      => array('From Name cannot be blank.')));
+                                 'sender' => array('fromAddress'   => array('From Address cannot be blank.')));
             $this->assertEquals($compareData, $emailMessage->getErrors());
 
             //Set sender, and recipient, and content
@@ -281,8 +278,7 @@
             $this->assertFalse($saved);
             $compareData = array('folder' => array('name'          => array('Name cannot be blank.'),
                                                    'emailBox'      => array('name' => array('Name cannot be blank.'))),
-                                 'sender' => array('fromAddress'   => array('From Address cannot be blank.'),
-                                                   'fromName'      => array('From Name cannot be blank.')));
+                                 'sender' => array('fromAddress'   => array('From Address cannot be blank.')));
             $this->assertEquals($compareData, $emailMessage->getErrors());
             //Set sender, and recipient, and content
             $emailContent              = new EmailMessageContent();
