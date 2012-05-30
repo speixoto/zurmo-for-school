@@ -51,7 +51,7 @@
          */
         protected function getIconName()
         {
-            return 'lead-large-icon';
+            return 'Lead';
         }
     }
 ?>
