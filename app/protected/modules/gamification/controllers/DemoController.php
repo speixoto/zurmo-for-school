@@ -36,25 +36,24 @@
             {
                 throw new NotSupportedException();
             }
-            /**
+
             //Level up notification
             $gameNotification           = new GameNotification();
             $gameNotification->user     = Yii::app()->user->userModel;
             $gameNotification->setLevelChangeByNextLevelValue(2);
             $saved                      = $gameNotification->save();
-**/
+
             //New badge notification
             $gameNotification           = new GameNotification();
             $gameNotification->user     = Yii::app()->user->userModel;
             $gameNotification->setNewBadgeByType('LoginUser');
             $saved                      = $gameNotification->save();
-/**
+
             //Badge grade up notification
             $gameNotification           = new GameNotification();
             $gameNotification->user     = Yii::app()->user->userModel;
             $gameNotification->setBadgeGradeChangeByTypeAndNewGrade('LoginUser', 5);
             $saved                      = $gameNotification->save();
-            **/
         }
     }
 ?>
