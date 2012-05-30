@@ -88,6 +88,10 @@
             $this->runControllerWithNoExceptionsAndGetContent('users/default/auditEventsModalList');
 
             //Now test all portlet controller actions
+            $this->setGetArray(array('id' => $aUser->id, 'portletId' => 1)); //Using dummy portlet id
+            //Access to details of a portlet for self user should be fine.
+            $this->runControllerWithNoExceptionsAndGetContent('users/defaultPortlet/details');
+
             //Now test peon with elevated rights to tabs /other available rights
             //such as convert lead
             //Now test peon with elevated permissions to models.
