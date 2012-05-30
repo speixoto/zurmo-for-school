@@ -53,15 +53,12 @@
         {
             return AboutView::renderSocialLinksContent();
         }
-		
-		//public function __construct($tipContent, $splashImageName, $hasDashboardAccess)
+
         public function __construct($tipContent, $hasDashboardAccess)
         {
             assert('is_string($tipContent)');
-            //assert('is_string($splashImageName)');
             assert('is_bool($hasDashboardAccess)');
             $this->tipContent                = $tipContent;
-            //$this->splashImageName           = $splashImageName;
             $this->hasDashboardAccess        = $hasDashboardAccess;
         }
 
@@ -70,15 +67,14 @@
             $content  = '<div class="clearfix">';
             $content .= '<h1>Welcome to Zurmo</h1>';
             $content .= static::renderSocialLinksContent();
-			$content .= '<div id="welcome-content">';
-			$content .= '<div id="instructions"><div id="welcome-gallery">';
-			$content .= $this->renderSplashImageContent();
-			$content .= '</div><p>';
-			$content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, '.
+            $content .= '<div id="welcome-content">';
+            $content .= '<div id="instructions"><div id="welcome-gallery">';
+            $content .= '</div><p>';
+            $content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, '.
                                'collect badges, and compete against co-workers while getting your job done.');
-			$content .= '</p>';
-			$content .= $this->renderDashboardLinkContent();
-			$content .= '</div>';
+            $content .= '</p>';
+            $content .= $this->renderDashboardLinkContent();
+            $content .= '</div>';
             $content .= static::renderHelpfulLinksContent();
             $content .= $this->renderTipsContent();
             $content .= $this->renderHideLinkContent();
@@ -109,11 +105,6 @@
                 $content  = CHtml::link($label, Yii::app()->createUrl('home/default'), array('class'=>'dashboard-link'));
                 return $content;
             }
-        }
-
-        protected function renderSplashImageContent()
-        {
-            return 'todo: show image using Chtml::image' . $this->splashImageName;
         }
 
         protected function renderHideLinkContent()
