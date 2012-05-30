@@ -5984,8 +5984,8 @@ div.wide.form label.hasCheckBox {
 .ZeroModelsYetView h2 {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
-  font-size: 52px;
-  line-height: 64px;
+  font-size: 48px;
+  line-height: 60px;
   font-weight: normal;
   padding: 15px 50px 15px 30px;
 }
@@ -6085,7 +6085,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
-.ZeroModelsYetView .Opporunity .large-icon:after {
+.ZeroModelsYetView .Opportunity .large-icon:after {
   content: "9";
   font-weight: normal;
   font-size: 300px;
