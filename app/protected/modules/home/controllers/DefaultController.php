@@ -83,9 +83,7 @@
                 }
             }
             $tipContent                = ZurmoTipsUtil::getSingleRandomTipContent();
-            $welcomeImageNames         = require(Yii::getPathOfAlias('application.modules.zurmo.utils.ZurmoWelcomeImages') . '.php');
-            $splashImageName           = $welcomeImageNames[array_rand($welcomeImageNames, 1)];
-            $welcomeView               = new WelcomeView($tipContent, $splashImageName, $hasDashboardAccess);
+            $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
             $view                      = new HomePageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $welcomeView));
             echo $view->render();

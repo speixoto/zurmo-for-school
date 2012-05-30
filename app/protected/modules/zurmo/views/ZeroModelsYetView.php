@@ -57,7 +57,6 @@
             $content = '<div class="'.$this->getIconName().'">';
             $content .= $this->getMessageContent();
             $content .= $createLinkElement->render();
-			//$content .= '<div class="'.$this->getIconName().'"></div>';
             $content .= '</div>';
             return $content;
         }
