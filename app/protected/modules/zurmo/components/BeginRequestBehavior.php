@@ -85,12 +85,15 @@
         */
         public function handleApplicationCache($event)
         {
-            $memcacheServiceHelper = new MemcacheServiceHelper();
-            if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
+            if (MEMCACHE_ON)
             {
-                $cacheComponent = Yii::createComponent('CMemCache',
-                    array('servers' => Yii::app()->params['memcacheServers']));
-                Yii::app()->setComponent('cache', $cacheComponent);
+                $memcacheServiceHelper = new MemcacheServiceHelper();
+                if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
+                {
+                    $cacheComponent = Yii::createComponent('CMemCache',
+                        array('servers' => Yii::app()->params['memcacheServers']));
+                    Yii::app()->setComponent('cache', $cacheComponent);
+                }
             }
         }
 
