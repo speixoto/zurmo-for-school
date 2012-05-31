@@ -31,6 +31,8 @@
      */
     abstract class ZurmoModuleController extends ZurmoBaseController
     {
+        const ZERO_MODELS_CHECK_FILTER_PATH = 'application.modules.zurmo.controllers.filters.ZeroModelsCheckControllerFilter';
+
         public function actionIndex()
         {
             $this->actionList();

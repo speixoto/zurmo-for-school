@@ -40,6 +40,7 @@
 			border: 1px solid #DFDFDF;
 			vertical-align:middle;
 			padding:10px;
+			overflow: hidden;
 		}
 		table tbody,
 		table tbody tr:last-child,
@@ -189,7 +190,7 @@ table.configuration-list{
 }
 
 .AdministrativeArea.AppContent{
-	padding-right:0;
+	//padding-right:0;
 }
 
 .multiselect-holder{
@@ -521,10 +522,8 @@ table.configuration-list{
 }
 
 #UsersPageView{
-	.AdministrativeArea.AppContent {
-		#ActionBarSearchAndListView{
-			padding-right:20px;
-		}
+	.AppContent {
+		//padding-right:0;
 	}
 	/*
 	.DetailsView{
@@ -565,6 +564,15 @@ table.configuration-list{
 		table{
 			width:100%;
 		}
+	}
+}
+
+/*=User Security*/
+#PoliciesEditAndDetailsView,
+#ModulePermissionsEditAndDetailsView,
+#RightsEditAndDetailsView{
+	.details-table{
+		margin-right:0;
 	}
 }
 
@@ -613,7 +621,7 @@ table.configuration-list{
 
 /*Import window*/
 .AppContent.ImportWizardView{
-	padding-right:0;
+	//padding-right:0;
 	#edit-form{
 		table{
 			width:100%;
@@ -643,13 +651,22 @@ table.configuration-list{
 	}
 }
 
-/*step 2*/
+/*= step 2*/
 #ImportWizardUploadFileView{
 	.hasCheckBox{
 		margin: 0 !important;
 		& + label{
 			margin:5px 0 0 10px !important;
 		}
+	}
+}
+
+/*= Step 3*/
+#ImportWizardSetModelPermissionsView{
+	#permissions-module{
+		position:relative !important;
+		top:0 !important;
+		right:0 !important;
 	}
 }
 
@@ -715,6 +732,11 @@ table.configuration-list{
 	#sample-column-header{
 		a{
 			.zLink();
+		}
+	}
+	.has-model-select{
+		a{
+			top:1px;
 		}
 	}
 }

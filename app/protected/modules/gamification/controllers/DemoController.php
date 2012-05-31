@@ -24,19 +24,36 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * A  NotificationRules to manage game changes requiring a notification to go out.
-     */
-    class GameNotificationRules extends NotificationRules
+    Yii::import('application.modules.gamification.controllers.DefaultController', true);
+    class GamificationDemoController extends GamificationDefaultController
     {
-        public static function getDisplayName()
+        /**
+         * Special method to load each type of game notification.  New badge, badge grade change, and level up.
+         */
+        public function actionLoadGameNotificationsSampler()
         {
-            return Yii::t('Default', 'A game notification');
-        }
+            if (Yii::app()->user->userModel->username != 'super')
+            {
+                throw new NotSupportedException();
+            }
 
-        public static function getType()
-        {
-            return 'Game';
+            //Level up notification
+            $gameNotification           = new GameNotification();
+            $gameNotification->user     = Yii::app()->user->userModel;
+            $gameNotification->setLevelChangeByNextLevelValue(2);
+            $saved                      = $gameNotification->save();
+
+            //New badge notification
+            $gameNotification           = new GameNotification();
+            $gameNotification->user     = Yii::app()->user->userModel;
+            $gameNotification->setNewBadgeByType('LoginUser');
+            $saved                      = $gameNotification->save();
+
+            //Badge grade up notification
+            $gameNotification           = new GameNotification();
+            $gameNotification->user     = Yii::app()->user->userModel;
+            $gameNotification->setBadgeGradeChangeByTypeAndNewGrade('LoginUser', 5);
+            $saved                      = $gameNotification->save();
         }
     }
 ?>
