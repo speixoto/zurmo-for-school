@@ -24,24 +24,5 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LeadsModuleAttributesListView extends GridView
-    {
-        protected $cssClasses =  array( 'AdministrativeArea');
-
-        public function __construct(
-            $controllerId,
-            $moduleId
-        )
-        {
-            parent::__construct(2, 1);
-            $moduleDisplayName = LeadsModule::getModuleLabelByTypeAndLanguage('Plural');
-            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, Yii::app()->getModule('leads'), 'DesignerFieldsLink'), 0, 0);
-            $this->setView(new AttributesRedirectToContactsView($controllerId, $moduleId), 1, 0);
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
-    }
+    header("Location: app/index.php")
 ?>
