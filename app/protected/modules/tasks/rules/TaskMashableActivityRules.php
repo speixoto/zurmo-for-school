@@ -65,12 +65,12 @@
                 {
                     return "<span>{modelStringContent}</span><br/><span>" .
                            "{relatedModelsByImportanceContent} </span><span class='less-pronounced-text'>" .
-                           Yii::t('Default', 'completed by {ownerStringContent}') . "</span>";
+                           Yii::t('Default', 'owned by {ownerStringContent}') . "</span>";
                 }
                 else
                 {
                     return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
-                           Yii::t('Default', 'completed by {ownerStringContent}') . "</span>";
+                           Yii::t('Default', 'owned by {ownerStringContent}') . "</span>";
                 }
             }
             else
