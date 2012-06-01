@@ -819,7 +819,7 @@
             }
             else
             {
-                @set_time_limit(300);
+                @set_time_limit(1200);
                 $perInstanceFilename     = "perInstance.php";
                 $debugFilename     = "debug.php";
             }
