@@ -48,7 +48,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/list');
             $this->assertFalse(strpos($content, 'Arthur Conan') === false);
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/list');
-            $this->assertFalse(strpos($content, 'Obi Wan') === false);
+            $this->assertFalse(strpos($content, 'Thomas Paine') === false);
 
             $contact = ContactTestHelper::createContactByNameForOwner('Jimmy', $super);
 
@@ -56,7 +56,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/list');
             $this->assertTrue(strpos($content, 'Arthur Conan') === false);
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/list');
-            $this->assertFalse(strpos($content, 'Obi Wan') === false);
+            $this->assertFalse(strpos($content, 'Thomas Paine') === false);
 
             $this->assertTrue($contact->delete());
             $this->assertEquals(0, count(Contact::getAll()));
@@ -68,7 +68,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/list');
             $this->assertFalse(strpos($content, 'Arthur Conan') === false);
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/list');
-            $this->assertTrue(strpos($content, 'Obi Wan') === false);
+            $this->assertTrue(strpos($content, 'Thomas Paine') === false);
         }
     }
 ?>

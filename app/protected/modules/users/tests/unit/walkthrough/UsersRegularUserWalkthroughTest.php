@@ -88,7 +88,15 @@
             $this->runControllerWithNoExceptionsAndGetContent('users/default/auditEventsModalList');
 
             //Now test all portlet controller actions
-            $this->setGetArray(array('id' => $aUser->id, 'portletId' => 1)); //Using dummy portlet id
+            $portlet = new Portlet();
+            $portlet->column    = 1;
+            $portlet->position  = 1;
+            $portlet->layoutId = 'xyz';
+            $portlet->collapsed = false;
+            $portlet->viewType = 'UserLatestActivtiesForPortlet';
+            $portlet->user = $bUser;
+            $portlet->save();
+            $this->setGetArray(array('id' => $aUser->id, 'portletId' => $portlet->id)); //Using dummy portlet id
             //Access to details of a portlet for self user should be fine.
             $this->runControllerWithNoExceptionsAndGetContent('users/defaultPortlet/details');
 

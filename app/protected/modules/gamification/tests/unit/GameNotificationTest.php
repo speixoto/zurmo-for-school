@@ -99,11 +99,11 @@
             $this->assertEquals('game-new-badge', $adapter2->getIconCssName());
             $this->assertEquals('game-badge-grade-change', $adapter3->getIconCssName());
 
-            $this->assertEquals('<h2>Congratulations!</h2><h3>You have reached level 2.</h3>',
+            $this->assertEquals('<h2>Congratulations!</h2><h3>You have reached level 2</h3>',
                                 $adapter1->getMessageContent());
-            $this->assertEquals('<h3>1 Zurmo login</h3>',
+            $this->assertEquals('<h2>New Badge</h2><h3>1 Zurmo login</h3>',
                                 $adapter2->getMessageContent());
-            $this->assertEquals('<h3>75 Zurmo logins</h3>',
+            $this->assertEquals('<h2>New Badge</h2><h3>75 Zurmo logins</h3>',
                                 $adapter3->getMessageContent());
         }
     }
