@@ -198,6 +198,7 @@
             ));
             return "$('#" . $id . "').live('change', function()
             {
+                $('.AppContainer').removeAttr('style');
                 $ajaxSubmitScript
             }
             );";

@@ -35,15 +35,14 @@
          */
         protected function renderControlEditable()
         {
-            $content  = parent::renderControlEditable();
+            $content  = '<div class="beforeToolTip">' . parent::renderControlEditable() . '</div>';
             $title        = Yii::t('Default', 'Create a math formula that is calculated from other fields.' .
                                    ' Use the Formula Name from the Available Fields grid below to create your formula.' .
                                    ' Example formula (field1 x field2) / field3');
             $spanContent  = '<span id="formula-tooltip" class="tooltip" title="' . $title . '">';
-            $spanContent .= Yii::t('Default', 'How does this work?') . '</span>';
-            $content      = $spanContent . '<br/>' . $content;
-            $content     .= '<br/>';
-            $content     .= $this->renderAvailableAttributesContent();
+            $spanContent .= Yii::t('Default', '?') . '</span>';
+            $content      = $content . $spanContent;
+            $content     .= '<div class="field-instructions">' . $this->renderAvailableAttributesContent() . '</div>';
             $qtip = new ZurmoTip();
             $qtip->addQTip("#formula-tooltip");
             return $content;
@@ -57,7 +56,7 @@
             $attributeData  = $adapter->getAttributes();
             if (count($attributeData) > 0)
             {
-                $content  = '<b>' . Yii::t('Default', 'Available Fields:') . '</b>';
+                $content  = '<strong>' . Yii::t('Default', 'Available Fields:') . '</strong>';
                 $content .= '<table style="width:auto">';
                 $content .= '<tr><td><b>' . Yii::t('Default', 'Field Name') . '</b></td>';
                 $content .= '<td><b>' . Yii::t('Default', 'Formula Name') . '</b></td></tr>';
