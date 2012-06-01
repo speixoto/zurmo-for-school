@@ -46,7 +46,7 @@
 
             //Recipient is billy.
             $recipient                 = new EmailMessageRecipient();
-            $recipient->toAddress      = 'billy@fakeemail.com';
+            $recipient->toAddress      = 'ivica@zurmo.com';
             $recipient->toName         = 'Billy James';
             $recipient->type           = EmailMessageRecipient::TYPE_TO;
             $emailMessage->recipients->add($recipient);

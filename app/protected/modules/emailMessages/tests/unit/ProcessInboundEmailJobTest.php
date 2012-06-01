@@ -26,16 +26,71 @@
 
     class ProcessInboundEmailJobTest extends BaseTest
     {
+        public static $userMailer;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            UserTestHelper::createBasicUser('billy');
+            UserTestHelper::createBasicUser('steve');
+
+            Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            Yii::app()->imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            Yii::app()->imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+            Yii::app()->imap->setInboundSettings();
+            Yii::app()->imap->init();
+
+            Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
+            Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
+            Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
+            Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
+            Yii::app()->emailHelper->sendEmailThroughTransport = true;
+            Yii::app()->emailHelper->setOutboundSettings();
+            Yii::app()->emailHelper->init();
+
+
+            $userSmtpMailer = new EmailHelperForTesting();
+
+            $userSmtpMailer->outboundHost     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundHost'];
+            $userSmtpMailer->outboundPort     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPort'];
+            $userSmtpMailer->outboundUsername = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundUsername'];
+            $userSmtpMailer->outboundPassword = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPassword'];
+            $userSmtpMailer->setOutboundSettings();
+            $userSmtpMailer->init();
+            $userSmtpMailer->sendEmailThroughTransport = true;
+            self::$userMailer = $userSmtpMailer;
+        }
+
+        public function setup(){
+            $user = User::getByUsername('steve');
+            $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+            $this->assertTrue($user->save());
         }
 
         public function testRun()
         {
+            //Yii::app()->imap->connect();
+            $super                      = User::getByUsername('super');
+            //Yii::app()->user->userModel = $super;
+            //$emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 3', $super);
+            //self::$userMailer->sendImmediately($emailMessage);
+            $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 4', $super);
+            self::$userMailer->sendImmediately($emailMessage);
+            exit;
+            $user = User::getByUsername('steve');
+            $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+            $user->save;
+            //Yii::app()->imap->expungeMessages();
 
+            $job = new ProcessInboundEmailJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(EmailMessage::getAll()));
+
+
+exit;
         }
     }
 ?>

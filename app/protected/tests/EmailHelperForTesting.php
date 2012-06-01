@@ -30,6 +30,8 @@
      */
     class EmailHelperForTesting extends EmailHelper
     {
+        public $sendEmailThroughTransport = false;
+
         /**
          * Override to avoid actually sending emails out through transport.
          * (non-PHPdoc)
@@ -37,9 +39,17 @@
          */
         protected function sendEmail(Mailer $mailer, EmailMessage $emailMessage)
         {
-            $emailMessage->error    = null;
-            $emailMessage->folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+            if (!$this->sendEmailThroughTransport)
+            {
+                $emailMessage->error    = null;
+                $emailMessage->folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+            }
+            else
+            {
+                parent::sendEmail($mailer, $emailMessage);
+            }
         }
+
 
         //For testing only
         public function getSentCount()

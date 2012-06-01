@@ -280,6 +280,22 @@
         }
 
         /**
+         * Delete all messages on imap server
+         */
+        public function expungeMessages()
+        {
+            $messages = $this->getMessages();
+            if (!empty($messages))
+            {
+                foreach ($messages as $message)
+                {
+                    imap_delete($this->imapStream, $message->msgNumber);
+                    imap_expunge($this->imapStream);
+                }
+            }
+        }
+
+        /**
          * Get all message attachments
          * @param object $structure
          * @param int $messageId

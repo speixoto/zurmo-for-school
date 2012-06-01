@@ -152,6 +152,8 @@
                 throw new NotSupportedException();
             }
             $mailer           = $this->getOutboundMailer();
+            print_r($mailer);
+            exit;
             $this->populateMailer($mailer, $emailMessage);
             $this->sendEmail($mailer, $emailMessage);
             $saved = $emailMessage->save();
