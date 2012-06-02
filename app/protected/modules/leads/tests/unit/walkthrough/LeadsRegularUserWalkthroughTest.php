@@ -120,7 +120,7 @@
             //Test nobody with elevated rights.
             Yii::app()->user->userModel = User::getByUsername('nobody');
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/list');
-            $this->assertFalse(strpos($content, 'Obi Wan') === false);
+            $this->assertFalse(strpos($content, 'Thomas Paine') === false);
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/create');
 
             //Test nobody can view an existing lead he owns.
@@ -128,7 +128,7 @@
 
             //At this point the listview for leads should show the search/list and not the helper screen.
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/list');
-            $this->assertTrue(strpos($content, 'Obi Wan') === false);
+            $this->assertTrue(strpos($content, 'Thomas Paine') === false);
 
             $this->setGetArray(array('id' => $lead->id));
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/edit');
