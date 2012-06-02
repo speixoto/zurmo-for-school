@@ -64,7 +64,7 @@
             $accounts = Account::getByName('accountOwnedBySuper');
             $this->assertEquals(1, count($accounts));
 
-            $this->assertEquals('42.1153153',  $accounts[0]->billingAddress->latitude);
+            $this->assertEquals('42.1153',  $accounts[0]->billingAddress->latitude);
             $this->assertEquals('-87.9763703', $accounts[0]->billingAddress->longitude);
             $this->assertEquals(0,             $accounts[0]->billingAddress->invalid);
 
