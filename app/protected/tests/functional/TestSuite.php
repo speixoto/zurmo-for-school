@@ -173,8 +173,8 @@
                     self::remoteAction(TEST_BASE_DB_CONTROL_URL, array('action' => 'restore'));
                     echo "Restored test db";
                     echo 'Clear cache on remote server';
-                    self::remoteAction(TEST_BASE_URL, array('clearCache'         => '1',
-                                                            'ignoreBrowserCheck' => '1'));
+                    //self::remoteAction(TEST_BASE_URL, array('clearCache'         => '1',
+                    //                                        'ignoreBrowserCheck' => '1'));
                     echo "Cache cleared";
 
                     echo 'Running test suite: ';
