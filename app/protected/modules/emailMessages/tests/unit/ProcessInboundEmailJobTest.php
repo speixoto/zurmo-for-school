@@ -78,7 +78,7 @@
             //$emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 3', $super);
             //self::$userMailer->sendImmediately($emailMessage);
             $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 4', $super);
-            self::$userMailer->sendImmediately($emailMessage);
+            Yii::app()->emailHelper->sendImmediately($emailMessage);
             exit;
             $user = User::getByUsername('steve');
             $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
