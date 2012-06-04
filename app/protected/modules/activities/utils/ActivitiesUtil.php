@@ -67,9 +67,8 @@
             $mashableActivityRules  = MashableActivityRulesFactory::createMashableActivityRulesByModel(get_class($model));
             $orderByAttributeName   = $mashableActivityRules->getLatestActivitiesOrderByAttributeName();
             $summaryContentTemplate = $mashableActivityRules->getSummaryContentTemplate($ownedByFilter, $viewModuleClassName);
-			
-			
-			$content  = '<div class="activity-item">';
+
+            $content  = '<div class="activity-item">';
             //Render icon
             $content  .= '<em class="'.get_class($model).'"></em>';
             //Render date
@@ -85,7 +84,7 @@
 
             //Render display content
             $content .= self::resolveContentTemplate($summaryContentTemplate, $data);
-			$content .= '</div>';
+            $content .= '</div>';
             return $content;
         }
 
@@ -110,7 +109,7 @@
 
         protected static function renderOwnerStringContent($model)
         {
-            if($model instanceof MashableActivity)
+            if ($model instanceof MashableActivity)
             {
                 return strval($model->owner);
             }
@@ -129,28 +128,28 @@
          */
         protected static function renderRelatedModelsByImportanceContent(RedBeanModel $model)
         {
-            if($model->activityItems->count() == 0)
+            if ($model->activityItems->count() == 0)
             {
                 return;
             }
             $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Account');
-            if($stringContent != null)
+            if ($stringContent != null)
             {
                 return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
             }
             $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Contact');
-            if($stringContent != null)
+            if ($stringContent != null)
             {
                 return Yii::t('Default', 'with {relatedContactsStringContent}', array('{relatedContactsStringContent}' => $stringContent));
             }
             $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Opportunity');
-            if($stringContent != null)
+            if ($stringContent != null)
             {
                 return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
             }
             $metadata      = Activity::getMetadata();
             $stringContent =  self::getFirstActivityItemStringContent($metadata['Activity']['activityItemsModelClassNames'], $model);
-            if($stringContent != null)
+            if ($stringContent != null)
             {
                 return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
             }
@@ -168,7 +167,7 @@
                     $castedDownmodel = $item->castDown(array($modelDerivationPathToItem));
                     if (get_class($castedDownmodel) == $castDownModelClassName)
                     {
-                        if(strval($castedDownmodel) != null)
+                        if (strval($castedDownmodel) != null)
                         {
                             $params          = array('label' => strval($castedDownmodel));
                             $moduleClassName = $castedDownmodel->getModuleClassName();
@@ -177,7 +176,6 @@
                                                                             $castedDownmodel->id, $params);
                             $existingModels[] = $element->render();
                         }
-
                     }
                 }
                 catch (NotFoundException $e)
@@ -192,9 +190,9 @@
         {
             assert('is_array($modelsAndStringData)');
             $content = null;
-            foreach($modelsAndStringData as $modelStringContent)
+            foreach ($modelsAndStringData as $modelStringContent)
             {
-                if($content != null)
+                if ($content != null)
                 {
                     $content .= ', ';
                 }

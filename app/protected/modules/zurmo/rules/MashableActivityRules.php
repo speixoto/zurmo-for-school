@@ -71,7 +71,7 @@
         {
             assert('is_string($ownedByFilter)');
             assert('is_string($viewModuleClassName)');
-            if($ownedByFilter != LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER)
+            if ($ownedByFilter != LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER)
             {
                 return "<span>{modelStringContent}</span><span class='less-pronounced-text'>" .
                        Yii::t('Default', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";

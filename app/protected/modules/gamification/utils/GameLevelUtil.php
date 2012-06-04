@@ -116,7 +116,6 @@
             }
             if ($nextLevel !== false)
             {
-
                 $pointsCollectedTowardsNextLevel = ($currentPoints - $currentLevelMinimumPointValue);
                 if ($pointsCollectedTowardsNextLevel == 0)
                 {
@@ -126,7 +125,6 @@
                 {
                     $nextLevelPercentageComplete = ($pointsCollectedTowardsNextLevel / ($nextLevelPointValue - $currentLevelMinimumPointValue)) * 100;
                 }
-
             }
             else
             {

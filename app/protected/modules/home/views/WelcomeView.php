@@ -85,7 +85,7 @@
 
         protected function renderTipsContent()
         {
-            if($this->tipContent != null)
+            if ($this->tipContent != null)
             {
                 $content  = '<div class="help-section">';
                 $content .= '<h3>' . Yii::t('Default', 'Tip of the Day') . '</h3>';
@@ -99,17 +99,17 @@
 
         protected function renderDashboardLinkContent()
         {
-            if($this->hasDashboardAccess)
+            if ($this->hasDashboardAccess)
             {
                 $label    = Yii::t('Default', 'Go to the dashboard');
-                $content  = CHtml::link($label, Yii::app()->createUrl('home/default'), array('class'=>'dashboard-link'));
+                $content  = CHtml::link($label, Yii::app()->createUrl('home/default'), array('class' => 'dashboard-link'));
                 return $content;
             }
         }
 
         protected function renderHideLinkContent()
         {
-            if($this->hasDashboardAccess)
+            if ($this->hasDashboardAccess)
             {
                 $label    = Yii::t('Default', '<span></span>Don\'t show me this screen again');
                 $content  = '<div class="hide-welcome">'.CHtml::link($label, Yii::app()->createUrl('home/default/hideWelcome'));

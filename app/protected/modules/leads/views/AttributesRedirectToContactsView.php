@@ -42,7 +42,6 @@
 
         protected function renderContent()
         {
-
             $content  = '<div>';
             $content .= Yii::t('Default', 'LeadsModulePluralLabel and ContactsModulePluralLabel are the same records, ' .
                                           'just in a different status. To create a LeadsModuleSingularLowerCaseLabel ' .

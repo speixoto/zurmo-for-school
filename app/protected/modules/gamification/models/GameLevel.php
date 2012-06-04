@@ -121,7 +121,6 @@
          */
         public static function resolvePersonAndAvailableTypes(Item $person, $levelTypes)
         {
-
             assert('$person->id > 0');
             assert('$person instanceof Contact || $person instanceof User');
             assert('is_array($levelTypes)');
@@ -139,19 +138,19 @@
             $where  = RedBeanModelDataProvider::makeWhere('GameLevel', $searchAttributeData, $joinTablesAdapter);
             $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
             $modelsByType = array();
-            foreach($levelTypes as $type)
+            foreach ($levelTypes as $type)
             {
                 $modelFound = false;
-                foreach($models as $model)
+                foreach ($models as $model)
                 {
-                    if($model->type == $type)
+                    if ($model->type == $type)
                     {
                         $modelsByType[$type] = $model;
                         $modelFound          = true;
                         break;
                     }
                 }
-                if(!$modelFound)
+                if (!$modelFound)
                 {
                     $gameLevel           = new GameLevel();
                     $gameLevel->type     = $type;
@@ -162,6 +161,7 @@
             }
             return $modelsByType;
         }
+
         public static function getModuleClassName()
         {
             return 'GamificationModule';

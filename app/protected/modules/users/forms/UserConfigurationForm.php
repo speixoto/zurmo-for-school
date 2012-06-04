@@ -64,7 +64,7 @@
                 array('subListPageSize',          'required'),
                 array('subListPageSize',          'type',      'type' => 'integer'),
                 array('subListPageSize',          'numerical', 'min' => 1),
-                array('hideWelcomeView',    	  'boolean'),
+                array('hideWelcomeView',          'boolean'),
             );
         }
 

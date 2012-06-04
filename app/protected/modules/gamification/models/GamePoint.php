@@ -271,7 +271,7 @@
                          $user->getClassId('Item') . " group by type";
             $rows      = R::getAll($sql);
             $indexedData = array();
-            foreach($rows as $row)
+            foreach ($rows as $row)
             {
                 $indexedData[$row['type']] = $row['sum'];
             }
