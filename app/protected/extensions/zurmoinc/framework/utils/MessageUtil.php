@@ -763,7 +763,8 @@
 
         $difference = array_diff($array1, $array2);
 
-        if (isset($difference) && sizeof($difference)) {
+        if (isset($difference) && sizeof($difference))
+        {
             foreach ($difference as $i => $val)
             {
                 $msg[] = "'" . $array1[$i] . (isset($array2[$i]) ? "' & '" . $array2[$i] . "'" : '');
