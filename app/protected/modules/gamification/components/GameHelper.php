@@ -205,7 +205,7 @@
                                             GameLevel::TYPE_COMMUNICATION,
                                             GameLevel::TYPE_GENERAL);
             $gameLevelsByType       = GameLevel::resolvePersonAndAvailableTypes(Yii::app()->user->userModel, $types);
-            foreach($gameLevelsByType as $type => $gameLevel)
+            foreach ($gameLevelsByType as $type => $gameLevel)
             {
                 static::resolveLevelChangeByType($type, $gameLevel, $pointSumsIndexedByType);
             }
@@ -216,7 +216,7 @@
             assert('is_string($levelType) && $levelType != null');
             assert('is_array($pointSumsIndexedByType)');
             //If the user has not reached level one, the model has not been saved yet
-            if($currentGameLevel->id < 0)
+            if ($currentGameLevel->id < 0)
             {
                 $className           = $levelType . 'GameLevelRules';
                 $nextLevelPointValue = $className::getMinimumPointsForLevel(1);
@@ -245,17 +245,18 @@
                 }
             }
         }
+
         protected static function resolveSummationValueByLevelTypeAndPointSums($levelType, $pointSumsIndexedByType)
         {
             assert('is_string($levelType) && $levelType != null');
             assert('is_array($pointSumsIndexedByType)');
-            if($levelType == GameLevel::TYPE_GENERAL)
+            if ($levelType == GameLevel::TYPE_GENERAL)
             {
                 return array_sum($pointSumsIndexedByType);
             }
             else
             {
-                if(isset($pointSumsIndexedByType[$levelType]))
+                if (isset($pointSumsIndexedByType[$levelType]))
                 {
                     return $pointSumsIndexedByType[$levelType];
                 }
@@ -273,7 +274,7 @@
             $gameNotification->user     = Yii::app()->user->userModel;
             $gameNotification->setLevelChangeByNextLevelValue($nextLevelValue);
             $saved = $gameNotification->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -339,7 +340,7 @@
                         }
                         GameBadge::processBonusPoints($gameBadge, Yii::app()->user->userModel, $gradeChangeOrNewBadge);
 
-                        if($this->modalNotificationsEnabled)
+                        if ($this->modalNotificationsEnabled)
                         {
                             $gameNotification           = new GameNotification();
                             $gameNotification->user     = Yii::app()->user->userModel;
@@ -352,7 +353,7 @@
                                 $gameNotification->setBadgeGradeChangeByTypeAndNewGrade($gameBadge->type, $gameBadge->grade);
                             }
                             $saved = $gameNotification->save();
-                            if(!$saved)
+                            if (!$saved)
                             {
                                 throw new FailedToSaveModelException();
                             }

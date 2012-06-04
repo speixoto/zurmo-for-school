@@ -58,10 +58,10 @@
         {
             assert('is_string($ownedByFilter)');
             assert('is_string($viewModuleClassName)');
-            if($ownedByFilter != LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER
-               && $viewModuleClassName != 'UsersModule')
+            if ($ownedByFilter != LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER &&
+               $viewModuleClassName != 'UsersModule')
             {
-                if($viewModuleClassName == 'HomeModule')
+                if ($viewModuleClassName == 'HomeModule')
                 {
                     return "<span>{modelStringContent}</span><br/><span>" .
                            "{relatedModelsByImportanceContent} </span><span class='less-pronounced-text'>" .
@@ -75,7 +75,7 @@
             }
             else
             {
-                if($viewModuleClassName == 'HomeModule' || $viewModuleClassName == 'UsersModule')
+                if ($viewModuleClassName == 'HomeModule' || $viewModuleClassName == 'UsersModule')
                 {
                     return "<span>{modelStringContent}</span><br/><span>" .
                            "{relatedModelsByImportanceContent} </span><span>{extraContent} </span>";

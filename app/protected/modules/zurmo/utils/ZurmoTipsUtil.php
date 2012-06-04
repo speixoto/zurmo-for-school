@@ -38,7 +38,7 @@
 
         public static function getRandomTipResolvedForCurrentUser()
         {
-            if(Yii::app()->user->userModel->firstName != null)
+            if (Yii::app()->user->userModel->firstName != null)
             {
                 $firstNameOrNull = ' ' .Yii::app()->user->userModel->firstName;
             }
@@ -50,5 +50,4 @@
             return str_replace('{spaceAndFirstName}', $firstNameOrNull, $tipContent);
         }
     }
-
 ?>

@@ -165,7 +165,6 @@
             return new ModalGameNotificationContainerView(GameNotification::getAllByUser(Yii::app()->user->userModel));
         }
 
-
         protected static function makeFooterView()
         {
             return new FooterView();

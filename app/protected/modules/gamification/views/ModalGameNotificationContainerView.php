@@ -45,12 +45,12 @@
             $content           = null;
             $index             = 0;
             $firstDialog       = true;
-            foreach($this->gameNotifications as $notification)
+            foreach ($this->gameNotifications as $notification)
             {
                 $content       .= self::renderNotificationContent($notification, $index, $firstDialog);
                 $firstDialog    = false;
-                $index ++;
-                if(!$notification->delete())
+                $index++;
+                if (!$notification->delete())
                 {
                     throw new FailedToDeleteModelException();
                 }
@@ -77,8 +77,8 @@
                 'htmlOptions' => array('class' => 'ModalGameNotification')
             ));
             $adapter = new GameNotificationToModalContentAdapter($notification);
-			echo '<div class="game-badge ' . $adapter->getIconCssName() . '"><div class="gloss"></div>' .
-                                '<strong class="badge-icon"></strong><span class="badge-message">'.$adapter->getMessageContent().'</span></div>';
+            echo '<div class="game-badge ' . $adapter->getIconCssName() . '"><div class="gloss"></div>' .
+                                '<strong class="badge-icon"></strong><span class="badge-message">' . $adapter->getMessageContent() . '</span></div>';
             echo '<br />';
             echo CHtml::link(Yii::t('Default', 'Continue'), '#',
                              array('class' => 'close-ModalGameNotification', 'onClick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
