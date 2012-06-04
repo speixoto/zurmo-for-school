@@ -101,14 +101,14 @@
             if (count($headerColumns) == 4)
             {
                 $content .= '<col style="width:20%" />';
-            	$content .= '<col style="width:20%" />';
+                $content .= '<col style="width:20%" />';
                 $content .= '<col style="width:25%" />';
                 $content .= '<col style="width:35%" />';
             }
             else
             {
                 $content .= '<col style="width:20%" />';
-            	$content .= '<col style="width:25%" />';
+                $content .= '<col style="width:25%" />';
                 $content .= '<col style="width:55%" />';
             }
             $content .= '</colgroup>';

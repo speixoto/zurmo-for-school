@@ -74,10 +74,10 @@
             {
                 $hasDashboardAccess = false;
             }
-            if(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue(Yii::app()->user->userModel))
+            if (UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue(Yii::app()->user->userModel))
             {
                 //If you can see dashboards, then go there, otherwise stay here since the user has limited access.
-                if($hasDashboardAccess)
+                if ($hasDashboardAccess)
                 {
                     $this->redirect(array($this->getId() . '/index'));
                 }
