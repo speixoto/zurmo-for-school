@@ -25,9 +25,10 @@
      ********************************************************************************/
 
     $basePath = realpath(dirname(__FILE__) . '/../../../');
-    require_once 'File/Iterator.php';
 
     require_once('../PhpUnitServiceUtil.php');
+    require_once 'File/Iterator.php';
+    require_once('File/Iterator/Factory.php');
 
     if (is_file($basePath . '/protected/config/debugTest.php'))
     {
@@ -49,7 +50,6 @@
     define('BROWSERS_TO_RUN', $seleniumBrowsersToRun);
     define('TEST_BASE_CONTROL_URL', $seleniumControlUrl);
 
-    require_once('File/Iterator/Factory.php');
     class TestSuite
     {
         public static function run()
@@ -609,7 +609,7 @@
                 echo "Invalid db control url";
                 exit;
             }
-            if (isset($params['action']) && in_array($params['action'], array('restore')))
+            if (isset($params['action']) && in_array($params['action'], array('restore', 'backupRemovePerInstance', 'restorePerInstance')))
             {
                 $url = $url . "?action=" . urlencode($params['action']);
             }
