@@ -4173,6 +4173,16 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   float: left;
   background: url(../images/welcome-gallery-1.png) left top no-repeat;
 }
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+  #LoginView,
+  #HeaderLinksView > div,
+  .AppContainer {
+    margin: 0 !important;
+  }
+  .AppContainer {
+    min-width: none;
+  }
+}
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -4284,7 +4294,7 @@ section {
 #LoginView {
   min-width: 900px;
   height: 100%;
-  margin: 0 40px 0 40px;
+  margin: 0 3% 0 3%;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -4409,13 +4419,13 @@ section {
   padding-top: 4px;
 }
 .background-1 {
-  background: #ffffff url(../images/landscape-1.png) bottom left repeat-x;
+  background: #ffffff url(../images/landscape-1.png) left bottom repeat-x;
 }
 .background-2 {
-  background: #ffffff url(../images/landscape-2.png) bottom left repeat-x;
+  background: #ffffff url(../images/landscape-2.png) left bottom repeat-x;
 }
 .background-3 {
-  background: #ffffff url(../images/landscape-3.png) bottom left repeat-x;
+  background: #ffffff url(../images/landscape-3.png) left bottom repeat-x;
 }
 /*=MastHead*/
 #HeaderLinksView {
@@ -4442,7 +4452,7 @@ section {
   display: inline-block;
 }
 #HeaderLinksView > div {
-  margin: 0 40px 0 40px;
+  margin: 0 3% 0 3%;
 }
 #HeaderLinksView ul {
   list-style: none;
@@ -4686,7 +4696,7 @@ section {
 .AppContainer {
   min-width: 900px;
   height: 100%;
-  margin: 0 40px 0 40px;
+  margin: 0 3% 0 3%;
   background: #ffffff url(../images/nav.png) left top repeat-y;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
