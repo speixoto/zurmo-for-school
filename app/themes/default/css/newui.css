@@ -4414,6 +4414,9 @@ section {
 .background-2 {
   background: #ffffff url(../images/landscape-2.png) bottom left repeat-x;
 }
+.background-3 {
+  background: #ffffff url(../images/landscape-3.png) bottom left repeat-x;
+}
 /*=MastHead*/
 #HeaderLinksView {
   background: url(../images/header-bar-1.png) left top repeat-x;
