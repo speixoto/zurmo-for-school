@@ -4285,15 +4285,6 @@ section {
   min-width: 900px;
   height: 100%;
   margin: 0 40px 0 40px;
-  background-color: #f6f6f6;
-  background-repeat: no-repeat;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f6f6f6), color-stop(100px, #ffffff), to(#f6f6f6));
-  background-image: -webkit-linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ffffff 100px, #f6f6f6);
-  background-image: -ms-linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
-  background-image: -o-linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
-  background-image: linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#f6f6f6', GradientType=0);
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -4323,7 +4314,7 @@ section {
   margin: -100px auto 0 -250px;
   height: 200px;
   position: relative;
-  top: 50%;
+  top: 45%;
   left: 50%;
 }
 #LoginView #LoginLogo {
@@ -4416,6 +4407,12 @@ section {
 #LoginView .form form .errorMessage {
   font-size: 11px;
   padding-top: 4px;
+}
+.background-1 {
+  background: #ffffff url(../images/landscape-1.png) bottom left repeat-x;
+}
+.background-2 {
+  background: #ffffff url(../images/landscape-2.png) bottom left repeat-x;
 }
 /*=MastHead*/
 #HeaderLinksView {
