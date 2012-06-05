@@ -1,7 +1,6 @@
 *{
     margin:0;
     padding:0;
-    -webkit-font-smoothing: antialiased;
 }
 
 /*Imports*/
@@ -19,14 +18,15 @@
 @import 'mozilla.less';
 @import 'qtip.less';
 @import 'gamification.less';
+@import 'welcome.less';
 
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
-    src: url('../../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
-    src: url('../../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'),
-         url('../../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'),
-         url('../../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
+    src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
+    src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'),
+         url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'),
+         url('../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -134,6 +134,7 @@ body{
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size:11px;
     color:#545454;
+    -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -175,7 +176,7 @@ footer, header, hgroup, menu, nav, section {
 
 /*=Login*/
 #LoginPageView > .GridView{
-    background: url(../../images/header-bar-1.png) left top repeat-x;
+    background: url(../images/header-bar-1.png) left top repeat-x;
     padding-top:38px;
 }
 
@@ -212,7 +213,7 @@ footer, header, hgroup, menu, nav, section {
         width:50%;
         padding-right:10px;
         float:left;
-        background: url(../../images/ZurmoLogo.png) 56px 35px no-repeat;
+        background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
     }
     .form{
         width:50%;
@@ -259,7 +260,7 @@ footer, header, hgroup, menu, nav, section {
 
 /*=MastHead*/
 #HeaderLinksView{
-    background: url(../../images/header-bar-1.png) left top repeat-x;
+    background: url(../images/header-bar-1.png) left top repeat-x;
     height:38px;
 }
 
@@ -342,7 +343,7 @@ footer, header, hgroup, menu, nav, section {
     width:18px;
     height:16px;
     padding:0 10px 0 10px;
-    background: url(../../images/notifications-bubble.png) center top no-repeat;
+    background: url(../images/notifications-bubble.png) center top no-repeat;
     border-left:1px solid #fff;
     border-right:1px solid #fff;
     float:left;
@@ -471,7 +472,7 @@ footer, header, hgroup, menu, nav, section {
 
 #GlobalSearchView{
     height:40px;
-    background: url(../../images/header-bar-2.png) left top repeat-x;
+    background: url(../images/header-bar-2.png) left top repeat-x;
     .b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
 }
 
@@ -491,7 +492,7 @@ footer, header, hgroup, menu, nav, section {
     border-left:none;
     margin:7px 0 0 -3px;
     float:left;
-    background: url(../../images/search-bar-gradient.png) left top repeat-x;
+    background: url(../images/search-bar-gradient.png) left top repeat-x;
     &:focus{
         outline: 0;
         color:#545454;
@@ -508,7 +509,7 @@ footer, header, hgroup, menu, nav, section {
     width:40px;
     border:1px solid #d5d4d4;
     border-right:none;
-    background: url(../../images/search-bar-loopa.png) left top no-repeat;
+    background: url(../images/search-bar-loopa.png) left top no-repeat;
 }
 
 #globalSearchInput .ui-multiselect-menu{
@@ -519,7 +520,7 @@ footer, header, hgroup, menu, nav, section {
     min-width:900px;
     height:100%;
     margin:0 40px 0 40px;
-    background:#fff url(../../images/nav.png) left top repeat-y;
+    background:#fff url(../images/nav.png) left top repeat-y;
     .b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
     .radius(0 0 5px 5px);
     z-index: 0;
@@ -604,7 +605,7 @@ footer, header, hgroup, menu, nav, section {
     left:170px;
     top:-20px;
     padding:5px 5px;
-    background:#fefefe url(../../images/sidebar-gradient.png) left top repeat-x;
+    background:#fefefe url(../images/sidebar-gradient.png) left top repeat-x;
     border:1px solid #ccc;
     width:160px;
     .b-shadow(0 0 5px 5px rgba(153, 153, 153, 0.25));
@@ -658,7 +659,7 @@ footer, header, hgroup, menu, nav, section {
 #MenuView li.active > a span,
 #MenuView a:hover span{
     .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
-    background-image: url(../../images/main-nav-selected.png);
+    background-image: url(../images/main-nav-selected.png);
     background-repeat: no-repeat;
     background-position-x: 0;
     background-position-y: 0;
@@ -803,10 +804,11 @@ footer, header, hgroup, menu, nav, section {
 
 /*=Content*/
 .AppContent{
-    padding:20px 20px 20px 20px;
+    padding:20px 20px 0 20px;
     margin-left:172px;
     margin-bottom:20px;
     #gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #ffffff );
+    .clearfix();
 }
 
 /*=dashboard*/
@@ -830,7 +832,7 @@ footer, header, hgroup, menu, nav, section {
     float:left;
     margin:20px 0 15px 0;
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
-    background:url(../../images/view-toolbar-gradient.png) left bottom repeat-x;
+    background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 
 #ActionBarForGroupsTreeListView,
@@ -1027,7 +1029,7 @@ footer, header, hgroup, menu, nav, section {
 }
 
 #credit-link{
-    background:url(../../images/Zurmo.png) left top no-repeat;
+    background:url(../images/Zurmo.png) left top no-repeat;
     line-height: 19px;
     display:inline-block;
     margin-left:10px;
@@ -1036,7 +1038,9 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-/*=Forms with clearfix issues*/
+/*=Forms with clearfix issues
+#ZurmoConfigurationEditAndDetailsView,
+#OutboundEmailConfigurationEditAndDetailsView,
 #MapConfigurationView,
 #AccountConvertToView,
 #AccountsMassEditView{
@@ -1044,6 +1048,7 @@ footer, header, hgroup, menu, nav, section {
         display:none;
     }
 }
+*/
 
 /*General table style, tables still need 'cellspacing="0"' in the markup */
 table {
@@ -1099,7 +1104,7 @@ table.items th{
     font-weight:bold !important;
     height:35px;
     line-height: 35px;
-    background: url(../../images/table-items-header.png) left top repeat-x;
+    background: url(../images/table-items-header.png) left top repeat-x;
     padding:0;
 }
 
@@ -1250,7 +1255,7 @@ table.items thead tr:hover{
     }
     a{
         color:#333333;
-        background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
         &:hover{
@@ -1294,7 +1299,7 @@ table.items thead tr:hover{
         border-right:1px solid #d7d7d7;
         border-bottom:1px solid #bababa;
         color:#656565;
-        background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
         &:before{
@@ -1389,7 +1394,7 @@ a.simple-select{
             background:none;
         }
         .ui-icon-closethick{
-            background: transparent url(../../images/widget-close-btn.png) left top no-repeat;
+            background: transparent url(../images/widget-close-btn.png) left top no-repeat;
             padding: 0 !important;
             margin:0 !important;
             width:30px !important;
@@ -1397,7 +1402,7 @@ a.simple-select{
             text-indent: -9999px;
             display: block;
             &:hover{
-                background: transparent url(../../images/widget-close-btn.png) left top no-repeat;
+                background: transparent url(../images/widget-close-btn.png) left top no-repeat;
             }
         }
     }
@@ -1426,17 +1431,16 @@ a.simple-select{
     .opacity(50);
 }
 
-/*=Search Scope box, and accoutn list*/
-/*Checkboxes*/
+/*=Checkboxes*/
 label.hasCheckBox{
     display: block;
-    background: url(../../images/checkbox.png) left 4px no-repeat;
+    background: url(../images/checkbox.png) left 4px no-repeat;
     width:16px;
     height:20px;
     padding:0;
     margin:0 0 0 15px;
     &.c_on {
-        background: url(../../images/checkbox.png) left -21px no-repeat;
+        background: url(../images/checkbox.png) left -21px no-repeat;
     }
     input {
         position: absolute;
@@ -1462,18 +1466,92 @@ div.wide.form{
 
 .ui-multiselect-checkboxes label {
     padding-left: 25px;
-    background: url(../../images/checkbox.png) left 4px no-repeat;
+    background: url(../images/checkbox.png) left 4px no-repeat;
     margin-left:0px;
 }
 
 .ui-multiselect-checkboxes label.c_on {
-    background: url(../../images/checkbox.png) left -21px no-repeat;
+    background: url(../images/checkbox.png) left -21px no-repeat;
 }
 
 .ui-multiselect-checkboxes label input {
     position: absolute;
     left: -9999px;
 }
+
+/*=Search Scope box, and account list*/
+.ZeroModelsYetView{
+	h2{
+		font-family:"Times New Roman", Times, serif;
+		font-style:italic;
+		font-size:48px;
+		line-height:60px;
+		font-weight:normal;
+		padding:15px 50px 15px 30px;
+		//text-align:center;
+	}
+	i{
+		font-size:13px;
+		color:#555;
+		font-weight:bold;
+		display:block;
+		margin-left:30px;
+	}
+	p{
+		font-size:16px;
+		line-height:24px;
+		color:#555;
+		font-weight:bold;
+		float:left;
+		width:70%;
+		margin:45px 0 0 30px;
+	}
+	a{
+		.zButton();
+		margin-left:30px;
+		margin-top:15px;
+		float:left;
+		&:before{
+			content: "Y";
+			.symbly(24px);
+			position: relative;
+			top: 2px;
+			left:-5px;
+			margin-right:3px;
+			color:@themeColor2;
+		}
+	}
+	.large-icon{
+		width:25%;
+		text-align:center;
+		//padding:0 30px 0 10px;
+		margin-top:30px;
+		border-right:1px solid #ccc;
+		float:left;
+	}
+	.Contact .large-icon:after{
+		content:"y";
+		.symbly(300px);
+		line-height: 50%;
+	}
+	.Account .large-icon:after{
+		content:"P";
+		.symbly(300px);
+		line-height: 65%;
+	}
+	.Lead .large-icon:after{
+		content:".";
+		.symbly(300px);
+		line-height: 65%;
+	}
+	.Opportunity .large-icon:after{
+		content:"9";
+		.symbly(300px);
+		line-height: 80%;
+	}
+	
+}
+
 
 #FilteredListView, .summary{
     display:none;
@@ -1541,7 +1619,7 @@ div.wide.form{
         height: 25px;
         border: 1px solid #d5d4d4;
         border-left: none;
-        background: url(../../images/search-bar-gradient.png) left top repeat-x;
+        background: url(../images/search-bar-gradient.png) left top repeat-x;
         &:focus{
             outline: none !important;
             box-shadow:none !important;
@@ -1582,7 +1660,7 @@ div.wide.form{
         padding-right:10px;
     }
     #cancel-advanced-search{
-        background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         color:#656565;
         .t-shadow(none);
     }
@@ -1797,7 +1875,7 @@ div.wide.form{
 
 .has-model-select{
     a{
-        background: url(../../images/dropdown-general.png) left top no-repeat;
+        background: url(../images/dropdown-general.png) left top no-repeat;
         width:28px;
         height:24px;
         display:block;
@@ -1829,7 +1907,7 @@ div.wide.form{
 
 .has-date-select{
     button{
-        background: url(../../images/dropdown-general.png) left top no-repeat;
+        background: url(../images/dropdown-general.png) left top no-repeat;
         width:28px;
         height:24px;
         display:block;
@@ -1910,6 +1988,7 @@ div.wide.form{
 }
 
 .details-table{
+	margin-right:20px;
     table{
         margin-bottom:10px;
     }
@@ -1966,10 +2045,22 @@ div.wide.form{
 /*=For single meeting, contact etc..*/
 .AppContent.TableOfContentsView,
 .AppContent.SecuredEditAndDetailsView{
-    padding-right:0;
+    //padding-right:0;
     .toolbar-mbmenu{
         top:8px;
     }
+}
+
+
+.wrapper{
+	float:left;
+	width:100%;
+	margin-right:20px;
+    margin-bottom:20px;
+    border:1px solid #ccc;
+    .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
+    #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+    .box-sizing();
 }
 
 .ProgressView,
@@ -1977,14 +2068,13 @@ div.wide.form{
 .TableOfContentsView,
 .DetailsView,
 .EditAndDetailsView{
-    position: relative;
     > div{
-        margin-right:20px;
-        margin-bottom:20px;
-        border:1px solid #ccc;
-        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-        #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-        .form form{
+       //margin-right:20px;
+       margin-bottom:20px;
+       border:1px solid #ccc;
+       .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
+       #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+       .form form{
             border:none;
             background:none;
             .b-shadow(none);
@@ -2130,7 +2220,7 @@ div.wide.form{
     .GridView + .GridView{
         width:35%;
         .juiportlet-widget{
-            margin-right:20px;
+            //margin-right:20px;
         }
     }
     .UserLatestActivtiesForPortletView{
@@ -2210,7 +2300,7 @@ div.wide.form{
             border-right:1px solid #d7d7d7;
             border-bottom:1px solid #bababa;
             color:#333333;
-            background: url(../../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+            background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
             display:inline-block;
             .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
             &:hover{
@@ -2480,7 +2570,7 @@ div.hasHalfs{
             font-weight:bold;
             display:block;
             padding:4px 0 4px 0 !important;
-            background: #fff url(../../images/view-toolbar-gradient.png) left bottom repeat-x;
+            background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
             span{
                 display:none;
             }
@@ -2559,6 +2649,11 @@ div.hasHalfs{
 }
 
 /*=Latest Activity*/
+.less-pronounced-text{
+	font-style:italic;
+	color:#999;	
+}
+
 .latest-activity-icon{
     position:relative;
     top:-3px;
@@ -2603,9 +2698,9 @@ div.hasHalfs{
     }
     .latest-activity-toolbar,
     .filter-latest-activities-bar{
+    	padding-left:8px;
 		label{
 			cursor:pointer;
-			padding-top:0;
 			border:none;
 			background:none;
 			font-size:11px !important;
@@ -2664,11 +2759,19 @@ div.hasHalfs{
         padding-left:15px !important;
         padding-right:15px;
     }
-    .items span{
+    .activity-item{
+    	padding-left:40px;
+    	position: relative;
+    }
+    .items em{
         display:inline-block;
         height:100%;
         padding-right:15px;
         float:left;
+        font-style:normal;
+        position:absolute;
+        left:0;
+        top:2px;
     }
     .Note:after{
         content: "3";
@@ -2689,7 +2792,7 @@ div.hasHalfs{
     display:block;
     text-align:center;
     padding:4px 0 4px 0 !important;
-    background: #fff url(../../images/view-toolbar-gradient.png) left bottom repeat-x;
+    background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
     &:hover{
         color:@themeColor2 !important;
     }
@@ -2789,7 +2892,7 @@ div.hasHalfs{
         position: absolute;
         top:-17px;
         right:6px;
-        background: transparent url(../../images/widget-close-btn.png) left top no-repeat;
+        background: transparent url(../images/widget-close-btn.png) left top no-repeat;
         padding: 0 !important;
         margin:0 !important;
         width:30px !important;
@@ -2823,13 +2926,13 @@ div.hasHalfs{
 }
 
 .dk_toggle {
-    background: url(../../images/dropdown-arrow.png) right top no-repeat;
+    background: url(../images/dropdown-arrow.png) right top no-repeat;
     padding-left: 6px;
     display: block !important;
     font-weight: normal !important;
     color: #999 !important;
     &:hover {
-        background: url(../../images/dropdown-arrow.png) right bottom no-repeat;
+        background: url(../images/dropdown-arrow.png) right bottom no-repeat;
     }
 }
 
@@ -2929,7 +3032,7 @@ div.hasHalfs{
 
 /*=Mass Edit view*/
 .AppContent.MassEditView{
-    padding-right:0;
+    //padding-right:0;
     #edit-form table{
         width:100%;
     }
@@ -3084,52 +3187,53 @@ div.hasHalfs{
         margin-top:4px;
         padding-left:20px;
     }
-    .social-links{
-        list-style:none;
-        padding:0 !important;
-        margin:15px 0 !important;
-        float:right;
-    }
-    .social-links li{
-        margin:0 0 0 5px;
-        float:left;
-    }
-    .social-links a{
-        color: #fff;
-        font-size: 12px;
-        text-indent: 0;
-        display: block;
-    }
-    .social-links a:hover span{
-        background-position-y: 0 !important;
-    }
-    .social-links span{
-        background: url(../../images/sprite-socialicons.png) 0 bottom no-repeat;
-        height: 22px;
-        width: 22px;
-        display: inline-block;
-        line-height: 22px;
-        text-indent: -9999px;
-        margin-right: 5px;
-    }
-    .facebook span{
-        background-position: -88px bottom !important;
-    }
-    .twitter span{
-        background-position: -22px bottom !important;
-    }
-    .linkedin span{
-        background-position: -66px bottom !important;
-    }
-    .rss span{
-        background-position: 0 bottom !important;
-    }
-    .bitbucket span{
-        background-position: -132px bottom !important;
-    }
-    .pivotal span{
-        background-position: 100% bottom !important;
-    }
+}
+
+.social-links{
+    list-style:none;
+    padding:0 !important;
+    margin:15px 0 !important;
+    float:right;
+}
+.social-links li{
+    margin:0 0 0 5px;
+    float:left;
+}
+.social-links a{
+    color: #fff;
+    font-size: 12px;
+    text-indent: 0;
+    display: block;
+}
+.social-links a:hover span{
+    background-position-y: 0 !important;
+}
+.social-links span{
+    background: url(../images/sprite-socialicons.png) 0 bottom no-repeat;
+    height: 22px;
+    width: 22px;
+    display: inline-block;
+    line-height: 22px;
+    text-indent: -9999px;
+    margin-right: 5px;
+}
+.facebook span{
+    background-position: -88px bottom !important;
+}
+.twitter span{
+    background-position: -22px bottom !important;
+}
+.linkedin span{
+    background-position: -66px bottom !important;
+}
+.rss span{
+    background-position: 0 bottom !important;
+}
+.bitbucket span{
+    background-position: -132px bottom !important;
+}
+.pivotal span{
+    background-position: 100% bottom !important;
 }
 
 /*tasks portlet on dashboard*/

@@ -157,6 +157,7 @@
         {
             $this->_apiListPageSize = $value;
         }
+
         /**
          * Call method to get the active value for a particular pagination type. If the active value doesnt exist
          * as a state on the currenet user, set the active value from the configuration

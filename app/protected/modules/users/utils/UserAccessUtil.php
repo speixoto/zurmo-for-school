@@ -24,13 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DashboardTitleBarAndEditView extends GridView
+    class UserAccessUtil
     {
-        public function __construct($controllerId, $moduleId, Dashboard $model)
+        public static function resolveCanCurrentUserAccessAction($userId)
         {
-            parent::__construct(2, 1);
-            $this->setView(new TitleBarView ($model::getModelLabelByTypeAndLanguage('Plural'), $model->name), 0, 0);
-            $this->setView(new DashboardEditView($controllerId, $moduleId, $model), 1, 0);
+            if (Yii::app()->user->userModel->id == $userId ||
+                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
+            {
+                return;
+            }
+            $messageView = new AccessFailureView();
+            $view = new AccessFailurePageView($messageView);
+            echo $view->render();
+            Yii::app()->end(0, false);
         }
     }
 ?>

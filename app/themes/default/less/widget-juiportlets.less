@@ -9,6 +9,8 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	float:left;
+	width:100%;
 }
 
 .juiportlet-widget-column2 {
@@ -56,6 +58,9 @@
 	float: left;
 	position: relative;
 	margin-left:15px;
+}
+.collapse ~ h3{
+	margin-left:0;
 }
 
 .juiportlet-widget-head{
@@ -117,8 +122,8 @@ a.remove {
 
 .juiportlet-widget-head a.collapse {
 	float: left;
-	display: inline;
-	background: url(../../images/portlet-minimize.png) 14px 50% no-repeat;
+	display: none; /*inline;*/
+	background: url(../images/portlet-minimize.png) 14px 50% no-repeat;
 	width: 14px;
 	height: 40px;
 	text-indent: -9999em;
@@ -128,11 +133,9 @@ a.remove {
 
 .juiportlet-widget-placeholder {
 	border: 2px dashed #262877;
+	margin: 0 20px 20px 2px;
 }
 
-.juiportlet-widget-placeholder {
-	margin: 20px 20px 20px 2px;
-}
 
 .juiportlet-widget-content{
 	padding:0 0 0 0;

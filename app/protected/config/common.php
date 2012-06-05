@@ -27,7 +27,7 @@
     $common_config = array(
         'basePath'          => COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected',
         'name'              => 'ZurmoCRM',
-        'defaultController' => 'home/default',
+        'defaultController' => 'home/default/welcome',
         'sourceLanguage'    => 'en',
 
         'behaviors' => array(
@@ -112,6 +112,7 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yii.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.ba-bbq.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jui/js/jquery-ui.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yiiactiveform.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/qtip/assets/jquery.qtip-1.0.0-rc3.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/extendedGridView/jquery.yiigridview.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fusionChart/jquery.fusioncharts.js',
@@ -140,6 +141,7 @@
                     array('system.web.js.source',                                       '/jquery.yii.js'),
                     array('system.web.js.source',                                       '/jquery.ba-bbq.js'),
                     array('system.web.js.source',                                       '/jui/js/jquery-ui.min.js'),
+                    array('system.web.js.source',                                       '/jquery.yiiactiveform.js'),
                     array('application.extensions.qtip.assets',                         '/jquery.qtip-1.0.0-rc3.min.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/extendedGridView/jquery.yiigridview.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/fusionChart/jquery.fusioncharts.js'),

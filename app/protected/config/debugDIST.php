@@ -97,7 +97,7 @@
     $seleniumTestResultsPath        = '';
     $seleniumServerPort             = '4048';
     $seleniumBrowsersToRun          = 'All';
-    $seleniumDbControlUrl           = '';
+    $seleniumControlUrl           = '';
 
     if ($debugOn)
     {
