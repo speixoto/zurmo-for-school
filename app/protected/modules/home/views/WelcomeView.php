@@ -70,7 +70,7 @@
             $content .= '<div id="welcome-content">';
             $content .= '<div id="instructions"><div id="welcome-gallery">';
             $content .= '</div><p>';
-            $content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, '.
+            $content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .
                                'collect badges, and compete against co-workers while getting your job done.');
             $content .= '</p>';
             $content .= $this->renderDashboardLinkContent();
@@ -111,7 +111,7 @@
         {
             if ($this->hasDashboardAccess)
             {
-                $label    = Yii::t('Default', '<span></span>Don\'t show me this screen again');
+                $label    = '<span></span>' . Yii::t('Default', '(Don\'t show me this screen again)');
                 $content  = '<div class="hide-welcome">'.CHtml::link($label, Yii::app()->createUrl('home/default/hideWelcome'));
                 $content .= ' <i>(' . Yii::t('Default', 'Don\'t worry you can turn it on again') . ')</i></div>';
                 return $content;

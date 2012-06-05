@@ -31,7 +31,7 @@
     $tips = array(
         Yii::t('Default', 'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'),
         Yii::t('Default', 'Need to update multiple records at once? Select them from the list and hit the Update button.'),
-        Yii::t('Default', 'Add new fields, remove ones you don’t need and change the layout using Designer.'),
+        Yii::t('Default', 'Add new fields, remove ones you don\'t need and change the layout using Designer.'),
         Yii::t('Default', 'Let Zurmo crunch the numbers, add calculated fields to your records in Designer.'),
         Yii::t('Default', 'Parlez vous Français{spaceAndFirstName}?  Choose your preferred language in your My Profile area.'),
         Yii::t('Default', 'Click on the Map link on records to see the customer location on Google Maps.'),
