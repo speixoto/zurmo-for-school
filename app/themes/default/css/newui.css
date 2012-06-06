@@ -3220,17 +3220,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   cursor: pointer;
   vertical-align: middle;
 }
-/*@font-face {
-    font-family: 'ZurmoGamificationSymblyRegular-Regular';
-    src: url('../fonts/zurmogamificationsymblyregular-regular.eot');
-    src: url('../fonts/zurmogamificationsymblyregular-regular.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/zurmogamificationsymblyregular-regular.woff') format('woff'),
-         url('../fonts/zurmogamificationsymblyregular-regular.ttf') format('truetype'),
-         url('../fonts/zurmogamificationsymblyregular-regular.svg#zurmogamificationsymblyregular-regular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-*/
 #LeaderboardView .items td:first-child,
 #LeaderboardView .items th:first-child {
   padding-left: 15px;
@@ -3594,6 +3583,14 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .CreateTask .badge-icon:before {
   content: "4";
 }
+/*Night Icons*/
+.NightOwl .badge-icon:before {
+  content: "$";
+}
+.EarlyBird .badge-icon:before {
+  content: "#";
+}
+/*Big Icons for popup badges*/
 .game-level-change .badge-icon:before {
   content: ";";
 }
