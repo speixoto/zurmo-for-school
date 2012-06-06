@@ -40,7 +40,7 @@
                 ),
                 'relations' => array(
                     'polys'           => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySide',      RedBeanModel::NOT_OWNED, 'polyTest'),
-                    'ownedPolys'      => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySideOwned', RedBeanModel::OWNED, 	  'polyOwnedTest'),
+                    'ownedPolys'      => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySideOwned', RedBeanModel::OWNED,     'polyOwnedTest'),
                 ),
                 'rules' => array(
                     array('name',                'type',     'type' => 'string'),
