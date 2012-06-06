@@ -44,7 +44,7 @@
 
             //Create test users
             $steven                    = User::getByUsername('steven');
-            $sally                     = UserTestHelper::createBasicUser('steven');
+            $sally                     = UserTestHelper::createBasicUser('sally');
             $mary                      = UserTestHelper::createBasicUser('mary');
 
             //give 3 users access, create, delete for conversation rights.
@@ -86,210 +86,286 @@
             $this->runControllerWithNoExceptionsAndGetContent('conversations/default/create');
         }
 
+        /**
+         * @depends testSuperUserAllSimpleControllerActions
+         */
         public function testSuperUserCreateConversation()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $mary           = User::getByUsername('mary');
+            $accounts       = Account::getByName('superAccount');
+            $superAccountId = $accounts[0]->id;
 
             //Test creating conversation via POST, invite Mary
             $conversations = Conversation::getAll();
             $this->assertEquals(0, count($conversations));
-            $this->setPostArray(array('Conversation' => array('subject'     => 'TestSubject',
-                                                              'description' => 'TestDescription')));
+            $activityItemPostData = array('Account' => array('id' => $superAccountId));
+            $this->setPostArray(array('ConversationParticipants' => array($mary->id => '1'),
+                                      'ActivityItemForm'         => $activityItemPostData,
+                                      'Conversation'             => array('subject'     => 'TestSubject',
+                                                                          'description' => 'TestDescription')));
             $this->runControllerWithNoExceptionsAndGetContent('conversations/default/create');
 
             //Confirm conversation saved.
-
+            $conversations = Conversation::getAll();
+            $this->assertEquals(1, count($conversations));
             //Confirm conversation is connected to the related account.
+            $this->assertEquals($accounts[0], $conversations[0]->conversationItems->offsetGet(0));
 
             //Confirm Mary is invited.
+            $this->assertEquals(1,     $conversations[0]->conversationParticipants->count());
+            $this->assertEquals($mary, $conversations[0]->conversationParticipants->offsetGet(0));
+            $this->assertFalse($conversations[0]->conversationParticipants->offsetGet(0)->hasReadLatest);
 
             //Confirm Mary is the only one with explicit permissions on the conversation
-
-            //Confirm a notification gets emailed to Mary
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 makeBySecurableItem($conversations[0]);
+            $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertEquals(0, count($readWritePermitables));
+            $this->assertTrue($readWritePermitables[$mary->id]);
         }
 
+        /**
+         * @depends testSuperUserCreateConversation
+         */
+        public function testInvitingAndUnivitingUsersOnExistingConversation()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $steven         = User::getByUsername('steven');
+            $sally           = User::getByUsername('sally');
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(1, count($conversations));
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
 
+            //Test inviting steven (via detailview)
+            $this->setPostArray(array('ConversationParticipantsForm' => array($mary->id => '1', $steven->id => '1', $sally->id => '0')));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants');
+            //steven should get email
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, Yii::app()->emailHelper->getSentCount());
 
-            //new test - test inviting steven (via detailview)
-                //steven should get email
-                //should be 2 explicits read/write
+            //should be 2 explicits read/write
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 makeBySecurableItem($conversations[0]);
+            $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertEquals(2, count($readWritePermitables));
 
-            //new test - uninvite mary (via detailview)
-                //should be 1 explicit read/write
+            //Uninvite mary (via detailview)
+            $this->setPostArray(array('ConversationParticipantsForm' => array($mary->id => '0', $steven->id => '1', $sally->id => '0')));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants');
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, Yii::app()->emailHelper->getSentCount());
+            //should be 1 explicits read/write
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 makeBySecurableItem($conversations[0]);
+            $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertEquals(1, count($readWritePermitables));
+        }
 
-            //new test - add comment
-                //should update latest activity stamp
+        /**
+         * @depends testInvitingAndUnivitingUsersOnExistingConversation
+         */
+        public function testAddingCommentsAndUpdatingActivityStampsOnConversation()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $steven         = User::getByUsername('steven');
+            $sally           = User::getByUsername('sally');
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(1, count($conversations));
+            $this->assertEquals(0, $conversations[0]->comments->count());
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $this->assertEquals($oldStamp,                $conversation[0]->latestDateTime);
+
+            //new test - add comment (DetailView)
+
+            //hmm. if we save from the inlineCreateSave in comments... how can we update latestStamp.
+
+            //Validate comment
+            $relatedModelPostData = array('Conversation' => $conversation->id);
+            $this->setPostArray(array('RelatedModelForm' => $relatedModelPostData,
+                                      'ajax' => 'inline-edit-form',
+                                      'Comment' => array('description' => 'a ValidComment Name')));
+            $this->setGetArray(array('id'       => $note->id, 'redirectUrl' => 'someRedirect'));
+            $content = $this->runControllerWithExitExceptionAndGetContent('comments/default/inlineCreateSave');
+            $this->assertEquals('[]', $content);
+
+            //Now save that comment.
+            $this->setPostArray(array('RelatedModelForm' => $relatedModelPostData,
+                                      'Comment'          => array('description' => 'a ValidComment Name')));
+            $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
+
+            //should update latest activity stamp
+            $this->assertNotEquals($oldStamp, $conversation[0]->latestDateTime);
+            //The comment should have everyone explicitly on it
+            $this->assertEquals(1, $conversations[0]->comments->count());
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 makeBySecurableItem($conversations[0]->comments->offsetGet(0));
+            $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $this->assertEquals(1, count($readWritePermitables));
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+
+            $mary          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
 
             //new test - mary can add comment ok
+            $this->setPostArray(array('RelatedModelForm' => $relatedModelPostData,
+                                      'Comment'          => array('description' => 'a ValidComment Name 2')));
+            $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
+            $this->assertEquals(2, $conversations[0]->comments->count());
+        }
+
+        /**
+         * @depends testAddingCommentsAndUpdatingActivityStampsOnConversation
+         */
+        public function testUserEditAndDeletePermissions()
+        {
+            $mary          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(1, count($conversations));
 
             //new test - mary cannot go to edit of conversation because she is not the owner
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('conversations/default/edit');
 
             //new test - mary cannot delete a conversation she does not own
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('conversations/default/delete');
 
             //new test - mary can delete a comment she wrote
+            $maryCommentId = $conversations[1]->comments->offsetGet(1)->id;
+            $superCommentId = $conversations[0]->comments->offsetGet(0)->id;
+            $this->setGetArray(array('id' => $maryCommentId));
+            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/delete');
+            $this->assertEquals(1, $conversations[0]->comments->count());
 
             //new test - mary cannot delete a comment she did not write.
+            $this->setGetArray(array('id' => $superCommentId));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('conversations/default/delete');
+            $this->assertEquals(1, $conversations[0]->comments->count());
 
-
-
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             //new test , super can edit the conversation
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
 
             //new test , super can delete the conversation
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/delete');
 
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(0, count($conversations));
+        }
 
+        /**
+         * @depends testUserEditAndDeletePermissions
+         */
+        public function testDetailViewPortletFilteringOnConversations()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $accounts       = Account::getByName('superAccount');
+            $superAccountId = $accounts[0]->id;
 
-            //new test - latest activities shows filtered by conversations
-
-            //new test - latest activities shows filtered by conversations with roll up on
-
-
-
-
-            //test filtering by started and trying strpos on something
-            //test filtering by participated in in listview. (using strpos to confirm)
-
-
-
-            //need to test CreateFromModel for conversation created from account detailview to make sure it populates right?
-
-
-            //test adding/editing/remove of attachments via UI.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
-            //Save account.
-            $superAccount = Account::getById($superAccountId);
-            $this->assertEquals(null, $superAccount->officePhone);
-            $this->setPostArray(array('Account' => array('officePhone' => '456765421')));
-            //Make sure the redirect is to the details view and not the list view.
-            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/edit',
-                        Yii::app()->createUrl('accounts/default/details', array('id' => $superAccountId)));
-            $superAccount = Account::getById($superAccountId);
-            $this->assertEquals('456765421', $superAccount->officePhone);
-            //Test having a failed validation on the account during save.
-            $this->setGetArray (array('id'      => $superAccountId));
-            $this->setPostArray(array('Account' => array('name' => '')));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/edit');
-            $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
-
-            //Load Model Detail Views
+            //Load Details view to generate the portlets.
             $this->setGetArray(array('id' => $superAccountId));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
 
-            //Load Model MassEdit Views.
-            //MassEdit view for single selected ids
-            $this->setGetArray(array('selectedIds' => '4,5,6,7,8', 'selectAll' => ''));  // Not Coding Standard
+            //Find the LatestActivity portlet.
+            $portletToUse = null;
+            $portlets     = Portlet::getAll();
+            foreach ($portlets as $portlet)
+            {
+                if ($portlet->viewType == 'AccountLatestActivtiesForPortlet')
+                {
+                    $portletToUse = $portlet;
+                    break;
+                }
+            }
+            $this->assertNotNull($portletToUse);
+            $this->assertEquals('AccountLatestActivtiesForPortletView', get_class($portletToUse->getView()));
+
+            //Load the portlet details for latest activity
+            $getData = array('id' => $superAccountId,
+                             'portletId' => 2,
+                             'uniqueLayoutId' => 'AccountDetailsAndRelationsView_2',
+                             'LatestActivitiesConfigurationForm' => array(
+                                'filteredByModelName' => 'all',
+                                'rollup' => false
+                             ));
+            $this->setGetArray($getData);
             $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massEdit');
-            $this->assertFalse(strpos($content, '<strong>5</strong>&#160;records selected for updating') === false);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
 
-            //MassEdit view for all result selected ids
-            $this->setGetArray(array('selectAll' => '1'));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massEdit');
-            $this->assertFalse(strpos($content, '<strong>4</strong>&#160;records selected for updating') === false);
+            //Now add roll up
+            $getData['LatestActivitiesConfigurationForm']['rollup'] = true;
+            $this->setGetArray($getData);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
+            //Now filter by conversation
+            $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Conversation';
+            $this->setGetArray($getData);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
 
-            //save Model MassEdit for selected Ids
-            //Test that the 2 accounts do not have the office phone number we are populating them with.
-            $account1 = Account::getById($superAccountId);
-            $account2 = Account::getById($superAccountId2);
-            $account3 = Account::getById($superAccountId3);
-            $account4 = Account::getById($superAccountId4);
-            $this->assertNotEquals('7788', $account1->officePhone);
-            $this->assertNotEquals('7788', $account2->officePhone);
-            $this->assertNotEquals('7788', $account3->officePhone);
-            $this->assertNotEquals('7788', $account4->officePhone);
-            $this->setGetArray(array(
-                'selectedIds' => $superAccountId . ',' . $superAccountId2, // Not Coding Standard
-                'selectAll' => '',
-                'Account_page' => 1));
-            $this->setPostArray(array(
-                'Account'  => array('officePhone' => '7788'),
-                'MassEdit' => array('officePhone' => 1)
-            ));
-            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/massEdit');
-            //Test that the 2 accounts have the new office phone number and the other accounts do not.
-            $account1 = Account::getById($superAccountId);
-            $account2 = Account::getById($superAccountId2);
-            $account3 = Account::getById($superAccountId3);
-            $account4 = Account::getById($superAccountId4);
-            $this->assertEquals   ('7788', $account1->officePhone);
-            $this->assertEquals   ('7788', $account2->officePhone);
-            $this->assertNotEquals('7788', $account3->officePhone);
-            $this->assertNotEquals('7788', $account4->officePhone);
-
-            //save Model MassEdit for entire search result
-            $this->setGetArray(array(
-                'selectAll' => '1',
-                'Account_page' => 1));
-            $this->setPostArray(array(
-                'Account'  => array('officePhone' => '4455'),
-                'MassEdit' => array('officePhone' => 1)
-            ));
-            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/massEdit');
-            //Test that all accounts have the new phone number.
-            $account1 = Account::getById($superAccountId);
-            $account2 = Account::getById($superAccountId2);
-            $account3 = Account::getById($superAccountId3);
-            $account4 = Account::getById($superAccountId4);
-            $this->assertEquals('4455', $account1->officePhone);
-            $this->assertEquals('4455', $account2->officePhone);
-            $this->assertEquals('4455', $account3->officePhone);
-            $this->assertEquals('4455', $account4->officePhone);
-
-            //Run Mass Update using progress save.
-            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massEditProgressPageSize');
-            $this->assertEquals(5, $pageSize);
-            Yii::app()->pagination->setForCurrentUserByType('massEditProgressPageSize', 1);
-            //The page size is smaller than the result set, so it should exit.
-            $this->runControllerWithExitExceptionAndGetContent('accounts/default/massEdit');
-            //save Modal MassEdit using progress load for page 2, 3 and 4.
-            $this->setGetArray(array('selectAll' => '1', 'Account_page' => 2));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massEditProgressSave');
-            $this->assertFalse(strpos($content, '"value":50') === false);
-            $this->setGetArray(array('selectAll' => '1', 'Account_page' => 3));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massEditProgressSave');
-            $this->assertFalse(strpos($content, '"value":75') === false);
-            $this->setGetArray(array('selectAll' => '1', 'Account_page' => 4));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massEditProgressSave');
-            $this->assertFalse(strpos($content, '"value":100') === false);
-            //Set page size back to old value.
-            Yii::app()->pagination->setForCurrentUserByType('massEditProgressPageSize', $pageSize);
-
-            //Autocomplete for Account
-            $this->setGetArray(array('term' => 'super'));
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/autoComplete');
-
-            //actionModalList
-            $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
-            ));
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/modalList');
-
-            //actionAuditEventsModalList
-            $this->setGetArray(array('id' => $superAccountId));
-            $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/auditEventsModalList');
+            //Now do the same thing with filtering but turn off rollup.
+            $getData['LatestActivitiesConfigurationForm']['rollup'] = true;
+            $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Conversation';
+            $this->setGetArray($getData);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
         }
-        **/
+
+        /**
+         * @depends testDetailViewPortletFilteringOnConversations
+         */
+        public function testListViewFiltering()
+        {
+            $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertfalse(strpos($content, 'Conversations') === false);
+            $this->setGetArray(array(
+                'type' => ConversationsUtil::LIST_TYPE_STARTED));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertfalse(strpos($content, 'Conversations') === false);
+            $this->setGetArray(array(
+                'type' => ConversationsUtil::LIST_TYPE_PARTICIPATING_IN));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertfalse(strpos($content, 'Conversations') === false);
+        }
+
+        /**
+         * @depends testListViewFiltering
+         */
+        public function testCreateFromModel()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $accounts       = Account::getByName('superAccount');
+            $superAccountId = $accounts[0]->id;
+
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(0, count($conversations));
+
+            //add related note for account using createFromRelation action
+            $conversationItemPostData = array('account' => array('id' => $account->id));
+            $this->setGetArray(array('relationAttributeName' => 'Account', 'relationModelId' => $superAccountId,
+                                     'relationModuleId'      => 'accounts', 'redirectUrl' => 'someRedirect'));
+            $this->setPostArray(array('ConversationItemForm' => $conversationItemPostData,
+                                      'Conversation' => array('subject' => 'Conversation Subject', 'description' => 'A description')));
+            $this->runControllerWithRedirectExceptionAndGetContent('notes/default/createFromRelation');
+
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(1,            count($conversations));
+            $this->assertEquals(1,            $conversations[0]->conversationItems->count());
+            $this->assertEquals($accounts[0], $conversations[0]->conversationItems->getOffset(0));
+        }
+
+        public function testAttachments()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(1, count($conversations));
+            //test adding/editing/remove of attachments via UI.
+        }
+
     }
 ?>
