@@ -365,6 +365,7 @@
             $conversations  = Conversation::getAll();
             $this->assertEquals(1, count($conversations));
             //test adding/editing/remove of attachments via UI.
+            $this->fail();
         }
 
     }
