@@ -684,8 +684,8 @@
                                       array('{relationName}' => $relationName,
                                             '{relationModelClassName}' => $relationModelClassName)));
                         }
-                        if (count($relationTypeModelClassNameAndOwns) >= 3
-                            && $relationTypeModelClassNameAndOwns[2] == self::OWNED)
+                        if (count($relationTypeModelClassNameAndOwns) >= 3 &&
+                            $relationTypeModelClassNameAndOwns[2] == self::OWNED)
                         {
                             $owns = true;
                         }

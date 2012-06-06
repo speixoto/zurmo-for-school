@@ -96,7 +96,6 @@
             $this->assertEquals($polySideId, $oneSide->polys[0]->id);
             $this->assertEquals($polySide3Id, $oneSide->polys[1]->id);
 
-
             //test disconnect a polySide
             $polySide = $oneSide->polys[0];
             $oneSide->polys->remove($polySide);
@@ -111,7 +110,7 @@
             $this->assertEquals(3, count(TestPolyOneToManyPolySide::getAll()));
             $this->assertTrue($oneSide->delete());
             $this->assertEquals(3, count(TestPolyOneToManyPolySide::getAll()));
-            foreach(TestPolyOneToManyPolySide::getAll() as $poly)
+            foreach (TestPolyOneToManyPolySide::getAll() as $poly)
             {
                $poly->delete();
             }
