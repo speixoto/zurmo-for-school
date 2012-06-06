@@ -31,8 +31,6 @@
     {
         protected $tipContent;
 
-        protected $splashImageName;
-
         protected $hasDashboardAccess;
 
         protected static function renderHelpfulLinksContent()
@@ -67,14 +65,25 @@
             $content  = '<div class="clearfix">';
             $content .= '<h1>Welcome to Zurmo</h1>';
             $content .= static::renderSocialLinksContent();
+<<<<<<< mine
+			$content .= '<div id="welcome-content">';
+			$content .= '<div id="instructions"><div id="welcome-gallery">';
+			$content .= $this->renderSplashImageContent();
+			$content .= '</div><p>It is a long established fact that a reader will be distracted by the readable content of a ' . 
+				'page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less ' . 
+				'normal distribution of letters, as opposed to using</p>';
+			$content .= $this->renderDashboardLinkContent();
+			$content .= '</div>';
+=======
             $content .= '<div id="welcome-content">';
-            $content .= '<div id="instructions"><div id="welcome-gallery">';
+            $content .= '<div id="instructions"><div id="gallery">';
             $content .= '</div><p>';
-            $content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .
+            $content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, '.
                                'collect badges, and compete against co-workers while getting your job done.');
             $content .= '</p>';
             $content .= $this->renderDashboardLinkContent();
             $content .= '</div>';
+>>>>>>> theirs
             $content .= static::renderHelpfulLinksContent();
             $content .= $this->renderTipsContent();
             $content .= $this->renderHideLinkContent();
@@ -85,7 +94,7 @@
 
         protected function renderTipsContent()
         {
-            if ($this->tipContent != null)
+            if($this->tipContent != null)
             {
                 $content  = '<div class="help-section">';
                 $content .= '<h3>' . Yii::t('Default', 'Tip of the Day') . '</h3>';
@@ -99,19 +108,19 @@
 
         protected function renderDashboardLinkContent()
         {
-            if ($this->hasDashboardAccess)
+            if($this->hasDashboardAccess)
             {
                 $label    = Yii::t('Default', 'Go to the dashboard');
-                $content  = CHtml::link($label, Yii::app()->createUrl('home/default'), array('class' => 'dashboard-link'));
+                $content  = CHtml::link($label, Yii::app()->createUrl('home/default'), array('class'=>'dashboard-link'));
                 return $content;
             }
         }
 
         protected function renderHideLinkContent()
         {
-            if ($this->hasDashboardAccess)
+            if($this->hasDashboardAccess)
             {
-                $label    = '<span></span>' . Yii::t('Default', '(Don\'t show me this screen again)');
+                $label    = Yii::t('Default', '<span></span>Don\'t show me this screen again');
                 $content  = '<div class="hide-welcome">'.CHtml::link($label, Yii::app()->createUrl('home/default/hideWelcome'));
                 $content .= ' <i>(' . Yii::t('Default', 'Don\'t worry you can turn it on again') . ')</i></div>';
                 return $content;

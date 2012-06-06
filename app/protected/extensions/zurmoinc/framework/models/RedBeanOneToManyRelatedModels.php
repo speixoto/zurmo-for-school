@@ -79,7 +79,7 @@
                 {
                     if ($this->bean->id > 0)
                     {
-                        if($this->polyName != null)
+                        if ($this->polyName != null)
                         {
                             $value           = array();
                             $values['id']    = $this->bean->id;
@@ -95,7 +95,6 @@
                             $relatedIds                  = R::$linkManager->getKeys($this->bean, $tableName);
                             $this->relatedBeansAndModels = array_values(R::batch($tableName, $relatedIds));
                         }
-
                     }
                     else
                     {
@@ -115,7 +114,6 @@
             }
         }
 
-
         public function save($runValidation = true)
         {
             if (!parent::save($runValidation))
@@ -124,9 +122,9 @@
             }
             foreach ($this->deferredRelateBeans as $bean)
             {
-                if($this->polyName != null)
+                if ($this->polyName != null)
                 {
-                    if($this->bean->id == null)
+                    if ($this->bean->id == null)
                     {
                         R::store($this->bean);
                     }

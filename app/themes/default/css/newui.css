@@ -3086,10 +3086,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-text-shadow: 0 1px 0 #ffffff;
   text-shadow: 0 1px 0 #ffffff;
 }
-.AttributeEditView form div table {
-  border-top: 1px solid #dedede;
-  padding-top: 16px;
-}
 .AttributeEditView form div table td {
   padding-left: 0 !important;
 }
@@ -3138,6 +3134,16 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 #DropDownDependencyMappingData table td {
   padding-right: 15px;
+  vertical-align: top;
+}
+/*Caluclated Fields Creation*/
+.field-instructions {
+  float: left;
+  width: 100%;
+  margin: 10px 0 15px 0;
+}
+.field-instructions table {
+  border-top: none !important;
 }
 /*Target only Mozilla/Gecko Browsers*/
 @-moz-document url-prefix() {
@@ -3214,17 +3220,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   cursor: pointer;
   vertical-align: middle;
 }
-/*@font-face {
-    font-family: 'ZurmoGamificationSymblyRegular-Regular';
-    src: url('../fonts/zurmogamificationsymblyregular-regular.eot');
-    src: url('../fonts/zurmogamificationsymblyregular-regular.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/zurmogamificationsymblyregular-regular.woff') format('woff'),
-         url('../fonts/zurmogamificationsymblyregular-regular.ttf') format('truetype'),
-         url('../fonts/zurmogamificationsymblyregular-regular.svg#zurmogamificationsymblyregular-regular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-*/
 #LeaderboardView .items td:first-child,
 #LeaderboardView .items th:first-child {
   padding-left: 15px;
@@ -3333,10 +3328,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 /*Badges from here*/
 #UserBadgesForPortletView {
-  padding-bottom: 15px;
-}
-#UserBadgesForPortletView > div {
-  padding: 15px 15px 0 15px;
+  padding: 15px 15px 15px 0;
 }
 .game-badge,
 .badge {
@@ -3351,7 +3343,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px;
-  margin: 0 0 0 15px;
+  margin: 0 0 15px 15px;
   -webkit-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
   -o-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
@@ -3366,10 +3358,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-image: -o-linear-gradient(#f5f5f5, #eeeeee 80%, #eeeeee);
   background-image: linear-gradient(#f5f5f5, #eeeeee 80%, #eeeeee);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#eeeeee', GradientType=0);
-}
-.game-badge:first-child,
-.badge:first-child {
-  margin-left: 0;
 }
 .game-badge:after,
 .badge:after {
@@ -3595,6 +3583,14 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .CreateTask .badge-icon:before {
   content: "4";
 }
+/*Night Icons*/
+.NightOwl .badge-icon:before {
+  content: "$";
+}
+.EarlyBird .badge-icon:before {
+  content: "#";
+}
+/*Big Icons for popup badges*/
 .game-level-change .badge-icon:before {
   content: ";";
 }
@@ -4084,6 +4080,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 #welcome-content {
   margin-top: 30px;
+  padding-bottom: 30px;
   display: block;
   float: left;
   width: 100%;
@@ -4172,6 +4169,16 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   margin-right: 15px;
   float: left;
   background: url(../images/welcome-gallery-1.png) left top no-repeat;
+}
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+  #LoginView,
+  #HeaderLinksView > div,
+  .AppContainer {
+    margin: 0 !important;
+  }
+  .AppContainer {
+    min-width: none;
+  }
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
@@ -4284,16 +4291,7 @@ section {
 #LoginView {
   min-width: 900px;
   height: 100%;
-  margin: 0 40px 0 40px;
-  background-color: #f6f6f6;
-  background-repeat: no-repeat;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f6f6f6), color-stop(100px, #ffffff), to(#f6f6f6));
-  background-image: -webkit-linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ffffff 100px, #f6f6f6);
-  background-image: -ms-linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
-  background-image: -o-linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
-  background-image: linear-gradient(#f6f6f6, #ffffff 100px, #f6f6f6);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#f6f6f6', GradientType=0);
+  margin: 0 3% 0 3%;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -4323,7 +4321,7 @@ section {
   margin: -100px auto 0 -250px;
   height: 200px;
   position: relative;
-  top: 50%;
+  top: 45%;
   left: 50%;
 }
 #LoginView #LoginLogo {
@@ -4417,6 +4415,15 @@ section {
   font-size: 11px;
   padding-top: 4px;
 }
+.background-1 {
+  background: #ffffff url(../images/landscape-1.png) left bottom repeat-x;
+}
+.background-2 {
+  background: #ffffff url(../images/landscape-2.png) left bottom repeat-x;
+}
+.background-3 {
+  background: #ffffff url(../images/landscape-3.png) left bottom repeat-x;
+}
 /*=MastHead*/
 #HeaderLinksView {
   background: url(../images/header-bar-1.png) left top repeat-x;
@@ -4442,7 +4449,7 @@ section {
   display: inline-block;
 }
 #HeaderLinksView > div {
-  margin: 0 40px 0 40px;
+  margin: 0 3% 0 3%;
 }
 #HeaderLinksView ul {
   list-style: none;
@@ -4686,7 +4693,7 @@ section {
 .AppContainer {
   min-width: 900px;
   height: 100%;
-  margin: 0 40px 0 40px;
+  margin: 0 3% 0 3%;
   background: #ffffff url(../images/nav.png) left top repeat-y;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -6590,6 +6597,9 @@ div.wide.form label.hasCheckBox {
 #edit-form .panel table {
   width: 100% !important;
 }
+#edit-form h3 {
+  margin-bottom: 8px;
+}
 #edit-form table {
   border-bottom: none;
   margin-bottom: 15px;
@@ -6782,10 +6792,17 @@ div.wide.form label.hasCheckBox {
   float: left;
   width: 100%;
 }
-.beforeToolTip .dk_container {
+.beforeToolTip .dk_container,
+.beforeToolTip textarea {
   margin-right: 30px !important;
   width: auto;
   float: none;
+}
+.beforeToolTip textarea {
+  width: 95%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .beforeToolTip + .tooltip {
   float: right;
