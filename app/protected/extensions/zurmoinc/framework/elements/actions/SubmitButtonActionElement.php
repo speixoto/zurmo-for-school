@@ -30,7 +30,34 @@
 
         public function render()
         {
-            return CHtml::submitButton($this->getLabel(), $this->getHtmlOptions());
+            $htmlOptions = $this->getHtmlOptions();
+            $request     = Yii::app()->getRequest();
+            if($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
+            {
+                $htmlOptions['params'][$request->csrfTokenName]=$request->getCsrfToken();
+            }
+            if(isset($htmlOptions['params']))
+            {
+                $params = CJavaScript::encode($htmlOptions['params']);
+            }
+            else
+            {
+                $params = '{}';
+            }
+            if(isset($htmlOptions['class']))
+            {
+                $htmlOptions['class']  .= ' z-button';
+            }
+            else
+            {
+                $htmlOptions['class']   = 'z-button';
+            }
+            $handler                 = "jQuery.yii.submitForm(this, '', $params); return false;";
+            $htmlOptions['onClick']  = $handler;
+            $aContent                = CHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent               .= CHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent               .= CHtml::tag('span', array('class' => 'z-label'), $this->getLabel());
+            return CHtml::link($aContent, '#', $htmlOptions);
         }
     }
 ?>

@@ -62,8 +62,13 @@
             $rememberMeLabel    = $form->label        ($this->formModel, 'rememberMe');
             $rememberMeError    = $form->error        ($this->formModel, 'rememberMe');
 
-            $submitButton       = CHtml::submitButton(Yii::t('Default', 'Sign in'),
-                                                      array('name' => 'Login', 'id' => 'Login'));
+            $element            = new SaveButtonActionElement($this->controller->getId(),
+                                                              $this->controller->getModule()->getId(),
+                                                              null,
+                                                              array('htmlOptions' => array('name'   => 'Login',
+                                                                                           'id'     => 'Login'),
+                                                                      'label'     => Yii::t('Default', 'Sign in')));
+            $submitButton       = $element->render();
 
             $fieldsRequiredLabel = Yii::t('Default', 'Fields with') . ' <span class="required">*</span> ' .
                                    Yii::t('Default', 'are required.');
