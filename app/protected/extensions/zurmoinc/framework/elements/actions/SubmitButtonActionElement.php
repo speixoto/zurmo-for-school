@@ -52,6 +52,9 @@
             {
                 $htmlOptions['class']   = 'z-button';
             }
+            $cs = Yii::app()->getClientScript();
+            $cs->registerCoreScript('jquery');
+            $cs->registerCoreScript('yii');
             $handler                 = "jQuery.yii.submitForm(this, '', $params); return false;";
             $htmlOptions['onClick']  = $handler;
             $aContent                = CHtml::tag('span', array('class' => 'z-spinner'), null);
