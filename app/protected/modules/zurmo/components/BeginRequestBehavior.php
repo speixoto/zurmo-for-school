@@ -71,6 +71,7 @@
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
@@ -342,6 +343,13 @@
                 Yii::app()->custom->resolveIsCustomDataLoaded();
             }
         }
+
+        public function handleLoadActivitiesObserver($event)
+        {
+            $activitiesObserver = new ActivitiesObserver();
+            $activitiesObserver->init(); //runs init();
+        }
+
 
         public function handleLoadGamification($event)
         {
