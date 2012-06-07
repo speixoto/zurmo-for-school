@@ -24,43 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamificationDefaultController extends ZurmoModuleController
+    class ConversationsActionBarForListView extends ActionBarForSearchAndListView
     {
-        public function actionIndex()
+        public static function getDefaultMetadata()
         {
-            $this->actionLeaderboard();
-        }
-
-        public function actionLeaderboard($type = null)
-        {
-            if ($type == null)
-            {
-                $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
-            }
-            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
-            {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
-            {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
-            {
-                $activeActionElementType = 'LeaderboardOverallLink';
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $view = new TitleBarAndLeaderboardView(
-                            $this->getId(),
-                            $this->getModule()->getId(),
-                            GamePointUtil::getUserLeaderboardData($type),
-                            $activeActionElementType);
-            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
-            echo $view->render();
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(
+                                'type'            => 'ConversationsCreatedLink',
+                                'htmlOptions'     => array( 'class' => 'icon-conversations-created' )
+                            ),
+                            array(
+                                'type'            => 'ConversationsParticipantLink',
+                                'htmlOptions'     => array( 'class' => 'icon-conversations-participant' )
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

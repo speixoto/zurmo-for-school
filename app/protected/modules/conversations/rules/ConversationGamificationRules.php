@@ -24,43 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamificationDefaultController extends ZurmoModuleController
+    /**
+     * Defines specific rules for conversation gamification.
+     */
+    class ConversationGamificationRules extends GamificationRules
     {
-        public function actionIndex()
-        {
-            $this->actionLeaderboard();
-        }
-
-        public function actionLeaderboard($type = null)
-        {
-            if ($type == null)
-            {
-                $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
-            }
-            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
-            {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
-            {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
-            {
-                $activeActionElementType = 'LeaderboardOverallLink';
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $view = new TitleBarAndLeaderboardView(
-                            $this->getId(),
-                            $this->getModule()->getId(),
-                            GamePointUtil::getUserLeaderboardData($type),
-                            $activeActionElementType);
-            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
-            echo $view->render();
-        }
     }
 ?>

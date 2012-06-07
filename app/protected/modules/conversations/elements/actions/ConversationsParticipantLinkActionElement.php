@@ -24,43 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamificationDefaultController extends ZurmoModuleController
+    class ConversationsParticipantLinkActionElement extends EditLinkActionElement
     {
-        public function actionIndex()
+        protected function getDefaultLabel()
         {
-            $this->actionLeaderboard();
+            return Yii::t('Default', 'Participating In');
         }
 
-        public function actionLeaderboard($type = null)
+        protected function getDefaultRoute()
         {
-            if ($type == null)
-            {
-                $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
-            }
-            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
-            {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
-            {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
-            {
-                $activeActionElementType = 'LeaderboardOverallLink';
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $view = new TitleBarAndLeaderboardView(
-                            $this->getId(),
-                            $this->getModule()->getId(),
-                            GamePointUtil::getUserLeaderboardData($type),
-                            $activeActionElementType);
-            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
-            echo $view->render();
+            return Yii::app()->createUrl(
+                $this->moduleId . '/' . $this->controllerId . '/list/',
+                array('type' => ConversationUtil::LIST_TYPE_PARTICIPANT));
         }
     }
 ?>

@@ -24,43 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamificationDefaultController extends ZurmoModuleController
+    /**
+     * Renders an action bar, search view, and list view.
+     */
+    class ActionBarAndListView extends GridView
     {
-        public function actionIndex()
+        public function __construct($controllerId, $moduleId, RedBeanModel $listModel,
+                                    $moduleName, CDataProvider $dataProvider, $selectedIds,
+                                    $actionBarViewClassName, $activeActionElementType = null)
         {
-            $this->actionLeaderboard();
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
+            assert('is_string($actionBarViewClassName)');
+            assert('$activeActionElementType == null || is_string($activeActionElementType)');
+            parent::__construct(2, 1);
+
+            $listViewClassName   = $moduleName . 'ListView';
+            $listView            = new $listViewClassName($controllerId, $moduleId,
+                                       get_class($listModel), $dataProvider, $selectedIds);
+            $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
+                                                               $listView->getGridViewId(),
+                                                               $dataProvider->getPagination()->pageVar,
+                                                               $listView->getRowsAreSelectable(), $activeActionElementType);
+            $this->setView($actionBarView, 0, 0);
+            $this->setView($listView,      1, 0);
         }
 
-        public function actionLeaderboard($type = null)
+        public function isUniqueToAPage()
         {
-            if ($type == null)
-            {
-                $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
-            }
-            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
-            {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
-            {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
-            {
-                $activeActionElementType = 'LeaderboardOverallLink';
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $view = new TitleBarAndLeaderboardView(
-                            $this->getId(),
-                            $this->getModule()->getId(),
-                            GamePointUtil::getUserLeaderboardData($type),
-                            $activeActionElementType);
-            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
-            echo $view->render();
+            return true;
         }
     }
 ?>

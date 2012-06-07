@@ -287,6 +287,7 @@
             'api',
             'configuration',
             'contacts',
+            'conversations',
             'designer',
             'emailMessages',
             'export',

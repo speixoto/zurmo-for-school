@@ -324,11 +324,11 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertfalse(strpos($content, 'Conversations') === false);
             $this->setGetArray(array(
-                'type' => ConversationsUtil::LIST_TYPE_STARTED));
+                'type' => ConversationUtil::LIST_TYPE_CREATED));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertfalse(strpos($content, 'Conversations') === false);
             $this->setGetArray(array(
-                'type' => ConversationsUtil::LIST_TYPE_PARTICIPATING_IN));
+                'type' => ConversationUtil::LIST_TYPE_PARTICIPANT));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertfalse(strpos($content, 'Conversations') === false);
         }

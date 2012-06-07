@@ -24,43 +24,57 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamificationDefaultController extends ZurmoModuleController
+    /**
+     * Model for storing comments that relate to a variety of different models across the application.
+     */
+    class Comment extends Item
     {
-        public function actionIndex()
+        public static function getByName($name)
         {
-            $this->actionLeaderboard();
+            assert('is_string($name) && $name != ""');
+            return self::getSubset(null, null, null, "name = '$name'");
         }
 
-        public function actionLeaderboard($type = null)
+        public function __toString()
         {
-            if ($type == null)
+            if (trim($this->description) == '')
             {
-                $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
+                return Yii::t('Default', '(Unnamed)');
             }
-            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
-            {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
-            {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
-            {
-                $activeActionElementType = 'LeaderboardOverallLink';
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $view = new TitleBarAndLeaderboardView(
-                            $this->getId(),
-                            $this->getModule()->getId(),
-                            GamePointUtil::getUserLeaderboardData($type),
-                            $activeActionElementType);
-            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
-            echo $view->render();
+            return $this->description;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'ZurmoModule';
+        }
+
+        public static function canSaveMetadata()
+        {
+            return false;
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'description',
+                ),
+                'rules' => array(
+                    array('description', 'required'),
+                    array('description', 'type',    'type' => 'string'),
+                ),
+                'elements' => array(
+                    'description'        => 'TextArea',
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
         }
     }
 ?>

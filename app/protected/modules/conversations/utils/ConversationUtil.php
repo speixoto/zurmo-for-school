@@ -24,43 +24,44 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamificationDefaultController extends ZurmoModuleController
+    /**
+     * Helper class for working with conversations
+     */
+    class ConversationUtil
     {
-        public function actionIndex()
-        {
-            $this->actionLeaderboard();
-        }
+        /**
+         * Filter by conversations the current user created.
+         * @var integer
+         */
+        const LIST_TYPE_CREATED = 1;
 
-        public function actionLeaderboard($type = null)
+        /**
+         * Filter by conversations the current user is participating in
+         * @var integer
+         */
+        const LIST_TYPE_PARTICIPANT = 2;
+
+        /**
+         * Given a filter type, @return the searchAttributes. If there is no filter specified it will default to a
+         * list of conversations the logged in user has started
+         * @param string $type
+         */
+        public static function resolveSearchAttributesByType($type)
         {
-            if ($type == null)
+            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_PARTICIPANT');
+            if($type == self::LIST_TYPE_CREATED)
             {
-                $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
-            }
-            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
-            {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
-            {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
-            {
-                $activeActionElementType = 'LeaderboardOverallLink';
+                $searchAttributes = array(
+                    'owner'    => array('id' => Yii::app()->user->userModel->id)
+                );
             }
             else
             {
-                throw new NotSupportedException();
+                $searchAttributes = array(
+                    'conversationParticipants' => array('id' => Yii::app()->user->userModel->id),
+                );
             }
-            $view = new TitleBarAndLeaderboardView(
-                            $this->getId(),
-                            $this->getModule()->getId(),
-                            GamePointUtil::getUserLeaderboardData($type),
-                            $activeActionElementType);
-            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
-            echo $view->render();
+            return $searchAttributes;
         }
     }
 ?>

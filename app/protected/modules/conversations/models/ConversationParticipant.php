@@ -24,43 +24,57 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamificationDefaultController extends ZurmoModuleController
+    /**
+     * Model for storing information about conversation participants and whether they have read or not read the
+     * latest comment in a conversation.
+     */
+    class ConversationParticipant extends OwnedModel
     {
-        public function actionIndex()
+        public function __toString()
         {
-            $this->actionLeaderboard();
+            try
+            {
+                if($this->person->id > 0)
+                {
+                    return strval($this->person);
+                }
+            }
+            catch(NotFoundException $e)
+            {
+            }
+            return Yii::t('Default', '(Unnamed)');
         }
 
-        public function actionLeaderboard($type = null)
+        public static function getModuleClassName()
         {
-            if ($type == null)
-            {
-                $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
-            }
-            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
-            {
-                $activeActionElementType = 'LeaderboardWeeklyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
-            {
-                $activeActionElementType = 'LeaderboardMonthlyLink';
-            }
-            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
-            {
-                $activeActionElementType = 'LeaderboardOverallLink';
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $view = new TitleBarAndLeaderboardView(
-                            $this->getId(),
-                            $this->getModule()->getId(),
-                            GamePointUtil::getUserLeaderboardData($type),
-                            $activeActionElementType);
-            $view = new LeaderboardPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this, $view));
-            echo $view->render();
+            return 'ConversationsModule';
+        }
+
+        public static function canSaveMetadata()
+        {
+            return false;
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'hasReadLatest',
+                ),
+                'relations' => array(
+                    'person'      => array(RedBeanModel::HAS_ONE, 'Item'),
+                ),
+                'rules' => array(
+                    array('hasReadLatest', 'boolean'),
+                )
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
         }
     }
 ?>
