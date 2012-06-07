@@ -55,20 +55,6 @@
         }
 
         /**
-         * Create Swift_Attachment based on dynamic content(for example when content
-         * is stored in database), filename and type.
-         *
-         * @param binary $content
-         * @param string $filename, for example 'image.png'
-         * @param string $contentType, for example 'application/octet-stream'
-         * @see SwiftMailer::attachment()
-         */
-        public function attachDynamicContent($content, $filename, $contentType)
-        {
-            return Swift_Attachment::newInstance($content, $filename, $contentType);
-        }
-
-        /**
          * Override to support adding sendResponseLog messages
          * (non-PHPdoc)
          * @see SwiftMailer::send()
@@ -88,6 +74,44 @@
                 catch (Swift_RfcComplianceException $e)
                 {
                     throw new OutboundEmailSendException($e->getMessage(), $e->getCode(), $e);
+                }
+            }
+
+            if (!empty($this->ccAddressesAndNames))
+            {
+                foreach ($this->ccAddressesAndNames as $address => $name)
+                {
+                    try
+                    {
+                        $message->addCc($address, $name);
+                    }
+                    catch (Swift_RfcComplianceException $e)
+                    {
+                        throw new OutboundEmailSendException($e->getMessage(), $e->getCode(), $e);
+                    }
+                }
+            }
+
+            if (!empty($this->bccAddressesAndNames))
+            {
+                foreach ($this->bccAddressesAndNames as $address => $name)
+                {
+                    try
+                    {
+                        $message->addBcc($address, $name);
+                    }
+                    catch (Swift_RfcComplianceException $e)
+                    {
+                        throw new OutboundEmailSendException($e->getMessage(), $e->getCode(), $e);
+                    }
+                }
+            }
+
+            if (!empty($this->attachments))
+            {
+                foreach ($this->attachments as $attachment)
+                {
+                    $message->attach($attachment);
                 }
             }
 

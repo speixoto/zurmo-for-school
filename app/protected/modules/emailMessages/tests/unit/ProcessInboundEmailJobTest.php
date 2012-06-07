@@ -24,9 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProcessInboundEmailJobTest extends BaseTest
+    class ProcessInboundEmailJobTesta extends BaseTest
     {
         public static $userMailer;
+        public static $userImap;
 
         public static function setUpBeforeClass()
         {
@@ -53,7 +54,6 @@
 
 
             $userSmtpMailer = new EmailHelperForTesting();
-
             $userSmtpMailer->outboundHost     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundHost'];
             $userSmtpMailer->outboundPort     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPort'];
             $userSmtpMailer->outboundUsername = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundUsername'];
@@ -62,35 +62,301 @@
             $userSmtpMailer->init();
             $userSmtpMailer->sendEmailThroughTransport = true;
             self::$userMailer = $userSmtpMailer;
+
+            $userImapHelper = new ImapHelper();
+
         }
 
         public function setup(){
             $user = User::getByUsername('steve');
-            $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+            $user->primaryEmail->emailAddress = str_replace('+', '@', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
             $this->assertTrue($user->save());
         }
 
-        public function testRun()
+        /**
+         * Test case when user send email to somebody, and to dropbox(via to field)
+         * This shouldn't happen in reality, because receipt will see that message is sent to dropbox folder too
+         */
+        public function testRunCaseOne()
         {
-            //Yii::app()->imap->connect();
-            $super                      = User::getByUsername('super');
-            //Yii::app()->user->userModel = $super;
-            //$emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 3', $super);
-            //self::$userMailer->sendImmediately($emailMessage);
-            $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 4', $super);
-            Yii::app()->emailHelper->sendImmediately($emailMessage);
-            exit;
+            $super = User::getByUsername('super');
             $user = User::getByUsername('steve');
-            $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
-            $user->save;
-            //Yii::app()->imap->expungeMessages();
+            Yii::app()->imap->connect();
 
+            // Expunge all emails from dropbox
+            Yii::app()->imap->expungeMessages();
+
+            // Check if there are no emails in dropbox
             $job = new ProcessInboundEmailJob();
             $this->assertTrue($job->run());
             $this->assertEquals(0, count(EmailMessage::getAll()));
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+
+            //Now user send email to another user, and to dropbox
+            $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
+            $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
+            $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'image.png';
+            $filePath_3    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
+
+            Yii::app()->emailHelper->sendRawEmail("Email from Steve", $user->primaryEmail->emailAddress, array('fakemail@example.com', Yii::app()->imap->imapUsername), 'Email from Steve', '<strong>Email</strong> from Steve', null, null, array($filePath_1, $filePath_2, $filePath_3));
+
+            sleep(30);
+
+            $job = new ProcessInboundEmailJob();
+            $this->assertTrue($job->run());
+
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $emailMessages = EmailMessage::getAll();
+            $emailMessage = $emailMessages[0];
+
+            $this->assertEquals('Email from Steve', $emailMessage->subject);
+            $this->assertEquals('Email from Steve', trim($emailMessage->content->textContent));
+            $this->assertEquals('<strong>Email</strong> from Steve', trim($emailMessage->content->htmlContent));
+            $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
+            $this->assertEquals(2, count($emailMessage->recipients));
+            foreach ($emailMessage->recipients as $recipient)
+            {
+                $this->assertTrue(in_array($recipient->toAddress, array('fakemail@example.com', Yii::app()->imap->imapUsername)));
+                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
+            }
+
+            $this->assertEquals(3, count($emailMessage->files));
+            foreach ($emailMessage->files as $attachment)
+            {
+                $this->assertTrue(in_array($attachment->name, array('table.csv', 'image.png', 'text.txt')));
+                $this->assertTrue($attachment->size > 0);
+            }
+        }
+
+        /**
+        * Test case when user send email to somebody, and cc to dropbox
+        * This shouldn't happen in reality, because receipt will see that message is sent to dropbox folder too
+        */
+        public function testRunCaseTwo()
+        {
+            $super = User::getByUsername('super');
+            $user = User::getByUsername('steve');
+            Yii::app()->imap->connect();
+
+            // Expunge all emails from dropbox
+            Yii::app()->imap->expungeMessages();
+
+            // Check if there are no emails in dropbox
+            $job = new ProcessInboundEmailJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+
+            //Now user send email to another user, and to dropbox
+            $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
+            $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
+            $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'image.png';
+            $filePath_3    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
+
+            Yii::app()->emailHelper->sendRawEmail("Email from Steve", $user->primaryEmail->emailAddress,
+                                                  'fakemail@example.com',
+                                                  'Email from Steve', '<strong>Email</strong> from Steve',
+                                                  array(Yii::app()->imap->imapUsername), null,
+                                                  array($filePath_1, $filePath_2, $filePath_3));
+
+            sleep(30);
+
+            $job = new ProcessInboundEmailJob();
+            $this->assertTrue($job->run());
+
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $emailMessages = EmailMessage::getAll();
+            $emailMessage = $emailMessages[0];
+
+            $this->assertEquals('Email from Steve', $emailMessage->subject);
+            $this->assertEquals('Email from Steve', trim($emailMessage->content->textContent));
+            $this->assertEquals('<strong>Email</strong> from Steve', trim($emailMessage->content->htmlContent));
+            $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
+
+            $this->assertEquals(1, count($emailMessage->recipients));
+            foreach ($emailMessage->recipients as $recipient)
+            {
+                $this->assertEquals($recipient->toAddress, 'fakemail@example.com');
+                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
+            }
+            // To-Do: Check CC fields
+
+            $this->assertEquals(3, count($emailMessage->files));
+            foreach ($emailMessage->files as $attachment)
+            {
+                $this->assertTrue(in_array($attachment->name, array('table.csv', 'image.png', 'text.txt')));
+                $this->assertTrue($attachment->size > 0);
+            }
+        }
+
+        /**
+        * Test case when user send email to somebody, and bcc to dropbox
+        * This is best practictice to be used in reality, because other receipts will not see that user
+        * bcc-ed email to dropbox
+        */
+        public function testRunCaseThree()
+        {
+            $super = User::getByUsername('super');
+            $user = User::getByUsername('steve');
+            Yii::app()->imap->connect();
+
+            // Expunge all emails from dropbox
+            Yii::app()->imap->expungeMessages();
+
+            // Check if there are no emails in dropbox
+            $job = new ProcessInboundEmailJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+
+            //Now user send email to another user, and to dropbox
+            $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
+            $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
+            $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'image.png';
+            $filePath_3    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
+
+            Yii::app()->emailHelper->sendRawEmail("Email from Steve", $user->primaryEmail->emailAddress,
+                                                  'fakemail@example.com',
+                                                  'Email from Steve', '<strong>Email</strong> from Steve',
+                                                  null, array(Yii::app()->imap->imapUsername),
+                                                  array($filePath_1, $filePath_2, $filePath_3));
+
+            sleep(30);
+
+            $job = new ProcessInboundEmailJob();
+            $this->assertTrue($job->run());
+
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $emailMessages = EmailMessage::getAll();
+            $emailMessage = $emailMessages[0];
+
+            $this->assertEquals('Email from Steve', $emailMessage->subject);
+            $this->assertEquals('Email from Steve', trim($emailMessage->content->textContent));
+            $this->assertEquals('<strong>Email</strong> from Steve', trim($emailMessage->content->htmlContent));
+            $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
+
+            $this->assertEquals(1, count($emailMessage->recipients));
+            foreach ($emailMessage->recipients as $recipient)
+            {
+                $this->assertEquals($recipient->toAddress, 'fakemail@example.com');
+                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
+            }
+            // To-Do: Check CC fields
+
+            $this->assertEquals(3, count($emailMessage->files));
+            foreach ($emailMessage->files as $attachment)
+            {
+                $this->assertTrue(in_array($attachment->name, array('table.csv', 'image.png', 'text.txt')));
+                $this->assertTrue($attachment->size > 0);
+            }
+        }
+
+        /**
+        * Test case when somebody send email to Zurmo user, and user forward it to dropbox
+        */
+        public function testRunCaseFour()
+        {
+            require(Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.EmailClientForwardTemplatesTestHelper') . '.php');
+
+            $super = User::getByUsername('super');
+            $user = User::getByUsername('steve');
+            Yii::app()->imap->connect();
+
+            // Expunge all emails from dropbox
+            Yii::app()->imap->expungeMessages();
+
+            // Check if there are no emails in dropbox
+            $job = new ProcessInboundEmailJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+
+            //Now user send email to another user, and to dropbox
+            $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
+            $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
+            $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
+
+            $originalSubject = "Email from John";
+            $originalTextBody   = "Email from John";
+            $originalHtmlBody   = "<strong>Hi Steve,</strong>. This is John. Bye!";
+
+            $forwardedEmailClientSubjectPrefixes = EmailClientForwardTemplatesTestHelper::$subjectPrefixes;
+            $forwardedEmailClientBodyPrefixes    = EmailClientForwardTemplatesTestHelper::$bodyPrefixes;
+
+            $numberOfEmailMessages = 0;
+            foreach ($forwardedEmailClientSubjectPrefixes as $client => $subjectPrefixes)
+            {
+                $this->assertTrue(isset($forwardedEmailClientBodyPrefixes[$client]) ||
+                                  !empty($forwardedEmailClientBodyPrefixes[$client])
+                );
+                $bodyPrefixes = $forwardedEmailClientBodyPrefixes[$client];
+                // Test all subject/body prefix combinations
+                foreach ($subjectPrefixes as $subjectPrefix)
+                {
+                    foreach ($bodyPrefixes as $bodyPrefix)
+                    {
+                        $this->assertTrue($subjectPrefix != '');
+                        $this->assertTrue($bodyPrefix    != '');
+                        $bodyPrefix = str_replace("FROM_NAME", "John Smith", $bodyPrefix);
+                        $bodyPrefix = str_replace("FROM_EMAIL", "fakemail@example.com", $bodyPrefix);
+
+                        // Expunge all emails from dropbox
+                        Yii::app()->imap->expungeMessages();
+                        // Check if there are no emails in dropbox
+                        $job = new ProcessInboundEmailJob();
+                        $this->assertTrue($job->run());
+                        $this->assertEquals($numberOfEmailMessages, count(EmailMessage::getAll()));
+                        $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+                        $this->assertEquals(0, $imapStats->Nmsgs);
+
+                        $subject = $subjectPrefix . " " . $originalSubject;
+                        $textBody = $bodyPrefix . $originalTextBody;
+                        $htmlBody = $bodyPrefix . $originalHtmlBody;
+                        Yii::app()->emailHelper->sendRawEmail($subject,
+                                                              $user->primaryEmail->emailAddress,
+                                                              array(Yii::app()->imap->imapUsername),
+                                                              $textBody,
+                                                              $htmlBody,
+                                                              null, null,
+                                                              array($filePath_1, $filePath_2));
+
+                        sleep(30);
+                        $job = new ProcessInboundEmailJob();
+                        $this->assertTrue($job->run());
+
+                        $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+                        $this->assertEquals(1, $imapStats->Nmsgs);
+                        $numberOfEmailMessages++;
+                        $this->assertEquals($numberOfEmailMessages, count(EmailMessage::getAll()));
+                        $emailMessages = EmailMessage::getAll();
+                        $emailMessage = $emailMessages[$numberOfEmailMessages - 1];
 
 
-exit;
+                        $this->assertEquals($subject, $emailMessage->subject);
+                        //$this->assertEquals($textBody, trim($emailMessage->content->textContent));
+                        //$this->assertEquals($htmlBody, trim($emailMessage->content->htmlContent));
+                        $this->assertEquals("fakemail@example.com", $emailMessage->sender->fromAddress);
+                        $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->recipients[0]->toAddress);
+
+                        $this->assertEquals(2, count($emailMessage->files));
+                        foreach ($emailMessage->files as $attachment)
+                        {
+                            $this->assertTrue(in_array($attachment->name, array('table.csv', 'text.txt')));
+                            $this->assertTrue($attachment->size > 0);
+                        }
+                    }
+                }
+            }
         }
     }
 ?>

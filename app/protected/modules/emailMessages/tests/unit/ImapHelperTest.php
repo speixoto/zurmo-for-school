@@ -116,7 +116,7 @@ To: 'Steve'
 Subject: Hello Steve";
 
             $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
-            $this->assertEquals($imapMessage->fromEmail, $from);
+            $this->assertEquals($imapMessage->fromEmail, $from['email']);
 
             $imapMessage->subject = "FW: Test subject";
             $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);

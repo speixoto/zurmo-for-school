@@ -290,8 +290,8 @@
                 foreach ($messages as $message)
                 {
                     imap_delete($this->imapStream, $message->msgNumber);
-                    imap_expunge($this->imapStream);
                 }
+                imap_expunge($this->imapStream);
             }
         }
 

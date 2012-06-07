@@ -49,7 +49,7 @@
                 }
             }
 
-            if (function_exists('finfo_open'))
+            if (is_file($file) && function_exists('finfo_open'))
             {
                 if (defined('FILEINFO_MIME_TYPE'))
                 {

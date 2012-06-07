@@ -142,10 +142,13 @@
 
                     $sender                    = new EmailMessageSender();
                     $sender->fromAddress       = $senderInfo['email'];
-                    //$sender->fromName          = $message->fromName;
+                    if (isset($senderInfo['name']))
+                    {
+                        $sender->fromName          = $senderInfo['name'];
+                    }
                     $emailMessage->sender      = $sender;
 
-                    foreach($receiversInfo as $receiverInfo)
+                    foreach ($receiversInfo as $receiverInfo)
                     {
                         $recipient                 = new EmailMessageRecipient();
                         $recipient->toAddress      = $receiverInfo['email'];
@@ -195,7 +198,6 @@
                     }
                     catch (NotSupportedException $e)
                     {
-                        print_r($emailMessage->getErrors());
                         echo Yii::t('Default', 'Message could not be saved..') . "\n";
                         // To-Do::What to do if emailMessage couldn't be saved???
                         // Should we send some email to email owner?

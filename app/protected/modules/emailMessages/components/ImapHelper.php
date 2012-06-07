@@ -95,7 +95,15 @@
             {
                 // I sent email to somebody
                 // soI am sender
-                $emailSender = $emailMessage->fromEmail;
+                $emailSender['email'] = $emailMessage->fromEmail;
+                if (isset($emailMessage->fromName))
+                {
+                    $emailSender['name'] = $emailMessage->fromName;
+                }
+                else
+                {
+                    $emailSender['name'] = '';
+                }
             }
             return $emailSender;
         }
@@ -127,6 +135,7 @@
             {
                 //I am sending email, so receivers is to
                 $emailReceivers = $emailMessage->to;
+                // To-Do: Get additional details, like CC receipts
             }
             return $emailReceivers;
         }
