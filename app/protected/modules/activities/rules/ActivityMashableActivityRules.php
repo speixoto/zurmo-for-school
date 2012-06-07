@@ -76,5 +76,58 @@
         public function getLatestActivityExtraDisplayStringByModel($model)
         {
         }
+
+        protected static function getActivityItemsStringContentByModelClassName(RedBeanModel $model, $castDownModelClassName)
+        {
+            assert('is_string($castDownModelClassName)');
+            $existingModels = array();
+            $modelDerivationPathToItem = ActivitiesUtil::getModelDerivationPathToItem($castDownModelClassName);
+            foreach ($model->activityItems as $item)
+            {
+                try
+                {
+                    $castedDownmodel = $item->castDown(array($modelDerivationPathToItem));
+                    if (get_class($castedDownmodel) == $castDownModelClassName)
+                    {
+                        if (strval($castedDownmodel) != null)
+                        {
+                            $params          = array('label' => strval($castedDownmodel));
+                            $moduleClassName = $castedDownmodel->getModuleClassName();
+                            $moduleId        = $moduleClassName::getDirectoryName();
+                            $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                            $castedDownmodel->id, $params);
+                            $existingModels[] = $element->render();
+                        }
+                    }
+                }
+                catch (NotFoundException $e)
+                {
+                    //do nothing
+                }
+            }
+            return self::resolveStringValueModelsDataToStringContent($existingModels);
+        }
+
+        protected static function getFirstActivityItemStringContent($relationModelClassNames, RedBeanModel $model)
+        {
+            assert('is_string($relationModelClassNames)');
+            foreach ($relationModelClassNames as $relationModelClassName)
+            {
+                //ASSUMES ONLY A SINGLE ATTACHED ACTIVITYITEM PER RELATION TYPE.
+                foreach ($model->activityItems as $item)
+                {
+                    try
+                    {
+                        $modelDerivationPathToItem = ActivitiesUtil::getModelDerivationPathToItem($relationModelClassName);
+                        $castedDownModel = $item->castDown(array($modelDerivationPathToItem));
+                        return strval($castedDownModel);
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        //do nothing
+                    }
+                }
+            }
+        }
     }
 ?>

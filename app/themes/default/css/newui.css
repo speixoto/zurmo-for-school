@@ -1217,7 +1217,6 @@ table.configuration-list tr td:last-child a:before {
   box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
 #currency-collection-form .view-toolbar-container {
-  border-top: 1px solid #CCCCCC;
   margin-bottom: 5px;
 }
 #CurrenciesCollectionView .form form {
@@ -8286,9 +8285,6 @@ div.hasHalfs .twoThirds {
   margin-left: -8px;
 }
 /*=Lead Conversion*/
-#LeadConvertView {
-  padding-right: 0;
-}
 #LeadConvertView .DetailsView > div {
   border: none !important;
   background: none !important;
