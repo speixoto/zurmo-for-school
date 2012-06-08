@@ -39,7 +39,7 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails',
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, autoCompleteForMultiSelectAutoComplete',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -416,6 +416,28 @@
         public function actionExport()
         {
             $this->export();
+        }
+
+        /**
+         * Given a partial name or e-mail address, search for all contacts regardless of contact state unless the
+         * current user has security restrictions on some states.  If the adapter resolver returns false, then the
+         * user does not have access to the Leads or Contacts module.
+         * JSON encode the resulting array of contacts.
+         */
+        public function actionAutoCompleteForMultiSelectAutoComplete($term)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'autoCompleteListPageSize', get_class($this->getModule()));
+            $users    = UserModelSearch::getUsersByPartialFullName($term, $pageSize);
+            $autoCompleteResults  = array();
+            foreach ($users as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => $user->getClassId('Item'),
+                    'name' => strval($user)
+                );
+            }
+            echo CJSON::encode($autoCompleteResults);
         }
     }
 ?>

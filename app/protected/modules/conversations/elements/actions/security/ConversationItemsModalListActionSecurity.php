@@ -25,44 +25,28 @@
      ********************************************************************************/
 
     /**
-     * User interface element for managing related model relations for conversations.
-     *
+     * Class utilized by conversationItems element to process security check on the possible related model elements.
      */
-    class ConversationItemsElement extends RelatedItemsElement
+    class ConversationItemsModalListActionSecurity extends RightsOnlyActionSecurity
     {
-            /**
-         * The action type of the related model
-         * for which the autocomplete/select popup are calling.
+        /**
+         * Runs through relations and makes sure the user can access at least one relation. If at least one is
+         * accessible, true is returned.
          */
-        protected static $editableActionType = 'ConversationItemsModalList';
-
-        protected static function getRelatedItemsModelClassNames()
+        public function canUserPerformAction()
         {
-            $metadata       = Conversation::getMetadata();
-            return $metadata['Conversation']['conversationItemsModelClassNames'];
-        }
-
-        protected static function getRelatedItemFormClassName()
-        {
-            return 'ConversationItemForm';
-        }
-
-        protected function getRelatedItemsFromModel()
-        {
-            return $this->model->conversationItems;
-        }
-
-        protected function renderControlNonEditable()
-        {
-            assert('$this->model instanceof Conversation');
-            return parent::renderControlNonEditable();
-        }
-
-        protected function renderControlEditable()
-        {
-            assert('$this->model instanceof Conversation');
-            assert('!isset($this->params["inputPrefix"])'); //Not supported at this time.
-            return parent::renderControlEditable();
+            $metadata     = Conversation::getMetadata();
+            foreach ($metadata['Conversation']['conversationItemsModelClassNames'] as $modelClassName)
+            {
+                if (is_subclass_of($modelClassName, 'Item') && $modelClassName::getModuleClassName() != null)
+                {
+                    if (RightsUtil::canUserAccessModule($modelClassName::getModuleClassName(), $this->user));
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 ?>

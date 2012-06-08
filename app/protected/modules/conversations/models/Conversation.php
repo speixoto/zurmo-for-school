@@ -109,6 +109,10 @@
                     'name',
                     'ownerHasReadLatest',
                 ),
+                'conversationItemsModelClassNames' => array(
+                    'Account',
+                    'Opportunity',
+                ),
             );
             return $metadata;
         }

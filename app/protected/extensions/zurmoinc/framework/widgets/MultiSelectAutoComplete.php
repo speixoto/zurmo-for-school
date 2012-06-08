@@ -78,7 +78,7 @@
             $javaScript .= "queryParam: 'term',"; // Not Coding Standard
             if ($this->hintText != null)
             {
-                $javaScript .= "hintText: '" . $this->hintText . "',"; // Not Coding Standard
+                $javaScript .= "hintText: '" . Yii::app()->format->text($this->hintText) . "',"; // Not Coding Standard
             }
             if ($this->jsonEncodedIdsAndLabels != null)
             {

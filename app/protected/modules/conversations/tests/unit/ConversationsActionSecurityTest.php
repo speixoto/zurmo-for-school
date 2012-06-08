@@ -24,45 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * User interface element for managing related model relations for conversations.
-     *
-     */
-    class ConversationItemsElement extends RelatedItemsElement
+    class ConversationsActionSecurityTest extends ZurmoBaseTest
     {
-            /**
-         * The action type of the related model
-         * for which the autocomplete/select popup are calling.
-         */
-        protected static $editableActionType = 'ConversationItemsModalList';
-
-        protected static function getRelatedItemsModelClassNames()
+        public static function setUpBeforeClass()
         {
-            $metadata       = Conversation::getMetadata();
-            return $metadata['Conversation']['conversationItemsModelClassNames'];
+            parent::setUpBeforeClass();
+            ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
+            SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        protected static function getRelatedItemFormClassName()
+        public function testCreateRightsOnlyActionSecurityFromActionType()
         {
-            return 'ConversationItemForm';
-        }
-
-        protected function getRelatedItemsFromModel()
-        {
-            return $this->model->conversationItems;
-        }
-
-        protected function renderControlNonEditable()
-        {
-            assert('$this->model instanceof Conversation');
-            return parent::renderControlNonEditable();
-        }
-
-        protected function renderControlEditable()
-        {
-            assert('$this->model instanceof Conversation');
-            assert('!isset($this->params["inputPrefix"])'); //Not supported at this time.
-            return parent::renderControlEditable();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $object = ActionSecurityFactory::createRightsOnlyActionSecurityFromActionType('ConversationItemsModalList', $super);
+            $this->assertTrue($object instanceof RightsOnlyActionSecurity);
         }
     }
 ?>

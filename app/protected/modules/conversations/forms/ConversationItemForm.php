@@ -25,44 +25,15 @@
      ********************************************************************************/
 
     /**
-     * User interface element for managing related model relations for conversations.
-     *
+     * Helps manage related models to an Activity.
      */
-    class ConversationItemsElement extends RelatedItemsElement
+    class ConversationItemForm extends RelatedItemForm
     {
-            /**
-         * The action type of the related model
-         * for which the autocomplete/select popup are calling.
-         */
-        protected static $editableActionType = 'ConversationItemsModalList';
-
-        protected static function getRelatedItemsModelClassNames()
+        public function __construct($relationModel)
         {
-            $metadata       = Conversation::getMetadata();
-            return $metadata['Conversation']['conversationItemsModelClassNames'];
-        }
-
-        protected static function getRelatedItemFormClassName()
-        {
-            return 'ConversationItemForm';
-        }
-
-        protected function getRelatedItemsFromModel()
-        {
-            return $this->model->conversationItems;
-        }
-
-        protected function renderControlNonEditable()
-        {
-            assert('$this->model instanceof Conversation');
-            return parent::renderControlNonEditable();
-        }
-
-        protected function renderControlEditable()
-        {
-            assert('$this->model instanceof Conversation');
-            assert('!isset($this->params["inputPrefix"])'); //Not supported at this time.
-            return parent::renderControlEditable();
+            $metadata = Conversation::getMetadata();
+            assert('in_array(get_class($relationModel), $metadata["Conversation"]["conversationItemsModelClassNames"])');
+            parent::__construct($relationModel);
         }
     }
 ?>

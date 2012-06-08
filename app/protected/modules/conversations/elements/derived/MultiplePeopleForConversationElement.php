@@ -25,43 +25,32 @@
      ********************************************************************************/
 
     /**
-     * User interface element for managing related model relations for activities. This class supports a HAS_MANY
-     * specifically for the 'contact' relation. This is utilized by the meeting model.
+     * User interface element for managing related model relations for conversation participants. This class supports a HAS_MANY
+     * specifically for the 'user' or 'contact' relation. This is utilized by the conversation model.
      *
      */
-    class MultipleContactsForMeetingElement extends Element implements DerivedElementInterface
+    class MultiplePeopleForConversationElement extends Element implements DerivedElementInterface
     {
         protected function renderControlNonEditable()
         {
-            $content  = null;
-            $contacts = $this->getExistingContactRelationsIdsAndLabels();
-            foreach ($contacts as $contactData)
-            {
-                if ($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content .= $contactData['name'];
-            }
-            return $content;
+            throw new NotSupportedException();
         }
 
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof Activity');
+            assert('$this->model instanceof Conversation');
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.MultiSelectAutoComplete', array(
                 'name'        => $this->getNameForIdField(),
                 'id'          => $this->getIdForIdField(),
-                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingContactRelationsIdsAndLabels()),
-                'sourceUrl'   => Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete'),
+                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels()),
+            //change source url to something else.
+                'sourceUrl'   => Yii::app()->createUrl('users/default/autoCompleteForMultiSelectAutoComplete'),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     ),
-                'hintText' => Yii::t('Default', 'Type a ContactsModuleSingularLowerCaseLabel ' .
-                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
-                                LabelUtil::getTranslationParamsForAllModules())
+                'hintText' => Yii::t('Default', 'Type a User\'s name ')
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['ModelElement'];
@@ -79,13 +68,12 @@
 
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Yii::t('Default', 'Attendees'));
+            return Yii::app()->format->text(Yii::t('Default', 'Participants'));
         }
 
          public static function getDisplayName()
         {
-            return Yii::t('Default', 'Related ContactsModulePluralLabel and LeadsModulePluralLabel',
-                       LabelUtil::getTranslationParamsForAllModules());
+            return Yii::t('Default', 'Participants');
         }
 
         /**
@@ -100,65 +88,49 @@
 
         protected function getNameForIdField()
         {
-                return 'ActivityItemForm[Contact][ids]';
+                return 'ConversationParticipantForm[People][ids]';
         }
 
         protected function getIdForIdField()
         {
-            return 'ActivityItemForm_Contact_ids';
+            return 'ConversationParticipantForm_People_ids';
         }
 
-        protected function getExistingContactRelationsIdsAndLabels()
+        protected function getExistingPeopleRelationsIdsAndLabels()
         {
-            $existingContacts = array();
+            $existingPeople = array();
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-            foreach ($this->model->activityItems as $item)
+            foreach ($this->model->conversationParticipants as $item)
             {
                 try
                 {
                     $contact = $item->castDown(array($modelDerivationPathToItem));
                     if (get_class($contact) == 'Contact')
                     {
-                        $existingContacts[] = array('id' => $contact->id,
-                                                    'name' => self::renderHtmlContentLabelFromContactAndKeyword($contact, null));
+                        $existingPeople[] = array('id' => $contact->getClassId('Item'),
+                                                    'name' => strval($contact));
                     }
                 }
                 catch (NotFoundException $e)
                 {
-                    //do nothing
+                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+                    try
+                    {
+                        $user = $item->castDown(array($modelDerivationPathToItem));
+                        if (get_class($contact) == 'User')
+                        {
+                            $existingPeople[] = array('id' => $user->getClassId('Item'),
+                                                      'name' => strval($user));
+                        }
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        //This means the item is not a recognized or expected supported model.
+                        throw new NotSupportedException();
+                    }
                 }
             }
-            return $existingContacts;
-        }
-
-        /**
-         * Given a contact model and a keyword, render the strval of the contact and the matched email address
-         * that the keyword matches. If the keyword does not match any email addresses on the contact, render the
-         * primary email if it exists. Otherwise just render the strval contact.
-         * @param object $contact - model
-         * @param string $keyword
-         */
-        public static function renderHtmlContentLabelFromContactAndKeyword($contact, $keyword)
-        {
-            assert('$contact instanceof Contact && $contact->id > 0');
-            assert('$keyword == null || is_string($keyword)');
-
-            if (substr($contact->secondaryEmail->emailAddress, 0, strlen($keyword)) === $keyword)
-            {
-                $emailAddressToUse = $contact->secondaryEmail->emailAddress;
-            }
-            else
-            {
-                $emailAddressToUse = $contact->primaryEmail->emailAddress;
-            }
-            if ($emailAddressToUse != null)
-            {
-                return strval($contact) . '&#160&#160<b>' . strval($emailAddressToUse) . '</b>';
-            }
-            else
-            {
-                return strval($contact);
-            }
+            return $existingPeople;
         }
     }
 ?>

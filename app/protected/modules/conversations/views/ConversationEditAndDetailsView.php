@@ -73,6 +73,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'Files'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'ConversationItems'),
                                             ),
                                         ),
@@ -89,6 +98,20 @@
         protected function getNewModelTitleLabel()
         {
             return Yii::t('Default', 'Create Conversation');
+        }
+
+        protected function renderRightSideFormLayoutForEdit($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $content = null;
+            if ($this->getModel() instanceof OwnedSecurableItem)
+            {
+                $content .= "<h3>".Yii::t('Default', 'Participants') . '</h3><div id="owner-box">';
+                $element  = new MultiplePeopleForConversationElement($this->getModel(), 'owner', $form);
+                $element->editableTemplate = '{content}{error}';
+                $content .= $element->render().'</div>';
+            }
+            return $content;
         }
     }
 ?>
