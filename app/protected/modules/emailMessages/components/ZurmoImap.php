@@ -293,6 +293,7 @@
                 }
                 imap_expunge($this->imapStream);
             }
+            return true;
         }
 
         /**
@@ -300,14 +301,14 @@
          * @param object $structure
          * @param int $messageId
          */
-        public function getAttachments($structure, $messageId)
+        protected function getAttachments($structure, $messageId)
         {
             $attachments = array();
             if (isset($structure->parts) && count($structure->parts))
             {
                 for ($i = 0; $i < count($structure->parts); $i++)
                 {
-                    $attachments[$i] = array(
+                    $attachment = array(
                           'is_attachment' => false,
                           'filename' => '',
                           'name' => '',
@@ -319,8 +320,8 @@
                         {
                             if (strtolower($object->attribute) == 'filename')
                             {
-                                $attachments[$i]['is_attachment'] = true;
-                                $attachments[$i]['filename'] = $object->value;
+                                $attachment['is_attachment'] = true;
+                                $attachment['filename'] = $object->value;
                             }
                         }
                     }
@@ -331,25 +332,26 @@
                         {
                             if(strtolower($object->attribute) == 'name')
                             {
-                                $attachments[$i]['is_attachment'] = true;
-                                $attachments[$i]['name'] = $object->value;
+                                $attachment['is_attachment'] = true;
+                                $attachment['name'] = $object->value;
                             }
                         }
                     }
 
-                    if ($attachments[$i]['is_attachment'])
+                    if ($attachment['is_attachment'])
                     {
-                        $attachments[$i]['attachment'] = imap_fetchbody($this->imapStream, $messageId, $i+1);
+                        $attachment['attachment'] = imap_fetchbody($this->imapStream, $messageId, $i+1);
                         if ($structure->parts[$i]->encoding == 3)
                         {
                             // 3 = BASE64
-                            $attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
+                            $attachment['attachment'] = base64_decode($attachment['attachment']);
                         }
                         elseif ($structure->parts[$i]->encoding == 4)
                         {
                             // 4 = QUOTED-PRINTABLE
-                            $attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
+                            $attachment['attachment'] = quoted_printable_decode($attachment['attachment']);
                         }
+                        $attachments[] = $attachment;
                     }
                 }
             }

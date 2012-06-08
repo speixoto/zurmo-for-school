@@ -30,11 +30,251 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            UserTestHelper::createBasicUser('billy');
+
+            Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
+            Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
+            Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
+            Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
+            Yii::app()->emailHelper->sendEmailThroughTransport = true;
+            Yii::app()->emailHelper->setOutboundSettings();
+            Yii::app()->emailHelper->init();
         }
 
-        public function testRun()
+        public function testInit()
         {
+            $imap = new ZurmoImap();
+            $this->assertEquals(null,    $imap->imapHost);
+            $this->assertEquals(null,    $imap->imapUsername);
+            $this->assertEquals(null,    $imap->imapPassword);
+            $this->assertEquals(143,     $imap->imapPort);
+            $this->assertEquals(null,    $imap->imapSSL);
+            $this->assertEquals('INBOX', $imap->imapFolder);
+
+            $imap->init();
+            $this->assertEquals(null,    $imap->imapHost);
+            $this->assertEquals(null,    $imap->imapUsername);
+            $this->assertEquals(null,    $imap->imapPassword);
+            $this->assertEquals(143,     $imap->imapPort);
+            $this->assertEquals(null,    $imap->imapSSL);
+            $this->assertEquals('INBOX', $imap->imapFolder);
+
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+
+            $imap->setInboundSettings();
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'],
+                                ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'imapHost'));
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'],
+                                ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'imapUsername'));
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'],
+                                ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'imapPassword'));
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'],
+                                ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'imapPort'));
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'],
+                                ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'imapSSL'));
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'],
+                                ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'imapFolder'));
+
+            $imap->init();
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'],     $imap->imapHost);
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'], $imap->imapUsername);
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'], $imap->imapPassword);
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'],     $imap->imapPort);
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'],      $imap->imapSSL);
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'],   $imap->imapFolder);
+        }
+
+        /**
+        * @depends testInit
+        */
+        public function testConnect()
+        {
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = 'Wrong Password';
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertFalse($imap->connect());
+
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort = "20";
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertFalse($imap->connect());
+
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapFolder = 'UnexistingFolderName';
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertFalse($imap->connect());
+
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertTrue($imap->connect());
+        }
+
+
+        public function testGetMessageBoxStatsDetailed()
+        {
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertTrue($imap->connect());
+
+            $messageBoxStatDetails = $imap->getMessageBoxStatsDetailed();
+            $this->assertTrue($messageBoxStatDetails instanceof stdClass);
+            $this->assertEquals('imap', $messageBoxStatDetails->Driver);
+        }
+
+        public function testGetMessageBoxStats()
+        {
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertTrue($imap->connect());
+
+            $messageBoxStat = $imap->getMessageBoxStats();
+            $this->assertTrue($messageBoxStat instanceof stdClass);
+            $this->assertEquals('imap', $messageBoxStat->Driver);
+        }
+
+        public function testExpungeMessages()
+        {
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertTrue($imap->connect());
+
+            Yii::app()->emailHelper->sendRawEmail("Test Email",
+                                                  Yii::app()->emailHelper->outboundUsername,
+                                                  $imap->imapUsername,
+                                                  'Test email body',
+                                                  '<strong>Test</strong> email html body',
+                                                  null, null, null
+            );
+            sleep(10);
+            $imapStats = $imap->getMessageBoxStatsDetailed();
+            $this->assertTrue($imapStats->Nmsgs > 0);
+
+            $imap->expungeMessages();
+            $imapStats = $imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+        }
+
+        public function testGetMessagesWithoutAttachments()
+        {
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertTrue($imap->connect());
+
+            $imap->expungeMessages();
+            Yii::app()->emailHelper->sendRawEmail("Test Email",
+                                                  Yii::app()->emailHelper->outboundUsername,
+                                                  $imap->imapUsername,
+                                                  'Test email body',
+                                                  '<strong>Test</strong> email html body',
+                                                  null,
+                                                  null,
+                                                  null
+            );
+            sleep(10);
+            $messages = $imap->getMessages();
+            $this->assertEquals(1, count($messages));
+            $this->assertEquals("Test Email", $messages[0]->subject);
+            $this->assertEquals("Test email body", trim($messages[0]->textBody));
+            $this->assertEquals("<strong>Test</strong> email html body", trim($messages[0]->htmlBody));
+            $this->assertEquals($imap->imapUsername, $messages[0]->to[0]['email']);
+            $this->assertEquals(Yii::app()->emailHelper->outboundUsername, $messages[0]->fromEmail);
+        }
+
+        public function testGetMessagesWithAttachments()
+        {
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertTrue($imap->connect());
+
+            $imap->expungeMessages();
+
+            $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
+            $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
+            $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'image.png';
+            $filePath_3    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
+
+            Yii::app()->emailHelper->sendRawEmail("Test Email",
+                                                  Yii::app()->emailHelper->outboundUsername,
+                                                  $imap->imapUsername,
+                                                  'Test email body',
+                                                  '<strong>Test</strong> email html body',
+                                                  array(Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']),
+                                                  array(Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']),
+                                                  array($filePath_1, $filePath_2, $filePath_3)
+            );
+            sleep(10);
+            $messages = $imap->getMessages();
+            $this->assertEquals(1, count($messages));
+            $this->assertEquals("Test Email", $messages[0]->subject);
+            $this->assertEquals("Test email body", trim($messages[0]->textBody));
+            $this->assertEquals("<strong>Test</strong> email html body", trim($messages[0]->htmlBody));
+            $this->assertEquals($imap->imapUsername, $messages[0]->to[0]['email']);
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'], $messages[0]->cc[0]['email']);
+            $this->assertEquals(Yii::app()->emailHelper->outboundUsername, $messages[0]->fromEmail);
+
+            $this->assertEquals(3, count($messages[0]->attachments));
+
+            $this->assertEquals('table.csv', $messages[0]->attachments[0]['filename']);
+            $this->assertTrue(strlen($messages[0]->attachments[0]['attachment']) > 0);
+            $this->assertEquals('image.png', $messages[0]->attachments[1]['filename']);
+            $this->assertTrue($messages[0]->attachments[1]['attachment'] != '');
+            $this->assertEquals('text.txt', $messages[0]->attachments[2]['filename']);
+            $this->assertTrue(strlen($messages[0]->attachments[2]['attachment']) > 0);
+
         }
     }
 ?>

@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ImapHelperTest extends BaseTest
+    class EmailArchivingHelperTest extends BaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -37,25 +37,25 @@
         {
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "";
-            $this->assertFalse(ImapHelper::isMessageForwarded($imapMessage));
+            $this->assertFalse(EmailArchivingHelper::isMessageForwarded($imapMessage));
 
             $imapMessage->subject = "Test subject";
-            $this->assertFalse(ImapHelper::isMessageForwarded($imapMessage));
+            $this->assertFalse(EmailArchivingHelper::isMessageForwarded($imapMessage));
 
             $imapMessage->subject = "Forward subject";
-            $this->assertFalse(ImapHelper::isMessageForwarded($imapMessage));
+            $this->assertFalse(EmailArchivingHelper::isMessageForwarded($imapMessage));
 
             $imapMessage->subject = "Fwd: Test subject";
-            $this->assertTrue(ImapHelper::isMessageForwarded($imapMessage));
+            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
 
             $imapMessage->subject = "FW: Test subject";
-            $this->assertTrue(ImapHelper::isMessageForwarded($imapMessage));
+            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
 
             $imapMessage->subject = "fw: Test subject";
-            $this->assertTrue(ImapHelper::isMessageForwarded($imapMessage));
+            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
 
             $imapMessage->subject = "Fw: Test subject";
-            $this->assertTrue(ImapHelper::isMessageForwarded($imapMessage));
+            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
         }
 
         /**
@@ -75,7 +75,7 @@ To: 'Steve'
 Subject: Hello Steve";
 
             $imapMessage->subject = "FW: Test subject";
-            $sender = ImapHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
+            $sender = EmailArchivingHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $sender['email']);
             $this->assertEquals('John Smith', $sender['name']);
 
@@ -86,7 +86,7 @@ Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve'";
 
-            $sender = ImapHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
+            $sender = EmailArchivingHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $sender['email']);
             $this->assertEquals('John Smith', $sender['name']);
 
@@ -95,7 +95,7 @@ Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve'";
 
-            $sender = ImapHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
+            $sender = EmailArchivingHelper::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
             $this->assertFalse($sender);
         }
 
@@ -115,11 +115,11 @@ Sent: 02 March 2012 AM 01:23
 To: 'Steve'
 Subject: Hello Steve";
 
-            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals($imapMessage->fromEmail, $from['email']);
 
             $imapMessage->subject = "FW: Test subject";
-            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
 
@@ -129,7 +129,7 @@ From: John Smith <john@example.com>
 Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve'";
-            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
 
@@ -137,7 +137,7 @@ To: 'Steve'";
 Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve'";
-            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertFalse($from);
 
             $imapMessage = new ImapMessage();
@@ -150,7 +150,7 @@ To: 'Steve'";
             From:	John Smith <john@example.com>
             To: 'Steve'
             ";
-            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
 
@@ -163,7 +163,7 @@ Date: 	Mon, 28 May 2012 15:43:39 +0200
 From: 	John Smith <john@example.com>
 To: 'Steve'
 ";
-            $from = ImapHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
         }
@@ -180,7 +180,7 @@ To: 'Steve'
                 array('email' => 'info@example.com')
             );
 
-            $receivers = ImapHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
+            $receivers = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
             $this->assertEquals($imapMessage->to, $receivers);
 
             // Check with multiple receivers.
@@ -188,11 +188,11 @@ To: 'Steve'
                 array('email' => 'info2@example.com'),
                 array('email' => 'info@example.com')
             );
-            $receivers = ImapHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
+            $receivers = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
             $this->assertEquals($imapMessage->to, $receivers);
 
             $imapMessage->subject = "FW: Test subject";
-            $receivers = ImapHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
+            $receivers = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
             $compareData = array(
                                array(
                                    'email' => $imapMessage->fromEmail,
@@ -222,7 +222,7 @@ To: 'Steve'
                 array('email' => 'info@example.com'),
                 array('email' => 'dropbox@example.com'),
             );
-            $owner = ImapHelper::resolveOwnerOfEmailMessage($imapMessage);
+            $owner = EmailArchivingHelper::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
 
             // User sent CC copy of his email to dropbox
@@ -237,7 +237,7 @@ To: 'Steve'
             $imapMessage->cc = array(
                 array('email' => 'dropbox@example.com'),
             );
-            $owner = ImapHelper::resolveOwnerOfEmailMessage($imapMessage);
+            $owner = EmailArchivingHelper::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
 
             // User sent BCC copy of his email to dropbox
@@ -250,7 +250,7 @@ To: 'Steve'
             $imapMessage->bcc = array(
                 array('email' => 'dropbox@example.com'),
             );
-            $owner = ImapHelper::resolveOwnerOfEmailMessage($imapMessage);
+            $owner = EmailArchivingHelper::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
 
             // Forwarded message, user should be in from field
@@ -259,7 +259,7 @@ To: 'Steve'
             $imapMessage->to = array(
                 array('email' => 'dropbox@example.com'),
             );
-            $owner = ImapHelper::resolveOwnerOfEmailMessage($imapMessage);
+            $owner = EmailArchivingHelper::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
         }
     }

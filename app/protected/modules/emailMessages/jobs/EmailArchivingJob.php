@@ -27,7 +27,7 @@
     /**
      * A job for retriving emails from dropbox(catch-all) folder
      */
-    class ProcessInboundEmailJob extends BaseJob
+    class EmailArchivingJob extends BaseJob
     {
         /**
          * @returns Translated label that describes this job type.
@@ -68,14 +68,9 @@
         public function run()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-
-            echo "\n";
-            echo 'Fetching emails:' . "\n";
-
             Yii::app()->imap->connect();
 
             $lastImapCheckTime     = EmailMessagesModule::getLastImapDropboxCheckTime();
-
             if (isset($lastImapCheckTime) && $lastImapCheckTime != '')
             {
                 $criteria = "SINCE \"{$lastImapCheckTime}\" UNDELETED";
@@ -92,7 +87,6 @@
             $lastCheckTime = null;
             if (count($messages))
             {
-                echo "Saving " . count($messages) . " emails. \n";
                 foreach ($messages as $message)
                 {
                     $lastMessageCreatedTime = strtotime($message->createdDate);
@@ -103,30 +97,29 @@
 
                     // Get owner for message
                     try {
-                        $emailOwner = ImapHelper::resolveOwnerOfEmailMessage($message);
-                        echo Yii::t('Default', 'User email found in database.') . "\n";
+                        $emailOwner = EmailArchivingHelper::resolveOwnerOfEmailMessage($message);
                     }
                     catch (CException $e)
                     {
                         // User not found, or few users share same primary email address, so continue with next email
                         // To-Do:: Email user that user can't be found
-                        echo Yii::t('Default', 'User email not in database.') . "\n";
+                        //echo Yii::t('Default', 'User email not in database.') . "\n";
                         continue;
                     }
 
-                    $senderInfo = ImapHelper::resolveEmailSenderFromEmailMessage($message);
+                    $senderInfo = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($message);
                     if (!$senderInfo)
                     {
                         // To-Do:: Email user that sender info can't be extracted
-                        echo Yii::t('Default', 'Sender details can not be found.') . "\n";
+                        //echo Yii::t('Default', 'Sender details can not be found.') . "\n";
                         continue;
                     }
 
-                    $receiversInfo = ImapHelper::resolveEmailReceiversFromEmailMessage($message);
+                    $receiversInfo = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($message);
                     if (!$receiversInfo)
                     {
                         // To-Do:: Email user that receiver info can't be found
-                        echo Yii::t('Default', 'Receiver(s) details can not be found.') . "\n";
+                        //echo Yii::t('Default', 'Receiver(s) details can not be found.') . "\n";
                         continue;
                     }
 
@@ -168,7 +161,7 @@
                             {
                                 continue;
                             }
-                            echo "Saving attachments. \n";
+                            //echo "Saving attachments. \n";
                             $fileContent          = new FileContent();
                             $fileContent->content = $attachment['attachment'];
                             $file                 = new EmailFileModel();
@@ -184,7 +177,7 @@
                     $validated                 = $emailMessage->validate();
                     if (!$validated)
                     {
-                        echo "ERROR";
+                        //echo "ERROR";
                         // To-Do::What to do if emailMessage couldn't be validated???
                     }
                     $saved = $emailMessage->save();
@@ -194,11 +187,9 @@
                         {
                             throw new NotSupportedException();
                         }
-                        echo Yii::t('Default', 'New message successfully saved.') . "\n";
                     }
                     catch (NotSupportedException $e)
                     {
-                        echo Yii::t('Default', 'Message could not be saved..') . "\n";
                         // To-Do::What to do if emailMessage couldn't be saved???
                         // Should we send some email to email owner?
                     }
@@ -206,10 +197,6 @@
                 if ($lastCheckTime != ''){
                     EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
                 }
-            }
-            else
-            {
-                echo "There are no new emails on server. \n";
             }
             return true;
         }

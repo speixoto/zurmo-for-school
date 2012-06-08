@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProcessInboundEmailJobTesta extends BaseTest
+    class EmailArchivingJobTest extends BaseTest
     {
         public static $userMailer;
         public static $userImap;
@@ -63,13 +63,15 @@
             $userSmtpMailer->sendEmailThroughTransport = true;
             self::$userMailer = $userSmtpMailer;
 
-            $userImapHelper = new ImapHelper();
-
+            $user = User::getByUsername('steve');
+            $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+            assert('$user->save()');
         }
 
         public function setup(){
+            parent::setup();
             $user = User::getByUsername('steve');
-            $user->primaryEmail->emailAddress = str_replace('+', '@', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
+            $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
             $this->assertTrue($user->save());
         }
 
@@ -87,7 +89,7 @@
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
-            $job = new ProcessInboundEmailJob();
+            $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
             $this->assertEquals(0, count(EmailMessage::getAll()));
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -103,7 +105,7 @@
 
             sleep(30);
 
-            $job = new ProcessInboundEmailJob();
+            $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -138,14 +140,20 @@
         public function testRunCaseTwo()
         {
             $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
 
+            $messages = EmailMessage::getAll();
+            foreach ($messages as $message)
+            {
+                $message->delete();
+            }
             // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
-            $job = new ProcessInboundEmailJob();
+            $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
             $this->assertEquals(0, count(EmailMessage::getAll()));
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -165,7 +173,7 @@
 
             sleep(30);
 
-            $job = new ProcessInboundEmailJob();
+            $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -203,14 +211,20 @@
         public function testRunCaseThree()
         {
             $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
 
+            $messages = EmailMessage::getAll();
+            foreach ($messages as $message)
+            {
+                $message->delete();
+            }
             // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
-            $job = new ProcessInboundEmailJob();
+            $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
             $this->assertEquals(0, count(EmailMessage::getAll()));
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -230,7 +244,7 @@
 
             sleep(30);
 
-            $job = new ProcessInboundEmailJob();
+            $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -265,17 +279,23 @@
         */
         public function testRunCaseFour()
         {
-            require(Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.EmailClientForwardTemplatesTestHelper') . '.php');
+            //require(Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.EmailClientForwardTemplatesTestHelper') . '.php');
 
             $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
 
+            $messages = EmailMessage::getAll();
+            foreach ($messages as $message)
+            {
+                $message->delete();
+            }
             // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
-            $job = new ProcessInboundEmailJob();
+            $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
             $this->assertEquals(0, count(EmailMessage::getAll()));
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -313,7 +333,7 @@
                         // Expunge all emails from dropbox
                         Yii::app()->imap->expungeMessages();
                         // Check if there are no emails in dropbox
-                        $job = new ProcessInboundEmailJob();
+                        $job = new EmailArchivingJob();
                         $this->assertTrue($job->run());
                         $this->assertEquals($numberOfEmailMessages, count(EmailMessage::getAll()));
                         $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -331,7 +351,7 @@
                                                               array($filePath_1, $filePath_2));
 
                         sleep(30);
-                        $job = new ProcessInboundEmailJob();
+                        $job = new EmailArchivingJob();
                         $this->assertTrue($job->run());
 
                         $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
@@ -343,8 +363,6 @@
 
 
                         $this->assertEquals($subject, $emailMessage->subject);
-                        //$this->assertEquals($textBody, trim($emailMessage->content->textContent));
-                        //$this->assertEquals($htmlBody, trim($emailMessage->content->htmlContent));
                         $this->assertEquals("fakemail@example.com", $emailMessage->sender->fromAddress);
                         $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->recipients[0]->toAddress);
 

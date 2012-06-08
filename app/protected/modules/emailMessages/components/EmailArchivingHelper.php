@@ -27,7 +27,7 @@
     /**
      * Helper class to work with inbound emails
      */
-    class ImapHelper
+    class EmailArchivingHelper
     {
         public static $validEmailClientForwardSubjectPrefixes = array(
             'Fwd:', // Gmail, ThunderBird/IceDove

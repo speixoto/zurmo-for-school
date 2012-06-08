@@ -36,43 +36,44 @@
 
         public static $bodyPrefixes = array(
             'Gmail' => array(<<<EOD
--------- Original Message --------
-Subject:	Test
-Date:	Mon, 28 May 2012 15:43:39 +0200
-From:	FROM_NAME <FROM_EMAIL>
-To: 'Steve'
+---------- Forwarded message ----------
+From: FROM_NAME <FROM_EMAIL>
+Date: Fri, Jun 8, 2012 at 10:16 AM
+Subject: Email from John
+To: Steve <steve@example.com>
 EOD
             ),
             'Outlook' => array(<<<EOD
--------- Original Message --------
-Subject:	Test
-Date:	Mon, 28 May 2012 15:43:39 +0200
-From:	FROM_NAME <FROM_EMAIL>
+-----Original Message-----
+From: FROM_NAME [mailto:FROM_EMAIL]
+Sent: Thursday, May 03, 2012 8:52 AM
 To: 'Steve'
+Subject: Email from John
 EOD
             ),
             'OutlookExpress' => array(<<<EOD
--------- Original Message --------
-Subject:	Test
-Date:	Mon, 28 May 2012 15:43:39 +0200
-From:	FROM_NAME <FROM_EMAIL>
+-----Original Message-----
+From: FROM_NAME [mailto:FROM_EMAIL]
+Sent: Thursday, May 03, 2012 8:52 AM
 To: 'Steve'
+Subject: Email from John
 EOD
             ),
             'ThunderBird' => array(<<<EOD
 -------- Original Message --------
-Subject:	Test
-Date:	Mon, 28 May 2012 15:43:39 +0200
-From:	FROM_NAME <FROM_EMAIL>
-To: 'Steve'
+Subject: 	Email from John
+Date: 	Thu, 7 Jun 2012 10:17:07 -0500
+From: 	FROM_NAME <FROM_EMAIL>
+Reply-To: 	<FROM_EMAIL>
 EOD
             ),
             'Yahoo' => array(<<<EOD
--------- Original Message --------
-Subject:	Test
-Date:	Mon, 28 May 2012 15:43:39 +0200
-From:	FROM_NAME <FROM_EMAIL>
-To: 'Steve'
+--- On Fri, 6/8/12, FROM_NAME <FROM_EMAIL> wrote:
+
+From: FROM_NAME <FROM_EMAIL>
+Subject: Email from John
+To: "Steve" <steve@example.com>
+Date: Friday, June 8, 2012, 6:15 AM
 EOD
             ),
         );

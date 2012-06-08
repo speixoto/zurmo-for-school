@@ -134,10 +134,11 @@
             $acceptedRecipients = $mailer->send();
             if ($acceptedRecipients > 0)
             {
-                echo "Email sent";
+                // Do nothing
             }
             else
             {
+                // To-Do: make exception or something else
                 echo "There was error while sending email";
             }
         }
