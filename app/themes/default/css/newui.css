@@ -3,7 +3,8 @@
   padding: 0;
 }
 /*Imports*/
-.zButton {
+.zButton,
+.z-button {
   cursor: pointer;
   padding: 0 15px 0 15px;
   line-height: 23px;
@@ -34,12 +35,41 @@
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-.zButton:hover {
+.zButton:hover,
+.z-button:hover {
   color: #7bb730 !important;
 }
-.zButton:active {
+.zButton:active,
+.z-button:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.zButton.loading .z-spinner,
+.z-button.loading .z-spinner {
+  display: block;
+}
+.zButton.loading .z-label,
+.z-button.loading .z-label {
+  display: none;
+}
+.zButton.loading .z-icon,
+.z-button.loading .z-icon {
+  display: none;
+}
+.z-spinner {
+  background: url(../images/zbutton-spinner.gif) 50% 50% no-repeat;
+  width: 22px;
+  height: 22px;
+  display: none;
+  float: left;
+}
+.z-icon:before {
+  /*empty*/
+
+}
+.z-label {
+  /*empty*/
+
 }
 .zLink {
   background: #262877;
@@ -386,6 +416,15 @@ a.remove:hover .icon:after {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+#InstallPageView .AppContainer a.loading .z-spinner {
+  display: block;
+}
+#InstallPageView .AppContainer a.loading .z-label {
+  display: none;
+}
+#InstallPageView .AppContainer a.loading .z-icon {
+  display: none;
+}
 #InstallPageView ul {
   list-style: inside;
   margin-bottom: 10px;
@@ -468,6 +507,15 @@ a.remove:hover .icon:after {
 #InstallPageView #install-form input[type="submit"]:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#InstallPageView #install-form input[type="submit"].loading .z-spinner {
+  display: block;
+}
+#InstallPageView #install-form input[type="submit"].loading .z-label {
+  display: none;
+}
+#InstallPageView #install-form input[type="submit"].loading .z-icon {
+  display: none;
 }
 #InstallPageView #install-form table {
   padding-bottom: 15px;
@@ -661,6 +709,15 @@ a.remove:hover .icon:after {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.configuration-list li a.loading .z-spinner {
+  display: block;
+}
+.configuration-list li a.loading .z-label {
+  display: none;
+}
+.configuration-list li a.loading .z-icon {
+  display: none;
+}
 .configuration-list li a:before {
   content: "n";
   font-weight: normal;
@@ -728,6 +785,15 @@ table.configuration-list tr td:last-child a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+table.configuration-list tr td:last-child a.loading .z-spinner {
+  display: block;
+}
+table.configuration-list tr td:last-child a.loading .z-label {
+  display: none;
+}
+table.configuration-list tr td:last-child a.loading .z-icon {
+  display: none;
+}
 table.configuration-list tr td:last-child a:before {
   content: "n";
   font-weight: normal;
@@ -759,10 +825,11 @@ table.configuration-list tr td:last-child a:before {
   padding-left: 15px;
 }
 #ModulePermissionsEditAndDetailsView th {
-  text-align: left;
-  font-size: 12px !important;
-  color: #666;
-  font-weight: 400 !important;
+  /*text-align:left;
+		font-size: 12px !important;
+		color: #666;
+		font-weight: 400 !important;*/
+
 }
 .multiselect-holder {
   width: 675px;
@@ -832,6 +899,15 @@ table.configuration-list tr td:last-child a:before {
 .multiselect-holder input[type="button"]:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.multiselect-holder input[type="button"].loading .z-spinner {
+  display: block;
+}
+.multiselect-holder input[type="button"].loading .z-label {
+  display: none;
+}
+.multiselect-holder input[type="button"].loading .z-icon {
+  display: none;
 }
 .multiselect-left,
 .multiselect-right {
@@ -1332,6 +1408,15 @@ table.configuration-list tr td:last-child a:before {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.add-custom-field .configure-custom-field-button.loading .z-spinner {
+  display: block;
+}
+.add-custom-field .configure-custom-field-button.loading .z-label {
+  display: none;
+}
+.add-custom-field .configure-custom-field-button.loading .z-icon {
+  display: none;
+}
 .add-custom-field .configure-custom-field-button:before {
   content: "n";
   font-weight: normal;
@@ -1390,10 +1475,21 @@ table.configuration-list tr td:last-child a:before {
   width: 100%;
 }
 /*=User Security*/
+.UserGroupMembershipView .details-table,
 #PoliciesEditAndDetailsView .details-table,
 #ModulePermissionsEditAndDetailsView .details-table,
 #RightsEditAndDetailsView .details-table {
   margin-right: 0;
+}
+.UserGroupMembershipView th,
+#PoliciesEditAndDetailsView th,
+#ModulePermissionsEditAndDetailsView th,
+#RightsEditAndDetailsView th {
+  text-align: left;
+  min-width: 200px;
+}
+.UserGroupMembershipView th {
+  text-align: left !important;
 }
 /*Audit Modal*/
 #AuditEventsModalListView tr td:first-child,
@@ -1445,6 +1541,15 @@ table.configuration-list tr td:last-child a:before {
 #SendATestEmailToButton:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#SendATestEmailToButton.loading .z-spinner {
+  display: block;
+}
+#SendATestEmailToButton.loading .z-label {
+  display: none;
+}
+#SendATestEmailToButton.loading .z-icon {
+  display: none;
 }
 #TestEmailMessageView {
   padding: 15px;
@@ -1515,6 +1620,15 @@ table.configuration-list tr td:last-child a:before {
 .AppContent.ImportWizardView #addExtraColumnButton:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.AppContent.ImportWizardView #addExtraColumnButton.loading .z-spinner {
+  display: block;
+}
+.AppContent.ImportWizardView #addExtraColumnButton.loading .z-label {
+  display: none;
+}
+.AppContent.ImportWizardView #addExtraColumnButton.loading .z-icon {
+  display: none;
 }
 .AppContent.ImportWizardView .required-fields {
   font-size: 12px;
@@ -1839,6 +1953,15 @@ table.configuration-list tr td:last-child a:before {
 .file-upload-box .ui-icon-plusthick:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.file-upload-box .ui-icon-plusthick.loading .z-spinner {
+  display: block;
+}
+.file-upload-box .ui-icon-plusthick.loading .z-label {
+  display: none;
+}
+.file-upload-box .ui-icon-plusthick.loading .z-icon {
+  display: none;
 }
 .file-upload-box .ui-icon-plusthick:after {
   content: "Y";
@@ -2279,6 +2402,15 @@ div.wide.form .errorMessage {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.ui-datepicker .ui-datepicker-current.loading .z-spinner {
+  display: block;
+}
+.ui-datepicker .ui-datepicker-current.loading .z-label {
+  display: none;
+}
+.ui-datepicker .ui-datepicker-current.loading .z-icon {
+  display: none;
+}
 .ui-datepicker .ui-datepicker-close {
   cursor: pointer;
   padding: 0 15px 0 15px;
@@ -2317,6 +2449,15 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui-datepicker-close:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.ui-datepicker .ui-datepicker-close.loading .z-spinner {
+  display: block;
+}
+.ui-datepicker .ui-datepicker-close.loading .z-label {
+  display: none;
+}
+.ui-datepicker .ui-datepicker-close.loading .z-icon {
+  display: none;
 }
 .ui-datepicker .ui-timepicker-div {
   padding: 5px;
@@ -2639,6 +2780,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .designer-toolbar input[type="submit"]:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.designer-toolbar input[type="submit"].loading .z-spinner {
+  display: block;
+}
+.designer-toolbar input[type="submit"].loading .z-label {
+  display: none;
+}
+.designer-toolbar input[type="submit"].loading .z-icon {
+  display: none;
 }
 .designer-toolbar h3 {
   margin: 0 0 5px 0;
@@ -3127,6 +3277,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-spinner {
+  display: block;
+}
+.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-label {
+  display: none;
+}
+.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-icon {
+  display: none;
+}
 #DropDownDependencyMappingData table {
   border-top: none;
   padding: top:none;
@@ -3229,14 +3388,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   padding-top: 1px;
 }
 .icon-leaderboard-monthly:before {
@@ -3245,14 +3402,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   padding-top: 1px;
 }
 .icon-leaderboard-overall:before {
@@ -3261,14 +3416,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   padding-top: 1px;
 }
 .points {
@@ -4005,6 +4158,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.ModalGameNotification a.loading .z-spinner {
+  display: block;
+}
+.ModalGameNotification a.loading .z-label {
+  display: none;
+}
+.ModalGameNotification a.loading .z-icon {
+  display: none;
+}
 .ModalGameNotification a:focus {
   outline: none;
 }
@@ -4076,6 +4238,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 #WelcomeView .dashboard-link:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#WelcomeView .dashboard-link.loading .z-spinner {
+  display: block;
+}
+#WelcomeView .dashboard-link.loading .z-label {
+  display: none;
+}
+#WelcomeView .dashboard-link.loading .z-icon {
+  display: none;
 }
 #welcome-content {
   margin-top: 30px;
@@ -4410,9 +4581,21 @@ section {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+#LoginView .form form input[type="submit"].loading .z-spinner {
+  display: block;
+}
+#LoginView .form form input[type="submit"].loading .z-label {
+  display: none;
+}
+#LoginView .form form input[type="submit"].loading .z-icon {
+  display: none;
+}
 #LoginView .form form .errorMessage {
   font-size: 11px;
   padding-top: 4px;
+}
+#LoginView .error {
+  margin-bottom: 40px !important;
 }
 .background-1 {
   background: #ffffff url(../images/landscape-1.png) left bottom repeat-x;
@@ -5152,8 +5335,10 @@ section {
   display: inline-block;
   border-left: 1px solid #bababa;
   position: relative;
-  text-indent: 20px;
   border-left: 1px solid #bababa;
+  text-indent: 0 !important;
+  padding-left: 40px;
+  vertical-align: middle;
 }
 .view-toolbar > a:hover,
 .view-toolbar .parent > a:hover,
@@ -5229,15 +5414,14 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   content: "!";
+  top: -2px;
 }
 .icon-create:before {
   content: "Y";
@@ -5245,15 +5429,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  padding-top: 1px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-add:before {
   content: "Y";
@@ -5261,15 +5443,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before {
@@ -5278,15 +5458,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 4px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before {
@@ -5295,15 +5473,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  padding-top: 1px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-memberships:before {
   content: "y";
@@ -5311,15 +5487,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-permissions:before {
   content: "E";
@@ -5327,15 +5501,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-rights:before {
   content: "u";
@@ -5343,15 +5515,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-policies:before {
   content: "x";
@@ -5359,15 +5529,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-delete:before {
   content: "_";
@@ -5375,15 +5543,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 2px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-left-arrow:before {
   content: "8";
@@ -5391,15 +5557,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-right-arrow:before {
   content: "7";
@@ -5407,15 +5571,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 2px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-fields:before {
   content: "0";
@@ -5423,15 +5585,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-layout:before {
   content: "C";
@@ -5439,15 +5599,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-user-details:before {
   content: "e";
@@ -5455,15 +5613,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-password:before {
   content: "J";
@@ -5471,15 +5627,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-audit:before {
   content: "I";
@@ -5487,15 +5641,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-user-config:before {
   content: "n";
@@ -5503,15 +5655,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-security:before {
   content: "F";
@@ -5519,15 +5669,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 /*=Footer*/
 #FooterView {
@@ -5924,14 +6072,12 @@ table.items thead tr:hover {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   top: 1px;
   color: #7bb730;
   margin-left: 2px;
@@ -6205,6 +6351,15 @@ div.wide.form label.hasCheckBox {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.ZeroModelsYetView a.loading .z-spinner {
+  display: block;
+}
+.ZeroModelsYetView a.loading .z-label {
+  display: none;
+}
+.ZeroModelsYetView a.loading .z-icon {
+  display: none;
+}
 .ZeroModelsYetView a:before {
   content: "Y";
   font-weight: normal;
@@ -6415,6 +6570,15 @@ div.wide.form label.hasCheckBox {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.search-form-tools input[type="submit"].loading .z-spinner {
+  display: block;
+}
+.search-form-tools input[type="submit"].loading .z-label {
+  display: none;
+}
+.search-form-tools input[type="submit"].loading .z-icon {
+  display: none;
+}
 #more-search-linkmodal,
 #more-search-link {
   margin-left: 0;
@@ -6562,7 +6726,8 @@ div.wide.form label.hasCheckBox {
   width: 100% !important;
 }
 .attributesContainer {
-  min-height: 260px;
+  /*min-height: 260px;*/
+
   padding-bottom: 15px;
 }
 #edit-form {
@@ -7099,6 +7264,15 @@ div.wide.form label.hasCheckBox {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.toolbar-mbmenu #OptionsMenu > li > a.loading .z-spinner {
+  display: block;
+}
+.toolbar-mbmenu #OptionsMenu > li > a.loading .z-label {
+  display: none;
+}
+.toolbar-mbmenu #OptionsMenu > li > a.loading .z-icon {
+  display: none;
+}
 .toolbar-mbmenu #OptionsMenu > li > a:after {
   content: "▾";
   margin-left: 5px;
@@ -7317,14 +7491,12 @@ div.wide.form label.hasCheckBox {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   top: 1px;
   color: #7bb730;
   margin-left: 2px;
@@ -7356,6 +7528,9 @@ div.wide.form label.hasCheckBox {
   margin-left: -90px;
   text-align: right;
   margin-top: 6px;
+}
+#inline-edit-form .view-toolbar-container a {
+  float: right;
 }
 #inline-edit-form .permissions-box {
   margin-left: 0 !important;
@@ -8383,6 +8558,15 @@ div.hasHalfs .twoThirds {
 #progressBar-links a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#progressBar-links a.loading .z-spinner {
+  display: block;
+}
+#progressBar-links a.loading .z-label {
+  display: none;
+}
+#progressBar-links a.loading .z-icon {
+  display: none;
 }
 /*=About*/
 #AboutView {

@@ -185,9 +185,6 @@ footer, header, hgroup, menu, nav, section {
     min-width:900px;
     height:100%;
     margin:0 3% 0 3%;
-    //margin:0 40px 0 40px;
-    //#gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #f6f6f6 );
-    //background: #fff url(../images/landscape-2.png) bottom left repeat-x;
     .b-shadow(  0 0 12px 5px rgba(153, 153, 153, 0.3) ); /*999*/
     .radius(0 0 5px 5px);
     padding:0;
@@ -258,6 +255,9 @@ footer, header, hgroup, menu, nav, section {
                 padding-top:4px
             }
         }
+    }
+    .error{
+    	margin-bottom: 40px !important;
     }
 }
 .background-1{
@@ -877,8 +877,10 @@ footer, header, hgroup, menu, nav, section {
     .parent > a{
         .view-toolbar-link();
         position:relative;
-        text-indent:20px;
         border-left: 1px solid #bababa;
+        text-indent:0 !important;
+    	padding-left:40px;
+    	vertical-align:middle;
     }
     .parent > a:after{
         content: "▾";
@@ -903,128 +905,127 @@ footer, header, hgroup, menu, nav, section {
 .view-toolbar-icons(@size: @recentlyViewedIconSize){
     .symbly(@size);
     padding:0 0 0 0;
-    margin:0 10px 0 0;
-    line-height: 100%;
-    position:absolute;
-    text-indent:-20px;
-    top:2px;
+    margin:0 6px 0 -30px;
     .box-sizing();
+    vertical-align:middle;
+    position:relative;
 }
 
 .icon-general:before,
 .icon-edit:before{
     .view-toolbar-icons();
     content: "!";
+    top:-2px;
 }
 
 .icon-create:before{
     content: "Y"; //w
     .view-toolbar-icons();
-    padding-top: 1px;
+    top:-2px;
 }
 
 .icon-add:before{
     content: "Y";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before{
     content: "(";
     .view-toolbar-icons();
-    top:4px;
+    top:-2px;
 }
 
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before{
     content: "2";
     .view-toolbar-icons();
-    padding-top: 1px;
+    top:-2px;
 }
 
 .icon-memberships:before{
     content: "y";
     .view-toolbar-icons(24px);
-    top:3px;
+    top:-2px;
 }
 
 .icon-permissions:before{
     content: "E";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-rights:before{
     content: "u";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-policies:before{
     content: "x";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-delete:before{
     content: "_";
     .view-toolbar-icons();
-    top:2px;
+    top:-2px;
 }
 
 .icon-left-arrow:before{
     content: "8";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-right-arrow:before{
     content: "7";
     .view-toolbar-icons();
-    top:2px;
+    top:-2px;
 }
 
 .icon-fields:before{
     content: "0";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-layout:before{
     content: "C";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-user-details:before{
     content: "e";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-password:before{
     content: "J";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-audit:before{
     content: "I";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-user-config:before{
     content: "n";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 .icon-security:before{
     content: "F";
     .view-toolbar-icons();
-    top:3px;
+    top:-2px;
 }
 
 /*=Footer*/
@@ -1758,7 +1759,7 @@ div.wide.form{
 }
 
 .attributesContainer{
-    min-height: 260px;
+    /*min-height: 260px;*/
     padding-bottom:15px;
 }
 
@@ -2369,6 +2370,11 @@ div.wide.form{
             text-align:right;
             margin-top:6px;
         }
+    }
+    .view-toolbar-container{
+    	a{
+    		float:right;
+    	}
     }
 }
 

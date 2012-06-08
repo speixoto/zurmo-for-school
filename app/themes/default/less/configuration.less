@@ -182,10 +182,10 @@ table.configuration-list{
 		padding-left:15px;
 	}
 	th{
-		text-align:left;
+		/*text-align:left;
 		font-size: 12px !important;
 		color: #666;
-		font-weight: 400 !important;
+		font-weight: 400 !important;*/
 	}
 }
 
@@ -567,11 +567,22 @@ table.configuration-list{
 }
 
 /*=User Security*/
+.UserGroupMembershipView,
 #PoliciesEditAndDetailsView,
 #ModulePermissionsEditAndDetailsView,
 #RightsEditAndDetailsView{
 	.details-table{
 		margin-right:0;
+	}
+	th{
+		text-align:left;
+		min-width: 200px;
+	}
+}
+
+.UserGroupMembershipView{
+	th{
+		text-align:left !important;
 	}
 }
 
