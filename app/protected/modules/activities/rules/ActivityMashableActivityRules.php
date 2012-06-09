@@ -77,6 +77,42 @@
         {
         }
 
+        /**
+         * Renders related models. But only renders one type of related model given that the $model supplied
+         * is connected to more than one type of activity item.  There is an order of importance that is checked
+         * starting with Account, then Contact, then Opportunity. If none are found, then it grabs the first available.
+         * @see getActivityItemsStringContentByModelClassName
+         * @param RedBeanModel $model
+         */
+        public function renderRelatedModelsByImportanceContent(RedBeanModel $model)
+        {
+            if ($model->activityItems->count() == 0)
+            {
+                return;
+            }
+            $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Account');
+            if ($stringContent != null)
+            {
+                return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
+            }
+            $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Contact');
+            if ($stringContent != null)
+            {
+                return Yii::t('Default', 'with {relatedContactsStringContent}', array('{relatedContactsStringContent}' => $stringContent));
+            }
+            $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Opportunity');
+            if ($stringContent != null)
+            {
+                return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
+            }
+            $metadata      = Activity::getMetadata();
+            $stringContent =  self::getFirstActivityItemStringContent($metadata['Activity']['activityItemsModelClassNames'], $model);
+            if ($stringContent != null)
+            {
+                return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
+            }
+        }
+
         protected static function getActivityItemsStringContentByModelClassName(RedBeanModel $model, $castDownModelClassName)
         {
             assert('is_string($castDownModelClassName)');
@@ -106,6 +142,21 @@
                 }
             }
             return self::resolveStringValueModelsDataToStringContent($existingModels);
+        }
+
+        protected static function resolveStringValueModelsDataToStringContent($modelsAndStringData)
+        {
+            assert('is_array($modelsAndStringData)');
+            $content = null;
+            foreach ($modelsAndStringData as $modelStringContent)
+            {
+                if ($content != null)
+                {
+                    $content .= ', ';
+                }
+                $content .= $modelStringContent;
+            }
+            return $content;
         }
 
         protected static function getFirstActivityItemStringContent($relationModelClassNames, RedBeanModel $model)
