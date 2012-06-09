@@ -98,7 +98,10 @@
 
         protected function getExistingPeopleRelationsIdsAndLabels()
         {
-            $existingPeople = array();
+            $existingPeople = array(
+                                array(  'id'       => $this->model->owner->id,
+                                        'name'     => strval($this->model->owner),
+                                        'readonly' => true));
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
             foreach ($this->model->conversationParticipants as $item)
             {

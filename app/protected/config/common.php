@@ -285,6 +285,7 @@
             'accounts',
             'activities',
             'api',
+            'comments',
             'configuration',
             'contacts',
             'conversations',

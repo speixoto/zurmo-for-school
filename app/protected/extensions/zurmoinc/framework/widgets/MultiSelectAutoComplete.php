@@ -50,7 +50,7 @@
 
         /**
          * The text to show in the dropdown label which appears when you first click in the search field. default:
-         * �Type in a search term�
+         * Type a search term
          */
         public $hintText;
 
