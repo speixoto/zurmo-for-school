@@ -25,41 +25,25 @@
      ********************************************************************************/
 
     /**
-     * Class for defining the badge associated with logging in
+     * Use this form when confirming a user's timezone for the first time.
      */
-    class LoginUserGameBadgeRules extends GameBadgeRules
+    class UserTimeZoneConfirmationForm extends CFormModel
     {
-       public static $valuesIndexedByGrade = array(
-            1  => 1,
-            2  => 10,
-            3  => 25,
-            4  => 50,
-            5  => 75,
-            6  => 100,
-            7  => 125,
-            8  => 150,
-            9  => 175,
-            10 => 200,
-            11 => 225,
-            12 => 250,
-            13 => 300
-        );
+        public $timeZone;
 
-        public static function getPassiveDisplayLabel($value)
+        public $id;
+
+        public function rules()
         {
-            return Yii::t('Default', '{n} Zurmo login|{n} Zurmo logins',
-                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
+            return array(
+                    array('timeZone', 'type',    'type'  => 'string'),
+                    array('timeZone', 'length',  'max'   => 64),
+            );
         }
 
-        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
+        public function attributeLabels()
         {
-            assert('is_array($userPointsByType)');
-            assert('is_array($userScoresByType)');
-            if (isset($userScoresByType['LoginUser']))
-            {
-                return static::getBadgeGradeByValue((int)$userScoresByType['LoginUser']->value);
-            }
-            return 0;
+            return array('timeZone' => Yii::t('Default', 'Time Zone'));
         }
     }
 ?>

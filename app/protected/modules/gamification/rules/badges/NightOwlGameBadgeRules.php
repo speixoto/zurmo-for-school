@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Class for defining the badge associated with logging in
+     * Class for defining the badge associated with logging in at night
      */
-    class LoginUserGameBadgeRules extends GameBadgeRules
+    class NightOwlGameBadgeRules extends GameBadgeRules
     {
        public static $valuesIndexedByGrade = array(
             1  => 1,
@@ -47,7 +47,7 @@
 
         public static function getPassiveDisplayLabel($value)
         {
-            return Yii::t('Default', '{n} Zurmo login|{n} Zurmo logins',
+            return Yii::t('Default', '{n} Zurmo nighttime login|{n} Zurmo nighttime logins',
                           array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
@@ -55,9 +55,9 @@
         {
             assert('is_array($userPointsByType)');
             assert('is_array($userScoresByType)');
-            if (isset($userScoresByType['LoginUser']))
+            if (isset($userScoresByType['NightOwl']))
             {
-                return static::getBadgeGradeByValue((int)$userScoresByType['LoginUser']->value);
+                return static::getBadgeGradeByValue((int)$userScoresByType['NightOwl']->value);
             }
             return 0;
         }

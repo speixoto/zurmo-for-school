@@ -25,41 +25,38 @@
      ********************************************************************************/
 
     /**
-     * Class for defining the badge associated with logging in
+     * View to display to users upon first login.  Allows them to confirm their timezone.
      */
-    class LoginUserGameBadgeRules extends GameBadgeRules
+    class UserTimeZoneConfirmationView extends EditView
     {
-       public static $valuesIndexedByGrade = array(
-            1  => 1,
-            2  => 10,
-            3  => 25,
-            4  => 50,
-            5  => 75,
-            6  => 100,
-            7  => 125,
-            8  => 150,
-            9  => 175,
-            10 => 200,
-            11 => 225,
-            12 => 250,
-            13 => 300
-        );
-
-        public static function getPassiveDisplayLabel($value)
+        public static function getDefaultMetadata()
         {
-            return Yii::t('Default', '{n} Zurmo login|{n} Zurmo logins',
-                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
-        }
-
-        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
-        {
-            assert('is_array($userPointsByType)');
-            assert('is_array($userScoresByType)');
-            if (isset($userScoresByType['LoginUser']))
-            {
-                return static::getBadgeGradeByValue((int)$userScoresByType['LoginUser']->value);
-            }
-            return 0;
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'timeZone', 'type' => 'TimeZoneStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>
