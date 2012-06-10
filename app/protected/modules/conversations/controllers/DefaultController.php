@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationsDefaultController extends ZurmoBaseController
+    class ConversationsDefaultController extends ZurmoModuleController
     {
         public function actionIndex()
         {
@@ -36,24 +36,9 @@
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class($this->getModule()));
             $conversation     = new Conversation(false);
+
             $getData          = GetUtil::getData();
             $type             = ArrayUtil::getArrayValue($getData, 'type');
-            $searchAttributes = array();
-            $searchAttributes = ConversationUtil::resolveSearchAttributesByType($type);
-            $metadataAdapter  = new SearchDataProviderMetadataAdapter(
-                $conversation,
-                Yii::app()->user->userModel->id,
-                $searchAttributes
-            );
-            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter,
-                'Conversation',
-                'RedBeanModelDataProvider',
-                'latestDateTime',
-                true,
-                $pageSize
-            );
-
             if ($type == null)
             {
                 $type = ConversationUtil::LIST_TYPE_CREATED;
@@ -71,6 +56,21 @@
                 throw new NotSupportedException();
             }
 
+            $searchAttributes = array();
+            $searchAttributes = ConversationUtil::resolveSearchAttributesByType($type);
+            $metadataAdapter  = new SearchDataProviderMetadataAdapter(
+                $conversation,
+                Yii::app()->user->userModel->id,
+                $searchAttributes
+            );
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                $metadataAdapter,
+                'Conversation',
+                'RedBeanModelDataProvider',
+                'latestDateTime',
+                true,
+                $pageSize
+            );
             $actionBarAndListView = new ActionBarAndListView(
                 $this->getId(),
                 $this->getModule()->getId(),
@@ -86,13 +86,45 @@
             echo $view->render();
         }
 
+        public function actionDetails($id)
+        {
+            $conversation = static::getModelAndCatchNotFoundAndDisplayError('Conversation', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($conversation);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
+                                      array(strval($conversation), 'ConversationsModule'), $conversation);
+            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($conversation, 'ConversationsModule',
+                                                                          'ConversationDetailsAndRelationsView',
+                                                                          Yii::app()->request->getRequestUri());
+            $view = new ConversationsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            echo $view->render();
+        }
+
         public function actionCreate()
         {
-            $editAndDetailsView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost(new Conversation()), 'Edit');
-            $view = new ConversationsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            $editView = new ConversationEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost(new Conversation()),
+                                                 Yii::t('Default', 'Create Conversation'));
+            $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
+                                                  makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
+        }
+
+        public function actionEdit($id, $redirectUrl = null)
+        {
+            $conversation = Conversation::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($conversation);
+            $editView = new ConversationEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost($conversation),
+                                                 strval($conversation));
+            $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
+                                                  makeStandardViewForCurrentUser($this, $editView));
+            echo $view->render();
+        }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new ModelHasFilesAndRelatedItemsZurmoControllerUtil('conversationItems', 'ConversationItemForm');
         }
     }
 ?>

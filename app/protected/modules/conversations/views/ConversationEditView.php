@@ -24,18 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationEditAndDetailsView extends SecuredEditAndDetailsView
+    class ConversationEditView extends SecuredEditView
     {
+        protected $viewContainsFileUploadElement = true;
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
-                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type' => 'EditLink',       'renderType' => 'Details'),
-                            array('type' => 'ConversationDeleteLink', 'renderType' => 'Details'),
+                            array('type'  => 'CancelLink'),
+                            array('type'  => 'SaveButton'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -93,11 +93,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        protected function getNewModelTitleLabel()
-        {
-            return Yii::t('Default', 'Create Conversation');
         }
 
         protected function renderRightSideFormLayoutForEdit($form)

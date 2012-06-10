@@ -25,40 +25,20 @@
      ********************************************************************************/
 
     /**
-     * Activities Modules such as Meetings, Notes, and tasks
-     * should extend this class to provide generic functionality
-     * that is applicable to all activity modules.
+     * Extended class to support models that have related items such as activities or conversations.
      */
-    abstract class ActivitiesModuleController extends ZurmoModuleController
+    class ModelHasFilesAndRelatedItemsZurmoControllerUtil extends ModelHasRelatedItemsZurmoControllerUtil
     {
-        protected static function getZurmoControllerUtil()
-        {
-            return new ModelHasRelatedItemsZurmoControllerUtil('activityItems', 'ActivityItemForm');
-        }
-
         /**
-         * Override to handle the special scenario of relations for an activity. Since relations are done in the
-         * ActivityItems, the relation information needs to handled in a specific way.
-         * @see ZurmoModuleController->resolveNewModelByRelationInformation
+         * Override to handle incoming file upload information.
+         * (non-PHPdoc)
+         * @see ModelHasRelatedItemsZurmoControllerUtil::afterSetAttributesDuringSave()
          */
-        protected function resolveNewModelByRelationInformation(    $model, $relationModelClassName,
-                                                                    $relationModelId, $relationModuleId)
+        protected function afterSetAttributesDuringSave($model)
         {
-            assert('$model instanceof Activity');
-            assert('is_string($relationModelClassName)');
-            assert('is_int($relationModelId)');
-            assert('is_string($relationModuleId)');
-
-            $metadata = Activity::getMetadata();
-            if (in_array($relationModelClassName, $metadata['Activity']['activityItemsModelClassNames']))
-            {
-                $model->activityItems->add($relationModelClassName::getById((int)$relationModelId));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $model;
+            assert('$model instanceof Item');
+            parent::afterSetAttributesDuringSave($model);
+            FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'filesIds');
         }
     }
 ?>

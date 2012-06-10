@@ -207,7 +207,8 @@
                 $savedSucessfully   = false;
                 $modelToStringValue = null;
                 $oldUsername        = $model->username;
-                $model              = ZurmoControllerUtil::saveModelFromPost($sanitizedPostdata, $model,
+                $controllerUtil     = new ZurmoControllerUtil();
+                $model              = $controllerUtil->saveModelFromPost($sanitizedPostdata, $model,
                                                                            $savedSucessfully, $modelToStringValue);
                 if ($savedSucessfully)
                 {
