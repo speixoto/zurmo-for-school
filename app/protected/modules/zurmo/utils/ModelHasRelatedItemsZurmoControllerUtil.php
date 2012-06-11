@@ -41,7 +41,7 @@
             $this->relatedItemsFormName     = $relatedItemsFormName;
         }
 
-        protected function afterSetAttributesDuringSave($model)
+        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
         {
             assert('$model instanceof Item');
             $this->resolveModelsRelatedItemsFromPost($model);

@@ -81,25 +81,23 @@
 
         protected function renderConversationParticipantsContent()
         {
-            return 'convo part form' . strval($this->params["relationModel"]);
-            //maybe we dont need to refresh. i dont think we do actually.
-            if (null != $messageContent = RequiredAttributesValidViewUtil::
-                                         resolveValidView('NotesModule', $this->getInlineEditViewClassName()))
-            {
-                $message = Yii::t('Default', 'The NotesModulePluralLabel form cannot be displayed.',
-                           LabelUtil::getTranslationParamsForAllModules());
-                $message .= '<br/>' . $messageContent . '<br/><br/>';
-                return $message;
-            }
-            $note         = new Note();
-            $note->activityItems->add($this->params["relationModel"]);
-            $inlineViewClassName = $this->getInlineEditViewClassName();
 
-            $urlParameters = array('redirectUrl' => $this->getPortletDetailsUrl()); //After save, the url to go to.
-            $uniquePageId  = get_called_class();
-            $inlineView    = new $inlineViewClassName($note, 'default', 'notes', 'inlineCreateSave',
-                                                      $urlParameters, $uniquePageId);
-            return $inlineView->render();
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                                                                'ZurmoActiveForm',
+                                                                array_merge(
+                                                                    array('id' => 'participants-edit-form')
+                                                                )
+                                                            );
+            $params   = array('formName' => 'participants-edit-form');
+            $content  = $formStart;
+            $element  = new OnChangeProcessMultiplePeopleForConversationElement($this->params["relationModel"],
+                                                                                null, $form, $params);
+            $element->editableTemplate = '{content}{error}';
+            $content .= $element->render().'</div>';
+            $formEnd  = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            return $content;
         }
 
         public static function canUserConfigure()

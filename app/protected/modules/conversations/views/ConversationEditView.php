@@ -102,7 +102,7 @@
             if ($this->getModel() instanceof OwnedSecurableItem)
             {
                 $content .= "<h3>".Yii::t('Default', 'Participants') . '</h3><div id="owner-box">';
-                $element  = new MultiplePeopleForConversationElement($this->getModel(), 'owner', $form);
+                $element  = new MultiplePeopleForConversationElement($this->getModel(), null, $form);
                 $element->editableTemplate = '{content}{error}';
                 $content .= $element->render().'</div>';
             }

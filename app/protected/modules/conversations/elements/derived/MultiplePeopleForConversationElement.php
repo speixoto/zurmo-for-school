@@ -50,11 +50,21 @@
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     ),
-                'hintText' => Yii::t('Default', 'Type a User\'s name ')
+                'hintText' => Yii::t('Default', 'Type a User\'s name '),
+                'onAdd'    => $this->getOnAddContent(),
+                'onDelete' => $this->getOnDeleteContent(),
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['ModelElement'];
             return $content;
+        }
+
+        protected function getOnAddContent()
+        {
+        }
+
+        protected function getOnDeleteContent()
+        {
         }
 
         protected function renderError()
@@ -88,12 +98,12 @@
 
         protected function getNameForIdField()
         {
-                return 'ConversationParticipantForm[People][ids]';
+                return 'ConversationParticipantsForm[itemIds]';
         }
 
         protected function getIdForIdField()
         {
-            return 'ConversationParticipantForm_People_ids';
+            return 'ConversationParticipantsForm_item_ids';
         }
 
         protected function getExistingPeopleRelationsIdsAndLabels()
@@ -120,10 +130,22 @@
                     try
                     {
                         $user = $item->castDown(array($modelDerivationPathToItem));
-                        if (get_class($contact) == 'User')
+                        //Owner is always added first.
+                        if (get_class($contact) == 'User' && $user->id != $this->model->owner->id)
                         {
-                            $existingPeople[] = array('id' => $user->getClassId('Item'),
-                                                      'name' => strval($user));
+                            //The current user can only remove themselves from the detailview and clicking on the special
+                            //remove button.
+                            if(Yii::app()->user->userModel->id == $user->id)
+                            {
+                                $readOnly = true;
+                            }
+                            else
+                            {
+                                $readOnly = false;
+                            }
+                            $existingPeople[] = array('id'       => $user->getClassId('Item'),
+                                                      'name'     => strval($user),
+                                                      'readonly' => $readOnly);
                         }
                     }
                     catch (NotFoundException $e)

@@ -25,10 +25,19 @@
      ********************************************************************************/
 
     /**
-     * Extended class to support models that have related items such as activities or conversations.
+     * Extended class to support conversation participants
      */
-    class ModelHasFilesAndRelatedItemsZurmoControllerUtil extends ModelHasRelatedItemsZurmoControllerUtil
+    class ConversationZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
     {
+        protected $conversationParticipantFormName;
+
+        public function __construct($relatedItemsRelationName, $relatedItemsFormName, $conversationParticipantFormName)
+        {
+            assert('is_string($relatedItemsRelationName)');
+            assert('is_string($relatedItemsFormName');
+            $this->conversationParticipantFormName = $conversationParticipantFormName;
+        }
+
         /**
          * Override to handle incoming file upload information.
          * (non-PHPdoc)
@@ -37,8 +46,16 @@
         protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
         {
             assert('$model instanceof Item');
+            assert('$explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions');
             parent::afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'filesIds');
+            $postData = PostUtil::getData();
+            if(isset($postData[$this->conversationParticipantFormName]))
+            {
+                ConversationParticipantsUtil::
+                    resolveConversationHasManyParticipantsFromPost($model,
+                                                                   $postData[$this->conversationParticipantFormName],
+                                                                   $explicitReadWriteModelPermissions);
+            }
         }
     }
 ?>

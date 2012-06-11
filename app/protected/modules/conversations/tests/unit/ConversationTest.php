@@ -153,6 +153,8 @@
             $conversation              = Conversation::getById($id);
             $conversation->conversationParticipants->add($steven);
             $this->assertTrue($conversation->save());
+            //use ConversationExplicitReadWriteModelPermissionsUtil instead.
+            $this->fail();
             ConversationExplicitReadModelPermissionsUtil::resolveByParticipants($conversation->conversationParticipants);
             $id = $conversation->id;
             unset($conversation);

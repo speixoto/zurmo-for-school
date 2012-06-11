@@ -124,7 +124,41 @@
 
         protected static function getZurmoControllerUtil()
         {
-            return new ModelHasFilesAndRelatedItemsZurmoControllerUtil('conversationItems', 'ConversationItemForm');
+            return new ConversationZurmoControllerUtil('conversationItems', 'ConversationItemForm',
+                                                       'ConversationParticipantsForm');
+        }
+
+        public function actionUpdateParticipants($id)
+        {
+            $postData     = PostUtil::getData();
+            if(isset($postData['ConversationParticipantsForm']))
+            {
+                $conversation                      = Conversation::getById($id);
+                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                    resolveByPostDataAndModelThenMake(array(), $conversation);
+                $currentUserWasParticipant         = ConversationParticipantsUtil::isUserAParticipant(Yii::app()->user->userModel);
+                ConversationParticipantsUtil::
+                    resolveConversationHasManyParticipantsFromPost($conversation,
+                                                                   $postData['ConversationParticipantsForm'],
+                                                                   $explicitReadWriteModelPermissions);
+                $saved = $conversation->save();
+                if($saved)
+                {
+                    $success                   = ExplicitReadWriteModelPermissionsUtil::
+                                                 resolveExplicitReadWriteModelPermissions($conversation,
+                                                                                          $explicitReadWriteModelPermissions);
+                    $currentUserIsParticipant  = ConversationParticipantsUtil::isUserAParticipant(Yii::app()->user->userModel);
+                    if($currentUserWasParticipant && !$currentUserIsParticipant)
+                    {
+                        echo 'redirectToList';
+                    }
+                }
+                else
+                {
+                    throw new FailedToSaveModelException();
+                }
+
+            }
         }
     }
 ?>
