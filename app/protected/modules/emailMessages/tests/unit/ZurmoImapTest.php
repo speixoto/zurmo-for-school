@@ -40,7 +40,7 @@
             Yii::app()->emailHelper->init();
         }
 
-        public function testInit()
+        public function Init()
         {
             $imap = new ZurmoImap();
             $this->assertEquals(null,    $imap->imapHost);
@@ -91,7 +91,7 @@
         /**
         * @depends testInit
         */
-        public function testConnect()
+        public function Connect()
         {
             $imap = new ZurmoImap();
             $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
@@ -124,7 +124,7 @@
         }
 
 
-        public function testGetMessageBoxStatsDetailed()
+        public function GetMessageBoxStatsDetailed()
         {
             $imap = new ZurmoImap();
             $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
@@ -143,7 +143,7 @@
             $this->assertEquals('imap', $messageBoxStatDetails->Driver);
         }
 
-        public function testGetMessageBoxStats()
+        public function GetMessageBoxStats()
         {
             $imap = new ZurmoImap();
             $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
@@ -162,7 +162,7 @@
             $this->assertEquals('imap', $messageBoxStat->Driver);
         }
 
-        public function testExpungeMessages()
+        public function ExpungeMessages()
         {
             $imap = new ZurmoImap();
             $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
@@ -192,7 +192,7 @@
             $this->assertEquals(0, $imapStats->Nmsgs);
         }
 
-        public function testGetMessagesWithoutAttachments()
+        public function GetMessagesWithoutAttachments()
         {
             $imap = new ZurmoImap();
             $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];

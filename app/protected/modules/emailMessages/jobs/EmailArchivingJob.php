@@ -101,31 +101,111 @@
                     }
                     catch (CException $e)
                     {
-                        // User not found, or few users share same primary email address, so continue with next email
-                        // To-Do:: Email user that user can't be found
-                        //echo Yii::t('Default', 'User email not in database.') . "\n";
+                        // User not found, or few users share same primary email address,
+                        // so infrm user about issue and continue with next email.
+                        $subject = Yii::t('Default', 'Invalid email address.');
+                        $textContent = Yii::t('Default', 'Email address does not exist in system.') . "\n\n" . $message->textBody;
+                        $htmlContent = Yii::t('Default', 'Email address does not exist in system.') . "<br><br>" . $message->htmlBody;
+
+                        $emailMessage = new EmailMessage();
+                        $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                        $emailMessage->subject = $subject;
+                        $emailContent              = new EmailMessageContent();
+                        $emailContent->textContent = $textContent;
+                        $emailContent->htmlContent = $htmlContent;
+                        $emailMessage->content     = $emailContent;
+                        $sender                    = new EmailMessageSender();
+                        $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
+                        $sender->fromName          = strval(Yii::app()->user->userModel);
+                        $sender->person            = Yii::app()->user->userModel;
+                        $emailMessage->sender      = $sender;
+                        $recipient                 = new EmailMessageRecipient();
+                        $recipient->toAddress      = $message->fromEmail;
+                        $recipient->type           = EmailMessageRecipient::TYPE_TO;
+                        $emailMessage->recipients->add($recipient);
+                        $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+                        $validated                 = $emailMessage->validate();
+                        if (!$validated)
+                        {
+                            $this->addErrorsAsUsageErrors($emailMessage->getErrors());
+                        }
+                        Yii::app()->emailHelper->sendImmediately($emailMessage);
                         continue;
                     }
 
                     $senderInfo = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($message);
                     if (!$senderInfo)
                     {
-                        // To-Do:: Email user that sender info can't be extracted
-                        //echo Yii::t('Default', 'Sender details can not be found.') . "\n";
+                        $subject = Yii::t('Default', "Sender info can't be extracted from email message.");
+                        $textContent = Yii::t('Default', "Sender info can't be extracted from email message.") . "\n\n" . $message->textBody;
+                        $htmlContent = Yii::t('Default', "Sender info can't be extracted from email message.") . "<br><br>" . $message->htmlBody;
+
+                        $emailMessage = new EmailMessage();
+                        $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                        $emailMessage->subject = $subject;
+                        $emailContent              = new EmailMessageContent();
+                        $emailContent->textContent = $textContent;
+                        $emailContent->htmlContent = $htmlContent;
+                        $emailMessage->content     = $emailContent;
+                        $sender                    = new EmailMessageSender();
+                        $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
+                        $sender->fromName          = strval(Yii::app()->user->userModel);
+                        $sender->person            = Yii::app()->user->userModel;
+                        $emailMessage->sender      = $sender;
+                        $recipient                 = new EmailMessageRecipient();
+                        $recipient->toAddress      = $message->fromEmail;
+                        $recipient->type           = EmailMessageRecipient::TYPE_TO;
+                        $emailMessage->recipients->add($recipient);
+                        $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+                        $validated                 = $emailMessage->validate();
+                        if (!$validated)
+                        {
+                            $this->addErrorsAsUsageErrors($emailMessage->getErrors());
+                        }
+                        Yii::app()->emailHelper->sendImmediately($emailMessage);
                         continue;
                     }
 
                     $receiversInfo = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($message);
                     if (!$receiversInfo)
                     {
-                        // To-Do:: Email user that receiver info can't be found
-                        //echo Yii::t('Default', 'Receiver(s) details can not be found.') . "\n";
+                        $subject = Yii::t('Default', "Receipt info can't be extracted from email message.");
+                        $textContent = Yii::t('Default', "Receipt info can't be extracted from email message.") . "\n\n" . $message->textBody;
+                        $htmlContent = Yii::t('Default', "Receipt info can't be extracted from email message.") . "<br><br>" . $message->htmlBody;
+
+                        $emailMessage = new EmailMessage();
+                        $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                        $emailMessage->subject = $subject;
+                        $emailContent              = new EmailMessageContent();
+                        $emailContent->textContent = $textContent;
+                        $emailContent->htmlContent = $htmlContent;
+                        $emailMessage->content     = $emailContent;
+                        $sender                    = new EmailMessageSender();
+                        $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
+                        $sender->fromName          = strval(Yii::app()->user->userModel);
+                        $sender->person            = Yii::app()->user->userModel;
+                        $emailMessage->sender      = $sender;
+                        $recipient                 = new EmailMessageRecipient();
+                        $recipient->toAddress      = $message->fromEmail;
+                        $recipient->type           = EmailMessageRecipient::TYPE_TO;
+                        $emailMessage->recipients->add($recipient);
+                        $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+                        $validated                 = $emailMessage->validate();
+                        if (!$validated)
+                        {
+                            $this->addErrorsAsUsageErrors($emailMessage->getErrors());
+                        }
+                        Yii::app()->emailHelper->sendImmediately($emailMessage);
                         continue;
                     }
 
                     $emailMessage = new EmailMessage();
                     $emailMessage->owner   = $emailOwner;
-                    // To-Do: Should we try to extract original subject, in case if message is forwarded.
+                    // To-Do: Should we try to extract original subject, in case if message is forwarded,
+                    // for example removing Fwd: prefix?
                     $emailMessage->subject = $message->subject;
 
                     $emailContent              = new EmailMessageContent();
@@ -161,7 +241,7 @@
                             {
                                 continue;
                             }
-                            //echo "Saving attachments. \n";
+                            // Save attachments
                             $fileContent          = new FileContent();
                             $fileContent->content = $attachment['attachment'];
                             $file                 = new EmailFileModel();
@@ -177,8 +257,8 @@
                     $validated                 = $emailMessage->validate();
                     if (!$validated)
                     {
-                        //echo "ERROR";
                         // To-Do::What to do if emailMessage couldn't be validated???
+                        // Email user
                     }
                     $saved = $emailMessage->save();
 

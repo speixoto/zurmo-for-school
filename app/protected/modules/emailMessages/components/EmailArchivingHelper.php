@@ -94,7 +94,7 @@
             else
             {
                 // I sent email to somebody
-                // soI am sender
+                // so I am sender
                 $emailSender['email'] = $emailMessage->fromEmail;
                 if (isset($emailMessage->fromName))
                 {

@@ -62,10 +62,6 @@
             $userSmtpMailer->init();
             $userSmtpMailer->sendEmailThroughTransport = true;
             self::$userMailer = $userSmtpMailer;
-
-            $user = User::getByUsername('steve');
-            $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
-            assert('$user->save()');
         }
 
         public function setup(){
@@ -79,7 +75,7 @@
          * Test case when user send email to somebody, and to dropbox(via to field)
          * This shouldn't happen in reality, because receipt will see that message is sent to dropbox folder too
          */
-        public function testRunCaseOne()
+        public function RunCaseOne()
         {
             $super = User::getByUsername('super');
             $user = User::getByUsername('steve');
@@ -137,7 +133,7 @@
         * Test case when user send email to somebody, and cc to dropbox
         * This shouldn't happen in reality, because receipt will see that message is sent to dropbox folder too
         */
-        public function testRunCaseTwo()
+        public function RunCaseTwo()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -208,7 +204,7 @@
         * This is best practictice to be used in reality, because other receipts will not see that user
         * bcc-ed email to dropbox
         */
-        public function testRunCaseThree()
+        public function RunCaseThree()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -277,7 +273,7 @@
         /**
         * Test case when somebody send email to Zurmo user, and user forward it to dropbox
         */
-        public function testRunCaseFour()
+        public function RunCaseFour()
         {
             //require(Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.EmailClientForwardTemplatesTestHelper') . '.php');
 
@@ -375,6 +371,127 @@
                     }
                 }
             }
+        }
+
+        /**
+        * Test case when sender email is not user primary email.
+        * In this case system should send email to user.
+        */
+        public function RunCaseFive()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $user = User::getByUsername('steve');
+            Yii::app()->imap->connect();
+
+            $messages = EmailMessage::getAll();
+            foreach ($messages as $message)
+            {
+                $message->delete();
+            }
+            // Expunge all emails from dropbox
+            Yii::app()->imap->expungeMessages();
+
+            // Check if there are no emails in dropbox
+            $job = new EmailArchivingJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+
+            Yii::app()->emailHelper->sendRawEmail("Email from invalid user",
+                                                  $user->primaryEmail->emailAddress,
+                                                  array(Yii::app()->imap->imapUsername),
+                                                  'Some content here',
+                                                  '<strong>Some</strong> content here',
+                                                  null,
+                                                  null,
+                                                  null);
+
+            // Change user email address.
+            $originalUserAddress = $user->primaryEmail->emailAddress;
+            $user = User::getByUsername('steve');
+            $user->primaryEmail->emailAddress = 'fakeemail@example.com';
+            $this->assertTrue($user->save());
+
+            sleep(30);
+            $job = new EmailArchivingJob();
+            $this->assertTrue($job->run());
+
+            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $emailMessages = EmailMessage::getAll();
+            $this->assertEquals("Invalid email address.", $emailMessages[0]->subject);
+            $this->assertTrue(strpos($emailMessages[0]->content->textContent, 'Email address does not exist in system.') !== false);
+            $this->assertTrue(strpos($emailMessages[0]->content->htmlContent, 'Email address does not exist in system.') !== false);
+            $this->assertEquals($originalUserAddress, $emailMessages[0]->recipients[0]->toAddress);
+        }
+
+        /**
+        * Check if only new messages are pulled from dropdown
+        */
+        public function testRunCaseSix()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $user = User::getByUsername('steve');
+            Yii::app()->imap->connect();
+
+            $messages = EmailMessage::getAll();
+            foreach ($messages as $message)
+            {
+                $message->delete();
+            }
+            // Expunge all emails from dropbox
+            Yii::app()->imap->expungeMessages();
+
+            // Check if there are no emails in dropbox
+            $job = new EmailArchivingJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+
+            //Now user send email to another user, and to dropbox
+            $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
+
+            Yii::app()->emailHelper->sendRawEmail("Email from Steve",
+                                                   $user->primaryEmail->emailAddress,
+                                                  array(Yii::app()->imap->imapUsername),
+                                                  'Email from Steve',
+                                                  '<strong>Email</strong> from Steve',
+                                                  null,
+                                                  null
+                                                  );
+
+            sleep(30);
+
+            $job = new EmailArchivingJob();
+            $this->assertTrue($job->run());
+
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $emailMessages = EmailMessage::getAll();
+            $emailMessage = $emailMessages[0];
+
+            $this->assertEquals('Email from Steve', $emailMessage->subject);
+            $this->assertEquals('Email from Steve', trim($emailMessage->content->textContent));
+            $this->assertEquals('<strong>Email</strong> from Steve', trim($emailMessage->content->htmlContent));
+            $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
+
+            $this->assertEquals(1, count($emailMessage->recipients));
+            foreach ($emailMessage->recipients as $recipient)
+            {
+                $this->assertEquals($recipient->toAddress, 'fakemail@example.com');
+                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
+            }
+
+            $job = new EmailArchivingJob();
+            $this->assertTrue($job->run());
+
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(1, count(EmailMessage::getAll()));
         }
     }
 ?>
