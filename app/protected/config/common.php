@@ -40,15 +40,15 @@
         ),
 
         'components' => array(
-            'assetManager' => array(
-                'class' => 'ZurmoAssetManager',
-                'basePath' => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'assets/',
-            ),
             'apiRequest' => array(
                 'class' => 'application.modules.api.components.ApiRequest',
             ),
             'apiHelper' => array(
                 'class' => 'application.modules.api.components.ZurmoApiHelper',
+            ),
+            'assetManager' => array(
+                'class' => 'ZurmoAssetManager',
+                'basePath' => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'assets/',
             ),
             'browser' => array(
                 'class' => 'application.extensions.zurmoinc.framework.components.Browser',

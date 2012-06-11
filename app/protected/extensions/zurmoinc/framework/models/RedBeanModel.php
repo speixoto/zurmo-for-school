@@ -279,9 +279,9 @@
                 $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             }
             $tableName = self::getTableName($modelClassName);
-            $sql = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
-                                                     $orderBy, false, $selectDistinct);
-            $ids = R::getCol($sql);
+            $sql       = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
+                                                           $orderBy, false, $selectDistinct);
+            $ids       = R::getCol($sql);
             $tableName = self::getTableName($modelClassName);
             $beans = R::batch ($tableName, $ids);
             return self::makeModels($beans, $modelClassName);
@@ -684,8 +684,8 @@
                                       array('{relationName}' => $relationName,
                                             '{relationModelClassName}' => $relationModelClassName)));
                         }
-                        if (count($relationTypeModelClassNameAndOwns) >= 3
-                            && $relationTypeModelClassNameAndOwns[2] == self::OWNED)
+                        if (count($relationTypeModelClassNameAndOwns) >= 3 &&
+                            $relationTypeModelClassNameAndOwns[2] == self::OWNED)
                         {
                             $owns = true;
                         }

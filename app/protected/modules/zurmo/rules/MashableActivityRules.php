@@ -63,6 +63,14 @@
         abstract public function getLatestActivityExtraDisplayStringByModel($model);
 
         /**
+         * Override to define how related models are displayed if at all.
+         * @param RedBeanModel $model
+         */
+        public function renderRelatedModelsByImportanceContent(RedBeanModel $model)
+        {
+        }
+
+        /**
          * Override to customize summary content.
          * @param string $ownedByFilter
          * @param string $viewModuleClassName
@@ -81,5 +89,7 @@
                 return "<span>{modelStringContent}</span><span>{extraContent}</span>";
             }
         }
+
+
     }
 ?>
