@@ -1493,7 +1493,41 @@ div.wide.form{
     left: -9999px;
 }
 
+/*=LIST VIEW*/
 /*=Search Scope box, and account list*/
+.list-preloader{
+/*from: http://jsdo.it/taka.atsushi/mlWf*/
+	display:none;
+	background: rgba(0, 0, 0, 0.5) ;/*url(../images/list-ajax-loader.gif) 50% 50% no-repeat;*/
+	.b-shadow(  0 0 30px 0 rgb(100, 100, 100) ); /*999*/
+	position:absolute;
+	top:50%;
+	left:50%;
+	.radius(10px);
+	width:60px;
+	height:60px;
+	margin:-30px 0 0 -30px;
+	img{
+		margin:25%;
+		width:50%;
+		height:50%;
+	}
+}
+
+.juiportlet-widget-content .list-preloader{
+	.radius(6px);
+	width:28px;
+	height:28px;
+	margin:-15px 0 0 -15px;
+}
+
+.cgrid-view.loading{
+	.list-preloader{
+		display:block;
+	}
+}
+
+
 .ZeroModelsYetView{
 	h2{
 		font-family:"Times New Roman", Times, serif;
@@ -1566,7 +1600,6 @@ div.wide.form{
 	
 }
 
-
 #FilteredListView, .summary{
     display:none;
 }
@@ -1595,10 +1628,12 @@ div.wide.form{
    float:left;
    width:100%;
    margin-bottom:20px;
+   position: relative;
 }
 
 .cgrid-view{
     .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );
+    position:relative;
 }
 
 .juiportlet-widget-content .cgrid-view{
