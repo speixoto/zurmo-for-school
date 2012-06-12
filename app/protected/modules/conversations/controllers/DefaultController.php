@@ -136,7 +136,7 @@
                 $conversation                      = Conversation::getById($id);
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                     resolveByPostDataAndModelThenMake(array(), $conversation);
-                $currentUserWasParticipant         = ConversationParticipantsUtil::isUserAParticipant(Yii::app()->user->userModel);
+                $currentUserWasParticipant         = ConversationParticipantsUtil::isUserAParticipant($conversation, Yii::app()->user->userModel);
                 ConversationParticipantsUtil::
                     resolveConversationHasManyParticipantsFromPost($conversation,
                                                                    $postData['ConversationParticipantsForm'],
@@ -147,7 +147,7 @@
                     $success                   = ExplicitReadWriteModelPermissionsUtil::
                                                  resolveExplicitReadWriteModelPermissions($conversation,
                                                                                           $explicitReadWriteModelPermissions);
-                    $currentUserIsParticipant  = ConversationParticipantsUtil::isUserAParticipant(Yii::app()->user->userModel);
+                    $currentUserIsParticipant  = ConversationParticipantsUtil::isUserAParticipant($conversation, Yii::app()->user->userModel);
                     if($currentUserWasParticipant && !$currentUserIsParticipant)
                     {
                         echo 'redirectToList';

@@ -53,7 +53,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                                array('attributeName' => 'subject', 'type' => 'Text', 'isLink' => true),
                                             ),
                                         ),
                                     )

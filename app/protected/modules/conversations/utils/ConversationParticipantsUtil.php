@@ -29,13 +29,13 @@
      */
     class ConversationParticipantsUtil
     {
-        public static function isUserAParticipant(User $user)
+        public static function isUserAParticipant(Conversation $model, User $user)
         {
             if ($model->conversationParticipants->count() > 0)
             {
                 foreach($model->conversationParticipants as $participant)
                 {
-                    if($participant->getClassId('Item') == $user->getClassId('Item'))
+                    if($participant->person->getClassId('Item') == $user->getClassId('Item'))
                     {
                         return true;
                     }
@@ -55,10 +55,10 @@
                                     Conversation $model, $postData, $explicitReadWriteModelPermissions)
         {
             assert('$explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions');
-            if (isset($postData['itemIds']))
+            if (isset($postData['itemIds']) && strlen($postData['itemIds']) > 0)
             {
                 $itemIds = explode(",", $postData['itemIds']);  // Not Coding Standard
-                $newParticipantsIndexedByItemId = array();
+                $newPeopleIndexedByItemId = array();
                 foreach ($itemIds as $itemId)
                 {
                     if($itemId != $model->owner->getClassId('Item'))
@@ -83,9 +83,10 @@
                     foreach ($participantsToRemove as $participantModelToRemove)
                     {
                         $model->conversationParticipants->remove($participantModelToRemove);
-                        if($participantModel instanceof Permitable)
+                        $person = static::castDownItem($participantModelToRemove->person);
+                        if($person instanceof Permitable)
                         {
-                            $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($participantModel);
+                            $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($person);
                         }
                     }
                 }

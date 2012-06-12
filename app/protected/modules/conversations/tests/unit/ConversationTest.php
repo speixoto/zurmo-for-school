@@ -67,9 +67,9 @@
             $conversation = Conversation::getById($id);
             $this->assertEquals('My test subject',        $conversation->subject);
             $this->assertEquals('My test description',    $conversation->description);
-            $this->assertEquals($user,                    $conversation->owner);
-            $this->assertEquals(1,                        $conversation->activityItems->count());
-            $this->assertEquals($accounts[0],             $conversation->activityItems->offsetGet(0));
+            $this->assertEquals($super,                   $conversation->owner);
+            $this->assertEquals(1,                        $conversation->conversationItems->count());
+            $this->assertEquals($accounts[0],             $conversation->conversationItems->offsetGet(0));
             $this->assertEquals(1,                        $conversation->files->count());
             $this->assertEquals($fileModel,               $conversation->files->offsetGet(0));
             $this->assertEquals($nowStamp,                $conversation->latestDateTime);
@@ -83,7 +83,7 @@
         {
             $conversations = Conversation::getAll();
             $conversation  = $conversations[0];
-            $participant   = UserTestHelper::createBasicUser('steven');
+            $participant   = User::getByUserName('steven');
             $latestStamp   = $conversation->latestDateTime;
 
             //latestDateTime should not change when just saving the conversation
@@ -123,7 +123,7 @@
         {
             $super                     = User::getByUsername('super');
             $steven                    = User::getByUsername('steven');
-            $sally                     = UserTestHelper::createBasicUser('steven');
+            $sally                     = UserTestHelper::createBasicUser('sally');
             $mary                      = UserTestHelper::createBasicUser('mary');
 
             $conversation              = new Conversation();
@@ -140,22 +140,27 @@
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(0, count($readWritePermitables));
 
-            //Attempt to resolve against conversationParticipants
-            ConversationExplicitReadModelPermissionsUtil::resolveByParticipants($conversation->conversationParticipants);
+            //Attempt to resolve against posted conversationParticipants data
+            $postData = array();
+            $postData['itemIds'] = $super->id;
+            ConversationParticipantsUtil::resolveConversationHasManyParticipantsFromPost(
+                                            $conversation, $postData, $explicitReadWriteModelPermissions);
             //Should still be 0, because super is the owner, and would not be specially added. (This is just a safety test here)
-            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
-                                                 makeBySecurableItem(Conversation::getById());
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(0, count($readWritePermitables));
-
+            $this->assertEquals(0, $conversation->conversationParticipants->count());
 
             //Add steven as a conversation participant.
             $conversation              = Conversation::getById($id);
-            $conversation->conversationParticipants->add($steven);
+            $postData = array();
+            $postData['itemIds'] = $super->id . ',' . $steven->id;
+            ConversationParticipantsUtil::resolveConversationHasManyParticipantsFromPost($conversation,
+                                                                                         $postData,
+                                                                                         $explicitReadWriteModelPermissions);
             $this->assertTrue($conversation->save());
-            //use ConversationExplicitReadWriteModelPermissionsUtil instead.
-            $this->fail();
-            ConversationExplicitReadModelPermissionsUtil::resolveByParticipants($conversation->conversationParticipants);
+            $success = ExplicitReadWriteModelPermissionsUtil::
+                        resolveExplicitReadWriteModelPermissions($conversation, $explicitReadWriteModelPermissions);
+            $this->assertTrue($success);
             $id = $conversation->id;
             unset($conversation);
 
@@ -165,6 +170,8 @@
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals($steven, $readWritePermitables[$steven->id]);
+            $this->assertEquals(1, $conversation->conversationParticipants->count());
+            $this->assertEquals($steven, $conversation->conversationParticipants[0]);
         }
 
         public function testGetUnreadConversationCount()

@@ -51,7 +51,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'subject', 'type' => 'Text'),
                                             ),
                                         ),
                                     )

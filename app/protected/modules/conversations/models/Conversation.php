@@ -31,21 +31,21 @@
             return 'Conversation';
         }
 
-        public static function getByName($name)
+        public static function getBySubject($subject)
         {
-            assert('is_string($name) && $name != ""');
-            return self::getSubset(null, null, null, "name = '$name'");
+            assert('is_string($subject) && $subject != ""');
+            return self::getSubset(null, null, null, "subject = '$subject'");
         }
 
         public function __toString()
         {
             try
             {
-                if (trim($this->name) == '')
+                if (trim($this->subject) == '')
                 {
                     return Yii::t('Default', '(Unnamed)');
                 }
-                return $this->name;
+                return $this->subject;
             }
             catch (AccessDeniedSecurityException $e)
             {
@@ -76,7 +76,7 @@
                 'members' => array(
                     'description',
                     'latestDateTime',
-                    'name',
+                    'subject',
                     'ownerHasReadLatest',
                 ),
                 'relations' => array(
@@ -90,9 +90,9 @@
                     array('latestDateTime', 	'required'),
                     array('latestDateTime', 	'readOnly'),
                     array('latestDateTime', 	'type', 'type' => 'datetime'),
-                    array('name',           	'required'),
-                    array('name',          		'type',    'type' => 'string'),
-                    array('name',           	'length',  'min'  => 3, 'max' => 64),
+                    array('subject',           	'required'),
+                    array('subject',          	'type',    'type' => 'string'),
+                    array('subject',           	'length',  'min'  => 3, 'max' => 64),
                     array('ownerHasReadLatest', 'boolean'),
                 ),
                 'elements' => array(
@@ -101,12 +101,12 @@
                     'files'             => 'Files',
                     'latestDateTime'    => 'DateTime',
                 ),
-                'defaultSortAttribute' => 'name',
+                'defaultSortAttribute' => 'subject',
                 'noAudit' => array(
                     'annualRevenue',
                     'description',
                     'latestDateTime',
-                    'name',
+                    'subject',
                     'ownerHasReadLatest',
                 ),
                 'conversationItemsModelClassNames' => array(
