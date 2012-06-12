@@ -77,6 +77,7 @@ EOD;
         $messageStreamer->add(Yii::t('Default', 'Starting schema update process.'));
         $messageLogger = new MessageLogger($messageStreamer);
         InstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
+        ReadPermissionsOptimizationUtil::rebuild();
         $messageStreamer->add(Yii::t('Default', 'Schema update complete.'));
     }
 }

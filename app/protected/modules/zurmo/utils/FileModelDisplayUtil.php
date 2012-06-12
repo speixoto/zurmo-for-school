@@ -71,5 +71,23 @@
             );
             return $content;
         }
+
+        public static function renderFileDataDetailsWithDownloadLinksContent($model, $filesRelationName)
+        {
+            $content = null;
+            if ($model->{$filesRelationName}->count() > 0)
+            {
+                foreach ($model->{$filesRelationName} as $fileModel)
+                {
+                    if ($content != null)
+                    {
+                        $content .= ', ';
+                    }
+                $content .= FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($model,
+                                                                                                       $fileModel);
+                }
+            }
+            return $content;
+        }
     }
 ?>

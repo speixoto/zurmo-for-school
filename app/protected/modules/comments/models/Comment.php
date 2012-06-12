@@ -44,6 +44,26 @@
             return $this->description;
         }
 
+
+        /**
+         * Given a related model type, a related model id, and a page size, return a list of comment models.
+         * @param string $type
+         * @param integer $relatedId
+         * @param integer $pageSize
+         */
+        public static function getCommentsByRelatedModelTypeIdAndPageSize($type,  $relatedId, $pageSize)
+        {
+            assert('is_string($type)');
+            assert('is_int($relatedId)');
+            assert('is_int($pageSize) || $pageSize = null');
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Comment');
+            $orderByColumnName = RedBeanModelDataProvider::
+                                 resolveSortAttributeColumnName('Comment', $joinTablesAdapter, 'createdDateTime');
+            $where             = "relatedmodel_type = '" . strtolower($type) . "' AND relatedmodel_id = '" . $relatedId. "'";
+            $orderBy           = $orderByColumnName . ' desc';
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $orderBy);
+        }
+
         public static function getModuleClassName()
         {
             return 'ZurmoModule';
@@ -61,12 +81,16 @@
                 'members' => array(
                     'description',
                 ),
+                'relations' => array(
+                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                ),
                 'rules' => array(
                     array('description', 'required'),
                     array('description', 'type',    'type' => 'string'),
                 ),
                 'elements' => array(
                     'description'        => 'TextArea',
+                    'files'              => 'Files',
                 ),
             );
             return $metadata;

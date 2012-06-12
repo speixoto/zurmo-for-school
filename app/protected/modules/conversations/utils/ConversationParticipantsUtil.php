@@ -57,23 +57,27 @@
             assert('$explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions');
             if (isset($postData['itemIds']))
             {
+                $itemIds = explode(",", $postData['itemIds']);  // Not Coding Standard
                 $newParticipantsIndexedByItemId = array();
-                foreach ($postData['itemIds'] as $itemId)
+                foreach ($itemIds as $itemId)
                 {
-                    $newParticipantsIndexedByItemId[$itemId] = static::castDownItem(Item::getById((int)$itemId));
+                    if($itemId != $model->owner->getClassId('Item'))
+                    {
+                        $newPeopleIndexedByItemId[$itemId] = static::castDownItem(Item::getById((int)$itemId));
+                    }
                 }
                 if ($model->conversationParticipants->count() > 0)
                 {
                     $participantsToRemove = array();
                     foreach ($model->conversationParticipants as $index => $existingParticipantModel)
                     {
-                        if (!isset($newParticipantsIndexedByItemId[$existingParticipantModel->getClassId('Item')]))
+                        if (!isset($newPeopleIndexedByItemId[$existingParticipantModel->person->getClassId('Item')]))
                         {
                             $participantsToRemove[] = $existingParticipantModel;
                         }
                         else
                         {
-                            unset($newParticipantsIndexedByItemId[$existingParticipantModel->getClassId('Item')]);
+                            unset($newPeopleIndexedByItemId[$existingParticipantModel->person->getClassId('Item')]);
                         }
                     }
                     foreach ($participantsToRemove as $participantModelToRemove)
@@ -86,12 +90,12 @@
                     }
                 }
                 //Now add missing participants
-                foreach ($newParticipantsIndexedByItemId as $participantModel)
+                foreach ($newPeopleIndexedByItemId as $personOrUserModel)
                 {
-                    $model->conversationParticipants->add($participantModel);
-                    if($participantModel instanceof Permitable)
+                    $model->conversationParticipants->add(static::makeConversationParticipantByPerson($personOrUserModel));
+                    if($personOrUserModel instanceof Permitable)
                     {
-                        $explicitReadWriteModelPermissions->addReadWritePermitable($participantModel);
+                        $explicitReadWriteModelPermissions->addReadWritePermitable($personOrUserModel);
                     }
                 }
             }
@@ -117,6 +121,14 @@
                 }
             }
             throw new NotSupportedException();
+        }
+
+        protected static function makeConversationParticipantByPerson($personOrUserModel)
+        {
+            assert('$personOrUserModel instanceof User || $personOrUserModel instanceof Person');
+            $conversationParticipant         = new ConversationParticipant();
+            $conversationParticipant->person = $personOrUserModel;
+            return $conversationParticipant;
         }
     }
 ?>

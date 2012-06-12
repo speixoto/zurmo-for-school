@@ -27,7 +27,7 @@
     /**
      * Class used for wrapping a comment inline edit view into a portlet ready view.
      */
-    class CommentInlineEditForPortletView extends ConfigurableMetadataView
+    abstract class CommentInlineEditForPortletView extends ConfigurableMetadataView
                                                                   implements PortletViewInterface
     {
         /**
@@ -80,22 +80,16 @@
 
         protected function renderCommentInlineEditContent()
         {
-            return 'comment add';
-            if (null != $messageContent = RequiredAttributesValidViewUtil::
-                                         resolveValidView('NotesModule', $this->getInlineEditViewClassName()))
-            {
-                $message = Yii::t('Default', 'The NotesModulePluralLabel form cannot be displayed.',
-                           LabelUtil::getTranslationParamsForAllModules());
-                $message .= '<br/>' . $messageContent . '<br/><br/>';
-                return $message;
-            }
-            $note         = new Note();
-            $note->activityItems->add($this->params["relationModel"]);
+            $comment = new Comment();
+            //$note->activityItems->add($this->params["relationModel"]); //hmm.
             $inlineViewClassName = $this->getInlineEditViewClassName();
 
-            $urlParameters = array('redirectUrl' => $this->getPortletDetailsUrl()); //After save, the url to go to.
+            $urlParameters = array('relatedModelId'           => $this->params['relationModel']->id,
+                                   'relatedModelClassName' 	  => get_class($this->params['relationModel']),
+                                   'relatedModelRelationName' => static::getRelatedModelRelationName(),
+                                   'redirectUrl' => $this->getPortletDetailsUrl()); //After save, the url to go to.
             $uniquePageId  = get_called_class();
-            $inlineView    = new $inlineViewClassName($note, 'default', 'notes', 'inlineCreateSave',
+            $inlineView    = new $inlineViewClassName($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
             return $inlineView->render();
         }
@@ -147,6 +141,15 @@
         public static function getModuleClassName()
         {
             return 'CommentsModule';
+        }
+
+        /**
+         * Override to define the relation name.  For example on conversations the relation name is 'comments'
+         * @throws NotImplementedException
+         */
+        protected static function getRelatedModelRelationName()
+        {
+            throw new NotImplementedException();
         }
     }
 ?>

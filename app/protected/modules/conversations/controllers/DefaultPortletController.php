@@ -24,46 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationDetailsAndRelationsView extends DetailsAndRelationsView
+    class ConversationsDefaultPortletController extends ZurmoPortletController
     {
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'ConversationDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'CommentInlineEditForConversationPortlet'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'ConversationParticipantsForPortlet',
-                                    ),
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-            return $metadata;
-        }
     }
 ?>

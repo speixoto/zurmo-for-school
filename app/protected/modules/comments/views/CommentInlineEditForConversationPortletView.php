@@ -24,46 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationDetailsAndRelationsView extends DetailsAndRelationsView
+    /**
+     * Class used for wrapping a comment inline edit view into a portlet ready view for the conversation detailview
+     */
+    class CommentInlineEditForConversationPortletView extends CommentInlineEditForPortletView
     {
-        public function isUniqueToAPage()
+        /**
+         * @returns the relation name on the Conversation model for comments.
+         */
+        protected static function getRelatedModelRelationName()
         {
-            return true;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'ConversationDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'CommentInlineEditForConversationPortlet'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'ConversationParticipantsForPortlet',
-                                    ),
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-            return $metadata;
+            return 'comments';
         }
     }
 ?>

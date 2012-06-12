@@ -24,22 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationDetailsView extends SecuredDetailsView
+    /**
+     * An inline edit view for a comment.
+     *
+     */
+    class CommentInlineEditView extends InlineEditView
     {
+        protected $viewContainsFileUploadElement = true;
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'EditLink'),
-                            array('type' => 'ConversationDeleteLink'),
+                            array('type' => 'SaveButton'),
                         ),
                     ),
+                    'derivedAttributeTypes' => array(
+                        'Files'
+                    ),
                     'nonPlaceableAttributeNames' => array(
-                        'owner',
                         'latestDateTime',
-                        'ownerHasReadLatest',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -63,15 +69,6 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ConversationItems'),
-                                            ),
-                                        ),
-                                    )
-                                ),
                             ),
                         ),
                     ),
@@ -80,34 +77,50 @@
             return $metadata;
         }
 
-        protected function renderTitleContent()
-        {
-            return '<h1>' . strval($this->model) . "</h1>";
-        }
-
         /**
          * Override to change the editableTemplate to place the label above the input.
          * @see DetailsView::resolveElementDuringFormLayoutRender()
          */
-        /**
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            $element->nonEditableTemplate = '<td colspan="{colspan}">{content}</td>';
+            if ($element->getAttribute() == 'description')
+            {
+                $element->editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
+            }
+            elseif ($element instanceOf FilesElement)
+            {
+                $element->editableTemplate = '<td colspan="{colspan}">' .
+                                             '<div class="file-upload-box">{content}{error}</div></td>';
+            }
+            else
+            {
+                $element->editableTemplate = '<td colspan="{colspan}">{label}<br/>{content}{error}</td>';
+            }
         }
-        **/
 
-        protected function renderAfterFormLayoutForDetailsContent()
+        /**
+         * Override to allow the comment thread, if it exists to be refreshed.
+         * (non-PHPdoc)
+         * @see InlineEditView::renderConfigSaveAjax()
+         */
+        protected function renderConfigSaveAjax($formName)
         {
-            $getParams    = array('relatedModelId'           => $this->model->id,
-                                  'relatedModelClassName'    => get_class($this->model),
-                                  'relatedModelRelationName' => 'comments');
-            $content      = parent::renderAfterFormLayoutForDetailsContent();
-            $pageSize     = 5;
-            $commentsData = Comment::getCommentsByRelatedModelTypeIdAndPageSize(get_class($this->model),
-                                                                                $this->modelId, ($pageSize + 1));
-            $view         = new CommentsForRelatedModelView('default', 'comments', $commentsData, $pageSize, $getParams);
-            $content     .= $view->render();
-            return $content;
+            // Begin Not Coding Standard
+            return CHtml::ajax(array(
+                    'type' => 'POST',
+                    'data' => 'js:$("#' . $formName . '").serialize()',
+                    'url'  =>  $this->getValidateAndSaveUrl(),
+                    'update' => '#' . $this->uniquePageId,
+                    'complete' => "function(XMLHttpRequest, textStatus){
+                        //find if there is a comment thread to refresh
+                        $('.hiddenCommentRefresh').click();}"
+                ));
+            // End Not Coding Standard
+        }
+
+        protected function doesLabelHaveOwnCell()
+        {
+            return false;
         }
     }
 ?>

@@ -113,15 +113,18 @@
                                         'name'     => strval($this->model->owner),
                                         'readonly' => true));
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-            foreach ($this->model->conversationParticipants as $item)
+            foreach ($this->model->conversationParticipants as $participant)
             {
                 try
                 {
-                    $contact = $item->castDown(array($modelDerivationPathToItem));
+                    $contact = $participant->person->castDown(array($modelDerivationPathToItem));
                     if (get_class($contact) == 'Contact')
                     {
                         $existingPeople[] = array('id' => $contact->getClassId('Item'),
                                                     'name' => strval($contact));
+                    }
+                    else {
+                        throw new NotFoundException();
                     }
                 }
                 catch (NotFoundException $e)
@@ -129,9 +132,9 @@
                     $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
                     try
                     {
-                        $user = $item->castDown(array($modelDerivationPathToItem));
+                        $user = $participant->person->castDown(array($modelDerivationPathToItem));
                         //Owner is always added first.
-                        if (get_class($contact) == 'User' && $user->id != $this->model->owner->id)
+                        if (get_class($user) == 'User' && $user->id != $this->model->owner->id)
                         {
                             //The current user can only remove themselves from the detailview and clicking on the special
                             //remove button.

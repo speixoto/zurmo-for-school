@@ -94,7 +94,7 @@
             $element  = new OnChangeProcessMultiplePeopleForConversationElement($this->params["relationModel"],
                                                                                 null, $form, $params);
             $element->editableTemplate = '{content}{error}';
-            $content .= $element->render().'</div>';
+            $content .= $element->render();
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             return $content;

@@ -25,41 +25,48 @@
      ********************************************************************************/
 
     /**
-     * Extended class to support conversation participants
+     * Extended class to support saving comments against a related model
      */
-    class ConversationZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
+    class CommentZurmoControllerUtil extends ZurmoControllerUtil
     {
-        protected $conversationParticipantFormName;
+        protected $relatedModel;
 
-        public function __construct($relatedItemsRelationName, $relatedItemsFormName, $conversationParticipantFormName)
+        protected $relationName;
+
+        public function __construct($relatedModel, $relationName)
         {
-            assert('is_string($relatedItemsRelationName)');
-            assert('is_string($relatedItemsFormName)');
-            $this->conversationParticipantFormName = $conversationParticipantFormName;
+            assert('is_string($relationName)');
+            $this->relatedModel = $relatedModel;
+            $this->relationName = $relationName;
         }
 
-        protected static function resolveAndMakeExplicitReadWriteModelPermissions($sanitizedData, $model)
-        {
-            return ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($model);
-        }
-
-        /**
-         * Override to handle incoming file upload information.
+       /**
+         * Override to handle incoming file upload information and to handle saving the comment against the conversation
+         * if it is not already connected.
          * (non-PHPdoc)
          * @see ModelHasRelatedItemsZurmoControllerUtil::afterSetAttributesDuringSave()
          */
         protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
         {
             assert('$model instanceof Item');
-            assert('$explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions');
             parent::afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            $postData = PostUtil::getData();
-            if(isset($postData[$this->conversationParticipantFormName]))
+            FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'filesIds');
+            if($this->relatedModel->getRelationType($this->relationName) == RedBeanModel::HAS_MANY)
             {
-                ConversationParticipantsUtil::
-                    resolveConversationHasManyParticipantsFromPost($model,
-                                                                   $postData[$this->conversationParticipantFormName],
-                                                                   $explicitReadWriteModelPermissions);
+                if(!$this->relatedModel->{$this->relationName}->contains($model))
+                {
+                    $this->relatedModel->{$this->relationName}->add($model);
+                    $saved = $this->relatedModel->save();
+                    if(!$saved)
+                    {
+                        throw new FailedToSaveModelException();
+                    }
+                }
+            }
+            else
+            {
+                //If a comment is connected only HAS_ONE from a related model, then add support for that here.
+                throw new NotImplementedException();
             }
         }
     }

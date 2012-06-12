@@ -80,7 +80,7 @@
                     'ownerHasReadLatest',
                 ),
                 'relations' => array(
-                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED),
+                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
                     'conversationItems'	 	   => array(RedBeanModel::HAS_MANY,  'Item'),
                     'conversationParticipants' => array(RedBeanModel::HAS_MANY,  'ConversationParticipant', RedBeanModel::OWNED),
                     'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
