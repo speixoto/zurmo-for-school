@@ -1187,6 +1187,10 @@ table.configuration-list tr td:last-child a:before {
   position: absolute;
   margin-top: 9px;
 }
+#JobLogsModalListView td:first-child,
+#JobLogsModalListView th:first-child {
+  padding-left: 15px;
+}
 /*Languages*/
 #LanguagesCollectionView form {
   padding: 0;
@@ -6039,7 +6043,7 @@ table.items thead tr:hover {
   right: 8px;
 }
 .portlet-toolbar a {
-  padding: 0 15px 0 25px;
+  padding: 0 15px 0 15px;
   line-height: 23px;
   margin: 0;
   font-size: 10px;
@@ -6286,7 +6290,52 @@ div.wide.form label.hasCheckBox {
   position: absolute;
   left: -9999px;
 }
+/*=LIST VIEW*/
 /*=Search Scope box, and account list*/
+.list-preloader {
+  /*from: http://jsdo.it/taka.atsushi/mlWf*/
+
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  /*url(../images/list-ajax-loader.gif) 50% 50% no-repeat;*/
+
+  -webkit-box-shadow: 0 0 30px 0 #646464;
+  -moz-box-shadow: 0 0 30px 0 #646464;
+  -o-box-shadow: 0 0 30px 0 #646464;
+  -ms-box-shadow: 0 0 30px 0 #646464;
+  box-shadow: 0 0 30px 0 #646464;
+  /*999*/
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  width: 60px;
+  height: 60px;
+  margin: -30px 0 0 -30px;
+}
+.list-preloader img {
+  margin: 25%;
+  width: 50%;
+  height: 50%;
+}
+.juiportlet-widget-content .list-preloader {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  margin: -15px 0 0 -15px;
+}
+.cgrid-view.loading .list-preloader {
+  display: block;
+}
 .ZeroModelsYetView h2 {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
@@ -6460,6 +6509,7 @@ div.wide.form label.hasCheckBox {
   float: left;
   width: 100%;
   margin-bottom: 20px;
+  position: relative;
 }
 .cgrid-view {
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
@@ -6467,6 +6517,7 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  position: relative;
 }
 .juiportlet-widget-content .cgrid-view {
   -webkit-box-shadow: none;
@@ -6983,6 +7034,7 @@ div.wide.form label.hasCheckBox {
   cursor: default;
 }
 .details-table {
+  position: relative;
   margin-right: 20px;
 }
 .details-table table {
@@ -7205,7 +7257,7 @@ div.wide.form label.hasCheckBox {
 .toolbar-mbmenu {
   position: absolute;
   top: -12px;
-  right: 30px;
+  right: 10px;
   margin: 0;
   float: right;
   width: auto;
