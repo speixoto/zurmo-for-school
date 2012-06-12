@@ -26,6 +26,14 @@
 
     class EmailMessageHelper
     {
+        /**
+         * Send system email message
+         * @param string $subject
+         * @param array $recipients
+         * @param string $textContent
+         * @param string $htmlContent
+         * @throws NotSupportedException
+         */
         public static function sendSystemEmail($subject, $recipients, $textContent = '', $htmlContent = '')
         {
             $emailMessage = new EmailMessage();
@@ -54,25 +62,26 @@
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             $validated                 = $emailMessage->validate();
+
             if (!$validated)
             {
-                $this->addErrorsAsUsageErrors($emailMessage->getErrors());
+                throw new NotSupportedException();
             }
             Yii::app()->emailHelper->sendImmediately($emailMessage);
 
-            if (!$emailMessage->hasSendError())
-            {
-                echo Yii::t('Default', 'Message successfully sent') . "\n";
-            }
-            else
-            {
-                echo Yii::t('Default', 'Message failed to send') . "\n";
-                echo $emailMessage->error     . "\n";
-            }
             $saved = $emailMessage->save();
             if (!$saved)
             {
                 throw new NotSupportedException();
+            }
+
+            if (!$emailMessage->hasSendError())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

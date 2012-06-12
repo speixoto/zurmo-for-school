@@ -76,6 +76,7 @@
             'outboundUsername' => '',
             'outboundPassword' => '',
         ),
+        'testEmailAddress' => '',
     );
 
     if (is_file(INSTANCE_ROOT . '/protected/config/perInstanceConfig.php'))

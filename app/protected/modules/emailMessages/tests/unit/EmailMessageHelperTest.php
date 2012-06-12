@@ -84,7 +84,6 @@
             $this->assertEquals('System Message', $emailMessage->subject);
             $this->assertEquals('System message content.', trim($emailMessage->content->textContent));
             $this->assertEquals('<strong>System</strong> message content.', trim($emailMessage->content->htmlContent));
-            //$this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
 
             $this->assertEquals(1, count($emailMessage->recipients));
             foreach ($emailMessage->recipients as $recipient)

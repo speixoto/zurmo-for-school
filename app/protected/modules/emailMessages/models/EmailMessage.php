@@ -123,7 +123,7 @@
 
         public function hasSendError()
         {
-            return !($this->error == null ||$this->error->id < 0);
+            return !($this->error == null || $this->error->id < 0);
         }
     }
 ?>

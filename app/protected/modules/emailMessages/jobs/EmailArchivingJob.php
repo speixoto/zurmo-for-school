@@ -107,30 +107,7 @@
                         $textContent = Yii::t('Default', 'Email address does not exist in system.') . "\n\n" . $message->textBody;
                         $htmlContent = Yii::t('Default', 'Email address does not exist in system.') . "<br><br>" . $message->htmlBody;
 
-                        $emailMessage = new EmailMessage();
-                        $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
-                        $emailMessage->subject = $subject;
-                        $emailContent              = new EmailMessageContent();
-                        $emailContent->textContent = $textContent;
-                        $emailContent->htmlContent = $htmlContent;
-                        $emailMessage->content     = $emailContent;
-                        $sender                    = new EmailMessageSender();
-                        $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
-                        $sender->fromName          = strval(Yii::app()->user->userModel);
-                        $sender->person            = Yii::app()->user->userModel;
-                        $emailMessage->sender      = $sender;
-                        $recipient                 = new EmailMessageRecipient();
-                        $recipient->toAddress      = $message->fromEmail;
-                        $recipient->type           = EmailMessageRecipient::TYPE_TO;
-                        $emailMessage->recipients->add($recipient);
-                        $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-                        $validated                 = $emailMessage->validate();
-                        if (!$validated)
-                        {
-                            $this->addErrorsAsUsageErrors($emailMessage->getErrors());
-                        }
-                        Yii::app()->emailHelper->sendImmediately($emailMessage);
+                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
                         continue;
                     }
 
@@ -141,30 +118,7 @@
                         $textContent = Yii::t('Default', "Sender info can't be extracted from email message.") . "\n\n" . $message->textBody;
                         $htmlContent = Yii::t('Default', "Sender info can't be extracted from email message.") . "<br><br>" . $message->htmlBody;
 
-                        $emailMessage = new EmailMessage();
-                        $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
-                        $emailMessage->subject = $subject;
-                        $emailContent              = new EmailMessageContent();
-                        $emailContent->textContent = $textContent;
-                        $emailContent->htmlContent = $htmlContent;
-                        $emailMessage->content     = $emailContent;
-                        $sender                    = new EmailMessageSender();
-                        $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
-                        $sender->fromName          = strval(Yii::app()->user->userModel);
-                        $sender->person            = Yii::app()->user->userModel;
-                        $emailMessage->sender      = $sender;
-                        $recipient                 = new EmailMessageRecipient();
-                        $recipient->toAddress      = $message->fromEmail;
-                        $recipient->type           = EmailMessageRecipient::TYPE_TO;
-                        $emailMessage->recipients->add($recipient);
-                        $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-                        $validated                 = $emailMessage->validate();
-                        if (!$validated)
-                        {
-                            $this->addErrorsAsUsageErrors($emailMessage->getErrors());
-                        }
-                        Yii::app()->emailHelper->sendImmediately($emailMessage);
+                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
                         continue;
                     }
 
@@ -175,30 +129,7 @@
                         $textContent = Yii::t('Default', "Receipt info can't be extracted from email message.") . "\n\n" . $message->textBody;
                         $htmlContent = Yii::t('Default', "Receipt info can't be extracted from email message.") . "<br><br>" . $message->htmlBody;
 
-                        $emailMessage = new EmailMessage();
-                        $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
-                        $emailMessage->subject = $subject;
-                        $emailContent              = new EmailMessageContent();
-                        $emailContent->textContent = $textContent;
-                        $emailContent->htmlContent = $htmlContent;
-                        $emailMessage->content     = $emailContent;
-                        $sender                    = new EmailMessageSender();
-                        $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
-                        $sender->fromName          = strval(Yii::app()->user->userModel);
-                        $sender->person            = Yii::app()->user->userModel;
-                        $emailMessage->sender      = $sender;
-                        $recipient                 = new EmailMessageRecipient();
-                        $recipient->toAddress      = $message->fromEmail;
-                        $recipient->type           = EmailMessageRecipient::TYPE_TO;
-                        $emailMessage->recipients->add($recipient);
-                        $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-                        $validated                 = $emailMessage->validate();
-                        if (!$validated)
-                        {
-                            $this->addErrorsAsUsageErrors($emailMessage->getErrors());
-                        }
-                        Yii::app()->emailHelper->sendImmediately($emailMessage);
+                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
                         continue;
                     }
 
@@ -257,8 +188,11 @@
                     $validated                 = $emailMessage->validate();
                     if (!$validated)
                     {
-                        // To-Do::What to do if emailMessage couldn't be validated???
-                        // Email user
+                        // Email message couldn't be validated(some related models can't be validated). Email user.
+                        $subject = Yii::t('Default', "Email message could not be validated.");
+                        $textContent = Yii::t('Default', "Email message could not be validated.") . "\n\n" . $message->textBody;
+                        $htmlContent = Yii::t('Default', "Email message could not be validated.") . "<br><br>" . $message->htmlBody;
+                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
                     }
                     $saved = $emailMessage->save();
 
@@ -270,8 +204,11 @@
                     }
                     catch (NotSupportedException $e)
                     {
-                        // To-Do::What to do if emailMessage couldn't be saved???
-                        // Should we send some email to email owner?
+                        // Email message couldn't be saved. Inform user
+                        $subject = Yii::t('Default', "Email message could not be saved.");
+                        $textContent = Yii::t('Default', "Email message could not be saved.") . "\n\n" . $message->textBody;
+                        $htmlContent = Yii::t('Default', "Email message could not be saved.") . "<br><br>" . $message->htmlBody;
+                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
                     }
                 }
                 if ($lastCheckTime != ''){
