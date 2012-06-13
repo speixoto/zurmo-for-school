@@ -130,13 +130,11 @@
                         'name'  => $emailMessage->fromName
                     )
                 );
-                // To-Do: Get additional recipients
             }
             else
             {
                 //I am sending email, so recipients are in too fields
                 $emailRecipients = $emailMessage->to;
-                // To-Do: Get additional details, like CC recipients
             }
             return $emailRecipients;
         }
@@ -168,8 +166,8 @@
         public static function resolveEmailSenderFromForwardedEmailMessage(ImapMessage $emailMessage)
         {
             $emailSender   = false;
-            $pattern = '/^\s*From:\s+(.*?)\s*(?:\[mailto:|<)(.*?)(?:[\]>])\s*$/mi';
-
+            //$pattern = '/^\s*From:\s+(.*?)\s*(?:\[mailto:|<)(.*?)(?:[\]>])\s*$/mi';
+            $pattern = '/^\s*(?:.*?):\s*(.*)?\s*(?:\[mailto:|<)([\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,6})(?:[\]>])(?:.*)?$/mi';
             $noOfMatches = false;
             if ($emailMessage->textBody != '')
             {
@@ -185,8 +183,8 @@
             // Fix this, so we can match email only for example!!!
             if ($noOfMatches > 0)
             {
-                $emailSender['name'] = $matches[1];
-                $emailSender['email'] = $matches[2];
+                $emailSender['name'] = trim($matches[1]);
+                $emailSender['email'] = trim($matches[2]);
             }
 
             return $emailSender;
