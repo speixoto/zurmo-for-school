@@ -41,7 +41,7 @@
         }
 
        /**
-         * Override to handle incoming file upload information and to handle saving the comment against the conversation
+         * Override to handle saving the comment against the conversation
          * if it is not already connected.
          * (non-PHPdoc)
          * @see ModelHasRelatedItemsZurmoControllerUtil::afterSetAttributesDuringSave()

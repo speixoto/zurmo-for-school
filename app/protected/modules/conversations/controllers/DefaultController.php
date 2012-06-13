@@ -158,5 +158,77 @@
                 }
             }
         }
+
+        public function actionDelete($id)
+        {
+            $conversation = Conversation::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($conversation);
+            $conversation->delete();
+            $this->redirect(array($this->getId() . '/index'));
+        }
+
+        public function actionDeleteCommentViaAjax($conversationId, $commentId)
+        {
+            $comment          = Comment::getById(intval($commentId));
+            $conversation     = Conversation::getById(intval($conversationId));
+            if($comment->createdByUser->id != Yii::app()->user->userModel->id &&
+               $conversation->owner->id    != Yii::app()->user->userModel->id)
+            {
+                $messageView = new AccessFailureAjaxView();
+                $view        = new AjaxPageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $deleted = $comment->delete();
+            if(!$deleted)
+            {
+                throw new FailedToDeleteModelException();
+            }
+        }
+
+        public function actionCreateFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl)
+        {
+            $conversation         = $this->resolveNewModelByRelationInformation( new Conversation(),
+                                                                                $relationAttributeName,
+                                                                                (int)$relationModelId,
+                                                                                $relationModuleId);
+            $this->actionCreateByModel($conversation, $redirectUrl);
+        }
+
+        protected function actionCreateByModel(Conversation $conversation, $redirectUrl)
+        {
+            $titleBarAndEditView = $this->makeEditAndDetailsView(
+                                            $this->attemptToSaveModelFromPost($conversation, $redirectUrl), 'Edit');
+            $pageViewClassName = $this->getPageViewClassName();
+            $view = new $pageViewClassName(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+            echo $view->render();
+        }
+
+
+        /**
+         * Override to handle the special scenario of relations for a conversation. Since relations are done in the
+         * ConversationItems, the relation information needs to handled in a specific way.
+         * @see ZurmoModuleController->resolveNewModelByRelationInformation
+         */
+        protected function resolveNewModelByRelationInformation(    $model, $relationModelClassName,
+                                                                    $relationModelId, $relationModuleId)
+        {
+            assert('$model instanceof Conversation');
+            assert('is_string($relationModelClassName)');
+            assert('is_int($relationModelId)');
+            assert('is_string($relationModuleId)');
+
+            $metadata = Conversation::getMetadata();
+            if (in_array($relationModelClassName, $metadata['Conversation']['conversationItemsModelClassNames']))
+            {
+                $model->conversationItems->add($relationModelClassName::getById((int)$relationModelId));
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $model;
+        }
     }
 ?>

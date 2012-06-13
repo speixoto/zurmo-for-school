@@ -41,11 +41,32 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        /**
+         * Using conversation to test this method.
+         */
         public function testGetCommentsByRelatedModelTypeIdAndPageSize()
         {
-            $commentsData             = Comment::getCommentsByRelatedModelTypeIdAndPageSize($relatedModelClassName,
-                                                                                            $relatedModelId,
-                                                                                            $retrievalPageSize);
+            $super                     = Yii::app()->user->userModel;
+            $comment1                  = new Comment();
+            $comment1->description     = 'Comment 1';
+            $comment2                  = new Comment();
+            $comment2->description     = 'Comment 2';
+            $comment3                  = new Comment();
+            $comment3->description     = 'Comment 3';
+            $conversation              = new Conversation();
+            $conversation->owner       = $super;
+            $conversation->subject     = 'My test subject';
+            $conversation->description = 'My test description';
+            $this->assertTrue($conversation->save());
+            $conversation->comments->add($comment1);
+            $conversation->comments->add($comment2);
+            $conversation->comments->add($comment3);
+            $this->assertTrue($conversation->save());
+
+            $commentsData             = Comment::getCommentsByRelatedModelTypeIdAndPageSize('Conversation',
+                                                                                            $conversation->id,
+                                                                                            5);
+            $this->assertEquals(3, count($commentsData));
         }
     }
 ?>

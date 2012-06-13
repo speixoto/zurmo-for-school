@@ -81,7 +81,6 @@
 
         protected function renderConversationParticipantsContent()
         {
-
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',

@@ -38,6 +38,7 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            ReadPermissionsOptimizationUtil::rebuild();
 
             //Setup test data owned by the super user.
             AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
@@ -160,7 +161,8 @@
 
             //Uninvite mary (via detailview)
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $this->setPostArray(array('ConversationParticipantsForm' => array($mary->id => '0', $steven->id => '1', $sally->id => '0')));
+            $this->setPostArray(array('ConversationParticipantsForm' => array('itemIds' => $steven->getClassId('Item') . ',' .
+                                                                                           $sally->getClassId('Item'))));
             $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants', true);
             $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
@@ -178,52 +180,84 @@
         {
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $steven         = User::getByUsername('steven');
-            $sally           = User::getByUsername('sally');
+            $sally          = User::getByUsername('sally');
+            $mary           = User::getByUsername('mary');
             $conversations  = Conversation::getAll();
             $this->assertEquals(1, count($conversations));
             $this->assertEquals(0, $conversations[0]->comments->count());
-            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
-            $this->assertEquals($oldStamp,                $conversation[0]->latestDateTime);
-
-            //new test - add comment (DetailView)
-
-            //hmm. if we save from the inlineCreateSave in comments... how can we update latestStamp.
+            $oldStamp        = $conversations[0]->latestDateTime;
 
             //Validate comment
-            $this->setGetArray(array('relatedModelId' => $conversations[0]->id, 'relatedModelClassName' => 'Conversation',
-                                     'relatedModelRelationName' => 'comments'));
+            $this->setGetArray(array('relatedModelId'             => $conversations[0]->id,
+                                     'relatedModelClassName'      => 'Conversation',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'redirectUrl'                => 'someRedirect'));
             $this->setPostArray(array('ajax' => 'inline-edit-form',
                                       'Comment' => array('description' => 'a ValidComment Name')));
-            $this->setGetArray(array('id'       => $note->id, 'redirectUrl' => 'someRedirect'));
+
             $content = $this->runControllerWithExitExceptionAndGetContent('comments/default/inlineCreateSave');
             $this->assertEquals('[]', $content);
 
             //Now save that comment.
-            $this->setGetArray(array('relatedModelId' => $conversations[0]->id, 'relatedModelClassName' => 'Conversation',
-                                     'relatedModelRelationName' => 'comments'));
+            $this->setGetArray(array('relatedModelId'             => $conversations[0]->id,
+                                     'relatedModelClassName'      => 'Conversation',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'redirectUrl'                => 'someRedirect'));
             $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name')));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
+            $id = $conversations[0]->id;
+            $conversations[0]->forget();
+            $conversation = Conversation::getById($id);
+            $this->assertEquals(1, $conversation->comments->count());
 
             //should update latest activity stamp
-            $this->assertNotEquals($oldStamp, $conversation[0]->latestDateTime);
-            //The comment should have everyone explicitly on it
-            $this->assertEquals(1, $conversations[0]->comments->count());
-            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
-                                                 makeBySecurableItem($conversations[0]->comments->offsetGet(0));
-            $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals(1, count($readWritePermitables));
-            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
+            $this->assertNotEquals($oldStamp, $conversations[0]->latestDateTime);
+            $newStamp = $conversations[0]->latestDateTime;
 
-            $mary          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
+            //Mary is not a participant, so she should not be able to add a comment
+            $mary = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
+            $this->setGetArray(array('relatedModelId'             => $conversations[0]->id,
+                                     'relatedModelClassName'      => 'Conversation',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'redirectUrl'                => 'someRedirect'));
+            $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name 2')));
+            try
+            {
+                $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
+                $this->fail();
+            }
+            catch(AccessDeniedSecurityException $e)
+            {
+                //success.
+            }
 
-            //new test - mary can add comment ok
-            $this->setGetArray(array('relatedModelId' => $conversations[0]->id, 'relatedModelClassName' => 'Conversation',
-                                     'relatedModelRelationName' => 'comments'));
+            //Add mary as a participant.
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->setPostArray(array('ConversationParticipantsForm' => array('itemIds' => $mary->getClassId('Item'))));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants', true);
+
+            //Mary can add comment ok
+            $mary = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
+            $this->setGetArray(array('relatedModelId'             => $conversations[0]->id,
+                                     'relatedModelClassName'      => 'Conversation',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'redirectUrl'                => 'someRedirect'));
             $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name 2')));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
-            $this->assertEquals(2, $conversations[0]->comments->count());
+            $id = $conversations[0]->id;
+            $conversations[0]->forget();
+            $conversation = Conversation::getById($id);
+            $this->assertEquals(2, $conversation->comments->count());
+            $this->assertNotEquals($newStamp, $conversation->latestDateTime);
+
+            //Remove mary as a participant. should get redirect content
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->setPostArray(array('ConversationParticipantsForm' => array('itemIds' => '')));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants');
+            $this->assertEquals('redirectToList', $content);
         }
 
         /**
@@ -231,38 +265,52 @@
          */
         public function testUserEditAndDeletePermissions()
         {
-            $mary          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $mary           = User::getByUsername('mary');
             $conversations  = Conversation::getAll();
             $this->assertEquals(1, count($conversations));
+            $this->assertEquals(2, $conversations[0]->comments->count());
 
-            //new test - mary cannot go to edit of conversation because she is not the owner
+            //Add mary back as a participant.
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $this->runControllerShouldResultInAccessFailureAndGetContent('conversations/default/edit');
+            $this->setPostArray(array('ConversationParticipantsForm' => array('itemIds' => $mary->getClassId('Item'))));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants', true);
 
-            //new test - mary cannot delete a conversation she does not own
+            //new test - mary, as a participant can edit the conversation
+            $mary           = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $this->runControllerShouldResultInAccessFailureAndGetContent('conversations/default/delete');
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/edit');
 
             //new test - mary can delete a comment she wrote
-            $maryCommentId = $conversations[1]->comments->offsetGet(1)->id;
+            $maryCommentId = $conversations[0]->comments->offsetGet(1)->id;
+            $this->assertEquals($conversations[0]->comments->offsetGet(1)->createdByUser->id, $mary->id);
             $superCommentId = $conversations[0]->comments->offsetGet(0)->id;
-            $this->setGetArray(array('id' => $maryCommentId));
-            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/delete');
-            $this->assertEquals(1, $conversations[0]->comments->count());
+            $this->assertEquals($conversations[0]->comments->offsetGet(0)->createdByUser->id, $super->id);
+            $this->setGetArray(array('commentId' => $maryCommentId, 'conversationId' => $conversations[0]->id));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/deleteCommentViaAjax', true);
+            $conversationId  = $conversations[0]->id;
+            $conversations[0]->forget();
+            $conversation = Conversation::getById($conversationId);
+            $this->assertEquals(1, $conversation->comments->count());
 
             //new test - mary cannot delete a comment she did not write.
-            $this->setGetArray(array('id' => $superCommentId));
-            $this->runControllerShouldResultInAccessFailureAndGetContent('conversations/default/delete');
-            $this->assertEquals(1, $conversations[0]->comments->count());
+            $this->setGetArray(array('commentId' => $superCommentId, 'conversationId' => $conversations[0]->id));
+            $this->runControllerShouldResultInAjaxAccessFailureAndGetContent('conversations/default/deleteCommentViaAjax');
+            $conversationId  = $conversations[0]->id;
+            $conversations[0]->forget();
+            $conversation = Conversation::getById($conversationId);
+            $this->assertEquals(1, $conversation->comments->count());
+            $this->assertEquals(1, $conversation->comments->count());
 
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             //new test , super can edit the conversation
-            $this->setGetArray(array('id' => $conversations[0]->id));
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
+            $this->setGetArray(array('id' => $conversation->id));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/details');
 
             //new test , super can delete the conversation
-            $this->setGetArray(array('id' => $conversations[0]->id));
-            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/delete');
+            $this->setGetArray(array('id' => $conversation->id));
+            $this->runControllerWithRedirectExceptionAndGetContent('conversations/default/delete');
 
             $conversations  = Conversation::getAll();
             $this->assertEquals(0, count($conversations));
@@ -298,7 +346,7 @@
 
             //Load the portlet details for latest activity
             $getData = array('id' => $superAccountId,
-                             'portletId' => 2,
+                             'portletId' => $portletToUse->id,
                              'uniqueLayoutId' => 'AccountDetailsAndRelationsView_2',
                              'LatestActivitiesConfigurationForm' => array(
                                 'filteredByModelName' => 'all',
@@ -355,53 +403,33 @@
             $this->assertEquals(0, count($conversations));
 
             //add related note for account using createFromRelation action
-            $conversationItemPostData = array('account' => array('id' => $account->id));
-            $this->setGetArray(array('relationAttributeName' => 'Account', 'relationModelId' => $superAccountId,
-                                     'relationModuleId'      => 'accounts', 'redirectUrl' => 'someRedirect'));
+            $conversationItemPostData = array('account' => array('id' => $accounts[0]->id));
+            $this->setGetArray(array(   'relationAttributeName'  => 'Account',
+                                        'relationModelId'        => $superAccountId,
+                                        'relationModuleId'       => 'accounts',
+                                        'redirectUrl'            => 'someRedirection'));
             $this->setPostArray(array('ConversationItemForm' => $conversationItemPostData,
                                       'Conversation' => array('subject' => 'Conversation Subject', 'description' => 'A description')));
-            $this->runControllerWithRedirectExceptionAndGetContent('notes/default/createFromRelation');
+            $this->runControllerWithRedirectExceptionAndGetContent('conversations/default/createFromRelation');
 
-            $conversations  = Conversation::getAll();
+            $conversations = Conversation::getAll();
             $this->assertEquals(1,            count($conversations));
             $this->assertEquals(1,            $conversations[0]->conversationItems->count());
-            $this->assertEquals($accounts[0], $conversations[0]->conversationItems->getOffset(0));
+            $this->assertEquals($accounts[0]->getClassId('Item'), $conversations[0]->conversationItems->offsetGet(0)->getClassId('Item'));
         }
 
         /**
          * @depends testCreateFromModel
          */
-        public function testAttachments()
-        {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $conversations  = Conversation::getAll();
-            $this->assertEquals(1, count($conversations));
-            //test adding/editing/remove of attachments via UI.
-            //should be similar to how notes works with attachments.
-            $this->fail(); //remove once this is completed.
-
-        }
-
-        /**
-         * @depends testAttachments
-         */
-        public function testUnparticipatingACurrentUser()
-        {
-            //todo: also test unparticipating yourself.!!! which you can only do if you did not create the conversation.
-        }
-
-        /**
-         * @depends testUnparticipatingACurrentUser
-         */
         public function testCommentsAjaxListForRelatedModel()
         {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $conversations  = Conversation::getAll();
             $this->assertEquals(1, count($conversations));
             $this->setGetArray(array('relatedModelId' => $conversations[0]->id, 'relatedModelClassName' => 'Conversation',
                                      'relatedModelRelationName' => 'comments'));
             $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $content = $this->runControllerWithNoExceptionsAndGetContent('comments/default/ajaxListForRelatedModel');
-            echo $content;
         }
     }
 ?>
