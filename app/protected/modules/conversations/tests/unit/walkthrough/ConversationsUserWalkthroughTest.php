@@ -43,9 +43,12 @@
             AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
 
             //Create test users
-            $steven                    = User::getByUsername('steven');
-            $sally                     = UserTestHelper::createBasicUser('sally');
-            $mary                      = UserTestHelper::createBasicUser('mary');
+            $steven                             = UserTestHelper::createBasicUser('steven');
+            $steven->primaryEmail->emailAddress = 'steven@testzurmo.com';
+            $sally                              = UserTestHelper::createBasicUser('sally');
+            $sally->primaryEmail->emailAddress  = 'sally@testzurmo.com';
+            $mary                               = UserTestHelper::createBasicUser('mary');
+            $mary->primaryEmail->emailAddress  = 'mary@testzurmo.com';
 
             //give 3 users access, create, delete for conversation rights.
             $steven->setRight('ConversationsModule', ConversationsModule::RIGHT_ACCESS_CONVERSATIONS);
@@ -99,30 +102,31 @@
             //Test creating conversation via POST, invite Mary
             $conversations = Conversation::getAll();
             $this->assertEquals(0, count($conversations));
-            $activityItemPostData = array('Account' => array('id' => $superAccountId));
-            $this->setPostArray(array('ConversationParticipants' => array($mary->id => '1'),
-                                      'ActivityItemForm'         => $activityItemPostData,
-                                      'Conversation'             => array('subject'     => 'TestSubject',
+            $itemPostData = array('Account' => array('id' => $superAccountId));
+            $this->setPostArray(array('ConversationParticipantsForm' => array('itemIds' => $mary->getClassId('Item')),
+                                      'ConversationItemForm'         => $itemPostData,
+                                      'Conversation'                 => array('subject' => 'TestSubject',
                                                                           'description' => 'TestDescription')));
-            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/create');
+            $this->runControllerWithRedirectExceptionAndGetContent('conversations/default/create');
 
             //Confirm conversation saved.
             $conversations = Conversation::getAll();
             $this->assertEquals(1, count($conversations));
             //Confirm conversation is connected to the related account.
+            $this->assertEquals(1, $conversations[0]->conversationItems->count());
             $this->assertEquals($accounts[0], $conversations[0]->conversationItems->offsetGet(0));
 
             //Confirm Mary is invited.
             $this->assertEquals(1,     $conversations[0]->conversationParticipants->count());
-            $this->assertEquals($mary, $conversations[0]->conversationParticipants->offsetGet(0));
-            $this->assertFalse($conversations[0]->conversationParticipants->offsetGet(0)->hasReadLatest);
+            $this->assertEquals($mary, $conversations[0]->conversationParticipants->offsetGet(0)->person);
+            $this->assertNull($conversations[0]->conversationParticipants->offsetGet(0)->hasReadLatest);
 
             //Confirm Mary is the only one with explicit permissions on the conversation
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  makeBySecurableItem($conversations[0]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals(0, count($readWritePermitables));
-            $this->assertTrue($readWritePermitables[$mary->id]);
+            $this->assertEquals(1, count($readWritePermitables));
+            $this->assertTrue(isset($readWritePermitables[$mary->id]));
         }
 
         /**
@@ -132,36 +136,39 @@
         {
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $steven         = User::getByUsername('steven');
-            $sally           = User::getByUsername('sally');
+            $sally          = User::getByUsername('sally');
+            $mary           = User::getByUsername('mary');
             $conversations  = Conversation::getAll();
             $this->assertEquals(1, count($conversations));
-            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
-
-            //Test inviting steven (via detailview)
-            $this->setPostArray(array('ConversationParticipantsForm' => array($mary->id => '1', $steven->id => '1', $sally->id => '0')));
-            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants');
-            //steven should get email
-            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(1, Yii::app()->emailHelper->getSentCount());
+            //Test inviting steven and sally (via detailview)
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->setPostArray(array('ConversationParticipantsForm' => array('itemIds' => $mary->getClassId('Item') . ',' .
+                                                                                           $steven->getClassId('Item') . ',' .
+                                                                                           $sally->getClassId('Item'))));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants', true);
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             //should be 2 explicits read/write
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  makeBySecurableItem($conversations[0]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals(2, count($readWritePermitables));
+            $this->assertEquals(3, count($readWritePermitables));
 
             //Uninvite mary (via detailview)
+            $this->setGetArray(array('id' => $conversations[0]->id));
             $this->setPostArray(array('ConversationParticipantsForm' => array($mary->id => '0', $steven->id => '1', $sally->id => '0')));
-            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants');
-            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(1, Yii::app()->emailHelper->getSentCount());
-            //should be 1 explicits read/write
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/updateParticipants', true);
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            //should be 2 explicits read/write
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  makeBySecurableItem($conversations[0]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
-            $this->assertEquals(1, count($readWritePermitables));
+            $this->assertEquals(2, count($readWritePermitables));
         }
 
         /**
@@ -184,17 +191,18 @@
             //hmm. if we save from the inlineCreateSave in comments... how can we update latestStamp.
 
             //Validate comment
-            $relatedModelPostData = array('Conversation' => $conversation->id);
-            $this->setPostArray(array('RelatedModelForm' => $relatedModelPostData,
-                                      'ajax' => 'inline-edit-form',
+            $this->setGetArray(array('relatedModelId' => $conversations[0]->id, 'relatedModelClassName' => 'Conversation',
+                                     'relatedModelRelationName' => 'comments'));
+            $this->setPostArray(array('ajax' => 'inline-edit-form',
                                       'Comment' => array('description' => 'a ValidComment Name')));
             $this->setGetArray(array('id'       => $note->id, 'redirectUrl' => 'someRedirect'));
             $content = $this->runControllerWithExitExceptionAndGetContent('comments/default/inlineCreateSave');
             $this->assertEquals('[]', $content);
 
             //Now save that comment.
-            $this->setPostArray(array('RelatedModelForm' => $relatedModelPostData,
-                                      'Comment'          => array('description' => 'a ValidComment Name')));
+            $this->setGetArray(array('relatedModelId' => $conversations[0]->id, 'relatedModelClassName' => 'Conversation',
+                                     'relatedModelRelationName' => 'comments'));
+            $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name')));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
 
             //should update latest activity stamp
@@ -211,8 +219,9 @@
             $mary          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
 
             //new test - mary can add comment ok
-            $this->setPostArray(array('RelatedModelForm' => $relatedModelPostData,
-                                      'Comment'          => array('description' => 'a ValidComment Name 2')));
+            $this->setGetArray(array('relatedModelId' => $conversations[0]->id, 'relatedModelClassName' => 'Conversation',
+                                     'relatedModelRelationName' => 'comments'));
+            $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name 2')));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
             $this->assertEquals(2, $conversations[0]->comments->count());
         }
@@ -359,15 +368,40 @@
             $this->assertEquals($accounts[0], $conversations[0]->conversationItems->getOffset(0));
         }
 
+        /**
+         * @depends testCreateFromModel
+         */
         public function testAttachments()
         {
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $conversations  = Conversation::getAll();
             $this->assertEquals(1, count($conversations));
             //test adding/editing/remove of attachments via UI.
-            $this->fail();
-            //todo: also test unparticipanting yourself.!!!
+            //should be similar to how notes works with attachments.
+            $this->fail(); //remove once this is completed.
+
         }
 
+        /**
+         * @depends testAttachments
+         */
+        public function testUnparticipatingACurrentUser()
+        {
+            //todo: also test unparticipating yourself.!!! which you can only do if you did not create the conversation.
+        }
+
+        /**
+         * @depends testUnparticipatingACurrentUser
+         */
+        public function testCommentsAjaxListForRelatedModel()
+        {
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(1, count($conversations));
+            $this->setGetArray(array('relatedModelId' => $conversations[0]->id, 'relatedModelClassName' => 'Conversation',
+                                     'relatedModelRelationName' => 'comments'));
+            $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('comments/default/ajaxListForRelatedModel');
+            echo $content;
+        }
     }
 ?>

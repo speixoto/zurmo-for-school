@@ -134,8 +134,7 @@
             if(isset($postData['ConversationParticipantsForm']))
             {
                 $conversation                      = Conversation::getById($id);
-                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
-                                                    resolveByPostDataAndModelThenMake(array(), $conversation);
+                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($conversation);
                 $currentUserWasParticipant         = ConversationParticipantsUtil::isUserAParticipant($conversation, Yii::app()->user->userModel);
                 ConversationParticipantsUtil::
                     resolveConversationHasManyParticipantsFromPost($conversation,
@@ -157,7 +156,6 @@
                 {
                     throw new FailedToSaveModelException();
                 }
-
             }
         }
     }

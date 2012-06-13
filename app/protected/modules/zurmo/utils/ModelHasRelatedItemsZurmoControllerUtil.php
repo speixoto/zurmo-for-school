@@ -36,7 +36,7 @@
         public function __construct($relatedItemsRelationName, $relatedItemsFormName)
         {
             assert('is_string($relatedItemsRelationName)');
-            assert('is_string($relatedItemsFormName');
+            assert('is_string($relatedItemsFormName)');
             $this->relatedItemsRelationName = $relatedItemsRelationName;
             $this->relatedItemsFormName     = $relatedItemsFormName;
         }

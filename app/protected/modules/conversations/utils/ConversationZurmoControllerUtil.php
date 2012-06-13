@@ -35,6 +35,7 @@
         {
             assert('is_string($relatedItemsRelationName)');
             assert('is_string($relatedItemsFormName)');
+            parent::__construct($relatedItemsRelationName, $relatedItemsFormName);
             $this->conversationParticipantFormName = $conversationParticipantFormName;
         }
 

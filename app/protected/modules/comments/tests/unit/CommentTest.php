@@ -24,45 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Override class is used specifically by the
-     * testing framework to provide an exception
-     * during a redirect call.
-     */
-    class HttpRequestForTesting extends CHttpRequest
+    class CommentTest extends ZurmoBaseTest
     {
-        public function redirect($url, $terminate = true, $statusCode = 302)
+        public static function setUpBeforeClass()
         {
-            throw new RedirectException($url);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            AccountTestHelper::createAccountByNameForOwner('anAccount', $super);
         }
 
-        /**
-         * Override returns a fake Uri. Request URI is not relevant when doing
-         * command line unit tests.
-         */
-        public function getRequestUri()
+        public function setUp()
         {
-            return '/app/test/index.php/somewhereForTheTest'; // Not Coding Standard
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        /**
-         * Override for testing since you cannot set headers during testing.
-         * @see CHttpRequest::sendFile()
-         */
-        public function sendFile($fileName, $content, $mimeType = null, $terminate = true)
+        public function testGetCommentsByRelatedModelTypeIdAndPageSize()
         {
-            echo 'Testing download.';
-            Yii::app()->end(0, false);
-        }
-
-        /**
-         * Override to avoid when parameters such as SERVER_NAME are not available via unit testing.
-         * (non-PHPdoc)
-         * @see CHttpRequest::getHostInfo()
-         */
-        public function getHostInfo($schema = '')
-        {
-            return 'localhost';
+            $commentsData             = Comment::getCommentsByRelatedModelTypeIdAndPageSize($relatedModelClassName,
+                                                                                            $relatedModelId,
+                                                                                            $retrievalPageSize);
         }
     }
 ?>

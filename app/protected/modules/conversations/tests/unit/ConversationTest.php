@@ -46,7 +46,6 @@
             $super                     = User::getByUsername('super');
             $fileModel                 = ZurmoTestHelper::createFileModel();
             $accounts                  = Account::getByName('anAccount');
-            $nowStamp                  = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $participant               = UserTestHelper::createBasicUser('steven');
 
             $conversationParticipant                = new ConversationParticipant();
@@ -57,9 +56,10 @@
             $conversation->owner       = $super;
             $conversation->subject     = 'My test subject';
             $conversation->description = 'My test description';
-            $conversation->conversationItems->add($participant);
+            $conversation->conversationItems->add($accounts[0]);
             $conversation->files->add($fileModel);
             $conversation->conversationParticipants->add($conversationParticipant);
+            $nowStamp                  = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $this->assertTrue($conversation->save());
             $id = $conversation->id;
             unset($conversation);
@@ -68,6 +68,7 @@
             $this->assertEquals('My test subject',        $conversation->subject);
             $this->assertEquals('My test description',    $conversation->description);
             $this->assertEquals($super,                   $conversation->owner);
+
             $this->assertEquals(1,                        $conversation->conversationItems->count());
             $this->assertEquals($accounts[0],             $conversation->conversationItems->offsetGet(0));
             $this->assertEquals(1,                        $conversation->files->count());
@@ -131,12 +132,10 @@
             $conversation->subject     = 'My test subject2';
             $conversation->description = 'My test description2';
             $this->assertTrue($conversation->save());
-            $id = $conversation->id;
-            unset($conversation);
 
             //Set explicitPermissions. Should not add any at this point
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
-                                                 makeBySecurableItem(Conversation::getById());
+                                                 makeBySecurableItem($conversation);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(0, count($readWritePermitables));
 
@@ -151,9 +150,8 @@
             $this->assertEquals(0, $conversation->conversationParticipants->count());
 
             //Add steven as a conversation participant.
-            $conversation              = Conversation::getById($id);
             $postData = array();
-            $postData['itemIds'] = $super->id . ',' . $steven->id;
+            $postData['itemIds'] = $super->getClassId('Item') . ',' . $steven->getClassId('Item');
             ConversationParticipantsUtil::resolveConversationHasManyParticipantsFromPost($conversation,
                                                                                          $postData,
                                                                                          $explicitReadWriteModelPermissions);
@@ -161,17 +159,15 @@
             $success = ExplicitReadWriteModelPermissionsUtil::
                         resolveExplicitReadWriteModelPermissions($conversation, $explicitReadWriteModelPermissions);
             $this->assertTrue($success);
-            $id = $conversation->id;
-            unset($conversation);
 
             //At this point there should be one readWritePermitable.  "Steven"
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
-                                                 makeBySecurableItem(Conversation::getById());
+                                                 makeBySecurableItem($conversation);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals($steven, $readWritePermitables[$steven->id]);
             $this->assertEquals(1, $conversation->conversationParticipants->count());
-            $this->assertEquals($steven, $conversation->conversationParticipants[0]);
+            $this->assertEquals($steven, $conversation->conversationParticipants[0]->person);
         }
 
         public function testGetUnreadConversationCount()
@@ -195,15 +191,29 @@
             $count                     = Conversation::getUnreadCountByUser($super);
             $this->assertEquals(0, $count);
 
+            //Add mary as a participant
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 makeBySecurableItem($conversation);
+            $postData            = array();
+            $postData['itemIds'] = $super->getClassId('Item') . ',' . $mary->getClassId('Item');
+            ConversationParticipantsUtil::resolveConversationHasManyParticipantsFromPost($conversation,
+                                                                                         $postData,
+                                                                                         $explicitReadWriteModelPermissions);
+            $success              = ExplicitReadWriteModelPermissionsUtil::
+                                        resolveExplicitReadWriteModelPermissions($conversation,
+                                                                                 $explicitReadWriteModelPermissions);
+            $this->assertTrue($success);
+            $conversation->save();
+
             //when mary adds a comment, super's count should go up (assumming count was previously 0)
             Yii::app()->user->userModel = $mary;
-            $comment                   = new Comment();
-            $comment->description      = 'This is mary\'s first comment';
+            $comment                    = new Comment();
+            $comment->description       = 'This is mary\'s first comment';
             $conversation->comments->add($comment);
             $this->assertTrue($conversation->save());
             Yii::app()->user->userModel = $super;
-            $count                     = Conversation::getUnreadCountByUser($super);
-            $this->assertEquals(0, $count);
+            $count                      = Conversation::getUnreadCountByUser($super);
+            $this->assertEquals(1, $count);
         }
     }
 ?>

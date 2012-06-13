@@ -52,7 +52,7 @@
          * @param object $explicitReadWriteModelPermissions - ExplicitReadWriteModelPermissions model
          */
         public static function resolveConversationHasManyParticipantsFromPost(
-                                    Conversation $model, $postData, $explicitReadWriteModelPermissions)
+                                    Conversation $conversation, $postData, $explicitReadWriteModelPermissions)
         {
             assert('$explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions');
             if (isset($postData['itemIds']) && strlen($postData['itemIds']) > 0)
@@ -61,15 +61,15 @@
                 $newPeopleIndexedByItemId = array();
                 foreach ($itemIds as $itemId)
                 {
-                    if($itemId != $model->owner->getClassId('Item'))
+                    if($itemId != $conversation->owner->getClassId('Item'))
                     {
                         $newPeopleIndexedByItemId[$itemId] = static::castDownItem(Item::getById((int)$itemId));
                     }
                 }
-                if ($model->conversationParticipants->count() > 0)
+                if ($conversation->conversationParticipants->count() > 0)
                 {
                     $participantsToRemove = array();
-                    foreach ($model->conversationParticipants as $index => $existingParticipantModel)
+                    foreach ($conversation->conversationParticipants as $index => $existingParticipantModel)
                     {
                         if (!isset($newPeopleIndexedByItemId[$existingParticipantModel->person->getClassId('Item')]))
                         {
@@ -82,7 +82,7 @@
                     }
                     foreach ($participantsToRemove as $participantModelToRemove)
                     {
-                        $model->conversationParticipants->remove($participantModelToRemove);
+                        $conversation->conversationParticipants->remove($participantModelToRemove);
                         $person = static::castDownItem($participantModelToRemove->person);
                         if($person instanceof Permitable)
                         {
@@ -93,17 +93,18 @@
                 //Now add missing participants
                 foreach ($newPeopleIndexedByItemId as $personOrUserModel)
                 {
-                    $model->conversationParticipants->add(static::makeConversationParticipantByPerson($personOrUserModel));
+                    $conversation->conversationParticipants->add(static::makeConversationParticipantByPerson($personOrUserModel));
                     if($personOrUserModel instanceof Permitable)
                     {
                         $explicitReadWriteModelPermissions->addReadWritePermitable($personOrUserModel);
                     }
+                    static::sendEmailInviteToParticipant($conversation, $personOrUserModel);
                 }
             }
             else
             {
                 //remove all participants
-                $model->conversationParticipants->removeAll();
+                $conversation->conversationParticipants->removeAll();
                 $explicitReadWriteModelPermissions->removeAllReadWritePermitables();
             }
         }
@@ -130,6 +131,70 @@
             $conversationParticipant         = new ConversationParticipant();
             $conversationParticipant->person = $personOrUserModel;
             return $conversationParticipant;
+        }
+
+        protected static function sendEmailInviteToParticipant(Conversation $conversation, $person)
+        {
+            assert('$person instanceof User || $person instanceof Contact');
+            if ($person->primaryEmail->emailAddress !== null)
+            {
+                $userToSendMessagesFrom    = $conversation->owner;
+                $emailMessage              = new EmailMessage();
+                $emailMessage->owner       = Yii::app()->user->userModel;
+                $emailMessage->subject     = Yii::t('Default', 'You have been invited to participate in a conversation');
+                $emailContent              = new EmailMessageContent();
+                $emailContent->textContent = static::getPartipantInviteEmailTextContent ($conversation);
+                $emailContent->htmlContent = static::getPartipantInviteEmailHtmlContent($conversation);
+                $emailMessage->content     = $emailContent;
+                $sender                    = new EmailMessageSender();
+                $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+                $sender->fromName          = strval($userToSendMessagesFrom);
+                $emailMessage->sender      = $sender;
+                $recipient                 = new EmailMessageRecipient();
+                $recipient->toAddress      = $person->primaryEmail->emailAddress;
+                $recipient->toName         = strval($person);
+                $recipient->type           = EmailMessageRecipient::TYPE_TO;
+                $recipient->person         = $person;
+                $emailMessage->recipients->add($recipient);
+                $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+                $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+                try
+                {
+                    Yii::app()->emailHelper->send($emailMessage);
+                }
+                catch (CException $e)
+                {
+                    //Not sure what to do yet when catching an exception here. Currently ignoring gracefully.
+                }
+            }
+        }
+
+        protected static function getPartipantInviteEmailTextContent(Conversation $conversation)
+        {
+            $url      = static::getUrlToConversationDetailAndRelationsView($conversation->id);
+            $content  = Yii::t('Default', '{ownerName} would like you to join a conversation "{conversationSubject}".',
+                               array('{ownerName}'           => $conversation->owner,
+                                     '{conversationSubject}' => $conversation->subject));
+            $content .= "\n\n";
+            $content .= CHtml::link($url, $url);
+            return $content;
+        }
+
+        protected static function getPartipantInviteEmailHtmlContent(Conversation $conversation)
+        {
+            $url     = static::getUrlToConversationDetailAndRelationsView($conversation->id);
+            $content = Yii::t('Default', '{ownerName} would like you to join a conversation "{conversationSubject}".',
+                               array('{ownerName}'           => $conversation->owner,
+                                     '{conversationSubject}' => $conversation->subject));
+            $content .= "<br/><br/>";
+            $content .= CHtml::link(Yii::t('Default', 'Click Here'), $url);
+            return $content;
+        }
+
+        protected static function getUrlToConversationDetailAndRelationsView($id)
+        {
+            assert('is_int($id)');
+            return Yii::app()->createAbsoluteUrl('conversations/default/details/', array('id' => $id));
         }
     }
 ?>

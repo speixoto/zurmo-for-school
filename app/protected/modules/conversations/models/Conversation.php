@@ -53,6 +53,39 @@
             }
         }
 
+        /**
+         * Given a user get the count of conversations that have unread comments.
+         * @param object $user User
+         */
+        public static function getUnreadCountByUser(User $user)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'ownerHasReadLatest',
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => (bool)1
+                ),
+                2 => array(
+                    'attributeName'        => 'conversationParticipants',
+                    'relatedAttributeName' => 'person',
+                    'operatorType'         => 'equals',
+                    'value'                => $user->getClassId('Item'),
+                ),
+                3 => array(
+                    'attributeName'        => 'conversationParticipants',
+                    'relatedAttributeName' => 'hasReadLatest',
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => (bool)1
+                ),
+            );
+            $searchAttributeData['structure'] = '1 or (2 and 3)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Conversation');
+            $where  = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
+            return self::getCount($joinTablesAdapter, $where, null, true);
+
+        }
+
         public function onCreated()
         {
             parent::onCreated();
