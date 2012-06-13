@@ -104,6 +104,7 @@
                     'sender'      => array(RedBeanModel::HAS_ONE,  'EmailMessageSender',     RedBeanModel::OWNED),
                     'recipients'  => array(RedBeanModel::HAS_MANY, 'EmailMessageRecipient',  RedBeanModel::OWNED),
                     'error'       => array(RedBeanModel::HAS_ONE,  'EmailMessageSendError' , RedBeanModel::OWNED),
+                    'emailItems'    => array(RedBeanModel::MANY_MANY, 'Item'),
                 ),
                 'rules' => array(
                     array('subject', 'required'),

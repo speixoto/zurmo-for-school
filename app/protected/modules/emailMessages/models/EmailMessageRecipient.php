@@ -66,7 +66,7 @@
                     'type',
                 ),
                 'relations' => array(
-                    'person'      => array(RedBeanModel::HAS_ONE, 'Item'),
+                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item'),
                 ),
                 'rules' => array(
                     array('toAddress', 'required'),

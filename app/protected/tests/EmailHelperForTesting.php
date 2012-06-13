@@ -97,9 +97,9 @@
 
             if (is_array($to) && !empty($to))
             {
-                foreach ($to as $receiptEmail)
+                foreach ($to as $recipientEmail)
                 {
-                    $mailer->addAddressByType($receiptEmail, '', EmailMessageRecipient::TYPE_TO);
+                    $mailer->addAddressByType($recipientEmail, '', EmailMessageRecipient::TYPE_TO);
                 }
             }
             else
@@ -109,17 +109,17 @@
 
             if (is_array($cc) && !empty($cc))
             {
-                foreach ($cc as $receiptEmail)
+                foreach ($cc as $recipientEmail)
                 {
-                    $mailer->addAddressByType($receiptEmail, '', EmailMessageRecipient::TYPE_CC);
+                    $mailer->addAddressByType($recipientEmail, '', EmailMessageRecipient::TYPE_CC);
                 }
             }
 
             if (is_array($bcc) && !empty($bcc))
             {
-                foreach ($bcc as $receiptEmail)
+                foreach ($bcc as $recipientEmail)
                 {
-                    $mailer->addAddressByType($receiptEmail, '', EmailMessageRecipient::TYPE_BCC);
+                    $mailer->addAddressByType($recipientEmail, '', EmailMessageRecipient::TYPE_BCC);
                 }
             }
 

@@ -74,11 +74,11 @@
             $emailMessage->sender      = $sender;
 
             //Recipient is billy.
-            $recipient                 = new EmailMessageRecipient();
-            $recipient->toAddress      = 'billy@fakeemail.com';
-            $recipient->toName         = 'Billy James';
-            $recipient->type           = EmailMessageRecipient::TYPE_TO;
-            $recipient->person         = $billy;
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'billy@fakeemail.com';
+            $recipient->toName          = 'Billy James';
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = $billy;
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is in no folder
@@ -169,15 +169,15 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'jane@fakeemail.com';
             $sender->fromName          = 'Jane Smith';
-            $sender->person            = $jane;
+            $sender->personOrAccount   = $jane;
             $emailMessage->sender      = $sender;
 
             //Recipient is billy.
-            $recipient                 = new EmailMessageRecipient();
-            $recipient->toAddress      = 'billy@fakeemail.com';
-            $recipient->toName         = 'Billy James';
-            $recipient->type           = EmailMessageRecipient::TYPE_TO;
-            $recipient->person         = $billy;
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'billy@fakeemail.com';
+            $recipient->toName          = 'Billy James';
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = $billy;
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is not in a folder.
@@ -225,15 +225,15 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'jane@fakeemail.com';
             $sender->fromName          = 'Jane Smith';
-            $sender->person            = $jane;
+            $sender->personOrAccount   = $jane;
             $emailMessage->sender      = $sender;
 
             //Recipient is billy.
-            $recipient                 = new EmailMessageRecipient();
-            $recipient->toAddress      = 'billy@fakeemail.com';
-            $recipient->toName         = 'Billy James';
-            $recipient->type           = EmailMessageRecipient::TYPE_TO;
-            $recipient->person         = $billy;
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'billy@fakeemail.com';
+            $recipient->toName          = 'Billy James';
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = $billy;
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is not in a folder.
@@ -289,31 +289,31 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'jane@fakeemail.com';
             $sender->fromName          = 'Jane Smith';
-            $sender->person            = $jane;
+            $sender->personOrAccount   = $jane;
             $emailMessage->sender      = $sender;
 
             //Recipient is billy.
-            $recipient                 = new EmailMessageRecipient();
-            $recipient->toAddress      = 'billy@fakeemail.com';
-            $recipient->toName         = 'Billy James';
-            $recipient->type           = EmailMessageRecipient::TYPE_TO;
-            $recipient->person         = $billy;
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'billy@fakeemail.com';
+            $recipient->toName          = 'Billy James';
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = $billy;
             $emailMessage->recipients->add($recipient);
 
             //CC recipient is Sally
-            $recipient                 = new EmailMessageRecipient();
-            $recipient->toAddress      = 'sally@fakeemail.com';
-            $recipient->toName         = 'Sally Pail';
-            $recipient->type           = EmailMessageRecipient::TYPE_CC;
-            $recipient->person         = $sally;
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'sally@fakeemail.com';
+            $recipient->toName          = 'Sally Pail';
+            $recipient->type            = EmailMessageRecipient::TYPE_CC;
+            $recipient->personOrAccount = $sally;
             $emailMessage->recipients->add($recipient);
 
             //BCC recipient is Jason
-            $recipient                 = new EmailMessageRecipient();
-            $recipient->toAddress      = 'jason@fakeemail.com';
-            $recipient->toName         = 'Jason Blue';
-            $recipient->type           = EmailMessageRecipient::TYPE_BCC;
-            $recipient->person         = $jason;
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'jason@fakeemail.com';
+            $recipient->toName          = 'Jason Blue';
+            $recipient->type            = EmailMessageRecipient::TYPE_BCC;
+            $recipient->personOrAccount = $jason;
             $emailMessage->recipients->add($recipient);
 
             //At this point the message is not in a folder.

@@ -75,7 +75,7 @@
         }
 
         /**
-         * Get informations from email message, for example sender, receiver, subject...
+         * Get informations from email message, for example sender, recipient, subject...
          * It is quite different for forwarded messages, because we need to parse email
          * body to get those information.
          * @param ImapMessage $emailMessage
@@ -109,35 +109,36 @@
         }
 
         /**
-        * Get receiver details from email message.
+        * Get recipient details from email message.
         * Have to cover two cases: when message is CC-ed or BCC-ed to dropbox,
         * and when email message is forwarded to dropbox.
-        * 1. If message is CC-ed or BCC-ed to dropbox, receipts can be exctracted from "To" field of email message
-        * 2. If message is forwarded, then email from which message is forwarded to dropbox is receiver
+        * 1. If message is CC-ed or BCC-ed to dropbox, recipients can be exctracted from "To" field of email message
+        * 2. If message is forwarded, then email from which message is forwarded to dropbox is recipient
         * @param ImapMessage $emailMessage
-        * @param array $emailReceivers
+        * @param array $emailRecipient
         */
-        public static function resolveEmailReceiversFromEmailMessage(ImapMessage $emailMessage)
+        public static function resolveEmailRecipientsFromEmailMessage(ImapMessage $emailMessage)
         {
             // Check if email is forwarded or not.
-            $emailReceivers = false;
+            $emailRecipients = false;
             if (self::isMessageForwarded($emailMessage))
             {
-                // Somebody sent email to me, I forwarded it to dropbox, so I am receiver
-                $emailReceivers = array(
+                // Somebody sent email to me, I forwarded it to dropbox, so I am a recipient
+                $emailRecipients = array(
                     array(
                         'email' => $emailMessage->fromEmail,
                         'name'  => $emailMessage->fromName
                     )
                 );
+                // To-Do: Get additional recipients
             }
             else
             {
-                //I am sending email, so receivers is to
-                $emailReceivers = $emailMessage->to;
-                // To-Do: Get additional details, like CC receipts
+                //I am sending email, so recipients are in too fields
+                $emailRecipients = $emailMessage->to;
+                // To-Do: Get additional details, like CC recipients
             }
-            return $emailReceivers;
+            return $emailRecipients;
         }
         /**
          * Check if email message is forwarded or not, based on email subject.

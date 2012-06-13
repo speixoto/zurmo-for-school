@@ -112,6 +112,7 @@
                     }
 
                     $senderInfo = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($message);
+
                     if (!$senderInfo)
                     {
                         $subject = Yii::t('Default', "Sender info can't be extracted from email message.");
@@ -121,13 +122,38 @@
                         EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
                         continue;
                     }
-
-                    $receiversInfo = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($message);
-                    if (!$receiversInfo)
+                    else
                     {
-                        $subject = Yii::t('Default', "Receipt info can't be extracted from email message.");
-                        $textContent = Yii::t('Default', "Receipt info can't be extracted from email message.") . "\n\n" . $message->textBody;
-                        $htmlContent = Yii::t('Default', "Receipt info can't be extracted from email message.") . "<br><br>" . $message->htmlBody;
+                        $sender                    = new EmailMessageSender();
+                        $sender->fromAddress       = $senderInfo['email'];
+                        if (isset($senderInfo['name']))
+                        {
+                            $sender->fromName          = $senderInfo['name'];
+                        }
+                        // Get personOrAccount relationship.
+                        // Check first if email belong to contact.
+                        $contacts = ContactSearch::getContactsByAnyEmailAddress($senderInfo['email'], 1);
+                        if (count($contacts))
+                        {
+                            $sender->personOrAccount = $contacts[0]->getClassId('Item');
+                        }
+                        else
+                        {
+                            // Check if email belongs to account
+                            $accounts = AccountSearch::getAccountsByAnyEmailAddress($senderInfo['email'], 1);
+                            if (count($contacts))
+                            {
+                                $sender->personOrAccount = $contacts[0]->getClassId('Item');
+                            }
+                        }
+                    }
+
+                    $recipientsInfo = EmailArchivingHelper::resolveEmailRecipientsFromEmailMessage($message);
+                    if (!$recipientsInfo)
+                    {
+                        $subject = Yii::t('Default', "Recipient info can't be extracted from email message.");
+                        $textContent = Yii::t('Default', "Recipient info can't be extracted from email message.") . "\n\n" . $message->textBody;
+                        $htmlContent = Yii::t('Default', "Recipient info can't be extracted from email message.") . "<br><br>" . $message->htmlBody;
 
                         EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
                         continue;
@@ -144,20 +170,32 @@
                     $emailContent->htmlContent = $message->htmlBody;
                     $emailMessage->content     = $emailContent;
 
-                    $sender                    = new EmailMessageSender();
-                    $sender->fromAddress       = $senderInfo['email'];
-                    if (isset($senderInfo['name']))
-                    {
-                        $sender->fromName          = $senderInfo['name'];
-                    }
+
                     $emailMessage->sender      = $sender;
 
-                    foreach ($receiversInfo as $receiverInfo)
+                    foreach ($recipientsInfo as $recipientInfo)
                     {
                         $recipient                 = new EmailMessageRecipient();
-                        $recipient->toAddress      = $receiverInfo['email'];
-                        $recipient->toName         = $receiverInfo['name'];
+                        $recipient->toAddress      = $recipientInfo['email'];
+                        $recipient->toName         = $recipientInfo['name'];
                         $recipient->type           = EmailMessageRecipient::TYPE_TO;
+
+                        // Get personOrAccount relationship.
+                        // Check first if email belong to contact.
+                        $contacts = ContactSearch::getContactsByAnyEmailAddress($recipientInfo['email'], 1);
+                        if (count($contacts))
+                        {
+                            $recipient->personOrAccount = $contacts[0]->getClassId('Item');
+                        }
+                        else
+                        {
+                            // Check if email belongs to account
+                            $accounts = AccountSearch::getAccountsByAnyEmailAddress($recipientInfo['email'], 1);
+                            if (count($contacts))
+                            {
+                                $recipient->personOrAccount = $contacts[0]->getClassId('Item');
+                            }
+                        }
                         $emailMessage->recipients->add($recipient);
                     }
 

@@ -171,7 +171,7 @@ To: 'Steve'
         /**
         * @depends testIsMessageForwarded
         */
-        public function testResolveEmailReceiverFromEmailMessage()
+        public function testResolveEmailRecipientsFromEmailMessage()
         {
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
@@ -180,26 +180,26 @@ To: 'Steve'
                 array('email' => 'info@example.com')
             );
 
-            $receivers = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
-            $this->assertEquals($imapMessage->to, $receivers);
+            $recipients = EmailArchivingHelper::resolveEmailRecipientsFromEmailMessage($imapMessage);
+            $this->assertEquals($imapMessage->to, $recipients);
 
-            // Check with multiple receivers.
+            // Check with multiple recipients.
             $imapMessage->to = array(
                 array('email' => 'info2@example.com'),
                 array('email' => 'info@example.com')
             );
-            $receivers = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
-            $this->assertEquals($imapMessage->to, $receivers);
+            $recipients = EmailArchivingHelper::resolveEmailRecipientsFromEmailMessage($imapMessage);
+            $this->assertEquals($imapMessage->to, $recipients);
 
             $imapMessage->subject = "FW: Test subject";
-            $receivers = EmailArchivingHelper::resolveEmailReceiversFromEmailMessage($imapMessage);
+            $recipients = EmailArchivingHelper::resolveEmailRecipientsFromEmailMessage($imapMessage);
             $compareData = array(
                                array(
                                    'email' => $imapMessage->fromEmail,
                                    'name' => ''
                                )
                            );
-            $this->assertEquals($compareData, $receivers);
+            $this->assertEquals($compareData, $recipients);
         }
 
         /**
@@ -226,7 +226,7 @@ To: 'Steve'
             $this->assertEquals($user->id, $owner->id);
 
             // User sent CC copy of his email to dropbox
-            // This also shouldn't be done in practice, because email receipt will see dropbox email account,
+            // This also shouldn't be done in practice, because email recipient will see dropbox email account,
             // but we need to cover it.
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";

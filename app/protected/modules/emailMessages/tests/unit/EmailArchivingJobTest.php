@@ -75,7 +75,7 @@
 
         /**
          * Test case when user send email to somebody, and to dropbox(via to field)
-         * This shouldn't happen in reality, because receipt will see that message is sent to dropbox folder too
+         * This shouldn't happen in reality, because recipient will see that message is sent to dropbox folder too
          */
         public function testRunCaseOne()
         {
@@ -144,7 +144,7 @@
 
         /**
         * Test case when user send email to somebody, and cc to dropbox
-        * This shouldn't happen in reality, because receipt will see that message is sent to dropbox folder too
+        * This shouldn't happen in reality, because recipient will see that message is sent to dropbox folder too
         */
         public function testRunCaseTwo()
         {
@@ -218,7 +218,7 @@
 
         /**
         * Test case when user send email to somebody, and bcc to dropbox
-        * This is best practictice to be used in reality, because other receipts will not see that user
+        * This is best practictice to be used in reality, because other recipients will not see that user
         * bcc-ed email to dropbox
         */
         public function testRunCaseThree()
@@ -296,8 +296,6 @@
         */
         public function testRunCaseFour()
         {
-            //require(Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.EmailClientForwardTemplatesTestHelper') . '.php');
-
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
