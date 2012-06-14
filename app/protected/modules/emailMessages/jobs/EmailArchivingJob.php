@@ -251,6 +251,7 @@
                 }
                 if ($lastCheckTime != ''){
                     EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
+                    // To:Do: Should we delete all email messages from server?
                 }
             }
             return true;

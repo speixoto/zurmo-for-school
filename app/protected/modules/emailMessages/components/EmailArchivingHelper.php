@@ -37,7 +37,7 @@
         /**
          * For a given email find user.
          * Function consider that user sent email to dropbox (To, CC or BCC),
-         * or forwarded email to dropbox, via his email client/
+         * or forwarded email to dropbox, via his email client.
          * @param ImapMessage $emailMessage
          * @return User $user
          */
@@ -87,14 +87,13 @@
             $emailSender = false;
             if (self::isMessageForwarded($emailMessage))
             {
-                //Somebody sent email to me, and I forwarded it to dropbox
-                // so, sender is in body_>from field
+                // Somebody sent email to user, and the user forwarded it to dropbox,
+                // sender is in body->from field
                 $emailSender = self::resolveEmailSenderFromForwardedEmailMessage($emailMessage);
             }
             else
             {
-                // I sent email to somebody
-                // so I am sender
+                // User sent email to somebody, and to dropbox(to, cc, bcc), so the user is sender
                 $emailSender['email'] = $emailMessage->fromEmail;
                 if (isset($emailMessage->fromName))
                 {
@@ -123,7 +122,7 @@
             $emailRecipients = false;
             if (self::isMessageForwarded($emailMessage))
             {
-                // Somebody sent email to me, I forwarded it to dropbox, so I am a recipient
+                // Somebody sent email to Zurmo user, the user forwarded it to dropbox, so the user is a recipient
                 $emailRecipients = array(
                     array(
                         'email' => $emailMessage->fromEmail,
@@ -133,8 +132,12 @@
             }
             else
             {
-                //I am sending email, so recipients are in too fields
+                // Zurmo user sent email, so recipients are in 'To' ans 'CC' fields
                 $emailRecipients = $emailMessage->to;
+                if (!empty($emailMessage->cc))
+                {
+                    $emailRecipients = array_unique(array_merge($emailRecipients, $emailMessage->cc));
+                }
             }
             return $emailRecipients;
         }
@@ -166,21 +169,17 @@
         public static function resolveEmailSenderFromForwardedEmailMessage(ImapMessage $emailMessage)
         {
             $emailSender   = false;
-            //$pattern = '/^\s*From:\s+(.*?)\s*(?:\[mailto:|<)(.*?)(?:[\]>])\s*$/mi';
             $pattern = '/^\s*(?:.*?):\s*(.*)?\s*(?:\[mailto:|<)([\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,6})(?:[\]>])(?:.*)?$/mi';
             $noOfMatches = false;
             if ($emailMessage->textBody != '')
             {
                 $noOfMatches = preg_match($pattern, $emailMessage->textBody, $matches);
             }
-            else
+            elseif ($emailMessage->htmlBody != '')
             {
-                // It is low probability that we can extract data from html message,
-                // because formats are very different for each email client
                 $noOfMatches = preg_match($pattern, $emailMessage->htmlBody, $matches);
             }
 
-            // Fix this, so we can match email only for example!!!
             if ($noOfMatches > 0)
             {
                 $emailSender['name'] = trim($matches[1]);
@@ -188,14 +187,6 @@
             }
 
             return $emailSender;
-        }
-
-        // Not used
-        public function extract_from_email($string){
-            // preg_match("/From.*\w+([\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+)/i", $string, $matches);
-            preg_match("/(From|Von).*\w+[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $string, $matches);
-            preg_match("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $matches[0], $matches);
-            return $matches[0];
         }
     }
 ?>

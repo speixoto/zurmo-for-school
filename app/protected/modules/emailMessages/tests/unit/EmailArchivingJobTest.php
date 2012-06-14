@@ -82,8 +82,6 @@
             $super = User::getByUsername('super');
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
-
-            // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
@@ -158,7 +156,6 @@
             {
                 $message->delete();
             }
-            // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
@@ -233,7 +230,6 @@
             {
                 $message->delete();
             }
-            // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
@@ -306,7 +302,6 @@
             {
                 $message->delete();
             }
-            // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
@@ -408,7 +403,6 @@
             {
                 $message->delete();
             }
-            // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
@@ -460,7 +454,6 @@
             {
                 $message->delete();
             }
-            // Expunge all emails from dropbox
             Yii::app()->imap->expungeMessages();
 
             // Check if there are no emails in dropbox
