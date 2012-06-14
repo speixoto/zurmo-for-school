@@ -124,8 +124,7 @@
                 'date'      => array('DATE'),
                 'time'      => array('TIME'),
                 'datetime'  => array('DATETIME'),
-                'blob'      => array('TINY_BLOB', 'MEDIUM_BLOB', 'LONG_BLOB', 'BLOB'),
-                'null'      => array('NULL')
+                'blob'      => array('TINY_BLOB', 'MEDIUM_BLOB', 'LONG_BLOB', 'BLOB')
             );
             $value              = strtoupper($value);
             $startCuttingPos    = stripos($value, '(');
