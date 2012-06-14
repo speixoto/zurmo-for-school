@@ -658,7 +658,8 @@
                                      '$forceNoFreeze = false;',
                                      $contents);
 
-            if ($minifyScripts)
+            $setIncludePathServiceHelper = new SetIncludePathServiceHelper();
+            if ($minifyScripts && $setIncludePathServiceHelper->runCheckAndGetIfSuccessful())
             {
                 $contents = preg_replace('/\$minifyScripts\s*=\s*false;/',
                                          '$minifyScripts = true;',
