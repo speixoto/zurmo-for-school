@@ -33,7 +33,7 @@
         {
             $url            = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
             $content        = $conversation->subject;
-            $latestContent .= static::renderDescriptionOrLatestCommentContent($conversation);
+            $latestContent  = static::renderDescriptionOrLatestCommentContent($conversation);
             if($latestContent != null)
             {
                 $content .= '<BR/>';
