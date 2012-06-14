@@ -41,13 +41,13 @@
             $type             = ArrayUtil::getArrayValue($getData, 'type');
             if ($type == null)
             {
-                $type = ConversationUtil::LIST_TYPE_CREATED;
+                $type = ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;
             }
-            if ($type == ConversationUtil::LIST_TYPE_CREATED)
+            if ($type == ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED)
             {
                 $activeActionElementType = 'ConversationsCreatedLink';
             }
-            elseif ($type == ConversationUtil::LIST_TYPE_PARTICIPANT)
+            elseif ($type == ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT)
             {
                 $activeActionElementType = 'ConversationsParticipantLink';
             }
@@ -55,13 +55,12 @@
             {
                 throw new NotSupportedException();
             }
-
             $searchAttributes = array();
-            $searchAttributes = ConversationUtil::resolveSearchAttributesByType($type);
-            $metadataAdapter  = new SearchDataProviderMetadataAdapter(
+            $metadataAdapter  = new ConversationsSearchDataProviderMetadataAdapter(
                 $conversation,
                 Yii::app()->user->userModel->id,
-                $searchAttributes
+                $searchAttributes,
+                $type
             );
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadataAdapter,
@@ -186,10 +185,19 @@
             }
         }
 
+        /**
+         * (non-PHPdoc)
+         * @see ZurmoModuleController::actionCreateFromRelation()
+         */
         public function actionCreateFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl)
         {
+            $getData              = GetUtil::getData();
+            if(null == ArrayUtil::getArrayValue($getData, 'relationModelClassName'))
+            {
+                throw new NotSupportedException();
+            }
             $conversation         = $this->resolveNewModelByRelationInformation( new Conversation(),
-                                                                                $relationAttributeName,
+                                                                                ArrayUtil::getArrayValue($getData, 'relationModelClassName'),
                                                                                 (int)$relationModelId,
                                                                                 $relationModuleId);
             $this->actionCreateByModel($conversation, $redirectUrl);
@@ -197,11 +205,11 @@
 
         protected function actionCreateByModel(Conversation $conversation, $redirectUrl)
         {
-            $titleBarAndEditView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost($conversation, $redirectUrl), 'Edit');
-            $pageViewClassName = $this->getPageViewClassName();
-            $view = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                             makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+            $editView = new ConversationEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost($conversation, $redirectUrl),
+                                                 Yii::t('Default', 'Create Conversation'));
+            $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
 
@@ -215,7 +223,7 @@
                                                                     $relationModelId, $relationModuleId)
         {
             assert('$model instanceof Conversation');
-            assert('is_string($relationModelClassName)');
+            assert('is_string($relationModelClassName) || null');
             assert('is_int($relationModelId)');
             assert('is_string($relationModuleId)');
 

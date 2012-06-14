@@ -25,33 +25,42 @@
      ********************************************************************************/
 
     /**
-     * Wrapper view for displaying an opportunity's latest activities feed.
+     * Helper class for working with conversations
      */
-    class OpportunityLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class ConversationsUtil
     {
-        public static function getDefaultMetadata()
+        public static function renderSubjectAndLatestForDisplayView(Conversation $conversation)
         {
-            $metadata = parent::getDefaultMetadata();
-            return array_merge($metadata, array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'                   => 'CreateConversationFromRelatedListLink',
-                                  'routeParameters'         =>
-                                    array('relationAttributeName'    => 'notUsed',
-                                            'relationModelClassName' => 'Opportunity',
-                                            'relationModelId'        => 'eval:$this->params["relationModel"]->id',
-                                            'relationModuleId'       => 'opportunities',
-                                            'redirectUrl'            => 'eval:Yii::app()->request->getRequestUri()')
-                        ),
-                    ),
-                ),
-            )));
-        }
-
-        public function getLatestActivitiesViewClassName()
-        {
-            return 'LatestActivitiesForOpportunityListView';
+            $url     = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
+            $content = $conversation->subject;
+            if($conversation->comments->count() > 0)
+            {
+                $content .= '<BR/>';
+                $position = $conversation->comments->count() - 1;
+                if($conversation->comments->offsetGet($position)->createdByUser == Yii::app()->user->userModel)
+                {
+                    $content .= Yii::t('Default', 'Me') . ': ';
+                }
+                else
+                {
+                    $content .= strval($conversation->comments->offsetGet($position)->createdByUser) . ': ';
+                }
+                $content .= $conversation->comments->offsetGet($position);
+            }
+            elseif($conversation->description != null)
+            {
+                $content .= '<BR/>';
+                if($conversation->owner == Yii::app()->user->userModel)
+                {
+                    $content .= Yii::t('Default', 'Me') . ': ';
+                }
+                else
+                {
+                    $content .= strval($conversation->owner) . ': ';
+                }
+                $content .= $conversation->description;
+            }
+            return $content = ZurmoHtml::link($content, $url);
         }
     }
 ?>

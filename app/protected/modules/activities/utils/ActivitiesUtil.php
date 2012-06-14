@@ -87,7 +87,7 @@
 
         protected static function renderOwnerStringContent($model)
         {
-            if ($model instanceof MashableActivity)
+            if ($model instanceof OwnedSecurableItem)
             {
                 return strval($model->owner);
             }

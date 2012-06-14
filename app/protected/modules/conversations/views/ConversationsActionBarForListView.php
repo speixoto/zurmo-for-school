@@ -32,6 +32,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
+                            array('type'          => 'CreateLink',
+                                'htmlOptions'     => array('class' => 'icon-create'),
+                            ),
                             array(
                                 'type'            => 'ConversationsCreatedLink',
                                 'htmlOptions'     => array( 'class' => 'icon-conversations-created' )

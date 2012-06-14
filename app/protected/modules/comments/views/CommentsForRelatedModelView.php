@@ -56,18 +56,17 @@
 
         protected function renderContent()
         {
-            $content = null;
+            $content = '<div>';
+            $content .= '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
             if(count($this->commentsData) > 0)
             {
-                $content .= '<div>';
-                $content .= '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
                 if(count($this->commentsData) > $this->pageSize && $this->pageSize != null)
                 {
                     $content .= '<div>' . $this->renderShowAllLinkContent() . '</div>';
                 }
                 $content .= '<div>' . $this->renderCommentsContent() . '</div>';
-                $content .= '</div>';
             }
+            $content .= '</div>';
             return $content;
         }
 

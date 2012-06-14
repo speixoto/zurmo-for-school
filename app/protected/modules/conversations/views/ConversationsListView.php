@@ -46,6 +46,9 @@
         {
             $metadata = array(
                 'global' => array(
+                    'derivedAttributeTypes' => array(
+                        'ConversationLatest',
+                    ),
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -53,7 +56,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'subject', 'type' => 'Text', 'isLink' => true),
+                                                array('attributeName' => 'null', 'type' => 'ConversationLatest'),
                                             ),
                                         ),
                                     )
@@ -62,7 +65,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'latestDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'latestDateTime', 'type' => 'ConversationLatestDateTime'),
                                             ),
                                         ),
                                     )

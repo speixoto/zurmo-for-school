@@ -68,7 +68,7 @@
 
         protected function getParticipatingInListUrl()
         {
-            return Yii::app()->createUrl('conversations/default/list', array('type' => ConversationUtil::LIST_TYPE_PARTICIPANT));
+            return Yii::app()->createUrl('conversations/default/list', array('type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT));
         }
     }
 ?>

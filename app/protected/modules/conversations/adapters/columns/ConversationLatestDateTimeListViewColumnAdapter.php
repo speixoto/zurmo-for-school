@@ -24,18 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationsParticipantLinkActionElement extends EditLinkActionElement
+    class ConversationLatestDateTimeListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        protected function getDefaultLabel()
+        public function renderGridViewData()
         {
-            return Yii::t('Default', 'Participating In');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl(
-                $this->moduleId . '/' . $this->controllerId . '/list/',
-                array('type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT));
+            return array(
+                'name'   => $this->attribute,
+                'header' => false,
+                'value'  => 'DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($data->' . $this->attribute . ')',
+                'type'   => 'raw',
+            );
         }
     }
 ?>

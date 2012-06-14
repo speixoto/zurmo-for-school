@@ -25,43 +25,51 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with conversations
+     * Display the conversation latest information either the latest comment or the description of the conversation.
+     * Current support is for  the list view only.
      */
-    class ConversationUtil
+    class ConversationLatestElement extends Element implements DerivedElementInterface
     {
-        /**
-         * Filter by conversations the current user created.
-         * @var integer
-         */
-        const LIST_TYPE_CREATED = 1;
-
-        /**
-         * Filter by conversations the current user is participating in
-         * @var integer
-         */
-        const LIST_TYPE_PARTICIPANT = 2;
-
-        /**
-         * Given a filter type, @return the searchAttributes. If there is no filter specified it will default to a
-         * list of conversations the logged in user has started
-         * @param string $type
-         */
-        public static function resolveSearchAttributesByType($type)
+        protected function renderEditable()
         {
-            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_PARTICIPANT');
-            if($type == self::LIST_TYPE_CREATED)
-            {
-                $searchAttributes = array(
-                    'owner'    => array('id' => Yii::app()->user->userModel->id)
-                );
-            }
-            else
-            {
-                $searchAttributes = array(
-                    'conversationParticipants' => array('id' => Yii::app()->user->userModel->id),
-                );
-            }
-            return $searchAttributes;
+            throw NotSupportedException();
+        }
+
+        protected function renderControlEditable()
+        {
+            throw NotSupportedException();
+        }
+
+        /**
+         * Render the full name as a non-editable display
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
+        {
+            throw NotSupportedException();
+        }
+
+        protected function renderLabel()
+        {
+            return Yii::t('Default', 'Conversation');
+        }
+
+        public static function getDisplayName()
+        {
+            return Yii::t('Default', 'Conversation Latest');
+        }
+
+        /**
+         * Get the attributeNames of attributes used in
+         * the derived element.
+         * @return array of model attributeNames used.
+         */
+        public static function getModelAttributeNames()
+        {
+            return array(
+                'subject',
+                'description',
+            );
         }
     }
 ?>

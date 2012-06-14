@@ -128,8 +128,9 @@
         protected static function makeConversationParticipantByPerson($personOrUserModel)
         {
             assert('$personOrUserModel instanceof User || $personOrUserModel instanceof Person');
-            $conversationParticipant         = new ConversationParticipant();
-            $conversationParticipant->person = $personOrUserModel;
+            $conversationParticipant                = new ConversationParticipant();
+            $conversationParticipant->hasReadLatest = false;
+            $conversationParticipant->person        = $personOrUserModel;
             return $conversationParticipant;
         }
 

@@ -120,7 +120,7 @@
             //Confirm Mary is invited.
             $this->assertEquals(1,     $conversations[0]->conversationParticipants->count());
             $this->assertEquals($mary, $conversations[0]->conversationParticipants->offsetGet(0)->person);
-            $this->assertNull($conversations[0]->conversationParticipants->offsetGet(0)->hasReadLatest);
+            $this->assertEquals(0,     $conversations[0]->conversationParticipants->offsetGet(0)->hasReadLatest);
 
             //Confirm Mary is the only one with explicit permissions on the conversation
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
@@ -381,11 +381,11 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertfalse(strpos($content, 'Conversations') === false);
             $this->setGetArray(array(
-                'type' => ConversationUtil::LIST_TYPE_CREATED));
+                'type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertfalse(strpos($content, 'Conversations') === false);
             $this->setGetArray(array(
-                'type' => ConversationUtil::LIST_TYPE_PARTICIPANT));
+                'type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertfalse(strpos($content, 'Conversations') === false);
         }
@@ -402,9 +402,19 @@
             $conversations  = Conversation::getAll();
             $this->assertEquals(0, count($conversations));
 
+            //First just go to the createFromRelation action. Make sure it comes up right
+            $this->setGetArray(array(   'relationAttributeName'  => 'notUsed',
+                                        'relationModelClassName' => 'Account',
+                                        'relationModelId'        => $superAccountId,
+                                        'relationModuleId'       => 'accounts',
+                                        'redirectUrl'            => 'someRedirection'));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/createFromRelation');
+
             //add related note for account using createFromRelation action
             $conversationItemPostData = array('account' => array('id' => $accounts[0]->id));
-            $this->setGetArray(array(   'relationAttributeName'  => 'Account',
+            $this->setGetArray(array(   'relationAttributeName'  => 'notUsed',
+                                        'relationModelClassName' => 'Account',
                                         'relationModelId'        => $superAccountId,
                                         'relationModuleId'       => 'accounts',
                                         'redirectUrl'            => 'someRedirection'));

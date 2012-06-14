@@ -35,7 +35,7 @@
         {
             return Yii::app()->createUrl(
                 $this->moduleId . '/' . $this->controllerId . '/list/',
-                array('type' => ConversationUtil::LIST_TYPE_CREATED));
+                array('type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED));
         }
     }
 ?>
