@@ -31,11 +31,22 @@
     {
         public static function renderSubjectAndLatestForDisplayView(Conversation $conversation)
         {
-            $url     = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
-            $content = $conversation->subject;
-            if($conversation->comments->count() > 0)
+            $url            = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
+            $content        = $conversation->subject;
+            $latestContent .= static::renderDescriptionOrLatestCommentContent($conversation);
+            if($latestContent != null)
             {
                 $content .= '<BR/>';
+                $content .= $latestContent;
+            }
+            return $content = ZurmoHtml::link($content, $url);
+        }
+
+        public static function renderDescriptionOrLatestCommentContent(Conversation $conversation)
+        {
+            $content = null;
+            if($conversation->comments->count() > 0)
+            {
                 $position = $conversation->comments->count() - 1;
                 if($conversation->comments->offsetGet($position)->createdByUser == Yii::app()->user->userModel)
                 {
@@ -49,7 +60,6 @@
             }
             elseif($conversation->description != null)
             {
-                $content .= '<BR/>';
                 if($conversation->owner == Yii::app()->user->userModel)
                 {
                     $content .= Yii::t('Default', 'Me') . ': ';
@@ -60,7 +70,7 @@
                 }
                 $content .= $conversation->description;
             }
-            return $content = ZurmoHtml::link($content, $url);
+            return $content;
         }
     }
 ?>

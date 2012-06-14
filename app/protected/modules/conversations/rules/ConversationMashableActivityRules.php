@@ -83,22 +83,23 @@
             {
                 if ($viewModuleClassName == 'HomeModule')
                 {
-                    return "<span>{modelStringContent}</span><br/><span>" .
-                           "{relatedModelsByImportanceContent} </span><span class='less-pronounced-text'>" .
-                           Yii::t('Default', 'owned by {ownerStringContent}') . "</span>";
+                    return "<span>{modelStringContent}</span><br/>" .
+                           "<span class='less-pronounced-text'>" .
+                           Yii::t('Default', 'created by {ownerStringContent}') . "</span>" .
+                           "<span>{extraContent}</span><span>{relatedModelsByImportanceContent} </span>";
                 }
                 else
                 {
                     return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
-                           Yii::t('Default', 'owned by {ownerStringContent}') . "</span>";
+                           Yii::t('Default', 'created by {ownerStringContent}') . "</span><span>{extraContent}</span>";
                 }
             }
             else
             {
                 if ($viewModuleClassName == 'HomeModule' || $viewModuleClassName == 'UsersModule')
                 {
-                    return "<span>{modelStringContent}</span><br/><span>" .
-                           "{relatedModelsByImportanceContent} </span><span>{extraContent}</span>";
+                    return "<span>{modelStringContent}</span><br/><span>{extraContent}</span><span>" .
+                           "{relatedModelsByImportanceContent} </span>";
                 }
                 else
                 {
@@ -109,6 +110,19 @@
 
         public function getLatestActivityExtraDisplayStringByModel($model)
         {
+            assert('$model instanceof Conversation');
+            $content      = null;
+            $content     .= ConversationsUtil::renderDescriptionOrLatestCommentContent($model);
+            $filesContent =  FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($model, 'files');
+            if($filesContent != null)
+            {
+                if($content != null)
+                {
+                    $content .= '<br/>';
+                }
+                $content .= $filesContent;
+            }
+            return $content;
         }
     }
 ?>
