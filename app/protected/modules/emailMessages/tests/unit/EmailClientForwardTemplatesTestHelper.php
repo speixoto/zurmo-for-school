@@ -31,7 +31,10 @@
             'Outlook' => array ('FW:'),
             'OutlookExpress' => array ('FW:'),
             'ThunderBird' => array('Fwd:'),
-            'Yahoo' => array ('Fw:')
+            'Yahoo' => array ('Fw:'),
+            'iPhone' => array ('Fw:'),   // iPad is exactly the same
+            'OutlookMac' => array ('Fw:'),
+            'AppleMail' => array ('Fw:'),
         );
 
         public static $bodyPrefixes = array(
@@ -74,6 +77,28 @@ From: FROM_NAME <FROM_EMAIL>
 Subject: Email from John
 To: "Steve" <steve@example.com>
 Date: Friday, June 8, 2012, 6:15 AM
+EOD
+            ),
+            'iPhone' => array(<<<EOD
+Begin forwarded message:
+
+From: FROM_NAME <FROM_EMAIL>
+Date: June 13, 2012 7:20:39 PM EDT
+To: Steve <steve@example.com>
+Subject: Re: Email from John
+EOD
+            ),
+           'OutlookMac' => array(<<<EOD
+On 6/13/12 11:18 AM, FROM_NAME <FROM_EMAIL> wrote:
+EOD
+            ),
+           'AppleMail' => array(<<<EOD
+Begin forwarded message:
+
+From: FROM_NAME <FROM_EMAIL>
+Subject: Email from John
+Date: June 13, 2012 11:18:32 AM EDT
+To: Steve <steve@example.com>
 EOD
             ),
         );
