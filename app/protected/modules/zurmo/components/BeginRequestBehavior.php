@@ -53,6 +53,7 @@
             {
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetIncludePathCheck'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
@@ -138,6 +139,19 @@
             {
                 echo $instanceFoldersServiceHelper->getMessage();
                 Yii::app()->end(0, false);
+            }
+        }
+
+        public function handleSetIncludePathCheck($event)
+        {
+            if (MINIFY_SCRIPTS)
+            {
+                $setIncludePathServiceHelper = new SetIncludePathServiceHelper();
+                if (!$setIncludePathServiceHelper->runCheckAndGetIfSuccessful())
+                {
+                    echo $setIncludePathServiceHelper->getMessage();
+                    Yii::app()->end(0, true);
+                }
             }
         }
 
