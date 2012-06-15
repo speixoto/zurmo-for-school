@@ -101,7 +101,7 @@
 
         public static function getDemoDataMakerClassName()
         {
-            return 'ConversationsDemoDataMaker';
+           // return 'ConversationsDemoDataMaker';
         }
 
         public static function hasPermissions()
