@@ -29,8 +29,45 @@
     }
 })(jQuery);
 
+function attachLoadingOnSubmit(formId)
+{
+    if($('#' + formId).find(".attachLoading:first").hasClass("loading"))
+    {
+        return false;
+    }
+    $('#' + formId).find(".attachLoading:first").addClass("loading");
+    return true;
+}
+
+function beforeValidateAction(form)
+{
+    if(form.find(".attachLoading:first").hasClass("loading"))
+    {
+        return false;
+    }
+    form.find(".attachLoading:first").addClass("loading");
+    return true;
+}
+
+function afterValidateAction(form, data, hasError)
+{
+    if(hasError)
+    {
+        form.find(".attachLoading:first").removeClass("loading");
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 function afterValidateAjaxAction(form, data, hasError)
 {
+    if(!afterValidateAction(form, data, hasError))
+    {
+        return false;
+    }
     if(!hasError) {
         eval($(form).data('settings').afterValidateAjax);
     }

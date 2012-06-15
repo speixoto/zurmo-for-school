@@ -47,6 +47,8 @@
                     'clientOptions' => array(
                         'validateOnSubmit' => true,
                         'validateOnChange' => false,
+                        'beforeValidate'   => 'js:beforeValidateAction',
+                        'afterValidate'    => 'js:afterValidateAction',
                     ),
                 )
             );

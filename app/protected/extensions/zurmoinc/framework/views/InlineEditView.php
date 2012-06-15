@@ -76,9 +76,10 @@
                     'action' => $this->getValidateAndSaveUrl(),
                     'enableAjaxValidation' => true,
                     'clientOptions' => array(
-                        'validateOnSubmit' => true,
-                        'validateOnChange' => false,
-                        'afterValidate'    => 'js:afterValidateAjaxAction',
+                        'validateOnSubmit'  => true,
+                        'validateOnChange'  => false,
+                        'beforeValidate'    => 'js:beforeValidateAction',
+                        'afterValidate'     => 'js:afterValidateAjaxAction',
                         'afterValidateAjax' => $afterValidateAjax,
                     ),
                 )
