@@ -1,6 +1,6 @@
 <?php
 
-class DateTimeUserModel extends RedBeanModel
+class TestDateTimeUserModel extends RedBeanModel
 {
 
     public static function getDefaultMetadata()
