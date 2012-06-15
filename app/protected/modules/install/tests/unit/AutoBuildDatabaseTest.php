@@ -71,7 +71,8 @@
         
         public function testColumnType()
         {
-            if(RedBeanDatabase::isFrozen()){
+            if(RedBeanDatabase::isFrozen())
+            {
                 $rootModels = array();
                 foreach (Module::getModuleObjects() as $module)
                 {
