@@ -1,5 +1,6 @@
 <?php
-    /*********************************************************************************
+
+    /* * *******************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
@@ -22,15 +23,19 @@
      *
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
-     ********************************************************************************/
+     * ****************************************************************************** */
+
     class DateTimeUserElementTest extends ZurmoBaseTest
     {
+
         protected $defaultTimeZone;
+
         public static function setUpBeforeClass()
         {
-            parent::setUpBeforeClass();            
+            parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
         }
+
         public function setUp()
         {
             parent::setUp();
@@ -39,70 +44,70 @@
 
         public function teardown()
         {
-            date_default_timezone_set($this->defaultTimeZone);                         
+            date_default_timezone_set($this->defaultTimeZone);
             parent::teardown();
         }
-        
-        
+
         public function testDateTimeCreatedUserElement()
         {
             $model = new DateTimeUserModel();
-            $model->createdDateTime = '2012-02-24 13:05:32';           
-            $createdDateTimeUserElement = new DateTimeCreatedUserElement($model,'null');
-            
+            $model->createdDateTime = '2012-02-24 13:05:32';
+            $createdDateTimeUserElement = new DateTimeCreatedUserElement($model, 'null');
+
             date_default_timezone_set('EST');
-            $content            = $createdDateTimeUserElement->render();
+            $content = $createdDateTimeUserElement->render();
             $this->assertTrue(stripos($content, '2/24/12 8:05 AM') !== false);
-            
+
             date_default_timezone_set('UTC');
-            $content            = $createdDateTimeUserElement->render();
+            $content = $createdDateTimeUserElement->render();
             $this->assertTrue(stripos($content, '2/24/12 1:05 PM') !== false);
-            
+
             date_default_timezone_set('US/Eastern');
-            $content            = $createdDateTimeUserElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 AM')  !== false);
-            
+            $content = $createdDateTimeUserElement->render();
+            $this->assertTrue(stripos($content, '2/24/12 8:05 AM') !== false);
+
             date_default_timezone_set('America/New_York');
-            $content            = $createdDateTimeUserElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 AM')  !== false);
-            
+            $content = $createdDateTimeUserElement->render();
+            $this->assertTrue(stripos($content, '2/24/12 8:05 AM') !== false);
+
             date_default_timezone_set('Europe/Madrid');
-            $content            = $createdDateTimeUserElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 2:05 PM')  !== false);
-            
+            $content = $createdDateTimeUserElement->render();
+            $this->assertTrue(stripos($content, '2/24/12 2:05 PM') !== false);
+
             date_default_timezone_set('Asia/Ho_Chi_Minh');
-            $content            = $createdDateTimeUserElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 PM')!==false);
-            
+            $content = $createdDateTimeUserElement->render();
+            $this->assertTrue(stripos($content, '2/24/12 8:05 PM') !== false);
         }
-        public function testDateTimeModifiedUserElement(){
-            $model = new DateTimeUserModel();
-            $model->modifiedDateTime = '2012-02-24 13:05:32';           
-            $modifiedDateTimeUserElement = new DateTimeModifiedUserElement($model,'null');
-            
+
+        public function testDateTimeModifiedUserElement()
+        {
+            $model      = new DateTimeUserModel();
+            $model->modifiedDateTime = '2012-02-24 13:05:32';
+            $modifiedDateTimeUserElement = new DateTimeModifiedUserElement($model, 'null');
+
             date_default_timezone_set('EST');
-            $content            = $modifiedDateTimeUserElement->render();
+            $content    = $modifiedDateTimeUserElement->render();
             $this->assertTrue(stripos($content, '2/24/12 8:05 AM') !== false);
-            
+
             date_default_timezone_set('UTC');
-            $content            = $modifiedDateTimeUserElement->render();
+            $content    = $modifiedDateTimeUserElement->render();
             $this->assertTrue(stripos($content, '2/24/12 1:05 PM') !== false);
-            
+
             date_default_timezone_set('US/Eastern');
-            $content            = $modifiedDateTimeUserElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 AM')  !== false);
-            
+            $content    = $modifiedDateTimeUserElement->render();
+            $this->assertTrue(stripos($content, '2/24/12 8:05 AM') !== false);
+
             date_default_timezone_set('America/New_York');
-            $content            = $modifiedDateTimeUserElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 AM')  !== false);
-            
+            $content    = $modifiedDateTimeUserElement->render();
+            $this->assertTrue(stripos($content, '2/24/12 8:05 AM') !== false);
+
             date_default_timezone_set('Europe/Madrid');
-            $content            = $modifiedDateTimeUserElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 2:05 PM')  !== false);
-            
+            $content    = $modifiedDateTimeUserElement->render();
+            $this->assertTrue(stripos($content, '2/24/12 2:05 PM') !== false);
+
             date_default_timezone_set('Asia/Ho_Chi_Minh');
-            $content            = $modifiedDateTimeUserElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 PM')!==false);
+            $content    = $modifiedDateTimeUserElement->render();
+            $this->assertTrue(stripos($content, '2/24/12 8:05 PM') !== false);
         }
 
     }

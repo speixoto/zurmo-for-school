@@ -68,44 +68,50 @@
                 RedBeanDatabase::freeze();
             }
         }
+        
         public function testColumnType()
         {
-            
-            $rootModels = array();
-            foreach (Module::getModuleObjects() as $module)
-            {
-                $moduleAndDependenciesRootModelNames    = $module->getRootModelNamesIncludingDependencies();
-                $rootModels                             = array_merge(  $rootModels, 
-                                                                    array_diff($moduleAndDependenciesRootModelNames, 
-                                                                    $rootModels));
-            }
-
-            foreach ($rootModels as $model)
-            {
-                $meta = $model::getDefaultMetadata();
-                if (isset($meta[$model]['rules']))
+            if(RedBeanDatabase::isFrozen()){
+                $rootModels = array();
+                foreach (Module::getModuleObjects() as $module)
                 {
-                    foreach ($meta[$model]['rules'] as $rule)
+                    $moduleAndDependenciesRootModelNames    = $module->getRootModelNamesIncludingDependencies();
+                    $rootModels                             = array_merge(  $rootModels, 
+                                                                        array_diff($moduleAndDependenciesRootModelNames, 
+                                                                        $rootModels));
+                }
+
+                foreach ($rootModels as $model)
+                {
+                    $meta = $model::getDefaultMetadata();
+                    if (isset($meta[$model]['rules']))
                     {
-                        if (is_array($rule) && count($rule) >= 3)
+                        foreach ($meta[$model]['rules'] as $rule)
                         {
-                            $attributeName       = $rule[0];
-                            $validatorName       = $rule[1];
-                            $validatorParameters = array_slice($rule, 2);
-                            if($validatorName=='type'){
-                                if (isset($validatorParameters['type']))
+                            if (is_array($rule) && count($rule) >= 3)
+                            {
+                                $attributeName       = $rule[0];
+                                $validatorName       = $rule[1];
+                                $validatorParameters = array_slice($rule, 2);
+                                switch ($validatorName)
                                 {
-                                    $type           = $validatorParameters['type'];                                        
-                                    $tableName      = RedBeanModel::getTableName($model);
-                                    $field          = strtolower($attributeName);
-                                    $row            = R::getRow("SHOW COLUMNS FROM $tableName where field='$field'");                                      
-                                    $compareType    = null;                                       
-                                    if ($row !== false)
-                                    {                                            
-                                        $compareType = $this->getDbTypeValue($row['Type']);
-                                    }                                        
-                                    $this->assertEquals($compareType,$type);                                                                                                                        
-                                }                                    
+                                    case 'type':
+                                        if (isset($validatorParameters['type']))
+                                        {
+                                            $type           = $validatorParameters['type'];                                        
+                                            $tableName      = RedBeanModel::getTableName($model);
+                                            $field          = strtolower($attributeName);
+                                            $row            = R::getRow("SHOW COLUMNS FROM $tableName where field='$field'");                                      
+                                            $compareType    = null;                                       
+                                            if ($row !== false)
+                                            {                                            
+                                                $compareType = $this->getDbTypeValue($row['Type']);
+                                            }                                                                                   
+                                            $this->assertEquals($compareType,$type);   
+                                            
+                                        }
+                                        break;
+                                }
                             }
                         }
                     }
@@ -124,7 +130,7 @@
                 'date'      => array('DATE'),
                 'time'      => array('TIME'),
                 'datetime'  => array('DATETIME'),
-                'blob'      => array('TINY_BLOB', 'MEDIUM_BLOB', 'LONG_BLOB', 'BLOB')
+                'blob'      => array('TINY_BLOB', 'MEDIUM_BLOB', 'LONG_BLOB', 'BLOB')    
             );
             $value              = strtoupper($value);
             $startCuttingPos    = stripos($value, '(');

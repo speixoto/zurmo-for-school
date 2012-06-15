@@ -1,6 +1,8 @@
 <?php
 
-class DateTimeUserModel extends RedBeanModel{
+class DateTimeUserModel extends RedBeanModel
+{
+
     public static function getDefaultMetadata()
     {
         $metadata = parent::getDefaultMetadata();
@@ -12,16 +14,17 @@ class DateTimeUserModel extends RedBeanModel{
                 'modifiedByUser'
             ),
             'rules' => array(
-                array('modifiedDateTime',     'type', 'type' => 'datetime'),
                 array('modifiedDateTime', 'type', 'type' => 'datetime'),
-                array('createdByUser','type','type'=>'integer'),
-                array('modifiedByUser','type','type'=>'integer')
+                array('modifiedDateTime', 'type', 'type' => 'datetime'),
+                array('createdByUser'   , 'type', 'type' => 'integer'),
+                array('modifiedByUser'  , 'type', 'type' => 'integer')
             ),
             'relations' => array(
-                'createdByUser'  => array(RedBeanModel::HAS_ONE,  'User'),
-                'modifiedByUser' => array(RedBeanModel::HAS_ONE,  'User'),
+                'createdByUser'  => array(RedBeanModel::HAS_ONE, 'User'),
+                'modifiedByUser' => array(RedBeanModel::HAS_ONE, 'User'),
             ),
         );
         return $metadata;
     }
+
 }
