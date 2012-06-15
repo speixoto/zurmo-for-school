@@ -61,38 +61,10 @@
                     ),
             );
             $metadata['structure'] = '(1)';
-            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Person');
-            $where  = RedBeanModelDataProvider::makeWhere('Person', $metadata, $joinTablesAdapter);
-            $persons = Person::getSubset($joinTablesAdapter, null, null, $where);
-
-            $metadata = array();
-            $metadata['clauses'] = array(
-                    1 => array(
-                            'attributeName'        => 'primaryEmail',
-                            'relatedAttributeName' => 'emailAddress',
-                            'operatorType'         => 'equals',
-                            'value'                => $emailAddress,
-                    ),
-            );
-            $metadata['structure'] = '(1)';
-            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Person');
-            $where  = RedBeanModelDataProvider::makeWhere('Person', $metadata, $joinTablesAdapter);
-            $persons = Person::getSubset($joinTablesAdapter, null, null, $where);
-
-            if (count($persons))
-            {
-                $personTableName   = RedBeanModel::getTableName('Person');
-                $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
-                $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");
-                $where = "      (person.id = '{$persons[0]->id}') ";
-
-                return User::getSubset($joinTablesAdapter, null, null,
-                                                $where, "person.firstname, person.lastname");
-            }
-            else
-            {
-                return array();
-            }
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
+            $users = User::getSubset($joinTablesAdapter, null, null, $where);
+            return $users;
         }
     }
 ?>

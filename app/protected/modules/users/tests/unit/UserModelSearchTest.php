@@ -61,7 +61,7 @@
 
             $users = UserModelSearch::getUsersByEmail('steve@example.com');
             $this->assertEquals(1, count($users));
-            //$this->assertEquals($user->id, $users[0]->id);
+            $this->assertEquals($user->id, $users[0]->id);
         }
     }
 ?>

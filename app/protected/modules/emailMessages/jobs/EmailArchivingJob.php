@@ -135,7 +135,7 @@
                         $contacts = ContactSearch::getContactsByAnyEmailAddress($senderInfo['email'], 1);
                         if (count($contacts))
                         {
-                            $sender->personOrAccount = $contacts[0]->getClassId('Item');
+                            $sender->personOrAccount = Item::getById($contacts[0]->getClassId('Item'));
                         }
                         else
                         {
@@ -143,18 +143,16 @@
                             $accounts = AccountSearch::getAccountsByAnyEmailAddress($senderInfo['email'], 1);
                             if (count($accounts))
                             {
-                                $sender->personOrAccount = $accounts[0]->getClassId('Item');
+                                $sender->personOrAccount = Item::getById($accounts[0]->getClassId('Item'));
                             }
-                            /*
                             else
                             {
                                 $users = UserModelSearch::getUsersByEmail($senderInfo['email']);
                                 if (count($users))
                                 {
-                                    $sender->personOrAccount = $users[0]->getClassId('Item');
+                                    $sender->personOrAccount = Item::getById($users[0]->getClassId('Item'));
                                 }
                             }
-                            */
                         }
                     }
 
@@ -195,7 +193,7 @@
                         $contacts = ContactSearch::getContactsByAnyEmailAddress($recipientInfo['email'], 1);
                         if (count($contacts))
                         {
-                            $recipient->personOrAccount = $contacts[0]->getClassId('Item');
+                            $recipient->personOrAccount = Item::getById($contacts[0]->getClassId('Item'));
                         }
                         else
                         {
@@ -203,18 +201,16 @@
                             $accounts = AccountSearch::getAccountsByAnyEmailAddress($recipientInfo['email'], 1);
                             if (count($accounts))
                             {
-                                $recipient->personOrAccount = $accounts[0]->getClassId('Item');
+                                $recipient->personOrAccount = Item::getById($accounts[0]->getClassId('Item'));
                             }
-                            /*
                             else
                             {
                                 $users = UserModelSearch::getUsersByEmail($senderInfo['email']);
                                 if (count($users))
                                 {
-                                    $sender->personOrAccount = $users[0]->getClassId('Item');
+                                    $sender->personOrAccount = Item::getById($users[0]->getClassId('Item'));
                                 }
                             }
-                            */
                         }
                         $emailMessage->recipients->add($recipient);
                     }

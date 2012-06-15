@@ -66,7 +66,7 @@
                     array('fromAddress', 'email'),
                     array('fromName',    'type',    'type' => 'string'),
                     array('fromName',    'length',  'max' => 64),
-                )
+                ),
             );
             return $metadata;
         }
