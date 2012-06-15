@@ -74,77 +74,10 @@
         }
 
         /**
-         * Test case when user send email to somebody, and to dropbox(via to field)
-         * This shouldn't happen in reality, because recipient will see that message is sent to dropbox folder too
-         */
-        public function testRunCaseOne()
-        {
-            $super = User::getByUsername('super');
-            $user = User::getByUsername('steve');
-            Yii::app()->imap->connect();
-            Yii::app()->imap->expungeMessages();
-
-            // Check if there are no emails in dropbox
-            $job = new EmailArchivingJob();
-            $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
-            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(0, $imapStats->Nmsgs);
-
-            //Now user send email to another user, and to dropbox
-            $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
-            $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
-            $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'image.png';
-            $filePath_3    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
-
-            Yii::app()->emailHelper->sendRawEmail("Email from Steve",
-                                                  $user->primaryEmail->emailAddress,
-                                                  array(
-                                                      Yii::app()->params['emailTestAccounts']['testEmailAddress'],
-                                                      Yii::app()->imap->imapUsername
-                                                  ),
-                                                  'Email from Steve',
-                                                  '<strong>Email</strong> from Steve',
-                                                  null,
-                                                  null,
-                                                  array($filePath_1, $filePath_2, $filePath_3)
-            );
-
-            sleep(30);
-
-            $job = new EmailArchivingJob();
-            $this->assertTrue($job->run());
-
-            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(1, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
-            $emailMessages = EmailMessage::getAll();
-            $emailMessage = $emailMessages[0];
-
-            $this->assertEquals('Email from Steve', $emailMessage->subject);
-            $this->assertEquals('Email from Steve', trim($emailMessage->content->textContent));
-            $this->assertEquals('<strong>Email</strong> from Steve', trim($emailMessage->content->htmlContent));
-            $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
-            $this->assertEquals(2, count($emailMessage->recipients));
-            foreach ($emailMessage->recipients as $recipient)
-            {
-                $this->assertTrue(in_array($recipient->toAddress, array(Yii::app()->params['emailTestAccounts']['testEmailAddress'], Yii::app()->imap->imapUsername)));
-                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
-            }
-
-            $this->assertEquals(3, count($emailMessage->files));
-            foreach ($emailMessage->files as $attachment)
-            {
-                $this->assertTrue(in_array($attachment->name, array('table.csv', 'image.png', 'text.txt')));
-                $this->assertTrue($attachment->size > 0);
-            }
-        }
-
-        /**
         * Test case when user send email to somebody, and cc to dropbox
         * This shouldn't happen in reality, because recipient will see that message is sent to dropbox folder too
         */
-        public function testRunCaseTwo()
+        public function testRunCaseOne()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -218,7 +151,7 @@
         * This is best practictice to be used in reality, because other recipients will not see that user
         * bcc-ed email to dropbox
         */
-        public function testRunCaseThree()
+        public function testRunCaseTwo()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -290,7 +223,7 @@
         /**
         * Test case when somebody send email to Zurmo user, and user forward it to dropbox
         */
-        public function testRunCaseFour()
+        public function testRunCaseThree()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -311,79 +244,63 @@
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
-            //Now user send email to another user, and to dropbox
             $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
             $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
             $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
 
-            $originalSubject = "Email from John";
-            $originalTextBody   = "Email from John";
-            $originalHtmlBody   = "<strong>Hi Steve,</strong>. This is John. Bye!";
+            $textBody = "
+---------- Forwarded message ----------
+From: Steve <" . Yii::app()->params['emailTestAccounts']['testEmailAddress'] . ">
+Date: Fri, Jun 8, 2012 at 10:16 AM
+Subject: Email from John
+To: Steve <steve@example.com>
 
-            $forwardedEmailClientSubjectPrefixes = EmailClientForwardTemplatesTestHelper::$subjectPrefixes;
-            $forwardedEmailClientBodyPrefixes    = EmailClientForwardTemplatesTestHelper::$bodyPrefixes;
+Hello Steve
+";
 
-            $numberOfEmailMessages = 0;
-            foreach ($forwardedEmailClientSubjectPrefixes as $client => $subjectPrefixes)
+            $htmlBody = "
+---------- Forwarded message ----------
+From: Steve <" . Yii::app()->params['emailTestAccounts']['testEmailAddress'] . ">
+Date: Fri, Jun 8, 2012 at 10:16 AM
+Subject: Email from John
+To: Steve <steve@example.com>
+
+<strong>Hello</strong> Steve
+";
+
+            //Now user forward email to dropbox
+            $subject = "Fwd: Email from John";
+            Yii::app()->emailHelper->sendRawEmail($subject,
+                                                  $user->primaryEmail->emailAddress,
+                                                  array(Yii::app()->imap->imapUsername),
+                                                  $textBody,
+                                                  $htmlBody,
+                                                  null,
+                                                  null,
+                                                  array($filePath_1, $filePath_2)
+            );
+
+            sleep(10);
+            $job = new EmailArchivingJob();
+            $this->assertTrue($job->run());
+
+            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $emailMessages = EmailMessage::getAll();
+            $emailMessage = $emailMessages[0];
+
+            $this->assertEquals($subject, $emailMessage->subject);
+            $this->assertTrue(strpos($emailMessage->content->textContent, 'Hello Steve') !== false);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '<strong>Hello</strong> Steve') !== false);
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['testEmailAddress'], $emailMessage->sender->fromAddress);
+            $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->recipients[0]->toAddress);
+
+            $this->assertEquals(2, count($emailMessage->files));
+            foreach ($emailMessage->files as $attachment)
             {
-                $this->assertTrue(isset($forwardedEmailClientBodyPrefixes[$client]) ||
-                                  !empty($forwardedEmailClientBodyPrefixes[$client])
-                );
-                $bodyPrefixes = $forwardedEmailClientBodyPrefixes[$client];
-                // Test all subject/body prefix combinations
-                foreach ($subjectPrefixes as $subjectPrefix)
-                {
-                    foreach ($bodyPrefixes as $bodyPrefix)
-                    {
-                        $this->assertTrue($subjectPrefix != '');
-                        $this->assertTrue($bodyPrefix    != '');
-                        $bodyPrefix = str_replace("FROM_NAME", "John Smith", $bodyPrefix);
-                        $bodyPrefix = str_replace("FROM_EMAIL", Yii::app()->params['emailTestAccounts']['testEmailAddress'], $bodyPrefix);
-
-                        // Expunge all emails from dropbox
-                        Yii::app()->imap->expungeMessages();
-                        // Check if there are no emails in dropbox
-                        $job = new EmailArchivingJob();
-                        $this->assertTrue($job->run());
-                        $this->assertEquals($numberOfEmailMessages, count(EmailMessage::getAll()));
-                        $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-                        $this->assertEquals(0, $imapStats->Nmsgs);
-
-                        $subject = $subjectPrefix . " " . $originalSubject;
-                        $textBody = $bodyPrefix . $originalTextBody;
-                        $htmlBody = $bodyPrefix . $originalHtmlBody;
-                        Yii::app()->emailHelper->sendRawEmail($subject,
-                                                              $user->primaryEmail->emailAddress,
-                                                              array(Yii::app()->imap->imapUsername),
-                                                              $textBody,
-                                                              $htmlBody,
-                                                              null, null,
-                                                              array($filePath_1, $filePath_2));
-
-                        sleep(30);
-                        $job = new EmailArchivingJob();
-                        $this->assertTrue($job->run());
-
-                        $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-                        $this->assertEquals(1, $imapStats->Nmsgs);
-                        $numberOfEmailMessages++;
-                        $this->assertEquals($numberOfEmailMessages, count(EmailMessage::getAll()));
-                        $emailMessages = EmailMessage::getAll();
-                        $emailMessage = $emailMessages[$numberOfEmailMessages - 1];
-
-
-                        $this->assertEquals($subject, $emailMessage->subject);
-                        $this->assertEquals(Yii::app()->params['emailTestAccounts']['testEmailAddress'], $emailMessage->sender->fromAddress);
-                        $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->recipients[0]->toAddress);
-
-                        $this->assertEquals(2, count($emailMessage->files));
-                        foreach ($emailMessage->files as $attachment)
-                        {
-                            $this->assertTrue(in_array($attachment->name, array('table.csv', 'text.txt')));
-                            $this->assertTrue($attachment->size > 0);
-                        }
-                    }
-                }
+                $this->assertTrue(in_array($attachment->name, array('table.csv', 'text.txt')));
+                $this->assertTrue($attachment->size > 0);
             }
         }
 
@@ -391,7 +308,7 @@
         * Test case when sender email is not user primary email.
         * In this case system should send email to user.
         */
-        public function testRunCaseFive()
+        public function testRunCaseFour()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -442,7 +359,7 @@
         /**
         * Check if only new messages are pulled from dropdown
         */
-        public function testRunCaseSix()
+        public function testRunCaseFive()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;

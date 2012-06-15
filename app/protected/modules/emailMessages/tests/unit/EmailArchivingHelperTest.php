@@ -35,39 +35,49 @@
 
         public function testIsMessageForwarded()
         {
+            Yii::app()->imap->imapUsername = 'dropbox@emample.com';
+
             $imapMessage = new ImapMessage();
-            $imapMessage->subject = "";
+            $imapMessage->subject        = "Test subject";
+            $imapMessage->to[0]['email'] = 'dropbox@emample.com';
+            $imapMessage->fromEmail      = 'steve@example.com';
+            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
+
+            $imapMessage->to[0]['email'] = 'dropbox@emample.com';
+            $imapMessage->to[1]['email'] = 'john@emample.com';
+            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
+
+            $imapMessage->to[0]['email'] = 'john@emample.com';
+            $imapMessage->to[1]['email'] = 'dropbox@emample.com';
+            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
+
+            $imapMessage = new ImapMessage();
+            $imapMessage->subject        = "Test subject";
+            $imapMessage->to[0]['email'] = 'john@emample.com';
+            $imapMessage->cc[0]['email'] = 'dropbox@emample.com';
             $this->assertFalse(EmailArchivingHelper::isMessageForwarded($imapMessage));
 
-            $imapMessage->subject = "Test subject";
+            $imapMessage = new ImapMessage();
+            $imapMessage->subject        = "Test subject";
+            $imapMessage->to[0]['email'] = 'john@emample.com';
+            $imapMessage->cc[0]['email'] = 'peter@emample.com';
+            $imapMessage->cc[1]['email'] = 'dropbox@emample.com';
             $this->assertFalse(EmailArchivingHelper::isMessageForwarded($imapMessage));
 
-            $imapMessage->subject = "Forward subject";
+            // Bcc is not visible when email message is sent to dropbox as Bcc
+            $imapMessage = new ImapMessage();
+            $imapMessage->subject        = "Test subject";
+            $imapMessage->to[0]['email'] = 'john@emample.com';
             $this->assertFalse(EmailArchivingHelper::isMessageForwarded($imapMessage));
-
-            $imapMessage->subject = "Fwd: Test subject";
-            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
-
-            $imapMessage->subject = "FW: Test subject";
-            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
-
-            $imapMessage->subject = "fw: Test subject";
-            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
-
-            $imapMessage->subject = "Fw: Test subject";
-            $this->assertTrue(EmailArchivingHelper::isMessageForwarded($imapMessage));
         }
 
-        /**
-        * @depends testIsMessageForwarded
-        */
         public function testResolveEmailSenderFromForwardedEmailMessage()
         {
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
             $imapMessage->fromEmail = "test@example.com";
 
-            // Outlook format
+            // Outlook, Yahoo, Outlook express format
             $imapMessage->textBody = "
 From: John Smith [mailto:john@example.com]
 Sent: 02 March 2012 AM 01:23
@@ -80,7 +90,7 @@ Subject: Hello Steve";
             $this->assertEquals('john@example.com', $sender['email']);
             $this->assertEquals('John Smith', $sender['name']);
 
-            //Google format
+            //Google, Thunderbird format
             $imapMessage->textBody = "
 From: John Smith <john@example.com>
 Date: Thu, Apr 19, 2012 at 5:22 PM
@@ -106,27 +116,33 @@ To: 'Steve'";
         */
         public function testResolveEmailSenderFromEmailMessage()
         {
+            Yii::app()->imap->imapUsername = 'dropbox@emample.com';
+
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
             $imapMessage->fromEmail = "test@example.com";
+            $imapMessage->cc[0]['email'] = 'dropbox@emample.com';
+            $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
+            $this->assertEquals($imapMessage->fromEmail, $from['email']);
 
-            // Outlook format
+            $imapMessage = new ImapMessage();
+            $imapMessage->fromEmail = "test@example.com";
+            $imapMessage->to[0]['email'] = 'dropbox@emample.com';
+
+            // Outlook, Yahoo, Outlook express format
             $imapMessage->textBody = "
 From: John Smith [mailto:john@example.com]
 Sent: 02 March 2012 AM 01:23
 To: 'Steve Tytler' <steve@example.com>, Peter Smith <peter@example.com>
-Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
+Cc: Peter Smith <peter@example.com>
 Subject: Hello Steve";
-
-            $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
-            $this->assertEquals($imapMessage->fromEmail, $from['email']);
 
             $imapMessage->subject = "FW: Test subject";
             $from = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
 
-            //Google format
+            //Google, Thunderbird format
             $imapMessage->textBody = "
 From: John Smith <john@example.com>
 Date: Thu, Apr 19, 2012 at 5:22 PM
@@ -137,8 +153,10 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>";
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
 
+
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Fwd: Test subject";
+            $imapMessage->to[0]['email'] = 'dropbox@emample.com';
             $imapMessage->htmlBody = "
 
             -------- Original Message --------
@@ -152,6 +170,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>";
             $this->assertEquals('John Smith', $from['name']);
 
             $imapMessage = new ImapMessage();
+            $imapMessage->to[0]['email'] = 'dropbox@emample.com';
             $imapMessage->subject = "Fwd: Test subject";
             $imapMessage->textBody = "
 -------- Original Message --------
@@ -171,6 +190,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
         */
         public function testResolveEmailRecipientsFromEmailMessage()
         {
+            Yii::app()->imap->imapUsername = 'dropbox@emample.com';
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
             $imapMessage->fromEmail = "test@example.com";
@@ -190,6 +210,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $this->assertEquals($imapMessage->to, $recipients);
 
             $imapMessage->subject = "FW: Test subject";
+            $imapMessage->to[0]['email'] = 'dropbox@emample.com';
             $recipients = EmailArchivingHelper::resolveEmailRecipientsFromEmailMessage($imapMessage);
             $compareData = array(
                                array(

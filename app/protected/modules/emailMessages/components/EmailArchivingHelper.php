@@ -149,15 +149,16 @@
          */
         public static function isMessageForwarded(ImapMessage $emailMessage)
         {
-            $isForwrded = false;
-            foreach (self::$validEmailClientForwardSubjectPrefixes as $forwardSubjectPrefix)
+            $isForwarded = false;
+            foreach ($emailMessage->to as $toAddress)
             {
-                if (stristr($emailMessage->subject, $forwardSubjectPrefix))
+                if ($toAddress['email'] == Yii::app()->imap->imapUsername)
                 {
-                    $isForwrded = true;
+                    $isForwarded = true;
+                    break;
                 }
             }
-            return $isForwrded;
+            return $isForwarded;
         }
 
         /**
