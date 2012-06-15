@@ -49,5 +49,19 @@
             $users = UserModelSearch::getUsersByPartialFullName('Ab', 5);
             $this->assertEquals(1, count($users));
         }
+
+        public function testGetUsersByEmail()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $user = UserTestHelper::createBasicUser('Steve');
+            $user->primaryEmail->emailAddress = 'steve@example.com';
+            $user->primaryEmail->optOut       = 1;
+            $user->primaryEmail->isInvalid    = 0;
+            $this->assertTrue($user->save());
+
+            $users = UserModelSearch::getUsersByEmail('steve@example.com');
+            $this->assertEquals(1, count($users));
+            //$this->assertEquals($user->id, $users[0]->id);
+        }
     }
 ?>

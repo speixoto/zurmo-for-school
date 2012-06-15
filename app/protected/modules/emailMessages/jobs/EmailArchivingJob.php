@@ -141,10 +141,20 @@
                         {
                             // Check if email belongs to account
                             $accounts = AccountSearch::getAccountsByAnyEmailAddress($senderInfo['email'], 1);
-                            if (count($contacts))
+                            if (count($accounts))
                             {
-                                $sender->personOrAccount = $contacts[0]->getClassId('Item');
+                                $sender->personOrAccount = $accounts[0]->getClassId('Item');
                             }
+                            /*
+                            else
+                            {
+                                $users = UserModelSearch::getUsersByEmail($senderInfo['email']);
+                                if (count($users))
+                                {
+                                    $sender->personOrAccount = $users[0]->getClassId('Item');
+                                }
+                            }
+                            */
                         }
                     }
 
@@ -191,10 +201,20 @@
                         {
                             // Check if email belongs to account
                             $accounts = AccountSearch::getAccountsByAnyEmailAddress($recipientInfo['email'], 1);
-                            if (count($contacts))
+                            if (count($accounts))
                             {
-                                $recipient->personOrAccount = $contacts[0]->getClassId('Item');
+                                $recipient->personOrAccount = $accounts[0]->getClassId('Item');
                             }
+                            /*
+                            else
+                            {
+                                $users = UserModelSearch::getUsersByEmail($senderInfo['email']);
+                                if (count($users))
+                                {
+                                    $sender->personOrAccount = $users[0]->getClassId('Item');
+                                }
+                            }
+                            */
                         }
                         $emailMessage->recipients->add($recipient);
                     }
