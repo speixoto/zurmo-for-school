@@ -208,8 +208,12 @@
          */
         protected function renderLabel()
         {
-            return Chtml::tag('label',
-                   array(), $this->dropDownDependencyDerivedAttributeMetadata->getLabelByLanguage(Yii::app()->language));
+            $content = $this->dropDownDependencyDerivedAttributeMetadata->getLabelByLanguage(Yii::app()->language);
+            if ($this->form === null)
+            {
+                return Yii::app()->format->text($content);
+            }
+            return Chtml::tag('label', array(), $content);
         }
 
         /**

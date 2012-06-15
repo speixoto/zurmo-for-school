@@ -119,8 +119,8 @@
                         return false;
                     }
                 );
-                $('#more-search-link" . $this->gridIdSuffix . "').unbind('click');
-                $('#more-search-link" . $this->gridIdSuffix . "').bind('click',  function(event)
+                $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
+                $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
                     {
                         $('.search-view-1').toggle();
                         return false;
