@@ -164,6 +164,11 @@
             return 'ConversationGamification';
         }
 
+        /**
+         * Alter hasReadLatest and/or ownerHasReadLatest based on comments being added.
+         * (non-PHPdoc)
+         * @see Item::beforeSave()
+         */
         protected function beforeSave()
         {
             if (parent::beforeSave())
@@ -171,6 +176,10 @@
                 if($this->comments->isModified() || $this->getIsNewModel())
                 {
                     $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+                    if($this->getIsNewModel())
+                    {
+                        $this->ownerHasReadLatest = true;
+                    }
                 }
                 if($this->comments->isModified())
                 {

@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Helps manage related models to an Activity.
+     * Helps manage related models to a Conversation.
      */
     class ConversationItemForm extends RelatedItemForm
     {

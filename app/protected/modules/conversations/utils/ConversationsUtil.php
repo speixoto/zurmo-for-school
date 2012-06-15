@@ -29,6 +29,12 @@
      */
     class ConversationsUtil
     {
+        /**
+         * Renders string content for the conversation subject and either the description or latest conversation comment
+         * if it exists.
+         * @param Conversation $conversation
+         * @return string
+         */
         public static function renderSubjectAndLatestForDisplayView(Conversation $conversation)
         {
             $url            = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
@@ -42,6 +48,11 @@
             return $content = ZurmoHtml::link($content, $url);
         }
 
+        /**
+         * Given a conversation, render the latest comment or the conversation description a comment does not exist.
+         * @param Conversation $conversation
+         * @return string
+         */
         public static function renderDescriptionOrLatestCommentContent(Conversation $conversation)
         {
             $content = null;
@@ -71,6 +82,51 @@
                 $content .= $conversation->description;
             }
             return $content;
+        }
+
+        /**
+         * For the current user, render a string of how many unread conversations exist for the user.
+         * @return string
+         */
+        public static function getUnreadCountTabMenuContentForCurrentUser()
+        {
+            return Conversation::getUnreadCountByUser(Yii::app()->user->userModel);
+        }
+
+        /**
+         * Given a conversation and a user, mark that the user has either read the latest comment as a conversation
+         * participant, or if the user is the owner, than as the owner.
+         * @param Conversation $conversation
+         * @param User $user
+         */
+        public static function markUserHasReadLatest(Conversation $conversation, User $user)
+        {
+            assert('$conversation->id > 0');
+            assert('$user->id > 0');
+            $save = false;
+            if($user == $conversation->owner)
+            {
+                if(!$conversation->ownerHasReadLatest)
+                {
+                    $conversation->ownerHasReadLatest = true;
+                    $save                             = true;
+                }
+            }
+            else
+            {
+                foreach($conversation->conversationParticipants as $position => $participant)
+                {
+                    if($participant->person == $user && !$participant->hasReadLatest)
+                    {
+                        $conversation->conversationParticipants[$position]->hasReadLatest = true;
+                        $save                                                             = true;
+                    }
+                }
+            }
+            if($save)
+            {
+                $conversation->save();
+            }
         }
     }
 ?>

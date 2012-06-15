@@ -181,15 +181,18 @@
                 }
                 if ((isset($item['ajaxLinkOptions'])))
                 {
-                    echo CHtml::ajaxLink('<span>' . $item['label'] . '</span>', $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
+                    echo CHtml::ajaxLink('<span>' . $item['label'] . '</span>' .
+                         static::resolveAndGetSpanAndDynamicLabelContent($item), $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
                 }
                 elseif (isset($item['url']))
                 {
-                    echo CHtml::link('<span></span><span>' . $item['label'] . '</span>', $item['url'], $htmlOptions);
+                    echo CHtml::link('<span></span><span>' . $item['label'] . '</span>' .
+                         static::resolveAndGetSpanAndDynamicLabelContent($item), $item['url'], $htmlOptions);
                 }
                 else
                 {
-                    echo CHtml::link('<span>' . $item['label'] . '</span>', "javascript:void(0);", $htmlOptions);
+                    echo CHtml::link('<span>' . $item['label'] . '</span>' .
+                         static::resolveAndGetSpanAndDynamicLabelContent($item), "javascript:void(0);", $htmlOptions);
                 }
                 if (isset($item['items']) && count($item['items']))
                 {
@@ -198,6 +201,14 @@
                     echo CHtml::closeTag('ul') . "\n";
                 }
                 echo CHtml::closeTag('li') . "\n";
+            }
+        }
+
+        protected static function resolveAndGetSpanAndDynamicLabelContent($item)
+        {
+            if(isset($item['dynamicLabelContent']))
+            {
+                return CHtml::tag('span', array(), $item['dynamicLabelContent']);
             }
         }
 

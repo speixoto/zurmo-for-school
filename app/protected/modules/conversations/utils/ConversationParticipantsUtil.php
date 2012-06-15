@@ -25,10 +25,15 @@
      ********************************************************************************/
 
     /**
-     * Helper class for conversation participant related logic.
+     * Helper class for conversation participant logic.
      */
     class ConversationParticipantsUtil
     {
+        /**
+         * Given a Conversation and User, determine if the user is already a conversationParticipant.
+         * @param Conversation $model
+         * @param User $user
+         */
         public static function isUserAParticipant(Conversation $model, User $user)
         {
             if ($model->conversationParticipants->count() > 0)

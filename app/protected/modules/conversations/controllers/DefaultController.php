@@ -103,6 +103,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($conversation);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                       array(strval($conversation), 'ConversationsModule'), $conversation);
+            ConversationsUtil::markUserHasReadLatest($conversation, Yii::app()->user->userModel);
             $detailsAndRelationsView = $this->makeDetailsAndRelationsView($conversation, 'ConversationsModule',
                                                                           'ConversationDetailsAndRelationsView',
                                                                           Yii::app()->request->getRequestUri());
@@ -176,25 +177,6 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($conversation);
             $conversation->delete();
             $this->redirect(array($this->getId() . '/index'));
-        }
-
-        public function actionDeleteCommentViaAjax($conversationId, $commentId)
-        {
-            $comment          = Comment::getById(intval($commentId));
-            $conversation     = Conversation::getById(intval($conversationId));
-            if($comment->createdByUser->id != Yii::app()->user->userModel->id &&
-               $conversation->owner->id    != Yii::app()->user->userModel->id)
-            {
-                $messageView = new AccessFailureAjaxView();
-                $view        = new AjaxPageView($messageView);
-                echo $view->render();
-                Yii::app()->end(0, false);
-            }
-            $deleted = $comment->delete();
-            if(!$deleted)
-            {
-                throw new FailedToDeleteModelException();
-            }
         }
 
         /**

@@ -81,7 +81,7 @@
             $this->assertEquals($fileModel,                       $conversation->files->offsetGet(0));
             $this->assertEquals(1,                                $conversation->conversationParticipants->count());
             $this->assertEquals($steven,                          $conversation->conversationParticipants->offsetGet(0)->person);
-            $this->assertEquals(0,                                $conversation->ownerHasReadLatest);
+            $this->assertEquals(1,                                $conversation->ownerHasReadLatest);
 
             //Clear conversation so permissions take properly.  Needed because we don't have changes between page loads.
             $id = $conversation->id;
@@ -247,6 +247,9 @@
             $this->assertEquals(2, $count);
         }
 
+        /**
+         * @depends testGetUnreadConversationCount
+         */
         public function testDeleteConversation()
         {
             $conversations = Conversation::getAll();

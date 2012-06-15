@@ -85,17 +85,6 @@
             return '<h1>' . strval($this->model) . "</h1>";
         }
 
-        /**
-         * Override to change the editableTemplate to place the label above the input.
-         * @see DetailsView::resolveElementDuringFormLayoutRender()
-         */
-        /**
-        protected function resolveElementDuringFormLayoutRender(& $element)
-        {
-            $element->nonEditableTemplate = '<td colspan="{colspan}">{content}</td>';
-        }
-        **/
-
         protected function renderAfterFormLayoutForDetailsContent()
         {
             $getParams    = array('relatedModelId'           => $this->model->id,
@@ -105,7 +94,7 @@
             $pageSize     = 5;
             $commentsData = Comment::getCommentsByRelatedModelTypeIdAndPageSize(get_class($this->model),
                                                                                 $this->modelId, ($pageSize + 1));
-            $view         = new CommentsForRelatedModelView('default', 'comments', $commentsData, $pageSize, $getParams);
+            $view         = new CommentsForRelatedModelView('default', 'comments', $commentsData, $this->model, $pageSize, $getParams);
             $content     .= $view->render();
             return $content;
         }

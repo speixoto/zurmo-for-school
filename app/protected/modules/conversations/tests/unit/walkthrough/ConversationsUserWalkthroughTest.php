@@ -25,10 +25,8 @@
      ********************************************************************************/
 
     /**
-     * Conversations Module Super User Walkthrough.
+     * Conversations Module User Walkthrough.
      * Walkthrough for the users of all possible controller actions.
-     * Since this is a super user, he should have access to all controller actions
-     * without any exceptions being thrown.
      */
     class ConversationsUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
@@ -287,16 +285,22 @@
             $this->assertEquals($conversations[0]->comments->offsetGet(1)->createdByUser->id, $mary->id);
             $superCommentId = $conversations[0]->comments->offsetGet(0)->id;
             $this->assertEquals($conversations[0]->comments->offsetGet(0)->createdByUser->id, $super->id);
-            $this->setGetArray(array('commentId' => $maryCommentId, 'conversationId' => $conversations[0]->id));
-            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/deleteCommentViaAjax', true);
+            $this->setGetArray(array('relatedModelId'             => $conversations[0]->id,
+                                     'relatedModelClassName'      => 'Conversation',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'id'               		  => $maryCommentId));
+            $this->runControllerWithNoExceptionsAndGetContent('comments/default/deleteViaAjax', true);
             $conversationId  = $conversations[0]->id;
             $conversations[0]->forget();
             $conversation = Conversation::getById($conversationId);
             $this->assertEquals(1, $conversation->comments->count());
 
             //new test - mary cannot delete a comment she did not write.
-            $this->setGetArray(array('commentId' => $superCommentId, 'conversationId' => $conversations[0]->id));
-            $this->runControllerShouldResultInAjaxAccessFailureAndGetContent('conversations/default/deleteCommentViaAjax');
+            $this->setGetArray(array('relatedModelId'             => $conversations[0]->id,
+                                     'relatedModelClassName'      => 'Conversation',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'id'               		  => $superCommentId));
+            $this->runControllerShouldResultInAjaxAccessFailureAndGetContent('comments/default/deleteViaAjax');
             $conversationId  = $conversations[0]->id;
             $conversations[0]->forget();
             $conversation = Conversation::getById($conversationId);
@@ -304,9 +308,10 @@
             $this->assertEquals(1, $conversation->comments->count());
 
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            //new test , super can edit the conversation
+            //new test , super can view and edit the conversation
             $this->setGetArray(array('id' => $conversation->id));
             $this->runControllerWithNoExceptionsAndGetContent('conversations/default/details');
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/edit');
 
             //new test , super can delete the conversation
             $this->setGetArray(array('id' => $conversation->id));

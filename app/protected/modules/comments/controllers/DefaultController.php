@@ -61,12 +61,35 @@
             $getParams                = array('relatedModelId'           => $relatedModelId,
                                               'relatedModelClassName'    => $relatedModelClassName,
                                               'relatedModelRelationName' => $relatedModelRelationName);
-            $view                     = new CommentsForRelatedModelView('default', 'comments', $commentsData,
+            $relatedModel             = $relatedModelClassName::getById((int)$relatedModelId);
+            $view                     = new CommentsForRelatedModelView('default', 'comments', $commentsData, $relatedModel,
                                                                         $pageSize, $getParams);
             $content                  = $view->render();
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;
+        }
+
+        public function actionDeleteViaAjax($id)
+        {
+            $getData                  = GetUtil::getData();
+            $relatedModelId           = ArrayUtil::getArrayValue($getData, 'relatedModelId');
+            $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
+            $comment                  = Comment::getById(intval($id));
+            $relatedModel             = $relatedModelClassName::getById(intval($relatedModelId));
+            if($comment->createdByUser->id != Yii::app()->user->userModel->id &&
+               $relatedModel->owner->id    != Yii::app()->user->userModel->id)
+            {
+                $messageView = new AccessFailureAjaxView();
+                $view        = new AjaxPageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $deleted = $comment->delete();
+            if(!$deleted)
+            {
+                throw new FailedToDeleteModelException();
+            }
         }
 
         protected function actionInlineEditValidate($model)

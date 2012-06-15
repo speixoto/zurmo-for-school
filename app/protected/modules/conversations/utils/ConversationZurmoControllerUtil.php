@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Extended class to support conversation participants
+     * Class helps support adding/removing conversation participants while saving a conversation from a post.
      */
     class ConversationZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
     {
@@ -45,7 +45,7 @@
         }
 
         /**
-         * Override to handle incoming file upload information.
+         * Override to handle incoming conversation participant information
          * (non-PHPdoc)
          * @see ModelHasRelatedItemsZurmoControllerUtil::afterSetAttributesDuringSave()
          */

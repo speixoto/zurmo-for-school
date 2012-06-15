@@ -65,6 +65,7 @@
                                 'right' => self::RIGHT_ACCESS_CONVERSATIONS
                             ),
                         ),
+                        'dynamicLabelContent' => 'eval:ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser()'
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(

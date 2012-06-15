@@ -108,6 +108,10 @@
             }
         }
 
+        /**
+         * (non-PHPdoc)
+         * @see MashableActivityRules::getLatestActivityExtraDisplayStringByModel()
+         */
         public function getLatestActivityExtraDisplayStringByModel($model)
         {
             assert('$model instanceof Conversation');

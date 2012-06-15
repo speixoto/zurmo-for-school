@@ -36,20 +36,24 @@
 
         protected $commentsData;
 
+        protected $relatedModel;
+
         protected $pageSize;
 
         protected $getParams;
 
-        public function __construct($controllerId, $moduleId, $commentsData, $pageSize, $getParams)
+        public function __construct($controllerId, $moduleId, $commentsData, Item $relatedModel, $pageSize, $getParams)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_array($commentsData)');
+            assert('$relatedModel->id > 0');
             assert('is_int($pageSize) || $pageSize == null');
             assert('is_array($getParams)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->commentsData           = $commentsData;
+            $this->relatedModel           = $relatedModel;
             $this->pageSize               = $pageSize;
             $this->getParams              = $getParams;
         }
@@ -115,6 +119,12 @@
                     $stringContent .= '<br/>';
                     $stringContent .= FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($comment, 'files');
                 }
+                if($comment->createdByUser == Yii::app()->user->userModel ||
+                   $this->relatedModel->createdByUser == Yii::app()->user->userModel ||
+                   ($this->relatedModel instanceof OwnedSecurableItem && $this->relatedModel->owner == Yii::app()->user->userModel))
+                {
+                    $stringContent .= CHtml::tag('span', array(), $this->renderDeleteLinkContent($comment));
+                }
                 $content .= '<tr>';
                 $content .= '<td>' . $stringContent . '</td>';
                 $content .= '</tr>';
@@ -127,6 +137,19 @@
             $content .= '</tbody>';
             $content .= '</table>';
             return $content;
+        }
+
+        protected function renderDeleteLinkContent(Comment $comment)
+        {
+            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
+                            array_merge($this->getParams, array('id' => $comment->id)));
+            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete'), $url,
+                         array('type'     => 'GET',
+                               'complete' => "function(XMLHttpRequest, textStatus){
+                                              $('#deleteCommentLink" . $comment->id . "').closest('tr').remove();}"),
+                         array('id'         => 'deleteCommentLink' . $comment->id,
+                                'class'     => 'deleteCommentLink' . $comment->id,
+                                'namespace' => 'delete'));
         }
 
         public function isUniqueToAPage()
