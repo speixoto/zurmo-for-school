@@ -179,7 +179,7 @@
             $this->assertTrue($gameLevel->id > 0);
             $this->assertEquals(2, $gameLevel->value);
 
-            //test user at general level 15 with 100,000 points, so there is nowhere to move up to (No game notification created)
+            //test user at general level 15 with 100 000 points, so there is nowhere to move up to (No game notification created)
             $gamePoint->value = 100000;
             $this->assertTrue($gamePoint->save());
             $gameLevel->value = 15;
@@ -261,7 +261,7 @@
             $gamePoint2 = GamePoint::resolveToGetByTypeAndPerson(GamePoint::TYPE_USER_ADOPTION, $billy);
             $this->assertEquals(100210, $gamePoint2->value);
 
-            //test user at general level 15 with 100,000 points, so there is nowhere to move up to (No game notification created)
+            //test user at general level 15 with 100 000 points, so there is nowhere to move up to (No game notification created)
             $gamePoint->value = 100000;
             $this->assertTrue($gamePoint->save());
             $gameLevel->value = 7;

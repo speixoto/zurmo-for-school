@@ -44,11 +44,13 @@
         {
             $content           = null;
             $index             = 0;
-            foreach($this->gameNotifications as $notification)
+            $firstDialog       = true;
+            foreach ($this->gameNotifications as $notification)
             {
-                $content .= self::renderNotificationContent($notification, $index);
-                $index ++;
-                if(!$notification->delete())
+                $content       .= self::renderNotificationContent($notification, $index, $firstDialog);
+                $firstDialog    = false;
+                $index++;
+                if (!$notification->delete())
                 {
                     throw new FailedToDeleteModelException();
                 }
@@ -56,7 +58,7 @@
             return $content;
         }
 
-        protected static function renderNotificationContent($notification, $index)
+        protected static function renderNotificationContent($notification, $index, $modal)
         {
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModalGameNotificationView");
@@ -64,18 +66,22 @@
                 'id' => 'ModalGameNotification' . $index,
                 'options' => array(
                     'autoOpen' => true,
-                    'modal'    => true,
-                    'height'   => 400,
-                    'width'    => 500,
+                    'modal'    => $modal,
+                    'height'   => 350,
+                    'width'    => 350,
+                    'dialogClass' => 'ModalGameNotificationParent',
+                    'position' => 'center',
+                    'clearStyle' => true,
                     'open'     => 'js:function(event, ui) {$(this).parent().children(".ui-dialog-titlebar").hide();}',
                 ),
+                'htmlOptions' => array('class' => 'ModalGameNotification')
             ));
             $adapter = new GameNotificationToModalContentAdapter($notification);
-            echo CHtml::tag('div', array(), $adapter->getIconCssName());
-            echo CHtml::tag('div', array(), $adapter->getMessageContent());
-            echo '<br/>';
+            echo '<div class="game-badge ' . $adapter->getIconCssName() . '"><div class="gloss"></div>' .
+                                '<strong class="badge-icon"></strong><span class="badge-message">' . $adapter->getMessageContent() . '</span></div>';
+            echo '<br />';
             echo CHtml::link(Yii::t('Default', 'Continue'), '#',
-                             array('onClick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
+                             array('class' => 'close-ModalGameNotification', 'onClick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
             $cClipWidget->endWidget('zii.widgets.jui.CJuiDialog');
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['ModalGameNotificationView'];

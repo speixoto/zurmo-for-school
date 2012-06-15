@@ -40,15 +40,15 @@
         ),
 
         'components' => array(
-            'assetManager' => array(
-                'class' => 'ZurmoAssetManager',
-                'basePath' => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'assets/',
-            ),
             'apiRequest' => array(
                 'class' => 'application.modules.api.components.ApiRequest',
             ),
             'apiHelper' => array(
                 'class' => 'application.modules.api.components.ZurmoApiHelper',
+            ),
+            'assetManager' => array(
+                'class' => 'ZurmoAssetManager',
+                'basePath' => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'assets/',
             ),
             'browser' => array(
                 'class' => 'application.extensions.zurmoinc.framework.components.Browser',
@@ -183,6 +183,7 @@
                 'importPageSize'           => 50,
                 'dashboardListPageSize'    => 5,
                 'apiListPageSize'          => 10,
+                'unlimitedPageSize'        => 1000000000
             ),
             'performance' => array(
                 'class'          => 'application.extensions.zurmoinc.framework.components.PerformanceMeasurement',
@@ -272,6 +273,7 @@
             'application.extensions.zurmoinc.framework.utils.FileUtil',
             'application.extensions.zurmoinc.framework.utils.GeneralCache',
             'application.extensions.zurmoinc.framework.exceptions.NotFoundException',
+            'application.extensions.zurmoinc.framework.components.ZurmoLocale',
             'application.modules.api.tests.unit.models.*',
             'application.modules.api.tests.unit.forms.*',
             'application.modules.install.serviceHelpers.MemcacheServiceHelper',

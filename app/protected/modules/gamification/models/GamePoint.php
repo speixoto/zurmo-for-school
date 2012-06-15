@@ -220,9 +220,10 @@
         public function replaceValue($value)
         {
             assert('is_int($value)');
+            $oldValue                               = $this->value;
             $this->unrestrictedSet('value', $value);
             $gamePointTransaction                   = new GamePointTransaction();
-            $gamePointTransaction->value            = $value - $this->value;
+            $gamePointTransaction->value            = $value - $oldValue;
             $this->transactions->add($gamePointTransaction);
         }
 
@@ -270,7 +271,7 @@
                          $user->getClassId('Item') . " group by type";
             $rows      = R::getAll($sql);
             $indexedData = array();
-            foreach($rows as $row)
+            foreach ($rows as $row)
             {
                 $indexedData[$row['type']] = $row['sum'];
             }

@@ -93,7 +93,7 @@
                             </div>
                         </div>';
             $content .= '<div id="rightCol">';
-            $content .= static::renderHelpfulLinksContent();
+            $content .= static::renderSocialLinksContent();
             $content .= '<div><h3>Application Info</h3><p>';
             $content .= Yii::t('Default', 'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.',
                         array('{zurmoVersion}' => $zurmoVersion));

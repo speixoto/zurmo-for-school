@@ -51,7 +51,6 @@
                           array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
-
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
             assert('is_array($userPointsByType)');

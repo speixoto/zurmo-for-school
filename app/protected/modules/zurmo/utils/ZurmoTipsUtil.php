@@ -35,6 +35,19 @@
             $tipKey = array_rand($tips, 1);
             return $tips[$tipKey];
         }
-    }
 
+        public static function getRandomTipResolvedForCurrentUser()
+        {
+            if (Yii::app()->user->userModel->firstName != null)
+            {
+                $firstNameOrNull = ' ' .Yii::app()->user->userModel->firstName;
+            }
+            else
+            {
+                $firstNameOrNull = null;
+            }
+            $tipContent = static::getSingleRandomTipContent();
+            return str_replace('{spaceAndFirstName}', $firstNameOrNull, $tipContent);
+        }
+    }
 ?>

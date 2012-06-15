@@ -36,7 +36,7 @@
 
         protected function preFilter($filterChain)
         {
-            if(isset($_POST['ajax']))
+            if (isset($_POST['ajax']))
             {
                 return true;
             }
@@ -56,7 +56,7 @@
                 $joinTablesAdapter = null;
                 $where             = null;
             }
-            if($modelClassName::getCount($joinTablesAdapter, $where) != 0)
+            if ($modelClassName::getCount($joinTablesAdapter, $where) != 0)
             {
                 return true;
             }

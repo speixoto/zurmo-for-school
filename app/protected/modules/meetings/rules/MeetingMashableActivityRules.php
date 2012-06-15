@@ -58,31 +58,31 @@
         {
             assert('is_string($ownedByFilter)');
             assert('is_string($viewModuleClassName)');
-            if($ownedByFilter != LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER
-               && $viewModuleClassName != 'UserModule')
+            if ($ownedByFilter != LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER &&
+               $viewModuleClassName != 'UsersModule')
             {
-                if($viewModuleClassName == 'HomeModule')
+                if ($viewModuleClassName == 'HomeModule')
                 {
                     return "<span>{modelStringContent}</span><br/><span>" .
-                           "{relatedModelsByImportanceContent}</span><span class='less-pronounced-text'>" .
-                           Yii::t('Default', 'organized by {ownerStringContent}') . "</span>";
+                           "{relatedModelsByImportanceContent} </span><span class='less-pronounced-text'>" .
+                           Yii::t('Default', 'owned by {ownerStringContent}') . " </span>";
                 }
                 else
                 {
-                    return "<span>{modelStringContent}</span><span class='less-pronounced-text'>" .
-                           Yii::t('Default', 'organized by {ownerStringContent}') . "</span>";
+                    return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
+                           Yii::t('Default', 'owned by {ownerStringContent}') . " </span>";
                 }
             }
             else
             {
-                if($viewModuleClassName == 'HomeModule' || $viewModuleClassName == 'UserModule')
+                if ($viewModuleClassName == 'HomeModule' || $viewModuleClassName == 'UsersModule')
                 {
                     return "<span>{modelStringContent}</span><br/><span>" .
-                           "{relatedModelsByImportanceContent}</span><span>{extraContent}</span>";
+                           "{relatedModelsByImportanceContent} </span><span>{extraContent} </span>";
                 }
                 else
                 {
-                    return "<span>{modelStringContent}</span>";
+                    return "<span>{modelStringContent} </span>";
                 }
             }
         }

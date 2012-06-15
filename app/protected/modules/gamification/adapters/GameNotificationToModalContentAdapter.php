@@ -42,15 +42,15 @@
         public function getIconCssName()
         {
             $data = $this->getAndValidateUnserializedData();
-            if($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
+            if ($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
             {
                 return 'game-level-change';
             }
-            elseif($data['type'] == GameNotification::TYPE_NEW_BADGE)
+            elseif ($data['type'] == GameNotification::TYPE_NEW_BADGE)
             {
                 return 'game-new-badge';
             }
-            elseif($data['type'] == GameNotification::TYPE_BADGE_GRADE_CHANGE)
+            elseif ($data['type'] == GameNotification::TYPE_BADGE_GRADE_CHANGE)
             {
                 return 'game-badge-grade-change';
             }
@@ -66,27 +66,27 @@
         public function getMessageContent()
         {
             $data = $this->getAndValidateUnserializedData();
-            if($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
+            if ($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
             {
                 $content  = '<h2>' . Yii::t('Default', 'Congratulations!') . '</h2>';
-                $content .= '<h3>' . Yii::t('Default', 'You have reached level {nextLevel}.',
+                $content .= '<h3>' . Yii::t('Default', 'You have reached level {nextLevel}',
                                             array('{nextLevel}' => $data['levelValue'])) . '</h3>';
                 return $content;
             }
-            elseif($data['type'] == GameNotification::TYPE_NEW_BADGE)
+            elseif ($data['type'] == GameNotification::TYPE_NEW_BADGE)
             {
                 $gameBadgeRulesClassName = $data['badgeType'] . 'GameBadgeRules';
                 $value                   = $gameBadgeRulesClassName::getItemCountByGrade(1);
-                $content  = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
-                $content  = '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
+                $content   = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
+                $content  .= '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
                 return $content;
             }
-            elseif($data['type'] == GameNotification::TYPE_BADGE_GRADE_CHANGE)
+            elseif ($data['type'] == GameNotification::TYPE_BADGE_GRADE_CHANGE)
             {
                 $gameBadgeRulesClassName = $data['badgeType'] . 'GameBadgeRules';
                 $value                   = $gameBadgeRulesClassName::getItemCountByGrade($data['grade']);
-                $content  = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
-                $content  = '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
+                $content   = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
+                $content  .= '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
                 return $content;
             }
             else
@@ -98,7 +98,7 @@
         protected function getAndValidateUnserializedData()
         {
             $data = $this->gameNotification->getUnserializedData();
-            if(!isset($data['type']))
+            if (!isset($data['type']))
             {
                 throw new NotSupportedException();
             }

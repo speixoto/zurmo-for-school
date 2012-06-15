@@ -90,9 +90,9 @@
         {
             assert('is_int($value)');
             $currentGrade   = 0;
-            foreach(static::$valuesIndexedByGrade as $grade => $minimumValue)
+            foreach (static::$valuesIndexedByGrade as $grade => $minimumValue)
             {
-                if($value >= $minimumValue)
+                if ($value >= $minimumValue)
                 {
                     $currentGrade = $grade;
                 }

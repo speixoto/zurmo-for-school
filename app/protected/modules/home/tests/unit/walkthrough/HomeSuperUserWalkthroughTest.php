@@ -45,7 +45,6 @@
             ContactsModule::loadStartingData();
         }
 
-
         public function testSuperUserWelcomeActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');

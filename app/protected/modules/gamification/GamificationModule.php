@@ -53,5 +53,10 @@
             );
             return $metadata;
         }
+
+        public static function getDemoDataMakerClassName()
+        {
+            return 'GamificationDemoDataMaker';
+        }
     }
 ?>

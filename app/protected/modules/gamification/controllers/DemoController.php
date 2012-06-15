@@ -36,6 +36,7 @@
             {
                 throw new NotSupportedException();
             }
+
             //Level up notification
             $gameNotification           = new GameNotification();
             $gameNotification->user     = Yii::app()->user->userModel;

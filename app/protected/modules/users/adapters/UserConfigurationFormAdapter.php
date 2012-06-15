@@ -83,6 +83,5 @@
             assert('is_bool($value)');
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'hideWelcomeView', $value);
         }
-
     }
 ?>

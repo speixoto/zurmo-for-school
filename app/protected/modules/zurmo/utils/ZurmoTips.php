@@ -29,16 +29,12 @@
      * This file contains a library of tips that can be displayed to users.
      */
     $tips = array(
-        Yii::t('Default', 'Tip 1'),
-        Yii::t('Default', 'Tip 2'),
-        Yii::t('Default', 'Tip 3'),
-        Yii::t('Default', 'Tip 4'),
-        Yii::t('Default', 'Tip 5'),
-        Yii::t('Default', 'Tip 6'),
-        Yii::t('Default', 'Tip 7'),
-        Yii::t('Default', 'Tip 8'),
-        Yii::t('Default', 'Tip 9'),
-        Yii::t('Default', 'Tip 10'),
+        Yii::t('Default', 'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'),
+        Yii::t('Default', 'Need to update multiple records at once? Select them from the list and hit the Update button.'),
+        Yii::t('Default', 'Add new fields, remove ones you don\'t need and change the layout using Designer.'),
+        Yii::t('Default', 'Let Zurmo crunch the numbers, add calculated fields to your records in Designer.'),
+        Yii::t('Default', 'Parlez vous Français{spaceAndFirstName}?  Choose your preferred language in your My Profile area.'),
+        Yii::t('Default', 'Click on the Map link on records to see the customer location on Google Maps.'),
     );
     return $tips;
 ?>

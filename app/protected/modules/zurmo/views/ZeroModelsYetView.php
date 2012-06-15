@@ -54,17 +54,16 @@
         {
             $params             = array('label' => $this->getCreateLinkDisplayLabel());
             $createLinkElement  = new CreateLinkActionElement($this->controllerId, $this->moduleId, null, $params);
-            $content = '<div>';
-            $content .= '<div>' . $this->getIconName() . '</div>';
-            $content .= '<div>' . $this->getMessageContent() . '</div>';
-            $content .= '<div>' . $createLinkElement->render() . '</div>';
+            $content = '<div class="' . $this->getIconName() . '">';
+            $content .= $this->getMessageContent();
+            $content .= $createLinkElement->render();
             $content .= '</div>';
             return $content;
         }
 
         protected function getIconName()
         {
-            return $this->modelClassName . '-large-icon';
+            return $this->modelClassName;
         }
     }
 ?>
