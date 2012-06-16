@@ -92,13 +92,6 @@
                     ) . '/Modal.js',
                 CClientScript::POS_END
             );
-            $cs->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
-                    ) . '/FormUtils.js',
-                CClientScript::POS_END
-            );
-
             $content .= $formStart;
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderAfterFormLayout($form);

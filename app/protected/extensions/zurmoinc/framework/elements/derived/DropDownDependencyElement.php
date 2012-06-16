@@ -136,8 +136,8 @@
             assert('is_array($dependencyData)');
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets') . '/DropDownDependencyManager.js'
-                    ),
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets')
+                    ) . '/DropDownDependencyManager.js',
                 CClientScript::POS_END
             );
             $managerObjectName = $this->getDependencyManagerScriptObjectName();
