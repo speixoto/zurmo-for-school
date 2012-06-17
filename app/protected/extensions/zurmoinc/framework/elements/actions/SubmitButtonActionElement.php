@@ -56,7 +56,7 @@
             $cs->registerCoreScript('jquery');
             $cs->registerCoreScript('yii');
             $handler                 = "jQuery.yii.submitForm(this, '', $params); return false;";
-            $htmlOptions['onClick']  = $handler;
+            $htmlOptions['onclick']  = $handler;
             $aContent                = CHtml::tag('span', array('class' => 'z-spinner'), 'Loading..');
             $aContent               .= CHtml::tag('span', array('class' => 'z-icon'), null);
             $aContent               .= CHtml::tag('span', array('class' => 'z-label'), $this->getLabel());
