@@ -553,7 +553,7 @@
                     'groups'     => array(RedBeanModel::MANY_MANY,           'Group'),
                     'manager'    => array(RedBeanModel::HAS_ONE,             'User'),
                     'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'User'),
+                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'EmailBox'),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',

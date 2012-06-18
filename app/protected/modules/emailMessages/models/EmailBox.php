@@ -31,6 +31,8 @@
     {
         const NOTIFICATIONS_NAME   = 'System Notifications';
 
+        const USER_DEFAULT_NAME    = 'Default';
+
         protected $isNotifications = false;
 
         public static function getByName($name)
