@@ -152,7 +152,7 @@
                 {
                     InboundEmailConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                    Yii::t('Default', 'Inbound email configuration saved successfully.')
+                                               Yii::t('Default', 'Inbound email configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
@@ -169,8 +169,7 @@
         }
 
         /**
-        * Assumes before calling this, the outbound settings have been validated in the form.
-        * Todo: When new user interface is complete, this will be re-worked to be on page instead of modal.
+        * Assumes before calling this, the inbound settings have been validated in the form.
         */
         public function actionTestImapConnection()
         {

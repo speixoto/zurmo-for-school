@@ -29,11 +29,6 @@
      */
     class EmailArchivingHelper
     {
-        public static $validEmailClientForwardSubjectPrefixes = array(
-            'Fwd:', // Gmail, ThunderBird/IceDove
-            'FW:',  // Outlook
-            'Fw:',  //Yahoo
-        );
         /**
          * For a given email find user.
          * Function consider that user sent email to dropbox (To, CC or BCC),
