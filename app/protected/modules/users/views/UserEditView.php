@@ -127,7 +127,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'primaryEmail', 'type' => 'EmailAddressInformation'),
+                                                array('attributeName' => 'primaryEmail',
+                                                      'type'          => 'EmailAddressInformation',
+                                                      'hideOptOut'    => true),
                                             ),
                                         ),
                                     )
