@@ -68,7 +68,7 @@
                 'imapPort'                                 => Yii::t('Default', 'IMAP Port'),
                 'imapSSL'                                  => Yii::t('Default', 'IMAP SSL connection'),
                 'imapFolder'                               => Yii::t('Default', 'IMAP folder'),
-                'aTestToAddress'                           => Yii::t('Default', 'Test IMAP connection'),
+                'testImapConnection'                       => Yii::t('Default', 'Test IMAP connection'),
             );
         }
     }
