@@ -36,8 +36,40 @@
             {
                 throw new NotSupportedException();
             }
+            $box                  = EmailBoxUtil::getDefaultEmailBoxByUser(Yii::app()->user->userModel);
+            $account = AccountTestHelper::
+                            createAccountByNameForOwner('Email Messages Test Account', Yii::app()->user->userModel);
+            $contact = ContactTestHelper::
+                            createContactWithAccountByNameForOwner('BobMessage', Yii::app()->user->userModel, $account);
 
-            //Archived - sent
+            //#1 Create Archived - Sent
+            $emailMessage              = new EmailMessage();
+            $emailMessage->owner       = Yii::app()->user->userModel;
+            $emailMessage->subject     = 'A test archived sent email';
+            $emailContent              = new EmailMessageContent();
+            $emailContent->textContent = 'My First Message';
+            $emailContent->htmlContent = 'Some fake HTML content';
+            $emailMessage->content     = $emailContent;
+            //Sending is current user (super)
+            $sender                    = new EmailMessageSender();
+            $sender->fromAddress       = 'super@zurmotest.com';
+            $sender->fromName          = 'Super User';
+            $sender->personOrAccount   = Yii::app()->user->userModel;
+            $emailMessage->sender      = $sender;
+            //Recipient is BobMessage
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'bob.message@zurmotest.com';
+            $recipient->toName          = strval($contact);
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = $contact;
+            $emailMessage->recipients->add($recipient);
+            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+            $saved = $emailMessage->save();
+            if (!$saved)
+            {
+                throw new NotSupportedException();
+            }
+
             //Archived - received
             //Sent
             //Received
