@@ -25,6 +25,8 @@
      ********************************************************************************/
 
     Yii::import('application.modules.emailMessages.controllers.DefaultController', true);
+    Yii::import('application.modules.accounts.tests.unit.AccountTestHelper', true);
+    Yii::import('application.modules.contacts.tests.unit.ContactTestHelper', true);
     class EmailMessagesDemoController extends EmailMessagesDefaultController
     {
         /**

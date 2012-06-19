@@ -88,5 +88,66 @@
         public function getLatestActivityExtraDisplayStringByModel($model)
         {
         }
+
+        /**
+         * (non-PHPdoc)
+         * @see MashableActivityRules::getSummaryContentTemplate()
+         */
+        public function getSummaryContentTemplate($ownedByFilter, $viewModuleClassName)
+        {
+            assert('is_string($ownedByFilter)');
+            assert('is_string($viewModuleClassName)');
+            return "<span>{modelStringContent}</span><br/><span class='less-pronounced-text'>" .
+                   "{relatedModelsByImportanceContent} </span>";
+        }
+
+        public function renderRelatedModelsByImportanceContent(RedBeanModel $model)
+        {
+            $content = null;
+            if ($model->sender != null  && $model->sender->id > 0)
+            {
+                $content .= Yii::t('Default', 'from: {senderContent}', array('{senderContent}' => strval($model->sender)));
+            }
+            if($model->recipients->count() > 0)
+            {
+                if($content != null)
+                {
+                    $content .= ' ';
+                }
+                $content .= Yii::t('Default', 'to: {recipientContent}', array('{recipientContent}' => 'the recipients..'));
+            }
+            return $content;
+        }
+
+        protected static function getSenderOrRecipientContent(RedBeanModel $model)
+        {
+            assert('$model instanceof EmailMessageSender || $model instanceof EmailMessageRecipient');
+            $existingModels = array();
+            $modelDerivationPathToItem = ActivitiesUtil::getModelDerivationPathToItem($castDownModelClassName);
+            foreach ($model->activityItems as $item)
+            {
+                try
+                {
+                    $castedDownmodel = $item->castDown(array($modelDerivationPathToItem));
+                    if (get_class($castedDownmodel) == $castDownModelClassName)
+                    {
+                        if (strval($castedDownmodel) != null)
+                        {
+                            $params          = array('label' => strval($castedDownmodel));
+                            $moduleClassName = $castedDownmodel->getModuleClassName();
+                            $moduleId        = $moduleClassName::getDirectoryName();
+                            $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                            $castedDownmodel->id, $params);
+                            $existingModels[] = $element->render();
+                        }
+                    }
+                }
+                catch (NotFoundException $e)
+                {
+                    //do nothing
+                }
+            }
+            return self::resolveStringValueModelsDataToStringContent($existingModels);
+        }
     }
 ?>
