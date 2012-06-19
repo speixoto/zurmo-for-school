@@ -50,7 +50,7 @@
 
         public function testDateTimeCreatedUserElement()
         {
-            $model = new DateTimeUserModel();
+            $model = new TestDateTimeModel();
             $model->createdDateTime = '2012-02-24 13:05:32';
             $createdDateTimeUserElement = new DateTimeCreatedUserElement($model, 'null');
 
