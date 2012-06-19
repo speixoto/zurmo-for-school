@@ -81,7 +81,6 @@
                 $criteria = "ALL UNDELETED";
                 $lastImapCheckTimeStamp = 0;
             }
-
             $messages = Yii::app()->imap->getMessages($criteria, $lastImapCheckTimeStamp);
 
             $lastCheckTime = null;
@@ -97,29 +96,20 @@
 
                     // Get owner for message
                     try {
-                        $emailOwner = EmailArchivingHelper::resolveOwnerOfEmailMessage($message);
+                        $emailOwner = EmailArchivingUtil::resolveOwnerOfEmailMessage($message);
                     }
                     catch (CException $e)
                     {
                         // User not found, or few users share same primary email address,
-                        // so infrm user about issue and continue with next email.
-                        $subject = Yii::t('Default', 'Invalid email address.');
-                        $textContent = Yii::t('Default', 'Email address does not exist in system.') . "\n\n" . $message->textBody;
-                        $htmlContent = Yii::t('Default', 'Email address does not exist in system.') . "<br><br>" . $message->htmlBody;
-
-                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
+                        // so inform user about issue and continue with next email.
+                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
                         continue;
                     }
 
-                    $senderInfo = EmailArchivingHelper::resolveEmailSenderFromEmailMessage($message);
-
+                    $senderInfo = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($message);
                     if (!$senderInfo)
                     {
-                        $subject = Yii::t('Default', "Sender info can't be extracted from email message.");
-                        $textContent = Yii::t('Default', "Sender info can't be extracted from email message.") . "\n\n" . $message->textBody;
-                        $htmlContent = Yii::t('Default', "Sender info can't be extracted from email message.") . "<br><br>" . $message->htmlBody;
-
-                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
+                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('SenderNotExtracted', $message);
                         continue;
                     }
                     else
@@ -130,55 +120,26 @@
                         {
                             $sender->fromName          = $senderInfo['name'];
                         }
-                        // Get personOrAccount relationship.
-                        // Check first if email belong to contact.
-                        $contacts = ContactSearch::getContactsByAnyEmailAddress($senderInfo['email'], 1);
-                        if (count($contacts))
-                        {
-                            $sender->personOrAccount = Item::getById($contacts[0]->getClassId('Item'));
-                        }
-                        else
-                        {
-                            // Check if email belongs to account
-                            $accounts = AccountSearch::getAccountsByAnyEmailAddress($senderInfo['email'], 1);
-                            if (count($accounts))
-                            {
-                                $sender->personOrAccount = Item::getById($accounts[0]->getClassId('Item'));
-                            }
-                            else
-                            {
-                                $users = UserModelSearch::getUsersByEmail($senderInfo['email']);
-                                if (count($users))
-                                {
-                                    $sender->personOrAccount = Item::getById($users[0]->getClassId('Item'));
-                                }
-                            }
-                        }
+
+                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($senderInfo['email']);
+                        $sender->personOrAccount = $personOrAccount;
                     }
 
-                    $recipientsInfo = EmailArchivingHelper::resolveEmailRecipientsFromEmailMessage($message);
+                    $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
                     if (!$recipientsInfo)
                     {
-                        $subject = Yii::t('Default', "Recipient info can't be extracted from email message.");
-                        $textContent = Yii::t('Default', "Recipient info can't be extracted from email message.") . "\n\n" . $message->textBody;
-                        $htmlContent = Yii::t('Default', "Recipient info can't be extracted from email message.") . "<br><br>" . $message->htmlBody;
-
-                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
+                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('RecipientNotExtracted', $message);
                         continue;
                     }
 
                     $emailMessage = new EmailMessage();
                     $emailMessage->owner   = $emailOwner;
-                    // To-Do: Should we try to extract original subject, in case if message is forwarded,
-                    // for example removing Fwd: prefix?
                     $emailMessage->subject = $message->subject;
 
                     $emailContent              = new EmailMessageContent();
                     $emailContent->textContent = $message->textBody;
                     $emailContent->htmlContent = $message->htmlBody;
                     $emailMessage->content     = $emailContent;
-
-
                     $emailMessage->sender      = $sender;
 
                     foreach ($recipientsInfo as $recipientInfo)
@@ -188,35 +149,13 @@
                         $recipient->toName         = $recipientInfo['name'];
                         $recipient->type           = EmailMessageRecipient::TYPE_TO;
 
-                        // Get personOrAccount relationship.
-                        // Check first if email belong to contact.
-                        $contacts = ContactSearch::getContactsByAnyEmailAddress($recipientInfo['email'], 1);
-                        if (count($contacts))
-                        {
-                            $recipient->personOrAccount = Item::getById($contacts[0]->getClassId('Item'));
-                        }
-                        else
-                        {
-                            // Check if email belongs to account
-                            $accounts = AccountSearch::getAccountsByAnyEmailAddress($recipientInfo['email'], 1);
-                            if (count($accounts))
-                            {
-                                $recipient->personOrAccount = Item::getById($accounts[0]->getClassId('Item'));
-                            }
-                            else
-                            {
-                                $users = UserModelSearch::getUsersByEmail($senderInfo['email']);
-                                if (count($users))
-                                {
-                                    $sender->personOrAccount = Item::getById($users[0]->getClassId('Item'));
-                                }
-                            }
-                        }
+                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($recipientInfo['email']);
+                        $recipient->personOrAccount = $personOrAccount;
                         $emailMessage->recipients->add($recipient);
                     }
 
                     $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                    $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_INBOX);
+                    $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
 
                     if (!empty($message->attachments))
                     {
@@ -243,34 +182,71 @@
                     if (!$validated)
                     {
                         // Email message couldn't be validated(some related models can't be validated). Email user.
-                        $subject = Yii::t('Default', "Email message could not be validated.");
-                        $textContent = Yii::t('Default', "Email message could not be validated.") . "\n\n" . $message->textBody;
-                        $htmlContent = Yii::t('Default', "Email message could not be validated.") . "<br><br>" . $message->htmlBody;
-                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
+                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotValidated', $message);
                     }
-                    $saved = $emailMessage->save();
 
+                    $saved = $emailMessage->save();
                     try {
                         if (!$saved)
                         {
                             throw new NotSupportedException();
                         }
+                        Yii::app()->imap->deleteMessage($message->msgNumber);
                     }
                     catch (NotSupportedException $e)
                     {
                         // Email message couldn't be saved. Inform user
-                        $subject = Yii::t('Default', "Email message could not be saved.");
-                        $textContent = Yii::t('Default', "Email message could not be saved.") . "\n\n" . $message->textBody;
-                        $htmlContent = Yii::t('Default', "Email message could not be saved.") . "<br><br>" . $message->htmlBody;
-                        EmailMessageHelper::sendSystemEmail($subject, array($message->fromEmail), $textContent, $htmlContent);
+                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotSaved', $message);
                     }
                 }
+                Yii::app()->imap->expungeMessages();
                 if ($lastCheckTime != ''){
                     EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
-                    // To:Do: Should we delete all email messages from server?
                 }
             }
             return true;
+        }
+
+        /**
+         * Resolve system message to be sent, and send it
+         * @param string $messageType
+         * @param ImapMessage $originalMessage
+         * @return boolean
+         * @throws NotSupportedException
+         */
+        protected function resolveMessageSubjectAndContentAndSendSystemMessage($messageType, $originalMessage)
+        {
+            switch ($messageType)
+            {
+                case "OwnerNotExist":
+                    $subject = Yii::t('Default', 'Invalid email address.');
+                    $textContent = Yii::t('Default', 'Email address does not exist in system.') . "\n\n" . $originalMessage->textBody;
+                    $htmlContent = Yii::t('Default', 'Email address does not exist in system.') . "<br><br>" . $originalMessage->htmlBody;
+                    break;
+                case "SenderNotExtracted":
+                    $subject = Yii::t('Default', "Sender info can't be extracted from email message.");
+                    $textContent = Yii::t('Default', "Sender info can't be extracted from email message.") . "\n\n" . $originalMessage->textBody;
+                    $htmlContent = Yii::t('Default', "Sender info can't be extracted from email message.") . "<br><br>" . $originalMessage->htmlBody;
+                    break;
+                case "RecipientNotExtracted":
+                    $subject = Yii::t('Default', "Recipient info can't be extracted from email message.");
+                    $textContent = Yii::t('Default', "Recipient info can't be extracted from email message.") . "\n\n" . $originalMessage->textBody;
+                    $htmlContent = Yii::t('Default', "Recipient info can't be extracted from email message.") . "<br><br>" . $originalMessage->htmlBody;
+                    break;
+                case "EmailMessageNotValidated":
+                    $subject = Yii::t('Default', "Email message could not be validated.");
+                    $textContent = Yii::t('Default', "Email message could not be validated.") . "\n\n" . $originalMessage->textBody;
+                    $htmlContent = Yii::t('Default', "Email message could not be validated.") . "<br><br>" . $originalMessage->htmlBody;
+                    break;
+                case "EmailMessageNotSaved":
+                    $subject = Yii::t('Default', "Email message could not be saved.");
+                    $textContent = Yii::t('Default', "Email message could not be saved.") . "\n\n" . $originalMessage->textBody;
+                    $htmlContent = Yii::t('Default', "Email message could not be saved.") . "<br><br>" . $originalMessage->htmlBody;
+                    break;
+                default:
+                    throw NotSupportedException();
+            }
+            return EmailMessageHelper::sendSystemEmail($subject, array($originalMessage->fromEmail), $textContent, $htmlContent);
         }
     }
 ?>

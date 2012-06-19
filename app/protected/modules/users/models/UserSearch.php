@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserModelSearch
+    class UserSearch
     {
         /**
          * For a give User name, run a partial search by
@@ -48,7 +48,7 @@
                                             $where, "person.firstname, person.lastname");
         }
 
-        public static function getUsersByEmail($emailAddress)
+        public static function getUsersByEmailAddress($emailAddress)
         {
             assert('is_string($emailAddress)');
             $metadata = array();
