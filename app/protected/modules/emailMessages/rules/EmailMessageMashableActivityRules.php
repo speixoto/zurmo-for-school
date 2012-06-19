@@ -106,7 +106,8 @@
             $content = null;
             if ($model->sender != null  && $model->sender->id > 0)
             {
-                $content .= Yii::t('Default', 'from: {senderContent}', array('{senderContent}' => strval($model->sender)));
+                $content .= Yii::t('Default', 'from: {senderContent}',
+                                    array('{senderContent}' => static::getSenderContent($model->sender)));
             }
             if($model->recipients->count() > 0)
             {
@@ -119,35 +120,43 @@
             return $content;
         }
 
-        protected static function getSenderOrRecipientContent(RedBeanModel $model)
+        protected static function getSenderContent(EmailMessageSender $emailMessageSender)
         {
-            assert('$model instanceof EmailMessageSender || $model instanceof EmailMessageRecipient');
-            $existingModels = array();
-            $modelDerivationPathToItem = ActivitiesUtil::getModelDerivationPathToItem($castDownModelClassName);
-            foreach ($model->activityItems as $item)
+            $existingModels  = array();
+            $castedDownModel = self::castDownItem($emailMessageSender->personOrAccount);
+            try
+            {
+                if (strval($castedDownModel) != null)
+                            {
+                                $params          = array('label' => strval($castedDownModel));
+                                $moduleClassName = $castedDownmodel->getModuleClassName();
+                                $moduleId        = $moduleClassName::getDirectoryName();
+                                $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                                $castedDownmodel->id, $params);
+                                $existingModels[] = $element->render();
+                            }
+                return self::resolveStringValueModelsDataToStringContent($existingModels);
+            }
+            catch(AccessDeniedSecurityException $e)
+            {
+                return $emailMessageSender->fromAddress;
+            }
+        }
+
+        protected static function castDownItem(Item $item)
+        {
+            foreach(array('Contact', 'User', 'Account') as $modelClassName)
             {
                 try
                 {
-                    $castedDownmodel = $item->castDown(array($modelDerivationPathToItem));
-                    if (get_class($castedDownmodel) == $castDownModelClassName)
-                    {
-                        if (strval($castedDownmodel) != null)
-                        {
-                            $params          = array('label' => strval($castedDownmodel));
-                            $moduleClassName = $castedDownmodel->getModuleClassName();
-                            $moduleId        = $moduleClassName::getDirectoryName();
-                            $element         = new DetailsLinkActionElement('default', $moduleId,
-                                                                            $castedDownmodel->id, $params);
-                            $existingModels[] = $element->render();
-                        }
-                    }
+                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($modelClassName);
+                    return $item->castDown(array($modelDerivationPathToItem));
                 }
                 catch (NotFoundException $e)
                 {
-                    //do nothing
                 }
             }
-            return self::resolveStringValueModelsDataToStringContent($existingModels);
+            throw new NotSupportedException();
         }
     }
 ?>
