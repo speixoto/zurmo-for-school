@@ -72,9 +72,89 @@
                 throw new NotSupportedException();
             }
 
-            //Archived - received
-            //Sent
-            //Received
+            //#2 Create Archived - Received
+            $emailMessage              = new EmailMessage();
+            $emailMessage->owner       = Yii::app()->user->userModel;
+            $emailMessage->subject     = 'A test archived received email';
+            $emailContent              = new EmailMessageContent();
+            $emailContent->textContent = 'My Second Message';
+            $emailContent->htmlContent = 'Some fake HTML content';
+            $emailMessage->content     = $emailContent;
+            //Sending is current user (super)
+            $sender                    = new EmailMessageSender();
+            $sender->fromAddress       = 'bob.message@zurmotest.com';
+            $sender->fromName          = strval($contact);
+            $sender->personOrAccount   = $contact;
+            $emailMessage->sender      = $sender;
+            //Recipient is BobMessage
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'super@zurmotest.com';
+            $recipient->toName          = 'Super User';
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = Yii::app()->user->userModel;
+            $emailMessage->recipients->add($recipient);
+            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+            $saved = $emailMessage->save();
+            if (!$saved)
+            {
+                throw new NotSupportedException();
+            }
+
+            //#3 Sent from Zurmo UI
+                    $emailMessage              = new EmailMessage();
+            $emailMessage->owner       = Yii::app()->user->userModel;
+            $emailMessage->subject     = 'A test archived sent email';
+            $emailContent              = new EmailMessageContent();
+            $emailContent->textContent = 'My First Message';
+            $emailContent->htmlContent = 'Some fake HTML content';
+            $emailMessage->content     = $emailContent;
+            //Sending is current user (super)
+            $sender                    = new EmailMessageSender();
+            $sender->fromAddress       = 'super@zurmotest.com';
+            $sender->fromName          = 'Super User';
+            $sender->personOrAccount   = Yii::app()->user->userModel;
+            $emailMessage->sender      = $sender;
+            //Recipient is BobMessage
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'bob.message@zurmotest.com';
+            $recipient->toName          = strval($contact);
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = $contact;
+            $emailMessage->recipients->add($recipient);
+            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_SENT);
+            $saved = $emailMessage->save();
+            if (!$saved)
+            {
+                throw new NotSupportedException();
+            }
+
+            //#4 Received from future Zurmo mail client
+            $emailMessage              = new EmailMessage();
+            $emailMessage->owner       = Yii::app()->user->userModel;
+            $emailMessage->subject     = 'A test archived received email';
+            $emailContent              = new EmailMessageContent();
+            $emailContent->textContent = 'My Second Message';
+            $emailContent->htmlContent = 'Some fake HTML content';
+            $emailMessage->content     = $emailContent;
+            //Sending is current user (super)
+            $sender                    = new EmailMessageSender();
+            $sender->fromAddress       = 'bob.message@zurmotest.com';
+            $sender->fromName          = strval($contact);
+            $sender->personOrAccount   = $contact;
+            $emailMessage->sender      = $sender;
+            //Recipient is BobMessage
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'super@zurmotest.com';
+            $recipient->toName          = 'Super User';
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = Yii::app()->user->userModel;
+            $emailMessage->recipients->add($recipient);
+            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_INBOX);
+            $saved = $emailMessage->save();
+            if (!$saved)
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

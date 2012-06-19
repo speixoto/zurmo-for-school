@@ -72,7 +72,7 @@
          */
         protected static function getLabel()
         {
-            return 'EmailMessagesModuleSingularLabel';
+            return 'Email';
         }
 
         /**
@@ -81,7 +81,7 @@
          */
         protected static function getPluralLabel()
         {
-            return 'EmailMessagesModulePluralLabel';
+            return 'Emails';
         }
 
         public static function canSaveMetadata()

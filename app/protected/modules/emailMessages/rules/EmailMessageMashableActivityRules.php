@@ -35,13 +35,13 @@
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'sender',
-                    'relatedAttributeName' => 'person',
+                    'relatedAttributeName' => 'personOrAccount',
                     'operatorType'         => 'equals',
                     'value'                => $relationItemId,
                 ),
                 2 => array(
                     'attributeName'        => 'recipients',
-                    'relatedAttributeName' => 'person',
+                    'relatedAttributeName' => 'personOrAccount',
                     'operatorType'         => 'equals',
                     'value'                => $relationItemId,
                 )
@@ -56,13 +56,13 @@
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'sender',
-                    'relatedAttributeName' => 'person',
+                    'relatedAttributeName' => 'personOrAccount',
                     'operatorType'         => 'oneOf',
                     'value'                => $relationItemIds,
                 ),
                 2 => array(
                     'attributeName'        => 'recipients',
-                    'relatedAttributeName' => 'person',
+                    'relatedAttributeName' => 'personOrAccount',
                     'operatorType'         => 'oneOf',
                     'value'                => $relationItemIds,
                 )
@@ -97,8 +97,8 @@
         {
             assert('is_string($ownedByFilter)');
             assert('is_string($viewModuleClassName)');
-            return "<span>{modelStringContent}</span><br/><span class='less-pronounced-text'>" .
-                   "{relatedModelsByImportanceContent} </span>";
+            return "<span class='less-pronounced-text'>" .
+                   "{relatedModelsByImportanceContent} </span><br/><span>{modelStringContent}</span>";
         }
 
         public function renderRelatedModelsByImportanceContent(RedBeanModel $model)
@@ -115,7 +115,8 @@
                 {
                     $content .= ' ';
                 }
-                $content .= Yii::t('Default', 'to: {recipientContent}', array('{recipientContent}' => 'the recipients..'));
+                $content .= Yii::t('Default', 'to: {recipientContent}',
+                                    array('{recipientContent}' => static::getRecipientsContent($model->recipients)));
             }
             return $content;
         }
@@ -129,10 +130,10 @@
                 if (strval($castedDownModel) != null)
                             {
                                 $params          = array('label' => strval($castedDownModel));
-                                $moduleClassName = $castedDownmodel->getModuleClassName();
+                                $moduleClassName = $castedDownModel->getModuleClassName();
                                 $moduleId        = $moduleClassName::getDirectoryName();
                                 $element         = new DetailsLinkActionElement('default', $moduleId,
-                                                                                $castedDownmodel->id, $params);
+                                                                                $castedDownModel->id, $params);
                                 $existingModels[] = $element->render();
                             }
                 return self::resolveStringValueModelsDataToStringContent($existingModels);
@@ -141,6 +142,37 @@
             {
                 return $emailMessageSender->fromAddress;
             }
+        }
+
+        protected static function getRecipientsContent(RedBeanOneToManyRelatedModels $recipients)
+        {
+            $existingModels  = array();
+            if($recipients->count() == 0)
+            {
+                return;
+            }
+            foreach($recipients as $recipient)
+            {
+                $castedDownModel = self::castDownItem($recipient->personOrAccount);
+                try
+                {
+                    if (strval($castedDownModel) != null)
+                                {
+                                    $params          = array('label' => strval($castedDownModel));
+                                    $moduleClassName = $castedDownModel->getModuleClassName();
+                                    $moduleId        = $moduleClassName::getDirectoryName();
+                                    $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                                    $castedDownModel->id, $params);
+                                    $existingModels[] = $element->render();
+                                }
+
+                }
+                catch(AccessDeniedSecurityException $e)
+                {
+                    return $emailMessageSender->fromAddress;
+                }
+            }
+            return self::resolveStringValueModelsDataToStringContent($existingModels);
         }
 
         protected static function castDownItem(Item $item)
