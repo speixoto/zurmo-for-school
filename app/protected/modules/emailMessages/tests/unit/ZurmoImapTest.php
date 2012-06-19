@@ -162,7 +162,7 @@
             $this->assertEquals('imap', $messageBoxStat->Driver);
         }
 
-        public function testExpungeMessages()
+        public function testDeleteMessages()
         {
             $imap = new ZurmoImap();
             $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
@@ -175,6 +175,7 @@
             $imap->setInboundSettings();
             $imap->init();
             $this->assertTrue($imap->connect());
+            $imap->deleteMessages(false);
 
             Yii::app()->emailHelper->sendRawEmail("Test Email",
                                                   Yii::app()->emailHelper->outboundUsername,
@@ -184,10 +185,50 @@
                                                   null, null, null
             );
             sleep(20);
+            $this->assertTrue($imap->connect());
             $imapStats = $imap->getMessageBoxStatsDetailed();
             $this->assertTrue($imapStats->Nmsgs > 0);
 
+            $imap->deleteMessages(true);
+            $this->assertTrue($imap->connect());
+            $imapStats = $imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+        }
+
+        public function testDeleteMessage()
+        {
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertTrue($imap->connect());
+            $imap->deleteMessages(true);
+            $imapStats = $imap->getMessageBoxStatsDetailed();
+            $this->assertEquals(0, $imapStats->Nmsgs);
+
+            Yii::app()->emailHelper->sendRawEmail("Test Email",
+                                                  Yii::app()->emailHelper->outboundUsername,
+                                                  $imap->imapUsername,
+                                                  'Test email body',
+                                                  '<strong>Test</strong> email html body',
+                                                  null, null, null
+            );
+            sleep(3);
+            $this->assertTrue($imap->connect());
+            $imapStats = $imap->getMessageBoxStatsDetailed();
+            $this->assertTrue($imapStats->Nmsgs > 0);
+
+            $messages = $imap->getMessages();
+
+            $imap->deleteMessage($messages[0]->msgNumber);
             $imap->expungeMessages();
+            $this->assertTrue($imap->connect());
             $imapStats = $imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
         }
@@ -206,7 +247,7 @@
             $imap->init();
             $this->assertTrue($imap->connect());
 
-            $imap->expungeMessages();
+            $imap->deleteMessages(true);
             Yii::app()->emailHelper->sendRawEmail("Test Email",
                                                   Yii::app()->emailHelper->outboundUsername,
                                                   $imap->imapUsername,
@@ -240,7 +281,7 @@
             $imap->init();
             $this->assertTrue($imap->connect());
 
-            $imap->expungeMessages();
+            $imap->deleteMessages(true);
 
             $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
             $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';

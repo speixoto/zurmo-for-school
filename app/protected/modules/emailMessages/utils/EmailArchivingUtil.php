@@ -27,7 +27,7 @@
     /**
      * Helper class to work with inbound emails
      */
-    class EmailArchivingHelper
+    class EmailArchivingUtil
     {
         /**
          * For a given email find user.
@@ -183,6 +183,39 @@
             }
 
             return $emailSender;
+        }
+
+        /**
+         * Get Contact or Account or User, based on meail address
+         * @param string $emailAddress
+         * @return Contact || Account || User
+         */
+        public static function resolvePersonOrAccountByEmailAddress($emailAddress)
+        {
+            $personOrAccount = null;
+            $contacts = ContactSearch::getContactsByAnyEmailAddress($emailAddress, 1);
+            if (count($contacts))
+            {
+                $personOrAccount = $contacts[0];
+            }
+            else
+            {
+                // Check if email belongs to account
+                $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress, 1);
+                if (count($accounts))
+                {
+                    $personOrAccount = $accounts[0];
+                }
+                else
+                {
+                    $users = UserSearch::getUsersByEmailAddress($emailAddress);
+                    if (count($users))
+                    {
+                        $personOrAccount = $users[0];
+                     }
+                }
+            }
+            return $personOrAccount;
         }
     }
 ?>

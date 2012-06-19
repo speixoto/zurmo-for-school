@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserModelSearchTest extends ZurmoBaseTest
+    class UserSearchTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -40,17 +40,17 @@
             UserTestHelper::createBasicUser('Bdo');
             UserTestHelper::createBasicUser('Abzo');
 
-            $users = UserModelSearch::getUsersByPartialFullName('A', 5);
+            $users = UserSearch::getUsersByPartialFullName('A', 5);
             $this->assertEquals(2, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('bd', 5);
+            $users = UserSearch::getUsersByPartialFullName('bd', 5);
             $this->assertEquals(1, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('Cz', 5);
+            $users = UserSearch::getUsersByPartialFullName('Cz', 5);
             $this->assertEquals(0, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('Ab', 5);
+            $users = UserSearch::getUsersByPartialFullName('Ab', 5);
             $this->assertEquals(1, count($users));
         }
 
-        public function testGetUsersByEmail()
+        public function testGetUsersByEmailAddress()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $user = UserTestHelper::createBasicUser('Steve');
@@ -59,7 +59,7 @@
             $user->primaryEmail->isInvalid    = 0;
             $this->assertTrue($user->save());
 
-            $users = UserModelSearch::getUsersByEmail('steve@example.com');
+            $users = UserSearch::getUsersByEmailAddress('steve@example.com');
             $this->assertEquals(1, count($users));
             $this->assertEquals($user->id, $users[0]->id);
         }

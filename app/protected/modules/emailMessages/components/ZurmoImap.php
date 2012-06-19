@@ -280,20 +280,41 @@
         }
 
         /**
-         * Delete all messages on imap server
+         * Expunge all messages on IMAP server
          */
         public function expungeMessages()
+        {
+            imap_expunge($this->imapStream);
+            return true;
+        }
+
+        /**
+         * Delete all messages on IMAP server
+         */
+        public function deleteMessages($expunge = false)
         {
             $messages = $this->getMessages();
             if (!empty($messages))
             {
                 foreach ($messages as $message)
                 {
-                    imap_delete($this->imapStream, $message->msgNumber);
+                    $this->deleteMessage($message->msgNumber);
                 }
-                imap_expunge($this->imapStream);
+            }
+            if ($expunge)
+            {
+                $this->expungeMessages();
             }
             return true;
+        }
+
+        /**
+         * Delete message on IMAP server
+         * @param int $msgNumber
+         */
+        public function deleteMessage($msgNumber)
+        {
+            imap_delete($this->imapStream, $msgNumber);
         }
 
         /**

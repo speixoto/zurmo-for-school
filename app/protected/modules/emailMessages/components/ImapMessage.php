@@ -29,23 +29,23 @@
      */
     class ImapMessage
     {
-        public $to = array();
+        public $to          = array();
 
-        public $cc = array();
+        public $cc          = array();
 
-        public $fromName = '';
+        public $fromName;
 
-        public $fromEmail = '';
+        public $fromEmail;
 
-        public $senderName = '';
+        public $senderName;
 
-        public $senderEmail = '';
+        public $senderEmail;
 
-        public $subject = '';
+        public $subject;
 
-        public $htmlBody = '';
+        public $htmlBody;
 
-        public $textBody = '';
+        public $textBody;
 
         public $attachments = array();
 

@@ -89,7 +89,7 @@
             {
                 $message->delete();
             }
-            Yii::app()->imap->expungeMessages();
+            Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
@@ -120,7 +120,7 @@
             $this->assertTrue($job->run());
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(0, $imapStats->Nmsgs);
             $this->assertEquals(1, count(EmailMessage::getAll()));
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
@@ -163,7 +163,7 @@
             {
                 $message->delete();
             }
-            Yii::app()->imap->expungeMessages();
+            Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
@@ -194,7 +194,7 @@
             $this->assertTrue($job->run());
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(0, $imapStats->Nmsgs);
             $this->assertEquals(1, count(EmailMessage::getAll()));
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
@@ -235,7 +235,7 @@
             {
                 $message->delete();
             }
-            Yii::app()->imap->expungeMessages();
+            Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
@@ -285,7 +285,7 @@ To: Steve <steve@example.com>
             $this->assertTrue($job->run());
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(0, $imapStats->Nmsgs);
             $this->assertEquals(1, count(EmailMessage::getAll()));
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
@@ -320,7 +320,7 @@ To: Steve <steve@example.com>
             {
                 $message->delete();
             }
-            Yii::app()->imap->expungeMessages();
+            Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
@@ -371,7 +371,7 @@ To: Steve <steve@example.com>
             {
                 $message->delete();
             }
-            Yii::app()->imap->expungeMessages();
+            Yii::app()->imap->deleteMessages(true);
 
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
@@ -398,7 +398,7 @@ To: Steve <steve@example.com>
             $this->assertTrue($job->run());
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(0, $imapStats->Nmsgs);
             $this->assertEquals(1, count(EmailMessage::getAll()));
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
@@ -419,7 +419,7 @@ To: Steve <steve@example.com>
             $this->assertTrue($job->run());
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(1, $imapStats->Nmsgs);
+            $this->assertEquals(0, $imapStats->Nmsgs);
             $this->assertEquals(1, count(EmailMessage::getAll()));
         }
     }
