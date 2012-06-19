@@ -83,6 +83,7 @@
                 {
                     try
                     {
+                        $model->setScenario('autoBuildDatabase');
                         if (!$model->save())
                         {
                             $messageLogger->addErrorMessage("*** Saving the sample $modelClassName failed.");
