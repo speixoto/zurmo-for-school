@@ -41,25 +41,15 @@ function attachLoadingOnSubmit(formId)
         return false;
     }
     $('#' + formId).find(".attachLoading:first").addClass("loading");
-    
-	$('.z-spinner', '#' + formId).spin({
-		lines : 11, // The number of lines to draw
-		length : 2.3, // The length of each line
-		width : 2, // The line thickness
-		radius : 3, // The radius of the inner circle
-		rotate : 0, // The rotation offset
-		color : '#fff', // #rgb or #rrggbb
-		speed : 2, // Rounds per second
-		trail : 37, // Afterglow percentage
-		shadow : false, // Whether to render a shadow
-		hwaccel : false, // Whether to use hardware acceleration
-		className : 'spinner', // The CSS class to assign to the spinner
-		zIndex : 2e9, // The z-index (defaults to 2000000000)
-		top : 4, // Top position relative to parent in px
-		left : 0 // Left position relative to parent in px
-	}); 
+    attachLoadingSpinner(formId);
 
     return true;
+}
+
+function detachLoadingOnSubmit(formId)
+{
+    $('#' + formId).find(".attachLoading:first").removeClass("loading");
+    $('#' + formId).find(".attachLoading:first").removeClass("loading-ajax-submit");
 }
 
 function beforeValidateAction(form)
@@ -70,22 +60,7 @@ function beforeValidateAction(form)
     }
     form.find(".attachLoading:first").addClass("loading");
     form.find(".attachLoading:first").addClass("loading-ajax-submit");
-    $( '.z-spinner', form ).spin({
-		lines : 11, // The number of lines to draw
-		length : 2.3, // The length of each line
-		width : 2, // The line thickness
-		radius : 3, // The radius of the inner circle
-		rotate : 0, // The rotation offset
-		color : '#fff', // #rgb or #rrggbb
-		speed : 2, // Rounds per second
-		trail : 37, // Afterglow percentage
-		shadow : false, // Whether to render a shadow
-		hwaccel : false, // Whether to use hardware acceleration
-		className : 'spinner', // The CSS class to assign to the spinner
-		zIndex : 2e9, // The z-index (defaults to 2000000000)
-		top : 4, // Top position relative to parent in px
-		left : 0 // Left position relative to parent in px
-	});
+    attachLoadingSpinner(form.attr('id'));
     return true;
 }
 
@@ -122,3 +97,24 @@ function searchByQueuedSearch(inputId)
         $('#' + inputId).closest('form').submit();
     }
 }
+
+function attachLoadingSpinner(formId)
+{
+    $('.z-spinner', '#' + formId).spin({
+        lines : 11, // The number of lines to draw
+        length : 2.3, // The length of each line
+        width : 2, // The line thickness
+        radius : 3, // The radius of the inner circle
+        rotate : 0, // The rotation offset
+        color : '#fff', // #rgb or #rrggbb
+        speed : 2, // Rounds per second
+        trail : 37, // Afterglow percentage
+        shadow : false, // Whether to render a shadow
+        hwaccel : false, // Whether to use hardware acceleration
+        className : 'spinner', // The CSS class to assign to the spinner
+        zIndex : 2e9, // The z-index (defaults to 2000000000)
+        top : 4, // Top position relative to parent in px
+        left : 0 // Left position relative to parent in px
+    });
+}
+
