@@ -49,23 +49,17 @@
 }
 .zButton.loading .z-spinner,
 .z-button.loading .z-spinner {
-  display: block;
-}
-.zButton.loading .z-label,
-.z-button.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .zButton.loading .z-icon,
 .z-button.loading .z-icon {
   display: none;
 }
 .z-spinner {
-  background: url(../images/zbutton-spinner.gif) 0 50% no-repeat;
-  width: 50px;
+  width: 23px;
   height: 23px;
   display: none;
   float: left;
-  padding-left: 30px;
 }
 .z-icon:before {
   /*empty*/
@@ -423,10 +417,7 @@ a.remove:hover .icon:after {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 #InstallPageView .AppContainer a.loading .z-spinner {
-  display: block;
-}
-#InstallPageView .AppContainer a.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 #InstallPageView .AppContainer a.loading .z-icon {
   display: none;
@@ -517,10 +508,7 @@ a.remove:hover .icon:after {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 #InstallPageView #install-form input[type="submit"].loading .z-spinner {
-  display: block;
-}
-#InstallPageView #install-form input[type="submit"].loading .z-label {
-  display: none;
+  display: inline-block;
 }
 #InstallPageView #install-form input[type="submit"].loading .z-icon {
   display: none;
@@ -720,10 +708,7 @@ a.remove:hover .icon:after {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .configuration-list li a.loading .z-spinner {
-  display: block;
-}
-.configuration-list li a.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .configuration-list li a.loading .z-icon {
   display: none;
@@ -798,10 +783,7 @@ table.configuration-list tr td:last-child a:active {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 table.configuration-list tr td:last-child a.loading .z-spinner {
-  display: block;
-}
-table.configuration-list tr td:last-child a.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 table.configuration-list tr td:last-child a.loading .z-icon {
   display: none;
@@ -915,10 +897,7 @@ table.configuration-list tr td:last-child a:before {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .multiselect-holder input[type="button"].loading .z-spinner {
-  display: block;
-}
-.multiselect-holder input[type="button"].loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .multiselect-holder input[type="button"].loading .z-icon {
   display: none;
@@ -1277,41 +1256,6 @@ table.configuration-list tr td:last-child a:before {
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
-#currency-collection-form .portlet-toolbar a.attachLoading {
-  color: #FFF;
-  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  background-color: #6fa82d;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
-  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
-  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
-  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d);
-  background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
-  background-image: linear-gradient(top, #97c43d, #6fa82d);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
-  cursor: pointer;
-}
-#currency-collection-form .portlet-toolbar a.attachLoading:hover {
-  color: #656565 !important;
-}
-#currency-collection-form .portlet-toolbar a.attachLoading:active {
-  color: #FFF !important;
-  -webkit-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -moz-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -o-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -ms-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-}
 #currency-collection-form .view-toolbar-container {
   margin-bottom: 5px;
 }
@@ -1431,10 +1375,7 @@ table.configuration-list tr td:last-child a:before {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .add-custom-field .configure-custom-field-button.loading .z-spinner {
-  display: block;
-}
-.add-custom-field .configure-custom-field-button.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .add-custom-field .configure-custom-field-button.loading .z-icon {
   display: none;
@@ -1567,10 +1508,7 @@ table.configuration-list tr td:last-child a:before {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 #SendATestEmailToButton.loading .z-spinner {
-  display: block;
-}
-#SendATestEmailToButton.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 #SendATestEmailToButton.loading .z-icon {
   display: none;
@@ -1648,10 +1586,7 @@ table.configuration-list tr td:last-child a:before {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .AppContent.ImportWizardView #addExtraColumnButton.loading .z-spinner {
-  display: block;
-}
-.AppContent.ImportWizardView #addExtraColumnButton.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .AppContent.ImportWizardView #addExtraColumnButton.loading .z-icon {
   display: none;
@@ -1987,10 +1922,7 @@ table.configuration-list tr td:last-child a:before {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .file-upload-box .ui-icon-plusthick.loading .z-spinner {
-  display: block;
-}
-.file-upload-box .ui-icon-plusthick.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .file-upload-box .ui-icon-plusthick.loading .z-icon {
   display: none;
@@ -2437,10 +2369,7 @@ div.wide.form .errorMessage {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .ui-datepicker .ui-datepicker-current.loading .z-spinner {
-  display: block;
-}
-.ui-datepicker .ui-datepicker-current.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .ui-datepicker .ui-datepicker-current.loading .z-icon {
   display: none;
@@ -2487,10 +2416,7 @@ div.wide.form .errorMessage {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .ui-datepicker .ui-datepicker-close.loading .z-spinner {
-  display: block;
-}
-.ui-datepicker .ui-datepicker-close.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .ui-datepicker .ui-datepicker-close.loading .z-icon {
   display: none;
@@ -2820,10 +2746,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .designer-toolbar input[type="submit"].loading .z-spinner {
-  display: block;
-}
-.designer-toolbar input[type="submit"].loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .designer-toolbar input[type="submit"].loading .z-icon {
   display: none;
@@ -3318,10 +3241,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-spinner {
-  display: block;
-}
-.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-icon {
   display: none;
@@ -4669,10 +4589,7 @@ span.tooltip {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .ModalGameNotification a.loading .z-spinner {
-  display: block;
-}
-.ModalGameNotification a.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .ModalGameNotification a.loading .z-icon {
   display: none;
@@ -4752,10 +4669,7 @@ span.tooltip {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 #WelcomeView .dashboard-link.loading .z-spinner {
-  display: block;
-}
-#WelcomeView .dashboard-link.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 #WelcomeView .dashboard-link.loading .z-icon {
   display: none;
@@ -5033,6 +4947,12 @@ section {
   -ms-box-shadow: none !important;
   box-shadow: none !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  /*
+            input[type="submit"]{
+                .zButton();
+            }
+            */
+
 }
 #LoginView .form form > div {
   margin-bottom: 15px;
@@ -5054,55 +4974,6 @@ section {
   margin-right: 10px !important;
   margin-top: 1px !important;
   clear: both;
-}
-#LoginView .form form input[type="submit"] {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-}
-#LoginView .form form input[type="submit"]:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-#LoginView .form form input[type="submit"]:hover {
-  color: #7bb730 !important;
-}
-#LoginView .form form input[type="submit"]:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-#LoginView .form form input[type="submit"].loading .z-spinner {
-  display: block;
-}
-#LoginView .form form input[type="submit"].loading .z-label {
-  display: none;
-}
-#LoginView .form form input[type="submit"].loading .z-icon {
-  display: none;
 }
 #LoginView .form form .errorMessage {
   font-size: 11px;
@@ -6511,19 +6382,18 @@ table.items thead tr:hover {
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
-.modal-view-toolbar a.attachLoading,
-.form-toolbar a.attachLoading {
+a.attachLoading {
   color: #FFF;
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   background-color: #6fa82d;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
@@ -6536,12 +6406,10 @@ table.items thead tr:hover {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
   cursor: pointer;
 }
-.modal-view-toolbar a.attachLoading:hover,
-.form-toolbar a.attachLoading:hover {
+a.attachLoading:hover {
   color: #656565 !important;
 }
-.modal-view-toolbar a.attachLoading:active,
-.form-toolbar a.attachLoading:active {
+a.attachLoading:active {
   color: #FFF !important;
   -webkit-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -6918,10 +6786,7 @@ div.wide.form label.hasCheckBox {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .ZeroModelsYetView a.loading .z-spinner {
-  display: block;
-}
-.ZeroModelsYetView a.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .ZeroModelsYetView a.loading .z-icon {
   display: none;
@@ -7141,10 +7006,7 @@ div.wide.form label.hasCheckBox {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .search-form-tools input[type="submit"].loading .z-spinner {
-  display: block;
-}
-.search-form-tools input[type="submit"].loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .search-form-tools input[type="submit"].loading .z-icon {
   display: none;
@@ -7839,10 +7701,7 @@ div.wide.form label.hasCheckBox {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .toolbar-mbmenu #OptionsMenu > li > a.loading .z-spinner {
-  display: block;
-}
-.toolbar-mbmenu #OptionsMenu > li > a.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 .toolbar-mbmenu #OptionsMenu > li > a.loading .z-icon {
   display: none;
@@ -9136,10 +8995,7 @@ div.hasHalfs .twoThirds {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 #progressBar-links a.loading .z-spinner {
-  display: block;
-}
-#progressBar-links a.loading .z-label {
-  display: none;
+  display: inline-block;
 }
 #progressBar-links a.loading .z-icon {
   display: none;

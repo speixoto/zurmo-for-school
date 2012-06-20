@@ -247,9 +247,11 @@ footer, header, hgroup, menu, nav, section {
                 margin-top:1px !important;
                 clear:both;
             }
+            /*
             input[type="submit"]{
                 .zButton();
             }
+            */
             .errorMessage{
                 font-size:11px;
                 padding-top:4px
@@ -260,6 +262,7 @@ footer, header, hgroup, menu, nav, section {
     	margin-bottom: 40px !important;
     }
 }
+
 .background-1{
 	 background: #fff url(../images/landscape-1.png) left bottom repeat-x;
 }
@@ -1282,19 +1285,21 @@ table.items thead tr:hover{
             .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
         }
     }
-    a.attachLoading{
-        color:#FFF;
-        .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
-        .b-shadow(inset 0 1px 1px 0 rgba(255, 255, 255, 0.5));
-        #gradient > .vertical(#97c43d, #6fa82d );        
-        cursor:pointer;
-        &:hover{
-            color:#656565 !important;
-        }
-        &:active{
-            color:#FFF !important;
-            .b-shadow(~"inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
-        }
+}
+
+a.attachLoading{
+    color:#FFF;
+    .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
+    //.b-shadow(inset 0 1px 1px 0 rgba(255, 255, 255, 0.5));
+    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
+    #gradient > .vertical(#97c43d, #6fa82d );        
+    cursor:pointer;
+    &:hover{
+        color:#656565 !important;
+    }
+    &:active{
+        color:#FFF !important;
+        .b-shadow(~"inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
     }
 }
 
