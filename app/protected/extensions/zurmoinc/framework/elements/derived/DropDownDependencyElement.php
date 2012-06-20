@@ -189,16 +189,19 @@
         protected function renderControlNonEditable()
         {
             $attributes = $this->dropDownDependencyDerivedAttributeMetadata->getUsedAttributeNames();
-            $content    = "<table> \n";
+            $content    = null;
             foreach ($attributes as $attribute)
             {
                 $element                        = new DropDownElement($this->model,
                                                                   $attribute,
                                                                   $this->form);
                 $element->nonEditableTemplate   = $this->getNonEditableTemplate();
+                if($content != null)
+                {
+                    $content .= ' &rarr; ';
+                }
                 $content                       .= $element->render();
             }
-            $content   .= "</table> \n";
             return $content;
         }
 
@@ -237,10 +240,7 @@
 
         protected function getNonEditableTemplate()
         {
-            $template  = "<tr><td width='100%' style='border:0px;'>\n";
-            $template .= '{label}&#160;{content}';
-            $template .= "</td></tr>\n";
-            return $template;
+            return "{content}";
         }
     }
 ?>
