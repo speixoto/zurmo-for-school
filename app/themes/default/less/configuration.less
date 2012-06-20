@@ -391,8 +391,10 @@ table.configuration-list{
 }
 
 #active-monitor-job-tooltip{
-	position: absolute;
-	margin-top:9px;
+	//position: absolute;
+	//margin-top:-9px;
+	//float:left;
+	
 }
 
 #JobLogsModalListView{
@@ -427,6 +429,9 @@ table.configuration-list{
 		left:auto;
 		right:auto;
 		.form-toolbar();
+		a:before{
+			content:"";
+		}
 	}
 	.view-toolbar-container{
 		margin-bottom:5px;

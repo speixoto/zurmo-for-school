@@ -1331,7 +1331,8 @@ a.attachLoading{
             .view-toolbar-icons();
             top:-1px;
             color:#fff;
-            margin-left:2px;
+            margin-left:0;
+            color:@themeColor2;
         }
         &:hover{
             color:@themeColor2 !important;
@@ -2858,6 +2859,11 @@ div.hasHalfs{
         content: "U";
         .latest-activity-icon();
     }
+}
+#activities-rollup-tooltip{
+	position:relative;
+	margin-top:-9px;
+	top:2px;
 }
 
 .vertical-forward-pager{
