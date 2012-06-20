@@ -4173,61 +4173,80 @@ span.tooltip {
   color: #7bb730 !important;
   margin-top: 3px;
 }
+.game-badge-CreateContact .badge-icon:before,
 .CreateContact .badge-icon:before {
   content: "y";
 }
+.game-badge-MassEditContacts .badge-icon:before,
 .MassEditContacts .badge-icon:before {
   content: "?";
 }
+.game-badge-CreateAccount .badge-icon:before,
 .CreateAccount .badge-icon:before {
   content: "P";
 }
+.game-badge-MassEditAccounts .badge-icon:before,
 .MassEditAccounts .badge-icon:before {
   content: "]";
 }
+.game-badge-SearchAccounts .badge-icon:before,
 .SearchAccounts .badge-icon:before {
   content: "=";
 }
+.game-badge-SearchContacts .badge-icon:before,
 .SearchContacts .badge-icon:before {
   content: "%";
 }
+.game-badge-SearchOpportunities .badge-icon:before,
 .SearchOpportunities .badge-icon:before {
   content: "+";
 }
+.game-badge-LoginUser .badge-icon:before,
 .LoginUser .badge-icon:before {
   content: "E";
 }
+.game-badge-CreateLead .badge-icon:before,
 .CreateLead .badge-icon:before {
   content: ".";
 }
+.game-badge-CreateCall .badge-icon:before,
 .CreateCall .badge-icon:before {
   content: "W";
 }
+.game-badge-CreateMeeting .badge-icon:before,
 .CreateMeeting .badge-icon:before {
   content: "U";
 }
+.game-badge-CreateNote .badge-icon:before,
 .CreateNote .badge-icon:before {
   content: "3";
 }
+.game-badge-CreateOpportunity .badge-icon:before,
 .CreateOpportunity .badge-icon:before {
   content: "9";
 }
+.game-badge-MassEditOpportunity .badge-icon:before,
 .MassEditOpportunity .badge-icon:before {
   content: "[";
 }
+.game-badge-SearchOpportunity .badge-icon:before,
 .SearchOpportunity .badge-icon:before {
   content: "+";
 }
+.game-badge-WinOpportunity .badge-icon:before,
 .WinOpportunity .badge-icon:before {
   content: ";";
 }
+.game-badge-CreateTask .badge-icon:before,
 .CreateTask .badge-icon:before {
   content: "4";
 }
 /*Night Icons*/
+.game-badge-NightOwl .badge-icon:before,
 .NightOwl .badge-icon:before {
   content: "$";
 }
+.game-badge-EarlyBird .badge-icon:before,
 .EarlyBird .badge-icon:before {
   content: "#";
 }
