@@ -122,44 +122,7 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
-			
-			$preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
-			/*$preloader .= "<script type='text/javascript'>$(window).ready(function(){	
-							$( '.z-spinner' ).spin({
-								lines : 10, // The number of lines to draw
-								length : 8, // The length of each line
-								width : 5, // The line thickness
-								radius : 8, // The radius of the inner circle
-								rotate : 0, // The rotation offset
-								color : '#fff', // #rgb or #rrggbb
-								speed : 2, // Rounds per second
-								trail : 37, // Afterglow percentage
-								shadow : false, // Whether to render a shadow
-								hwaccel : false, // Whether to use hardware acceleration
-								className : 'spinner', // The CSS class to assign to the spinner
-								zIndex : 2e9, // The z-index (defaults to 2000000000)
-								top : 0, // Top position relative to parent in px
-								left : 0 // Left position relative to parent in px
-							});						
-							$( '.juiportlet-widget-content .z-spinner' ).spin({
-								lines : 11, // The number of lines to draw
-								length : 4, // The length of each line
-								width : 2, // The line thickness
-								radius : 4, // The radius of the inner circle
-								rotate : 0, // The rotation offset
-								color : '#fff', // #rgb or #rrggbb
-								speed : 1.5, // Rounds per second
-								trail : 35, // Afterglow percentage
-								shadow : false, // Whether to render a shadow
-								hwaccel : false, // Whether to use hardware acceleration
-								className : 'spinner', // The CSS class to assign to the spinner
-								zIndex : 2e9, // The z-index (defaults to 2000000000)
-								top : 0, // Top position relative to parent in px
-								left : 0 // Left position relative to parent in px
-							});					
-						} )</script>";*/
-			
-			
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
             return array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
@@ -176,7 +139,7 @@
                 'nullDisplay'      => '&#160;',
                 'showTableOnEmpty' => $this->getShowTableOnEmpty(),
                 'emptyText'        => $this->getEmptyText(),
-                'template'         => "\n{items}\n{pager}".$preloader,
+                'template'         => "\n{items}\n{pager}" . $preloader,
             );
         }
 
@@ -275,11 +238,11 @@
         {
             if ($this->rowsAreSelectable)
             {
-                return 'js:function(id, options) {addListViewSelectedIdsToUrl(id, options);}';
+                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); addListViewSelectedIdsToUrl(id, options); }';
             }
             else
             {
-                return null;
+                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
             }
         }
 
