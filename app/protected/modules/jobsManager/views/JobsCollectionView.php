@@ -209,10 +209,16 @@
 
             foreach ($this->jobsData as $type => $jobData)
             {
+                $title    = Yii::t('Default', 'Cron or scheduled job name: {type}', array('{type}' => $type));
                 $content .= '<tr>';
-                $content .= '<td>' . CHtml::encode($jobData['label']) . '</td>';
+                $content .= '<td>';
+                $content .= '<span id="suggested-frequency-job-tooltip-' . $type . '" class="tooltip" title="' . $title . '">';
+                $content .= CHtml::encode($jobData['label']) . '</span>';
+                $content .= '</td>';
                 $content .= '<td>' . CHtml::encode($jobData['recommendedFrequencyContent']) . '</td>';
                 $content .= '</tr>';
+                $qtip     = new ZurmoTip();
+                $qtip->addQTip("#suggested-frequency-job-tooltip-' . $type . '");
             }
             $content .= '</tbody>';
             $content .= '</table>';
