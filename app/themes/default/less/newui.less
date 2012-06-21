@@ -1507,10 +1507,8 @@ div.wide.form{
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 .list-preloader{
-/*from: http://jsdo.it/taka.atsushi/mlWf*/
-	display:none;
-	background: rgba(0, 0, 0, 0.5) ;/*url(../images/list-ajax-loader.gif) 50% 50% no-repeat;*/
-	.b-shadow(  0 0 30px 0 rgb(100, 100, 100) ); /*999*/
+	background: rgba(0, 0, 0, 0.5);
+	.b-shadow(  0 0 30px 0 rgba(100, 100, 100, 0.7) );
 	position:absolute;
 	top:50%;
 	left:50%;
@@ -1518,11 +1516,12 @@ div.wide.form{
 	width:60px;
 	height:60px;
 	margin:-30px 0 0 -30px;
-	img{
-		margin:25%;
-		width:50%;
-		height:50%;
-	}
+	.z-spinner{
+		width:auto;
+		height:auto;
+    	display:block;
+    	margin:8px 0 0 8px;
+   }
 }
 
 .juiportlet-widget-content .list-preloader{
@@ -1530,6 +1529,12 @@ div.wide.form{
 	width:28px;
 	height:28px;
 	margin:-15px 0 0 -15px;
+	.z-spinner{
+		width:auto;
+		height:auto;
+    	display:block;
+    	margin:4px 0 0 4px;
+   }
 }
 
 .cgrid-view.loading{
