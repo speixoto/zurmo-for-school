@@ -3,14 +3,14 @@
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
-     * This program is free software; you can redistribute it and/or modify it under
+     * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
      * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
      *
-     * This program is distributed in the hope that it will be useful, but WITHOUT
+     * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
      * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
      * details.
@@ -22,26 +22,34 @@
      *
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
-     *
-     * The interactive user interfaces in modified source and object code versions
-     * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
-     *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
-     * these Appropriate Legal Notices must retain the display of the "Powered by
-     * Zurmo" logo. If the display of the logo is not reasonably feasible for
-     * technical reasons, the Appropriate Legal Notices must display the words
-     * "Powered by Zurmo".
      ********************************************************************************/
 
-    define('IS_LINUX', PHP_OS == 'Linux');
-    define('IS_WINNT', PHP_OS == 'WINNT');
-    define('IS_OSX', PHP_OS == 'Darwin');
-    
-    // The application has only been tested in Linux, and
-    // Windows variants identifying themselves as WINNT.
-    assert(IS_LINUX || IS_WINNT || IS_OSX); // Not Coding Standard
 
-    define('COMMON_ROOT',   dirname(__FILE__));
-    define('INSTANCE_ROOT', getcwd());
-?>
+class TestDateTimeUserModel extends RedBeanModel
+{
+
+    public static function getDefaultMetadata()
+    {
+        $metadata = parent::getDefaultMetadata();
+        $metadata[__CLASS__] = array(
+            'members' => array(
+                'modifiedDateTime',
+                'createdDateTime',
+                'createdByUser',
+                'modifiedByUser'
+            ),
+            'rules' => array(
+                array('modifiedDateTime', 'type', 'type' => 'datetime'),
+                array('modifiedDateTime', 'type', 'type' => 'datetime'),
+                array('createdByUser'   , 'type', 'type' => 'integer'),
+                array('modifiedByUser'  , 'type', 'type' => 'integer')
+            ),
+            'relations' => array(
+                'createdByUser'  => array(RedBeanModel::HAS_ONE, 'User'),
+                'modifiedByUser' => array(RedBeanModel::HAS_ONE, 'User'),
+            ),
+        );
+        return $metadata;
+    }
+
+}

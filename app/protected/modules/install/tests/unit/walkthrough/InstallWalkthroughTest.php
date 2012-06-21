@@ -192,7 +192,15 @@
 
             $content = $this->runControllerWithExitExceptionAndGetContent('install/default/settings');
             $errors = CJSON::decode($content);
+            $this->assertEquals(1, count($errors));
+
+            $postData['InstallSettingsForm']['hostInfo'] = 'http://www.example.com';
+            $this->setPostArray($postData);
+
+            $content = $this->runControllerWithExitExceptionAndGetContent('install/default/settings');
+            $errors = CJSON::decode($content);
             $this->assertEquals(0, count($errors));
+
 
             //Run installation.
             $this->setPostArray(array(
@@ -211,6 +219,7 @@
                     'databaseType'          => 'mysql',
                     'removeExistingData'    => '1',
                     'installDemoData'       => '',
+                    'hostInfo'              => 'http://www.example.com'
                 )));
 
             //Close db connection(new will be created during installation process).
