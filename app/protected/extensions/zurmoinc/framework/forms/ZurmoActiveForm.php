@@ -85,6 +85,12 @@
             }
             echo CHtml::endForm();
             $cs = Yii::app()->clientScript;
+            $cs->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
+                    ) . '/FormUtils.js',
+                CClientScript::POS_END
+            );
             if (!$this->enableAjaxValidation && !$this->enableClientValidation || empty($this->attributes))
             {
                 if ($this->focus !== null)
@@ -97,12 +103,6 @@
                 }
                 return;
             }
-            $cs->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
-                    ) . '/FormUtils.js',
-                CClientScript::POS_END
-            );
             $options = $this->clientOptions;
             if (isset($this->clientOptions['validationUrl']) && is_array($this->clientOptions['validationUrl']))
             {

@@ -1152,6 +1152,17 @@ table.configuration-list tr td:last-child a:before {
 #JobsCollectionView tr:last-child td {
   border-bottom: 1px solid #DFDFDF !important;
 }
+#JobsCollectionView table tr:first-child th {
+  color: #545454;
+  text-align: left;
+  font-weight: bold !important;
+  height: auto  !important;
+  background: url(../images/table-items-header.png) left top repeat-x;
+  padding: 0 0 0 10px !important;
+}
+#JobsCollectionView .tooltip {
+  margin-top: 9px;
+}
 #JobsCollectionView a {
   background: #262877;
   padding: 1px 4px;
@@ -1397,21 +1408,21 @@ table.configuration-list tr td:last-child a:before {
 }
 #UsersPageView {
   /*
-  .DetailsView{
-    table{
-      margin-left:8px;
-    }
-    td{
-      text-align:left;
-      padding-left:15px;
-    }
-    th{
-      text-align:left;
-      font-size: 12px !important;
-      color: #666;
-    }
-  }
-  */
+	.DetailsView{
+		table{
+			margin-left:8px;
+		}
+		td{
+			text-align:left;
+			padding-left:15px;
+		}
+		th{
+			text-align:left;
+			font-size: 12px !important;
+			color: #666;
+		}
+	}
+	*/
 
 }
 #UsersPageView .panel {
@@ -3275,15 +3286,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     height: 26px;
   }
   /*
-    .panel, #permissions-module{
-      .has-date-select, .has-model-select{
-        a, button{
-                &:before{
-                    top:-3px;
-                }
+  	.panel, #permissions-module{
+  		.has-date-select, .has-model-select{
+  			a, button{
+              	&:before{
+                  	top:-3px;
+              	}
              }
-      }
-    }*/
+  		}
+  	}*/
   .has-model-select a {
     top: 25px !important;
   }
@@ -3298,6 +3309,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   }
   #NoteInlineEditView .has-date-select button {
     top: 11px !important;
+  }
+  #JobsCollectionView .tooltip {
+    margin-top: -11px;
   }
 }
 span.tooltip {
@@ -3891,6 +3905,7 @@ span.tooltip {
 }
 .game-badge,
 .badge {
+  cursor: help;
   position: relative;
   display: inline-block;
   max-width: 100%;
@@ -6071,7 +6086,6 @@ section {
   margin-right: 50px;
   font-style: italic;
   color: #262877;
-  text-align: right;
 }
 #credit-link {
   background: url(../images/Zurmo.png) left top no-repeat;
@@ -6625,11 +6639,7 @@ a.simple-select:before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #fff;
-  filter: alpha(opacity=50);
-  -khtml-opacity: 0.5;
-  -moz-opacity: 0.5;
-  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.5);
 }
 /*=Checkboxes*/
 label.hasCheckBox {
@@ -6675,37 +6685,16 @@ div.wide.form label.hasCheckBox {
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 .list-preloader {
-  /*from: http://jsdo.it/taka.atsushi/mlWf*/
-
   display: none;
   background: rgba(0, 0, 0, 0.5);
-  /*url(../images/list-ajax-loader.gif) 50% 50% no-repeat;*/
-
-  -webkit-box-shadow: 0 0 30px 0 #646464;
-  -moz-box-shadow: 0 0 30px 0 #646464;
-  -o-box-shadow: 0 0 30px 0 #646464;
-  -ms-box-shadow: 0 0 30px 0 #646464;
-  box-shadow: 0 0 30px 0 #646464;
-  /*999*/
-
+  -webkit-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  -moz-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  -o-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  -ms-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  width: 60px;
-  height: 60px;
-  margin: -30px 0 0 -30px;
-}
-.list-preloader img {
-  margin: 25%;
-  width: 50%;
-  height: 50%;
-}
-.juiportlet-widget-content .list-preloader {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   -ms-border-radius: 6px;
@@ -6714,6 +6703,28 @@ div.wide.form label.hasCheckBox {
   width: 28px;
   height: 28px;
   margin: -15px 0 0 -15px;
+}
+.list-preloader .z-spinner {
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 4px 0 0 4px;
+}
+.overlay-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+}
+.overlay-spinner .big-spinner {
+  width: auto;
+  height: auto;
+  display: block;
+}
+.loading .list-preloader {
+  display: block;
 }
 .cgrid-view.loading .list-preloader {
   display: block;
