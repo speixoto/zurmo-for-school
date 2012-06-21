@@ -666,7 +666,8 @@
                                      '$forceNoFreeze = false;',
                                      $contents);
 
-            if ($minifyScripts)
+            $setIncludePathServiceHelper = new SetIncludePathServiceHelper();
+            if ($minifyScripts && $setIncludePathServiceHelper->runCheckAndGetIfSuccessful())
             {
                 $contents = preg_replace('/\$minifyScripts\s*=\s*false;/',
                                          '$minifyScripts = true;',
@@ -881,6 +882,16 @@
             $message->textContent       = Yii::t('Default', 'If this website is in production mode, please remove the app/test.php file.');
             $rules                      = new RemoveApiTestEntryScriptFileNotificationRules();
             NotificationsUtil::submit($message, $rules);
+
+            // If minify is disabled, inform user that they should fix issues and enable minify
+            $setIncludePathServiceHelper = new SetIncludePathServiceHelper();
+            if (!$setIncludePathServiceHelper->runCheckAndGetIfSuccessful())
+            {
+                $message                    = new NotificationMessage();
+                $message->textContent       = Yii::t('Default', 'Minify is disabled. Try to fix issues related to it, and enable it.');
+                $rules                      = new EnableMinifyNotificationRules();
+                NotificationsUtil::submit($message, $rules);
+            }
 
             ZurmoModule::setZurmoToken();
             $messageStreamer->add(Yii::t('Default', 'Installation Complete.'));
