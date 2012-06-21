@@ -30,9 +30,9 @@
     class EmailMessagesModule extends SecurableModule
     {
         const RIGHT_ACCESS_CONFIGURATION         = 'Access Email Configuration';
-        const RIGHT_CREATE_EMAIL_MESSAGES        = 'Create Email Messages';
-        const RIGHT_DELETE_EMAIL_MESSAGES        = 'Delete Email Messages';
-        const RIGHT_ACCESS_EMAIL_MESSAGES        = 'Access Email Messages Tab';
+        const RIGHT_CREATE_EMAIL_MESSAGES        = 'Create Emails';
+        const RIGHT_DELETE_EMAIL_MESSAGES        = 'Delete Emails';
+        const RIGHT_ACCESS_EMAIL_MESSAGES        = 'Access Emails Tab';
 
         public function getDependencies()
         {
