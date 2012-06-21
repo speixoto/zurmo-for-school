@@ -1397,21 +1397,21 @@ table.configuration-list tr td:last-child a:before {
 }
 #UsersPageView {
   /*
-  .DetailsView{
-    table{
-      margin-left:8px;
-    }
-    td{
-      text-align:left;
-      padding-left:15px;
-    }
-    th{
-      text-align:left;
-      font-size: 12px !important;
-      color: #666;
-    }
-  }
-  */
+	.DetailsView{
+		table{
+			margin-left:8px;
+		}
+		td{
+			text-align:left;
+			padding-left:15px;
+		}
+		th{
+			text-align:left;
+			font-size: 12px !important;
+			color: #666;
+		}
+	}
+	*/
 
 }
 #UsersPageView .panel {
@@ -3275,15 +3275,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     height: 26px;
   }
   /*
-    .panel, #permissions-module{
-      .has-date-select, .has-model-select{
-        a, button{
-                &:before{
-                    top:-3px;
-                }
+  	.panel, #permissions-module{
+  		.has-date-select, .has-model-select{
+  			a, button{
+              	&:before{
+                  	top:-3px;
+              	}
              }
-      }
-    }*/
+  		}
+  	}*/
   .has-model-select a {
     top: 25px !important;
   }
@@ -3891,6 +3891,7 @@ span.tooltip {
 }
 .game-badge,
 .badge {
+  cursor: help;
   position: relative;
   display: inline-block;
   max-width: 100%;
@@ -6071,7 +6072,6 @@ section {
   margin-right: 50px;
   font-style: italic;
   color: #262877;
-  text-align: right;
 }
 #credit-link {
   background: url(../images/Zurmo.png) left top no-repeat;
