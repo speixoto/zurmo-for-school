@@ -274,13 +274,13 @@
                     }
                     if ($counter == $bulkQuantity)
                     {
-                        $sql .= "('" . implode("','", array_map('mysql_real_escape_string', $row)). "')"; // Not Coding Standard
+                        $sql .= "('" . implode("','", array_map('mysql_escape_string', $row)). "')"; // Not Coding Standard
                         R::exec($sql);
                         $counter = 0;
                     }
                     else
                     {
-                        $sql .= "('" . implode("','", array_map('mysql_real_escape_string', $row)). "'),"; // Not Coding Standard
+                        $sql .= "('" . implode("','", array_map('mysql_escape_string', $row)). "'),"; // Not Coding Standard
                         $counter++;
                     }
                 }
