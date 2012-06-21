@@ -53,7 +53,7 @@
 
         protected $dataProvider;
 
-        public $cssFile null;
+        public $cssFile = null;
 
         /**
          * Initialize the Calendar Widget
