@@ -7146,9 +7146,6 @@ div.wide.form label.hasCheckBox {
   background: #7bb730 !important;
   color: #fff !important;
 }
-.AttributeDetailsView .toolbar-mbmenu {
-  top: 8px;
-}
 .DetailsAndRelationsView,
 #AccountDetailsAndRelationsView {
   zoom: 1;
