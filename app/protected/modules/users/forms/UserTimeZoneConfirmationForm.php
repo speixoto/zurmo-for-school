@@ -24,32 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SaveButtonActionElement extends SubmitButtonActionElement
+    /**
+     * Use this form when confirming a user's timezone for the first time.
+     */
+    class UserTimeZoneConfirmationForm extends CFormModel
     {
-        public function getActionType()
+        public $timeZone;
+
+        public $id;
+
+        public function rules()
         {
-            return 'Edit';
+            return array(
+                    array('timeZone', 'type',    'type'  => 'string'),
+                    array('timeZone', 'length',  'max'   => 64),
+            );
         }
 
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        public function attributeLabels()
         {
-            if (!isset($params['htmlOptions']))
-            {
-                $params['htmlOptions'] = array();
-            }
-            $params['htmlOptions'] = array_merge(array('id'    => 'save',
-                                                       'name'  => 'save',
-                                                       'class' => 'attachLoading'), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Save');
-        }
-
-        protected function getDefaultRoute()
-        {
+            return array('timeZone' => Yii::t('Default', 'Time Zone'));
         }
     }
 ?>

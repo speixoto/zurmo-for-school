@@ -24,32 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SaveButtonActionElement extends SubmitButtonActionElement
+    /**
+     * Class for defining the badge associated with logging in at night
+     */
+    class EarlyBirdGameBadgeRules extends GameBadgeRules
     {
-        public function getActionType()
+       public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 10,
+            3  => 25,
+            4  => 50,
+            5  => 75,
+            6  => 100,
+            7  => 125,
+            8  => 150,
+            9  => 175,
+            10 => 200,
+            11 => 225,
+            12 => 250,
+            13 => 300
+        );
+
+        public static function getPassiveDisplayLabel($value)
         {
-            return 'Edit';
+            return Yii::t('Default', '{n} Zurmo early morning login|{n} Zurmo early morning logins',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            if (!isset($params['htmlOptions']))
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['EarlyBird']))
             {
-                $params['htmlOptions'] = array();
+                return static::getBadgeGradeByValue((int)$userScoresByType['EarlyBird']->value);
             }
-            $params['htmlOptions'] = array_merge(array('id'    => 'save',
-                                                       'name'  => 'save',
-                                                       'class' => 'attachLoading'), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Save');
-        }
-
-        protected function getDefaultRoute()
-        {
+            return 0;
         }
     }
 ?>

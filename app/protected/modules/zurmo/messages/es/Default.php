@@ -415,7 +415,7 @@
             => 'Parent group',
         'Parent Role'
             => 'Parent role',
-        'Parlez vous Français{spaceAndFirstName}?  Choose your preferred language in your My Profile area.'
+        'Parlez vous Français{spaceAndFirstName}? Choose your preferred language in your My Profile area.'
             => 'Seleccione su idioma preferido en mi perfil.',
         'Password'
             => 'Contraseña',

@@ -24,32 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SaveButtonActionElement extends SubmitButtonActionElement
+    Yii::import('application.modules.jobsManager.controllers.DefaultController', true);
+    class JobsManagerDemoController extends JobsManagerDefaultController
     {
-        public function getActionType()
+        /**
+         * Special method to load up a job log with errors
+         */
+        public function actionLoadJobLogWithErrors()
         {
-            return 'Edit';
-        }
-
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
-        {
-            if (!isset($params['htmlOptions']))
+            if (Yii::app()->user->userModel->username != 'super')
             {
-                $params['htmlOptions'] = array();
+                throw new NotSupportedException();
             }
-            $params['htmlOptions'] = array_merge(array('id'    => 'save',
-                                                       'name'  => 'save',
-                                                       'class' => 'attachLoading'), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Save');
-        }
-
-        protected function getDefaultRoute()
-        {
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'CurrencyRatesUpdate';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITH_ERROR;
+            $jobLog->isProcessed   = true;
+            $jobLog->message       = 'An error message about something' . "\n" . 'This is after a line break.';
+            $saved                 = $jobLog->save();
         }
     }
 ?>

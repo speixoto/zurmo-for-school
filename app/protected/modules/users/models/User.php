@@ -346,6 +346,8 @@
                     'fullName' => 'Name',
                     'timeZone' => 'Time Zone',
                     'title'    => 'Salutation',
+                    'primaryEmail' => 'Email',
+                    'primaryAddress' => 'Address',
                 )
             );
         }
