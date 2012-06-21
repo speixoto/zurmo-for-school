@@ -122,9 +122,7 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
-
-            $preloader = '<div class="list-preloader"><img src="data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20version%3D%221.1%22%20width%3D%2230px%22%20height%3D%2230px%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cdefs%3E%3Cg%20id%3D%22pair%22%3E%3Cellipse%20cx%3D%2210%22%20cy%3D%220%22%20rx%3D%225%22%20ry%3D%222%22%20style%3D%22fill%3A%23ccc%3B%20fill-opacity%3A0.5%3B%22%2F%3E%3Cellipse%20cx%3D%22-10%22%20cy%3D%220%22%20rx%3D%225%22%20ry%3D%222%22%20style%3D%22fill%3A%23ccc%3B%20fill-opacity%3A0.5%3B%22%2F%3E%3C%2Fg%3E%3C%2Fdefs%3E%3Cg%20transform%3D%22translate(15%2C15)%22%3E%3Cg%3E%3CanimateTransform%20attributeName%3D%22transform%22%20type%3D%22rotate%22%20from%3D%220%22%20to%3D%22360%22%20dur%3D%222s%22%20repeatDur%3D%22indefinite%22%2F%3E%3Cuse%20xlink%3Ahref%3D%22%23pair%22%2F%3E%3Cuse%20xlink%3Ahref%3D%22%23pair%22%20transform%3D%22rotate(45)%22%2F%3E%3Cuse%20xlink%3Ahref%3D%22%23pair%22%20transform%3D%22rotate(90)%22%2F%3E%3Cuse%20xlink%3Ahref%3D%22%23pair%22%20transform%3D%22rotate(135)%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" /></div>';
-
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
             return array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
@@ -141,7 +139,7 @@
                 'nullDisplay'      => '&#160;',
                 'showTableOnEmpty' => $this->getShowTableOnEmpty(),
                 'emptyText'        => $this->getEmptyText(),
-                'template'         => "\n{items}\n{pager}".$preloader,
+                'template'         => "\n{items}\n{pager}" . $preloader,
             );
         }
 
@@ -240,11 +238,11 @@
         {
             if ($this->rowsAreSelectable)
             {
-                return 'js:function(id, options) {addListViewSelectedIdsToUrl(id, options);}';
+                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); addListViewSelectedIdsToUrl(id, options); }';
             }
             else
             {
-                return null;
+                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
             }
         }
 

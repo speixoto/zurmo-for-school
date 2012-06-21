@@ -415,7 +415,7 @@
             => 'Übergeordnete Gruppe',
         'Parent Role'
             => 'übergeordneten Rolle',
-        'Parlez vous Français{spaceAndFirstName}?  Choose your preferred language in your My Profile area.'
+        'Parlez vous Français{spaceAndFirstName}? Choose your preferred language in your My Profile area.'
             => 'Parlez vous français{spaceAndFirstName}? Die gewünschte Sprache kann man in meinem Profil ausgewählt.',
         'Password'
             => 'Kennwort',

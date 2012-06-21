@@ -258,7 +258,7 @@
                     'data'       => 'js:$("#' . $form->getId() . '").serialize()',
                     'url'        =>  $urlScript,
                     'update'     => '#' . $this->uniquePageId,
-                    'beforeSend' => 'js:function(){$("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
+                    'beforeSend' => 'js:function(){makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
                     'complete'   => 'js:function(){$("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");}'
             ));
             Yii::app()->clientScript->registerScript($this->uniquePageId, "
