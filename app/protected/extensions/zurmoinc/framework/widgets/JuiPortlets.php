@@ -91,7 +91,7 @@
          */
         public $layoutType;
 
-        public $cssFile = 'css/widget-juiportlets.css';
+        public $cssFile = null;
 
         /**
          * Can portlets be collapsed.

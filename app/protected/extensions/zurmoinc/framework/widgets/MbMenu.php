@@ -41,9 +41,9 @@
 
         protected $theme;
 
-        protected $cssFile         = 'css/mbmenu.css';
+        protected $cssFile;
 
-        protected $cssIeStylesFile = 'css/mbmenu-iestyles.css';
+        protected $cssIeStylesFile = null;
 
         private $nljs;
 
