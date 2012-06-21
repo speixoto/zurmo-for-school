@@ -42,7 +42,7 @@
          */
         public static function getType()
         {
-            return 'ProcessInboundEmail';
+            return 'EmailArchiving';
         }
 
         public static function getRecommendedRunFrequencyContent()
