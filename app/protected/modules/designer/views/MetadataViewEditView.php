@@ -113,6 +113,12 @@
 
         protected function renderSaveLayoutButton($notificationBarId)
         {
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
+                    ) . '/FormUtils.js',
+                CClientScript::POS_END
+            );
             $htmlOptions             = array();
             $htmlOptions['class']    = 'attachLoading z-button';
             $aContent                = CHtml::tag('span', array('class' => 'z-spinner'), null);
