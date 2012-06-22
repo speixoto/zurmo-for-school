@@ -41,8 +41,64 @@
         $contents = preg_replace('/\$installed\s*=\s*false;/',
                                  '$installed = true;',
                                  $contents);
+
         file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
     }
+
+    $contents = file_get_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
+
+    if (!strpos($contents, '$testApiUrl'))
+    {
+        $testApiUrlSettings = <<<EOD
+    \$testApiUrl = ''; // Set this url only for in perInstanceTest.php file. It should point to app directory, and it is used just for API tests.
+                       // For example if zurmo index page is http://my-site.com/app/index.php, the value should be http://my-site.com/app
+EOD;
+        $contents = preg_replace('/\?\>/',
+                "\n" . $testApiUrlSettings . "\n" . "?>",
+                $contents);
+        file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+    }
+
+    if (!strpos($contents, '$emailTestAccounts'))
+    {
+        $emailSettings = <<<EOD
+    \$emailTestAccounts = array(
+        'smtpSettings' => array(
+            'outboundHost' => '',
+            'outboundPort' => '',
+            'outboundUsername' => '',
+            'outboundPassword' => '',
+        ),
+        'dropboxImapSettings' => array(
+            'imapHost' => '',
+            'imapUsername' => '',
+            'imapPassword' => '',
+            'imapPort' => '',
+            'imapSSL' => '',
+        ),
+        'userImapSettings' => array(
+            'imapHost' => '',
+            'imapUsername' => '',
+            'imapPassword' => '',
+            'imapPort' => '',
+            'imapSSL' => '',
+        ),
+        'userSmtpSettings' => array(
+            'outboundHost' => '',
+            'outboundPort' => '',
+            'outboundUsername' => '',
+            'outboundPassword' => '',
+        ),
+        'testEmailAddress' => '',
+    );
+EOD;
+        $contents = preg_replace('/\?\>/',
+                "\n" . $emailSettings . "\n" . "?>",
+                $contents);
+
+        file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+    }
+exit;
 
     $debug          = INSTANCE_ROOT . '/protected/config/debugTest.php';
 
