@@ -33,6 +33,10 @@
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
+                                                 echo "<pre>";
+                                                 print_r($sanitizedPostData);
+                                                 echo "</pre>";
+                                                 exit;
             return static::saveModelFromSanitizedData($sanitizedPostData, $model, $savedSucessfully, $modelToStringValue);
         }
 
