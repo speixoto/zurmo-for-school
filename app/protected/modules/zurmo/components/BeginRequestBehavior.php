@@ -380,7 +380,6 @@
             $activitiesObserver->init(); //runs init();
         }
 
-
         public function handleLoadGamification($event)
         {
             Yii::app()->gameHelper;

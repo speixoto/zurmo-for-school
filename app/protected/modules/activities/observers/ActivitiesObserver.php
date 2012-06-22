@@ -33,7 +33,7 @@
         {
             $metadata                = Activity::getMetadata();
             $observedModelClassNames = $metadata['Activity']['activityItemsModelClassNames'];
-            if($observedModelClassNames == null)
+            if ($observedModelClassNames == null)
             {
                 return;
             }

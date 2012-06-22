@@ -68,17 +68,17 @@
                 RedBeanDatabase::freeze();
             }
         }
-        
+
         public function testColumnType()
         {
-            if(RedBeanDatabase::isFrozen())
+            if (RedBeanDatabase::isFrozen())
             {
                 $rootModels = array();
                 foreach (Module::getModuleObjects() as $module)
                 {
                     $moduleAndDependenciesRootModelNames    = $module->getRootModelNamesIncludingDependencies();
-                    $rootModels                             = array_merge(  $rootModels, 
-                                                                        array_diff($moduleAndDependenciesRootModelNames, 
+                    $rootModels                             = array_merge(  $rootModels,
+                                                                        array_diff($moduleAndDependenciesRootModelNames,
                                                                         $rootModels));
                 }
 
@@ -99,17 +99,16 @@
                                     case 'type':
                                         if (isset($validatorParameters['type']))
                                         {
-                                            $type           = $validatorParameters['type'];                                        
+                                            $type           = $validatorParameters['type'];
                                             $tableName      = RedBeanModel::getTableName($model);
                                             $field          = strtolower($attributeName);
-                                            $row            = R::getRow("SHOW COLUMNS FROM $tableName where field='$field'");                                      
-                                            $compareType    = null;                                       
+                                            $row            = R::getRow("SHOW COLUMNS FROM $tableName where field='$field'");
+                                            $compareType    = null;
                                             if ($row !== false)
-                                            {                                            
+                                            {
                                                 $compareType = $this->getDbTypeValue($row['Type']);
-                                            }        
-                                            $this->assertEquals($compareType,$type);   
-                                            
+                                            }
+                                            $this->assertEquals($compareType, $type);
                                         }
                                         break;
                                 }
@@ -131,7 +130,7 @@
                 'date'      => array('DATE'),
                 'time'      => array('TIME'),
                 'datetime'  => array('DATETIME'),
-                'blob'      => array('TINY_BLOB', 'MEDIUM_BLOB', 'LONG_BLOB', 'BLOB')    
+                'blob'      => array('TINY_BLOB', 'MEDIUM_BLOB', 'LONG_BLOB', 'BLOB')
             );
             $value              = strtoupper($value);
             $startCuttingPos    = stripos($value, '(');

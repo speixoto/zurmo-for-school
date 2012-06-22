@@ -47,10 +47,10 @@
                 $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
                 $gameScore->addValue();
                 self::resolveSaveGameScoreAndAddPointsByCategory($gameScore, $category);
-                if(Yii::app()->timeZoneHelper->isCurrentUsersTimeZoneConfirmed())
+                if (Yii::app()->timeZoneHelper->isCurrentUsersTimeZoneConfirmed())
                 {
                     $hour = date('G');
-                    if($hour >= 22 || $hour < 4)
+                    if ($hour >= 22 || $hour < 4)
                     {
                         $scoreType           = 'NightOwl';
                         $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
@@ -58,7 +58,7 @@
                         $gameScore->addValue();
                         self::resolveSaveGameScoreAndAddPointsByCategory($gameScore, $category);
                     }
-                    elseif($hour >= 4 && $hour < 8)
+                    elseif ($hour >= 4 && $hour < 8)
                     {
                         $scoreType           = 'EarlyBird';
                         $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
