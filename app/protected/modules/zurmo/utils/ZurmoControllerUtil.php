@@ -33,10 +33,6 @@
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
-                                                 echo "<pre>";
-                                                 print_r($sanitizedPostData);
-                                                 echo "</pre>";
-                                                 exit;
             return static::saveModelFromSanitizedData($sanitizedPostData, $model, $savedSucessfully, $modelToStringValue);
         }
 
@@ -61,7 +57,6 @@
             $sanitizedDataWithoutOwner     = PostUtil::
                                                  removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
             $model->setAttributes($sanitizedDataWithoutOwner);
-
             if ($model->validate())
             {
                 $modelToStringValue = strval($model);
