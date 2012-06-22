@@ -182,12 +182,16 @@
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/jobLogsModalList/',
                                            array('type' => $type));
             $label = Yii::t('Default', 'Job Log');
-            return CHtml::ajaxLink($label, $route,
-                array(
-                    'onclick' => '$("#modalContainer").dialog("open"); return false;',
-                    'update' => '#modalContainer',
-                )
-            );
+            return CHtml::ajaxLink($label, $route, static::resolveAjaxOptionsForJobLogLink($type));
+        }
+
+        protected static function resolveAjaxOptionsForJobLogLink($type)
+        {
+            assert('is_string($type) && $type != ""');
+            $jobClassName = $type . 'Job';
+            $title        = Yii::t('Default', 'Job Log for {jobDisplayName}',
+                                              array('{jobDisplayName}' => $jobClassName::getDisplayName()));
+            return ModalView::getAjaxOptionsForModalLink($title);
         }
 
         protected function renderSuggestedFrequencyContent()

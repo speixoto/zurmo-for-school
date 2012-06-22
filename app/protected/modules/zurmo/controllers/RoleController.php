@@ -133,11 +133,7 @@
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
                 $_GET['modalTransferInformation']['sourceNameFieldId']
             );
-            $view = new ModalView(
-                            $this,
-                            $rolesModalTreeView,
-                            'modalContainer',
-                            $pageTitle);
+            $view = new ModalView($this, $rolesModalTreeView);
             return $view->render();
         }
 

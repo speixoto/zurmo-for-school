@@ -179,12 +179,15 @@
                 'portletId'      => $portletId,
             ));
             return CHtml::ajaxLink(Yii::t('Default', 'Edit') . '<span class="icon"></span>', $url,
-                array(
-                    'onclick'  => '$("#modalContainer").dialog("open"); return false;',
-                    'update'   => '#modalContainer',
-                ),
+                static::resolveAjaxOptionsForEditLink(),
                 $htmlOptions
             );
+        }
+
+        protected static function resolveAjaxOptionsForEditLink()
+        {
+            $title = Yii::t('Default', 'Edit Portlet');
+            return ModalView::getAjaxOptionsForModalLink($title);
         }
 
         /**

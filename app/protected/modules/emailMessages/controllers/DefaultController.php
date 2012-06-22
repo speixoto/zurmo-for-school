@@ -129,10 +129,7 @@
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
                 $messageView = new TestEmailMessageView($messageContent);
-                $view = new ModalView($this,
-                                      $messageView,
-                                      'modalContainer',
-                                      Yii::t('Default', 'Test Message Results'));
+                $view = new ModalView($this, $messageView);
                 echo $view->render();
             }
             else
