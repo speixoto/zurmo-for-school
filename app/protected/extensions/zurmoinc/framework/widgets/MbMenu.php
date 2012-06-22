@@ -159,8 +159,11 @@
         public function registerCssFile()
         {
             $cs = Yii::app()->getClientScript();
-            $cs->registerCssFile($this->themeUrl . '/' . $this->theme . '/' . $this->cssFile, 'screen');
-            if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 8)
+            if($this->cssFile != null)
+            {
+                $cs->registerCssFile($this->themeUrl . '/' . $this->theme . '/' . $this->cssFile, 'screen');
+            }
+            if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 8 && $this->cssIeStylesFile != null)
             {
                 $cs->registerCssFile($this->themeUrl . '/' . $this->theme . '/' . $this->cssIeStylesFile, 'screen');
             }
