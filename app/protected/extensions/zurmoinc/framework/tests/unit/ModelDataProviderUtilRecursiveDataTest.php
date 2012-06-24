@@ -26,9 +26,14 @@
     /**
      * Testing recursive nested relation data.  This would occur if you are searching across multiple models
      * that span multiple relationships.
+     * @see SearchDataProviderMetadataAdapterForRecursiveSearchesTest
 
     Models and relations used in this class
 
+                                III -> hasOne EEE
+                                  |
+                                  | CCC hasMany III
+                                  | III hasOne  CCC
                                 CCC -> hasOne EEE
                                   |
                                   | CCC hasMany BBB
@@ -110,9 +115,65 @@
             $data = AAA::getSubset($joinTablesAdapter, 0, 5, $where, null, null, $joinTablesAdapter->getSelectDistinct());
         }
 
+            /**
+         * AAA -> hasOne -> BBB -> hasOne -> CCC -> hasOne -> EEE
+         * Use relatedAttributeName which should function the same as the previous method.  This is how the search
+         * attributes will get converted.
+         */
+        public function testHasOneToHasOneToHasOneUsingRelatedAttributeName()
+        {
+            $quote               = DatabaseCompatibilityUtil::getQuote();
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	    => 'eee',
+                                'relatedAttributeName' 	=> 'eeeMember',
+                                'operatorType'	        => 'equals',
+                                'value'                 => 'somevalue',
+                        ),
+                    ),
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            //Build the query 'where' and 'joins'. Confirm they are as expected
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('AAA');
+            $where             = ModelDataProviderUtil::makeWhere('AAA', $searchAttributeData, $joinTablesAdapter);
+            $compareWhere      = "({$quote}eee{$quote}.{$quote}eeemember{$quote} = 'somevalue')";
+            $this->assertEquals($compareWhere, $where);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $leftTables = $joinTablesAdapter->getLeftTablesAndAliases();
+            $this->assertEquals('bbb', $leftTables[0]['tableName']);
+            $this->assertEquals('ccc',      $leftTables[1]['tableName']);
+            $this->assertEquals('eee', $leftTables[2]['tableName']);
+            //Only stringing hasOne relations together so it makes sense not to need distinct
+            $this->assertFalse($joinTablesAdapter->getSelectDistinct());
+
+            //Now test that the subsetSQL query produced is correct.
+            $subsetSql = AAA::makeSubsetOrCountSqlQuery('aaa', $joinTablesAdapter, 1, 5, $where,
+                                                        null, false, $joinTablesAdapter->getSelectDistinct());
+            $compareSubsetSql  = "select {$quote}aaa{$quote}.{$quote}id{$quote} id ";
+            $compareSubsetSql .= "from {$quote}aaa{$quote} ";
+            $compareSubsetSql .= "left join {$quote}bbb{$quote} on ";
+            $compareSubsetSql .= "{$quote}bbb{$quote}.{$quote}id{$quote} = {$quote}aaa{$quote}.{$quote}bbb_id{$quote} ";
+            $compareSubsetSql .= "left join {$quote}ccc{$quote} on ";
+            $compareSubsetSql .= "{$quote}ccc{$quote}.{$quote}id{$quote} = {$quote}bbb{$quote}.{$quote}ccc_id{$quote} ";
+            $compareSubsetSql .= "left join {$quote}eee{$quote} on ";
+            $compareSubsetSql .= "{$quote}eee{$quote}.{$quote}id{$quote} = {$quote}ccc{$quote}.{$quote}eee_id{$quote} ";
+            $compareSubsetSql .= "where " . $compareWhere . ' ';
+            $compareSubsetSql .= 'limit 5 offset 1';
+            $this->assertEquals($compareSubsetSql, $subsetSql);
+            //Make sure the sql runs properly.
+            $data = AAA::getSubset($joinTablesAdapter, 0, 5, $where, null, null, $joinTablesAdapter->getSelectDistinct());
+        }
+
         /**
          * AAA -> hasOne -> BBB -> hasMany -> FFF -> hasOne -> EEE
-         * @depends testHasOneToHasOneToHasOne
+         * @depends testHasOneToHasOneToHasOneUsingRelatedAttributeName
          */
         public function testHasOneToHasManyToHasOne()
         {
