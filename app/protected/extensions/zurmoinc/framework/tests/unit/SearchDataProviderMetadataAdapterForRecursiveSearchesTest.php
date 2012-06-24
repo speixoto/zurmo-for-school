@@ -61,98 +61,40 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
         }
-//chekcin.
+
         //#0  remove reference to $processAsRelatedModelData
         //#1 make sure both tests run.
         //#2 refactor iteratives to recursive
         //#3 clean up in general.
-        //#4 we should not be using all this static stuff in the adapter. much easier to put some things against porperties and not pass
-        //$5 careful look for todos
+        #3b - rename resolveModelForTypeOperations
 //checheckin.
-
-
-        //still need to do date time stuff which will be tricky since we have not recursed that part of the adapter.
-        //should relatedAttributeName be nixed? or should we still allow for it to be prcessed in modelDataUtil? I think we still
-        //allow because then peopel can use it for convenience. plus it is tested...
-
-        //test starting at hasMany as first nest also manyMany as first nest. also do as firsts and seconds...
-        //test id fields here and in the modelDataproviderutilrecurisevedata
-        //also means since we added support for relatedAttributeName... we should test, or should we remove that
-        //support since it is redundant what is the mont?
-
-        //on modeldataproviderUtilRecursiveData - 2 calls to hasOne eee but from different branches...
-        //also refactor to use non static since we can reduce parameters beign passed
-
+        //#4 we should not be using all this static stuff in the adapter. much easier to put some things against porperties and not pass
+//checheckin.
 
         //nested normal model fields like a custom field
         //nested normal model fields like a multi-select custom field
+        //populateClausesAndStructureForAttributeWithRelatedModelData, test nesting oneOf custom field...
+        //if you are 4 levels deep and have relatedAttributeName because of custom data or something does this work not
+
+        //still need to do date time stuff which will be tricky since we have not recursed that part of the adapter.
+        //test starting at hasMany as first nest also manyMany as first nest. also do as firsts and seconds...
+        //test id fields here and in the modelDataproviderutilrecurisevedata
+        //on modeldataproviderUtilRecursiveData - 2 calls to hasOne eee but from different branches...
+
+
+
 
         //search form specific, like date fields since you can do betweens etc.
         //search form specials like owner (owned by field)
 
-        //populateClausesAndStructureForAttributeWithRelatedModelData, test nesting oneOf custom field...
-        //if you are 4 levels deep and have relatedAttributeName because of custom data or something does this work not
-        //only here but also in the conversion to sql? need to add tests there as well
+
+        //test in ModelDataProviderUtilRecursiveDataTest - custom fields, multi-select custom fields. etc...
 
         public function testGetAdaptedMetadataForAttributesAcrossRelations()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
             $searchAttributes = array(
-                'aaaMember' => 'Vomitorio Corp',
-                'bbb' => array(
-                    'bbbMember'  => 'bbbMemberValue',
-                    'ccc'    => array(
-                        'cccMember' => 'cccMemberValue',
-                        'eee' => array(
-                            'eeeMember' => 'eeeMemberValue',
-                       ),
-                        'iii'    => array(
-                            'eee' => array(
-                                'eeeMember' => 'eeeMemberValue',
-                            )
-                        )
-                    )
-                )
-            );
-
-            $searchAttributes2 = array(
-                'aaaMember' => 'Vomitorio Corp',
-                array(	'relationName'  => 'bbb',
-                        'relationData' => array(
-                            'bbbMember'  => 'bbbMemberValue',
-                            array(	'relationName'  => 'ccc',
-                                    'relationData' => array(
-                                        'cccMember' => 'cccMemberValue',
-                                        array(	'relationName'  => 'eee',
-                                                'relationData' => array(
-                                                    'eeeMember' => 'eeeMemberValue'
-                                                )
-                                        ),
-                                        array(	'relationName'  => 'iii',
-                                                'relationData' => array(
-                                                    array(	'relationName'  => 'eee',
-                                                            'relationData' => array(
-                                                                'eeeMember' => 'eeeMemberValue'
-                                                            )
-                                                    ),
-                                                )
-                                        ),
-                                )
-                            ),
-                        )
-                )
-            );
-
-
-            $searchAttributes3 = array();
-            $searchAttributes3['aaaMember']              = 'Vomitorio Corp';
-            $searchAttributes3['bbb']['relatedData']     = true;
-            $searchAttributes3['bbb']['bbbMember']       = 'bbbMemberValue';
-
-
-            $searchAttributes4 = array(
                 'aaaMember' => 'Vomitorio Corp',
                 'bbb' => array(
                     'relatedData' => true,
@@ -174,11 +116,10 @@
                     )
                 )
             );
-
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 new AAA(false),
                 1,
-                $searchAttributes4
+                $searchAttributes
             );
             $metadata = $metadataAdapter->getAdaptedMetadata();
             $compareClauses = array(
@@ -242,9 +183,6 @@
                     ),
                 ),
             );
-//echo "<pre>";
-//print_r($metadata);
-//echo "</pre>";
             $compareStructure = '1 and 2 and 3 and 4 and 5';
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);

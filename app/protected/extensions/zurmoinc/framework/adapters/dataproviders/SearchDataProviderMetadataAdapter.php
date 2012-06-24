@@ -124,62 +124,54 @@
                                                                                            $clauseCount);
                 }
             }
+            //relation attribute that is relatedData
+            elseif(isset($value['relatedData']) && $value['relatedData'] == true)
+            {
+                $adaptedMetadataClauseBasePart = array(
+                    'attributeName'        => $attributeName,
+                    'relatedModelData' => array());
+                $depth = 1;
+                unset($value['relatedData']);
+                static::populateClausesAndStructureForAttributeWithRelatedModelData(
+                    $this->model->$attributeName,
+                    $value,
+                    $adaptedMetadataClauseBasePart,
+                    $appendStructureAsAnd,
+                    $adaptedMetadataClauses,
+                    $clauseCount,
+                    $structure,
+                    $depth,
+                    $operatorType);
+            }
             //relation attribute that has array of data
             else
             {
-                if(isset($value['relatedData']) && $value['relatedData'] == true)
+                foreach ($value as $relatedAttributeName => $relatedValue)
                 {
-                    $adaptedMetadataClauseBasePart = array(
-                        'attributeName'        => $attributeName,
-                        'relatedModelData' => array());
-                    $depth = 1;
-                    unset($value['relatedData']);
-                    static::populateClausesAndStructureForAttributeWithRelatedModelData(
-                        $this->model->$attributeName,
-                        $value,
-                        $adaptedMetadataClauseBasePart,
-                        $appendStructureAsAnd,
-                        $adaptedMetadataClauses,
-                        $clauseCount,
-                        $structure,
-                        $depth,
-                        $operatorType);
-                }
-                else
-                {
-                    foreach ($value as $relatedAttributeName => $relatedValue)
-                    {
-                        //todo: can remove this processor probabl.y
-                        $processAsRelatedModelData = false;
-                        if(static::resolveRelatedValueWhenArray($processAsRelatedModelData,
-                                                             $this->model->$attributeName,
+                    if(static::resolveRelatedValueWhenArray( $this->model->$attributeName,
                                                              $relatedAttributeName,
                                                              $relatedValue,
                                                              $operatorType))
-                        {
-                            static::populateClausesAndStructureForRelatedAttributeThatIsArray(  $processAsRelatedModelData,
-                                                                                                $this->model,
-                                                                                                $attributeName,
-                                                                                                $relatedAttributeName,
-                                                                                                $relatedValue,
-                                                                                                $appendStructureAsAnd,
-                                                                                                $adaptedMetadataClauses,
-                                                                                                $clauseCount,
-                                                                                                $structure,
-                                                                                                $operatorType);
-                        }
+                    {
+                        static::populateClausesAndStructureForRelatedAttributeThatIsArray(  $this->model,
+                                                                                            $attributeName,
+                                                                                            $relatedAttributeName,
+                                                                                            $relatedValue,
+                                                                                            $appendStructureAsAnd,
+                                                                                            $adaptedMetadataClauses,
+                                                                                            $clauseCount,
+                                                                                            $structure,
+                                                                                            $operatorType);
                     }
                 }
             }
         }
 
-        protected static function resolveRelatedValueWhenArray(& $processAsRelatedModelData,
-                                                               $model,
+        protected static function resolveRelatedValueWhenArray($model,
                                                                $relatedAttributeName,
                                                                & $relatedValue,
                                                                & $operatorType)
         {
-            //todo: even though we check for relatedValue['value'] we could in fact have some attribute called that..
             if (is_array($relatedValue))
             {
                 if (isset($relatedValue['value']) && $relatedValue['value'] != '')
@@ -191,13 +183,11 @@
                        is_array($relatedValue) && count($relatedValue) > 0)
                 {
                     //Continue on using relatedValue as is.
-                    $processAsRelatedModelData = true;
                 }
                 elseif ($model->$relatedAttributeName instanceof RedBeanModels &&
                        is_array($relatedValue) && count($relatedValue) > 0)
                 {
                     //Continue on using relatedValue as is.
-                    $processAsRelatedModelData = true;
                 }
                 elseif ($model instanceof CustomField && count($relatedValue) > 0)
                 {
@@ -213,16 +203,11 @@
                         $operatorType = 'oneOf';
                     }
                 }
-                else
-                {
-                    $processAsRelatedModelData = true;
-                }
             }
             return true;
         }
 
-        protected static function populateClausesAndStructureForRelatedAttributeThatIsArray($processAsRelatedModelData,
-                                                                                            $model,
+        protected static function populateClausesAndStructureForRelatedAttributeThatIsArray($model,
                                                                                             $attributeName,
                                                                                             $relatedAttributeName,
                                                                                             $relatedValue,
@@ -256,7 +241,7 @@
             }
         }
 
-        protected static function resolveModelForTypeOperations($model)
+        protected static function resolveAsRedBeanModel($model)
         {
             if ($model instanceof RedBeanOneToManyRelatedModels || $model instanceof RedBeanManyToManyRelatedModels)
             {
@@ -329,21 +314,19 @@
                                                                                     $depth);
                     }
                 }
-                //relation attribute that has array of data
-                else
-                {
-                if(isset($value['relatedData']) && $value['relatedData'] == true)
+                //relation attribute that is relatedData
+                elseif(isset($value['relatedData']) && $value['relatedData'] == true)
                 {
 
-                                $partToAppend                    = array('attributeName'    => $attributeName,
-                                                                         'relatedModelData' => array());
-                                $appendedClauseToPassRecursively = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                                $adaptedMetadataClauseBasePart,
-                                                                                $partToAppend,
-                                                                                $depth);
+                    $partToAppend                    = array('attributeName'    => $attributeName,
+                                                             'relatedModelData' => array());
+                    $appendedClauseToPassRecursively = static::getAppendedAdaptedMetadataClauseBasePart(
+                                                                    $adaptedMetadataClauseBasePart,
+                                                                    $partToAppend,
+                                                                    $depth);
                     unset($value['relatedData']);
                                 static::populateClausesAndStructureForAttributeWithRelatedModelData(
-                                    static::resolveModelForTypeOperations($model->$attributeName),
+                                    static::resolveAsRedBeanModel($model->$attributeName),
                                     $value,
                                     $appendedClauseToPassRecursively,
                                     $appendStructureAsAnd,
@@ -354,17 +337,13 @@
                                     $operatorType);
 
                 }
+                //relation attribute that has array of data
                 else
                 {
-
-
                     foreach ($value as $relatedAttributeName => $relatedValue)
                     {
-                        $processAsRelatedModelData = false;
-                        //static::makeAndGetDeepestRelatedModelDataEmptyArray($adaptedMetadataClauseBasePart);
                         $currentClauseCount = $clauseCount;
-                        if(static::resolveRelatedValueWhenArray( $processAsRelatedModelData,
-                                                                 $model->$attributeName,
+                        if(static::resolveRelatedValueWhenArray( $model->$attributeName,
                                                                  $relatedAttributeName,
                                                                  $relatedValue,
                                                                  $operatorType))
@@ -396,7 +375,6 @@
                         }
                     }
                 }
-                }
             }
         }
 
@@ -411,7 +389,7 @@
                                                                                                $previousAttributeName = null)
         {
             assert('$previousAttributeName == null || is_string($previousAttributeName)');
-            $modelForTypeOperations = static::resolveModelForTypeOperations($model);
+            $modelForTypeOperations = static::resolveAsRedBeanModel($model);
             if ($operatorType == null)
             {
                 $operatorType = ModelAttributeToOperatorTypeUtil::getOperatorType($modelForTypeOperations, $attributeName);
@@ -627,22 +605,12 @@
         {
             assert('is_array($adaptedMetadataClauseBasePart)');
             assert('is_int($depth) && $depth > 0');
-            if($depth == 1)
+            $finalPart = $adaptedMetadataClauseBasePart;
+            for ($i = 0; $i < $depth; $i++)
             {
-                 return $adaptedMetadataClauseBasePart['relatedModelData'];
+                $finalPart = $finalPart['relatedModelData'];
             }
-            elseif($depth == 2)
-            {
-                 return $adaptedMetadataClauseBasePart['relatedModelData']['relatedModelData'];
-            }
-            elseif($depth == 3)
-            {
-                 return $adaptedMetadataClauseBasePart['relatedModelData']['relatedModelData']['relatedModelData'];
-            }
-            elseif($depth == 4)
-            {
-                 return $adaptedMetadataClauseBasePart['relatedModelData']['relatedModelData']['relatedModelData']['relatedModelData'];
-            }
+            return $finalPart;
         }
 
         protected static function getAppendedAdaptedMetadataClauseBasePart($adaptedMetadataClauseBasePart, $partToAppend, $depth)
@@ -650,22 +618,12 @@
             assert('is_array($adaptedMetadataClauseBasePart)');
             assert('is_array($partToAppend)');
             assert('is_int($depth) && $depth > 0');
-            if($depth == 1)
+            $finalPart = & $adaptedMetadataClauseBasePart;
+            for ($i = 0; $i < $depth; $i++)
             {
-                 $adaptedMetadataClauseBasePart['relatedModelData'] = $partToAppend;
+                $finalPart = & $finalPart['relatedModelData'];
             }
-            elseif($depth == 2)
-            {
-                 $adaptedMetadataClauseBasePart['relatedModelData']['relatedModelData'] = $partToAppend;
-            }
-            elseif($depth == 3)
-            {
-                 $adaptedMetadataClauseBasePart['relatedModelData']['relatedModelData']['relatedModelData'] = $partToAppend;
-            }
-            elseif($depth == 4)
-            {
-                 $adaptedMetadataClauseBasePart['relatedModelData']['relatedModelData']['relatedModelData']['relatedModelData'] = $partToAppend;
-            }
+            $finalPart = $partToAppend;
             return $adaptedMetadataClauseBasePart;
         }
     }
