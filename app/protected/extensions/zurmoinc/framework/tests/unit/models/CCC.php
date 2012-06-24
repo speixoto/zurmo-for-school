@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CCC extends RedBeanModel
+    class CCC extends CustomFieldsModel
     {
         public static function getDefaultMetadata()
         {
@@ -37,9 +37,15 @@
                     'bbb'                => array(RedBeanModel::HAS_MANY,            'BBB'),
                     'iii'                => array(RedBeanModel::HAS_MANY,            'III'),
                     'eee'                => array(RedBeanModel::HAS_ONE,             'EEE'),
+                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
+                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
                 ),
                 'rules' => array(
                     array('cccMember', 'type', 'type' => 'string'),
+                ),
+                'customFields' => array(
+                    'industry'           => 'Industries',
+                    'multipleIndustries' => 'MultipleIndustries',
                 ),
             );
             return $metadata;

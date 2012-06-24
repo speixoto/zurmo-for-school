@@ -257,10 +257,12 @@
         {
             assert('is_array($relatedData)');
             assert('is_int($depth) && $depth > 0');
-            $basePartAtRequiredDepth = static::
-                                       getAdaptedMetadataClauseBasePartAtRequiredDepth($adaptedMetadataClauseBasePart, $depth);
+            $startingOperatorType = $operatorType;
             foreach($relatedData as $attributeName => $value)
             {
+             $operatorType            = $startingOperatorType;
+             $basePartAtRequiredDepth = static::
+                                       getAdaptedMetadataClauseBasePartAtRequiredDepth($adaptedMetadataClauseBasePart, $depth);
               //non-relation attribute that has single data value
                 if (!is_array($value))
                 {
@@ -313,16 +315,15 @@
                                                                     $partToAppend,
                                                                     $depth);
                     unset($value['relatedData']);
-                                $this->populateClausesAndStructureForAttributeWithRelatedModelData(
-                                    static::resolveAsRedBeanModel($model->$attributeName),
-                                    $value,
-                                    $appendedClauseToPassRecursively,
-                                    $adaptedMetadataClauses,
-                                    $clauseCount,
-                                    $structure,
-                                    ($depth + 1),
-                                    $operatorType);
-
+                    $this->populateClausesAndStructureForAttributeWithRelatedModelData(
+                        static::resolveAsRedBeanModel($model->$attributeName),
+                        $value,
+                        $appendedClauseToPassRecursively,
+                        $adaptedMetadataClauses,
+                        $clauseCount,
+                        $structure,
+                        ($depth + 1),
+                        $operatorType);
                 }
                 //relation attribute that has array of data
                 else

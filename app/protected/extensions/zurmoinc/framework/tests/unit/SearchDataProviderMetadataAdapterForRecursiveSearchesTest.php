@@ -63,18 +63,14 @@
         }
 
 
-//checheckin.
 
-        //nested normal model fields like a custom field
-        //nested normal model fields like a multi-select custom field
-        //populateClausesAndStructureForAttributeWithRelatedModelData, test nesting oneOf custom field...
-        //if you are 4 levels deep and have relatedAttributeName because of custom data or something does this work not
-
-        //still need to do date time stuff which will be tricky since we have not recursed that part of the adapter.
         //test starting at hasMany as first nest also manyMany as first nest. also do as firsts and seconds...
         //test id fields here and in the modelDataproviderutilrecurisevedata
-        //on modeldataproviderUtilRecursiveData - 2 calls to hasOne eee but from different branches...
+        //test on modeldataproviderUtilRecursiveData - 2 calls to hasOne eee but from different branches...
 
+
+
+        //still need to do date time stuff which will be tricky since we have not recursed that part of the adapter.
         //search form specific, like date fields since you can do betweens etc.
         //search form specials like owner (owned by field)
 
@@ -180,333 +176,246 @@
 
 
         /**
-        public function testSearchingOnACustomFieldWithMultipleValues()
+         * @depends testGetAdaptedMetadataForAttributesAcrossRelations
+         */
+        public function testSearchingOnACustomFieldWithMultipleValuesWhenInRelatedData()
         {
             $searchAttributes = array(
-                'industry' => array(
+                'industry'  => array(
                     'value'    => array('A', 'B', 'C'),
+                ),
+                'bbb' => array(
+                    'relatedData' => true,
+                    'industry'  => array(
+                        'value'    => array('A', 'B', 'C'),
+                    ),
+                    'ccc'    => array(
+                        'relatedData' => true,
+                        'cccMember' => 'cccMemberValue',
+                        'industry'  => array(
+                            'value'    => array('A', 'B', 'C'),
+                        ),
+                        'eee' => array(
+                            'relatedData' => true,
+                            'eeeMember' => 'eeeMemberValue',
+                       ),
+                        'iii'    => array(
+                           'relatedData' => true,
+                            'eee' => array(
+                                'relatedData' => true,
+                                'industry'  => array(
+                                    'value'    => array('A', 'B', 'C'),
+                                ),
+                                'eeeMember' => 'eeeMemberValue',
+                            )
+                        )
+                    )
                 )
             );
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new TestCustomFieldsModel(false),
+                new AAA(false),
                 1,
                 $searchAttributes
             );
             $metadata = $metadataAdapter->getAdaptedMetadata();
             $compareClauses = array(
+                //Standard attribute on model
                 1 => array(
                     'attributeName'        => 'industry',
                     'relatedAttributeName' => 'value',
                     'operatorType'         => 'oneOf',
                     'value'                => array('A', 'B', 'C'),
                 ),
+                //Standard attribute on related model
+                2 => array(
+                    'attributeName'        => 'bbb',
+                        'relatedModelData'	=> array(
+                            'attributeName'        => 'industry',
+                            'relatedAttributeName' => 'value',
+                            'operatorType'         => 'oneOf',
+                            'value'                => array('A', 'B', 'C'),
+                        ),
+                ),
+                //Standard attribute on related related model
+                3 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'cccMember',
+                                'operatorType'	    => 'startsWith',
+                                'value'             => 'cccMemberValue',
+                            ),
+                    ),
+                ),
+                //Custom Field attribute on related related model
+                4 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName'        => 'industry',
+                                'relatedAttributeName' => 'value',
+                                'operatorType'         => 'oneOf',
+                                'value'                => array('A', 'B', 'C'),
+                            ),
+                    ),
+                ),
+                //Standard attribute on related related related model
+                5 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	    => 'eee',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	=> 'eeeMember',
+                                        'operatorType'	        => 'startsWith',
+                                        'value'                 => 'eeeMemberValue',
+                                    ),
+                            ),
+                    ),
+                ),
+                //Custom Field attribute on related related related related model
+                6 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'iii',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	    => 'eee',
+                                            'relatedModelData'	=> array(
+                                                'attributeName'        => 'industry',
+                                                'relatedAttributeName' => 'value',
+                                                'operatorType'         => 'oneOf',
+                                                'value'                => array('A', 'B', 'C'),
+                                            ),
+                                    ),
+                            ),
+                    ),
+                ),
+                //Standard attribute on related related related related model
+                7 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'iii',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	    => 'eee',
+                                            'relatedModelData'	=> array(
+                                                'attributeName' 	=> 'eeeMember',
+                                                'operatorType'	        => 'startsWith',
+                                                'value'                 => 'eeeMemberValue',
+                                            ),
+                                    ),
+                            ),
+                    ),
+                ),
             );
-            $compareStructure = '1';
+            $compareStructure = '1 and 2 and 3 and 4 and 5 and 6 and 7';
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
 
-        public function testSearchingOnACustomFieldWithMultipleValuesWhereWithEmptyValueSpecified()
+        /**
+         * @depends testSearchingOnACustomFieldWithMultipleValuesWhenInRelatedData
+         */
+        public function testSearchingOnACustomFieldWithMultipleValuesWhenInRelatedDataAndEmpty()
         {
             $searchAttributes = array(
                 'industry' => array(
                     'value'    => array(''),
+                ),
+                'bbb' => array(
+                    'relatedData' => true,
+                    'industry' => array(
+                        'value'    => array(''),
+                    ),
+                    'ccc'    => array(
+                        'relatedData' => true,
+                        'cccMember' => 'cccMemberValue',
+                        'industry' => array(
+                            'value'    => array(''),
+                        ),
+                        'eee' => array(
+                            'relatedData' => true,
+                            'eeeMember' => 'eeeMemberValue',
+                       ),
+                        'iii'    => array(
+                           'relatedData' => true,
+                            'eee' => array(
+                                'relatedData' => true,
+                                'industry' => array(
+                                    'value'    => array(''),
+                                ),
+                                'eeeMember' => 'eeeMemberValue',
+                            )
+                        )
+                    )
                 )
             );
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new TestCustomFieldsModel(false),
-                1,
-                $searchAttributes
-            );
-            $metadata = $metadataAdapter->getAdaptedMetadata();
-            $compareClauses = array();
-            $compareStructure = null;
-            $this->assertEquals($compareClauses, $metadata['clauses']);
-            $this->assertEquals($compareStructure, $metadata['structure']);
-        }
-
-        public function testGetAdaptedMetadataForhasManyRelationAttributes()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $searchAttributes = array(
-                'ks' => array(
-                    'kMember'    => 'some Value',
-                )
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new I(false),
+                new AAA(false),
                 1,
                 $searchAttributes
             );
             $metadata = $metadataAdapter->getAdaptedMetadata();
             $compareClauses = array(
+                //Standard attribute on model
+                //Standard attribute on related related model
                 1 => array(
-                    'attributeName'        => 'ks',
-                    'relatedAttributeName' => 'kMember',
-                    'operatorType'         => 'startsWith',
-                    'value'                => 'some Value',
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'cccMember',
+                                'operatorType'	    => 'startsWith',
+                                'value'             => 'cccMemberValue',
+                            ),
+                    ),
                 ),
-            );
-
-            $compareStructure = '1';
-            $this->assertEquals($compareClauses, $metadata['clauses']);
-            $this->assertEquals($compareStructure, $metadata['structure']);
-        }
-
-        public function testSearchFormDynamicAttributesForRelatedManyManyDateTimeAttributes()
-        {
-            $super                      = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $searchAttributes = array(
-                'dateDateTimeADate__Date'          => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER,
-                                                         'firstDate'  => '1993-04-04'),
-                'dateDateTimeADateTime__DateTime'  => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY),
-            );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
-            $this->assertTrue($searchForm->isAttributeOnForm('dateDateTimeADate__Date'));
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                $searchForm,
-                $super->id,
-                $searchAttributes
-            );
-            $todayDateTime      = new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser()));
-            $today              = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                                  $todayDateTime->getTimeStamp());
-            $todayPlus7Days     = MixedDateTypesSearchFormAttributeMappingRules::calculateNewDateByDaysFromNow(7);
-            $metadata           = $metadataAdapter->getAdaptedMetadata();
-            $compareClauses = array(
-                1 => array(
-                    'attributeName'        => 'manyMany',
-                    'relatedAttributeName' => 'aDate',
-                    'operatorType'         => 'greaterThanOrEqualTo',
-                    'value'                => '1993-04-04',
-                ),
+                //Standard attribute on related related related model
                 2 => array(
-                    'attributeName'        => 'manyMany',
-                    'relatedAttributeName' => 'aDateTime',
-                    'operatorType'         => 'greaterThanOrEqualTo',
-                    'value'                => DateTimeUtil::
-                                              convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($today),
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	    => 'eee',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	=> 'eeeMember',
+                                        'operatorType'	        => 'startsWith',
+                                        'value'                 => 'eeeMemberValue',
+                                    ),
+                            ),
+                    ),
                 ),
+                //Standard attribute on related related related related model
                 3 => array(
-                    'attributeName'        => 'manyMany',
-                    'relatedAttributeName' => 'aDateTime',
-                    'operatorType'         => 'lessThanOrEqualTo',
-                    'value'                => DateTimeUtil::
-                                              convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today),
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'iii',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	    => 'eee',
+                                            'relatedModelData'	=> array(
+                                                'attributeName' 	=> 'eeeMember',
+                                                'operatorType'	        => 'startsWith',
+                                                'value'                 => 'eeeMemberValue',
+                                            ),
+                                    ),
+                            ),
+                    ),
                 ),
             );
-
-            $compareStructure = '(1) and (2 and 3)';
-            $this->assertEquals($compareClauses, $metadata['clauses']);
-            $this->assertEquals($compareStructure, $metadata['structure']);
-        }
-
-        public function testAdaptingBooleanValues()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-            //Test with blank values for boolean on model and on related model.
-            //Will treat as '0'. Normally you would sanitize $searchAttributes so that this
-            //would be removed before passing into the adapter.
-            $searchAttributes = array(
-                'bool'       => '',
-                'a'          => array('a' => ''),
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new TestBooleanAttributeModel(false),
-                1,
-                $searchAttributes
-            );
-            $metadata = $metadataAdapter->getAdaptedMetadata();
-            $compareClauses = array(
-                1 => array(
-                    'attributeName' => 'bool',
-                    'operatorType'  => 'doesNotEqual',
-                    'value'         => (bool)1,
-                ),
-                2 => array(
-                    'attributeName'        => 'a',
-                    'relatedAttributeName' => 'a',
-                    'operatorType'         => 'doesNotEqual',
-                    'value'                => (bool)1,
-                ),
-            );
-            $compareStructure = '1 and 2';
-            $this->assertEquals($compareClauses, $metadata['clauses']);
-            $this->assertEquals($compareStructure, $metadata['structure']);
-
-            //Now test with populated as '0'
-            $searchAttributes = array(
-                'bool'       => '0',
-                'a'          => array('a' => '0'),
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new TestBooleanAttributeModel(false),
-                1,
-                $searchAttributes
-            );
-            $metadata = $metadataAdapter->getAdaptedMetadata();
-            $compareClauses = array(
-                1 => array(
-                    'attributeName' => 'bool',
-                    'operatorType'  => 'doesNotEqual',
-                    'value'         => (bool)1,
-                ),
-                2 => array(
-                    'attributeName'        => 'a',
-                    'relatedAttributeName' => 'a',
-                    'operatorType'         => 'doesNotEqual',
-                    'value'                => (bool)1,
-                ),
-            );
-            $compareStructure = '1 and 2';
-            $this->assertEquals($compareClauses, $metadata['clauses']);
-            $this->assertEquals($compareStructure, $metadata['structure']);
-
-            //Now test with populated as '1'
-            $searchAttributes = array(
-                'bool'       => '1',
-                'a'          => array('a' => '1'),
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new TestBooleanAttributeModel(false),
-                1,
-                $searchAttributes
-            );
-            $metadata = $metadataAdapter->getAdaptedMetadata();
-            $compareClauses = array(
-                1 => array(
-                    'attributeName' => 'bool',
-                    'operatorType'  => 'equals',
-                    'value'         => (bool)1,
-                ),
-                2 => array(
-                    'attributeName'        => 'a',
-                    'relatedAttributeName' => 'a',
-                    'operatorType'         => 'equals',
-                    'value'                => (bool)1,
-                ),
-            );
-            $compareStructure = '1 and 2';
-            $this->assertEquals($compareClauses, $metadata['clauses']);
-            $this->assertEquals($compareStructure, $metadata['structure']);
-        }
-
-        public function testGetAdaptedMetadata()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $searchAttributes = array(
-                'name'          => 'Vomitorio Corp',
-                'officePhone'   => '5',
-                'billingAddress' => array(
-                    'street1'    => null,
-                    'street2'    => 'Suite 101',
-                )
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new Account(false),
-                1,
-                $searchAttributes
-            );
-            $metadata = $metadataAdapter->getAdaptedMetadata();
-            $compareClauses = array(
-                1 => array(
-                    'attributeName' => 'name',
-                    'operatorType'  => 'startsWith',
-                    'value'         => 'Vomitorio Corp',
-                ),
-                2 => array(
-                    'attributeName' => 'officePhone',
-                    'operatorType'  => 'startsWith',
-                    'value'         => 5,
-                ),
-                3 => array(
-                    'attributeName'        => 'billingAddress',
-                    'relatedAttributeName' => 'street2',
-                    'operatorType'         => 'startsWith',
-                    'value'                => 'Suite 101',
-                ),
-            );
-
             $compareStructure = '1 and 2 and 3';
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
+/**
 
-        public function testSearchingOnMultipleValuesCustomFields()
-        {
-            $searchAttributes = array(
-                'multipleIndustries' => array(
-                    'values'    => array('Something'),
-                )
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new TestCustomFieldsModel(false),
-                1,
-                $searchAttributes
-            );
-            $metadata = $metadataAdapter->getAdaptedMetadata();
-            $compareClauses = array(
-                1 => array(
-                    'attributeName'        => 'multipleIndustries',
-                    'relatedAttributeName' => 'values',
-                    'operatorType'         => 'oneOf',
-                    'value'                => array('Something'),
-                ),
-            );
-            $compareStructure = '1';
-            $this->assertEquals($compareClauses, $metadata['clauses']);
-            $this->assertEquals($compareStructure, $metadata['structure']);
-        }
-
-        public function testGetAdaptedMetadataUsingOrClause()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $searchAttributes = array(
-                'name'          => 'Vomitorio Corp',
-                'officePhone'   => '5',
-                'billingAddress' => array(
-                    'street1'    => null,
-                    'street2'    => 'Suite 101',
-                )
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                new Account(false),
-                1,
-                $searchAttributes
-            );
-            $metadata = $metadataAdapter->getAdaptedMetadata(false);
-            $compareClauses = array(
-                1 => array(
-                    'attributeName' => 'name',
-                    'operatorType'  => 'startsWith',
-                    'value'         => 'Vomitorio Corp',
-                ),
-                2 => array(
-                    'attributeName' => 'officePhone',
-                    'operatorType'  => 'startsWith',
-                    'value'         => 5,
-                ),
-                3 => array(
-                    'attributeName'        => 'billingAddress',
-                    'relatedAttributeName' => 'street2',
-                    'operatorType'         => 'startsWith',
-                    'value'                => 'Suite 101',
-                ),
-            );
-
-            $compareStructure = '1 or 2 or 3';
-            $this->assertEquals($compareClauses, $metadata['clauses']);
-            $this->assertEquals($compareStructure, $metadata['structure']);
-        }
 
         public function testSearchFormAttributesAreAdaptedProperly()
         {
@@ -778,6 +687,56 @@
             );
 
             $compareStructure = '(1 and 2) and (3 and 4)';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        public function testSearchFormDynamicAttributesForRelatedManyManyDateTimeAttributes()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $searchAttributes = array(
+                'dateDateTimeADate__Date'          => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER,
+                                                         'firstDate'  => '1993-04-04'),
+                'dateDateTimeADateTime__DateTime'  => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY),
+            );
+            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $this->assertTrue($searchForm->isAttributeOnForm('dateDateTimeADate__Date'));
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                $searchForm,
+                $super->id,
+                $searchAttributes
+            );
+            $todayDateTime      = new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser()));
+            $today              = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                                  $todayDateTime->getTimeStamp());
+            $todayPlus7Days     = MixedDateTypesSearchFormAttributeMappingRules::calculateNewDateByDaysFromNow(7);
+            $metadata           = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'manyMany',
+                    'relatedAttributeName' => 'aDate',
+                    'operatorType'         => 'greaterThanOrEqualTo',
+                    'value'                => '1993-04-04',
+                ),
+                2 => array(
+                    'attributeName'        => 'manyMany',
+                    'relatedAttributeName' => 'aDateTime',
+                    'operatorType'         => 'greaterThanOrEqualTo',
+                    'value'                => DateTimeUtil::
+                                              convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($today),
+                ),
+                3 => array(
+                    'attributeName'        => 'manyMany',
+                    'relatedAttributeName' => 'aDateTime',
+                    'operatorType'         => 'lessThanOrEqualTo',
+                    'value'                => DateTimeUtil::
+                                              convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today),
+                ),
+            );
+
+            $compareStructure = '(1) and (2 and 3)';
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
