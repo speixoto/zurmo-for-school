@@ -62,13 +62,7 @@
             Yii::app()->user->userModel = $super;
         }
 
-        //#0  remove reference to $processAsRelatedModelData
-        //#1 make sure both tests run.
-        //#2 refactor iteratives to recursive
-        //#3 clean up in general.
-        #3b - rename resolveModelForTypeOperations
-//checheckin.
-        //#4 we should not be using all this static stuff in the adapter. much easier to put some things against porperties and not pass
+
 //checheckin.
 
         //nested normal model fields like a custom field
@@ -81,12 +75,8 @@
         //test id fields here and in the modelDataproviderutilrecurisevedata
         //on modeldataproviderUtilRecursiveData - 2 calls to hasOne eee but from different branches...
 
-
-
-
         //search form specific, like date fields since you can do betweens etc.
         //search form specials like owner (owned by field)
-
 
         //test in ModelDataProviderUtilRecursiveDataTest - custom fields, multi-select custom fields. etc...
 
