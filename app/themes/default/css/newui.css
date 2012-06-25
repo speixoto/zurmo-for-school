@@ -5348,6 +5348,13 @@ section {
   z-index: 0;
   position: relative;
 }
+.AppContent {
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  -ms-border-radius: 0 0 5px 5px;
+  -o-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
+}
 #HeaderView {
   position: relative;
   z-index: 9999;

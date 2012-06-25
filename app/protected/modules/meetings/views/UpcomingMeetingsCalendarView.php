@@ -104,10 +104,12 @@
                     type     : 'GET',
                     'beforeSend' : function(){
                                         jQuery('#modalContainer').html('');
+										makeLargeLoadingSpinner('modalContainer');
                                         jQuery('#modalContainer').dialog({'title': dateText,
                                                                           'autoOpen':true,
                                                                           'modal': true,
                                                                           'height': 'auto',
+                                                                          'position': 'center',
                                                                           'width':600}); return true;},
                     success  : function(data)
                     {
