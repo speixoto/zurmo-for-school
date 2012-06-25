@@ -92,6 +92,15 @@
             $whatToTestIsModuleDir = self::isWhatToTestAModule($whatToTest);
             $suiteNames          = array();
             $htmlTestSuiteFiles  = array();
+            if ($whatToTest == 'All' || $whatToTest == 'Misc' || !$whatToTestIsModuleDir)
+            {
+                $compareToTest = $whatToTest;
+                if ($whatToTest == 'Misc')
+                {
+                    $compareToTest = null;
+                }
+                $htmlTestSuiteFiles = self::buildSuiteFromSeleneseDirectory($htmlTestSuiteFiles, '.', $compareToTest);
+            }
             if ($whatToTest != 'Misc' && !$whatToTestIsModuleDir)
             {
                 $compareToTest = $whatToTest;
@@ -134,15 +143,6 @@
                         }
                     }
                 }
-            }
-            if ($whatToTest == 'All' || $whatToTest == 'Misc' || !$whatToTestIsModuleDir)
-            {
-                $compareToTest = $whatToTest;
-                if ($whatToTest == 'Misc')
-                {
-                    $compareToTest = null;
-                }
-                $htmlTestSuiteFiles = self::buildSuiteFromSeleneseDirectory($htmlTestSuiteFiles, '.', $compareToTest);
             }
             if (count($htmlTestSuiteFiles) == 0)
             {
