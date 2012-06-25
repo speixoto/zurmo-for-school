@@ -90,6 +90,19 @@
             }
         }
 
-
+        protected static function resolveStringValueModelsDataToStringContent($modelsAndStringData)
+        {
+            assert('is_array($modelsAndStringData)');
+            $content = null;
+            foreach ($modelsAndStringData as $modelStringContent)
+            {
+                if ($content != null)
+                {
+                    $content .= ', ';
+                }
+                $content .= $modelStringContent;
+            }
+            return $content;
+        }
     }
 ?>

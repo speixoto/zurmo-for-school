@@ -72,7 +72,7 @@
          */
         protected static function getLabel()
         {
-            return 'EmailMessagesModuleSingularLabel';
+            return 'Email';
         }
 
         /**
@@ -81,7 +81,7 @@
          */
         protected static function getPluralLabel()
         {
-            return 'EmailMessagesModulePluralLabel';
+            return 'Emails';
         }
 
         public static function canSaveMetadata()
@@ -104,6 +104,7 @@
                     'sender'      => array(RedBeanModel::HAS_ONE,  'EmailMessageSender',     RedBeanModel::OWNED),
                     'recipients'  => array(RedBeanModel::HAS_MANY, 'EmailMessageRecipient',  RedBeanModel::OWNED),
                     'error'       => array(RedBeanModel::HAS_ONE,  'EmailMessageSendError' , RedBeanModel::OWNED),
+                    'emailItems'    => array(RedBeanModel::MANY_MANY, 'Item'),
                 ),
                 'rules' => array(
                     array('subject', 'required'),
@@ -123,7 +124,7 @@
 
         public function hasSendError()
         {
-            return !($this->error == null ||$this->error->id < 0);
+            return !($this->error == null || $this->error->id < 0);
         }
     }
 ?>

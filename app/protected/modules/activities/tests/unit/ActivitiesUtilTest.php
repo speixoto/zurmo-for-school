@@ -62,11 +62,11 @@
             $sender->fromName          = 'Zurmo System';
             $emailMessage->sender      = $sender;
             //Recipient is billy.
-            $recipient                 = new EmailMessageRecipient();
-            $recipient->toAddress      = 'billy@fakeemail.com';
-            $recipient->toName         = 'Billy James';
-            $recipient->type           = EmailMessageRecipient::TYPE_TO;
-            $recipient->person         = $billy;
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = 'billy@fakeemail.com';
+            $recipient->toName          = 'Billy James';
+            $recipient->type            = EmailMessageRecipient::TYPE_TO;
+            $recipient->personOrAccount = $billy;
             $emailMessage->recipients->add($recipient);
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);

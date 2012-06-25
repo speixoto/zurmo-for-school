@@ -1817,7 +1817,7 @@
                                 {
                                     //If the attribute is required, but already exists and has not been modified we do
                                     //not have to worry about saving it.
-                                    if($this->isSavableFromRelation &&
+                                    if ($this->isSavableFromRelation &&
                                        !($this->isAttributeRequired($relationName) &&
                                          !$relatedModel->isModified() &&
                                          $relatedModel->id > 0))

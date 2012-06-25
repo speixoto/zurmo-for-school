@@ -140,5 +140,85 @@
                 throw new NotSupportedException();
             }
         }
+
+        public function actionInboundConfigurationEdit()
+        {
+            $configurationForm = InboundEmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $postVariableName   = get_class($configurationForm);
+            if (isset($_POST[$postVariableName]))
+            {
+                $configurationForm->setAttributes($_POST[$postVariableName]);
+                if ($configurationForm->validate())
+                {
+                    InboundEmailConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
+                    Yii::app()->user->setFlash('notification',
+                                               Yii::t('Default', 'Inbound email configuration saved successfully.')
+                    );
+                    $this->redirect(Yii::app()->createUrl('configuration/default/index'));
+                }
+            }
+            $editView = new InboundEmailConfigurationEditAndDetailsView(
+                                    'Edit',
+                                    $this->getId(),
+                                    $this->getModule()->getId(),
+                                    $configurationForm);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                         makeStandardViewForCurrentUser($this, $editView));
+            echo $view->render();
+        }
+
+        /**
+        * Assumes before calling this, the inbound settings have been validated in the form.
+        */
+        public function actionTestImapConnection()
+        {
+            $configurationForm = InboundEmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $postVariableName   = get_class($configurationForm);
+            if (isset($_POST[$postVariableName]))
+            {
+                $configurationForm->setAttributes($_POST[$postVariableName]);
+
+                $imap = new ZurmoImap();
+
+                $imap->imapHost     = $configurationForm->imapHost;
+                $imap->imapUsername = $configurationForm->imapUsername;
+                $imap->imapPassword = $configurationForm->imapPassword;
+                $imap->imapPort     = $configurationForm->imapPort;
+                $imap->imapSSL      = $configurationForm->imapSSL;
+                $imap->imapFolder   = $configurationForm->imapFolder;
+
+                try{
+                    $connect = $imap->connect();
+                }
+                catch (Exception $e)
+                {
+                    $connect = false;
+                    $messageContent = Yii::t('Default', 'Could not connect to IMAP server.') . "\n";
+                }
+
+                if (isset($connect) && $connect == true)
+                {
+                    $messageContent = Yii::t('Default', 'Successfully connected to IMAP server.') . "\n";
+                }
+                else
+                {
+                    $messageContent = Yii::t('Default', 'Could not connect to IMAP server.') . "\n";
+                }
+
+                Yii::app()->getClientScript()->setToAjaxMode();
+                $messageView = new TestImapConnectionMessageView($messageContent);
+                $view = new ModalView($this,
+                                      $messageView,
+                                      'modalContainer',
+                                      Yii::t('Default', 'Test Message Results')
+                );
+                echo $view->render();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 ?>

@@ -312,7 +312,7 @@
         'Latitude'
             => 'Latitude', // Same Word Translated
         'Let Zurmo crunch the numbers, add calculated fields to your records in Designer.'
-            => 'Permettez à Zurmo de faire le gros du travail,  ajoutez des champs calculés dans Designer.',
+            => 'Permettez à Zurmo de faire le gros du travail, ajoutez des champs calculés dans Designer.',
         'List Filters'
             => 'Filtres',
         'List page size'
@@ -415,7 +415,7 @@
             => 'Groupe mère',
         'Parent Role'
             => 'Rôle parent',
-        'Parlez vous Français{spaceAndFirstName}?  Choose your preferred language in your My Profile area.'
+        'Parlez vous Français{spaceAndFirstName}? Choose your preferred language in your My Profile area.'
             => 'Sélectionnez votre langue préférée dans Mon Profil.',
         'Password'
             => 'Mot de passe',

@@ -290,7 +290,7 @@
                'Contrassegna questo box si specificate un database esistente.',
         'Welcome to Zurmo. Before getting started, we need some information on the database. ' .
         'You will need to know the following items before proceeding:'
-            => 'Benvenuto a Zurmo.  Avanti di cominciare, è necessario ottenere informazione del vostro database.' .
+            => 'Benvenuto a Zurmo. Avanti di cominciare, è necessario ottenere informazione del vostro database.' .
                'È necessario avere LE informazioni seguenti:',
         'Writing Configuration File.'
             => 'Creazione del file di configurazione.',
