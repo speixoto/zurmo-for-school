@@ -24,7 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserChangePasswordView extends EditView
+    /**
+     * View to display to users upon first login.  Allows them to confirm their timezone.
+     */
+    class UserTimeZoneConfirmationView extends EditView
     {
         public static function getDefaultMetadata()
         {
@@ -32,7 +35,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelLink'),
                             array('type' => 'SaveButton'),
                         ),
                     ),
@@ -44,16 +46,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'newPassword', 'type' => 'Password'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'newPassword_repeat', 'type' => 'Password'),
+                                                array('attributeName' => 'timeZone', 'type' => 'TimeZoneStaticDropDown'),
                                             ),
                                         ),
                                     )
@@ -64,24 +57,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        protected function resolveActiveFormAjaxValidationOptions()
-        {
-            return array('enableAjaxValidation' => true,
-                'clientOptions' => array(
-                    'beforeValidate'    => 'js:beforeValidateAction',
-                    'afterValidate'     => 'js:afterValidateAction',
-                    'validateOnSubmit'  => true,
-                    'validateOnChange'  => false,
-                    'inputContainer'    => 'td',
-                )
-            );
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'UserChangePasswordView';
         }
     }
 ?>

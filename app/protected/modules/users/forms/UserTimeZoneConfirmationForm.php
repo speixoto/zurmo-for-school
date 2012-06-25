@@ -24,23 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LoginPageView extends ZurmoPageView
+    /**
+     * Use this form when confirming a user's timezone for the first time.
+     */
+    class UserTimeZoneConfirmationForm extends CFormModel
     {
-        public function __construct(CController $controller, CFormModel $formModel, $extraHeaderContent = null)
-        {
-            assert('is_string($extraHeaderContent) || $extraHeaderContent == null');
+        public $timeZone;
 
-            $loginview = new LoginView($controller, $formModel, $extraHeaderContent);
-            $loginview->setCssClasses(array('clearfix', 'background-' . mt_rand(1, 3)));
-            $gridView = new GridView(2, 1);
-            $gridView->setView($loginview, 0, 0);
-            $gridView->setView(new FooterView(), 1, 0);
-            parent::__construct($gridView);
+        public $id;
+
+        public function rules()
+        {
+            return array(
+                    array('timeZone', 'type',    'type'  => 'string'),
+                    array('timeZone', 'length',  'max'   => 64),
+            );
         }
 
-        protected function getSubtitle()
+        public function attributeLabels()
         {
-            return Yii::t('Default', 'Sign in');
+            return array('timeZone' => Yii::t('Default', 'Time Zone'));
         }
     }
 ?>

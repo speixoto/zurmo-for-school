@@ -24,23 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LoginPageView extends ZurmoPageView
+    /**
+     * Class for defining the badge associated with logging in at night
+     */
+    class NightOwlGameBadgeRules extends GameBadgeRules
     {
-        public function __construct(CController $controller, CFormModel $formModel, $extraHeaderContent = null)
-        {
-            assert('is_string($extraHeaderContent) || $extraHeaderContent == null');
+       public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 10,
+            3  => 25,
+            4  => 50,
+            5  => 75,
+            6  => 100,
+            7  => 125,
+            8  => 150,
+            9  => 175,
+            10 => 200,
+            11 => 225,
+            12 => 250,
+            13 => 300
+        );
 
-            $loginview = new LoginView($controller, $formModel, $extraHeaderContent);
-            $loginview->setCssClasses(array('clearfix', 'background-' . mt_rand(1, 3)));
-            $gridView = new GridView(2, 1);
-            $gridView->setView($loginview, 0, 0);
-            $gridView->setView(new FooterView(), 1, 0);
-            parent::__construct($gridView);
+        public static function getPassiveDisplayLabel($value)
+        {
+            return Yii::t('Default', '{n} Zurmo nighttime login|{n} Zurmo nighttime logins',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
-        protected function getSubtitle()
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            return Yii::t('Default', 'Sign in');
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['NightOwl']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['NightOwl']->value);
+            }
+            return 0;
         }
     }
 ?>
