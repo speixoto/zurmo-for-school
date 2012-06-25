@@ -2708,6 +2708,14 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding-left: 15px;
   padding-right: 15px;
 }
+.lead-conversion-radiobutton {
+  display: block;
+  margin-bottom: 10px;
+}
+.lead-conversion-radiobutton label {
+  float: none !important;
+  margin-left: 20px;
+}
 .modal-settings .wide.form {
   padding: 15px !important;
   background-color: #f5f5f5;
