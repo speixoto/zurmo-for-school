@@ -32,6 +32,7 @@
         public $IIIName;
         public $differentOperatorA;
         public $differentOperatorB;
+        public $concatedName;
 
         public function __construct(RedBeanModel $model)
         {
@@ -46,13 +47,15 @@
                 array('differentOperatorB', 'boolean'),
                 array('dateDateTimeADate__Date', 'safe'),
                 array('dateDateTimeADateTime__DateTime', 'safe'),
+                array('concactedName', 'safe'),
             ));
         }
 
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'IIIName'                           => Yii::t('Default', 'ABName'),
+                'concactedName'                    => Yii::t('Default', 'Concated Name'),
+                'IIIName'                          => Yii::t('Default', 'IIIName'),
                 'differentOperatorA'               => Yii::t('Default', 'differentOperatorA'),
                 'differentOperatorB'               => Yii::t('Default', 'differentOperatorB'),
             ));
@@ -75,6 +78,11 @@
                 ),
                 'differentOperatorB' => array(
                     array('iiiMember', null, 'endsWith')
+                ),
+                'concatedName' => array(
+                    array('iiiMember'),
+                    array('iiiMember2'),
+                    array('concatedAttributeNames' => array('iiiMember', 'iiiMember2'))
                 ),
             ));
         }

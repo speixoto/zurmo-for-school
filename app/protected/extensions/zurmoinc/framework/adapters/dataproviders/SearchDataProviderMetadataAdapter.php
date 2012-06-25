@@ -363,30 +363,31 @@
          * Method for populating clauses for concated attributes.  The first concated attribute $attributeNames[0]
          * will be used to determine the operator types.
          */
-        protected function populateClausesAndStructureForConcatedAttributes($attributeNames,
+        protected function populateClausesAndStructureForConcatedAttributes($model,
+                                                                            $attributeNames,
                                                                             $value,
-                                                                            &$adaptedMetadataClauses,
-                                                                            &$clauseCount,
-                                                                            &$structure,
+                                                                            & $adaptedMetadataClauseBasePart,
+                                                                            & $clauseCount,
+                                                                            & $structure,
                                                                             $operatorType = null)
         {
             assert('is_array($attributeNames) && count($attributeNames) == 2');
-            assert('is_array($adaptedMetadataClauses) || $adaptedMetadataClauses == null');
+            assert('is_array($adaptedMetadataClauseBasePart)');
             assert('is_int($clauseCount)');
             assert('$structure == null || is_string($structure)');
             if ($value !== null)
             {
                 if ($operatorType == null)
                 {
-                    $operatorType        = ModelAttributeToOperatorTypeUtil::getOperatorType($this->model, $attributeNames[0]);
-                    $operatorTypeCompare = ModelAttributeToOperatorTypeUtil::getOperatorType($this->model, $attributeNames[1]);
+                    $operatorType        = ModelAttributeToOperatorTypeUtil::getOperatorType($model, $attributeNames[0]);
+                    $operatorTypeCompare = ModelAttributeToOperatorTypeUtil::getOperatorType($model, $attributeNames[1]);
                     if ($operatorType != $operatorTypeCompare)
                     {
                         throw New NotSupportedException();
                     }
                 }
-                $value = ModelAttributeToCastTypeUtil::resolveValueForCast($this->model, $attributeNames[0], $value);
-                $adaptedMetadataClauses[($clauseCount)] = array(
+                $value = ModelAttributeToCastTypeUtil::resolveValueForCast($model, $attributeNames[0], $value);
+                $adaptedMetadataClauseBasePart = array(
                     'concatedAttributeNames' => $attributeNames,
                     'operatorType'           => $operatorType,
                     'value'                  => $value,
@@ -424,21 +425,28 @@
             {
                 if (isset($searchFormClause['concatedAttributeNames']))
                 {
-                    if($depth > 0)
-                    {
-                        //implement nested concated names if needed.
-                        throw new NotImplementedException();
-                    }
                     assert('is_array($searchFormClause["concatedAttributeNames"][0]) &&
                              count($searchFormClause["concatedAttributeNames"][0]) == 2');
                     assert('!isset($searchFormClause["concatedAttributeNames"]["operatorType"])');
                     assert('!isset($searchFormClause["concatedAttributeNames"]["appendStructureAsAnd"])');
-                    $this->populateClausesAndStructureForConcatedAttributes($searchFormClause['concatedAttributeNames'][0],
+                    $oldAppendStructureAsAndValue = $this->appendStructureAsAnd;
+                    $this->appendStructureAsAnd   = false;
+                    $basePartAtRequiredDepth      = static::
+                                                       getAdaptedMetadataClauseBasePartAtRequiredDepth(
+                                                       $adaptedMetadataClauseBasePart, $depth);
+                    $currentClauseCount           = $clauseCount;
+                    $this->populateClausesAndStructureForConcatedAttributes( $model,
+                                                                             $searchFormClause['concatedAttributeNames'][0],
                                                                              $searchFormClause['concatedAttributeNames']['value'],
-                                                                             $adaptedMetadataClauses,
+                                                                             $basePartAtRequiredDepth,
                                                                              $clauseCount,
                                                                              $tempStructure,
                                                                              false);
+                    $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
+                                                                                $adaptedMetadataClauseBasePart,
+                                                                                $basePartAtRequiredDepth,
+                                                                                $depth);
+                    $this->appendStructureAsAnd   = $oldAppendStructureAsAndValue;
                 }
                 else
                 {

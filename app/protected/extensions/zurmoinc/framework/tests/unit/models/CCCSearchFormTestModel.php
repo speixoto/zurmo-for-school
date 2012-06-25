@@ -32,6 +32,7 @@
         public $CCCName;
         public $differentOperatorA;
         public $differentOperatorB;
+        public $concatedName;
 
         public function __construct(RedBeanModel $model)
         {
@@ -45,12 +46,14 @@
                 array('CCCName', 'safe'),
                 array('differentOperatorA', 'safe'),
                 array('differentOperatorB', 'boolean'),
+                array('concactedName', 'safe'),
             ));
         }
 
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
+                'concactedName'                    => Yii::t('Default', 'Concated Name'),
                 'CCCName'                          => Yii::t('Default', 'CCCName'),
                 'differentOperatorA'               => Yii::t('Default', 'differentOperatorA'),
                 'differentOperatorB'               => Yii::t('Default', 'differentOperatorB'),
@@ -74,6 +77,11 @@
                 ),
                 'differentOperatorB' => array(
                     array('cccMember', null, 'endsWith')
+                ),
+                'concatedName' => array(
+                    array('cccMember'),
+                    array('cccMember2'),
+                    array('concatedAttributeNames' => array('cccMember', 'cccMember2'))
                 ),
             ));
         }

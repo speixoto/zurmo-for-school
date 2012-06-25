@@ -62,13 +62,365 @@
             Yii::app()->user->userModel = $super;
         }
 
-        //test starting at hasMany as first nest also manyMany as first nest. also do as firsts and seconds...
-        //test id fields here and in the modelDataproviderutilrecurisevedata
-        //test on modeldataproviderUtilRecursiveData - 2 calls to hasOne eee but from different branches...
-        //i think still do concated, since contacts will show that as an advanced field.
-        //test in ModelDataProviderUtilRecursiveDataTest - custom fields, multi-select custom fields. etc...
-        //notes,tasks, meetings then need search forms...
+        public function testGetAdaptedMetadataForConcatedAttributesAcrossRelations()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $searchAttributes = array(
+                'aaaMember' => 'Vomitorio Corp',
+                'bbb' => array(
+                    'relatedData' => true,
+                    'bbbMember'  => 'bbbMemberValue',
+                    'ccc'    => array(
+                        'relatedData' => true,
+                        'cccMember' => 'cccMemberValue',
+                        'eee' => array(
+                            'relatedData' => true,
+                            'eeeMember' => 'eeeMemberValue',
+                        ),
+                        'concatedName' => 'Jimmy Jam',
+                        'iii'    => array(
+                           'relatedData' => true,
+                           'concatedName' => 'Jimmy Jam',
+                            'eee' => array(
+                                'relatedData' => true,
+                                'eeeMember' => 'eeeMemberValue',
+                            )
+                        )
+                    )
+                )
+            );
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                new AAA(false),
+                1,
+                $searchAttributes
+            );
+            $metadata       = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                //Standard attribute on model
+                1 => array(
+                    'attributeName' => 'aaaMember',
+                    'operatorType'  => 'startsWith',
+                    'value'         => 'Vomitorio Corp',
+                ),
+                //Standard attribute on related model
+                2 => array(
+                    'attributeName'        => 'bbb',
+                        'relatedModelData'	=> array(
+                            'attributeName' 	=> 'bbbMember',
+                            'operatorType'	    => 'startsWith',
+                            'value'             => 'bbbMemberValue',
+                        ),
+                ),
+                //Standard attribute on related related model
+                3 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'cccMember',
+                                'operatorType'	    => 'startsWith',
+                                'value'             => 'cccMemberValue',
+                            ),
+                    ),
+                ),
+                //Standard attribute on related related related model
+                4 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	    => 'eee',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	=> 'eeeMember',
+                                        'operatorType'	        => 'startsWith',
+                                        'value'                 => 'eeeMemberValue',
+                                    ),
+                            ),
+                    ),
+                ),
+                //Concated nested attribute first part
+                5 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'cccMember',
+                                'operatorType'	    => 'startsWith',
+                                'value'             => 'Jimmy Jam',
+                            ),
+                    ),
+                ),
+                //Concated nested attribute second part
+                6 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'cccMember2',
+                                'operatorType'	    => 'startsWith',
+                                'value'             => 'Jimmy Jam',
+                            ),
+                    ),
+                ),
+                //Concated nested attribute third part
+                7 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'concatedAttributeNames' 	=> array('cccMember', 'cccMember2'),
+                                'operatorType'	    => 'startsWith',
+                                'value'             => 'Jimmy Jam',
+                            ),
+                    ),
+                ),
+                //Concated nested nested attribute first part
+                8 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'iii',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	=> 'iiiMember',
+                                        'operatorType'	    => 'startsWith',
+                                        'value'             => 'Jimmy Jam',
+                                    ),
+                            ),
+                    ),
+                ),
+                //Concated nested nested attribute second part
+                9 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'iii',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	=> 'iiiMember2',
+                                        'operatorType'	    => 'startsWith',
+                                        'value'             => 'Jimmy Jam',
+                                    ),
+                            ),
+                    ),
+                ),
+                //Concated nested nested attribute third part
+                10 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'iii',
+                                    'relatedModelData'	=> array(
+                                        'concatedAttributeNames' 	=> array('iiiMember', 'iiiMember2'),
+                                        'operatorType'	    => 'startsWith',
+                                        'value'             => 'Jimmy Jam',
+                                    ),
+                            ),
+                    ),
+                ),
+                //Standard nested nested nested attribute
+                11 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'ccc',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'iii',
+                                    'relatedModelData'	=> array(
+                                        'attributeName' 	    => 'eee',
+                                            'relatedModelData'	=> array(
+                                                'attributeName' 	=> 'eeeMember',
+                                                'operatorType'	        => 'startsWith',
+                                                'value'                 => 'eeeMemberValue',
+                                            ),
+                                    ),
+                            ),
+                    ),
+                ),
+            );
+            $compareStructure = '1 and 2 and 3 and 4 and (5 or 6 or 7) and (8 or 9 or 10) and 11';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
 
+        /**
+         * @depends testGetAdaptedMetadataForConcatedAttributesAcrossRelations
+         */
+        public function testGetAdaptedMetadataForAttributesAcrossRelationsStartingWitManyManyAndIds()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $searchAttributes = array(
+                'id' => '5',
+                'bbb' => array(
+                    'relatedData' => true,
+                    'id'  => '6',
+                    'aaa'    => array(
+                        'relatedData' => true,
+                        'id' => '7',
+                       )
+                    )
+            );
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                new DDD(false),
+                1,
+                $searchAttributes
+            );
+            $metadata = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                //Standard attribute on model
+                1 => array(
+                    'attributeName' => 'id',
+                    'operatorType'  => 'equals',
+                    'value'         => '5',
+                ),
+                //Standard attribute on related model
+                2 => array(
+                    'attributeName'        => 'bbb',
+                        'relatedModelData'	=> array(
+                            'attributeName' 	=> 'id',
+                            'operatorType'	    => 'equals',
+                            'value'             => '6',
+                        ),
+                ),
+                //Standard attribute on related related model
+                3 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'aaa',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'id',
+                                'operatorType'	    => 'equals',
+                                'value'             => '7',
+                            ),
+                    ),
+                ),
+            );
+            $compareStructure = '1 and 2 and 3';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        /**
+         * @depends testGetAdaptedMetadataForAttributesAcrossRelationsStartingWitManyManyAndIds
+         */
+        public function testGetAdaptedMetadataForAttributesAcrossRelationsStartingWitManyMany()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $searchAttributes = array(
+                'dddMember' => 'Vomitorio Corp',
+                'bbb' => array(
+                    'relatedData' => true,
+                    'bbbMember'  => 'bbbMemberValue',
+                    'aaa'    => array(
+                        'relatedData' => true,
+                        'aaaMember' => 'aaaMemberValue',
+                       )
+                    )
+            );
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                new DDD(false),
+                1,
+                $searchAttributes
+            );
+            $metadata = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                //Standard attribute on model
+                1 => array(
+                    'attributeName' => 'dddMember',
+                    'operatorType'  => 'startsWith',
+                    'value'         => 'Vomitorio Corp',
+                ),
+                //Standard attribute on related model
+                2 => array(
+                    'attributeName'        => 'bbb',
+                        'relatedModelData'	=> array(
+                            'attributeName' 	=> 'bbbMember',
+                            'operatorType'	    => 'startsWith',
+                            'value'             => 'bbbMemberValue',
+                        ),
+                ),
+                //Standard attribute on related related model
+                3 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'aaa',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'aaaMember',
+                                'operatorType'	    => 'startsWith',
+                                'value'             => 'aaaMemberValue',
+                            ),
+                    ),
+                ),
+            );
+            $compareStructure = '1 and 2 and 3';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        /**
+         * @depends testGetAdaptedMetadataForAttributesAcrossRelationsStartingWitManyMany
+         */
+        public function testGetAdaptedMetadataForAttributesAcrossRelationsStartingWithHasMany()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $searchAttributes = array(
+                'cccMember' => 'Vomitorio Corp',
+                'bbb' => array(
+                    'relatedData' => true,
+                    'bbbMember'  => 'bbbMemberValue',
+                    'aaa'    => array(
+                        'relatedData' => true,
+                        'aaaMember' => 'aaaMemberValue',
+                       )
+                    )
+            );
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                new CCC(false),
+                1,
+                $searchAttributes
+            );
+            $metadata = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                //Standard attribute on model
+                1 => array(
+                    'attributeName' => 'cccMember',
+                    'operatorType'  => 'startsWith',
+                    'value'         => 'Vomitorio Corp',
+                ),
+                //Standard attribute on related model
+                2 => array(
+                    'attributeName'        => 'bbb',
+                        'relatedModelData'	=> array(
+                            'attributeName' 	=> 'bbbMember',
+                            'operatorType'	    => 'startsWith',
+                            'value'             => 'bbbMemberValue',
+                        ),
+                ),
+                //Standard attribute on related related model
+                3 => array(
+                    'attributeName'	=> 'bbb',
+                    'relatedModelData' => array(
+                        'attributeName' 	=> 'aaa',
+                            'relatedModelData'	=> array(
+                                'attributeName' 	=> 'aaaMember',
+                                'operatorType'	    => 'startsWith',
+                                'value'             => 'aaaMemberValue',
+                            ),
+                    ),
+                ),
+            );
+            $compareStructure = '1 and 2 and 3';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        /**
+         * @depends testGetAdaptedMetadataForAttributesAcrossRelationsStartingWithHasMany
+         */
         public function testGetAdaptedMetadataForAttributesAcrossRelations()
         {
             $super = User::getByUsername('super');
