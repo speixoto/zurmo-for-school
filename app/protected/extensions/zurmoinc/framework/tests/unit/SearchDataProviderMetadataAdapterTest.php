@@ -287,7 +287,6 @@
                     'value'                => 'Suite 101',
                 ),
             );
-
             $compareStructure = '1 and 2 and 3';
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);

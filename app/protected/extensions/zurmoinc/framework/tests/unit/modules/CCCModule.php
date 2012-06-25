@@ -24,39 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class III extends RedBeanModel
+    class CCCModule extends Module
     {
+        public function getDependencies()
+        {
+            return array(
+            );
+        }
+
         public static function getDefaultMetadata()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'iiiMember',
-                    'iiiMember2',
-                    'date',
-                    'date2',
-                    'dateTime',
-                    'dateTime2'
-                ),
-                'relations' => array(
-                    'ccc'                => array(RedBeanModel::HAS_ONE,            'CCC'),
-                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
-                ),
-                'rules' => array(
-                    array('iiiMember',  'type', 'type' => 'string'),
-                    array('iiiMember2', 'type', 'type' => 'string'),
-                    array('date',       'type', 'type' => 'date'),
-                    array('date2',      'type', 'type' => 'date'),
-                    array('dateTime',   'type', 'type' => 'datetime'),
-                    array('dateTime2',  'type', 'type' => 'datetime'),
-                ),
+            $metadata = array();
+            $metadata['global'] = array(
+                'globalSearchAttributeNames' => array()
             );
             return $metadata;
         }
 
-        public static function getModuleClassName()
+        public static function getPrimaryModelName()
         {
-            return 'IIIModule';
+            return 'CCC';
+        }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'CCCSearchFormTestModel';
         }
     }
 ?>

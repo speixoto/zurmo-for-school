@@ -32,6 +32,11 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'cccMember',
+                    'cccMember2',
+                    'date',
+                    'date2',
+                    'dateTime',
+                    'dateTime2'
                 ),
                 'relations' => array(
                     'bbb'                => array(RedBeanModel::HAS_MANY,            'BBB'),
@@ -41,7 +46,12 @@
                     'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
                 ),
                 'rules' => array(
-                    array('cccMember', 'type', 'type' => 'string'),
+                    array('cccMember',  'type', 'type' => 'string'),
+                    array('cccMember2', 'type', 'type' => 'string'),
+                    array('date',       'type', 'type' => 'date'),
+                    array('date2',      'type', 'type' => 'date'),
+                    array('dateTime',   'type', 'type' => 'datetime'),
+                    array('dateTime2',  'type', 'type' => 'datetime'),
                 ),
                 'customFields' => array(
                     'industry'           => 'Industries',
@@ -49,6 +59,11 @@
                 ),
             );
             return $metadata;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'CCCModule';
         }
     }
 ?>

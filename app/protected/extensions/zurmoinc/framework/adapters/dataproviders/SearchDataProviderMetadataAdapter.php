@@ -59,15 +59,17 @@
                 //If attribute is a pseudo attribute on the SearchForm
                 if ($this->model instanceof SearchForm && $this->model->isAttributeOnForm($attributeName))
                 {
-                    $this->populateAdaptedMetadataFromSearchFormAttributes( $attributeName,
-                                                                             $value,
-                                                                             $adaptedMetadata['clauses'],
-                                                                             $clauseCount,
-                                                                             $structure);
+                    $this->populateAdaptedMetadataFromSearchFormAttributes( $this->model,
+                                                                            $attributeName,
+                                                                            $value,
+                                                                            $adaptedMetadata['clauses'],
+                                                                            $clauseCount,
+                                                                            $structure);
                 }
                 else
                 {
-                    $this->populateClausesAndStructureForAttribute($attributeName,
+                    $this->populateClausesAndStructureForAttribute( $this->model,
+                                                                    $attributeName,
                                                                     $value,
                                                                     $adaptedMetadata['clauses'],
                                                                     $clauseCount,
@@ -78,63 +80,133 @@
             return $adaptedMetadata;
         }
 
-        protected function populateClausesAndStructureForAttribute( $attributeName,
+        protected function populateClausesAndStructureForAttributeWithRelatedModelData( $model,
+                                                                                        $relatedMetaData,
+                                                                                        $adaptedMetadataClauseBasePart,
+                                                                                        & $adaptedMetadataClauses,
+                                                                                        & $clauseCount,
+                                                                                        & $structure,
+                                                                                        $depth,
+                                                                                        $operatorType = null)
+        {
+            assert('$model instanceof RedBeanModel || $model instanceof SearchForm');
+            assert('is_array($relatedMetaData)');
+            assert('is_int($depth)');
+            $startingOperatorType = $operatorType;
+            foreach($relatedMetaData as $attributeName => $value)
+            {
+                //If attribute is a pseudo attribute on the SearchForm
+                if ($model instanceof SearchForm && $model->isAttributeOnForm($attributeName))
+                {
+                    $this->populateAdaptedMetadataFromSearchFormAttributes( $model,
+                                                                            $attributeName,
+                                                                            $value,
+                                                                            $adaptedMetadataClauses,
+                                                                            $clauseCount,
+                                                                            $structure,
+                                                                            $adaptedMetadataClauseBasePart,
+                                                                            $depth);
+                }
+                else
+                {
+                    $this->populateClausesAndStructureForAttribute($model,
+                                                                   $attributeName,
+                                                                   $value,
+                                                                   $adaptedMetadataClauses,
+                                                                   $clauseCount,
+                                                                   $structure,
+                                                                   $adaptedMetadataClauseBasePart,
+                                                                   $operatorType,
+                                                                   $depth);
+                }
+            }
+        }
+
+        protected function populateClausesAndStructureForAttribute( $model,
+                                                                    $attributeName,
                                                                     $value,
                                                                     & $adaptedMetadataClauses,
                                                                     & $clauseCount,
                                                                     & $structure,
-                                                                    $operatorType = null)
+                                                                    $adaptedMetadataClauseBasePart = array(),
+                                                                    $operatorType = null,
+                                                                    $depth = 0)
         {
+            assert('$model instanceof SearchForm || $model instanceof RedBeanModel');
             assert('is_string($attributeName)');
             assert('is_array($adaptedMetadataClauses) || $adaptedMetadataClauses == null');
             assert('is_int($clauseCount)');
             assert('$structure == null || is_string($structure)');
+            assert('is_int($depth)');
+            $basePartAtRequiredDepth = static::
+                                       getAdaptedMetadataClauseBasePartAtRequiredDepth($adaptedMetadataClauseBasePart, $depth);
             //non-relation attribute that has single data value
             if (!is_array($value))
             {
                 if ($value !== null)
                 {
-                    $adaptedMetadataClauses[($clauseCount)] = array();
-                    $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(  $this->model,
+                    $currentClauseCount                         = $clauseCount;
+                    $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(  $model,
                                                                                            $attributeName,
                                                                                            $operatorType,
                                                                                            $value,
-                                                                                           $adaptedMetadataClauses[($clauseCount)],
+                                                                                           $basePartAtRequiredDepth,
                                                                                            $structure,
                                                                                            $clauseCount);
+                    $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
+                                                                                $adaptedMetadataClauseBasePart,
+                                                                                $basePartAtRequiredDepth,
+                                                                                $depth);
                 }
             }
             //non-relation attribute that has array of data
-            elseif (!$this->model->isRelation($attributeName))
+            elseif (!$model->isRelation($attributeName))
             {
                 if (isset($value['value']) && $value['value'] != '')
                 {
-                    $adaptedMetadataClauses[($clauseCount)] = array();
-                    $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(  $this->model,
+                    $currentClauseCount                         = $clauseCount;
+                    $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(   $model,
                                                                                            $attributeName,
                                                                                            $operatorType,
                                                                                            $value['value'],
-                                                                                           $adaptedMetadataClauses[($clauseCount)],
+                                                                                           $basePartAtRequiredDepth,
                                                                                            $structure,
                                                                                            $clauseCount);
+                    $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
+                                                                                $adaptedMetadataClauseBasePart,
+                                                                                $basePartAtRequiredDepth,
+                                                                                $depth);
                 }
             }
             //relation attribute that is relatedData
             elseif(isset($value['relatedData']) && $value['relatedData'] == true)
             {
-                $adaptedMetadataClauseBasePart = array(
-                    'attributeName'        => $attributeName,
-                    'relatedModelData' => array());
-                $depth = 1;
+                $partToAppend                    = array('attributeName'    => $attributeName,
+                                                         'relatedModelData' => array());
+                $appendedClauseToPassRecursively = static::getAppendedAdaptedMetadataClauseBasePart(
+                                                                $adaptedMetadataClauseBasePart,
+                                                                $partToAppend,
+                                                                $depth);
                 unset($value['relatedData']);
+
+                $finalModel = static::resolveAsRedBeanModel($model->$attributeName);
+                if($finalModel::getModuleClassName() != null)
+                {
+                    $moduleClassName = $finalModel::getModuleClassName();
+                    if($moduleClassName::getGlobalSearchFormClassName() != null)
+                    {
+                        $searchFormClassName = $moduleClassName::getGlobalSearchFormClassName();
+                        $finalModel          = new $searchFormClassName($finalModel);
+                    }
+                }
                 $this->populateClausesAndStructureForAttributeWithRelatedModelData(
-                    $this->model->$attributeName,
+                    $finalModel,
                     $value,
-                    $adaptedMetadataClauseBasePart,
+                    $appendedClauseToPassRecursively,
                     $adaptedMetadataClauses,
                     $clauseCount,
                     $structure,
-                    $depth,
+                    ($depth + 1),
                     $operatorType);
             }
             //relation attribute that has array of data
@@ -142,19 +214,35 @@
             {
                 foreach ($value as $relatedAttributeName => $relatedValue)
                 {
-                    if(static::resolveRelatedValueWhenArray( $this->model->$attributeName,
+                    $currentClauseCount = $clauseCount;
+                    if(static::resolveRelatedValueWhenArray( $model->$attributeName,
                                                              $relatedAttributeName,
                                                              $relatedValue,
                                                              $operatorType))
                     {
-                        $this->populateClausesAndStructureForRelatedAttributeThatIsArray(  $this->model,
-                                                                                            $attributeName,
-                                                                                            $relatedAttributeName,
-                                                                                            $relatedValue,
-                                                                                            $adaptedMetadataClauses,
-                                                                                            $clauseCount,
-                                                                                            $structure,
-                                                                                            $operatorType);
+                        if ($relatedValue !== null)
+                        {
+                            if ($model->isRelation($attributeName))
+                            {
+                                $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(
+                                                                                               $model->$attributeName,
+                                                                                               $relatedAttributeName,
+                                                                                               $operatorType,
+                                                                                               $relatedValue,
+                                                                                               $basePartAtRequiredDepth,
+                                                                                               $structure,
+                                                                                               $clauseCount,
+                                                                                               $attributeName);
+                                $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
+                                                                                            $adaptedMetadataClauseBasePart,
+                                                                                            $basePartAtRequiredDepth,
+                                                                                            $depth);
+                            }
+                            else
+                            {
+                                throw new NotSupportedException();
+                            }
+                        }
                     }
                 }
             }
@@ -200,38 +288,6 @@
             return true;
         }
 
-        protected function populateClausesAndStructureForRelatedAttributeThatIsArray($model,
-                                                                                            $attributeName,
-                                                                                            $relatedAttributeName,
-                                                                                            $relatedValue,
-                                                                                            & $adaptedMetadataClauses,
-                                                                                            & $clauseCount,
-                                                                                            & $structure,
-                                                                                            $operatorType = null)
-
-        {
-            if ($relatedValue !== null)
-            {
-                if ($model->isRelation($attributeName))
-                {
-                    $adaptedMetadataClauses[($clauseCount)] = array();
-                    $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(
-                                                                                   $model->$attributeName,
-                                                                                   $relatedAttributeName,
-                                                                                   $operatorType,
-                                                                                   $relatedValue,
-                                                                                   $adaptedMetadataClauses[($clauseCount)],
-                                                                                   $structure,
-                                                                                   $clauseCount,
-                                                                                   $attributeName);
-                }
-                else
-                {
-                    throw new NotSupportedException();
-                }
-            }
-        }
-
         protected static function resolveAsRedBeanModel($model)
         {
             if ($model instanceof RedBeanOneToManyRelatedModels || $model instanceof RedBeanManyToManyRelatedModels)
@@ -245,134 +301,14 @@
             }
         }
 
-
-        protected function populateClausesAndStructureForAttributeWithRelatedModelData(RedBeanModel $model,
-                                                                                              $relatedData,
-                                                                                              $adaptedMetadataClauseBasePart,
-                                                                                              & $adaptedMetadataClauses,
-                                                                                              & $clauseCount,
-                                                                                              & $structure,
-                                                                                              $depth,
-                                                                                              $operatorType = null)
-        {
-            assert('is_array($relatedData)');
-            assert('is_int($depth) && $depth > 0');
-            $startingOperatorType = $operatorType;
-            foreach($relatedData as $attributeName => $value)
-            {
-             $operatorType            = $startingOperatorType;
-             $basePartAtRequiredDepth = static::
-                                       getAdaptedMetadataClauseBasePartAtRequiredDepth($adaptedMetadataClauseBasePart, $depth);
-              //non-relation attribute that has single data value
-                if (!is_array($value))
-                {
-                    if ($value !== null)
-                    {
-                       // $d = static::makeAndGetDeepestRelatedModelDataEmptyArray($adaptedMetadataClauseBasePart);
-                        $currentClauseCount = $clauseCount;
-                        $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(  $model,
-                                                                                               $attributeName,
-                                                                                               $operatorType,
-                                                                                               $value,
-                                                                                               $basePartAtRequiredDepth,
-                                                                                               $structure,
-                                                                                               $clauseCount);
-                        $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                                    $adaptedMetadataClauseBasePart,
-                                                                                    $basePartAtRequiredDepth,
-                                                                                    $depth);
-
-                    }
-                }
-                //non-relation attribute that has array of data
-                elseif (!$model->isRelation($attributeName))
-                {
-                    if (isset($value['value']) && $value['value'] != '')
-                    {
-                        //static::makeAndGetDeepestRelatedModelDataEmptyArray($adaptedMetadataClauseBasePart);
-                        $currentClauseCount = $clauseCount;
-                        $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(  $model,
-                                                                                               $attributeName,
-                                                                                               $operatorType,
-                                                                                               $value['value'],
-                                                                                               $basePartAtRequiredDepth,
-                                                                                               $structure,
-                                                                                               $clauseCount);
-                        $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                                    $adaptedMetadataClauseBasePart,
-                                                                                    $basePartAtRequiredDepth,
-                                                                                    $depth);
-                    }
-                }
-                //relation attribute that is relatedData
-                elseif(isset($value['relatedData']) && $value['relatedData'] == true)
-                {
-
-                    $partToAppend                    = array('attributeName'    => $attributeName,
-                                                             'relatedModelData' => array());
-                    $appendedClauseToPassRecursively = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                    $adaptedMetadataClauseBasePart,
-                                                                    $partToAppend,
-                                                                    $depth);
-                    unset($value['relatedData']);
-                    $this->populateClausesAndStructureForAttributeWithRelatedModelData(
-                        static::resolveAsRedBeanModel($model->$attributeName),
-                        $value,
-                        $appendedClauseToPassRecursively,
-                        $adaptedMetadataClauses,
-                        $clauseCount,
-                        $structure,
-                        ($depth + 1),
-                        $operatorType);
-                }
-                //relation attribute that has array of data
-                else
-                {
-                    foreach ($value as $relatedAttributeName => $relatedValue)
-                    {
-                        $currentClauseCount = $clauseCount;
-                        if(static::resolveRelatedValueWhenArray( $model->$attributeName,
-                                                                 $relatedAttributeName,
-                                                                 $relatedValue,
-                                                                 $operatorType))
-                        {
-                            if ($relatedValue !== null)
-                            {
-                                if ($model->isRelation($attributeName))
-                                {
-                                    $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(
-                                                                                                   $model->$attributeName,
-                                                                                                   $relatedAttributeName,
-                                                                                                   $operatorType,
-                                                                                                   $relatedValue,
-                                                                                                   $basePartAtRequiredDepth,
-                                                                                                   $structure,
-                                                                                                   $clauseCount,
-                                                                                                   $attributeName);
-                                        $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                                                    $adaptedMetadataClauseBasePart,
-                                                                                                    $basePartAtRequiredDepth,
-                                                                                                    $depth);
-                                }
-                                else
-                                {
-                                    throw new NotSupportedException();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        protected function resolveOperatorAndCastsAndAppendClauseAsAndToStructureString($model,
-                                                                                               $attributeName,
-                                                                                               $operatorType,
-                                                                                               $value,
-                                                                                               & $adaptedMetadataClause,
-                                                                                               & $structure,
-                                                                                               & $clauseCount,
-                                                                                               $previousAttributeName = null)
+        protected function resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(   $model,
+                                                                                           $attributeName,
+                                                                                           $operatorType,
+                                                                                           $value,
+                                                                                           & $adaptedMetadataClause,
+                                                                                           & $structure,
+                                                                                           & $clauseCount,
+                                                                                           $previousAttributeName = null)
         {
             assert('$previousAttributeName == null || is_string($previousAttributeName)');
             $modelForTypeOperations = static::resolveAsRedBeanModel($model);
@@ -397,14 +333,13 @@
             }
             if($previousAttributeName == null)
             {
-                $adaptedMetadataClause['attributeName'] = $attributeName;
+                $adaptedMetadataClause['attributeName']        = $attributeName;
             }
             else
             {
                 $adaptedMetadataClause['attributeName']        = $previousAttributeName;
                 $adaptedMetadataClause['relatedAttributeName'] = $attributeName;
             }
-
             $adaptedMetadataClause['operatorType']  = $operatorType;
             $adaptedMetadataClause['value']         = $value;
             $this->resolveAppendClauseAsAndToStructureString($structure,
@@ -468,23 +403,32 @@
             }
         }
 
-        protected function populateAdaptedMetadataFromSearchFormAttributes( $attributeName,
+        protected function populateAdaptedMetadataFromSearchFormAttributes( $model,
+                                                                            $attributeName,
                                                                             $value,
                                                                             &$adaptedMetadataClauses,
                                                                             &$clauseCount,
-                                                                            &$structure)
+                                                                            &$structure,
+                                                                            $adaptedMetadataClauseBasePart = array(),
+                                                                            $depth = 0)
         {
+            assert('$model instanceof SearchForm || $model instanceof RedBeanModel');
             assert('is_string($attributeName)');
             assert('is_array($adaptedMetadataClauses) || $adaptedMetadataClauses == null');
             assert('is_int($clauseCount)');
             assert('$structure == null || is_string($structure)');
             $tempStructure = null;
             $metadataFromSearchFormAttributes = SearchFormAttributesToSearchDataProviderMetadataUtil::getMetadata(
-                                                $this->model, $attributeName, $value);
+                                                $model, $attributeName, $value);
             foreach ($metadataFromSearchFormAttributes as $searchFormClause)
             {
                 if (isset($searchFormClause['concatedAttributeNames']))
                 {
+                    if($depth > 0)
+                    {
+                        //implement nested concated names if needed.
+                        throw new NotImplementedException();
+                    }
                     assert('is_array($searchFormClause["concatedAttributeNames"][0]) &&
                              count($searchFormClause["concatedAttributeNames"][0]) == 2');
                     assert('!isset($searchFormClause["concatedAttributeNames"]["operatorType"])');
@@ -518,12 +462,15 @@
                         {
                             $this->appendStructureAsAnd = false;
                         }
-                        $this->populateClausesAndStructureForAttribute($searchFormAttributeName,
+                        $this->populateClausesAndStructureForAttribute( $model,
+                                                                        $searchFormAttributeName,
                                                                         $searchFormStructure['value'],
                                                                         $adaptedMetadataClauses,
                                                                         $clauseCount,
                                                                         $tempStructure,
-                                                                        $operatorType);
+                                                                        $adaptedMetadataClauseBasePart,
+                                                                        $operatorType,
+                                                                        $depth);
                         $this->appendStructureAsAnd = $oldAppendStructureAsAndValue;
                     }
                 }
@@ -585,7 +532,11 @@
         protected static function getAdaptedMetadataClauseBasePartAtRequiredDepth($adaptedMetadataClauseBasePart, $depth)
         {
             assert('is_array($adaptedMetadataClauseBasePart)');
-            assert('is_int($depth) && $depth > 0');
+            assert('is_int($depth)');
+            if($depth == 0)
+            {
+                return $adaptedMetadataClauseBasePart;
+            }
             $finalPart = $adaptedMetadataClauseBasePart;
             for ($i = 0; $i < $depth; $i++)
             {
@@ -598,7 +549,11 @@
         {
             assert('is_array($adaptedMetadataClauseBasePart)');
             assert('is_array($partToAppend)');
-            assert('is_int($depth) && $depth > 0');
+            assert('is_int($depth)');
+            if($depth == 0)
+            {
+                return $partToAppend;
+            }
             $finalPart = & $adaptedMetadataClauseBasePart;
             for ($i = 0; $i < $depth; $i++)
             {
