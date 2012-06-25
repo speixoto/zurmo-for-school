@@ -128,7 +128,7 @@
                 $content .= '<tr>';
                 $content .= '<td>' . $this->renderViewJobLogLinkContent($type);
                 $content .=          '&#160;' . CHtml::encode($jobData['label']) . '</td>';
-                $content .= '<td>' . CHtml::encode($jobData['lastCompletedRunContent']) . '</td>';
+                $content .= '<td>' . $jobData['lastCompletedRunEncodedContent'] . '</td>';
                 $content .= '<td>' . CHtml::encode($jobData['statusContent']) . '</td>';
                 $content .= '<td>' . $this->resolveActionContentByStatus($type, $jobData['status']) . '</td>';
                 $content .= '</tr>';
