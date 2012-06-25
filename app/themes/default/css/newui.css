@@ -1190,9 +1190,11 @@ table.configuration-list tr td:last-child a:before {
 #JobLogsModalListView th:first-child {
   padding-left: 15px;
 }
+#JobLogsModalListView .tooltip,
 #jobs-frequency .tooltip {
   margin-top: -2px;
 }
+#JobLogsModalListView .job-label,
 #jobs-frequency .job-label {
   margin-left: 25px;
 }

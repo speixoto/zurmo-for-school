@@ -35,7 +35,7 @@
             {
                 $content     = '<span id="active-nonmonitor-job-tooltip-' .
                                $jobLog->id . '" class="tooltip" title="' . CHtml::encode($jobLog->message) . '">';
-                $content    .= Yii::t('Default', 'Completed with Errors') . '</span>';
+                $content    .= '?</span><span class="job-label">' . Yii::t('Default', 'Completed with Errors') . '</span>';
                 $options     = array('content' =>
                                         array('title' =>
                                             array('text'   => Yii::t('Default', 'Error Log'),
