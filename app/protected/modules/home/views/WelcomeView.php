@@ -89,10 +89,10 @@
             {
                 $content  = '<div class="help-section daily-tip">';
                 $content .= '<h3>' . Yii::t('Default', 'Tip of the Day') . '</h3>';
-                $content .= '<span>' . self::renderNextTipAjaxLink('tip-of-day-next-page-link', Yii::t('Default', 'Next')) . '</span>';
                 $content .= '<ul>';
                 $content .= '<li>' . $this->tipContent . '</li>';
                 $content .= '</ul>';
+				$content .= self::renderNextTipAjaxLink('tip-of-day-next-page-link', Yii::t('Default', 'Next Tip'));
                 $content .= '</div>';
                 return $content;
             }
