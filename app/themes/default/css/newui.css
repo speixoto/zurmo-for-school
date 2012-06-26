@@ -6627,6 +6627,7 @@ a.attachLoading:active {
 a.simple-select {
   color: #262877 !important;
   background: none !important;
+  background-image: none !important;
   -webkit-box-shadow: none  !important;
   -moz-box-shadow: none  !important;
   -o-box-shadow: none  !important;
@@ -6644,6 +6645,9 @@ a.simple-select {
 }
 a.simple-select:before {
   content: "" !important;
+}
+.portlet-toolbar a.simple-select {
+  background: none !important;
 }
 /*=Popup Modals*/
 .ui-dialog {

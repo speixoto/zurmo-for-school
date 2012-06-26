@@ -1421,6 +1421,7 @@ a.attachLoading{
 a.simple-select{
     color:@themeColor !important;
     background:none !important;
+    background-image:none !important;
     .b-shadow( ~"none  !important" );
     .radius(~"0 !important");
     padding:0  !important;
@@ -1430,6 +1431,11 @@ a.simple-select{
     &:before{
         content:""  !important;
     }
+}
+.portlet-toolbar{
+	a.simple-select{
+    	background:none !important;
+   	}
 }
 
 /*=Popup Modals*/
