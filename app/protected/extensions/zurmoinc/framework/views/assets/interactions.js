@@ -127,7 +127,6 @@ function setupCheckboxStyling( $context ) {
 
 
 function makeSmallLoadingSpinner(id){
-	alert(id);
 	$( '.z-spinner', '#' + id ).spin({
 		lines : 11, // The number of lines to draw
 		length : 4, // The length of each line

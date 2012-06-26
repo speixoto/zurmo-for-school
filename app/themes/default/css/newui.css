@@ -377,6 +377,58 @@ a.remove:hover .icon:after {
 }
 #InstallPageView .AppContainer a {
   margin: auto 10px;
+  cursor: pointer;
+  padding: 0 15px 0 15px;
+  line-height: 23px;
+  margin: 0;
+  font-size: 10px;
+  font-weight: bold;
+  text-indent: 0;
+  display: inline-block;
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #bababa;
+  color: #656565;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+#InstallPageView .AppContainer a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+#InstallPageView .AppContainer a:hover {
+  color: #7bb730 !important;
+}
+#InstallPageView .AppContainer a:active {
+  color: #656565;
+  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#InstallPageView .AppContainer a.loading .z-spinner {
+  display: inline-block;
+}
+#InstallPageView .AppContainer a.loading .z-icon {
+  display: none;
+}
+#InstallPageView #save {
+  color: #fff !important;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
 }
 #InstallPageView ul {
   list-style: inside;
@@ -3297,6 +3349,19 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   }
   #NoteInlineEditView .has-date-select button {
     top: 11px !important;
+  }
+  #NoteEditAndDetailsView div.has-model-select a {
+    top: 26px !important;
+  }
+  #NoteEditAndDetailsView div.has-model-select a:before {
+    top: -3px;
+    margin-left: 8px;
+  }
+  #NoteEditAndDetailsView div.has-date-select button:before {
+    top: -3px;
+  }
+  #NoteEditAndDetailsView #permissions-module #owner-box div.has-model-select a {
+    top: 23px !important;
   }
   #JobsCollectionView .tooltip {
     margin-top: -11px;
@@ -8015,6 +8080,9 @@ div.wide.form label.hasCheckBox {
   color: #7bb730;
   margin-left: 2px;
 }
+#NoteEditAndDetailsView .has-model-select a {
+  top: 24px !important;
+}
 #inline-edit-form table + table {
   float: left;
   -moz-box-sizing: border-box;
@@ -8408,10 +8476,12 @@ div.hasHalfs .twoThirds {
   outline: none;
 }
 /*=Meeting/Task Single View*/
+#NoteEditAndDetailsView .details-table,
 #TaskEditAndDetailsView .details-table,
 #MeetingEditAndDetailsView .details-table {
   margin-right: 0 !important;
 }
+#NoteEditAndDetailsView .view-toolbar,
 #TaskEditAndDetailsView .view-toolbar,
 #MeetingEditAndDetailsView .view-toolbar {
   margin-top: 0 !important;
