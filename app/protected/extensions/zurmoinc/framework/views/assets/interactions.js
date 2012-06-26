@@ -127,43 +127,42 @@ function setupCheckboxStyling( $context ) {
 
 
 function makeSmallLoadingSpinner(id){
-	alert(id);
-	$( '.z-spinner', '#' + id ).spin({
-		lines : 11, // The number of lines to draw
-		length : 4, // The length of each line
-		width : 2, // The line thickness
-		radius : 4, // The radius of the inner circle
-		rotate : 0, // The rotation offset
-		color : '#fff', // #rgb or #rrggbb
-		speed : 1.5, // Rounds per second
-		trail : 35, // Afterglow percentage
-		shadow : false, // Whether to render a shadow
-		hwaccel : false, // Whether to use hardware acceleration
-		className : 'spinner', // The CSS class to assign to the spinner
-		zIndsex : 2e9, // The z-index (defaults to 2000000000)
-		top : 0, // Top position relative to parent in px
-		left : 0 // Left position relative to parent in px
-	});	
+    $( '.z-spinner', '#' + id ).spin({
+        lines : 11, // The number of lines to draw
+        length : 4, // The length of each line
+        width : 2, // The line thickness
+        radius : 4, // The radius of the inner circle
+        rotate : 0, // The rotation offset
+        color : '#fff', // #rgb or #rrggbb
+        speed : 1.5, // Rounds per second
+        trail : 35, // Afterglow percentage
+        shadow : false, // Whether to render a shadow
+        hwaccel : false, // Whether to use hardware acceleration
+        className : 'spinner', // The CSS class to assign to the spinner
+        zIndsex : 2e9, // The z-index (defaults to 2000000000)
+        top : 0, // Top position relative to parent in px
+        left : 0 // Left position relative to parent in px
+    });
 }
 
-function makeLargeLoadingSpinner(id){	
-	$('#' + id).append('<span class="big-spinner"></span>');
-	$('.big-spinner', '#' + id).spin({
-		lines : 10, // The number of lines to draw
-		length : 8, // The length of each line
-		width : 5, // The line thickness
-		radius : 8, // The radius of the inner circle
-		rotate : 0, // The rotation offset
-		color : '#CCCCCC', // #rgb or #rrggbb
-		speed : 2, // Rounds per second
-		trail : 37, // Afterglow percentage
-		shadow : false, // Whether to render a shadow
-		hwaccel : false, // Whether to use hardware acceleration
-		className : 'spinner', // The CSS class to assign to the spinner
-		zIndex : 2e9, // The z-index (defaults to 2000000000)
-		top : 0, // Top position relative to parent in px
-		left : 0 // Left position relative to parent in px
-	});
+function makeLargeLoadingSpinner(id){
+    $('#' + id).append('<span class="big-spinner"></span>');
+    $('.big-spinner', '#' + id).spin({
+        lines : 10, // The number of lines to draw
+        length : 8, // The length of each line
+        width : 5, // The line thickness
+        radius : 8, // The radius of the inner circle
+        rotate : 0, // The rotation offset
+        color : '#CCCCCC', // #rgb or #rrggbb
+        speed : 2, // Rounds per second
+        trail : 37, // Afterglow percentage
+        shadow : false, // Whether to render a shadow
+        hwaccel : false, // Whether to use hardware acceleration
+        className : 'spinner', // The CSS class to assign to the spinner
+        zIndex : 2e9, // The z-index (defaults to 2000000000)
+        top : 0, // Top position relative to parent in px
+        left : 0 // Left position relative to parent in px
+    });
 }
 
 
