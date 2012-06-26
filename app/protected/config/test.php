@@ -74,5 +74,10 @@
     {
         $common_config['params']['emailTestAccounts'] = $emailTestAccounts;
     }
+
+    if (isset($testApiUrl))
+    {
+        $common_config['params']['testApiUrl'] = '';
+    }
     return $common_config;
 ?>
