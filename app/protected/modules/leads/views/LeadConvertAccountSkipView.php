@@ -78,7 +78,12 @@
             $cancelLink = new CancelConvertLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
             $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
             $content .= $cancelLink->render() . '&#160;';
-            $content .= CHtml::submitButton(Yii::t('Default', 'Complete Conversion'), array('name' => 'AccountSkip'));
+            $element  =   new SaveButtonActionElement($this->controllerId, $this->moduleId,
+                                                      null,
+                                                      array('htmlOptions' =>
+                                                          array('name'   => 'AccountSkip', 'id' => 'AccountSkip'),
+                                                                'label'  => Yii::t('Default', 'Complete Conversion')));
+            $content .= $element->render();
             $content .= '</div></div>';
             return $content;
         }

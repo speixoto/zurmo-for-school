@@ -24,23 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LoginPageView extends ZurmoPageView
+    Yii::import('application.modules.jobsManager.controllers.DefaultController', true);
+    class JobsManagerDemoController extends JobsManagerDefaultController
     {
-        public function __construct(CController $controller, CFormModel $formModel, $extraHeaderContent = null)
+        /**
+         * Special method to load up a job log with errors
+         */
+        public function actionLoadJobLogWithErrors()
         {
-            assert('is_string($extraHeaderContent) || $extraHeaderContent == null');
-
-            $loginview = new LoginView($controller, $formModel, $extraHeaderContent);
-            $loginview->setCssClasses(array('clearfix', 'background-' . mt_rand(1, 3)));
-            $gridView = new GridView(2, 1);
-            $gridView->setView($loginview, 0, 0);
-            $gridView->setView(new FooterView(), 1, 0);
-            parent::__construct($gridView);
-        }
-
-        protected function getSubtitle()
-        {
-            return Yii::t('Default', 'Sign in');
+            if (Yii::app()->user->userModel->username != 'super')
+            {
+                throw new NotSupportedException();
+            }
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'CurrencyRatesUpdate';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITH_ERROR;
+            $jobLog->isProcessed   = true;
+            $jobLog->message       = 'An error message about something' . "\n" . 'This is after a line break.';
+            $saved                 = $jobLog->save();
         }
     }
 ?>

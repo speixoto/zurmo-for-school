@@ -71,7 +71,7 @@
 
         public function testColumnType()
         {
-            if(RedBeanDatabase::isFrozen())
+            if (RedBeanDatabase::isFrozen())
             {
                 $rootModels = array();
                 foreach (Module::getModuleObjects() as $module)
@@ -108,8 +108,8 @@
                                             {
                                                 $compareType = $this->getDbTypeValue($row['Type']);
                                             }
-                                            $this->assertEquals($compareType,$type);
-
+(??)                                            $this->assertEquals($compareType,$type);   
+(??)                                            
                                         }
                                         break;
                                 }

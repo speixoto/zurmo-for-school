@@ -888,7 +888,7 @@
             if (!$setIncludePathServiceHelper->runCheckAndGetIfSuccessful())
             {
                 $message                    = new NotificationMessage();
-                $message->textContent       = Yii::t('Default', 'Minify is disabled. Try to fix issues related to it, and enable it.');
+                $message->textContent       = Yii::t('Default', 'Minify has been disabled due to a system issue. Try to resolve the problem and re-enable Minify.');
                 $rules                      = new EnableMinifyNotificationRules();
                 NotificationsUtil::submit($message, $rules);
             }
