@@ -105,6 +105,8 @@
             => 'Vue des formulaires',
         'Details View'
             => 'Vue détaillée',
+        'Display {label} when'
+            => 'Exposer {label} quand',
         'Display Name'
             => 'Étiquette du champ',
         'Dropdown Dependency Mapping'
