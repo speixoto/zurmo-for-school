@@ -129,7 +129,6 @@
             $this->assertNotNull($account3->billingAddress->longitude);
             $this->assertEquals(0,           $account3->billingAddress->invalid);
 
-
             $account4 = Account::getById($accountId4);
             $this->assertNotNull($account4->billingAddress->latitude);
             $this->assertNotNull($account4->billingAddress->longitude);

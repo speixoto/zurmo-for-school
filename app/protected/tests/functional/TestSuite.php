@@ -691,8 +691,6 @@
                 return false;
             }
         }
-
-
     }
 
     $testRunner = new TestSuite();
