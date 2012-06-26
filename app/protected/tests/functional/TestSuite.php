@@ -174,7 +174,7 @@
                         echo 'Restoring test db';
                         self::remoteAction(TEST_BASE_CONTROL_URL, array('action' => 'restore'));
                         echo "Restored test db";
-                        if (self::isDefaultTimeZoneTest)
+                        if (self::isDefaultTimeZoneTest($pathToSuite))
                         {
                             echo 'Set user default time zone.';
                             self::remoteAction(TEST_BASE_CONTROL_URL, array('action' => 'setUserDefaultTimezone'));
