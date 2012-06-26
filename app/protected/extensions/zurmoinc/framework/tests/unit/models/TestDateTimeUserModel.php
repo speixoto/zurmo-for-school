@@ -27,7 +27,6 @@
 
 class TestDateTimeUserModel extends RedBeanModel
 {
-
     public static function getDefaultMetadata()
     {
         $metadata = parent::getDefaultMetadata();
@@ -51,5 +50,4 @@ class TestDateTimeUserModel extends RedBeanModel
         );
         return $metadata;
     }
-
 }

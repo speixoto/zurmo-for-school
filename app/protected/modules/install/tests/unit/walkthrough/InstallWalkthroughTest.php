@@ -201,7 +201,6 @@
             $errors = CJSON::decode($content);
             $this->assertEquals(0, count($errors));
 
-
             //Run installation.
             $this->setPostArray(array(
                 'InstallSettingsForm' => array(

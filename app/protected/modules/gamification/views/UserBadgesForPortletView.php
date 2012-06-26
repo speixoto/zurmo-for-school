@@ -100,7 +100,7 @@
                     $zTip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
                     //$zTip->addQTip("#" . $tooltipSpanId);
                 }
-				$zTip->addQTip(".badge-icon");
+                $zTip->addQTip(".badge-icon");
             }
             else
             {

@@ -32,19 +32,20 @@
         {
             $htmlOptions = $this->getHtmlOptions();
             $request     = Yii::app()->getRequest();
-            if($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
+            if ($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
             {
-                $htmlOptions['params'][$request->csrfTokenName]=$request->getCsrfToken();
+                $htmlOptions['params'][$request->csrfTokenName] = $request->getCsrfToken();
             }
-            if(isset($htmlOptions['params']))
+            if (isset($htmlOptions['params']))
             {
                 $params = CJavaScript::encode($htmlOptions['params']);
+                unset($htmlOptions['params']);
             }
             else
             {
                 $params = '{}';
             }
-            if(isset($htmlOptions['class']))
+            if (isset($htmlOptions['class']))
             {
                 $htmlOptions['class']  .= ' z-button';
             }

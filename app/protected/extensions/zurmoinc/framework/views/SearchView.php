@@ -97,6 +97,7 @@
         {
             $moreSearchOptionsLink = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             $clearSearchLink = CHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('search', "
                 $('#clear-search-link" . $this->gridIdSuffix . "').removeAttr('clearForm');
                 $('#clear-search-link" . $this->gridIdSuffix . "').clearform(

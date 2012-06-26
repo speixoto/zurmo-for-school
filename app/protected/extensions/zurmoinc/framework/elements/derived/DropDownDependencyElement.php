@@ -196,7 +196,7 @@
                                                                   $attribute,
                                                                   $this->form);
                 $element->nonEditableTemplate   = $this->getNonEditableTemplate();
-                if($content != null)
+                if ($content != null)
                 {
                     $content .= ' &rarr; ';
                 }
