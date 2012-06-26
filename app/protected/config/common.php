@@ -80,6 +80,9 @@
             'fusioncharts' => array(
                 'class' => 'application.extensions.fusioncharts.fusionCharts',
             ),
+            'imap' => array(
+                'class'       => 'application.modules.emailMessages.components.ZurmoImap',
+            ),
             'gameHelper' => array(
                 'class' => 'application.modules.gamification.components.GameHelper',
             ),

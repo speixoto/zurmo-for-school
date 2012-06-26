@@ -34,6 +34,7 @@
         const TYPE_OUTBOX       = 'Outbox';
         const TYPE_DRAFT        = 'Draft';
         const TYPE_OUTBOX_ERROR = 'OutboxError';
+        const TYPE_ARCHIVED     = 'Archived';
 
         public static function getDefaultDraftName()
         {
@@ -58,6 +59,11 @@
         public static function getDefaultOutboxErrorName()
         {
             return Yii::t('Default', 'Outbox Error');
+        }
+
+        public static function getDefaultArchivedName()
+        {
+            return Yii::t('Default', 'Archived');
         }
 
         public static function getByBoxAndType(EmailBox $box, $type)

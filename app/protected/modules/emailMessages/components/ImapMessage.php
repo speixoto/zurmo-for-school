@@ -24,30 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserModelSearchTest extends ZurmoBaseTest
+    /**
+     * Class to store IMAP message info
+     */
+    class ImapMessage
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
+        public $to          = array();
 
-        public function testGetUsersByPartialFullName()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
+        public $cc          = array();
 
-            UserTestHelper::createBasicUser('Azo');
-            UserTestHelper::createBasicUser('Bdo');
-            UserTestHelper::createBasicUser('Abzo');
+        public $fromName;
 
-            $users = UserModelSearch::getUsersByPartialFullName('A', 5);
-            $this->assertEquals(2, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('bd', 5);
-            $this->assertEquals(1, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('Cz', 5);
-            $this->assertEquals(0, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('Ab', 5);
-            $this->assertEquals(1, count($users));
-        }
+        public $fromEmail;
+
+        public $senderName;
+
+        public $senderEmail;
+
+        public $subject;
+
+        public $htmlBody;
+
+        public $textBody;
+
+        public $attachments = array();
+
+        public $createdDate;
+
+        public $uid;
+
+        public $msgNumber;
+
+        public $msgId;
     }
 ?>

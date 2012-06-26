@@ -79,7 +79,7 @@
         protected static function getUserResults($partialName, $pageSize)
         {
             $autoCompleteResults  = array();
-            $users                = UserModelSearch::getUsersByPartialFullName($partialName, $pageSize);
+            $users                = UserSearch::getUsersByPartialFullName($partialName, $pageSize);
             foreach ($users as $user)
             {
                 $autoCompleteResults[] = array(

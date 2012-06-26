@@ -37,14 +37,14 @@
             => 'Eine Textnachricht von Zurmo',
         'Access Email Configuration'
             => 'Zugriff auf die E-Mail Konfiguration',
-        'Access EmailMessagesModulePluralLabel Tab'
-            => 'Zugang zu EmailMessagesModulePluralLabel',
+        'Access Emails Tab'
+            => 'Zugang zu Emails',
         'Clear Old Sent Notifications Email Job'
             => 'Löschen die alten Benachrichtigungen',
-        'Create EmailMessagesModulePluralLabel'
-            => 'EmailMessagesModulePluralLabel erstellen',
-        'Delete EmailMessagesModulePluralLabel'
-            => 'EmailMessagesModulePluralLabel entfernen',
+        'Create Emails'
+            => 'Emails erstellen',
+        'Delete Emails'
+            => 'Emails entfernen',
         'Draft'
             => 'Entwurf',
         'Email Configuration'

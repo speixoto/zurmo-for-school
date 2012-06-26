@@ -24,28 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserModelSearch
+    class AccountSearch
     {
         /**
-         * For a give User name, run a partial search by
-         * full name and retrieve user models.
-         *
+         * For a given email address, run search by email address and retrieve account models.
          */
-        public static function getUsersByPartialFullName($partialName, $pageSize)
+        public static function getAccountsByAnyEmailAddress($emailAddress, $pageSize = null)
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $personTableName   = RedBeanModel::getTableName('Person');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
-            $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");
-            $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',
-                                                                   '\' \'',
-                                                                   'person.lastname'));
-             $where = "      (person.firstname      like lower('$partialName%') or "    .
-                      "       person.lastname       like lower('$partialName%') or "    .
-                      "       $fullNameSql like lower('$partialName%')) ";
-            return User::getSubset($joinTablesAdapter, null, $pageSize,
-                                            $where, "person.firstname, person.lastname");
+            assert('is_string($emailAddress)');
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'primaryEmail',
+                    'relatedAttributeName' => 'emailAddress',
+                    'operatorType'         => 'equals',
+                    'value'                => $emailAddress,
+                ),
+                2 => array(
+                    'attributeName'        => 'secondaryEmail',
+                    'relatedAttributeName' => 'emailAddress',
+                    'operatorType'         => 'equals',
+                    'value'                => $emailAddress,
+                ),
+            );
+            $metadata['structure'] = '(1 or 2)';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
+            return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);
         }
     }
 ?>
