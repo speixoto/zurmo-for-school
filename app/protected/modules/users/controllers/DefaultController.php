@@ -192,7 +192,7 @@
                 if ($confirmTimeZoneForm->validate())
                 {
                     Yii::app()->user->userModel->timeZone = $confirmTimeZoneForm->timeZone;
-                    if(Yii::app()->user->userModel->save())
+                    if (Yii::app()->user->userModel->save())
                     {
                         Yii::app()->timeZoneHelper->confirmCurrentUsersTimeZone();
                         $this->redirect(Yii::app()->homeUrl);
@@ -209,7 +209,6 @@
                                                  makeStandardViewForCurrentUser($this, $timeZoneView));
             echo $view->render();
         }
-
 
         /**
          * Override to handle UserStatus processing.

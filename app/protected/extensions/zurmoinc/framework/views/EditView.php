@@ -95,6 +95,7 @@
         {
             return array('enableAjaxValidation' => false);
         }
+
         public static function getDesignerRulesType()
         {
             return 'EditView';

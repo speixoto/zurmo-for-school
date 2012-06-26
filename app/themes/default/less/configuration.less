@@ -408,13 +408,34 @@ table.configuration-list{
 	//position: absolute;
 	//margin-top:-9px;
 	//float:left;
-	
 }
 
 #JobLogsModalListView{
 	td:first-child, th:first-child{
 		padding-left:15px;
 	}
+}
+
+#JobLogsModalListView,
+#jobs-frequency{
+	.tooltip{
+		margin-top:-2px;
+	}
+	.job-label{
+		margin-left:25px;
+	}
+}
+
+.jobHasErrors{
+    color:#cc0000;
+}
+
+.jobRanSuccessfully{
+    color:#7BB730;
+}
+
+.jobHasNeverRun{
+    color:#b38b01;
 }
 
 /*Languages*/

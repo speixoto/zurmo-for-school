@@ -26,7 +26,6 @@
 
     class DateTimeUserElementTest extends ZurmoBaseTest
     {
-
         protected $defaultTimeZone;
 
         public static function setUpBeforeClass()
@@ -108,7 +107,5 @@
             $content    = $modifiedDateTimeUserElement->render();
             $this->assertTrue(stripos($content, '2/24/12 8:05 PM') !== false);
         }
-
     }
-
 ?>

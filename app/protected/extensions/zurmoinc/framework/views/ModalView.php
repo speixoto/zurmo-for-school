@@ -80,9 +80,10 @@
             {
                 $heightContent = $height;
             }
-            return "js:function(){jQuery('#" . $containerId . "').html(''); " .
+            return "js:function(){jQuery('#" . $containerId . "').html('');" .
+            						"makeLargeLoadingSpinner('" . $containerId . "');" .
                                     "jQuery('#" . $containerId . "').dialog({'title':'" . $title . "','autoOpen':true," .
-                                    "'modal':true,'height':" . $heightContent . ",'width':" . $width . "}); return true;}";
+                                    "'modal':true,'height':" . $heightContent . ",'width':" . $width . ", 'position':'center'}); return true;}";
         }
     }
 ?>

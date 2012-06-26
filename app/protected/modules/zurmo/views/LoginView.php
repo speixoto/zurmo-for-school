@@ -85,7 +85,7 @@
                 $('#LoginForm_password').keypress(function(e)
                 {
                     c = e.which ? e.which : e.keyCode;
-                    if(c == 13)
+                    if (c == 13)
                     {
                         $(this).closest('form').submit();
                     }
