@@ -68,21 +68,12 @@
                 'htmlOptions' => $htmlOptions,
                 'options'     => array('select' => 'js: function(event, ui) {if (ui.item.href.length > 0)' .
                                                    '{window.location = ui.item.href;} return false;}',
-                                       'appendTo' => '#app-search',
+                                       'appendTo' => '.global-search-loopa',
+                                       'search' => 'js: function(event, ui) { makeGlobalSearchSpinner("app-search ul") }',
                                        'position' => array('my' =>  'right top', 'at' => 'right bottom')
             )));
             $cClipWidget->endClip();
             $content .= $cClipWidget->getController()->clips['GlobalSearchElement'];
-            // Begin Not Coding Standard
-            $script = '$(".ui-autocomplete").position({
-                            my: "left top",
-                            at: "left bottom",
-                            of: $("#app-search"),
-                            offset: "-30 0",
-                            collision: "none"
-                            });';
-            /// End Not Coding Standard
-            Yii::app()->clientScript->registerScript('GlobalSearchElementPosition', $script);
             return $content;
         }
 
