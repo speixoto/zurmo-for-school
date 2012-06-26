@@ -59,7 +59,9 @@
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',
-                                                                array('id' => 'select-account-form', 'enableAjaxValidation' => false)
+                                                                array('id'                   => static::getFormId(),
+                                                                      'enableAjaxValidation' => false,
+                                                                      'htmlOptions'          => $this->resolveFormHtmlOptions())
                                                             );
             $content .= $formStart;
             $content .= $this->renderFormLayout($form);
@@ -91,6 +93,17 @@
             $content .= $element->render();
             $content .= '</div></div>';
             return $content;
+        }
+
+        protected static function getFormId()
+        {
+            return 'select-account-form';
+        }
+
+        protected function resolveFormHtmlOptions()
+        {
+            $data = array('onSubmit' => 'js:return attachLoadingOnSubmit("' . static::getFormId() . '")');
+            return $data;
         }
     }
 ?>
