@@ -43,7 +43,7 @@
         Yii::t('Default', 'Want to export your data directly to Excel? Search for the data you need and hit the Export button.'),
         Yii::t('Default', 'Recently Viewed lets you jump back to any records you have looked at lately.'),
         Yii::t('Default', 'Find what you need quickly using the global search at the top of the screen.'),
-        Yii::t('Default', 'The Import Wizard helps get your data into the system easily, find it under the config icon (thats the cog in the top right).'),
+        Yii::t('Default', 'The Import Wizard helps get your data into the system easily, find it under the config icon (that\'s the cog in the top right).'),
         Yii::t('Default', 'Got questions{spaceAndFirstName}? Find answers in the Zurmo Wiki.'),
         Yii::t('Default', 'Tag Cloud fields allow you to tag records with values so that you can easily find them later.'),
         Yii::t('Default', 'Need help{spaceAndFirstName}, why not ask a question in the forum?'),

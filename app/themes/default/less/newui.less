@@ -532,6 +532,77 @@ footer, header, hgroup, menu, nav, section {
     min-width: 225px !important;
 }
 
+.ui-multiselect {
+  padding:0;
+  text-align:left;
+  span.ui-icon {
+    float:right;
+  }
+}
+.ui-multiselect-single .ui-multiselect-checkboxes input {
+  position:absolute !important;
+  top:auto !important;
+  left:-9999px;
+}
+.ui-multiselect-single .ui-multiselect-checkboxes label {
+  padding:5px !important;
+}
+.ui-multiselect-header {
+  margin-bottom:0;
+  padding:0;
+  ul {
+    li {
+      float:left;
+      padding:0 0 0 0;
+    }
+  }
+  a {
+    text-decoration:none;
+  }
+  a:hover {
+    text-decoration:underline;
+  }
+  span.ui-icon {
+    float:left;
+  }
+  li.ui-multiselect-close {
+    float:right;
+    text-align:right;
+    padding-right:0;
+  }
+}
+.ui-multiselect-menu {
+  display:none;
+  padding:0;
+  position:absolute;
+  z-index:10000;
+}
+.ui-multiselect-checkboxes {
+  position:relative;
+  overflow-y:auto;
+  label {
+    cursor:default;
+    display:block;
+    input {
+      position:relative;
+      top:1px;
+    }
+  }
+  li {
+    clear:both;
+    padding-right:0;
+  }
+  li.ui-multiselect-optgroup-label {
+    text-align:center;
+    font-weight:bold;
+    a {
+      display:block;
+      text-decoration:none;
+    }
+  }
+}
+
+
 .AppContainer{
     min-width:900px;
     height:100%;
@@ -541,6 +612,9 @@ footer, header, hgroup, menu, nav, section {
     .radius(0 0 5px 5px);
     z-index: 0;
     position:relative;
+}
+.AppContent{
+	 .radius(0 0 5px 5px);
 }
 
 #HeaderView{
@@ -1433,6 +1507,12 @@ a.simple-select{
     }
 }
 
+.big-spinner{
+	margin-left:270px;
+	margin-top:30px;
+	display:block;	
+}
+
 .ui-resizable-handle{
     z-index: 0;
 }
@@ -1760,6 +1840,10 @@ div.wide.form{
         display:block;
     }
 }
+
+
+
+
 
 .flyout{
     border:1px solid #b6b6b6;
@@ -2732,6 +2816,17 @@ div.hasHalfs{
             }
         }
     }
+}
+
+/*=Meeting/Task Single View*/
+#TaskEditAndDetailsView,
+#MeetingEditAndDetailsView{
+	.details-table{
+		margin-right:0 !important;
+	}
+	.view-toolbar {
+		margin-top:0 !important;
+	}
 }
 
 /*=Latest Activity*/

@@ -39,6 +39,7 @@
             if (isset($htmlOptions['params']))
             {
                 $params = CJavaScript::encode($htmlOptions['params']);
+                unset($htmlOptions['params']);
             }
             else
             {

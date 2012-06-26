@@ -71,18 +71,21 @@
             $content  = '<span>';
             $content .= CHtml::ajaxButton(Yii::t('Default', 'Send Test Email'),
                 Yii::app()->createUrl('emailMessages/default/sendTestMessage/', array()),
-                    array(
-                        'type' => 'POST',
-                        'data' => 'js:$("#' . $this->form->getId() . '").serialize()',
-                        'beforeSend' => 'js:function(){$(\'#' . $id . '\').parent().addClass(\'modal-model-select-link\');}',
-                        'complete'   => 'js:function(){$(\'#' . $id . '\').parent().removeClass(\'modal-model-select-link\');}',
-                        'onclick' => '$("#modalContainer").dialog("open"); return false;',
-                        'update'  => '#modalContainer',
-                    ),
+                    static::resolveAjaxOptionsForTestEmailSettings($this->form->getId()),
                     array('id' => $id)
             );
             $content .= '</span>';
             return $content;
+        }
+
+        protected static function resolveAjaxOptionsForTestEmailSettings($formId)
+        {
+            assert('is_string($formId)');
+            $title               = Yii::t('Default', 'Test Message Results');
+            $ajaxOptions         = ModalView::getAjaxOptionsForModalLink($title);
+            $ajaxOptions['type'] = 'POST';
+            $ajaxOptions['data'] = 'js:$("#' . $formId . '").serialize()';
+            return $ajaxOptions;
         }
     }
 ?>

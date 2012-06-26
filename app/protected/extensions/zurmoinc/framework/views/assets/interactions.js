@@ -126,8 +126,8 @@ function setupCheckboxStyling( $context ) {
 }
 
 
-function makeSmallLoadingSpinner(id)
-{
+function makeSmallLoadingSpinner(id){
+	alert(id);
 	$( '.z-spinner', '#' + id ).spin({
 		lines : 11, // The number of lines to draw
 		length : 4, // The length of each line
@@ -146,16 +146,15 @@ function makeSmallLoadingSpinner(id)
 	});	
 }
 
-function makeLargeLoadingSpinner(id)
-{	
-	$('body').append('<div class="overlay-spinner"><span class="big-spinner"></span></div>')
-	$('.big-spinner', id).spin({
+function makeLargeLoadingSpinner(id){	
+	$('#' + id).append('<span class="big-spinner"></span>');
+	$('.big-spinner', '#' + id).spin({
 		lines : 10, // The number of lines to draw
 		length : 8, // The length of each line
 		width : 5, // The line thickness
 		radius : 8, // The radius of the inner circle
 		rotate : 0, // The rotation offset
-		color : '#000', // #rgb or #rrggbb
+		color : '#CCCCCC', // #rgb or #rrggbb
 		speed : 2, // Rounds per second
 		trail : 37, // Afterglow percentage
 		shadow : false, // Whether to render a shadow

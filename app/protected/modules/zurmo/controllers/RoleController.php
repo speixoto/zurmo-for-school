@@ -133,11 +133,8 @@
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
                 $_GET['modalTransferInformation']['sourceNameFieldId']
             );
-            $view = new ModalView(
-                            $this,
-                            $rolesModalTreeView,
-                            'modalContainer',
-                            $pageTitle);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view = new ModalView($this, $rolesModalTreeView);
             return $view->render();
         }
 

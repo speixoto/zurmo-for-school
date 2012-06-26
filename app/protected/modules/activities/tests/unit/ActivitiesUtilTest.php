@@ -60,7 +60,9 @@
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'system@somewhere.com';
             $sender->fromName          = 'Zurmo System';
+            $sender->personOrAccount   = $super;
             $emailMessage->sender      = $sender;
+
             //Recipient is billy.
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'billy@fakeemail.com';
