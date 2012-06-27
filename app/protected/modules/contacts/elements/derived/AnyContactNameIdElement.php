@@ -25,20 +25,40 @@
      ********************************************************************************/
 
     /**
-     * Display the name and hidden id of the account model.
+     * Display the name and hidden id of the contact model including contacts of all states (leads and contacts).
      * Displays a select button and auto-complete input
      */
-    class AccountNameIdElement extends NameIdElement
+    class AnyContactNameIdElement extends ContactNameIdElement
     {
-        protected static $moduleId = 'accounts';
+        protected static $autoCompleteActionId = 'autoCompleteAllContacts';
 
-        protected $idAttributeId = 'accountId';
+        protected static $modalActionId = 'modalListAllContacts';
 
-        protected $nameAttributeName = 'accountName';
+        protected function renderLabel()
+        {
+            $label = Yii::t('Default', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
+                                                LabelUtil::getTranslationParamsForAllModules());
+            if ($this->form === null)
+            {
+                return $this->getFormattedAttributeLabel();
+            }
+            $id = $this->getIdForHiddenField();
+            return $this->form->labelEx($this->model, $this->attribute, array('for' => $id, 'label' => $label));
+        }
+
+        protected function getAutoCompleteControllerId()
+        {
+            return 'variableContactState';
+        }
+
+        protected function getSelectLinkControllerId()
+        {
+            return 'variableContactState';
+        }
 
         protected static function getModalTitleForSelectingModel()
         {
-            return Yii::t('Default', 'AccountsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
+            return Yii::t('Default', 'ContactsModuleSingularLabel and LeadsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

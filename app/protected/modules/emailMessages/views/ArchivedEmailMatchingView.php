@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ArchivedEmailMatching extends GridView
+    class ArchivedEmailMatchingView extends GridView
     {
         protected $cssClasses =  array('DetailsView');
 
@@ -34,6 +34,10 @@
 
         protected $emailMessage;
 
+        protected $selectForm;
+
+        protected $contact;
+
         protected $userCanAccessLeads;
 
         protected $userCanAccessContacts;
@@ -42,13 +46,18 @@
 
         protected $userCanCreateLead;
 
+        protected $uniqueId;
+
+        protected $saveActionId;
+
+        protected $urlParameters;
+
         public function __construct(
                 $controllerId,
                 $moduleId,
                 EmailMessage $emailMessage,
-                SelectVariableContactForm $selectVariableContactForm,
-                CreateContactForm $createContactForm,
-                CreateLeadForm $createLeadForm,
+                Contact      $contact,
+                $selectForm,
                 $userCanAccessLeads,
                 $userCanAccessContacts,
                 $userCanCreateContact,
@@ -58,6 +67,7 @@
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('$emailMessage->id > 0');
+            assert('$selectForm instanceof AnyContactSelectForm || $selectForm instanceof ContactSelectForm || $selectForm instanceof LeadSelectForm');
             assert('is_bool($userCanAccessLeads)');
             assert('is_bool($userCanAccessContacts)');
             assert('is_bool($userCanCreateContact)');
@@ -67,14 +77,16 @@
             $this->controllerId              = $controllerId;
             $this->moduleId                  = $moduleId;
             $this->emailMessage              = $emailMessage;
-            $this->selectVariableContactForm = $selectVariableContactForm;
-            $this->contact = $contact; //we need this for use with creating lead or contact.
-            $this->lead    = $lead;
-            $this->userCanAccessLeads        = $userCanAccessLeads; //todo: remove this, we don't need it since the selectVariableContactForm should have this info
-            $this->userCanAccessContacts     = $userCanAccessContacts; //todo: remove this, we don't need it since the selectVariableContactForm should have this info
+            $this->selectForm                = $selectForm;
+            $this->contact                   = $contact;
+            $this->userCanAccessLeads        = $userCanAccessLeads;
+            $this->userCanAccessContacts     = $userCanAccessContacts;
             $this->userCanCreateContact      = $userCanCreateContact;
             $this->userCanCreateLead         = $userCanCreateLead;
             $this->gridSize                  = $gridSize;
+            $this->uniqueId                  = $emailMessage->id;
+            $this->saveActionId              = 'completeMatch';
+            $this->urlParameters             = array('id' => $this->emailMessage->id);
         }
 
         /**
@@ -83,69 +95,54 @@
          */
         protected function renderContent()
         {
-            $this->setView(new SelectVariableContactForArchivedEmailMatchingView($this->controllerId,
-                                                                                 $this->moduleId,
-                                                                                 $emailMessage,
-                                                                                 $this->selectVariableContactForm), 0, 0);
-
-            ///effectively inlineContact,Lead quick creations.
+            $this->setView(new AnyContactSelectForEmailMatchingView($this->controllerId,
+                                                                    $this->moduleId,
+                                                                    $this->selectForm,
+                                                                    $this->uniqueId,
+                                                                    $this->saveActionId,
+                                                                    $this->urlParameters), 0, 0);
             $row = 1;
-            if($userCanCreateContact)
+            if($this->userCanCreateContact)
             {
-                $this->setView(new xxxView($controllerId, $moduleId, $emailMessage, $this->contact), $row, 0);
+                $this->setView(new ContactInlineCreateForArchivedEmailCreateView(
+                                        $this->controllerId,
+                                        $this->moduleId,
+                                        $this->emailMessage->id,
+                                        $this->contact,
+                                        $this->uniqueId,
+                                        $this->saveActionId,
+                                        $this->urlParameters), $row, 0);
                 $row ++;
             }
-            if($userCanCreateLead)
+            if($this->userCanCreateLead)
             {
-                $this->setView(new yyyView($controllerId, $moduleId, $emailMessage, $this->lead), $row, 0);
+                $this->setView(new LeadInlineCreateForArchivedEmailCreateView(
+                                        $this->controllerId,
+                                        $this->moduleId,
+                                        $this->emailMessage->id,
+                                        $this->contact,
+                                        $this->uniqueId,
+                                        $this->saveActionId,
+                                        $this->urlParameters), $row, 0);
             }
-            $this->renderScriptsContent();
+            $selectLink            = $this->renderSelectLinkContent();
+            $selectContent         = $this->renderSelectContent();
+            $createContactLink     = CHtml::link(Yii::t('Default', 'Create ContactsModuleSingularLabel',
+                                     LabelUtil::getTranslationParamsForAllModules()), '#',
+                                     array('class' => 'contact-create-link'));
+            $createContactContent  = Yii::t('Default', 'Create ContactsModuleSingularLabel',
+                                     LabelUtil::getTranslationParamsForAllModules());
+            $createLeadLink        = CHtml::link(Yii::t('Default', 'Create LeadsModuleSingularLabel',
+                                     LabelUtil::getTranslationParamsForAllModules()), '#',
+                                     array('class' => 'lead-create-link'));
+            $createLeadContent     = Yii::t('Default', 'Create LeadsModuleSingularLabel',
+                                     LabelUtil::getTranslationParamsForAllModules());
 
-            $selectLink = CHtml::link(Yii::t('Default', 'Select AccountsModuleSingularLabel',
-                            LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-select-link'));
-            $createLink = CHtml::link(Yii::t('Default', 'Create AccountsModuleSingularLabel',
-                            LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-create-link'));
-            $createLink = CHtml::link(Yii::t('Default', 'Create AccountsModuleSingularLabel',
-                            LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-create-link'));
-
-
-            $content  = null;
-            $content .= '<div class="lead-conversion-actions">';
-            $content .= '<div id="account-select-title">';
-            if ($this->userCanCreateAccount)
-            {
-                $content .= $createLink .  '&#160;' . Yii::t('Default', 'or') . '&#160;';
-            }
-            $content .= Yii::t('Default', 'Select AccountsModuleSingularLabel',
-                                    LabelUtil::getTranslationParamsForAllModules()) . '&#160;';
-
-            if ($this->convertToAccountSetting == LeadsModule::CONVERT_ACCOUNT_NOT_REQUIRED)
-            {
-                $content .= Yii::t('Default', 'or') . '&#160;' . $skipLink;
-            }
+            $content  = '<div class="lead-conversion-actions">';
+            $content .= $this->renderContactSelectTitleDivContent($selectContent, $createLeadLink,    $createContactLink);
+            $content .= $this->renderLeadCreateTitleDivContent($selectLink,       $createLeadContent, $createContactLink);
+            $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent);
             $content .= '</div>';
-            $content .= '<div id="account-create-title">';
-            $content .= Yii::t('Default', 'Create AccountsModuleSingularLabel',
-                                    LabelUtil::getTranslationParamsForAllModules()) . '&#160;';
-            $content .= Yii::t('Default', 'or') . '&#160;' . $selectLink . '&#160;';
-            if ($this->convertToAccountSetting == LeadsModule::CONVERT_ACCOUNT_NOT_REQUIRED)
-            {
-                $content .= Yii::t('Default', 'or') . '&#160;' . $skipLink;
-            }
-            $content .= '</div>';
-            if ($this->convertToAccountSetting == LeadsModule::CONVERT_ACCOUNT_NOT_REQUIRED)
-            {
-                $content .= '<div id="account-skip-title">';
-                if ($this->userCanCreateAccount)
-                {
-                    $content .= $createLink . '&#160;' . Yii::t('Default', 'or') . '&#160;';
-                }
-                $content .= $selectLink . '&#160;' . Yii::t('Default', 'or') . '&#160;';
-                $content .= Yii::t('Default', 'Skip AccountsModuleSingularLabel',
-                                        LabelUtil::getTranslationParamsForAllModules()) . '&#160;';
-                $content .= '</div>';
-            }
-            $content .= '</div>'; //this was missing..
             return '<div class="wrapper">' . $content . parent::renderContent() . '</div>';
         }
 
@@ -156,18 +153,9 @@
 
         protected function renderScriptsContent()
         {
-            //always start with everything hidden except top area.
-            //todo:
-            Yii::app()->clientScript->registerScript('leadConvert', "
-                $(document).ready(function()
-                    {
-                        $('#account-create-title').hide();
-                        $('#AccountConvertToView').hide();
-                        $('#LeadConvertAccountSkipView').hide();
-                        $('#account-skip-title').hide();
-                    }
-                );
-            ");
+            //todo: do stying inline to hide stuff by defualt since this will always be the same way
+            //todo: make this script to handle more than one row at a time. by using parent/child. then we don't need
+            //ids maybe on the title links... we can remove them.
             Yii::app()->clientScript->registerScript('leadConvertActions', "
                 $('.account-select-link').click( function()
                     {
@@ -203,7 +191,102 @@
                     }
                 );
             ");
+        }
 
+        protected function renderSelectLinkContent()
+        {
+            if($this->userCanAccessContacts && $this->userCanAccessLeads)
+            {
+                return CHtml::link(Yii::t('Default', 'Select ContactsModuleSingularLabel / LeadsModuleSingularLabel',
+                                LabelUtil::getTranslationParamsForAllModules()), '#',
+                                    array('class' => 'contact-select-link'));
+            }
+            if($this->userCanAccessContacts)
+            {
+                return CHtml::link(Yii::t('Default', 'Select ContactsModuleSingularLabel',
+                                LabelUtil::getTranslationParamsForAllModules()), '#',
+                                    array('class' => 'contact-select-link'));
+            }
+            else
+            {
+                return CHtml::link(Yii::t('Default', 'Select LeadsModuleSingularLabel',
+                                LabelUtil::getTranslationParamsForAllModules()), '#',
+                                    array('class' => 'contact-select-link'));
+            }
+        }
+
+        protected function renderSelectContent()
+        {
+            if($this->userCanAccessContacts && $this->userCanAccessLeads)
+            {
+                return Yii::t('Default', 'Select ContactsModuleSingularLabel / LeadsModuleSingularLabel',
+                                LabelUtil::getTranslationParamsForAllModules());
+            }
+            if($this->userCanAccessContacts)
+            {
+                return Yii::t('Default', 'Select ContactsModuleSingularLabel',
+                                LabelUtil::getTranslationParamsForAllModules());
+            }
+            else
+            {
+                return Yii::t('Default', 'Select LeadsModuleSingularLabel',
+                                LabelUtil::getTranslationParamsForAllModules());
+            }
+        }
+
+        protected function renderContactSelectTitleDivContent($selectContent, $createLeadLink, $createContactLink)
+        {
+            assert('is_string($selectContent)');
+            assert('is_string($createLeadLink)');
+            assert('is_string($createContactLink)');
+            $content  = '<div id="contact-select-title-' . $this->uniqueId . '">';
+            $content .= $selectContent .  ' ' . Yii::t('Default', 'or') . ' ';
+            if($this->userCanCreateContact && $this->userCanCreateLead)
+            {
+                $content .= $createLeadLink . ' ' . Yii::t('Default', 'or') . ' ' . $createContactLink;
+            }
+            elseif($this->userCanCreateContact)
+            {
+                $content .= $createContactLink;
+            }
+            else
+            {
+                $content .= $createLeadLink;
+            }
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected function renderLeadCreateTitleDivContent($selectContent, $createLeadContent, $createContactLink)
+        {
+            assert('is_string($selectContent)');
+            assert('is_string($createLeadContent)');
+            assert('is_string($createContactLink)');
+            $content  = '<div id="lead-create-title-' . $this->uniqueId . '">';
+            $content .= $selectContent . Yii::t('Default', 'or') . ' ';
+            $content .= $createLeadContent;
+            if($this->userCanCreateContact)
+            {
+                $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createContactLink;
+            }
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected function renderContactCreateTitleDivContent($selectContent, $createLeadLink, $createContactContent)
+        {
+            assert('is_string($selectContent)');
+            assert('is_string($createLeadLink)');
+            assert('is_string($createContactContent)');
+            $content  = '<div id="contact-create-title-' . $this->uniqueId . '">';
+            $content .= $selectContent . Yii::t('Default', 'or') . ' ';
+            if($this->userCanCreateLead)
+            {
+                $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createLeadLink;
+            }
+            $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createContactContent;
+            $content .= '</div>';
+            return $content;
         }
     }
 ?>

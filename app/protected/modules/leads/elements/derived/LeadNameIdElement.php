@@ -25,20 +25,16 @@
      ********************************************************************************/
 
     /**
-     * Display the name and hidden id of the account model.
+     * Display the name and hidden id of the lead state contact model
      * Displays a select button and auto-complete input
      */
-    class AccountNameIdElement extends NameIdElement
+    class LeadNameIdElement extends NameIdElement
     {
-        protected static $moduleId = 'accounts';
-
-        protected $idAttributeId = 'accountId';
-
-        protected $nameAttributeName = 'accountName';
+        protected static $moduleId = 'leads';
 
         protected static function getModalTitleForSelectingModel()
         {
-            return Yii::t('Default', 'AccountsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
+            return Yii::t('Default', 'LeadsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

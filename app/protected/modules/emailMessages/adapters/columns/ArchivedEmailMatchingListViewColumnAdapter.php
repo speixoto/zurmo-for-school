@@ -29,9 +29,10 @@
         public function renderGridViewData()
         {
             return array(
-                'name' => 'subject',
-                'header' => Yii::t('Default', 'Figure this out'),
-                'value'  => 'ArchivedEmailMatchingUtil::renderEmailMessageToMatchContent($data)',
+                'name'   => 'subject',
+                'header' => '',
+                'type'   => 'raw',
+                'value'  => 'ArchivedEmailMatchingUtil::renderEmailMessageToMatchContent($data, Yii::app()->user->userModel)',
             );
         }
     }

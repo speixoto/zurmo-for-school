@@ -25,20 +25,18 @@
      ********************************************************************************/
 
     /**
-     * Display the name and hidden id of the account model.
-     * Displays a select button and auto-complete input
+     * Form used for selecting a contact model in any state. (leads and contacts)
      */
-    class AccountNameIdElement extends NameIdElement
+    class AnyContactSelectForm extends ContactSelectForm
     {
-        protected static $moduleId = 'accounts';
-
-        protected $idAttributeId = 'accountId';
-
-        protected $nameAttributeName = 'accountName';
-
-        protected static function getModalTitleForSelectingModel()
+        public function attributeLabels()
         {
-            return Yii::t('Default', 'AccountsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
+            return array(
+                'contactId'          => Yii::t('Default', 'LeadsModuleSingularLabel or ContactsModuleSingularLabel Id',
+                                            LabelUtil::getTranslationParamsForAllModules()),
+                'contactName'        => Yii::t('Default', 'LeadsModuleSingularLabel or ContactsModuleSingularLabel Name',
+                                            LabelUtil::getTranslationParamsForAllModules()),
+            );
         }
     }
 ?>

@@ -29,9 +29,48 @@
      */
     class ArchivedEmailMatchingUtil
     {
-        public static function renderEmailMessageToMatchContent(EmailMessage $emailMessage)
+        public static function renderEmailMessageToMatchContent(EmailMessage $emailMessage, $user)
         {
-            return 'test content';
+            $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', $user);
+            $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule', $user);
+            $userCanCreateContact  = RightsUtil::doesUserHaveAllowByRightName('ContactsModule', ContactsModule::getCreateRight(), $user);
+            $userCanCreateLead     = RightsUtil::doesUserHaveAllowByRightName('LeadsModule',    LeadsModule::getCreateRight(), $user);
+            if($userCanAccessLeads && $userCanAccessContacts)
+            {
+                $selectForm = new AnyContactSelectForm();
+            }
+            elseif(!$userCanAccessLeads && $userCanAccessContacts)
+            {
+                $selectForm = new ContactSelectForm();
+            }
+            else
+            {
+                $selectForm = new LeadSelectForm();
+            }
+            if($userCanCreateContact && $userCanCreateLead)
+            {
+                $gridSize = 3;
+            }
+            elseif($userCanCreateContact || $userCanCreateLead)
+            {
+                $gridSize = 2;
+            }
+            else
+            {
+                $gridSize = 1;
+            }
+            $view = new ArchivedEmailMatchingView(
+                            'default',
+                            'emailMessages',
+                            $emailMessage,
+                            new Contact(),
+                            $selectForm,
+                            $userCanAccessLeads,
+                            $userCanAccessContacts,
+                            $userCanCreateContact,
+                            $userCanCreateLead,
+                            $gridSize);
+            return $view->render();
         }
     }
 ?>

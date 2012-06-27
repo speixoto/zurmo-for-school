@@ -251,6 +251,10 @@
 
                 //we can create the forms in the util i guess. or pass it here. not helping ourselves passing it here really
                  * // i guess we are i dont know.
+                 *
+                 * $selectForm            //todo: assert at least user can access leads or contacts
+            //todo: assert at least user can create leads or contacts? otherwise you can't really archive to begin with so yes this is true.
+                 *
              */
 
 

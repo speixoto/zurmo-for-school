@@ -25,20 +25,20 @@
      ********************************************************************************/
 
     /**
-     * Display the name and hidden id of the account model.
+     * Display the name and hidden id of the contact model.
      * Displays a select button and auto-complete input
      */
-    class AccountNameIdElement extends NameIdElement
+    class ContactNameIdElement extends NameIdElement
     {
-        protected static $moduleId = 'accounts';
+        protected static $moduleId = 'contacts';
 
-        protected $idAttributeId = 'accountId';
+        protected $idAttributeId = 'contactId';
 
-        protected $nameAttributeName = 'accountName';
+        protected $nameAttributeName = 'contactName';
 
         protected static function getModalTitleForSelectingModel()
         {
-            return Yii::t('Default', 'AccountsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
+            return Yii::t('Default', 'ContactsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

@@ -30,7 +30,7 @@
     abstract class InlineEditView extends EditView
     {
         /**
-         * Action id to use by ajax for validating and saving the note.
+         * Action id to use by ajax for validating and saving the model.
          * @var string
          */
         protected $saveActionId;
@@ -53,7 +53,7 @@
             assert('is_string($moduleId)');
             assert('is_string($saveActionId)');
             assert('is_array($urlParameters)');
-            assert('is_string($uniquePageId)');
+            assert('is_string($uniquePageId) || $uniquePageId == null');
             $this->model              = $model;
             $this->modelClassName     = get_class($model);
             $this->controllerId       = $controllerId;

@@ -25,20 +25,45 @@
      ********************************************************************************/
 
     /**
-     * Display the name and hidden id of the account model.
-     * Displays a select button and auto-complete input
+     * Form used for selecting an contact
      */
-    class AccountNameIdElement extends NameIdElement
+    class ContactSelectForm extends CFormModel
     {
-        protected static $moduleId = 'accounts';
+        public $contactId;
+        public $contactName;
 
-        protected $idAttributeId = 'accountId';
-
-        protected $nameAttributeName = 'accountName';
-
-        protected static function getModalTitleForSelectingModel()
+        /**
+         * Override to handle use case of $name == 'id'.
+         * As this form does not have an 'id', it will return null;
+         * @see ModelElement.  This form is used by ModelElement for example
+         * and ModelElement expects the model to have an 'id' value.
+         */
+        public function __get($name)
         {
-            return Yii::t('Default', 'AccountsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
+            if ($name == 'id')
+            {
+                return null;
+            }
+            return parent::__get($name);
+        }
+
+        public function rules()
+        {
+            return array(
+                array('contactId',   'type',    'type' => 'integer'),
+                array('contactId',   'required'),
+                array('contactName', 'required'),
+            );
+        }
+
+        public function attributeLabels()
+        {
+            return array(
+                'contactId'          => Yii::t('Default', 'ContactsModuleSingularLabel Id',
+                                            LabelUtil::getTranslationParamsForAllModules()),
+                'contactName'        => Yii::t('Default', 'ContactsModuleSingularLabel Name',
+                                            LabelUtil::getTranslationParamsForAllModules()),
+            );
         }
     }
 ?>
