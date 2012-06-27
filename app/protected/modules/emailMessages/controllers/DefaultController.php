@@ -222,6 +222,11 @@
         {
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class($this->getModule()));
+
+                //what happens if you don't have access rights to leads or contacts modules?
+                //LeadsControllerSecurityUtil::
+            //resolveCanUserProperlyConvertLead needed in controller
+
             $emailMessage     = new EmailMessage(false);
             $searchAttributes = array();
             $metadataAdapter  = new ArchivedEmailMatchingSearchDataProviderMetadataAdapter(
@@ -233,14 +238,34 @@
                 $metadataAdapter,
                 'EmailMessage',
                 'RedBeanModelDataProvider',
-                'latestDateTime',
+                'createdDateTime',
                 true,
                 $pageSize
             );
-            $listView            = new ArchivedEmailMatchingListView($this->getId(), $this->getModule()->getId(),
-                                       'EmailMessage', $dataProvider);
+
+            /* we can pass these settings into the listview to pass to the util to pass to the view.
+             *                 $userCanCreateLead,
+                $userCanCreateContact,
+                $userCanAccessLeads,
+                $userCanAccessContacts
+
+                //we can create the forms in the util i guess. or pass it here. not helping ourselves passing it here really
+                 * // i guess we are i dont know.
+             */
+
+
+            $titleBarAndListView = new TitleBarAndListView(
+                                        $this->getId(),
+                                        $this->getModule()->getId(),
+                                        $emailMessage,
+                                        'EmailMessage',
+                                        $dataProvider,
+                                        'ArchivedEmailMatchingListView',
+                                        Yii::t('Default', 'Some title'),
+                                        array(),
+                                        false);
             $view = new EmailMessagesPageView(ZurmoDefaultViewUtil::
-                                              makeStandardViewForCurrentUser($this, $listView));
+                                              makeStandardViewForCurrentUser($this, $titleBarAndListView));
             echo $view->render();
         }
     }

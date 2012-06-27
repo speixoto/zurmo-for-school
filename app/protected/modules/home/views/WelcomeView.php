@@ -92,7 +92,7 @@
                 $content .= '<ul>';
                 $content .= '<li>' . $this->tipContent . '</li>';
                 $content .= '</ul>';
-				$content .= self::renderNextTipAjaxLink('tip-of-day-next-page-link', Yii::t('Default', 'Next Tip'));
+                $content .= self::renderNextTipAjaxLink('tip-of-day-next-page-link', Yii::t('Default', 'Next Tip'));
                 $content .= '</div>';
                 return $content;
             }
@@ -101,11 +101,7 @@
         protected static function renderNextTipAjaxLink($id, $label)
         {
             assert('is_string($id)');
-            assert('is_string($label)');
-            assert('is_string($url)');
-            assert('is_string($pageVar)');
-            assert('is_int($page)');
-            assert('is_string($style) || $style == null');
+            assert('is_string($label)');;
             $url       = Yii::app()->createUrl('home/default/getTip');
             // Begin Not Coding Standard
             return       CHtml::ajaxLink($label, $url,

@@ -36,9 +36,7 @@
          */
         public function __construct($model, $userId, $metadata)
         {
-            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_PARTICIPANT');
             parent::__construct($model, $userId, $metadata);
-            $this->type = $type;
         }
 
         /**
@@ -53,25 +51,25 @@
             $startingCount = $clauseCount + 1;
             $structure = '';
 
-            if($this->type == self::LIST_TYPE_CREATED)
-            {
-                $adaptedMetadata['clauses'][$startingCount] = array(
-                    'attributeName' => 'owner',
-                    'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->id
-                );
-                $structure .= $startingCount;
-            }
-            else
-            {
-                $adaptedMetadata['clauses'][$startingCount] = array(
-                    'attributeName'        => 'conversationParticipants',
-                    'relatedAttributeName' => 'person',
-                    'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->getClassId('Item')
-                );
-                $structure .= $startingCount;
-            }
+            $adaptedMetadata['clauses'][$startingCount] = array(
+                'attributeName'        => 'folder',
+                'relatedAttributeName' => 'type',
+                'operatorType'         => 'equals',
+                'value'                => EmailFolder::TYPE_ARCHIVED,
+            );
+            $adaptedMetadata['clauses'][($startingCount +1)] = array(
+                'attributeName'        => 'owner',
+                'relatedAttributeName' => 'id',
+                'operatorType'         => 'equals',
+                'value'                =>Yii::app()->user->userModel->id,
+            );
+            $structure .= $startingCount . ' and ' . ($startingCount +1);
+
+            //todo: add (sender personOrAccount isEmpty and recipients personOrAccount isEmpty)
+            //emailMessage hasOne -> sender -> personOrAccount -> id
+            //emailMessage hasMany -> recipients -> personOrAccount -> id
+
+
             if (empty($metadata['structure']))
             {
                 $adaptedMetadata['structure'] = '(' . $structure . ')';
