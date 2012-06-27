@@ -95,6 +95,10 @@
             transition: all @time ease-out;
 }
 
+.debug(){
+	background-color:rgba(255, 0, 0, 0.5);
+}
+
 /*=For modern browsers */
 .clearfix{
     &:before{
@@ -495,6 +499,14 @@ footer, header, hgroup, menu, nav, section {
 #app-search{
     margin-left:3%;
     width:341px;
+    display:block;
+    .z-spinner{
+    	display:block !important;
+    	z-index:999999;
+    	position:absolute;
+    	margin-left:316px;
+    	margin-top:11px;
+    }
 }
 
 #globalSearchInput{
@@ -1215,17 +1227,17 @@ table.items th{
 
 tr.odd{
     background:none;
-    .animateAll(0.2s);
+    .animateAll(0.05s);
 }
 
 tr.even{
-    .animateAll(0.2s);
+    .animateAll(0.05s);
 }
 
 table.items tr:hover{
     background-color:#D4E7BC;
     color:@themeColor;
-    .animateAll(0.35s);
+    .animateAll(0.05s);
     .pencil{
         visibility:visible;
         color:@themeColor;
