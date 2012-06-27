@@ -217,5 +217,32 @@
                 throw new NotSupportedException();
             }
         }
+
+        public function actionMatchingList()
+        {
+            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                'listPageSize', get_class($this->getModule()));
+            $emailMessage     = new EmailMessage(false);
+            $searchAttributes = array();
+            $metadataAdapter  = new ArchivedEmailMatchingSearchDataProviderMetadataAdapter(
+                $emailMessage,
+                Yii::app()->user->userModel->id,
+                $searchAttributes,
+                $type
+            );
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                $metadataAdapter,
+                'EmailMessage',
+                'RedBeanModelDataProvider',
+                'latestDateTime',
+                true,
+                $pageSize
+            );
+            $listView            = new ArchivedEmailMatchingListView($this->getId(), $this->getModule()->getId(),
+                                       'EmailMessage', $dataProvider);
+            $view = new EmailMessagesPageView(ZurmoDefaultViewUtil::
+                                              makeStandardViewForCurrentUser($this, $listView));
+            echo $view->render();
+        }
     }
 ?>
