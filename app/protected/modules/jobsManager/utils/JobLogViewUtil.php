@@ -41,6 +41,8 @@
                                             array('text'   => Yii::t('Default', 'Error Log'),
                                                   'button' => Yii::t('Default', 'Close'))
                                         ),
+                                     'hide' => array('event' => 'click'),
+                                     'show' => array('event' => 'click mouseenter', 'solo' => true),
                                      'adjust' =>
                                         array('screen' => true),
                                      'position' =>

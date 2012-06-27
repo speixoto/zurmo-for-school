@@ -75,6 +75,21 @@
             )));
             $cClipWidget->endClip();
             $content .= $cClipWidget->getController()->clips['GlobalSearchElement'];
+            // Begin Not Coding Standard
+            $script = ' $("#globalSearchInput").data( "autocomplete" )._renderItem = function( ul, item ) {
+                            return $( "<li></li>" ).data( "item.autocomplete", item )
+                                    .append( "<a><span class=" + item.iconClass + "></span><span>" + item.label + "</span></a>" )
+                                    .appendTo( ul );
+                        };
+                        $(".ui-autocomplete").position({
+                            my: "left top",
+                            at: "left bottom",
+                            of: $("#app-search"),
+                            offset: "-30 0",
+                            collision: "none"
+                            });';
+            /// End Not Coding Standard
+            Yii::app()->clientScript->registerScript('GlobalSearchElementPosition', $script);
             return $content;
         }
 
