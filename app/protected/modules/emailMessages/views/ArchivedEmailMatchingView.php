@@ -102,6 +102,7 @@
                                                                     $this->saveActionId,
                                                                     $this->urlParameters), 0, 0);
             $row = 1;
+            $content = $this->renderEmailMessageContentAndResolveLink();
             if($this->userCanCreateContact)
             {
                 $this->setView(new ContactInlineCreateForArchivedEmailCreateView(
@@ -138,12 +139,24 @@
             $createLeadContent     = Yii::t('Default', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
 
-            $content  = '<div class="lead-conversion-actions">';
+            $content .= '<div class="email-matching-actions">';
             $content .= $this->renderContactSelectTitleDivContent($selectContent, $createLeadLink,    $createContactLink);
             $content .= $this->renderLeadCreateTitleDivContent($selectLink,       $createLeadContent, $createContactLink);
             $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent);
             $content .= '</div>';
             return '<div class="wrapper">' . $content . parent::renderContent() . '</div>';
+        }
+
+        protected function renderEmailMessageContentAndResolveLink()
+        {
+            $rules    = new EmailMessageMashableActivityRules();
+            $content  = '<div class="email-matching-show-more">';
+            $content .= 'down arr';
+            $content .= '</div>';
+            $content .= '<div class="email-matching-summary-content">';
+            $content .= $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
+            $content .= '</div>';
+            return $content;
         }
 
         public function isUniqueToAPage()

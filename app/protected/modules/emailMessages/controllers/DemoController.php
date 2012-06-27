@@ -185,7 +185,7 @@
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = 'bob.message@zurmotest.com';
-            $recipient->toName          = strval($contact);
+            $recipient->toName          = 'Bobby Bobson';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
@@ -206,7 +206,7 @@
             //Sending is current user (super)
             $sender                    = new EmailMessageSender();
             $sender->fromAddress       = 'bob.message@zurmotest.com';
-            $sender->fromName          = strval($contact);
+            $sender->fromName          = 'Bobby Bobson';
             $emailMessage->sender      = $sender;
             //Recipient is BobMessage
             $recipient                  = new EmailMessageRecipient();
