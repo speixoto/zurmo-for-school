@@ -95,6 +95,7 @@
          */
         protected function renderContent()
         {
+            $this->renderScriptsContent();
             $this->setView(new AnyContactSelectForEmailMatchingView($this->controllerId,
                                                                     $this->moduleId,
                                                                     $this->selectForm,
@@ -139,22 +140,27 @@
             $createLeadContent     = Yii::t('Default', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
 
-            $content .= '<div class="email-matching-actions">';
+            $content .= '<div class="matching-actions-and-content" style="display:none;"><div class="lead-conversion-actions">';
             $content .= $this->renderContactSelectTitleDivContent($selectContent, $createLeadLink,    $createContactLink);
             $content .= $this->renderLeadCreateTitleDivContent($selectLink,       $createLeadContent, $createContactLink);
             $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent);
             $content .= '</div>';
-            return '<div class="wrapper">' . $content . parent::renderContent() . '</div>';
+            $content .= parent::renderContent() . '</div>';
+            return '<div class="wrapper">' . $content .  '</div>';
         }
 
         protected function renderEmailMessageContentAndResolveLink()
         {
             $rules    = new EmailMessageMashableActivityRules();
             $content  = '<div class="email-matching-show-more">';
-            $content .= 'down arr';
+            $content .= '<span class="list-row-more-arrow">down arr</span>';
+            $content .= '</div>';
+            $content .= '<div class="email-matching-show-less" style="display:none;">';
+            $content .= '<span class="list-row-less-arrow">up arr</span>';
             $content .= '</div>';
             $content .= '<div class="email-matching-summary-content">';
             $content .= $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
+            $content .= CHtml::tag('span', array(), strval($this->emailMessage));
             $content .= '</div>';
             return $content;
         }
@@ -166,40 +172,54 @@
 
         protected function renderScriptsContent()
         {
-            //todo: do stying inline to hide stuff by defualt since this will always be the same way
-            //todo: make this script to handle more than one row at a time. by using parent/child. then we don't need
-            //ids maybe on the title links... we can remove them.
-            Yii::app()->clientScript->registerScript('leadConvertActions', "
-                $('.account-select-link').click( function()
+            Yii::app()->clientScript->registerScript('emailMatchingActions', "
+                $('.email-matching-show-more').click( function()
                     {
-                        $('#AccountConvertToView').hide();
-                        $('#LeadConvertAccountSkipView').hide();
-                        $('#AccountSelectView').show();
-                        $('#account-create-title').hide();
-                        $('#account-skip-title').hide();
-                        $('#account-select-title').show();
+                        $(this).hide();
+                        $(this).parent().find('.email-matching-show-less').show();
+                        $(this).parent().find('.matching-actions-and-content').show();
                         return false;
                     }
                 );
-                $('.account-create-link').click( function()
+                $('.email-matching-show-less').click( function()
                     {
-                        $('#AccountConvertToView').show();
-                        $('#LeadConvertAccountSkipView').hide();
-                        $('#AccountSelectView').hide();
-                        $('#account-create-title').show();
-                        $('#account-skip-title').hide();
-                        $('#account-select-title').hide();
+                        $(this).hide();
+                        $(this).parent().find('.email-matching-show-more').show();
+                        $(this).parent().find('.matching-actions-and-content').hide();
                         return false;
                     }
                 );
-                $('.account-skip-link').click( function()
+                $('.contact-select-link').click( function()
                     {
-                        $('#AccountConvertToView').hide();
-                        $('#LeadConvertAccountSkipView').show();
-                        $('#AccountSelectView').hide();
-                        $('#account-create-title').hide();
-                        $('#account-skip-title').show();
-                        $('#account-select-title').hide();
+
+                        $(this).parent().parent().find('.contact-select-title').show();
+                        $(this).parent().parent().find('.lead-create-title').hide();
+                        $(this).parent().parent().find('.contact-create-title').hide();
+                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').show();
+                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
+                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                        return false;
+                    }
+                );
+                $('.lead-create-link').click( function()
+                    {
+                        $(this).parent().parent().find('.contact-select-title').hide();
+                        $(this).parent().parent().find('.lead-create-title').show();
+                        $(this).parent().parent().find('.contact-create-title').hide();
+                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
+                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
+                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                        return false;
+                    }
+                );
+                $('.contact-create-link').click( function()
+                    {
+                        $(this).parent().parent().find('.contact-select-title').hide();
+                        $(this).parent().parent().find('.lead-create-title').hide();
+                        $(this).parent().parent().find('.contact-create-title').show();
+                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
+                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
+                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').show();
                         return false;
                     }
                 );
@@ -252,7 +272,7 @@
             assert('is_string($selectContent)');
             assert('is_string($createLeadLink)');
             assert('is_string($createContactLink)');
-            $content  = '<div id="contact-select-title-' . $this->uniqueId . '">';
+            $content  = '<div id="contact-select-title-' . $this->uniqueId . '" class="contact-select-title">';
             $content .= $selectContent .  ' ' . Yii::t('Default', 'or') . ' ';
             if($this->userCanCreateContact && $this->userCanCreateLead)
             {
@@ -275,7 +295,7 @@
             assert('is_string($selectContent)');
             assert('is_string($createLeadContent)');
             assert('is_string($createContactLink)');
-            $content  = '<div id="lead-create-title-' . $this->uniqueId . '">';
+            $content  = '<div id="lead-create-title-' . $this->uniqueId . '" class="lead-create-title" style="display:none">';
             $content .= $selectContent . Yii::t('Default', 'or') . ' ';
             $content .= $createLeadContent;
             if($this->userCanCreateContact)
@@ -291,7 +311,7 @@
             assert('is_string($selectContent)');
             assert('is_string($createLeadLink)');
             assert('is_string($createContactContent)');
-            $content  = '<div id="contact-create-title-' . $this->uniqueId . '">';
+            $content  = '<div id="contact-create-title-' . $this->uniqueId . '" class="contact-create-title" style="display:none">';
             $content .= $selectContent . Yii::t('Default', 'or') . ' ';
             if($this->userCanCreateLead)
             {

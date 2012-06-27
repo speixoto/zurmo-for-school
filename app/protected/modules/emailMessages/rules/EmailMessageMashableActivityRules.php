@@ -101,22 +101,25 @@
                    "{relatedModelsByImportanceContent} </span><br/><span>{modelStringContent}</span>";
         }
 
-        public function renderRelatedModelsByImportanceContent(RedBeanModel $model)
+        public function renderRelatedModelsByImportanceContent(RedBeanModel $model, $lineBreak = false)
         {
             $content = null;
             if ($model->sender != null  && $model->sender->id > 0)
             {
-                $content .= Yii::t('Default', 'from: {senderContent}',
+                $senderContent  = Yii::t('Default', 'from: {senderContent}',
                                     array('{senderContent}' => static::getSenderContent($model->sender)));
+                $content       .= CHtml::tag('span', array(), $senderContent);
             }
             if($model->recipients->count() > 0)
             {
+                $recipientContent = null;
                 if($content != null)
                 {
-                    $content .= ' ';
+                    $recipientContent .= ' ';
                 }
-                $content .= Yii::t('Default', 'to: {recipientContent}',
-                                    array('{recipientContent}' => static::getRecipientsContent($model->recipients)));
+                $recipientContent .= Yii::t('Default', 'to: {recipientContent}',
+                                     array('{recipientContent}' => static::getRecipientsContent($model->recipients)));
+                $content       .= CHtml::tag('span', array(), $recipientContent);
             }
             return $content;
         }
@@ -124,6 +127,10 @@
         protected static function getSenderContent(EmailMessageSender $emailMessageSender)
         {
             $existingModels  = array();
+            if($emailMessageSender->personOrAccount->id < 0)
+            {
+                return $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
+            }
             $castedDownModel = self::castDownItem($emailMessageSender->personOrAccount);
             try
             {
@@ -153,23 +160,30 @@
             }
             foreach($recipients as $recipient)
             {
-                $castedDownModel = self::castDownItem($recipient->personOrAccount);
-                try
+                if($recipient->personOrAccount->id < 0)
                 {
-                    if (strval($castedDownModel) != null)
-                                {
-                                    $params          = array('label' => strval($castedDownModel));
-                                    $moduleClassName = $castedDownModel->getModuleClassName();
-                                    $moduleId        = $moduleClassName::getDirectoryName();
-                                    $element         = new DetailsLinkActionElement('default', $moduleId,
-                                                                                    $castedDownModel->id, $params);
-                                    $existingModels[] = $element->render();
-                                }
-
+                    $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
                 }
-                catch(AccessDeniedSecurityException $e)
+                else
                 {
-                    return $emailMessageSender->fromAddress;
+                    $castedDownModel = self::castDownItem($recipient->personOrAccount);
+                    try
+                    {
+                        if (strval($castedDownModel) != null)
+                                    {
+                                        $params          = array('label' => strval($castedDownModel));
+                                        $moduleClassName = $castedDownModel->getModuleClassName();
+                                        $moduleId        = $moduleClassName::getDirectoryName();
+                                        $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                                        $castedDownModel->id, $params);
+                                        $existingModels[] = $element->render();
+                                    }
+
+                    }
+                    catch(AccessDeniedSecurityException $e)
+                    {
+                        $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
+                    }
                 }
             }
             return self::resolveStringValueModelsDataToStringContent($existingModels);

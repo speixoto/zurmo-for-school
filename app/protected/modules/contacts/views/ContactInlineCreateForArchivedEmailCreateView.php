@@ -155,6 +155,16 @@
         }
 
         /**
+         * By default, this is hidden.
+         * (non-PHPdoc)
+         * @see View::getViewStyle()
+         */
+        protected function getViewStyle()
+        {
+            return " style=' display:none;'";
+        }
+
+        /**
          * Override to support prefixing with the uniqueId since this view is typicall used in a listview where there
          * are more than one form with the same inputs.
          * (non-PHPdoc)
