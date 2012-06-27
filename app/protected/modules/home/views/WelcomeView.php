@@ -65,7 +65,7 @@
         protected function renderContent()
         {
             $content  = '<div class="clearfix">';
-            $content .= '<h1>Welcome to Zurmo</h1>';
+            $content .= '<h1>' . Yii::t('Default', 'Welcome to Zurmo'). '</h1>';
             $content .= static::renderSocialLinksContent();
             $content .= '<div id="welcome-content">';
             $content .= '<div id="instructions"><div id="welcome-gallery">';
@@ -87,14 +87,35 @@
         {
             if ($this->tipContent != null)
             {
-                $content  = '<div class="help-section">';
+                $content  = '<div class="help-section daily-tip">';
                 $content .= '<h3>' . Yii::t('Default', 'Tip of the Day') . '</h3>';
                 $content .= '<ul>';
                 $content .= '<li>' . $this->tipContent . '</li>';
                 $content .= '</ul>';
+				$content .= self::renderNextTipAjaxLink('tip-of-day-next-page-link', Yii::t('Default', 'Next Tip'));
                 $content .= '</div>';
                 return $content;
             }
+        }
+
+        protected static function renderNextTipAjaxLink($id, $label)
+        {
+            assert('is_string($id)');
+            assert('is_string($label)');
+            assert('is_string($url)');
+            assert('is_string($pageVar)');
+            assert('is_int($page)');
+            assert('is_string($style) || $style == null');
+            $url       = Yii::app()->createUrl('home/default/getTip');
+            // Begin Not Coding Standard
+            return       CHtml::ajaxLink($label, $url,
+                         array('type' => 'GET',
+                               'dataType' => 'json',
+                               'success' => "js:function(data){
+                                    $('.daily-tip').find('li').html(data);
+                              }"),
+                         array('id' => $id, 'href' => '#'));
+            // End Not Coding Standard
         }
 
         protected function renderDashboardLinkContent()

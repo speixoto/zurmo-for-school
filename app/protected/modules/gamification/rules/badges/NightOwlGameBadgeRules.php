@@ -24,30 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserModelSearchTest extends ZurmoBaseTest
+    /**
+     * Class for defining the badge associated with logging in at night
+     */
+    class NightOwlGameBadgeRules extends GameBadgeRules
     {
-        public static function setUpBeforeClass()
+       public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 10,
+            3  => 25,
+            4  => 50,
+            5  => 75,
+            6  => 100,
+            7  => 125,
+            8  => 150,
+            9  => 175,
+            10 => 200,
+            11 => 225,
+            12 => 250,
+            13 => 300
+        );
+
+        public static function getPassiveDisplayLabel($value)
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            return Yii::t('Default', '{n} Zurmo nighttime login|{n} Zurmo nighttime logins',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
-        public function testGetUsersByPartialFullName()
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-
-            UserTestHelper::createBasicUser('Azo');
-            UserTestHelper::createBasicUser('Bdo');
-            UserTestHelper::createBasicUser('Abzo');
-
-            $users = UserModelSearch::getUsersByPartialFullName('A', 5);
-            $this->assertEquals(2, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('bd', 5);
-            $this->assertEquals(1, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('Cz', 5);
-            $this->assertEquals(0, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('Ab', 5);
-            $this->assertEquals(1, count($users));
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['NightOwl']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['NightOwl']->value);
+            }
+            return 0;
         }
     }
 ?>

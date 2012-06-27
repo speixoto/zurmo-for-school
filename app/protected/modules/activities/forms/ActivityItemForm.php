@@ -25,7 +25,8 @@
      ********************************************************************************/
 
     /**
-     * Helps manage related models to an Activity.
+     * ActivityForm helps manage related models to an Activity. This form is used by ModelElements and its interface
+     * mimics if a ZurmoActiveForm was used.
      */
     class ActivityItemForm extends RelatedItemForm
     {

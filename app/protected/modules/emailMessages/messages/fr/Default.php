@@ -37,14 +37,14 @@
             => 'Une message texte de Zurmo',
         'Access Email Configuration'
             => 'Accès à la configuration email',
-        'Access EmailMessagesModulePluralLabel Tab'
-            => 'Accès aux EmailMessagesModulePluralLabel',
+        'Access Emails Tab'
+            => 'Accès aux Emails',
         'Clear Old Sent Notifications Email Job'
             => 'Supprimer les vieux messages de notification',
-        'Create EmailMessagesModulePluralLabel'
-            => 'Créer EmailMessagesModulePluralLabel',
-        'Delete EmailMessagesModulePluralLabel'
-            => 'Supprimer EmailMessagesModulePluralLabel',
+        'Create Emails'
+            => 'Créer Emails',
+        'Delete Emails'
+            => 'Supprimer Emails',
         'Draft'
             => 'Brouillon',
         'Email Configuration'

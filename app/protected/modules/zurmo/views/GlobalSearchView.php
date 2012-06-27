@@ -74,7 +74,12 @@
             $cClipWidget->endClip();
             $content .= $cClipWidget->getController()->clips['GlobalSearchElement'];
             // Begin Not Coding Standard
-            $script = '$(".ui-autocomplete").position({
+            $script = ' $("#globalSearchInput").data( "autocomplete" )._renderItem = function( ul, item ) {
+                            return $( "<li></li>" ).data( "item.autocomplete", item )
+                                    .append( "<a><span class=" + item.iconClass + "></span><span>" + item.label + "</span></a>" )
+                                    .appendTo( ul );
+                        };
+                        $(".ui-autocomplete").position({
                             my: "left top",
                             at: "left bottom",
                             of: $("#app-search"),
