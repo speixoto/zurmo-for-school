@@ -5293,6 +5293,14 @@ section {
 #app-search {
   margin-left: 3%;
   width: 341px;
+  display: block;
+}
+#app-search .z-spinner {
+  display: block !important;
+  z-index: 999999;
+  position: absolute;
+  margin-left: 316px;
+  margin-top: 11px;
 }
 #globalSearchInput {
   font-style: italic;
@@ -6298,27 +6306,27 @@ table.items th {
 }
 tr.odd {
   background: none;
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  -ms-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 tr.even {
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  -ms-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 table.items tr:hover {
   background-color: #D4E7BC;
   color: #262877;
-  -webkit-transition: all 0.35s ease-out;
-  -moz-transition: all 0.35s ease-out;
-  -o-transition: all 0.35s ease-out;
-  -ms-transition: all 0.35s ease-out;
-  transition: all 0.35s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 table.items tr:hover .pencil {
   visibility: visible;
