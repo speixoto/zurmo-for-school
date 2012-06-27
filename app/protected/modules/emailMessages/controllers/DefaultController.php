@@ -227,8 +227,7 @@
             $metadataAdapter  = new ArchivedEmailMatchingSearchDataProviderMetadataAdapter(
                 $emailMessage,
                 Yii::app()->user->userModel->id,
-                $searchAttributes,
-                $type
+                $searchAttributes
             );
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadataAdapter,
