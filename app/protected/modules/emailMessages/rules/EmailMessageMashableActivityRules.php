@@ -46,7 +46,7 @@
                     'value'                => $relationItemId,
                 )
             );
-            $searchAttributeData['structure'] = '1 or 2';
+            $searchAttributeData['structure'] = '(1 or 2)';
             return $this->resolveSearchAttributeDataForLatestActivities($searchAttributeData);
         }
 

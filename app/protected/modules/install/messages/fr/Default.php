@@ -280,8 +280,6 @@
             => 'Il y a eu un problème lors de la création de la base de données d\'erreurs',
         'There was a problem creating the user Error code:'
             => 'Il y a eu un problème lors de la création du code d\'erreur d\'utilisateur',
-        'Tidy'
-            => 'Tidys',
         'User who can connect to the database.'
             => 'L\'utilisateur qui connecte à la base de données.',
         'User`s password.'

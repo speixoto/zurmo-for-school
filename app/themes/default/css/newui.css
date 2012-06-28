@@ -3498,15 +3498,36 @@ span.tooltip {
 /* Applied on hover of tooltips i.e. added/removed on mouseenter/mouseleave respectively */
 /*! Default tooltip style */
 .ui-tooltip-default .ui-tooltip-titlebar {
-  background-color: #FFEF93;
+  font-weight: bold;
+  color: #262877;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  background-color: #ededed;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
+  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: linear-gradient(top, #f6f6f6, #ededed);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
+  border-bottom: 1px solid #dfdfdf;
 }
 .ui-tooltip-default .ui-tooltip-icon {
-  border-color: #CCC;
-  background: #F1F1F1;
-  color: #777;
+  border-color: #fff;
+  background: #7bb730;
+  color: #fff;
 }
 .ui-tooltip-default .ui-tooltip-titlebar .ui-state-hover {
-  border-color: #AAA;
   color: #111;
 }
 /* Tips plugin */
@@ -5291,8 +5312,16 @@ section {
   box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
 }
 #app-search {
-  margin-left: 40px;
+  margin-left: 3%;
   width: 341px;
+  display: block;
+}
+#app-search .z-spinner {
+  display: block !important;
+  z-index: 999999;
+  position: absolute;
+  margin-left: 316px;
+  margin-top: 11px;
 }
 #globalSearchInput {
   font-style: italic;
@@ -6298,27 +6327,27 @@ table.items th {
 }
 tr.odd {
   background: none;
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  -ms-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 tr.even {
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  -ms-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 table.items tr:hover {
   background-color: #D4E7BC;
   color: #262877;
-  -webkit-transition: all 0.35s ease-out;
-  -moz-transition: all 0.35s ease-out;
-  -o-transition: all 0.35s ease-out;
-  -ms-transition: all 0.35s ease-out;
-  transition: all 0.35s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 table.items tr:hover .pencil {
   visibility: visible;
@@ -8828,6 +8857,8 @@ div.hasHalfs .twoThirds {
 }
 /*=Auto Complete*/
 .ui-autocomplete {
+  margin-top: 2px;
+  width: 335px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -8846,6 +8877,7 @@ div.hasHalfs .twoThirds {
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   padding-top: 3px;
   padding-bottom: 3px;
+  text-align: left;
 }
 .ui-autocomplete li {
   list-style: none;
@@ -8855,7 +8887,7 @@ div.hasHalfs .twoThirds {
   font-size: 11px;
   font-weight: normal;
   display: block;
-  padding: 5px 10px 5px 10px;
+  padding: 2px 10px 2px 10px;
   margin: 0 2px;
 }
 .ui-autocomplete li a:hover,

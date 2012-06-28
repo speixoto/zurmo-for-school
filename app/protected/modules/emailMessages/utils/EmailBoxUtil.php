@@ -66,10 +66,14 @@
             $folder->type     = EmailFolder::TYPE_OUTBOX_ERROR;
             $folder->emailBox = $box;
             $box->folders->add($folder);
-            $saved            = $box->save();
             $folder           = new EmailFolder();
             $folder->name     = EmailFolder::getDefaultArchivedName();
             $folder->type     = EmailFolder::TYPE_ARCHIVED;
+            $folder->emailBox = $box;
+            $box->folders->add($folder);
+            $folder           = new EmailFolder();
+            $folder->name     = EmailFolder::getDefaultArchivedUnmatchedName();
+            $folder->type     = EmailFolder::TYPE_ARCHIVED_UNMATCHED;
             $folder->emailBox = $box;
             $box->folders->add($folder);
             $saved            = $box->save();

@@ -43,7 +43,7 @@
 
         protected function renderContent()
         {
-            $content  = '<div id="app-search">' . $this->renderGlobalSearchContent() . '</div>';
+            $content  = '<div id="app-search" class="clearfix">' . $this->renderGlobalSearchContent() . '<span class="z-spinner"></span></div>';
             return $content;
         }
 
@@ -68,7 +68,9 @@
                 'htmlOptions' => $htmlOptions,
                 'options'     => array('select' => 'js: function(event, ui) {if (ui.item.href.length > 0)' .
                                                    '{window.location = ui.item.href;} return false;}',
-                                       'appendTo' => '#app-search',
+                                       'appendTo' => '.global-search-loopa',
+                                       'search' => 'js: function(event, ui) { makeGlobalSearchSpinner("app-search", true) }',
+                                       'open' => 'js: function(event, ui) { makeGlobalSearchSpinner("app-search", false) }',
                                        'position' => array('my' =>  'right top', 'at' => 'right bottom')
             )));
             $cClipWidget->endClip();

@@ -95,6 +95,10 @@
             transition: all @time ease-out;
 }
 
+.debug(){
+	background-color:rgba(255, 0, 0, 0.5);
+}
+
 /*=For modern browsers */
 .clearfix{
     &:before{
@@ -493,8 +497,16 @@ footer, header, hgroup, menu, nav, section {
 }
 
 #app-search{
-    margin-left:40px;
+    margin-left:3%;
     width:341px;
+    display:block;
+    .z-spinner{
+    	display:block !important;
+    	z-index:999999;
+    	position:absolute;
+    	margin-left:316px;
+    	margin-top:11px;
+    }
 }
 
 #globalSearchInput{
@@ -1215,17 +1227,17 @@ table.items th{
 
 tr.odd{
     background:none;
-    .animateAll(0.2s);
+    .animateAll(0.05s);
 }
 
 tr.even{
-    .animateAll(0.2s);
+    .animateAll(0.05s);
 }
 
 table.items tr:hover{
     background-color:#D4E7BC;
     color:@themeColor;
-    .animateAll(0.35s);
+    .animateAll(0.05s);
     .pencil{
         visibility:visible;
         color:@themeColor;
@@ -3056,9 +3068,12 @@ div.hasHalfs{
 
 /*=Auto Complete*/
 .ui-autocomplete{
+	margin-top:2px;
+	width:335px;
     .flyout();
     padding-top:3px;
     padding-bottom:3px;
+    text-align:left;
     li{
         list-style:none;
         a{
@@ -3066,7 +3081,7 @@ div.hasHalfs{
             font-size: 11px;
             font-weight: normal;
             display: block;
-            padding: 5px 10px 5px 10px;
+            padding: 2px 10px 2px 10px;
             margin: 0 2px;
             &:hover, #ui-active-menuitem, .ui-state-hover{
                 background:@themeColor2 !important;
