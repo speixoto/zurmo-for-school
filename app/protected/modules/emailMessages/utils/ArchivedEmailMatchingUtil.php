@@ -82,7 +82,7 @@
                  $contact->primaryEmail->emailAddress   = $emailMessage->sender->fromAddress;
                  self::resolveFullNameToFirstAndLastName($emailMessage->sender->fromName, $contact);
             }
-            elseif($emailMessage->recipients->count())
+            elseif($emailMessage->recipients->count() > 0)
             {
                 foreach($emailMessage->recipients as $recipient)
                 {
@@ -109,22 +109,24 @@
 
         public static function resolveContactToSenderOrRecipient(EmailMessage $emailMessage, $contact)
         {
+
             if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->id < 0)
             {
                  $emailMessage->sender->personOrAccount = $contact;
                  return;
             }
-            elseif($emailMessage->recipients->count())
+            elseif($emailMessage->recipients->count() > 0)
             {
                 foreach($emailMessage->recipients as $key => $recipient)
                 {
-                    if($recipient->personOrAccount->id > 0)
+                    if($recipient->personOrAccount->id < 0)
                     {
                         $emailMessage->recipients->offsetGet($key)->personOrAccount = $contact;
                         return;
                     }
                 }
             }
+            throw new NotSupportedException();
         }
     }
 ?>
