@@ -36,7 +36,7 @@
 
         protected function renderLabel()
         {
-            $label = Yii::t('Default', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
+            $label = Yii::t('Default', 'LeadsModuleSingularLabel or ContactsModuleSingularLabel',
                                                 LabelUtil::getTranslationParamsForAllModules());
             if ($this->form === null)
             {
@@ -58,7 +58,7 @@
 
         protected static function getModalTitleForSelectingModel()
         {
-            return Yii::t('Default', 'ContactsModuleSingularLabel and LeadsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
+            return Yii::t('Default', 'LeadsModuleSingularLabel and ContactsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

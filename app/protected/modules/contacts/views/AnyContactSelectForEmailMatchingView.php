@@ -153,12 +153,7 @@
                     'data' => 'js:$("#' . $formName . '").serialize()',
                     'url'  =>  $this->getValidateAndSaveUrl(),
                     'complete' => "function(XMLHttpRequest, textStatus){
-                        //find if there is a latest activities portlet
-                        //$('.LatestActivtiesForPortletView').each(function(){
-                        //    $(this).find('.pager').find('.first').find('a').click();
-                       // });
-                       alert('complete');
-                       }"
+                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();}"
                 ));
             // End Not Coding Standard
         }

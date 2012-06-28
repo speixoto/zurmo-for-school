@@ -146,7 +146,7 @@
             $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent);
             $content .= '</div>';
             $content .= parent::renderContent() . '</div>';
-            return '<div class="wrapper">' . $content .  '</div>';
+            return '<div id="wrapper-' . $this->uniqueId . '" class="wrapper">' . $content .  '</div>';
         }
 
         protected function renderEmailMessageContentAndResolveLink()
@@ -207,8 +207,8 @@
                         $(this).parent().parent().find('.lead-create-title').show();
                         $(this).parent().parent().find('.contact-create-title').hide();
                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
-                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
-                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
+                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').show();
                         return false;
                     }
                 );
@@ -218,8 +218,8 @@
                         $(this).parent().parent().find('.lead-create-title').hide();
                         $(this).parent().parent().find('.contact-create-title').show();
                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
-                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
-                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').show();
+                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
+                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
                         return false;
                     }
                 );

@@ -59,11 +59,13 @@
             {
                 $gridSize = 1;
             }
+            $contact = new Contact();
+            self::resolveEmailAddressAndNameToContact($emailMessage, $contact);
             $view = new ArchivedEmailMatchingView(
                             'default',
                             'emailMessages',
                             $emailMessage,
-                            new Contact(),
+                            $contact,
                             $selectForm,
                             $userCanAccessLeads,
                             $userCanAccessContacts,
@@ -71,6 +73,58 @@
                             $userCanCreateLead,
                             $gridSize);
             return $view->render();
+        }
+
+        public static function resolveEmailAddressAndNameToContact(EmailMessage $emailMessage, $contact)
+        {
+            if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->id < 0)
+            {
+                 $contact->primaryEmail->emailAddress   = $emailMessage->sender->fromAddress;
+                 self::resolveFullNameToFirstAndLastName($emailMessage->sender->fromName, $contact);
+            }
+            elseif($emailMessage->recipients->count())
+            {
+                foreach($emailMessage->recipients as $recipient)
+                {
+                    if($recipient->personOrAccount->id < 0)
+                    {
+                        $contact->primaryEmail->emailAddress = $recipient->toAddress;
+                        self::resolveFullNameToFirstAndLastName($recipient->toName, $contact);
+                    }
+                }
+            }
+        }
+
+        protected static function resolveFullNameToFirstAndLastName($name, $contact)
+        {
+            @list($firstName, $lastName) = explode(' ', trim($name));
+            if ($lastName == null)
+            {
+                $lastName  = $firstName;
+                $firstName = null;
+            }
+            $contact->firstName = $firstName;
+            $contact->lastName  = $lastName;
+        }
+
+        public static function resolveContactToSenderOrRecipient(EmailMessage $emailMessage, $contact)
+        {
+            if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->id < 0)
+            {
+                 $emailMessage->sender->personOrAccount = $contact;
+                 return;
+            }
+            elseif($emailMessage->recipients->count())
+            {
+                foreach($emailMessage->recipients as $key => $recipient)
+                {
+                    if($recipient->personOrAccount->id > 0)
+                    {
+                        $emailMessage->recipients->offsetGet($key)->personOrAccount = $contact;
+                        return;
+                    }
+                }
+            }
         }
     }
 ?>
