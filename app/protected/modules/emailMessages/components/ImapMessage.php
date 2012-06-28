@@ -24,28 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserModelSearch
+    /**
+     * Class to store IMAP message info
+     */
+    class ImapMessage
     {
-        /**
-         * For a give User name, run a partial search by
-         * full name and retrieve user models.
-         *
-         */
-        public static function getUsersByPartialFullName($partialName, $pageSize)
-        {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $personTableName   = RedBeanModel::getTableName('Person');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
-            $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");
-            $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',
-                                                                   '\' \'',
-                                                                   'person.lastname'));
-             $where = "      (person.firstname      like lower('$partialName%') or "    .
-                      "       person.lastname       like lower('$partialName%') or "    .
-                      "       $fullNameSql like lower('$partialName%')) ";
-            return User::getSubset($joinTablesAdapter, null, $pageSize,
-                                            $where, "person.firstname, person.lastname");
-        }
+        public $to          = array();
+
+        public $cc          = array();
+
+        public $fromName;
+
+        public $fromEmail;
+
+        public $senderName;
+
+        public $senderEmail;
+
+        public $subject;
+
+        public $htmlBody;
+
+        public $textBody;
+
+        public $attachments = array();
+
+        public $createdDate;
+
+        public $uid;
+
+        public $msgNumber;
+
+        public $msgId;
     }
 ?>

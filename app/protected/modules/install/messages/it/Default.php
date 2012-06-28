@@ -280,8 +280,6 @@
             => 'C\'era un errore durante la creazione del database dei codice Errore:',
         'There was a problem creating the user Error code:'
             => 'C\'era un error durante la creazione del utente dei codice Errore:',
-        'Tidy'
-            => 'Tidy', // Same Word Translated
         'User who can connect to the database.'
             => 'Utente che posso connettere al database.',
         'User`s password.'

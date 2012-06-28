@@ -37,14 +37,14 @@
             => 'Un messaggio SMS di prova da Zurmo',
         'Access Email Configuration'
             => 'Accesso alla configurazione di mail',
-        'Access EmailMessagesModulePluralLabel Tab'
-            => 'Accesso ai EmailMessagesModulePluralLabel Tab',
+        'Access Emails Tab'
+            => 'Accesso ai Emails Tab',
         'Clear Old Sent Notifications Email Job'
             => 'Cancellare le vecchie notificazioni inviati',
-        'Create EmailMessagesModulePluralLabel'
-            => 'Creare EmailMessagesModulePluralLabel',
-        'Delete EmailMessagesModulePluralLabel'
-            => 'Cancellare EmailMessagesModulePluralLabel',
+        'Create Emails'
+            => 'Creare Emails',
+        'Delete Emails'
+            => 'Cancellare Emails',
         'Draft'
             => 'Bozza',
         'Email Configuration'

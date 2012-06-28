@@ -95,6 +95,10 @@
             transition: all @time ease-out;
 }
 
+.debug(){
+	background-color:rgba(255, 0, 0, 0.5);
+}
+
 /*=For modern browsers */
 .clearfix{
     &:before{
@@ -493,8 +497,16 @@ footer, header, hgroup, menu, nav, section {
 }
 
 #app-search{
-    margin-left:40px;
+    margin-left:3%;
     width:341px;
+    display:block;
+    .z-spinner{
+    	display:block !important;
+    	z-index:999999;
+    	position:absolute;
+    	margin-left:316px;
+    	margin-top:11px;
+    }
 }
 
 #globalSearchInput{
@@ -532,6 +544,77 @@ footer, header, hgroup, menu, nav, section {
     min-width: 225px !important;
 }
 
+.ui-multiselect {
+  padding:0;
+  text-align:left;
+  span.ui-icon {
+    float:right;
+  }
+}
+.ui-multiselect-single .ui-multiselect-checkboxes input {
+  position:absolute !important;
+  top:auto !important;
+  left:-9999px;
+}
+.ui-multiselect-single .ui-multiselect-checkboxes label {
+  padding:5px !important;
+}
+.ui-multiselect-header {
+  margin-bottom:0;
+  padding:0;
+  ul {
+    li {
+      float:left;
+      padding:0 0 0 0;
+    }
+  }
+  a {
+    text-decoration:none;
+  }
+  a:hover {
+    text-decoration:underline;
+  }
+  span.ui-icon {
+    float:left;
+  }
+  li.ui-multiselect-close {
+    float:right;
+    text-align:right;
+    padding-right:0;
+  }
+}
+.ui-multiselect-menu {
+  display:none;
+  padding:0;
+  position:absolute;
+  z-index:10000;
+}
+.ui-multiselect-checkboxes {
+  position:relative;
+  overflow-y:auto;
+  label {
+    cursor:default;
+    display:block;
+    input {
+      position:relative;
+      top:1px;
+    }
+  }
+  li {
+    clear:both;
+    padding-right:0;
+  }
+  li.ui-multiselect-optgroup-label {
+    text-align:center;
+    font-weight:bold;
+    a {
+      display:block;
+      text-decoration:none;
+    }
+  }
+}
+
+
 .AppContainer{
     min-width:900px;
     height:100%;
@@ -541,6 +624,9 @@ footer, header, hgroup, menu, nav, section {
     .radius(0 0 5px 5px);
     z-index: 0;
     position:relative;
+}
+.AppContent{
+	 .radius(0 0 5px 5px);
 }
 
 #HeaderView{
@@ -1141,17 +1227,17 @@ table.items th{
 
 tr.odd{
     background:none;
-    .animateAll(0.2s);
+    .animateAll(0.05s);
 }
 
 tr.even{
-    .animateAll(0.2s);
+    .animateAll(0.05s);
 }
 
 table.items tr:hover{
     background-color:#D4E7BC;
     color:@themeColor;
-    .animateAll(0.35s);
+    .animateAll(0.05s);
     .pencil{
         visibility:visible;
         color:@themeColor;
@@ -1347,6 +1433,7 @@ a.attachLoading{
 a.simple-select{
     color:@themeColor !important;
     background:none !important;
+    background-image:none !important;
     .b-shadow( ~"none  !important" );
     .radius(~"0 !important");
     padding:0  !important;
@@ -1356,6 +1443,11 @@ a.simple-select{
     &:before{
         content:""  !important;
     }
+}
+.portlet-toolbar{
+	a.simple-select{
+    	background:none !important;
+   	}
 }
 
 /*=Popup Modals*/
@@ -1431,6 +1523,12 @@ a.simple-select{
             }
         }
     }
+}
+
+.big-spinner{
+	margin-left:270px;
+	margin-top:30px;
+	display:block;	
 }
 
 .ui-resizable-handle{
@@ -1761,6 +1859,10 @@ div.wide.form{
     }
 }
 
+
+
+
+
 .flyout{
     border:1px solid #b6b6b6;
     #gradient > .vertical( #f5f5f5, #ebebeb );
@@ -1940,6 +2042,7 @@ div.wide.form{
         width:100%;
     }
 }
+
 .panel{
 	.has-model-select a{
 		top:1px !important;
@@ -2122,7 +2225,6 @@ div.wide.form{
 	}
 }
 
-
 /*=For single meeting, contact etc..*/
 .AppContent.TableOfContentsView,
 .AppContent.SecuredEditAndDetailsView{
@@ -2131,7 +2233,6 @@ div.wide.form{
         top:8px;
     }
 }
-
 
 .wrapper{
 	float:left;
@@ -2400,6 +2501,14 @@ div.wide.form{
             }
         }
     }
+}
+
+#NoteEditAndDetailsView{
+	.has-model-select{
+		a{
+			top:24px !important;
+		}
+	}
 }
 
 #inline-edit-form{
@@ -2734,6 +2843,21 @@ div.hasHalfs{
     }
 }
 
+/*=Meeting/Task Single View*/
+#NoteEditAndDetailsView,
+#TaskEditAndDetailsView,
+#MeetingEditAndDetailsView{
+	.details-table{
+		margin-right:0 !important;
+	}
+	.view-toolbar {
+		margin-top:0 !important;
+	}
+}
+
+
+
+
 /*=Latest Activity*/
 .less-pronounced-text{
 	font-style:italic;
@@ -2944,9 +3068,12 @@ div.hasHalfs{
 
 /*=Auto Complete*/
 .ui-autocomplete{
+	margin-top:2px;
+	width:335px;
     .flyout();
     padding-top:3px;
     padding-bottom:3px;
+    text-align:left;
     li{
         list-style:none;
         a{
@@ -2954,7 +3081,7 @@ div.hasHalfs{
             font-size: 11px;
             font-weight: normal;
             display: block;
-            padding: 5px 10px 5px 10px;
+            padding: 2px 10px 2px 10px;
             margin: 0 2px;
             &:hover, #ui-active-menuitem, .ui-state-hover{
                 background:@themeColor2 !important;

@@ -24,30 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserModelSearchTest extends ZurmoBaseTest
+    /**
+     * View used to render message content as a result of sending a test email.  This is rendered in a modal window.
+     */
+    class TestImapConnectionMessageView extends View
     {
-        public static function setUpBeforeClass()
+        protected $message;
+
+        public function __construct($message)
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            assert('is_string($message)');
+            $this->message = $message;
         }
 
-        public function testGetUsersByPartialFullName()
+        protected function renderContent()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-
-            UserTestHelper::createBasicUser('Azo');
-            UserTestHelper::createBasicUser('Bdo');
-            UserTestHelper::createBasicUser('Abzo');
-
-            $users = UserModelSearch::getUsersByPartialFullName('A', 5);
-            $this->assertEquals(2, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('bd', 5);
-            $this->assertEquals(1, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('Cz', 5);
-            $this->assertEquals(0, count($users));
-            $users = UserModelSearch::getUsersByPartialFullName('Ab', 5);
-            $this->assertEquals(1, count($users));
+            return nl2br($this->message);
         }
     }
 ?>

@@ -62,11 +62,6 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $super2 = User::getByUsername('super2');
 
-            $this->assertEquals('smtp', Yii::app()->emailHelper->outboundType);
-            $this->assertNull(Yii::app()->emailHelper->outboundHost);
-            $this->assertEquals(25, Yii::app()->emailHelper->outboundPort);
-            $this->assertNull(Yii::app()->emailHelper->outboundUsername);
-            $this->assertNull(Yii::app()->emailHelper->outboundPassword);
             $this->assertEquals($super->id, Yii::app()->emailHelper->getUserToSendNotificationsAs()->id);
 
             //Change email settings
