@@ -69,7 +69,7 @@
 
         public static function getDefaultArchivedUnmatchedName()
         {
-            return Yii::t('Default', 'ArchivedUnmatched');
+            return Yii::t('Default', 'Archived Unmatched');
         }
 
         public static function getByBoxAndType(EmailBox $box, $type)
