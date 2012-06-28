@@ -30,7 +30,7 @@
         {
             $modelClassName   = $this->getModule()->getPrimaryModelName();
             $viewClassName    = $modelClassName . 'EditAndDetailsView';
-            $x = array_merge(parent::filters(),
+            return array_merge(parent::filters(),
                 array(
                     array(
                         ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
@@ -43,7 +43,6 @@
                    ),
                )
             );
-            return $x;
         }
 
         public function actionList()
@@ -185,9 +184,7 @@
                                             $_GET['modalTransferInformation']['sourceNameFieldId']
             );
             echo ModalSearchListControllerUtil::
-                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
-                                                     Yii::t('Default', 'AccountsModuleSingularLabel Search',
-                                                     LabelUtil::getTranslationParamsForAllModules()));
+                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
         public function actionDelete($id)

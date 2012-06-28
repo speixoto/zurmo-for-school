@@ -83,7 +83,7 @@
                         $customFieldModelClassName = $this->getAttributeModelClassName($customFieldName);
                         $classBean                 = $this->getClassBean($customFieldModelClassName);
                         $columnName                = static::getForeignKeyName($customFieldModelClassName, $customFieldName);
-                        if($classBean->{$columnName} == null)
+                        if ($classBean->{$columnName} == null)
                         {
                             $customField       = $this->unrestrictedGet($customFieldName);
                             $customFieldData   = CustomFieldData::getByName($customFieldDataName);

@@ -25,17 +25,41 @@
      ********************************************************************************/
 
     /**
-     * Makes sure tidy is installed and has the correct minimum version.
+     * Class for defining the badge associated with logging in at night
      */
-    class TidyServiceHelper extends ServiceHelper
+    class EarlyBirdGameBadgeRules extends GameBadgeRules
     {
-        protected $required = false;
+       public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 10,
+            3  => 25,
+            4  => 50,
+            5  => 75,
+            6  => 100,
+            7  => 125,
+            8  => 150,
+            9  => 175,
+            10 => 200,
+            11 => 225,
+            12 => 250,
+            13 => 300
+        );
 
-        protected $minimumVersion = '2.0';
-
-        protected function checkService()
+        public static function getPassiveDisplayLabel($value)
         {
-            return $this->checkServiceAndSetMessagesByMethodNameAndDisplayLabel('checkTidy', Yii::t('Default', 'Tidy'));
+            return Yii::t('Default', '{n} Zurmo early morning login|{n} Zurmo early morning logins',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
+        }
+
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
+        {
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['EarlyBird']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['EarlyBird']->value);
+            }
+            return 0;
         }
     }
 ?>

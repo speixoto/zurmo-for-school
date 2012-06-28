@@ -25,15 +25,14 @@
      ********************************************************************************/
     class DateTimeElementTest extends ZurmoBaseTest
     {
-        
         protected $defaultTimeZone;
-        
+
         public static function setUpBeforeClass()
         {
-            parent::setUpBeforeClass();            
+            parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
         }
-        
+
         public function setUp()
         {
             parent::setUp();
@@ -42,42 +41,39 @@
 
         public function teardown()
         {
-            date_default_timezone_set($this->defaultTimeZone);                         
+            date_default_timezone_set($this->defaultTimeZone);
             parent::teardown();
         }
-        
+
         public function testRender()
         {
-            $model              = new TestDateTimeModel();            
+            $model              = new TestDateTimeModel();
             $model->myDateTime  = '2012-02-24 13:05:32';
             $dateTimeElement    = new DateTimeElement($model, 'myDateTime');
-            
+
             date_default_timezone_set('EST');
             $content            = $dateTimeElement->render();
             $this->assertTrue(stripos($content, '2/24/12 8:05 AM') !== false);
-            
+
             date_default_timezone_set('UTC');
             $content            = $dateTimeElement->render();
             $this->assertTrue(stripos($content, '2/24/12 1:05 PM') !== false);
-            
+
             date_default_timezone_set('US/Eastern');
             $content            = $dateTimeElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 AM')  !== false);
-            
+            $this->assertTrue(stripos($content, '2/24/12 8:05 AM')  !== false);
+
             date_default_timezone_set('America/New_York');
             $content            = $dateTimeElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 AM')  !== false);
-            
+            $this->assertTrue(stripos($content, '2/24/12 8:05 AM')  !== false);
+
             date_default_timezone_set('Europe/Madrid');
             $content            = $dateTimeElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 2:05 PM')  !== false);
-            
+            $this->assertTrue(stripos($content, '2/24/12 2:05 PM')  !== false);
+
             date_default_timezone_set('Asia/Ho_Chi_Minh');
             $content = $dateTimeElement->render();
-            $this->assertTrue(stripos($content,'2/24/12 8:05 PM')  !==false);
-            
+            $this->assertTrue(stripos($content, '2/24/12 8:05 PM')  !== false);
         }
-
     }
-
 ?>

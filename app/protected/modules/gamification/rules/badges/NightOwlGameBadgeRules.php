@@ -24,28 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserModelSearch
+    /**
+     * Class for defining the badge associated with logging in at night
+     */
+    class NightOwlGameBadgeRules extends GameBadgeRules
     {
-        /**
-         * For a give User name, run a partial search by
-         * full name and retrieve user models.
-         *
-         */
-        public static function getUsersByPartialFullName($partialName, $pageSize)
+       public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 10,
+            3  => 25,
+            4  => 50,
+            5  => 75,
+            6  => 100,
+            7  => 125,
+            8  => 150,
+            9  => 175,
+            10 => 200,
+            11 => 225,
+            12 => 250,
+            13 => 300
+        );
+
+        public static function getPassiveDisplayLabel($value)
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $personTableName   = RedBeanModel::getTableName('Person');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
-            $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");
-            $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',
-                                                                   '\' \'',
-                                                                   'person.lastname'));
-             $where = "      (person.firstname      like lower('$partialName%') or "    .
-                      "       person.lastname       like lower('$partialName%') or "    .
-                      "       $fullNameSql like lower('$partialName%')) ";
-            return User::getSubset($joinTablesAdapter, null, $pageSize,
-                                            $where, "person.firstname, person.lastname");
+            return Yii::t('Default', '{n} Zurmo nighttime login|{n} Zurmo nighttime logins',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
+        }
+
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
+        {
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['NightOwl']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['NightOwl']->value);
+            }
+            return 0;
         }
     }
 ?>

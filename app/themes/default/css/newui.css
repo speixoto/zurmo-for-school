@@ -3,7 +3,8 @@
   padding: 0;
 }
 /*Imports*/
-.zButton {
+.zButton,
+.z-button {
   cursor: pointer;
   padding: 0 15px 0 15px;
   line-height: 23px;
@@ -22,24 +23,51 @@
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-.zButton:hover {
+.zButton:not(.attachLoading),
+.z-button:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.zButton:hover,
+.z-button:hover {
   color: #7bb730 !important;
 }
-.zButton:active {
+.zButton:active,
+.z-button:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.zButton.loading .z-spinner,
+.z-button.loading .z-spinner {
+  display: inline-block;
+}
+.zButton.loading .z-icon,
+.z-button.loading .z-icon {
+  display: none;
+}
+.z-spinner {
+  width: 23px;
+  height: 23px;
+  display: none;
+  float: left;
+}
+.z-icon:before {
+  /*empty*/
+
+}
+.z-label {
+  /*empty*/
+
 }
 .zLink {
   background: #262877;
@@ -348,6 +376,7 @@ a.remove:hover .icon:after {
   border-radius: 5px;
 }
 #InstallPageView .AppContainer a {
+  margin: auto 10px;
   cursor: pointer;
   padding: 0 15px 0 15px;
   line-height: 23px;
@@ -366,18 +395,19 @@ a.remove:hover .icon:after {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  margin: auto 10px;
+}
+#InstallPageView .AppContainer a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #InstallPageView .AppContainer a:hover {
   color: #7bb730 !important;
@@ -385,6 +415,20 @@ a.remove:hover .icon:after {
 #InstallPageView .AppContainer a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#InstallPageView .AppContainer a.loading .z-spinner {
+  display: inline-block;
+}
+#InstallPageView .AppContainer a.loading .z-icon {
+  display: none;
+}
+#InstallPageView #save {
+  color: #fff !important;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
 }
 #InstallPageView ul {
   list-style: inside;
@@ -450,17 +494,19 @@ a.remove:hover .icon:after {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+#InstallPageView #install-form input[type="submit"]:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #InstallPageView #install-form input[type="submit"]:hover {
   color: #7bb730 !important;
@@ -468,6 +514,12 @@ a.remove:hover .icon:after {
 #InstallPageView #install-form input[type="submit"]:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#InstallPageView #install-form input[type="submit"].loading .z-spinner {
+  display: inline-block;
+}
+#InstallPageView #install-form input[type="submit"].loading .z-icon {
+  display: none;
 }
 #InstallPageView #install-form table {
   padding-bottom: 15px;
@@ -478,6 +530,9 @@ a.remove:hover .icon:after {
 #InstallPageView #install-form td {
   width: 37%;
 }
+#InstallPageView #install-form th + td {
+  vertical-align: top;
+}
 #InstallPageView #install-form tr td:last-child {
   padding-left: 15px;
 }
@@ -486,6 +541,10 @@ a.remove:hover .icon:after {
   color: #666;
   font-weight: 400 !important;
   padding-top: 12px;
+}
+#InstallPageView #install-form .hasCheckBox {
+  padding-top: 0;
+  margin-left: 0;
 }
 #logging-table,
 #progress-table {
@@ -638,12 +697,11 @@ a.remove:hover .icon:after {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -654,12 +712,21 @@ a.remove:hover .icon:after {
   right: 15px;
   top: 14px;
 }
+.configuration-list li a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .configuration-list li a:hover {
   color: #7bb730 !important;
 }
 .configuration-list li a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.configuration-list li a.loading .z-spinner {
+  display: inline-block;
+}
+.configuration-list li a.loading .z-icon {
+  display: none;
 }
 .configuration-list li a:before {
   content: "n";
@@ -708,12 +775,11 @@ table.configuration-list tr td:last-child a {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -721,12 +787,21 @@ table.configuration-list tr td:last-child a {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   float: right;
 }
+table.configuration-list tr td:last-child a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 table.configuration-list tr td:last-child a:hover {
   color: #7bb730 !important;
 }
 table.configuration-list tr td:last-child a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+table.configuration-list tr td:last-child a.loading .z-spinner {
+  display: inline-block;
+}
+table.configuration-list tr td:last-child a.loading .z-icon {
+  display: none;
 }
 table.configuration-list tr td:last-child a:before {
   content: "n";
@@ -759,10 +834,11 @@ table.configuration-list tr td:last-child a:before {
   padding-left: 15px;
 }
 #ModulePermissionsEditAndDetailsView th {
-  text-align: left;
-  font-size: 12px !important;
-  color: #666;
-  font-weight: 400 !important;
+  /*text-align:left;
+		font-size: 12px !important;
+		color: #666;
+		font-weight: 400 !important;*/
+
 }
 .multiselect-holder {
   width: 675px;
@@ -811,12 +887,11 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -826,12 +901,21 @@ table.configuration-list tr td:last-child a:before {
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
+.multiselect-holder input[type="button"]:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .multiselect-holder input[type="button"]:hover {
   color: #7bb730 !important;
 }
 .multiselect-holder input[type="button"]:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.multiselect-holder input[type="button"].loading .z-spinner {
+  display: inline-block;
+}
+.multiselect-holder input[type="button"].loading .z-icon {
+  display: none;
 }
 .multiselect-left,
 .multiselect-right {
@@ -1083,6 +1167,17 @@ table.configuration-list tr td:last-child a:before {
 #JobsCollectionView tr:last-child td {
   border-bottom: 1px solid #DFDFDF !important;
 }
+#JobsCollectionView table tr:first-child th {
+  color: #545454;
+  text-align: left;
+  font-weight: bold !important;
+  height: auto  !important;
+  background: url(../images/table-items-header.png) left top repeat-x;
+  padding: 0 0 0 10px !important;
+}
+#JobsCollectionView .tooltip {
+  margin-top: 9px;
+}
 #JobsCollectionView a {
   background: #262877;
   padding: 1px 4px;
@@ -1106,9 +1201,26 @@ table.configuration-list tr td:last-child a:before {
 #JobsCollectionView #jobs-collection-form > div + table {
   border-top: none;
 }
-#active-monitor-job-tooltip {
-  position: absolute;
-  margin-top: 9px;
+#JobLogsModalListView td:first-child,
+#JobLogsModalListView th:first-child {
+  padding-left: 15px;
+}
+#JobLogsModalListView .tooltip,
+#jobs-frequency .tooltip {
+  margin-top: -2px;
+}
+#JobLogsModalListView .job-label,
+#jobs-frequency .job-label {
+  margin-left: 25px;
+}
+.jobHasErrors {
+  color: #cc0000;
+}
+.jobRanSuccessfully {
+  color: #7BB730;
+}
+.jobHasNeverRun {
+  color: #b38b01;
 }
 /*Languages*/
 #LanguagesCollectionView form {
@@ -1162,13 +1274,15 @@ table.configuration-list tr td:last-child a:before {
 }
 #currency-collection-form .portlet-toolbar a {
   color: #333333;
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+#currency-collection-form .portlet-toolbar a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #currency-collection-form .portlet-toolbar a:hover {
   color: #7bb730 !important;
@@ -1181,40 +1295,8 @@ table.configuration-list tr td:last-child a:before {
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
-#currency-collection-form .portlet-toolbar input {
-  color: #FFF;
-  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -webkit-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  -moz-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  -o-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  -ms-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  background-color: #97c43d;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#97c43d));
-  background-image: -moz-linear-gradient(top, #97c43d, #97c43d);
-  background-image: -ms-linear-gradient(top, #97c43d, #97c43d);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #97c43d));
-  background-image: -webkit-linear-gradient(top, #97c43d, #97c43d);
-  background-image: -o-linear-gradient(top, #97c43d, #97c43d);
-  background-image: linear-gradient(top, #97c43d, #97c43d);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#97c43d', GradientType=0);
-  cursor: pointer;
-}
-#currency-collection-form .portlet-toolbar input:hover {
-  color: #656565 !important;
-}
-#currency-collection-form .portlet-toolbar input:active {
-  color: #FFF !important;
-  -webkit-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -moz-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -o-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  -ms-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
-  box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+#currency-collection-form .portlet-toolbar a:before {
+  content: "";
 }
 #currency-collection-form .view-toolbar-container {
   margin-bottom: 5px;
@@ -1313,17 +1395,19 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+.add-custom-field .configure-custom-field-button:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .add-custom-field .configure-custom-field-button:hover {
   color: #7bb730 !important;
@@ -1331,6 +1415,12 @@ table.configuration-list tr td:last-child a:before {
 .add-custom-field .configure-custom-field-button:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.add-custom-field .configure-custom-field-button.loading .z-spinner {
+  display: inline-block;
+}
+.add-custom-field .configure-custom-field-button.loading .z-icon {
+  display: none;
 }
 .add-custom-field .configure-custom-field-button:before {
   content: "n";
@@ -1350,21 +1440,21 @@ table.configuration-list tr td:last-child a:before {
 }
 #UsersPageView {
   /*
-  .DetailsView{
-    table{
-      margin-left:8px;
-    }
-    td{
-      text-align:left;
-      padding-left:15px;
-    }
-    th{
-      text-align:left;
-      font-size: 12px !important;
-      color: #666;
-    }
-  }
-  */
+	.DetailsView{
+		table{
+			margin-left:8px;
+		}
+		td{
+			text-align:left;
+			padding-left:15px;
+		}
+		th{
+			text-align:left;
+			font-size: 12px !important;
+			color: #666;
+		}
+	}
+	*/
 
 }
 #UsersPageView .panel {
@@ -1390,10 +1480,21 @@ table.configuration-list tr td:last-child a:before {
   width: 100%;
 }
 /*=User Security*/
+.UserGroupMembershipView .details-table,
 #PoliciesEditAndDetailsView .details-table,
 #ModulePermissionsEditAndDetailsView .details-table,
 #RightsEditAndDetailsView .details-table {
   margin-right: 0;
+}
+.UserGroupMembershipView th,
+#PoliciesEditAndDetailsView th,
+#ModulePermissionsEditAndDetailsView th,
+#RightsEditAndDetailsView th {
+  text-align: left;
+  min-width: 200px;
+}
+.UserGroupMembershipView th {
+  text-align: left !important;
 }
 /*Audit Modal*/
 #AuditEventsModalListView tr td:first-child,
@@ -1427,17 +1528,19 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+#SendATestEmailToButton:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #SendATestEmailToButton:hover {
   color: #7bb730 !important;
@@ -1445,6 +1548,12 @@ table.configuration-list tr td:last-child a:before {
 #SendATestEmailToButton:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#SendATestEmailToButton.loading .z-spinner {
+  display: inline-block;
+}
+#SendATestEmailToButton.loading .z-icon {
+  display: none;
 }
 #TestEmailMessageView {
   padding: 15px;
@@ -1497,17 +1606,19 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:hover {
   color: #7bb730 !important;
@@ -1515,6 +1626,12 @@ table.configuration-list tr td:last-child a:before {
 .AppContent.ImportWizardView #addExtraColumnButton:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.AppContent.ImportWizardView #addExtraColumnButton.loading .z-spinner {
+  display: inline-block;
+}
+.AppContent.ImportWizardView #addExtraColumnButton.loading .z-icon {
+  display: none;
 }
 .AppContent.ImportWizardView .required-fields {
   font-size: 12px;
@@ -1777,6 +1894,10 @@ table.configuration-list tr td:last-child a:before {
 #modal-edit-form td > label:first-child {
   margin-top: 5px;
 }
+#modal-edit-form .panelTitle {
+  padding-left: 0;
+  padding-top: 0;
+}
 .panelTitle {
   font-size: 13px;
   font-weight: bold;
@@ -1820,12 +1941,11 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -1833,12 +1953,21 @@ table.configuration-list tr td:last-child a:before {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   padding: 0 5px;
 }
+.file-upload-box .ui-icon-plusthick:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .file-upload-box .ui-icon-plusthick:hover {
   color: #7bb730 !important;
 }
 .file-upload-box .ui-icon-plusthick:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.file-upload-box .ui-icon-plusthick.loading .z-spinner {
+  display: inline-block;
+}
+.file-upload-box .ui-icon-plusthick.loading .z-icon {
+  display: none;
 }
 .file-upload-box .ui-icon-plusthick:after {
   content: "Y";
@@ -2259,12 +2388,11 @@ div.wide.form .errorMessage {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2272,12 +2400,21 @@ div.wide.form .errorMessage {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   float: left;
 }
+.ui-datepicker .ui-datepicker-current:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .ui-datepicker .ui-datepicker-current:hover {
   color: #7bb730 !important;
 }
 .ui-datepicker .ui-datepicker-current:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.ui-datepicker .ui-datepicker-current.loading .z-spinner {
+  display: inline-block;
+}
+.ui-datepicker .ui-datepicker-current.loading .z-icon {
+  display: none;
 }
 .ui-datepicker .ui-datepicker-close {
   cursor: pointer;
@@ -2298,12 +2435,11 @@ div.wide.form .errorMessage {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2311,12 +2447,21 @@ div.wide.form .errorMessage {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   float: right;
 }
+.ui-datepicker .ui-datepicker-close:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .ui-datepicker .ui-datepicker-close:hover {
   color: #7bb730 !important;
 }
 .ui-datepicker .ui-datepicker-close:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.ui-datepicker .ui-datepicker-close.loading .z-spinner {
+  display: inline-block;
+}
+.ui-datepicker .ui-datepicker-close.loading .z-icon {
+  display: none;
 }
 .ui-datepicker .ui-timepicker-div {
   padding: 5px;
@@ -2578,6 +2723,14 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding-left: 15px;
   padding-right: 15px;
 }
+.lead-conversion-radiobutton {
+  display: block;
+  margin-bottom: 10px;
+}
+.lead-conversion-radiobutton label {
+  float: none !important;
+  margin-left: 20px;
+}
 .modal-settings .wide.form {
   padding: 15px !important;
   background-color: #f5f5f5;
@@ -2620,12 +2773,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -2633,12 +2785,21 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   margin-bottom: 15px;
 }
+.designer-toolbar input[type="submit"]:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .designer-toolbar input[type="submit"]:hover {
   color: #7bb730 !important;
 }
 .designer-toolbar input[type="submit"]:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.designer-toolbar input[type="submit"].loading .z-spinner {
+  display: inline-block;
+}
+.designer-toolbar input[type="submit"].loading .z-icon {
+  display: none;
 }
 .designer-toolbar h3 {
   margin: 0 0 5px 0;
@@ -3107,12 +3268,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -3120,12 +3280,21 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   margin: 15px 0 0 0;
 }
+.AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .AttributeEditView form div table #customFieldDataData_AddInputButton:hover {
   color: #7bb730 !important;
 }
 .AttributeEditView form div table #customFieldDataData_AddInputButton:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-spinner {
+  display: inline-block;
+}
+.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-icon {
+  display: none;
 }
 #DropDownDependencyMappingData table {
   border-top: none;
@@ -3157,15 +3326,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     height: 26px;
   }
   /*
-    .panel, #permissions-module{
-      .has-date-select, .has-model-select{
-        a, button{
-                &:before{
-                    top:-3px;
-                }
+  	.panel, #permissions-module{
+  		.has-date-select, .has-model-select{
+  			a, button{
+              	&:before{
+                  	top:-3px;
+              	}
              }
-      }
-    }*/
+  		}
+  	}*/
   .has-model-select a {
     top: 25px !important;
   }
@@ -3181,31 +3350,29 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   #NoteInlineEditView .has-date-select button {
     top: 11px !important;
   }
+  #NoteEditAndDetailsView div.has-model-select a {
+    top: 26px !important;
+  }
+  #NoteEditAndDetailsView div.has-model-select a:before {
+    top: -3px;
+    margin-left: 8px;
+  }
+  #NoteEditAndDetailsView div.has-date-select button:before {
+    top: -3px;
+  }
+  #NoteEditAndDetailsView #permissions-module #owner-box div.has-model-select a {
+    top: 23px !important;
+  }
+  #JobsCollectionView .tooltip {
+    margin-top: -11px;
+  }
 }
-.qtip,
-.zTip {
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-}
-.tooltip {
+span.tooltip {
   width: 15px;
   height: 15px !important;
   line-height: 14px !important;
   display: inline-block;
+  position: absolute;
   background: #fff;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -3218,6 +3385,493 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-align: center;
   cursor: pointer;
   vertical-align: middle;
+  margin-top: 9px;
+}
+.qtip {
+  border: 1px solid #b6b6b6;
+  background-color: #ebebeb;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  color: #262877;
+}
+/*!
+* qTip2 - Pretty powerful tooltips
+* http://craigsworks.com/projects/qtip2/
+*
+* Version: nightly
+* Copyright 2009-2010 Craig Michael Thompson - http://craigsworks.com
+*
+* Dual licensed under MIT or GPLv2 licenses
+*   http://en.wikipedia.org/wiki/MIT_License
+*   http://en.wikipedia.org/wiki/GNU_General_Public_License
+*
+* Date: Sat Jun  2 08:46:38.0000000000 2012
+*/
+/* Core qTip styles */
+.ui-tooltip,
+.qtip {
+  position: absolute;
+  left: -28000px;
+  top: -28000px;
+  display: none;
+  max-width: 280px;
+  min-width: 50px;
+  font-size: 10.5px;
+  line-height: 12px;
+  border-width: 1px;
+  border-style: solid;
+}
+/* Fluid class for determining actual width in IE */
+.ui-tooltip-fluid {
+  display: block;
+  visibility: hidden;
+  position: static !important;
+  float: left !important;
+}
+.ui-tooltip-content {
+  position: relative;
+  padding: 5px 9px;
+  overflow: hidden;
+  text-align: left;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+.ui-tooltip-titlebar {
+  position: relative;
+  min-height: 14px;
+  padding: 5px 35px 5px 10px;
+  overflow: hidden;
+  border-width: 0 0 1px;
+  font-weight: bold;
+}
+.ui-tooltip-titlebar + .ui-tooltip-content {
+  border-top-width: 0px !important;
+}
+/*! Default close button class */
+.ui-tooltip-titlebar .ui-state-default {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  margin-top: -9px;
+  cursor: pointer;
+  outline: medium none;
+  border-width: 1px;
+  border-style: solid;
+}
+* html .ui-tooltip-titlebar .ui-state-default {
+  top: 16px;
+}
+/* IE fix */
+.ui-tooltip-titlebar .ui-icon,
+.ui-tooltip-icon .ui-icon {
+  display: block;
+  text-indent: -1000em;
+}
+.ui-tooltip-icon,
+.ui-tooltip-icon .ui-icon {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.ui-tooltip-icon .ui-icon {
+  width: 18px;
+  height: 14px;
+  text-align: center;
+  text-indent: 0;
+  font: normal bold 10px/13px Tahoma, sans-serif;
+  color: inherit;
+  background: transparent none no-repeat -100em -100em;
+}
+/* Applied to 'focused' tooltips e.g. most recently displayed/interacted with */
+/* Applied on hover of tooltips i.e. added/removed on mouseenter/mouseleave respectively */
+/*! Default tooltip style */
+.ui-tooltip-default .ui-tooltip-titlebar {
+  font-weight: bold;
+  color: #262877;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  background-color: #ededed;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
+  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: linear-gradient(top, #f6f6f6, #ededed);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
+  border-bottom: 1px solid #dfdfdf;
+}
+.ui-tooltip-default .ui-tooltip-icon {
+  border-color: #fff;
+  background: #7bb730;
+  color: #fff;
+}
+.ui-tooltip-default .ui-tooltip-titlebar .ui-state-hover {
+  color: #111;
+}
+/* Tips plugin */
+.ui-tooltip .ui-tooltip-tip {
+  margin: 0 auto;
+  overflow: hidden;
+  z-index: 10;
+}
+.ui-tooltip .ui-tooltip-tip,
+.ui-tooltip .ui-tooltip-tip * {
+  position: absolute;
+  line-height: 0.1px !important;
+  font-size: 0.1px !important;
+  color: #123456;
+  background: transparent;
+  border: 0px dashed transparent;
+}
+.ui-tooltip .ui-tooltip-tip canvas {
+  top: 0;
+  left: 0;
+}
+/* Modal plugin */
+#qtip-overlay {
+  position: fixed;
+  left: -10000em;
+  top: -10000em;
+}
+/* Applied to modals with show.modal.blur set to true */
+#qtip-overlay.blurs {
+  cursor: pointer;
+}
+/* Change opacity of overlay here */
+#qtip-overlay div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+}
+/*! Light tooltip style */
+.ui-tooltip-light {
+  background-color: white;
+  border-color: #E2E2E2;
+  color: #454545;
+}
+.ui-tooltip-light .ui-tooltip-titlebar {
+  background-color: #f1f1f1;
+}
+/*! Dark tooltip style */
+.ui-tooltip-dark {
+  background-color: #505050;
+  border-color: #303030;
+  color: #f3f3f3;
+}
+.ui-tooltip-dark .ui-tooltip-titlebar {
+  background-color: #404040;
+}
+.ui-tooltip-dark .ui-tooltip-icon {
+  border-color: #444;
+}
+.ui-tooltip-dark .ui-tooltip-titlebar .ui-state-hover {
+  border-color: #303030;
+}
+/*! Cream tooltip style */
+.ui-tooltip-cream {
+  background-color: #FBF7AA;
+  border-color: #F9E98E;
+  color: #A27D35;
+}
+.ui-tooltip-cream .ui-tooltip-titlebar {
+  background-color: #F0DE7D;
+}
+.ui-tooltip-cream .ui-state-default .ui-tooltip-icon {
+  background-position: -82px 0;
+}
+/*! Red tooltip style */
+.ui-tooltip-red {
+  background-color: #F78B83;
+  border-color: #D95252;
+  color: #912323;
+}
+.ui-tooltip-red .ui-tooltip-titlebar {
+  background-color: #F06D65;
+}
+.ui-tooltip-red .ui-state-default .ui-tooltip-icon {
+  background-position: -102px 0;
+}
+.ui-tooltip-red .ui-tooltip-icon {
+  border-color: #D95252;
+}
+.ui-tooltip-red .ui-tooltip-titlebar .ui-state-hover {
+  border-color: #D95252;
+}
+/*! Green tooltip style */
+.ui-tooltip-green {
+  background-color: #CAED9E;
+  border-color: #90D93F;
+  color: #3F6219;
+}
+.ui-tooltip-green .ui-tooltip-titlebar {
+  background-color: #B0DE78;
+}
+.ui-tooltip-green .ui-state-default .ui-tooltip-icon {
+  background-position: -42px 0;
+}
+/*! Blue tooltip style */
+.ui-tooltip-blue {
+  background-color: #E5F6FE;
+  border-color: #ADD9ED;
+  color: #5E99BD;
+}
+.ui-tooltip-blue .ui-tooltip-titlebar {
+  background-color: #D0E9F5;
+}
+.ui-tooltip-blue .ui-state-default .ui-tooltip-icon {
+  background-position: -2px 0;
+}
+/*! Add shadows to your tooltips in: FF3+, Chrome 2+, Opera 10.6+, IE9+, Safari 2+ */
+.ui-tooltip-shadow {
+  -webkit-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+/*! Add rounded corners to your tooltips in: FF3+, Chrome 2+, Opera 10.6+, IE9+, Safari 2+ */
+.ui-tooltip-rounded,
+.ui-tooltip-tipsy,
+.ui-tooltip-bootstrap {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+/*! Youtube tooltip style */
+.ui-tooltip-youtube {
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 0 3px #333;
+  -moz-box-shadow: 0 0 3px #333;
+  box-shadow: 0 0 3px #333;
+  color: white;
+  border-width: 0;
+  background: #4A4A4A;
+  background-image: -moz-linear-gradient(top, #4a4a4a 0, #000000 100%);
+  background-image: -ms-linear-gradient(top, #4a4a4a 0, #000000 100%);
+  background-image: -o-linear-gradient(top, #4a4a4a 0, #000000 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #4a4a4a), color-stop(100%, #000000));
+  background-image: -webkit-linear-gradient(top, #4a4a4a 0, #000000 100%);
+  background-image: linear-gradient(to bottom, #4a4a4a 0, #000000 100%);
+}
+.ui-tooltip-youtube .ui-tooltip-titlebar {
+  background-color: #4A4A4A;
+  background-color: rgba(0, 0, 0, 0);
+}
+.ui-tooltip-youtube .ui-tooltip-content {
+  padding: .75em;
+  font: 12px arial, sans-serif;
+  filter: progid:dximagetransform.microsoft.gradient(GradientType=0, StartColorStr=#4a4a4a, EndColorStr=#000000);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);";
+}
+.ui-tooltip-youtube .ui-tooltip-icon {
+  border-color: #222;
+}
+.ui-tooltip-youtube .ui-tooltip-titlebar .ui-state-hover {
+  border-color: #303030;
+}
+/* jQuery TOOLS Tooltip style */
+.ui-tooltip-jtools {
+  background: #232323;
+  background: rgba(0, 0, 0, 0.7);
+  background-image: -moz-linear-gradient(top, #717171, #232323);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#717171), to(#232323));
+  border: 2px solid #ddd;
+  border: 2px solid #f1f1f1;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 0 12px #333;
+  -moz-box-shadow: 0 0 12px #333;
+  box-shadow: 0 0 12px #333;
+}
+/* IE Specific */
+.ui-tooltip-jtools .ui-tooltip-titlebar {
+  background-color: transparent;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr=#717171, endColorstr=#4a4a4a);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#717171,endColorstr=#4A4A4A)";
+}
+.ui-tooltip-jtools .ui-tooltip-content {
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr=#4a4a4a, endColorstr=#232323);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323)";
+}
+.ui-tooltip-jtools .ui-tooltip-titlebar,
+.ui-tooltip-jtools .ui-tooltip-content {
+  background: transparent;
+  color: white;
+  border: 0 dashed transparent;
+}
+.ui-tooltip-jtools .ui-tooltip-icon {
+  border-color: #555;
+}
+.ui-tooltip-jtools .ui-tooltip-titlebar .ui-state-hover {
+  border-color: #333;
+}
+/* Cluetip style */
+.ui-tooltip-cluetip {
+  -webkit-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4);
+  background-color: #D9D9C2;
+  color: #111;
+  border: 0 dashed transparent;
+}
+.ui-tooltip-cluetip .ui-tooltip-titlebar {
+  background-color: #87876A;
+  color: white;
+  border: 0 dashed transparent;
+}
+.ui-tooltip-cluetip .ui-tooltip-icon {
+  border-color: #808064;
+}
+.ui-tooltip-cluetip .ui-tooltip-titlebar .ui-state-hover {
+  border-color: #696952;
+  color: #696952;
+}
+/* Tipsy style */
+.ui-tooltip-tipsy {
+  background: black;
+  background: rgba(0, 0, 0, 0.87);
+  color: white;
+  border: 0px solid transparent;
+  font-size: 11px;
+  font-family: 'Lucida Grande', sans-serif;
+  font-weight: bold;
+  line-height: 16px;
+  text-shadow: 0 1px black;
+}
+.ui-tooltip-tipsy .ui-tooltip-titlebar {
+  padding: 6px 35px 0 10;
+  background-color: transparent;
+}
+.ui-tooltip-tipsy .ui-tooltip-content {
+  padding: 6px 10;
+}
+.ui-tooltip-tipsy .ui-tooltip-icon {
+  border-color: #222;
+  text-shadow: none;
+}
+.ui-tooltip-tipsy .ui-tooltip-titlebar .ui-state-hover {
+  border-color: #303030;
+}
+/* Tipped style */
+.ui-tooltip-tipped {
+  border: 3px solid #959FA9;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #F9F9F9;
+  color: #454545;
+  font-weight: normal;
+  font-family: serif;
+}
+.ui-tooltip-tipped .ui-tooltip-titlebar {
+  border-bottom-width: 0;
+  color: white;
+  background: #3A79B8;
+  background-image: -moz-linear-gradient(top, #3a79b8, #2e629d);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#3a79b8), to(#2e629d));
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr=#3a79b8, endColorstr=#2e629d);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D)";
+}
+.ui-tooltip-tipped .ui-tooltip-icon {
+  border: 2px solid #285589;
+  background: #285589;
+}
+.ui-tooltip-tipped .ui-tooltip-icon .ui-icon {
+  background-color: #FBFBFB;
+  color: #555;
+}
+/**
+ * Twitter Bootstrap style.
+ *
+ * Tested with IE 8, IE 9, Chrome 18, Firefox 9, Opera 11.
+ * Does not work with IE 7.
+ */
+.ui-tooltip-bootstrap {
+  font-size: 13px;
+  line-height: 18px;
+  color: #333333;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+}
+.ui-tooltip-bootstrap .ui-tooltip-titlebar {
+  font-size: 18px;
+  line-height: 22px;
+  border-bottom: 1px solid #ccc;
+  background-color: transparent;
+}
+.ui-tooltip-bootstrap .ui-tooltip-titlebar .ui-state-default {
+  right: 9px;
+  top: 49%;
+  border-style: none;
+}
+.ui-tooltip-bootstrap .ui-tooltip-icon {
+  background: white;
+}
+.ui-tooltip-bootstrap .ui-tooltip-icon .ui-icon {
+  width: auto;
+  height: auto;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #000000;
+  text-shadow: 0 1px 0 #ffffff;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+}
+.ui-tooltip-bootstrap .ui-tooltip-icon .ui-icon:hover {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+/* IE9 fix - removes all filters */
+.ui-tooltip:not(.ie9haxors) div.ui-tooltip-content,
+.ui-tooltip:not(.ie9haxors) div.ui-tooltip-titlebar {
+  filter: none;
+  -ms-filter: none;
 }
 #LeaderboardView .items td:first-child,
 #LeaderboardView .items th:first-child {
@@ -3229,14 +3883,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   padding-top: 1px;
 }
 .icon-leaderboard-monthly:before {
@@ -3245,14 +3897,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   padding-top: 1px;
 }
 .icon-leaderboard-overall:before {
@@ -3261,14 +3911,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   padding-top: 1px;
 }
 .points {
@@ -3331,6 +3979,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .game-badge,
 .badge {
+  cursor: help;
   position: relative;
   display: inline-block;
   max-width: 100%;
@@ -3531,61 +4180,80 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   color: #7bb730 !important;
   margin-top: 3px;
 }
+.game-badge-CreateContact .badge-icon:before,
 .CreateContact .badge-icon:before {
   content: "y";
 }
+.game-badge-MassEditContacts .badge-icon:before,
 .MassEditContacts .badge-icon:before {
   content: "?";
 }
+.game-badge-CreateAccount .badge-icon:before,
 .CreateAccount .badge-icon:before {
   content: "P";
 }
+.game-badge-MassEditAccounts .badge-icon:before,
 .MassEditAccounts .badge-icon:before {
   content: "]";
 }
+.game-badge-SearchAccounts .badge-icon:before,
 .SearchAccounts .badge-icon:before {
   content: "=";
 }
+.game-badge-SearchContacts .badge-icon:before,
 .SearchContacts .badge-icon:before {
   content: "%";
 }
+.game-badge-SearchOpportunities .badge-icon:before,
 .SearchOpportunities .badge-icon:before {
   content: "+";
 }
+.game-badge-LoginUser .badge-icon:before,
 .LoginUser .badge-icon:before {
   content: "E";
 }
+.game-badge-CreateLead .badge-icon:before,
 .CreateLead .badge-icon:before {
   content: ".";
 }
+.game-badge-CreateCall .badge-icon:before,
 .CreateCall .badge-icon:before {
   content: "W";
 }
+.game-badge-CreateMeeting .badge-icon:before,
 .CreateMeeting .badge-icon:before {
   content: "U";
 }
+.game-badge-CreateNote .badge-icon:before,
 .CreateNote .badge-icon:before {
   content: "3";
 }
+.game-badge-CreateOpportunity .badge-icon:before,
 .CreateOpportunity .badge-icon:before {
   content: "9";
 }
+.game-badge-MassEditOpportunity .badge-icon:before,
 .MassEditOpportunity .badge-icon:before {
   content: "[";
 }
+.game-badge-SearchOpportunity .badge-icon:before,
 .SearchOpportunity .badge-icon:before {
   content: "+";
 }
+.game-badge-WinOpportunity .badge-icon:before,
 .WinOpportunity .badge-icon:before {
   content: ";";
 }
+.game-badge-CreateTask .badge-icon:before,
 .CreateTask .badge-icon:before {
   content: "4";
 }
 /*Night Icons*/
+.game-badge-NightOwl .badge-icon:before,
 .NightOwl .badge-icon:before {
   content: "$";
 }
+.game-badge-EarlyBird .badge-icon:before,
 .EarlyBird .badge-icon:before {
   content: "#";
 }
@@ -3986,17 +4654,19 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+.ModalGameNotification a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .ModalGameNotification a:hover {
   color: #7bb730 !important;
@@ -4004,6 +4674,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .ModalGameNotification a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.ModalGameNotification a.loading .z-spinner {
+  display: inline-block;
+}
+.ModalGameNotification a.loading .z-icon {
+  display: none;
 }
 .ModalGameNotification a:focus {
   outline: none;
@@ -4053,12 +4729,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -4070,12 +4745,21 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 14px !important;
   line-height: 28px;
 }
+#WelcomeView .dashboard-link:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 #WelcomeView .dashboard-link:hover {
   color: #7bb730 !important;
 }
 #WelcomeView .dashboard-link:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#WelcomeView .dashboard-link.loading .z-spinner {
+  display: inline-block;
+}
+#WelcomeView .dashboard-link.loading .z-icon {
+  display: none;
 }
 #welcome-content {
   margin-top: 30px;
@@ -4114,6 +4798,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .help-section li {
   margin-bottom: 10px;
+}
+#tip-of-day-next-page-link {
+  margin-left: 16px;
 }
 .hide-welcome {
   display: block;
@@ -4320,7 +5007,7 @@ section {
   margin: -100px auto 0 -250px;
   height: 200px;
   position: relative;
-  top: 45%;
+  top: 40%;
   left: 50%;
 }
 #LoginView #LoginLogo {
@@ -4350,6 +5037,12 @@ section {
   -ms-box-shadow: none !important;
   box-shadow: none !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  /*
+            input[type="submit"]{
+                .zButton();
+            }
+            */
+
 }
 #LoginView .form form > div {
   margin-bottom: 15px;
@@ -4372,47 +5065,12 @@ section {
   margin-top: 1px !important;
   clear: both;
 }
-#LoginView .form form input[type="submit"] {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-}
-#LoginView .form form input[type="submit"]:hover {
-  color: #7bb730 !important;
-}
-#LoginView .form form input[type="submit"]:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
 #LoginView .form form .errorMessage {
   font-size: 11px;
   padding-top: 4px;
+}
+#LoginView .error {
+  margin-bottom: 40px !important;
 }
 .background-1 {
   background: #ffffff url(../images/landscape-1.png) left bottom repeat-x;
@@ -4654,8 +5312,16 @@ section {
   box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
 }
 #app-search {
-  margin-left: 40px;
+  margin-left: 3%;
   width: 341px;
+  display: block;
+}
+#app-search .z-spinner {
+  display: block !important;
+  z-index: 999999;
+  position: absolute;
+  margin-left: 316px;
+  margin-top: 11px;
 }
 #globalSearchInput {
   font-style: italic;
@@ -4689,6 +5355,73 @@ section {
 #globalSearchInput .ui-multiselect-menu {
   min-width: 225px !important;
 }
+.ui-multiselect {
+  padding: 0;
+  text-align: left;
+}
+.ui-multiselect span.ui-icon {
+  float: right;
+}
+.ui-multiselect-single .ui-multiselect-checkboxes input {
+  position: absolute !important;
+  top: auto !important;
+  left: -9999px;
+}
+.ui-multiselect-single .ui-multiselect-checkboxes label {
+  padding: 5px !important;
+}
+.ui-multiselect-header {
+  margin-bottom: 0;
+  padding: 0;
+}
+.ui-multiselect-header ul li {
+  float: left;
+  padding: 0 0 0 0;
+}
+.ui-multiselect-header a {
+  text-decoration: none;
+}
+.ui-multiselect-header a:hover {
+  text-decoration: underline;
+}
+.ui-multiselect-header span.ui-icon {
+  float: left;
+}
+.ui-multiselect-header li.ui-multiselect-close {
+  float: right;
+  text-align: right;
+  padding-right: 0;
+}
+.ui-multiselect-menu {
+  display: none;
+  padding: 0;
+  position: absolute;
+  z-index: 10000;
+}
+.ui-multiselect-checkboxes {
+  position: relative;
+  overflow-y: auto;
+}
+.ui-multiselect-checkboxes label {
+  cursor: default;
+  display: block;
+}
+.ui-multiselect-checkboxes label input {
+  position: relative;
+  top: 1px;
+}
+.ui-multiselect-checkboxes li {
+  clear: both;
+  padding-right: 0;
+}
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label {
+  text-align: center;
+  font-weight: bold;
+}
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a {
+  display: block;
+  text-decoration: none;
+}
 .AppContainer {
   min-width: 900px;
   height: 100%;
@@ -4708,6 +5441,13 @@ section {
   border-radius: 0 0 5px 5px;
   z-index: 0;
   position: relative;
+}
+.AppContent {
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  -ms-border-radius: 0 0 5px 5px;
+  -o-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
 }
 #HeaderView {
   position: relative;
@@ -5152,8 +5892,10 @@ section {
   display: inline-block;
   border-left: 1px solid #bababa;
   position: relative;
-  text-indent: 20px;
   border-left: 1px solid #bababa;
+  text-indent: 0 !important;
+  padding-left: 40px;
+  vertical-align: middle;
 }
 .view-toolbar > a:hover,
 .view-toolbar .parent > a:hover,
@@ -5229,15 +5971,14 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
   content: "!";
+  top: -2px;
 }
 .icon-create:before {
   content: "Y";
@@ -5245,15 +5986,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  padding-top: 1px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-add:before {
   content: "Y";
@@ -5261,15 +6000,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before {
@@ -5278,15 +6015,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 4px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before {
@@ -5295,15 +6030,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  padding-top: 1px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-memberships:before {
   content: "y";
@@ -5311,15 +6044,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-permissions:before {
   content: "E";
@@ -5327,15 +6058,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-rights:before {
   content: "u";
@@ -5343,15 +6072,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-policies:before {
   content: "x";
@@ -5359,15 +6086,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-delete:before {
   content: "_";
@@ -5375,15 +6100,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 2px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-left-arrow:before {
   content: "8";
@@ -5391,15 +6114,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-right-arrow:before {
   content: "7";
@@ -5407,15 +6128,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 2px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-fields:before {
   content: "0";
@@ -5423,15 +6142,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-layout:before {
   content: "C";
@@ -5439,15 +6156,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-user-details:before {
   content: "e";
@@ -5455,15 +6170,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-password:before {
   content: "J";
@@ -5471,15 +6184,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-audit:before {
   content: "I";
@@ -5487,15 +6198,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-user-config:before {
   content: "n";
@@ -5503,15 +6212,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-security:before {
   content: "F";
@@ -5519,15 +6226,13 @@ section {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 3px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 /*=Footer*/
 #FooterView {
@@ -5540,7 +6245,6 @@ section {
   margin-right: 50px;
   font-style: italic;
   color: #262877;
-  text-align: right;
 }
 #credit-link {
   background: url(../images/Zurmo.png) left top no-repeat;
@@ -5623,27 +6327,27 @@ table.items th {
 }
 tr.odd {
   background: none;
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  -ms-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 tr.even {
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  -ms-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 table.items tr:hover {
   background-color: #D4E7BC;
   color: #262877;
-  -webkit-transition: all 0.35s ease-out;
-  -moz-transition: all 0.35s ease-out;
-  -o-transition: all 0.35s ease-out;
-  -ms-transition: all 0.35s ease-out;
-  transition: all 0.35s ease-out;
+  -webkit-transition: all 0.05s ease-out;
+  -moz-transition: all 0.05s ease-out;
+  -o-transition: all 0.05s ease-out;
+  -ms-transition: all 0.05s ease-out;
+  transition: all 0.05s ease-out;
 }
 table.items tr:hover .pencil {
   visibility: visible;
@@ -5826,13 +6530,16 @@ table.items thead tr:hover {
 .modal-view-toolbar a,
 .form-toolbar a {
   color: #333333;
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+.modal-view-toolbar a:not(.attachLoading),
+.form-toolbar a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .modal-view-toolbar a:hover,
 .form-toolbar a:hover {
@@ -5847,37 +6554,34 @@ table.items thead tr:hover {
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
-.modal-view-toolbar input,
-.form-toolbar input {
+a.attachLoading {
   color: #FFF;
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -webkit-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  -moz-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  -o-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  -ms-box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  box-shadow: inset 0 1px 1px 1px rgba(255, 255, 255, 0.8);
-  background-color: #97c43d;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  background-color: #6fa82d;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#97c43d));
-  background-image: -moz-linear-gradient(top, #97c43d, #97c43d);
-  background-image: -ms-linear-gradient(top, #97c43d, #97c43d);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #97c43d));
-  background-image: -webkit-linear-gradient(top, #97c43d, #97c43d);
-  background-image: -o-linear-gradient(top, #97c43d, #97c43d);
-  background-image: linear-gradient(top, #97c43d, #97c43d);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#97c43d', GradientType=0);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: linear-gradient(top, #97c43d, #6fa82d);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
   cursor: pointer;
 }
-.modal-view-toolbar input:hover,
-.form-toolbar input:hover {
+a.attachLoading:hover {
   color: #656565 !important;
 }
-.modal-view-toolbar input:active,
-.form-toolbar input:active {
+a.attachLoading:active {
   color: #FFF !important;
   -webkit-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -5891,7 +6595,7 @@ table.items thead tr:hover {
   right: 8px;
 }
 .portlet-toolbar a {
-  padding: 0 15px 0 25px;
+  padding: 0 15px 0 15px;
   line-height: 23px;
   margin: 0;
   font-size: 10px;
@@ -5911,7 +6615,6 @@ table.items thead tr:hover {
   border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #bababa;
   color: #656565;
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -5919,23 +6622,25 @@ table.items thead tr:hover {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
+.portlet-toolbar a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .portlet-toolbar a:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 1px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+  color: #fff;
+  margin-left: 0;
   color: #7bb730;
-  margin-left: 2px;
 }
 .portlet-toolbar a:hover {
   color: #7bb730 !important;
@@ -5951,6 +6656,7 @@ table.items thead tr:hover {
 a.simple-select {
   color: #262877 !important;
   background: none !important;
+  background-image: none !important;
   -webkit-box-shadow: none  !important;
   -moz-box-shadow: none  !important;
   -o-box-shadow: none  !important;
@@ -5968,6 +6674,9 @@ a.simple-select {
 }
 a.simple-select:before {
   content: "" !important;
+}
+.portlet-toolbar a.simple-select {
+  background: none !important;
 }
 /*=Popup Modals*/
 .ui-dialog {
@@ -6077,6 +6786,11 @@ a.simple-select:before {
 .ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick:hover {
   background: transparent url(../images/widget-close-btn.png) left top no-repeat;
 }
+.big-spinner {
+  margin-left: 270px;
+  margin-top: 30px;
+  display: block;
+}
 .ui-resizable-handle {
   z-index: 0;
 }
@@ -6093,11 +6807,7 @@ a.simple-select:before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #fff;
-  filter: alpha(opacity=50);
-  -khtml-opacity: 0.5;
-  -moz-opacity: 0.5;
-  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.5);
 }
 /*=Checkboxes*/
 label.hasCheckBox {
@@ -6140,7 +6850,53 @@ div.wide.form label.hasCheckBox {
   position: absolute;
   left: -9999px;
 }
+/*=LIST VIEW*/
 /*=Search Scope box, and account list*/
+.list-preloader {
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  -moz-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  -o-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  -ms-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  margin: -15px 0 0 -15px;
+}
+.list-preloader .z-spinner {
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 4px 0 0 4px;
+}
+.overlay-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+}
+.overlay-spinner .big-spinner {
+  width: auto;
+  height: auto;
+  display: block;
+}
+.loading .list-preloader {
+  display: block;
+}
+.cgrid-view.loading .list-preloader {
+  display: block;
+}
 .ZeroModelsYetView h2 {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
@@ -6184,12 +6940,11 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -6199,6 +6954,9 @@ div.wide.form label.hasCheckBox {
   margin-top: 15px;
   float: left;
 }
+.ZeroModelsYetView a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .ZeroModelsYetView a:hover {
   color: #7bb730 !important;
 }
@@ -6206,13 +6964,19 @@ div.wide.form label.hasCheckBox {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.ZeroModelsYetView a.loading .z-spinner {
+  display: inline-block;
+}
+.ZeroModelsYetView a.loading .z-icon {
+  display: none;
+}
 .ZeroModelsYetView a:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   position: relative;
-  top: 2px;
+  top: -1px;
   left: -5px;
   margin-right: 3px;
   color: #7bb730;
@@ -6305,6 +7069,7 @@ div.wide.form label.hasCheckBox {
   float: left;
   width: 100%;
   margin-bottom: 20px;
+  position: relative;
 }
 .cgrid-view {
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
@@ -6312,6 +7077,7 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  position: relative;
 }
 .juiportlet-widget-content .cgrid-view {
   -webkit-box-shadow: none;
@@ -6397,17 +7163,19 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+.search-form-tools input[type="submit"]:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .search-form-tools input[type="submit"]:hover {
   color: #7bb730 !important;
@@ -6415,6 +7183,12 @@ div.wide.form label.hasCheckBox {
 .search-form-tools input[type="submit"]:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.search-form-tools input[type="submit"].loading .z-spinner {
+  display: inline-block;
+}
+.search-form-tools input[type="submit"].loading .z-icon {
+  display: none;
 }
 #more-search-linkmodal,
 #more-search-link {
@@ -6427,6 +7201,7 @@ div.wide.form label.hasCheckBox {
   margin-left: 5px;
 }
 .search-view-1 {
+  z-index: 100;
   min-width: 400px;
   height: auto;
   position: absolute;
@@ -6563,7 +7338,8 @@ div.wide.form label.hasCheckBox {
   width: 100% !important;
 }
 .attributesContainer {
-  min-height: 260px;
+  /*min-height: 260px;*/
+
   padding-bottom: 15px;
 }
 #edit-form {
@@ -6818,6 +7594,7 @@ div.wide.form label.hasCheckBox {
   cursor: default;
 }
 .details-table {
+  position: relative;
   margin-right: 20px;
 }
 .details-table table {
@@ -7040,7 +7817,7 @@ div.wide.form label.hasCheckBox {
 .toolbar-mbmenu {
   position: absolute;
   top: -12px;
-  right: 30px;
+  right: 10px;
   margin: 0;
   float: right;
   width: auto;
@@ -7080,12 +7857,11 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -7093,12 +7869,21 @@ div.wide.form label.hasCheckBox {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   font-size: 11px;
 }
+.toolbar-mbmenu #OptionsMenu > li > a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 .toolbar-mbmenu #OptionsMenu > li > a:hover {
   color: #7bb730 !important;
 }
 .toolbar-mbmenu #OptionsMenu > li > a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.toolbar-mbmenu #OptionsMenu > li > a.loading .z-spinner {
+  display: inline-block;
+}
+.toolbar-mbmenu #OptionsMenu > li > a.loading .z-icon {
+  display: none;
 }
 .toolbar-mbmenu #OptionsMenu > li > a:after {
   content: "▾";
@@ -7315,17 +8100,18 @@ div.wide.form label.hasCheckBox {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
-  margin: 0 10px 0 0;
-  line-height: 100%;
-  position: absolute;
-  text-indent: -20px;
-  top: 2px;
+  margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  top: 1px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
   color: #7bb730;
   margin-left: 2px;
+}
+#NoteEditAndDetailsView .has-model-select a {
+  top: 24px !important;
 }
 #inline-edit-form table + table {
   float: left;
@@ -7354,6 +8140,9 @@ div.wide.form label.hasCheckBox {
   margin-left: -90px;
   text-align: right;
   margin-top: 6px;
+}
+#inline-edit-form .view-toolbar-container a {
+  float: right;
 }
 #inline-edit-form .permissions-box {
   margin-left: 0 !important;
@@ -7716,6 +8505,17 @@ div.hasHalfs .twoThirds {
   color: #262877 !important;
   outline: none;
 }
+/*=Meeting/Task Single View*/
+#NoteEditAndDetailsView .details-table,
+#TaskEditAndDetailsView .details-table,
+#MeetingEditAndDetailsView .details-table {
+  margin-right: 0 !important;
+}
+#NoteEditAndDetailsView .view-toolbar,
+#TaskEditAndDetailsView .view-toolbar,
+#MeetingEditAndDetailsView .view-toolbar {
+  margin-top: 0 !important;
+}
 /*=Latest Activity*/
 .less-pronounced-text {
   font-style: italic;
@@ -7952,6 +8752,11 @@ div.hasHalfs .twoThirds {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
 }
+#activities-rollup-tooltip {
+  position: relative;
+  margin-top: -9px;
+  top: 2px;
+}
 .vertical-forward-pager {
   font-weight: bold;
   display: block;
@@ -8049,6 +8854,8 @@ div.hasHalfs .twoThirds {
 }
 /*=Auto Complete*/
 .ui-autocomplete {
+  margin-top: 2px;
+  width: 335px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -8067,6 +8874,7 @@ div.hasHalfs .twoThirds {
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   padding-top: 3px;
   padding-bottom: 3px;
+  text-align: left;
 }
 .ui-autocomplete li {
   list-style: none;
@@ -8076,7 +8884,7 @@ div.hasHalfs .twoThirds {
   font-size: 11px;
   font-weight: normal;
   display: block;
-  padding: 5px 10px 5px 10px;
+  padding: 2px 10px 2px 10px;
   margin: 0 2px;
 }
 .ui-autocomplete li a:hover,
@@ -8363,17 +9171,19 @@ div.hasHalfs .twoThirds {
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+#progressBar-links a:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #progressBar-links a:hover {
   color: #7bb730 !important;
@@ -8381,6 +9191,12 @@ div.hasHalfs .twoThirds {
 #progressBar-links a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+#progressBar-links a.loading .z-spinner {
+  display: inline-block;
+}
+#progressBar-links a.loading .z-icon {
+  display: none;
 }
 /*=About*/
 #AboutView {
