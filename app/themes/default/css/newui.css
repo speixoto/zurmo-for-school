@@ -835,9 +835,9 @@ table.configuration-list tr td:last-child a:before {
 }
 #ModulePermissionsEditAndDetailsView th {
   /*text-align:left;
-		font-size: 12px !important;
-		color: #666;
-		font-weight: 400 !important;*/
+        font-size: 12px !important;
+        color: #666;
+        font-weight: 400 !important;*/
 
 }
 .multiselect-holder {
@@ -1440,21 +1440,21 @@ table.configuration-list tr td:last-child a:before {
 }
 #UsersPageView {
   /*
-	.DetailsView{
-		table{
-			margin-left:8px;
-		}
-		td{
-			text-align:left;
-			padding-left:15px;
-		}
-		th{
-			text-align:left;
-			font-size: 12px !important;
-			color: #666;
-		}
-	}
-	*/
+    .DetailsView{
+        table{
+            margin-left:8px;
+        }
+        td{
+            text-align:left;
+            padding-left:15px;
+        }
+        th{
+            text-align:left;
+            font-size: 12px !important;
+            color: #666;
+        }
+    }
+    */
 
 }
 #UsersPageView .panel {
@@ -3326,15 +3326,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     height: 26px;
   }
   /*
-  	.panel, #permissions-module{
-  		.has-date-select, .has-model-select{
-  			a, button{
-              	&:before{
-                  	top:-3px;
-              	}
+      .panel, #permissions-module{
+          .has-date-select, .has-model-select{
+              a, button{
+                  &:before{
+                      top:-3px;
+                  }
              }
-  		}
-  	}*/
+          }
+      }*/
   .has-model-select a {
     top: 25px !important;
   }
@@ -5342,56 +5342,56 @@ section {
   color: #545454;
   font-style: normal;
 }
-.autocomplete-icon-Account:before {
+.autocomplete-icon-AccountsModule:before {
   content: "P";
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
-.autocomplete-icon-Contact:before {
+.autocomplete-icon-ContactsModule:before {
   content: "y";
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
-.autocomplete-icon-Lead:before {
+.autocomplete-icon-LeadsModule:before {
   content: ".";
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
-.autocomplete-icon-Opportunity:before {
+.autocomplete-icon-OpportunitiesModule:before {
   content: "9";
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
-.autocomplete-icon-Task:before {
+.autocomplete-icon-TasksModule:before {
   content: "4";
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
-.autocomplete-icon-Note:before {
+.autocomplete-icon-NotesModule:before {
   content: "3";
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
-.autocomplete-icon-Meeting:before {
+.autocomplete-icon-MeetingsModule:before {
   content: "U";
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
-.autocomplete-icon-User:before {
+.autocomplete-icon-UsersModule:before {
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
