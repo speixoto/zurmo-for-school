@@ -106,13 +106,13 @@
             $modelClassNamesAndSearchAttributeData = self::makeModelClassNamesAndSearchAttributeData($partialTerm, $user, $scopeData);
             if (empty($modelClassNamesAndSearchAttributeData))
             {
-                return array(array('href' => '', 'label' => Yii::t('Default', 'No Results Found')));
+                return array(array('href' => '', 'label' => Yii::t('Default', 'No Results Found'), 'iconClass' => ''));
             }
             $dataProvider = new RedBeanModelsDataProvider('anId', null, false, $modelClassNamesAndSearchAttributeData);
             $data = $dataProvider->getData();
             if (empty($data))
             {
-                return array(array('href' => '', 'label' => Yii::t('Default', 'No Results Found')));
+                return array(array('href' => '', 'label' => Yii::t('Default', 'No Results Found'), 'iconClass' => ''));
             }
             $autoCompleteResults = array();
             foreach ($data as $model)
@@ -122,8 +122,9 @@
                 $route           = Yii::app()->createUrl($moduleClassName::getDirectoryName()
                                                          . '/default/details/', array('id' => $model->id));
                 $autoCompleteResults[] = array(
-                    'href' => $route,
-                    'label' => strval($model) .' - ' . $moduleLabel,
+                    'href'           => $route,
+                    'label'          => strval($model) .' - ' . $moduleLabel,
+                    'iconClass' => get_class($model),
                 );
             }
             return $autoCompleteResults;

@@ -101,7 +101,7 @@
         protected static function renderNextTipAjaxLink($id, $label)
         {
             assert('is_string($id)');
-            assert('is_string($label)');;
+            assert('is_string($label)');
             $url       = Yii::app()->createUrl('home/default/getTip');
             // Begin Not Coding Standard
             return       CHtml::ajaxLink($label, $url,
