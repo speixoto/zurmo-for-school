@@ -3129,13 +3129,15 @@ div.hasHalfs{
             border-bottom: 1px solid #CCC;
             color: #666;
             font-size: 11px;
+            line-height:100%;
             font-weight: normal;
             display: block;
             padding: 6px 10px 6px 10px;
             margin: 0 2px;
-            &:hover, #ui-active-menuitem, .ui-state-hover{
+            &:hover, &#ui-active-menuitem, &.ui-state-hover{
                 background:@themeColor2 !important;
                 color:#fff !important;
+                cursor:pointer !important;
             }
         }
         &:first-child a{
