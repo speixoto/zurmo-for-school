@@ -280,8 +280,6 @@
             => 'Es gab ein Problem beim Erstellen der Datenbank Fehlercode:',
         'There was a problem creating the user Error code:'
             => 'Es gab ein Problem beim Erstellen des Benutzers Fehlercode:',
-        'Tidy'
-            => 'Tidy', // Same Word Translated
         'User who can connect to the database.'
             => 'Benutzer, die mit der Datenbank verbinden kann.',
         'User`s password.'

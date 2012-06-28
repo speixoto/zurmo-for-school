@@ -24,18 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Makes sure tidy is installed and has the correct minimum version.
-     */
-    class TidyServiceHelper extends ServiceHelper
+    class AccountSearch
     {
-        protected $required = false;
-
-        protected $minimumVersion = '2.0';
-
-        protected function checkService()
+        /**
+         * For a given email address, run search by email address and retrieve account models.
+         */
+        public static function getAccountsByAnyEmailAddress($emailAddress, $pageSize = null)
         {
-            return $this->checkServiceAndSetMessagesByMethodNameAndDisplayLabel('checkTidy', Yii::t('Default', 'Tidy'));
+            assert('is_string($emailAddress)');
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'primaryEmail',
+                    'relatedAttributeName' => 'emailAddress',
+                    'operatorType'         => 'equals',
+                    'value'                => $emailAddress,
+                ),
+                2 => array(
+                    'attributeName'        => 'secondaryEmail',
+                    'relatedAttributeName' => 'emailAddress',
+                    'operatorType'         => 'equals',
+                    'value'                => $emailAddress,
+                ),
+            );
+            $metadata['structure'] = '(1 or 2)';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
+            return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);
         }
     }
 ?>

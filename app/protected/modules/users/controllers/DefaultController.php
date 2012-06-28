@@ -85,7 +85,6 @@
 
         public function actionDetails($id)
         {
-            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
             $title           = Yii::t('Default', 'Profile');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
