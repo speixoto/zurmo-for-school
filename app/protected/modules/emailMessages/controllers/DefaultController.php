@@ -270,7 +270,6 @@
 
             if(isset($_POST[get_class($selectForm)]))
             {
-
                 if (isset($_POST['ajax']) && $_POST['ajax'] === 'select-contact-form-' . $id)
                 {
 
@@ -289,6 +288,7 @@
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);
                     $contact = Contact::getById((int)$selectForm->contactId);
                     ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($emailMessage, $contact);
+                    ArchivedEmailMatchingUtil::resolveEmailAddressToContactIfEmailRelationAvailable($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
                                                                          EmailFolder::TYPE_ARCHIVED_UNMATCHED);
                     if(!$emailMessage->save())

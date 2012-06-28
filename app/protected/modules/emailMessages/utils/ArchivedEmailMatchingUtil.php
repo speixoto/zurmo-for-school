@@ -90,6 +90,40 @@
                     {
                         $contact->primaryEmail->emailAddress = $recipient->toAddress;
                         self::resolveFullNameToFirstAndLastName($recipient->toName, $contact);
+                        return;
+                    }
+                }
+            }
+        }
+
+        public static function resolveEmailAddressToContactIfEmailRelationAvailable(EmailMessage $emailMessage, $contact)
+        {
+            if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->isSame($contact))
+            {
+                if($contact->primaryEmail->emailAddress == null)
+                {
+                    $contact->primaryEmail->emailAddress     = $emailMessage->sender->fromAddress;
+                }
+                elseif($contact->secondaryEmail->emailAddress == null)
+                {
+                    $contact->secondaryEmail->emailAddress   = $emailMessage->sender->fromAddress;
+                }
+            }
+            elseif($emailMessage->recipients->count() > 0)
+            {
+                foreach($emailMessage->recipients as $recipient)
+                {
+                    if($recipient->personOrAccount->isSame($contact))
+                    {
+                        if($contact->primaryEmail->emailAddress == null)
+                        {
+                            $contact->primaryEmail->emailAddress   = $recipient->toAddress;
+                        }
+                        elseif($contact->secondaryEmail->emailAddress == null)
+                        {
+                            $contact->secondaryEmail->emailAddress   = $recipient->toAddress;
+                        }
+                        return;
                     }
                 }
             }
