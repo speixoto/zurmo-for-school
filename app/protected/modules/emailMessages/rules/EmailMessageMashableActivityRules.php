@@ -153,23 +153,26 @@
             }
             foreach($recipients as $recipient)
             {
-                $castedDownModel = self::castDownItem($recipient->personOrAccount);
-                try
+                if($recipient->personOrAccount->id > 0)
                 {
-                    if (strval($castedDownModel) != null)
-                                {
-                                    $params          = array('label' => strval($castedDownModel));
-                                    $moduleClassName = $castedDownModel->getModuleClassName();
-                                    $moduleId        = $moduleClassName::getDirectoryName();
-                                    $element         = new DetailsLinkActionElement('default', $moduleId,
-                                                                                    $castedDownModel->id, $params);
-                                    $existingModels[] = $element->render();
-                                }
+                    $castedDownModel = self::castDownItem($recipient->personOrAccount);
+                    try
+                    {
+                        if (strval($castedDownModel) != null)
+                                    {
+                                        $params          = array('label' => strval($castedDownModel));
+                                        $moduleClassName = $castedDownModel->getModuleClassName();
+                                        $moduleId        = $moduleClassName::getDirectoryName();
+                                        $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                                        $castedDownModel->id, $params);
+                                        $existingModels[] = $element->render();
+                                    }
 
-                }
-                catch(AccessDeniedSecurityException $e)
-                {
-                    return $emailMessageSender->fromAddress;
+                    }
+                    catch(AccessDeniedSecurityException $e)
+                    {
+                        return $emailMessageSender->fromAddress;
+                    }
                 }
             }
             return self::resolveStringValueModelsDataToStringContent($existingModels);
