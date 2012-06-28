@@ -299,19 +299,6 @@
         }
 
         /**
-         * @returns true, or the Tidy version if less than required, or false if not installed.
-         */
-        public static function checkTidy($minimumRequiredVersion, /* out */ &$actualVersion)
-        {
-            $actualVersion = phpversion('tidy');
-            if ($actualVersion !== null)
-            {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
-            }
-            return false;
-        }
-
-        /**
          * @returns true, or the Curl version if less than required, or false if not installed.
          */
         public static function checkCurl($minimumRequiredVersion, /* out */ &$actualVersion)

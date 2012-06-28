@@ -57,7 +57,6 @@
                          'InstanceFolders',
                          'APC',
                          'Soap',
-                         'Tidy',
                          'Curl',
                          'Yii',
                          'RedBean',
