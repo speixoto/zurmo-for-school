@@ -124,7 +124,7 @@
                 $autoCompleteResults[] = array(
                     'href'           => $route,
                     'label'          => strval($model) .' - ' . $moduleLabel,
-                    'iconClass' => get_class($model),
+                    'iconClass' => 'autocomplete-icon-' . get_class($model),
                 );
             }
             return $autoCompleteResults;
