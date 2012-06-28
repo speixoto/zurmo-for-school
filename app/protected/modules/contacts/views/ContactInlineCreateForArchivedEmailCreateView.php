@@ -174,5 +174,10 @@
         {
             $elementInformation['inputPrefix']  = array(get_class($this->model), $this->uniqueId);
         }
+
+        public static function getDisplayDescription()
+        {
+            return Yii::t('Default', 'Matching Archived Emails');
+        }
     }
 ?>

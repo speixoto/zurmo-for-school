@@ -36,7 +36,7 @@
 
         protected function renderLabel()
         {
-            $label = Yii::t('Default', 'LeadsModuleSingularLabel or ContactsModuleSingularLabel',
+            $label = Yii::t('Default', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
                                                 LabelUtil::getTranslationParamsForAllModules());
             if ($this->form === null)
             {

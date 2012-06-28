@@ -220,13 +220,12 @@
 
         public function actionMatchingList()
         {
+            $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
+            $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule', Yii::app()->user->userModel);
+            EmailMessagesControllerSecurityUtil::
+                resolveCanUserProperlyMatchMessage($userCanAccessContacts, $userCanAccessLeads);
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class($this->getModule()));
-
-                //what happens if you don't have access rights to leads or contacts modules?
-                //LeadsControllerSecurityUtil::
-            //resolveCanUserProperlyConvertLead needed in controller
-
             $emailMessage     = new EmailMessage(false);
             $searchAttributes = array();
             $metadataAdapter  = new ArchivedEmailMatchingSearchDataProviderMetadataAdapter(
@@ -242,22 +241,6 @@
                 true,
                 $pageSize
             );
-
-            /* we can pass these settings into the listview to pass to the util to pass to the view.
-             *                 $userCanCreateLead,
-                $userCanCreateContact,
-                $userCanAccessLeads,
-                $userCanAccessContacts
-
-                //we can create the forms in the util i guess. or pass it here. not helping ourselves passing it here really
-                 * // i guess we are i dont know.
-                 *
-                 * $selectForm            //todo: assert at least user can access leads or contacts
-            //todo: assert at least user can create leads or contacts? otherwise you can't really archive to begin with so yes this is true.
-                 *
-             */
-
-
             $titleBarAndListView = new TitleBarAndListView(
                                         $this->getId(),
                                         $this->getModule()->getId(),
@@ -279,6 +262,10 @@
             $emailMessage          = EmailMessage::getById((int)$id);
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule', Yii::app()->user->userModel);
+            if(!$userCanAccessContacts && !$userCanAccessLeads)
+            {
+                throw new NotSupportedException();
+            }
             $selectForm            = self::makeSelectForm($userCanAccessLeads, $userCanAccessContacts);
 
             if(isset($_POST[get_class($selectForm)]))
