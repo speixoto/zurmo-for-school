@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View is used to display rows of email messages that are archived but not connected to any contacts or leads.
+     */
     class ArchivedEmailMatchingListView extends SecuredListView
     {
        /**

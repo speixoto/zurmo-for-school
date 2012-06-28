@@ -56,7 +56,6 @@
             Yii::app()->imap->imapPort        = $form->imapPort;
             Yii::app()->imap->imapSSL         = $form->imapSSL;
             Yii::app()->imap->imapFolder      = $form->imapFolder;
-
             Yii::app()->imap->setInboundSettings();
        }
     }

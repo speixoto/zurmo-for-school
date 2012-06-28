@@ -24,32 +24,74 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * @see ArchivedEmailMatchingListView.  For each row in the list, this view is used to allow a user to select
+     * an existing contact/lead, or create a new contact or lead to match the email message to.
+     * Enter description here ...
+     */
     class ArchivedEmailMatchingView extends GridView
     {
         protected $cssClasses =  array('DetailsView');
 
+        /**
+         * @var string
+         */
         protected $controllerId;
 
+        /**
+         * @var string
+         */
         protected $moduleId;
 
+        /**
+         * @var EmailMessage object
+         */
         protected $emailMessage;
 
+        /**
+         * Variable form depending on user's access/create rights to contacts and leads.
+         * @var CFormModel
+         */
         protected $selectForm;
 
+        /**
+         * @var Contact object
+         */
         protected $contact;
 
+        /**
+         * @var boolean
+         */
         protected $userCanAccessLeads;
 
+        /**
+         * @var boolean
+         */
         protected $userCanAccessContacts;
 
+        /**
+         * @var boolean
+         */
         protected $userCanCreateContact;
 
+        /**
+         * @var boolean
+         */
         protected $userCanCreateLead;
 
+        /**
+         * @var string
+         */
         protected $uniqueId;
 
+        /**
+         * @var string
+         */
         protected $saveActionId;
 
+        /**
+         * @var array
+         */
         protected $urlParameters;
 
         public function __construct(

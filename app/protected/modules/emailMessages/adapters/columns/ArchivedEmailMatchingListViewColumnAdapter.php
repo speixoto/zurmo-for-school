@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Used by the ArchivedEmailMatchingListView to display information about an email message.
+     */
     class ArchivedEmailMatchingListViewColumnAdapter extends ListViewColumnAdapter
     {
         public function renderGridViewData()

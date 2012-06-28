@@ -26,7 +26,7 @@
 
     /**
      * Display the email message and options to resolve it against existing contacts/leads or creating a new contact
-     * or lead.  Used by @see ARchivedEmailMatchingListView
+     * or lead.  Used by @see ArchivedEmailMatchingListView
      */
     class ArchivedEmailMatchingElement extends Element implements DerivedElementInterface
     {

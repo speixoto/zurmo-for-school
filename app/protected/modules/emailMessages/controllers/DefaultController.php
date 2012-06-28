@@ -299,20 +299,21 @@
             }
             else
             {
-                static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Contact');
-                static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Lead');
+                static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Contact', (int)$id);
+                static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Lead', (int)$id);
             }
         }
 
-        protected static function attemptToMatchAndSaveLeadOrContact($emailMessage, $type)
+        protected static function attemptToMatchAndSaveLeadOrContact($emailMessage, $type, $emailMessageId)
         {
             assert('$type == "Contact" || $type == "Lead"');
+            assert('is_int($emailMessageId)');
             if(isset($_POST[$type]))
             {
-                if (isset($_POST['ajax']) && $_POST['ajax'] === strtolower($type) . '-inline-create-form-' . $id)
+                if (isset($_POST['ajax']) && $_POST['ajax'] === strtolower($type) . '-inline-create-form-' . $emailMessageId)
                 {
                     $contact = new Contact();
-                    $contact->setAttributes($_POST[$type][$id]);
+                    $contact->setAttributes($_POST[$type][$emailMessageId]);
                     $contact->validate();
                     $errorData = array();
                     foreach ($contact->getErrors() as $attribute => $errors)
@@ -325,7 +326,7 @@
                 else
                 {
                     $contact = new Contact();
-                    $contact->setAttributes($_POST['Contact'][$id]);
+                    $contact->setAttributes($_POST[$type][$emailMessageId]);
                     if(!$contact->save())
                     {
                         throw new FailedToSaveModelException();

@@ -64,12 +64,6 @@
                 'value'                =>Yii::app()->user->userModel->id,
             );
             $structure .= $startingCount . ' and ' . ($startingCount +1);
-
-            //todo: add (sender personOrAccount isEmpty and recipients personOrAccount isEmpty)
-            //emailMessage hasOne -> sender -> personOrAccount -> id
-            //emailMessage hasMany -> recipients -> personOrAccount -> id
-
-
             if (empty($metadata['structure']))
             {
                 $adaptedMetadata['structure'] = '(' . $structure . ')';

@@ -29,6 +29,11 @@
      */
     class ArchivedEmailMatchingUtil
     {
+        /**
+         * @return string content
+         * @param EmailMessage object $emailMessage
+         * @param User object $user
+         */
         public static function renderEmailMessageToMatchContent(EmailMessage $emailMessage, $user)
         {
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', $user);
@@ -75,6 +80,10 @@
             return $view->render();
         }
 
+        /**
+         * @param EmailMessage object $emailMessage
+         * @param User object $user
+         */
         public static function resolveEmailAddressAndNameToContact(EmailMessage $emailMessage, $contact)
         {
             if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->id < 0)
@@ -96,6 +105,10 @@
             }
         }
 
+        /**
+         * @param EmailMessage object $emailMessage
+         * @param User object $user
+         */
         public static function resolveEmailAddressToContactIfEmailRelationAvailable(EmailMessage $emailMessage, $contact)
         {
             if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->isSame($contact))
@@ -129,18 +142,10 @@
             }
         }
 
-        protected static function resolveFullNameToFirstAndLastName($name, $contact)
-        {
-            @list($firstName, $lastName) = explode(' ', trim($name));
-            if ($lastName == null)
-            {
-                $lastName  = $firstName;
-                $firstName = null;
-            }
-            $contact->firstName = $firstName;
-            $contact->lastName  = $lastName;
-        }
-
+        /**
+         * @param EmailMessage object $emailMessage
+         * @param User object $user
+         */
         public static function resolveContactToSenderOrRecipient(EmailMessage $emailMessage, $contact)
         {
 
@@ -161,6 +166,18 @@
                 }
             }
             throw new NotSupportedException();
+        }
+
+        protected static function resolveFullNameToFirstAndLastName($name, $contact)
+        {
+            @list($firstName, $lastName) = explode(' ', trim($name));
+            if ($lastName == null)
+            {
+                $lastName  = $firstName;
+                $firstName = null;
+            }
+            $contact->firstName = $firstName;
+            $contact->lastName  = $lastName;
         }
     }
 ?>
