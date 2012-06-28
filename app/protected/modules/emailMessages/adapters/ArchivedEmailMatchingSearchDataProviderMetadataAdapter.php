@@ -55,7 +55,7 @@
                 'attributeName'        => 'folder',
                 'relatedAttributeName' => 'type',
                 'operatorType'         => 'equals',
-                'value'                => EmailFolder::TYPE_ARCHIVED,
+                'value'                => EmailFolder::TYPE_ARCHIVED_UNMATCHED,
             );
             $adaptedMetadata['clauses'][($startingCount +1)] = array(
                 'attributeName'        => 'owner',

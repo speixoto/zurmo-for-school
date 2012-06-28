@@ -188,7 +188,7 @@
             $recipient->toName          = 'Bobby Bobson';
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $emailMessage->recipients->add($recipient);
-            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
             $saved = $emailMessage->save();
             if (!$saved)
             {
@@ -215,7 +215,7 @@
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $recipient->personOrAccount = Yii::app()->user->userModel;
             $emailMessage->recipients->add($recipient);
-            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
             $saved = $emailMessage->save();
             if (!$saved)
             {
