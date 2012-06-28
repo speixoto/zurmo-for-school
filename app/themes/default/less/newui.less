@@ -99,6 +99,10 @@
 	background-color:rgba(255, 0, 0, 0.5);
 }
 
+.hide(){
+	display:none;
+}
+
 /*=For modern browsers */
 .clearfix{
     &:before{
@@ -505,6 +509,8 @@ footer, header, hgroup, menu, nav, section {
     	position:absolute;
     	margin-left:316px;
     	margin-top:11px;
+    	float:none;
+    	display:block !important;
     }
 }
 
@@ -528,42 +534,42 @@ footer, header, hgroup, menu, nav, section {
 }
 
 .autocomplete-icon-Account:before{
-    	content: "P";
-	.symbly(18px);
+    content: "P";
+	.symbly(20px);
 	margin-right:8px;
 }
 .autocomplete-icon-Contact:before{
 	content: "y";
-	.symbly(18px);
+	.symbly(22px);
 	margin-right:8px;
 }
 .autocomplete-icon-Lead:before{
 	content: ".";
-	.symbly(18px);
+	.symbly(20px);
 	margin-right:8px;
 }
 .autocomplete-icon-Opportunity:before{
 	content: "9";
-	.symbly(18px);
+	.symbly(20px);
 	margin-right:8px;
 }
 .autocomplete-icon-Task:before{
 	content: "4";
-	.symbly(18px);
+	.symbly(20px);
 	margin-right:8px;
 }
 .autocomplete-icon-Note:before{
 	content: "3";
-	.symbly(18px);
+	.symbly(20px);
 	margin-right:8px;
 }
 .autocomplete-icon-Meeting:before{
 	content: "U";
-	.symbly(18px);
+	.symbly(20px);
 	margin-right:8px;
 }
 .autocomplete-icon-User:before{
-	.symbly(18px);
+	.symbly(20px);
 	margin-right:8px;
 	content: "e";
 }
@@ -3111,9 +3117,11 @@ div.hasHalfs{
 	margin-top:2px;
 	width:335px;
     .flyout();
-    padding-top:3px;
-    padding-bottom:3px;
+    padding-top:2px;
+    padding-bottom:2px;
     text-align:left;
+    z-index:9999999;
+    position:relative;
     li{
         list-style:none;
         a{
@@ -3123,7 +3131,7 @@ div.hasHalfs{
             font-size: 11px;
             font-weight: normal;
             display: block;
-            padding: 2px 10px 2px 10px;
+            padding: 6px 10px 6px 10px;
             margin: 0 2px;
             &:hover, #ui-active-menuitem, .ui-state-hover{
                 background:@themeColor2 !important;

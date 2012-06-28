@@ -5321,6 +5321,8 @@ section {
   position: absolute;
   margin-left: 316px;
   margin-top: 11px;
+  float: none;
+  display: block !important;
 }
 #globalSearchInput {
   font-style: italic;
@@ -5343,55 +5345,55 @@ section {
 .autocomplete-icon-Account:before {
   content: "P";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
 .autocomplete-icon-Contact:before {
   content: "y";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
 .autocomplete-icon-Lead:before {
   content: ".";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
 .autocomplete-icon-Opportunity:before {
   content: "9";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
 .autocomplete-icon-Task:before {
   content: "4";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
 .autocomplete-icon-Note:before {
   content: "3";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
 .autocomplete-icon-Meeting:before {
   content: "U";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
 }
 .autocomplete-icon-User:before {
   font-weight: normal;
-  font-size: 18px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 8px;
   content: "e";
@@ -8930,9 +8932,11 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   text-align: left;
+  z-index: 9999999;
+  position: relative;
 }
 .ui-autocomplete li {
   list-style: none;
@@ -8944,7 +8948,7 @@ div.hasHalfs .twoThirds {
   font-size: 11px;
   font-weight: normal;
   display: block;
-  padding: 2px 10px 2px 10px;
+  padding: 6px 10px 6px 10px;
   margin: 0 2px;
 }
 .ui-autocomplete li a:hover,
