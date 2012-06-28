@@ -501,7 +501,6 @@ footer, header, hgroup, menu, nav, section {
     width:341px;
     display:block;
     .z-spinner{
-    	display:block !important;
     	z-index:999999;
     	position:absolute;
     	margin-left:316px;
@@ -526,6 +525,47 @@ footer, header, hgroup, menu, nav, section {
         color:#545454;
         font-style:normal;
     }
+}
+
+.autocomplete-icon-Account:before{
+    	content: "P";
+	.symbly(18px);
+	margin-right:8px;
+}
+.autocomplete-icon-Contact:before{
+	content: "y";
+	.symbly(18px);
+	margin-right:8px;
+}
+.autocomplete-icon-Lead:before{
+	content: ".";
+	.symbly(18px);
+	margin-right:8px;
+}
+.autocomplete-icon-Opportunity:before{
+	content: "9";
+	.symbly(18px);
+	margin-right:8px;
+}
+.autocomplete-icon-Task:before{
+	content: "4";
+	.symbly(18px);
+	margin-right:8px;
+}
+.autocomplete-icon-Note:before{
+	content: "3";
+	.symbly(18px);
+	margin-right:8px;
+}
+.autocomplete-icon-Meeting:before{
+	content: "U";
+	.symbly(18px);
+	margin-right:8px;
+}
+.autocomplete-icon-User:before{
+	.symbly(18px);
+	margin-right:8px;
+	content: "e";
 }
 
 .global-search-loopa{
@@ -3077,16 +3117,24 @@ div.hasHalfs{
     li{
         list-style:none;
         a{
+        	border-top: 1px solid #fff;
+			border-bottom: 1px solid #CCC;
             color: #666;
             font-size: 11px;
             font-weight: normal;
             display: block;
             padding: 2px 10px 2px 10px;
-            margin: 0 2px;
+            //margin: 0 2px;
             &:hover, #ui-active-menuitem, .ui-state-hover{
                 background:@themeColor2 !important;
                 color:#fff !important;
             }
+        }
+        &:first-child a{
+        	border-top:none;
+        }
+        &:last-child a{
+        	border-bottom:none;
         }
     }
 }
