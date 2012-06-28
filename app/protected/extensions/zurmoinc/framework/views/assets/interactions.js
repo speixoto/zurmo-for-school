@@ -93,6 +93,9 @@ $(window).ready(function(){
        function setCheckboxes(){
            setupCheckboxStyling( $('#search-form') );
            setupCheckboxStyling( $('#app-search') );
+           if (  $('.items').length > 0 ){
+           	   addClickListenerForCheckbox( $('.items') );
+           }
        },
    1000 );
 });
@@ -102,6 +105,22 @@ $(window).ready(function(){
  * from: http://webdesign.maratz.com/lab/fancy-checkboxes-and-radio-buttons/jquery.html
  *
  */
+function addClickListenerForCheckbox($context) {
+	$('label', $context[0]).live('click', {
+		$inputContext : $(this).content
+	}, function(event) {
+		if ($('input:checkbox', event.data.$inputContext).length) {
+			$('input:checkbox', event.data.$inputContext).each(function() {
+				$(this).parent().removeClass('c_on');
+			});
+			$('label input:checked', event.data.$inputContext).each(function() {
+				$(this).parent('label').addClass('c_on');
+			});
+		}
+	});
+}
+
+
 function setupCheckboxStyling( $context ) {
    if ( $('input:checkbox', $context ).length ) {
        $('input:checkbox', $context ).each(function(){
