@@ -948,6 +948,11 @@ footer, header, hgroup, menu, nav, section {
             content: "3";
         }
     }
+    li.type-EmailMessageModule{
+        em:before{
+            content: "g";
+        }
+    }
 }
 
 /*=Content*/
@@ -3039,6 +3044,10 @@ div.hasHalfs{
     }
     .Meeting:after{
         content: "U";
+        .latest-activity-icon();
+    }
+    .EmailMessage:after{
+    	content: "g";
         .latest-activity-icon();
     }
 }

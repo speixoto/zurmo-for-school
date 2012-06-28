@@ -5885,6 +5885,9 @@ section {
 #RecentlyViewedView li.type-NotesModule em:before {
   content: "3";
 }
+#RecentlyViewedView li.type-EmailMessageModule em:before {
+  content: "g";
+}
 /*=Content*/
 .AppContent {
   padding: 20px 20px 0 20px;
@@ -8804,6 +8807,17 @@ div.hasHalfs .twoThirds {
 .LatestActivitiesListView .Meeting:after,
 .LatestActivitiesView .Meeting:after {
   content: "U";
+  position: relative;
+  top: -3px;
+  color: #666 !important;
+  font-weight: normal;
+  font-size: 42px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 28px;
+}
+.LatestActivitiesListView .EmailMessage:after,
+.LatestActivitiesView .EmailMessage:after {
+  content: "g";
   position: relative;
   top: -3px;
   color: #666 !important;
