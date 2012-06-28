@@ -33,7 +33,14 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            UserTestHelper::createBasicUser('aaa');
+            UserTestHelper::createBasicUser('bbb');
+            UserTestHelper::createBasicUser('ccc');
+            UserTestHelper::createBasicUser('ddr');
             UserTestHelper::createBasicUser('steve');
+            UserTestHelper::createBasicUser('eeer');
+            UserTestHelper::createBasicUser('ffrr');
+            UserTestHelper::createBasicUser('john');
 
             Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
             Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
@@ -136,7 +143,6 @@
                 $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             }
-            // To-Do: Check CC fields
 
             $this->assertEquals(3, count($emailMessage->files));
             foreach ($emailMessage->files as $attachment)
@@ -144,11 +150,12 @@
                 $this->assertTrue(in_array($attachment->name, array('table.csv', 'image.png', 'text.txt')));
                 $this->assertTrue($attachment->size > 0);
             }
+            $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
         }
 
         /**
         * Test case when user send email to somebody, and bcc to dropbox
-        * This is best practictice to be used in reality, because other recipients will not see that user
+        * This is best practice to be used in reality, because other recipients will not see that user
         * bcc-ed email to dropbox
         */
         public function testRunCaseTwo()
@@ -210,7 +217,6 @@
                 $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             }
-            // To-Do: Check CC fields
 
             $this->assertEquals(3, count($emailMessage->files));
             foreach ($emailMessage->files as $attachment)
@@ -218,6 +224,7 @@
                 $this->assertTrue(in_array($attachment->name, array('table.csv', 'image.png', 'text.txt')));
                 $this->assertTrue($attachment->size > 0);
             }
+            $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
         }
 
         /**
@@ -302,6 +309,7 @@ To: Steve <steve@example.com>
                 $this->assertTrue(in_array($attachment->name, array('table.csv', 'text.txt')));
                 $this->assertTrue($attachment->size > 0);
             }
+            $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
         }
 
         /**
@@ -365,6 +373,9 @@ To: Steve <steve@example.com>
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
+            $john = User::getByUsername('john');
+            $john->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['testEmailAddress'];
+            $this->assertTrue($john->save());
 
             $messages = EmailMessage::getAll();
             foreach ($messages as $message)
@@ -414,6 +425,7 @@ To: Steve <steve@example.com>
                 $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             }
+            $this->assertEquals(EmailFolder::TYPE_ARCHIVED, $emailMessage->folder->type);
 
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());

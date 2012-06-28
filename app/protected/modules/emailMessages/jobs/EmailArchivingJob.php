@@ -88,6 +88,7 @@
             {
                 foreach ($messages as $message)
                 {
+                    $emailSenderOrRecepientEmailNotFoundInSystem = false;
                     $lastMessageCreatedTime = strtotime($message->createdDate);
                     if (strtotime($message->createdDate) > strtotime($lastCheckTime))
                     {
@@ -123,6 +124,10 @@
 
                         $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($senderInfo['email']);
                         $sender->personOrAccount = $personOrAccount;
+                        if(!isset($personOrAccount))
+                        {
+                            $emailSenderOrRecepientEmailNotFoundInSystem = true;
+                        }
                     }
 
                     $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
@@ -152,10 +157,26 @@
                         $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($recipientInfo['email']);
                         $recipient->personOrAccount = $personOrAccount;
                         $emailMessage->recipients->add($recipient);
+
+                        // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
+                        // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
+                        // be able to match emails with items(Contacts, Accounts...) emails in systems
+                        if(!isset($personOrAccount))
+                        {
+                            $emailSenderOrRecepientEmailNotFoundInSystem = true;
+                        }
                     }
 
                     $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                    $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+
+                    if ($emailSenderOrRecepientEmailNotFoundInSystem)
+                    {
+                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
+                    }
+                    else
+                    {
+                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+                    }
 
                     if (!empty($message->attachments))
                     {
