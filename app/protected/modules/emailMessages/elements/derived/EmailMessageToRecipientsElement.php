@@ -27,13 +27,13 @@
     /**
      * Display email message content.
      */
-    class EmailMessageSenderElement extends Element
+    class EmailMessageToRecipientsElement extends Element implements DerivedElementInterface
     {
         protected function renderControlNonEditable()
         {
-            assert('$this->model->{$this->attribute} instanceof EmailMessageSender');
-            $sender = $this->model->{$this->attribute};
-            return Yii::app()->format->html(EmailMessageMashableActivityRules::getSenderContent($sender));
+            assert('$this->model instanceof EmailMessage');
+            return Yii::app()->format->html(EmailMessageMashableActivityRules::
+                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_TO));
         }
 
         protected function renderControlEditable()
@@ -48,7 +48,17 @@
 
         protected function renderLabel()
         {
-            return Yii::t('Default', 'From');
+            return Yii::t('Default', 'To');
+        }
+
+        public static function getDisplayName()
+        {
+            return Yii::t('Default', 'To Recipients');
+        }
+
+        public static function getModelAttributeNames()
+        {
+            return array();
         }
     }
 ?>
