@@ -174,6 +174,10 @@
                         return $emailMessageSender->fromAddress;
                     }
                 }
+                else
+                {
+
+                }
             }
             return self::resolveStringValueModelsDataToStringContent($existingModels);
         }

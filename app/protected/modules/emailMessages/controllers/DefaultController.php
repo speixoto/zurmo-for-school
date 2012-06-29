@@ -41,6 +41,16 @@
             );
         }
 
+        public function actionDetails($id, $redirectUrl = null)
+        {
+            $emailMessage          = EmailMessage::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailMessage);
+            $detailsView           = new EmailMessageDetailsView($this->getId(), $this->getModule()->getId(), $emailMessage);
+            $view              = new EmailMessagesPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $detailsView));
+            echo $view->render();
+        }
+
         public function actionConfigurationEdit()
         {
             $configurationForm = OutboundEmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
