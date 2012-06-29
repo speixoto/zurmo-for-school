@@ -109,7 +109,7 @@
                             ),
                         ),
                         array(
-                            'title' => Yii::t("Default", "Email Archiving Configuration"),
+                            'title' => Yii::t("Default", "Email Archiving Configuration (IMAP)"),
                             'rows' => array(
                                 array('cells' =>
                                     array(

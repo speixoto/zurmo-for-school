@@ -87,13 +87,13 @@
                 'password'                             => Yii::t('Default', 'Password'),
                 'userIdOfUserToSendNotificationsAs'    => Yii::t('Default', 'Send system notifications from'),
                 'aTestToAddress'                       => Yii::t('Default', 'Send a test email to'),
-                'imapHost'                                 => Yii::t('Default', 'IMAP Host'),
-                'imapUsername'                             => Yii::t('Default', 'IMAP username'),
-                'imapPassword'                             => Yii::t('Default', 'IMAP password'),
-                'imapPort'                                 => Yii::t('Default', 'IMAP Port'),
-                'imapSSL'                                  => Yii::t('Default', 'IMAP SSL connection'),
-                'imapFolder'                               => Yii::t('Default', 'IMAP folder'),
-                'testImapConnection'                       => Yii::t('Default', 'Test IMAP connection'),
+                'imapHost'                             => Yii::t('Default', 'Host'),
+                'imapUsername'                         => Yii::t('Default', 'Username'),
+                'imapPassword'                         => Yii::t('Default', 'Password'),
+                'imapPort'                             => Yii::t('Default', 'Port'),
+                'imapSSL'                              => Yii::t('Default', 'SSL connection'),
+                'imapFolder'                           => Yii::t('Default', 'Folder'),
+                'testImapConnection'                   => Yii::t('Default', 'Test IMAP connection'),
             );
         }
     }
