@@ -240,8 +240,9 @@
                 }
                 else
                 {
-                    $emailMessage->error    = null;
-                    $emailMessage->folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+                    $emailMessage->error        = null;
+                    $emailMessage->folder       = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+                    $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 }
             }
             catch (OutboundEmailSendException $e)

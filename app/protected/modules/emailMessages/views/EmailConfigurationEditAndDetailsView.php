@@ -25,13 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Edit and details view for the inbound email global configuration view.
+     * Edit and details view for the email global configuration view.
      */
-    class InboundEmailConfigurationEditAndDetailsView extends EditAndDetailsView
+    class EmailConfigurationEditAndDetailsView extends EditAndDetailsView
     {
         protected function renderTitleContent()
         {
-            return '<h1>' . Yii::t('Default', 'Inbound Email Configuration (IMAP)') . '</h1>';
+            return '<h1>' . Yii::t('Default', 'Email Configuration') . '</h1>';
         }
 
         public static function getDefaultMetadata()
@@ -48,6 +48,68 @@
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
+                            'title' => Yii::t("Default", "Outbound Email Configuration (SMTP)"),
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'host', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'port', 'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'username', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'password', 'type' => 'Password'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'userIdOfUserToSendNotificationsAs',
+                                                      'type' => 'UserToSendNotificationFrom'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'aTestToAddress',
+                                                      'type' => 'SendATestEmailTo'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                        array(
+                            'title' => Yii::t("Default", "Email Archiving Configuration"),
                             'rows' => array(
                                 array('cells' =>
                                     array(

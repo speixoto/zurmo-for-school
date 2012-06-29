@@ -45,7 +45,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'modifiedDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'sentDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )
