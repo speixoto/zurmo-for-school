@@ -133,8 +133,7 @@
                     'url'  =>  $this->getValidateAndSaveUrl(),
                     'update' => '#' . $this->uniquePageId,
                     'complete' => "function(XMLHttpRequest, textStatus){
-                        //
-                        alert('complete create contact');}"
+                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();}"
                 ));
             // End Not Coding Standard
         }

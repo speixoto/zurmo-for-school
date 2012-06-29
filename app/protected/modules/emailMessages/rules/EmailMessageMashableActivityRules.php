@@ -124,7 +124,7 @@
             return $content;
         }
 
-        protected static function getSenderContent(EmailMessageSender $emailMessageSender)
+        public static function getSenderContent(EmailMessageSender $emailMessageSender)
         {
             $existingModels  = array();
             if($emailMessageSender->personOrAccount->id < 0)
@@ -151,7 +151,7 @@
             }
         }
 
-        protected static function getRecipientsContent(RedBeanOneToManyRelatedModels $recipients)
+        public static function getRecipientsContent(RedBeanOneToManyRelatedModels $recipients)
         {
             $existingModels  = array();
             if($recipients->count() == 0)

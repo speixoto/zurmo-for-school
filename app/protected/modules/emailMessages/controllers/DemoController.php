@@ -192,6 +192,7 @@
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
+            $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $saved = $emailMessage->save();
             if (!$saved)
             {
@@ -219,6 +220,7 @@
             $recipient->personOrAccount = Yii::app()->user->userModel;
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
+            $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $saved = $emailMessage->save();
             if (!$saved)
             {
