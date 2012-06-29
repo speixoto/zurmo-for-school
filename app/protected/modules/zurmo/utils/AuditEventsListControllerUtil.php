@@ -35,7 +35,6 @@
         public static function renderList(CController $controller, $dataProvider)
         {
             assert('$dataProvider instanceof RedBeanModelDataProvider');
-            assert('$pageTitle == null || is_string($pageTitle)');
             $auditEventsListView = new AuditEventsModalListView(
                 $controller->getId(),
                 $controller->getModule()->getId(),
