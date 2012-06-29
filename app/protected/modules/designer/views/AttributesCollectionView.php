@@ -77,8 +77,8 @@
                                                             array('moduleClassName' => $this->moduleClassName,
                                                                   'attributeTypeName' => $information['elementType'],
                                                                   'attributeName' => $attributeName,)
-                                                            ),
-                                                          array('id' => $attributeName)
+                                                          ),
+                                                          array('id' => 'edit-link-' . $attributeName)
                                                   );
                     }
                     $content .= '<li>';
