@@ -24,26 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Edit and details view for the outbound email global configuration view.
-     */
-    class OutboundEmailConfigurationEditAndDetailsView extends EditAndDetailsView
+    class EmailMessageDetailsView extends DetailsView
     {
-        protected function renderTitleContent()
-        {
-            return '<h1>' . Yii::t('Default', 'Outbound Email Configuration (SMTP)') . '</h1>';
-        }
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type' => 'ConfigurationLink'),
-                            array('type' => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type' => 'EditLink',      'renderType' => 'Details'),
-                        ),
+                    'derivedAttributeTypes' => array(
+                        'EmailMessageToRecipients',
+                        'EmailMessageCcRecipients',
+                        'EmailMessageContent'
+                    ),
+                    'nonPlaceableAttributeNames' => array(
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -53,7 +45,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'host', 'type' => 'Text'),
+                                                array('attributeName' => 'sentDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )
@@ -62,7 +54,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'port', 'type' => 'Integer'),
+                                                array('attributeName' => 'sender', 'type' => 'EmailMessageSender'),
                                             ),
                                         ),
                                     )
@@ -71,7 +63,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'username', 'type' => 'Text'),
+                                                array('attributeName' => 'null', 'type' => 'EmailMessageToRecipients'),
                                             ),
                                         ),
                                     )
@@ -80,7 +72,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'password', 'type' => 'Password'),
+                                                array('attributeName' => 'null', 'type' => 'EmailMessageCcRecipients'),
                                             ),
                                         ),
                                     )
@@ -89,8 +81,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'userIdOfUserToSendNotificationsAs',
-                                                      'type' => 'UserToSendNotificationFrom'),
+                                                array('attributeName' => 'subject', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -99,8 +90,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'aTestToAddress',
-                                                      'type' => 'SendATestEmailTo'),
+                                                array('attributeName' => 'content', 'type' => 'EmailMessageContent'),
                                             ),
                                         ),
                                     )
@@ -111,6 +101,18 @@
                 ),
             );
             return $metadata;
+        }
+
+        protected function renderTitleContent()
+        {
+            if ($this->model->id > 0)
+            {
+                return '<h1>' . strval($this->model) . '</h1>';
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

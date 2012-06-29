@@ -41,23 +41,33 @@
             );
         }
 
+        public function actionDetails($id, $redirectUrl = null)
+        {
+            $emailMessage          = EmailMessage::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailMessage);
+            $detailsView           = new EmailMessageDetailsView($this->getId(), $this->getModule()->getId(), $emailMessage);
+            $view              = new EmailMessagesPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $detailsView));
+            echo $view->render();
+        }
+
         public function actionConfigurationEdit()
         {
-            $configurationForm = OutboundEmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $configurationForm = EmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
             {
                 $configurationForm->setAttributes($_POST[$postVariableName]);
                 if ($configurationForm->validate())
                 {
-                    OutboundEmailConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
+                    EmailConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'Outbound email configuration saved successfully.')
+                        Yii::t('Default', 'Email configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }
-            $editView = new OutboundEmailConfigurationEditAndDetailsView(
+            $editView = new EmailConfigurationEditAndDetailsView(
                                     'Edit',
                                     $this->getId(),
                                     $this->getModule()->getId(),
@@ -74,7 +84,7 @@
          */
         public function actionSendTestMessage()
         {
-            $configurationForm = OutboundEmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $configurationForm = EmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
             {
@@ -138,39 +148,12 @@
             }
         }
 
-        public function actionInboundConfigurationEdit()
-        {
-            $configurationForm = InboundEmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
-            $postVariableName   = get_class($configurationForm);
-            if (isset($_POST[$postVariableName]))
-            {
-                $configurationForm->setAttributes($_POST[$postVariableName]);
-                if ($configurationForm->validate())
-                {
-                    InboundEmailConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
-                    Yii::app()->user->setFlash('notification',
-                                               Yii::t('Default', 'Inbound email configuration saved successfully.')
-                    );
-                    $this->redirect(Yii::app()->createUrl('configuration/default/index'));
-                }
-            }
-            $editView = new InboundEmailConfigurationEditAndDetailsView(
-                                    'Edit',
-                                    $this->getId(),
-                                    $this->getModule()->getId(),
-                                    $configurationForm);
-            $editView->setCssClasses( array('AdministrativeArea') );
-            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
-            echo $view->render();
-        }
-
         /**
         * Assumes before calling this, the inbound settings have been validated in the form.
         */
         public function actionTestImapConnection()
         {
-            $configurationForm = InboundEmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $configurationForm = EmailConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
             {

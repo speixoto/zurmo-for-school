@@ -77,13 +77,6 @@
                         'route'            => '/emailMessages/default/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),
-                    array(
-                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Inbound Email Configuration',
-                        'descriptionLabel' => 'Manage Email Configuration',
-                        'route'            => '/emailMessages/default/inboundConfigurationEdit',
-                        'right'            => self::RIGHT_ACCESS_CONFIGURATION,
-                    ),
                 ),
                 'headerMenuItems' => array(
                     array(

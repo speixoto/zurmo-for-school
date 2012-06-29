@@ -835,9 +835,9 @@ table.configuration-list tr td:last-child a:before {
 }
 #ModulePermissionsEditAndDetailsView th {
   /*text-align:left;
-		font-size: 12px !important;
-		color: #666;
-		font-weight: 400 !important;*/
+        font-size: 12px !important;
+        color: #666;
+        font-weight: 400 !important;*/
 
 }
 .multiselect-holder {
@@ -1440,21 +1440,21 @@ table.configuration-list tr td:last-child a:before {
 }
 #UsersPageView {
   /*
-	.DetailsView{
-		table{
-			margin-left:8px;
-		}
-		td{
-			text-align:left;
-			padding-left:15px;
-		}
-		th{
-			text-align:left;
-			font-size: 12px !important;
-			color: #666;
-		}
-	}
-	*/
+    .DetailsView{
+        table{
+            margin-left:8px;
+        }
+        td{
+            text-align:left;
+            padding-left:15px;
+        }
+        th{
+            text-align:left;
+            font-size: 12px !important;
+            color: #666;
+        }
+    }
+    */
 
 }
 #UsersPageView .panel {
@@ -1506,10 +1506,10 @@ table.configuration-list tr td:last-child a:before {
   outline: none;
 }
 /*Email Config*/
-#OutboundEmailConfigurationEditAndDetailsView .panel {
+#EmailConfigurationEditAndDetailsView .panel {
   width: 100% !important;
 }
-#SendATestEmailToButton {
+.EmailTestingButton {
   cursor: pointer;
   padding: 0 15px 0 15px;
   line-height: 23px;
@@ -1539,20 +1539,20 @@ table.configuration-list tr td:last-child a:before {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-#SendATestEmailToButton:not(.attachLoading) {
+.EmailTestingButton:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-#SendATestEmailToButton:hover {
+.EmailTestingButton:hover {
   color: #7bb730 !important;
 }
-#SendATestEmailToButton:active {
+.EmailTestingButton:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
-#SendATestEmailToButton.loading .z-spinner {
+.EmailTestingButton.loading .z-spinner {
   display: inline-block;
 }
-#SendATestEmailToButton.loading .z-icon {
+.EmailTestingButton.loading .z-icon {
   display: none;
 }
 #TestEmailMessageView {
@@ -3326,15 +3326,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     height: 26px;
   }
   /*
-  	.panel, #permissions-module{
-  		.has-date-select, .has-model-select{
-  			a, button{
-              	&:before{
-                  	top:-3px;
-              	}
+      .panel, #permissions-module{
+          .has-date-select, .has-model-select{
+              a, button{
+                  &:before{
+                      top:-3px;
+                  }
              }
-  		}
-  	}*/
+          }
+      }*/
   .has-model-select a {
     top: 25px !important;
   }
@@ -5317,11 +5317,12 @@ section {
   display: block;
 }
 #app-search .z-spinner {
-  display: block !important;
   z-index: 999999;
   position: absolute;
   margin-left: 316px;
   margin-top: 11px;
+  float: none;
+  display: block !important;
 }
 #globalSearchInput {
   font-style: italic;
@@ -5340,6 +5341,62 @@ section {
   outline: 0;
   color: #545454;
   font-style: normal;
+}
+.autocomplete-icon-AccountsModule:before {
+  content: "P";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+}
+.autocomplete-icon-ContactsModule:before {
+  content: "y";
+  font-weight: normal;
+  font-size: 22px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+}
+.autocomplete-icon-LeadsModule:before {
+  content: ".";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+}
+.autocomplete-icon-OpportunitiesModule:before {
+  content: "9";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+}
+.autocomplete-icon-TasksModule:before {
+  content: "4";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+}
+.autocomplete-icon-NotesModule:before {
+  content: "3";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+}
+.autocomplete-icon-MeetingsModule:before {
+  content: "U";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+}
+.autocomplete-icon-UsersModule:before {
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+  content: "e";
 }
 .global-search-loopa {
   padding: 0;
@@ -5828,6 +5885,9 @@ section {
 #RecentlyViewedView li.type-NotesModule em:before {
   content: "3";
 }
+#RecentlyViewedView li.type-EmailMessageModule em:before {
+  content: "g";
+}
 /*=Content*/
 .AppContent {
   padding: 20px 20px 0 20px;
@@ -6257,7 +6317,7 @@ section {
 }
 /*=Forms with clearfix issues
 #ZurmoConfigurationEditAndDetailsView,
-#OutboundEmailConfigurationEditAndDetailsView,
+#EmailConfigurationEditAndDetailsView,
 #MapConfigurationView,
 #AccountConvertToView,
 #AccountsMassEditView{
@@ -8755,6 +8815,17 @@ div.hasHalfs .twoThirds {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
 }
+.LatestActivitiesListView .EmailMessage:after,
+.LatestActivitiesView .EmailMessage:after {
+  content: "g";
+  position: relative;
+  top: -3px;
+  color: #666 !important;
+  font-weight: normal;
+  font-size: 42px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 28px;
+}
 #activities-rollup-tooltip {
   position: relative;
   margin-top: -9px;
@@ -8875,26 +8946,38 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   text-align: left;
+  z-index: 9999999;
+  position: relative;
 }
 .ui-autocomplete li {
   list-style: none;
 }
 .ui-autocomplete li a {
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #CCC;
   color: #666;
   font-size: 11px;
+  line-height: 100%;
   font-weight: normal;
   display: block;
-  padding: 2px 10px 2px 10px;
+  padding: 6px 10px 6px 10px;
   margin: 0 2px;
 }
 .ui-autocomplete li a:hover,
-.ui-autocomplete li a #ui-active-menuitem,
-.ui-autocomplete li a .ui-state-hover {
+.ui-autocomplete li a#ui-active-menuitem,
+.ui-autocomplete li a.ui-state-hover {
   background: #7bb730 !important;
   color: #fff !important;
+  cursor: pointer !important;
+}
+.ui-autocomplete li:first-child a {
+  border-top: none;
+}
+.ui-autocomplete li:last-child a {
+  border-bottom: none;
 }
 /*=Flash Message View*/
 #FlashMessageView {
