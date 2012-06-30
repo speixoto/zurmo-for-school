@@ -43,7 +43,6 @@
                                 //currently it will not work correctly since in the db it would store a static value instead of it still being dynamic
                                     'ajaxOptions' => 'eval:static::resolveAjaxOptionsForSelectList()',
                                     'htmlOptions' => array( 'id' => 'SelectContactsForOpportunityFromRelatedListLink',
-                                                            'class' => 'simple-select',
                                                             'live' => false) //This is there are no double bindings
             );
             $metadata['global']['panels'] = array(

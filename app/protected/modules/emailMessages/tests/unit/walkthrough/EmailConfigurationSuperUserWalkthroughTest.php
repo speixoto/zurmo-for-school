@@ -57,7 +57,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEdit');
         }
 
-        public function testSuperUserModifyOutboundEmailConfiguration()
+        public function testSuperUserModifyEmailConfiguration()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $super2 = User::getByUsername('super2');
@@ -66,7 +66,7 @@
 
             //Change email settings
             $this->resetGetArray();
-            $this->setPostArray(array('OutboundEmailConfigurationForm' => array(
+            $this->setPostArray(array('EmailConfigurationForm' => array(
                                     'host'                              => 'abc',
                                     'port'                              => '565',
                                     'username'                          => 'myuser',

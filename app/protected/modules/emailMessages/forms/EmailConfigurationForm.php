@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Form to all editing and viewing of outbound email configuration values in the user interface.
+     * Form to all editing and viewing of email configuration values in the user interface.
      */
-    class OutboundEmailConfigurationForm extends ConfigurationForm
+    class EmailConfigurationForm extends ConfigurationForm
     {
         public $host;
         public $port = 25;
@@ -35,6 +35,13 @@
         public $password;
         public $userIdOfUserToSendNotificationsAs;
         public $aTestToAddress;
+        public $imapHost;
+        public $imapUsername;
+        public $imapPassword;
+        public $imapPort;
+        public $imapSSL;
+        public $imapFolder;
+        public $testImapConnection;
 
         public function rules()
         {
@@ -52,6 +59,22 @@
                 array('userIdOfUserToSendNotificationsAs', 'type',      'type' => 'integer'),
                 array('userIdOfUserToSendNotificationsAs', 'numerical', 'min'  => 1),
                 array('aTestToAddress',                    'email'),
+                array('imapHost',                          'required'),
+                array('imapHost',                          'type',      'type' => 'string'),
+                array('imapHost',                          'length',    'min'  => 1, 'max' => 64),
+                array('imapUsername',                      'required'),
+                array('imapUsername',                      'type',      'type' => 'string'),
+                array('imapUsername',                      'length',    'min'  => 1, 'max' => 64),
+                array('imapPassword',                      'required'),
+                array('imapPassword',                      'type',      'type' => 'string'),
+                array('imapPassword',                      'length',    'min'  => 1, 'max' => 64),
+                array('imapPort',                          'required'),
+                array('imapPort',                          'type',      'type' => 'integer'),
+                array('imapPort',                          'numerical', 'min'  => 1),
+                array('imapSSL',                           'boolean'),
+                array('imapFolder',                        'required'),
+                array('imapFolder',                        'type',      'type' => 'string'),
+                array('imapFolder',                        'length',    'min'  => 1, 'max' => 64),
             );
         }
 
@@ -64,6 +87,13 @@
                 'password'                             => Yii::t('Default', 'Password'),
                 'userIdOfUserToSendNotificationsAs'    => Yii::t('Default', 'Send system notifications from'),
                 'aTestToAddress'                       => Yii::t('Default', 'Send a test email to'),
+                'imapHost'                             => Yii::t('Default', 'Host'),
+                'imapUsername'                         => Yii::t('Default', 'Username'),
+                'imapPassword'                         => Yii::t('Default', 'Password'),
+                'imapPort'                             => Yii::t('Default', 'Port'),
+                'imapSSL'                              => Yii::t('Default', 'SSL connection'),
+                'imapFolder'                           => Yii::t('Default', 'Folder'),
+                'testImapConnection'                   => Yii::t('Default', 'Test IMAP connection'),
             );
         }
     }

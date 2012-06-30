@@ -25,20 +25,37 @@
      ********************************************************************************/
 
     /**
-     * Display the name and hidden id of the account model.
-     * Displays a select button and auto-complete input
+     * Display email message content.
      */
-    class AccountNameIdElement extends NameIdElement
+    class EmailMessageContentElement extends Element
     {
-        protected static $moduleId = 'accounts';
-
-        protected $idAttributeId = 'accountId';
-
-        protected $nameAttributeName = 'accountName';
-
-        protected static function getModalTitleForSelectingModel()
+        protected function renderControlNonEditable()
         {
-            return Yii::t('Default', 'AccountsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
+            assert('$this->model->{$this->attribute} instanceof EmailMessageContent');
+            $emailMessageContent = $this->model->{$this->attribute};
+            if($emailMessageContent->htmlContent != null)
+            {
+                return Yii::app()->format->html($emailMessageContent->htmlContent);
+            }
+            elseif($emailMessageContent->textContent != null)
+            {
+                return Yii::app()->format->text($emailMessageContent->textContent);
+            }
+        }
+
+        protected function renderControlEditable()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function renderError()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function renderLabel()
+        {
+            return Yii::t('Default', 'Body');
         }
     }
 ?>

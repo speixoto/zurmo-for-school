@@ -23,22 +23,24 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-
-    /**
-     * Display the name and hidden id of the account model.
-     * Displays a select button and auto-complete input
-     */
-    class AccountNameIdElement extends NameIdElement
+    class TestDatabaseBulkInsertModel extends RedBeanModel
     {
-        protected static $moduleId = 'accounts';
-
-        protected $idAttributeId = 'accountId';
-
-        protected $nameAttributeName = 'accountName';
-
-        protected static function getModalTitleForSelectingModel()
+        public static function getDefaultMetadata()
         {
-            return Yii::t('Default', 'AccountsModuleSingularLabel Search', LabelUtil::getTranslationParamsForAllModules());
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'number',
+                    'string',
+                ),
+                'rules' => array(
+                    array('number',     'type',      'type' => 'integer'),
+                    array('number',     'numerical', 'min'  => 0, 'max' => 10000),
+                    array('string',     'type',      'type' => 'string'),
+                    array('string',     'length',    'min'  => 0,'max'=>255)
+                )
+            );
+            return $metadata;
         }
     }
 ?>
