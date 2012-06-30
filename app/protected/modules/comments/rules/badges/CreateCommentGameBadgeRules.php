@@ -25,15 +25,40 @@
      ********************************************************************************/
 
     /**
-     * Defines specific rules for conversation gamification.
+     * Class for defining the badge associated with creating a new comment
      */
-    class ConversationGamificationRules extends GamificationRules
+    class CreateCommentGameBadgeRules extends GameBadgeRules
     {
-        protected $scoreOnUpdate = false;
+        public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 10,
+            3  => 25,
+            4  => 50,
+            5  => 75,
+            6  => 100,
+            7  => 125,
+            8  => 150,
+            9  => 175,
+            10 => 200,
+            11 => 225,
+            12 => 250,
+            13 => 300,
+        );
 
-        public static function getPointTypesAndValuesForCreateModel()
+        public static function getPassiveDisplayLabel($value)
         {
-            return array(GamePoint::TYPE_COMMUNICATION => 10);
+            return Yii::t('Default', '{n} Comment created|{n} Comments created', array($value));
+        }
+
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
+        {
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['CreateComment']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateComment']->value);
+            }
+            return 0;
         }
     }
 ?>

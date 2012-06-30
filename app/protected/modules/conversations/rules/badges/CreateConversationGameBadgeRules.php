@@ -25,15 +25,40 @@
      ********************************************************************************/
 
     /**
-     * Defines specific rules for conversation gamification.
+     * Class for defining the badge associated with creating a new conversation
      */
-    class ConversationGamificationRules extends GamificationRules
+    class CreateConversationGameBadgeRules extends GameBadgeRules
     {
-        protected $scoreOnUpdate = false;
+        public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 5,
+            3  => 10,
+            4  => 25,
+            5  => 50,
+            6  => 75,
+            7  => 100,
+            8  => 125,
+            9  => 150,
+            10 => 175,
+            11 => 200,
+            12 => 225,
+            13 => 250
+        );
 
-        public static function getPointTypesAndValuesForCreateModel()
+        public static function getPassiveDisplayLabel($value)
         {
-            return array(GamePoint::TYPE_COMMUNICATION => 10);
+            return Yii::t('Default', '{n} Conversation created|{n} Conversations created', array($value));
+        }
+
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
+        {
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['CreateConversation']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateConversation']->value);
+            }
+            return 0;
         }
     }
 ?>

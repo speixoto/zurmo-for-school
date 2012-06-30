@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Defines specific rules for conversation gamification.
+     * Defines specific rules for comment gamification.
      */
-    class ConversationGamificationRules extends GamificationRules
+    class CommentGamificationRules extends GamificationRules
     {
         protected $scoreOnUpdate = false;
 
