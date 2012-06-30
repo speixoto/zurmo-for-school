@@ -77,7 +77,7 @@
 
     if (isset($testApiUrl))
     {
-        $common_config['params']['testApiUrl'] = '';
+        $common_config['params']['testApiUrl'] = $testApiUrl;
     }
     return $common_config;
 ?>

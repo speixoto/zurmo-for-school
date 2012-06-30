@@ -96,6 +96,7 @@
                 'members' => array(
                     'subject',
                     'type',
+                    'sentDateTime',
                 ),
                 'relations' => array(
                     'folder'        => array(RedBeanModel::HAS_ONE,  'EmailFolder'),
@@ -111,6 +112,10 @@
                     array('subject', 'length',  'min'  => 3, 'max' => 255),
                     array('folder', 'required'),
                     array('sender', 'required'),
+                    array('sentDateTime',  'type', 'type' => 'datetime'),
+                ),
+                'elements' => array(
+                    'sentDateTime'  => 'DateTime',
                 )
             );
             return $metadata;
