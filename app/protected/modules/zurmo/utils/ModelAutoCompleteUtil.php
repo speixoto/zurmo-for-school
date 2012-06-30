@@ -123,7 +123,7 @@
                                                          . '/default/details/', array('id' => $model->id));
                 $autoCompleteResults[] = array(
                     'href'           => $route,
-                    'label'          => strval($model) .' - ' . $moduleLabel,
+                    'label'          => strval($model),
                     'iconClass' => 'autocomplete-icon-' . $moduleClassName,
                 );
             }
