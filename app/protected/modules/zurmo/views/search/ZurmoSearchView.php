@@ -27,7 +27,7 @@
     /**
      * The Zurmo base search view for a module's search view.  Includes extra pieces like filtered lists.
      */
-    abstract class ZurmoSearchView extends SearchView
+    abstract class ZurmoSearchView extends DynamicSearchView
     {
         protected $showFilteredListLink;
 

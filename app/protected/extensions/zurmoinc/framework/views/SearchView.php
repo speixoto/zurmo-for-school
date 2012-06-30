@@ -30,6 +30,7 @@
     abstract class SearchView extends ModelView
     {
         protected $gridIdSuffix;
+
         protected $hideAllSearchPanelsToStart;
 
         /**
@@ -205,26 +206,13 @@
                     $startingDivStyle = "style='display:none;'";
                 }
                 $content .= '<div class="search-view-' . $key . '" ' . $startingDivStyle . '>';
-                foreach ($panel['rows'] as $row)
+                if($key == 1)
                 {
-                    //$content .= '<tr>';
-                    foreach ($row['cells'] as $cell)
-                    {
-                        if (!empty($cell['elements']))
-                        {
-                            foreach ($cell['elements'] as $elementInformation)
-                            {
-                                if (count($row['cells']) == 1 && count($row['cells']) < $maxCellsPerRow)
-                                {
-                                    $elementInformation['wide'] = true;
-                                }
-                                $elementclassname = $elementInformation['type'] . 'Element';
-                                $element = new $elementclassname($this->model, $elementInformation['attributeName'], $form, array_slice($elementInformation, 2));
-                                $content .= $element->render();
-                            }
-                        }
-                    }
-                    //$content .= '</tr>';
+                   $content .= $this->renderAdvancedSearchForFormLayout($panel, $maxCellsPerRow, $form);
+                }
+                else
+                {
+                    $content .= $this->renderStaticSearchRows($panel, $maxCellsPerRow, $form);
                 }
                 if ($key == 1)
                 {
@@ -237,7 +225,36 @@
                 $content .= '</div>';
             }
             $content .= $this->renderFormBottomPanel();
-            //$content .= '</table>';
+            return $content;
+        }
+
+        protected function renderAdvancedSearchForFormLayout($panel, $maxCellsPerRow, $form = null)
+        {
+            return $this->renderStaticSearchRows($panel, $maxCellsPerRow, $form);
+        }
+
+        protected function renderStaticSearchRows($panel, $maxCellsPerRow, $form = null)
+        {
+            $content = null;
+            foreach ($panel['rows'] as $row)
+            {
+                foreach ($row['cells'] as $cell)
+                {
+                    if (!empty($cell['elements']))
+                    {
+                        foreach ($cell['elements'] as $elementInformation)
+                        {
+                            if (count($row['cells']) == 1 && count($row['cells']) < $maxCellsPerRow)
+                            {
+                                $elementInformation['wide'] = true;
+                            }
+                            $elementclassname = $elementInformation['type'] . 'Element';
+                            $element = new $elementclassname($this->model, $elementInformation['attributeName'], $form, array_slice($elementInformation, 2));
+                            $content .= $element->render();
+                        }
+                    }
+                }
+            }
             return $content;
         }
 

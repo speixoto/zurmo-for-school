@@ -167,5 +167,18 @@
             }
             echo CJSON::encode($autoCompleteResults);
         }
+
+        public function actionDynamicSearchAddExtraRow($viewClassName, $modelClassName, $formModelClassName, $rowNumber, $suffix = null)
+        {
+            $searchableAttributeIndicesAndDerivedTypes = DynamicSearchUtil::
+                                                            getSearchableAttributesAndLabels($viewClassName,
+                                                                                             $modelClassName);
+            $ajaxOnChangeUrl  = Yii::app()->createUrl("import/default/mappingRulesEdit", array('xxx' => 'yyy'));
+            $extraRowView     = new DynamicSearchExtraRowView(
+                                    $searchableAttributeIndicesAndDerivedTypes, (int)$rowNumber, $suffix,
+                                    $formModelClassName, $ajaxOnChangeUrl);
+            $view             = new AjaxPageView($extraRowView);
+            echo CHtml::tag('div', array(), $view->render());
+        }
     }
 ?>

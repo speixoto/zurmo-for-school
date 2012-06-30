@@ -25,38 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Extend this class when a searchForm's model is owned.
+     * Extend this class when a searchForm should allow dynamic searches in advanced search. This means the user
+     * can add any field as a search parameter.
      */
-    abstract class OwnedSearchForm extends DynamicSearchForm
+    abstract class DynamicSearchForm extends SearchForm
     {
-        public $ownedItemsOnly;
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                               array('ownedItemsOnly', 'boolean'),
-            ));
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-                               'ownedItemsOnly' => Yii::t('Default', 'Only Items I Own'),
-            ));
-        }
-
-        protected static function getSearchFormAttributeMappingRulesTypes()
-        {
-            return array_merge(parent::getSearchFormAttributeMappingRulesTypes(), array('ownedItemsOnly' => 'OwnedItemsOnly'));
-        }
-
-        public function getAttributesMappedToRealAttributesMetadata()
-        {
-            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-                'ownedItemsOnly' => array(
-                    array('owner', 'id', null, 'resolveValueByRules'),
-                ),
-            ));
-        }
     }
 ?>
