@@ -238,7 +238,7 @@
 
                 //Test where no results are expected.
                 $data = ModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm('weqqw', 5, $super);
-                $this->assertEquals(array(array('href' => '', 'label' => 'No Results Found')), $data);
+                $this->assertEquals(array(array('href' => '', 'label' => 'No Results Found', 'iconClass' => '')), $data);
 
                 //Test where one account is expected searching by account name.
                 $data = ModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm('Rabbit', 5, $super);
@@ -313,7 +313,7 @@
                 $this->assertTrue  ($jimmy->save());
                 Yii::app()->user->userModel = $jimmy;
                 $data = ModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm('animal', 5, Yii::app()->user->userModel);
-                $this->assertEquals(array(array('href' => '', 'label' => 'No Results Found')), $data);
+                $this->assertEquals(array(array('href' => '', 'label' => 'No Results Found', 'iconClass' => '')), $data);
 
                 //Give Jimmy read on 1 model.  The search then should pick up this model.
                 Yii::app()->user->userModel = $super;
