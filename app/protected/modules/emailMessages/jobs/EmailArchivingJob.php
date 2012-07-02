@@ -115,6 +115,14 @@
                     $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', Yii::app()->user->userModel);
                     $userCanAccessUsers    = RightsUtil::canUserAccessModule('UsersModule',    Yii::app()->user->userModel);
 
+                    if (!($userCanAccessContacts || $userCanAccessLeads || $userCanAccessAccounts || $userCanAccessUsers) &&
+                        RightsUtil::doesUserHaveAllowByRightName('EmailMessagesModule', EmailMessagesModule::RIGHT_ACCESS_EMAIL_MESSAGES, $emailOwner) &&
+                        RightsUtil::doesUserHaveAllowByRightName('EmailMessagesModule', EmailMessagesModule::RIGHT_CREATE_EMAIL_MESSAGES, $emailOwner))
+                    {
+                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('NoRighsForModule', $message);
+                        continue;
+                    }
+
                     $senderInfo = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($message);
                     if (!$senderInfo)
                     {
@@ -242,6 +250,7 @@
                         $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotSaved', $message);
                     }
                 }
+                Yii::app()->user->userModel = self::$jobOwnerUserModel;
                 Yii::app()->imap->expungeMessages();
                 if ($lastCheckTime != ''){
                     EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
@@ -265,6 +274,11 @@
                     $subject = Yii::t('Default', 'Invalid email address.');
                     $textContent = Yii::t('Default', 'Email address does not exist in system.') . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Yii::t('Default', 'Email address does not exist in system.') . "<br><br>" . $originalMessage->htmlBody;
+                    break;
+                case "NoRighsForModule":
+                    $subject = Yii::t('Default', 'No rights for modules or connected person or account.');
+                    $textContent = Yii::t('Default', 'You do not have rights to access email message module or to create new email message or no rights to connect email message with contact, account or user.') . "\n\n" . $originalMessage->textBody;
+                    $htmlContent = Yii::t('Default', 'You do not have rights to access email message module or to create new email message or no rights to connect email message with contact, account or user.') . "<br><br>" . $originalMessage->htmlBody;
                     break;
                 case "SenderNotExtracted":
                     $subject = Yii::t('Default', "Sender info can't be extracted from email message.");
