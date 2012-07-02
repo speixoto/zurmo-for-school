@@ -7470,6 +7470,9 @@ div.wide.form label.hasCheckBox {
 #edit-form #permissions-module #owner-box .has-model-select a {
   top: 23px;
 }
+#edit-form #permissions-module .ui-autocomplete {
+  width: auto !important;
+}
 #edit-form #permissions-module input[type="text"] {
   margin-bottom: 4px;
 }
