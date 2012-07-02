@@ -7540,12 +7540,6 @@ div.wide.form label.hasCheckBox {
 .has-model-select input {
   width: 100%;
 }
-.panel .has-model-select a {
-  top: 1px !important;
-}
-.panel .has-date-select button {
-  top: 1px !important;
-}
 .has-model-select {
   clear: left;
   padding: 0 !important;
@@ -7583,6 +7577,13 @@ div.wide.form label.hasCheckBox {
   color: #8b8b8b;
   text-align: center;
   vertical-align: bottom;
+}
+.has-date-select {
+  clear: left;
+  padding: 0 !important;
+}
+.has-date-select input {
+  margin: 0 !important;
 }
 .has-date-select button {
   background: url(../images/dropdown-general.png) left top no-repeat;
@@ -8163,9 +8164,6 @@ div.wide.form label.hasCheckBox {
   top: -1px;
   color: #7bb730;
   margin-left: 2px;
-}
-#NoteEditAndDetailsView .has-model-select a {
-  top: 24px !important;
 }
 #inline-edit-form table + table {
   float: left;

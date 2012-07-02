@@ -2109,14 +2109,6 @@ div.wide.form{
     }
 }
 
-.panel{
-    .has-model-select a{
-        top:1px !important;
-    }
-    .has-date-select button{
-        top:1px !important;
-    }
-}
 
 .has-model-select{
 	clear:left;
@@ -2158,6 +2150,11 @@ div.wide.form{
 }
 
 .has-date-select{
+	clear:left;
+	padding:0 !important;
+	input{
+		margin:0 !important;
+	}
     button{
         background: url(../images/dropdown-general.png) left top no-repeat;
         width:28px;
@@ -2556,14 +2553,6 @@ div.wide.form{
                 color:@themeColor2;
                 margin-left:2px;
             }
-        }
-    }
-}
-
-#NoteEditAndDetailsView{
-    .has-model-select{
-        a{
-            top:24px !important;
         }
     }
 }
