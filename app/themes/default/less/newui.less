@@ -1393,7 +1393,7 @@ a.attachLoading{
     position: absolute;
     top:-34px;
     right:8px;
-    .icon-create {
+    .icon-create, a {
         padding:0 15px 0 15px;
         line-height:23px;
         margin:0;
@@ -1411,14 +1411,6 @@ a.attachLoading{
         &:not(.attachLoading){
 	    	background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 	    }
-        &:before{
-            content: "Y";
-            .view-toolbar-icons();
-            top:-1px;
-            color:#fff;
-            margin-left:0;
-            color:@themeColor2;
-        }
         &:hover{
             color:@themeColor2 !important;
         }
@@ -1426,6 +1418,30 @@ a.attachLoading{
             color:#656565;
             .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
         }
+    }
+    .icon-create:before{
+    	content: "Y";
+        .view-toolbar-icons();
+        top:-1px;
+        color:#fff;
+        margin-left:0;
+        color:@themeColor2;
+    }
+    .icon-delete:before{
+    	content: "_";
+        .view-toolbar-icons();
+        top:-1px;
+        color:#fff;
+        margin-left:0;
+        color:@themeColor2;
+    }
+    .icon-edit:before{
+    	content: "!";
+        .view-toolbar-icons();
+        top:-1px;
+        color:#fff;
+        margin-left:0;
+        color:@themeColor2;
     }
 }
 
