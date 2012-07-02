@@ -30,6 +30,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            ReadPermissionsOptimizationUtil::rebuild();
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
         }
 
@@ -280,6 +281,154 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             );
             $owner = EmailArchivingUtil::resolveOwnerOfEmailMessage($imapMessage);
             $this->assertEquals($user->id, $owner->id);
+        }
+
+        public function testResolvePersonOrAccountByEmailAddress(){
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $user = UserTestHelper::createBasicUser('joseph');
+            $anotherUser = UserTestHelper::createBasicUser('josephine');
+
+            $emailAddress = 'sameone234@example.com';
+
+            // User can access users, but there are no users in system with the email.
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        false,
+                                                                                        false,
+                                                                                        false,
+                                                                                        true);
+            $this->assertNull($personOrAccount);
+
+            // User can access users, and there is user is system with the email.
+            Yii::app()->user->userModel = $super;
+            $anotherUser->primaryEmail->emailAddress = $emailAddress;
+            $this->assertTrue($anotherUser->save());
+
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        false,
+                                                                                        false,
+                                                                                        false,
+                                                                                        true);
+            $this->assertEquals($anotherUser->id, $personOrAccount->id);
+            $this->assertTrue($personOrAccount instanceof User);
+
+            // Now test email with accounts, we will left user email there.
+            // User can access accounts, but there are no accounts in system with the email.
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        false,
+                                                                                        false,
+                                                                                        true,
+                                                                                        false);
+            $this->assertNull($personOrAccount);
+
+            // User can access accounts, but there are no accounts in system with the email.
+            // But there is user is system with the email
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        false,
+                                                                                        false,
+                                                                                        true,
+                                                                                        true);
+            $this->assertEquals($anotherUser->id, $personOrAccount->id);
+            $this->assertTrue($personOrAccount instanceof User);
+
+            // User can access accounts, and there is account in system with the email.
+            // But owner of email is super users, so it shouldn't return account
+            Yii::app()->user->userModel = $super;
+            $email = new Email();
+            $email->emailAddress = $emailAddress;
+            $email2 = new Email();
+            $email2->emailAddress = 'aabb@example.com';
+            $account = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->primaryEmail = $email;
+            $account->secondaryEmail = $email2;
+
+            $this->assertTrue($account->save());
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        false,
+                                                                                        false,
+                                                                                        true,
+                                                                                        false);
+            $this->assertNull($personOrAccount);
+            Yii::app()->user->userModel = $super;
+            $account->owner       = $user;
+            $this->assertTrue($account->save());
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        false,
+                                                                                        false,
+                                                                                        true,
+                                                                                        false);
+
+            $this->assertEquals($account->id, $personOrAccount->id);
+            $this->assertTrue($personOrAccount instanceof Account);
+
+            // Now test with contacts/leads. Please note that we are not removing email address
+            // from users and accounts, so if contact or lead exist with this email, they should be returned
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        true,
+                                                                                        true,
+                                                                                        false,
+                                                                                        false);
+            $this->assertNull($personOrAccount);
+
+            // User can access contacts, but there are no contact in system with the email.
+            // But there is user and account is system with the email
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        false,
+                                                                                        false,
+                                                                                        true,
+                                                                                        true);
+            $this->assertEquals($account->id, $personOrAccount->id);
+            $this->assertTrue($personOrAccount instanceof Account);
+
+            // User can access contacts, and there is contact in system with the email.
+            // But owner of email is super users, so it shouldn't return contact
+            Yii::app()->user->userModel = $super;
+            $this->assertTrue(ContactsModule::loadStartingData());
+            $this->assertEquals(6, count(ContactState::GetAll()));
+            $contactStates = ContactState::getByName('Qualified');
+            $email = new Email();
+            $email->emailAddress = $emailAddress;
+            $email2 = new Email();
+            $email2->emailAddress = 'aabb@example.com';
+            $contact                = new Contact();
+            $contact->state         = $contactStates[0];
+            $contact->owner         = $super;
+            $contact->firstName     = 'Super';
+            $contact->lastName      = 'Man';
+            $contact->primaryEmail = $email;
+            $contact->secondaryEmail = $email;
+            $this->assertTrue($account->save());
+
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        true,
+                                                                                        true,
+                                                                                        false,
+                                                                                        false);
+            $this->assertNull($personOrAccount);
+
+            Yii::app()->user->userModel = $super;
+            $contact->owner       = $user;
+            $this->assertTrue($contact->save());
+            Yii::app()->user->userModel = $user;
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                                        true,
+                                                                                        true,
+                                                                                        true,
+                                                                                        true);
+            $this->assertEquals($contact->id, $personOrAccount->id);
+            $this->assertTrue($personOrAccount instanceof Contact);
         }
     }
 ?>

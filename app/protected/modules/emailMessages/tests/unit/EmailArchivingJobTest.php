@@ -425,7 +425,7 @@ To: Steve <steve@example.com>
                 $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             }
-            $this->assertEquals(EmailFolder::TYPE_ARCHIVED, $emailMessage->folder->type);
+            $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
 
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());

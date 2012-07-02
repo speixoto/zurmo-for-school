@@ -542,13 +542,6 @@
                     $compareData, $newModel->getAttributeLabelsForAllSupportedLanguagesByAttributeName($name));
             }
 
-            //Now go to the detail view of the attribute.
-            $this->setGetArray(array(   'moduleClassName'       => $moduleClassName,
-                                        'attributeTypeName'     => $attributeTypeName,
-                                        'attributeName'         => $name));
-
-            $content = $this->runControllerWithNoExceptionsAndGetContent('designer/default/attributeDetails');
-
             if ($attributeTypeName != "CalculatedNumber" && $attributeTypeName != "DropDownDependency")
             {
                 //Now test going to the user interface edit view for the existing attribute.

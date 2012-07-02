@@ -188,27 +188,59 @@
         /**
          * Get Contact or Account or User, based on meail address
          * @param string $emailAddress
-         * @return Contact || Account || User
+         * @param boolean $userCanAccessContacts
+         * @param boolean $userCanAccessLeads
+         * @param boolean $userCanAccessAccounts
+         * @param boolean $userCanAccessUsers
+         * @return Contact || Account || User || NULL
          */
-        public static function resolvePersonOrAccountByEmailAddress($emailAddress)
+        public static function resolvePersonOrAccountByEmailAddress($emailAddress,
+                                                                    $userCanAccessContacts = false,
+                                                                    $userCanAccessLeads = false,
+                                                                    $userCanAccessAccounts = false,
+                                                                    $userCanAccessUsers = false)
         {
             $personOrAccount = null;
-            $contacts = ContactSearch::getContactsByAnyEmailAddress($emailAddress, 1);
-            if (count($contacts))
+            $contactsOrLeads = array();
+
+            if ($userCanAccessContacts || $userCanAccessLeads)
             {
-                $personOrAccount = $contacts[0];
+                $stateMetadataAdapterClassName = null;
+                if ($userCanAccessContacts && !$userCanAccessLeads)
+                {
+                    $stateMetadataAdapterClassName = 'ContactsStateMetadataAdapter';
+                }
+                elseif (!$userCanAccessContacts && $userCanAccessLeads)
+                {
+                    $stateMetadataAdapterClassName = 'LeadsStateMetadataAdapter';
+                }
+                $contactsOrLeads = ContactSearch::getContactsByAnyEmailAddress($emailAddress, 1, $stateMetadataAdapterClassName);
+            }
+
+            if (count($contactsOrLeads))
+            {
+                $personOrAccount = $contactsOrLeads[0];
             }
             else
             {
+                $accounts = array();
                 // Check if email belongs to account
-                $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress, 1);
+                if ($userCanAccessAccounts)
+                {
+                    $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress, 1);
+                }
+
                 if (count($accounts))
                 {
                     $personOrAccount = $accounts[0];
                 }
                 else
                 {
-                    $users = UserSearch::getUsersByEmailAddress($emailAddress);
+                    $users = array();
+                    if ($userCanAccessUsers)
+                    {
+                        $users = UserSearch::getUsersByEmailAddress($emailAddress);
+                    }
                     if (count($users))
                     {
                         $personOrAccount = $users[0];

@@ -73,7 +73,7 @@
                                     'password'                          => 'apassword',
                                     'userIdOfUserToSendNotificationsAs' => $super2->id)));
             $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEdit');
-            $this->assertEquals('Outbound email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+            $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $emailHelper = new EmailHelper;
