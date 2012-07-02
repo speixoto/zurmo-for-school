@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LeadsModalSearchView extends DynamicSearchView
+    class LeadsModalSearchView extends SearchView
     {
         public static function getDefaultMetadata()
         {

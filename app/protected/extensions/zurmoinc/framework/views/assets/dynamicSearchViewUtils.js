@@ -10,6 +10,7 @@ function rebuildDynamicSearchRowNumbersAndStructureInput(formId)
             structure += ' AND ';
         }
         structure += rowCount;
+        $(this).parent().find('.structure-position').val(rowCount);
         rowCount ++;
     });
     $('#' + formId).find('.dynamic-search-structure-input').val(structure);

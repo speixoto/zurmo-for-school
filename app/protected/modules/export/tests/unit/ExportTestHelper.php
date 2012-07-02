@@ -46,7 +46,7 @@
             );
 
             return RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter,
+                $metadataAdapter->getAdaptedMetadata(),
                 $listModelClassName,
                 'RedBeanModelDataProvider',
                 null,

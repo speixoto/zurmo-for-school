@@ -47,12 +47,12 @@
          * readable by the RedBeanModelDataProvider
          * @param $appendStructureAsAnd - true/false. If false, then the structure will be appended as OR.
          */
-        public function getAdaptedMetadata($appendStructureAsAnd = true)
+        public function getAdaptedMetadata($appendStructureAsAnd = true, $clauseCount = 1)
         {
             assert('is_bool($appendStructureAsAnd)');
+            assert('is_int($clauseCount)');
             $this->appendStructureAsAnd = $appendStructureAsAnd;
             $adaptedMetadata = array('clauses' => array(), 'structure' => '');
-            $clauseCount = 1;
             $structure = '';
             foreach ($this->metadata as $attributeName => $value)
             {

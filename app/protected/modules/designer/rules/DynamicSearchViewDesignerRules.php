@@ -24,43 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class used to make data providers
-     */
-    class RedBeanModelDataProviderUtil
+    class DynamicSearchViewDesignerRules extends SearchViewDesignerRules
     {
-        /**
-         * Adapt metadata to be ready to load into a Data Provider.
-         * Make data Provider
-         * @return RedBeanModelDataProvider
-         */
-        public static function makeDataProvider(
-            array $metadata,
-            $listModelClassName,
-            $dataProviderClassName,
-            $sortAttribute,
-            $sortDescending,
-            $pageSize,
-            $stateMetadataAdapterClassName = null
-            )
+        public function allowEditInLayoutTool()
         {
-            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            assert('is_string($dataProviderClassName)');
-            if ($stateMetadataAdapterClassName != null)
-            {
-                $stateMetadataAdapter = new $stateMetadataAdapterClassName($metadata);
-                $metadata = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
-            }
-            return new $dataProviderClassName(
-                $listModelClassName,
-                $sortAttribute,
-                $sortDescending,
-                $metadata,
-                array(
-                'pagination' => array(
-                    'pageSize' => $pageSize
-                )
-            ));
+            return false;
         }
     }
 ?>

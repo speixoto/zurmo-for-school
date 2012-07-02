@@ -77,14 +77,14 @@
                                                                                            $searchAttributes);
             $sortAttribute             = SearchUtil::resolveSortAttributeFromGetArray($listModelClassName);
             $sortDescending            = SearchUtil::resolveSortDescendingFromGetArray($listModelClassName);
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+            $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                 $searchModel,
                 $userId,
                 $sanitizedSearchAttributes
             );
-
+            $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(), $userId);
             return RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter,
+                $metadata,
                 $listModelClassName,
                 'RedBeanModelDataProvider',
                 $sortAttribute,
@@ -92,6 +92,29 @@
                 $pageSize,
                 $stateMetadataAdapterClassName
             );
+        }
+
+        protected static function resolveDynamicSearchMetadata($searchModel, $metadata, $userId)
+        {
+            $dynamicSearchAttributes          = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($searchModel));
+            if($dynamicSearchAttributes == null)
+            {
+                return $metadata;
+            }
+            $sanitizedDynamicSearchAttributes = SearchUtil::
+                                                sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
+                                                                                                            $dynamicSearchAttributes);
+            $dynamicStructure                 = SearchUtil::getDynamicSearchStructureFromGetArray(get_class($searchModel));
+            if ($sanitizedDynamicSearchAttributes != null)
+            {
+                $dynamicSearchMetadataAdapter = new DynamicSearchDataProviderMetadataAdapter($metadata,
+                                                                                             $searchModel,
+                                                                                             $userId,
+                                                                                             $sanitizedDynamicSearchAttributes,
+                                                                                             $dynamicStructure);
+                $metadata                     = $dynamicSearchMetadataAdapter->getAdaptedDataProviderMetadata();
+            }
+            return $metadata;
         }
 
         protected function makeSearchAndListView(

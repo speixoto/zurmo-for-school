@@ -154,7 +154,7 @@
                 unserialize($filteredList->serializedData)
             );
             return RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter,
+                $metadataAdapter->getAdaptedMetadata(),
                 $listModelClassName,
                 'FilteredListDataProvider',
                 $sortAttribute,

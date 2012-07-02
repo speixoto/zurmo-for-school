@@ -33,10 +33,15 @@
     {
         const ANY_MIXED_ATTRIBUTES_SCOPE_NAME = 'anyMixedAttributesScope';
 
+        const DYNAMIC_NAME = 'dynamic';
+
+        const DYNAMIC_STRUCTURE_NAME = 'dynamicStructure';
+
         /**
          * Get the search attributes array by resolving the GET array
          * for the information. If the self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME is set, remove that
-         * from the array since this is utilized only directly from the $_GET string.
+         * from the array since this is utilized only directly from the $_GET string.  Also removes
+         * the dynamic search variables if present such as self::DYNAMIC_NAME and self::DYNAMIC_STRUCTURE_NAME
          */
         public static function resolveSearchAttributesFromGetArray($getArrayName)
         {
@@ -49,6 +54,16 @@
                     key_exists(self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME, $searchAttributes))
                 {
                     unset($searchAttributes[self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
+                }
+                if (isset($searchAttributes[self::DYNAMIC_NAME]) ||
+                    key_exists(self::DYNAMIC_NAME, $_GET[$getArrayName]))
+                {
+                    unset($searchAttributes[self::DYNAMIC_NAME]);
+                }
+                if (isset($searchAttributes[self::DYNAMIC_STRUCTURE_NAME]) ||
+                    key_exists(self::DYNAMIC_STRUCTURE_NAME, $_GET[$getArrayName]))
+                {
+                    unset($searchAttributes[self::DYNAMIC_STRUCTURE_NAME]);
                 }
             }
             return $searchAttributes;
@@ -253,6 +268,65 @@
                 $searchAttributesReadyToSetToModel[$attributeName] = $data;
             }
             return $searchAttributesReadyToSetToModel;
+        }
+
+
+        /**
+         * Removes the dynamic structure
+         */
+        public static function getDynamicSearchAttributesFromGetArray($getArrayName)
+        {
+            assert('is_string($getArrayName)');
+            if (!empty($_GET[$getArrayName]) &&
+                isset($_GET[$getArrayName][self::DYNAMIC_NAME]))
+            {
+                $dynamicSearchAttributes = $_GET[$getArrayName][self::DYNAMIC_NAME];
+                if(isset($dynamicSearchAttributes[self::DYNAMIC_STRUCTURE_NAME]))
+                {
+                    unset($dynamicSearchAttributes[self::DYNAMIC_STRUCTURE_NAME]);
+                }
+                foreach($dynamicSearchAttributes as $key => $data)
+                {
+                    if(is_string($data) && $data == 'undefined')
+                    {
+                        unset($dynamicSearchAttributes[$key]);
+                    }
+                }
+                return $dynamicSearchAttributes;
+            }
+        }
+
+
+        public static function sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel(DynamicSearchForm $searchModel,
+                                                                                           $dynamicSearchAttributes)
+        {
+            assert('is_array($dynamicSearchAttributes)');
+            $sanitizedDynamicSearchAttributes = array();
+            foreach($dynamicSearchAttributes as $key => $searchAttributeData)
+            {
+                $attributeIndexOrDerivedType = $searchAttributeData['attributeIndexOrDerivedType'];
+                $structurePosition           = $searchAttributeData['structurePosition'];
+                unset($searchAttributeData['attributeIndexOrDerivedType']);
+                unset($searchAttributeData['structurePosition']);
+                $sanitizedDynamicSearchAttributes[$key] = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
+                                                              $searchAttributeData);
+                $sanitizedDynamicSearchAttributes[$key]['attributeIndexOrDerivedType'] = $attributeIndexOrDerivedType;
+                $sanitizedDynamicSearchAttributes[$key]['structurePosition']           = $structurePosition;
+            }
+            return $sanitizedDynamicSearchAttributes;
+        }
+
+        /**
+         *
+         */
+        public static function getDynamicSearchStructureFromGetArray($getArrayName)
+        {
+            assert('is_string($getArrayName)');
+            if (!empty($_GET[$getArrayName]) &&
+                isset($_GET[$getArrayName][self::DYNAMIC_STRUCTURE_NAME]))
+            {
+                return $_GET[$getArrayName][self::DYNAMIC_STRUCTURE_NAME];
+            }
         }
     }
 ?>

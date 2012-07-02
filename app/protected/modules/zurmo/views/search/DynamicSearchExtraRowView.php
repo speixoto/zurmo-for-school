@@ -62,8 +62,13 @@
         protected function renderContent()
         {
             $this->renderScripts();
+            $hiddenInputName     = $this->formModelClassName . '[' . SearchUtil::DYNAMIC_NAME . '][' . $this->rowNumber . '][structurePosition]';
+            $hiddenInputId       = $this->formModelClassName . '_' . SearchUtil::DYNAMIC_NAME . '_' . $this->rowNumber . '_structurePosition';
+            $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
+
             $content  = CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), null);
             $content .= $this->renderAttributeDropDownContent();
+            $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
             $content .= CHtml::tag('div', array('id' => $this->getInputsDivId()), null);
             $content .= '&#160;' . CHtml::link(Yii::t('Default', 'Remove Field'),
                         '#', array('class' => 'remove-extra-dynamic-search-row-link'));

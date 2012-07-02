@@ -56,12 +56,15 @@
             }
         }
 
+       //todo: we could have getMetadata be changed to resolveMetadata, non-static. that way saved
+       //todo: search we can pull in and show rows by default.
+       //todo: we have to deal with saved search but this might require an override in DynamicSearchView...
         protected function renderDynamicAdvancedSearchRows($panel, $maxCellsPerRow, $form = null)
         {
             assert('$form != null');
             $content = null;
             $content .= 'dynamic rows';
-            $rowCount = 1;
+            $rowCount = 0;
             if(($panel['rows']) > 0)
             {
                 foreach ($panel['rows'] as $row)
@@ -89,11 +92,6 @@
             }
             $content .= $this->renderAddExtraRowContent($rowCount);
             $content .= $this->renderDynamicSearchStructureContent();
-           //we could have getMetadata be changed to resolveMetadata, non-static. that way saved
-           //search we can pull in and show rows by default.
-           ///we need a hidden array to post so if we have 1,3,5,6  which will show as 1,2,3,4 that hidden array should translate that.
-             ///think about this abit.
-           //we have to deal with saved search but this might require an override in DynamicSearchView...
            return $content;
         }
 
@@ -107,9 +105,9 @@
                                          'modelClassName' => get_class($this->model->getModel()),
                                          'formModelClassName' => get_class($this->model),
                                          'suffix' => $this->getSearchFormId()));
-            $content             = CHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
+            $content             = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
-            $content            .= CHtml::ajaxButton(Yii::t('Default', 'Add Field'), $ajaxOnChangeUrl,
+            $content            .= ZurmoHtml::ajaxLink(Yii::t('Default', 'Add Field'), $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
                                           'success' => 'js:function(data){
@@ -117,7 +115,7 @@
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                           }'),
-                                    array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId()));
+                                    array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
             return CHtml::tag('div', array(), $content);
         }
@@ -149,8 +147,8 @@
 
         protected function renderStructureInputContent()
         {
-            $name                = get_class($this->model) . '[dynamic][structure]';
-            $id                  = get_class($this->model) . '_dynamic_structure';
+            $name                = get_class($this->model) . '[' . SearchUtil::DYNAMIC_STRUCTURE_NAME . ']';
+            $id                  = get_class($this->model) . '_' . SearchUtil::DYNAMIC_STRUCTURE_NAME;
             $idInputHtmlOptions  = array('id' => $id, 'class' => 'dynamic-search-structure-input');
             return CHtml::textField($name, $this->getStructureValue(), $idInputHtmlOptions);
         }
@@ -190,6 +188,11 @@
                         return false;
                     }
                 );");
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return 'DynamicSearchView';
         }
     }
 ?>
