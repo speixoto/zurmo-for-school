@@ -29,6 +29,7 @@
      */
     class EmailArchivingJob extends BaseJob
     {
+        public static $jobOwnerUserModel;
         /**
          * @returns Translated label that describes this job type.
          */
@@ -67,7 +68,7 @@
          */
         public function run()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
+            self::$jobOwnerUserModel = Yii::app()->user->userModel;
             Yii::app()->imap->connect();
 
             $lastImapCheckTime     = EmailMessagesModule::getLastImapDropboxCheckTime();
@@ -88,6 +89,8 @@
             {
                 foreach ($messages as $message)
                 {
+                    Yii::app()->user->userModel = self::$jobOwnerUserModel;
+
                     $emailSenderOrRecepientEmailNotFoundInSystem = false;
                     $lastMessageCreatedTime = strtotime($message->createdDate);
                     if (strtotime($message->createdDate) > strtotime($lastCheckTime))
@@ -106,6 +109,11 @@
                         $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
                         continue;
                     }
+                    Yii::app()->user->userModel = $emailOwner;
+                    $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
+                    $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    Yii::app()->user->userModel);
+                    $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', Yii::app()->user->userModel);
+                    $userCanAccessUsers    = RightsUtil::canUserAccessModule('UsersModule',    Yii::app()->user->userModel);
 
                     $senderInfo = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($message);
                     if (!$senderInfo)
@@ -122,7 +130,14 @@
                             $sender->fromName          = $senderInfo['name'];
                         }
 
-                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($senderInfo['email']);
+                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+                                $senderInfo['email'],
+                                $userCanAccessContacts,
+                                $userCanAccessLeads,
+                                $userCanAccessAccounts,
+                                $userCanAccessUsers
+                        );
+
                         $sender->personOrAccount = $personOrAccount;
                         if(!isset($personOrAccount))
                         {
@@ -130,6 +145,7 @@
                         }
                     }
 
+                    Yii::app()->user->userModel = self::$jobOwnerUserModel;
                     $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
                     if (!$recipientsInfo)
                     {
@@ -154,7 +170,13 @@
                         $recipient->toName         = $recipientInfo['name'];
                         $recipient->type           = EmailMessageRecipient::TYPE_TO;
 
-                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($recipientInfo['email']);
+                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+                                $recipientInfo['email'],
+                                $userCanAccessContacts,
+                                $userCanAccessLeads,
+                                $userCanAccessAccounts,
+                                $userCanAccessUsers
+                        );
                         $recipient->personOrAccount = $personOrAccount;
                         $emailMessage->recipients->add($recipient);
 
