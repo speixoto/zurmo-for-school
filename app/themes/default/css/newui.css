@@ -8755,6 +8755,17 @@ div.hasHalfs .twoThirds {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
 }
+.LatestActivitiesListView .EmailMessage:after,
+.LatestActivitiesView .EmailMessage:after {
+  content: "g";
+  position: relative;
+  top: -3px;
+  color: #666 !important;
+  font-weight: normal;
+  font-size: 42px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 28px;
+}
 #activities-rollup-tooltip {
   position: relative;
   margin-top: -9px;
