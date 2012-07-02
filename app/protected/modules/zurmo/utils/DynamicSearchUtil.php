@@ -31,8 +31,8 @@
     {
         public static function getSearchableAttributesAndLabels($viewClassName, $modelClassName)
         {
-            //modelClassName is a true model not a searchForm.. so assert that
-            //todo: asserts.
+            assert('is_string($viewClassName)');
+            assert('is_string($modelClassName) && is_subclass_of($modelClassName, "RedBeanModel")');
             $editableMetadata         = $viewClassName::getMetadata();
             $designerRulesType        = $viewClassName::getDesignerRulesType();
             $designerRulesClassName   = $designerRulesType . 'DesignerRules';
@@ -57,6 +57,50 @@
                 }
             }
             return $attributeIndexOrDerivedTypeAndLabels;
+        }
+
+        public static function getCellElement($viewClassName, $modelClassName, $elementName)
+        {
+            assert('is_string($viewClassName)');
+            assert('is_string($modelClassName) && is_subclass_of($modelClassName, "RedBeanModel")');
+            assert('is_string($elementName)');
+            $editableMetadata         = $viewClassName::getMetadata();
+            $designerRulesType        = $viewClassName::getDesignerRulesType();
+            $designerRulesClassName   = $designerRulesType . 'DesignerRules';
+            $designerRules            = new $designerRulesClassName();
+            $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
+            $derivedAttributesAdapter = new DerivedAttributesAdapter($modelClassName);
+            $attributeCollection      = array_merge($modelAttributesAdapter->getAttributes(),
+                                                        $derivedAttributesAdapter->getAttributes());
+            $attributesLayoutAdapter = AttributesLayoutAdapterUtil::makeAttributesLayoutAdapter(
+                $attributeCollection,
+                $designerRules,
+                $editableMetadata
+            );
+
+            $derivedAttributes         = $attributesLayoutAdapter->getAvailableDerivedAttributeTypes();
+            $placeableLayoutAttributes = $attributesLayoutAdapter->getPlaceableLayoutAttributes();
+            if (in_array($elementName, $derivedAttributes))
+            {
+                $element = array('attributeName' => 'null', 'type' => $elementName); // Not Coding Standard
+            }
+            elseif (isset($placeableLayoutAttributes[$elementName]) &&
+                   $placeableLayoutAttributes[$elementName]['elementType'] == 'DropDownDependency')
+            {
+                throw new NotSupportedException();
+            }
+            elseif (isset($placeableLayoutAttributes[$elementName]))
+            {
+                $element = array(
+                    'attributeName' => $elementName,
+                    'type'          => $placeableLayoutAttributes[$elementName]['elementType']
+                );
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $designerRules->formatSavableElement($element, $viewClassName);
         }
     }
 ?>

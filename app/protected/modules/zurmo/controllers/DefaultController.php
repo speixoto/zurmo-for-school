@@ -173,12 +173,50 @@
             $searchableAttributeIndicesAndDerivedTypes = DynamicSearchUtil::
                                                             getSearchableAttributesAndLabels($viewClassName,
                                                                                              $modelClassName);
-            $ajaxOnChangeUrl  = Yii::app()->createUrl("import/default/mappingRulesEdit", array('xxx' => 'yyy'));
+            $ajaxOnChangeUrl  = Yii::app()->createUrl("zurmo/default/dynamicSearchAttributeInput",
+                                   array('viewClassName'      => $viewClassName,
+                                         'modelClassName'     => $modelClassName,
+                                         'formModelClassName' => $formModelClassName,
+                                         'rowNumber'          => $rowNumber,
+                                         'suffix'             => $suffix));
             $extraRowView     = new DynamicSearchExtraRowView(
                                     $searchableAttributeIndicesAndDerivedTypes, (int)$rowNumber, $suffix,
                                     $formModelClassName, $ajaxOnChangeUrl);
             $view             = new AjaxPageView($extraRowView);
             echo CHtml::tag('div', array(), $view->render());
+        }
+
+        public function actionDynamicSearchAttributeInput($viewClassName, $modelClassName, $formModelClassName, $rowNumber,
+                                                          $attributeIndexOrDerivedType, $suffix = null)
+        {
+            if($attributeIndexOrDerivedType == null)
+            {
+                $content = null;
+            }
+            else
+            {
+                $model                     = new $modelClassName(false);
+                $searchForm                = new $formModelClassName($model);
+                $form                      = new NoRequiredsActiveForm();
+                $element                   = DynamicSearchUtil::getCellElement($viewClassName, $modelClassName,
+                                                                              $attributeIndexOrDerivedType);
+                $element['inputPrefix']    = array($formModelClassName, 'dynamic', $rowNumber);
+                $elementclassname          = $element['type'] . 'Element';
+                $element                   = new $elementclassname($searchForm, $element['attributeName'],
+                                                                  $form, array_slice($element, 2));
+                $element->editableTemplate = '{content}{error}';
+                $content                   = $element->render();
+            }
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js', CClientScript::POS_END);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+
         }
     }
 ?>

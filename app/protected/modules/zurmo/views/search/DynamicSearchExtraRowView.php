@@ -62,7 +62,7 @@
         protected function renderContent()
         {
             $this->renderScripts();
-            $content  = CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), $this->rowNumber . '. ');
+            $content  = CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), null);
             $content .= $this->renderAttributeDropDownContent();
             $content .= CHtml::tag('div', array('id' => $this->getInputsDivId()), null);
             $content .= '&#160;' . CHtml::link(Yii::t('Default', 'Remove Field'),
@@ -99,10 +99,12 @@
                                            $this->searchableAttributeIndicesAndDerivedTypes,
                                            $htmlOptions);
             Yii::app()->clientScript->registerScript('mappingExtraColumnRemoveLink', "
-            $('.remove-extra-dynamic-search-row-link').click( function()
+            $('.remove-extra-dynamic-search-row-link').unbind('click');
+            $('.remove-extra-dynamic-search-row-link').bind('click', function()
                 {
+                    formId = $(this).closest('form').attr('id');
                     $(this).parent().remove();
-                    //todo: rework visible count and counter.
+                    rebuildDynamicSearchRowNumbersAndStructureInput(formId);
                 }
             );");
             return $content;
@@ -115,7 +117,9 @@
                     'data'    => 'js:\'suffix=' . $this->suffix .
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',
                     'url'     =>  $ajaxOnChangeUrl,
-                    'replace' => '#' . $inputDivId,
+                    'success' => 'js:function(data){
+                                      $("#' . $inputDivId . '").html(data);
+                                  }',
             ));
             return "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {
@@ -126,7 +130,7 @@
 
         protected function getInputsDivId()
         {
-            return $this->formModelClassName . '-dynamic-search-inputs-for-' . $this->suffix;
+            return $this->formModelClassName . '-dynamic-search-inputs-for-' . $this->rowNumber . '-' . $this->suffix;
         }
     }
 ?>

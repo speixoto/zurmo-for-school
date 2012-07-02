@@ -88,12 +88,9 @@
                 }
             }
             $content .= $this->renderAddExtraRowContent($rowCount);
-            $content .= 'more options';
-
+            $content .= $this->renderDynamicSearchStructureContent();
            //we could have getMetadata be changed to resolveMetadata, non-static. that way saved
            //search we can pull in and show rows by default.
-           //also need more advanced to show structure input.
-           //need to show row # next to rows.. then refactor on delete of rows. which means we need to allow delete of rows
            ///we need a hidden array to post so if we have 1,3,5,6  which will show as 1,2,3,4 that hidden array should translate that.
              ///think about this abit.
            //we have to deal with saved search but this might require an override in DynamicSearchView...
@@ -103,26 +100,96 @@
         protected function renderAddExtraRowContent($rowCount)
         {
             assert('is_int($rowCount)');
-            $idInputHtmlOptions  = array('id' => 'rowCounter-' . $this->gridIdSuffix);
+            $idInputHtmlOptions  = array('id' => 'rowCounter-' . $this->getSearchFormId());
             $hiddenInputName     = 'rowCounter';
             $ajaxOnChangeUrl     = Yii::app()->createUrl("zurmo/default/dynamicSearchAddExtraRow",
                                    array('viewClassName' => get_class($this),
                                          'modelClassName' => get_class($this->model->getModel()),
                                          'formModelClassName' => get_class($this->model),
-                                         'suffix' => $this->gridIdSuffix));
+                                         'suffix' => $this->getSearchFormId()));
             $content             = CHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
             $content            .= CHtml::ajaxButton(Yii::t('Default', 'Add Field'), $ajaxOnChangeUrl,
                                     array('type' => 'GET',
-                                          'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->gridIdSuffix. '\').val()',
+                                          'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
                                           'success' => 'js:function(data){
-                                            $(\'#rowCounter-' . $this->gridIdSuffix. '\').val(parseInt($(\'#rowCounter-' . $this->gridIdSuffix. '\').val()) + 1)
-                                            $(\'#addExtraAdvancedSearchRowButton-' . $this->gridIdSuffix. '\').parent().before(data);
+                                            $(\'#rowCounter-' . $this->getSearchFormId(). '\').val(parseInt($(\'#rowCounter-' . $this->getSearchFormId() . '\').val()) + 1)
+                                            $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
+                                            rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                           }'),
-                                    array('id' => 'addExtraAdvancedSearchRowButton-' . $this->gridIdSuffix));
+                                    array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId()));
             // End Not Coding Standard
             return CHtml::tag('div', array(), $content);
         }
 
+        protected function renderDynamicSearchStructureContent()
+        {
+            if($this->shouldHideDynamicSearchStructureByDefault())
+            {
+                $style1 = '';
+                $style2 = 'display:none;';
+            }
+            else
+            {
+                $style1 = 'display:none;';
+                $style2 = '';
+            }
+            $content  = CHtml::link(Yii::t('Default', 'More Options'), '#',
+                            array('id' => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
+                                          'style' => $style1));
+            $content .= CHtml::link(Yii::t('Default', 'Less Options'), '#',
+                            array('id' => 'hide-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
+                                          'style' => $style2));
+            $content .= CHtml::tag('div',
+                            array('id' => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
+                                          'style' => $style2),
+                            $this->renderStructureInputContent());
+            return $content;
+        }
+
+        protected function renderStructureInputContent()
+        {
+            $name                = get_class($this->model) . '[dynamic][structure]';
+            $id                  = get_class($this->model) . '_dynamic_structure';
+            $idInputHtmlOptions  = array('id' => $id, 'class' => 'dynamic-search-structure-input');
+            return CHtml::textField($name, $this->getStructureValue(), $idInputHtmlOptions);
+        }
+
+        protected function shouldHideDynamicSearchStructureByDefault()
+        {
+            //todo: expand once we have saved search
+            return true;
+        }
+
+        protected function getStructureValue()
+        {
+            //todo: expand once we have saved search
+            return null;
+        }
+
+        protected function renderAfterFormLayout($form)
+        {
+           parent::renderAfterFormLayout($form);
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dynamicSearchViewUtils.js');
+            Yii::app()->clientScript->registerScript('showStructurePanels' . $this->getSearchFormId(), "
+                $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').click( function()
+                    {
+                        $('#show-dynamic-search-structure-div-" . $this->getSearchFormId() . "').show();
+                        $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').hide();
+                        $('#hide-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').show();
+                        return false;
+                    }
+                );
+                $('#hide-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').click( function()
+                    {
+                        $('#show-dynamic-search-structure-div-" . $this->getSearchFormId() . "').hide();
+                        $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').show();
+                        $('#hide-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').hide();
+                        return false;
+                    }
+                );");
+        }
     }
 ?>
