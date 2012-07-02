@@ -3326,15 +3326,15 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     height: 26px;
   }
   /*
-      .panel, #permissions-module{
-          .has-date-select, .has-model-select{
-              a, button{
-                  &:before{
-                      top:-3px;
-                  }
+  	.panel, #permissions-module{
+  		.has-date-select, .has-model-select{
+  			a, button{
+              	&:before{
+                  	top:-3px;
+              	}
              }
-          }
-      }*/
+  		}
+  	}*/
   .has-model-select a {
     top: 25px !important;
   }
@@ -6654,7 +6654,7 @@ a.attachLoading:active {
   top: -34px;
   right: 8px;
 }
-.portlet-toolbar a {
+.portlet-toolbar .icon-create {
   padding: 0 15px 0 15px;
   line-height: 23px;
   margin: 0;
@@ -6682,10 +6682,10 @@ a.attachLoading:active {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-.portlet-toolbar a:not(.attachLoading) {
+.portlet-toolbar .icon-create:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-.portlet-toolbar a:before {
+.portlet-toolbar .icon-create:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
@@ -6702,10 +6702,10 @@ a.attachLoading:active {
   margin-left: 0;
   color: #7bb730;
 }
-.portlet-toolbar a:hover {
+.portlet-toolbar .icon-create:hover {
   color: #7bb730 !important;
 }
-.portlet-toolbar a:active {
+.portlet-toolbar .icon-create:active {
   color: #656565;
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
