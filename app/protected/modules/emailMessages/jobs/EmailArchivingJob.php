@@ -109,6 +109,7 @@
                         $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
                         continue;
                     }
+
                     Yii::app()->user->userModel = $emailOwner;
                     $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
                     $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    Yii::app()->user->userModel);
@@ -124,6 +125,7 @@
                     }
 
                     $senderInfo = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($message);
+
                     if (!$senderInfo)
                     {
                         $this->resolveMessageSubjectAndContentAndSendSystemMessage('SenderNotExtracted', $message);
@@ -131,23 +133,10 @@
                     }
                     else
                     {
-                        $sender                    = new EmailMessageSender();
-                        $sender->fromAddress       = $senderInfo['email'];
-                        if (isset($senderInfo['name']))
-                        {
-                            $sender->fromName          = $senderInfo['name'];
-                        }
+                        $sender = $this->createEmailMessageSender($senderInfo, $userCanAccessContacts,
+                                $userCanAccessLeads, $userCanAccessAccounts, $userCanAccessUsers);
 
-                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
-                                $senderInfo['email'],
-                                $userCanAccessContacts,
-                                $userCanAccessLeads,
-                                $userCanAccessAccounts,
-                                $userCanAccessUsers
-                        );
-
-                        $sender->personOrAccount = $personOrAccount;
-                        if(!isset($personOrAccount))
+                        if(empty($sender->personOrAccount) || $sender->personOrAccount->id <= 0)
                         {
                             $emailSenderOrRecepientEmailNotFoundInSystem = true;
                         }
@@ -173,25 +162,13 @@
 
                     foreach ($recipientsInfo as $recipientInfo)
                     {
-                        $recipient                 = new EmailMessageRecipient();
-                        $recipient->toAddress      = $recipientInfo['email'];
-                        $recipient->toName         = $recipientInfo['name'];
-                        $recipient->type           = EmailMessageRecipient::TYPE_TO;
-
-                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
-                                $recipientInfo['email'],
-                                $userCanAccessContacts,
-                                $userCanAccessLeads,
-                                $userCanAccessAccounts,
-                                $userCanAccessUsers
-                        );
-                        $recipient->personOrAccount = $personOrAccount;
+                        $recipient = $this->createEmailMessageRecipient($recipientInfo, $userCanAccessContacts,
+                                $userCanAccessLeads, $userCanAccessAccounts, $userCanAccessUsers);
                         $emailMessage->recipients->add($recipient);
-
                         // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
                         // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
                         // be able to match emails with items(Contacts, Accounts...) emails in systems
-                        if(!isset($personOrAccount))
+                        if(empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0)
                         {
                             $emailSenderOrRecepientEmailNotFoundInSystem = true;
                         }
@@ -216,16 +193,7 @@
                             {
                                 continue;
                             }
-                            // Save attachments
-                            $fileContent          = new FileContent();
-                            $fileContent->content = $attachment['attachment'];
-                            $file                 = new EmailFileModel();
-                            $file->fileContent    = $fileContent;
-                            $file->name           = $attachment['filename'];
-                            $file->type           = ZurmoFileHelper::getMimeType($attachment['filename']);
-                            $file->size           = strlen($attachment['attachment']);
-                            $saved                = $file->save();
-                            assert('$saved'); // Not Coding Standard
+                            $file = $this->createEmailAttachment($attachment);
                             $emailMessage->files->add($file);
                         }
                     }
@@ -304,6 +272,83 @@
                     throw NotSupportedException();
             }
             return EmailMessageHelper::sendSystemEmail($subject, array($originalMessage->fromEmail), $textContent, $htmlContent);
+        }
+
+        /**
+         * Create EmailMessageSender
+         * @param array $senderInfo
+         * @param boolean $userCanAccessContacts
+         * @param boolean $userCanAccessLeads
+         * @param boolean $userCanAccessAccounts
+         * @param boolean $userCanAccessUsers
+         * @return EmailMessageSender
+         */
+        protected function createEmailMessageSender($senderInfo, $userCanAccessContacts, $userCanAccessLeads,
+                                                     $userCanAccessAccounts, $userCanAccessUsers)
+        {
+            $sender                    = new EmailMessageSender();
+            $sender->fromAddress       = $senderInfo['email'];
+            if (isset($senderInfo['name']))
+            {
+                $sender->fromName          = $senderInfo['name'];
+            }
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+                    $senderInfo['email'],
+                    $userCanAccessContacts,
+                    $userCanAccessLeads,
+                    $userCanAccessAccounts,
+                    $userCanAccessUsers
+            );
+            $sender->personOrAccount = $personOrAccount;
+            return $sender;
+        }
+
+        /**
+         * Create EmailMessageRecipient
+         * @param array $recipientInfo
+         * @param boolean $userCanAccessContacts
+         * @param boolean $userCanAccessLeads
+         * @param boolean $userCanAccessAccounts
+         * @param boolean $userCanAccessUsers
+         * @return EmailMessageRecipient
+         */
+        protected function createEmailMessageRecipient($recipientInfo, $userCanAccessContacts, $userCanAccessLeads,
+                                                     $userCanAccessAccounts, $userCanAccessUsers)
+        {
+            $recipient                 = new EmailMessageRecipient();
+            $recipient->toAddress      = $recipientInfo['email'];
+            $recipient->toName         = $recipientInfo['name'];
+            $recipient->type           = EmailMessageRecipient::TYPE_TO;
+
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+                    $recipientInfo['email'],
+                    $userCanAccessContacts,
+                    $userCanAccessLeads,
+                    $userCanAccessAccounts,
+                    $userCanAccessUsers
+            );
+            $recipient->personOrAccount = $personOrAccount;
+            return $recipient;
+        }
+
+        /**
+         * Create EmailFileModel
+         * @param array $attachment
+         * @return EmailFileModel
+         */
+        protected function createEmailAttachment($attachment)
+        {
+            // Save attachments
+            $fileContent          = new FileContent();
+            $fileContent->content = $attachment['attachment'];
+            $file                 = new EmailFileModel();
+            $file->fileContent    = $fileContent;
+            $file->name           = $attachment['filename'];
+            $file->type           = ZurmoFileHelper::getMimeType($attachment['filename']);
+            $file->size           = strlen($attachment['attachment']);
+            $saved                = $file->save();
+            assert('$saved'); // Not Coding Standard
+            return $file;
         }
     }
 ?>
