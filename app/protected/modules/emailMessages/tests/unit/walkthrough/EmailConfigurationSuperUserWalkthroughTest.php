@@ -57,7 +57,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEdit');
         }
 
-        public function testSuperUserModifyOutboundEmailConfiguration()
+        public function testSuperUserModifyEmailConfiguration()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $super2 = User::getByUsername('super2');
@@ -66,14 +66,14 @@
 
             //Change email settings
             $this->resetGetArray();
-            $this->setPostArray(array('OutboundEmailConfigurationForm' => array(
+            $this->setPostArray(array('EmailConfigurationForm' => array(
                                     'host'                              => 'abc',
                                     'port'                              => '565',
                                     'username'                          => 'myuser',
                                     'password'                          => 'apassword',
                                     'userIdOfUserToSendNotificationsAs' => $super2->id)));
             $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEdit');
-            $this->assertEquals('Outbound email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+            $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $emailHelper = new EmailHelper;

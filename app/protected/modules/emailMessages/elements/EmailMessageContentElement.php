@@ -25,50 +25,37 @@
      ********************************************************************************/
 
     /**
-     * Helper class to help with user interface manipulation for FileModel related actions.
+     * Display email message content.
      */
-    class FileModelDisplayUtil
+    class EmailMessageContentElement extends Element
     {
-        /**
-         * Given a file size in bytes, convert to a human readable form.
-         * @param integer $size
-         * @return string $content
-         */
-        public static function convertSizeToHumanReadableAndGet($size)
+        protected function renderControlNonEditable()
         {
-            assert('is_numeric($size)');
-            if ($size == 0)
+            assert('$this->model->{$this->attribute} instanceof EmailMessageContent');
+            $emailMessageContent = $this->model->{$this->attribute};
+            if($emailMessageContent->htmlContent != null)
             {
-                return '0';
+                return Yii::app()->format->html($emailMessageContent->htmlContent);
             }
-            if ($size < 1048576)
+            elseif($emailMessageContent->textContent != null)
             {
-                return round($size / 1024, 2) . 'KB';
-            }
-            elseif ($size < 1073741824)
-            {
-                return round($size / 1048576, 2) . 'MB';
-            }
-            else
-            {
-                return round($size / 1073741824, 2) . 'GB';
+                return Yii::app()->format->text($emailMessageContent->textContent);
             }
         }
 
-        public static function renderDownloadLinkContentByRelationModelAndFileModel($model, $fileModel)
+        protected function renderControlEditable()
         {
-            assert('$model instanceof RedBeanModel');
-            assert('$fileModel instanceof FileModel');
-            $content = null;
-            $content .= '<span class="ui-icon ui-icon-document" style="display:inline-block;"></span>';
-            $content .= CHtml::link(
-                    Yii::app()->format->text($fileModel->name),
-                    Yii::app()->createUrl('zurmo/fileModel/download/',
-                        array('modelId' => $model->id,
-                              'modelClassName' => get_class($model),
-                              'id' => $fileModel->id))
-            );
-            return $content;
+            throw new NotImplementedException();
+        }
+
+        protected function renderError()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function renderLabel()
+        {
+            return Yii::t('Default', 'Body');
         }
     }
 ?>
