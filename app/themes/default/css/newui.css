@@ -2350,7 +2350,8 @@ div.wide.form .errorMessage {
   color: #B3B3B3;
 }
 .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
-  background: #b5b6e7;
+  background-image: none !important;
+  background: #b5b6e7 !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   border-top: 1px solid #BBB;
