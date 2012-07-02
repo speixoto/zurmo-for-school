@@ -272,7 +272,7 @@
 
 
         /**
-         * Removes the dynamic structure
+         * @param string $getArrayName
          */
         public static function getDynamicSearchAttributesFromGetArray($getArrayName)
         {
@@ -296,7 +296,10 @@
             }
         }
 
-
+        /**
+         * @param object DynamicSearchForm $searchModel
+         * @param array $dynamicSearchAttributes
+         */
         public static function sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel(DynamicSearchForm $searchModel,
                                                                                            $dynamicSearchAttributes)
         {
@@ -317,7 +320,7 @@
         }
 
         /**
-         *
+         * @param string $getArrayName
          */
         public static function getDynamicSearchStructureFromGetArray($getArrayName)
         {

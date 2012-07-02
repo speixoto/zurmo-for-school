@@ -60,13 +60,13 @@
          */
         public function getAdaptedDataProviderMetadata()
         {
-            $metadata      = $this->metadata;
-            $clauseCount   = count($metadata['clauses']);
-            $structure     = $this->dynamicStructure;
+            $metadata                   = $this->metadata;
+            $clauseCount                = count($metadata['clauses']);
+            $structure                  = $this->dynamicStructure;
+            $correctlyPositionedClauses = array();
             foreach($this->sanitizedDynamicSearchAttributes as $searchAttribute)
             {
-                //$attributeIndexOrDerivedType = $searchAttribute['attributeIndexOrDerivedType'];
-                $structurePosition           = $searchAttribute['structurePosition'];
+                $structurePosition = $searchAttribute['structurePosition'];
                 unset($searchAttribute['attributeIndexOrDerivedType']);
                 unset($searchAttribute['structurePosition']);
                 $metadataAdapter = new SearchDataProviderMetadataAdapter(
@@ -77,17 +77,20 @@
                 $searchItemMetadata = $metadataAdapter->getAdaptedMetadata(true, ($clauseCount + 1));
                 if(count($searchItemMetadata['clauses']) > 0)
                 {
-                    $metadata['clauses']        = $metadata['clauses'] + $searchItemMetadata['clauses'];
-                    $clauseCount                = $clauseCount + count($searchItemMetadata['clauses']);
-                    $correctlyPositionedClauses = array($structurePosition => $searchItemMetadata['structure']);
-                    strtr(strtolower($structure), $correctlyPositionedClauses);
+                    $metadata['clauses']                            = $metadata['clauses'] + $searchItemMetadata['clauses'];
+                    $clauseCount                                    = $clauseCount + count($searchItemMetadata['clauses']);
+                    $correctlyPositionedClauses
+                        [$structurePosition][$structurePosition]    = $searchItemMetadata['structure'];
                 }
                 else
                 {
-                    $correctlyPositionedClauses = array($structurePosition => null);
-                    strtr(strtolower($structure), $correctlyPositionedClauses);
+                    $correctlyPositionedClauses[$structurePosition][$structurePosition] = null;
                 }
-                //todo: what about if more than 10? do we have to do this in reverse?
+            }
+            krsort($correctlyPositionedClauses);
+            foreach($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
+            {
+                $structure = strtr(strtolower($structure), $correctlyPositionedClauseData);
             }
             if (empty($metadata['structure']))
             {

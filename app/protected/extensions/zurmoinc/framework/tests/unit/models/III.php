@@ -50,6 +50,12 @@
                     array('dateTime',   'type', 'type' => 'datetime'),
                     array('dateTime2',  'type', 'type' => 'datetime'),
                 ),
+                'elements' => array(
+                    'date'      => 'Date',
+                    'date2'     => 'Date',
+                    'dateTime'  => 'DateTime',
+                    'dateTime2' => 'DateTime',
+                ),
             );
             return $metadata;
         }

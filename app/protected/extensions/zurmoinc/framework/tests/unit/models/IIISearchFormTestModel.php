@@ -27,7 +27,7 @@
     /**
      * Used for testing with @see III model
      */
-    class IIISearchFormTestModel extends SearchForm
+    class IIISearchFormTestModel extends DynamicSearchForm
     {
         public $IIIName;
         public $differentOperatorA;

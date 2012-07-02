@@ -117,6 +117,17 @@
             $this->assertEquals(array('a' => '0'), $newArray);
         }
 
+        public function testResolveSearchAttributesFromGetArrayForDynamicSearch()
+        {
+            $_GET['testing'] = array(
+                'a' => '0',
+                'dynamic' => array(array('b' => '0')),
+                'dynamicStructure' => '1 and 2',
+            );
+            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing');
+            $this->assertEquals(array('a' => '0'), $newArray);
+        }
+
         public function testResolveSearchAttributesFromGetArrayForAnyMixedAttributeScopeName()
         {
             $_GET['testing'] = array(
@@ -248,6 +259,123 @@
             $_GET['someArray'][SearchUtil::ANY_MIXED_ATTRIBUTES_SCOPE_NAME] = array('A', 'B', 'C');
             SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromGetArray($searchModel, $getArrayName);
             $this->assertEquals(array('A', 'B', 'C'), $searchModel->getAnyMixedAttributesScope());
+        }
+
+        public function testGetDynamicSearchAttributesFromGetArray()
+        {
+            //Test without any dynamic search
+            $_GET['testing'] = array(
+                'a' => null,
+            );
+            $newArray = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
+            $this->assertNull($newArray);
+
+            //Test with dynamic search
+            $_GET['testing'] = array(
+                'a' => null,
+                'dynamic' => array(array('b' => 'c')),
+                'dynamicStructure' => '1 and 2',
+            );
+            $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
+            $compareData = array(array('b' => 'c'));
+            $this->assertEquals($compareData, $newArray);
+
+            //Test with dynamic search and an undefined sub-array
+            $_GET['testing'] = array(
+                'a' => null,
+                'dynamic' => array(array('b' => 'c'), 'undefined', array('d' => 'simpleDimple')),
+                'dynamicStructure' => '1 and 2',
+            );
+            $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
+            $compareData = array(0 => array('b' => 'c'), 2 => array('d' => 'simpleDimple'));
+            $this->assertEquals($compareData, $newArray);
+        }
+
+
+        public function testSanitizeDynamicSearchAttributesByDesignerTypeForSavingModel()
+        {
+            $searchModel = new ASearchFormTestModel(new A());
+            //Test without anything special sanitizing
+            $dynamicSearchAttributes = array(
+                                        0 => array('attributeIndexOrDerivedType' => 'a',
+                                                    'structurePosition'          => '1',
+                                                    'a'                          => 'someting'),
+                                        2 => array('attributeIndexOrDerivedType' => 'a',
+                                                    'structurePosition'          => '2',
+                                                    'a'                          => 'sometingElse'));
+            $newArray = SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
+                                                                                                $dynamicSearchAttributes);
+            $this->assertEquals($dynamicSearchAttributes, $newArray);
+
+        }
+
+        public function testSanitizeDynamicSearchAttributesByDesignerTypeForSavingModelWithSanitizableItems()
+        {
+            $language    = Yii::app()->getLanguage();
+            $this->assertEquals($language, 'en');
+            $searchModel = new IIISearchFormTestModel(new III());
+            $dynamicSearchAttributes = array(
+                                        0 => array('attributeIndexOrDerivedType' => 'date__Date',
+                                                    'structurePosition'          => '1',
+                                                    'date__Date'                 =>
+                                                        array('firstDate' => '5/4/11',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
+                                        2 => array('attributeIndexOrDerivedType' => 'date2__Date',
+                                                    'structurePosition'          => '2',
+                                                    'date2__Date'                =>
+                                                        array('firstDate' => '5/6/11',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
+                                        3 => array('attributeIndexOrDerivedType' => 'dateTime__DateTime',
+                                                    'structurePosition'          => '1',
+                                                    'dateTime__DateTime'         =>
+                                                        array('firstDate' => '5/7/11',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
+                                        5 => array('attributeIndexOrDerivedType' => 'dateTime2__DateTime',
+                                                    'structurePosition'          => '2',
+                                                    'dateTime2__DateTime'        =>
+                                                        array('firstDate' => '5/8/11',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
+                                        );
+            $newArray = SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
+                                                                                                $dynamicSearchAttributes);
+            $compareData = array(
+                                        0 => array('attributeIndexOrDerivedType' => 'date__Date',
+                                                    'structurePosition'          => '1',
+                                                    'date__Date'                 =>
+                                                        array('firstDate' => '2011-05-04',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
+                                        2 => array('attributeIndexOrDerivedType' => 'date2__Date',
+                                                    'structurePosition'          => '2',
+                                                    'date2__Date'                =>
+                                                        array('firstDate' => '2011-05-06',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
+                                        3 => array('attributeIndexOrDerivedType' => 'dateTime__DateTime',
+                                                    'structurePosition'          => '1',
+                                                    'dateTime__DateTime'         =>
+                                                        array('firstDate' => '2011-05-07',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
+                                        5 => array('attributeIndexOrDerivedType' => 'dateTime2__DateTime',
+                                                    'structurePosition'          => '2',
+                                                    'dateTime2__DateTime'        =>
+                                                        array('firstDate' => '2011-05-08',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER)),
+                                        );
+            $this->assertEquals($compareData, $newArray);
+        }
+
+        public function testGetDynamicSearchStructureFromGetArray()
+        {
+            $_GET['testing'] = array(
+                'a' => null,
+            );
+            $newString = SearchUtil::getDynamicSearchStructureFromGetArray('testing');
+            $this->assertNull($newString);
+            $_GET['testing'] = array(
+                'a' => null,
+                'dynamicStructure' => '1 and 2',
+            );
+            $newString = SearchUtil::getDynamicSearchStructureFromGetArray('testing');
+            $this->assertEquals('1 and 2', $newString);
         }
     }
 ?>
