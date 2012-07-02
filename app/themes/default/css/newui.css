@@ -5420,7 +5420,7 @@ section {
 #ShortcutsMenu {
   position: absolute;
   float: right;
-  right: 40px;
+  right: 3%;
   top: 8px;
 }
 #ShortcutsMenu > li {
