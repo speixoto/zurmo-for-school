@@ -30,10 +30,11 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            ReadPermissionsOptimizationUtil::rebuild();
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
         }
 
-        public function IsMessageForwarded()
+        public function testIsMessageForwarded()
         {
             Yii::app()->imap->imapUsername = 'dropbox@emample.com';
 
@@ -71,7 +72,7 @@
             $this->assertFalse(EmailArchivingUtil::isMessageForwarded($imapMessage));
         }
 
-        public function ResolveEmailSenderFromForwardedEmailMessage()
+        public function testResolveEmailSenderFromForwardedEmailMessage()
         {
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Test subject";
@@ -114,7 +115,7 @@ To: 'Steve'";
         /**
         * @depends testResolveEmailSenderFromForwardedEmailMessage
         */
-        public function ResolveEmailSenderFromEmailMessage()
+        public function testResolveEmailSenderFromEmailMessage()
         {
             Yii::app()->imap->imapUsername = 'dropbox@emample.com';
 
@@ -188,7 +189,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
         /**
         * @depends testIsMessageForwarded
         */
-        public function ResolveEmailRecipientsFromEmailMessage()
+        public function testResolveEmailRecipientsFromEmailMessage()
         {
             Yii::app()->imap->imapUsername = 'dropbox@emample.com';
             $imapMessage = new ImapMessage();
@@ -224,7 +225,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
         /**
         * @depends testIsMessageForwarded
         */
-        public function ResolveOwnerOfEmailMessage()
+        public function testResolveOwnerOfEmailMessage()
         {
             $user = UserTestHelper::createBasicUser('billy');
             $email = new Email();
@@ -340,10 +341,14 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             Yii::app()->user->userModel = $super;
             $email = new Email();
             $email->emailAddress = $emailAddress;
+            $email2 = new Email();
+            $email2->emailAddress = 'aabb@example.com';
             $account = new Account();
             $account->owner       = $super;
             $account->name        = 'Test Account';
             $account->primaryEmail = $email;
+            $account->secondaryEmail = $email2;
+
             $this->assertTrue($account->save());
             Yii::app()->user->userModel = $user;
             $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($emailAddress,
@@ -352,7 +357,6 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
                                                                                         true,
                                                                                         false);
             $this->assertNull($personOrAccount);
-
             Yii::app()->user->userModel = $super;
             $account->owner       = $user;
             $this->assertTrue($account->save());
@@ -362,6 +366,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
                                                                                         false,
                                                                                         true,
                                                                                         false);
+
             $this->assertEquals($account->id, $personOrAccount->id);
             $this->assertTrue($personOrAccount instanceof Account);
 
@@ -394,12 +399,15 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $contactStates = ContactState::getByName('Qualified');
             $email = new Email();
             $email->emailAddress = $emailAddress;
+            $email2 = new Email();
+            $email2->emailAddress = 'aabb@example.com';
             $contact                = new Contact();
             $contact->state         = $contactStates[0];
             $contact->owner         = $super;
             $contact->firstName     = 'Super';
             $contact->lastName      = 'Man';
             $contact->primaryEmail = $email;
+            $contact->secondaryEmail = $email;
             $this->assertTrue($account->save());
 
             Yii::app()->user->userModel = $user;
