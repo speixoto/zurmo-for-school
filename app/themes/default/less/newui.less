@@ -2052,7 +2052,17 @@ div.wide.form{
     .view-toolbar-container{
         border-top:1px solid #CCCCCC;
     }
-    #right-side-edit-view-panel{
+    
+    .hasCheckBox{
+        margin:8px 0 0 0;
+        display:block;
+        input[type="checkbox"]{
+            margin-bottom:0 !important;
+        }
+    }
+}
+
+#right-side-edit-view-panel{
         position:absolute;
         right:15px;
         top:15px;
@@ -2120,14 +2130,7 @@ div.wide.form{
             margin-top:6px;
         }
     }
-    .hasCheckBox{
-        margin:8px 0 0 0;
-        display:block;
-        input[type="checkbox"]{
-            margin-bottom:0 !important;
-        }
-    }
-}
+
 
 .has-date-select, .has-model-select{
     position: relative;
@@ -2430,18 +2433,19 @@ div.wide.form{
     ul{
         list-style: none;
     }
-    .OptionsMenu{ }
-    .OptionsMenu > li > a{
+    .options-menu{ }
+    .options-menu > li > a{
         text-align:center;
         width: 60px;
         .zButton();
         font-size:11px;
+        color: #666 !important;
         &:after{
             content: "▾";
             margin-left:5px;
         }
     }
-    .OptionsMenu ul{
+    .options-menu ul{
         .flyout();
         margin-top:-8px;
         padding-top:3px;
@@ -3107,6 +3111,23 @@ div.hasHalfs{
     span{
         display:none;
     }
+}
+
+
+.LatestActivtiesForPortletView{
+	position:relative;
+	.toolbar-mbmenu{
+		z-index:999999;
+		top:-34px;
+    	right:10px;
+    	.view-toolbar{
+    		background:none;
+    		margin:0;
+    	}
+    	li{
+    		padding:0;
+    	}
+	}
 }
 
 /*=Search User Modal*/
