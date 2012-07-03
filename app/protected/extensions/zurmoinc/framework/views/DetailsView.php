@@ -70,6 +70,7 @@
                 $content .= '</div></div>';
             }
             $content .= $this->renderFormLayout();
+            $content .= $this->renderRightSideContent();
             $content .= '<p>' . $this->renderAfterFormLayoutForDetailsContent() . '</p>';
             $content .= '</div>';
             return $content;
@@ -81,6 +82,10 @@
             {
                 return '<h1>' . $this->title . "</h1>";
             }
+        }
+
+        protected function renderRightSideContent($form = null)
+        {
         }
 
         protected function renderAfterFormLayoutForDetailsContent()

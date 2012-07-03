@@ -113,7 +113,7 @@
             return '<h1>' . $this->getNewModelTitleLabel() . '</h1>';
         }
 
-        protected function renderRightSideContent($form)
+        protected function renderRightSideContent($form = null)
         {
             assert('$form == null || $form instanceof ZurmoActiveForm');
             if ($form != null)

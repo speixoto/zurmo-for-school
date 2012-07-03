@@ -85,6 +85,15 @@
             return '<h1>' . strval($this->model) . "</h1>";
         }
 
+        protected function renderRightSideContent($form = null)
+        {
+            assert('$form == null');
+            $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
+            $content .= 'this is where the right side stuff goes';
+            $content .= '</div></div></div>';
+            return $content;
+        }
+
         protected function renderAfterFormLayoutForDetailsContent()
         {
             $getParams    = array('relatedModelId'           => $this->model->id,
@@ -98,5 +107,7 @@
             $content     .= $view->render();
             return $content;
         }
+
+
     }
 ?>

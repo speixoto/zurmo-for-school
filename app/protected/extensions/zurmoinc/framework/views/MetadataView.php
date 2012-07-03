@@ -206,10 +206,8 @@
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("OptionMenu");
                 $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'OptionsMenu'),
+                    'htmlOptions' => array('class' => 'options-menu'),
                     'items'                   => array($menuItems),
-                    'navContainerClass'       => 'nav-single-container',
-                    'navBarClass'             => 'nav-single-bar',
                 ));
                 $cClipWidget->endClip();
                 return $cClipWidget->getController()->clips['OptionMenu'];

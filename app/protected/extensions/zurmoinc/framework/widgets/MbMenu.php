@@ -141,7 +141,15 @@
                 $this->getController()->getRoute(),
                 $hasActiveChild
             );
-            $this->htmlOptions['class']= 'nav';
+            if(isset($this->htmlOptions['class']))
+            {
+                $this->htmlOptions['class'] .= ' nav';
+            }
+            else
+            {
+                $this->htmlOptions['class'] = 'nav';
+            }
+
         }
 
         /**
@@ -274,13 +282,7 @@
         {
             $this->registerClientScripts();
             $this->registerCssFile();
-            $htmlOptions['class'] = $this->navContainerClass;
-            //echo CHtml::openTag('div', $htmlOptions) . "\n";
-            $htmlOptions['class'] = $this->navBarClass;
-            //echo CHtml::openTag('div', $htmlOptions) . "\n";
             parent::run();
-            //echo CHtml::closeTag('div');
-            //echo CHtml::closeTag('div');
         }
     }
 ?>

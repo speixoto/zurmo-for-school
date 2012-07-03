@@ -455,7 +455,7 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
-            $users    = UserModelSearch::getUsersByPartialFullName($term, $pageSize);
+            $users    = UserSearch::getUsersByPartialFullName($term, $pageSize);
             $autoCompleteResults  = array();
             foreach ($users as $user)
             {

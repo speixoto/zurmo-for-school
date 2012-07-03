@@ -108,5 +108,18 @@
             }
             return $content;
         }
+
+        /**
+         * Override to change the editableTemplate to place the label above the input.
+         * @see DetailsView::resolveElementDuringFormLayoutRender()
+         */
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
+            if ($element instanceOf FilesElement)
+            {
+                $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' .
+                                             '<div class="file-upload-box">{content}{error}</div></td>';
+            }
+        }
     }
 ?>
