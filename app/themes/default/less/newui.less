@@ -20,6 +20,7 @@
 @import 'gamification.less';
 @import 'welcome.less';
 @import 'tablet.less';
+@import 'conversations.less';
 
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
@@ -1255,6 +1256,19 @@ table.items tbody tr:last-child td{
     border-bottom: none;
 }
 
+table.items{
+	tbody{
+		tr{
+			td:first-child:not(.checkbox-column),
+			th:first-child:not(.checkbox-column){
+				padding-left:10px;
+			}
+		}
+	}
+}
+
+
+
 .juiportlet-widget table.items thead tr th:first-child,
 .juiportlet-widget table.items tbody tr td:first-child{
     padding-left:15px;
@@ -1946,7 +1960,16 @@ div.wide.form{
 
 /*=Edit + Add Account View*/
 .buffer{
+	.clearfix();
     padding-left:30px;
+    
+    > div{
+    	float:left;
+        padding:8px 10px;
+        background:#F4F4F4;
+    	width:100%;
+        .box-sizing();
+    }
 }
 
 .double-column{
@@ -1966,11 +1989,7 @@ div.wide.form{
         //width:100% !important;
         float:left !important;
         .buffer{
-            padding-left:15px;
-            > div{
-                width:100%;
-                .box-sizing();
-            }
+           // padding-left:15px;
         }
     }
     .col-0, .col-2{
@@ -2043,9 +2062,9 @@ div.wide.form{
             margin-bottom:8px;
         }
         .buffer > div{
-            float:left;
-            padding:8px 10px;
-            background:#F4F4F4;
+            //float:left;
+            //padding:8px 10px;
+            //background:#F4F4F4;
         }
         label{
             width: 100%;
@@ -2411,8 +2430,8 @@ div.wide.form{
     ul{
         list-style: none;
     }
-    #OptionsMenu{ }
-    #OptionsMenu > li > a{
+    .OptionsMenu{ }
+    .OptionsMenu > li > a{
         text-align:center;
         width: 60px;
         .zButton();
@@ -2422,7 +2441,7 @@ div.wide.form{
             margin-left:5px;
         }
     }
-    #OptionsMenu ul{
+    .OptionsMenu ul{
         .flyout();
         margin-top:-8px;
         padding-top:3px;
@@ -3053,6 +3072,13 @@ div.hasHalfs{
     .EmailMessage:after{
         content: "g";
         .latest-activity-icon();
+    }
+    .Conversation{
+    	padding-top:5px;
+    	&:after{
+	        content: "b";
+	        .latest-activity-icon();
+	    }
     }
 }
 #activities-rollup-tooltip{

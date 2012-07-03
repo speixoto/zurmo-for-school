@@ -2554,7 +2554,6 @@ ul.token-input-list {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  font-size: 12px;
   color: #999;
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -2590,8 +2589,10 @@ ul.token-input-list.disabled input {
 }
 ul.token-input-list li input {
   border: 0;
-  margin: 2px 0;
+  margin: 0 !important;
   -webkit-appearance: caret;
+  padding: 0 !important;
+  line-height: 100%;
 }
 li.token-input-token {
   overflow: hidden;
@@ -2603,7 +2604,6 @@ li.token-input-token {
   background-color: #D4E7BC;
   color: #666 !important;
   cursor: default;
-  font-size: 12px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -2621,12 +2621,12 @@ li.token-input-token p {
   display: inline;
   padding: 0;
   margin: 0;
-  color: #666 !important;
-  font-size: 12px;
+  color: #545454 !important;
+  font-size: 11px;
   font-style: normal;
 }
 li.token-input-token span {
-  color: #666 !important;
+  color: #545454 !important;
   margin-left: 5px;
   font-weight: normal;
   cursor: pointer;
@@ -2665,7 +2665,6 @@ div.token-input-dropdown {
   -ms-border-radius: 0 0 3px 3px;
   -o-border-radius: 0 0 3px 3px;
   border-radius: 0 0 3px 3px;
-  font-size: 12px;
   color: #999;
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -2698,7 +2697,7 @@ div.token-input-dropdown ul li em {
 }
 div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-color: #D4E7BC;
-  color: #666;
+  color: #545454;
 }
 #NotificationsForUserListView .items th,
 #NotificationsForUserListView .items td {
@@ -4192,6 +4191,14 @@ span.tooltip {
 .CreateTask .badge-icon:before {
   content: "4";
 }
+.game-badge-CreateComment .badge-icon:before,
+.CreateComment .badge-icon:before {
+  content: "b";
+}
+.game-badge-CreateConversation .badge-icon:before,
+.CreateConversation .badge-icon:before {
+  content: "O";
+}
 /*Night Icons*/
 .game-badge-NightOwl .badge-icon:before,
 .NightOwl .badge-icon:before {
@@ -4809,6 +4816,9 @@ span.tooltip {
   .AppContainer {
     min-width: none;
   }
+}
+#ConversationEditView td {
+  padding-left: 0;
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
@@ -6313,6 +6323,10 @@ table.items tbody tr:last-child,
 table.items tbody tr:last-child td {
   border-bottom: none;
 }
+table.items tbody tr td:first-child:not(.checkbox-column),
+table.items tbody tr th:first-child:not(.checkbox-column) {
+  padding-left: 10px;
+}
 .juiportlet-widget table.items thead tr th:first-child,
 .juiportlet-widget table.items tbody tr td:first-child {
   padding-left: 15px;
@@ -7343,7 +7357,26 @@ div.wide.form label.hasCheckBox {
 }
 /*=Edit + Add Account View*/
 .buffer {
+  zoom: 1;
   padding-left: 30px;
+}
+.buffer:before {
+  content: "";
+  display: table;
+}
+.buffer:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.buffer > div {
+  float: left;
+  padding: 8px 10px;
+  background: #F4F4F4;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .double-column .panel {
   float: left;
@@ -7359,15 +7392,6 @@ div.wide.form label.hasCheckBox {
   margin-bottom: 15px;
   position: relative !important;
   float: left !important;
-}
-.double-column #right-side-edit-view-panel .buffer {
-  padding-left: 15px;
-}
-.double-column #right-side-edit-view-panel .buffer > div {
-  width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .double-column .col-0,
 .double-column .col-2 {
@@ -7453,11 +7477,6 @@ div.wide.form label.hasCheckBox {
 }
 #edit-form #right-side-edit-view-panel h3 {
   margin-bottom: 8px;
-}
-#edit-form #right-side-edit-view-panel .buffer > div {
-  float: left;
-  padding: 8px 10px;
-  background: #F4F4F4;
 }
 #edit-form #right-side-edit-view-panel label {
   width: 100%;
@@ -7897,7 +7916,7 @@ div.wide.form label.hasCheckBox {
 .toolbar-mbmenu ul {
   list-style: none;
 }
-.toolbar-mbmenu #OptionsMenu > li > a {
+.toolbar-mbmenu .OptionsMenu > li > a {
   text-align: center;
   width: 60px;
   cursor: pointer;
@@ -7930,27 +7949,27 @@ div.wide.form label.hasCheckBox {
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   font-size: 11px;
 }
-.toolbar-mbmenu #OptionsMenu > li > a:not(.attachLoading) {
+.toolbar-mbmenu .OptionsMenu > li > a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-.toolbar-mbmenu #OptionsMenu > li > a:hover {
+.toolbar-mbmenu .OptionsMenu > li > a:hover {
   color: #7bb730 !important;
 }
-.toolbar-mbmenu #OptionsMenu > li > a:active {
+.toolbar-mbmenu .OptionsMenu > li > a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
-.toolbar-mbmenu #OptionsMenu > li > a.loading .z-spinner {
+.toolbar-mbmenu .OptionsMenu > li > a.loading .z-spinner {
   display: inline-block;
 }
-.toolbar-mbmenu #OptionsMenu > li > a.loading .z-icon {
+.toolbar-mbmenu .OptionsMenu > li > a.loading .z-icon {
   display: none;
 }
-.toolbar-mbmenu #OptionsMenu > li > a:after {
+.toolbar-mbmenu .OptionsMenu > li > a:after {
   content: "▾";
   margin-left: 5px;
 }
-.toolbar-mbmenu #OptionsMenu ul {
+.toolbar-mbmenu .OptionsMenu ul {
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -7973,7 +7992,7 @@ div.wide.form label.hasCheckBox {
   display: none;
   font-weight: normal !important;
 }
-.toolbar-mbmenu #OptionsMenu ul a {
+.toolbar-mbmenu .OptionsMenu ul a {
   text-indent: 0;
   color: #666;
   font-size: 11px;
@@ -7988,7 +8007,7 @@ div.wide.form label.hasCheckBox {
   -ms-text-shadow: none;
   text-shadow: none;
 }
-.toolbar-mbmenu #OptionsMenu ul a:hover {
+.toolbar-mbmenu .OptionsMenu ul a:hover {
   background: #7bb730 !important;
   color: #fff !important;
 }
@@ -8798,6 +8817,21 @@ div.hasHalfs .twoThirds {
 .LatestActivitiesListView .EmailMessage:after,
 .LatestActivitiesView .EmailMessage:after {
   content: "g";
+  position: relative;
+  top: -3px;
+  color: #666 !important;
+  font-weight: normal;
+  font-size: 42px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 28px;
+}
+.LatestActivitiesListView .Conversation,
+.LatestActivitiesView .Conversation {
+  padding-top: 5px;
+}
+.LatestActivitiesListView .Conversation:after,
+.LatestActivitiesView .Conversation:after {
+  content: "b";
   position: relative;
   top: -3px;
   color: #666 !important;
