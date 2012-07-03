@@ -156,7 +156,41 @@
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
 
-        //todo: test when there is already a structure/clause in there
+        /**
+         * @expectedException NotSupportedException
+         */
+        public function testDynamicSearchWithNullValues()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $sanitizedDynamicSearchAttributes = array(
+                0 => array(
+                    'iiiMember'                   => 'someThing',
+                    'attributeIndexOrDerivedType' => 'iiiMember',
+                    'structurePosition'           => '1',
+                ),
+                2 => array(
+                    'iiiMember2'                   => null, //must be null not '' to show its removal in test
+                    'attributeIndexOrDerivedType' => 'iiiMember2',
+                    'structurePosition'           => '2',
+                ),
+                4 => array(
+                    'iiiMember2'                   => 'someThing3',
+                    'attributeIndexOrDerivedType' => 'iiiMember2',
+                    'structurePosition'           => '3',
+                )
+            );
+            $dynamicStructure = '(1 or 2) and 3';
+            $metadata         = array('clauses' => array(), 'structure' => '');
+            $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
+                $metadata,
+                new IIISearchFormTestModel(new III(false)),
+                (int)Yii::app()->user->userModel->id,
+                $sanitizedDynamicSearchAttributes,
+                $dynamicStructure);
+            $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
+        }
+
         //todo: test null value;
     }
 ?>

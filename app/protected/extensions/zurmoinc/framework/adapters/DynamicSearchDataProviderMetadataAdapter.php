@@ -84,7 +84,7 @@
                 }
                 else
                 {
-                    $correctlyPositionedClauses[$structurePosition][$structurePosition] = null;
+                    throw new NotSupportedException();
                 }
             }
             krsort($correctlyPositionedClauses);
