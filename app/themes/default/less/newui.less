@@ -901,6 +901,15 @@ footer, header, hgroup, menu, nav, section {
 @recentlyViewedIconSize : 24px;
 
 #RecentlyViewedView {
+	li.type-ConversationsModule{
+		em{
+            padding-top:3px;
+            padding-right:3px;
+        }
+        em:before{
+            content: "b";
+        }
+    }
     li.type-UsersModule{
         em:before{
             content: "e";
@@ -1951,7 +1960,7 @@ div.wide.form{
             color:@themeColor;
         }
     }
-    #permissions-module{
+    #right-side-edit-view-panel{
         margin-bottom:15px;
         position:relative !important;
         //width:100% !important;
@@ -2024,7 +2033,7 @@ div.wide.form{
     .view-toolbar-container{
         border-top:1px solid #CCCCCC;
     }
-    #permissions-module{
+    #right-side-edit-view-panel{
         position:absolute;
         right:15px;
         top:15px;

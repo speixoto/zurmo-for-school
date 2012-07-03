@@ -92,7 +92,7 @@
                 $rightSideContent = $this->renderRightSideFormLayoutForEdit($form);
                 if ($rightSideContent != null)
                 {
-                    $content  = '<div id="permissions-module"><div class="buffer"><div>';
+                    $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
                     $content .= $rightSideContent;
                     $content .= '</div></div></div>';
                     return $content;

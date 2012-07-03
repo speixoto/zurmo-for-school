@@ -1438,25 +1438,6 @@ table.configuration-list tr td:last-child a:before {
   width: 100%;
   margin-bottom: 20px;
 }
-#UsersPageView {
-  /*
-    .DetailsView{
-        table{
-            margin-left:8px;
-        }
-        td{
-            text-align:left;
-            padding-left:15px;
-        }
-        th{
-            text-align:left;
-            font-size: 12px !important;
-            color: #666;
-        }
-    }
-    */
-
-}
 #UsersPageView .panel {
   width: 100% !important;
   -moz-box-sizing: border-box;
@@ -1471,6 +1452,9 @@ table.configuration-list tr td:last-child a:before {
 }
 #UsersPageView #edit-form {
   padding-right: 30px;
+}
+#UserCreateView .panel {
+  width: 70% !important;
 }
 .panelTitle {
   padding-left: 15px;
@@ -1583,7 +1567,7 @@ table.configuration-list tr td:last-child a:before {
 .AppContent.ImportWizardView h3 {
   margin-bottom: 15px;
 }
-.AppContent.ImportWizardView #permissions-module {
+.AppContent.ImportWizardView #right-side-edit-view-panel {
   width: 60% !important;
   float: none !important;
 }
@@ -1650,7 +1634,7 @@ table.configuration-list tr td:last-child a:before {
   margin: 5px 0 0 10px !important;
 }
 /*= Step 3*/
-#ImportWizardSetModelPermissionsView #permissions-module {
+#ImportWizardSetModelPermissionsView #right-side-edit-view-panel {
   position: relative !important;
   top: 0 !important;
   right: 0 !important;
@@ -5814,6 +5798,13 @@ section {
   -ms-text-shadow: none !important;
   text-shadow: none !important;
 }
+#RecentlyViewedView li.type-ConversationsModule em {
+  padding-top: 3px;
+  padding-right: 3px;
+}
+#RecentlyViewedView li.type-ConversationsModule em:before {
+  content: "b";
+}
 #RecentlyViewedView li.type-UsersModule em:before {
   content: "e";
 }
@@ -7364,15 +7355,15 @@ div.wide.form label.hasCheckBox {
 .double-column .panel a {
   color: #262877;
 }
-.double-column #permissions-module {
+.double-column #right-side-edit-view-panel {
   margin-bottom: 15px;
   position: relative !important;
   float: left !important;
 }
-.double-column #permissions-module .buffer {
+.double-column #right-side-edit-view-panel .buffer {
   padding-left: 15px;
 }
-.double-column #permissions-module .buffer > div {
+.double-column #right-side-edit-view-panel .buffer > div {
   width: 100%;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -7453,75 +7444,75 @@ div.wide.form label.hasCheckBox {
 #edit-form .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
-#edit-form #permissions-module {
+#edit-form #right-side-edit-view-panel {
   position: absolute;
   right: 15px;
   top: 15px;
   width: 30%;
   float: right;
 }
-#edit-form #permissions-module h3 {
+#edit-form #right-side-edit-view-panel h3 {
   margin-bottom: 8px;
 }
-#edit-form #permissions-module .buffer > div {
+#edit-form #right-side-edit-view-panel .buffer > div {
   float: left;
   padding: 8px 10px;
   background: #F4F4F4;
 }
-#edit-form #permissions-module label {
+#edit-form #right-side-edit-view-panel label {
   width: 100%;
   display: block;
   line-height: 100%;
   padding-top: 0;
 }
-#edit-form #permissions-module #owner-box {
+#edit-form #right-side-edit-view-panel #owner-box {
   margin-bottom: 15px;
   position: relative;
 }
-#edit-form #permissions-module #owner-box label,
-#edit-form #permissions-module #owner-box + label {
+#edit-form #right-side-edit-view-panel #owner-box label,
+#edit-form #right-side-edit-view-panel #owner-box + label {
   font-size: 12px;
   font-weight: 600;
 }
-#edit-form #permissions-module #owner-box input {
+#edit-form #right-side-edit-view-panel #owner-box input {
   position: relative;
   z-index: 0;
 }
-#edit-form #permissions-module .ui-autocomplete {
+#edit-form #right-side-edit-view-panel .ui-autocomplete {
   width: auto !important;
 }
-#edit-form #permissions-module input[type="text"] {
+#edit-form #right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
 }
-#edit-form #permissions-module #owner-box + label {
+#edit-form #right-side-edit-view-panel #owner-box + label {
   margin-bottom: 15px;
 }
-#edit-form #permissions-module .radio-input {
+#edit-form #right-side-edit-view-panel .radio-input {
   margin-bottom: 10px;
   width: 100%;
   float: left;
   display: block;
 }
-#edit-form #permissions-module .radio-input label {
+#edit-form #right-side-edit-view-panel .radio-input label {
   width: auto;
   float: left;
   vertical-align: middle;
 }
-#edit-form #permissions-module .radio-input input[type="radio"] {
+#edit-form #right-side-edit-view-panel .radio-input input[type="radio"] {
   float: left;
   margin: 0 8px 0 10px;
   vertical-align: middle;
 }
-#edit-form #permissions-module .radio-input select,
-#edit-form #permissions-module .radio-input .dk_container {
+#edit-form #right-side-edit-view-panel .radio-input select,
+#edit-form #right-side-edit-view-panel .radio-input .dk_container {
   margin-top: 8px;
   margin-left: 30px;
   margin-bottom: 0;
   width: 80%;
   background: #fff;
 }
-#edit-form #permissions-module input[type="text"],
-#edit-form #permissions-module select {
+#edit-form #right-side-edit-view-panel input[type="text"],
+#edit-form #right-side-edit-view-panel select {
   margin-top: 6px;
 }
 #edit-form .hasCheckBox {
