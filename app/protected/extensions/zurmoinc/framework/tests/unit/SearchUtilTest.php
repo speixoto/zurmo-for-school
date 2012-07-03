@@ -121,7 +121,7 @@
         {
             $_GET['testing'] = array(
                 'a' => '0',
-                'dynamic' => array(array('b' => '0')),
+                'dynamicClauses' => array(array('b' => '0')),
                 'dynamicStructure' => '1 and 2',
             );
             $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing');
@@ -273,7 +273,7 @@
             //Test with dynamic search
             $_GET['testing'] = array(
                 'a' => null,
-                'dynamic' => array(array('b' => 'c')),
+                'dynamicClauses' => array(array('b' => 'c')),
                 'dynamicStructure' => '1 and 2',
             );
             $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
@@ -283,7 +283,7 @@
             //Test with dynamic search and an undefined sub-array
             $_GET['testing'] = array(
                 'a' => null,
-                'dynamic' => array(array('b' => 'c'), 'undefined', array('d' => 'simpleDimple')),
+                'dynamicClauses' => array(array('b' => 'c'), 'undefined', array('d' => 'simpleDimple')),
                 'dynamicStructure' => '1 and 2',
             );
             $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');

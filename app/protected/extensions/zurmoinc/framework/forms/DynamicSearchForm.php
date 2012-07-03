@@ -30,5 +30,23 @@
      */
     abstract class DynamicSearchForm extends SearchForm
     {
+        public $dynamicStructure;
+
+        public $dynamicClauses;
+
+        public function rules()
+        {
+            return array_merge(parent::rules(), array(
+                               array('dynamicStructure', 'safe'),
+                               array('dynamicClauses', 'safe'),
+            ));
+        }
+
+        public function attributeLabels()
+        {
+            return array_merge(parent::attributeLabels(), array(
+                               'dynamicStructure' => Yii::t('Default', 'Clause Ordering'),
+            ));
+        }
     }
 ?>

@@ -99,7 +99,7 @@
                                                      $this->renderAttributeDropDownOnChangeScript($id,
                                                      $this->getInputsDivId(),
                                                      $this->ajaxOnChangeUrl));
-            $content = CHtml::dropDownList($name,
+            $content  = CHtml::dropDownList($name,
                                            null,
                                            $this->searchableAttributeIndicesAndDerivedTypes,
                                            $htmlOptions);

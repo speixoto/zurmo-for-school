@@ -65,7 +65,8 @@
 
         protected function getExtraRenderFormBottomPanelScriptPart()
         {
-            return "$('.filtered-list-link').click( function()
+            return parent::getExtraRenderFormBottomPanelScriptPart() .
+                    "$('.filtered-list-link').click( function()
                     {
                         $('.search-view-0').hide();
                         $('.search-view-1').hide();

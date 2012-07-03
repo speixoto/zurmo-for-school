@@ -216,7 +216,22 @@
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;
+        }
 
+        public function actionValidateDynamicSearch($viewClassName, $modelClassName, $formModelClassName)
+        {
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'search-form' && isset($_POST[$formModelClassName]))
+            {
+                $model                     = new $modelClassName(false);
+                $searchForm                = new $formModelClassName($model);
+                $searchForm->setAttributes($_POST[$formModelClassName]);
+                $errorData = array();
+                $errorData['AccountsSearchForm_anyMixedAttributes'] = array('abc');
+                $errorData['AccountsSearchForm_dynamicStructure'] = array('def');
+                $errorData['AccountsSearchForm_dynamicClauses'] = array('should pick a field', 'foo foo');
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
+            }
         }
     }
 ?>

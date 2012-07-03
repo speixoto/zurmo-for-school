@@ -66,16 +66,35 @@
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'NoRequiredsActiveForm',
-                                                                array('id' => $this->getSearchFormId(), 'enableAjaxValidation' => false)
+                                                                array('id'                   => $this->getSearchFormId(),
+                                                                      'action'               => $this->getFormActionUrl(),
+                                                                      'enableAjaxValidation' => $this->getEnableAjaxValidationValue(),
+                                                                      'clientOptions'        => $this->getClientOptions(),
+
+                                                                )
                                                             );
             $content .= $formStart;
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderAfterFormLayout($form);
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-
             $content .= '</div>';
             return $content;
+        }
+
+        protected function getEnableAjaxValidationValue()
+        {
+            return false;
+        }
+
+        protected function getClientOptions()
+        {
+            return array();
+        }
+
+        protected function getFormActionUrl()
+        {
+            return null;
         }
 
         protected function renderAfterFormLayout($form)
@@ -99,7 +118,7 @@
             $moreSearchOptionsLink = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             $clearSearchLink = CHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
             // Begin Not Coding Standard
-            Yii::app()->clientScript->registerScript('search', "
+            Yii::app()->clientScript->registerScript('search' . $this->getSearchFormId(), "
                 $('#clear-search-link" . $this->gridIdSuffix . "').removeAttr('clearForm');
                 $('#clear-search-link" . $this->gridIdSuffix . "').clearform(
                     {
@@ -127,27 +146,12 @@
                 $('#search-advanced-search').unbind('click');
                 $('#search-advanced-search').bind('click', function(event)
                     {
-                        $('.search-view-0').children(\"input[type='text']\").val('');
-                        $('.search-view-1').hide();
                         $(this).closest('form').submit();
                         return false;
                     }
                 );
-                $('#" . $this->getSearchFormId() . "').unbind('submit');
-                $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
-                    {
-                        $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
-                        $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
-                        {
-                            data: $(this).serialize() + '&" . $this->listModelClassName . "_page=&" . // Not Coding Standard
-                            $this->listModelClassName . "_sort=" .
-                            $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
-                         }
-                        );
-                        return false;
-                    }
-                );
             " . $this->getExtraRenderFormBottomPanelScriptPart());
+            $this->renderAdvancedSearchScripts();
             // End Not Coding Standard
             $startingDivStyle = null;
             if ($this->hideAllSearchPanelsToStart)
@@ -160,6 +164,26 @@
             $content .= $this->renderFormBottomPanelExtraLinks();
             $content .= '</div>';
             return $content;
+        }
+
+        protected function renderAdvancedSearchScripts()
+        {
+            Yii::app()->clientScript->registerScript('advancedSearch' . $this->getSearchFormId(), "
+                $('#" . $this->getSearchFormId() . "').unbind('submit');
+                $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
+                    {
+                        $('.search-view-1').hide();
+                        $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
+                        $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
+                        {
+                            data: $(this).serialize() + '&" . $this->listModelClassName . "_page=&" . // Not Coding Standard
+                            $this->listModelClassName . "_sort=" .
+                            $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
+                         }
+                        );
+                        return false;
+                    }
+                );");
         }
 
         /**

@@ -33,7 +33,7 @@
     {
         const ANY_MIXED_ATTRIBUTES_SCOPE_NAME = 'anyMixedAttributesScope';
 
-        const DYNAMIC_NAME = 'dynamic';
+        const DYNAMIC_NAME = 'dynamicClauses';
 
         const DYNAMIC_STRUCTURE_NAME = 'dynamicStructure';
 
