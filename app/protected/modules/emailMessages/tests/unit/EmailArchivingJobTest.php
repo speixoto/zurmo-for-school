@@ -28,6 +28,7 @@
     {
         public static $userMailer;
         public static $userImap;
+        public static $emailHelperSendEmailThroughTransport;
 
         public static function setUpBeforeClass()
         {
@@ -51,6 +52,7 @@
             Yii::app()->imap->setInboundSettings();
             Yii::app()->imap->init();
 
+            self::$emailHelperSendEmailThroughTransport = Yii::app()->emailHelper->sendEmailThroughTransport;
             Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
             Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
             Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
@@ -78,6 +80,12 @@
             $user = User::getByUsername('steve');
             $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
             $this->assertTrue($user->save());
+        }
+
+        public static function tearDownAfterClass()
+        {
+            Yii::app()->emailHelper->sendEmailThroughTransport = self::$emailHelperSendEmailThroughTransport;
+            parent::tearDownAfterClass();
         }
 
         /**
