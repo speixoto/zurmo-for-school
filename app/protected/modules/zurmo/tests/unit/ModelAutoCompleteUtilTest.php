@@ -327,7 +327,7 @@
                 Yii::app()->user->userModel = $jimmy;
                 $data = ModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm('animal', 5, Yii::app()->user->userModel);
                 $this->assertEquals(1, count($data));
-                $this->assertEquals('The Zoo - Account',             $data[0]['label']);
+                $this->assertEquals('The Zoo',             $data[0]['label']);
 
                 //Give Jimmy read on 2 more models.  The search then should pick up these models.
                 Yii::app()->user->userModel = $super;
