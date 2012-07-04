@@ -102,23 +102,23 @@
         {
             self::resolveNameID($model, $attribute, $htmlOptions);
             $selection = self::resolveValue($model, $attribute);
-            if($model->hasErrors($attribute))
+            if ($model->hasErrors($attribute))
             {
                 self::addErrorCss($htmlOptions);
             }
             $name = $htmlOptions['name'];
             unset($htmlOptions['name']);
-            if(array_key_exists('uncheckValue', $htmlOptions))
+            if (array_key_exists('uncheckValue', $htmlOptions))
             {
                 $uncheck = $htmlOptions['uncheckValue'];
                 unset($htmlOptions['uncheckValue']);
             }
             else
             {
-                $uncheck= '';
+                $uncheck = '';
             }
-            $hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX.$htmlOptions['id']) : array('id' => false);
-            $hidden=$uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';
+            $hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+            $hidden = $uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';
             return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
         }
 

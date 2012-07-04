@@ -50,7 +50,6 @@
             }
         }
 
-
         //For testing only
         public function getSentCount()
         {
@@ -123,7 +122,7 @@
                 }
             }
 
-            if(isset($attachments) && !empty($attachments))
+            if (isset($attachments) && !empty($attachments))
             {
                 foreach ($attachments as $file)
                 {

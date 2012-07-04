@@ -79,12 +79,14 @@
             $imapMessage->fromEmail = "test@example.com";
 
             // Outlook, Yahoo, Outlook express format
+            // Begin Not Coding Standard
             $imapMessage->textBody = "
 From: John Smith [mailto:john@example.com]
 Sent: 02 March 2012 AM 01:23
 To: 'Steve Tytler' <steve@example.com>, Peter Smith <peter@example.com>
 Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
 Subject: Hello Steve";
+            // End Not Coding Standard
 
             $imapMessage->subject = "FW: Test subject";
             $sender = EmailArchivingUtil::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
@@ -92,12 +94,14 @@ Subject: Hello Steve";
             $this->assertEquals('John Smith', $sender['name']);
 
             //Google, Thunderbird format
+            // Begin Not Coding Standard
             $imapMessage->textBody = "
 From: John Smith <john@example.com>
 Date: Thu, Apr 19, 2012 at 5:22 PM
 Subject: Hello Steve
 To: 'Steve Tytler' <steve@example.com>, Peter Smith <peter@example.com>
 Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>";
+            // End Not Coding Standard
 
             $sender = EmailArchivingUtil::resolveEmailSenderFromForwardedEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $sender['email']);
@@ -154,16 +158,15 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>";
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
 
-
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Fwd: Test subject";
             $imapMessage->to[0]['email'] = 'dropbox@emample.com';
             $imapMessage->htmlBody = "
 
             -------- Original Message --------
-            Subject:	Test
-            Date:	Mon, 28 May 2012 15:43:39 +0200
-            From:	John Smith <john@example.com>
+            Subject:    Test
+            Date:   Mon, 28 May 2012 15:43:39 +0200
+            From:   John Smith <john@example.com>
             To: 'Steve'
             ";
             $from = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($imapMessage);
@@ -175,9 +178,9 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>";
             $imapMessage->subject = "Fwd: Test subject";
             $imapMessage->textBody = "
 -------- Original Message --------
-Subject: 	Test
-Date: 	Mon, 28 May 2012 15:43:39 +0200
-From: 	John Smith <john@example.com>
+Subject:     Test
+Date:   Mon, 28 May 2012 15:43:39 +0200
+From:   John Smith <john@example.com>
 To: 'Steve Tytler' <steve@example.com>, Peter Smith <peter@example.com>
 Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
 ";
@@ -283,7 +286,8 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $this->assertEquals($user->id, $owner->id);
         }
 
-        public function testResolvePersonOrAccountByEmailAddress(){
+        public function testResolvePersonOrAccountByEmailAddress()
+        {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 

@@ -123,7 +123,6 @@
             $this->assertTrue($imap->connect());
         }
 
-
         public function testGetMessageBoxStatsDetailed()
         {
             $imap = new ZurmoImap();
@@ -315,7 +314,6 @@
             $this->assertTrue($messages[0]->attachments[1]['attachment'] != '');
             $this->assertEquals('text.txt', $messages[0]->attachments[2]['filename']);
             $this->assertTrue(strlen($messages[0]->attachments[2]['attachment']) > 0);
-
         }
     }
 ?>

@@ -84,7 +84,7 @@
             $string  .= '"#", ';
             $string  .= 'array("onclick" => CHtml::ajax(array(';
             $string  .= '"url"      => Yii::app()->createUrl("' . $this->moduleId . '/defaultPortlet/selectFromRelatedListSave", $_GET),'; // Not Coding Standard
-            $string  .= '"beforeSend" => "function ( xhr ) {jQuery(\'#modalContainer\').html(\'\');makeLargeLoadingSpinner(\'modalContainer\');}",';
+            $string  .= '"beforeSend" => "function ( xhr ) {jQuery(\'#modalContainer\').html(\'\');makeLargeLoadingSpinner(\'modalContainer\');}",'; // Not Coding Standard
             $string  .= '"complete" => "function(XMLHttpRequest, textStatus){\$(\"#modalContainer\").dialog(\"close\"); juiPortlets.refresh();}",'; // Not Coding Standard
             $string  .= '"update"   => "#' . $this->uniquePortletPageId . '",'; // Not Coding Standard
             $string  .= '"data"     => array(\'modelId\' => $data->id)';

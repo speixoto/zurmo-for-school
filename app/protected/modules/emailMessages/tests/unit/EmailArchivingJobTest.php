@@ -59,7 +59,6 @@
             Yii::app()->emailHelper->setOutboundSettings();
             Yii::app()->emailHelper->init();
 
-
             $userSmtpMailer = new EmailHelperForTesting();
             $userSmtpMailer->outboundHost     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundHost'];
             $userSmtpMailer->outboundPort     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPort'];
@@ -71,7 +70,8 @@
             self::$userMailer = $userSmtpMailer;
         }
 
-        public function setup(){
+        public function setup()
+        {
             parent::setup();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -255,6 +255,7 @@
             $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
             $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
 
+            // Begin Not Coding Standard
             $textBody = "
 ---------- Forwarded message ----------
 From: Steve <" . Yii::app()->params['emailTestAccounts']['testEmailAddress'] . ">
@@ -274,7 +275,7 @@ To: Steve <steve@example.com>
 
 <strong>Hello</strong> Steve
 ";
-
+            // End Not Coding Standard
             //Now user forward email to dropbox
             $subject = "Fwd: Email from John";
             Yii::app()->emailHelper->sendRawEmail($subject,
