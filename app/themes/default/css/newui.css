@@ -4820,6 +4820,58 @@ span.tooltip {
 #ConversationEditView td {
   padding-left: 0;
 }
+#ConversationEditView textarea {
+  line-height: 130%;
+}
+#ConversationsPageView .AppContent {
+  padding-right: 0;
+}
+#ConversationDetailsAndRelationsView .GridView {
+  display: none;
+}
+#ConversationDetailsAndRelationsView .GridView:first-child {
+  display: block;
+  width: 100%;
+}
+#ConversationDetailsAndRelationsView .panel {
+  width: 70%;
+  float: left;
+  margin-top: 10px;
+}
+#ConversationDetailsAndRelationsView .panel td,
+#ConversationDetailsAndRelationsView .panel th {
+  padding-bottom: 10px !important;
+}
+#ConversationDetailsAndRelationsView .details-table {
+  zoom: 1;
+}
+#ConversationDetailsAndRelationsView .details-table:before {
+  content: "";
+  display: table;
+}
+#ConversationDetailsAndRelationsView .details-table:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#ConversationDetailsAndRelationsView #right-side-edit-view-panel {
+  top: 55px;
+}
+#CommentList {
+  padding: 10px;
+}
+#CommentList .comment-details {
+  margin-bottom: 5px;
+  display: block;
+}
+#CommentList .comment {
+  margin-bottom: 15px;
+  line-height: 140%;
+}
+#CommentsForRelatedModelView {
+  width: 70%;
+  float: left;
+}
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -5807,6 +5859,13 @@ section {
   -o-text-shadow: none !important;
   -ms-text-shadow: none !important;
   text-shadow: none !important;
+}
+#RecentlyViewedView {
+  /*deafult for if an icon doesnt exist*/
+
+}
+#RecentlyViewedView li em:before {
+  content: "z";
 }
 #RecentlyViewedView li.type-ConversationsModule em {
   padding-top: 3px;
@@ -7414,6 +7473,16 @@ div.wide.form label.hasCheckBox {
   /*min-height: 260px;*/
 
   padding-bottom: 15px;
+  zoom: 1;
+}
+.attributesContainer:before {
+  content: "";
+  display: table;
+}
+.attributesContainer:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 #edit-form {
   zoom: 1;

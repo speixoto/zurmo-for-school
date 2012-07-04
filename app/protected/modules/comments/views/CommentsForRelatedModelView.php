@@ -68,7 +68,7 @@
                 {
                     $content .= '<div>' . $this->renderShowAllLinkContent() . '</div>';
                 }
-                $content .= '<div>' . $this->renderCommentsContent() . '</div>';
+                $content .= '<div id="CommentList">' . $this->renderCommentsContent() . '</div>';
             }
             $content .= '</div>';
             return $content;
@@ -101,17 +101,17 @@
 
         protected function renderCommentsContent()
         {
-            $content  = '<table>';
-            $content .= '<tbody>';
+            $content  = null; //'<table>';
+            //$content .= '<tbody>';
             $rows = 0;
             foreach(array_reverse($this->commentsData) as $comment)
             {
             //Render date
-                $stringContent  = '<strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                $stringContent  = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $comment->createdDateTime, 'long', null) . '</strong> ';
-                $stringContent .= Yii::t('Default', 'by {ownerStringContent}',
+                $stringContent .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
                                         array('{ownerStringContent}' => strval($comment->createdByUser)));
-                $stringContent .= '<br/>';
+                $stringContent .= '</span>';
                 $stringContent .= $comment->description;
                 //attachments
                 if($comment->files->count() > 0)
@@ -123,19 +123,20 @@
                    $this->relatedModel->createdByUser == Yii::app()->user->userModel ||
                    ($this->relatedModel instanceof OwnedSecurableItem && $this->relatedModel->owner == Yii::app()->user->userModel))
                 {
+                    $stringContent .= '<br/>';
                     $stringContent .= CHtml::tag('span', array(), $this->renderDeleteLinkContent($comment));
                 }
-                $content .= '<tr>';
-                $content .= '<td>' . $stringContent . '</td>';
-                $content .= '</tr>';
+                //$content .= '<tr>';
+                $content .= '<div class="comment">' . $stringContent . '</div>';
+                //$content .= '</tr>';
                 $rows ++;
                 if($rows == $this->pageSize && $this->pageSize != null)
                 {
                     break;
                 }
             }
-            $content .= '</tbody>';
-            $content .= '</table>';
+            //$content .= '</tbody>';
+            //$content .= '</table>';
             return $content;
         }
 
