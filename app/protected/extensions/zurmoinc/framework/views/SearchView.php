@@ -128,6 +128,7 @@
                 $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
                 $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function()
                     {
+                        " . $this->getExtraRenderForCancelSearchLinkScript() . "
                         $(this).closest('form').submit();
                         return false;
                     }
@@ -135,7 +136,7 @@
                 $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
                 $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
                     {
-                        $('.search-view-1').toggle();
+                        $('.search-view-1').show();
                         return false;
                     }
                 );
@@ -143,13 +144,6 @@
                 $('#cancel-advanced-search').bind('click', function(event){
                     $('.search-view-1').hide();
                 });
-                $('#search-advanced-search').unbind('click');
-                $('#search-advanced-search').bind('click', function(event)
-                    {
-                        $(this).closest('form').submit();
-                        return false;
-                    }
-                );
             " . $this->getExtraRenderFormBottomPanelScriptPart());
             $this->renderAdvancedSearchScripts();
             // End Not Coding Standard
@@ -164,6 +158,11 @@
             $content .= $this->renderFormBottomPanelExtraLinks();
             $content .= '</div>';
             return $content;
+        }
+
+        protected function getExtraRenderForCancelSearchLinkScript()
+        {
+
         }
 
         protected function renderAdvancedSearchScripts()
@@ -242,8 +241,12 @@
                 {
                     $content .= '<div class="view-toolbar-container clearfix">';
                     $content .= '<div class="form-toolbar">';
-                    $content .= CHtml::button(Yii::t('Default', 'Cancel'), array('id' => 'cancel-advanced-search'));
-                    $content .= CHtml::button(Yii::t('Default', 'Search'), array('id' => 'search-advanced-search'));
+                    //$content .= CHtml::link(Yii::t('Default', 'Cancel'), '#', array('id' => 'cancel-advanced-search'));
+                    $params = array();
+                    $params['label']       = Yii::t('Default', 'Search and Close');
+                    $params['htmlOptions'] = array('id' => 'search-advanced-search');
+                    $searchElement = new SaveButtonActionElement(null, null, null, $params);
+                    $content .= $searchElement->render();
                     $content .= '</div></div>';
                 }
                 $content .= '</div>';

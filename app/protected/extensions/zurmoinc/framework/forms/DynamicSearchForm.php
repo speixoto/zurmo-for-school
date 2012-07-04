@@ -38,7 +38,9 @@
         {
             return array_merge(parent::rules(), array(
                                array('dynamicStructure', 'safe'),
-                               array('dynamicClauses', 'safe'),
+                               array('dynamicStructure',   'validateDynamicStructure', 'on' => 'validateDynamic'),
+                               array('dynamicClauses',   'safe'),
+                               array('dynamicClauses',   'validateDynamicClauses', 'on' => 'validateDynamic'),
             ));
         }
 
@@ -47,6 +49,47 @@
             return array_merge(parent::attributeLabels(), array(
                                'dynamicStructure' => Yii::t('Default', 'Clause Ordering'),
             ));
+        }
+
+        public function validateDynamicStructure($attribute, $params)
+        {
+            //todo: test for valid structure math.
+            //CalculatedNumberUtil::isFormulaValid <- something like this maybe
+            //$this->addError('dynamicStructure', Yii::t('Default', 'The structure is invalid'));
+        }
+
+        public function validateDynamicClauses($attribute, $params)
+        {
+            if($this->$attribute != null)
+            {
+                $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($this->$attribute);
+                $sanitizedData           = DataUtil::sanitizeDataByDesignerTypeForSavingModel($this, $dynamicSearchAttributes);
+                foreach($sanitizedData as $key => $rowData)
+                {
+                    $structurePosition = $rowData['structurePosition'];
+                    if($rowData['attributeIndexOrDerivedType'] == null)
+                    {
+                        $this->addError('dynamicClauses', Yii::t('Default', 'You must select a field for row {rowNumber}',
+                        array('{rowNumber}' => $structurePosition)));
+                    }
+                    else
+                    {
+                        unset($rowData['attributeIndexOrDerivedType']);
+                        unset($rowData['structurePosition']);
+                        $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                            $this,
+                            Yii::app()->user->userModel->id,
+                            $rowData
+                        );
+                        $metadata = $metadataAdapter->getAdaptedMetadata();
+                        if(count($metadata['clauses']) == 0)
+                        {
+                            $this->addError('dynamicClauses', Yii::t('Default', 'You must select a value for row {rowNumber}',
+                            array('{rowNumber}' => $structurePosition)));
+                        }
+                    }
+                }
+            }
         }
     }
 ?>

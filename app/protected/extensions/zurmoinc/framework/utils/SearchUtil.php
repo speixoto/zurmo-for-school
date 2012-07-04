@@ -280,7 +280,7 @@
             if (!empty($_GET[$getArrayName]) &&
                 isset($_GET[$getArrayName][self::DYNAMIC_NAME]))
             {
-                $dynamicSearchAttributes = $_GET[$getArrayName][self::DYNAMIC_NAME];
+                $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($_GET[$getArrayName][self::DYNAMIC_NAME]);
                 if(isset($dynamicSearchAttributes[self::DYNAMIC_STRUCTURE_NAME]))
                 {
                     unset($dynamicSearchAttributes[self::DYNAMIC_STRUCTURE_NAME]);

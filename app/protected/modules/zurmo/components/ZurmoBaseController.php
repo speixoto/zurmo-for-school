@@ -133,6 +133,22 @@
             );
         }
 
+        protected function makeListView(
+            $searchModel,
+            $dataProvider
+            )
+        {
+            $listModel = $searchModel->getModel();
+            $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
+            $listView            = new $listViewClassName(
+                                       $this->getId(),
+                                       $this->getModule()->getId(),
+                                       get_class($listModel),
+                                       $dataProvider,
+                                       GetUtil::resolveSelectedIdsFromGet());
+            return $listView;
+        }
+
         protected function makeFilteredListDataProviderFromGet(
             $filteredListId,
             $listModelClassName,

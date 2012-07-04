@@ -289,8 +289,25 @@
             $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
             $compareData = array(0 => array('b' => 'c'), 2 => array('d' => 'simpleDimple'));
             $this->assertEquals($compareData, $newArray);
-        }
 
+            //Test with an empty value being converted to null, also tests nested empty values
+            $_GET['testing'] = array(
+                'a' => null,
+                'dynamicClauses' => array(array('b' => 'c'), 'undefined', array('d' => ''),
+                     array('e' => array('f' => array('g' => ''))),
+                     array('e' => array('f' => '')),
+                     ),
+                'dynamicStructure' => '1 and 2',
+            );
+            $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
+            $compareData = array(0 => array('b' => 'c'), 2 => array('d' => null),
+                                      array('e' => array('f' => array('g' => null))),
+                                      array('e' => array('f' => null)));
+            $this->assertEquals($compareData, $newArray);
+            $this->assertTrue($newArray[2]['d'] === null);
+            $this->assertTrue($newArray[3]['e']['f']['g'] === null);
+            $this->assertTrue($newArray[4]['e']['f'] === null);
+        }
 
         public function testSanitizeDynamicSearchAttributesByDesignerTypeForSavingModel()
         {
@@ -366,7 +383,7 @@
         public function testGetDynamicSearchStructureFromGetArray()
         {
             $_GET['testing'] = array(
-                'a' => null,
+                'a' => '',
             );
             $newString = SearchUtil::getDynamicSearchStructureFromGetArray('testing');
             $this->assertNull($newString);

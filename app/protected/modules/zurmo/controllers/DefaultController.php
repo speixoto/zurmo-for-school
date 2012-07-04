@@ -200,7 +200,7 @@
                 $form                      = new NoRequiredsActiveForm();
                 $element                   = DynamicSearchUtil::getCellElement($viewClassName, $modelClassName,
                                                                               $attributeIndexOrDerivedType);
-                $element['inputPrefix']    = array($formModelClassName, 'dynamic', $rowNumber);
+                $element['inputPrefix']    = array($formModelClassName, SearchUtil::DYNAMIC_NAME, $rowNumber);
                 $elementclassname          = $element['type'] . 'Element';
                 $element                   = new $elementclassname($searchForm, $element['attributeName'],
                                                                   $form, array_slice($element, 2));
@@ -225,12 +225,17 @@
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
                 $searchForm->setAttributes($_POST[$formModelClassName]);
-                $errorData = array();
-                $errorData['AccountsSearchForm_anyMixedAttributes'] = array('abc');
-                $errorData['AccountsSearchForm_dynamicStructure'] = array('def');
-                $errorData['AccountsSearchForm_dynamicClauses'] = array('should pick a field', 'foo foo');
-                echo CJSON::encode($errorData);
-                Yii::app()->end(0, false);
+                $searchForm->setScenario('validateDynamic');
+                if(!$searchForm->validate())
+                {
+                     $errorData = array();
+                    foreach ($searchForm->getErrors() as $attribute => $errors)
+                    {
+                            $errorData[CHtml::activeId($searchForm, $attribute)] = $errors;
+                    }
+                    echo CJSON::encode($errorData);
+                    Yii::app()->end(0, false);
+                }
             }
         }
     }

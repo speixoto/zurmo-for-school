@@ -33,7 +33,7 @@
 
         const ADVANCED_SEARCH_TYPE_DYNAMIC = 'Dynamic';
 
-            /**
+        /**
          * Constructs a detail view specifying the controller as
          * well as the model that will have its details displayed.
          */
@@ -70,10 +70,12 @@
         protected function renderConfigSaveAjax($formName)
         {
             return     "$('.search-view-1').hide();
+                        $('#" . $formName . "').find('.attachLoading:first').removeClass('loading');
+                        $('#" . $formName . "').find('.attachLoading:first').removeClass('loading-ajax-submit');
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
                         {
-                            data: $(this).serialize() + '&" . $this->listModelClassName . "_page=&" . // Not Coding Standard
+                            data: $('#" . $formName . "').serialize() + '&" . $this->listModelClassName . "_page=&" . // Not Coding Standard
                             $this->listModelClassName . "_sort=" .
                             $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
                          }
@@ -109,8 +111,14 @@
         protected function renderDynamicAdvancedSearchRows($panel, $maxCellsPerRow,  $form = null)
         {
             assert('$form != null');
-            $content  = $form->errorSummary($this->model); //still move out of here
-            $content .= $form->error($this->model, 'dynamicClauses');
+            $content  = $form->errorSummary($this->model);
+            //todo: fix this trick or move it into another method. Currently required to properly support error summary working correctly.
+            $content .= '<div style="display:none;">';
+            $htmlOptions = array('id' => get_class($this->model) . '_dynamicClauses', 'name' => 'dynamicClausesValidationHelper');
+            $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptions);
+            $content .= $form->error($this->model, 'dynamicClauses', $htmlOptions);
+            $content .= '</div>';
+            //todo: end move
             $rowCount = 0;
             if(($panel['rows']) > 0)
             {
@@ -182,9 +190,6 @@
             $content  = CHtml::link(Yii::t('Default', 'More Options'), '#',
                             array('id' => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
                                           'style' => $style1));
-            $content .= CHtml::link(Yii::t('Default', 'Less Options'), '#',
-                            array('id' => 'hide-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
-                                          'style' => $style2));
             $content .= CHtml::tag('div',
                             array('id' => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
                                           'style' => $style2), $this->renderStructureInputContent($form));
@@ -218,15 +223,6 @@
                     {
                         $('#show-dynamic-search-structure-div-" . $this->getSearchFormId() . "').show();
                         $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').hide();
-                        $('#hide-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').show();
-                        return false;
-                    }
-                );
-                $('#hide-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').click( function()
-                    {
-                        $('#show-dynamic-search-structure-div-" . $this->getSearchFormId() . "').hide();
-                        $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').show();
-                        $('#hide-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').hide();
                         return false;
                     }
                 );");

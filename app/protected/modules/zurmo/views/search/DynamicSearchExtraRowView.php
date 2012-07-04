@@ -90,8 +90,8 @@
 
         protected function renderAttributeDropDownContent()
         {
-            $name        = $this->formModelClassName . '[dynamic][' . $this->rowNumber . '][attributeIndexOrDerivedType]';
-            $id          = $this->formModelClassName . '_dynamic_' . $this->rowNumber . '_attributeIndexOrDerivedType';
+            $name        = $this->formModelClassName . '[' . SearchUtil::DYNAMIC_NAME . '][' . $this->rowNumber . '][attributeIndexOrDerivedType]';
+            $id          = $this->formModelClassName . '_' . SearchUtil::DYNAMIC_NAME . '_' . $this->rowNumber . '_attributeIndexOrDerivedType';
             $htmlOptions = array('id' => $id,
                 'empty' => Yii::t('Default', 'Select a field')
             );
