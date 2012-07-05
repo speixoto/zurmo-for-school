@@ -161,6 +161,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>";
             $imapMessage = new ImapMessage();
             $imapMessage->subject = "Fwd: Test subject";
             $imapMessage->to[0]['email'] = 'dropbox@emample.com';
+            // Begin Not Coding Standard
             $imapMessage->htmlBody = "
 
             -------- Original Message --------
@@ -169,6 +170,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>";
             From:   John Smith <john@example.com>
             To: 'Steve'
             ";
+            // End Not Coding Standard
             $from = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
@@ -176,6 +178,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>";
             $imapMessage = new ImapMessage();
             $imapMessage->to[0]['email'] = 'dropbox@emample.com';
             $imapMessage->subject = "Fwd: Test subject";
+            // Begin Not Coding Standard
             $imapMessage->textBody = "
 -------- Original Message --------
 Subject:     Test
@@ -184,6 +187,7 @@ From:   John Smith <john@example.com>
 To: 'Steve Tytler' <steve@example.com>, Peter Smith <peter@example.com>
 Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
 ";
+            // End Not Coding Standard
             $from = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($imapMessage);
             $this->assertEquals('john@example.com', $from['email']);
             $this->assertEquals('John Smith', $from['name']);
