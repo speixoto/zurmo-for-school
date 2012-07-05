@@ -96,7 +96,6 @@
             $this->assertEquals('143',     Yii::app()->imap->imapPort);
             $this->assertEquals('0',     Yii::app()->imap->imapSSL);
             $this->assertEquals('INBOX',     Yii::app()->imap->imapFolder);
-            print_r(Yii::app()->imap);
         }
     }
 ?>
