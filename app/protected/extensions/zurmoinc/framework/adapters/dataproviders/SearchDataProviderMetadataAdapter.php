@@ -288,7 +288,7 @@
             return true;
         }
 
-        protected static function resolveAsRedBeanModel($model)
+        public static function resolveAsRedBeanModel($model)
         {
             if ($model instanceof RedBeanOneToManyRelatedModels || $model instanceof RedBeanManyToManyRelatedModels)
             {

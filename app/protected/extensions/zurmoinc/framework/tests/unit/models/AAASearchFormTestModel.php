@@ -25,11 +25,11 @@
      ********************************************************************************/
 
     /**
-     * Used for testing with @see CCC model
+     * Used for testing with @see AAA model
      */
-    class CCCSearchFormTestModel extends DynamicSearchForm
+    class AAASearchFormTestModel extends DynamicSearchForm
     {
-        public $CCCName;
+        public $AAAName;
         public $differentOperatorA;
         public $differentOperatorB;
         public $concatedName;
@@ -43,7 +43,7 @@
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('CCCName', 'safe'),
+                array('AAAName', 'safe'),
                 array('differentOperatorA', 'safe'),
                 array('differentOperatorB', 'boolean'),
                 array('concactedName', 'safe'),
@@ -54,7 +54,7 @@
         {
             return array_merge(parent::attributeLabels(), array(
                 'concactedName'                    => Yii::t('Default', 'Concated Name'),
-                'CCCName'                          => Yii::t('Default', 'CCCName'),
+                'AAAName'                          => Yii::t('Default', 'AAAName'),
                 'differentOperatorA'               => Yii::t('Default', 'differentOperatorA'),
                 'differentOperatorB'               => Yii::t('Default', 'differentOperatorB'),
             ));
@@ -68,20 +68,20 @@
         public function getAttributesMappedToRealAttributesMetadata()
         {
             return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-                'CCCName' => array(
-                    array('cccMember'),
-                    array('cccMember2'),
+                'AAAName' => array(
+                    array('aaaMember'),
+                    array('aaaMember2'),
                 ),
                 'differentOperatorA' => array(
-                    array('cccMember', null, null, 'resolveValueByRules'),
+                    array('aaaMember', null, null, 'resolveValueByRules'),
                 ),
                 'differentOperatorB' => array(
-                    array('cccMember', null, 'endsWith')
+                    array('aaaMember', null, 'endsWith')
                 ),
                 'concatedName' => array(
-                    array('cccMember'),
-                    array('cccMember2'),
-                    array('concatedAttributeNames' => array('cccMember', 'cccMember2'))
+                    array('aaaMember'),
+                    array('aaaMember2'),
+                    array('concatedAttributeNames' => array('aaaMember', 'aaaMember2'))
                 ),
             ));
         }

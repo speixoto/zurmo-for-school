@@ -29,6 +29,14 @@
      */
     class DynamicSearchUtil
     {
+        /**
+         * Use when multiple relation attribute names
+         * need to be combined together into one string that can easily
+         * be parsed later.
+         * @see FormModelUtil::DELIMITER which is only 2 __
+         */
+        const RELATION_DELIMITER = '___';
+
         public static function getSearchableAttributesAndLabels($viewClassName, $modelClassName)
         {
             assert('is_string($viewClassName)');

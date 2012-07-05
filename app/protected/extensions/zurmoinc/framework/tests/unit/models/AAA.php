@@ -35,7 +35,7 @@
                 ),
                 'relations' => array(
                     'bbb'                => array(RedBeanModel::HAS_ONE,            'BBB'),
-                    'hhh'                => array(RedBeanModel::HAS_ONE,            'hhh'),
+                    'hhh'                => array(RedBeanModel::HAS_ONE,            'HHH'),
                     'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
                     'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
                 ),

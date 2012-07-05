@@ -316,10 +316,39 @@
             $dynamicSearchAttributes = array(
                                         0 => array('attributeIndexOrDerivedType' => 'a',
                                                     'structurePosition'          => '1',
-                                                    'a'                          => 'someting'),
+                                                    'a'                          => 'something'),
                                         2 => array('attributeIndexOrDerivedType' => 'a',
                                                     'structurePosition'          => '2',
-                                                    'a'                          => 'sometingElse'));
+                                                    'a'                          => 'somethingElse'));
+            $newArray = SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
+                                                                                                $dynamicSearchAttributes);
+            $this->assertEquals($dynamicSearchAttributes, $newArray);
+        }
+
+        public function testSanitizeDynamicSearchAttributesByDesignerTypeForSavingModelWithNestedAttributes()
+        {
+            $searchModel = new IIISearchFormTestModel(new III());
+            //Test without anything special sanitizing
+            $dynamicSearchAttributes = array(
+                                        0 => array('attributeIndexOrDerivedType' => 'iiiMember',
+                                                    'structurePosition'          => '1',
+                                                    'iiiMember'                  => 'something'),
+                                        1 => array('attributeIndexOrDerivedType' => 'ccc' . DynamicSearchUtil::RELATION_DELIMITER . 'cccMember',
+                                                    'structurePosition'          => '2',
+                                                    'ccc'                        => array(
+                                                        'relatedModelData' => true,
+                                                        'cccMember'        => 'somethingElse',
+                                                    )),
+                                        2 => array('attributeIndexOrDerivedType' => 'ccc' . DynamicSearchUtil::RELATION_DELIMITER .
+                                                   'bbb' . DynamicSearchUtil::RELATION_DELIMITER . 'bbbMember',
+                                                    'structurePosition'          => '2',
+                                                    'ccc'                        => array(
+                                                        'relatedModelData' => true,
+                                                        'bbb'                        => array(
+                                                            'relatedModelData' => true,
+                                                            'bbbMember'        => 'bbbValue',
+                                                        )
+                                                    )));
             $newArray = SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
                                                                                                 $dynamicSearchAttributes);
             $this->assertEquals($dynamicSearchAttributes, $newArray);
@@ -380,6 +409,120 @@
             $this->assertEquals($compareData, $newArray);
         }
 
+        public function testSanitizeDynamicSearchAttributesByDesignerTypeForSavingModelWithSanitizableItemsNestedSingleLevel()
+        {
+            $language    = Yii::app()->getLanguage();
+            $this->assertEquals($language, 'en');
+            $searchModel = new CCCSearchFormTestModel(new CCC());
+            $dynamicSearchAttributes = array(
+                                        0 => array('attributeIndexOrDerivedType' => 'iii' . DynamicSearchUtil::RELATION_DELIMITER . 'date__Date',
+                                                    'structurePosition'          => '1',
+                                                    'iii'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'date__Date'                 =>
+                                                        array('firstDate' => '5/4/11',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
+                                        1 => array('attributeIndexOrDerivedType' => 'iii' . DynamicSearchUtil::RELATION_DELIMITER . 'dateTime__DateTime',
+                                                    'structurePosition'          => '1',
+                                                    'iii'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'dateTime__DateTime'         =>
+                                                        array('firstDate' => '5/7/11',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
+                                        );
+
+            $newArray = SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
+                                                                                                $dynamicSearchAttributes);
+            $compareData = array(
+                                        0 => array('attributeIndexOrDerivedType' => 'iii' . DynamicSearchUtil::RELATION_DELIMITER . 'date__Date',
+                                                    'structurePosition'          => '1',
+                                                    'iii'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'date__Date'                 =>
+                                                        array('firstDate' => '2011-05-04',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
+                                        1 => array('attributeIndexOrDerivedType' => 'iii' . DynamicSearchUtil::RELATION_DELIMITER . 'dateTime__DateTime',
+                                                    'structurePosition'          => '1',
+                                                    'iii'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'dateTime__DateTime'         =>
+                                                        array('firstDate' => '2011-05-07',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
+                                        );
+            $this->assertEquals($compareData, $newArray);
+        }
+
+        public function testSanitizeDynamicSearchAttributesByDesignerTypeForSavingModelWithSanitizableItemsNestedNMultipleLevelsDeep()
+        {
+            $language    = Yii::app()->getLanguage();
+            $this->assertEquals($language, 'en');
+            $searchModel = new AAASearchFormTestModel(new AAA());
+            $dynamicSearchAttributes = array(
+                                        0 => array('attributeIndexOrDerivedType' => 'bbb' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'ccc' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'iii' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'date__Date',
+                                                    'structurePosition'          => '1',
+                                                    'bbb'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'ccc'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'iii'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'date__Date'                 =>
+                                                        array('firstDate' => '5/4/11',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
+                                        1 => array('attributeIndexOrDerivedType' => 'bbb' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'ccc' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'iii' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'dateTime__DateTime',
+                                                    'structurePosition'          => '1',
+                                                    'bbb'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'ccc'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'iii'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'date__Date'                 =>
+                                                        array('firstDate' => '5/7/11',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
+                                        );
+
+            $newArray = SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
+                                                                                                $dynamicSearchAttributes);
+            $compareData = array(
+                                        0 => array('attributeIndexOrDerivedType' => 'bbb' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'ccc' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'iii' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'date__Date',
+                                                    'structurePosition'          => '1',
+                                                    'bbb'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'ccc'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'iii'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'date__Date'                 =>
+                                                        array('firstDate' => '2011-05-04',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
+                                        1 => array('attributeIndexOrDerivedType' => 'bbb' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'ccc' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'iii' .
+                                                    DynamicSearchUtil::RELATION_DELIMITER . 'dateTime__DateTime',
+                                                    'structurePosition'          => '1',
+                                                    'bbb'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'ccc'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'iii'						 => array(
+                                                    'relatedModelData'			 => true,
+                                                    'date__Date'                 =>
+                                                        array('firstDate' => '2011-05-07',
+                                                              'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
+                                        );
+            $this->assertEquals($compareData, $newArray);
+        }
+
         public function testGetDynamicSearchStructureFromGetArray()
         {
             $_GET['testing'] = array(
@@ -393,6 +536,43 @@
             );
             $newString = SearchUtil::getDynamicSearchStructureFromGetArray('testing');
             $this->assertEquals('1 and 2', $newString);
+        }
+
+        /**
+         * Checks if the empty values are properly converted to null when nested
+         */
+        public function testGetSearchAttributesFromSearchArrayWithRecursiveNullResolution()
+        {
+            $searchArray = array(
+                'a' => 'apple',
+                'b' => array(
+                    'relatedModelData' => true,
+                    'bMember' => '',
+                ),
+                'c' => array(
+                    'relatedModelData' => true,
+                    'd' => array(
+                        'relatedModelData' => true,
+                        'dMember' => '',
+                    ),
+                ),
+            );
+            $testArray = array(
+                'a' => 'apple',
+                'b' => array(
+                    'relatedModelData' => true,
+                    'bMember' => null,
+                ),
+                'c' => array(
+                    'relatedModelData' => true,
+                    'd' => array(
+                        'relatedModelData' => true,
+                        'dMember' => null,
+                    ),
+                ),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($testArray, $newArray);
         }
     }
 ?>

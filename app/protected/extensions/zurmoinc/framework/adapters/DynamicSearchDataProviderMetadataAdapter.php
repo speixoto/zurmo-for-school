@@ -64,11 +64,29 @@
             $clauseCount                = count($metadata['clauses']);
             $structure                  = $this->dynamicStructure;
             $correctlyPositionedClauses = array();
-            foreach($this->sanitizedDynamicSearchAttributes as $searchAttribute)
+            $this->processData($this->sanitizedDynamicSearchAttributes, $clauseCount, $correctlyPositionedClauses, $metadata);
+            krsort($correctlyPositionedClauses);
+            foreach($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
             {
-                $structurePosition = $searchAttribute['structurePosition'];
-                unset($searchAttribute['attributeIndexOrDerivedType']);
-                unset($searchAttribute['structurePosition']);
+                $structure = strtr(strtolower($structure), $correctlyPositionedClauseData);
+            }
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
+        }
+
+        protected function processData($searchAttributes, & $clauseCount, & $correctlyPositionedClauses, & $metadata)
+        {
+            foreach($searchAttributes as $position => $searchAttribute)
+            {
+                $structurePosition = self::resolveUnsetAndGetSructurePosition($searchAttribute);
+                self::resolveUnsetAttributeIndexOrDerivedType($searchAttribute);
                 $metadataAdapter = new SearchDataProviderMetadataAdapter(
                     $this->model,
                     $this->userId,
@@ -87,20 +105,61 @@
                     throw new NotSupportedException();
                 }
             }
-            krsort($correctlyPositionedClauses);
-            foreach($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
+        }
+
+        protected static function resolveUnsetAndGetSructurePosition(& $searchAttribute)
+        {
+            if(isset($searchAttribute['structurePosition']))
             {
-                $structure = strtr(strtolower($structure), $correctlyPositionedClauseData);
+                $structurePosition = $searchAttribute['structurePosition'];
+                unset($searchAttribute['structurePosition']);
+                return $structurePosition;
             }
-            if (empty($metadata['structure']))
+            /**
+            foreach($searchAttribute as $attributeName => $attributeData)
             {
-                $metadata['structure'] = '(' . $structure . ')';
+                if(!is_array($attributeData))
+                {
+                   continue;
+                }
+                elseif(isset($attributeData['structurePosition']))
+                {
+                    $structurePosition = $attributeData['structurePosition'];
+                    unset($searchAttribute[$attributeName]['structurePosition']);
+                    return $structurePosition;
+                }
+                else
+                {
+                    return static::resolveUnsetAndGetSructurePosition($searchAttribute[$attributeName]);
+                }
             }
-            else
+            **/
+        }
+
+        protected static function resolveUnsetAttributeIndexOrDerivedType(& $searchAttribute)
+        {
+            if(isset($searchAttribute['attributeIndexOrDerivedType']))
             {
-                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+                unset($searchAttribute['attributeIndexOrDerivedType']);
             }
-            return $metadata;
+            /**
+            foreach($searchAttribute as $attributeName => $attributeData)
+            {
+                if(!is_array($attributeData))
+                {
+                    continue;
+                }
+                elseif(isset($attributeData['attributeIndexOrDerivedType']))
+                {
+                    unset($searchAttribute[$attributeName]['attributeIndexOrDerivedType']);
+                    return;
+                }
+                else
+                {
+                    return static::resolveUnsetAttributeIndexOrDerivedType($searchAttribute[$attributeName]);
+                }
+            }
+            **/
         }
     }
 ?>

@@ -34,6 +34,83 @@
             Yii::app()->user->userModel = $super;
         }
 
+        /**
+         * Test a regular attribute, a single level of nesting, and deeper nesting.
+         */
+        public function testDynamicSearchWithNestedData()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $sanitizedDynamicSearchAttributes = array(
+                0 => array(
+                    'iiiMember'                   => 'someThing',
+                    'attributeIndexOrDerivedType' => 'iiiMember',
+                    'structurePosition'           => '1',
+                ),
+                2 => array(
+                    'ccc' => array(
+                        'relatedData'                 => true,
+                        'cccMember'                   => 'cccMemberValue',
+                    ),
+                    'attributeIndexOrDerivedType' => 'ccc' . DynamicSearchUtil::RELATION_DELIMITER . 'cccMember',
+                    'structurePosition'           => '2',
+                ),
+                4 => array(
+                    'ccc' => array(
+                        'relatedData'           => true,
+                        'bbb'                   => array(
+                            'relatedData'                 => true,
+                            'bbbMember'                   => 'bbbMemberValue',
+
+                        ),
+                    ),
+                    'attributeIndexOrDerivedType' => 'ccc' . DynamicSearchUtil::RELATION_DELIMITER . 'bbb' . DynamicSearchUtil::RELATION_DELIMITER . 'bbbMember',
+                    'structurePosition'           => '3',
+                ),
+            );
+            $dynamicStructure = '(1 or 2) and 3';
+            $metadata         = array('clauses' => array(), 'structure' => '');
+            $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
+                $metadata,
+                new IIISearchFormTestModel(new III(false)),
+                (int)Yii::app()->user->userModel->id,
+                $sanitizedDynamicSearchAttributes,
+                $dynamicStructure);
+            $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'iiiMember',
+                    'operatorType'         => 'startsWith',
+                    'value'                => 'someThing',
+                ),
+                2 => array(
+                    'attributeName'        => 'ccc',
+                    'relatedModelData'     => array(
+                        'attributeName'        => 'cccMember',
+                        'operatorType'         => 'startsWith',
+                        'value'                => 'cccMemberValue',
+                    ),
+                ),
+                3 => array(
+                    'attributeName'        => 'ccc',
+                    'relatedModelData'     => array(
+                        'attributeName'        => 'bbb',
+                        'relatedModelData'     => array(
+                            'attributeName'        => 'bbbMember',
+                            'operatorType'         => 'startsWith',
+                            'value'                => 'bbbMemberValue',
+                        ),
+                    ),
+                ),
+            );
+            $compareStructure = '((1 or 2) and 3)';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        /**
+         * @depends testDynamicSearchWithNestedData
+         */
         public function testDynamicSearch()
         {
             $super = User::getByUsername('super');
@@ -86,6 +163,9 @@
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
 
+        /**
+         * @depends testDynamicSearch
+         */
         public function testDynamicSearchAndBasicSearchTogether()
         {
             $super = User::getByUsername('super');
@@ -157,6 +237,7 @@
         }
 
         /**
+         * @depends testDynamicSearchAndBasicSearchTogether
          * @expectedException NotSupportedException
          */
         public function testDynamicSearchWithNullValues()
@@ -190,7 +271,5 @@
                 $dynamicStructure);
             $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
         }
-
-        //todo: test null value;
     }
 ?>

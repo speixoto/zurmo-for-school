@@ -319,12 +319,49 @@
                 $structurePosition           = $searchAttributeData['structurePosition'];
                 unset($searchAttributeData['attributeIndexOrDerivedType']);
                 unset($searchAttributeData['structurePosition']);
-                $sanitizedDynamicSearchAttributes[$key] = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
-                                                              $searchAttributeData);
+                self::processDynamicSearchAttributesDataForSavingModelRecursively($searchModel, $searchAttributeData);
+                $sanitizedDynamicSearchAttributes[$key] = $searchAttributeData;
                 $sanitizedDynamicSearchAttributes[$key]['attributeIndexOrDerivedType'] = $attributeIndexOrDerivedType;
                 $sanitizedDynamicSearchAttributes[$key]['structurePosition']           = $structurePosition;
             }
             return $sanitizedDynamicSearchAttributes;
+        }
+
+        protected static function processDynamicSearchAttributesDataForSavingModelRecursively($searchModel, & $searchAttributeData)
+        {
+            $processRecursively = false;
+            foreach($searchAttributeData as $attributeName => $attributeData)
+            {
+                if( isset($attributeData['relatedModelData']) &&
+                    is_array($attributeData) &&
+                    $attributeData['relatedModelData'] == true)
+                {
+                    assert('count($attributeData) == 2');
+                    $processRecursively = true;
+                    break;
+                }
+            }
+            if($processRecursively)
+            {
+                //
+                $modelToUse      = SearchDataProviderMetadataAdapter::resolveAsRedBeanModel($searchModel->$attributeName);
+                $moduleClassName = $modelToUse->getModuleClassName();
+                if($moduleClassName != null)
+                {
+                    $formClassName   = $moduleClassName::getGlobalSearchFormClassName();
+                    if($formClassName != null)
+                    {
+                        $modelToUse = new $formClassName($modelToUse);
+                    }
+                }
+                //
+                self::processDynamicSearchAttributesDataForSavingModelRecursively($modelToUse,
+                                                                                 $searchAttributeData[$attributeName]);
+            }
+            else
+            {
+                $searchAttributeData = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel, $searchAttributeData);
+            }
         }
 
         /**

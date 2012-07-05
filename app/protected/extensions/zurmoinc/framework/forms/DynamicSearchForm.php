@@ -63,6 +63,7 @@
         {
             if($this->$attribute != null)
             {
+                //why arent we calling getDYnamicsearchAttributes????
                 $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($this->$attribute);
                 foreach($dynamicSearchAttributes as $key => $rowData)
                 {
@@ -76,7 +77,10 @@
                     {
                         unset($rowData['attributeIndexOrDerivedType']);
                         unset($rowData['structurePosition']);
+                        //why arent we calling this? sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel well maybe this is ok.
+                        //cause we already unset, but this wont work for recursive, the unsets we are doing above would be further nested
                         $sanitizedRowData = DataUtil::sanitizeDataByDesignerTypeForSavingModel($this, $rowData);
+                        //should be calling dynamic adapter?
                         $metadataAdapter  = new SearchDataProviderMetadataAdapter(
                             $this,
                             Yii::app()->user->userModel->id,
