@@ -2391,14 +2391,17 @@ div.wide.form{
     th{
         color:#999;
         text-align:right;
-        line-height: 24px;
+        //line-height: 24px;
     }
     td, td a{
         color:#525252;
     }
     th, td{
         font-weight:600;
-        padding:0 0 15px 0;
+        //padding:0 0 15px 0;
+    	padding-top:15px !important;
+    	vertical-align:top;
+    	border:1px solid pink;
     }
      //for opt in email checkboxes
     input[type="checkbox"] + label{
@@ -2408,9 +2411,9 @@ div.wide.form{
     //for address fields
     td > label{
         &:first-child{
-            margin-top:5px;
+            //margin-top:5px;
         }
-        margin-top:10px;
+        //margin-top:10px;
     }
     //for 2 columns
     td + th{
