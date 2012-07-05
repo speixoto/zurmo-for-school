@@ -103,13 +103,7 @@
             $inputId = $this->getEditableInputId();
             $script   = " basicSearchQueued = 0;";
             $script  .= " basicSearchOldValue = '';";
-            $script  .= "   $('#" . $inputId . "').removeAttr('clearForm'); ";
-            $script  .= "   $('#" . $inputId . "').clearform(
-                                {
-                                    form: '#" . $this->form->getId() . "',
-                                }
-                            );
-                            var basicSearchHandler = function(event)
+            $script  .= "   var basicSearchHandler = function(event)
                             {
                                 if ($(this).val() != '')
                                 {

@@ -33,6 +33,8 @@
     {
         const ANY_MIXED_ATTRIBUTES_SCOPE_NAME = 'anyMixedAttributesScope';
 
+        const ANY_MIXED_ATTRIBUTES            = 'anyMixedAttributes';
+
         const DYNAMIC_NAME = 'dynamicClauses';
 
         const DYNAMIC_STRUCTURE_NAME = 'dynamicStructure';
@@ -64,6 +66,12 @@
                     key_exists(self::DYNAMIC_STRUCTURE_NAME, $_GET[$getArrayName]))
                 {
                     unset($searchAttributes[self::DYNAMIC_STRUCTURE_NAME]);
+                }
+                if((isset($searchAttributes[self::ANY_MIXED_ATTRIBUTES]) ||
+                     key_exists(self::ANY_MIXED_ATTRIBUTES, $_GET[$getArrayName])) &&
+                   empty($searchAttributes[self::ANY_MIXED_ATTRIBUTES]))
+                {
+                    unset($searchAttributes[self::ANY_MIXED_ATTRIBUTES]);
                 }
             }
             return $searchAttributes;

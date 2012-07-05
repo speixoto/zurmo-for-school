@@ -47,7 +47,7 @@
                 $editableMetadata
             );
             $attributeIndexOrDerivedTypeAndLabels = array();
-            foreach($attributesLayoutAdapter->getPlaceableLayoutAttributes() as $attributeIndexOrDerivedType => $data)
+            foreach($attributesLayoutAdapter->makeDesignerLayoutAttributes()->get() as $attributeIndexOrDerivedType => $data)
             {
                 //Special exception since anyMixedAttributes should not be available for dynamic search.
                 //Eventually refactor and decouple at some point if needed.
