@@ -312,7 +312,7 @@
             );
             DatabaseCompatibilityUtil::bulkInsert($tableName, $insertData, $columnNames, 3);
 
-            $bulkInsertedRows      = R::getAll("select * from $tableName");
+            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), 3);
             for ($i = 0; $i < 3; $i++)
             {
@@ -337,7 +337,7 @@
             $insertData  = $this->createDumpDataForBulkInsert($numberOfRows);
 
             DatabaseCompatibilityUtil::bulkInsert($tableName, $insertData, $columnNames, $bulkQuantity);
-            $bulkInsertedRows      = R::getAll("select * from $tableName");
+            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), $numberOfRows);
             for ($i = 0; $i < $numberOfRows; $i++)
             {
