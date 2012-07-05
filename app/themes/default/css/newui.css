@@ -7903,7 +7903,6 @@ div.wide.form label.hasCheckBox {
 .EditAndDetailsView th {
   color: #999;
   text-align: right;
-  line-height: 24px;
 }
 .ProgressView td,
 #MetadataViewEditView td,
@@ -7928,7 +7927,8 @@ div.wide.form label.hasCheckBox {
 .DetailsView td,
 .EditAndDetailsView td {
   font-weight: 600;
-  padding: 0 0 15px 0;
+  padding-top: 15px !important;
+  vertical-align: middle !important;
 }
 .ProgressView input[type="checkbox"] + label,
 #MetadataViewEditView input[type="checkbox"] + label,
@@ -7937,20 +7937,6 @@ div.wide.form label.hasCheckBox {
 .EditAndDetailsView input[type="checkbox"] + label {
   width: 60px;
   margin-top: 0;
-}
-.ProgressView td > label,
-#MetadataViewEditView td > label,
-.TableOfContentsView td > label,
-.DetailsView td > label,
-.EditAndDetailsView td > label {
-  margin-top: 10px;
-}
-.ProgressView td > label:first-child,
-#MetadataViewEditView td > label:first-child,
-.TableOfContentsView td > label:first-child,
-.DetailsView td > label:first-child,
-.EditAndDetailsView td > label:first-child {
-  margin-top: 5px;
 }
 .ProgressView td + th,
 #MetadataViewEditView td + th,
