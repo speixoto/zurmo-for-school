@@ -374,7 +374,7 @@
                 DatabaseCompatibilityUtil::bulkInsert($tableName, $importDataForOneLoop, $columnNames, $bulkQuantity);
             }
 
-            $bulkInsertedRows      = R::getAll("select * from $tableName");
+            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), $numberOfRows);
             for ($i = 0; $i < $numberOfRows; $i++)
             {
