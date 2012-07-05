@@ -33,6 +33,11 @@
 
         const ADVANCED_SEARCH_TYPE_DYNAMIC = 'Dynamic';
 
+        public static function getDesignerRulesType()
+        {
+            return 'DynamicSearchView';
+        }
+
         /**
          * Constructs a detail view specifying the controller as
          * well as the model that will have its details displayed.
@@ -43,20 +48,31 @@
             parent::__construct($model, $listModelClassName, $gridIdSuffix, $hideAllSearchPanelsToStart);
         }
 
-        protected function getEnableAjaxValidationValue()
-        {
-            return true;
-        }
-
         protected function getClientOptions()
         {
             return array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
                         'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
+                        'afterValidate'     => 'js:afterDynamicSearchValidateAjaxAction',
                         'afterValidateAjax' => $this->renderConfigSaveAjax($this->getSearchFormId()),
                     );
+        }
+
+        protected function getEnableAjaxValidationValue()
+        {
+            return true;
+        }
+
+        protected function getExtraRenderForCancelSearchLinkScript()
+        {
+            return "$(this).closest('form').find('.search-view-1').find('.dynamic-search-row').each(function(){
+                        $(this).remove();
+                    });
+                    $('#" . $this->getRowCounterInputId() . "').val(0);
+                    $('#" . $this->getStructureInputId() . "').val('');
+                    $('.search-view-1').hide();
+            ";
         }
 
         protected function getFormActionUrl()
@@ -65,6 +81,21 @@
                                             array('viewClassName'       => get_class($this),
                                                   'modelClassName'     => get_class($this->model->getModel()),
                                                   'formModelClassName' => get_class($this->model)));
+        }
+
+        protected function getRowCounterInputId()
+        {
+            return 'rowCounter-' . $this->getSearchFormId();
+        }
+
+        protected function getStructureInputId()
+        {
+            return get_class($this->model) . '_' . SearchUtil::DYNAMIC_STRUCTURE_NAME;
+        }
+
+        protected function getStructureInputName()
+        {
+            return get_class($this->model) . '[' . SearchUtil::DYNAMIC_STRUCTURE_NAME . ']';
         }
 
         protected function renderConfigSaveAjax($formName)
@@ -108,17 +139,11 @@
        //todo: we could have getMetadata be changed to resolveMetadata, non-static. that way saved
        //todo: search we can pull in and show rows by default.
        //todo: we have to deal with saved search but this might require an override in DynamicSearchView...
-        protected function renderDynamicAdvancedSearchRows($panel, $maxCellsPerRow,  $form = null)
+        protected function renderDynamicAdvancedSearchRows($panel, $maxCellsPerRow,  $form)
         {
             assert('$form != null');
             $content  = $form->errorSummary($this->model);
-            //todo: fix this trick or move it into another method. Currently required to properly support error summary working correctly.
-            $content .= '<div style="display:none;">';
-            $htmlOptions = array('id' => get_class($this->model) . '_dynamicClauses', 'name' => 'dynamicClausesValidationHelper');
-            $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptions);
-            $content .= $form->error($this->model, 'dynamicClauses', $htmlOptions);
-            $content .= '</div>';
-            //todo: end move
+            $content .= $this->renderDynamicClausesValidationHelperContent($form);
             $rowCount = 0;
             if(($panel['rows']) > 0)
             {
@@ -153,26 +178,56 @@
         protected function renderAddExtraRowContent($rowCount)
         {
             assert('is_int($rowCount)');
-            $idInputHtmlOptions  = array('id' => 'rowCounter-' . $this->getSearchFormId());
+            $idInputHtmlOptions  = array('id' => $this->getRowCounterInputId());
             $hiddenInputName     = 'rowCounter';
             $ajaxOnChangeUrl     = Yii::app()->createUrl("zurmo/default/dynamicSearchAddExtraRow",
-                                   array('viewClassName' => get_class($this),
-                                         'modelClassName' => get_class($this->model->getModel()),
+                                   array('viewClassName'      => get_class($this),
+                                         'modelClassName'     => get_class($this->model->getModel()),
                                          'formModelClassName' => get_class($this->model),
-                                         'suffix' => $this->getSearchFormId()));
+                                         'suffix'             => $this->getSearchFormId()));
             $content             = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
             $content            .= ZurmoHtml::ajaxLink(Yii::t('Default', 'Add Field'), $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
                                           'success' => 'js:function(data){
-                                            $(\'#rowCounter-' . $this->getSearchFormId(). '\').val(parseInt($(\'#rowCounter-' . $this->getSearchFormId() . '\').val()) + 1)
+                                            $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
             return CHtml::tag('div', array(), $content);
+        }
+
+        protected function renderAfterFormLayout($form)
+        {
+           parent::renderAfterFormLayout($form);
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dynamicSearchViewUtils.js');
+            Yii::app()->clientScript->registerScript('showStructurePanels' . $this->getSearchFormId(), "
+                $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').click( function()
+                    {
+                        $('#show-dynamic-search-structure-div-"      . $this->getSearchFormId() . "').show();
+                        $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').hide();
+                        return false;
+                    }
+                );");
+        }
+
+        /**
+         * This is a trick to properly validate this form. Eventually refactor.  Used to support error summary correctly.
+         */
+        protected function renderDynamicClausesValidationHelperContent($form)
+        {
+            $htmlOptions = array('id'   => get_class($this->model) . '_dynamicClauses',
+                                 'name' => 'dynamicClausesValidationHelper');
+            $content  = '<div style="display:none;">';
+            $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptions);
+            $content .= $form->error($this->model, 'dynamicClauses', $htmlOptions);
+            $content .= '</div>';
+            return $content;
         }
 
         protected function renderDynamicSearchStructureContent($form)
@@ -188,19 +243,19 @@
                 $style2 = '';
             }
             $content  = CHtml::link(Yii::t('Default', 'More Options'), '#',
-                            array('id' => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
-                                          'style' => $style1));
+                            array('id'    => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
+                                  'style' => $style1));
             $content .= CHtml::tag('div',
-                            array('id' => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
-                                          'style' => $style2), $this->renderStructureInputContent($form));
+                            array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
+                                  'style' => $style2), $this->renderStructureInputContent($form));
             return $content;
         }
 
         protected function renderStructureInputContent($form)
         {
-            $name                = get_class($this->model) . '[' . SearchUtil::DYNAMIC_STRUCTURE_NAME . ']';
-            $id                  = get_class($this->model) . '_' . SearchUtil::DYNAMIC_STRUCTURE_NAME;
-            $idInputHtmlOptions  = array('id' => $id, 'name' => $name, 'class' => 'dynamic-search-structure-input');
+            $idInputHtmlOptions  = array('id'    => $this->getStructureInputId(),
+                                         'name'  => $this->getStructureInputName(),
+                                         'class' => 'dynamic-search-structure-input');
             $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
@@ -210,27 +265,6 @@
         {
             //todo: expand once we have saved search
             return true;
-        }
-
-        protected function renderAfterFormLayout($form)
-        {
-           parent::renderAfterFormLayout($form);
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dynamicSearchViewUtils.js');
-            Yii::app()->clientScript->registerScript('showStructurePanels' . $this->getSearchFormId(), "
-                $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').click( function()
-                    {
-                        $('#show-dynamic-search-structure-div-" . $this->getSearchFormId() . "').show();
-                        $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').hide();
-                        return false;
-                    }
-                );");
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'DynamicSearchView';
         }
     }
 ?>

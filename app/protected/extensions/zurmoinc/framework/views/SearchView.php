@@ -99,12 +99,7 @@
 
         protected function renderAfterFormLayout($form)
         {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js');
+            $this->registerScripts();
         }
 
         /**
@@ -117,6 +112,32 @@
         {
             $moreSearchOptionsLink = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             $clearSearchLink = CHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
+            $startingDivStyle = null;
+            if ($this->hideAllSearchPanelsToStart)
+            {
+                $startingDivStyle = "style='display:none;'";
+            }
+            $content  = '<div class="search-form-tools">';
+            $content .= $moreSearchOptionsLink . '&#160;|&#160;';
+            $content .= $clearSearchLink;
+            $content .= $this->renderFormBottomPanelExtraLinks();
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected function getExtraRenderForCancelSearchLinkScript()
+        {
+
+        }
+
+        protected function registerScripts()
+        {
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js');
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('search' . $this->getSearchFormId(), "
                 $('#clear-search-link" . $this->gridIdSuffix . "').removeAttr('clearForm');
@@ -136,7 +157,7 @@
                 $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
                 $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
                     {
-                        $('.search-view-1').show();
+                        $('.search-view-1').toggle();
                         return false;
                     }
                 );
@@ -147,22 +168,6 @@
             " . $this->getExtraRenderFormBottomPanelScriptPart());
             $this->renderAdvancedSearchScripts();
             // End Not Coding Standard
-            $startingDivStyle = null;
-            if ($this->hideAllSearchPanelsToStart)
-            {
-                $startingDivStyle = "style='display:none;'";
-            }
-            $content  = '<div class="search-form-tools">';
-            $content .= $moreSearchOptionsLink . '&#160;|&#160;';
-            $content .= $clearSearchLink;
-            $content .= $this->renderFormBottomPanelExtraLinks();
-            $content .= '</div>';
-            return $content;
-        }
-
-        protected function getExtraRenderForCancelSearchLinkScript()
-        {
-
         }
 
         protected function renderAdvancedSearchScripts()
@@ -241,9 +246,9 @@
                 {
                     $content .= '<div class="view-toolbar-container clearfix">';
                     $content .= '<div class="form-toolbar">';
-                    //$content .= CHtml::link(Yii::t('Default', 'Cancel'), '#', array('id' => 'cancel-advanced-search'));
+                    $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
                     $params = array();
-                    $params['label']       = Yii::t('Default', 'Search and Close');
+                    $params['label']       = Yii::t('Default', 'Search');
                     $params['htmlOptions'] = array('id' => 'search-advanced-search');
                     $searchElement = new SaveButtonActionElement(null, null, null, $params);
                     $content .= $searchElement->render();
@@ -255,7 +260,7 @@
             return $content;
         }
 
-        protected function renderAdvancedSearchForFormLayout($panel, $maxCellsPerRow, $form = null)
+        protected function renderAdvancedSearchForFormLayout($panel, $maxCellsPerRow, $form)
         {
             return $this->renderStaticSearchRows($panel, $maxCellsPerRow, $form);
         }

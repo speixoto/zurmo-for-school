@@ -47,6 +47,7 @@
 
         public function actionList()
         {
+
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));
             $account = new Account(false);

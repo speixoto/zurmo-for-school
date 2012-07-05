@@ -183,7 +183,7 @@
                                     $searchableAttributeIndicesAndDerivedTypes, (int)$rowNumber, $suffix,
                                     $formModelClassName, $ajaxOnChangeUrl);
             $view             = new AjaxPageView($extraRowView);
-            echo CHtml::tag('div', array(), $view->render());
+            echo CHtml::tag('div', array('class' => 'dynamic-search-row'), $view->render());
         }
 
         public function actionDynamicSearchAttributeInput($viewClassName, $modelClassName, $formModelClassName, $rowNumber,
@@ -224,6 +224,7 @@
             {
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
+                unset($_POST[$formModelClassName]['anyMixedAttributesScope']);
                 $searchForm->setAttributes($_POST[$formModelClassName]);
                 $searchForm->setScenario('validateDynamic');
                 if(!$searchForm->validate())

@@ -138,7 +138,7 @@
             $dataProvider
             )
         {
-            $listModel = $searchModel->getModel();
+            $listModel           = $searchModel->getModel();
             $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
             $listView            = new $listViewClassName(
                                        $this->getId(),

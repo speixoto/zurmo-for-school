@@ -51,7 +51,9 @@
             {
                 //Special exception since anyMixedAttributes should not be available for dynamic search.
                 //Eventually refactor and decouple at some point if needed.
-                if($attributeIndexOrDerivedType != 'anyMixedAttributes')
+                if($attributeIndexOrDerivedType != 'anyMixedAttributes' &&
+                   $attributeIndexOrDerivedType != 'dynamicStructure' &&
+                   $attributeIndexOrDerivedType != 'dynamicClauses')
                 {
                     $attributeIndexOrDerivedTypeAndLabels[$attributeIndexOrDerivedType] = $data['attributeLabel'];
                 }

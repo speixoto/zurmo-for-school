@@ -44,7 +44,7 @@
         {
             assert('is_array($searchableAttributeIndicesAndDerivedTypes)');
             assert('is_int($rowNumber)');
-            assert('is_string($suffix)');
+            assert('is_string($suffix) || $suffix == null');
             assert('is_string($formModelClassName)');
             assert('is_string($ajaxOnChangeUrl)');
             $this->searchableAttributeIndicesAndDerivedTypes    = $searchableAttributeIndicesAndDerivedTypes;

@@ -47,6 +47,7 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
+                               'dynamicClauses' => Yii::t('Default', 'Advanced Search Rows'),
                                'dynamicStructure' => Yii::t('Default', 'Clause Ordering'),
             ));
         }
@@ -63,8 +64,7 @@
             if($this->$attribute != null)
             {
                 $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($this->$attribute);
-                $sanitizedData           = DataUtil::sanitizeDataByDesignerTypeForSavingModel($this, $dynamicSearchAttributes);
-                foreach($sanitizedData as $key => $rowData)
+                foreach($dynamicSearchAttributes as $key => $rowData)
                 {
                     $structurePosition = $rowData['structurePosition'];
                     if($rowData['attributeIndexOrDerivedType'] == null)
@@ -76,10 +76,11 @@
                     {
                         unset($rowData['attributeIndexOrDerivedType']);
                         unset($rowData['structurePosition']);
-                        $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                        $sanitizedRowData = DataUtil::sanitizeDataByDesignerTypeForSavingModel($this, $rowData);
+                        $metadataAdapter  = new SearchDataProviderMetadataAdapter(
                             $this,
                             Yii::app()->user->userModel->id,
-                            $rowData
+                            $sanitizedRowData
                         );
                         $metadata = $metadataAdapter->getAdaptedMetadata();
                         if(count($metadata['clauses']) == 0)
