@@ -33,11 +33,11 @@
         {
             assert('$this->model->{$this->attribute} instanceof EmailMessageContent');
             $emailMessageContent = $this->model->{$this->attribute};
-            if($emailMessageContent->htmlContent != null)
+            if ($emailMessageContent->htmlContent != null)
             {
                 return Yii::app()->format->html($emailMessageContent->htmlContent);
             }
-            elseif($emailMessageContent->textContent != null)
+            elseif ($emailMessageContent->textContent != null)
             {
                 return Yii::app()->format->text($emailMessageContent->textContent);
             }

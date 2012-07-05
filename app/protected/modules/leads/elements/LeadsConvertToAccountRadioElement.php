@@ -70,7 +70,7 @@
                 'name' => $this->getEditableInputName(),
                 'id'   => $this->getEditableInputId(),
             );
-			$htmlOptions['separator'] = '';
+            $htmlOptions['separator'] = '';
             $htmlOptions['template'] =  '<span class="lead-conversion-radiobutton">{input} {label}</span>';
             return $htmlOptions;
         }

@@ -109,9 +109,9 @@
                 $content .= Yii::t('Default', 'from: {senderContent}',
                                     array('{senderContent}' => static::getSenderContent($model->sender)));
             }
-            if($model->recipients->count() > 0)
+            if ($model->recipients->count() > 0)
             {
-                if($content != null)
+                if ($content != null)
                 {
                     $content .= ' ';
                 }
@@ -124,7 +124,7 @@
         public static function getSenderContent(EmailMessageSender $emailMessageSender)
         {
             $existingModels  = array();
-            if($emailMessageSender->personOrAccount->id < 0)
+            if ($emailMessageSender->personOrAccount->id < 0)
             {
                 return $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
             }
@@ -142,7 +142,7 @@
                             }
                 return self::resolveStringValueModelsDataToStringContent($existingModels);
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 return $emailMessageSender->fromAddress;
             }
@@ -153,15 +153,15 @@
             assert('$type == null || $type == EmailMessageRecipient::TYPE_TO ||
                     EmailMessageRecipient::TYPE_CC || EmailMessageRecipient::TYPE_BCC');
             $existingModels  = array();
-            if($recipients->count() == 0)
+            if ($recipients->count() == 0)
             {
                 return;
             }
-            foreach($recipients as $recipient)
+            foreach ($recipients as $recipient)
             {
-                if($type == null || $recipient->type == $type)
+                if ($type == null || $recipient->type == $type)
                 {
-                    if($recipient->personOrAccount->id < 0)
+                    if ($recipient->personOrAccount->id < 0)
                     {
                         $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
                     }
@@ -179,9 +179,8 @@
                                                                                             $castedDownModel->id, $params);
                                             $existingModels[] = $element->render();
                                         }
-
                         }
-                        catch(AccessDeniedSecurityException $e)
+                        catch (AccessDeniedSecurityException $e)
                         {
                             $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
                         }
@@ -193,7 +192,7 @@
 
         protected static function castDownItem(Item $item)
         {
-            foreach(array('Contact', 'User', 'Account') as $modelClassName)
+            foreach (array('Contact', 'User', 'Account') as $modelClassName)
             {
                 try
                 {

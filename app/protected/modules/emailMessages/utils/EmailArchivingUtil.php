@@ -136,6 +136,7 @@
             }
             return $emailRecipients;
         }
+
         /**
          * Check if email message is forwarded or not, based on email subject.
          * For works only with few emails clients: Gmail, Outlook, ThunderBird, Yahoo
@@ -165,7 +166,7 @@
         public static function resolveEmailSenderFromForwardedEmailMessage(ImapMessage $emailMessage)
         {
             $emailSender   = false;
-            $pattern = '/^\s*(?:.*?):\s*(.*)?\s*(?:\[mailto:|<)([\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,6})(?:[\]>])(?:.*)?$/mi';
+            $pattern = '/^\s*(?:.*?):\s*(.*)?\s*(?:\[mailto:|<)([\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,6})(?:[\]>])(?:.*)?$/mi'; // Not Coding Standard
             $noOfMatches = false;
             if ($emailMessage->textBody != '')
             {

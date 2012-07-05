@@ -87,11 +87,11 @@
         public static function getDefaultEmailBoxByUser(User $user)
         {
             assert('$user->id > 0');
-            if($user->emailBoxes->count() == 0)
+            if ($user->emailBoxes->count() == 0)
             {
                 return self::createBoxAndDefaultFoldersByUserAndName($user, EmailBox::USER_DEFAULT_NAME);
             }
-            elseif($user->emailBoxes->count() > 1)
+            elseif ($user->emailBoxes->count() > 1)
             {
                 //Until multiple boxes are supported against a user, this is not supported
                 throw new NotSupportedException();

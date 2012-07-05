@@ -53,6 +53,5 @@
         {
             return Yii::t('Default', 'Select a Role');
         }
-
     }
 ?>

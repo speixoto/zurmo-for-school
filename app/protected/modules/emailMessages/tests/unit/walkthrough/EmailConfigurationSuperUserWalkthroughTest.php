@@ -71,18 +71,31 @@
                                     'port'                              => '565',
                                     'username'                          => 'myuser',
                                     'password'                          => 'apassword',
-                                    'userIdOfUserToSendNotificationsAs' => $super2->id)));
+                                    'userIdOfUserToSendNotificationsAs' => $super2->id,
+                                    'imapHost'                          => 'mail.example.com',
+                                    'imapUsername'                      => 'test@example.com',
+                                    'imapPassword'                      => 'abcd',
+                                    'imapPort'                          => '143',
+                                    'imapSSL'                           => '0',
+                                    'imapFolder'                        => 'INBOX')));
             $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEdit');
             $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $emailHelper = new EmailHelper;
-            $this->assertEquals('smtp',     Yii::app()->emailHelper->outboundType);
-            $this->assertEquals('abc',      Yii::app()->emailHelper->outboundHost);
-            $this->assertEquals('565',      Yii::app()->emailHelper->outboundPort);
-            $this->assertEquals('myuser',   Yii::app()->emailHelper->outboundUsername);
-            $this->assertEquals('apassword', Yii::app()->emailHelper->outboundPassword);
+            $this->assertEquals('smtp',         Yii::app()->emailHelper->outboundType);
+            $this->assertEquals('abc',          Yii::app()->emailHelper->outboundHost);
+            $this->assertEquals('565',          Yii::app()->emailHelper->outboundPort);
+            $this->assertEquals('myuser',       Yii::app()->emailHelper->outboundUsername);
+            $this->assertEquals('apassword',    Yii::app()->emailHelper->outboundPassword);
             $this->assertEquals($super2->id,    Yii::app()->emailHelper->getUserToSendNotificationsAs()->id);
+
+            $this->assertEquals('mail.example.com',     Yii::app()->imap->imapHost);
+            $this->assertEquals('test@example.com',     Yii::app()->imap->imapUsername);
+            $this->assertEquals('abcd',     Yii::app()->imap->imapPassword);
+            $this->assertEquals('143',     Yii::app()->imap->imapPort);
+            $this->assertEquals('0',     Yii::app()->imap->imapSSL);
+            $this->assertEquals('INBOX',     Yii::app()->imap->imapFolder);
         }
     }
 ?>

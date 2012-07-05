@@ -304,7 +304,7 @@
 
             // Test with different quatations.
             $tableName      = TestDatabaseBulkInsertModel::getTableName('TestDatabaseBulkInsertModel');
-            $columnNames    = array('number','string');
+            $columnNames    = array('number', 'string');
             $insertData     = array(
                 array(999  , 'It\'s string with quatation.'),
                 array(1000 , "It\`s string with quatation."),
@@ -312,7 +312,7 @@
             );
             DatabaseCompatibilityUtil::bulkInsert($tableName, $insertData, $columnNames, 3);
 
-            $bulkInsertedRows      = R::getAll("select * from $tableName");
+            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), 3);
             for ($i = 0; $i < 3; $i++)
             {
@@ -331,13 +331,13 @@
 
             // Test when there are less rows of data then bulk quantity for one loop.
             $tableName      = TestDatabaseBulkInsertModel::getTableName('TestDatabaseBulkInsertModel');
-            $columnNames    = array('number','string');
+            $columnNames    = array('number', 'string');
             $numberOfRows   = 50;
             $bulkQuantity   = 100;
             $insertData  = $this->createDumpDataForBulkInsert($numberOfRows);
 
             DatabaseCompatibilityUtil::bulkInsert($tableName, $insertData, $columnNames, $bulkQuantity);
-            $bulkInsertedRows      = R::getAll("select * from $tableName");
+            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), $numberOfRows);
             for ($i = 0; $i < $numberOfRows; $i++)
             {
@@ -374,7 +374,7 @@
                 DatabaseCompatibilityUtil::bulkInsert($tableName, $importDataForOneLoop, $columnNames, $bulkQuantity);
             }
 
-            $bulkInsertedRows      = R::getAll("select * from $tableName");
+            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), $numberOfRows);
             for ($i = 0; $i < $numberOfRows; $i++)
             {
@@ -385,7 +385,7 @@
 
         protected function createDumpDataForBulkInsert($number)
         {
-            assert('is_numeric($number) && $number > 0');
+            assert('is_numeric($number) && $number > 0'); // Not Coding Standard
             $data = array();
             for ($i = 0; $i < $number; $i++)
             {

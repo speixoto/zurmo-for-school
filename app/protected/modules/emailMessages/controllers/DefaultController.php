@@ -168,7 +168,8 @@
                 $imap->imapSSL      = $configurationForm->imapSSL;
                 $imap->imapFolder   = $configurationForm->imapFolder;
 
-                try{
+                try
+                {
                     $connect = $imap->connect();
                 }
                 catch (Exception $e)

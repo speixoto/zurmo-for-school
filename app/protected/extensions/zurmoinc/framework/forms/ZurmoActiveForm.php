@@ -157,9 +157,9 @@
          * (non-PHPdoc)
          * @see CActiveForm::radioButtonList()
          */
-        public function radioButtonList($model,$attribute,$data,$htmlOptions=array())
+        public function radioButtonList($model, $attribute, $data, $htmlOptions = array())
         {
-            return ZurmoHtml::activeRadioButtonList($model,$attribute,$data,$htmlOptions);
+            return ZurmoHtml::activeRadioButtonList($model, $attribute, $data, $htmlOptions);
         }
 
         /**
