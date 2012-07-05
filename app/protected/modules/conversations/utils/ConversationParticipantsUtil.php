@@ -144,26 +144,27 @@
             assert('$person instanceof User || $person instanceof Contact');
             if ($person->primaryEmail->emailAddress !== null)
             {
-                $userToSendMessagesFrom    = $conversation->owner;
-                $emailMessage              = new EmailMessage();
-                $emailMessage->owner       = Yii::app()->user->userModel;
-                $emailMessage->subject     = Yii::t('Default', 'You have been invited to participate in a conversation');
-                $emailContent              = new EmailMessageContent();
-                $emailContent->textContent = static::getPartipantInviteEmailTextContent ($conversation);
-                $emailContent->htmlContent = static::getPartipantInviteEmailHtmlContent($conversation);
-                $emailMessage->content     = $emailContent;
-                $sender                    = new EmailMessageSender();
-                $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                $sender->fromName          = strval($userToSendMessagesFrom);
-                $emailMessage->sender      = $sender;
-                $recipient                 = new EmailMessageRecipient();
-                $recipient->toAddress      = $person->primaryEmail->emailAddress;
-                $recipient->toName         = strval($person);
-                $recipient->type           = EmailMessageRecipient::TYPE_TO;
-                $recipient->person         = $person;
+                $userToSendMessagesFrom     = $conversation->owner;
+                $emailMessage               = new EmailMessage();
+                $emailMessage->owner        = Yii::app()->user->userModel;
+                $emailMessage->subject      = Yii::t('Default', 'You have been invited to participate in a conversation');
+                $emailContent               = new EmailMessageContent();
+                $emailContent->textContent  = static::getPartipantInviteEmailTextContent ($conversation);
+                $emailContent->htmlContent  = static::getPartipantInviteEmailHtmlContent($conversation);
+                $emailMessage->content      = $emailContent;
+                $sender                     = new EmailMessageSender();
+                $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+                $sender->fromName           = strval($userToSendMessagesFrom);
+                $sender->personOrAccount    = $userToSendMessagesFrom;
+                $emailMessage->sender       = $sender;
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $person->primaryEmail->emailAddress;
+                $recipient->toName          = strval($person);
+                $recipient->type            = EmailMessageRecipient::TYPE_TO;
+                $recipient->personOrAccount = $person;
                 $emailMessage->recipients->add($recipient);
-                $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+                $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+                $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
                 try
                 {
                     Yii::app()->emailHelper->send($emailMessage);

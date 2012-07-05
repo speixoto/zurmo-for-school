@@ -56,7 +56,7 @@
                 $retrievalPageSize        = ($pageSize + 1);
             }
             $commentsData             = Comment::getCommentsByRelatedModelTypeIdAndPageSize($relatedModelClassName,
-                                                                                            $relatedModelId,
+                                                                                            (int)$relatedModelId,
                                                                                             $retrievalPageSize);
             $getParams                = array('relatedModelId'           => $relatedModelId,
                                               'relatedModelClassName'    => $relatedModelClassName,
@@ -119,7 +119,7 @@
             {
                 throw new NotSupportedException();
             }
-            $relatedModel = $relatedModelClassName::getById($relatedModelId);
+            $relatedModel = $relatedModelClassName::getById((int)$relatedModelId);
             return new CommentZurmoControllerUtil($relatedModel, $relatedModelRelationName);
         }
     }

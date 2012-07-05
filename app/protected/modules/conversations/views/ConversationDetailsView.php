@@ -89,12 +89,39 @@
         {
             assert('$form == null');
             $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
-            $content .= 'this is where the right side stuff goes';
+            $content .= "<h3>".Yii::t('Default', 'Participants') . '</h3>';
+            $content .= $this->renderConversationParticipantsContent();
             $content .= '</div></div></div>';
             return $content;
         }
 
         protected function renderAfterFormLayoutForDetailsContent()
+        {
+            $content  = $this->renderConversationCommentsContent();
+            $content .= $this->renderConversationCreateCommentContent();
+            return $content;
+        }
+
+        protected function renderConversationParticipantsContent()
+        {
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                                                                'ZurmoActiveForm',
+                                                                array_merge(
+                                                                    array('id' => 'participants-edit-form')
+                                                                )
+                                                            );
+            $params   = array('formName' => 'participants-edit-form');
+            $content  = $formStart;
+            $element  = new OnChangeProcessMultiplePeopleForConversationElement($this->model, null, $form, $params);
+            $element->editableTemplate = '{content}{error}';
+            $content .= $element->render();
+            $formEnd  = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            return $content;
+        }
+
+        protected function renderConversationCommentsContent()
         {
             $getParams    = array('relatedModelId'           => $this->model->id,
                                   'relatedModelClassName'    => get_class($this->model),
@@ -108,6 +135,26 @@
             return $content;
         }
 
+        protected function renderConversationCreateCommentContent()
+        {
+            $comment       = new Comment();
+            $uniquePageId  = 'CommentInlineEditForConversationView';
+            $redirectUrl   = Yii::app()->createUrl('/conversations/default/inlineCreateCommentFromAjax',
+                                                    array('id' => $this->model->id,
+                                                          'uniquePageId' => $uniquePageId));
+            $urlParameters = array('relatedModelId'           => $this->model->id,
+                                   'relatedModelClassName' 	  => 'Conversation',
+                                   'relatedModelRelationName' => 'comments',
+                                   'redirectUrl'              => $redirectUrl); //After save, the url to go to.
 
+            $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
+                                                      $urlParameters, $uniquePageId);
+            return Chtml::tag('div', array('id' => 'CommentInlineEditForConversationView'), $inlineView->render());
+        }
+
+        protected function getPortletDetailsUrl()
+        {
+            return Yii::app()->createUrl('/conversations/default/inlineCreateComment');
+        }
     }
 ?>

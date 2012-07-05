@@ -104,11 +104,9 @@
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                       array(strval($conversation), 'ConversationsModule'), $conversation);
             ConversationsUtil::markUserHasReadLatest($conversation, Yii::app()->user->userModel);
-            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($conversation, 'ConversationsModule',
-                                                                          'ConversationDetailsAndRelationsView',
-                                                                          Yii::app()->request->getRequestUri());
-            $view = new ConversationsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            $detailsView              = new ConversationDetailsView($this->getId(), $this->getModule()->getId(), $conversation);
+            $view                     = new ConversationsPageView(ZurmoDefaultViewUtil::
+                                                makeStandardViewForCurrentUser($this, $detailsView));
             echo $view->render();
         }
 
@@ -145,7 +143,7 @@
             $postData     = PostUtil::getData();
             if(isset($postData['ConversationParticipantsForm']))
             {
-                $conversation                      = Conversation::getById($id);
+                $conversation                      = Conversation::getById((int)$id);
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($conversation);
                 $currentUserWasParticipant         = ConversationParticipantsUtil::isUserAParticipant($conversation, Yii::app()->user->userModel);
                 ConversationParticipantsUtil::
@@ -231,6 +229,23 @@
                 throw new NotSupportedException();
             }
             return $model;
+        }
+
+        public function actionInlineCreateCommentFromAjax($id, $uniquePageId)
+        {
+            $comment       = new Comment();
+            $redirectUrl   = Yii::app()->createUrl('/conversations/default/inlineCreateCommentFromAjax',
+                                                    array('id'		     => $id,
+                                                          'uniquePageId' => $uniquePageId));
+            $urlParameters = array('relatedModelId'           => (int)$id,
+                                   'relatedModelClassName' 	  => 'Conversation',
+                                   'relatedModelRelationName' => 'comments',
+                                   'redirectUrl'              => $redirectUrl); //After save, the url to go to.
+            $uniquePageId  = 'CommentInlineEditForConversationView';
+            $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
+                                                       $urlParameters, $uniquePageId);
+            $view          = new AjaxPageView($inlineView);
+            echo $view->render();
         }
     }
 ?>
