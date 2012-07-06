@@ -309,17 +309,6 @@ a.remove:hover .icon:after {
   top: 6px;
   content: 'e';
 }
-/*RSS Widget*/
-.rssBody ul {
-  list-style: none;
-}
-.rssBody li {
-  padding: 10px 15px;
-  border-bottom: 1px solid #dfdfdf;
-}
-.rssBody li:last-child {
-  border-bottom: none;
-}
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
   width: 170px;
@@ -3832,7 +3821,7 @@ span.tooltip {
   padding-left: 15px;
 }
 .icon-leaderboard-weekly:before {
-  content: "w";
+  content: "x";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -3843,10 +3832,10 @@ span.tooltip {
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
-  padding-top: 1px;
+  top: -2px;
 }
 .icon-leaderboard-monthly:before {
-  content: "w";
+  content: ":";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -3857,10 +3846,10 @@ span.tooltip {
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
-  padding-top: 1px;
+  top: -2px;
 }
 .icon-leaderboard-overall:before {
-  content: "t";
+  content: ";";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -3871,7 +3860,7 @@ span.tooltip {
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
-  padding-top: 1px;
+  top: -2px;
 }
 .points {
   display: block;
@@ -4828,6 +4817,34 @@ span.tooltip {
     min-width: none;
   }
 }
+.icon-conversations-created:before {
+  content: "w";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-conversations-participant:before {
+  content: "b";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+}
 #ConversationEditView td {
   padding-left: 0;
 }
@@ -4837,45 +4854,55 @@ span.tooltip {
 #ConversationsPageView .items td {
   padding-left: 10px;
 }
+.single-coloumn-details-view.AppContent,
 #ConversationDetailsView.AppContent,
 #ConversationDetailsAndRelationsView.AppContent {
   padding-right: 0;
 }
+.single-coloumn-details-view .GridView,
 #ConversationDetailsView .GridView,
 #ConversationDetailsAndRelationsView .GridView {
   display: none;
 }
+.single-coloumn-details-view .GridView:first-child,
 #ConversationDetailsView .GridView:first-child,
 #ConversationDetailsAndRelationsView .GridView:first-child {
   display: block;
   width: 100%;
 }
+.single-coloumn-details-view .panel,
 #ConversationDetailsView .panel,
 #ConversationDetailsAndRelationsView .panel {
   width: 70%;
   float: left;
 }
+.single-coloumn-details-view .panel td,
 #ConversationDetailsView .panel td,
 #ConversationDetailsAndRelationsView .panel td,
+.single-coloumn-details-view .panel th,
 #ConversationDetailsView .panel th,
 #ConversationDetailsAndRelationsView .panel th {
   padding-bottom: 10px !important;
 }
+.single-coloumn-details-view .details-table,
 #ConversationDetailsView .details-table,
 #ConversationDetailsAndRelationsView .details-table {
   zoom: 1;
 }
+.single-coloumn-details-view .details-table:before,
 #ConversationDetailsView .details-table:before,
 #ConversationDetailsAndRelationsView .details-table:before {
   content: "";
   display: table;
 }
+.single-coloumn-details-view .details-table:after,
 #ConversationDetailsView .details-table:after,
 #ConversationDetailsAndRelationsView .details-table:after {
   content: "";
   display: table;
   clear: both;
 }
+.single-coloumn-details-view #right-side-edit-view-panel,
 #ConversationDetailsView #right-side-edit-view-panel,
 #ConversationDetailsAndRelationsView #right-side-edit-view-panel {
   top: 55px;
@@ -5833,7 +5860,7 @@ section {
 }
 #MenuView a > span > span {
   margin-left: 10px;
-  background: #fff;
+  background: #7bb730;
   padding: 0;
   width: 16px;
   height: 16px;
@@ -5841,7 +5868,7 @@ section {
   text-align: center;
   text-indent: 0;
   display: inline-block;
-  color: #262877;
+  color: #fff;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -5861,9 +5888,28 @@ section {
   background-position-x: 0;
   background-position-y: 0;
 }
+#MenuView li.active > a > span > span,
+#MenuView a:hover > span > span {
+  -webkit-box-shadow: inset 0 0 2px 0 #333333;
+  -moz-box-shadow: inset 0 0 2px 0 #333333;
+  -o-box-shadow: inset 0 0 2px 0 #333333;
+  -ms-box-shadow: inset 0 0 2px 0 #333333;
+  box-shadow: inset 0 0 2px 0 #333333;
+  background: #fff;
+  color: #262877;
+}
 #MenuView li.active > a > span {
   background-color: #7bb730;
   color: #fff;
+}
+#MenuView li.active > a > span > span {
+  -webkit-box-shadow: inset 0 0 2px 0 #333333;
+  -moz-box-shadow: inset 0 0 2px 0 #333333;
+  -o-box-shadow: inset 0 0 2px 0 #333333;
+  -ms-box-shadow: inset 0 0 2px 0 #333333;
+  box-shadow: inset 0 0 2px 0 #333333;
+  background: #fff;
+  color: #262877;
 }
 /*=Recently Viewed*/
 #RecentlyViewedView {
@@ -7222,7 +7268,7 @@ div.wide.form label.hasCheckBox {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   position: relative;
-  top: -1px;
+  top: 2px;
   left: -5px;
   margin-right: 3px;
   color: #7bb730;
@@ -7261,6 +7307,13 @@ div.wide.form label.hasCheckBox {
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
+}
+.ZeroModelsYetView .Conversation .large-icon:after {
+  content: "b";
+  font-weight: normal;
+  font-size: 230px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 90%;
 }
 #FilteredListView,
 .summary {
@@ -9643,4 +9696,15 @@ div.hasHalfs .twoThirds {
 /*tasks portlet on dashboard*/
 .TasksMyListView .checkbox-column .hasCheckBox {
   margin-left: 0;
+}
+/*RSS Widget*/
+.rssBody ul {
+  list-style: none;
+}
+.rssBody li {
+  padding: 10px 15px;
+  border-bottom: 1px solid #dfdfdf;
+}
+.rssBody li:last-child {
+  border-bottom: none;
 }
