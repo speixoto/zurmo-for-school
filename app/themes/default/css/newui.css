@@ -247,12 +247,12 @@ a.remove:hover .icon:after {
 .juiportlet-widget-content {
   padding: 0 0 0 0;
 }
-.juiportlet-widget-content li {
+.juiportlet-widget-content > li {
   padding: 10px 15px;
   border-bottom: 1px solid #dfdfdf;
   list-style: none;
 }
-.juiportlet-widget-content li:last-child {
+.juiportlet-widget-content > li:last-child {
   border-bottom: none;
 }
 .juiportlet-widget-content .summary,
@@ -308,6 +308,17 @@ a.remove:hover .icon:after {
   position: absolute;
   top: 6px;
   content: 'e';
+}
+/*RSS Widget*/
+.rssBody ul {
+  list-style: none;
+}
+.rssBody li {
+  padding: 10px 15px;
+  border-bottom: 1px solid #dfdfdf;
+}
+.rssBody li:last-child {
+  border-bottom: none;
 }
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
@@ -4885,6 +4896,9 @@ span.tooltip {
 }
 #CommentList .comment:hover .delete-comment {
   visibility: visible;
+}
+#CommentList .comment.unread {
+  font-weight: bold;
 }
 #CommentList .delete-comment {
   visibility: hidden;
