@@ -7288,6 +7288,9 @@ div.wide.form label.hasCheckBox {
 .search-view-1 label {
   padding-top: 7px;
   padding-right: 10px;
+  width: 100%;
+  display: block;
+  text-align: left;
 }
 .search-view-1 #cancel-advanced-search {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
