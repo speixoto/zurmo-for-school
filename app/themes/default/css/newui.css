@@ -4823,42 +4823,57 @@ span.tooltip {
 #ConversationEditView textarea {
   line-height: 130%;
 }
-#ConversationsPageView .AppContent {
+#ConversationsPageView .items td {
+  padding-left: 10px;
+}
+#ConversationDetailsView.AppContent,
+#ConversationDetailsAndRelationsView.AppContent {
   padding-right: 0;
 }
+#ConversationDetailsView .GridView,
 #ConversationDetailsAndRelationsView .GridView {
   display: none;
 }
+#ConversationDetailsView .GridView:first-child,
 #ConversationDetailsAndRelationsView .GridView:first-child {
   display: block;
   width: 100%;
 }
+#ConversationDetailsView .panel,
 #ConversationDetailsAndRelationsView .panel {
   width: 70%;
   float: left;
-  margin-top: 10px;
 }
+#ConversationDetailsView .panel td,
 #ConversationDetailsAndRelationsView .panel td,
+#ConversationDetailsView .panel th,
 #ConversationDetailsAndRelationsView .panel th {
   padding-bottom: 10px !important;
 }
+#ConversationDetailsView .details-table,
 #ConversationDetailsAndRelationsView .details-table {
   zoom: 1;
 }
+#ConversationDetailsView .details-table:before,
 #ConversationDetailsAndRelationsView .details-table:before {
   content: "";
   display: table;
 }
+#ConversationDetailsView .details-table:after,
 #ConversationDetailsAndRelationsView .details-table:after {
   content: "";
   display: table;
   clear: both;
 }
+#ConversationDetailsView #right-side-edit-view-panel,
 #ConversationDetailsAndRelationsView #right-side-edit-view-panel {
   top: 55px;
 }
 #CommentList {
-  padding: 10px;
+  padding: 10px 0 0 15px;
+}
+#CommentList h2 {
+  margin-bottom: 15px;
 }
 #CommentList .comment-details {
   margin-bottom: 5px;
@@ -4868,9 +4883,85 @@ span.tooltip {
   margin-bottom: 15px;
   line-height: 140%;
 }
+#CommentList .comment:hover .delete-comment {
+  visibility: visible;
+}
+#CommentList .delete-comment {
+  visibility: hidden;
+  display: block;
+  margin-top: 4px;
+}
+#CommentList .delete-comment a {
+  margin-left: 4px;
+}
+#CommentList .delete-comment:before {
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  content: "_";
+}
+#CommentInlineEditForConversationView,
 #CommentsForRelatedModelView {
   width: 70%;
   float: left;
+}
+#CommentInlineEditForConversationView .wide.form {
+  padding: 0;
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+}
+#CommentInlineEditForConversationView form {
+  padding: 0;
+}
+#CommentInlineEditForConversationView .panel {
+  width: 100%;
+  float: none;
+  border-bottom: 1px solid #CCCCCC;
+}
+#CommentInlineEditForConversationView #inline-edit-form {
+  padding-left: 15px;
+}
+#CommentInlineEditForConversationView #inline-edit-form table {
+  border-bottom: none;
+}
+#CommentInlineEditForConversationView #inline-edit-form td {
+  padding-left: 0 !important;
+}
+#CommentInlineEditForConversationView #inline-edit-form .files {
+  margin-bottom: 0;
+}
+#CommentInlineEditForConversationView #inline-edit-form .files td {
+  padding-bottom: 0;
+}
+#CommentInlineEditForConversationView .view-toolbar-container {
+  border-top: 1px solid #fff;
+  padding-top: 13px;
+  text-align: center;
+}
+#CommentInlineEditForConversationView .view-toolbar-container a {
+  float: none !important;
+  color: #fff !important;
+}
+.attachments {
+  margin-top: 5px;
+  list-style: none;
+}
+.attachments li {
+  margin-bottom: 2px;
+}
+.icon-attachemnt {
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 4px;
+}
+.icon-attachemnt:before {
+  content: "H";
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
@@ -5689,7 +5780,7 @@ section {
   float: left;
   position: relative;
 }
-#MenuView a span {
+#MenuView a > span {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 12px;
@@ -5714,8 +5805,10 @@ section {
   position: absolute;
   top: 0;
   left: 0;
+  /*Conversation button*/
+
 }
-#MenuView a span:first-child {
+#MenuView a > span:first-child {
   background-color: #7bb730;
   width: 160px;
   height: 33px;
@@ -5724,9 +5817,26 @@ section {
   -moz-opacity: 0;
   opacity: 0;
 }
+#MenuView a > span > span {
+  margin-left: 10px;
+  background: #fff;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  text-indent: 0;
+  display: inline-block;
+  color: #262877;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
 /*#MenuView .parent >*/
-#MenuView li.active > a span,
-#MenuView a:hover span {
+#MenuView li.active > a > span,
+#MenuView a:hover > span {
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
@@ -5737,7 +5847,7 @@ section {
   background-position-x: 0;
   background-position-y: 0;
 }
-#MenuView li.active > a span {
+#MenuView li.active > a > span {
   background-color: #7bb730;
   color: #fff;
 }
@@ -6551,7 +6661,7 @@ table.items thead tr:hover {
   padding-left: 15px;
 }
 .form form {
-  padding: 15px;
+  padding: 0 15px 15px 15px;
   border: 1px solid #CCC;
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
@@ -7928,7 +8038,7 @@ div.wide.form label.hasCheckBox {
 .EditAndDetailsView td {
   font-weight: 600;
   padding-top: 15px !important;
-  vertical-align: middle !important;
+  vertical-align: top !important;
 }
 .ProgressView input[type="checkbox"] + label,
 #MetadataViewEditView input[type="checkbox"] + label,

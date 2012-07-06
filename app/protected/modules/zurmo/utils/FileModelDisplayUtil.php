@@ -73,19 +73,17 @@
 
         public static function renderFileDataDetailsWithDownloadLinksContent($model, $filesRelationName)
         {
-            $content = null;
+            $content = '<ul class="attachments">';
+            $content .= '<li><strong>Attached Files:</strong></li>';
             if ($model->{$filesRelationName}->count() > 0)
             {
                 foreach ($model->{$filesRelationName} as $fileModel)
                 {
-                    if ($content != null)
-                    {
-                        $content .= ', ';
-                    }
-                $content .= FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($model,
-                                                                                                       $fileModel);
+                	$content .= '<li><span class="icon-attachemnt"></span>' .
+                				FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($model, $fileModel) . '</li>';
                 }
             }
+			$content .= '</ul>';
             return $content;
         }
     }

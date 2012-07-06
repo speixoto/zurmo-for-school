@@ -101,8 +101,7 @@
 
         protected function renderCommentsContent()
         {
-            $content  = null; //'<table>';
-            //$content .= '<tbody>';
+            $content  = '<h2>Comments</h2>';
             $rows = 0;
             foreach(array_reverse($this->commentsData) as $comment)
             {
@@ -116,27 +115,21 @@
                 //attachments
                 if($comment->files->count() > 0)
                 {
-                    $stringContent .= '<br/>';
                     $stringContent .= FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($comment, 'files');
                 }
                 if($comment->createdByUser == Yii::app()->user->userModel ||
                    $this->relatedModel->createdByUser == Yii::app()->user->userModel ||
                    ($this->relatedModel instanceof OwnedSecurableItem && $this->relatedModel->owner == Yii::app()->user->userModel))
                 {
-                    $stringContent .= '<br/>';
-                    $stringContent .= CHtml::tag('span', array(), $this->renderDeleteLinkContent($comment));
+                    $stringContent .= '<span class="delete-comment">' . $this->renderDeleteLinkContent($comment) . '</span>';
                 }
-                //$content .= '<tr>';
                 $content .= '<div class="comment">' . $stringContent . '</div>';
-                //$content .= '</tr>';
                 $rows ++;
                 if($rows == $this->pageSize && $this->pageSize != null)
                 {
                     break;
                 }
             }
-            //$content .= '</tbody>';
-            //$content .= '</table>';
             return $content;
         }
 
@@ -144,7 +137,7 @@
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
                             array_merge($this->getParams, array('id' => $comment->id)));
-            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete'), $url,
+            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete Comment'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
                                               $('#deleteCommentLink" . $comment->id . "').closest('tr').remove();}"),

@@ -5,13 +5,24 @@
 	textarea{
 		line-height: 130%;
 	}
+	#right-side-edit-view-panel{
+		//top:30px;
+	}
 }
 
-#ConversationsPageView .AppContent{
-	padding-right:0;
+#ConversationsPageView{
+	.items{
+		td{
+			padding-left: 10px;
+		}
+	}
 }
 
+#ConversationDetailsView,
 #ConversationDetailsAndRelationsView{
+	&.AppContent{
+		padding-right:0;
+	}
 	.GridView{
 		display:none;
 	}
@@ -22,7 +33,6 @@
 	.panel{
 		width:70%;
 		float:left;
-		margin-top:10px;
 		td, th{
 			padding-bottom:10px !important;
 		}
@@ -33,10 +43,14 @@
 	#right-side-edit-view-panel{
 		top:55px;
 	}
+	
 }
 
 #CommentList{
-	padding:10px;
+	padding:10px 0 0 15px;
+	h2{
+		margin-bottom:15px;
+	}
 	.comment-details{
 		margin-bottom:5px;
 		display:block;
@@ -44,10 +58,86 @@
 	.comment{
 		margin-bottom:15px;
 		line-height: 140%;
+		&:hover{
+			.delete-comment{
+				visibility:visible;
+			}
+		}
+	}
+	.delete-comment{
+		visibility:hidden;
+		display:block;
+		margin-top:4px;
+		a{
+			margin-left:4px;
+		}
+		&:before{
+			.symbly(18px);
+			content:"_";
+		}
 	}
 }
 
+#CommentInlineEditForConversationView,
 #CommentsForRelatedModelView{
 	width:70%;
 	float:left;
+}
+
+#CommentInlineEditForConversationView{
+	.wide.form{
+		padding:0;
+		border:none;
+		background:none;
+		.b-shadow(none);	
+	}
+	form{
+		padding:0;
+	}
+	.panel{
+		width:100%;
+		float:none;
+		border-bottom: 1px solid #CCCCCC;
+	}
+	#inline-edit-form{
+		padding-left:15px;
+		table{
+			border-bottom:none;
+		}
+		td{
+			padding-left:0 !important;
+		}
+		.files{
+			margin-bottom:0;
+			td{
+				padding-bottom: 0;
+			}
+		}
+	}
+	.view-toolbar-container{
+		border-top:1px solid #fff;
+		padding-top:13px;
+		text-align:center;
+		a{
+			float:none !important;
+			color:#fff !important;
+		}
+	}
+}
+.attachments{
+	margin-top:5px;
+	list-style: none;
+	li:first-child strong{
+		
+	}
+	li{
+		margin-bottom:2px;
+	}
+}
+.icon-attachemnt{
+	.symbly(18px);
+	margin-right:4px;
+	&:before{
+		content:"H";
+	}
 }
