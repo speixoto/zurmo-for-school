@@ -25,16 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Form to all editing and viewing of email configuration values in the user interface.
+     * Form to all editing and viewing of email archiving configuration values in the user interface.
      */
-    class EmailConfigurationForm extends ConfigurationForm
+    class EmailArchivingConfigurationForm extends ConfigurationForm
     {
-        public $host;
-        public $port = 25;
-        public $username;
-        public $password;
-        public $userIdOfUserToSendNotificationsAs;
-        public $aTestToAddress;
         public $imapHost;
         public $imapUsername;
         public $imapPassword;
@@ -46,19 +40,6 @@
         public function rules()
         {
             return array(
-                array('host',                              'required'),
-                array('host',                              'type',      'type' => 'string'),
-                array('host',                              'length',    'min'  => 1, 'max' => 64),
-                array('port',                              'required'),
-                array('port',                              'type',      'type' => 'integer'),
-                array('port',                              'numerical', 'min'  => 1),
-                array('username',                          'type',      'type' => 'string'),
-                array('username',                          'length',    'min'  => 1, 'max' => 64),
-                array('password',                          'type',      'type' => 'string'),
-                array('password',                          'length',    'min'  => 1, 'max' => 64),
-                array('userIdOfUserToSendNotificationsAs', 'type',      'type' => 'integer'),
-                array('userIdOfUserToSendNotificationsAs', 'numerical', 'min'  => 1),
-                array('aTestToAddress',                    'email'),
                 array('imapHost',                          'required'),
                 array('imapHost',                          'type',      'type' => 'string'),
                 array('imapHost',                          'length',    'min'  => 1, 'max' => 64),
@@ -81,12 +62,6 @@
         public function attributeLabels()
         {
             return array(
-                'host'                                 => Yii::t('Default', 'Host'),
-                'port'                                 => Yii::t('Default', 'Port'),
-                'username'                             => Yii::t('Default', 'Username'),
-                'password'                             => Yii::t('Default', 'Password'),
-                'userIdOfUserToSendNotificationsAs'    => Yii::t('Default', 'Send system notifications from'),
-                'aTestToAddress'                       => Yii::t('Default', 'Send a test email to'),
                 'imapHost'                             => Yii::t('Default', 'Host'),
                 'imapUsername'                         => Yii::t('Default', 'Username'),
                 'imapPassword'                         => Yii::t('Default', 'Password'),

@@ -24,37 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DropDownDependencyAttributeDetailsView extends AttributeDetailsView
+    /**
+     * Edit and details view for the email global configuration view.
+     */
+    class EmailSmtpConfigurationEditAndDetailsView extends EditAndDetailsView
     {
+        protected function renderTitleContent()
+        {
+            return '<h1>' . Yii::t('Default', 'Email Configuration') . '</h1>';
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'AttributeEditLink',
-                                'routeParameters' => 'eval:$this->getEditLinkRouteParameters()',
-                            ),
+                            array('type' => 'ConfigurationLink'),
+                            array('type' => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
+                            'title' => Yii::t("Default", "Outbound Email Configuration (SMTP)"),
                             'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'AttributeType'),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'attributeName', 'type' => 'Text'),
+                                                array('attributeName' => 'host', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -63,7 +63,45 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'attributeLabels', 'type' => 'AttributeLabel'),
+                                                array('attributeName' => 'port', 'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'username', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'password', 'type' => 'Password'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'userIdOfUserToSendNotificationsAs',
+                                                      'type' => 'UserToSendNotificationFrom'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'aTestToAddress',
+                                                      'type' => 'SendATestEmailTo'),
                                             ),
                                         ),
                                     )

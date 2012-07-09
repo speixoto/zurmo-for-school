@@ -24,37 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AccountAttributeDetailsView extends AttributeDetailsView
+    /**
+     * Edit and details view for the email global configuration view.
+     */
+    class EmailArchivingConfigurationEditAndDetailsView extends EditAndDetailsView
     {
+        protected function renderTitleContent()
+        {
+            return '<h1>' . Yii::t('Default', 'Email Configuration') . '</h1>';
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'AttributeEditLink',
-                                'routeParameters' => 'eval:$this->getEditLinkRouteParameters()',
-                            ),
+                            array('type' => 'ConfigurationLink'),
+                            array('type' => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
+                            'title' => Yii::t("Default", "Email Archiving Configuration (IMAP)"),
                             'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'AttributeType'),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'attributeLabels', 'type' => 'AttributeLabel'),
+                                                array('attributeName' => 'imapHost', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -63,7 +63,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'attributeName', 'type' => 'Text'),
+                                                array('attributeName' => 'imapPort', 'type' => 'Integer'),
                                             ),
                                         ),
                                     )
@@ -72,7 +72,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'isRequired', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'imapUsername', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -81,8 +81,36 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'isAudited', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'imapPassword', 'type' => 'Password'),
                                             ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'imapSSL', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'imapFolder', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'testImapConnection',
+                                                    'type' => 'TestImapConnection'),
+                                                ),
                                         ),
                                     )
                                 ),
