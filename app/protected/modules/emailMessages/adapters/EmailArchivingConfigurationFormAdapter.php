@@ -25,22 +25,17 @@
      ********************************************************************************/
 
     /**
-     * Class to adapt email configuration values into a configuration form.
+     * Class to adapt email archving configuration values into a configuration form.
      * Saves global values from a configuration form.
      */
-    class EmailConfigurationFormAdapter
+    class EmailArchivingConfigurationFormAdapter
     {
         /**
-         * @return EmailConfigurationForm
+         * @return EmailArchivingConfigurationForm
          */
         public static function makeFormFromGlobalConfiguration()
         {
-            $form                                    = new EmailConfigurationForm();
-            $form->host                              = Yii::app()->emailHelper->outboundHost;
-            $form->port                              = Yii::app()->emailHelper->outboundPort;
-            $form->username                          = Yii::app()->emailHelper->outboundUsername;
-            $form->password                          = Yii::app()->emailHelper->outboundPassword;
-            $form->userIdOfUserToSendNotificationsAs = Yii::app()->emailHelper->getUserToSendNotificationsAs()->id;
+            $form                                    = new EmailArchivingConfigurationForm();
             $form->imapHost                          = Yii::app()->imap->imapHost;
             $form->imapUsername                      = Yii::app()->imap->imapUsername;
             $form->imapPassword                      = Yii::app()->imap->imapPassword;
@@ -51,14 +46,10 @@
         }
 
         /**
-         * Given a EmailConfigurationForm, save the configuration global values.
+         * Given a EmailArchivingConfigurationForm, save the configuration global values.
          */
-        public static function setConfigurationFromForm(EmailConfigurationForm $form)
+        public static function setConfigurationFromForm(EmailArchivingConfigurationForm $form)
         {
-            Yii::app()->emailHelper->outboundHost      = $form->host;
-            Yii::app()->emailHelper->outboundPort      = $form->port;
-            Yii::app()->emailHelper->outboundUsername  = $form->username;
-            Yii::app()->emailHelper->outboundPassword  = $form->password;
             Yii::app()->imap->imapHost                 = $form->imapHost;
             Yii::app()->imap->imapUsername             = $form->imapUsername;
             Yii::app()->imap->imapPassword             = $form->imapPassword;
@@ -66,9 +57,6 @@
             Yii::app()->imap->imapSSL                  = $form->imapSSL;
             Yii::app()->imap->imapFolder               = $form->imapFolder;
             Yii::app()->imap->setInboundSettings();
-            Yii::app()->emailHelper->setOutboundSettings();
-            Yii::app()->emailHelper->setUserToSendNotificationsAs(
-                                        User::getById((int)$form->userIdOfUserToSendNotificationsAs));
        }
     }
 ?>
