@@ -5643,30 +5643,30 @@ section {
 .AppContent{
      .radius(0 0 5px 5px);
     .single-column{
-        background:pink !important;
-        padding-right:0 !important;
-        .GridView{
-            display:block;
-            width:100% !important;
-        }
-        .GridView:first-child{
-            display:block;
-            width:100% !important;
-        }
-        .panel{
-            width:70%;
-            float:left;
-            td, th{
-                padding-bottom:10px !important;
-            }
-        }
-        .details-table{
-            .clearfix();
-        }
-        #right-side-edit-view-panel{
-            top:55px;
-        }
-    }
+    	background:pink !important;
+		padding-right:0 !important;
+		.GridView{
+			display:block;
+			width:100% !important;
+		}
+		.GridView:first-child{
+			display:block;
+			width:100% !important;
+		}
+		.panel{
+			width:70%;
+			float:left;
+			td, th{
+				padding-bottom:10px !important;
+			}
+		}
+		.details-table{
+			.clearfix();
+		}
+		#right-side-edit-view-panel{
+			top:55px;
+		}
+	}
 }
 */
 /*
@@ -5674,30 +5674,30 @@ section {
 .single-coloumn-details-view,
 #ConversationDetailsView,
 #ConversationDetailsAndRelationsView{
-    &.AppContent{
-        padding-right:0;
-    }
-    .GridView{
-        display:none;
-    }
-    .GridView:first-child{
-        display:block;
-        width:100%;
-    }
-    .panel{
-        width:70%;
-        float:left;
-        td, th{
-            padding-bottom:10px !important;
-        }
-    }
-    .details-table{
-        .clearfix();
-    }
-    #right-side-edit-view-panel{
-        top:55px;
-    }
-
+	&.AppContent{
+		padding-right:0;
+	}
+	.GridView{
+		display:none;
+	}
+	.GridView:first-child{
+		display:block;
+		width:100%;
+	}
+	.panel{
+		width:70%;
+		float:left;
+		td, th{
+			padding-bottom:10px !important;
+		}
+	}
+	.details-table{
+		.clearfix();
+	}
+	#right-side-edit-view-panel{
+		top:55px;
+	}
+	
 }
 */
 #HeaderView {
@@ -6155,9 +6155,9 @@ section {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff', GradientType=0);
   zoom: 1;
   /*> .MetadataView{
-        padding-right:20px;
-        .box-sizing();
-        .clearfix();
+    	padding-right:20px;
+    	.box-sizing();
+    	.clearfix();
     }*/
 
 }
@@ -6211,6 +6211,9 @@ section {
 #HomePageView .AppContent {
   padding-right: 0;
 }
+#HomeDashboardView {
+  margin-top: 15px;
+}
 /*=Inner toolbar*/
 .view-toolbar-container {
   width: 100%;
@@ -6224,7 +6227,7 @@ section {
   border-right-color: #d7d7d7;
   border-radius: 4px;
   float: left;
-  margin: 20px 0 15px 0;
+  margin: 0 0 15px 0;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -8238,7 +8241,7 @@ div.wide.form label.hasCheckBox {
 }
 .toolbar-mbmenu {
   position: absolute;
-  top: -12px;
+  top: 8px;
   right: 10px;
   margin: 0;
   float: right;
