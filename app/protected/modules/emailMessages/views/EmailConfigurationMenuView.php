@@ -34,28 +34,24 @@
         protected function getCategoryData()
         {
             $categories = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
+            $module = new EmailMessagesModule('EmailMessagesModule', false);
+            $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser('EmailMessagesModule');
+            if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
             {
-                if (get_class($module) != 'EmailMessagesModule') continue;
-                $moduleMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser(get_class($module));
-                if ($module->isEnabled() && count($moduleMenuItems) > 0)
-                {
-                    foreach ($moduleMenuItems as $menuItem)
+                foreach ($moduleSubMenuItems as $subMenuItem)
                     {
-                        if (!empty($menuItem['category']))
+                        if (!empty($subMenuItem['category']))
                         {
-                            assert('isset($menuItem["titleLabel"])');
-                            assert('isset($menuItem["descriptionLabel"])');
-                            assert('isset($menuItem["route"])');
-                            $categories[$menuItem['category']][] = $menuItem;
+                            assert('isset($subMenuItem["titleLabel"])');
+                            assert('isset($subMenuItem["descriptionLabel"])');
+                            assert('isset($subMenuItem["route"])');
+                            $categories[$subMenuItem['category']][] = $subMenuItem;
                         }
                         else
                         {
                             throw new NotSupportedException();
                         }
                     }
-                }
             }
             return $categories;
         }
