@@ -2653,8 +2653,10 @@ li.token-input-input-token {
   list-style-type: none;
 }
 div.token-input-dropdown {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   position: absolute;
-  min-width: 400px;
   background-color: #fff;
   overflow: hidden;
   border-left: 1px solid #ccc;
@@ -5007,8 +5009,10 @@ span.tooltip {
   content: "H";
 }
 #ConversationsPageView ~ .token-input-dropdown {
-  width: auto !important;
-  min-width: auto !important;
+  min-width: 0 !important;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
