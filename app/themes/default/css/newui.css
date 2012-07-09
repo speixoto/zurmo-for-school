@@ -5006,6 +5006,10 @@ span.tooltip {
 .icon-attachment:before {
   content: "H";
 }
+#ConversationsPageView ~ .token-input-dropdown {
+  width: auto !important;
+  min-width: auto !important;
+}
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
