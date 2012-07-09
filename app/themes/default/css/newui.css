@@ -8549,6 +8549,9 @@ div.wide.form label.hasCheckBox {
 #inline-edit-form .view-toolbar-container a {
   float: right;
 }
+#inline-edit-form textarea {
+  line-height: 130%;
+}
 #inline-edit-form .permissions-box {
   margin-left: 0 !important;
   zoom: 1;
