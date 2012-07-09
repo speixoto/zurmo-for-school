@@ -63,9 +63,7 @@
         {
             if($this->$attribute != null)
             {
-                //why arent we calling getDYnamicsearchAttributes????
-                $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($this->$attribute);
-                foreach($dynamicSearchAttributes as $key => $rowData)
+                foreach($this->$attribute as $key => $rowData)
                 {
                     $structurePosition = $rowData['structurePosition'];
                     if($rowData['attributeIndexOrDerivedType'] == null)
@@ -77,16 +75,15 @@
                     {
                         unset($rowData['attributeIndexOrDerivedType']);
                         unset($rowData['structurePosition']);
-                        //why arent we calling this? sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel well maybe this is ok.
-                        //cause we already unset, but this wont work for recursive, the unsets we are doing above would be further nested
-                        $sanitizedRowData = DataUtil::sanitizeDataByDesignerTypeForSavingModel($this, $rowData);
-                        //should be calling dynamic adapter?
-                        $metadataAdapter  = new SearchDataProviderMetadataAdapter(
+                        $dynamicStructure = '';
+                        $metadataAdapter  = new DynamicSearchDataProviderMetadataAdapter(
+                            array('clauses' => array(), 'structure' => ''),
                             $this,
                             Yii::app()->user->userModel->id,
-                            $sanitizedRowData
+                            array($rowData),
+                            $dynamicStructure
                         );
-                        $metadata = $metadataAdapter->getAdaptedMetadata();
+                        $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
                         if(count($metadata['clauses']) == 0)
                         {
                             $this->addError('dynamicClauses', Yii::t('Default', 'You must select a value for row {rowNumber}',

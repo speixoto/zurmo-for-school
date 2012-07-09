@@ -66,6 +66,9 @@
                     $attributeIndexOrDerivedTypeAndLabels[$attributeIndexOrDerivedType] = $data['attributeLabel'];
                 }
             }
+
+            //nested: do we just support non-derived? what about date?
+$attributeIndexOrDerivedTypeAndLabels['contacts___firstName'] = 'Contacts - First Name';
             return $attributeIndexOrDerivedTypeAndLabels;
         }
 

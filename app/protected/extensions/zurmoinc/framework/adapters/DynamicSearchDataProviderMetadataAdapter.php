@@ -100,10 +100,6 @@
                     $correctlyPositionedClauses
                         [$structurePosition][$structurePosition]    = $searchItemMetadata['structure'];
                 }
-                else
-                {
-                    throw new NotSupportedException();
-                }
             }
         }
 

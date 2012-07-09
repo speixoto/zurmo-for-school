@@ -123,6 +123,54 @@
                                                       'name' => '')))));
             $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/default/validateDynamicSearch');
             $this->assertEquals('{"AccountsSearchForm_dynamicClauses":["You must select a value for row 1"]}', $content);
+
+            //Test a form that validates a dynamic cluase
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'               => 'search-form',
+                                        'AccountsSearchForm' => array(
+                                            'dynamicStructure' => '1',
+                                            'dynamicClauses'   => array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => 'name',
+                                                      'name' => 'someValue')))));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
+            $this->assertEmpty($content);
+
+            //Test a form that does not validate recursive dynamic clause attributes
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'               => 'search-form',
+                                        'AccountsSearchForm' => array(
+                                            'dynamicStructure' => '1',
+                                            'dynamicClauses'   => array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => 'name',
+                                                      'contacts' => array(
+                                                        'relatedData'   => true,
+                                                        'firstName'		=> '',
+                                                      ))))));
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/default/validateDynamicSearch');
+            $this->assertEquals('{"AccountsSearchForm_dynamicClauses":["You must select a value for row 1"]}', $content);
+
+            //Test a form that does validate recursive dynamic clause attributes
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'               => 'search-form',
+                                        'AccountsSearchForm' => array(
+                                            'dynamicStructure' => '1',
+                                            'dynamicClauses'   => array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => 'name',
+                                                      'contacts' => array(
+                                                        'relatedData'   => true,
+                                                        'firstName'		=> 'Jason',
+                                                      ))))));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
+            $this->assertEmpty($content);
         }
     }
 ?>

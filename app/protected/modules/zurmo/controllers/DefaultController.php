@@ -193,6 +193,13 @@
             {
                 $content = null;
             }
+            elseif('something about relation delimiter')
+            {
+                //well if it can split by RELATION_DELIMITER...
+                        //we will need to know form model, shouldnt be hard for relation real model className.
+                            //we need to recurse until we can reach the bottom of the recursion.
+                            //then determine what model we are in.
+            }
             else
             {
                 $model                     = new $modelClassName(false);
@@ -225,7 +232,9 @@
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
                 unset($_POST[$formModelClassName]['anyMixedAttributesScope']);
-                $searchForm->setAttributes($_POST[$formModelClassName]);
+                $sanitizedDynamicSearchAttributes = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
+                                                                $_POST[$formModelClassName], $searchForm);
+                $searchForm->setAttributes($sanitizedDynamicSearchAttributes);
                 $searchForm->setScenario('validateDynamic');
                 if(!$searchForm->validate())
                 {
@@ -238,6 +247,19 @@
                     Yii::app()->end(0, false);
                 }
             }
+        }
+
+        protected function resolveAndSanitizeDynamicSearchAttributesByPostData($postData, DynamicSearchForm $searchForm)
+        {
+            if(isset($postData['dynamicClauses']))
+            {
+                $dynamicSearchAttributes          = SearchUtil::getSearchAttributesFromSearchArray($postData['dynamicClauses']);
+                $sanitizedDynamicSearchAttributes = SearchUtil::
+                                                    sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel(
+                                                        $searchForm, $dynamicSearchAttributes);
+                $postData['dynamicClauses']       = $sanitizedDynamicSearchAttributes;
+            }
+            return $postData;
         }
     }
 ?>
