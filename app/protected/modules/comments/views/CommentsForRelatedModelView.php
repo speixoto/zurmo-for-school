@@ -105,7 +105,12 @@
             $rows = 0;
             foreach(array_reverse($this->commentsData) as $comment)
             {
-            //Render date
+                //Skip the first if the page size is smaller than what is returned.
+                if(count(($this->commentsData)) > $this->pageSize && $this->pageSize != null && $rows == 0)
+                {
+                    $rows ++;
+                    continue;
+                }
                 $stringContent  = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $comment->createdDateTime, 'long', null) . '</strong> ';
                 $stringContent .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
@@ -125,10 +130,6 @@
                 }
                 $content .= '<div class="comment">' . $stringContent . '</div>';
                 $rows ++;
-                if($rows == $this->pageSize && $this->pageSize != null)
-                {
-                    break;
-                }
             }
             return $content;
         }
