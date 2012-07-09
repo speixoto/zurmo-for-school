@@ -53,18 +53,6 @@
                         'label' => 'Conversations',
                         'url'   => array('/conversations/default'),
                         'right' => self::RIGHT_ACCESS_CONVERSATIONS,
-                        'items' => array(
-                            array(
-                                'label' => 'Create Conversation',
-                                'url'   => array('/conversations/default/create'),
-                                'right' => self::RIGHT_CREATE_CONVERSATIONS
-                            ),
-                            array(
-                                'label' => 'Conversations',
-                                'url'   => array('/conversations/default'),
-                                'right' => self::RIGHT_ACCESS_CONVERSATIONS
-                            ),
-                        ),
                         'dynamicLabelContent' => 'eval:ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser()'
                     ),
                 ),

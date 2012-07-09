@@ -109,7 +109,7 @@
         protected function getExistingPeopleRelationsIdsAndLabels()
         {
             $existingPeople = array(
-                                array(  'id'       => $this->model->owner->id,
+                                array(  'id'       => $this->model->owner->getClassId('Item'),
                                         'name'     => strval($this->model->owner),
                                         'readonly' => true));
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');

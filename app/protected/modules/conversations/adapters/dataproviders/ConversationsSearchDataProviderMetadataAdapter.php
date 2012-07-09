@@ -82,7 +82,12 @@
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->getClassId('Item')
                 );
-                $structure .= $startingCount;
+                $adaptedMetadata['clauses'][$startingCount + 1] = array(
+                    'attributeName' => 'owner',
+                    'operatorType'  => 'equals',
+                    'value'         => Yii::app()->user->userModel->id
+                );
+                $structure .= $startingCount . ' or ' . ($startingCount + 1);
             }
             if (empty($metadata['structure']))
             {

@@ -74,7 +74,7 @@
             {
                 foreach($conversation->conversationParticipants as $position => $participant)
                 {
-                    if($participant->person == $user && !$participant->hasReadLatest)
+                    if($participant->person->getClassId('Item') == $user->getClassId('Item') && !$participant->hasReadLatest)
                     {
                         $conversation->conversationParticipants[$position]->hasReadLatest = true;
                         $save                                                             = true;
@@ -85,6 +85,27 @@
             {
                 $conversation->save();
             }
+        }
+
+        public static function hasUserReadConversationLatest(Conversation $conversation, User $user)
+        {
+            assert('$conversation->id > 0');
+            assert('$user->id > 0');
+            if($user == $conversation->owner)
+            {
+                return $conversation->ownerHasReadLatest;
+            }
+            else
+            {
+                foreach($conversation->conversationParticipants as $position => $participant)
+                {
+                    if($participant->person == $user)
+                    {
+                        return $participant->hasReadLatest;
+                    }
+                }
+            }
+            return false;
         }
     }
 ?>

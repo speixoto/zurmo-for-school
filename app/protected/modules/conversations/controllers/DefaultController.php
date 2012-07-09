@@ -40,17 +40,14 @@
 
         public function actionIndex()
         {
-            $this->actionList();
+            $this->actionList(ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT);
         }
 
-        public function actionList()
+        public function actionList($type = null)
         {
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class($this->getModule()));
             $conversation     = new Conversation(false);
-
-            $getData          = GetUtil::getData();
-            $type             = ArrayUtil::getArrayValue($getData, 'type');
             if ($type == null)
             {
                 $type = ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;

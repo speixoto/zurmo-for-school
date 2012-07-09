@@ -89,5 +89,25 @@
         {
             return array();
         }
+
+        protected function getCGridViewParams()
+        {
+            $gridViewParams = parent::getCGridViewParams();
+            $gridViewParams['rowCssClassExpression'] = 'ConversationsListView::resolveRowCssClasses($this, $row, $data)';
+            return $gridViewParams;
+        }
+
+        public static function resolveRowCssClasses($grid, $row, $data)
+        {
+            if(is_array($grid->rowCssClass) && ($n = count($grid->rowCssClass)) > 0)
+            {
+                $content = $grid->rowCssClass[$row%$n];
+                if(!ConversationsUtil::hasUserReadConversationLatest($data, Yii::app()->user->userModel))
+                {
+                    $content .= ' unread';
+                }
+                return $content;
+            }
+        }
     }
 ?>
