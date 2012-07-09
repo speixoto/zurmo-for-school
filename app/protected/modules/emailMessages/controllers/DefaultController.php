@@ -58,7 +58,7 @@
             echo $view->render();
         }
 
-        public function actionConfigurationEditSmtp()
+        public function actionConfigurationEditOutbound()
         {
             $configurationForm = EmailSmtpConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
@@ -86,7 +86,7 @@
 
         }
 
-        public function actionConfigurationEditEmailArchiving()
+        public function actionConfigurationEditArchiving()
         {
             $configurationForm = EmailArchivingConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
