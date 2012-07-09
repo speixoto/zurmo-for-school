@@ -34,6 +34,11 @@
             $this->model = $model;
         }
 
+        public function getModel()
+        {
+            return $this->model;
+        }
+
         public function getAttributes()
         {
             $modelAttributes = $this->getModelAttributes();

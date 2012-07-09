@@ -30,6 +30,11 @@
         {
             $metadata = array(
                 'global' => array(
+                    'definedNestedAttributes' => array(
+                        array('account' => array(
+                            'name',
+                        )),
+                    ),
                     'derivedAttributeTypes' => array(
                         'ContactStateDropDown',
                     ),

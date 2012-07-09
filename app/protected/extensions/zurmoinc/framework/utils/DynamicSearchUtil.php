@@ -67,8 +67,7 @@
                 }
             }
 
-            //nested: do we just support non-derived? what about date?
-$attributeIndexOrDerivedTypeAndLabels['contacts___firstName'] = 'Contacts - First Name';
+            self::resolveAndAddViewDefinedNestedAttributes($modelAttributesAdapter->getModel(), $viewClassName, $attributeIndexOrDerivedTypeAndLabels);
             return $attributeIndexOrDerivedTypeAndLabels;
         }
 
@@ -114,6 +113,62 @@ $attributeIndexOrDerivedTypeAndLabels['contacts___firstName'] = 'Contacts - Firs
                 throw new NotSupportedException();
             }
             return $designerRules->formatSavableElement($element, $viewClassName);
+        }
+
+        public static function resolveAndAddViewDefinedNestedAttributes($model, $viewClassName, & $attributeIndexOrDerivedTypeAndLabels)
+        {
+            assert('$model instanceof SearchForm || $model instanceof RedBeanModel');
+            assert('is_string($viewClassName)');
+            assert('is_array($attributeIndexOrDerivedTypeAndLabels)');
+            $metadata = $viewClassName::getMetadata();
+            if(isset($metadata['global']['definedNestedAttributes']))
+            {
+                foreach($metadata['global']['definedNestedAttributes'] as $definedNestedAttribute)
+                {
+                    $attributeIndexOrDerivedLabel = null;
+                    $attributeIndexOrDerivedType  = self::makeDefinedNestedAttributeIndexOrDerivedTypeRecursively(
+                                                            $model,
+                                                            $attributeIndexOrDerivedLabel,
+                                                            $definedNestedAttribute);
+                    if($attributeIndexOrDerivedLabel == null)
+                    {
+                        throw new NotSupportedException();
+                    }
+                    $attributeIndexOrDerivedTypeAndLabels[$attributeIndexOrDerivedType] = $attributeIndexOrDerivedLabel;
+                }
+            }
+        }
+
+        protected static function makeDefinedNestedAttributeIndexOrDerivedTypeRecursively($model, & $attributeIndexOrDerivedLabel, $definedNestedAttribute)
+        {
+            assert('$model instanceof SearchForm || $model instanceof RedBeanModel');
+            assert('is_string($attributeIndexOrDerivedLabel) || $attributeIndexOrDerivedLabel == null');
+            assert('is_array($definedNestedAttribute)');
+            if(count($definedNestedAttribute) > 1)
+            {
+                //Each defined attribute should be in its own sub-array.
+                throw new NotSupportedException();
+            }
+            foreach($definedNestedAttribute as $positionOrAttributeName => $nestedAttributeDataOrAttributeName)
+            {
+                if(is_array($nestedAttributeDataOrAttributeName))
+                {
+                    $attributeIndexOrDerivedLabel .= $model->getAttributeLabel($positionOrAttributeName) . ' - ';
+                    $modelToUse      = SearchUtil::resolveModelToUseByModelAndAttributeName(
+                                                $model,
+                                                $positionOrAttributeName);
+                    $string          = self::makeDefinedNestedAttributeIndexOrDerivedTypeRecursively(
+                                                $modelToUse,
+                                                $attributeIndexOrDerivedLabel,
+                                                $nestedAttributeDataOrAttributeName);
+                    return $positionOrAttributeName . self::RELATION_DELIMITER . $string;
+                }
+                else
+                {
+                    $attributeIndexOrDerivedLabel .= $model->getAttributeLabel($nestedAttributeDataOrAttributeName);
+                    return $nestedAttributeDataOrAttributeName;
+                }
+            }
         }
     }
 ?>

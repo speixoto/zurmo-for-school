@@ -191,29 +191,53 @@
         {
             if($attributeIndexOrDerivedType == null)
             {
-                $content = null;
+                Yii::app()->end(0, false);
             }
-            elseif('something about relation delimiter')
+            if(count(explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType)) > 1)
             {
-                //well if it can split by RELATION_DELIMITER...
-                        //we will need to know form model, shouldnt be hard for relation real model className.
-                            //we need to recurse until we can reach the bottom of the recursion.
-                            //then determine what model we are in.
+                $content          = null;
+                $model            = new $modelClassName(false);
+                $nestedAttributes = explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType);
+                $inputPrefix      = array($formModelClassName, SearchUtil::DYNAMIC_NAME, $rowNumber);
+                $totalNestedCount = count($nestedAttributes);
+                $processCount     = 1;
+                foreach($nestedAttributes as $attribute)
+                {
+                    if($processCount < $totalNestedCount)
+                    {
+                        $model           = SearchUtil::resolveModelToUseByModelAndAttributeName($model, $attribute);
+                        $inputPrefix[]   = $attribute;
+                        $relatedDataName = Element::resolveInputIdPrefixIntoString($inputPrefix) . '[relatedData]';
+                        $content        .= ZurmoHtml::hiddenField($relatedDataName, true);
+                    }
+                    $processCount ++;
+                }
+                $attributeIndexOrDerivedType = $attribute;
+                $modelToUse                  = $model;
+                $cellElementModelClassName   = get_class($model->getModel());
+                //Dynamic Search needs to always assume there is an available SearchForm
+                //Always assumes the SearchView to use matches the exact pluralCamelCasedName.
+                //Does not support nested relations to leads persay.  It will resolve as a Contact.
+                $moduleClassName             = $model->getModel()->getModuleClassName();
+                $viewClassName               = $moduleClassName::getPluralCamelCasedName() . 'SearchView';
+                $element                     = DynamicSearchUtil::getCellElement($viewClassName, $cellElementModelClassName,
+                                                                                 $attributeIndexOrDerivedType);
             }
             else
             {
-                $model                     = new $modelClassName(false);
-                $searchForm                = new $formModelClassName($model);
-                $form                      = new NoRequiredsActiveForm();
-                $element                   = DynamicSearchUtil::getCellElement($viewClassName, $modelClassName,
-                                                                              $attributeIndexOrDerivedType);
-                $element['inputPrefix']    = array($formModelClassName, SearchUtil::DYNAMIC_NAME, $rowNumber);
-                $elementclassname          = $element['type'] . 'Element';
-                $element                   = new $elementclassname($searchForm, $element['attributeName'],
-                                                                  $form, array_slice($element, 2));
-                $element->editableTemplate = '{content}{error}';
-                $content                   = $element->render();
+                $model                 = new $modelClassName(false);
+                $modelToUse            = new $formModelClassName($model);
+                $inputPrefix           = array($formModelClassName, SearchUtil::DYNAMIC_NAME, $rowNumber);
+                $element               = DynamicSearchUtil::getCellElement($viewClassName, $modelClassName,
+                                                                          $attributeIndexOrDerivedType);
             }
+            $form                      = new NoRequiredsActiveForm();
+            $element['inputPrefix']    = $inputPrefix;
+            $elementclassname          = $element['type'] . 'Element';
+            $element                   = new $elementclassname($modelToUse, $element['attributeName'],
+                                                              $form, array_slice($element, 2));
+            $element->editableTemplate = '{content}{error}';
+            $content                  .= $element->render();
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);

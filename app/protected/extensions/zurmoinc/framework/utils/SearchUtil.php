@@ -343,18 +343,7 @@
             }
             if($processRecursively)
             {
-                //
-                $modelToUse      = SearchDataProviderMetadataAdapter::resolveAsRedBeanModel($searchModel->$attributeName);
-                $moduleClassName = $modelToUse->getModuleClassName();
-                if($moduleClassName != null)
-                {
-                    $formClassName   = $moduleClassName::getGlobalSearchFormClassName();
-                    if($formClassName != null)
-                    {
-                        $modelToUse = new $formClassName($modelToUse);
-                    }
-                }
-                //
+                $modelToUse      = self::resolveModelToUseByModelAndAttributeName($searchModel, $attributeName);
                 self::processDynamicSearchAttributesDataForSavingModelRecursively($modelToUse,
                                                                                  $searchAttributeData[$attributeName]);
             }
@@ -362,6 +351,29 @@
             {
                 $searchAttributeData = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel, $searchAttributeData);
             }
+        }
+
+        /**
+         * Given a model and an attribute that is a relation, ascertain the correct model to use.  If a search form
+         * model is available then use that otherwise use the appropriate related model.
+         * @param object $model SearchForm or RedBeanModel
+         * @param string $attributeName
+         */
+        public static function resolveModelToUseByModelAndAttributeName($model, $attributeName)
+        {
+            assert('$model instanceof SearchForm || $model instanceof RedBeanModel');
+            assert('is_string($attributeName)');
+            $modelToUse      = SearchDataProviderMetadataAdapter::resolveAsRedBeanModel($model->$attributeName);
+            $moduleClassName = $modelToUse->getModuleClassName();
+            if($moduleClassName != null)
+            {
+                $formClassName   = $moduleClassName::getGlobalSearchFormClassName();
+                if($formClassName != null)
+                {
+                    $modelToUse = new $formClassName($modelToUse);
+                }
+            }
+            return $modelToUse;
         }
 
         /**
