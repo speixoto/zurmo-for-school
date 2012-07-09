@@ -208,7 +208,7 @@
                 $mailer->addAddressByType($recipient->toAddress, $recipient->toName, $recipient->type);
             }
 
-            if(isset($emailMessage->files) && !empty($emailMessage->files))
+            if (isset($emailMessage->files) && !empty($emailMessage->files))
             {
                 foreach ($emailMessage->files as $file)
                 {

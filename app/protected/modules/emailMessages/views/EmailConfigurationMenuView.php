@@ -24,41 +24,40 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CreateFromRelatedListLinkActionElement extends RelatedListLinkActionElement
+    class EmailConfigurationMenuView extends ConfigureModulesMenuView
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected function renderTitleContent()
         {
-            if (!isset($params['htmlOptions']))
+            return '<h1>' . Yii::t('Default', 'Email Administration') . '</h1>';
+        }
+
+        protected function getCategoryData()
+        {
+            $categories = array();
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
             {
-                $params['htmlOptions'] = array();
+                if (get_class($module) != 'EmailMessagesModule') continue;
+                $moduleMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser(get_class($module));
+                if ($module->isEnabled() && count($moduleMenuItems) > 0)
+                {
+                    foreach ($moduleMenuItems as $menuItem)
+                    {
+                        if (!empty($menuItem['category']))
+                        {
+                            assert('isset($menuItem["titleLabel"])');
+                            assert('isset($menuItem["descriptionLabel"])');
+                            assert('isset($menuItem["route"])');
+                            $categories[$menuItem['category']][] = $menuItem;
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
+                    }
+                }
             }
-            $params['htmlOptions'] = array_merge(array('class' => 'icon-create'), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Create');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/createFromRelation/', $this->getRouteParameters());
-        }
-
-        protected function getRouteModuleId()
-        {
-            if (!isset($this->params['routeModuleId']))
-            {
-                return array();
-            }
-            return $this->params['routeModuleId'];
-        }
-
-        public function getActionType()
-        {
-            return 'Create';
+            return $categories;
         }
     }
 ?>

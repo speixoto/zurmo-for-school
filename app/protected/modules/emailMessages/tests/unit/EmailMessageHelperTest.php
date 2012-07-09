@@ -26,11 +26,14 @@
 
     class EmailMessageHelperTest extends ZurmoBaseTest
     {
+        public static $emailHelperSendEmailThroughTransport;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
 
+            self::$emailHelperSendEmailThroughTransport = Yii::app()->emailHelper->sendEmailThroughTransport;
             Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
             Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
             Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
@@ -47,6 +50,12 @@
             Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
             Yii::app()->imap->setInboundSettings();
             Yii::app()->imap->init();
+        }
+
+        public static function tearDownAfterClass()
+        {
+            Yii::app()->emailHelper->sendEmailThroughTransport = self::$emailHelperSendEmailThroughTransport;
+            parent::tearDownAfterClass();
         }
 
         public function testSendSystemEmail()

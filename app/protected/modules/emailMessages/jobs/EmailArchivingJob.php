@@ -30,6 +30,7 @@
     class EmailArchivingJob extends BaseJob
     {
         public static $jobOwnerUserModel;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -101,7 +102,8 @@
                 }
                 Yii::app()->user->userModel = self::$jobOwnerUserModel;
                 Yii::app()->imap->expungeMessages();
-                if ($lastCheckTime != ''){
+                if ($lastCheckTime != '')
+                {
                     EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
                 }
             }
@@ -235,7 +237,8 @@
         protected function saveEmailMessage($message)
         {
             // Get owner for message
-            try {
+            try
+            {
                 $emailOwner = EmailArchivingUtil::resolveOwnerOfEmailMessage($message);
             }
             catch (CException $e)
@@ -271,7 +274,7 @@
                 $sender = $this->createEmailMessageSender($senderInfo, $userCanAccessContacts,
                               $userCanAccessLeads, $userCanAccessAccounts, $userCanAccessUsers);
 
-                if(empty($sender->personOrAccount) || $sender->personOrAccount->id <= 0)
+                if (empty($sender->personOrAccount) || $sender->personOrAccount->id <= 0)
                 {
                     $emailSenderOrRecepientEmailNotFoundInSystem = true;
                 }
@@ -303,7 +306,7 @@
                 // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
                 // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
                 // be able to match emails with items(Contacts, Accounts...) emails in systems
-                if(empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0)
+                if (empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0)
                 {
                     $emailSenderOrRecepientEmailNotFoundInSystem = true;
                 }
@@ -321,7 +324,7 @@
 
             if (!empty($message->attachments))
             {
-                foreach($message->attachments as $attachment)
+                foreach ($message->attachments as $attachment)
                 {
                     if (!$attachment['is_attachment'])
                     {

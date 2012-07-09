@@ -104,7 +104,6 @@ EOD;
 
                 file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
             }
-
         }
     }
 ?>

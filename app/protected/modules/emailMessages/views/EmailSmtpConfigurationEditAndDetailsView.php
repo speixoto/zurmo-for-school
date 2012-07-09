@@ -27,7 +27,7 @@
     /**
      * Edit and details view for the email global configuration view.
      */
-    class EmailConfigurationEditAndDetailsView extends EditAndDetailsView
+    class EmailSmtpConfigurationEditAndDetailsView extends EditAndDetailsView
     {
         protected function renderTitleContent()
         {
@@ -103,75 +103,6 @@
                                                 array('attributeName' => 'aTestToAddress',
                                                       'type' => 'SendATestEmailTo'),
                                             ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'title' => Yii::t("Default", "Email Archiving Configuration (IMAP)"),
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapHost', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapPort', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapUsername', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapPassword', 'type' => 'Password'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapSSL', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapFolder', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'testImapConnection',
-                                                    'type' => 'TestImapConnection'),
-                                                ),
                                         ),
                                     )
                                 ),

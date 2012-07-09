@@ -69,7 +69,8 @@
   /*empty*/
 
 }
-.zLink {
+.zLink,
+.z-link {
   background: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
@@ -77,9 +78,10 @@
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  color: #fff;
+  color: #fff !important;
 }
-.zLink:hover {
+.zLink:hover,
+.z-link:hover {
   color: #fff !important;
   text-decoration: underline;
 }
@@ -1704,7 +1706,7 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  color: #fff;
+  color: #fff !important;
 }
 #ImportWizardMappingView #sample-column-header a:hover {
   color: #fff !important;
@@ -5637,13 +5639,67 @@ section {
   z-index: 0;
   position: relative;
 }
-.AppContent {
-  -webkit-border-radius: 0 0 5px 5px;
-  -moz-border-radius: 0 0 5px 5px;
-  -ms-border-radius: 0 0 5px 5px;
-  -o-border-radius: 0 0 5px 5px;
-  border-radius: 0 0 5px 5px;
+/*
+.AppContent{
+     .radius(0 0 5px 5px);
+    .single-column{
+    	background:pink !important;
+		padding-right:0 !important;
+		.GridView{
+			display:block;
+			width:100% !important;
+		}
+		.GridView:first-child{
+			display:block;
+			width:100% !important;
+		}
+		.panel{
+			width:70%;
+			float:left;
+			td, th{
+				padding-bottom:10px !important;
+			}
+		}
+		.details-table{
+			.clearfix();
+		}
+		#right-side-edit-view-panel{
+			top:55px;
+		}
+	}
 }
+*/
+/*
+
+.single-coloumn-details-view,
+#ConversationDetailsView,
+#ConversationDetailsAndRelationsView{
+	&.AppContent{
+		padding-right:0;
+	}
+	.GridView{
+		display:none;
+	}
+	.GridView:first-child{
+		display:block;
+		width:100%;
+	}
+	.panel{
+		width:70%;
+		float:left;
+		td, th{
+			padding-bottom:10px !important;
+		}
+	}
+	.details-table{
+		.clearfix();
+	}
+	#right-side-edit-view-panel{
+		top:55px;
+	}
+	
+}
+*/
 #HeaderView {
   position: relative;
   z-index: 9999;
@@ -6080,6 +6136,11 @@ section {
 }
 /*=Content*/
 .AppContent {
+  -webkit-border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  -ms-border-radius: 0 0 5px 5px;
+  -o-border-radius: 0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
   padding: 20px 20px 0 20px;
   margin-left: 172px;
   margin-bottom: 20px;
@@ -6093,6 +6154,12 @@ section {
   background-image: linear-gradient(#f6f6f6, #ffffff 100px, #ffffff);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff', GradientType=0);
   zoom: 1;
+  /*> .MetadataView{
+    	padding-right:20px;
+    	.box-sizing();
+    	.clearfix();
+    }*/
+
 }
 .AppContent:before {
   content: "";
@@ -6102,6 +6169,43 @@ section {
   content: "";
   display: table;
   clear: both;
+}
+.AppContent .single-column {
+  padding-right: 0 !important;
+}
+.AppContent .single-column > .GridView {
+  display: block;
+  width: 100% !important;
+}
+.AppContent .single-column .panel {
+  width: 70%;
+  float: left;
+}
+.AppContent .single-column .panel td,
+.AppContent .single-column .panel th {
+  padding-bottom: 10px !important;
+}
+.AppContent .single-column .juiportlet-widget,
+.AppContent .single-column .details-table {
+  margin-right: 0 !important;
+}
+.AppContent .single-column .details-table {
+  zoom: 1;
+}
+.AppContent .single-column .details-table:before {
+  content: "";
+  display: table;
+}
+.AppContent .single-column .details-table:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.AppContent .single-column #right-side-edit-view-panel {
+  top: 55px;
+}
+.AppContent .single-column #inline-edit-form .panel {
+  width: 100%;
 }
 /*=dashboard*/
 #HomePageView .AppContent {
@@ -7527,6 +7631,9 @@ div.wide.form label.hasCheckBox {
 .search-view-1 label {
   padding-top: 7px;
   padding-right: 10px;
+  width: 100%;
+  display: block;
+  text-align: left;
 }
 .search-view-1 #cancel-advanced-search {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -7935,6 +8042,9 @@ div.wide.form label.hasCheckBox {
 }
 .details-table p {
   color: #545454 !important;
+  width: 100%;
+  float: none;
+  clear: left;
 }
 .details-table p a {
   color: #262877 !important;
@@ -9478,7 +9588,7 @@ div.hasHalfs .twoThirds {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  color: #fff;
+  color: #fff !important;
 }
 .lead-conversion-actions a:hover {
   color: #fff !important;

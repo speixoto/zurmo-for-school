@@ -28,6 +28,7 @@
     {
         public static $userMailer;
         public static $userImap;
+        public static $emailHelperSendEmailThroughTransport;
 
         public static function setUpBeforeClass()
         {
@@ -51,6 +52,7 @@
             Yii::app()->imap->setInboundSettings();
             Yii::app()->imap->init();
 
+            self::$emailHelperSendEmailThroughTransport = Yii::app()->emailHelper->sendEmailThroughTransport;
             Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
             Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
             Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
@@ -58,7 +60,6 @@
             Yii::app()->emailHelper->sendEmailThroughTransport = true;
             Yii::app()->emailHelper->setOutboundSettings();
             Yii::app()->emailHelper->init();
-
 
             $userSmtpMailer = new EmailHelperForTesting();
             $userSmtpMailer->outboundHost     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundHost'];
@@ -71,13 +72,20 @@
             self::$userMailer = $userSmtpMailer;
         }
 
-        public function setup(){
+        public function setup()
+        {
             parent::setup();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
             $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
             $this->assertTrue($user->save());
+        }
+
+        public static function tearDownAfterClass()
+        {
+            Yii::app()->emailHelper->sendEmailThroughTransport = self::$emailHelperSendEmailThroughTransport;
+            parent::tearDownAfterClass();
         }
 
         /**
@@ -255,6 +263,7 @@
             $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
             $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
 
+            // Begin Not Coding Standard
             $textBody = "
 ---------- Forwarded message ----------
 From: Steve <" . Yii::app()->params['emailTestAccounts']['testEmailAddress'] . ">
@@ -274,7 +283,7 @@ To: Steve <steve@example.com>
 
 <strong>Hello</strong> Steve
 ";
-
+            // End Not Coding Standard
             //Now user forward email to dropbox
             $subject = "Fwd: Email from John";
             Yii::app()->emailHelper->sendRawEmail($subject,

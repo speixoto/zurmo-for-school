@@ -72,7 +72,7 @@
             assert('is_string($title)');
             assert('$height == "auto" || is_int($height)');
             assert('is_int($width)');
-            if($height == 'auto')
+            if ($height == 'auto')
             {
                 $heightContent = "'auto'";
             }
@@ -80,10 +80,12 @@
             {
                 $heightContent = $height;
             }
+            // Begin Not Coding Standard
             return "js:function(){jQuery('#" . $containerId . "').html('');" .
                                     "makeLargeLoadingSpinner('" . $containerId . "');" .
                                     "jQuery('#" . $containerId . "').dialog({'title':'" . $title . "','autoOpen':true," .
                                     "'modal':true,'height':" . $heightContent . ",'width':" . $width . ", 'position':'center'}); return true;}";
+            // End Not Coding Standard
         }
     }
 ?>

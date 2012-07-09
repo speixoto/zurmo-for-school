@@ -108,7 +108,7 @@
                                             {
                                                 $compareType = $this->getDbTypeValue($row['Type']);
                                             }
-                                            $this->assertEquals($compareType,$type);
+                                            $this->assertEquals($compareType, $type);
                                         }
                                         break;
                                 }

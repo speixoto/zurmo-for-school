@@ -24,41 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CreateFromRelatedListLinkActionElement extends RelatedListLinkActionElement
+    class EmailConfigurationListView extends GridView
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected $cssClasses =  array( 'AdministrativeArea' , 'TableOfContentsView' );
+
+        public function __construct()
         {
-            if (!isset($params['htmlOptions']))
-            {
-                $params['htmlOptions'] = array();
-            }
-            $params['htmlOptions'] = array_merge(array('class' => 'icon-create'), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            parent::__construct(1, 1);
+            $this->setView(new EmailConfigurationMenuView(), 0, 0);
         }
 
-        protected function getDefaultLabel()
+        public function isUniqueToAPage()
         {
-            return Yii::t('Default', 'Create');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/createFromRelation/', $this->getRouteParameters());
-        }
-
-        protected function getRouteModuleId()
-        {
-            if (!isset($this->params['routeModuleId']))
-            {
-                return array();
-            }
-            return $this->params['routeModuleId'];
-        }
-
-        public function getActionType()
-        {
-            return 'Create';
+            return true;
         }
     }
 ?>
