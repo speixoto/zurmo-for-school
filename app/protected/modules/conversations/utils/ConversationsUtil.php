@@ -39,49 +39,7 @@
         {
             $url            = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
             $content        = $conversation->subject;
-            $latestContent  = static::renderDescriptionOrLatestCommentContent($conversation);
-            if($latestContent != null)
-            {
-                $content .= '<BR/>';
-                $content .= $latestContent;
-            }
             return $content = ZurmoHtml::link($content, $url);
-        }
-
-        /**
-         * Given a conversation, render the latest comment or the conversation description a comment does not exist.
-         * @param Conversation $conversation
-         * @return string
-         */
-        public static function renderDescriptionOrLatestCommentContent(Conversation $conversation)
-        {
-            $content = null;
-            if($conversation->comments->count() > 0)
-            {
-                $position = $conversation->comments->count() - 1;
-                if($conversation->comments->offsetGet($position)->createdByUser == Yii::app()->user->userModel)
-                {
-                    $content .= Yii::t('Default', 'Me') . ': ';
-                }
-                else
-                {
-                    $content .= strval($conversation->comments->offsetGet($position)->createdByUser) . ': ';
-                }
-                $content .= $conversation->comments->offsetGet($position);
-            }
-            elseif($conversation->description != null)
-            {
-                if($conversation->owner == Yii::app()->user->userModel)
-                {
-                    $content .= Yii::t('Default', 'Me') . ': ';
-                }
-                else
-                {
-                    $content .= strval($conversation->owner) . ': ';
-                }
-                $content .= $conversation->description;
-            }
-            return $content;
         }
 
         /**

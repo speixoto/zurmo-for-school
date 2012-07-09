@@ -116,7 +116,6 @@
         {
             assert('$model instanceof Conversation');
             $content      = null;
-            $content     .= ConversationsUtil::renderDescriptionOrLatestCommentContent($model);
             $filesContent =  FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($model, 'files');
             if($filesContent != null)
             {
