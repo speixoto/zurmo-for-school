@@ -32,7 +32,7 @@
     {
         public $scriptFile = 'jquery.tokeninput.js';
 
-        public $cssFile = 'token-input.css';
+        public $cssFile = null;
 
         /**
          * Input field name.

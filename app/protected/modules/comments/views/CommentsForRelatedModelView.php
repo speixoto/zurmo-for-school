@@ -115,7 +115,7 @@
                 //attachments
                 if($comment->files->count() > 0)
                 {
-                    $stringContent .= FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($comment, 'files');
+                    $stringContent .= FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($comment, 'files', true);
                 }
                 if($comment->createdByUser == Yii::app()->user->userModel ||
                    $this->relatedModel->createdByUser == Yii::app()->user->userModel ||

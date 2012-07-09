@@ -4997,13 +4997,13 @@ span.tooltip {
 .attachments li {
   margin-bottom: 2px;
 }
-.icon-attachemnt {
+.icon-attachment {
   font-weight: normal;
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 4px;
 }
-.icon-attachemnt:before {
+.icon-attachment:before {
   content: "H";
 }
 @font-face {
@@ -5643,30 +5643,30 @@ section {
 .AppContent{
      .radius(0 0 5px 5px);
     .single-column{
-    	background:pink !important;
-		padding-right:0 !important;
-		.GridView{
-			display:block;
-			width:100% !important;
-		}
-		.GridView:first-child{
-			display:block;
-			width:100% !important;
-		}
-		.panel{
-			width:70%;
-			float:left;
-			td, th{
-				padding-bottom:10px !important;
-			}
-		}
-		.details-table{
-			.clearfix();
-		}
-		#right-side-edit-view-panel{
-			top:55px;
-		}
-	}
+        background:pink !important;
+        padding-right:0 !important;
+        .GridView{
+            display:block;
+            width:100% !important;
+        }
+        .GridView:first-child{
+            display:block;
+            width:100% !important;
+        }
+        .panel{
+            width:70%;
+            float:left;
+            td, th{
+                padding-bottom:10px !important;
+            }
+        }
+        .details-table{
+            .clearfix();
+        }
+        #right-side-edit-view-panel{
+            top:55px;
+        }
+    }
 }
 */
 /*
@@ -5674,30 +5674,30 @@ section {
 .single-coloumn-details-view,
 #ConversationDetailsView,
 #ConversationDetailsAndRelationsView{
-	&.AppContent{
-		padding-right:0;
-	}
-	.GridView{
-		display:none;
-	}
-	.GridView:first-child{
-		display:block;
-		width:100%;
-	}
-	.panel{
-		width:70%;
-		float:left;
-		td, th{
-			padding-bottom:10px !important;
-		}
-	}
-	.details-table{
-		.clearfix();
-	}
-	#right-side-edit-view-panel{
-		top:55px;
-	}
-	
+    &.AppContent{
+        padding-right:0;
+    }
+    .GridView{
+        display:none;
+    }
+    .GridView:first-child{
+        display:block;
+        width:100%;
+    }
+    .panel{
+        width:70%;
+        float:left;
+        td, th{
+            padding-bottom:10px !important;
+        }
+    }
+    .details-table{
+        .clearfix();
+    }
+    #right-side-edit-view-panel{
+        top:55px;
+    }
+
 }
 */
 #HeaderView {
@@ -6155,9 +6155,9 @@ section {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff', GradientType=0);
   zoom: 1;
   /*> .MetadataView{
-    	padding-right:20px;
-    	.box-sizing();
-    	.clearfix();
+        padding-right:20px;
+        .box-sizing();
+        .clearfix();
     }*/
 
 }

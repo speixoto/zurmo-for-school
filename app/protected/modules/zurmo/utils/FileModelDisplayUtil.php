@@ -71,19 +71,23 @@
             return $content;
         }
 
-        public static function renderFileDataDetailsWithDownloadLinksContent($model, $filesRelationName)
+        public static function renderFileDataDetailsWithDownloadLinksContent($model, $filesRelationName, $showHeaderLabel = false)
         {
-            $content = '<ul class="attachments">';
-            $content .= '<li><strong>Attached Files:</strong></li>';
+            $content = null;
             if ($model->{$filesRelationName}->count() > 0)
             {
+                $content .= '<ul class="attachments">';
+                if($showHeaderLabel)
+                {
+                    $content .= '<li><strong>' . Yii::t('Default', 'Attachments'). '</strong></li>';
+                }
                 foreach ($model->{$filesRelationName} as $fileModel)
                 {
-                	$content .= '<li><span class="icon-attachemnt"></span>' .
-                				FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($model, $fileModel) . '</li>';
+                    $content .= '<li><span class="icon-attachment"></span>' .
+                                FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($model, $fileModel) . '</li>';
                 }
+                $content .= '</ul>';
             }
-			$content .= '</ul>';
             return $content;
         }
     }
