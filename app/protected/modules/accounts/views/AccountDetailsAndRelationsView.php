@@ -52,27 +52,7 @@
                                 )
                             )
                         )
-                    ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'UpcomingMeetingsForAccountCalendar',
-                                    ),
-                                    array(
-                                        'type' => 'OpenTasksForAccountRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'ContactsForAccountRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'OpportunitiesForAccountRelatedList',
-                                    )
-                                )
-                            )
-                        )
-                    )
+                    ),  
                 )
             );
             return $metadata;

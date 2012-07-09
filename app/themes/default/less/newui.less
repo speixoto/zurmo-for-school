@@ -671,9 +671,74 @@ footer, header, hgroup, menu, nav, section {
     z-index: 0;
     position:relative;
 }
+/*
 .AppContent{
      .radius(0 0 5px 5px);
+    .single-column{
+    	background:pink !important;
+		padding-right:0 !important;
+		.GridView{
+			display:block;
+			width:100% !important;
+		}
+		.GridView:first-child{
+			display:block;
+			width:100% !important;
+		}
+		.panel{
+			width:70%;
+			float:left;
+			td, th{
+				padding-bottom:10px !important;
+			}
+		}
+		.details-table{
+			.clearfix();
+		}
+		#right-side-edit-view-panel{
+			top:55px;
+		}
+	}
 }
+*/
+/*
+
+.single-coloumn-details-view,
+#ConversationDetailsView,
+#ConversationDetailsAndRelationsView{
+	&.AppContent{
+		padding-right:0;
+	}
+	.GridView{
+		display:none;
+	}
+	.GridView:first-child{
+		display:block;
+		width:100%;
+	}
+	.panel{
+		width:70%;
+		float:left;
+		td, th{
+			padding-bottom:10px !important;
+		}
+	}
+	.details-table{
+		.clearfix();
+	}
+	#right-side-edit-view-panel{
+		top:55px;
+	}
+	
+}
+*/
+
+
+
+
+
+
+
 
 #HeaderView{
     position:relative;
@@ -957,11 +1022,48 @@ footer, header, hgroup, menu, nav, section {
 
 /*=Content*/
 .AppContent{
+	.radius(0 0 5px 5px);
     padding:20px 20px 0 20px;
     margin-left:172px;
     margin-bottom:20px;
     #gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #ffffff );
     .clearfix();
+    
+    /*> .MetadataView{
+    	padding-right:20px;
+    	.box-sizing();
+    	.clearfix();
+    }*/
+    
+    .single-column{
+    	padding-right:0 !important;
+		> .GridView{
+			display:block;
+			width:100% !important;
+		}
+		.panel{
+			width:70%;
+			float:left;
+			td, th{
+				padding-bottom:10px !important;
+			}
+		}
+		.juiportlet-widget,
+		.details-table{
+			margin-right:0 !important;
+		}
+		.details-table{
+			.clearfix();
+		}
+		#right-side-edit-view-panel{
+			top:55px;
+		}
+		
+		#inline-edit-form .panel{
+			width:100%;
+		}
+		
+	}
 }
 
 /*=dashboard*/
@@ -2262,6 +2364,9 @@ div.wide.form{
     }
     p{
         color:#545454 !important;
+        width:100%;
+        float:none;
+        clear:left;
         a{
             color:@themeColor !important;
         }
