@@ -111,25 +111,6 @@
                 unset($searchAttribute['structurePosition']);
                 return $structurePosition;
             }
-            /**
-            foreach($searchAttribute as $attributeName => $attributeData)
-            {
-                if(!is_array($attributeData))
-                {
-                   continue;
-                }
-                elseif(isset($attributeData['structurePosition']))
-                {
-                    $structurePosition = $attributeData['structurePosition'];
-                    unset($searchAttribute[$attributeName]['structurePosition']);
-                    return $structurePosition;
-                }
-                else
-                {
-                    return static::resolveUnsetAndGetSructurePosition($searchAttribute[$attributeName]);
-                }
-            }
-            **/
         }
 
         protected static function resolveUnsetAttributeIndexOrDerivedType(& $searchAttribute)
@@ -138,24 +119,6 @@
             {
                 unset($searchAttribute['attributeIndexOrDerivedType']);
             }
-            /**
-            foreach($searchAttribute as $attributeName => $attributeData)
-            {
-                if(!is_array($attributeData))
-                {
-                    continue;
-                }
-                elseif(isset($attributeData['attributeIndexOrDerivedType']))
-                {
-                    unset($searchAttribute[$attributeName]['attributeIndexOrDerivedType']);
-                    return;
-                }
-                else
-                {
-                    return static::resolveUnsetAttributeIndexOrDerivedType($searchAttribute[$attributeName]);
-                }
-            }
-            **/
         }
     }
 ?>
