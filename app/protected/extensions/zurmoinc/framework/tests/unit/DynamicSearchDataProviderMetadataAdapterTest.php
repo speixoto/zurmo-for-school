@@ -238,7 +238,6 @@
 
         /**
          * @depends testDynamicSearchAndBasicSearchTogether
-         * @expectedException NotSupportedException
          */
         public function testDynamicSearchWithNullValues()
         {
@@ -270,7 +269,6 @@
                 $sanitizedDynamicSearchAttributes,
                 $dynamicStructure);
             $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
-            return;
             $compareClauses = array(
                 1 => array(
                     'attributeName'        => 'iiiMember',
@@ -283,7 +281,7 @@
                     'value'                => 'someThing3',
                 ),
             );
-            $compareStructure = '(1 or 2) and 3';
+            $compareStructure = '(1 or 2) and 3'; //not sure why this clause is messed up.
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
