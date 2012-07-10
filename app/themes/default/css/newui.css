@@ -5014,6 +5014,11 @@ span.tooltip {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.unread td,
+.unread td a {
+  color: #262877;
+  font-weight: bold;
+}
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
