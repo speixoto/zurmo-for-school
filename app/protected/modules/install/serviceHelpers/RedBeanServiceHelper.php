@@ -34,20 +34,27 @@
         protected function checkService()
         {
             $passed = $this->checkServiceAndSetMessagesByMethodNameAndDisplayLabel('checkRedBean',
-                                                                                Yii::t('Default', 'RedBean'));
+                                                                                Yii::t('Default', 'RedBean'));           
             if ($passed)
             {
-                $patched        = InstallUtil::checkRedBeanPatched();
-                $this->message .= "\n";
-                if ($patched)
-                {
-                    $this->message .= Yii::t('Default', 'RedBean file is patched correctly');
+                if (InstallUtil::checkRedBeanIsNotLegacy()) {
+                    $patched        = InstallUtil::checkRedBeanPatched();
+                    $this->message .= "\n";
+                    if ($patched)
+                    {
+                        $this->message .= Yii::t('Default', 'RedBean file is patched correctly');
+                    }
+                    else
+                    {
+                        $this->message .= Yii::t('Default', 'RedBean file is missing patch.');
+                    }
+                    return $patched;
+                } else {
+                    $this->message .= "\n";
+                    $this->message .= Yii::t('Default', 'RedBean version should not be the Legacy one');
+                    return false;
                 }
-                else
-                {
-                    $this->message .= Yii::t('Default', 'RedBean file is missing patch.');
-                }
-                return $patched;
+                
             }
             return $passed;
         }
