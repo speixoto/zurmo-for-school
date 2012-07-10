@@ -193,12 +193,12 @@
             {
                 Yii::app()->end(0, false);
             }
+            $content          = null;
             if(count(explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType)) > 1)
             {
-                $content          = null;
                 $model            = new $modelClassName(false);
                 $nestedAttributes = explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType);
-                $inputPrefix      = array($formModelClassName, SearchUtil::DYNAMIC_NAME, $rowNumber);
+                $inputPrefix      = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
                 $totalNestedCount = count($nestedAttributes);
                 $processCount     = 1;
                 foreach($nestedAttributes as $attribute)
@@ -227,7 +227,7 @@
             {
                 $model                 = new $modelClassName(false);
                 $modelToUse            = new $formModelClassName($model);
-                $inputPrefix           = array($formModelClassName, SearchUtil::DYNAMIC_NAME, $rowNumber);
+                $inputPrefix           = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
                 $element               = DynamicSearchUtil::getCellElement($viewClassName, $modelClassName,
                                                                           $attributeIndexOrDerivedType);
             }
@@ -255,11 +255,27 @@
             {
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
-                unset($_POST[$formModelClassName]['anyMixedAttributesScope']);
-                $sanitizedDynamicSearchAttributes = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
+                //$rawPostFormData           = $_POST[$formModelClassName];
+                if(isset($_POST[$formModelClassName]['anyMixedAttributesScope']))
+                {
+                    $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName]['anyMixedAttributesScope']);
+                    unset($_POST[$formModelClassName]['anyMixedAttributesScope']);
+                }
+                $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
-                $searchForm->setAttributes($sanitizedDynamicSearchAttributes);
-                $searchForm->setScenario('validateDynamic');
+                $searchForm->setAttributes($sanitizedSearchData);
+                if(isset($_POST['save']) && $_POST['save'] == 'saveSearch')
+                {
+                    $searchForm->setScenario('validateSaveSearch');
+                    if($searchForm->validate())
+                    {
+                        $this->processSaveSearch($searchForm);
+                    }
+                }
+                else
+                {
+                    $searchForm->setScenario('validateDynamic');
+                }
                 if(!$searchForm->validate())
                 {
                      $errorData = array();
@@ -271,6 +287,24 @@
                     Yii::app()->end(0, false);
                 }
             }
+        }
+
+        protected function processSaveSearch($searchForm)
+        {
+            /**
+            echo "<pre>";
+            print_r($searchForm->anyMixedAttributes);
+            print_r($searchForm->getAnyMixedAttributesScope());
+            print_r($searchForm->dynamicStructure);
+            print_r($searchForm->dynamicClauses);
+            print_r($searchForm->savedSearchName);
+            print_r($searchForm->savedSearchId);
+            echo "</pre>";
+            **/
+            //adapter needed to go both ways i think.
+            //$savedSearch = SomeAdapter::makeSavedSearchBySearchForm($searchForm);
+            //$savedSearch->save();
+            //what happens if this fails to save? throw not failed to save exception
         }
 
         protected function resolveAndSanitizeDynamicSearchAttributesByPostData($postData, DynamicSearchForm $searchForm)

@@ -24,39 +24,45 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Extend this class when a searchForm's model is owned.
-     */
-    abstract class OwnedSearchForm extends SavedDynamicSearchForm
+    class SavedSearch extends OwnedSecurableItem
     {
-        public $ownedItemsOnly;
-
-        public function rules()
+        public function __toString()
         {
-            return array_merge(parent::rules(), array(
-                               array('ownedItemsOnly', 'boolean'),
-            ));
+            if (trim($this->name) == '')
+            {
+                return Yii::t('Default', '(Unnamed)');
+            }
+            return $this->name;
         }
 
-        public function attributeLabels()
+        public static function getByOwnerAndViewClassName(User $user, $viewClassName)
         {
-            return array_merge(parent::attributeLabels(), array(
-                               'ownedItemsOnly' => Yii::t('Default', 'Only Items I Own'),
-            ));
+            assert('$user->id > 0');
+            assert('is_string($viewClassName');
+            //todo
         }
 
-        protected static function getSearchFormAttributeMappingRulesTypes()
+        public static function getDefaultMetadata()
         {
-            return array_merge(parent::getSearchFormAttributeMappingRulesTypes(), array('ownedItemsOnly' => 'OwnedItemsOnly'));
-        }
-
-        public function getAttributesMappedToRealAttributesMetadata()
-        {
-            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-                'ownedItemsOnly' => array(
-                    array('owner', 'id', null, 'resolveValueByRules'),
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                    'serializedData',
+                    'viewClassName'
                 ),
-            ));
+                'rules' => array(
+                    array('name', 			     'required'),
+                    array('name',                'type',   'type' => 'string'),
+                    array('name',                'length', 'max'  => 64),
+                    array('serializedData',      'required'),
+                    array('serializedData',      'type', 'type' => 'string'),
+                    array('viewClassName', 		 'required'),
+                    array('viewClassName',       'type',   'type' => 'string'),
+                    array('viewClassName',       'length', 'max'  => 64),
+                )
+            );
+            return $metadata;
         }
     }
 ?>

@@ -62,8 +62,8 @@
         protected function renderContent()
         {
             $this->renderScripts();
-            $hiddenInputName     = $this->formModelClassName . '[' . SearchUtil::DYNAMIC_NAME . '][' . $this->rowNumber . '][structurePosition]';
-            $hiddenInputId       = $this->formModelClassName . '_' . SearchUtil::DYNAMIC_NAME . '_' . $this->rowNumber . '_structurePosition';
+            $hiddenInputName     = $this->formModelClassName . '[' . DynamicSearchForm::DYNAMIC_NAME . '][' . $this->rowNumber . '][structurePosition]';
+            $hiddenInputId       = $this->formModelClassName . '_' . DynamicSearchForm::DYNAMIC_NAME . '_' . $this->rowNumber . '_structurePosition';
             $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
 
             $content  = CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), null);
@@ -90,8 +90,8 @@
 
         protected function renderAttributeDropDownContent()
         {
-            $name        = $this->formModelClassName . '[' . SearchUtil::DYNAMIC_NAME . '][' . $this->rowNumber . '][attributeIndexOrDerivedType]';
-            $id          = $this->formModelClassName . '_' . SearchUtil::DYNAMIC_NAME . '_' . $this->rowNumber . '_attributeIndexOrDerivedType';
+            $name        = $this->formModelClassName . '[' . DynamicSearchForm::DYNAMIC_NAME . '][' . $this->rowNumber . '][attributeIndexOrDerivedType]';
+            $id          = $this->formModelClassName . '_' . DynamicSearchForm::DYNAMIC_NAME . '_' . $this->rowNumber . '_attributeIndexOrDerivedType';
             $htmlOptions = array('id' => $id,
                 'empty' => Yii::t('Default', 'Select a field')
             );

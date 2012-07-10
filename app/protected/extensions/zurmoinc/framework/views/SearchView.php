@@ -244,20 +244,36 @@
                 }
                 if ($key == 1)
                 {
-                    $content .= '<div class="view-toolbar-container clearfix">';
-                    $content .= '<div class="form-toolbar">';
-                    $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
-                    $params = array();
-                    $params['label']       = Yii::t('Default', 'Search');
-                    $params['htmlOptions'] = array('id' => 'search-advanced-search');
-                    $searchElement = new SaveButtonActionElement(null, null, null, $params);
-                    $content .= $searchElement->render();
-                    $content .= '</div></div>';
+                    $content .= $this->renderViewToolBarContainerForAdvancedSearch($form);
                 }
                 $content .= '</div>';
             }
             $content .= $this->renderFormBottomPanel();
             return $content;
+        }
+
+        protected function renderViewToolBarContainerForAdvancedSearch($form)
+        {
+            $content  = '<div class="view-toolbar-container clearfix">';
+            $content .= '<div class="form-toolbar">';
+            $content .= $this->renderViewToolBarLinksForAdvancedSearch($form);
+            $content .= '</div></div>';
+            return $content;
+        }
+
+        protected function renderViewToolBarLinksForAdvancedSearch($form)
+        {
+            $content  = CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
+            $params = array();
+            $params['label']       = Yii::t('Default', 'Search');
+            $params['htmlOptions'] = array('id' => 'search-advanced-search');
+            $searchElement = new SaveButtonActionElement(null, null, null, $params);
+            $content .= $searchElement->render();
+            return $content;
+        }
+
+        protected function renderSaveInputAndSaveButtonContentForAdvancedSearch($form)
+        {
         }
 
         protected function renderAdvancedSearchForFormLayout($panel, $maxCellsPerRow, $form)

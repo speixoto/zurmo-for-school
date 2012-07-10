@@ -41,6 +41,7 @@
         {
             assert('is_string($viewClassName)');
             assert('is_string($modelClassName) && is_subclass_of($modelClassName, "RedBeanModel")');
+            $searchFormClassName      = $viewClassName::getModelForMetadataClassName();
             $editableMetadata         = $viewClassName::getMetadata();
             $designerRulesType        = $viewClassName::getDesignerRulesType();
             $designerRulesClassName   = $designerRulesType . 'DesignerRules';
@@ -57,16 +58,11 @@
             $attributeIndexOrDerivedTypeAndLabels = array();
             foreach($attributesLayoutAdapter->makeDesignerLayoutAttributes()->get() as $attributeIndexOrDerivedType => $data)
             {
-                //Special exception since anyMixedAttributes should not be available for dynamic search.
-                //Eventually refactor and decouple at some point if needed.
-                if($attributeIndexOrDerivedType != 'anyMixedAttributes' &&
-                   $attributeIndexOrDerivedType != 'dynamicStructure' &&
-                   $attributeIndexOrDerivedType != 'dynamicClauses')
+                if($searchFormClassName::isAttributeSearchable($attributeIndexOrDerivedType))
                 {
                     $attributeIndexOrDerivedTypeAndLabels[$attributeIndexOrDerivedType] = $data['attributeLabel'];
                 }
             }
-
             self::resolveAndAddViewDefinedNestedAttributes($modelAttributesAdapter->getModel(), $viewClassName, $attributeIndexOrDerivedTypeAndLabels);
             return $attributeIndexOrDerivedTypeAndLabels;
         }

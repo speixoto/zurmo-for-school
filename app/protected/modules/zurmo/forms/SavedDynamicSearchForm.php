@@ -25,38 +25,45 @@
      ********************************************************************************/
 
     /**
-     * Extend this class when a searchForm's model is owned.
+     * Extend this class when a searchForm should allow dynamic searches to be saved.
      */
-    abstract class OwnedSearchForm extends SavedDynamicSearchForm
+    abstract class SavedDynamicSearchForm extends DynamicSearchForm
     {
-        public $ownedItemsOnly;
+        public $savedSearchId;
+
+        public $savedSearchName;
+
+        public static function getNonSearchableAttributes()
+        {
+            return array_merge(parent::getNonSearchableAttributes(), array('savedSearchId', 'savedSearchName'));
+        }
 
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                               array('ownedItemsOnly', 'boolean'),
+                               array('savedSearchId',   'safe'),
+                               array('savedSearchName', 'safe'),
+                               array('savedSearchName', 'type',   'type' => 'string'),
+                               array('savedSearchName', 'length', 'max'  => 64),
+                               array('savedSearchName', 'validateSaveSearch', 'on' => 'validateSaveSearch'),
             ));
         }
 
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                               'ownedItemsOnly' => Yii::t('Default', 'Only Items I Own'),
+                               'savedSearchId' => Yii::t('Default',   'Id'),
+                               'savedSearchName' => Yii::t('Default', 'Name'),
             ));
         }
 
-        protected static function getSearchFormAttributeMappingRulesTypes()
+        public function validateSaveSearch($attribute, $params)
         {
-            return array_merge(parent::getSearchFormAttributeMappingRulesTypes(), array('ownedItemsOnly' => 'OwnedItemsOnly'));
-        }
-
-        public function getAttributesMappedToRealAttributesMetadata()
-        {
-            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-                'ownedItemsOnly' => array(
-                    array('owner', 'id', null, 'resolveValueByRules'),
-                ),
-            ));
+            if($this->$attribute == null)
+            {
+                $this->addError('savedSearchName', Yii::t('yii', '{attribute} cannot be blank.',
+                                                        array('{attribute}' => Yii::t('Default', 'Name'))));
+            }
         }
     }
 ?>

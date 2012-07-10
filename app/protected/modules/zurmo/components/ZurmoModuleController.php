@@ -38,11 +38,15 @@
             $this->actionList();
         }
 
-        public function actionMassExport()
+        public function actionLoadSavedSearch($id, $redirectAction = 'list')
         {
-            echo 'mass export<br/>';
-            echo 'not implemented yet';
-            exit;
+            $savedSearch = SavedSearch::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedSearch);
+            $getParams   = unserialize($savedSearch->serializedData);
+            $getParams   = array_merge($getParams, array('savedSearchId' => $id));
+            $url         = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/' .
+                                                 $redirectAction, $getParams);
+            $this->redirect($url);
         }
 
         /**

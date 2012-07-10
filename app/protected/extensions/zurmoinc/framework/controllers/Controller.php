@@ -71,7 +71,7 @@
         {
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $searchAttributes          = SearchUtil::resolveSearchAttributesFromGetArray(get_class($searchModel));
+            $searchAttributes          = SearchUtil::resolveSearchAttributesFromGetArray(get_class($searchModel), get_class($searchModel));
             SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromGetArray($searchModel, get_class($searchModel));
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);

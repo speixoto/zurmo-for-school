@@ -90,12 +90,12 @@
 
         protected function getStructureInputId()
         {
-            return get_class($this->model) . '_' . SearchUtil::DYNAMIC_STRUCTURE_NAME;
+            return get_class($this->model) . '_' . DynamicSearchForm::DYNAMIC_STRUCTURE_NAME;
         }
 
         protected function getStructureInputName()
         {
-            return get_class($this->model) . '[' . SearchUtil::DYNAMIC_STRUCTURE_NAME . ']';
+            return get_class($this->model) . '[' . DynamicSearchForm::DYNAMIC_STRUCTURE_NAME . ']';
         }
 
         protected function renderConfigSaveAjax($formName)
@@ -111,7 +111,6 @@
                             $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
                          }
                         );";
-                        return false;
         }
 
         /**

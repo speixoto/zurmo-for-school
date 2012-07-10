@@ -30,9 +30,18 @@
      */
     abstract class DynamicSearchForm extends SearchForm
     {
+        const DYNAMIC_NAME             = 'dynamicClauses';
+
+        const DYNAMIC_STRUCTURE_NAME   = 'dynamicStructure';
+
         public $dynamicStructure;
 
         public $dynamicClauses;
+
+        public static function getNonSearchableAttributes()
+        {
+            return array_merge(parent::getNonSearchableAttributes(), array('dynamicStructure', 'dynamicClauses'));
+        }
 
         public function rules()
         {

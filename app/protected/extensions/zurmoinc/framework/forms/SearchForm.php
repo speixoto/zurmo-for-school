@@ -30,6 +30,8 @@
      */
     abstract class SearchForm extends ModelForm
     {
+        const ANY_MIXED_ATTRIBUTES_SCOPE_NAME = 'anyMixedAttributesScope';
+
         private $dynamicAttributeData;
 
         private $dynamicAttributeNames = array();
@@ -159,6 +161,23 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * @return true if the provided attribute is searchable and not just a special form property.
+         */
+        public static function isAttributeSearchable($attributeName)
+        {
+            if(in_array($attributeName, static::getNonSearchableAttributes()))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static function getNonSearchableAttributes()
+        {
+            return array('anyMixedAttributesScope');
         }
 
         /**

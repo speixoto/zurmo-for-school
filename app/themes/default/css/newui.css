@@ -7080,7 +7080,7 @@ div.wide.form label.hasCheckBox {
 .summary {
   display: none;
 }
-.ZurmoSearchView {
+.SavedDynamicSearchView {
   padding: 0;
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
@@ -7090,7 +7090,7 @@ div.wide.form label.hasCheckBox {
   float: left;
   width: 100%;
 }
-.ZurmoSearchView #search-form {
+.SavedDynamicSearchView #search-form {
   position: relative;
   padding: 10px 0 10px 0;
   border: 1px solid #DFDFDF;
@@ -7113,16 +7113,16 @@ div.wide.form label.hasCheckBox {
   box-shadow: inset 0 1px 0 0 #ffffff;
   zoom: 1;
 }
-.ZurmoSearchView #search-form:before {
+.SavedDynamicSearchView #search-form:before {
   content: "";
   display: table;
 }
-.ZurmoSearchView #search-form:after {
+.SavedDynamicSearchView #search-form:after {
   content: "";
   display: table;
   clear: both;
 }
-.ZurmoSearchView #search-form table {
+.SavedDynamicSearchView #search-form table {
   border-bottom: none;
 }
 .SecuredListView {

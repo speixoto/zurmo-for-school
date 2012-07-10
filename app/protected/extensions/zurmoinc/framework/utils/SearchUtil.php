@@ -31,47 +31,25 @@
      */
     class SearchUtil
     {
-        const ANY_MIXED_ATTRIBUTES_SCOPE_NAME = 'anyMixedAttributesScope';
-
-        const ANY_MIXED_ATTRIBUTES            = 'anyMixedAttributes';
-
-        const DYNAMIC_NAME = 'dynamicClauses';
-
-        const DYNAMIC_STRUCTURE_NAME = 'dynamicStructure';
-
         /**
          * Get the search attributes array by resolving the GET array
-         * for the information. If the self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME is set, remove that
-         * from the array since this is utilized only directly from the $_GET string.  Also removes
-         * the dynamic search variables if present such as self::DYNAMIC_NAME and self::DYNAMIC_STRUCTURE_NAME
+         * for the information.  Remove any attributes from the array that are not searchable form attributes
          */
-        public static function resolveSearchAttributesFromGetArray($getArrayName)
+        public static function resolveSearchAttributesFromGetArray($getArrayName, $formModelClassName)
         {
             assert('is_string($getArrayName)');
+            assert('is_string($formModelClassName) && is_subclass_of($formModelClassName, "SearchForm")');
             $searchAttributes = array();
             if (!empty($_GET[$getArrayName]))
             {
                 $searchAttributes = SearchUtil::getSearchAttributesFromSearchArray($_GET[$getArrayName]);
-                if (isset($searchAttributes[self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]) ||
-                    key_exists(self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME, $searchAttributes))
+                foreach($formModelClassName::getNonSearchableAttributes() as $attribute)
                 {
-                    unset($searchAttributes[self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
-                }
-                if (isset($searchAttributes[self::DYNAMIC_NAME]) ||
-                    key_exists(self::DYNAMIC_NAME, $_GET[$getArrayName]))
-                {
-                    unset($searchAttributes[self::DYNAMIC_NAME]);
-                }
-                if (isset($searchAttributes[self::DYNAMIC_STRUCTURE_NAME]) ||
-                    key_exists(self::DYNAMIC_STRUCTURE_NAME, $_GET[$getArrayName]))
-                {
-                    unset($searchAttributes[self::DYNAMIC_STRUCTURE_NAME]);
-                }
-                if((isset($searchAttributes[self::ANY_MIXED_ATTRIBUTES]) ||
-                     key_exists(self::ANY_MIXED_ATTRIBUTES, $_GET[$getArrayName])) &&
-                   empty($searchAttributes[self::ANY_MIXED_ATTRIBUTES]))
-                {
-                    unset($searchAttributes[self::ANY_MIXED_ATTRIBUTES]);
+                    if (isset($searchAttributes[$attribute]) ||
+                        key_exists($attribute, $searchAttributes))
+                    {
+                        unset($searchAttributes[$attribute]);
+                    }
                 }
             }
             return $searchAttributes;
@@ -89,21 +67,21 @@
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             assert('is_string($getArrayName)');
             $searchAttributes  = array();
-            if (!empty($_GET[$getArrayName]) && isset($_GET[$getArrayName][self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
+            if (!empty($_GET[$getArrayName]) && isset($_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
             {
                 assert('$searchModel instanceof SearchForm');
-                if (!is_array($_GET[$getArrayName][self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
+                if (!is_array($_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
                     $sanitizedAnyMixedAttributesScope = null;
                 }
-                elseif (count($_GET[$getArrayName][self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]) == 1 &&
-                       $_GET[$getArrayName][self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME][0] == 'All')
+                elseif (count($_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]) == 1 &&
+                       $_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME][0] == 'All')
                 {
                     $sanitizedAnyMixedAttributesScope = null;
                 }
                 else
                 {
-                    $sanitizedAnyMixedAttributesScope = $_GET[$getArrayName][self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME];
+                    $sanitizedAnyMixedAttributesScope = $_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME];
                 }
                 $searchModel->setAnyMixedAttributesScope($sanitizedAnyMixedAttributesScope);
             }
@@ -286,12 +264,12 @@
         {
             assert('is_string($getArrayName)');
             if (!empty($_GET[$getArrayName]) &&
-                isset($_GET[$getArrayName][self::DYNAMIC_NAME]))
+                isset($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_NAME]))
             {
-                $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($_GET[$getArrayName][self::DYNAMIC_NAME]);
-                if(isset($dynamicSearchAttributes[self::DYNAMIC_STRUCTURE_NAME]))
+                $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_NAME]);
+                if(isset($dynamicSearchAttributes[DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]))
                 {
-                    unset($dynamicSearchAttributes[self::DYNAMIC_STRUCTURE_NAME]);
+                    unset($dynamicSearchAttributes[DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]);
                 }
                 foreach($dynamicSearchAttributes as $key => $data)
                 {
@@ -383,9 +361,9 @@
         {
             assert('is_string($getArrayName)');
             if (!empty($_GET[$getArrayName]) &&
-                isset($_GET[$getArrayName][self::DYNAMIC_STRUCTURE_NAME]))
+                isset($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]))
             {
-                return $_GET[$getArrayName][self::DYNAMIC_STRUCTURE_NAME];
+                return $_GET[$getArrayName][DynamicSearchForm::DYNAMIC_STRUCTURE_NAME];
             }
         }
     }

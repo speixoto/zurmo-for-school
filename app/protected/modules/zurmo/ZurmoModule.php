@@ -56,7 +56,7 @@
             // dependence hierarchy it needed concern itself, other than
             // with the models that are specific to itself.
             return array('AuditEvent', 'NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet', 'CustomFieldData',
-                         'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata');
+                         'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata', 'SavedSearch');
         }
 
         public static function getDefaultMetadata()

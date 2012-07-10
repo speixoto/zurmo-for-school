@@ -270,6 +270,22 @@
                 $sanitizedDynamicSearchAttributes,
                 $dynamicStructure);
             $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
+            return;
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'iiiMember',
+                    'operatorType'         => 'startsWith',
+                    'value'                => 'someThing',
+                ),
+                2 => array(
+                    'attributeName'        => 'iiiMember2',
+                    'operatorType'         => 'startsWith',
+                    'value'                => 'someThing3',
+                ),
+            );
+            $compareStructure = '(1 or 2) and 3';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
         }
     }
 ?>
