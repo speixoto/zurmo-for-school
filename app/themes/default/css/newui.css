@@ -5236,7 +5236,16 @@ section {
 }
 /*=MastHead*/
 #HeaderLinksView {
-  background: url(../images/header-bar-1.png) left top repeat-x;
+  background-color: #262877;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#202264), to(#262877));
+  background-image: -moz-linear-gradient(top, #202264, #262877);
+  background-image: -ms-linear-gradient(top, #202264, #262877);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #202264), color-stop(100%, #262877));
+  background-image: -webkit-linear-gradient(top, #202264, #262877);
+  background-image: -o-linear-gradient(top, #202264, #262877);
+  background-image: linear-gradient(top, #202264, #262877);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202264', endColorstr='#262877', GradientType=0);
   height: 38px;
 }
 #corp-logo {
