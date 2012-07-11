@@ -5917,6 +5917,20 @@ section {
   left: 0;
   /*Conversation button*/
 
+  /*> span {
+        	margin-left:10px;
+        	background: @themeColor2;
+        	padding:0;
+        	width:16px;
+        	height:16px;
+        	line-height:16px;
+        	text-align:center;
+        	text-indent:0;
+        	display:inline-block;
+        	color:#fff;
+        	.radius(50%);
+        } */
+
 }
 #MenuView a > span:first-child {
   background-color: #7bb730;
@@ -5929,20 +5943,21 @@ section {
 }
 #MenuView a > span > span {
   margin-left: 10px;
-  background: #7bb730;
-  padding: 0;
-  width: 16px;
+  width: 18px;
   height: 16px;
-  line-height: 16px;
+  background: url(../images/notifications-bubble.png) center top no-repeat;
+  line-height: 11px;
   text-align: center;
   text-indent: 0;
+  font-size: 10px;
   display: inline-block;
-  color: #fff;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
+  background-color: none !important;
+}
+#MenuView a > span > span.unread #notifications-link.tooltip {
+  color: #ff0000 !important;
+}
+#MenuView a > span > span.all-read #notifications-link.tooltip {
+  color: #7bb730 !important;
 }
 /*#MenuView .parent >*/
 #MenuView li.active > a > span,
@@ -5959,12 +5974,6 @@ section {
 }
 #MenuView li.active > a > span > span,
 #MenuView a:hover > span > span {
-  -webkit-box-shadow: inset 0 0 2px 0 #333333;
-  -moz-box-shadow: inset 0 0 2px 0 #333333;
-  -o-box-shadow: inset 0 0 2px 0 #333333;
-  -ms-box-shadow: inset 0 0 2px 0 #333333;
-  box-shadow: inset 0 0 2px 0 #333333;
-  background: #fff;
   color: #262877;
 }
 #MenuView li.active > a > span {
@@ -5972,12 +5981,6 @@ section {
   color: #fff;
 }
 #MenuView li.active > a > span > span {
-  -webkit-box-shadow: inset 0 0 2px 0 #333333;
-  -moz-box-shadow: inset 0 0 2px 0 #333333;
-  -o-box-shadow: inset 0 0 2px 0 #333333;
-  -ms-box-shadow: inset 0 0 2px 0 #333333;
-  box-shadow: inset 0 0 2px 0 #333333;
-  background: #fff;
   color: #262877;
 }
 /*=Recently Viewed*/
