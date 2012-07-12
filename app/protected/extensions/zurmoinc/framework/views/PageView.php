@@ -79,7 +79,7 @@
                 {
                     foreach (self::$xhtmlValidationErrors as $error)
                     {
-                        $content = $this->appentContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $error);
+                        $content = $this->appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $error);
                     }
                 }
                 if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
@@ -110,12 +110,12 @@
                     $performanceMessage .= 'Timing: ' . $id . ' total time: ' . number_format(($time), 3) . "</br>";
                 }
                 $performanceMessageHtml = '<div class="performance-info">' . $performanceMessage . '</div>';
-                $content = $this->appentContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $performanceMessageHtml);
+                $content = $this->appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $performanceMessageHtml);
             }
             if (YII_DEBUG && Yii::app()->isApplicationInstalled())
             {
                 $dbInfoHtml = '<span style="background-color: lightgreen; color: green">Database: \'' . Yii::app()->db->connectionString . '\', username: \'' . Yii::app()->db->username . '\'.</span><br />';
-                $content = $this->appentContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $dbInfoHtml);
+                $content = $this->appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $dbInfoHtml);
             }
             return $content;
         }
@@ -364,7 +364,13 @@
             return $scriptData;
         }
 
-        public function appentContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $additionalContent)
+        /**
+         * Add additional html conent before html body end("</body>") tag and html end tag ("</html>")
+         * @param string $content
+         * @param string $additionalContent
+         * @return string
+         */
+        public function appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $additionalContent)
         {
             $content = str_replace($this->renderXHtmlBodyEnd() . $this->renderXHtmlEnd() ,
                                    $additionalContent . $this->renderXHtmlBodyEnd() . $this->renderXHtmlEnd(),
