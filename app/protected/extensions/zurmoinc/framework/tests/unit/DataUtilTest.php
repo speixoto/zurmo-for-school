@@ -32,7 +32,7 @@
             $purifiedText = DataUtil::purifyHtml($text);
             $this->assertEquals($text, $purifiedText);
 
-            $text = "<IMG SRC=JaVaScRiPt:alert('XSS')>";
+            $text = "<IMG SRC=JaVaScRiPt:alert('XSS')>"; // Not Coding Standard
             $purifiedText = DataUtil::purifyHtml($text);
             $this->assertEquals('', $purifiedText);
 
@@ -54,7 +54,7 @@
             DataUtil::purifyHtmlAndModifyInput($text);
             $this->assertEquals('<b>This</b> is <a href="http://www.zurmo.com">valid text</a>', $text);
 
-            $text = "<IMG SRC=JaVaScRiPt:alert('XSS')>";
+            $text = "<IMG SRC=JaVaScRiPt:alert('XSS')>"; // Not Coding Standard
             DataUtil::purifyHtmlAndModifyInput($text);
             $this->assertEquals('', $text);
 
@@ -117,8 +117,8 @@
                 'url' => 'http://www.zurmo.org',
                 'dropDown' => array('value' => 'test value<SCRIPT>alert(\'XSS\')</SCRIPT>'),
                 'radioDropDown' => array('value' => 'my value'),
-                'multiDropDown' => array('values' => 'multi1,multi2'),
-                'tagCloud' => array('values' => 'tag1,tag2<SCRIPT>alert(\'XSS\')</SCRIPT>')
+                'multiDropDown' => array('values' => 'multi1,multi2'),                      // Not Coding Standard
+                'tagCloud' => array('values' => 'tag1,tag2<SCRIPT>alert(\'XSS\')</SCRIPT>') // Not Coding Standard
             );
             $model = new TestDataUtilModel;
             $sanitizedData = DataUtil::sanitizeDataByDesignerTypeForSavingModel($model, $data);
@@ -136,7 +136,7 @@
                 'url' => 'http://www.zurmo.org',
                 'dropDown' => array('value' => 'test value'),
                 'radioDropDown' => array('value' => 'my value'),
-                'multiDropDown' => array('values' => 'multi1,multi2'),
+                'multiDropDown' => array('values' => 'multi1,multi2'), // Not Coding Standard
                 'tagCloud' => array('values' => array('tag1', 'tag2'))
             );
             $this->assertEquals($compareData, $sanitizedData);

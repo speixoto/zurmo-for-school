@@ -83,7 +83,6 @@
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
-
         }
 
         public function actionConfigurationEditArchiving()
@@ -111,7 +110,6 @@
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
-
         }
 
         /**
