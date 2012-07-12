@@ -33,11 +33,9 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
         }
-
-        
+     
         public function testValidateDynamicStructure()
-        {
-            
+        {            
             /*
              * Test valide use of parenthesis
              */
@@ -45,10 +43,9 @@
             $searchForm->dynamicClauses   = array(
                                     array('structurePosition' => '1'),
                                     array('structurePosition' => '2'));
-            $searchForm->dynamicStructure = ('(1 AND 2 )');
+            $searchForm->dynamicStructure = '(1 AND 2 )';
             $searchForm->validateDynamicStructure('dynamicStructure','');            
-            $this->assertFalse($searchForm->hasErrors());
-            
+            $this->assertFalse($searchForm->hasErrors());      
             
             /*
              * Test valide use of operators
@@ -57,15 +54,15 @@
             $searchForm->dynamicClauses   = array(
                                     array('structurePosition' => '1'),
                                     array('structurePosition' => '2'));
-            $searchForm->dynamicStructure = ('1 AND 2 ');
+            $searchForm->dynamicStructure = '1 AND 2 ';
             $searchForm->validateDynamicStructure('dynamicStructure','');
             $this->assertFalse($searchForm->hasErrors());            
-            $searchForm->dynamicStructure = ('1 and 2 ');
+            $searchForm->dynamicStructure = '1 and 2 ';
             $searchForm->validateDynamicStructure('dynamicStructure','');
             $this->assertFalse($searchForm->hasErrors());            
-            $searchForm->dynamicStructure = ('1 oR 2 ');
+            $searchForm->dynamicStructure = '1 oR 2 ';
             $searchForm->validateDynamicStructure('dynamicStructure','');
-            $this->assertFalse($searchForm->hasErrors());            
+            $this->assertFalse($searchForm->hasErrors());   
             
             /*
              * Test invalide use of parenthesis
@@ -74,13 +71,13 @@
             $searchForm->dynamicClauses   = array(
                                     array('structurePosition' => '1'),
                                     array('structurePosition' => '2'));
-            $searchForm->dynamicStructure = ('1 ( 2');
+            $searchForm->dynamicStructure = '1 ( 2';
             $searchForm->validateDynamicStructure('dynamicStructure','');
             $this->assertTrue($searchForm->hasErrors());            
-            $searchForm->dynamicStructure = ('1 ) 2 )');
+            $searchForm->dynamicStructure = '1 ) 2 )';
             $searchForm->validateDynamicStructure('dynamicStructure','');
             $this->assertTrue($searchForm->hasErrors());            
-            $searchForm->dynamicStructure = ('1 ( 2 ())))');
+            $searchForm->dynamicStructure = '1 ( 2 ())))';
             $searchForm->validateDynamicStructure('dynamicStructure','');
             $this->assertTrue($searchForm->hasErrors());            
             
@@ -91,16 +88,15 @@
             $searchForm->dynamicClauses   = array(
                                     array('structurePosition' => '1'),
                                     array('structurePosition' => '2'));
-            $searchForm->dynamicStructure = ('1 AND 3');
+            $searchForm->dynamicStructure = '1 AND 3';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
             $this->assertTrue($searchForm->hasErrors());
-            $searchForm->dynamicStructure = ('1 AND 10');
+            $searchForm->dynamicStructure = '1 AND 10';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
             $this->assertTrue($searchForm->hasErrors());
-            $searchForm->dynamicStructure = ('1 AND -5');
+            $searchForm->dynamicStructure = '1 AND -5';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
-            $this->assertTrue($searchForm->hasErrors());
-            
+            $this->assertTrue($searchForm->hasErrors());            
             
             /*
              * Test invalid use of operators
@@ -109,16 +105,15 @@
             $searchForm->dynamicClauses   = array(
                                     array('structurePosition' => '1'),
                                     array('structurePosition' => '2'));
-            $searchForm->dynamicStructure = ('1 + 2');
+            $searchForm->dynamicStructure = '1 + 2';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
             $this->assertTrue($searchForm->hasErrors());
-            $searchForm->dynamicStructure = ('1 A* 2');
+            $searchForm->dynamicStructure = '1 A* 2';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
             $this->assertTrue($searchForm->hasErrors());
-            $searchForm->dynamicStructure = ('1 * 2');
+            $searchForm->dynamicStructure = '1 * 2';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
-            $this->assertTrue($searchForm->hasErrors());
-            
+            $this->assertTrue($searchForm->hasErrors());            
             
             /*
              * Test other invalid expressions
@@ -127,17 +122,15 @@
             $searchForm->dynamicClauses   = array(
                                     array('structurePosition' => '1'),
                                     array('structurePosition' => '2'));
-            $searchForm->dynamicStructure = ('1 OR OR 2');
+            $searchForm->dynamicStructure = '1 OR OR 2';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
             $this->assertTrue($searchForm->hasErrors());
-            $searchForm->dynamicStructure = ('1 AND ( ) 2');
+            $searchForm->dynamicStructure = '1 AND ( ) 2';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
             $this->assertTrue($searchForm->hasErrors());
-            $searchForm->dynamicStructure = ('OR 2 AND 1');
+            $searchForm->dynamicStructure = 'OR 2 AND 1';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
-            $this->assertTrue($searchForm->hasErrors());
-                                      
-        }
-        
+            $this->assertTrue($searchForm->hasErrors());                                      
+        }        
     }
 ?>
