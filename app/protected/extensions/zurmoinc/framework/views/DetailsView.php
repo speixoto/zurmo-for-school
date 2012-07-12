@@ -71,7 +71,7 @@
             }
             $content .= $this->renderFormLayout();
             $content .= $this->renderRightSideContent();
-            $content .= '<p>' . $this->renderAfterFormLayoutForDetailsContent() . '</p>';
+            $content .= $this->renderAfterFormLayoutForDetailsContent();
             $content .= '</div>';
             return $content;
         }

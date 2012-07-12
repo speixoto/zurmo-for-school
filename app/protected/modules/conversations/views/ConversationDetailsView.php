@@ -126,12 +126,11 @@
             $getParams    = array('relatedModelId'           => $this->model->id,
                                   'relatedModelClassName'    => get_class($this->model),
                                   'relatedModelRelationName' => 'comments');
-            $content      = parent::renderAfterFormLayoutForDetailsContent();
             $pageSize     = 5;
             $commentsData = Comment::getCommentsByRelatedModelTypeIdAndPageSize(get_class($this->model),
                                                                                 $this->modelId, ($pageSize + 1));
             $view         = new CommentsForRelatedModelView('default', 'comments', $commentsData, $this->model, $pageSize, $getParams);
-            $content     .= $view->render();
+            $content      = $view->render();
             return $content;
         }
 
