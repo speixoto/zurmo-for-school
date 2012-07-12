@@ -132,6 +132,7 @@
                     $emailHelper->outboundPort     = $configurationForm->port;
                     $emailHelper->outboundUsername = $configurationForm->username;
                     $emailHelper->outboundPassword = $configurationForm->password;
+                    $emailHelper->outboundSecurity = $configurationForm->security;
                     $userToSendMessagesFrom        = User::getById((int)$configurationForm->userIdOfUserToSendNotificationsAs);
 
                     $emailMessage              = new EmailMessage();

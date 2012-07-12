@@ -90,6 +90,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'security', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'userIdOfUserToSendNotificationsAs',
                                                       'type' => 'UserToSendNotificationFrom'),
                                             ),
