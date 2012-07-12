@@ -63,11 +63,57 @@
 
         public function validateDynamicStructure($attribute, $params)
         {
-            //todo: test for valid structure math.
-            //CalculatedNumberUtil::isFormulaValid <- something like this maybe
-            //$this->addError('dynamicStructure', Yii::t('Default', 'The structure is invalid'));
+            $formula = strtolower($this->$attribute);
+            if (!$this-> validateParenthesis($formula)) 
+            {
+                $error = "Please fix your parenthesis.";
+            } else {
+                $formula = str_replace("(","", $formula);
+                $formula = str_replace(")","", $formula);
+                $arguments = preg_split("/or|and/", $formula);
+                foreach ($arguments as $argument)
+                {
+                    if (!is_numeric(trim($argument)) 
+                        || !(intval(trim($argument)) <= count($this->dynamicClauses)) 
+                        || !(preg_match("/\./", $argument) === 0) )
+                    {
+                        $error = "Please use only integers lesser than " . count($this->dynamicClauses) .".";
+                    }
+                }              
+            } 
+            if (isset($error)) {
+                $this->addError('dynamicStructure', Yii::t('Default', 'The structure is invalid. ' . $error));
+            }
         }
 
+        /*
+         * Function for validation of parentises in a formula
+         */
+        public function  validateParenthesis($formula)
+        {
+            $val = 0;
+            for ($i = 0; $i <= strlen($formula); $i++) {
+                $char = substr($formula, $i, 1);            
+                if ($char === "(") 
+                {
+                    $val += 1;                    
+                } elseif ($char === ")") {
+                    $val -= 1;
+                }
+                if ($val < 0)  {return false;}
+            }
+            if ($val!==0) 
+            {
+                return false;
+                
+            } else {
+                return true;    
+            }
+        }
+
+
+
+        
         public function validateDynamicClauses($attribute, $params)
         {
             if($this->$attribute != null)
