@@ -1595,9 +1595,12 @@ table.items thead tr:hover{
         border-bottom:1px solid #bababa;
     }
     a{
-        color:#333333;
+        color:#656565 !important;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
+        &.attachLoading{
+            color: #fff !important;
+        }
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         }
@@ -1837,6 +1840,9 @@ label.hasCheckBox{
 div.wide.form{
     label.hasCheckBox{
         margin-top:0 !important;
+    }
+    a{
+        color:@themeColor;
     }
 }
 

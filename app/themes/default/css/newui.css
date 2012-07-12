@@ -1275,13 +1275,16 @@ table.configuration-list tr td:last-child a:before {
   border-bottom: 1px solid #bababa;
 }
 #currency-collection-form .portlet-toolbar a {
-  color: #333333;
+  color: #656565 !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+#currency-collection-form .portlet-toolbar a.attachLoading {
+  color: #fff !important;
 }
 #currency-collection-form .portlet-toolbar a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -6915,13 +6918,17 @@ table.items thead tr:hover {
 }
 .modal-view-toolbar a,
 .form-toolbar a {
-  color: #333333;
+  color: #656565 !important;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+.modal-view-toolbar a.attachLoading,
+.form-toolbar a.attachLoading {
+  color: #fff !important;
 }
 .modal-view-toolbar a:not(.attachLoading),
 .form-toolbar a:not(.attachLoading) {
@@ -7261,6 +7268,9 @@ label.hasCheckBox  + label {
 }
 div.wide.form label.hasCheckBox {
   margin-top: 0 !important;
+}
+div.wide.form a {
+  color: #262877;
 }
 .ui-multiselect-checkboxes label {
   padding-left: 25px;
