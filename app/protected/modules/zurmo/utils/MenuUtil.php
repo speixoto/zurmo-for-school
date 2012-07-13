@@ -40,6 +40,7 @@
                 $items = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
                 GeneralCache::cacheEntry(self::getMenuViewItemsCacheIdentifier(), $items);
             }
+            static::resolveTabMenuForDynamicLabelContent($items);
             return $items;
         }
 
@@ -191,6 +192,17 @@
             assert('is_string($moduleClassName)');
             $user      = Yii::app()->user->userModel;
             $metadata  = $moduleClassName::getConfigureMenuItems();
+            $menuItems = MenuUtil::resolveModuleMenuForAccess($moduleClassName, $metadata, $user);
+            return self::resolveMenuItemsForLanguageLocalization(  $menuItems,
+                                                    $moduleClassName,
+                                                    array('titleLabel', 'descriptionLabel'));
+        }
+
+        public static function getAccessibleConfigureSubMenuByCurrentUser($moduleClassName)
+        {
+            assert('is_string($moduleClassName)');
+            $user      = Yii::app()->user->userModel;
+            $metadata  = $moduleClassName::getConfigureSubMenuItems();
             $menuItems = MenuUtil::resolveModuleMenuForAccess($moduleClassName, $metadata, $user);
             return self::resolveMenuItemsForLanguageLocalization(  $menuItems,
                                                     $moduleClassName,
@@ -444,6 +456,21 @@
                 }
             }
             return $menuItems;
+        }
+
+        protected static function resolveTabMenuForDynamicLabelContent(& $items)
+        {
+            foreach ($items as $key => $item)
+            {
+                if (isset($items[$key]['dynamicLabelContent']))
+                {
+                    MetadataUtil::resolveEvaluateSubString($items[$key]['dynamicLabelContent']);
+                    if(isset($items[$key]['items']))
+                    {
+                        static::resolveTabMenuForDynamicLabelContent($items[$key]['items']);
+                    }
+                }
+            }
         }
     }
 ?>

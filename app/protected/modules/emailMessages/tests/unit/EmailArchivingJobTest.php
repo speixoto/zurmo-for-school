@@ -28,56 +28,72 @@
     {
         public static $userMailer;
         public static $userImap;
+        public static $emailHelperSendEmailThroughTransport;
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            UserTestHelper::createBasicUser('aaa');
-            UserTestHelper::createBasicUser('bbb');
-            UserTestHelper::createBasicUser('ccc');
-            UserTestHelper::createBasicUser('ddr');
-            UserTestHelper::createBasicUser('steve');
-            UserTestHelper::createBasicUser('eeer');
-            UserTestHelper::createBasicUser('ffrr');
-            UserTestHelper::createBasicUser('john');
+            self::$emailHelperSendEmailThroughTransport = Yii::app()->emailHelper->sendEmailThroughTransport;
 
-            Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
-            Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
-            Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
-            Yii::app()->imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
-            Yii::app()->imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
-            Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
-            Yii::app()->imap->setInboundSettings();
-            Yii::app()->imap->init();
+            if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                UserTestHelper::createBasicUser('aaa');
+                UserTestHelper::createBasicUser('bbb');
+                UserTestHelper::createBasicUser('ccc');
+                UserTestHelper::createBasicUser('ddr');
+                UserTestHelper::createBasicUser('steve');
+                UserTestHelper::createBasicUser('eeer');
+                UserTestHelper::createBasicUser('ffrr');
+                UserTestHelper::createBasicUser('john');
 
-            Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
-            Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
-            Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
-            Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
-            Yii::app()->emailHelper->sendEmailThroughTransport = true;
-            Yii::app()->emailHelper->setOutboundSettings();
-            Yii::app()->emailHelper->init();
+                Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+                Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+                Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+                Yii::app()->imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+                Yii::app()->imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+                Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+                Yii::app()->imap->setInboundSettings();
+                Yii::app()->imap->init();
 
+                Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
+                Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
+                Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
+                Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
+                Yii::app()->emailHelper->sendEmailThroughTransport = true;
+                Yii::app()->emailHelper->setOutboundSettings();
+                Yii::app()->emailHelper->init();
 
-            $userSmtpMailer = new EmailHelperForTesting();
-            $userSmtpMailer->outboundHost     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundHost'];
-            $userSmtpMailer->outboundPort     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPort'];
-            $userSmtpMailer->outboundUsername = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundUsername'];
-            $userSmtpMailer->outboundPassword = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPassword'];
-            $userSmtpMailer->setOutboundSettings();
-            $userSmtpMailer->init();
-            $userSmtpMailer->sendEmailThroughTransport = true;
-            self::$userMailer = $userSmtpMailer;
+                $userSmtpMailer = new EmailHelperForTesting();
+                $userSmtpMailer->outboundHost     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundHost'];
+                $userSmtpMailer->outboundPort     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPort'];
+                $userSmtpMailer->outboundUsername = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundUsername'];
+                $userSmtpMailer->outboundPassword = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPassword'];
+                $userSmtpMailer->setOutboundSettings();
+                $userSmtpMailer->init();
+                $userSmtpMailer->sendEmailThroughTransport = true;
+                self::$userMailer = $userSmtpMailer;
+            }
         }
 
-        public function setup(){
+        public function setup()
+        {
             parent::setup();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $user = User::getByUsername('steve');
-            $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
-            $this->assertTrue($user->save());
+
+            if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $user = User::getByUsername('steve');
+                $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+                $this->assertTrue($user->save());
+            }
+        }
+
+        public static function tearDownAfterClass()
+        {
+            Yii::app()->emailHelper->sendEmailThroughTransport = self::$emailHelperSendEmailThroughTransport;
+            parent::tearDownAfterClass();
         }
 
         /**
@@ -86,6 +102,10 @@
         */
         public function testRunCaseOne()
         {
+            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $this->markTestSkipped(Yii::t('Default', 'Test email settings are not configured in perInstanceTest.php file.'));
+            }
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
@@ -160,6 +180,10 @@
         */
         public function testRunCaseTwo()
         {
+            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $this->markTestSkipped(Yii::t('Default', 'Test email settings are not configured in perInstanceTest.php file.'));
+            }
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
@@ -232,6 +256,10 @@
         */
         public function testRunCaseThree()
         {
+            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $this->markTestSkipped(Yii::t('Default', 'Test email settings are not configured in perInstanceTest.php file.'));
+            }
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
@@ -255,6 +283,7 @@
             $filePath_1    = $pathToFiles . DIRECTORY_SEPARATOR . 'table.csv';
             $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
 
+            // Begin Not Coding Standard
             $textBody = "
 ---------- Forwarded message ----------
 From: Steve <" . Yii::app()->params['emailTestAccounts']['testEmailAddress'] . ">
@@ -274,7 +303,7 @@ To: Steve <steve@example.com>
 
 <strong>Hello</strong> Steve
 ";
-
+            // End Not Coding Standard
             //Now user forward email to dropbox
             $subject = "Fwd: Email from John";
             Yii::app()->emailHelper->sendRawEmail($subject,
@@ -318,6 +347,10 @@ To: Steve <steve@example.com>
         */
         public function testRunCaseFour()
         {
+            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $this->markTestSkipped(Yii::t('Default', 'Test email settings are not configured in perInstanceTest.php file.'));
+            }
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
@@ -369,6 +402,10 @@ To: Steve <steve@example.com>
         */
         public function testRunCaseFive()
         {
+            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $this->markTestSkipped(Yii::t('Default', 'Test email settings are not configured in perInstanceTest.php file.'));
+            }
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
@@ -425,7 +462,7 @@ To: Steve <steve@example.com>
                 $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             }
-            $this->assertEquals(EmailFolder::TYPE_ARCHIVED, $emailMessage->folder->type);
+            $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
 
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());

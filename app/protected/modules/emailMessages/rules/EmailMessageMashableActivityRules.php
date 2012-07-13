@@ -101,25 +101,22 @@
                    "{relatedModelsByImportanceContent} </span><br/><span>{modelStringContent}</span>";
         }
 
-        public function renderRelatedModelsByImportanceContent(RedBeanModel $model, $lineBreak = false)
+        public function renderRelatedModelsByImportanceContent(RedBeanModel $model)
         {
             $content = null;
             if ($model->sender != null  && $model->sender->id > 0)
             {
-                $senderContent  = Yii::t('Default', 'from: {senderContent}',
+                $content .= Yii::t('Default', 'from: {senderContent}',
                                     array('{senderContent}' => static::getSenderContent($model->sender)));
-                $content       .= CHtml::tag('span', array(), $senderContent);
             }
-            if($model->recipients->count() > 0)
+            if ($model->recipients->count() > 0)
             {
-                $recipientContent = null;
-                if($content != null)
+                if ($content != null)
                 {
-                    $recipientContent .= ' ';
+                    $content .= ' ';
                 }
-                $recipientContent .= Yii::t('Default', 'to: {recipientContent}',
-                                     array('{recipientContent}' => static::getRecipientsContent($model->recipients)));
-                $content       .= CHtml::tag('span', array(), $recipientContent);
+                $content .= Yii::t('Default', 'to: {recipientContent}',
+                                    array('{recipientContent}' => static::getRecipientsContent($model->recipients)));
             }
             return $content;
         }
@@ -127,7 +124,7 @@
         public static function getSenderContent(EmailMessageSender $emailMessageSender)
         {
             $existingModels  = array();
-            if($emailMessageSender->personOrAccount->id < 0)
+            if ($emailMessageSender->personOrAccount->id < 0)
             {
                 return $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
             }
@@ -145,44 +142,48 @@
                             }
                 return self::resolveStringValueModelsDataToStringContent($existingModels);
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 return $emailMessageSender->fromAddress;
             }
         }
 
-        public static function getRecipientsContent(RedBeanOneToManyRelatedModels $recipients)
+        public static function getRecipientsContent(RedBeanOneToManyRelatedModels $recipients, $type = null)
         {
+            assert('$type == null || $type == EmailMessageRecipient::TYPE_TO ||
+                    EmailMessageRecipient::TYPE_CC || EmailMessageRecipient::TYPE_BCC');
             $existingModels  = array();
-            if($recipients->count() == 0)
+            if ($recipients->count() == 0)
             {
                 return;
             }
-            foreach($recipients as $recipient)
+            foreach ($recipients as $recipient)
             {
-                if($recipient->personOrAccount->id < 0)
+                if ($type == null || $recipient->type == $type)
                 {
-                    $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
-                }
-                else
-                {
-                    $castedDownModel = self::castDownItem($recipient->personOrAccount);
-                    try
-                    {
-                        if (strval($castedDownModel) != null)
-                                    {
-                                        $params          = array('label' => strval($castedDownModel));
-                                        $moduleClassName = $castedDownModel->getModuleClassName();
-                                        $moduleId        = $moduleClassName::getDirectoryName();
-                                        $element         = new DetailsLinkActionElement('default', $moduleId,
-                                                                                        $castedDownModel->id, $params);
-                                        $existingModels[] = $element->render();
-                                    }
-
-                    }
-                    catch(AccessDeniedSecurityException $e)
+                    if ($recipient->personOrAccount->id < 0)
                     {
                         $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
+                    }
+                    else
+                    {
+                        $castedDownModel = self::castDownItem($recipient->personOrAccount);
+                        try
+                        {
+                            if (strval($castedDownModel) != null)
+                                        {
+                                            $params          = array('label' => strval($castedDownModel));
+                                            $moduleClassName = $castedDownModel->getModuleClassName();
+                                            $moduleId        = $moduleClassName::getDirectoryName();
+                                            $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                                            $castedDownModel->id, $params);
+                                            $existingModels[] = $element->render();
+                                        }
+                        }
+                        catch (AccessDeniedSecurityException $e)
+                        {
+                            $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
+                        }
                     }
                 }
             }
@@ -191,7 +192,7 @@
 
         protected static function castDownItem(Item $item)
         {
-            foreach(array('Contact', 'User', 'Account') as $modelClassName)
+            foreach (array('Contact', 'User', 'Account') as $modelClassName)
             {
                 try
                 {

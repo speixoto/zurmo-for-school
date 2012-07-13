@@ -31,20 +31,7 @@
     {
         public function getLatestActivityExtraDisplayStringByModel($model)
         {
-            $content = null;
-            if ($model->files->count() > 0)
-            {
-                foreach ($model->files as $fileModel)
-                {
-                    if ($content != null)
-                    {
-                        $content .= ', ';
-                    }
-                $content .= FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($model,
-                                                                                                       $fileModel);
-                }
-            }
-            return $content;
+            return FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($model, 'files');
         }
 
         /**
@@ -62,12 +49,12 @@
                 {
                     return "<span>{modelStringContent}</span><br/><span>{relatedModelsByImportanceContent} " .
                            "</span><span class='less-pronounced-text'>" .
-                           Yii::t('Default', 'by {ownerStringContent}') . "</span>";
+                           Yii::t('Default', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";
                 }
                 else
                 {
                     return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
-                           Yii::t('Default', 'by {ownerStringContent}') . "</span>";
+                           Yii::t('Default', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";
                 }
             }
             else
@@ -79,7 +66,7 @@
                 }
                 else
                 {
-                    return "<span>{modelStringContent}</span>";
+                    return "<span>{modelStringContent}</span><span>{extraContent}</span>";
                 }
             }
         }

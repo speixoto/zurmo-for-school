@@ -29,6 +29,8 @@
      */
     class EmailArchivingJob extends BaseJob
     {
+        public static $jobOwnerUserModel;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -67,7 +69,7 @@
          */
         public function run()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
+            self::$jobOwnerUserModel = Yii::app()->user->userModel;
             Yii::app()->imap->connect();
 
             $lastImapCheckTime     = EmailMessagesModule::getLastImapDropboxCheckTime();
@@ -88,140 +90,20 @@
             {
                 foreach ($messages as $message)
                 {
+                    Yii::app()->user->userModel = self::$jobOwnerUserModel;
+
                     $emailSenderOrRecepientEmailNotFoundInSystem = false;
                     $lastMessageCreatedTime = strtotime($message->createdDate);
                     if (strtotime($message->createdDate) > strtotime($lastCheckTime))
                     {
                         $lastCheckTime = $message->createdDate;
                     }
-
-                    // Get owner for message
-                    try {
-                        $emailOwner = EmailArchivingUtil::resolveOwnerOfEmailMessage($message);
-                    }
-                    catch (CException $e)
-                    {
-                        // User not found, or few users share same primary email address,
-                        // so inform user about issue and continue with next email.
-                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
-                        continue;
-                    }
-
-                    $senderInfo = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($message);
-                    if (!$senderInfo)
-                    {
-                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('SenderNotExtracted', $message);
-                        continue;
-                    }
-                    else
-                    {
-                        $sender                    = new EmailMessageSender();
-                        $sender->fromAddress       = $senderInfo['email'];
-                        if (isset($senderInfo['name']))
-                        {
-                            $sender->fromName          = $senderInfo['name'];
-                        }
-
-                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($senderInfo['email']);
-                        $sender->personOrAccount = $personOrAccount;
-                        if(!isset($personOrAccount))
-                        {
-                            $emailSenderOrRecepientEmailNotFoundInSystem = true;
-                        }
-                    }
-
-                    $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
-                    if (!$recipientsInfo)
-                    {
-                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('RecipientNotExtracted', $message);
-                        continue;
-                    }
-
-                    $emailMessage = new EmailMessage();
-                    $emailMessage->owner   = $emailOwner;
-                    $emailMessage->subject = $message->subject;
-
-                    $emailContent              = new EmailMessageContent();
-                    $emailContent->textContent = $message->textBody;
-                    $emailContent->htmlContent = $message->htmlBody;
-                    $emailMessage->content     = $emailContent;
-                    $emailMessage->sender      = $sender;
-
-                    foreach ($recipientsInfo as $recipientInfo)
-                    {
-                        $recipient                 = new EmailMessageRecipient();
-                        $recipient->toAddress      = $recipientInfo['email'];
-                        $recipient->toName         = $recipientInfo['name'];
-                        $recipient->type           = EmailMessageRecipient::TYPE_TO;
-
-                        $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($recipientInfo['email']);
-                        $recipient->personOrAccount = $personOrAccount;
-                        $emailMessage->recipients->add($recipient);
-
-                        // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
-                        // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
-                        // be able to match emails with items(Contacts, Accounts...) emails in systems
-                        if(!isset($personOrAccount))
-                        {
-                            $emailSenderOrRecepientEmailNotFoundInSystem = true;
-                        }
-                    }
-
-                    $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-
-                    if ($emailSenderOrRecepientEmailNotFoundInSystem)
-                    {
-                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
-                    }
-                    else
-                    {
-                        $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
-                    }
-
-                    if (!empty($message->attachments))
-                    {
-                        foreach($message->attachments as $attachment)
-                        {
-                            if (!$attachment['is_attachment'])
-                            {
-                                continue;
-                            }
-                            // Save attachments
-                            $fileContent          = new FileContent();
-                            $fileContent->content = $attachment['attachment'];
-                            $file                 = new EmailFileModel();
-                            $file->fileContent    = $fileContent;
-                            $file->name           = $attachment['filename'];
-                            $file->type           = ZurmoFileHelper::getMimeType($attachment['filename']);
-                            $file->size           = strlen($attachment['attachment']);
-                            $saved                = $file->save();
-                            assert('$saved'); // Not Coding Standard
-                            $emailMessage->files->add($file);
-                        }
-                    }
-                    $validated                 = $emailMessage->validate();
-                    if (!$validated)
-                    {
-                        // Email message couldn't be validated(some related models can't be validated). Email user.
-                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotValidated', $message);
-                    }
-
-                    $saved = $emailMessage->save();
-                    try {
-                        if (!$saved)
-                        {
-                            throw new NotSupportedException();
-                        }
-                        Yii::app()->imap->deleteMessage($message->msgNumber);
-                    }
-                    catch (NotSupportedException $e)
-                    {
-                        // Email message couldn't be saved. Inform user
-                        $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotSaved', $message);
-                    }
+                    $this->saveEmailMessage($message);
                 }
+                Yii::app()->user->userModel = self::$jobOwnerUserModel;
                 Yii::app()->imap->expungeMessages();
-                if ($lastCheckTime != ''){
+                if ($lastCheckTime != '')
+                {
                     EmailMessagesModule::setLastImapDropboxCheckTime($lastCheckTime);
                 }
             }
@@ -243,6 +125,11 @@
                     $subject = Yii::t('Default', 'Invalid email address.');
                     $textContent = Yii::t('Default', 'Email address does not exist in system.') . "\n\n" . $originalMessage->textBody;
                     $htmlContent = Yii::t('Default', 'Email address does not exist in system.') . "<br><br>" . $originalMessage->htmlBody;
+                    break;
+                case "NoRighsForModule":
+                    $subject = Yii::t('Default', 'No rights for modules or connected person or account.');
+                    $textContent = Yii::t('Default', 'You do not have rights to access email message module or to create new email message or no rights to connect email message with contact, account or user.') . "\n\n" . $originalMessage->textBody;
+                    $htmlContent = Yii::t('Default', 'You do not have rights to access email message module or to create new email message or no rights to connect email message with contact, account or user.') . "<br><br>" . $originalMessage->htmlBody;
                     break;
                 case "SenderNotExtracted":
                     $subject = Yii::t('Default', "Sender info can't be extracted from email message.");
@@ -268,6 +155,208 @@
                     throw NotSupportedException();
             }
             return EmailMessageHelper::sendSystemEmail($subject, array($originalMessage->fromEmail), $textContent, $htmlContent);
+        }
+
+        /**
+         * Create EmailMessageSender
+         * @param array $senderInfo
+         * @param boolean $userCanAccessContacts
+         * @param boolean $userCanAccessLeads
+         * @param boolean $userCanAccessAccounts
+         * @param boolean $userCanAccessUsers
+         * @return EmailMessageSender
+         */
+        protected function createEmailMessageSender($senderInfo, $userCanAccessContacts, $userCanAccessLeads,
+                                                     $userCanAccessAccounts, $userCanAccessUsers)
+        {
+            $sender                    = new EmailMessageSender();
+            $sender->fromAddress       = $senderInfo['email'];
+            if (isset($senderInfo['name']))
+            {
+                $sender->fromName          = $senderInfo['name'];
+            }
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+                    $senderInfo['email'],
+                    $userCanAccessContacts,
+                    $userCanAccessLeads,
+                    $userCanAccessAccounts,
+                    $userCanAccessUsers
+            );
+            $sender->personOrAccount = $personOrAccount;
+            return $sender;
+        }
+
+        /**
+         * Create EmailMessageRecipient
+         * @param array $recipientInfo
+         * @param boolean $userCanAccessContacts
+         * @param boolean $userCanAccessLeads
+         * @param boolean $userCanAccessAccounts
+         * @param boolean $userCanAccessUsers
+         * @return EmailMessageRecipient
+         */
+        protected function createEmailMessageRecipient($recipientInfo, $userCanAccessContacts, $userCanAccessLeads,
+                                                     $userCanAccessAccounts, $userCanAccessUsers)
+        {
+            $recipient                 = new EmailMessageRecipient();
+            $recipient->toAddress      = $recipientInfo['email'];
+            $recipient->toName         = $recipientInfo['name'];
+            $recipient->type           = EmailMessageRecipient::TYPE_TO;
+
+            $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
+                    $recipientInfo['email'],
+                    $userCanAccessContacts,
+                    $userCanAccessLeads,
+                    $userCanAccessAccounts,
+                    $userCanAccessUsers
+            );
+            $recipient->personOrAccount = $personOrAccount;
+            return $recipient;
+        }
+
+        /**
+         * Create EmailFileModel
+         * @param array $attachment
+         * @return EmailFileModel
+         */
+        protected function createEmailAttachment($attachment)
+        {
+            // Save attachments
+            $fileContent          = new FileContent();
+            $fileContent->content = $attachment['attachment'];
+            $file                 = new EmailFileModel();
+            $file->fileContent    = $fileContent;
+            $file->name           = $attachment['filename'];
+            $file->type           = ZurmoFileHelper::getMimeType($attachment['filename']);
+            $file->size           = strlen($attachment['attachment']);
+            $saved                = $file->save();
+            assert('$saved'); // Not Coding Standard
+            return $file;
+        }
+
+        protected function saveEmailMessage($message)
+        {
+            // Get owner for message
+            try
+            {
+                $emailOwner = EmailArchivingUtil::resolveOwnerOfEmailMessage($message);
+            }
+            catch (CException $e)
+            {
+                // User not found, or few users share same primary email address,
+                // so inform user about issue and continue with next email.
+                $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
+                return false;
+            }
+
+            Yii::app()->user->userModel = $emailOwner;
+            $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
+            $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    Yii::app()->user->userModel);
+            $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', Yii::app()->user->userModel);
+            $userCanAccessUsers    = RightsUtil::canUserAccessModule('UsersModule',    Yii::app()->user->userModel);
+
+            if (!($userCanAccessContacts || $userCanAccessLeads || $userCanAccessAccounts || $userCanAccessUsers) &&
+                RightsUtil::doesUserHaveAllowByRightName('EmailMessagesModule', EmailMessagesModule::RIGHT_ACCESS_EMAIL_MESSAGES, $emailOwner) &&
+                RightsUtil::doesUserHaveAllowByRightName('EmailMessagesModule', EmailMessagesModule::RIGHT_CREATE_EMAIL_MESSAGES, $emailOwner))
+            {
+                $this->resolveMessageSubjectAndContentAndSendSystemMessage('NoRighsForModule', $message);
+                return false;
+            }
+
+            $senderInfo = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($message);
+            if (!$senderInfo)
+            {
+                $this->resolveMessageSubjectAndContentAndSendSystemMessage('SenderNotExtracted', $message);
+                return false;
+            }
+            else
+            {
+                $sender = $this->createEmailMessageSender($senderInfo, $userCanAccessContacts,
+                              $userCanAccessLeads, $userCanAccessAccounts, $userCanAccessUsers);
+
+                if (empty($sender->personOrAccount) || $sender->personOrAccount->id <= 0)
+                {
+                    $emailSenderOrRecepientEmailNotFoundInSystem = true;
+                }
+            }
+
+            Yii::app()->user->userModel = self::$jobOwnerUserModel;
+            $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
+            if (!$recipientsInfo)
+            {
+                $this->resolveMessageSubjectAndContentAndSendSystemMessage('RecipientNotExtracted', $message);
+                return false;
+            }
+
+            $emailMessage = new EmailMessage();
+            $emailMessage->owner   = $emailOwner;
+            $emailMessage->subject = $message->subject;
+
+            $emailContent              = new EmailMessageContent();
+            $emailContent->textContent = $message->textBody;
+            $emailContent->htmlContent = $message->htmlBody;
+            $emailMessage->content     = $emailContent;
+            $emailMessage->sender      = $sender;
+
+            foreach ($recipientsInfo as $recipientInfo)
+            {
+                $recipient = $this->createEmailMessageRecipient($recipientInfo, $userCanAccessContacts,
+                                 $userCanAccessLeads, $userCanAccessAccounts, $userCanAccessUsers);
+                $emailMessage->recipients->add($recipient);
+                // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
+                // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
+                // be able to match emails with items(Contacts, Accounts...) emails in systems
+                if (empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0)
+                {
+                    $emailSenderOrRecepientEmailNotFoundInSystem = true;
+                }
+            }
+
+            $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            if ($emailSenderOrRecepientEmailNotFoundInSystem)
+            {
+                $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
+            }
+            else
+            {
+                $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+            }
+
+            if (!empty($message->attachments))
+            {
+                foreach ($message->attachments as $attachment)
+                {
+                    if (!$attachment['is_attachment'])
+                    {
+                        continue;
+                    }
+                    $file = $this->createEmailAttachment($attachment);
+                    $emailMessage->files->add($file);
+                }
+            }
+            $validated                 = $emailMessage->validate();
+            if (!$validated)
+            {
+                // Email message couldn't be validated(some related models can't be validated). Email user.
+                $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotValidated', $message);
+            }
+
+            $saved = $emailMessage->save();
+            try
+            {
+                if (!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+                Yii::app()->imap->deleteMessage($message->msgNumber);
+            }
+            catch (NotSupportedException $e)
+            {
+                // Email message couldn't be saved. Email user.
+                $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotSaved', $message);
+                return false;
+            }
+            return true;
         }
     }
 ?>

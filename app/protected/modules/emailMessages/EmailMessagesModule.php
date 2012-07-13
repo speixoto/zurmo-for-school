@@ -86,6 +86,22 @@
                         'order' => 7,
                     ),
                 ),
+                'configureSubMenuItems' => array(
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'Email SMTP Configuration',
+                        'descriptionLabel' => 'Manage Email SMTP Configuration',
+                        'route'            => '/emailMessages/default/configurationEditOutbound',
+                        'right'            => self::RIGHT_ACCESS_CONFIGURATION,
+                    ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'Email Archiving Configuration',
+                        'descriptionLabel' => 'Manage Email Archiving Configuration',
+                        'route'            => '/emailMessages/default/configurationEditArchiving',
+                        'right'            => self::RIGHT_ACCESS_CONFIGURATION,
+                    ),
+                )
             );
             return $metadata;
         }

@@ -37,9 +37,12 @@
             Currency::resetCaches();  //php only cache
             $activitiesObserver = new ActivitiesObserver();
             $activitiesObserver->init(); //runs init();
+            $conversationsObserver = new ConversationsObserver();
+            $conversationsObserver->init(); //runs init();
             Yii::app()->gameHelper;
             Yii::app()->gamificationObserver; //runs init();
             Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
+            Yii::app()->emailHelper->sendEmailThroughTransport = false;
         }
 
         public static function tearDownAfterClass()

@@ -63,6 +63,37 @@
             return $emailMessage;
         }
 
+        public static function isSetEmailAccountsTestConfiguration()
+        {
+            $isSetEmailAccountsTestConfiguration = false;
+
+            if (isset(Yii::app()->params['emailTestAccounts']))
+            {
+                $smtpSettings        = Yii::app()->params['emailTestAccounts']['smtpSettings'];
+                $dropboxImapSettings = Yii::app()->params['emailTestAccounts']['dropboxImapSettings'];
+                $userSmtpSettings    = Yii::app()->params['emailTestAccounts']['userSmtpSettings'];
+                $userImapSettings    = Yii::app()->params['emailTestAccounts']['userImapSettings'];
+                $testEmailAddress    = Yii::app()->params['emailTestAccounts']['testEmailAddress'];
+
+                if ( $smtpSettings['outboundHost'] != '' && $smtpSettings['outboundPort'] != '' &&
+                     $smtpSettings['outboundUsername'] != '' && $smtpSettings['outboundPassword'] != '' &&
+                     $dropboxImapSettings['imapHost'] != '' && $dropboxImapSettings['imapUsername'] != '' &&
+                     $dropboxImapSettings['imapPassword'] != '' && $dropboxImapSettings['imapPort'] != '' &&
+                     $dropboxImapSettings['imapFolder'] != '' &&
+                     $userSmtpSettings['outboundHost'] != '' && $userSmtpSettings['outboundPort'] != '' &&
+                     $userSmtpSettings['outboundUsername'] != '' && $userSmtpSettings['outboundPassword'] != '' &&
+                     $userImapSettings['imapHost'] != '' && $userImapSettings['imapUsername'] != '' &&
+                     $userImapSettings['imapPassword'] != '' && $userImapSettings['imapPort'] != '' &&
+                     $userImapSettings['imapFolder'] != '' &&
+                     $testEmailAddress != ''
+                )
+                {
+                    $isSetEmailAccountsTestConfiguration = true;
+                }
+            }
+            return $isSetEmailAccountsTestConfiguration;
+        }
+
         public static function createArchivedUnmatchedReceivedMessage(User $user)
         {
             if($user->primaryEmail->emailAddress == null)
@@ -126,10 +157,6 @@
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
             $saved = $emailMessage->save();
-            if (!$saved)
-            {
-                throw new NotSupportedException();
-            }
             if (!$saved)
             {
                 throw new NotSupportedException();

@@ -117,7 +117,7 @@
         {
             assert('is_string($castDownModelClassName)');
             $existingModels = array();
-            $modelDerivationPathToItem = ActivitiesUtil::getModelDerivationPathToItem($castDownModelClassName);
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($castDownModelClassName);
             foreach ($model->activityItems as $item)
             {
                 try
@@ -146,7 +146,7 @@
 
         protected static function getFirstActivityItemStringContent($relationModelClassNames, RedBeanModel $model)
         {
-            assert('is_string($relationModelClassNames)');
+            assert('is_array($relationModelClassNames)');
             foreach ($relationModelClassNames as $relationModelClassName)
             {
                 //ASSUMES ONLY A SINGLE ATTACHED ACTIVITYITEM PER RELATION TYPE.
@@ -154,7 +154,7 @@
                 {
                     try
                     {
-                        $modelDerivationPathToItem = ActivitiesUtil::getModelDerivationPathToItem($relationModelClassName);
+                        $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($relationModelClassName);
                         $castedDownModel = $item->castDown(array($modelDerivationPathToItem));
                         return strval($castedDownModel);
                     }
