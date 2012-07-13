@@ -33,6 +33,7 @@
         public $port = 25;
         public $username;
         public $password;
+        public $security;
         public $userIdOfUserToSendNotificationsAs;
         public $aTestToAddress;
 
@@ -49,6 +50,8 @@
                 array('username',                          'length',    'min'  => 1, 'max' => 64),
                 array('password',                          'type',      'type' => 'string'),
                 array('password',                          'length',    'min'  => 1, 'max' => 64),
+                array('security',                          'type',      'type' => 'string'),
+                array('security',                          'length',    'min'  => 0, 'max' => 3),
                 array('userIdOfUserToSendNotificationsAs', 'type',      'type' => 'integer'),
                 array('userIdOfUserToSendNotificationsAs', 'numerical', 'min'  => 1),
                 array('aTestToAddress',                    'email'),
@@ -62,6 +65,7 @@
                 'port'                                 => Yii::t('Default', 'Port'),
                 'username'                             => Yii::t('Default', 'Username'),
                 'password'                             => Yii::t('Default', 'Password'),
+                'security'                             => Yii::t('Default', 'Encryption'),
                 'userIdOfUserToSendNotificationsAs'    => Yii::t('Default', 'Send system notifications from'),
                 'aTestToAddress'                       => Yii::t('Default', 'Send a test email to')
             );

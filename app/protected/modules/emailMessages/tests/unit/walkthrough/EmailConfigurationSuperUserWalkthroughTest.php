@@ -72,7 +72,7 @@
                                     'username'                          => 'myuser',
                                     'password'                          => 'apassword',
                                     'userIdOfUserToSendNotificationsAs' => $super2->id)));
-            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditSmtp');
+            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditOutbound');
             $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
@@ -99,7 +99,7 @@
                                     'imapPort'                          => '143',
                                     'imapSSL'                           => '0',
                                     'imapFolder'                        => 'INBOX')));
-            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditEmailArchiving');
+            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditArchiving');
             $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             $this->assertEquals('mail.example.com',     Yii::app()->imap->imapHost);

@@ -545,6 +545,9 @@
             if ($attributeTypeName != "CalculatedNumber" && $attributeTypeName != "DropDownDependency")
             {
                 //Now test going to the user interface edit view for the existing attribute.
+                $this->setGetArray(array(   'moduleClassName'       => $moduleClassName,
+                                            'attributeTypeName'     => $attributeTypeName,
+                                            'attributeName'         => $name));
                 $content = $this->runControllerWithRedirectExceptionAndGetContent('designer/default/attributeEdit');
             }
         }

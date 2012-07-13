@@ -40,6 +40,7 @@
             $form->port                              = Yii::app()->emailHelper->outboundPort;
             $form->username                          = Yii::app()->emailHelper->outboundUsername;
             $form->password                          = Yii::app()->emailHelper->outboundPassword;
+            $form->security                          = Yii::app()->emailHelper->outboundSecurity;
             $form->userIdOfUserToSendNotificationsAs = Yii::app()->emailHelper->getUserToSendNotificationsAs()->id;
             return $form;
         }
@@ -53,6 +54,7 @@
             Yii::app()->emailHelper->outboundPort      = $form->port;
             Yii::app()->emailHelper->outboundUsername  = $form->username;
             Yii::app()->emailHelper->outboundPassword  = $form->password;
+            Yii::app()->emailHelper->outboundSecurity  = $form->security;
             Yii::app()->emailHelper->setOutboundSettings();
             Yii::app()->emailHelper->setUserToSendNotificationsAs(
                                         User::getById((int)$form->userIdOfUserToSendNotificationsAs));

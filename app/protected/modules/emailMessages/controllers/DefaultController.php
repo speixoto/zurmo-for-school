@@ -58,7 +58,7 @@
             echo $view->render();
         }
 
-        public function actionConfigurationEditSmtp()
+        public function actionConfigurationEditOutbound()
         {
             $configurationForm = EmailSmtpConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
@@ -83,10 +83,9 @@
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
-
         }
 
-        public function actionConfigurationEditEmailArchiving()
+        public function actionConfigurationEditArchiving()
         {
             $configurationForm = EmailArchivingConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
@@ -111,7 +110,6 @@
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
-
         }
 
         /**
@@ -132,6 +130,7 @@
                     $emailHelper->outboundPort     = $configurationForm->port;
                     $emailHelper->outboundUsername = $configurationForm->username;
                     $emailHelper->outboundPassword = $configurationForm->password;
+                    $emailHelper->outboundSecurity = $configurationForm->security;
                     $userToSendMessagesFrom        = User::getById((int)$configurationForm->userIdOfUserToSendNotificationsAs);
 
                     $emailMessage              = new EmailMessage();

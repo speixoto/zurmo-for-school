@@ -54,7 +54,6 @@
                      "    --exclude-walkthroughs  For the specified test, exclude tests under a walkthroughs directory.\n"       .
                      "    --only-benchmarks       For the specified test, only includes tests under a benchmarks directory.\n" .
                      "    --exclude-benchmarks    For the specified test, exclude tests under a benchmarks directory.\n"      .
-                     "    --exclude-emailMessages Exclude tests from emailMessages module.\n"      .
                      "    --reuse-schema          Reload a previously auto build database. (Will auto build if there is no\n" .
                      "                            previous one. The auto built schema is dumped to the system temp dir in\n"  .
                      "                            autobuild.sql.)\n"                                                          .
@@ -76,7 +75,6 @@
             $excludeWalkthroughs  =  self::customOptionSet('--exclude-walkthroughs',  $argv);
             $onlyBenchmarks       =  self::customOptionSet('--only-benchmarks',       $argv);
             $excludeBenchmarks    =  self::customOptionSet('--exclude-benchmarks',    $argv);
-            $excludeEmailMessages =  self::customOptionSet('--exclude-emailMessages', $argv);
             $reuse                =  self::customOptionSet('--reuse-schema',          $argv);
             $freeze               = !self::customOptionSet('--no-freeze',             $argv);
 
@@ -145,10 +143,6 @@
                     if ($moduleName != '.' &&
                         $moduleName != '..')
                     {
-                        if ($moduleName == 'emailMessages' && $excludeEmailMessages)
-                        {
-                            continue;
-                        }
                         $moduleUnitTestDirectoryName = "$moduleDirectoryName/$moduleName/tests/unit";
                         self::buildAndAddSuiteFromDirectory($suite, $moduleName, $moduleUnitTestDirectoryName, $whatToTest, $includeUnitTests, $includeWalkthroughs, $includeBenchmarks);
                     }
