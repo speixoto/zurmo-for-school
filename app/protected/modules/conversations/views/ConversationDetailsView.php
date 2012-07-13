@@ -90,7 +90,7 @@
 
         protected function renderConversationContent()
         {
-            $content  = '<span class="some-details">';
+            $content  = '<div class="comment conversation-subject">';
             $content .= '<span class="comment-details"><strong>'.
                             DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                     $this->model->createdDateTime, 'long', null) . '</strong> ';
@@ -98,7 +98,7 @@
                                     array('{ownerStringContent}' => strval($this->model->createdByUser)));
             $content .= '</span>';
             $element  = new TextAreaElement($this->model, 'description');
-            $element->nonEditableTemplate = '<div>{content}</div>';
+            $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
             $content .= $element->render();
             $element  = new FilesElement($this->model, 'null');
             $element->nonEditableTemplate = '<div>{content}</div>';
@@ -106,6 +106,7 @@
             $element  = new ConversationItemsElement($this->model, 'null');
             $element->nonEditableTemplate = '<div>{content}</div>';
             $content .= $element->render();
+            $content .= '</div>';
             return Chtml::tag('div', array('id' => 'ConversationSummaryView'), $content);
         }
 
