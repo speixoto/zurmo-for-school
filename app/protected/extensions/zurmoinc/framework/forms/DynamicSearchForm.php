@@ -77,6 +77,7 @@
                 {
                     if (!is_numeric(trim($argument)) 
                         || !(intval(trim($argument)) <= count($this->dynamicClauses)) 
+                        || !(intval(trim($argument)) > 0)   
                         || !(preg_match("/\./", $argument) === 0) )
                     {
                         $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));                        
