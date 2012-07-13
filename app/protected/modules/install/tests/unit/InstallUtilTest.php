@@ -287,7 +287,7 @@
         {
             $this->assertTrue(InstallUtil::checkRedBeanIsNotLegacy());
         }
-        
+
         public function testCheckRedBeanPatched()
         {
             $this->assertTrue(InstallUtil::checkRedBeanPatched());
