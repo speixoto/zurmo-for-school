@@ -101,7 +101,7 @@
 
         protected function renderCommentsContent()
         {
-            $content  = '<h2>Comments</h2>';
+            $content  = null;
             $rows = 0;
             foreach(array_reverse($this->commentsData) as $comment)
             {
