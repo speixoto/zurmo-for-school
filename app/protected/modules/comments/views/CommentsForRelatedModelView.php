@@ -116,7 +116,7 @@
                 $stringContent .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
                                         array('{ownerStringContent}' => strval($comment->createdByUser)));
                 $stringContent .= '</span>';
-                $stringContent .= $comment->description;
+                $stringContent .= '<div class="comment-content">' . $comment->description . '</div>';
                 //attachments
                 if($comment->files->count() > 0)
                 {

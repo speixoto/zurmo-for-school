@@ -58,6 +58,7 @@
     }
 }
 
+#ConversationSummaryView,
 #CommentList{
     padding:10px 0 0 15px;
     h2{
@@ -66,18 +67,6 @@
     .comment-details{
         margin-bottom:5px;
         display:block;
-    }
-    .comment{
-        margin-bottom:15px;
-        line-height: 140%;
-        &:hover{
-            .delete-comment{
-                visibility:visible;
-            }
-        }
-        &.unread{
-            font-weight:bold;
-        }
     }
     .delete-comment{
         visibility:hidden;
@@ -92,7 +81,33 @@
         }
     }
 }
+.comment{
+    margin-bottom:15px;
+    line-height: 140%;
+    .comment-content{
+        font-size: 12px;
+    }
+    &:hover{
+        .delete-comment{
+            visibility:visible;
+        }
+    }
+    &.unread{
+        font-weight:bold;
+    }
+}
+.conversation-subject{
+    margin-bottom: 30px;   
+    .comment-content{
+        font-size: 15px;
+        line-height: 150%;
+        
+        font-style: italic;
+    }
+}
 
+
+#ConversationSummaryView,
 #CommentInlineEditForConversationView,
 #CommentsForRelatedModelView{
     width:70%;
@@ -100,6 +115,10 @@
 }
 
 #CommentInlineEditForConversationView{
+     h2{
+        margin-bottom:15px;
+        margin-left:15px;
+    }
     .wide.form{
         padding:0;
         border:none;
@@ -132,9 +151,9 @@
     .view-toolbar-container{
         border-top:1px solid #fff;
         padding-top:13px;
-        text-align:center;
+        //text-align:center;
         a{
-            float:none !important;
+            //float:none !important;
             color:#fff !important;
         }
     }
