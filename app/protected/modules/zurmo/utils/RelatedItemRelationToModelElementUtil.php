@@ -25,13 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Helper class to resolve correct model element to use in the user interface based on the user's rights to
+     * Helper class to resolve correct model element type to use in the user interface based on the user's rights to
      * access specified modules.  Special consideration is given for the contact model.  In the case of the contact
      * model, the access for the leads module must be considered. This will help determine how many states to show.
      */
     class RelatedItemRelationToModelElementUtil
     {
-        public static function resolveModelElementClassNameByActionSecurity($modelClassName, $user)
+        public static function resolveModelElementTypeByActionSecurity($modelClassName, $user, & $canAccess)
         {
             assert('is_string($modelClassName)');
             assert('$user instanceof User && $user->id > 0');
@@ -41,19 +41,20 @@
                 $canAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule', $user);
                 if ($canAccessContacts && $canAccessLeads)
                 {
-                    return 'AllStatesContactElement';
+                    return 'AllStatesContact';
                 }
                 elseif (!$canAccessContacts && $canAccessLeads)
                 {
-                    return 'LeadElement';
+                    return 'Lead';
                 }
                 elseif ($canAccessContacts && !$canAccessLeads)
                 {
-                    return 'ContactElement';
+                    return 'Contact';
                 }
                 else
                 {
-                    return null;
+                    $canAccess = false;
+                    return 'Contact';
                 }
             }
             else
@@ -61,9 +62,9 @@
                 $moduleClassName = $modelClassName::getModuleClassName();
                 if (!RightsUtil::canUserAccessModule($moduleClassName, $user))
                 {
-                    return null;
+                    $canAccess = false;
                 }
-                return $modelClassName . 'Element';
+                return $modelClassName;
             }
         }
     }

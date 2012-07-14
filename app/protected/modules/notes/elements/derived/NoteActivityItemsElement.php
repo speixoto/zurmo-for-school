@@ -41,5 +41,17 @@
             $editableTemplate .= "</td></tr>\n";
             return $editableTemplate;
         }
+
+        /**
+         * (non-PHPdoc)
+         * @see RelatedItemsElement::getRelatedItemEditableTemplate()
+         */
+        protected function getRelatedItemEditableHiddenInputOnlyTemplate()
+        {
+            $editableTemplate = "<tr><td colspan='3'>\n";
+            $editableTemplate .= '{content}{error}';
+            $editableTemplate .= "</td></tr>\n";
+            return $editableTemplate;
+        }
     }
 ?>
