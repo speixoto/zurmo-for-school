@@ -67,23 +67,27 @@
                     'value'                => (bool)1
                 ),
                 2 => array(
+                    'attributeName'        => 'owner',
+                    'operatorType'         => 'equals',
+                    'value'                => $user->id
+                ),
+                3 => array(
                     'attributeName'        => 'conversationParticipants',
                     'relatedAttributeName' => 'person',
                     'operatorType'         => 'equals',
                     'value'                => $user->getClassId('Item'),
                 ),
-                3 => array(
+                4 => array(
                     'attributeName'        => 'conversationParticipants',
                     'relatedAttributeName' => 'hasReadLatest',
                     'operatorType'         => 'doesNotEqual',
                     'value'                => (bool)1
                 ),
             );
-            $searchAttributeData['structure'] = '1 or (2 and 3)';
+            $searchAttributeData['structure'] = '((1 and 2) or (3 and 4))';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Conversation');
             $where  = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
             return self::getCount($joinTablesAdapter, $where, null, true);
-
         }
 
         public function onCreated()
@@ -125,7 +129,7 @@
                     array('latestDateTime', 	'type', 'type' => 'datetime'),
                     array('subject',           	'required'),
                     array('subject',          	'type',    'type' => 'string'),
-                    array('subject',           	'length',  'min'  => 3, 'max' => 64),
+                    array('subject',           	'length',  'min'  => 3, 'max' => 255),
                     array('ownerHasReadLatest', 'boolean'),
                 ),
                 'elements' => array(
