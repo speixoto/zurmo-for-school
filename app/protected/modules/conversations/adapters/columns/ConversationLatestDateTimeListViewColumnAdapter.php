@@ -31,7 +31,7 @@
             return array(
                 'name'   => $this->attribute,
                 'header' => false,
-                'value'  => 'DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($data->' . $this->attribute . ')',
+                'value'  => '"<span class=\'conversation-date\'>" . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($data->' . $this->attribute . ') . "</span>"',
                 'type'   => 'raw',
             );
         }

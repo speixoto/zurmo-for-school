@@ -1153,6 +1153,9 @@ table.configuration-list tr td:last-child a:before {
   position: relative;
   top: -3px;
 }
+#LanguagesCollectionView tr:last-child td {
+  border-bottom: none !important;
+}
 /*Jobs*/
 #JobsCollectionView .form form {
   padding: 0;
@@ -2740,7 +2743,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding: 0 0 15px 0;
 }
 .designer-toolbar {
-  margin: 0 0 0 0;
+  margin: 15px 0 0 0;
 }
 .designer-toolbar input[type="submit"] {
   cursor: pointer;
@@ -4852,6 +4855,10 @@ span.tooltip {
   position: relative;
   top: 0;
 }
+.conversation-date {
+  float: right;
+  margin-right: 10px;
+}
 #ConversationEditView td {
   padding-left: 0;
 }
@@ -4914,44 +4921,66 @@ span.tooltip {
 #ConversationDetailsAndRelationsView #right-side-edit-view-panel {
   top: 55px;
 }
+#ConversationSummaryView,
 #CommentList {
   padding: 10px 0 0 15px;
 }
+#ConversationSummaryView h2,
 #CommentList h2 {
   margin-bottom: 15px;
 }
+#ConversationSummaryView .comment-details,
 #CommentList .comment-details {
   margin-bottom: 5px;
   display: block;
 }
-#CommentList .comment {
-  margin-bottom: 15px;
-  line-height: 140%;
-}
-#CommentList .comment:hover .delete-comment {
-  visibility: visible;
-}
-#CommentList .comment.unread {
-  font-weight: bold;
-}
+#ConversationSummaryView .delete-comment,
 #CommentList .delete-comment {
   visibility: hidden;
   display: block;
   margin-top: 4px;
 }
+#ConversationSummaryView .delete-comment a,
 #CommentList .delete-comment a {
   margin-left: 4px;
 }
+#ConversationSummaryView .delete-comment:before,
 #CommentList .delete-comment:before {
   font-weight: normal;
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
   content: "_";
 }
+.comment {
+  margin-bottom: 15px;
+  line-height: 140%;
+}
+.comment .comment-content {
+  font-size: 12px;
+}
+.comment:hover .delete-comment {
+  visibility: visible;
+}
+.comment.unread {
+  font-weight: bold;
+}
+.conversation-subject {
+  margin-bottom: 30px;
+}
+.conversation-subject .comment-content {
+  font-size: 15px;
+  line-height: 150%;
+  font-style: italic;
+}
+#ConversationSummaryView,
 #CommentInlineEditForConversationView,
 #CommentsForRelatedModelView {
   width: 70%;
   float: left;
+}
+#CommentInlineEditForConversationView h2 {
+  margin-bottom: 15px;
+  margin-left: 15px;
 }
 #CommentInlineEditForConversationView .wide.form {
   padding: 0;
@@ -4989,10 +5018,8 @@ span.tooltip {
 #CommentInlineEditForConversationView .view-toolbar-container {
   border-top: 1px solid #fff;
   padding-top: 13px;
-  text-align: center;
 }
 #CommentInlineEditForConversationView .view-toolbar-container a {
-  float: none !important;
   color: #fff !important;
 }
 .attachments {

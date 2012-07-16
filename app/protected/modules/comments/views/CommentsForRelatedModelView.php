@@ -101,7 +101,7 @@
 
         protected function renderCommentsContent()
         {
-            $content  = '<h2>Comments</h2>';
+            $content  = null;
             $rows = 0;
             foreach(array_reverse($this->commentsData) as $comment)
             {
@@ -116,7 +116,7 @@
                 $stringContent .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
                                         array('{ownerStringContent}' => strval($comment->createdByUser)));
                 $stringContent .= '</span>';
-                $stringContent .= $comment->description;
+                $stringContent .= '<div class="comment-content">' . $comment->description . '</div>';
                 //attachments
                 if($comment->files->count() > 0)
                 {

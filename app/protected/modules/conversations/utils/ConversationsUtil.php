@@ -91,7 +91,7 @@
         {
             assert('$conversation->id > 0');
             assert('$user->id > 0');
-            if($user == $conversation->owner)
+            if($user->isSame($conversation->owner))
             {
                 return $conversation->ownerHasReadLatest;
             }
@@ -99,7 +99,7 @@
             {
                 foreach($conversation->conversationParticipants as $position => $participant)
                 {
-                    if($participant->person == $user)
+                    if($participant->person->getClassId('Item') == $user->getClassId('Item'))
                     {
                         return $participant->hasReadLatest;
                     }

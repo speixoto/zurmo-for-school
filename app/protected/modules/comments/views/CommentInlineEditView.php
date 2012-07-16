@@ -38,7 +38,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'SaveButton'),
+                            array('type' => 'SaveButton', 'label' => 'eval:Yii::t("Default", "Add Comment")'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(

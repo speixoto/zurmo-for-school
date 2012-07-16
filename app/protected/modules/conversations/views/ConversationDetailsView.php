@@ -36,48 +36,14 @@
                             array('type' => 'ConversationDeleteLink'),
                         ),
                     ),
-                    'nonPlaceableAttributeNames' => array(
-                        'owner',
-                        'latestDateTime',
-                        'ownerHasReadLatest',
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'Files'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ConversationItems'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
                 ),
             );
             return $metadata;
+        }
+
+        protected function renderFormLayout($form = null)
+        {
+            //override since the details are done @see renderConversationContent
         }
 
         protected function renderTitleContent()
@@ -97,7 +63,8 @@
 
         protected function renderAfterFormLayoutForDetailsContent()
         {
-            $content  = $this->renderConversationCommentsContent();
+            $content  = $this->renderConversationContent();
+            $content .= $this->renderConversationCommentsContent();
             $content .= $this->renderConversationCreateCommentContent();
             return $content;
         }
@@ -121,6 +88,28 @@
             return $content;
         }
 
+        protected function renderConversationContent()
+        {
+            $content  = '<div class="comment conversation-subject">';
+            $content .= '<span class="comment-details"><strong>'.
+                            DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                    $this->model->createdDateTime, 'long', null) . '</strong> ';
+            $content .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
+                                    array('{ownerStringContent}' => strval($this->model->createdByUser)));
+            $content .= '</span>';
+            $element  = new TextAreaElement($this->model, 'description');
+            $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
+            $content .= $element->render();
+            $element  = new FilesElement($this->model, 'null');
+            $element->nonEditableTemplate = '<div>{content}</div>';
+            $content .= $element->render();
+            $element  = new ConversationItemsElement($this->model, 'null');
+            $element->nonEditableTemplate = '<div>{content}</div>';
+            $content .= $element->render();
+            $content .= '</div>';
+            return Chtml::tag('div', array('id' => 'ConversationSummaryView'), $content);
+        }
+
         protected function renderConversationCommentsContent()
         {
             $getParams    = array('relatedModelId'           => $this->model->id,
@@ -136,6 +125,7 @@
 
         protected function renderConversationCreateCommentContent()
         {
+            $content       = Chtml::tag('h2', array(), Yii::t('Default', 'Add Comment'));
             $comment       = new Comment();
             $uniquePageId  = 'CommentInlineEditForConversationView';
             $redirectUrl   = Yii::app()->createUrl('/conversations/default/inlineCreateCommentFromAjax',
@@ -148,7 +138,8 @@
 
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
-            return Chtml::tag('div', array('id' => 'CommentInlineEditForConversationView'), $inlineView->render());
+            $content      .= $inlineView->render();
+            return Chtml::tag('div', array('id' => 'CommentInlineEditForConversationView'), $content);
         }
 
         protected function getPortletDetailsUrl()
