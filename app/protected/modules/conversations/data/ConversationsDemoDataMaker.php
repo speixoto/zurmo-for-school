@@ -123,6 +123,15 @@
                               'which bear a vague resemblance to a leopard\'s spots.',
                               'I think something like a snake eating a mouse could be funny.'
                           )),
+                    array('subject'     => 'Vacation time in December',
+                          'description' => 'My wife and I are thinking about going to Hawaii in December.  Does this time of year work?',
+                          'comments'    => array(
+                              'That should be fun.  Bring your laptop in case we need you!',
+                              'Do not bring your laptop.  That would ruin the fun.',
+                              'Make sure you hike up the volcano.',
+                              'I want to take a vacation.',
+                              'We should have a company retreat in Hawaii.  That would be fun!'
+                          )),
             );
             return RandomDataUtil::getRandomValueFromArray($data);
         }
