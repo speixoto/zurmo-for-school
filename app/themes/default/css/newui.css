@@ -4855,6 +4855,10 @@ span.tooltip {
   position: relative;
   top: 0;
 }
+.conversation-date {
+  float: right;
+  margin-right: 10px;
+}
 #ConversationEditView td {
   padding-left: 0;
 }
