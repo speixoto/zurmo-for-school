@@ -8702,6 +8702,9 @@ div.wide.form a {
   color: #7bb730;
   margin-left: 2px;
 }
+#NoteInlineEditView .form-toolbar {
+  border-top: none;
+}
 #inline-edit-form table + table {
   float: left;
   -moz-box-sizing: border-box;
