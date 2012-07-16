@@ -188,22 +188,25 @@
             $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent);
             $content .= '</div>';
             $content .= parent::renderContent() . '</div>';
-            return '<div id="wrapper-' . $this->uniqueId . '" class="wrapper">' . $content .  '</div>';
+            return '<div id="wrapper-' . $this->uniqueId . '" class="email-archive-item">' . $content .  '</div>';
         }
 
         protected function renderEmailMessageContentAndResolveLink()
         {
             $rules    = new EmailMessageMashableActivityRules();
-            $content  = '<div class="email-matching-show-more">';
-            $content .= '<span class="list-row-more-arrow">down arr</span>';
-            $content .= '</div>';
-            $content .= '<div class="email-matching-show-less" style="display:none;">';
-            $content .= '<span class="list-row-less-arrow">up arr</span>';
-            $content .= '</div>';
-            $content .= '<div class="email-matching-summary-content">';
+            
+            $content  = '<div class="email-matching-summary-content">';
             $content .= $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
             $content .= CHtml::tag('span', array(), strval($this->emailMessage));
             $content .= '</div>';
+            $content .= '<div class="email-matching-show-more">';
+            $content .= '<span class="icon-down-arrow"></span>Expand';
+            $content .= '</div>';
+            $content .= '<div class="email-matching-show-less" style="display:none;">';
+            $content .= '<span class="icon-up-arrow"></span>Collapse';
+            $content .= '</div>';
+            
+            
             return $content;
         }
 
@@ -220,6 +223,7 @@
                         $(this).hide();
                         $(this).parent().find('.email-matching-show-less').show();
                         $(this).parent().find('.matching-actions-and-content').show();
+                        $(this).parents('tr').addClass('expanded');
                         return false;
                     }
                 );
@@ -228,6 +232,7 @@
                         $(this).hide();
                         $(this).parent().find('.email-matching-show-more').show();
                         $(this).parent().find('.matching-actions-and-content').hide();
+                        $(this).parents('tr').removeClass('expanded');
                         return false;
                     }
                 );
