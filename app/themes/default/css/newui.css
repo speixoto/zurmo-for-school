@@ -1153,6 +1153,9 @@ table.configuration-list tr td:last-child a:before {
   position: relative;
   top: -3px;
 }
+#LanguagesCollectionView tr:last-child td {
+  border-bottom: none !important;
+}
 /*Jobs*/
 #JobsCollectionView .form form {
   padding: 0;
@@ -2740,7 +2743,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding: 0 0 15px 0;
 }
 .designer-toolbar {
-  margin: 0 0 0 0;
+  margin: 15px 0 0 0;
 }
 .designer-toolbar input[type="submit"] {
   cursor: pointer;
