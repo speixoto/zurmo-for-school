@@ -49,11 +49,13 @@
             $amChart->data = $chartData;
             $amChart->id =  $this->uniqueLayoutId;
             $amChart->type = $this->resolveViewAndMetadataValueByName('type');
+            $amChart->addSerial('value', 'column');
+            $amChart->addSerial('value', 'line');                        
             $amChart->xAxisName = $chartDataProvider->getXAxisName();
             $amChart->yAxisName = $chartDataProvider->getYAxisName();            
-            $javascript = $amChart->printJavascriptChart();
+            $javascript= $amChart->JavascriptChart();            
+            //echo $javascript;
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->uniqueLayoutId,$javascript);
-            
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Chart");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.AmChart', array(

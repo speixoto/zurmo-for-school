@@ -1,172 +1,149 @@
 <?php
 class AmChartMaker
 {
-    public $type            = 'Column3D';
-    public $data            = null;   
-    public $height          = 300;                        
-    public $valueField      = 'value';        
-    public $categoryField   = 'displayLabel';        
-    public $chartIs3d       = false;        
-    public $chartRotate     = false;        
-    public $chartIsPie      = false;        
-    public $xAxisName       = null;        
-    public $yAxisName       = null;        
-    public $chartTitle      = null;  
+    public  $type            = 'Column3D';
+    public  $data            = null;   
+    public  $height          = 300;                        
+    public  $valueField      = 'value';        
+    public  $categoryField   = 'displayLabel';        
+    public  $chartIs3d       = false;            
+    public  $chartIsPie      = false;        
+    public  $xAxisName       = null;        
+    public  $yAxisName       = null;        
+    public  $chartTitle      = null;  
+    
+    private $serial          = array();
+    private $chartProperties = array();
     /*
     * Returns the type of chart to be used in AmChar
     */
-    private function getChartPropertiesByType() 
+    private function addChartPropertiesByType() 
     {
         if ($this->type === "Column2D")
         {
-            $graph = "
-                var graph = new AmCharts.AmGraph();
-                graph.valueField = 'value';
-                graph.balloonText = '[[category]]: [[value]]';
-                graph.type = 'column';
-                graph.lineAlpha = 0;
-                graph.fillAlphas = 0.8;
-                chart.addGraph(graph);   ";   
         }
         elseif ($this->type === "Column3D")
-        {
-            $graph = "
-            var graph = new AmCharts.AmGraph();
-            graph.valueField = '" . $this->valueField . "';
-            graph.balloonText = '[[category]]: [[value]]';
-            graph.type = 'column';
-            graph.lineAlpha = 0;
-            graph.fillAlphas = 1;
-            chart.addGraph(graph);  ";
-            $this->chartIs3d = true;
+        {   
+            $this->makeChart3d();
         }
         elseif ($this->type === "Bar2D")
-        {
-            $graph = "
-            var graph = new AmCharts.AmGraph();
-            graph.valueField = '" . $this->valueField . "';
-            graph.colorField = 'color';
-            graph.balloonText = '[[category]]: [[value]]';
-            graph.type = 'column';
-            graph.lineAlpha = 0;
-            graph.fillAlphas = 1;
-            chart.addGraph(graph);  ";
-            $this->chartRotate = true;
+        {                    
+            $this->addChartProperties('rotate', true);
         } 
         elseif ($this->type === "Donut2D")
         {
-            $graph = "chart.sequencedAnimation = true;
-            chart.startEffect = 'elastic';
-            chart.innerRadius = '30%';
-            chart.startDuration = 2;
-            chart.labelRadius = 15;
-            ";
+            $this->addChartProperties('sequencedAnimation', true);
+            $this->addChartProperties('startEffect', "'elastic'");
+            $this->addChartProperties('innerRadius', "'30%'");
+            $this->addChartProperties('startDuration', 2);
+            $this->addChartProperties('labelRadius', 15);
             $this->chartIsPie = true;
         } 
         elseif ($this->type === "Pie2D")
         {
-            $graph = "
-            chart.outlineColor = '#FFFFFF';
-            chart.outlineAlpha = 0.8;
-            chart.outlineThickness = 2; ";
+            $this->addChartProperties('outlineColor', "'#FFFFFF'");
+            $this->addChartProperties('outlineAlpha', 0.8);
+            $this->addChartProperties('outlineThickness', 2); 
             $this->chartIsPie = true;
         }            
         elseif ($this->type === "Pie3D")
         {
-            $graph = "
-            chart.outlineColor = '#FFFFFF';
-            chart.outlineAlpha = 0.8;
-            chart.outlineThickness = 2; ";
-            $this->chartIs3d = true;
+            $this->addChartProperties('outlineColor', "'#FFFFFF'");
+            $this->addChartProperties('outlineAlpha', 0.8);
+            $this->addChartProperties('outlineThickness', 2); 
+            $this->makeChart3d();
             $this->chartIsPie = true;
         }
         else
-        {
-            $graph = "
-            var graph = new AmCharts.AmGraph();
-            graph.valueField = '" . $this->valueField . "';
-            graph.colorField = 'color';
-            graph.balloonText = '[[category]]: [[value]]';
-            graph.type = 'column';
-            graph.lineAlpha = 0;
-            graph.fillAlphas = 1;
-            chart.addGraph(graph);  ";               
-        }
-        return $graph;
+        {   
+        }        
     }    
     private function convertDataArrayToJavascriptArray()
     {
         return CJavaScript::encode($this->data);                                           
     }
-    public function printJavascriptChart()
+    /*
+     * Add serial to Serial Chart
+     * $valuefield: string 
+     * $type: string (column, line)
+     */
+    public function makeChart3d()
     {
-        $graph = $this->getChartPropertiesByType();
-            $javascript = "var chartData = ". $this->convertDataArrayToJavascriptArray();
-            $javascript .=" \n AmCharts.ready(function () {     ";
-           
-            if ($this->chartIsPie)
-            {
-                $javascript .="
-                chart = new AmCharts.AmPieChart();
+        $this->addChartProperties('depth3D', 15);
+        $this->addChartProperties('angle', 30);
+        $this->chartIs3d = true;
+    }
+    public function addSerial($valueField, $type)
+    {
+        array_push($this->serial, array(
+                                'valueField'    =>  $valueField,
+                                'type'          =>  $type,
+                             )
+        );
+    }
+    /*
+     * Add properties to chart
+     */
+    public function addChartProperties($tag, $value)
+    {
+        array_push($this->chartProperties, array(
+                                'tag'           =>  $tag,
+                                'value'         =>  $value,
+                             )
+                
+        );
+    }
+    public function JavascriptChart()
+    {
+        //Init AmCharts
+        $this->addChartPropertiesByType();
+        $javascript = "var chartData = ". $this->convertDataArrayToJavascriptArray() . ";";
+        $javascript .=" \n AmCharts.ready(function () {     ";
+        //Make chart Pie or Serial
+        if ($this->chartIsPie)
+        {
+            $javascript .="
+               var chart = new AmCharts.AmPieChart();
                 // title of the chart
                 chart.addTitle('Title', 16);
                 chart.dataProvider = chartData;
-                chart.titleField = 'displayLabel';
-                chart.valueField = '". $this->valueField . "';
-                " . $graph;
-
-            }
-            else
-            {
-            
-                $javascript .="
+                chart.titleField = '{$this->categoryField}';
+                chart.valueField = '". $this->valueField . "';";
+        }
+        else
+        {
+            //Init the AmSerialGraph
+            $javascript .="
                     var chart = new AmCharts.AmSerialChart();
                     chart.dataProvider = chartData;
-                    chart.categoryField = 'displayLabel';
-                    chart.startDuration = 2;";
-                              
-                if ($this->chartRotate){
-                    $javascript .= "chart.rotate = ". $this->chartRotate;
-                }
-                
-            
-           
-            
-            
-                $javascript .="
-                               
-                    // change balloon text color                
-                    chart.balloon.color = '#000000';
-
-                    // AXES
-                    // category
-                    var categoryAxis = chart.categoryAxis;
-                    categoryAxis.gridAlpha = 0;
-                    categoryAxis.axisAlpha = 0;
-                    categoryAxis.labelsEnabled = false;
-                
-                    // value
-                    var valueAxis = new AmCharts.ValueAxis();
-                    valueAxis.gridAlpha = 0;
-                    valueAxis.axisAlpha = 0;
-                    valueAxis.labelsEnabled = false;
-                    valueAxis.minimum = 0;
-                    chart.addValueAxis(valueAxis);
-                    {$graph}";
+                    chart.categoryField = '{$this->categoryField}';
+            ";            
+        }
+        //Add chart properties       
+        foreach ($this->chartProperties as $chartProperty)
+        {
+            $javascript .= "chart." . $chartProperty['tag'] . " = " . $chartProperty['value'] . ";";
+        }
+        
+        if (!$this->chartIsPie)
+        {
+            //Add serial infor as graph            
+            foreach ($this->serial as $key => $serial)
+            {
+                $javascript .= "var graph{$key} = new AmCharts.AmGraph();
+                    graph{$key}.valueField = '". $serial['valueField'] ."';
+                    graph{$key}.type = '" . $serial['type'] .  "';
+                    graph{$key}.lineAlpha = 0;
+                    graph{$key}.fillAlphas = 0.8;
+                    chart.addGraph(graph{$key});";
+                //Add graph properties
             }
-            if ($this->chartIs3d) 
-            { 
-                $javascript .= "chart.depth3D = 20;chart.angle = 30;";             
-            }
-                    $javascript .="
-                    
-                    
-                    
-                        // WRITE
-                        chart.write('chartContainer1111');
-                    });
-            ";    
-            return $javascript;
-    }
+                   
+        }
+        //Write chart       
+        $javascript .= "chart.write('chartContainer1111');
+                 });";
+        return $javascript;   
+    }             
 }
 ?>
