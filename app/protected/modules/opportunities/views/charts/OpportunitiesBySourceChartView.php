@@ -37,39 +37,15 @@
             if ($accessContent != null)
             {
                 return $accessContent;
-            }
-            
-            
+            }                        
             $chartDataProviderType = $this->getChartDataProviderType();
-            $chartDataProvider     = ChartDataProviderFactory::createByType($chartDataProviderType);
-            
-            
+            $chartDataProvider     = ChartDataProviderFactory::createByType($chartDataProviderType);                                  
             //PARA QUE SERVE ISTO???
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule(
-                                        $chartDataProvider->getModel()->getModuleClassName(), true);
-            
-            $chartData = $chartDataProvider->getChartData();
-            //foreach ($chartData as $seriesData)
-            //{
-            //    $amChartData->addChartData($seriesData['value'],"name=" . $seriesData['displayLabel']); // Not Coding Standard
-            //}
-
-            /*
-            $adapterClassName      = 'ChartDataProviderTo' . $chartLibraryName . 'ChartAdapter';
-            $fusionChart = $adapterClassName::makeChartByChartDataProvider($chartDataProvider,
-                                $portlet->getView()->getChartParams());
-            
-            */
-            
-            
+                                        $chartDataProvider->getModel()->getModuleClassName(), true);            
+            $chartData = $chartDataProvider->getChartData();                           
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Chart");
-            /*$cClipWidget->widget('ext.zurmoinc.framework.widgets.AmChart', array(
-                    'id'      => $this->uniqueLayoutId,
-                    'dataUrl' => Yii::app()->createUrl('/home/defaultPortlet/makeChartXML',
-                                    array('portletId' => $this->params['portletId'], 'chartLibraryName' => 'Fusion')),
-                    'type'    => $this->resolveViewAndMetadataValueByName('type'),
-            ));*/
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.AmChart', array(
                     'id'        => $this->uniqueLayoutId,                    
                     'data'      => $chartData,
