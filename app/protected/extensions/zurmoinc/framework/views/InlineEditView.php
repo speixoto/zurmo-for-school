@@ -98,7 +98,7 @@
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {
-                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
+                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar clearfix">';
                 $content .= $actionElementContent;
                 $content .= '</div></div>';
             }

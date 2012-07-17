@@ -4959,7 +4959,7 @@ span.tooltip {
   font-size: 12px;
 }
 .comment:hover .delete-comment {
-  visibility: visible;
+  visibility: visible !important;
 }
 .comment.unread {
   font-weight: bold;
@@ -8736,6 +8736,10 @@ div.wide.form a {
 }
 #inline-edit-form .view-toolbar-container a {
   float: right;
+  clear: both;
+}
+#inline-edit-form .form-toolbar {
+  border-top: none;
 }
 #inline-edit-form textarea {
   line-height: 130%;
