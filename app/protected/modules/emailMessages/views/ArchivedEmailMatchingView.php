@@ -182,7 +182,7 @@
             $createLeadContent     = Yii::t('Default', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
 
-            $content .= '<div class="matching-actions-and-content" style="display:none;"><div class="lead-conversion-actions">';
+            $content .= '<div class="matching-actions-and-content" style="display:none;"><div class="email-matching-actions">';
             $content .= $this->renderContactSelectTitleDivContent($selectContent, $createLeadLink,    $createContactLink);
             $content .= $this->renderLeadCreateTitleDivContent($selectLink,       $createLeadContent, $createContactLink);
             $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent);

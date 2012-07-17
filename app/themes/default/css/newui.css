@@ -6386,6 +6386,9 @@ section {
 #HomePageView .AppContent {
   padding-right: 0;
 }
+#HomePageView .AppContent#DashboardEditView {
+  padding-right: 20px;
+}
 #HomeDashboardView {
   margin-top: 15px;
 }
