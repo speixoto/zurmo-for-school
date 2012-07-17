@@ -40,7 +40,6 @@
             }                        
             $chartDataProviderType = $this->getChartDataProviderType();
             $chartDataProvider     = ChartDataProviderFactory::createByType($chartDataProviderType);                                  
-            //PARA QUE SERVE ISTO???
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule(
                                         $chartDataProvider->getModel()->getModuleClassName(), true);            
             $chartData = $chartDataProvider->getChartData();  
@@ -49,11 +48,8 @@
             $amChart->data = $chartData;
             $amChart->id =  $this->uniqueLayoutId;
             $amChart->type = $this->resolveViewAndMetadataValueByName('type');  
-            $amChart->addSerial('value', 'column', array(
-                                                        'lineAlpha'  => 0,
-                                                        'fillAlphas' => 0.8,
-            ));
-            $amChart->addSerial('value', 'line', array());                        
+            $amChart->addSerialGraph('value', 'column');
+            //$amChart->addSerialGraph('value', 'line', array('fillAlphas' => 0));
             $amChart->xAxisName = $chartDataProvider->getXAxisName();
             $amChart->yAxisName = $chartDataProvider->getYAxisName();            
             $javascript= $amChart->JavascriptChart();            
