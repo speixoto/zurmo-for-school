@@ -37,7 +37,7 @@
         
         public function run()
         {            
-            echo "<div id='chartContainer1111' style='width: 100%; height: 400px;'></div>";                                                                                                                   
+            echo "<div id='chartContainer{$this->id}' style='width: 100%; height: 400px;'></div>";                                                                                                                   
         }
     }
 ?>

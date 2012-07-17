@@ -48,9 +48,12 @@
             $amChart = new AmChartMaker();
             $amChart->data = $chartData;
             $amChart->id =  $this->uniqueLayoutId;
-            $amChart->type = $this->resolveViewAndMetadataValueByName('type');
-            $amChart->addSerial('value', 'column');
-            $amChart->addSerial('value', 'line');                        
+            $amChart->type = $this->resolveViewAndMetadataValueByName('type');  
+            $amChart->addSerial('value', 'column', array(
+                                                        'lineAlpha'  => 0,
+                                                        'fillAlphas' => 0.8,
+            ));
+            $amChart->addSerial('value', 'line', array());                        
             $amChart->xAxisName = $chartDataProvider->getXAxisName();
             $amChart->yAxisName = $chartDataProvider->getYAxisName();            
             $javascript= $amChart->JavascriptChart();            

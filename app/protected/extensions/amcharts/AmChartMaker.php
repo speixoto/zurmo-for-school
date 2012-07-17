@@ -9,8 +9,7 @@ class AmChartMaker
     public  $chartIs3d       = false;            
     public  $chartIsPie      = false;        
     public  $xAxisName       = null;        
-    public  $yAxisName       = null;        
-    public  $chartTitle      = null;  
+    public  $yAxisName       = null;  
     
     private $serial          = array();
     private $chartProperties = array();
@@ -21,14 +20,17 @@ class AmChartMaker
     {
         if ($this->type === "Column2D")
         {
+            $this->addChartProperties('usePrefixes', true);
         }
         elseif ($this->type === "Column3D")
         {   
             $this->makeChart3d();
+            $this->addChartProperties('usePrefixes', true);
         }
         elseif ($this->type === "Bar2D")
         {                    
             $this->addChartProperties('rotate', true);
+            $this->addChartProperties('usePrefixes', true);
         } 
         elseif ($this->type === "Donut2D")
         {
@@ -36,7 +38,8 @@ class AmChartMaker
             $this->addChartProperties('startEffect', "'elastic'");
             $this->addChartProperties('innerRadius', "'30%'");
             $this->addChartProperties('startDuration', 2);
-            $this->addChartProperties('labelRadius', 15);
+            $this->addChartProperties('labelRadius', 15);    
+            $this->addChartProperties('usePrefixes', true);
             $this->chartIsPie = true;
         } 
         elseif ($this->type === "Pie2D")
@@ -44,6 +47,7 @@ class AmChartMaker
             $this->addChartProperties('outlineColor', "'#FFFFFF'");
             $this->addChartProperties('outlineAlpha', 0.8);
             $this->addChartProperties('outlineThickness', 2); 
+            $this->addChartProperties('usePrefixes', true);
             $this->chartIsPie = true;
         }            
         elseif ($this->type === "Pie3D")
@@ -51,6 +55,7 @@ class AmChartMaker
             $this->addChartProperties('outlineColor', "'#FFFFFF'");
             $this->addChartProperties('outlineAlpha', 0.8);
             $this->addChartProperties('outlineThickness', 2); 
+            $this->addChartProperties('usePrefixes', true);
             $this->makeChart3d();
             $this->chartIsPie = true;
         }
@@ -73,11 +78,12 @@ class AmChartMaker
         $this->addChartProperties('angle', 30);
         $this->chartIs3d = true;
     }
-    public function addSerial($valueField, $type)
+    public function addSerial($valueField, $type, $options)
     {
         array_push($this->serial, array(
                                 'valueField'    =>  $valueField,
                                 'type'          =>  $type,
+                                'options'       =>  $options,
                              )
         );
     }
@@ -103,12 +109,10 @@ class AmChartMaker
         if ($this->chartIsPie)
         {
             $javascript .="
-               var chart = new AmCharts.AmPieChart();
-                // title of the chart
-                chart.addTitle('Title', 16);
-                chart.dataProvider = chartData;
-                chart.titleField = '{$this->categoryField}';
-                chart.valueField = '". $this->valueField . "';";
+               var chart = new AmCharts.AmPieChart();               
+               chart.dataProvider = chartData;
+               chart.titleField = '{$this->categoryField}';
+               chart.valueField = '". $this->valueField . "';";
         }
         else
         {
@@ -118,7 +122,7 @@ class AmChartMaker
                     chart.dataProvider = chartData;
                     chart.categoryField = '{$this->categoryField}';
             ";            
-        }
+        }        
         //Add chart properties       
         foreach ($this->chartProperties as $chartProperty)
         {
@@ -127,21 +131,42 @@ class AmChartMaker
         
         if (!$this->chartIsPie)
         {
-            //Add serial infor as graph            
+            //Add serial as graph            
             foreach ($this->serial as $key => $serial)
             {
                 $javascript .= "var graph{$key} = new AmCharts.AmGraph();
                     graph{$key}.valueField = '". $serial['valueField'] ."';
-                    graph{$key}.type = '" . $serial['type'] .  "';
-                    graph{$key}.lineAlpha = 0;
-                    graph{$key}.fillAlphas = 0.8;
-                    chart.addGraph(graph{$key});";
+                    graph{$key}.type = '" . $serial['type'] .  "';";
                 //Add graph properties
+                foreach($serial['options'] as $graphTag => $graphOption)
+                {
+                    $javascript .= "graph{$key}." . $graphTag . " = " . $graphOption . ";";
+                }                   
+                $javascript .= "chart.addGraph(graph{$key});";                
             }
+            //Add Axis
+            $currencySymbol = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
+            $javascript .= "
+                // categoryAxis
+                var categoryAxis = chart.categoryAxis;                
+                categoryAxis.gridPosition = 'start';
+                categoryAxis.title = '{$this->xAxisName}'
+
+                // valueAxis
+                var valueAxis = new AmCharts.ValueAxis();
+                valueAxis.title = '{$this->yAxisName}';
+                valueAxis.usePrefixes = true;
+                valueAxis.unitPosition = 'left';
+                valueAxis.unit = '{$currencySymbol}';
+                valueAxis.minimum = 0;
+                chart.addValueAxis(valueAxis);                
+
+
+                ";
                    
         }
         //Write chart       
-        $javascript .= "chart.write('chartContainer1111');
+        $javascript .= "chart.write('chartContainer{$this->id}');
                  });";
         return $javascript;   
     }             
