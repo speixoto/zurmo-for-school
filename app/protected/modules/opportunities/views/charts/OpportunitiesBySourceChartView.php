@@ -43,13 +43,21 @@
             //PARA QUE SERVE ISTO???
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule(
                                         $chartDataProvider->getModel()->getModuleClassName(), true);            
-            $chartData = $chartDataProvider->getChartData();                           
+            $chartData = $chartDataProvider->getChartData();  
+            Yii::import('ext.amcharts.AmChartMaker');
+            $amChart = new AmChartMaker();
+            $amChart->data = $chartData;
+            $amChart->id =  $this->uniqueLayoutId;
+            $amChart->type = $this->resolveViewAndMetadataValueByName('type');
+            $amChart->xAxisName = $chartDataProvider->getXAxisName();
+            $amChart->yAxisName = $chartDataProvider->getYAxisName();            
+            $javascript = $amChart->printJavascriptChart();
+            Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->uniqueLayoutId,$javascript);
+            
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Chart");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.AmChart', array(
                     'id'        => $this->uniqueLayoutId,                    
-                    'data'      => $chartData,
-                    'type'      => $this->resolveViewAndMetadataValueByName('type'),
             ));
             $cClipWidget->endClip();            
             return $cClipWidget->getController()->clips['Chart'];
