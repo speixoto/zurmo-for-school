@@ -34,7 +34,7 @@
         protected function checkService()
         {
             $passed = $this->checkServiceAndSetMessagesByMethodNameAndDisplayLabel('checkRedBean',
-                                                                                Yii::t('Default', 'RedBean'));           
+                                                                                Yii::t('Default', 'RedBean'));
             if ($passed)
             {
                 if (InstallUtil::checkRedBeanIsNotLegacy()) {
@@ -51,10 +51,10 @@
                     return $patched;
                 } else {
                     $this->message .= "\n";
-                    $this->message .= Yii::t('Default', 'RedBean version should not be the Legacy one');
+                    $this->message .= Yii::t('Default', 'Do not use the RedBean Legacy');
                     return false;
                 }
-                
+
             }
             return $passed;
         }
