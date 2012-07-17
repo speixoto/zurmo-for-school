@@ -54,7 +54,7 @@
                 else
                 {
                     $this->message .= "\n";
-                    $this->message .= Yii::t('Default', 'Do not use the RedBean Legacy');
+                    $this->message .= Yii::t('Default', 'Do not use the RedBean Legacy version');
                     return false;
                 }
             }
