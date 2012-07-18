@@ -190,7 +190,10 @@
                      $('#dk_container_" . static::getSavedSearchListDropDown() . "').remove();
                      $('#" . static::getSavedSearchListDropDown() . "').dropkick();
                      $('#" . static::getSavedSearchListDropDown() . "').dropkick('rebindToggle');
-            ";
+                     $('#save-search-area').hide();
+                     $('#save-as-advanced-search').show();
+                     jQuery.yii.submitForm(this, '', {}); return false;
+            ";           
         }
     }
 ?>
