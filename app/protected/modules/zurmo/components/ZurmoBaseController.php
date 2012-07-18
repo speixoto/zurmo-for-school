@@ -124,7 +124,6 @@
             $userId,
             $stateMetadataAdapterClassName = null)
         {
-            assert('$searchModel != null');
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             static::resolveToTriggerOnSearchEvents($listModelClassName);
             $dataCollection = new SearchAttributesDataCollection($searchModel);
@@ -164,7 +163,6 @@
             $stateMetadataAdapterClassName = null
             )
         {
-            assert('$searchModel != null');
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             if ($_GET['selectAll'])
             {
