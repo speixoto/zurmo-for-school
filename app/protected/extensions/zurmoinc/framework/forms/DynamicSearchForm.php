@@ -63,7 +63,6 @@
 
         public function validateDynamicStructure($attribute, $params)
         {
-            return;
             $formula = strtolower($this->$attribute);
             if (!$this->validateParenthesis($formula))
             {

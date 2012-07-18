@@ -24,6 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base class for managing the source of search attributes.  Attributes can be coming from a $_GET, a $_POST or
+     * potentially a model as a saved search.
+     */
     class SearchAttributesDataCollection
     {
 

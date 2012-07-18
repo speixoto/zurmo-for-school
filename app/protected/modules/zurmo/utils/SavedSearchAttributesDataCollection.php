@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Handles resolving when a search attribute has a SavedSearch model as a potential source.
+     */
     class SavedSearchAttributesDataCollection extends SearchAttributesDataCollection
     {
         public function getDynamicSearchAttributes()
