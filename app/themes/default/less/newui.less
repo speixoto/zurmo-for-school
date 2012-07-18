@@ -146,6 +146,11 @@ body{
     font-size:11px;
     color:#545454;
     -webkit-font-smoothing: antialiased;
+    /* @doubtful_existance: I don’t think these even exist? Can’t hurt much, I guess. */
+-moz-font-smoothing: antialiased;
+-o-font-smoothing: antialiased;
+/* end @doubtful_existance */
+font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -481,16 +486,22 @@ footer, header, hgroup, menu, nav, section {
 #settings-header-menu{
     > li{
         position: relative;
+        .t-shadow(none) !important;
+        a{
+            .t-shadow(none) !important;
+        }
     }
     > li > a span{
         display:inline-block;
         text-indent:-9999px;
+        .t-shadow(none) !important;
     }
     > li > a:after{
         content: "n"; //Q o n
-        color:#d4d5e3;
-        .symbly(22px);
-        margin-top:1px;
+        color:#ccc;
+        .symbly(26px);
+        //.opacity(75);
+        //font-smooth:always;
     }
     ul{
         margin-left:-97px;
@@ -1145,6 +1156,10 @@ footer, header, hgroup, menu, nav, section {
 }
 #HomeDashboardView{
 	margin-top:15px;
+    .parent > ul{
+        min-width: 160px;
+        margin-top:0;
+    }
 }
 
 /*=Inner toolbar*/
@@ -1211,7 +1226,7 @@ footer, header, hgroup, menu, nav, section {
         list-style:none;
     }
     .parent > ul{
-        margin-top:-2px;
+        margin-top:0;
         .headerDropDown();
         left:auto;
     }
@@ -1244,6 +1259,13 @@ footer, header, hgroup, menu, nav, section {
 
 .icon-add:before{
     content: "Y";
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+#HomeDashboardView .parent > a:before,
+.icon-change-dashborad:before{
+    content: "/";
     .view-toolbar-icons();
     top:-2px;
 }

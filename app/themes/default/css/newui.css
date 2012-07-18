@@ -713,6 +713,7 @@ a.remove:hover .icon:after {
   position: absolute;
   right: 15px;
   top: 14px;
+  vertical-align: middle;
 }
 .configuration-list li a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -733,11 +734,13 @@ a.remove:hover .icon:after {
 .configuration-list li a:before {
   content: "n";
   font-weight: normal;
-  font-size: 16px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 5px;
   position: relative;
   top: 0px;
+  font-weight: normal !important;
+  vertical-align: middle;
 }
 table.configuration-list {
   zoom: 1;
@@ -3306,6 +3309,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 /*Target only Mozilla/Gecko Browsers*/
 @-moz-document url-prefix() {
+  body {
+    font-smooth: always !important;
+  }
   .form input[type="text"],
   .form input[type="password"],
   .form select.multiple,
@@ -5216,6 +5222,13 @@ body {
   font-size: 11px;
   color: #545454;
   -webkit-font-smoothing: antialiased;
+  /* @doubtful_existance: I don’t think these even exist? Can’t hurt much, I guess. */
+
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  /* end @doubtful_existance */
+
+  font-smoothing: antialiased;
 }
 h1,
 h2,
@@ -5598,18 +5611,34 @@ section {
 }
 #settings-header-menu > li {
   position: relative;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
+}
+#settings-header-menu > li a {
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
 }
 #settings-header-menu > li > a span {
   display: inline-block;
   text-indent: -9999px;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
 }
 #settings-header-menu > li > a:after {
   content: "n";
-  color: #d4d5e3;
+  color: #ccc;
   font-weight: normal;
-  font-size: 22px;
+  font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  margin-top: 1px;
 }
 #settings-header-menu ul {
   margin-left: -97px;
@@ -6392,6 +6421,10 @@ section {
 #HomeDashboardView {
   margin-top: 15px;
 }
+#HomeDashboardView .parent > ul {
+  min-width: 160px;
+  margin-top: 0;
+}
 /*=Inner toolbar*/
 .view-toolbar-container {
   width: 100%;
@@ -6455,7 +6488,7 @@ section {
   list-style: none;
 }
 .view-toolbar .parent > ul {
-  margin-top: -2px;
+  margin-top: 0;
   z-index: 9999;
   min-width: 110px;
   display: none;
@@ -6531,6 +6564,21 @@ section {
 }
 .icon-add:before {
   content: "Y";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+#HomeDashboardView .parent > a:before,
+.icon-change-dashborad:before {
+  content: "/";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
