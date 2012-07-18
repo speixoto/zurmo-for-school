@@ -250,6 +250,13 @@
             }
         }
 
+        public function actionDeleteSavedSearch($id)
+        {
+            $savedSearch = SavedSearch::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($savedSearch);
+            $savedSearch->delete();
+        }
+
         protected function resolveAndSanitizeDynamicSearchAttributesByPostData($postData, DynamicSearchForm $searchForm)
         {
             if(isset($postData['dynamicClauses']))

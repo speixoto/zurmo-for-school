@@ -78,38 +78,6 @@
             return static::RIGHTS_FILTER_PATH;
         }
 
-        protected function makeSearchFilterListView(
-            $searchModel,
-            $filteredListModelClassName,
-            $pageSize,
-            $title,
-            $userId,
-            $dataProvider
-            )
-        {
-            $listModel = $searchModel->getModel();
-            $filteredListData = array();
-            //Add back in once filtered lists is completed.
-            //$filteredListData = $filteredListModelClassName::getRowsByCreatedUserId($userId);
-            $filteredListId = null;
-            if (!empty($_GET['filteredListId']) && empty($_POST['search']))
-            {
-                $filteredListId = (int)$_GET['filteredListId'];
-            }
-            return new SearchFilterListView(
-                $this->getId(),
-                $this->getModule()->getId(),
-                $searchModel,
-                $listModel,
-                $this->getModule()->getPluralCamelCasedName(),
-                $dataProvider,
-                GetUtil::resolveSelectedIdsFromGet(),
-                $filteredListData,
-                $filteredListId,
-                $title
-            );
-        }
-
         protected function makeActionBarSearchAndListView(
             $searchModel,
             $pageSize,
@@ -149,64 +117,9 @@
             return $listView;
         }
 
-        protected function makeFilteredListDataProviderFromGet(
-            $filteredListId,
-            $listModelClassName,
-            $filteredListModelClassName,
-            $pageSize,
-            $userId,
-            $stateMetadataAdapterClassName = null)
-        {
-            assert('is_int($filteredListId)');
-            assert('is_string($listModelClassName)');
-            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $filteredList   = $filteredListModelClassName::getById($filteredListId);
-            $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray($listModelClassName);
-            $sortDescending = SearchUtil::resolveSortDescendingFromGetArray($listModelClassName);
-
-            $metadataAdapter = new FilteredListDataProviderMetadataAdapter(
-                $filteredList,
-                $userId,
-                unserialize($filteredList->serializedData)
-            );
-            return RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter->getAdaptedMetadata(),
-                $listModelClassName,
-                'FilteredListDataProvider',
-                $sortAttribute,
-                $sortDescending,
-                $pageSize,
-                $stateMetadataAdapterClassName
-            );
-        }
-
-        protected function attemptToSaveFilteredListModelFromPost($id, $modelClassName)
-        {
-            if ($id != null)
-            {
-                $filteredList = $modelClassName::getById(intval($id));
-            }
-            else
-            {
-                $filteredList = new $modelClassName();
-            }
-            if (isset($_POST[$modelClassName]))
-            {
-                $filteredList->setAttributes($_POST[$modelClassName]);
-                $filteredList->serializedData = serialize(FilteredListSaveUtil::makeDataFromPost($_POST[$modelClassName]));
-                if ($filteredList->save()) //todo: some sort of validation?
-                {
-                    $this->redirect(array('default/index', 'filteredListId' => $filteredList->id));
-                    Yii::app()->end(0, false);
-                }
-            }
-            return $filteredList;
-        }
-
         protected function makeSearchDataProvider(
             $searchModel,
             $listModelClassName,
-            $filteredListModelClassName,
             $pageSize,
             $userId,
             $stateMetadataAdapterClassName = null)
@@ -248,7 +161,6 @@
             $listModelClassName,
             $pageSize,
             $userId,
-            $filteredListModelClassName = null,
             $stateMetadataAdapterClassName = null
             )
         {
@@ -259,7 +171,6 @@
                 return $this->makeSearchDataProvider(
                     $searchModel,
                     $listModelClassName,
-                    $filteredListModelClassName,
                     $pageSize,
                     $userId,
                     $stateMetadataAdapterClassName);

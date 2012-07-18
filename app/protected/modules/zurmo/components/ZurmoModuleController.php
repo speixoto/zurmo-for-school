@@ -150,16 +150,10 @@
             return null;
         }
 
-        protected function getModelFilteredListClassName()
-        {
-            return null;
-        }
-
         protected function export()
         {
             $modelClassName        = $this->getModelName();
             $searchFormClassName   = $this->getSearchFormClassName();
-            $filteredListClassName = $this->getModelFilteredListClassName();
             // Set $pageSize to unlimited, because we don't want pagination
             $pageSize = Yii::app()->pagination->getGlobalValueByType('unlimitedPageSize');
             $model = new $modelClassName(false);
@@ -178,8 +172,7 @@
                 $searchForm,
                 $modelClassName,
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                $filteredListClassName
+                Yii::app()->user->userModel->id
             );
 
             if (!$dataProvider)

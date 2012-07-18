@@ -54,7 +54,6 @@
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Account',
-                'AccountsFilteredList',
                 $pageSize,
                 Yii::app()->user->userModel->id
             );
@@ -137,8 +136,7 @@
                 new AccountsSearchForm($account),
                 'Account',
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                'AccountsFilteredList');
+                Yii::app()->user->userModel->id);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $account = $this->processMassEdit(
                 $pageSize,
@@ -176,8 +174,7 @@
                 new AccountsSearchForm($account),
                 'Account',
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                'AccountsFilteredList'
+                Yii::app()->user->userModel->id
             );
             $this->processMassEditProgressSave(
                 'Account',
@@ -208,11 +205,6 @@
         protected function getSearchFormClassName()
         {
             return 'AccountsSearchForm';
-        }
-
-        protected function getModelFilteredListClassName()
-        {
-            return 'AccountsFilteredList';
         }
 
         public function actionExport()

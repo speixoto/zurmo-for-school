@@ -136,7 +136,50 @@
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content .= $searchElement->render();
+            $content .= $this->renderDeleteLinkContent();
             return $content;
+        }
+
+        protected function renderDeleteLinkContent()
+        {
+            // Begin Not Coding Standard
+            Yii::app()->clientScript->registerScript('deleteSavedSearchAndRemoveFromViewScript', "
+                function deleteSavedSearchAndRemoveFromView(modelId)
+                {
+                        $.ajax({
+                            url : '" . Yii::app()->createUrl('zurmo/default/deleteSavedSearch') . "?id=' + modelId,
+                            type : 'GET',
+                            dataType : 'json',
+                            success : function(data)
+                            {
+                               var inputId = '" . static::getSavedSearchListDropDown() . "';
+                               $('#' + inputId + ' > option').each(function(){
+                                   if (this.value == modelId)
+                                   {
+                                       $('#' + inputId + ' option[value=\'' + this.value + '\']').remove();
+                                   }
+                               });
+                               $('#' + inputId).removeData('dropkick');
+                               $('#dk_container_' + inputId).remove();
+                               $('#' + inputId).dropkick();
+                               $('#' + inputId).dropkick('rebindToggle');
+                               $('#removeSavedSearch').remove();
+                            },
+                            error : function()
+                            {
+                                //todo: error call
+                            }
+                        });
+                }
+            ", CClientScript::POS_END);
+            // End Not Coding Standard
+            if($this->model->savedSearchId != null)
+            {
+                $label = Yii::t('Default', 'Delete') . "<span class='icon'></span>";
+                return CHtml::link($label, "#", array( 'id'		 => 'removeSavedSearch',
+                                                       'class'   => 'remove',
+                                                       'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));
+            }
         }
 
         protected function getExtraRenderForClearSearchLinkScript()

@@ -54,7 +54,6 @@
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Opportunity',
-                'OpportunitiesFilteredList',
                 $pageSize,
                 Yii::app()->user->userModel->id
             );
@@ -160,8 +159,7 @@
                 new OpportunitiesSearchForm($opportunity),
                 'Opportunity',
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                'OpportunitiesFilteredList');
+                Yii::app()->user->userModel->id);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $opportunity = $this->processMassEdit(
                 $pageSize,
@@ -199,8 +197,7 @@
                 new OpportunitiesSearchForm($opportunity),
                 'Opportunity',
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                'OpportunitiesFilteredList'
+                Yii::app()->user->userModel->id
             );
             $this->processMassEditProgressSave(
                 'Opportunity',
@@ -247,11 +244,6 @@
         protected function getSearchFormClassName()
         {
             return 'OpportunitiesSearchForm';
-        }
-
-        protected function getModelFilteredListClassName()
-        {
-            return 'OpportunitiesFilteredList';
         }
 
         public function actionExport()

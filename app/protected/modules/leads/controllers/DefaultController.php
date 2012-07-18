@@ -58,7 +58,6 @@
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Contact',
-                'LeadsFilteredList',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'LeadsStateMetadataAdapter'
@@ -162,7 +161,6 @@
                 'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'LeadsFilteredList',
                 'LeadsStateMetadataAdapter');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassEdit(
@@ -202,7 +200,6 @@
                 'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'LeadsFilteredList',
                 'LeadsStateMetadataAdapter'
             );
             $this->processMassEditProgressSave(
@@ -344,11 +341,6 @@
         protected function getSearchFormClassName()
         {
             return 'LeadsSearchForm';
-        }
-
-        protected function getModelFilteredListClassName()
-        {
-            return 'LeadsFilteredList';
         }
 
         public function actionExport()

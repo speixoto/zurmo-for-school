@@ -55,7 +55,6 @@
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Contact',
-                'ContactsFilteredList',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter'
@@ -154,7 +153,6 @@
                 'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'ContactsFilteredList',
                 'ContactsStateMetadataAdapter');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassEdit(
@@ -194,7 +192,6 @@
                 'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'ContactsFilteredList',
                 'ContactsStateMetadataAdapter'
             );
             $this->processMassEditProgressSave(
@@ -256,11 +253,6 @@
         protected function getSearchFormClassName()
         {
             return 'ContactsSearchForm';
-        }
-
-        protected function getModelFilteredListClassName()
-        {
-            return 'ContactsFilteredList';
         }
 
         public function actionExport()
