@@ -63,27 +63,28 @@
 
         public function validateDynamicStructure($attribute, $params)
         {
+            return;
             $formula = strtolower($this->$attribute);
-            if (!$this->validateParenthesis($formula)) 
+            if (!$this->validateParenthesis($formula))
             {
                 $errorContent = Yii::t('Default', 'Please fix your parenthesis.');
-            } 
-            else 
+            }
+            else
             {
                 $formula = str_replace("(","", $formula);
                 $formula = str_replace(")","", $formula);
                 $arguments = preg_split("/or|and/", $formula);
                 foreach ($arguments as $argument)
                 {
-                    if (!is_numeric(trim($argument)) 
-                        || !(intval(trim($argument)) <= count($this->dynamicClauses)) 
+                    if (!is_numeric(trim($argument))
+                        || !(intval(trim($argument)) <= count($this->dynamicClauses))
                         || !(preg_match("/\./", $argument) === 0) )
                     {
-                        $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));                        
+                        $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));
                     }
-                }              
-            } 
-            if (isset($errorContent)) 
+                }
+            }
+            if (isset($errorContent))
             {
                 $this->addError('dynamicStructure', Yii::t('Default', 'The structure is invalid. {error}', array('{error}' => $errorContent)));
             }
@@ -96,30 +97,30 @@
         {
             $val = 0;
             for ($i = 0; $i <= strlen($formula); $i++) {
-                $char = substr($formula, $i, 1);            
-                if ($char === "(") 
+                $char = substr($formula, $i, 1);
+                if ($char === "(")
                 {
-                    $val += 1;                    
-                } 
-                elseif ($char === ")") 
+                    $val += 1;
+                }
+                elseif ($char === ")")
                 {
                     $val -= 1;
                 }
-                if ($val < 0)  
+                if ($val < 0)
                 {
                     return false;
                 }
             }
-            if ($val!==0) 
+            if ($val!==0)
             {
-                return false;                
-            } 
-            else 
+                return false;
+            }
+            else
             {
-                return true;    
+                return true;
             }
         }
-        
+
         public function validateDynamicClauses($attribute, $params)
         {
             if($this->$attribute != null)

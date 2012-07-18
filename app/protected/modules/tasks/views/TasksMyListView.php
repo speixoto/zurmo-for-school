@@ -39,7 +39,7 @@
             $metadata = array(
                 'perUser' => array(
                     'title' => "eval:Yii::t('Default', 'My Open TasksModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
-                    'searchAttributes' => array('ownedItemsOnly' => true, 'completed' => false),
+                    'searchAttributes' => array('ownedItemsOnly' => true, ),//'completed' => false),
                 ),
                 'global' => array(
                     'derivedAttributeTypes' => array(

@@ -67,12 +67,18 @@
             $listModelClassName,
             $pageSize,
             $userId,
-            $stateMetadataAdapterClassName = null)
+            $stateMetadataAdapterClassName = null,
+            $dataCollection = null)
         {
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $searchAttributes          = SearchUtil::resolveSearchAttributesFromGetArray(get_class($searchModel), get_class($searchModel));
-            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromGetArray($searchModel, get_class($searchModel));
+            assert('$dataCollection instanceof SearchAttributesDataCollection || $dataCollection == null');
+            if($dataCollection == null)
+            {
+                $dataCollection = new SearchAttributesDataCollection($searchModel);
+            }
+            $searchAttributes          = $dataCollection->resolveSearchAttributesFromSourceData();
+            $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
             $sortAttribute             = SearchUtil::resolveSortAttributeFromGetArray($listModelClassName);
@@ -82,7 +88,8 @@
                 $userId,
                 $sanitizedSearchAttributes
             );
-            $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(), $userId);
+            $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
+                                                                              $userId, $dataCollection);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,
@@ -94,9 +101,10 @@
             );
         }
 
-        protected static function resolveDynamicSearchMetadata($searchModel, $metadata, $userId)
+        protected static function resolveDynamicSearchMetadata($searchModel, $metadata, $userId, SearchAttributesDataCollection $dataCollection)
         {
-            $dynamicSearchAttributes          = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($searchModel));
+
+            $dynamicSearchAttributes          = $dataCollection->getDynamicSearchAttributes();
             if($dynamicSearchAttributes == null)
             {
                 return $metadata;
@@ -104,7 +112,7 @@
             $sanitizedDynamicSearchAttributes = SearchUtil::
                                                 sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
                                                                                                             $dynamicSearchAttributes);
-            $dynamicStructure                 = SearchUtil::getDynamicSearchStructureFromGetArray(get_class($searchModel));
+            $dynamicStructure                 = $dataCollection->getDynamicStructure();
             if ($sanitizedDynamicSearchAttributes != null)
             {
                 $dynamicSearchMetadataAdapter = new DynamicSearchDataProviderMetadataAdapter($metadata,
@@ -115,33 +123,6 @@
                 $metadata                     = $dynamicSearchMetadataAdapter->getAdaptedDataProviderMetadata();
             }
             return $metadata;
-        }
-
-        protected function makeSearchAndListView(
-            $searchModel,
-            $listModel,
-            $searchAndListViewClassName,
-            $moduleClassName,
-            $pageSize,
-            $userId,
-            $stateMetadataAdapterClassName = null)
-        {
-            $dataProvider = $this->makeRedBeanDataProviderFromGet(
-                $searchModel,
-                get_class($listModel),
-                $pageSize,
-                $userId,
-                $stateMetadataAdapterClassName
-            );
-            return new $searchAndListViewClassName(
-                $this->getId(),
-                $this->getModule()->getId(),
-                $searchModel,
-                $listModel,
-                $moduleClassName,
-                $dataProvider,
-                GetUtil::resolveSelectedIdsFromGet()
-            );
         }
 
         protected function makeDetailsAndRelationsView($model, $moduleClassName, $viewClassName, $redirectUrl)

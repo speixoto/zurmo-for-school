@@ -166,5 +166,133 @@
                 }
             }
         }
+
+        public static function renderDynamicSearchAttributeInput($viewClassName,
+                                                                    $modelClassName,
+                                                                    $formModelClassName,
+                                                                    $rowNumber,
+                                                                    $attributeIndexOrDerivedType,
+                                                                    $searchAttributes = array(),
+                                                                    $suffix = null)
+        {
+            assert('is_string($viewClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($formModelClassName)');
+            assert('is_int($rowNumber)');
+            assert('is_string($attributeIndexOrDerivedType) || $attributeIndexOrDerivedType == null');
+            assert('is_array($searchAttributes)');
+            assert('is_string($suffix) || $suffix == null');
+            $content          = null;
+            if(count(explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType)) > 1)
+            {
+                $model            = new $modelClassName(false);
+                $nestedAttributes = explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType);
+                $inputPrefix      = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
+                $totalNestedCount = count($nestedAttributes);
+                $processCount     = 1;
+                $nestedSearchAttributes = $searchAttributes;
+
+                foreach($nestedAttributes as $attribute)
+                {
+                    if($processCount < $totalNestedCount && isset($nestedSearchAttributes[$attribute]))
+                    {
+                        $nestedSearchAttributes = $nestedSearchAttributes[$attribute];
+                        if(isset($nestedSearchAttributes['relatedData']))
+                        {
+                            unset($nestedSearchAttributes['relatedData']);
+                        }
+                    }
+                    if($processCount < $totalNestedCount)
+                    {
+                        $model           = SearchUtil::resolveModelToUseByModelAndAttributeName($model, $attribute);
+                        $inputPrefix[]   = $attribute;
+                        $relatedDataName = Element::resolveInputIdPrefixIntoString($inputPrefix) . '[relatedData]';
+                        $content        .= ZurmoHtml::hiddenField($relatedDataName, true);
+                    }
+                    $processCount ++;
+                }
+                $attributeIndexOrDerivedType = $attribute;
+                $modelToUse                  = $model;
+                $modelToUse->setAttributes($nestedSearchAttributes);
+                $cellElementModelClassName   = get_class($model->getModel());
+                //Dynamic Search needs to always assume there is an available SearchForm
+                //Always assumes the SearchView to use matches the exact pluralCamelCasedName.
+                //Does not support nested relations to leads persay.  It will resolve as a Contact.
+                $moduleClassName             = $model->getModel()->getModuleClassName();
+                $viewClassName               = $moduleClassName::getPluralCamelCasedName() . 'SearchView';
+                $element                     = DynamicSearchUtil::getCellElement($viewClassName, $cellElementModelClassName,
+                                                                                 $attributeIndexOrDerivedType);
+            }
+            else
+            {
+                $model                 = new $modelClassName(false);
+                $modelToUse            = new $formModelClassName($model);
+                $modelToUse->setAttributes($searchAttributes);
+                $inputPrefix           = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
+                $element               = DynamicSearchUtil::getCellElement($viewClassName, $modelClassName,
+                                                                          $attributeIndexOrDerivedType);
+            }
+            $form                      = new NoRequiredsActiveForm();
+            $element['inputPrefix']    = $inputPrefix;
+            $elementclassname          = $element['type'] . 'Element';
+            $element                   = new $elementclassname($modelToUse, $element['attributeName'],
+                                                              $form, array_slice($element, 2));
+            $element->editableTemplate = '{content}{error}';
+            $content                  .= $element->render();
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js', CClientScript::POS_END);
+            return $content;
+        }
+
+        public static function renderDynamicSearchRowContent($viewClassName,
+                                               $modelClassName,
+                                               $formModelClassName,
+                                               $rowNumber,
+                                               $attributeIndexOrDerivedType,
+                                               $inputContent,
+                                               $suffix = null,
+                                               $renderAsAjax = false)
+        {
+            assert('is_string($viewClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($formModelClassName)');
+            assert('is_int($rowNumber)');
+            assert('is_string($attributeIndexOrDerivedType) || $attributeIndexOrDerivedType == null');
+            assert('is_array($searchAttributes)');
+            assert('is_string($suffix) || $suffix == null');
+            assert('is_bool($renderAsAjax)');
+            $searchableAttributeIndicesAndDerivedTypes = DynamicSearchUtil::
+                                                            getSearchableAttributesAndLabels($viewClassName,
+                                                                                             $modelClassName);
+            $ajaxOnChangeUrl  = Yii::app()->createUrl("zurmo/default/dynamicSearchAttributeInput",
+                                   array('viewClassName'      => $viewClassName,
+                                         'modelClassName'     => $modelClassName,
+                                         'formModelClassName' => $formModelClassName,
+                                         'rowNumber'          => $rowNumber,
+                                         'suffix'             => $suffix));
+            $rowView     = new DynamicSearchRowView(
+                                    $searchableAttributeIndicesAndDerivedTypes,
+                                    (int)$rowNumber,
+                                    $suffix,
+                                    $formModelClassName,
+                                    $ajaxOnChangeUrl,
+                                    $attributeIndexOrDerivedType,
+                                    $inputContent);
+
+
+            if(!$renderAsAjax)
+            {
+                $view = $rowView;
+            }
+            else
+            {
+                $view = new AjaxPageView($rowView);
+            }
+            return CHtml::tag('div', array('class' => 'dynamic-search-row'), $view->render());
+        }
     }
 ?>

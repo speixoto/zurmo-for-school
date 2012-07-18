@@ -38,8 +38,24 @@
         public static function getByOwnerAndViewClassName(User $user, $viewClassName)
         {
             assert('$user->id > 0');
-            assert('is_string($viewClassName');
-            //todo
+            assert('is_string($viewClassName)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'owner',
+                    'operatorType'         => 'equals',
+                    'value'                => $user->id,
+                ),
+                2 => array(
+                    'attributeName'        => 'viewClassName',
+                    'operatorType'         => 'equals',
+                    'value'                => $viewClassName,
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('SavedSearch');
+            $where             = RedBeanModelDataProvider::makeWhere('SavedSearch', $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where, null);
         }
 
         public static function getDefaultMetadata()
@@ -63,6 +79,11 @@
                 )
             );
             return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
         }
     }
 ?>

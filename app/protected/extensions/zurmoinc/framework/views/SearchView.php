@@ -125,7 +125,7 @@
             return $content;
         }
 
-        protected function getExtraRenderForCancelSearchLinkScript()
+        protected function getExtraRenderForClearSearchLinkScript()
         {
 
         }
@@ -149,7 +149,7 @@
                 $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
                 $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function()
                     {
-                        " . $this->getExtraRenderForCancelSearchLinkScript() . "
+                        " . $this->getExtraRenderForClearSearchLinkScript() . "
                         $(this).closest('form').submit();
                         return false;
                     }

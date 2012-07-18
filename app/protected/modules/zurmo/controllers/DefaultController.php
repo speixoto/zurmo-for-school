@@ -170,20 +170,16 @@
 
         public function actionDynamicSearchAddExtraRow($viewClassName, $modelClassName, $formModelClassName, $rowNumber, $suffix = null)
         {
-            $searchableAttributeIndicesAndDerivedTypes = DynamicSearchUtil::
-                                                            getSearchableAttributesAndLabels($viewClassName,
-                                                                                             $modelClassName);
-            $ajaxOnChangeUrl  = Yii::app()->createUrl("zurmo/default/dynamicSearchAttributeInput",
-                                   array('viewClassName'      => $viewClassName,
-                                         'modelClassName'     => $modelClassName,
-                                         'formModelClassName' => $formModelClassName,
-                                         'rowNumber'          => $rowNumber,
-                                         'suffix'             => $suffix));
-            $extraRowView     = new DynamicSearchExtraRowView(
-                                    $searchableAttributeIndicesAndDerivedTypes, (int)$rowNumber, $suffix,
-                                    $formModelClassName, $ajaxOnChangeUrl);
-            $view             = new AjaxPageView($extraRowView);
-            echo CHtml::tag('div', array('class' => 'dynamic-search-row'), $view->render());
+
+            echo DynamicSearchUtil::renderDynamicSearchRowContent($viewClassName,
+                                                                  $modelClassName,
+                                                                  $formModelClassName,
+                                                                  (int)$rowNumber,
+                                                                  null,
+                                                                  null,
+                                                                  $suffix,
+                                                                  true);
+
         }
 
         public function actionDynamicSearchAttributeInput($viewClassName, $modelClassName, $formModelClassName, $rowNumber,
@@ -193,57 +189,13 @@
             {
                 Yii::app()->end(0, false);
             }
-            $content          = null;
-            if(count(explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType)) > 1)
-            {
-                $model            = new $modelClassName(false);
-                $nestedAttributes = explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType);
-                $inputPrefix      = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
-                $totalNestedCount = count($nestedAttributes);
-                $processCount     = 1;
-                foreach($nestedAttributes as $attribute)
-                {
-                    if($processCount < $totalNestedCount)
-                    {
-                        $model           = SearchUtil::resolveModelToUseByModelAndAttributeName($model, $attribute);
-                        $inputPrefix[]   = $attribute;
-                        $relatedDataName = Element::resolveInputIdPrefixIntoString($inputPrefix) . '[relatedData]';
-                        $content        .= ZurmoHtml::hiddenField($relatedDataName, true);
-                    }
-                    $processCount ++;
-                }
-                $attributeIndexOrDerivedType = $attribute;
-                $modelToUse                  = $model;
-                $cellElementModelClassName   = get_class($model->getModel());
-                //Dynamic Search needs to always assume there is an available SearchForm
-                //Always assumes the SearchView to use matches the exact pluralCamelCasedName.
-                //Does not support nested relations to leads persay.  It will resolve as a Contact.
-                $moduleClassName             = $model->getModel()->getModuleClassName();
-                $viewClassName               = $moduleClassName::getPluralCamelCasedName() . 'SearchView';
-                $element                     = DynamicSearchUtil::getCellElement($viewClassName, $cellElementModelClassName,
-                                                                                 $attributeIndexOrDerivedType);
-            }
-            else
-            {
-                $model                 = new $modelClassName(false);
-                $modelToUse            = new $formModelClassName($model);
-                $inputPrefix           = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
-                $element               = DynamicSearchUtil::getCellElement($viewClassName, $modelClassName,
-                                                                          $attributeIndexOrDerivedType);
-            }
-            $form                      = new NoRequiredsActiveForm();
-            $element['inputPrefix']    = $inputPrefix;
-            $elementclassname          = $element['type'] . 'Element';
-            $element                   = new $elementclassname($modelToUse, $element['attributeName'],
-                                                              $form, array_slice($element, 2));
-            $element->editableTemplate = '{content}{error}';
-            $content                  .= $element->render();
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js', CClientScript::POS_END);
+            $content = DynamicSearchUtil::renderDynamicSearchAttributeInput( $viewClassName,
+                                                                             $modelClassName,
+                                                                             $formModelClassName,
+                                                                             $rowNumber,
+                                                                             $attributeIndexOrDerivedType,
+                                                                             array(),
+                                                                             $suffix);
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;
@@ -269,7 +221,7 @@
                     $searchForm->setScenario('validateSaveSearch');
                     if($searchForm->validate())
                     {
-                        $this->processSaveSearch($searchForm);
+                        $this->processSaveSearch($searchForm, $viewClassName);
                     }
                 }
                 else
@@ -289,22 +241,13 @@
             }
         }
 
-        protected function processSaveSearch($searchForm)
+        protected function processSaveSearch($searchForm, $viewClassName)
         {
-            /**
-            echo "<pre>";
-            print_r($searchForm->anyMixedAttributes);
-            print_r($searchForm->getAnyMixedAttributesScope());
-            print_r($searchForm->dynamicStructure);
-            print_r($searchForm->dynamicClauses);
-            print_r($searchForm->savedSearchName);
-            print_r($searchForm->savedSearchId);
-            echo "</pre>";
-            **/
-            //adapter needed to go both ways i think.
-            //$savedSearch = SomeAdapter::makeSavedSearchBySearchForm($searchForm);
-            //$savedSearch->save();
-            //what happens if this fails to save? throw not failed to save exception
+            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName);
+            if(!$savedSearch->save())
+            {
+                throw new FailedToSaveModelException();
+            }
         }
 
         protected function resolveAndSanitizeDynamicSearchAttributesByPostData($postData, DynamicSearchForm $searchForm)

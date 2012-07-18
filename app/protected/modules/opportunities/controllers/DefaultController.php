@@ -51,7 +51,7 @@
                             'listPageSize', get_class($this->getModule()));
             $opportunity = new Opportunity(false);
             $searchForm = new OpportunitiesSearchForm($opportunity);
-            $dataProvider = $this->makeSearchFilterListDataProvider(
+            $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Opportunity',
                 'OpportunitiesFilteredList',

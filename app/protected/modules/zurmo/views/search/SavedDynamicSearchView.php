@@ -39,6 +39,57 @@
             parent::__construct($model, $listModelClassName, $gridIdSuffix = null, $hideAllSearchPanelsToStart);
         }
 
+        protected function renderDynamicAdvancedSearchRows($panel, $maxCellsPerRow,  $form)
+        {
+            $content  = $this->renderSavedSearchList();
+            $content .= parent::renderDynamicAdvancedSearchRows($panel, $maxCellsPerRow,  $form);
+            return $content;
+        }
+
+        protected function renderSavedSearchList()
+        {
+            $savedSearches = SavedSearch::getByOwnerAndViewClassName(Yii::app()->user->userModel, get_class($this));
+            if(count($savedSearches) > 0)
+            {
+                $idOrName      = static::getSavedSearchListDropDown();
+                $htmlOptions   = array('id' => $idOrName, 'empty' => Yii::t('Default', 'Load a saved search'));
+                $content       = CHtml::dropDownList($idOrName,
+                                                     $this->model->savedSearchId,
+                                                     self::resolveSavedSearchesToIdAndLabels($savedSearches),
+                                                     $htmlOptions);
+                $this->renderSavedSearchDropDownOnChangeScript($idOrName, $this->model->loadSavedSearchUrl);
+                return $content;
+            }
+        }
+
+        protected static function getSavedSearchListDropDown()
+        {
+            return 'savedSearchId';
+        }
+
+        protected static function resolveSavedSearchesToIdAndLabels($savedSearches)
+        {
+            $data = array();
+            foreach($savedSearches as $savedSearch)
+            {
+                $data[$savedSearch->id] = strval($savedSearch);
+            }
+            return $data;
+        }
+
+        protected function renderSavedSearchDropDownOnChangeScript($id, $onChangeUrl)
+        {
+            //Currently supports only if there is no additional get params. Todo, merge if there is an existing get param.
+            Yii::app()->clientScript->registerScript('savedSearchLoadScript', "
+                $('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
+                {
+                    if($(this).val() != '')
+                    {
+                        window.location = '" . $onChangeUrl . "?savedSearchId=' + $(this).val();
+                    }
+                });");
+        }
+
         protected function getExtraRenderFormBottomPanelScriptPart()
         {
             return parent::getExtraRenderFormBottomPanelScriptPart() .
@@ -86,6 +137,17 @@
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content .= $searchElement->render();
             return $content;
+        }
+
+        protected function getExtraRenderForClearSearchLinkScript()
+        {
+            return parent::getExtraRenderForClearSearchLinkScript() .
+                    "$('#" . static::getSavedSearchListDropDown() . "').val();
+                     $('#" . static::getSavedSearchListDropDown() . "').removeData('dropkick');
+                     $('#dk_container_" . static::getSavedSearchListDropDown() . "').remove();
+                     $('#" . static::getSavedSearchListDropDown() . "').dropkick();
+                     $('#" . static::getSavedSearchListDropDown() . "').dropkick('rebindToggle');
+            ";
         }
     }
 ?>

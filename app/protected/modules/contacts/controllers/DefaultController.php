@@ -48,11 +48,11 @@
 
         public function actionList()
         {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'listPageSize', get_class($this->getModule()));
-            $contact  = new Contact(false);
-            $searchForm = new ContactsSearchForm($contact);
-            $dataProvider = $this->makeSearchFilterListDataProvider(
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $contact                        = new Contact(false);
+            $searchForm                     = new ContactsSearchForm($contact);
+            $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Contact',
                 'ContactsFilteredList',

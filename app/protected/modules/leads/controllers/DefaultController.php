@@ -55,7 +55,7 @@
                             'listPageSize', get_class($this->getModule()));
             $contact  = new Contact(false);
             $searchForm = new LeadsSearchForm($contact);
-            $dataProvider = $this->makeSearchFilterListDataProvider(
+            $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Contact',
                 'LeadsFilteredList',

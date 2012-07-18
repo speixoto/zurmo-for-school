@@ -203,7 +203,7 @@
             return $filteredList;
         }
 
-        protected function makeSearchFilterListDataProvider(
+        protected function makeSearchDataProvider(
             $searchModel,
             $listModelClassName,
             $filteredListModelClassName,
@@ -214,27 +214,23 @@
             assert('$searchModel != null');
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             static::resolveToTriggerOnSearchEvents($listModelClassName);
-            if (!empty($_GET['filteredListId']) && empty($_POST['search']))
+            $dataCollection = new SearchAttributesDataCollection($searchModel);
+            if($searchModel instanceof SavedDynamicSearchForm)
             {
-                $filteredListId = (int)$_GET['filteredListId'];
-                assert('!empty($filteredListModelClassName)');
-                $dataProvider = $this->makeFilteredListDataProviderFromGet(
-                    $filteredListId,
-                    $listModelClassName,
-                    $filteredListModelClassName,
-                    $pageSize,
-                    $userId,
-                    $stateMetadataAdapterClassName);
+                SavedSearchUtil::resolveSearchFormByGetData(GetUtil::getData(), $searchModel);
+                $searchModel->loadSavedSearchUrl = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/list/');
+                if($searchModel->savedSearchId != null)
+                {
+                    $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+                }
             }
-            else
-            {
-                $dataProvider = $this->makeRedBeanDataProviderFromGet(
-                    $searchModel,
-                    $listModelClassName,
-                    $pageSize,
-                    $userId,
-                    $stateMetadataAdapterClassName);
-            }
+            $dataProvider = $this->makeRedBeanDataProviderFromGet(
+                $searchModel,
+                $listModelClassName,
+                $pageSize,
+                $userId,
+                $stateMetadataAdapterClassName,
+                $dataCollection);
             return $dataProvider;
         }
 
@@ -260,7 +256,7 @@
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             if ($_GET['selectAll'])
             {
-                return $this->makeSearchFilterListDataProvider(
+                return $this->makeSearchDataProvider(
                     $searchModel,
                     $listModelClassName,
                     $filteredListModelClassName,

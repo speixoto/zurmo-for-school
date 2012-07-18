@@ -465,7 +465,8 @@
                 $moduleClassName            = $this->model->getModuleClassName();
                 $metadata                   = $moduleClassName::getMetadata();
                 $data                       = array('anyMixedAttributes' => array());
-                if ($metadata['global']['globalSearchAttributeNames'] != null)
+                if (isset($metadata['global']['globalSearchAttributeNames']) &&
+                    $metadata['global']['globalSearchAttributeNames'] != null)
                 {
                     foreach ($metadata['global']['globalSearchAttributeNames'] as $attributeName)
                     {

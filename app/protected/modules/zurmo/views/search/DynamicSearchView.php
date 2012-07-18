@@ -64,9 +64,10 @@
             return true;
         }
 
-        protected function getExtraRenderForCancelSearchLinkScript()
+        protected function getExtraRenderForClearSearchLinkScript()
         {
-            return "$(this).closest('form').find('.search-view-1').find('.dynamic-search-row').each(function(){
+            return parent::getExtraRenderForClearSearchLinkScript() .
+                    "$(this).closest('form').find('.search-view-1').find('.dynamic-search-row').each(function(){
                         $(this).remove();
                     });
                     $('#" . $this->getRowCounterInputId() . "').val(0);
@@ -135,43 +136,60 @@
             }
         }
 
-       //todo: we could have getMetadata be changed to resolveMetadata, non-static. that way saved
-       //todo: search we can pull in and show rows by default.
-       //todo: we have to deal with saved search but this might require an override in DynamicSearchView...
         protected function renderDynamicAdvancedSearchRows($panel, $maxCellsPerRow,  $form)
         {
             assert('$form != null');
-            $content  = $form->errorSummary($this->model);
-            $content .= $this->renderDynamicClausesValidationHelperContent($form);
-            $rowCount = 0;
-            if(($panel['rows']) > 0)
+            $content            = $form->errorSummary($this->model);
+            $content           .= $this->renderDynamicClausesValidationHelperContent($form);
+            $rowCount           = 0;
+            $suffix             = $this->getSearchFormId();
+            $viewClassName      = get_class($this);
+            $modelClassName     = get_class($this->model->getModel());
+            $formModelClassName = get_class($this->model);
+            if($this->model->dynamicClauses!= null)
             {
-                foreach ($panel['rows'] as $row)
+                foreach($this->model->dynamicClauses as $dynamicClause)
                 {
-                    $content .= '<div>';
-                    foreach ($row['cells'] as $cell)
+                    $attributeIndexOrDerivedType = ArrayUtil::getArrayValue($dynamicClause, 'attributeIndexOrDerivedType');
+                    if($attributeIndexOrDerivedType != null)
                     {
-                        if (!empty($cell['elements']))
-                        {
-                            foreach ($cell['elements'] as $elementInformation)
-                            {
-                                $elementclassname          = $elementInformation['type'] . 'Element';
-                                $element                   = new $elementclassname($this->model,
-                                                                                   $elementInformation['attributeName'],
-                                                                                   $form,
-                                                                                   array_slice($elementInformation, 2));
-                                $element->editableTemplate = '{content}{error}';
-                                $content .= $element->render();
-                            }
-                        }
+                        $searchAttributes = self::resolveSearchAttributeValuesForDynamicRow($dynamicClause,
+                                                                                            $attributeIndexOrDerivedType);
+                        $inputContent = DynamicSearchUtil::renderDynamicSearchAttributeInput($viewClassName,
+                                                                                             $modelClassName,
+                                                                                             $formModelClassName,
+                                                                                             (int)$rowCount,
+                                                                                             $attributeIndexOrDerivedType,
+                                                                                             $searchAttributes,
+                                                                                             $suffix);
+                        $content .= DynamicSearchUtil::renderDynamicSearchRowContent(        $viewClassName,
+                                                                                             $modelClassName,
+                                                                                             $formModelClassName,
+                                                                                             $rowCount,
+                                                                                             $attributeIndexOrDerivedType,
+                                                                                             $inputContent,
+                                                                                             $suffix);
+                        $rowCount ++;
                     }
-                    $content .= '</div>';
-                    $rowCount ++;
                 }
             }
             $content .= $this->renderAddExtraRowContent($rowCount);
             $content .= $this->renderDynamicSearchStructureContent($form);
            return $content;
+        }
+
+        protected static function resolveSearchAttributeValuesForDynamicRow($dynamicClause, $attributeIndexOrDerivedType)
+        {
+            $dynamicClauseOnlyWithAttributes = $dynamicClause;
+            if(isset($dynamicClause['structurePosition']))
+            {
+                unset($dynamicClauseOnlyWithAttributes['structurePosition']);
+            }
+            if(isset($dynamicClause['attributeIndexOrDerivedType']))
+            {
+                unset($dynamicClauseOnlyWithAttributes['attributeIndexOrDerivedType']);
+            }
+            return $dynamicClauseOnlyWithAttributes;
         }
 
         protected function renderAddExtraRowContent($rowCount)
@@ -221,7 +239,8 @@
         protected function renderDynamicClausesValidationHelperContent($form)
         {
             $htmlOptions = array('id'   => get_class($this->model) . '_dynamicClauses',
-                                 'name' => 'dynamicClausesValidationHelper');
+                                 'name' => 'dynamicClausesValidationHelper',
+                                 'value' => 'xxx');
             $content  = '<div style="display:none;">';
             $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptions);
             $content .= $form->error($this->model, 'dynamicClauses', $htmlOptions);
@@ -252,17 +271,17 @@
 
         protected function renderStructureInputContent($form)
         {
+            $content             = Yii::t('Default', 'Search Structure') . ':';
             $idInputHtmlOptions  = array('id'    => $this->getStructureInputId(),
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'dynamic-search-structure-input');
-            $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
+            $content            .= $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
         }
 
         protected function shouldHideDynamicSearchStructureByDefault()
         {
-            //todo: expand once we have saved search
             return true;
         }
     }

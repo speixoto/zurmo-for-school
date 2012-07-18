@@ -33,27 +33,31 @@
 
         public $savedSearchName;
 
+        public $loadSavedSearchUrl;
+
         public static function getNonSearchableAttributes()
         {
-            return array_merge(parent::getNonSearchableAttributes(), array('savedSearchId', 'savedSearchName'));
+            return array_merge(parent::getNonSearchableAttributes(), array('savedSearchId', 'savedSearchName', 'loadSavedSearchUrl'));
         }
 
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                               array('savedSearchId',   'safe'),
-                               array('savedSearchName', 'safe'),
-                               array('savedSearchName', 'type',   'type' => 'string'),
-                               array('savedSearchName', 'length', 'max'  => 64),
-                               array('savedSearchName', 'validateSaveSearch', 'on' => 'validateSaveSearch'),
+                               array('savedSearchId',      'safe'),
+                               array('savedSearchName',    'safe'),
+                               array('loadSavedSearchUrl', 'safe'),
+                               array('savedSearchName',    'type',   'type' => 'string'),
+                               array('savedSearchName',    'length', 'max'  => 64),
+                               array('savedSearchName',    'validateSaveSearch', 'on' => 'validateSaveSearch'),
             ));
         }
 
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                               'savedSearchId' => Yii::t('Default',   'Id'),
-                               'savedSearchName' => Yii::t('Default', 'Name'),
+                               'savedSearchId'      => Yii::t('Default',   'Id'),
+                               'savedSearchName'    => Yii::t('Default', 'Name'),
+                               'loadSavedSearchUrl' => 'LoadSavedSearchUrl',
             ));
         }
 

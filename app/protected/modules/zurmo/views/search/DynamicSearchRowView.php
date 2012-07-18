@@ -27,7 +27,7 @@
     /**
      * Class for rendering an extra row when 'Add Field' is clicked in the advanced search.
      */
-    class DynamicSearchExtraRowView extends View
+    class DynamicSearchRowView extends View
     {
         protected $searchableAttributeIndicesAndDerivedTypes;
 
@@ -39,19 +39,27 @@
 
         protected $ajaxOnChangeUrl;
 
+        protected $selectedAttribute;
+
+        protected $inputContent;
+
         public function __construct($searchableAttributeIndicesAndDerivedTypes, $rowNumber,
-                                    $suffix, $formModelClassName, $ajaxOnChangeUrl)
+                                    $suffix, $formModelClassName, $ajaxOnChangeUrl, $selectedAttribute = null, $inputContent = null)
         {
             assert('is_array($searchableAttributeIndicesAndDerivedTypes)');
             assert('is_int($rowNumber)');
             assert('is_string($suffix) || $suffix == null');
             assert('is_string($formModelClassName)');
             assert('is_string($ajaxOnChangeUrl)');
+            assert('is_string($selectedAttribute) || $selectedAttribute == null');
+            assert('is_string($inputContent) || $inputContent == null');
             $this->searchableAttributeIndicesAndDerivedTypes    = $searchableAttributeIndicesAndDerivedTypes;
             $this->rowNumber                                    = $rowNumber;
-            $this->suffix                                      = $suffix;
+            $this->suffix                                       = $suffix;
             $this->formModelClassName                           = $formModelClassName;
             $this->ajaxOnChangeUrl                              = $ajaxOnChangeUrl;
+            $this->selectedAttribute                            = $selectedAttribute;
+            $this->inputContent                                 = $inputContent;
         }
 
         public function render()
@@ -66,10 +74,10 @@
             $hiddenInputId       = $this->formModelClassName . '_' . DynamicSearchForm::DYNAMIC_NAME . '_' . $this->rowNumber . '_structurePosition';
             $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
 
-            $content  = CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), null);
+            $content  = CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
             $content .= $this->renderAttributeDropDownContent();
             $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
-            $content .= CHtml::tag('div', array('id' => $this->getInputsDivId()), null);
+            $content .= CHtml::tag('div', array('id' => $this->getInputsDivId()), $this->inputContent);
             $content .= '&#160;' . CHtml::link(Yii::t('Default', 'Remove Field'),
                         '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
@@ -100,7 +108,7 @@
                                                      $this->getInputsDivId(),
                                                      $this->ajaxOnChangeUrl));
             $content  = CHtml::dropDownList($name,
-                                           null,
+                                           $this->selectedAttribute,
                                            $this->searchableAttributeIndicesAndDerivedTypes,
                                            $htmlOptions);
             Yii::app()->clientScript->registerScript('mappingExtraColumnRemoveLink', "
