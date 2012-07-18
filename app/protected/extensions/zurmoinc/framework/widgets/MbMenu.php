@@ -159,7 +159,7 @@
         public function registerCssFile()
         {
             $cs = Yii::app()->getClientScript();
-            if($this->cssFile != null)
+            if ($this->cssFile != null)
             {
                 $cs->registerCssFile($this->themeUrl . '/' . $this->theme . '/' . $this->cssFile, 'screen');
             }

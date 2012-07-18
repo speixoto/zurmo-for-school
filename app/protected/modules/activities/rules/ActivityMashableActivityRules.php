@@ -146,7 +146,7 @@
 
         protected static function getFirstActivityItemStringContent($relationModelClassNames, RedBeanModel $model)
         {
-            assert('is_string($relationModelClassNames)');
+            assert('is_array($relationModelClassNames)');
             foreach ($relationModelClassNames as $relationModelClassName)
             {
                 //ASSUMES ONLY A SINGLE ATTACHED ACTIVITYITEM PER RELATION TYPE.

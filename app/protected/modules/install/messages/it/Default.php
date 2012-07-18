@@ -112,6 +112,8 @@
             => 'Il valore thread_stack del database soddisfa il requisito minimale.',
         'Database username'
             => 'Nome d\'utente del database',
+        'Do not use the RedBean Legacy version'
+            => 'Non utilizzare la versione RedBean Legacy',
         'Dropping existing tables.'
             => 'Rimuovendo tavole esistente.',
         'Error code:'
@@ -130,6 +132,10 @@
             => 'Il nome di host dove Zurmo va essere installato.',
         'If this website is in production mode, please remove the app/test.php file.'
             => 'Si questo webpage è en produzions, prego di rimuovere ile file app/test.php.',
+        'IMAP extension is loaded.'
+            => 'L\'estensione IMAP è stata caricata.',
+        'IMAP extension is not loaded.'
+            => 'L\'estensione IMAP non è stata caricata.',
         'In all likelihood, these items were supplied to you by your Web Host. '.
         'If you do not have this information, then you will need to contact them ' .
         'before you can continue. If you\'re all ready...'
@@ -274,7 +280,7 @@
             => 'Il percorso relativo del file dove Zurmo va essere installato.',
         'The system has detected that the hostInfo and/or scriptUrl are not set up. Please open the perInstance.php config file and set up these parameters.'
             => 'Il sistema ha trovato che hostInfo e/o scriptUrl non sono configurati.  Prego di aprire il file config perInstance.php e configurare questi parametri.',
-        'There is problem with php set_include_path command. Command can fail if "php_admin_value include_path" directive is set in Apache configuration.'
+        'There is a problem with php set_include_path command. Command can fail if "php_admin_value include_path" directive is set in Apache configuration.'
             => 'C\'è un problema con la funzione php set_include_path.  La funzione può fallire se "php_admin_value include_path" è definito nella configurazione di Apache.',
         'There was a problem creating the database Error code:'
             => 'C\'era un errore durante la creazione del database dei codice Errore:',

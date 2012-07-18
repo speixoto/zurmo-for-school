@@ -351,7 +351,7 @@
                     {
                         foreach ($structure->parts[$i]->parameters as $object)
                         {
-                            if(strtolower($object->attribute) == 'name')
+                            if (strtolower($object->attribute) == 'name')
                             {
                                 $attachment['is_attachment'] = true;
                                 $attachment['name'] = $object->value;
@@ -361,7 +361,7 @@
 
                     if ($attachment['is_attachment'])
                     {
-                        $attachment['attachment'] = imap_fetchbody($this->imapStream, $messageId, $i+1);
+                        $attachment['attachment'] = imap_fetchbody($this->imapStream, $messageId, $i + 1);
                         if ($structure->parts[$i]->encoding == 3)
                         {
                             // 3 = BASE64
@@ -390,7 +390,6 @@
         {
             return imap_uid($this->imapStream, $msgNo);
         }
-
 
         /**
          * get the count of mails for the given conditions and params
@@ -447,7 +446,7 @@
             /* multipart */
             if ($structure->type == 1)
             {
-                foreach($structure->parts as $index => $subStructure)
+                foreach ($structure->parts as $index => $subStructure)
                 {
                     if ($partNumber)
                     {

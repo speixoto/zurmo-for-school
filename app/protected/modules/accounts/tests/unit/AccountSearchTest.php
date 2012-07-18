@@ -24,44 +24,48 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserSearchTest extends ZurmoBaseTest
+    class AccountSearchTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            $user = SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = $user;
+            $accountData = array(
+                'Samsonite',
+                'Zurmo',
+                'Auto',
+                'Build',
+                'Roger'
+            );
+
+            foreach ($accountData as $key => $name)
+            {
+                $account = new Account();
+                $account->name    = $name;
+                $account->owner        = $user;
+                $account->primaryEmail = new Email();
+                $account->primaryEmail->emailAddress = strtolower($name) . '@zurmoland.com';
+                $account->secondaryEmail = new Email();
+                $account->secondaryEmail->emailAddress = 'a' . strtolower($name) . '@zurmoworld.com';
+                assert($account->save()); // Not Coding Standard
+            }
         }
 
-        public function testGetUsersByPartialFullName()
+        public function testGetAccountsByAnyEmailAddress()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
+            $data = AccountSearch::getAccountsByAnyEmailAddress('test@example.com', 5);
+            $this->assertEquals(0, count($data));
 
-            UserTestHelper::createBasicUser('Azo');
-            UserTestHelper::createBasicUser('Bdo');
-            UserTestHelper::createBasicUser('Abzo');
+            //search by primaryEmail
+            $data = AccountSearch::getAccountsByAnyEmailAddress('zurmo@zurmoland.com', 5);
+            $this->assertEquals(1, count($data));
+            $this->assertEquals('Zurmo', $data[0]->name);
 
-            $users = UserSearch::getUsersByPartialFullName('A', 5);
-            $this->assertEquals(2, count($users));
-            $users = UserSearch::getUsersByPartialFullName('bd', 5);
-            $this->assertEquals(1, count($users));
-            $users = UserSearch::getUsersByPartialFullName('Cz', 5);
-            $this->assertEquals(0, count($users));
-            $users = UserSearch::getUsersByPartialFullName('Ab', 5);
-            $this->assertEquals(1, count($users));
-        }
-
-        public function testGetUsersByEmailAddress()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $user = UserTestHelper::createBasicUser('Steve');
-            $user->primaryEmail->emailAddress = 'steve@example.com';
-            $user->primaryEmail->optOut       = 1;
-            $user->primaryEmail->isInvalid    = 0;
-            $this->assertTrue($user->save());
-
-            $users = UserSearch::getUsersByEmailAddress('steve@example.com');
-            $this->assertEquals(1, count($users));
-            $this->assertEquals($user->id, $users[0]->id);
+            //search by secondaryEmail
+            $data = AccountSearch::getAccountsByAnyEmailAddress('aroger@zurmoworld.com', 5);
+            $this->assertEquals(1, count($data));
+            $this->assertEquals('Roger', $data[0]->name);
         }
     }
 ?>

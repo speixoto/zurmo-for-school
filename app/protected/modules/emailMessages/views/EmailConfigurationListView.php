@@ -24,7 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MultiSelectDropDownAttributeDetailsView extends DropDownAttributeDetailsView
+    class EmailConfigurationListView extends GridView
     {
+        protected $cssClasses =  array( 'AdministrativeArea' , 'TableOfContentsView' );
+
+        public function __construct()
+        {
+            parent::__construct(1, 1);
+            $this->setView(new EmailConfigurationMenuView(), 0, 0);
+        }
+
+        public function isUniqueToAPage()
+        {
+            return true;
+        }
     }
 ?>

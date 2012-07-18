@@ -37,7 +37,7 @@
                     array('number',     'type',      'type' => 'integer'),
                     array('number',     'numerical', 'min'  => 0, 'max' => 10000),
                     array('string',     'type',      'type' => 'string'),
-                    array('string',     'length',    'min'  => 0,'max'=>255)
+                    array('string',     'length',    'min'  => 0, 'max' => 255)
                 )
             );
             return $metadata;

@@ -24,43 +24,36 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    abstract class AttributeDetailsView extends DetailsView
+    class EmailConfigurationMenuView extends ConfigureModulesMenuView
     {
-        protected $moduleClassName;
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            AttributeForm $model,
-            $moduleClassName,
-            $title
-        )
-        {
-            $this->controllerId    = $controllerId;
-            $this->moduleId        = $moduleId;
-            $this->model           = $model;
-            $this->moduleClassName = $moduleClassName;
-            $this->modelId         = null;
-            $this->title           = $title;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
-
-        protected function getEditLinkRouteParameters()
-        {
-            return array(
-                'moduleClassName'     => $this->moduleClassName,
-                'attributeName'       => $this->model->attributeName,
-                'attributeTypeName'   => $this->model->getAttributeTypeName(),
-            );
-        }
-
         protected function renderTitleContent()
         {
-            return '<h1>' . $this->title . '</h1>';
+            return '<h1>' . Yii::t('Default', 'Email Configuration') . '</h1>';
+        }
+
+        protected function getCategoryData()
+        {
+            $categories = array();
+            $module = new EmailMessagesModule('EmailMessagesModule', false);
+            $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser('EmailMessagesModule');
+            if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
+            {
+                foreach ($moduleSubMenuItems as $subMenuItem)
+                    {
+                        if (!empty($subMenuItem['category']))
+                        {
+                            assert('isset($subMenuItem["titleLabel"])');
+                            assert('isset($subMenuItem["descriptionLabel"])');
+                            assert('isset($subMenuItem["route"])');
+                            $categories[$subMenuItem['category']][] = $subMenuItem;
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
+                    }
+            }
+            return $categories;
         }
     }
 ?>
