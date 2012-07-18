@@ -63,29 +63,34 @@
 
         public function validateDynamicStructure($attribute, $params)
         {
-            $formula = strtolower($this->$attribute);
-            if (!$this->validateParenthesis($formula)) 
+            if (count($this->dynamicClauses) > 0) 
             {
-                $errorContent = Yii::t('Default', 'Please fix your parenthesis.');
-            } 
-            else 
-            {
-                $formula = str_replace("(","", $formula);
-                $formula = str_replace(")","", $formula);
-                $arguments = preg_split("/or|and/", $formula);
-                foreach ($arguments as $argument)
+                $formula = strtolower($this->$attribute);
+                if (!$this->validateParenthesis($formula)) 
                 {
-                    if (!is_numeric(trim($argument)) 
-                        || !(intval(trim($argument)) <= count($this->dynamicClauses)) 
-                        || !(preg_match("/\./", $argument) === 0) )
+                    $errorContent = Yii::t('Default', 'Please fix your parenthesis.');
+                } 
+                else 
+                {
+                    $formula = str_replace("(","", $formula);
+                    $formula = str_replace(")","", $formula);
+                    $arguments = preg_split("/or|and/", $formula);
+                    foreach ($arguments as $argument)                   
                     {
-                        $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));                        
-                    }
-                }              
-            } 
-            if (isset($errorContent)) 
-            {
-                $this->addError('dynamicStructure', Yii::t('Default', 'The structure is invalid. {error}', array('{error}' => $errorContent)));
+                        $argument = trim($argument);
+                        if (!is_numeric($argument) 
+                            || !(intval($argument) <= count($this->dynamicClauses)) 
+                            || !(intval($argument) > 0)   
+                            || !(preg_match("/\./", $argument) === 0) )
+                        {
+                            $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));                        
+                        }
+                    }              
+                } 
+                if (isset($errorContent)) 
+                {
+                    $this->addError('dynamicStructure', Yii::t('Default', 'The structure is invalid. {error}', array('{error}' => $errorContent)));
+                }
             }
         }
 
