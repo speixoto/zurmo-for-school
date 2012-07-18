@@ -38,13 +38,11 @@
         {
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchModel,
                 $userId,
                 array()
             );
-
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadataAdapter->getAdaptedMetadata(),
                 $listModelClassName,

@@ -240,7 +240,7 @@
         {
             $htmlOptions = array('id'   => get_class($this->model) . '_dynamicClauses',
                                  'name' => 'dynamicClausesValidationHelper',
-                                 'value' => 'xxx');
+                                 'value' => 'notUsed');
             $content  = '<div style="display:none;">';
             $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptions);
             $content .= $form->error($this->model, 'dynamicClauses', $htmlOptions);
