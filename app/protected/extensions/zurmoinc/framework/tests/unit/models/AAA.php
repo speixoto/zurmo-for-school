@@ -32,6 +32,7 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'aaaMember',
+                    'aaaBoolean',
                 ),
                 'relations' => array(
                     'bbb'                => array(RedBeanModel::HAS_ONE,            'BBB'),
@@ -41,6 +42,7 @@
                 ),
                 'rules' => array(
                     array('aaaMember', 'type', 'type' => 'string'),
+                    array('aaaBoolean', 'boolean'),
                 ),
                 'customFields' => array(
                     'industry'           => 'Industries',

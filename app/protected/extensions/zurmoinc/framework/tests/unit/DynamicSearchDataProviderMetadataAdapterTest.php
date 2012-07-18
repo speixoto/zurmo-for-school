@@ -281,7 +281,7 @@
                     'value'                => 'someThing3',
                 ),
             );
-            $compareStructure = '(1 or 2) and 3'; //not sure why this clause is messed up.
+            $compareStructure = '((1) and 2)';
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);
         }

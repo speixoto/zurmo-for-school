@@ -29,6 +29,8 @@
      */
     class DynamicSearchDataProviderMetadataAdapter
     {
+        const NOT_USED_STRUCTURE_POSITION = 'notUsed';
+
         protected $metadata;
 
         protected $model;
@@ -66,10 +68,25 @@
             $correctlyPositionedClauses = array();
             $this->processData($this->sanitizedDynamicSearchAttributes, $clauseCount, $correctlyPositionedClauses, $metadata);
             krsort($correctlyPositionedClauses);
+            //Resolve any unused clauses first before replacing real clauses.
+            foreach($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
+            {
+                if($correctlyPositionedClauseData[$position] == self::NOT_USED_STRUCTURE_POSITION)
+                {
+                    $structure = strtr(strtolower($structure), $correctlyPositionedClauseData);
+                    unset($correctlyPositionedClauses[$position]);
+                }
+            }
+            //Replace clauses still used.
             foreach($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
             {
                 $structure = strtr(strtolower($structure), $correctlyPositionedClauseData);
             }
+            //Now resolve and remove any unused clauses and nearby operators.
+            $structure = str_ireplace(' or '  . self::NOT_USED_STRUCTURE_POSITION, 			 '', $structure);
+            $structure = str_ireplace(' and ' . self::NOT_USED_STRUCTURE_POSITION, 			 '', $structure);
+            $structure = str_ireplace('('     . self::NOT_USED_STRUCTURE_POSITION . ' or ',  '(', $structure);
+            $structure = str_ireplace('('     . self::NOT_USED_STRUCTURE_POSITION . ' and ', '(', $structure);
             if (empty($metadata['structure']))
             {
                 $metadata['structure'] = '(' . $structure . ')';
@@ -99,6 +116,11 @@
                     $clauseCount                                    = $clauseCount + count($searchItemMetadata['clauses']);
                     $correctlyPositionedClauses
                         [$structurePosition][$structurePosition]    = $searchItemMetadata['structure'];
+                }
+                else
+                {
+                    $correctlyPositionedClauses
+                        [$structurePosition][$structurePosition]    = self::NOT_USED_STRUCTURE_POSITION;
                 }
             }
         }

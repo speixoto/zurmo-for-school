@@ -145,7 +145,7 @@
             {
                 if ($value !== null)
                 {
-                    $currentClauseCount                         = $clauseCount;
+                    $currentClauseCount = $clauseCount;
                     $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(  $model,
                                                                                            $attributeName,
                                                                                            $operatorType,
@@ -327,6 +327,13 @@
             if ($model instanceof RedBeanModel)
             {
                 $mixedType = ModelAttributeToMixedTypeUtil::getType($model, $attributeName);
+                static::resolveBooleanFalseValueAndOperatorTypeForAdaptedMetadataClause($mixedType,
+                                                                                        $value,
+                                                                                        $operatorType);
+            }
+            elseif($model instanceof SearchForm)
+            {
+                $mixedType = ModelAttributeToMixedTypeUtil::getType($model->getModel(), $attributeName);
                 static::resolveBooleanFalseValueAndOperatorTypeForAdaptedMetadataClause($mixedType,
                                                                                         $value,
                                                                                         $operatorType);
