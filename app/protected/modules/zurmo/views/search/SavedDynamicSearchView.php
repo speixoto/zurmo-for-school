@@ -142,6 +142,9 @@
 
         protected function renderDeleteLinkContent()
         {
+            $htmlOptions = array();
+            $attribute   = 'savedSearchId';
+            ZurmoHtml::resolveNameID($this->model, $attribute, $htmlOptions);
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('deleteSavedSearchAndRemoveFromViewScript', "
                 function deleteSavedSearchAndRemoveFromView(modelId)
@@ -164,6 +167,7 @@
                                $('#' + inputId).dropkick();
                                $('#' + inputId).dropkick('rebindToggle');
                                $('#removeSavedSearch').remove();
+                               $('#" . $htmlOptions['id'] . "').val('');
                             },
                             error : function()
                             {
