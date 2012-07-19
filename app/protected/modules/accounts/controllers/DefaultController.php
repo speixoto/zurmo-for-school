@@ -202,7 +202,7 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return 'AccountsSearchForm';
         }

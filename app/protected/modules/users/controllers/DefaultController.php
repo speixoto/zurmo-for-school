@@ -430,7 +430,7 @@
             echo $view->render();
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return 'UsersSearchForm';
         }

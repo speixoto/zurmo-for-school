@@ -145,7 +145,7 @@
             return $this->getModule()->getPrimaryModelName();
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return null;
         }
@@ -153,7 +153,7 @@
         protected function export()
         {
             $modelClassName        = $this->getModelName();
-            $searchFormClassName   = $this->getSearchFormClassName();
+            $searchFormClassName   = static::getSearchFormClassName();
             // Set $pageSize to unlimited, because we don't want pagination
             $pageSize = Yii::app()->pagination->getGlobalValueByType('unlimitedPageSize');
             $model = new $modelClassName(false);

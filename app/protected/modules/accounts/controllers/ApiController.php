@@ -28,7 +28,7 @@
     */
     class AccountsApiController extends ZurmoModuleApiController
     {
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return 'AccountsSearchForm';
         }
