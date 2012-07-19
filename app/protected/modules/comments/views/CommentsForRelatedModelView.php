@@ -141,7 +141,7 @@
             return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete Comment'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
-                                              $('#deleteCommentLink" . $comment->id . "').closest('tr').remove();}"),
+                                              $('#deleteCommentLink" . $comment->id . "').parent().parent().remove();}"),
                          array('id'         => 'deleteCommentLink' . $comment->id,
                                 'class'     => 'deleteCommentLink' . $comment->id,
                                 'namespace' => 'delete'));
