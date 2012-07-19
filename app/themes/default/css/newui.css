@@ -5055,6 +5055,9 @@ span.tooltip {
   color: #262877;
   font-weight: bold;
 }
+#ArchivedEmailMatchingListView .items td {
+  padding-right: 10px;
+}
 .email-archive-item {
   border: none !important;
   background: none !important;
@@ -5063,7 +5066,7 @@ span.tooltip {
   -o-box-shadow: none !important;
   -ms-box-shadow: none !important;
   box-shadow: none !important;
-  margin: 0 10px 0 0 !important;
+  margin: 0 0 0 0 !important;
   padding: 0 !important;
 }
 .email-archive-item .lead-conversion-actions {
@@ -5083,7 +5086,7 @@ span.tooltip {
 .email-archive-item .wide.form > form {
   padding: 0;
 }
-.email-archive-item .wide.form > form > table {
+.email-archive-item .wide.form > form table {
   padding-bottom: 15px !important;
 }
 .email-archive-item .matching-actions-and-content form {
@@ -5115,6 +5118,35 @@ span.tooltip {
 .email-archive-item .email-to strong {
   font-weight: bold;
   color: #999;
+}
+.email-archive-item .beforeOptOutCheckBox + .hasCheckBox {
+  left: 0 !important;
+}
+.email-archive-item .beforeOptOutCheckBox + .hasCheckBox label.hasCheckBox {
+  margin-right: 0;
+  margin-left: 5px;
+}
+.email-archive-item .beforeOptOutCheckBox + .hasCheckBox label.hasCheckBox + label {
+  margin-left: 5px;
+  margin-right: 0;
+}
+.email-matching-actions {
+  margin: 15px 0 5px 0;
+  display: block;
+}
+.email-matching-actions a {
+  background: #262877;
+  padding: 1px 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  color: #fff !important;
+}
+.email-matching-actions a:hover {
+  color: #fff !important;
+  text-decoration: underline;
 }
 .email-matching-show-more,
 .email-matching-show-less {
@@ -5157,11 +5189,6 @@ span.tooltip {
   margin: 0 4px 0 0;
 }
 .expanded {
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff;
-  -moz-box-shadow: inset 0 0 0 2px #ffffff;
-  -o-box-shadow: inset 0 0 0 2px #ffffff;
-  -ms-box-shadow: inset 0 0 0 2px #ffffff;
-  box-shadow: inset 0 0 0 2px #ffffff;
   background-color: #f5f5f5 !important;
   background-repeat: no-repeat !important;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) !important;
@@ -5174,6 +5201,11 @@ span.tooltip {
 }
 .expanded > td {
   padding-bottom: 0 !important;
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff;
+  -moz-box-shadow: inset 0 0 0 2px #ffffff;
+  -o-box-shadow: inset 0 0 0 2px #ffffff;
+  -ms-box-shadow: inset 0 0 0 2px #ffffff;
+  box-shadow: inset 0 0 0 2px #ffffff;
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
