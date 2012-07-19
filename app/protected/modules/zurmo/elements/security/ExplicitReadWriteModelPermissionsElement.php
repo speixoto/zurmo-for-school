@@ -159,6 +159,10 @@
             else
             {
                 assert(current($permitables) instanceof Group); // Not Coding Standard
+                if(!current($permitables) instanceof Group)
+                {
+                    throw new NotSupportedException('XXX: ' . current($permitables)); ;
+                }
                 if (current($permitables)->name == Group::EVERYONE_GROUP_NAME)
                 {
                     return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;

@@ -1230,7 +1230,7 @@
             }
             else
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException('Invalid Attribute: ' . $attributeName);
             }
         }
 
