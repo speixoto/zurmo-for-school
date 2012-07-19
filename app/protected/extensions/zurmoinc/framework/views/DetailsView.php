@@ -339,7 +339,7 @@
             parent::assertMetadataIsValid($metadata);
             $attributeNames = array();
             $derivedTypes   = array();
-            assert('is_int($metadata["global"]["panelsDisplayType"])');
+            assert('!isset($metadata["global"]["panelsDisplayType"]) || is_int($metadata["global"]["panelsDisplayType"])');
         }
 
         /**

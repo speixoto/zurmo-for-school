@@ -77,8 +77,9 @@
             $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
             $comment                  = Comment::getById(intval($id));
             $relatedModel             = $relatedModelClassName::getById(intval($relatedModelId));
-            if($comment->createdByUser->id != Yii::app()->user->userModel->id &&
-               $relatedModel->owner->id    != Yii::app()->user->userModel->id)
+            if($comment->createdByUser->id      != Yii::app()->user->userModel->id &&
+               $relatedModel->owner->id         != Yii::app()->user->userModel->id &&
+               $relatedModel->createdByUser->id != Yii::app()->user->userModel->id)
             {
                 $messageView = new AccessFailureAjaxView();
                 $view        = new AjaxPageView($messageView);
