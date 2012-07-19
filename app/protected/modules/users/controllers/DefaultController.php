@@ -67,9 +67,7 @@
             $searchForm      = new UsersSearchForm(new User(false));
             $dataProvider    = $this->makeRedBeanDataProviderByDataCollection(
                 $searchForm,
-                'User',
-                $pageSize,
-                Yii::app()->user->userModel->id
+                $pageSize
             );
             $actionBarSearchAndListView = $this->makeActionBarSearchAndListView(
                 $searchForm,
@@ -285,7 +283,6 @@
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new UsersSearchForm($user),
-                'User',
                 $pageSize,
                 Yii::app()->user->userModel->id);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -323,7 +320,6 @@
             $user = new User(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new UsersSearchForm($user),
-                'User',
                 $pageSize,
                 Yii::app()->user->userModel->id
             );

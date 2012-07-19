@@ -199,15 +199,13 @@
                 }
                 else
                 {
-                    $searchForm = null;
+                    throw new NotSupportedException();
                 }
 
                 $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
                 $dataProvider = $this->makeRedBeanDataProviderByDataCollection(
                     $searchForm,
-                    $modelClassName,
                     $pageSize,
-                    Yii::app()->user->userModel->id,
                     $stateMetadataAdapterClassName
                 );
 

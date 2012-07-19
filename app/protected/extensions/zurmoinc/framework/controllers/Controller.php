@@ -64,15 +64,14 @@
          */
         public function makeRedBeanDataProviderByDataCollection(
             $searchModel,
-            $listModelClassName,
             $pageSize,
-            $userId,
             $stateMetadataAdapterClassName = null,
             $dataCollection = null)
         {
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('$dataCollection instanceof SearchAttributesDataCollection || $dataCollection == null');
+            $listModelClassName = get_class($searchModel->getModel());
             if($dataCollection == null)
             {
                 $dataCollection = new SearchAttributesDataCollection($searchModel);
@@ -85,11 +84,11 @@
             $sortDescending            = SearchUtil::resolveSortDescendingFromGetArray($listModelClassName);
             $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                 $searchModel,
-                $userId,
+                Yii::app()->user->userModel,
                 $sanitizedSearchAttributes
             );
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
-                                                                              $userId, $dataCollection);
+                                                                              Yii::app()->user->userModel, $dataCollection);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,

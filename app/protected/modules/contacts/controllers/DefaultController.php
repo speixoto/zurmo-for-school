@@ -54,9 +54,7 @@
             $searchForm                     = new ContactsSearchForm($contact);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                'Contact',
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter'
             );
             if(isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
@@ -149,7 +147,6 @@
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new ContactsSearchForm($contact),
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter');
@@ -188,7 +185,6 @@
             $contact = new Contact(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new ContactsSearchForm($contact),
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter'

@@ -62,9 +62,7 @@
 
             $dataProvider      = $controller->makeRedBeanDataProviderByDataCollection(
                                                 $searchModel,
-                                                $modelClassName,
                                                 $pageSize,
-                                                $userId,
                                                 $stateMetadataAdapterClassName);
             $searchAndListView = new $className(
                 $controller->getId(),
