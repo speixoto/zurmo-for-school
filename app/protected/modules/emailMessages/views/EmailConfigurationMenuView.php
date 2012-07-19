@@ -28,7 +28,7 @@
     {
         protected function renderTitleContent()
         {
-            return '<h1>' . Yii::t('Default', 'Email Administration') . '</h1>';
+            return '<h1>' . Yii::t('Default', 'Email Configuration') . '</h1>';
         }
 
         protected function getCategoryData()
