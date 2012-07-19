@@ -48,7 +48,9 @@
                 $randomConversationData     = self::getRandomConversationData();
                 $postData                   = array();
                 $conversation               = new Conversation();
+                $conversation->setScenario('importModel');
                 $conversation->owner        = $demoDataHelper->getRandomByModelName('User');
+                $comment->createdByUser     = $conversation->owner;
                 $conversation->conversationItems->add($demoDataHelper->getRandomByModelName('Account'));
                 $conversation->subject      = $randomConversationData['subject'];
                 $conversation->description  = $randomConversationData['description'];
