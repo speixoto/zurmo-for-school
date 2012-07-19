@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ActivityItemRelationToModelElementUtilTest extends ZurmoBaseTest
+    class RelatedItemRelationToModelElementUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -33,7 +33,7 @@
             SecurityTestHelper::createUsers();
         }
 
-        public function testResolveModelElementClassNameByActionSecurity()
+        public function testresolveModelElementTypeByActionSecurity()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -43,37 +43,49 @@
             $this->assertEquals(Right::DENY, $bobby->getEffectiveRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS));
 
             //test Account model where user does not have access
-            $elementName = ActivityItemRelationToModelElementUtil::resolveModelElementClassNameByActionSecurity('Account', $bobby);
-            $this->assertNull($elementName);
+            $canAccess = true;
+            $elementName = RelatedItemRelationToModelElementUtil::resolveModelElementTypeByActionSecurity('Account', $bobby, $canAccess);
+            $this->assertFalse($canAccess);
+            $this->assertEquals('Account', $elementName);
             $bobby->setRight('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
             $this->assertTrue($bobby->save());
 
             //test Account model where user has access
-            $elementName = ActivityItemRelationToModelElementUtil::resolveModelElementClassNameByActionSecurity('Account', $bobby);
-            $this->assertEquals('AccountElement', $elementName);
+            $canAccess = true;
+            $elementName = RelatedItemRelationToModelElementUtil::resolveModelElementTypeByActionSecurity('Account', $bobby, $canAccess);
+            $this->assertTrue($canAccess);
+            $this->assertEquals('Account', $elementName);
 
             //test Contact model where has no access to either the leads or contacts module.
-            $elementName = ActivityItemRelationToModelElementUtil::resolveModelElementClassNameByActionSecurity('Contact', $bobby);
-            $this->assertNull($elementName);
+            $canAccess = true;
+            $elementName = RelatedItemRelationToModelElementUtil::resolveModelElementTypeByActionSecurity('Contact', $bobby, $canAccess);
+            $this->assertFalse($canAccess);
+            $this->assertEquals('Contact', $elementName);
 
             //test Contact model where user has access to only the leads module
             $bobby->setRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS);
             $this->assertTrue($bobby->save());
-            $elementName = ActivityItemRelationToModelElementUtil::resolveModelElementClassNameByActionSecurity('Contact', $bobby);
-            $this->assertEquals('LeadElement', $elementName);
+            $canAccess   = true;
+            $elementName = RelatedItemRelationToModelElementUtil::resolveModelElementTypeByActionSecurity('Contact', $bobby, $canAccess);
+            $this->assertTrue($canAccess);
+            $this->assertEquals('Lead', $elementName);
 
             //test Contact model where user has access to only the contacts module
             $bobby->removeRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS);
             $bobby->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
             $this->assertTrue($bobby->save());
-            $elementName = ActivityItemRelationToModelElementUtil::resolveModelElementClassNameByActionSecurity('Contact', $bobby);
-            $this->assertEquals('ContactElement', $elementName);
+            $canAccess   = true;
+            $elementName = RelatedItemRelationToModelElementUtil::resolveModelElementTypeByActionSecurity('Contact', $bobby, $canAccess);
+            $this->assertTrue($canAccess);
+            $this->assertEquals('Contact', $elementName);
 
             //test Contact model where user has access to both the contacts and leads module.
             $bobby->setRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS);
             $this->assertTrue($bobby->save());
-            $elementName = ActivityItemRelationToModelElementUtil::resolveModelElementClassNameByActionSecurity('Contact', $bobby);
-            $this->assertEquals('AllStatesContactElement', $elementName);
+            $canAccess   = true;
+            $elementName = RelatedItemRelationToModelElementUtil::resolveModelElementTypeByActionSecurity('Contact', $bobby, $canAccess);
+            $this->assertTrue($canAccess);
+            $this->assertEquals('AllStatesContact', $elementName);
         }
     }
 ?>

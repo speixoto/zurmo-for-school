@@ -117,11 +117,11 @@
                 {
                     $reflection = new ReflectionClass( $calledClass );
                     $classFile = $reflection->getFileName();
-                    return "<!--Called in: $classFile--><div $id $classes>$content</div>";
+                    return "<!--Called in: $classFile--><div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
                 }
                 else
                 {
-                    return "<div $id $classes>$content</div>";
+                    return "<div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
                 }
             }
         }
@@ -139,6 +139,11 @@
         public function getCssClasses()
         {
             return $this->cssClasses;
+        }
+
+        protected function getViewStyle()
+        {
+            return null;
         }
     }
 ?>

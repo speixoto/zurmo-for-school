@@ -20,6 +20,8 @@
 @import 'gamification.less';
 @import 'welcome.less';
 @import 'tablet.less';
+@import 'conversations.less';
+@import 'email.less';
 
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
@@ -144,6 +146,11 @@ body{
     font-size:11px;
     color:#545454;
     -webkit-font-smoothing: antialiased;
+    /* @doubtful_existance: I don’t think these even exist? Can’t hurt much, I guess. */
+-moz-font-smoothing: antialiased;
+-o-font-smoothing: antialiased;
+/* end @doubtful_existance */
+font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -283,7 +290,8 @@ footer, header, hgroup, menu, nav, section {
 
 /*=MastHead*/
 #HeaderLinksView{
-    background: url(../images/header-bar-1.png) left top repeat-x;
+    //background: url(../images/header-bar-1.png) left top repeat-x;
+    #gradient > .vertical( darken(@themeColor, 5%), @themeColor );
     height:38px;
 }
 
@@ -478,16 +486,22 @@ footer, header, hgroup, menu, nav, section {
 #settings-header-menu{
     > li{
         position: relative;
+        .t-shadow(none) !important;
+        a{
+            .t-shadow(none) !important;
+        }
     }
     > li > a span{
         display:inline-block;
         text-indent:-9999px;
+        .t-shadow(none) !important;
     }
     > li > a:after{
         content: "n"; //Q o n
-        color:#d4d5e3;
-        .symbly(22px);
-        margin-top:1px;
+        color:#ccc;
+        .symbly(26px);
+        //.opacity(75);
+        //font-smooth:always;
     }
     ul{
         margin-left:-97px;
@@ -842,7 +856,7 @@ footer, header, hgroup, menu, nav, section {
     display:block;
     float:left;
     position:relative;
-    span{
+    > span{
         font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight:bold;
         font-size:12px;
@@ -865,22 +879,74 @@ footer, header, hgroup, menu, nav, section {
             height:33px;
             .opacity(0);
         }
+        /*Conversation button*/
+        /*> span {
+        	margin-left:10px;
+        	background: @themeColor2;
+        	padding:0;
+        	width:16px;
+        	height:16px;
+        	line-height:16px;
+        	text-align:center;
+        	text-indent:0;
+        	display:inline-block;
+        	color:#fff;
+        	.radius(50%);
+        } */
+        > span{
+            margin-left:10px;
+            //margin-top:12px;
+            width:18px;
+            height:16px;
+            //padding:0 10px 0 10px;
+            background: url(../images/notifications-bubble.png) center top no-repeat;
+            //border-left:1px solid #fff;
+            //border-right:1px solid #fff;
+            //float:left;
+            line-height:11px;
+            text-align:center;
+            text-indent:0;
+            font-size: 10px;
+
+            display:inline-block;
+            background-color:none !important;
+            &.unread{
+                #notifications-link.tooltip{
+                    color:#ff0000 !important;
+                }
+            }
+            &.all-read{
+                #notifications-link.tooltip{
+                    color:#7bb730 !important;
+                }
+            }
+        }
     }
 }
 
 /*#MenuView .parent >*/
-#MenuView li.active > a span,
-#MenuView a:hover span{
+#MenuView li.active > a > span,
+#MenuView a:hover > span{
     .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
     background-image: url(../images/main-nav-selected.png);
     background-repeat: no-repeat;
     background-position-x: 0;
     background-position-y: 0;
+     > span{
+    	//.b-shadow(inset 0 0 2px 0 #333);
+    	//background: #fff;
+    	color:@themeColor;
+    }
 }
 
-#MenuView li.active > a span{
+#MenuView li.active > a > span{
     background-color:@themeColor2;
     color:#fff;
+    > span{
+    	//.b-shadow(inset 0 0 2px 0 #333);
+    	//background: #fff;
+    	color:@themeColor;
+    }
 }
 
 /*=Recently Viewed*/
@@ -966,6 +1032,21 @@ footer, header, hgroup, menu, nav, section {
 @recentlyViewedIconSize : 24px;
 
 #RecentlyViewedView {
+	/*deafult for if an icon doesnt exist*/
+	li{
+		em:before{
+            content: "z";
+        }
+	}
+	li.type-ConversationsModule{
+		em{
+            padding-top:3px;
+            padding-right:3px;
+        }
+        em:before{
+            content: "b";
+        }
+    }
     li.type-UsersModule{
         em:before{
             content: "e";
@@ -1069,6 +1150,16 @@ footer, header, hgroup, menu, nav, section {
 /*=dashboard*/
 #HomePageView .AppContent{
     padding-right:0;
+    &#DashboardEditView{
+        padding-right:20px;
+    }
+}
+#HomeDashboardView{
+	margin-top:15px;
+    .parent > ul{
+        min-width: 160px;
+        margin-top:0;
+    }
 }
 
 /*=Inner toolbar*/
@@ -1085,7 +1176,7 @@ footer, header, hgroup, menu, nav, section {
     border-right-color:#d7d7d7;
     border-radius:4px;
     float:left;
-    margin:20px 0 15px 0;
+    margin:0 0 15px 0;
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
     background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
@@ -1135,7 +1226,7 @@ footer, header, hgroup, menu, nav, section {
         list-style:none;
     }
     .parent > ul{
-        margin-top:-2px;
+        margin-top:0;
         .headerDropDown();
         left:auto;
     }
@@ -1168,6 +1259,13 @@ footer, header, hgroup, menu, nav, section {
 
 .icon-add:before{
     content: "Y";
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+#HomeDashboardView .parent > a:before,
+.icon-change-dashborad:before{
+    content: "/";
     .view-toolbar-icons();
     top:-2px;
 }
@@ -1348,6 +1446,19 @@ table.items tbody tr:last-child td{
     border-bottom: none;
 }
 
+table.items{
+	tbody{
+		tr{
+			td:first-child:not(.checkbox-column),
+			th:first-child:not(.checkbox-column){
+				padding-left:10px;
+			}
+		}
+	}
+}
+
+
+
 .juiportlet-widget table.items thead tr th:first-child,
 .juiportlet-widget table.items tbody tr td:first-child{
     padding-left:15px;
@@ -1475,7 +1586,7 @@ table.items thead tr:hover{
         }
     }
     form{
-        padding:15px;
+        padding:0 15px 15px 15px;
         border:1px solid #CCC;
         .b-shadow(0 0 20px 5px rgba(153, 153, 153, 0.12)); /*999*/
         background: #ffffff;
@@ -1510,9 +1621,12 @@ table.items thead tr:hover{
         border-bottom:1px solid #bababa;
     }
     a{
-        color:#333333;
+        color:#656565 !important;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
+        &.attachLoading{
+            color: #fff !important;
+        }
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         }
@@ -1753,6 +1867,9 @@ div.wide.form{
     label.hasCheckBox{
         margin-top:0 !important;
     }
+    a{
+        color:@themeColor;
+    }
 }
 
 .ui-multiselect-checkboxes label {
@@ -1852,7 +1969,7 @@ div.wide.form{
             content: "Y";
             .symbly(24px);
             position: relative;
-            top: -1px;
+            top: 2px;
             left:-5px;
             margin-right:3px;
             color:@themeColor2;
@@ -1885,6 +2002,11 @@ div.wide.form{
         content:"9";
         .symbly(300px);
         line-height: 80%;
+    }
+    .Conversation .large-icon:after{
+        content:"b";
+        .symbly(230px);
+        line-height: 90%;
     }
 
 }
@@ -2038,7 +2160,16 @@ div.wide.form{
 
 /*=Edit + Add Account View*/
 .buffer{
+	.clearfix();
     padding-left:30px;
+    
+    > div{
+    	float:left;
+        padding:8px 10px;
+        background:#F4F4F4;
+    	width:100%;
+        .box-sizing();
+    }
 }
 
 .double-column{
@@ -2052,17 +2183,13 @@ div.wide.form{
             color:@themeColor;
         }
     }
-    #permissions-module{
+    #right-side-edit-view-panel{
         margin-bottom:15px;
         position:relative !important;
         //width:100% !important;
         float:left !important;
         .buffer{
-            padding-left:15px;
-            > div{
-                width:100%;
-                .box-sizing();
-            }
+           // padding-left:15px;
         }
     }
     .col-0, .col-2{
@@ -2089,6 +2216,7 @@ div.wide.form{
 .attributesContainer{
     /*min-height: 260px;*/
     padding-bottom:15px;
+    .clearfix();
 }
 
 #edit-form{
@@ -2125,7 +2253,17 @@ div.wide.form{
     .view-toolbar-container{
         border-top:1px solid #CCCCCC;
     }
-    #permissions-module{
+    
+    .hasCheckBox{
+        margin:8px 0 0 0;
+        display:block;
+        input[type="checkbox"]{
+            margin-bottom:0 !important;
+        }
+    }
+}
+
+#right-side-edit-view-panel{
         position:absolute;
         right:15px;
         top:15px;
@@ -2135,9 +2273,9 @@ div.wide.form{
             margin-bottom:8px;
         }
         .buffer > div{
-            float:left;
-            padding:8px 10px;
-            background:#F4F4F4;
+            //float:left;
+            //padding:8px 10px;
+            //background:#F4F4F4;
         }
         label{
             width: 100%;
@@ -2193,14 +2331,7 @@ div.wide.form{
             margin-top:6px;
         }
     }
-    .hasCheckBox{
-        margin:8px 0 0 0;
-        display:block;
-        input[type="checkbox"]{
-            margin-bottom:0 !important;
-        }
-    }
-}
+
 
 .has-date-select, .has-model-select{
     position: relative;
@@ -2210,14 +2341,6 @@ div.wide.form{
     }
 }
 
-.panel{
-    .has-model-select a{
-        top:1px !important;
-    }
-    .has-date-select button{
-        top:1px !important;
-    }
-}
 
 .has-model-select{
     clear:left;
@@ -2259,6 +2382,11 @@ div.wide.form{
 }
 
 .has-date-select{
+	clear:left;
+	padding:0 !important;
+	input{
+		margin:0 !important;
+	}
     button{
         background: url(../images/dropdown-general.png) left top no-repeat;
         width:28px;
@@ -2460,14 +2588,16 @@ div.wide.form{
     th{
         color:#999;
         text-align:right;
-        line-height: 24px;
+        //line-height: 24px;
     }
     td, td a{
         color:#525252;
     }
     th, td{
         font-weight:600;
-        padding:0 0 15px 0;
+        //padding:0 0 15px 0;
+    	padding-top:15px !important;
+    	vertical-align: top !important;
     }
      //for opt in email checkboxes
     input[type="checkbox"] + label{
@@ -2477,9 +2607,9 @@ div.wide.form{
     //for address fields
     td > label{
         &:first-child{
-            margin-top:5px;
+            //margin-top:5px;
         }
-        margin-top:10px;
+        //margin-top:10px;
     }
     //for 2 columns
     td + th{
@@ -2494,7 +2624,7 @@ div.wide.form{
 
 .toolbar-mbmenu{
     position:absolute;
-    top:-12px;
+    top:8px;
     right:10px;
     margin:0;
     float:right;
@@ -2509,18 +2639,19 @@ div.wide.form{
     ul{
         list-style: none;
     }
-    #OptionsMenu{ }
-    #OptionsMenu > li > a{
+    .options-menu{ }
+    .options-menu > li > a{
         text-align:center;
         width: 60px;
         .zButton();
         font-size:11px;
+        color: #666 !important;
         &:after{
             content: "▾";
             margin-left:5px;
         }
     }
-    #OptionsMenu ul{
+    .options-menu ul{
         .flyout();
         margin-top:-8px;
         padding-top:3px;
@@ -2662,13 +2793,8 @@ div.wide.form{
             }
         }
     }
-}
-
-#NoteEditAndDetailsView{
-    .has-model-select{
-        a{
-            top:24px !important;
-        }
+    .form-toolbar{
+        border-top:none;
     }
 }
 
@@ -2704,7 +2830,14 @@ div.wide.form{
     .view-toolbar-container{
         a{
             float:right;
+            clear: both;
         }
+    }
+    .form-toolbar{
+        border-top:none;
+    }
+    textarea{
+        line-height: 130%;
     }
 }
 
@@ -3160,6 +3293,13 @@ div.hasHalfs{
         content: "g";
         .latest-activity-icon();
     }
+    .Conversation{
+    	padding-top:5px;
+    	&:after{
+	        content: "b";
+	        .latest-activity-icon();
+	    }
+    }
 }
 #activities-rollup-tooltip{
     position:relative;
@@ -3187,6 +3327,23 @@ div.hasHalfs{
     span{
         display:none;
     }
+}
+
+
+.LatestActivtiesForPortletView{
+	position:relative;
+	.toolbar-mbmenu{
+		z-index:999999;
+		top:-34px;
+    	right:10px;
+    	.view-toolbar{
+    		background:none;
+    		margin:0;
+    	}
+    	li{
+    		padding:0;
+    	}
+	}
 }
 
 /*=Search User Modal*/
@@ -3458,14 +3615,24 @@ div.hasHalfs{
         background:none !important;
         .b-shadow(none);
     }
+    .panel{
+        width: 100% !important;
+    }
     #edit-form{
         border:none !important;
         background:none !important;
         .b-shadow(none);
+        padding-bottom: 0 !important;
         table{
             width:100%;
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
         }
     }
+    form table{
+        padding-bottom: 15px !important;
+    }
+    
     #account-skip-form{
         th{
             text-align:center !important;
@@ -3632,3 +3799,18 @@ div.hasHalfs{
         }
     }
 }
+
+/*RSS Widget*/
+.rssBody{
+	ul{
+		list-style: none;
+	}
+	li{
+		padding:10px 15px;
+		border-bottom:1px solid #dfdfdf;
+		&:last-child{
+			border-bottom:none;
+		}
+	}
+}
+

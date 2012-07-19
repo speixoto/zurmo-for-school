@@ -25,46 +25,49 @@
      ********************************************************************************/
 
     /**
-     * Helper class to resolve correct model element to use in the user interface based on the user's rights to
-     * access specified modules.  Special consideration is given for the contact model.  In the case of the contact
-     * model, the access for the leads module must be considered. This will help determine how many states to show.
+     * Base class for related item forms. This form is used by ModelElements and its interface
+     * mimics if a CActiveForm was used. Extend as needed.
      */
-    class ActivityItemRelationToModelElementUtil
+    abstract class RelatedItemForm extends CFormModel
     {
-        public static function resolveModelElementClassNameByActionSecurity($modelClassName, $user)
+        protected $relationModel;
+
+        public function __construct($relationModel)
         {
-            assert('is_string($modelClassName)');
-            assert('$user instanceof User && $user->id > 0');
-            if ($modelClassName == 'Contact')
+            assert('$relationModel instanceof RedBeanModel');
+            $this->relationModel = $relationModel;
+        }
+
+        /**
+         * Override to handle use case of $name == 'id' and the reference to the relationModel that will be called upon.
+         * As this form does not have an 'id', it will return null;
+         * @see RelatedItemsElement - to see a example of where this is instantiated from.
+         * @see ModelElement.  This form is used by ModelElement for example
+         * and ModelElement expects the model to have an 'id' value.
+         */
+        public function __get($name)
+        {
+            if ($name == 'id')
             {
-                $canAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', $user);
-                $canAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule', $user);
-                if ($canAccessContacts && $canAccessLeads)
-                {
-                    return 'AllStatesContactElement';
-                }
-                elseif (!$canAccessContacts && $canAccessLeads)
-                {
-                    return 'LeadElement';
-                }
-                elseif ($canAccessContacts && !$canAccessLeads)
-                {
-                    return 'ContactElement';
-                }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
             else
             {
-                $moduleClassName = $modelClassName::getModuleClassName();
-                if (!RightsUtil::canUserAccessModule($moduleClassName, $user))
+                if ($name == get_class($this->relationModel))
                 {
-                    return null;
+                    return $this->relationModel;
                 }
-                return $modelClassName . 'Element';
             }
+            throw new NotSupportedException();
+        }
+
+        public function getAttributeLabel($attributeName)
+        {
+            if ($attributeName == get_class($this->relationModel))
+            {
+                return $this->relationModel->getModelLabelByTypeAndLanguage('Singular');
+            }
+            throw new NotSupportedException();
         }
     }
 ?>
