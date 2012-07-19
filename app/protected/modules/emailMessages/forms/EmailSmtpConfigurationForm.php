@@ -65,7 +65,7 @@
                 'port'                                 => Yii::t('Default', 'Port'),
                 'username'                             => Yii::t('Default', 'Username'),
                 'password'                             => Yii::t('Default', 'Password'),
-                'security'                             => Yii::t('Default', 'Encryption'),
+                'security'                             => Yii::t('Default', 'Extra Mail Settings'),
                 'userIdOfUserToSendNotificationsAs'    => Yii::t('Default', 'Send system notifications from'),
                 'aTestToAddress'                       => Yii::t('Default', 'Send a test email to')
             );
