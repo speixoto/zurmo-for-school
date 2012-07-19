@@ -43,17 +43,17 @@
             assert('$demoDataHelper->isSetRange("Account")');
 
             $conversations = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            foreach (self::getConversationData() as $randomConversationData)
             {
-                $randomConversationData     = self::getRandomConversationData();
-                $postData                   = array();
-                $conversation               = new Conversation();
+                $postData                    = array();
+                $conversation                = new Conversation();
                 $conversation->setScenario('importModel');
-                $conversation->owner        = $demoDataHelper->getRandomByModelName('User');
+                $conversation->owner         = $demoDataHelper->getRandomByModelName('User');
+                $conversation->createdByUser = $conversation->owner;
                 $comment->createdByUser     = $conversation->owner;
                 $conversation->conversationItems->add($demoDataHelper->getRandomByModelName('Account'));
-                $conversation->subject      = $randomConversationData['subject'];
-                $conversation->description  = $randomConversationData['description'];
+                $conversation->subject       = $randomConversationData['subject'];
+                $conversation->description   = $randomConversationData['description'];
                 //Add some comments
                 foreach ($randomConversationData['comments'] as $commentDescription)
                 {
@@ -102,7 +102,7 @@
             }
         }
 
-        protected static function getRandomConversationData()
+        protected static function getConversationData()
         {
             $data = array(
                     array('subject'     => 'Should we consider building a new corporate headquarters on Mars?',
@@ -135,7 +135,7 @@
                               'We should have a company retreat in Hawaii.  That would be fun!'
                           )),
             );
-            return RandomDataUtil::getRandomValueFromArray($data);
+            return $data;
         }
     }
 ?>
