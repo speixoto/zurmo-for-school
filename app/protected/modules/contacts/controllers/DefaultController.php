@@ -72,7 +72,6 @@
                     $searchForm,
                     $pageSize,
                     ContactsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    Yii::app()->user->userModel->id,
                     $dataProvider
                 );
             }

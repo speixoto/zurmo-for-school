@@ -75,7 +75,6 @@
                 $searchForm,
                 $pageSize,
                 UsersModule::getModuleLabelByTypeAndLanguage('Plural'),
-                Yii::app()->user->userModel->id,
                 $dataProvider
             );
             $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
