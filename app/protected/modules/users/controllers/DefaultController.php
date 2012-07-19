@@ -65,7 +65,7 @@
             $pageSize        = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                'listPageSize', get_class($this->getModule()));
             $searchForm      = new UsersSearchForm(new User(false));
-            $dataProvider    = $this->makeRedBeanDataProviderFromGet(
+            $dataProvider    = $this->makeRedBeanDataProviderByDataCollection(
                 $searchForm,
                 'User',
                 $pageSize,

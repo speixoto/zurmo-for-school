@@ -136,7 +136,7 @@
                     $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                 }
             }
-            $dataProvider = $this->makeRedBeanDataProviderFromGet(
+            $dataProvider = $this->makeRedBeanDataProviderByDataCollection(
                 $searchModel,
                 $listModelClassName,
                 $pageSize,
