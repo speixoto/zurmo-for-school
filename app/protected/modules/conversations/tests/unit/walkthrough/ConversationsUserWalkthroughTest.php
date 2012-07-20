@@ -213,7 +213,7 @@
             //should update latest activity stamp
             $this->assertNotEquals($oldStamp, $conversations[0]->latestDateTime);
             $newStamp = $conversations[0]->latestDateTime;
-
+            sleep(2); // Sleeps are bad in tests, but I need some time to pass
             //Mary is not a participant, so she should not be able to add a comment
             $mary = $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
             $this->setGetArray(array('relatedModelId'             => $conversations[0]->id,
