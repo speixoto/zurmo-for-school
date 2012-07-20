@@ -33,8 +33,8 @@
             => 'Bitte geben Sie eine E-Mail-Adresse.',
         'A test email from Zurmo'
             => 'Eine Testnachricht von Zurmo',
-        'A test text message from Zurmo'
-            => 'Eine Textnachricht von Zurmo',
+        'A test text message from Zurmo.'
+            => 'Eine Textnachricht von Zurmo.',
         'Access Email Configuration'
             => 'Zugriff auf die E-Mail Konfiguration',
         'Access Emails Tab'

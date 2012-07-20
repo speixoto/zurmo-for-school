@@ -146,7 +146,10 @@
         public static function sendEmailInviteToParticipant(Conversation $conversation, $person)
         {
             assert('$person instanceof User || $person instanceof Contact');
-            if ($person->primaryEmail->emailAddress !== null)
+            if ($person->primaryEmail->emailAddress !== null &&
+                (($person instanceof User &&
+                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($person)) ||
+                 $person instanceof Contact))
             {
                 $userToSendMessagesFrom     = $conversation->owner;
                 $emailMessage               = new EmailMessage();

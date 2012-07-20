@@ -133,31 +133,9 @@
                     $emailHelper->outboundSecurity = $configurationForm->security;
                     $userToSendMessagesFrom        = User::getById((int)$configurationForm->userIdOfUserToSendNotificationsAs);
 
-                    $emailMessage              = new EmailMessage();
-                    $emailMessage->owner       = Yii::app()->user->userModel;
-                    $emailMessage->subject     = Yii::t('Default', 'A test email from Zurmo');
-                    $emailContent              = new EmailMessageContent();
-                    $emailContent->textContent = Yii::t('Default', 'A test text message from Zurmo');
-                    $emailContent->htmlContent = Yii::t('Default', 'A test text message from Zurmo');
-                    $emailMessage->content     = $emailContent;
-                    $sender                    = new EmailMessageSender();
-                    $sender->fromAddress       = $emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                    $sender->fromName          = strval($userToSendMessagesFrom);
-                    $emailMessage->sender      = $sender;
-                    $recipient                 = new EmailMessageRecipient();
-                    $recipient->toAddress      = $configurationForm->aTestToAddress;
-                    $recipient->toName         = 'Test Recipient';
-                    $recipient->type           = EmailMessageRecipient::TYPE_TO;
-                    $emailMessage->recipients->add($recipient);
-                    $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                    $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-                    $validated                 = $emailMessage->validate();
-                    if (!$validated)
-                    {
-                        throw new NotSupportedException();
-                    }
+                    $emailMessage = EmailMessageHelper::sendTestEmail($emailHelper, $userToSendMessagesFrom,
+                                                                      $configurationForm->aTestToAddress);
                     $messageContent  = null;
-                    $emailHelper->sendImmediately($emailMessage);
                     if (!$emailMessage->hasSendError())
                     {
                         $messageContent .= Yii::t('Default', 'Message successfully sent') . "\n";

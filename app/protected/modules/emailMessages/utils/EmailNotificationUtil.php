@@ -26,6 +26,10 @@
 
     class EmailNotificationUtil
     {
+        /**
+         * Based on the current theme, retrieve the email notification template for html content and replace the
+         * content tags with the appropriate strings
+         */
         public static function resolveNotificationHtmlTemplate($bodyContent)
         {
             assert('is_string($bodyContent)');
@@ -39,10 +43,7 @@
             return strtr($htmlTemplate, $htmlContent);
         }
 
-        /**
-         * Based on the current theme, retrieve the email notification template for html content
-         */
-        public static function getNotificationHtmlTemplate()
+        protected static function getNotificationHtmlTemplate()
         {
             $theme        = Yii::app()->theme->name;
             $name         = 'NotificationEmailTemplate';
@@ -57,10 +58,14 @@
             }
         }
 
-            public static function resolveNotificationTextTemplate($bodyContent)
+        /**
+         * Based on the current theme, retrieve the email notification template for text content and replace the
+         * content tags with the appropriate strings
+         */
+        public static function resolveNotificationTextTemplate($bodyContent)
         {
             assert('is_string($bodyContent)');
-            $url                                = Yii::app()->createAbsoluteUrl('users/default/edit',
+            $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
                                                   array('id' => Yii::app()->user->userModel->id));
             $htmlTemplate                       = self::getNotificationTextTemplate();
             $htmlContent                        = array();
@@ -70,10 +75,7 @@
             return strtr($htmlTemplate, $htmlContent);
         }
 
-        /**
-         * Based on the current theme, retrieve the email notification template for text content
-         */
-        public static function getNotificationTextTemplate()
+        protected static function getNotificationTextTemplate()
         {
             $theme        = Yii::app()->theme->name;
             $name         = 'NotificationEmailTemplate';
