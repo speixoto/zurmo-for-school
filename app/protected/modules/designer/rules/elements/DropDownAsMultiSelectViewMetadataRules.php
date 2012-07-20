@@ -40,7 +40,8 @@
                 )
             {
                 if (!is_subclass_of($elementclassname, 'ContactStateDropDownElement') &&
-                    $elementclassname != 'ContactStateDropDownElement')
+                    $elementclassname != 'ContactStateDropDownElement'
+                    && !is_subclass_of($elementclassname, 'StaticDropDownFormElement'))
                 {
                     $elementMetadata['type']     = 'DropDownAsMultiSelect';
                     $elementMetadata['addBlank'] = true;

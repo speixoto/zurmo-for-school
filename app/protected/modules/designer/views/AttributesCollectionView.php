@@ -73,7 +73,7 @@
                     }
                     else
                     {
-                        $linkContent = CHtml::link(Yii::t('Default', 'Configure'), Yii::app()->createUrl($route,
+                        $linkContent = ZurmoHtml::link(Yii::t('Default', 'Configure'), Yii::app()->createUrl($route,
                                                             array('moduleClassName' => $this->moduleClassName,
                                                                   'attributeTypeName' => $information['elementType'],
                                                                   'attributeName' => $attributeName)

@@ -96,7 +96,7 @@
             {
                 return $label;
             }
-            return CHtml::label($label, false);
+            return ZurmoHtml::label($label, false);
         }
 
         /**
@@ -182,7 +182,7 @@
         public function getEditableNameIds()
         {
             $htmlOptions = array();
-            CHtml::resolveNameID($this->model, $this->attribute, $htmlOptions);
+            ZurmoHtml::resolveNameID($this->model, $this->attribute, $htmlOptions);
             return array(
                 $htmlOptions['id']
             );
@@ -241,7 +241,7 @@
             {
                 $id .= '_' . $relationAttributeName;
             }
-            return CHtml::getIdByName($id);
+            return ZurmoHtml::getIdByName($id);
         }
 
         /**

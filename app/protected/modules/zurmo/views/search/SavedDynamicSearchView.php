@@ -53,7 +53,7 @@
             {
                 $idOrName      = static::getSavedSearchListDropDown();
                 $htmlOptions   = array('id' => $idOrName, 'empty' => Yii::t('Default', 'Load a saved search'));
-                $content       = CHtml::dropDownList($idOrName,
+                $content       = ZurmoHtml::dropDownList($idOrName,
                                                      $this->model->savedSearchId,
                                                      self::resolveSavedSearchesToIdAndLabels($savedSearches),
                                                      $htmlOptions);
@@ -112,8 +112,8 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $content  = CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
-            $content .= CHtml::link(Yii::t('Default', 'Save As'), '#', array('id' => 'save-as-advanced-search'));
+            $content  = ZurmoHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
+            $content .= ZurmoHtml::link(Yii::t('Default', 'Save As'), '#', array('id' => 'save-as-advanced-search'));
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
             $params['htmlOptions'] = array('id' => 'search-advanced-search');
@@ -180,7 +180,7 @@
             if($this->model->savedSearchId != null)
             {
                 $label = Yii::t('Default', 'Delete') . "<span class='icon'></span>";
-                return CHtml::link($label, "#", array( 'id'		 => 'removeSavedSearch',
+                return ZurmoHtml::link($label, "#", array( 'id'		 => 'removeSavedSearch',
                                                        'class'   => 'remove',
                                                        'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));
             }

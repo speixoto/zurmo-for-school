@@ -297,7 +297,7 @@
                     $errorData = array();
                     foreach ($selectForm->getErrors() as $attribute => $errors)
                     {
-                            $errorData[CHtml::activeId($selectForm, $attribute)] = $errors;
+                            $errorData[ZurmoHtml::activeId($selectForm, $attribute)] = $errors;
                     }
                     echo CJSON::encode($errorData);
                     Yii::app()->end(0, false);
@@ -337,7 +337,7 @@
                     $errorData = array();
                     foreach ($contact->getErrors() as $attribute => $errors)
                     {
-                            $errorData[CHtml::activeId($contact, $attribute)] = $errors;
+                            $errorData[ZurmoHtml::activeId($contact, $attribute)] = $errors;
                     }
                     echo CJSON::encode($errorData);
                     Yii::app()->end(0, false);
