@@ -60,6 +60,9 @@
             $everyone->setRight('HomeModule',          HomeModule::RIGHT_CREATE_DASHBOARDS, Right::ALLOW);
             $everyone->setRight('HomeModule',          HomeModule::RIGHT_DELETE_DASHBOARDS, Right::ALLOW);
             $everyone->setRight('ExportModule',        ExportModule::RIGHT_ACCESS_EXPORT, Right::ALLOW);
+            $everyone->setRight('ConversationsModule', ConversationsModule::RIGHT_ACCESS_CONVERSATIONS, Right::ALLOW);
+            $everyone->setRight('ConversationsModule', ConversationsModule::RIGHT_CREATE_CONVERSATIONS, Right::ALLOW);
+            $everyone->setRight('ConversationsModule', ConversationsModule::RIGHT_DELETE_CONVERSATIONS, Right::ALLOW);
             $saved = $everyone->save();
             assert('$saved');
         }
