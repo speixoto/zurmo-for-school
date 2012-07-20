@@ -57,7 +57,8 @@
          * @param object $explicitReadWriteModelPermissions - ExplicitReadWriteModelPermissions model
          */
         public static function resolveConversationHasManyParticipantsFromPost(
-                                    Conversation $conversation, $postData, $explicitReadWriteModelPermissions)
+                                    Conversation $conversation, $postData, $explicitReadWriteModelPermissions,
+                                    $sendNotifications = true)
         {
             assert('$explicitReadWriteModelPermissions instanceof ExplicitReadWriteModelPermissions');
             if (isset($postData['itemIds']) && strlen($postData['itemIds']) > 0)
@@ -103,7 +104,10 @@
                     {
                         $explicitReadWriteModelPermissions->addReadWritePermitable($personOrUserModel);
                     }
-                    static::sendEmailInviteToParticipant($conversation, $personOrUserModel);
+                    if($sendNotifications)
+                    {
+                        static::sendEmailInviteToParticipant($conversation, $personOrUserModel);
+                    }
                 }
             }
             else
