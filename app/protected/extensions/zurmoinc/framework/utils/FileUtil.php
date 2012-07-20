@@ -81,5 +81,100 @@
             }
             return ArrayUtil::flatten($files);
         }
+
+        /**
+         * Check are all file and folder permissions set correctly(recoursive)
+         * @param string $directory
+         */
+        public static function areAllFilesAndDirectoriesWritable($directory)
+        {
+            $isWritable = true;
+            $handle = opendir($directory);
+            while (($item = readdir($handle)) !== false)
+            {
+                if ($item != '.' && $item != '..')
+                {
+                    $path = $directory . '/' . $item;
+                    if (is_dir($path))
+                    {
+                        // Check if folder itself is writeable, and if all subfolders and files are writeable.
+                        $isWritable = $isWritable && is_writeable($path) && self::areAllFilesAndDirectoriesWritable($path);
+                    }
+                    else
+                    {
+                        $isWritable = $isWritable && is_writeable($path);
+                    }
+                }
+            }
+            closedir($handle);
+            return $isWritable;
+        }
+
+        /**
+         * Copy folders and files recoursive
+         * @param string $source
+         * @param string $target
+         */
+        public static function copyRecoursive($source, $target)
+        {
+            if (is_dir($source))
+            {
+                @mkdir($target);
+                $currentWorkingDirectory = dir($source);
+                while (false !== ($filename = $currentWorkingDirectory->read()))
+                {
+                    if ($filename == '.' || $filename == '..')
+                    {
+                        continue;
+                    }
+                    $fullPath = $source . '/' . $filename;
+                    if (is_dir($fullPath))
+                    {
+                        self::copyRecoursive($fullPath, $target . '/' . $filename);
+                        continue;
+                    }
+                    copy($fullPath, $target . '/' . $filename);
+                }
+                $currentWorkingDirectory->close();
+            }
+            elseif (is_file($source))
+            {
+                copy($source, $target );
+            }
+        }
+
+        /**
+         * Delete folder and all its contents
+         * @param string $directory
+         */
+        public static function deleteDirectoryRecoursive($directory)
+        {
+            assert(is_dir($directory)); // Not Coding Standard
+            $entries = scandir($directory);
+            foreach ($entries as $entry)
+            {
+                if ($entry != "." && $entry != "..")
+                {
+                    $entry = "$directory/$entry";
+                    if (is_file($entry) || is_link($entry))
+                    {
+                        if (IS_LINUX)
+                        {
+                            unlink($entry);
+                        }
+                        else
+                        {
+                            assert(IS_WINNT); // Not Coding Standard
+                            unlink($entry);
+                        }
+                    }
+                    else
+                    {
+                        self::deleteDirectoryRecoursive($entry);
+                    }
+                }
+            }
+            rmdir($directory);
+        }
     }
 ?>
