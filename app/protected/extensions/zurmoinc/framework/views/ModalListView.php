@@ -51,6 +51,11 @@
             return array();
         }
 
+        protected static function getSummaryText()
+        {
+            return Yii::t('zii','Displaying {start}-{end} of {count} result(s).');
+        }
+
         protected function getCGridViewPagerParams()
         {
             return array(
