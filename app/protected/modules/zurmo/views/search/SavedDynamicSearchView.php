@@ -79,15 +79,23 @@
 
         protected function renderSavedSearchDropDownOnChangeScript($id, $onChangeUrl)
         {
-            //Currently supports only if there is no additional get params. Todo, merge if there is an existing get param.
+            //To support adicional params if set $onChangeUrl
+            $onChangeUrlParams = parse_url($onChangeUrl);
+            if (isset($onChangeUrlParams['query'])) {                
+                $onChangeUrl .= "&savedSearchId";
+            }
+            else
+            {
+                $onChangeUrl .= "?savedSearchId";
+            }
             Yii::app()->clientScript->registerScript('savedSearchLoadScript', "
                 $('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
                 {
                     if($(this).val() != '')
                     {
-                        window.location = '" . $onChangeUrl . "?savedSearchId=' + $(this).val();
+                        window.location = '" . $onChangeUrl .  "=' + $(this).val();
                     }
-                });");
+                });");            
         }
 
         protected function getExtraRenderFormBottomPanelScriptPart()
