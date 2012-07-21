@@ -17,11 +17,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/zurmo/app/index.php/conversations/default#</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>//div[@id='MenuView']/ul/li[6]/a/span[2]</td>
 	<td></td>
@@ -30,11 +25,6 @@
 	<td>clickAndWait</td>
 	<td>link=Created</td>
 	<td></td>
-</tr>
-<tr>
-	<td>assertTable</td>
-	<td>css=table.items.1.0</td>
-	<td>New Conversation ${randomTitle}</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -83,13 +73,13 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>link=Acme Corp</td>
-	<td>Acme Corp</td>
+	<td>link=Praxis Corporation</td>
+	<td>Praxis Corporation</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>link=Consulting Services</td>
-	<td>Consulting Services</td>
+	<td>link=Cross Country Shipments</td>
+	<td>Cross Country Shipments</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -133,7 +123,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Sirius Cybernetics Corporation</td>
+	<td>link=General Services Corporation</td>
 	<td></td>
 </tr>
 <tr>
@@ -164,7 +154,7 @@
 <tr>
 	<td>type</td>
 	<td>id=OpportunitiesSearchForm_anyMixedAttributes</td>
-	<td>o</td>
+	<td>e</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -173,7 +163,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Open Source Consulting</td>
+	<td>link=Enterprise Software</td>
 	<td></td>
 </tr>
 <tr>
@@ -188,13 +178,13 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>link=Sirius Cybernetics Corporation</td>
-	<td>Sirius Cybernetics Corporation</td>
+	<td>link=General Services Corporation</td>
+	<td>General Services Corporation</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>link=Open Source Consulting</td>
-	<td>Open Source Consulting</td>
+	<td>link=Enterprise Software</td>
+	<td>Enterprise Software</td>
 </tr>
 <tr>
 	<td>click</td>
