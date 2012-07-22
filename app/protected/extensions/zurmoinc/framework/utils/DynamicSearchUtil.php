@@ -262,7 +262,6 @@
             assert('is_string($formModelClassName)');
             assert('is_int($rowNumber)');
             assert('is_string($attributeIndexOrDerivedType) || $attributeIndexOrDerivedType == null');
-            assert('is_array($searchAttributes)');
             assert('is_string($suffix) || $suffix == null');
             assert('is_bool($renderAsAjax)');
             $searchableAttributeIndicesAndDerivedTypes = DynamicSearchUtil::

@@ -35,14 +35,13 @@
             if($searchForm->savedSearchId != null)
             {
                 $savedSearch       = SavedSearch::getById((int)$searchForm->savedSearchId);
-                $savedSearch->name = $searchForm->savedSearchName;
             }
             else
             {
                 $savedSearch                = new SavedSearch();
                 $savedSearch->viewClassName = $viewClassName;
-                $savedSearch->name          = $searchForm->savedSearchName;
             }
+            $savedSearch->name = $searchForm->savedSearchName;
 
             $data = array(
                 'anyMixedAttributes'      => $searchForm->anyMixedAttributes,

@@ -222,6 +222,7 @@
                     if($searchForm->validate())
                     {
                         $this->processSaveSearch($searchForm, $viewClassName);
+                        Yii::app()->end(0, false);
                     }
                 }
                 else
