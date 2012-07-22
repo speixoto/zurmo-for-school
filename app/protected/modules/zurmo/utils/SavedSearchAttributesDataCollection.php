@@ -36,7 +36,7 @@
             {
                 return $searchArray;
             }
-            else
+            elseif($this->model->dynamicClauses != null)
             {
                 $searchArray = $this->model->dynamicClauses;
                 return SearchUtil::getSearchAttributesFromSearchArray($searchArray);

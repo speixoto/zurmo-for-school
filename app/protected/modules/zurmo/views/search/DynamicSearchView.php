@@ -298,7 +298,12 @@
 
         protected function getClearSearchLabelPrefixContent()
         {
-            return ZurmoHtml::tag('span', array('class' => 'clear-search-link-criteria-selected-count'), null);
+            $criteriaCount = count($this->model->dynamicClauses);
+            if($this->model->anyMixedAttributes != null)
+            {
+                $criteriaCount++;
+            }
+            return ZurmoHtml::tag('span', array('class' => 'clear-search-link-criteria-selected-count'), $criteriaCount);
         }
 
         protected function getClearSearchLabelContent()

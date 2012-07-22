@@ -156,6 +156,7 @@
          */
         public static function getSearchAttributesFromSearchArray($searchArray)
         {
+            assert('$searchArray != null');
             array_walk_recursive($searchArray, 'SearchUtil::changeEmptyValueToNull');
             SearchUtil::changeEmptyArrayValuesToNull($searchArray);
             return $searchArray;
