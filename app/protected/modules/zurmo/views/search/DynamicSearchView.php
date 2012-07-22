@@ -303,7 +303,17 @@
             {
                 $criteriaCount++;
             }
-            return ZurmoHtml::tag('span', array('class' => 'clear-search-link-criteria-selected-count'), $criteriaCount);
+            if($criteriaCount == 0)
+            {
+                $criteriaCountContent = '';
+            }
+            else
+            {
+                $criteriaCountContent = $criteriaCount . ' ';
+            }
+            return ZurmoHtml::tag('span',
+                                  array('class' => 'clear-search-link-criteria-selected-count'),
+                                  $criteriaCountContent);
         }
 
         protected function getClearSearchLabelContent()
