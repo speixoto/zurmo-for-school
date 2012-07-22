@@ -28,3 +28,20 @@ function afterDynamicSearchValidateAjaxAction(form, data, hasError)
     }
     return false;
 }
+function resolveClearLinkPrefixLabelAndVisibility(formId)
+{
+    criteriaSelected 	   = $('#' + formId).find('.dynamic-search-row-number-label').length;
+    if($('#' + formId).find('.anyMixedAttributes-input').val() != '')
+    {
+        criteriaSelected++;
+    }
+    if(criteriaSelected > 0)
+    {
+        $('#' + formId).find('.clear-search-link-criteria-selected-count').html(criteriaSelected + ' ');
+        $('#clear-search-link').show();
+    }
+    else
+    {
+        $('#clear-search-link').hide();
+    }
+}

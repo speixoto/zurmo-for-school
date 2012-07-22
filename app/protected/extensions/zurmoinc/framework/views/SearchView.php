@@ -110,8 +110,13 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
-            $clearSearchLink = CHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink        = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
+            $clearSearchLabel             = $this->getClearSearchLabelContent();
+            $clearSearchLinkStartingStyle = $this->getClearSearchLinkStartingStyle();
+            $clearSearchLink              = CHtml::link($clearSearchLabelPrefix . $clearSearchLabel, '#',
+                                                        array('id'    => 'clear-search-link' . $this->gridIdSuffix,
+                                                              'style' => $clearSearchLinkStartingStyle));
             $startingDivStyle = null;
             if ($this->hideAllSearchPanelsToStart)
             {
@@ -123,6 +128,19 @@
             $content .= $this->renderFormBottomPanelExtraLinks();
             $content .= '</div>';
             return $content;
+        }
+
+        protected function getClearSearchLabelPrefixContent()
+        {
+        }
+
+        protected function getClearSearchLabelContent()
+        {
+            return Yii::t('Default', 'Clear');
+        }
+
+        protected function getClearSearchLinkStartingStyle()
+        {
         }
 
         protected function getExtraRenderForClearSearchLinkScript()

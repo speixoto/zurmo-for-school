@@ -118,6 +118,7 @@
                     formId = $(this).closest('form').attr('id');
                     $(this).parent().remove();
                     rebuildDynamicSearchRowNumbersAndStructureInput(formId);
+                    resolveClearLinkPrefixLabelAndVisibility(formId);
                 }
             );");
             return $content;

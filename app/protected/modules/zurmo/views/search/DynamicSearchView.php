@@ -73,6 +73,7 @@
                     $('#" . $this->getRowCounterInputId() . "').val(0);
                     $('#" . $this->getStructureInputId() . "').val('');
                     $('.search-view-1').hide();
+                    resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
             ";
         }
 
@@ -112,6 +113,15 @@
                             $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
                          }
                         );";
+        }
+
+        protected function getExtraRenderFormBottomPanelScriptPart()
+        {
+            return parent::getExtraRenderFormBottomPanelScriptPart() .
+                    "$('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').unbind('input.clear propertychange.clear keyup.clear');
+                     $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event){
+                         resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
+                });";
         }
 
         /**
@@ -211,6 +221,7 @@
                                             $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
+                                            resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
@@ -283,6 +294,24 @@
         protected function shouldHideDynamicSearchStructureByDefault()
         {
             return true;
+        }
+
+        protected function getClearSearchLabelPrefixContent()
+        {
+            return ZurmoHtml::tag('span', array('class' => 'clear-search-link-criteria-selected-count'), null);
+        }
+
+        protected function getClearSearchLabelContent()
+        {
+            return Yii::t('Default', 'Criteria Selected - Clear');
+        }
+
+        protected function getClearSearchLinkStartingStyle()
+        {
+            if ($this->model->anyMixedAttributes == null && count($this->model->dynamicClauses) == 0)
+            {
+                return "display:none;";
+            }
         }
     }
 ?>
