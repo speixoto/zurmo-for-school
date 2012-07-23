@@ -123,10 +123,12 @@
             $pageSize,
             $userId,
             $stateMetadataAdapterClassName = null,
-            $stickySearchKey = null)
+            $stickySearchKey = null,
+            $setSticky       = true)
         {
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
+            assert('is_bool($setSticky)');
             static::resolveToTriggerOnSearchEvents($listModelClassName);
             $dataCollection = new SearchAttributesDataCollection($searchModel);
             if($searchModel instanceof SavedDynamicSearchForm)
@@ -153,7 +155,10 @@
                         $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                     }
                 }
-                SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection);
+                if($setSticky)
+                {
+                    SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection);
+                }
                 $searchModel->loadSavedSearchUrl = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/list/');
             }
             $dataProvider = $this->makeRedBeanDataProviderFromGet(

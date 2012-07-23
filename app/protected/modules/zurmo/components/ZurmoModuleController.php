@@ -276,5 +276,58 @@
                 Yii::app()->end(0, false);
             }
         }
+
+        public function actionRenderStickyListBreadCrumbContent($stickyOffset, $stickyKey, $stickyModelId)
+        {
+            if($stickyOffset == null)
+            {
+                Yii::app()->end(0, false);
+            }
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $modelClassName                 = $this->getModule()->getPrimaryModelName();
+            $searchFormClassName            = $this->getSearchFormClassName(); //maybe replace to call getGlobalSearchFormClassName depending on 0.7.4 refactor
+            $model                          = new $modelClassName(false);
+            $searchForm                     = new $searchFormClassName($model);
+            $dataProvider = $this->makeSearchDataProvider(
+                $searchForm,
+                $modelClassName,
+                $pageSize,
+                Yii::app()->user->userModel->id,
+                null,
+                $stickyKey,
+                false
+            );
+            $totalCount  = $dataProvider->calculateTotalItemCount();
+            $finalOffset = StickySearchUtil::resolveFinalOffsetForStickyList((int)$stickyOffset, (int)$pageSize, (int)$totalCount);
+            $dataProvider->setOffset($finalOffset);
+            $dataList   = $dataProvider->getData();
+            if(count($dataList) > 0)
+            {
+                $menuItems = array('label' => 'down arrow');
+                foreach($dataList as $row => $data)
+                {
+                    $url = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/details',
+                                                  array('id' => $data->id, 'stickyOffset'  => $row + $finalOffset));
+                    if($data->id == $stickyModelId)
+                    {
+                        $label = '<span>HIGHLIGHT' . strval($data) . '</span>';
+                    }
+                    else
+                    {
+                        $label = strval($data);
+                    }
+                    $menuItems['items'][] = array('label' => $label, 'url'   => $url);
+                }
+                $cClipWidget     = new CClipWidget();
+                $cClipWidget->beginClip("StickyList");
+                $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
+                    'htmlOptions' => array('id' => 'StickyListMenu'),
+                    'items'                   => array($menuItems),
+                ));
+                $cClipWidget->endClip();
+                echo $cClipWidget->getController()->clips['StickyList'];
+            }
+        }
     }
 ?>

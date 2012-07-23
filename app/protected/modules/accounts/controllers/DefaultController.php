@@ -86,9 +86,11 @@
             $account = static::getModelAndCatchNotFoundAndDisplayError('Account', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($account);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account), 'AccountsModule'), $account);
+            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'AccountsSearchView', $account);
             $detailsAndRelationsView = $this->makeDetailsAndRelationsView($account, 'AccountsModule',
                                                                           'AccountDetailsAndRelationsView',
-                                                                          Yii::app()->request->getRequestUri());
+                                                                          Yii::app()->request->getRequestUri(),
+                                                                          $breadCrumbView);
             $view = new AccountsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();
