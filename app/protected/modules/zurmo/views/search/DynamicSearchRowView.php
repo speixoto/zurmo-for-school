@@ -78,7 +78,7 @@
             $content .= $this->renderAttributeDropDownContent();
             $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
             $content .= CHtml::tag('div', array('id' => $this->getInputsDivId()), $this->inputContent);
-            $content .= '&#160;' . CHtml::link(Yii::t('Default', 'Remove Field'),
+            $content .= CHtml::link(Yii::t('Default', 'Remove Field'),
                         '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }

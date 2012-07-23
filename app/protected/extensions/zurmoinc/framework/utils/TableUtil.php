@@ -62,7 +62,7 @@
                 throw new NotSupportedException();
             }
             $content .= '</colgroup>';
-            return $content;
+            return '';//$content;
         }
     }
 ?>
