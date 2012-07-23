@@ -112,7 +112,9 @@
                             $this->listModelClassName . "_sort=" .
                             $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
                          }
-                        );";
+                        );
+                        $('#" . $this->getClearingSearchInputId() . "').val('');
+                        ";
         }
 
         protected function getExtraRenderFormBottomPanelScriptPart()

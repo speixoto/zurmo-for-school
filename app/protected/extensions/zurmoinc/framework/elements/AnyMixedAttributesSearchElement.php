@@ -52,8 +52,7 @@
         {
             $htmlOptions             = array('class'   => 'input-hint anyMixedAttributes-input',
                                              'onfocus' => '$(this).removeClass("input-hint"); $(this).val("");',
-                                             'size'    => 80,
-                                             'value'   => Yii::t('Default', 'Start typing to search'));
+                                             'size'    => 80);
             return array_merge(parent::getHtmlOptions(), $htmlOptions);
         }
 

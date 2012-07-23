@@ -81,7 +81,7 @@
         {
             //To support adicional params if set $onChangeUrl
             $onChangeUrlParams = parse_url($onChangeUrl);
-            if (isset($onChangeUrlParams['query'])) {                
+            if (isset($onChangeUrlParams['query'])) {
                 $onChangeUrl .= "&savedSearchId";
             }
             else
@@ -93,10 +93,22 @@
                 {
                     if($(this).val() != '')
                     {
-                        window.location = '" . $onChangeUrl .  "=' + $(this).val();
+                        savedSearchId = $(this).val();
+                        $.ajax({
+                          url: '" . $this->getClearStickySearchUrlAndParams() . "',
+                          complete: function(data){
+                              window.location = '" . $onChangeUrl .  "=' + savedSearchId;
+                          },
+                        });
                     }
-                });");            
+                });");
         }
+
+        protected function getClearStickySearchUrlAndParams()
+        {
+            return Yii::app()->createUrl('zurmo/default/clearStickySearch/', array('key' => get_class($this)));
+        }
+
 
         protected function getExtraRenderFormBottomPanelScriptPart()
         {
@@ -205,7 +217,7 @@
                      $('#save-search-area').hide();
                      $('#save-as-advanced-search').show();
                      jQuery.yii.submitForm(this, '', {}); return false;
-            ";           
+            ";
         }
     }
 ?>

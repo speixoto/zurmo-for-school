@@ -55,7 +55,9 @@
                 $searchForm,
                 'Account',
                 $pageSize,
-                Yii::app()->user->userModel->id
+                Yii::app()->user->userModel->id,
+                null,
+                'AccountsSearchView'
             );
             if(isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {

@@ -55,7 +55,9 @@
                 $searchForm,
                 'Opportunity',
                 $pageSize,
-                Yii::app()->user->userModel->id
+                Yii::app()->user->userModel->id,
+                null,
+                'OpportunitiesSearchView'
             );
             if(isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {

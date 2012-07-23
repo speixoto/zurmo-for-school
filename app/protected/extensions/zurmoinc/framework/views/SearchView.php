@@ -126,6 +126,7 @@
             $content .= $moreSearchOptionsLink . '&#160;|&#160;';
             $content .= $clearSearchLink;
             $content .= $this->renderFormBottomPanelExtraLinks();
+            $content .= $this->renderClearingSearchInputContent();
             $content .= '</div>';
             return $content;
         }
@@ -148,6 +149,18 @@
 
         }
 
+        protected function renderClearingSearchInputContent()
+        {
+            $idInputHtmlOptions  = array('id' => $this->getClearingSearchInputId());
+            $hiddenInputName     = 'clearingSearch';
+            return ZurmoHtml::hiddenField($hiddenInputName, null, $idInputHtmlOptions);
+        }
+
+        protected function getClearingSearchInputId()
+        {
+            return 'clearingSearch-' . $this->getSearchFormId();
+        }
+
         protected function registerScripts()
         {
             Yii::app()->clientScript->registerScriptFile(
@@ -167,8 +180,10 @@
                 $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
                 $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function()
                     {
+                        $('#" . $this->getClearingSearchInputId() . "').val('1');
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
                         $(this).closest('form').submit();
+                        $('#" . $this->getClearingSearchInputId() . "').val('');
                         return false;
                     }
                 );

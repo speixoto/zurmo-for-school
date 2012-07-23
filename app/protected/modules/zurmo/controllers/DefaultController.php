@@ -192,7 +192,7 @@
             $content = DynamicSearchUtil::renderDynamicSearchAttributeInput( $viewClassName,
                                                                              $modelClassName,
                                                                              $formModelClassName,
-                                                                             $rowNumber,
+                                                                             (int)$rowNumber,
                                                                              $attributeIndexOrDerivedType,
                                                                              array(),
                                                                              $suffix);
@@ -269,6 +269,11 @@
                 $postData['dynamicClauses']       = $sanitizedDynamicSearchAttributes;
             }
             return $postData;
+        }
+
+        public function actionClearStickySearch($key)
+        {
+            SavedSearchUtil::clearDataByKey($key);
         }
     }
 ?>

@@ -57,7 +57,8 @@
                 'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'ContactsStateMetadataAdapter'
+                'ContactsStateMetadataAdapter',
+                'ContactsSearchView'
             );
             if(isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {

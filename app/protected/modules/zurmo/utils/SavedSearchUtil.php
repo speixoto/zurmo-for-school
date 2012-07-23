@@ -79,5 +79,68 @@
                 }
             }
         }
+
+        public static function clearDataByKey($key)
+        {
+            assert('is_string($key)');
+            Yii::app()->user->setState($key, null);
+        }
+
+        public static function getDataByKey($key)
+        {
+            assert('is_string($key)');
+            $stickyData = Yii::app()->user->getState($key);
+            if($stickyData == null)
+            {
+                return null;
+            }
+            return unserialize($stickyData);
+        }
+
+        public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection)
+        {
+            assert('is_string($key)');
+
+            $stickyData['dynamicClauses']          = $dataCollection->getDynamicSearchAttributes();
+            $stickyData['dynamicStructure']        = $dataCollection->getDynamicStructure();
+            $anyMixedAttributes                    = $dataCollection->resolveSearchAttributesFromSourceData();
+            if(isset($anyMixedAttributes['anyMixedAttributes']))
+            {
+                $stickyData['anyMixedAttributes']      = $anyMixedAttributes['anyMixedAttributes'];
+            }
+            $stickyData['anyMixedAttributesScope'] = $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
+            if($dataCollection instanceof SavedSearchAttributesDataCollection)
+            {
+                $stickyData['savedSearchId']           = $dataCollection->getSavedSearchId();
+            }
+            Yii::app()->user->setState($key, serialize($stickyData));
+        }
+
+        public static function resolveSearchFormByStickyDataAndModel($stickyData, SavedDynamicSearchForm $model)
+        {
+            assert('$stickyData != null && is_array($stickyData)');
+            if(isset($stickyData['savedSearchId']) && $stickyData['savedSearchId'] != '')
+            {
+                $savedSearch            = SavedSearch::getById((int)$stickyData['savedSearchId']);
+                $model->savedSearchName = $savedSearch->name;
+                $model->savedSearchId   = $savedSearch->id;
+            }
+            if(isset($stickyData['anyMixedAttributes']))
+            {
+                $model->anyMixedAttributes = $stickyData['anyMixedAttributes'];
+            }
+            if(isset($stickyData['anyMixedAttributes']))
+            {
+                $model->setAnyMixedAttributesScope($stickyData['anyMixedAttributesScope']);
+            }
+            if(isset($stickyData['dynamicStructure']))
+            {
+                $model->dynamicStructure = $stickyData['dynamicStructure'];
+            }
+            if(isset($stickyData['dynamicClauses']))
+            {
+                $model->dynamicClauses = $stickyData['dynamicClauses'];
+            }
+        }
     }
 ?>
