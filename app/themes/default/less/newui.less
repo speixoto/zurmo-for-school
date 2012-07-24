@@ -2168,7 +2168,7 @@ div.wide.form{
     > div{
         float: left;
         width: 100%;
-        > div:first-child{
+        > span:first-child + div{
             margin-right: 15px !important;
             width: 44%;
             float: left;
@@ -2190,6 +2190,9 @@ div.wide.form{
         margin: 8px 0 0 -80px !important;
         position: relative;
         display: block;
+    }
+    .dynamic-search-row-number-label{
+        display: none;
     }
 }
 
@@ -2786,9 +2789,6 @@ div.wide.form{
     }
 }
 
-
-
-
 #NoteInlineEditView{
     .col-0{
         width:100%;
@@ -2974,6 +2974,64 @@ div.wide.form{
         margin-top:6px;
     }
 }
+/*=Sticky search*/
+.BreadCrumbView{
+    position: relative;
+    z-index: 10;
+    &+div{
+        position: relative;
+        z-index: 1;
+    }
+    .spinner{
+       margin-top:-8px;
+    }
+    > div{
+        display: inline-block;
+        //margin-right: 4px;
+    }
+    #StickyListMenu{
+        list-style: none;
+        > li > a > span{
+            //.symbly(22px);
+            top:0;
+            position: relative;
+            display: block;
+            line-height: 20px;
+            padding:0 5px;
+        }
+        ul{
+            .flyout();
+            display: none;
+            list-style: none;
+            position: absolute;
+            margin-top:5px;
+            padding-top:3px;
+            padding-bottom:3px;
+            font-weight:normal !important;
+            a{
+                text-indent:0;
+                color: #666;
+                font-size: 11px;
+                font-weight: normal;
+                display: block;
+                padding: 5px 10px 5px 10px;
+                margin: 0 2px;
+                line-height: normal;
+                .t-shadow(none);
+                &:hover{
+                    background:@themeColor2 !important;
+                    color:#fff !important;
+                }
+                strong{
+                    font-weight: bold;
+                    color:@themeColor;
+                }
+            }
+            
+        }
+    }
+}
+
 
 /*=Temp Addreess Fields*/
 div.overlay-label-field{
