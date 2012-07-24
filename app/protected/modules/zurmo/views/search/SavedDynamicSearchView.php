@@ -132,13 +132,13 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $content  = CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
-            $content .= CHtml::link(Yii::t('Default', 'Save As'), '#', array('id' => 'save-as-advanced-search'));
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
             $params['htmlOptions'] = array('id' => 'search-advanced-search');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content .= $searchElement->render();
+            $content  = $searchElement->render();
+            $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
+            $content .= CHtml::link(Yii::t('Default', 'Save As'), '#', array('id' => 'save-as-advanced-search'));
             $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
             $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);
             $content .= '</div>';

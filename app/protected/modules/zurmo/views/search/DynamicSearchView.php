@@ -216,7 +216,8 @@
                                          'suffix'             => $this->getSearchFormId()));
             $content             = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
-            $content            .= ZurmoHtml::ajaxLink(Yii::t('Default', 'Add Field'), $ajaxOnChangeUrl,
+            $addFieldLabelContent = $this->getAddFieldLabelContent();
+            $content            .= ZurmoHtml::ajaxLink($addFieldLabelContent, $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
                                           'success' => 'js:function(data){
@@ -224,10 +225,32 @@
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                             resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
+                                            resolveCriteriaLink("' . $this->getSearchFormId() . '");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
             return CHtml::tag('div', array('class' => 'add-fields-container'), $content);
+        }
+
+        protected function getAddFieldLabelContent()
+        {
+            if(count($this->model->dynamicClauses) == 0)
+            {
+                $startingFirstStyle      = null;
+                $startingAfterFirstStyle = 'display:none;';
+            }
+            else
+            {
+                $startingFirstStyle      = 'display:none;';
+                $startingAfterFirstStyle = null;
+            }
+            $content = ZurmoHtml::tag('span', array( 'class' => 'first-add-field-link',
+                                                     'style' => $startingFirstStyle),
+                                                     Yii::t('Default', 'or start by adding adding criteria'));
+            $content .= ZurmoHtml::tag('span', array('class' => 'after-first-add-field-link',
+                                                     'style' => $startingAfterFirstStyle),
+                                                     Yii::t('Default', 'Add another criteria'));
+            return $content;
         }
 
         protected function renderAfterFormLayout($form)
@@ -273,12 +296,22 @@
                 $style1 = 'display:none;';
                 $style2 = '';
             }
+            if(count($this->model->dynamicClauses) > 0)
+            {
+                $style3 = '';
+            }
+            else
+            {
+                $style3 = 'display:none;';
+            }
             $content  = CHtml::link(Yii::t('Default', 'More Options'), '#',
                             array('id'    => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
                                   'style' => $style1));
             $content .= CHtml::tag('div',
                             array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
                                   'style' => $style2), $this->renderStructureInputContent($form));
+            $content  = ZurmoHtml::tag('span', array('id'    => 'show-dynamic-search-structure-wrapper-' . $this->getSearchFormId(),
+                                                     'style' => $style3), $content);
             return $content;
         }
 
