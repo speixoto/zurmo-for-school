@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>setSpeed</td>
-	<td>1500</td>
+	<td>2000</td>
 	<td></td>
 </tr>
 <tr>
@@ -58,7 +58,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Acme Corp</td>
+	<td>link=Praxis Corporation</td>
 	<td></td>
 </tr>
 <tr>
@@ -69,7 +69,7 @@
 <tr>
 	<td>type</td>
 	<td>id=OpportunitiesSearchForm_anyMixedAttributes</td>
-	<td>con</td>
+	<td>cro</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -98,13 +98,13 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>link=Acme Corp</td>
-	<td>Acme Corp</td>
+	<td>link=Praxis Corporation</td>
+	<td>Praxis Corporation</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>link=Consulting Services</td>
-	<td>Consulting Services</td>
+	<td>link=Cross Country Shipments</td>
+	<td>Cross Country Shipments</td>
 </tr>
 <tr>
 	<td>type</td>
@@ -114,10 +114,10 @@
 <tr>
 	<td>click</td>
 	<td>css=span.z-label</td>
-	<td>css=#CommentList &gt; div.comment &gt; div.comment-content</td>
+	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>waitForText</td>
 	<td>css=#CommentList &gt; div.comment &gt; div.comment-content</td>
 	<td>exact:Can you see my first comment?</td>
 </tr>
@@ -152,7 +152,7 @@
 	<td>Jil</td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>waitForText</td>
 	<td>//div[@id='NotificationBar']/div/div/span[2]</td>
 	<td>Participants updated successfully</td>
 </tr>
