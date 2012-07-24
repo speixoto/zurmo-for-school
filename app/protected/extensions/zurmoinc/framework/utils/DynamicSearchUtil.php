@@ -227,6 +227,7 @@
             else
             {
                 $model                 = new $modelClassName(false);
+                $model->setScenario('importModel'); //this is so attributes such as modified user can be set
                 $modelToUse            = new $formModelClassName($model);
                 $modelToUse->setAttributes($searchAttributes);
                 $inputPrefix           = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
