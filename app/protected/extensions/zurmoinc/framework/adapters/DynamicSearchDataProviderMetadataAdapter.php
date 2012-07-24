@@ -48,7 +48,7 @@
             assert('isset($metadata["structure"])');
             assert('is_int($userId)');
             assert('is_array($sanitizedDynamicSearchAttributes) && count($sanitizedDynamicSearchAttributes)  > 0');
-            //assert('is_string($dynamicStructure)');
+            assert('is_string($dynamicStructure)');
             $this->metadata                         = $metadata;
             $this->model                            = $model;
             $this->userId                           = $userId;

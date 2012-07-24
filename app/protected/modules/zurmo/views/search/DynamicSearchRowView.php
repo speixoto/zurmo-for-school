@@ -73,9 +73,9 @@
             $hiddenInputName     = $this->formModelClassName . '[' . DynamicSearchForm::DYNAMIC_NAME . '][' . $this->rowNumber . '][structurePosition]';
             $hiddenInputId       = $this->formModelClassName . '_' . DynamicSearchForm::DYNAMIC_NAME . '_' . $this->rowNumber . '_structurePosition';
             $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
-            
+
             $content  = '<div>';
-            //$content .= CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
+            $content .= CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
             $content .= $this->renderAttributeDropDownContent();
             $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
             $content .= CHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
