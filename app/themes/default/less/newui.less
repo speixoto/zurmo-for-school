@@ -1889,6 +1889,29 @@ div.wide.form{
 
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
+
+.summary{
+    padding:5px;
+    text-align: right;
+    font-weight:bold !important;
+    border:1px solid #DFDFDF;
+    border-top:none;
+    border-bottom: none;
+    #gradient > .vertical(#e3e3e3, #f5f5f5);
+    & + .items{
+        //border-top:none !important;
+    }
+}
+.summary + .items{
+    //border-top:1px solid red;
+     border-top:none !important;
+    thead{
+        th{
+            border-top:none !important;
+        }
+    }
+}
+
 .list-preloader{
     display:none;
     background: rgba(0, 0, 0, 0.5);
@@ -2011,9 +2034,9 @@ div.wide.form{
 
 }
 
-#FilteredListView, .summary{
+/*#FilteredListView, .summary{
     display:none;
-}
+}*/
 
 .ZurmoSearchView{
     padding:0;
@@ -2089,6 +2112,7 @@ div.wide.form{
         }
     }
 }
+
 #search-form{
     border-color: #dfdfdf;
     border-bottom: none;
@@ -2114,6 +2138,25 @@ div.wide.form{
     &:after{
         content: "▾";
         margin-left:5px;
+    }
+}
+
+#ModalView{
+    .search-view-0{
+        margin:15px 0 0 0;
+        width:220px;
+        float:left;
+    }
+    .search-view-1{
+        margin-top:15px;
+        z-index:100;
+        min-width:400px;
+        height:auto;
+        position:absolute;
+        left:250px;
+        top:35px;
+        padding:20px 20px 20px 20px;
+        .flyout();
     }
 }
 
@@ -2983,7 +3026,8 @@ div.wide.form{
         z-index: 1;
     }
     .spinner{
-       margin-top:-8px;
+       margin-top:-10px;
+        margin-left:20px;
     }
     > div{
         display: inline-block;
@@ -2996,7 +3040,6 @@ div.wide.form{
             top:0;
             position: relative;
             display: block;
-            line-height: 20px;
             padding:0 5px;
         }
         ul{
@@ -3004,7 +3047,7 @@ div.wide.form{
             display: none;
             list-style: none;
             position: absolute;
-            margin-top:5px;
+            margin-top:0;
             padding-top:3px;
             padding-bottom:3px;
             font-weight:normal !important;
