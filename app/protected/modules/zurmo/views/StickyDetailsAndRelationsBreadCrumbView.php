@@ -52,7 +52,7 @@
             $content = parent::renderContent();
             if($this->stickyLoadUrl != null)
             {
-                $content .= '<div id="stickyListLoadingArea"><span class="loading">XX</span></div>';
+                $content .= '<div id="stickyListLoadingArea"><span class="loading"></span></div>';
             }
             $this->renderScripts();
             return $content;

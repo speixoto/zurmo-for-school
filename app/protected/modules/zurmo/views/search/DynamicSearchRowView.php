@@ -80,8 +80,7 @@
             $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
             $content .= CHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
             $content .= '</div>';
-            $content .= CHtml::link(Yii::t('Default', 'Remove Field'),
-                        '#', array('class' => 'remove-extra-dynamic-search-row-link'));
+            $content .= CHtml::link(Yii::t('Default', 'Remove Criteria'), '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }
 
@@ -121,6 +120,7 @@
                     $(this).parent().remove();
                     rebuildDynamicSearchRowNumbersAndStructureInput(formId);
                     resolveClearLinkPrefixLabelAndVisibility(formId);
+                    resolveCriteriaLink(formId);
                 }
             );");
             return $content;
