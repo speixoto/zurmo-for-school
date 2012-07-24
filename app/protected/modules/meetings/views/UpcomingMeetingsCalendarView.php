@@ -151,8 +151,7 @@
             foreach ($dayEvents as $event)
             {
                 $dateTimestamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($event['dbDate']);
-                $dateForJavascript = date('M j, Y', $dateTimestamp);
-                //echo "calendarEvents[new Date('" . $event['date'] . "')] = new CalendarEvent('" . $event['label'] . "', '" . $event['className'] . "'); \n";                
+                $dateForJavascript = date('M j, Y', $dateTimestamp);             
                 echo "console.log('" . $dateForJavascript . "');calendarEvents[new Date('" . $dateForJavascript . "')] = new CalendarEvent('" . $event['label'] . "', '" . $event['className'] . "'); \n";
             }
         }
