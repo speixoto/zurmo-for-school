@@ -182,11 +182,17 @@
                     {
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
-                        //Reseting DropKick Information
-                        $('#" . $this->getModelForMetadataClassName() . "_type_value').removeData('dropkick');
-                        $('#dk_container_" . $this->getModelForMetadataClassName() . "_type_value').remove();
-                        $('#" . $this->getModelForMetadataClassName() . "_type_value').dropkick();
-                        $('#" . $this->getModelForMetadataClassName() . "_type_value').dropkick('rebindToggle');
+                        //Reseting DropKick Information                       
+                        $('select:not(.ignore-style)').each(function(){                                                
+                            $(this).removeData('dropkick');
+                        });
+                        $('div.dk_container').each(function(){
+                            $(this).remove();
+                        });
+                        $('select:not(.ignore-style)').each(function(){                                                
+                            $(this).dropkick();
+                            $(this).dropkick('rebindToggle');
+                        });
                         $(this).closest('form').submit();
                         $('#" . $this->getClearingSearchInputId() . "').val('');
                         return false;
