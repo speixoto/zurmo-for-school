@@ -59,7 +59,7 @@
             foreach($attributesLayoutAdapter->makeDesignerLayoutAttributes()->get() as $attributeIndexOrDerivedType => $data)
             {
                 //special case with anyMixedAttributes since it is searchable but in the basic search part so never dynamically searchable
-                if($searchFormClassName::isAttributeSearchable($attributeIndexOrDerivedType) || $attributeIndexOrDerivedType == 'anyMixedAttributes')
+                if($searchFormClassName::isAttributeSearchable($attributeIndexOrDerivedType) && $attributeIndexOrDerivedType != 'anyMixedAttributes')
                 {
                     $attributeIndexOrDerivedTypeAndLabels[$attributeIndexOrDerivedType] = $data['attributeLabel'];
                 }

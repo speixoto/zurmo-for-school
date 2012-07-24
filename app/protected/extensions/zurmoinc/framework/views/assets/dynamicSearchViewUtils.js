@@ -1,24 +1,3 @@
-function resolveCriteriaLink(formId)
-{
-    rowCount = 0;
-    $('#' + formId).find('.dynamic-search-row-number-label').each(function()
-    {
-        rowCount ++;
-    });
-    if(rowCount == 0)
-    {
-        $('#' + formId).find('.first-add-field-link').show();
-        $('#' + formId).find('.after-first-add-field-link').hide();
-        $('#show-dynamic-search-structure-wrapper-' + formId).hide();
-    }
-    else
-    {
-        $('#' + formId).find('.first-add-field-link').hide();
-        $('#' + formId).find('.after-first-add-field-link').show();
-        $('#show-dynamic-search-structure-wrapper-' + formId).show();
-    }
-}
-
 function rebuildDynamicSearchRowNumbersAndStructureInput(formId)
 {
     rowCount = 1;
@@ -35,6 +14,14 @@ function rebuildDynamicSearchRowNumbersAndStructureInput(formId)
         rowCount ++;
     });
     $('#' + formId).find('.dynamic-search-structure-input').val(structure);
+    if(rowCount == 1)
+    {
+        $('#show-dynamic-search-structure-wrapper-' + formId).hide();
+    }
+    else
+    {
+        $('#show-dynamic-search-structure-wrapper-' + formId).show();
+    }
 }
 
 function afterDynamicSearchValidateAjaxAction(form, data, hasError)

@@ -74,6 +74,7 @@
                     $('#" . $this->getStructureInputId() . "').val('');
                     $('.search-view-1').hide();
                     resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
+                    rebuildDynamicSearchRowNumbersAndStructureInput('" . $this->getSearchFormId() . "')
             ";
         }
 
@@ -186,6 +187,7 @@
                 }
             }
             $content .= $this->renderAddExtraRowContent($rowCount);
+            $content .= $this->renderAfterAddExtraRowContent($form);
             $content .= $this->renderDynamicSearchStructureContent($form);
            return $content;
         }
@@ -225,32 +227,20 @@
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                             resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
-                                            resolveCriteriaLink("' . $this->getSearchFormId() . '");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
             return CHtml::tag('div', array('class' => 'add-fields-container'), $content);
         }
 
+        protected function renderAfterAddExtraRowContent($form)
+        {
+
+        }
+
         protected function getAddFieldLabelContent()
         {
-            if(count($this->model->dynamicClauses) == 0)
-            {
-                $startingFirstStyle      = null;
-                $startingAfterFirstStyle = 'display:none;';
-            }
-            else
-            {
-                $startingFirstStyle      = 'display:none;';
-                $startingAfterFirstStyle = null;
-            }
-            $content = ZurmoHtml::tag('span', array( 'class' => 'first-add-field-link',
-                                                     'style' => $startingFirstStyle),
-                                                     Yii::t('Default', 'or start by adding adding criteria'));
-            $content .= ZurmoHtml::tag('span', array('class' => 'after-first-add-field-link',
-                                                     'style' => $startingAfterFirstStyle),
-                                                     Yii::t('Default', 'Add another criteria'));
-            return $content;
+            return ZurmoHtml::tag('span', array(), Yii::t('Default', 'Add criteria'));
         }
 
         protected function renderAfterFormLayout($form)

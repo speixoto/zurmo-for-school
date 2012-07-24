@@ -116,7 +116,6 @@
                     "$('#save-as-advanced-search').click( function()
                     {
                         $('#save-search-area').show();
-                        $('#save-as-advanced-search').hide();
                         return false;
                     }
                 );";
@@ -130,6 +129,16 @@
                        parent::renderConfigSaveAjax($formName);
         }
 
+        protected function renderAfterAddExtraRowContent($form)
+        {
+            $content  = CHtml::link(Yii::t('Default', 'or save this search'), '#', array('id' => 'save-as-advanced-search'));
+            $content  = CHtml::tag('div', array('class' => 'search-save-container'), $content);
+            $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
+            $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);
+            $content .= '</div>';
+            return $content;
+        }
+
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
             $params = array();
@@ -138,10 +147,8 @@
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content  = $searchElement->render();
             $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
-            $content .= CHtml::link(Yii::t('Default', 'Save As'), '#', array('id' => 'save-as-advanced-search'));
-            $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
-            $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);
-            $content .= '</div>';
+
+
             return $content;
         }
 
@@ -215,7 +222,6 @@
                      $('#" . static::getSavedSearchListDropDown() . "').dropkick();
                      $('#" . static::getSavedSearchListDropDown() . "').dropkick('rebindToggle');
                      $('#save-search-area').hide();
-                     $('#save-as-advanced-search').show();
                      jQuery.yii.submitForm(this, '', {}); return false;
             ";
         }

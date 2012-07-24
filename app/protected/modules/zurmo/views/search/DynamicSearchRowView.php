@@ -120,7 +120,6 @@
                     $(this).parent().remove();
                     rebuildDynamicSearchRowNumbersAndStructureInput(formId);
                     resolveClearLinkPrefixLabelAndVisibility(formId);
-                    resolveCriteriaLink(formId);
                 }
             );");
             return $content;
