@@ -120,7 +120,7 @@
             $startingDivStyle = null;
             if ($this->hideAllSearchPanelsToStart)
             {
-                $startingDivStyle = "style=''";
+                $startingDivStyle = "style='display:none;'";
             }
             $content  = '<div class="search-form-tools">';
             $content .= $moreSearchOptionsLink . '&#160;|&#160;';
@@ -264,7 +264,7 @@
                 $startingDivStyle = "";
                 if ($key == 1 || $this->hideAllSearchPanelsToStart)
                 {
-                    $startingDivStyle = "style=''";
+                    $startingDivStyle = "style='display:none;'";
                 }
                 $content .= '<div class="search-view-' . $key . '" ' . $startingDivStyle . '>';
                 if($key == 1)
