@@ -442,17 +442,20 @@
                                                        getAdaptedMetadataClauseBasePartAtRequiredDepth(
                                                        $adaptedMetadataClauseBasePart, $depth);
                     $currentClauseCount           = $clauseCount;
-                    $this->populateClausesAndStructureForConcatedAttributes( $model,
-                                                                             $searchFormClause['concatedAttributeNames'][0],
-                                                                             $searchFormClause['concatedAttributeNames']['value'],
-                                                                             $basePartAtRequiredDepth,
-                                                                             $clauseCount,
-                                                                             $tempStructure,
-                                                                             false);
-                    $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
-                                                                                $adaptedMetadataClauseBasePart,
-                                                                                $basePartAtRequiredDepth,
-                                                                                $depth);
+                    if($searchFormClause['concatedAttributeNames']['value'] != null)
+                    {
+                        $this->populateClausesAndStructureForConcatedAttributes( $model,
+                                                                                 $searchFormClause['concatedAttributeNames'][0],
+                                                                                 $searchFormClause['concatedAttributeNames']['value'],
+                                                                                 $basePartAtRequiredDepth,
+                                                                                 $clauseCount,
+                                                                                 $tempStructure,
+                                                                                 false);
+                        $adaptedMetadataClauses[$currentClauseCount] = static::getAppendedAdaptedMetadataClauseBasePart(
+                                                                                    $adaptedMetadataClauseBasePart,
+                                                                                    $basePartAtRequiredDepth,
+                                                                                    $depth);
+                    }
                     $this->appendStructureAsAnd   = $oldAppendStructureAsAndValue;
                 }
                 else
