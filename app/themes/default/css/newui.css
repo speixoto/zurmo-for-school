@@ -7923,8 +7923,11 @@ div.wide.form a {
   content: "▾";
   margin-left: 5px;
 }
+#ModalView .list-view-items-summary-clone {
+  margin: 10px 10px 0 0;
+}
 #ModalView .search-view-0 {
-  margin: 15px 0 0 0;
+  margin: 5px 0 0 10px !important;
   width: 220px;
   float: left;
 }
@@ -8001,13 +8004,13 @@ div.wide.form a {
   width: 100%;
 }
 .dynamic-search-row > div > span:first-child + div {
-  margin-right: 15px !important;
-  width: 44%;
+  margin-right: 0 !important;
+  width: 46%;
   float: left;
 }
 .dynamic-search-row > div .criteria-value-container {
-  margin-right: 80px !important;
-  width: 44%;
+  margin-right: 30px !important;
+  width: 46%;
   float: right;
 }
 .dynamic-search-row > div .has-model-select {
@@ -8018,18 +8021,64 @@ div.wide.form a {
 }
 .dynamic-search-row .remove-extra-dynamic-search-row-link {
   float: right;
-  margin: 8px 0 0 -80px !important;
+  margin: 4px 0 0 -30px !important;
   position: relative;
   display: block;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  color: #a7a7a7 !important;
+}
+.dynamic-search-row .remove-extra-dynamic-search-row-link:hover {
+  color: #262877 !important;
 }
 .dynamic-search-row .dynamic-search-row-number-label {
-  display: none;
+  float: left;
+  line-height: 26px;
+  margin-right: 15px;
+  font-weight: bold;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-.add-fields-container {
+.add-fields-container,
+.search-save-container {
+  float: left;
+  display: inline-block;
+  margin: 10px 3px 10px 0;
+}
+#show-dynamic-search-structure-wrapper-search-form {
+  display: block;
   width: 100%;
   float: left;
-  display: block;
-  margin: 10px 0;
+}
+#save-search-area {
+  width: 50%;
+  margin-top: 3px;
+  border-top: none;
+}
+#save-search-area input,
+#save-search-area a {
+  display: inline-block;
+  width: auto;
+  float: left;
+  margin-right: 15px;
+}
+#save-search-area #removeSavedSearch {
+  line-height: 26px;
+}
+#save-search-area #save-advanced-search {
+  color: #fff;
+}
+#show-dynamic-search-structure-div-search-form input {
+  text-indent: 30px;
+}
+#show-dynamic-search-structure-div-search-form span {
+  width: auto;
+  padding: 0 8px;
+  font-weight: bold;
 }
 .ui-multiselect-menu {
   padding: 10px !important;
