@@ -311,13 +311,14 @@
                                                   array('id' => $data->id, 'stickyOffset'  => $row + $finalOffset));
                     if($data->id == $stickyModelId)
                     {
-                        $label = '<strong>' . strval($data) . '</strong>';
+                        $menuItems['items'][] = array(  'label'       => strval($data),
+                                                        'url'         => $url,
+                                                        'itemOptions' => array('class' => 'strong'));
                     }
                     else
                     {
-                        $label = strval($data);
+                        $menuItems['items'][] = array('label' => strval($data), 'url'   => $url);
                     }
-                    $menuItems['items'][] = array('label' => $label, 'url'   => $url);
                 }
                 $cClipWidget     = new CClipWidget();
                 $cClipWidget->beginClip("StickyList");
