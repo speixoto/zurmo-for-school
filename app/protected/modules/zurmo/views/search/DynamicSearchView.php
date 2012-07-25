@@ -344,7 +344,7 @@
 
         protected function getClearSearchLabelContent()
         {
-            return Yii::t('Default', 'Criteria Selected - Clear');
+            return Yii::t('Default', 'Criteria Selected <span class="icon-clear">Z</span>');
         }
 
         protected function getClearSearchLinkStartingStyle()

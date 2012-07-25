@@ -123,7 +123,7 @@
                 $startingDivStyle = "style='display:none;'";
             }
             $content  = '<div class="search-form-tools">';
-            $content .= $moreSearchOptionsLink . '&#160;|&#160;';
+            $content .= $moreSearchOptionsLink;
             $content .= $clearSearchLink;
             $content .= $this->renderFormBottomPanelExtraLinks();
             $content .= $this->renderClearingSearchInputContent();

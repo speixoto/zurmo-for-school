@@ -7989,6 +7989,29 @@ div.wide.form a {
 .search-view-1 .view-toolbar-container {
   display: inline-block;
 }
+#clear-search-link {
+  background: #262877;
+  padding: 1px 4px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  color: #fff !important;
+  margin-left: 10px;
+}
+#clear-search-link:hover {
+  color: #fff !important;
+  text-decoration: underline;
+}
+#clear-search-link .icon-clear {
+  font-weight: normal;
+  font-size: 16px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+}
+.mp-divider {
+  padding: 0 2px;
+}
 #show-dynamic-search-structure-div-search-form {
   display: inline-block;
   width: 100%;
@@ -8047,7 +8070,7 @@ div.wide.form a {
 .search-save-container {
   float: left;
   display: inline-block;
-  margin: 10px 3px 10px 0;
+  margin: 15px 3px 10px 0;
 }
 #show-dynamic-search-structure-wrapper-search-form {
   display: block;
@@ -8056,7 +8079,7 @@ div.wide.form a {
 }
 #save-search-area {
   width: 50%;
-  margin-top: 3px;
+  margin-top: 10px;
   border-top: none;
 }
 #save-search-area input,
@@ -8065,6 +8088,10 @@ div.wide.form a {
   width: auto;
   float: left;
   margin-right: 15px;
+}
+#save-search-area input {
+  width: 50%;
+  margin-left: 5px;
 }
 #save-search-area #removeSavedSearch {
   line-height: 26px;

@@ -311,7 +311,7 @@
                                                   array('id' => $data->id, 'stickyOffset'  => $row + $finalOffset));
                     if($data->id == $stickyModelId)
                     {
-                        $label = '<span>HIGHLIGHT' . strval($data) . '</span>';
+                        $label = '<strong>' . strval($data) . '</strong>';
                     }
                     else
                     {
