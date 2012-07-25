@@ -294,6 +294,7 @@
             'jobsManager',
             'leads',
             'meetings',
+            'missions',
             'notes',
             'notifications',
             'opportunities',
