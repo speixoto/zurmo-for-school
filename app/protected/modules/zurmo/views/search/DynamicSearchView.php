@@ -299,6 +299,7 @@
                                   'style' => $style1));
             $content .= CHtml::tag('div',
                             array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
+                                  'class' => 'has-lang-label',
                                   'style' => $style2), $this->renderStructureInputContent($form));
             $content  = ZurmoHtml::tag('span', array('id'    => 'show-dynamic-search-structure-wrapper-' . $this->getSearchFormId(),
                                                      'style' => $style3), $content);
@@ -307,11 +308,11 @@
 
         protected function renderStructureInputContent($form)
         {
-            $content             = Yii::t('Default', 'Search Structure') . ':';
             $idInputHtmlOptions  = array('id'    => $this->getStructureInputId(),
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'dynamic-search-structure-input');
-            $content            .= $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
+            $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
+            $content            .= Yii::t('Default', '<span>Search Structure</span>');
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
         }

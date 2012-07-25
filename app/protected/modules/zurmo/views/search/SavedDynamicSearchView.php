@@ -131,7 +131,7 @@
 
         protected function renderAfterAddExtraRowContent($form)
         {
-            $content  = CHtml::link(Yii::t('Default', 'or save this search'), '#', array('id' => 'save-as-advanced-search'));
+            $content  = ' or ' . CHtml::link(Yii::t('Default', 'save this search'), '#', array('id' => 'save-as-advanced-search'));
             $content  = CHtml::tag('div', array('class' => 'search-save-container'), $content);
             $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
             $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);
