@@ -7507,29 +7507,41 @@ div.wide.form a {
 }
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
+/*
+.summary{
+    padding:5px;
+    text-align: right;
+    font-weight:bold !important;
+    border:1px solid #DFDFDF;
+    border-top:none;
+    border-bottom: none;
+    #gradient > .vertical(#e3e3e3, #f5f5f5);
+    & + .items{
+        //border-top:none !important;
+    }
+}
+.summary + .items{
+    //border-top:1px solid red;
+     border-top:none !important;
+    thead{
+        th{
+            border-top:none !important;
+        }
+    }
+}
+*/
 .summary {
-  padding: 5px;
-  text-align: right;
-  font-weight: bold !important;
-  border: 1px solid #DFDFDF;
-  border-top: none;
-  border-bottom: none;
-  background-color: #f5f5f5;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#e3e3e3), to(#f5f5f5));
-  background-image: -moz-linear-gradient(top, #e3e3e3, #f5f5f5);
-  background-image: -ms-linear-gradient(top, #e3e3e3, #f5f5f5);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e3e3e3), color-stop(100%, #f5f5f5));
-  background-image: -webkit-linear-gradient(top, #e3e3e3, #f5f5f5);
-  background-image: -o-linear-gradient(top, #e3e3e3, #f5f5f5);
-  background-image: linear-gradient(top, #e3e3e3, #f5f5f5);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e3e3e3', endColorstr='#f5f5f5', GradientType=0);
+  display: none;
 }
-.summary + .items {
-  border-top: none !important;
-}
-.summary + .items thead th {
-  border-top: none !important;
+.list-view-items-summary-clone {
+  float: right;
+  margin: 20px 0 0 0;
+  color: #666;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 .list-preloader {
   display: none;
