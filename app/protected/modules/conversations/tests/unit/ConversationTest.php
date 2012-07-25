@@ -117,6 +117,8 @@
             $this->assertEquals($latestStamp, $conversation->latestDateTime);
             $this->assertEquals(1, $conversation->ownerHasReadLatest);
 
+            sleep(2); // Sleeps are bad in tests, but I need some time to pass
+
             //Add comment, this should update the latestDateTime,
             //and also it should reset hasReadLatest on conversation participants
             $comment              = new Comment();

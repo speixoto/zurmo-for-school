@@ -24,34 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Override to change how the labels show up for each of the activity item relations.
-     */
-    class NoteActivityItemsElement extends ActivityItemsElement
-    {
-        /**
-         * Because notes is a simpler model that is typically displayed inline, the labels should display above
-         * each of the relation inputs.
-         * @see ActivityItemsElement::getRelatedItemEditableTemplate()
-         */
-        protected function getRelatedItemEditableTemplate()
-        {
-            $editableTemplate = "<tr><td colspan='{colspan}'>\n";
-            $editableTemplate .= '{label}<br/>{content}{error}';
-            $editableTemplate .= "</td></tr>\n";
-            return $editableTemplate;
-        }
+    // KEEP these in alphabetical order.
+    // KEEP them indented correctly.
+    // KEEP all the language files up-to-date with each other.
+    // DON'T MAKE A MESS!
+    return array(
 
-        /**
-         * (non-PHPdoc)
-         * @see RelatedItemsElement::getRelatedItemEditableTemplate()
-         */
-        protected function getRelatedItemEditableHiddenInputOnlyTemplate()
-        {
-            $editableTemplate = "<tr><td colspan='{colspan}'>\n";
-            $editableTemplate .= '{content}{error}';
-            $editableTemplate .= "</td></tr>\n";
-            return $editableTemplate;
-        }
-    }
+    );
 ?>
