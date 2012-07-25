@@ -40,40 +40,40 @@
 
         public function actionIndex()
         {
-            $this->actionList(ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT);
+            $this->actionList(MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_OPEN);
         }
 
         public function actionList($type = null)
         {
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class($this->getModule()));
-            $conversation     = new Conversation(false);
+            $mission          = new Mission(false);
             if ($type == null)
             {
-                $type = ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;
+                $type = MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;
             }
-            if ($type == ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED)
+            if ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED)
             {
-                $activeActionElementType = 'ConversationsCreatedLink';
+                $activeActionElementType = 'MissionsCreatedLink';
             }
-            elseif ($type == ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT)
+            elseif ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_OPEN)
             {
-                $activeActionElementType = 'ConversationsParticipantLink';
+                $activeActionElementType = 'MissionsOpenLink';
             }
             else
             {
                 throw new NotSupportedException();
             }
             $searchAttributes = array();
-            $metadataAdapter  = new ConversationsSearchDataProviderMetadataAdapter(
-                $conversation,
+            $metadataAdapter  = new MissionsSearchDataProviderMetadataAdapter(
+                $mission,
                 Yii::app()->user->userModel->id,
                 $searchAttributes,
                 $type
             );
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadataAdapter,
-                'Conversation',
+                'Mission',
                 'RedBeanModelDataProvider',
                 'latestDateTime',
                 true,
@@ -82,14 +82,14 @@
             $actionBarAndListView = new ActionBarAndListView(
                 $this->getId(),
                 $this->getModule()->getId(),
-                $conversation,
-                'Conversations',
+                $mission,
+                'Missions',
                 $dataProvider,
                 array(),
-                'ConversationsActionBarForListView',
+                'MissionsActionBarForListView',
                 $activeActionElementType
             );
-            $view = new ConversationsPageView(ZurmoDefaultViewUtil::
+            $view = new MissionsPageView(ZurmoDefaultViewUtil::
                                               makeStandardViewForCurrentUser($this, $actionBarAndListView));
             echo $view->render();
         }
@@ -149,7 +149,7 @@
                                    'relatedModelClassName' 	  => 'Mission',
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
-            $uniquePageId  = 'CommentInlineEditForMissionView';
+            $uniquePageId  = 'CommentInlineEditForModelView';
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                        $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);

@@ -30,14 +30,27 @@
     class MissionsUtil
     {
         /**
+         * Renders string content for the mission description or the latest mission comment
+         * if it exists.
+         * @param Mission $mission
+         * @return string
+         */
+        public static function renderDescriptionAndLatestForDisplayView(Mission $mission)
+        {
+            $url            = Yii::app()->createUrl('/missions/default/details', array('id' => $mission->id));
+            $content        = $mission->description;
+            return $content = ZurmoHtml::link($content, $url);
+        }
+
+        /**
          * Given a mission and a user, mark ownerHasReadLatest true if the user is the owner, if the user is the takenByUser
          * then mark the takenByUserHasReadLatest as true, otherwise do nothing.
          * @param Mission $mission
          * @param User $user
          */
-        public static function markUserHasReadLatest(Conversation $mission, User $user)
+        public static function markUserHasReadLatest(Mission $mission, User $user)
         {
-            assert('$conversation->id > 0');
+            assert('$mission->id > 0');
             assert('$user->id > 0');
             $save = false;
             if($user == $mission->owner)
@@ -58,8 +71,23 @@
             }
             if($save)
             {
-                $conversation->save();
+                $mission->save();
             }
+        }
+
+        public static function hasUserReadMissionLatest(Mission $mission, User $user)
+        {
+            assert('$mission->id > 0');
+            assert('$user->id > 0');
+            if($user->isSame($mission->owner))
+            {
+                return $mission->ownerHasReadLatest;
+            }
+            elseif($user == $mission->takenByUser)
+            {
+                return $mission->takenByUserHasReadLatest;
+            }
+            return false;
         }
     }
 ?>
