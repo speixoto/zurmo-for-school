@@ -34,8 +34,8 @@
             => 'Por favor, introduzca una dirección de email.',
         'A test email from Zurmo'
             => 'Un mensaje de prueba de  Zurmo',
-        'A test text message from Zurmo'
-            => 'Un mensaje de texto de Zurmo',
+        'A test text message from Zurmo.'
+            => 'Un mensaje de texto de Zurmo.',
         'Access Email Configuration'
             => 'Acceso a la configuración email',
         'Access Emails Tab'
