@@ -273,7 +273,7 @@
 
         public function actionClearStickySearch($key)
         {
-            SavedSearchUtil::clearDataByKey($key);
+            StickySearchUtil::clearDataByKey($key);
         }
     }
 ?>

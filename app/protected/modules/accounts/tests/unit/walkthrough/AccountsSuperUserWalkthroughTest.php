@@ -299,5 +299,33 @@
             $accounts = Account::getAll();
             $this->assertEquals(4, count($accounts));
         }
+
+        /**
+         * @depends testSuperUserCreateAction
+         */
+        public function testStickySearchActions()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            StickySearchUtil::clearDataByKey('AccountsSearchView');
+            $value = StickySearchUtil::getDataByKey('AccountsSearchView');
+            $this->assertNull($value);
+            $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes' => 'xyz')));
+            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/');
+            $data = StickySearchUtil::getDataByKey('AccountsSearchView');
+            $compareData = array('dynamicClauses'          => null,
+                                 'dynamicStructure'        => null,
+                                 'anyMixedAttributes'      => 'xyz',
+                                 'anyMixedAttributesScope' => null,
+            );
+            $this->assertEquals($compareData, $data);
+            $this->setGetArray(array('clearingSearch' => true));
+            $this->runControllerWithNoExceptionsAndGetContent('accounts/default');
+            $data = StickySearchUtil::getDataByKey('AccountsSearchView');
+            $compareData = array('dynamicClauses'          => null,
+                                 'dynamicStructure'        => null,
+                                 'anyMixedAttributesScope' => null,
+            );
+            $this->assertEquals($compareData, $data);
+        }
     }
 ?>

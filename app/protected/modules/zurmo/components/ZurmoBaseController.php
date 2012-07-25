@@ -133,16 +133,12 @@
             $dataCollection = new SearchAttributesDataCollection($searchModel);
             if($searchModel instanceof SavedDynamicSearchForm)
             {
-                if($stickySearchKey == null)
-                {
-                    throw new NotSupportedException();
-                }
                 $getData = GetUtil::getData();
-                if(isset($getData['clearingSearch']) && $getData['clearingSearch'])
+                if($stickySearchKey != null && isset($getData['clearingSearch']) && $getData['clearingSearch'])
                 {
-                    SavedSearchUtil::clearDataByKey($stickySearchKey);
+                    StickySearchUtil::clearDataByKey($stickySearchKey);
                 }
-                if(null != $stickySearchData = SavedSearchUtil::getDataByKey($stickySearchKey))
+                if($stickySearchKey != null && null != $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey))
                 {
                     SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
                     $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
@@ -155,7 +151,7 @@
                         $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                     }
                 }
-                if($setSticky)
+                if($stickySearchKey != null && $setSticky)
                 {
                     SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection);
                 }

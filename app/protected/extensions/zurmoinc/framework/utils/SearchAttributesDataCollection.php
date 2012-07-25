@@ -49,6 +49,11 @@
             return SearchUtil::getDynamicSearchStructureFromGetArray(get_class($this->model));
         }
 
+        public function getAnyMixedAttributesScopeFromModel()
+        {
+            return $this->model->getAnyMixedAttributesScope();
+        }
+
         public function resolveSearchAttributesFromSourceData()
         {
             return SearchUtil::resolveSearchAttributesFromGetArray(get_class($this->model), get_class($this->model));
