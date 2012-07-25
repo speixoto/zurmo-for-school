@@ -85,5 +85,44 @@
             $this->assertEquals('1 or 6',      $searchForm->dynamicStructure);
             $this->assertEquals(null,          $searchForm->dynamicClauses);
         }
+
+        public function testSetGetClearStickySearchByKey()
+        {
+            StickySearchUtil::clearDataByKey('abc');
+            $value = StickySearchUtil::getDataByKey('abc');
+            $this->assertNull($value);
+
+            $savedSearch                     = new SavedSearch();
+            $savedSearch->name               = 'something';
+            $savedSearch->viewClassName      = 'view';
+            $savedSearch->serializedData     = 'someString';
+            $saved                           = $savedSearch->save();
+            $this->assertTrue($saved);
+            $this->assertTrue($savedSearch->id > 0);
+
+            $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
+            $searchModel->dynamicStructure   = '1 and 5';
+            $searchModel->dynamicClauses     = array('a', 'b');
+            $searchModel->anyMixedAttributes = 'abcdef';
+            $searchModel->savedSearchId      = $savedSearch->id;
+            $searchModel->setAnyMixedAttributesScope('xyz');
+            $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection);
+            $stickyData = StickySearchUtil::getDataByKey('abc');
+            $compareData = array(   'dynamicClauses'          => array('a', 'b'),
+                                    'dynamicStructure'        => '1 and 5',
+                                    'anyMixedAttributes'      => 'abcdef',
+                                    'anyMixedAttributesScope' => 'xyz',
+                                    'savedSearchId'           => $savedSearch->id);
+            $this->assertEquals($compareData, $stickyData);
+            $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
+            SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickyData, $searchModel);
+            $this->assertEquals('something',        $searchModel->savedSearchName);
+            $this->assertEquals($savedSearch->id,   $searchModel->savedSearchId);
+            $this->assertEquals('abcdef',           $searchModel->anyMixedAttributes);
+            $this->assertEquals('xyz',              $searchModel->getAnyMixedAttributesScope());
+            $this->assertEquals('1 and 5',          $searchModel->dynamicStructure);
+            $this->assertEquals(array('a', 'b'),    $searchModel->dynamicClauses);
+        }
     }
 ?>

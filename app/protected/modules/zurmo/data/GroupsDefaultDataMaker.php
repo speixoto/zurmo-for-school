@@ -44,6 +44,7 @@
             $everyone->setRight('LeadsModule',         LeadsModule::RIGHT_ACCESS_LEADS, Right::ALLOW);
             $everyone->setRight('LeadsModule',         LeadsModule::RIGHT_CREATE_LEADS, Right::ALLOW);
             $everyone->setRight('LeadsModule',         LeadsModule::RIGHT_DELETE_LEADS, Right::ALLOW);
+            $everyone->setRight('LeadsModule',         LeadsModule::RIGHT_CONVERT_LEADS, Right::ALLOW);
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_ACCESS_OPPORTUNITIES, Right::ALLOW);
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES, Right::ALLOW);
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_DELETE_OPPORTUNITIES, Right::ALLOW);

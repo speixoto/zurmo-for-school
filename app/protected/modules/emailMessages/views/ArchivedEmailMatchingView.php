@@ -194,7 +194,7 @@
         protected function renderEmailMessageContentAndResolveLink()
         {
             $rules    = new EmailMessageMashableActivityRules();
-            
+
             $content  = '<div class="email-matching-summary-content">';
             $content .= $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
             $content .= CHtml::tag('span', array(), strval($this->emailMessage));
@@ -205,8 +205,8 @@
             $content .= '<div class="email-matching-show-less" style="display:none;">';
             $content .= '<span class="icon-up-arrow"></span>Collapse';
             $content .= '</div>';
-            
-            
+
+
             return $content;
         }
 
@@ -362,7 +362,7 @@
             $content .= $selectContent . Yii::t('Default', 'or') . ' ';
             if($this->userCanCreateLead)
             {
-                $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createLeadLink;
+                $content .= ' ' . $createLeadLink;
             }
             $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createContactContent;
             $content .= '</div>';

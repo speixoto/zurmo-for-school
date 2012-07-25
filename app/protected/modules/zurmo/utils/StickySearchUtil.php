@@ -29,6 +29,23 @@
      */
     class StickySearchUtil
     {
+        public static function clearDataByKey($key)
+        {
+            assert('is_string($key)');
+            Yii::app()->user->setState($key, null);
+        }
+
+        public static function getDataByKey($key)
+        {
+            assert('is_string($key)');
+            $stickyData = Yii::app()->user->getState($key);
+            if($stickyData == null)
+            {
+                return null;
+            }
+            return unserialize($stickyData);
+        }
+
         /**
          * Given an offset and pageSize, determine what the list offset should be in order to maximize how the list
          * displays in the user interface
@@ -45,19 +62,27 @@
             {
                 $finalOffset = 0;
             }
+            elseif($pageSize >= $totalCount)
+            {
+                $finalOffset = 0;
+            }
             else
             {
-                $finalOffset = $stickyOffset - round($pageSize / 2);
-                if($finalOffset < 0)
+                //lower boundry of half the page size from stickyOffset
+                $lowerBoundryOffset = $stickyOffset - round($pageSize / 2);
+                //upper boundry of half the page size from stickyOffset
+                $upperBoundryOffset = $stickyOffset + round($pageSize / 2);
+                if($lowerBoundryOffset < 0)
                 {
                     $finalOffset = 0;
                 }
+                elseif($upperBoundryOffset > ($totalCount -1))
+                {
+                    $finalOffset = $lowerBoundryOffset - ($upperBoundryOffset - ($totalCount- 1));
+                }
                 else
                 {
-                    if($totalCount - $stickyOffset < $pageSize)
-                    {
-                        $finalOffset = $totalCount - $pageSize;
-                    }
+                    $finalOffset = $lowerBoundryOffset;
                 }
             }
             return (int)$finalOffset;
@@ -68,7 +93,7 @@
         {
             assert('is_string($stickySearchKey)');
             if(ArrayUtil::getArrayValue(GetUtil::getData(), 'stickyOffset') !== null &&
-               SavedSearchUtil::getDataByKey($stickySearchKey) != null)
+               StickySearchUtil::getDataByKey($stickySearchKey) != null)
             {
                  $stickyLoadUrl = Yii::app()->createUrl($controller->getModule()->getId() . '/' . $controller->getId() . '/renderStickyListBreadCrumbContent',
                                                         array('stickyKey'     => $stickySearchKey,

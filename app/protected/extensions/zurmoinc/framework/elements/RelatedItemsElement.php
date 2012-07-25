@@ -106,8 +106,7 @@
         protected function resolveAndRenderEditableInput($relationModel, $relatedItemForm, $relationModelClassName, $modelElementType)
         {
             $elementInformation = array('attributeName' => $relationModelClassName,
-                                        'type'          => $modelElementType
-            );
+                                        'type'          => $modelElementType);
             FormLayoutSecurityUtil::resolveElementForEditableRender($relatedItemForm, $elementInformation, Yii::app()->user->userModel);
             if($elementInformation['attributeName'] != null)
             {
@@ -188,7 +187,7 @@
         {
             $template  = "<tr><th>\n";
             $template .=  "{label}";
-            $template .= "</th><td colspan=\"3\">\n";
+            $template .= "</th><td colspan=\"" . $this->getColumnSpan() . "\">\n";
             $template .= '{content}{error}';
             $template .= "</td></tr>\n";
             return $template;
@@ -197,7 +196,7 @@
         protected function getRelatedItemEditableHiddenInputOnlyTemplate()
         {
             $template  = "<tr><th>\n";
-            $template .= "</th><td colspan=\"3\">\n";
+            $template .= "</th><td colspan=\"" . $this->getColumnSpan() . "\">\n";
             $template .= '{content}{error}';
             $template .= "</td></tr>\n";
             return $template;
@@ -207,7 +206,7 @@
         {
             $template  = "<tr><th>\n";
             $template .=  "{label}";
-            $template .= "</th><td colspan=\"3\">\n";
+            $template .= "</th><td colspan=\"" . $this->getColumnSpan() . "\">\n";
             $template .= '{content}';
             $template .= "</td></tr>\n";
             return $template;

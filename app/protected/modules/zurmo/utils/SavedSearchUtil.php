@@ -80,23 +80,6 @@
             }
         }
 
-        public static function clearDataByKey($key)
-        {
-            assert('is_string($key)');
-            Yii::app()->user->setState($key, null);
-        }
-
-        public static function getDataByKey($key)
-        {
-            assert('is_string($key)');
-            $stickyData = Yii::app()->user->getState($key);
-            if($stickyData == null)
-            {
-                return null;
-            }
-            return unserialize($stickyData);
-        }
-
         public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection)
         {
             assert('is_string($key)');
@@ -108,7 +91,8 @@
             {
                 $stickyData['anyMixedAttributes']      = $anyMixedAttributes['anyMixedAttributes'];
             }
-            $stickyData['anyMixedAttributesScope'] = $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
+            $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
+            $stickyData['anyMixedAttributesScope']     = $dataCollection->getAnyMixedAttributesScopeFromModel();
             if($dataCollection instanceof SavedSearchAttributesDataCollection)
             {
                 $stickyData['savedSearchId']           = $dataCollection->getSavedSearchId();
