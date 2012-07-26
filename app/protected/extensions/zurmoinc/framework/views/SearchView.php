@@ -256,7 +256,7 @@
         {
             $metadata       = self::getMetadata();
             $maxCellsPerRow = $this->getMaxCellsPerRow();
-            $content        = '<div class="list-view-items-summary-clone">Result(s)</div>';
+            $content        = $this->renderSummaryCloneContent();
             $content       .= TableUtil::getColGroupContent($this->getColumnCount($metadata['global']));
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)
@@ -283,6 +283,11 @@
             }
             $content .= $this->renderFormBottomPanel();
             return $content;
+        }
+
+        protected function renderSummaryCloneContent()
+        {
+            return '<div class="list-view-items-summary-clone"></div>';
         }
 
         protected function renderViewToolBarContainerForAdvancedSearch($form)
@@ -441,6 +446,11 @@
         protected function getSearchFormId()
         {
             return 'search-form' . $this->gridIdSuffix;
+        }
+
+        protected function getListViewId()
+        {
+            return $this->gridId . $this->gridIdSuffix;
         }
 
         protected function getMaxCellsPerRow()

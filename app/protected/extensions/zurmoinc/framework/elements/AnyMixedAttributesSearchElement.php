@@ -51,7 +51,7 @@
         protected function getHtmlOptions()
         {
             $htmlOptions             = array('class'   => 'input-hint anyMixedAttributes-input',
-                                             'onfocus' => '$(this).removeClass("input-hint"); $(this).val("");',
+                                             'onfocus' => '$(this).select();',
                                              'size'    => 80);
             return array_merge(parent::getHtmlOptions(), $htmlOptions);
         }
