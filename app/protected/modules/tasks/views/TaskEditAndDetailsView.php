@@ -32,11 +32,11 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelLink', 'renderType' => 'Edit'),
-                            array('type' => 'SaveButton', 'renderType' => 'Edit'),
-                            array('type' => 'EditLink', 'renderType' => 'Details'),
-                            array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),
+                            array('type' => 'CancelLink', 'renderType' => 'Edit', 'label' => Yii::t('Default', 'Cancel changes')),
                             array('type' => 'TaskDeleteLink'),
+                            array('type' => 'SaveButton', 'renderType' => 'Edit'),                            
+                            array('type' => 'EditLink', 'renderType' => 'Details'),
+                            array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),                            
                         ),
                     ),
                     'derivedAttributeTypes' => array(

@@ -27,16 +27,17 @@
     class MeetingEditAndDetailsView extends SecuredEditAndDetailsView
     {
         public static function getDefaultMetadata()
-        {
+        {            
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink', 'renderType' => 'Edit'),
+                            array('type'  => 'CancelLink', 'renderType' => 'Edit', 'label' => Yii::t('Default', 'Cancel changes')),
+                            array('type' => 'MeetingDeleteLink'),
                             array('type' => 'SaveButton',  'renderType' => 'Edit'),
                             array('type' => 'EditLink',    'renderType' => 'Details'),
                             array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),
-                            array('type' => 'MeetingDeleteLink'),
+                            
                         ),
                     ),
                     'derivedAttributeTypes' => array(

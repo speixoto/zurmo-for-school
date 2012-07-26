@@ -223,8 +223,6 @@ EOD;
             echo '</label>' . $this->renderMaxSizeContent($this->maxSize)   . "\n";
             echo '</div><div class="clear"></div>'                          . "\n";
             echo '<div class="fileupload-content">'                         . "\n";
-            //echo '<table class="files"><tbody><tr><td colspan="6">'         . "\n";
-            //echo '</td></tr></tbody></table>'                               . "\n";
             echo '<table class="files"><tbody></tbody></table>'             . "\n";
             echo '</div>'                                                   . "\n";
             echo '</div>'                                                   . "\n";
@@ -234,7 +232,7 @@ EOD;
 
         private function makeDownloadRowScriptContent()
         {
-            $deleteLabel = Yii::t('Default', 'Delete');
+            $deleteLabel = Yii::t('Default', '<!--Delete-->');
 $scriptContent = <<<EOD
 <script id="template-download" type="text/x-jquery-tmpl">
     <tr class="template-download{{if error}} ui-state-error{{/if}}">
@@ -260,7 +258,7 @@ EOD;
         private function makeUploadRowScriptContent()
         {
             $startLabel  = Yii::t('Default', 'Start');
-            $cancelLabel = Yii::t('Default', 'Cancel');
+            $cancelLabel = Yii::t('Default', ' Cancel');
 $scriptContent = <<<EOD
 <script id="template-upload" type="text/x-jquery-tmpl">
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">

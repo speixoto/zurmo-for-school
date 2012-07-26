@@ -37,8 +37,11 @@
         protected $attribute;
         protected $form;
         protected $params;
-        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}</td>';
-        public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}</td>';
+        //public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}</td>';
+        //public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}</td>';
+        
+        public $editableTemplate = '<th>{label}</th><td>{content}{error}</td>';
+        public $nonEditableTemplate = '<th>{label}</th><td>{content}</td>';
 
         /**
          * Constructs the element specifying the model and attribute.
@@ -105,7 +108,8 @@
          */
         protected function renderError()
         {
-            return $this->form->error($this->model, $this->attribute);
+            return $this->form->error($this->model, $this->attribute,
+                    array('inputID' => $this->getEditableInputId()));
         }
 
         /**
@@ -328,7 +332,11 @@
 
         protected function resolveInputNamePrefix()
         {
-            $inputIdPrefix = $this->resolveInputPrefix();
+            return static::resolveInputIdPrefixIntoString($this->resolveInputPrefix());
+        }
+
+        public static function resolveInputIdPrefixIntoString($inputIdPrefix)
+        {
             if (is_array($inputIdPrefix))
             {
                 if (count($inputIdPrefix) > 1)
