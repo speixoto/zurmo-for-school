@@ -105,6 +105,10 @@
     display:none;
 }
 
+.strong{
+    font-weight: bold;
+}
+
 /*=For modern browsers */
 .clearfix{
     &:before{
@@ -3137,6 +3141,11 @@ div.wide.form{
             padding-top:3px;
             padding-bottom:3px;
             font-weight:normal !important;
+            .strong{
+                a, span{
+                    font-weight: bold !important;
+                }
+            }
             a{
                 text-indent:0;
                 color: #666;
@@ -3151,12 +3160,7 @@ div.wide.form{
                     background:@themeColor2 !important;
                     color:#fff !important;
                 }
-                strong{
-                    font-weight: bold;
-                    color:@themeColor;
-                }
             }
-            
         }
     }
 }
