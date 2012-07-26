@@ -1978,6 +1978,7 @@ table.configuration-list tr td:last-child a:before {
   background: none;
   border: none;
   vertical-align: middle;
+  cursor: pointer;
 }
 .fileupload-content .ui-icon-trash:after {
   content: "_";
@@ -2027,6 +2028,10 @@ table.configuration-list tr td:last-child a:before {
 .fileupload-content .cancel,
 .fileupload-content .delete {
   text-align: right;
+}
+.fileupload-content .cancel button,
+.fileupload-content .delete button {
+  color: #a7a7a7;
 }
 .fileupload-content .cancel button:hover span,
 .fileupload-content .delete button:hover span {
@@ -7957,6 +7962,12 @@ div.wide.form a {
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
 }
+#ModalView #clear-search-linkmodal {
+  margin-left: 10px;
+}
+#ModalView .view-toolbar-container {
+  margin-top: 15px;
+}
 .search-view-1 {
   margin-top: 15px;
   z-index: 100;
@@ -7980,7 +7991,6 @@ div.wide.form a {
   text-shadow: none;
 }
 .search-view-1 .view-toolbar-container {
-  margin-top: 15px;
   border-top: 1px solid #CCCCCC;
 }
 .search-view-1 > div {
@@ -8077,6 +8087,10 @@ div.wide.form a {
   width: 100%;
   float: left;
 }
+#show-dynamic-search-structure-div-link-search-form {
+  display: block;
+  margin-bottom: 15px;
+}
 #save-search-area {
   width: 50%;
   margin-top: 10px;
@@ -8100,11 +8114,11 @@ div.wide.form a {
   color: #fff;
 }
 #show-dynamic-search-structure-div-search-form input {
-  text-indent: 30px;
+  text-indent: 40px;
 }
 #show-dynamic-search-structure-div-search-form span {
   width: auto;
-  padding: 0 8px;
+  padding: 0 12px;
   font-weight: bold;
 }
 .ui-multiselect-menu {
@@ -9011,6 +9025,7 @@ div.wide.form a {
 #inline-edit-form .view-toolbar-container a {
   float: right;
   clear: both;
+  margin: 0;
 }
 #inline-edit-form .form-toolbar {
   border-top: none;
