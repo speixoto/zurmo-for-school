@@ -5213,6 +5213,9 @@ span.tooltip {
 /*=Variables*/
 /*blue theme*/
 /*=Functions*/
+.strong {
+  font-weight: bold;
+}
 /*=For modern browsers */
 .clearfix {
   zoom: 1;
@@ -9165,6 +9168,10 @@ div.wide.form a {
   padding-bottom: 3px;
   font-weight: normal !important;
 }
+.BreadCrumbView #StickyListMenu ul .strong a,
+.BreadCrumbView #StickyListMenu ul .strong span {
+  font-weight: bold !important;
+}
 .BreadCrumbView #StickyListMenu ul a {
   text-indent: 0;
   color: #666;
@@ -9183,10 +9190,6 @@ div.wide.form a {
 .BreadCrumbView #StickyListMenu ul a:hover {
   background: #7bb730 !important;
   color: #fff !important;
-}
-.BreadCrumbView #StickyListMenu ul a strong {
-  font-weight: bold;
-  color: #262877;
 }
 /*=Temp Addreess Fields*/
 div.overlay-label-field {
