@@ -26,6 +26,16 @@
 
     class Mission extends OwnedSecurableItem implements MashableActivityInterface
     {
+        const STATUS_OPEN      = 1;
+
+        const STATUS_TAKEN     = 2;
+
+        const STATUS_COMPLETED = 3;
+
+        const STATUS_REJECTED  = 4;
+
+        const STATUS_ACCEPTED  = 5;
+
         public static function getMashableActivityRulesType()
         {
             return 'Mission';
@@ -78,14 +88,14 @@
                     'dueDateTime',
                     'latestDateTime',
                     'ownerHasReadLatest',
-                    'rewardDescription'.
+                    'rewardDescription',
                     'status',
                     'takenByUserHasReadLatest',
                 ),
                 'relations' => array(
                     'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
                     'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
-                    'takenByUser'              => array(RedBeanModel::HAS_ONE, 'User'),
+                    'takenByUser'              => array(RedBeanModel::HAS_ONE,   'User'),
                 ),
                 'rules' => array(
                     array('description',              'required'),
@@ -134,7 +144,7 @@
 
         public static function getGamificationRulesType()
         {
-            return 'MissionGamification';
+          //  return 'MissionGamification';
         }
 
         /**

@@ -40,10 +40,10 @@
         {
             return Yii::t('Default', '<h2>"Make your life a mission - not an intermission."' .
                                      '</h2><i>- Arnold Glasgow</i></i><div class="large-icon"></div><p>' .
-                                     'Start a conversation with someone "wise" in your organization about a record ' .
-                                     'in the CRM or perhaps something unrelated.  When you are conversing within the ' .
-                                     'CRM, it is better than "ten" replies in email.' .
-                                     'customer we interact with."</p>');
+                                     'Create a Mission in the CRM for something that needs to get done. ' .
+                                     'Could be getting lunch for the team at the local taco stand or completing ' .
+                                     'a powerpoint presentation for tomorrow\'s meeting. Users can select from ' .
+                                     'available Missions and receive rewards for completion.</p>');
         }
     }
 ?>

@@ -110,7 +110,8 @@
         public function actionCreate()
         {
             $mission         = new Mission();
-            $mission->status = Mission::STATUS_NEW;
+            $mission->status = Mission::STATUS_OPEN;
+            $mission->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE);
             $editView = new MissionEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($mission),
                                                  Yii::t('Default', 'Create Mission'));
@@ -154,6 +155,35 @@
                                                        $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);
             echo $view->render();
+        }
+
+        public function ajaxChangeStatus($status, $id)
+        {
+            $mission         = Mission::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($mission);
+            if($status == Mission::STATUS_TAKEN)
+            {
+                if($mission->takenByUser->id > 0)
+                {
+                    throw new NotSupportedException();
+                }
+                $mission->takenByUser = Yii::app()->user->userModel;
+            }
+
+            $mission->status = $status;
+            $saved           = $mission->save();
+            if(!$saved)
+            {
+                throw new NotSupportedException();
+            }
+            $statusText        = MissionStatusElement::renderStatusTextContent($mission);
+            $statusAction      = MissionStatusElement::renderStatusActionContent($mission, $statusChangeDivId);
+            $content = $statusText;
+            if($statusAction != null)
+            {
+                $content . ' ' . $statusAction;
+            }
+            echo $content;
         }
     }
 ?>

@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MissionLatestListViewColumnAdapter extends AddressListViewColumnAdapter
+    class MissionStatusListViewColumnAdapter extends TextListViewColumnAdapter
     {
         public function renderGridViewData()
         {
@@ -32,8 +32,8 @@
                 'name'        => 'description',
                 'header'	  => false,
                 'type'        => 'raw',
-                'value'       => 'MissionsUtil::renderDescriptionAndLatestForDisplayView($data)',
-                'htmlOptions' => array('style' => 'width:50%;'),
+                'value'       => 'MissionStatusElement::renderStatusTextAndActionArea($data);',
+                'htmlOptions' => array('style' => 'width:30%;'),
             );
         }
     }

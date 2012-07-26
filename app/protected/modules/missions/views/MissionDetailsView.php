@@ -36,14 +36,76 @@
                             array('type' => 'MissionDeleteLink'),
                         ),
                     ),
+                    'derivedAttributeTypes' => array(
+                        'MissionStatus',
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'latestDateTime',
+                        'ownerHasReadLatest',
+                        'status',
+                        'takenByUserHasReadLatest',
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'status', 'type' => 'MissionStatus'),
+                                            ),
+                                        ),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                            ),
+                                        ),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'takenByUser', 'type' => 'User'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'description', 'type' => 'TextArea'),
+                                            ),
+                                        ),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'rewardDescription', 'type' => 'TextArea'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'Files'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             );
             return $metadata;
-        }
-
-        protected function renderFormLayout($form = null)
-        {
-            //override since the details are done @see renderMissionContent
         }
 
         protected function renderTitleContent()
@@ -61,6 +123,7 @@
 
         protected function renderMissionContent()
         {
+            /**
             $content  = '<div class="comment model-details-summary">';
             $content .= '<span class="comment-details"><strong>'.
                             DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
@@ -80,7 +143,8 @@
             $element->nonEditableTemplate = '<div>{content}</div>';
             $content .= $element->render();
             $content .= '</div>';
-            return Chtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);
+            **/
+           // return Chtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);
         }
 
         protected function renderMissionCommentsContent()

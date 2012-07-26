@@ -48,6 +48,8 @@
                 'global' => array(
                     'derivedAttributeTypes' => array(
                         'MissionLatest',
+                        'MissionLatestDateTime',
+                        'MissionStatus'
                     ),
                     'panels' => array(
                         array(
@@ -66,6 +68,15 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'latestDateTime', 'type' => 'MissionLatestDateTime'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'latestDateTime', 'type' => 'MissionStatus'),
                                             ),
                                         ),
                                     )
