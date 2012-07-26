@@ -40,7 +40,7 @@
 
         public function actionIndex()
         {
-            $this->actionList(MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_OPEN);
+            $this->actionList(MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_AVAILABLE);
         }
 
         public function actionList($type = null)
@@ -50,15 +50,20 @@
             $mission          = new Mission(false);
             if ($type == null)
             {
-                $type = MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;
+                $type = MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_AVAILABLE;
             }
             if ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED)
             {
                 $activeActionElementType = 'MissionsCreatedLink';
             }
-            elseif ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_OPEN)
+            elseif ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_AVAILABLE)
             {
-                $activeActionElementType = 'MissionsOpenLink';
+                $activeActionElementType = 'MissionsAvailableLink';
+            }
+            elseif ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
+            {
+
+                $activeActionElementType = 'MissionsMineTakenButNotAcceptedLink';
             }
             else
             {
@@ -72,7 +77,7 @@
                 $type
             );
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter,
+                $metadataAdapter->getAdaptedMetadata(),
                 'Mission',
                 'RedBeanModelDataProvider',
                 'latestDateTime',
@@ -110,8 +115,12 @@
         public function actionCreate()
         {
             $mission         = new Mission();
-            $mission->status = Mission::STATUS_OPEN;
-            $mission->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE);
+            $mission->status = Mission::STATUS_AVAILABLE;
+            //Set everyone with read/write access on save
+            if(isset($_POST['Mission']))
+            {
+                $_POST['Mission']['explicitReadWriteModelPermissions']['type'] = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
+            }
             $editView = new MissionEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($mission),
                                                  Yii::t('Default', 'Create Mission'));
@@ -157,32 +166,47 @@
             echo $view->render();
         }
 
-        public function ajaxChangeStatus($status, $id)
+        public function actionAjaxChangeStatus($status, $id)
         {
+            $content         = null;
+            $save            = true;
             $mission         = Mission::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($mission);
             if($status == Mission::STATUS_TAKEN)
             {
                 if($mission->takenByUser->id > 0)
                 {
-                    throw new NotSupportedException();
+                    $save = false;
                 }
-                $mission->takenByUser = Yii::app()->user->userModel;
+                else
+                {
+                    $mission->takenByUser = Yii::app()->user->userModel;
+                }
             }
 
-            $mission->status = $status;
-            $saved           = $mission->save();
-            if(!$saved)
+            if($save)
             {
-                throw new NotSupportedException();
+                $mission->status = $status;
+                $saved           = $mission->save();
+                if(!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+                $statusText        = MissionStatusElement::renderStatusTextContent($mission);
+                $statusAction      = MissionStatusElement::renderStatusActionContent($mission, MissionStatusElement::getStatusChangeDivId($mission->id));
+                $content          .= $statusText;
+                if($statusAction != null)
+                {
+                    $content .= ' ' . $statusAction;
+                }
             }
-            $statusText        = MissionStatusElement::renderStatusTextContent($mission);
-            $statusAction      = MissionStatusElement::renderStatusActionContent($mission, $statusChangeDivId);
-            $content = $statusText;
-            if($statusAction != null)
+            else
             {
-                $content . ' ' . $statusAction;
+                $content .= '<div>' . Yii::t('Default', 'This mission is already taken') . '</div>';
             }
+            $content = ZurmoHtml::tag('div', array('id' => MissionStatusElement::getStatusChangeDivId($mission->id)), $content);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
             echo $content;
         }
     }

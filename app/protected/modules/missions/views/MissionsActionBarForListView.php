@@ -40,8 +40,12 @@
                                 'htmlOptions'     => array( 'class' => 'icon-missions-created' )
                             ),
                             array(
-                                'type'            => 'MissionsOpenLink',
-                                'htmlOptions'     => array( 'class' => 'icon-missions-open' )
+                                'type'            => 'MissionsAvailableLink',
+                                'htmlOptions'     => array( 'class' => 'icon-missions-available' )
+                            ),
+                            array(
+                                'type'            => 'MissionsMineTakenButNotAcceptedLink',
+                                'htmlOptions'     => array( 'class' => 'icon-missions-taken-but-not-accepted' )
                             ),
                         ),
                     ),

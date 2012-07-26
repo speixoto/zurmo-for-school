@@ -40,7 +40,13 @@
          * Filter by missions that are not taken
          * @var integer
          */
-        const LIST_TYPE_OPEN = 2;
+        const LIST_TYPE_AVAILABLE = 2;
+
+        /**
+         * Filter by missions that are taken by the current user but not accepted yet.
+         * @var integer
+         */
+        const LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED = 3;
 
         protected $type;
         /**
@@ -48,7 +54,7 @@
          */
         public function __construct($model, $userId, $metadata, $type)
         {
-            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_OPEN');
+            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_AVAILABLE || self::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED');
             parent::__construct($model, $userId, $metadata);
             $this->type = $type;
         }
@@ -74,11 +80,28 @@
                 );
                 $structure .= $startingCount;
             }
+            elseif($this->type == self::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
+            {
+                $adaptedMetadata['clauses'][$startingCount] = array(
+                    'attributeName' => 'takenByUser',
+                    'operatorType'  => 'equals',
+                    'value'         => Yii::app()->user->userModel->id
+                );
+                $adaptedMetadata['clauses'][$startingCount + 1] = array(
+                    'attributeName' => 'status',
+                    'operatorType'  => 'oneOf',
+                    'value'         => array(Mission::STATUS_TAKEN,
+                                             Mission::STATUS_COMPLETED,
+                                             Mission::STATUS_REJECTED),
+                );
+                $structure .= $startingCount . ' and ' . ($startingCount + 1);
+            }
             else
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'takenByUser',
                     'operatorType'  => 'isNull',
+                    'value'         => null
                 );
                 $structure .= $startingCount;
             }

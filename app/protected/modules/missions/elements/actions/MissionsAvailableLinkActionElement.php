@@ -24,18 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MissionsOpenLinkActionElement extends EditLinkActionElement
+    class MissionsAvailableLinkActionElement extends EditLinkActionElement
     {
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Open');
+            return Yii::t('Default', 'Available');
         }
 
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl(
                 $this->moduleId . '/' . $this->controllerId . '/list/',
-                array('type' => MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_OPEN));
+                array('type' => MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_AVAILABLE));
         }
     }
 ?>

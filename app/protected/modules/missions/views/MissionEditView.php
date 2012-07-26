@@ -59,7 +59,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'reward', 'type' => 'TextArea'),
                                             ),
                                         ),
                                     )
@@ -68,7 +68,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'rewardDescription', 'type' => 'TextArea'),
+                                                array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )

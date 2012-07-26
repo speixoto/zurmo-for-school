@@ -26,7 +26,7 @@
 
     class Mission extends OwnedSecurableItem implements MashableActivityInterface
     {
-        const STATUS_OPEN      = 1;
+        const STATUS_AVAILABLE = 1;
 
         const STATUS_TAKEN     = 2;
 
@@ -88,7 +88,7 @@
                     'dueDateTime',
                     'latestDateTime',
                     'ownerHasReadLatest',
-                    'rewardDescription',
+                    'reward',
                     'status',
                     'takenByUserHasReadLatest',
                 ),
@@ -107,7 +107,7 @@
                     array('status',           		  'required'),
                     array('status',          		  'type',    'type' => 'integer'),
                     array('ownerHasReadLatest',       'boolean'),
-                    array('rewardDescription',  	  'type', 'type' => 'string'),
+                    array('reward',  	  'type', 'type' => 'string'),
                     array('takenByUserHasReadLatest', 'boolean'),
 
                 ),
@@ -116,7 +116,7 @@
                     'dueDateTime'       => 'DateTime',
                     'files'             => 'Files',
                     'latestDateTime'    => 'DateTime',
-                    'rewardDescription' => 'TextArea',
+                    'reward' => 'TextArea',
                 ),
                 'defaultSortAttribute' => 'subject',
                 'noAudit' => array(
@@ -124,7 +124,7 @@
                     'dueDateTime',
                     'latestDateTime',
                     'ownerHasReadLatest',
-                    'rewardDescription',
+                    'reward',
                     'status',
                     'takenByUserHasReadLatest'
                 ),

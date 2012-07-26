@@ -52,20 +52,24 @@
 
         public static function renderStatusTextAndActionArea(Mission $mission)
         {
-            $statusChangeDivId = 'MissionStatusChangeArea';
             $statusText        = self::renderStatusTextContent($mission);
-            $statusAction      = self::renderStatusActionContent($mission, $statusChangeDivId);
+            $statusAction      = self::renderStatusActionContent($mission, self::getStatusChangeDivId($mission->id));
             $content = $statusText;
             if($statusAction != null)
             {
-                $content . ' ' . $statusAction;
+                $content .= ' ' . $statusAction;
             }
-            return ZurmoHtml::tag('div', array('id' => $statusChangeDivId), $content);
+            return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($mission->id)), $content);
+        }
+
+        public static function getStatusChangeDivId($missionId)
+        {
+            return  'MissionStatusChangeArea-' . $missionId;
         }
 
         public static function renderStatusTextContent(Mission $mission)
         {
-            if($mission->status == Mission::STATUS_OPEN)
+            if($mission->status == Mission::STATUS_AVAILABLE)
             {
                 return Yii::t('Default', 'Available');
             }
@@ -93,8 +97,8 @@
 
         public static function renderStatusActionContent(Mission $mission, $updateDivId)
         {
-            assert('is_string($updateDivId');
-            if($mission->status == Mission::STATUS_OPEN &&
+            assert('is_string($updateDivId)');
+            if($mission->status == Mission::STATUS_AVAILABLE &&
                !$mission->owner->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_TAKEN, $mission->id,
@@ -131,11 +135,17 @@
             assert('is_string($updateDivId');
             $url     =   Yii::app()->createUrl('missions/default/ajaxChangeStatus',
                                                array('status' => $newStatus, 'id' => $missionId));
-            return       ZurmoHtml::ajaxLink($label, $url,
-                         array('type' => 'GET',
-                               'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'),
-                         array('class'      => 'mission-change-status-link',
-                                'namespace' => 'update'));
+            $aContent                = CHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent               .= CHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent               .= CHtml::tag('span', array('class' => 'z-label'), $label);
+            return       ZurmoHtml::ajaxLink($aContent, $url,
+                         array('type'       => 'GET',
+                               'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'
+                             ),
+                         array('class'      => 'mission-change-status-link attachLoading z-button',
+                                'namespace' => 'update',
+                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                                        attachLoadingSpinner($(this).attr("id"));'));
         }
 
         protected function renderLabel()

@@ -24,16 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MissionLatestDateTimeListViewColumnAdapter extends TextListViewColumnAdapter
+    class MissionsMineTakenButNotAcceptedLinkActionElement extends EditLinkActionElement
     {
-        public function renderGridViewData()
+        protected function getDefaultLabel()
         {
-            return array(
-                'name'   => $this->attribute,
-                'header' => false,
-                'value'  => '"<span class=\'list-row-model-date\'>" . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($data->' . $this->attribute . ') . "</span>"',
-                'type'   => 'raw',
-            );
+            return Yii::t('Default', 'My Missions');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl(
+                $this->moduleId . '/' . $this->controllerId . '/list/',
+                array('type' => MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED));
         }
     }
 ?>

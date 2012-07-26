@@ -56,9 +56,13 @@
                                                 array('attributeName' => 'status', 'type' => 'MissionStatus'),
                                             ),
                                         ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'description', 'type' => 'TextArea'),
                                             ),
                                         ),
                                     )
@@ -67,9 +71,13 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                                array('attributeName' => 'reward', 'type' => 'TextArea'),
                                             ),
                                         ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'takenByUser', 'type' => 'User'),
@@ -81,12 +89,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
+                                                array('attributeName' => 'owner', 'type' => 'User'),
                                             ),
                                         ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'rewardDescription', 'type' => 'TextArea'),
+                                                array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )
@@ -115,36 +127,9 @@
 
         protected function renderAfterFormLayoutForDetailsContent()
         {
-            $content  = $this->renderMissionContent();
-            $content .= $this->renderMissionCommentsContent();
+            $content  = $this->renderMissionCommentsContent();
             $content .= $this->renderMissionCreateCommentContent();
             return $content;
-        }
-
-        protected function renderMissionContent()
-        {
-            /**
-            $content  = '<div class="comment model-details-summary">';
-            $content .= '<span class="comment-details"><strong>'.
-                            DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                    $this->model->createdDateTime, 'long', null) . '</strong> ';
-            $content .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
-                                    array('{ownerStringContent}' => strval($this->model->createdByUser)));
-            $content .= '</span>';
-            $element  = new TextAreaElement($this->model, 'description');
-            $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
-            $content .= $element->render();
-            $content .= '</span>';
-            $element  = new TextAreaElement($this->model, 'rewardDescription');
-            $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
-            $content .= $element->render();
-            $content .= 'todo show the due date, but with label or not?????????? hmm. same with reward description above';
-            $element  = new FilesElement($this->model, 'null');
-            $element->nonEditableTemplate = '<div>{content}</div>';
-            $content .= $element->render();
-            $content .= '</div>';
-            **/
-           // return Chtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);
         }
 
         protected function renderMissionCommentsContent()
