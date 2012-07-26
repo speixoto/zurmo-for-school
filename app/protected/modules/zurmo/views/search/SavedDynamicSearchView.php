@@ -131,24 +131,11 @@
 
         protected function renderAfterAddExtraRowContent($form)
         {
-            $content  = '<strong class="mp-divider"> · </strong>' . CHtml::link(Yii::t('Default', 'Save this search'), '#', array('id' => 'save-as-advanced-search'));
+            $content  = '<strong class="mp-divider"> · </strong>' . CHtml::link(Yii::t('Default', 'Save search'), '#', array('id' => 'save-as-advanced-search'));
             $content  = CHtml::tag('div', array('class' => 'search-save-container'), $content);
             $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
             $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);
             $content .= '</div>';
-            return $content;
-        }
-
-        protected function renderViewToolBarLinksForAdvancedSearch($form)
-        {
-            $params = array();
-            $params['label']       = Yii::t('Default', 'Search');
-            $params['htmlOptions'] = array('id' => 'search-advanced-search');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content  = $searchElement->render();
-            $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
-
-
             return $content;
         }
 

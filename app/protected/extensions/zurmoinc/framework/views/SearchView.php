@@ -296,12 +296,12 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $content  = CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
-            $params['htmlOptions'] = array('id' => 'search-advanced-search');
+            $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content .= $searchElement->render();
+            $content  = $searchElement->render();
+            $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
             return $content;
         }
 
