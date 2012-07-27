@@ -136,16 +136,7 @@
                         //Owner is always added first.
                         if (get_class($user) == 'User' && $user->id != $this->model->owner->id)
                         {
-                            //The current user can only remove themselves from the detailview and clicking on the special
-                            //remove button.
-                            if(Yii::app()->user->userModel->id == $user->id)
-                            {
-                                $readOnly = true;
-                            }
-                            else
-                            {
-                                $readOnly = false;
-                            }
+                            $readOnly = false;
                             $existingPeople[] = array('id'       => $user->getClassId('Item'),
                                                       'name'     => strval($user),
                                                       'readonly' => $readOnly);

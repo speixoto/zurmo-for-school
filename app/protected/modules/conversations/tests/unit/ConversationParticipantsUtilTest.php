@@ -76,7 +76,7 @@
 
             //test no existing participants. Do not add owner of conversation
             $postData            = array();
-            $postData['itemIds'] = $super->id;
+            $postData['itemIds'] = $super->getClassId('Item');
             ConversationParticipantsUtil::resolveConversationHasManyParticipantsFromPost(
                                             $conversation, $postData, $explicitReadWriteModelPermissions);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
