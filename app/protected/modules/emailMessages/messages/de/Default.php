@@ -93,8 +93,8 @@
             => 'HTML-Inhalt',
         'Inbox'
             => 'Posteingang',
-        'Invalid email address.'
-            => 'Ungültige E-Mail-Adresse.',
+        'Invalid email address'
+            => 'Ungültige E-Mail-Adresse',
         'Manage Email Configuration'
             => 'E-Mail Konfiguration',
         'Message failed to send'
@@ -113,8 +113,8 @@
             => 'Postausgang Fehler ',
         'Person'
             => 'Name',
-        'Person or Account'
-            => 'Person or Account', // Same Word Translated
+        'Person Or Account'
+            => 'Person Or Account', // Same Word Translated
         'Port'
             => 'Port', // Same Word Translated
         'Process Inbound Email Job'

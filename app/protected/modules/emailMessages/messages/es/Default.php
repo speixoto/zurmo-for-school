@@ -94,8 +94,8 @@
             => 'Contenido HTML',
         'Inbox'
             => 'Buzón de entrada',
-        'Invalid email address.'
-            => 'Dirección de email no válida.',
+        'Invalid email address'
+            => 'Dirección de email no válida',
         'Manage Email Configuration'
             => 'Configuración del email',
         'Message failed to send'
@@ -114,8 +114,8 @@
             => 'Error de buzón de salida',
         'Person'
             => 'Nombre',
-        'Person or Account'
-            => 'Person or Account', // Same Word Translated
+        'Person Or Account'
+            => 'Person Or Account', // Same Word Translated
         'Port'
             => 'Puerto',
         'Process Inbound Email Job'
