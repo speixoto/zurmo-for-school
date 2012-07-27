@@ -50,7 +50,7 @@
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     ),
-                'hintText' => Yii::t('Default', 'Type a User\'s name '),
+                'hintText' => Yii::t('Default', 'Type a User\'s name'),
                 'onAdd'    => $this->getOnAddContent(),
                 'onDelete' => $this->getOnDeleteContent(),
             ));

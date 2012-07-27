@@ -29,6 +29,43 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-
+        'Access Conversations Tab'
+            => 'Accesso ai Conversazioni',
+        'Add Comment'
+            => 'Aggiungi commento',
+        'Conversation'
+            => 'Conversazione',
+        'Conversation Latest'
+            => 'Ultime conversazione',
+        'Conversations'
+            => 'Conversazioni',
+        'Create Conversation'
+            => 'Nuova conversazione',
+        'Create Conversations'
+            => 'Crea conversazioni',
+        'Created'
+            => 'Creati',
+        'created by {ownerStringContent}'
+            => 'crea per {ownerStringContent}',
+        'Delete Conversations'
+            => 'Elimina Conversazioni',
+        'Has Read Latest'
+            => 'Has Read Latest', // Same Word Translated
+        'Participants'
+            => 'Partecipanti',
+        'Participants updated successfully'
+            => 'Partecipanti aggiornato con successo',
+        'Participating In'
+            => 'Le mie conversazioni',
+        'Person'
+            => 'Person', // Same Word Translated
+        'Type a User\'s name'
+            => 'Inserisce il nome utente',
+        'You have been invited to participate in a conversation'
+            => 'Sei stato invitato a partecipare a una conversazione',
+        '{n} Conversation created|{n} Conversations created'
+            => '{n} Conversazione creata|{n} Conversazioni creati',
+        '{ownerName} would like you to join a conversation "{conversationSubject}".'
+            => '{ownerName} vorrei farvi partecipare a la conversazione "{conversationSubject}".',
     );
 ?>
