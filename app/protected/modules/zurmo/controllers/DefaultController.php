@@ -142,10 +142,30 @@
                             'autoCompleteListPageSize', get_class($this->getModule()));
             $autoCompleteResults = ModelAutoCompleteUtil::
                                    getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
-                                                                       $scopeData);
+                                                                       $scopeData);            
+            $autoCompleteResults = array_merge($autoCompleteResults, array(array('href'      => Yii::app()->createUrl('/zurmo/default/GlobalSearch',
+                                                                                                                      array('term' => $term)),
+                                                    'label'     => 'All results',
+                                                    'iconClass' => 'autocomplete-icon-AllResults')));
             echo CJSON::encode($autoCompleteResults);
         }
 
+        /*
+         * Given a string return all result from the global search in a view
+         */
+        public function actionGlobalSearch($term)
+        {                                                                        
+            $pageSize  = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'listPageSize', get_class($this->getModule()));                                                  
+            $autoCompleteResults = ModelAutoCompleteUtil::
+                                   getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel);            
+            $view = new GlobalSearchPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, new GlobalSearchListView()));
+            print_r($autoCompleteResults);
+            echo $view->render();                          
+        }
+        
+        
         /**
          * Given a name of a customFieldData object and a term to search on return a JSON encoded
          * array of autocomplete search results.
