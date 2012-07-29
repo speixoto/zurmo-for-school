@@ -132,6 +132,7 @@
         public function actionEdit($id, $redirectUrl = null)
         {
             $mission  = Mission::getById(intval($id));
+            MissionAccessUtil::resolveCanCurrentUserWriteOrDeleteMission($mission);
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($mission);
             $editView = new MissionEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($mission),

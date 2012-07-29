@@ -168,5 +168,24 @@
         {
             return Yii::app()->createUrl('/missions/default/inlineCreateComment');
         }
+
+        /**
+         * Override to handle the edit link, since it is only editable
+         */
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            assert('$element instanceof ActionElement');
+            assert('is_array($elementInformation)');
+            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
+            {
+                return false;
+            }
+            if($elementInformation['type'] == 'EditLink' && $this->model->owner != Yii::app()->user->userModel)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 ?>
