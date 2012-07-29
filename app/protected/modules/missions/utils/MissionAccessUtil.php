@@ -32,7 +32,7 @@
          */
         public static function resolveCanCurrentUserWriteOrDeleteMission(Mission $mission)
         {
-            if (Yii::app()->user->userModel->id == $mission->owner)
+            if (Yii::app()->user->userModel == $mission->owner)
             {
                 return;
             }

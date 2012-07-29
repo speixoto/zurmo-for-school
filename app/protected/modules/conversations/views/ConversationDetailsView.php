@@ -46,9 +46,9 @@
             //override since the details are done @see renderConversationContent
         }
 
-        protected function renderTitleContent()
+        public function getTitle()
         {
-            return '<h1>' . strval($this->model) . "</h1>";
+            return strval($this->model);
         }
 
         protected function renderRightSideContent($form = null)

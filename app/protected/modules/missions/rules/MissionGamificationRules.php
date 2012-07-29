@@ -25,30 +25,15 @@
      ********************************************************************************/
 
     /**
-     * Helper class for constructing the admin view used by the classes that extend the ZurmoPageView.
+     * Defines specific rules for mission gamification.
      */
-    class ZurmoDefaultAdminViewUtil extends ZurmoDefaultViewUtil
+    class MissionGamificationRules extends GamificationRules
     {
-        protected static $showRecentlyViewed = false;
+        protected $scoreOnUpdate = false;
 
-        public static function makeViewWithBreadcrumbsForCurrentUser(CController $controller,
-                                                                     View $containedView,
-                                                                     $breadcrumbLinks,
-                                                                     $breadcrumbViewClassName)
+        public static function getPointTypesAndValuesForCreateModel()
         {
-            return parent::makeViewWithBreadcrumbsForCurrentUser($controller,
-                                                                 $containedView,
-                                                                 $breadcrumbLinks,
-                                                                 $breadcrumbViewClassName,
-                                                                 array( 'AdministrativeArea' ));
-        }
-
-        protected static function makeMenuView($controller = null)
-        {
-            assert('$controller == null || $controller instanceof CController');
-            $items = MenuUtil::resolveByCacheAndGetVisibleAndOrderedAdminTabMenuByCurrentUser();
-            static::resolveForActiveMenuItem($items, $controller);
-            return new MenuView($items);
+            return array(GamePoint::TYPE_COMMUNICATION => 10);
         }
     }
 ?>

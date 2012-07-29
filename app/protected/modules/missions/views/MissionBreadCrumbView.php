@@ -25,30 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Helper class for constructing the admin view used by the classes that extend the ZurmoPageView.
+     * View that renders missions module breadcrumb content
      */
-    class ZurmoDefaultAdminViewUtil extends ZurmoDefaultViewUtil
+    class MissionBreadCrumbView extends BreadCrumbView
     {
-        protected static $showRecentlyViewed = false;
-
-        public static function makeViewWithBreadcrumbsForCurrentUser(CController $controller,
-                                                                     View $containedView,
-                                                                     $breadcrumbLinks,
-                                                                     $breadcrumbViewClassName)
+        protected function getHomeLinkLabel()
         {
-            return parent::makeViewWithBreadcrumbsForCurrentUser($controller,
-                                                                 $containedView,
-                                                                 $breadcrumbLinks,
-                                                                 $breadcrumbViewClassName,
-                                                                 array( 'AdministrativeArea' ));
-        }
-
-        protected static function makeMenuView($controller = null)
-        {
-            assert('$controller == null || $controller instanceof CController');
-            $items = MenuUtil::resolveByCacheAndGetVisibleAndOrderedAdminTabMenuByCurrentUser();
-            static::resolveForActiveMenuItem($items, $controller);
-            return new MenuView($items);
+            return Yii::t('Default', 'Missions');
         }
     }
 ?>

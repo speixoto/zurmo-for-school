@@ -120,9 +120,9 @@
             return $metadata;
         }
 
-        protected function renderTitleContent()
+        public function getTitle()
         {
-            return '<h1>' . strval($this->model) . "</h1>";
+            return strval($this->model);
         }
 
         protected function renderAfterFormLayoutForDetailsContent()

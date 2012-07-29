@@ -144,7 +144,7 @@
 
         public static function getGamificationRulesType()
         {
-          //  return 'MissionGamification';
+            return 'MissionGamification';
         }
 
         /**

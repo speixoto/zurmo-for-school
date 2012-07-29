@@ -78,10 +78,12 @@
 
         protected function renderTitleContent()
         {
-            if ($this->title != null)
-            {
-                return '<h1>' . $this->title . "</h1>";
-            }
+            return StringUtil::renderFluidTitleContent($this->getTitle());
+        }
+
+        public function getTitle()
+        {
+            return $this->title;
         }
 
         protected function renderRightSideContent($form = null)

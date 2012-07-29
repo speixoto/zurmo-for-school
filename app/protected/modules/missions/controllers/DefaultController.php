@@ -107,8 +107,10 @@
                                       array(strval($mission), 'MissionsModule'), $mission);
             MissionsUtil::markUserHasReadLatest($mission, Yii::app()->user->userModel);
             $detailsView              = new MissionDetailsView($this->getId(), $this->getModule()->getId(), $mission);
-            $view                     = new MissionsPageView(ZurmoDefaultViewUtil::
-                                                makeStandardViewForCurrentUser($this, $detailsView));
+            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($mission), 25));
+            $view     = new MissionsPageView(ZurmoDefaultViewUtil::
+                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadcrumbLinks,
+                                                                                    'MissionBreadCrumbView'));
             echo $view->render();
         }
 
@@ -124,8 +126,10 @@
             $editView = new MissionEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($mission),
                                                  Yii::t('Default', 'Create Mission'));
+            $breadcrumbLinks = array(Yii::t('Default', 'Create'));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
-                                                  makeStandardViewForCurrentUser($this, $editView));
+                                             makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
+                                                                                    'MissionBreadCrumbView'));
             echo $view->render();
         }
 
@@ -137,8 +141,11 @@
             $editView = new MissionEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($mission),
                                                  strval($mission));
+            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($mission), 25) =>
+                                     array('default/details',  'id' => $id), Yii::t('Default', 'Edit'));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
-                                                  makeStandardViewForCurrentUser($this, $editView));
+                                             makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
+                                                                                    'MissionBreadCrumbView'));
             echo $view->render();
         }
 

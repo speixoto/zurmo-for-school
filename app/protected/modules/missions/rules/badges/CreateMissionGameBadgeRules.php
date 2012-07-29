@@ -25,30 +25,40 @@
      ********************************************************************************/
 
     /**
-     * Helper class for constructing the admin view used by the classes that extend the ZurmoPageView.
+     * Class for defining the badge associated with creating a new mission
      */
-    class ZurmoDefaultAdminViewUtil extends ZurmoDefaultViewUtil
+    class CreateMissionGameBadgeRules extends GameBadgeRules
     {
-        protected static $showRecentlyViewed = false;
+        public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 5,
+            3  => 10,
+            4  => 25,
+            5  => 50,
+            6  => 75,
+            7  => 100,
+            8  => 125,
+            9  => 150,
+            10 => 175,
+            11 => 200,
+            12 => 225,
+            13 => 250
+        );
 
-        public static function makeViewWithBreadcrumbsForCurrentUser(CController $controller,
-                                                                     View $containedView,
-                                                                     $breadcrumbLinks,
-                                                                     $breadcrumbViewClassName)
+        public static function getPassiveDisplayLabel($value)
         {
-            return parent::makeViewWithBreadcrumbsForCurrentUser($controller,
-                                                                 $containedView,
-                                                                 $breadcrumbLinks,
-                                                                 $breadcrumbViewClassName,
-                                                                 array( 'AdministrativeArea' ));
+            return Yii::t('Default', '{n} Mission created|{n} Missions created', array($value));
         }
 
-        protected static function makeMenuView($controller = null)
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            assert('$controller == null || $controller instanceof CController');
-            $items = MenuUtil::resolveByCacheAndGetVisibleAndOrderedAdminTabMenuByCurrentUser();
-            static::resolveForActiveMenuItem($items, $controller);
-            return new MenuView($items);
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['CreateMission']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateMission']->value);
+            }
+            return 0;
         }
     }
 ?>
