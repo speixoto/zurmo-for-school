@@ -54,7 +54,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Change Dashboard');
+            return Yii::t('Default', 'Switch Dashboard');
         }
 
         protected function getDefaultRoute()
