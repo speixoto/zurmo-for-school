@@ -24,12 +24,39 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GlobalSearchListView extends View
+    class GlobalSearchAndListView extends View
     { 
+        
+        private $collection;
+        
+        public function __construct($id, $id02, $collection) {
+            //$this->collection = $collection;
+        }
+        
         protected function renderContent()
         {
-            $content = "adsas";
+            $content = '';
+            //$content = $this->renderSearchView();
+            $content .= $this->renderListViews();                        
             return $content;
+        }
+        
+        /*
+         * Render a group of lists that contais the search result from GlobalList
+         *        
+         */
+        protected function renderListViews()
+        {
+            //TODO: Columns = count of $this->getCollectionCount()->getViews...            
+            $gridView = new GridView(2, 1);            
+            $gridView->setView(new AboutView, 0, 0);
+            $gridView->setView(new AboutView, 1, 0);
+            //TODO: em baixo
+            //foreach($this->getCollection()->getViews() as $view)
+            //{
+            //    $gridView->setView($view.....
+            //}
+            return $gridView->render();
         }
     }
 ?>

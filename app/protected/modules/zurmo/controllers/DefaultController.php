@@ -143,26 +143,36 @@
             $autoCompleteResults = ModelAutoCompleteUtil::
                                    getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
                                                                        $scopeData);            
-            $autoCompleteResults = array_merge($autoCompleteResults, array(array('href'      => Yii::app()->createUrl('/zurmo/default/GlobalSearch',
-                                                                                                                      array('term' => $term)),
+            $autoCompleteResults = array_merge($autoCompleteResults, array(array('href'      => Yii::app()->createUrl('/zurmo/default/GlobalList',
+                                                                                                                      $_GET),
                                                     'label'     => 'All results',
                                                     'iconClass' => 'autocomplete-icon-AllResults')));
-            echo CJSON::encode($autoCompleteResults);
+            echo CJSON::encode($autoCompleteResults);            
         }
 
         /*
          * Given a string return all result from the global search in a view
          */
-        public function actionGlobalSearch($term)
-        {                                                                        
+        public function actionGlobalList()
+        {                                                                                                                  
             $pageSize  = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'listPageSize', get_class($this->getModule()));                                                  
+                            'listPageSize', get_class($this->getModule()));                                                                          
+            $scopeData = $_GET['globalSearchScope'];
+            $scopeData = null;
+            $term = $_GET['term'];            
+            $collection = new GlobalSearchResultsDataCollection($term, $scopeData, Yii::app()->user->userModel);  
             $autoCompleteResults = ModelAutoCompleteUtil::
-                                   getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel);            
+                                   getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
+                                                                       null);             
+            $listView = new GlobalSearchAndListView(
+                            $this->getId(),
+                            $this->getModule()->getId(),                            
+                            $collection
+                        );                               
+            print_r($collection->render());                     
             $view = new GlobalSearchPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, new GlobalSearchListView()));
-            print_r($autoCompleteResults);
-            echo $view->render();                          
+                                         makeStandardViewForCurrentUser($this, $listView));
+            echo $view->render();                  
         }
         
         
