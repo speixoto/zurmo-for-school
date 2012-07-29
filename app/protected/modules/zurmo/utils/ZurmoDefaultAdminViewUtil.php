@@ -34,13 +34,14 @@
         public static function makeViewWithBreadcrumbsForCurrentUser(CController $controller,
                                                                      View $containedView,
                                                                      $breadcrumbLinks,
-                                                                     $breadcrumbViewClassName)
+                                                                     $breadcrumbViewClassName,
+                                                                     $cssClasses = array('AdministrativeArea'))
         {
             return parent::makeViewWithBreadcrumbsForCurrentUser($controller,
                                                                  $containedView,
                                                                  $breadcrumbLinks,
                                                                  $breadcrumbViewClassName,
-                                                                 array( 'AdministrativeArea' ));
+                                                                 $cssClasses);
         }
 
         protected static function makeMenuView($controller = null)

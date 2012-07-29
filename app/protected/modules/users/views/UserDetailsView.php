@@ -174,11 +174,11 @@
             return $metadata;
         }
 
-        protected function renderTitleContent()
+        public function getTitle()
         {
             if ($this->model->id > 0)
             {
-                return '<h1>' . strval($this->model) . '</h1>';
+                return strval($this->model);
             }
             else
             {

@@ -93,11 +93,6 @@
             return $content;
         }
 
-        protected function renderTitleContent()
-        {
-            return '<h1>' . $this->title . '</h1>';
-        }
-
         public function isUniqueToAPage()
         {
             return false;

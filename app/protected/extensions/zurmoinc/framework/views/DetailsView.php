@@ -76,16 +76,6 @@
             return $content;
         }
 
-        protected function renderTitleContent()
-        {
-            return StringUtil::renderFluidTitleContent($this->getTitle());
-        }
-
-        public function getTitle()
-        {
-            return $this->title;
-        }
-
         protected function renderRightSideContent($form = null)
         {
         }

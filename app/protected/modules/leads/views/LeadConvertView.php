@@ -216,11 +216,6 @@
             return '<div class="wrapper">' . $content . parent::renderContent() . '</div>';
         }
 
-        protected function renderTitleContent()
-        {
-            return '<h1>' . $this->title . '</h1>';
-        }
-
         public function isUniqueToAPage()
         {
             return true;
