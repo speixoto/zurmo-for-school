@@ -53,8 +53,10 @@
             => 'Elimina Dashboard',
         'Delete Dashboards'
             => 'Elimina i Dashboards',
-        'Don\'t show me this screen again (Don\'t worry you can turn it on again)'
-            => 'Non visualizzare più questa finestra (è possibile riattivarla)',
+        'Don\'t show me this screen again'
+            => 'Non visualizzare più questa finestra',
+        'Don\'t worry you can turn it on again'
+            => 'è possibile riattivarla',
         'Edit Dashboard'
             => 'Modifica Dashboard',
         'Go to the dashboard'
