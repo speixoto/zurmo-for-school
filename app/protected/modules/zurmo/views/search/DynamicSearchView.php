@@ -294,7 +294,7 @@
             {
                 $style3 = 'display:none;';
             }
-            $content  = CHtml::link(Yii::t('Default', 'More Options'), '#',
+            $content  = CHtml::link(Yii::t('Default', 'Modify Structure'), '#',
                             array('id'    => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
                                   'style' => $style1));
             $content .= CHtml::tag('div',
@@ -344,7 +344,7 @@
 
         protected function getClearSearchLabelContent()
         {
-            return Yii::t('Default', 'Criteria Selected - Clear');
+            return Yii::t('Default', 'Criteria Selected <span class="icon-clear">Z</span>');
         }
 
         protected function getClearSearchLinkStartingStyle()

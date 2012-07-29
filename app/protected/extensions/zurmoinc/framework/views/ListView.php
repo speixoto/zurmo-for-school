@@ -140,6 +140,7 @@
                 'emptyText'            => $this->getEmptyText(),
                 'template'             => static::getGridTemplate(),
                 'summaryText'          => $this->getSummaryText(),
+                'summaryCssClass'	   => $this->getSummaryCssClass(),
             );
         }
 
@@ -152,6 +153,11 @@
         protected static function getSummaryText()
         {
             return Yii::t('zii','{count} result(s)');
+        }
+
+        protected static function getSummaryCssClass()
+        {
+            return 'summary';
         }
 
         protected function getCGridViewPagerParams()

@@ -77,6 +77,7 @@
             // Begin Not Coding Standard
             return 'js:function(id, data) {
                         processAjaxSuccessError(id, data);
+                        processListViewSummaryClone("' . $this->getGridViewId() . '", "' . $this->getSummaryCssClass() . '");
                     }';
             // End Not Coding Standard
         }

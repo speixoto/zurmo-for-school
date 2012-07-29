@@ -123,7 +123,7 @@
                 $startingDivStyle = "style='display:none;'";
             }
             $content  = '<div class="search-form-tools">';
-            $content .= $moreSearchOptionsLink . '&#160;|&#160;';
+            $content .= $moreSearchOptionsLink;
             $content .= $clearSearchLink;
             $content .= $this->renderFormBottomPanelExtraLinks();
             $content .= $this->renderClearingSearchInputContent();
@@ -267,7 +267,7 @@
         {
             $metadata       = self::getMetadata();
             $maxCellsPerRow = $this->getMaxCellsPerRow();
-            $content        = '<div class="list-view-items-summary-clone">Result(s)</div>';
+            $content        = $this->renderSummaryCloneContent();
             $content       .= TableUtil::getColGroupContent($this->getColumnCount($metadata['global']));
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)
@@ -296,6 +296,11 @@
             return $content;
         }
 
+        protected function renderSummaryCloneContent()
+        {
+            return '<div class="list-view-items-summary-clone"></div>';
+        }
+
         protected function renderViewToolBarContainerForAdvancedSearch($form)
         {
             $content  = '<div class="view-toolbar-container clearfix">';
@@ -307,12 +312,12 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $content  = CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
-            $params['htmlOptions'] = array('id' => 'search-advanced-search');
+            $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content .= $searchElement->render();
+            $content  = $searchElement->render();
+            $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
             return $content;
         }
 
@@ -452,6 +457,11 @@
         protected function getSearchFormId()
         {
             return 'search-form' . $this->gridIdSuffix;
+        }
+
+        protected function getListViewId()
+        {
+            return $this->gridId . $this->gridIdSuffix;
         }
 
         protected function getMaxCellsPerRow()

@@ -105,6 +105,10 @@
     display:none;
 }
 
+.strong{
+    font-weight: bold;
+}
+
 /*=For modern browsers */
 .clearfix{
     &:before{
@@ -2173,6 +2177,12 @@ div.wide.form{
         padding:20px 20px 20px 20px;
         .flyout();
     }
+    #clear-search-linkmodal{
+        margin-left:10px;
+    }
+    .view-toolbar-container{
+        margin-top:15px;
+    }
 }
 
 .search-view-1{
@@ -2180,11 +2190,6 @@ div.wide.form{
     z-index:100;
     min-width:400px;
     height:auto;
-    //position:absolute;
-    //left:250px;
-    //top:35px;
-    //padding:20px 20px 20px 20px;
-    //.flyout();
     label{
         padding-top:7px;
         padding-right:10px;
@@ -2198,7 +2203,7 @@ div.wide.form{
         .t-shadow(none);
     }
     .view-toolbar-container{
-        margin-top:15px;
+        //margin-top:15px;
         border-top:1px solid #CCCCCC;
     }
     > div{
@@ -2211,6 +2216,17 @@ div.wide.form{
     .view-toolbar-container{
         display: inline-block;
     }
+}
+
+#clear-search-link{
+    .z-link();
+    margin-left:10px;
+    .icon-clear{
+        .symbly(16px);
+    }
+}
+.mp-divider{
+    padding:0 2px;    
 }
 
 #show-dynamic-search-structure-div-search-form{
@@ -2269,7 +2285,7 @@ div.wide.form{
     //width: 100%;
     float: left;
     display: inline-block;
-    margin:10px 3px 10px 0;
+    margin:15px 3px 10px 0;
 }
 
 
@@ -2279,15 +2295,24 @@ div.wide.form{
     float: left;
 }
 
+#show-dynamic-search-structure-div-link-search-form{
+    display: block;
+    margin-bottom: 15px;
+}
+
 #save-search-area{
     width: 50%;
-    margin-top:3px;
+    margin-top:10px;
     border-top:none;
     input, a{
         display: inline-block;
         width: auto;
         float: left;
         margin-right:15px;
+    }
+    input{
+        width: 50%;
+        margin-left:5px;
     }
     #removeSavedSearch{
         line-height: 26px;
@@ -2299,11 +2324,11 @@ div.wide.form{
 
 #show-dynamic-search-structure-div-search-form{
     input{
-        text-indent: 30px;
+        text-indent: 40px;
     }
     span{
         width: auto;
-        padding: 0 8px;
+        padding: 0 12px;
         font-weight:bold;
     }
 }
@@ -3004,6 +3029,7 @@ div.wide.form{
         a{
             float:right;
             clear: both;
+            margin:0;
         }
     }
     .form-toolbar{
@@ -3115,6 +3141,11 @@ div.wide.form{
             padding-top:3px;
             padding-bottom:3px;
             font-weight:normal !important;
+            .strong{
+                a, span{
+                    font-weight: bold !important;
+                }
+            }
             a{
                 text-indent:0;
                 color: #666;
@@ -3129,12 +3160,7 @@ div.wide.form{
                     background:@themeColor2 !important;
                     color:#fff !important;
                 }
-                strong{
-                    font-weight: bold;
-                    color:@themeColor;
-                }
             }
-            
         }
     }
 }
