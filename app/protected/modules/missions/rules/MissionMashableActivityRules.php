@@ -106,5 +106,31 @@
             }
             return $content;
         }
+
+        protected static function resolveSearchAttributesDataByOwnedByFilterClauses(& $searchAttributesData, $userId)
+        {
+            assert('is_array($searchAttributesData)');
+            assert('is_int($userId)');
+            $clauseCount = count($searchAttributesData['clauses']);
+            $searchAttributesData['clauses'][] = array(
+                    'attributeName'        => 'owner',
+                    'operatorType'         => 'equals',
+                    'value'                => $userId,
+            );
+            $searchAttributesData['clauses'][] = array(
+                    'attributeName'        => 'takenByUser',
+                    'operatorType'         => 'equals',
+                    'value'                => $userId,
+            );
+            if ($clauseCount == 0)
+            {
+                $searchAttributesData['structure'] = '0';
+            }
+            else
+            {
+                $searchAttributesData['structure'] = $searchAttributesData['structure'] .
+                ' and (' . ($clauseCount + 1) . ' or ' . ($clauseCount + 2) . ')';
+            }
+        }
     }
 ?>
