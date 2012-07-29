@@ -1,5 +1,5 @@
 <?php
-    class GlobalSearchResultsDataCollection {        
+    class GlobalSearchResultsDataCollection extends ZurmoModuleController{        
         
         private $term;
         
@@ -28,20 +28,32 @@
                 $modelClassName = $module::getPrimaryModelName();                
                 $model  = new $modelClassName(false);                
                 $searchForm = new $searchFormClassName($model);  
-                $searchAttributes = MixedTermSearchUtil::
-                                     getGlobalSearchAttributeByModuleAndPartialTerm($module, $this->term);
-                $dataProvider = new SearchDataProviderMetadataAdapter(
-                                                $searchForm, 1, $searchAttributes);    
-                
-                $listViewClassName   = $module->getPluralCamelCasedName() . 'ListView';                
+                $sanitizedSearchAttributes = MixedTermSearchUtil::
+                                     getGlobalSearchAttributeByModuleAndPartialTerm($module, $this->term);                                                
+                $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                                                        $model,
+                                                        $this->user->id,
+                                                        aray()//$sanitizedSearchAttributes
+                                            );                   
+                $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';                
+                $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                             $metadataAdapter->getAdaptedMetadata(false),
+                             $modelClassName,
+                             'RedBeanModelDataProvider',
+                             'createdDateTime',
+                             true,
+                             $pageSize               
+                        );                
                 $listView = new $listViewClassName(
                                     'default',
                                     $module->getId(),
-                                    get_class($model),
+                                    $modelClassName,
                                     $dataProvider,
-                                    GetUtil::resolveSelectedIdsFromGet());
-                $this->dataCollection = $listView;
-                print_r($dataProvider);                
+                                    GetUtil::resolveSelectedIdsFromGet());                                               
+                $this->dataCollection[$moduleName] = $listView;
+                echo '<p>';
+                print_r($moduleName);
+                echo '</p>';                
             }
         }
         

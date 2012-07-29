@@ -160,16 +160,15 @@
             $scopeData = $_GET['globalSearchScope'];
             $scopeData = null;
             $term = $_GET['term'];            
-            $collection = new GlobalSearchResultsDataCollection($term, $scopeData, Yii::app()->user->userModel);  
+            $dataCollection = new GlobalSearchResultsDataCollection($term, $scopeData, Yii::app()->user->userModel);  
             $autoCompleteResults = ModelAutoCompleteUtil::
                                    getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
                                                                        null);             
             $listView = new GlobalSearchAndListView(
                             $this->getId(),
                             $this->getModule()->getId(),                            
-                            $collection
-                        );                               
-            print_r($collection->render());                     
+                            $dataCollection
+                        );                                           
             $view = new GlobalSearchPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $listView));
             echo $view->render();                  

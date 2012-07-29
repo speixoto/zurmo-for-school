@@ -27,10 +27,10 @@
     class GlobalSearchAndListView extends View
     { 
         
-        private $collection;
+        private $dataCollection;
         
-        public function __construct($id, $id02, $collection) {
-            //$this->collection = $collection;
+        public function __construct($id, $id02, $dataCollection) {
+            $this->dataCollection = $dataCollection;
         }
         
         protected function renderContent()
@@ -47,15 +47,16 @@
          */
         protected function renderListViews()
         {
-            //TODO: Columns = count of $this->getCollectionCount()->getViews...            
-            $gridView = new GridView(2, 1);            
-            $gridView->setView(new AboutView, 0, 0);
-            $gridView->setView(new AboutView, 1, 0);
-            //TODO: em baixo
-            //foreach($this->getCollection()->getViews() as $view)
-            //{
-            //    $gridView->setView($view.....
-            //}
+            $dataColecction = $this->dataCollection->getDataCollection();
+            $rows = count($dataColecction); 
+            $gridView = new GridView($rows, 1);            
+            $row = 0;
+            foreach ($dataColecction as $moduleName => $view)
+            {               
+                $gridView->setView($view, $row++, 0);                                
+            }
+            //$gridView->setView(new AboutView, 0, 0);
+            //$gridView->setView(new AboutView, 1, 0);            
             return $gridView->render();
         }
     }
