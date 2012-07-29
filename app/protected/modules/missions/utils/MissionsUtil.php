@@ -40,7 +40,7 @@
             $url            = Yii::app()->createUrl('/missions/default/details', array('id' => $mission->id));
             $content        = $mission->description;
             $content        .= '<div>';
-            $content        .= '<span class="list-row-model-date">' . Yii::t('Default', 'Latest Update') . ': ' .
+            $content        .= '<span>' . Yii::t('Default', 'Latest Update') . ': ' .
                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($mission->latestDateTime) .
                                 '</span>';
             $content        .= '</div>';
