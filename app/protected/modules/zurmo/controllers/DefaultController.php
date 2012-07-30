@@ -154,27 +154,22 @@
          * Given a string return all result from the global search in a view
          */
         public function actionGlobalList()
-        {                                                                                                                  
-            $pageSize  = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'listPageSize', get_class($this->getModule()));                                                                          
-            $scopeData = $_GET['globalSearchScope'];
-            $scopeData = null;
+        {                                                                                                                              
+            $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
             $term = $_GET['term'];            
-            $dataCollection = new GlobalSearchResultsDataCollection($term, $scopeData, Yii::app()->user->userModel);  
-            $autoCompleteResults = ModelAutoCompleteUtil::
-                                   getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
-                                                                       null);             
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                        'listPageSize', get_class($this->getModule()));
+            $dataCollection = new GlobalSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);                       
             $listView = new GlobalSearchAndListView(
                             $this->getId(),
                             $this->getModule()->getId(),                            
-                            $dataCollection
+                            $dataCollection->getViews()
                         );                                           
             $view = new GlobalSearchPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $listView));
             echo $view->render();                  
         }
-        
-        
+
         /**
          * Given a name of a customFieldData object and a term to search on return a JSON encoded
          * array of autocomplete search results.

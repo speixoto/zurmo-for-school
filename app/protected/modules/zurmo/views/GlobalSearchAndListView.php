@@ -27,17 +27,28 @@
     class GlobalSearchAndListView extends View
     { 
         
-        private $dataCollection;
+        private $views;
         
-        public function __construct($id, $id02, $dataCollection) {
-            $this->dataCollection = $dataCollection;
+        public function __construct($id, $id02, $views) {
+            $this->views = $views;
         }
         
         protected function renderContent()
         {
             $content = '';
             //$content = $this->renderSearchView();
-            $content .= $this->renderListViews();                        
+            $content .= $this->renderListViews(); 
+            $content .= '<div id="results"></div>';
+            /*$content .= '
+                <script>
+                $.ajax({
+                    url: "http://localhost/zurmo/app/index.php/",
+                    cache: false
+                    }).done(function( html ) {
+                    $("#results").append(html);
+                });
+                </script>
+            ';*/
             return $content;
         }
         
@@ -46,12 +57,11 @@
          *        
          */
         protected function renderListViews()
-        {
-            $dataColecction = $this->dataCollection->getDataCollection();
-            $rows = count($dataColecction); 
+        {            
+            $rows = count($this->views); 
             $gridView = new GridView($rows, 1);            
             $row = 0;        
-            foreach ($dataColecction as $moduleName => $view)
+            foreach ($this->views as $moduleName => $view)
             {               
                 $gridView->setView($view, $row++, 0);                                
             } 

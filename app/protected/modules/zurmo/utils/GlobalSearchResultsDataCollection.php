@@ -1,43 +1,58 @@
 <?php
-    class GlobalSearchResultsDataCollection extends ZurmoModuleController{        
+/*
+ * GlobalSearchResultsDataCollection
+ * @param
+ */
+    class GlobalSearchResultsDataCollection 
+    {        
         
-        private $term;
+        private $term;       
+        private $scopeData;        
+        private $user;        
+        private $views = array();        
         
-        private $scopeData;
-        
-        private $user;
-        
-        private $dataCollection = array();        
-        
-        public function __construct($term, $scopeData, $user) {
+        /*
+         * @param   string      
+         * @param   integer     
+         * @param   User        User model
+         * @param   array       Modules to be searched
+         */
+        public function __construct($term, $pageSize, $user, $scopeData = null) {
             //TODO: make asserts
             $this->term = $term;
-            $this->scopeData = $scopeData;
+            $this->pageSize = $pageSize;
             $this->user = $user;
-            $this->makeDataCollection();
+            $this->scopeData = $scopeData;
+            $this->makeViews();            
         }
-        
-        private function makeDataCollection()
-        {                                    
+              
+        /*
+         * makeViews
+         * @return  array   moduleName => listView
+         */
+        private function makeViews()
+        {                                                
+            $pageSize = $this->pageSize;
             $globalSearchModuleNamesAndLabelsData = GlobalSearchUtil::
                     getGlobalSearchScopingModuleNamesAndLabelsDataByUser($this->user);            
             foreach ($globalSearchModuleNamesAndLabelsData as $moduleName => $label)
-            {                                        
-                $pageSize = 10; //TODO: Make generic
-                $module = Yii::app()->findModule($moduleName);                
-                $searchFormClassName = $module::getGlobalSearchFormClassName();
-                $modelClassName = $module::getPrimaryModelName();                
-                $model  = new $modelClassName(false);                
-                $searchForm = new $searchFormClassName($model);  
-                $sanitizedSearchAttributes = MixedTermSearchUtil::
-                                     getGlobalSearchAttributeByModuleAndPartialTerm($module, $this->term);                                                
-                $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                                                        $searchForm,
-                                                        $this->user->id,
-                                                        $sanitizedSearchAttributes
-                                            );                   
-                $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';                
-                $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+            {        
+                if ($this->scopeData == null || in_array($moduleName, $this->scopeData))
+                {                        
+                    $module = Yii::app()->findModule($moduleName);                
+                    $searchFormClassName = $module::getGlobalSearchFormClassName();
+                    $modelClassName = $module::getPrimaryModelName();                
+                    $model  = new $modelClassName(false);                
+                    $searchForm = new $searchFormClassName($model);  
+                    $sanitizedSearchAttributes = MixedTermSearchUtil::
+                            getGlobalSearchAttributeByModuleAndPartialTerm($module, $this->term);                                                
+                    $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                            $searchForm,
+                            $this->user->id,
+                            $sanitizedSearchAttributes
+                        );                   
+                    $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';                
+                    $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                              $metadataAdapter->getAdaptedMetadata(false),
                              $modelClassName,
                              'RedBeanModelDataProvider',
@@ -45,21 +60,22 @@
                              true,
                              $pageSize,
                              $module->getStateMetadataAdapterClassName()
-                        );                
-                $listView = new $listViewClassName(
-                                    'default',
-                                    $module->getId(),
-                                    $modelClassName,
-                                    $dataProvider,
-                                    GetUtil::resolveSelectedIdsFromGet(),
-                                    'list-view-' .$moduleName);                                               
-                $this->dataCollection[$moduleName] = $listView;          
+                        );                             
+                    $listView = new $listViewClassName(
+                            'default',
+                            $module->getId(),
+                            $modelClassName,
+                            $dataProvider,
+                            GetUtil::resolveSelectedIdsFromGet(),
+                            '-' .$moduleName);                                               
+                    $this->views[$moduleName] = $listView;
+                }
             }
         }
         
-        public function getDataCollection()
+        public function getViews()
         {
-            return $this->dataCollection;
+            return $this->views;
         }              
     }
 ?>
