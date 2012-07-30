@@ -50,13 +50,11 @@
             $dataColecction = $this->dataCollection->getDataCollection();
             $rows = count($dataColecction); 
             $gridView = new GridView($rows, 1);            
-            $row = 0;
+            $row = 0;        
             foreach ($dataColecction as $moduleName => $view)
             {               
                 $gridView->setView($view, $row++, 0);                                
-            }
-            //$gridView->setView(new AboutView, 0, 0);
-            //$gridView->setView(new AboutView, 1, 0);            
+            } 
             return $gridView->render();
         }
     }

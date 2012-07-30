@@ -19,7 +19,8 @@
         
         private function makeDataCollection()
         {                                    
-            $globalSearchModuleNamesAndLabelsData = GlobalSearchUtil::getGlobalSearchScopingModuleNamesAndLabelsDataByUser($this->user);            
+            $globalSearchModuleNamesAndLabelsData = GlobalSearchUtil::
+                    getGlobalSearchScopingModuleNamesAndLabelsDataByUser($this->user);            
             foreach ($globalSearchModuleNamesAndLabelsData as $moduleName => $label)
             {                                        
                 $pageSize = 10; //TODO: Make generic
@@ -31,9 +32,9 @@
                 $sanitizedSearchAttributes = MixedTermSearchUtil::
                                      getGlobalSearchAttributeByModuleAndPartialTerm($module, $this->term);                                                
                 $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                                                        $model,
+                                                        $searchForm,
                                                         $this->user->id,
-                                                        aray()//$sanitizedSearchAttributes
+                                                        $sanitizedSearchAttributes
                                             );                   
                 $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';                
                 $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
@@ -42,18 +43,17 @@
                              'RedBeanModelDataProvider',
                              'createdDateTime',
                              true,
-                             $pageSize               
+                             $pageSize,
+                             $module->getStateMetadataAdapterClassName()
                         );                
                 $listView = new $listViewClassName(
                                     'default',
                                     $module->getId(),
                                     $modelClassName,
                                     $dataProvider,
-                                    GetUtil::resolveSelectedIdsFromGet());                                               
-                $this->dataCollection[$moduleName] = $listView;
-                echo '<p>';
-                print_r($moduleName);
-                echo '</p>';                
+                                    GetUtil::resolveSelectedIdsFromGet(),
+                                    'list-view-' .$moduleName);                                               
+                $this->dataCollection[$moduleName] = $listView;          
             }
         }
         
