@@ -24,18 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MissionsCreatedLinkActionElement extends EditLinkActionElement
+    /**
+     * Class defines rules for the missions portlet
+     */
+    class MissionsListPortletRules extends MyListPortletRules
     {
-        protected function getDefaultLabel()
+        /**
+         * (non-PHPdoc)
+         * @see PortletRules::allowMultiplePlacementOnDashboard()
+         */
+        public function allowMultiplePlacementOnDashboard()
         {
-            return MissionsListConfigurationForm::getListTypeCreatedLabel();
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl(
-                $this->moduleId . '/' . $this->controllerId . '/list/',
-                array('type' => MissionsListConfigurationForm::LIST_TYPE_CREATED));
+            return false;
         }
     }
 ?>

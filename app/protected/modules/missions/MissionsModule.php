@@ -47,12 +47,6 @@
         {
             $metadata = array();
             $metadata['global'] = array(
-                'designerMenuItems'   => array(
-                    'showFieldsLink'  => false,
-                    'showGeneralLink' => false,
-                    'showLayoutsLink' => false,
-                    'showMenusLink'   => false,
-                ),
                 'globalSearchAttributeNames' => array(),
                 'tabMenuItems' => array(),
                 'shortcutsCreateMenuItems' => array(
@@ -66,7 +60,7 @@
                         array(
                             'label' => 'My Missions',
                             'url'   => array('/missions/default/list' ,
-                                                'type' => MissionsSearchDataProviderMetadataAdapter::
+                                                'type' => MissionsListConfigurationForm::
                                                                 LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED),
                             'order' => 2,
                             'right' => self::RIGHT_ACCESS_MISSIONS,

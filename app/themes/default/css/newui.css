@@ -9562,14 +9562,14 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar,
 .LatestActivitiesView .latest-activity-toolbar,
-.LatestActivitiesListView .filter-latest-activities-bar,
-.LatestActivitiesView .filter-latest-activities-bar {
+.LatestActivitiesListView .filter-portlet-model-bar,
+.LatestActivitiesView .filter-portlet-model-bar {
   padding-left: 8px;
 }
 .LatestActivitiesListView .latest-activity-toolbar label,
 .LatestActivitiesView .latest-activity-toolbar label,
-.LatestActivitiesListView .filter-latest-activities-bar label,
-.LatestActivitiesView .filter-latest-activities-bar label {
+.LatestActivitiesListView .filter-portlet-model-bar label,
+.LatestActivitiesView .filter-portlet-model-bar label {
   cursor: pointer;
   border: none;
   background: none;
@@ -9580,8 +9580,8 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar label:hover,
 .LatestActivitiesView .latest-activity-toolbar label:hover,
-.LatestActivitiesListView .filter-latest-activities-bar label:hover,
-.LatestActivitiesView .filter-latest-activities-bar label:hover {
+.LatestActivitiesListView .filter-portlet-model-bar label:hover,
+.LatestActivitiesView .filter-portlet-model-bar label:hover {
   background: #262877;
   color: #FFF;
   -webkit-border-radius: 3px !important;
@@ -9593,19 +9593,19 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar input[type="radio"],
 .LatestActivitiesView .latest-activity-toolbar input[type="radio"],
-.LatestActivitiesListView .filter-latest-activities-bar input[type="radio"],
-.LatestActivitiesView .filter-latest-activities-bar input[type="radio"],
+.LatestActivitiesListView .filter-portlet-model-bar input[type="radio"],
+.LatestActivitiesView .filter-portlet-model-bar input[type="radio"],
 .LatestActivitiesListView .latest-activity-toolbar input[type="checkbox"],
 .LatestActivitiesView .latest-activity-toolbar input[type="checkbox"],
-.LatestActivitiesListView .filter-latest-activities-bar input[type="checkbox"],
-.LatestActivitiesView .filter-latest-activities-bar input[type="checkbox"] {
+.LatestActivitiesListView .filter-portlet-model-bar input[type="checkbox"],
+.LatestActivitiesView .filter-portlet-model-bar input[type="checkbox"] {
   visibility: hidden;
   display: none;
 }
 .LatestActivitiesListView .latest-activity-toolbar .ui-state-active,
 .LatestActivitiesView .latest-activity-toolbar .ui-state-active,
-.LatestActivitiesListView .filter-latest-activities-bar .ui-state-active,
-.LatestActivitiesView .filter-latest-activities-bar .ui-state-active {
+.LatestActivitiesListView .filter-portlet-model-bar .ui-state-active,
+.LatestActivitiesView .filter-portlet-model-bar .ui-state-active {
   background: #262877;
   color: #FFF;
   -webkit-border-radius: 3px !important;
@@ -9617,13 +9617,13 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar .ui-button-text,
 .LatestActivitiesView .latest-activity-toolbar .ui-button-text,
-.LatestActivitiesListView .filter-latest-activities-bar .ui-button-text,
-.LatestActivitiesView .filter-latest-activities-bar .ui-button-text {
+.LatestActivitiesListView .filter-portlet-model-bar .ui-button-text,
+.LatestActivitiesView .filter-portlet-model-bar .ui-button-text {
   padding: 0;
   margin: 0;
 }
-.LatestActivitiesListView .filter-latest-activities-bar,
-.LatestActivitiesView .filter-latest-activities-bar {
+.LatestActivitiesListView .filter-portlet-model-bar,
+.LatestActivitiesView .filter-portlet-model-bar {
   border-bottom: 1px solid #DFDFDF;
   overflow: hidden;
   height: 40px;

@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Latest activity list view.
+     * Missions list view for use on a portlet.
      */
-    class LatestActivitiesListView extends ListView
+    class MissionsPortletListView extends MissionsListView
     {
         protected $controllerId;
 
@@ -36,8 +36,8 @@
         protected $dataProvider;
 
         /**
-         * Form that has the information for how to display the latest activity view.
-         * @var object LatestActivitiesConfigurationForm
+         * Form that has the information for how to display the missions view.
+         * @var object MissionsListConfigurationForm
          */
         protected $configurationForm;
 
@@ -60,18 +60,6 @@
          */
         protected $uniquePageId;
 
-        /**
-         * True to show the roll up option.
-         * @var boolean
-         */
-        protected $showRollUpToggle = true;
-
-        /**
-         * True to show the owned by filter option.
-         * @var boolean
-         */
-        protected $showOwnedByFilter = true;
-
         protected $params;
 
         /**
@@ -80,8 +68,8 @@
          */
         protected $containerModuleClassName;
 
-        public function __construct(RedBeanModelsDataProvider $dataProvider,
-                                    LatestActivitiesConfigurationForm $configurationForm,
+        public function __construct(RedBeanModelDataProvider      $dataProvider,
+                                    MissionsListConfigurationForm $configurationForm,
                                     $controllerId,
                                     $moduleId,
                                     $portletDetailsUrl,
@@ -127,31 +115,6 @@
             return "\n{items}\n{pager}" . $preloader;
         }
 
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ActivitySummary'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-
-            );
-            return $metadata;
-        }
-
         protected function getCGridViewParams()
         {
             return array_merge(parent::getCGridViewParams(), array('hideHeader' => true));
@@ -189,7 +152,7 @@
 
         protected function renderConfigurationForm()
         {
-            $formName   = 'latest-activity-configuration-form';
+            $formName   = 'missions-list-configuration-form';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
@@ -210,44 +173,11 @@
             assert('$form instanceof ZurmoActiveForm');
             $content      = null;
             $innerContent = null;
-            if ($this->showOwnedByFilter)
-            {
-                $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
-                                                                                          'ownedByFilter',
-                                                                                          $form);
-                $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_ownedByFilter_area">{content}</div>';
-                $ownedByFilterContent      = $element->render();
-                $innerContent             .= $ownedByFilterContent;
-            }
-            if ($this->showRollUpToggle)
-            {
-                $element                   = new LatestActivitiesRollUpFilterRadioElement($this->configurationForm,
-                                                                                       'rollup', $form);
-                $element->editableTemplate = '{content}';
-                $rollupElementContent      = $element->render();
-                $innerContent .= '<div id="LatestActivitiesConfigurationForm_rollup_area">' . $rollupElementContent . '</div>';
-            }
-            if ($innerContent != null)
-            {
-                $content .= '<div class="horizontal-line latest-activity-toolbar">';
-                $content .= $innerContent;
-                $content .= CHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
-                $content .= '</div>' . "\n";
-            }
-            if ($innerContent != null &&
-               $this->configurationForm->filteredByModelName == LatestActivitiesConfigurationForm::FILTERED_BY_ALL)
-            {
-                $startingStyle = "display:none";
-            }
-            else
-            {
-                $startingStyle = null;
-            }
-            $content .= '<div id="filter-portlet-model-bar-' . $this->uniquePageId . '" class="filter-portlet-model-bar" style="' . $startingStyle . '">';
-            $element                       = new LatestActivitiesMashableFilterRadioElement($this->configurationForm,
-                                                                                      'filteredByModelName',
+            $content .= '<div class="filter-portlet-model-bar">';
+            $element                       = new MissionsListTypeFilterRadioElement($this->configurationForm,
+                                                                                      'type',
                                                                                       $form);
-            $element->editableTemplate =  '<div id="LatestActivitiesConfigurationForm_filteredByModelName_area">{content}</div>';
+            $element->editableTemplate =  '<div id="MissionsListConfigurationForm_type_area">{content}</div>';
             $content .= $element->render();
             $content .= '</div>' . "\n";
             return $content;
@@ -267,28 +197,10 @@
                     'complete'   => 'js:function(){$("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");}'
             ));
             Yii::app()->clientScript->registerScript($this->uniquePageId, "
-            $('#LatestActivitiesConfigurationForm_rollup_area').buttonset();
-            $('#LatestActivitiesConfigurationForm_ownedByFilter_area').buttonset();
-            $('#LatestActivitiesConfigurationForm_filteredByModelName_area').buttonset();
-            $('#LatestActivitiesConfigurationForm_rollup_area').change(function()
+            $('#MissionsListConfigurationForm_type_area').buttonset();
+            $('#MissionsListConfigurationForm_type_area').change(function()
                 {
                     " . $ajaxSubmitScript . "
-                }
-            );
-            $('#LatestActivitiesConfigurationForm_ownedByFilter_area').change(function()
-                {
-                    " . $ajaxSubmitScript . "
-                }
-            );
-            $('#LatestActivitiesConfigurationForm_filteredByModelName_area').change(function()
-                {
-                    " . $ajaxSubmitScript . "
-                }
-            );
-            $('#filter-latest-activities-link').click( function()
-                {
-                    $('#filter-portlet-model-bar-" . $this->uniquePageId . "').toggle();
-                    return false;
                 }
             );
             ");

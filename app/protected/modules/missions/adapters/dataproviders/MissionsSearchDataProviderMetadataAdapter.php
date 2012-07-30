@@ -30,31 +30,15 @@
      */
     class MissionsSearchDataProviderMetadataAdapter extends SearchDataProviderMetadataAdapter
     {
-        /**
-         * Filter by missions the current user created.
-         * @var integer
-         */
-        const LIST_TYPE_CREATED = 1;
-
-        /**
-         * Filter by missions that are not taken
-         * @var integer
-         */
-        const LIST_TYPE_AVAILABLE = 2;
-
-        /**
-         * Filter by missions that are taken by the current user but not accepted yet.
-         * @var integer
-         */
-        const LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED = 3;
-
         protected $type;
         /**
          * Override to add passing in type
          */
         public function __construct($model, $userId, $metadata, $type)
         {
-            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_AVAILABLE || self::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED');
+            assert('$type == MissionsListConfigurationForm::LIST_TYPE_CREATED ||
+                    $type == MissionsListConfigurationForm::LIST_TYPE_AVAILABLE ||
+                    $type == MissionsListConfigurationForm::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED');
             parent::__construct($model, $userId, $metadata);
             $this->type = $type;
         }
@@ -71,7 +55,7 @@
             $startingCount = $clauseCount + 1;
             $structure = '';
 
-            if($this->type == self::LIST_TYPE_CREATED)
+            if($this->type == MissionsListConfigurationForm::LIST_TYPE_CREATED)
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'owner',
@@ -80,7 +64,7 @@
                 );
                 $structure .= $startingCount;
             }
-            elseif($this->type == self::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
+            elseif($this->type == MissionsListConfigurationForm::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'takenByUser',

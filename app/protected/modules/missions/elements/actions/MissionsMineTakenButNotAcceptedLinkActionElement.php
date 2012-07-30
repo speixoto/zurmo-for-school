@@ -28,14 +28,14 @@
     {
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'My Missions');
+            return MissionsListConfigurationForm::getListTypeMineTakenButNotAcceptedLabel();
         }
 
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl(
                 $this->moduleId . '/' . $this->controllerId . '/list/',
-                array('type' => MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED));
+                array('type' => MissionsListConfigurationForm::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED));
         }
     }
 ?>

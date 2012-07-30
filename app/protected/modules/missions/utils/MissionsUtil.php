@@ -94,5 +94,56 @@
             }
             return false;
         }
+
+        public static function makeActiveActionElementType($type)
+        {
+            assert('$type == null || is_int($type)');
+            if ($type == null)
+            {
+                $type = MissionsListConfigurationForm::LIST_TYPE_AVAILABLE;
+            }
+            if ($type == MissionsListConfigurationForm::LIST_TYPE_CREATED)
+            {
+                return 'MissionsCreatedLink';
+            }
+            elseif ($type == MissionsListConfigurationForm::LIST_TYPE_AVAILABLE)
+            {
+                return 'MissionsAvailableLink';
+            }
+            elseif ($type == MissionsListConfigurationForm::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
+            {
+
+                return 'MissionsMineTakenButNotAcceptedLink';
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+
+        public static function makeDataProviderByType(Mission $mission, $type, $pageSize)
+        {
+            if ($type == null)
+            {
+                $type = MissionsListConfigurationForm::LIST_TYPE_AVAILABLE;
+            }
+            $searchAttributes = array();
+            $metadataAdapter  = new MissionsSearchDataProviderMetadataAdapter(
+                $mission,
+                Yii::app()->user->userModel->id,
+                $searchAttributes,
+                $type
+            );
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                $metadataAdapter->getAdaptedMetadata(),
+                'Mission',
+                'RedBeanModelDataProvider',
+                'latestDateTime',
+                true,
+                $pageSize
+            );
+            return $dataProvider;
+        }
     }
 ?>

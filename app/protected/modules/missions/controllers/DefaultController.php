@@ -40,7 +40,7 @@
 
         public function actionIndex()
         {
-            $this->actionList(MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_AVAILABLE);
+            $this->actionList(MissionsListConfigurationForm::LIST_TYPE_AVAILABLE);
         }
 
         public function actionList($type = null)
@@ -48,42 +48,8 @@
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class($this->getModule()));
             $mission          = new Mission(false);
-            if ($type == null)
-            {
-                $type = MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_AVAILABLE;
-            }
-            if ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED)
-            {
-                $activeActionElementType = 'MissionsCreatedLink';
-            }
-            elseif ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_AVAILABLE)
-            {
-                $activeActionElementType = 'MissionsAvailableLink';
-            }
-            elseif ($type == MissionsSearchDataProviderMetadataAdapter::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
-            {
-
-                $activeActionElementType = 'MissionsMineTakenButNotAcceptedLink';
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $searchAttributes = array();
-            $metadataAdapter  = new MissionsSearchDataProviderMetadataAdapter(
-                $mission,
-                Yii::app()->user->userModel->id,
-                $searchAttributes,
-                $type
-            );
-            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter->getAdaptedMetadata(),
-                'Mission',
-                'RedBeanModelDataProvider',
-                'latestDateTime',
-                true,
-                $pageSize
-            );
+            $activeActionElementType = MissionsUtil::makeActiveActionElementType($type);
+            $dataProvider            = MissionsUtil::makeDataProviderByType($mission, $type, $pageSize);
             $actionBarAndListView = new ActionBarAndListView(
                 $this->getId(),
                 $this->getModule()->getId(),
