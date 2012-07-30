@@ -29,6 +29,13 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-
+        'Comments'
+            => 'Kommentare',
+        'Delete Comment'
+            => 'Kommentar löschen',
+        'Show older comments'
+            => 'Zeige ältesten Beiträge',
+        '{n} Comment created|{n} Comments created'
+            => '{n} Kommentar erstellt|{n} Kommentare erstellt',
     );
 ?>
