@@ -63,7 +63,7 @@
                 if(!$mission->ownerHasReadLatest)
                 {
                     $mission->ownerHasReadLatest = true;
-                    $save                             = true;
+                    $save                        = true;
                 }
             }
             elseif($user == $mission->takenByUser)
