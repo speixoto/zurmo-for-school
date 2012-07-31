@@ -29,7 +29,7 @@
         
         private $views;
         
-        public function __construct($id, $id02, $views) {
+        public function __construct($views) {
             $this->views = $views;
         }
         
@@ -37,18 +37,7 @@
         {
             $content = '';
             //$content = $this->renderSearchView();
-            $content .= $this->renderListViews(); 
-            $content .= '<div id="results"></div>';
-            /*$content .= '
-                <script>
-                $.ajax({
-                    url: "http://localhost/zurmo/app/index.php/",
-                    cache: false
-                    }).done(function( html ) {
-                    $("#results").append(html);
-                });
-                </script>
-            ';*/
+            $content .= $this->renderListViews();             
             return $content;
         }
         

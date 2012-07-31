@@ -160,9 +160,7 @@
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                         'listPageSize', get_class($this->getModule()));
             $dataCollection = new GlobalSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);                       
-            $listView = new GlobalSearchAndListView(
-                            $this->getId(),
-                            $this->getModule()->getId(),                            
+            $listView = new GlobalSearchAndListView(                                                        
                             $dataCollection->getViews()
                         );                                           
             $view = new GlobalSearchPageView(ZurmoDefaultViewUtil::
