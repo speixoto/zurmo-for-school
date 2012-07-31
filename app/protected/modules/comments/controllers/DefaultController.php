@@ -86,6 +86,7 @@
                 echo $view->render();
                 Yii::app()->end(0, false);
             }
+            exit;
             $deleted = $comment->delete();
             if(!$deleted)
             {

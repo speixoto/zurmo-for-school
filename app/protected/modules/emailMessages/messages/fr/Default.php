@@ -33,8 +33,8 @@
             => 'Veuillez saisir une adresse email.',
         'A test email from Zurmo'
             => 'Un message de test de Zurmo',
-        'A test text message from Zurmo'
-            => 'Une message texte de Zurmo',
+        'A test text message from Zurmo.'
+            => 'Une message texte de Zurmo.',
         'Access Email Configuration'
             => 'Accès à la configuration email',
         'Access Emails Tab'
@@ -93,8 +93,8 @@
             => 'Contenu HTML',
         'Inbox'
             => 'Boîte de réception',
-        'Invalid email address.'
-            => 'L\'adresse email n\'est pas valide.',
+        'Invalid email address'
+            => 'L\'adresse email n\'est pas valide',
         'Manage Email Configuration'
             => 'Configuration Email',
         'Message failed to send'
@@ -113,8 +113,8 @@
             => 'Erreur boite d\'envoi',
         'Person'
             => 'Nom',
-        'Person or Account'
-            => 'Person or Account', // Same Word Translated
+        'Person Or Account'
+            => 'Person Or Account', // Same Word Translated
         'Port'
             => 'Port', // Same Word Translated
         'Process Inbound Email Job'

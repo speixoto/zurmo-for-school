@@ -50,6 +50,7 @@
                 $conversation->setScenario('importModel');
                 $conversation->owner         = $demoDataHelper->getRandomByModelName('User');
                 $conversation->createdByUser = $conversation->owner;
+                $comment->createdByUser     = $conversation->owner;
                 $conversation->conversationItems->add($demoDataHelper->getRandomByModelName('Account'));
                 $conversation->subject       = $randomConversationData['subject'];
                 $conversation->description   = $randomConversationData['description'];
