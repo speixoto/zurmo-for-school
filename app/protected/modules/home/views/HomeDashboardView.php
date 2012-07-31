@@ -75,6 +75,9 @@
                                     'type' => 'OpportunitiesBySourceChart',
                                 ),
                                 array(
+                                    'type' => 'MyMissionsForPortlet',
+                                ),
+                                array(
                                     'type' => 'RssReader',
                                 ),
                             )
