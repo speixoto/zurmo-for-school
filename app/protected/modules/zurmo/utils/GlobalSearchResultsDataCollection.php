@@ -39,24 +39,22 @@
             {
                 if ($this->scopeData == null || in_array($moduleName, $this->scopeData))
                 {
-                    if($moduleName == 'contacts')
-                    {
-                        $module = Yii::app()->findModule($moduleName);
-                        $searchFormClassName = $module::getGlobalSearchFormClassName();
-                        $modelClassName = $module::getPrimaryModelName();
-                        $model  = new $modelClassName(false);
-                        $searchForm = new $searchFormClassName($model);
-                        $sanitizedSearchAttributes = MixedTermSearchUtil::
+                    $module = Yii::app()->findModule($moduleName);
+                    $searchFormClassName = $module::getGlobalSearchFormClassName();
+                    $modelClassName = $module::getPrimaryModelName();
+                    $model  = new $modelClassName(false);
+                    $searchForm = new $searchFormClassName($model);
+                    $sanitizedSearchAttributes = MixedTermSearchUtil::
                                 getGlobalSearchAttributeByModuleAndPartialTerm($module, $this->term);
-                        $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                    $metadataAdapter = new SearchDataProviderMetadataAdapter(
                                 $searchForm,
                                 $this->user->id,
                                 $sanitizedSearchAttributes
                             );
-                        $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';
-                        $sortAttribute     = SearchUtil::resolveSortAttributeFromGetArray($modelClassName);
-                        $sortDescending    = SearchUtil::resolveSortDescendingFromGetArray($modelClassName);
-                        $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                    $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';
+                    $sortAttribute     = SearchUtil::resolveSortAttributeFromGetArray($modelClassName);
+                    $sortDescending    = SearchUtil::resolveSortDescendingFromGetArray($modelClassName);
+                    $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                                  $metadataAdapter->getAdaptedMetadata(false),
                                  $modelClassName,
                                  'RedBeanModelDataProvider',
@@ -65,17 +63,20 @@
                                  $pageSize,
                                  $module->getStateMetadataAdapterClassName()
                             );
-                        $listView = new $listViewClassName(
+                    $listView = new $listViewClassName(
                                 'default',
                                 $module->getId(),
                                 $modelClassName,
                                 $dataProvider,
                                 GetUtil::resolveSelectedIdsFromGet(),
-                                '-' .$moduleName
-                                );
-                        $this->views[$moduleName] = $listView;
-                    }
-                }
+                                '-' .$moduleName,
+                                array(
+                                    'route' => '',
+                                    'class' => 'SimpleListLinkPager'
+                                  )
+                             );                        
+                    $this->views[$moduleName] = $listView;
+                }                
             }
         }
 

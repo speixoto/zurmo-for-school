@@ -158,7 +158,7 @@
             $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
             $term = $_GET['term'];            
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                        'listPageSize', get_class($this->getModule()));
+                        'listPageSize', get_class($this->getModule()));            
             $dataCollection = new GlobalSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);                       
             $listView = new GlobalSearchAndListView(                                                        
                             $dataCollection->getViews()

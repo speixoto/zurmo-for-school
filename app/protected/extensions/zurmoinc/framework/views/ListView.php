@@ -58,7 +58,12 @@
          * Array of model ids. Each id is for a different row checked off
          */
         protected $selectedIds;
-
+        
+        /**
+         * Array containing CGridViewPagerParams
+         */
+        protected $gridViewPagerParams;
+        
         private $resolvedMetadata;
 
         /**
@@ -71,7 +76,8 @@
             $modelClassName,
             $dataProvider,
             $selectedIds,
-            $gridIdSuffix = null
+            $gridIdSuffix = null,
+            $gridViewPagerParams = null
         )
         {
             assert('is_array($selectedIds)');
@@ -83,6 +89,7 @@
             $this->rowsAreSelectable      = true;
             $this->selectedIds            = $selectedIds;
             $this->gridIdSuffix           = $gridIdSuffix;
+            $this->gridViewPagerParams    = $gridViewPagerParams;
             $this->gridId                 = 'list-view';
         }
 
@@ -162,13 +169,22 @@
 
         protected function getCGridViewPagerParams()
         {
-            return array(
-                    'prevPageLabel'    => '<span>previous</span>',
-                    'nextPageLabel'    => '<span>next</span>',
-                    'class'            => 'EndlessListLinkPager',
-                    'paginationParams' => GetUtil::getData(),
-                    'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
-                );
+            $defaultGridViewPagerParams = array(
+                        'prevPageLabel'    => '<span>previous</span>',
+                        'nextPageLabel'    => '<span>next</span>',
+                        'class'            => 'EndlessListLinkPager',
+                        'paginationParams' => GetUtil::getData(),
+                        'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
+                    ); 
+            if (!$this->gridViewPagerParams)
+            {
+                return $defaultGridViewPagerParams;
+            } 
+            else
+            {
+                return array_merge($defaultGridViewPagerParams, $this->gridViewPagerParams);
+            }
+             
         }
 
         protected function getShowTableOnEmpty()
