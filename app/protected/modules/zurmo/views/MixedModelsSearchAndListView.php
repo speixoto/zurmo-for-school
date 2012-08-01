@@ -36,8 +36,19 @@
         protected function renderContent()
         {            
             $content = '';
-            $content = $this->renderSearchView();
+            //$content = $this->renderSearchView();
             $content .= $this->renderListViews();             
+            $content .= "
+                    <script>                    
+                          $(document).ready(function () {                                
+                                $('.cgrid-view').each(function(){                                  
+                                   $(this).find('.pager').find('.first').find('a').click();
+                                   //$(this).find('.button-column').next().find('a').click();
+                                   
+                                });                                
+                          });                
+                    </script>
+                ";
             return $content;
         }
         
@@ -64,10 +75,10 @@
             $rows = count($this->views); 
             $gridView = new GridView($rows, 1);            
             $row = 0;        
-            foreach ($this->views as $moduleName => $view)
+            foreach ($this->views as $view)
             {                               
                 $gridView->setView($view, $row++, 0);                                
-            } 
+            }             
             return $gridView->render();
         }
     }

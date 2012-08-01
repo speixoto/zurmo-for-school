@@ -22,8 +22,7 @@
             $this->term = $term;
             $this->pageSize = $pageSize;
             $this->user = $user;
-            $this->scopeData = $scopeData;
-            $this->makeViews();
+            $this->scopeData = $scopeData;            
         }
                 
         /*
@@ -77,24 +76,36 @@
          * @return  array   moduleName => listView
          */
         private function makeViews()
-        {            
+        {                        
+            foreach ($this->getSearchedModules() as $moduleName => $title)
+            {                
+                $titleView = new TitleBarView($title, null, 3);
+                $this->views['titleBar-' . $moduleName] = $titleView;
+                $this->views[$moduleName] = $this->getView($moduleName);
+            }
+        }
+
+        public function getSearchedModules()
+        {
+            $modules = array();
             $globalSearchModuleNamesAndLabelsData = GlobalSearchUtil::
                     getGlobalSearchScopingModuleNamesAndLabelsDataByUser($this->user);
             foreach ($globalSearchModuleNamesAndLabelsData as $moduleName => $label)
             {
                 if ($this->scopeData == null || in_array($moduleName, $this->scopeData))
                 {                 
-                    $module = Yii::app()->findModule($moduleName);                   
-                    $description = $module::getPluralCamelCasedName();
-                    $titleView = new TitleBarView($description, null, 3);
-                    $this->views['titleBar-' . $moduleName] = $titleView;
-                    $this->views[$moduleName] = $this->getView($moduleName);
+                    $module = Yii::app()->findModule($moduleName);
+                    $title = $module::getPluralCamelCasedName();
+                    $modules[$moduleName] = $title;                    
                 }                
             }
+            return $modules;
         }
-
+        
         public function getViews()
-        {
+        {     
+            $this->term = '?';
+            $this->makeViews();
             return $this->views;
         }
     }
