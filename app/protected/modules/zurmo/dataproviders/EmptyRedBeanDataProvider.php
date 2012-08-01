@@ -27,7 +27,7 @@
     /**
      * A data provider that returns no results.
      */
-    class EmptyDataProvider extends RedBeanModelDataProvider
+    class EmptyRedBeanDataProvider extends RedBeanModelDataProvider
     {        
         /**
          * Return an empty array         

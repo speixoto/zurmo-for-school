@@ -50,7 +50,7 @@
             $sortDescending    = SearchUtil::resolveSortDescendingFromGetArray($modelClassName);
             if ($empty) 
             { 
-                $dataProviderClass = 'EmptyDataProvider';
+                $dataProviderClass = 'EmptyRedBeanDataProvider';
             }
             else
             {

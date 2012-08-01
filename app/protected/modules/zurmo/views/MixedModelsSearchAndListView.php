@@ -38,17 +38,13 @@
             $content = '';
             //$content = $this->renderSearchView();
             $content .= $this->renderListViews();             
-            $content .= "
-                    <script>                    
-                          $(document).ready(function () {                                
-                                $('.cgrid-view').each(function(){                                  
-                                   $(this).find('.pager').find('.first').find('a').click();
-                                   //$(this).find('.button-column').next().find('a').click();
-                                   
-                                });                                
-                          });                
-                    </script>
-                ";
+            $script = "$(document).ready(function () {                                
+                            $('.cgrid-view').each(function(){                                  
+                                //$(this).find('.pager').find('.first').find('a').click();
+                                $(this).find('.button-column').next().find('a').click();
+                            });                                
+                       });";
+            Yii::app()->clientScript->registerScript('LoadListViews', $script);
             return $content;
         }
         
