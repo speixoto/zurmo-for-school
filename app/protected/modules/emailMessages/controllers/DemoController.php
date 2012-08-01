@@ -239,7 +239,7 @@
             $messageStreamer->setExtraRenderBytes(0);
             $messageLogger = new MessageLogger($messageStreamer);
 
-            if(Yii::app()->user->userModel->primaryEmail->emailAddress == null)
+            if (Yii::app()->user->userModel->primaryEmail->emailAddress == null)
             {
                 $messageLogger->addErrorMessage('Cannot send test emails because the current user does not have an email address');
                 Yii::app()->end(0, false);
@@ -248,7 +248,7 @@
             $messageLogger->addInfoMessage('Using host:' . Yii::app()->emailHelper->outboundHost);
             $messageLogger->addInfoMessage('Using port:' . Yii::app()->emailHelper->outboundPort);
             $messageLogger->addInfoMessage('Using username:' . Yii::app()->emailHelper->outboundUsername);
-            if(Yii::app()->emailHelper->outboundPassword != null)
+            if (Yii::app()->emailHelper->outboundPassword != null)
             {
                 $messageLogger->addInfoMessage('Using password: Yes');
             }

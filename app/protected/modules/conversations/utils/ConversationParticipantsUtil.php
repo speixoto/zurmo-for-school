@@ -38,9 +38,9 @@
         {
             if ($model->conversationParticipants->count() > 0)
             {
-                foreach($model->conversationParticipants as $participant)
+                foreach ($model->conversationParticipants as $participant)
                 {
-                    if($participant->person->getClassId('Item') == $user->getClassId('Item'))
+                    if ($participant->person->getClassId('Item') == $user->getClassId('Item'))
                     {
                         return true;
                     }
@@ -67,7 +67,7 @@
                 $newPeopleIndexedByItemId = array();
                 foreach ($itemIds as $itemId)
                 {
-                    if($itemId != $conversation->owner->getClassId('Item'))
+                    if ($itemId != $conversation->owner->getClassId('Item'))
                     {
                         $newPeopleIndexedByItemId[$itemId] = static::castDownItem(Item::getById((int)$itemId));
                     }
@@ -90,7 +90,7 @@
                     {
                         $conversation->conversationParticipants->remove($participantModelToRemove);
                         $person = static::castDownItem($participantModelToRemove->person);
-                        if($person instanceof Permitable)
+                        if ($person instanceof Permitable)
                         {
                             $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($person);
                         }
@@ -100,11 +100,11 @@
                 foreach ($newPeopleIndexedByItemId as $personOrUserModel)
                 {
                     $conversation->conversationParticipants->add(static::makeConversationParticipantByPerson($personOrUserModel));
-                    if($personOrUserModel instanceof Permitable)
+                    if ($personOrUserModel instanceof Permitable)
                     {
                         $explicitReadWriteModelPermissions->addReadWritePermitable($personOrUserModel);
                     }
-                    if($sendNotifications)
+                    if ($sendNotifications)
                     {
                         static::sendEmailInviteToParticipant($conversation, $personOrUserModel);
                     }
@@ -120,7 +120,7 @@
 
         protected static function castDownItem(Item $item)
         {
-            foreach(array('Contact', 'User') as $modelClassName)
+            foreach (array('Contact', 'User') as $modelClassName)
             {
                 try
                 {
@@ -192,11 +192,11 @@
             $url     = static::getUrlToConversationDetailAndRelationsView($conversation->id);
             $content = Yii::t('Default', '{headerStartTag}Join the Conversation{headerEndTag}{headerLineBreak}{ownerName} ' .
                                          'would like you to join a conversation {strongStartTag}"{conversationSubject}"{strongEndTag}',
-                               array('{headerStartTag}'	     => null,
-                                     '{headerEndTag}'		 => null,
-                                     '{headerLineBreak}'	 => "\n\n",
-                                     '{strongStartTag}'		 => null,
-                                     '{strongEndTag}'		 => null,
+                               array('{headerStartTag}'      => null,
+                                     '{headerEndTag}'        => null,
+                                     '{headerLineBreak}'     => "\n\n",
+                                     '{strongStartTag}'      => null,
+                                     '{strongEndTag}'        => null,
                                      '{ownerName}'           => $conversation->owner,
                                      '{conversationSubject}' => $conversation->subject));
             $content .= "\n\n";
@@ -209,11 +209,11 @@
             $url     = static::getUrlToConversationDetailAndRelationsView($conversation->id);
             $content = Yii::t('Default', '{headerStartTag}Join the Conversation{headerEndTag}{headerLineBreak}{ownerName} ' .
                                          'would like you to join a conversation {strongStartTag}"{conversationSubject}"{strongEndTag}',
-                               array('{headerStartTag}'	     => '<h2 class="h2">',
-                                     '{headerEndTag}'		 => '</h2>',
-                                     '{headerLineBreak}'	 => null,
-                                     '{strongStartTag}'		 => '<strong>',
-                                     '{strongEndTag}'		 => '</strong>',
+                               array('{headerStartTag}'      => '<h2 class="h2">',
+                                     '{headerEndTag}'        => '</h2>',
+                                     '{headerLineBreak}'     => null,
+                                     '{strongStartTag}'      => '<strong>',
+                                     '{strongEndTag}'        => '</strong>',
                                      '{ownerName}'           => $conversation->owner,
                                      '{conversationSubject}' => $conversation->subject));
             $content .= "<br/>";

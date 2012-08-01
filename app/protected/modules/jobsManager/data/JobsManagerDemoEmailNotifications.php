@@ -47,11 +47,10 @@
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Notification');
             $where = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
             $models = Notification::getSubset($joinTablesAdapter, null, null, $where, null);
-            foreach($models as $model)
+            foreach ($models as $model)
             {
                 $model->delete();
             }
         }
     }
-
 ?>

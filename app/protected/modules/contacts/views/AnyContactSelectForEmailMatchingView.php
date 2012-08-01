@@ -105,11 +105,11 @@
             $content .= TableUtil::getColGroupContent(1);
             $content .= '<tbody>';
             $content .= '<tr>';
-            if($this->model instanceof AnyContactSelectForm)
+            if ($this->model instanceof AnyContactSelectForm)
             {
                 $elementClassName = 'AnyContactNameIdElement';
             }
-            elseif($this->model instanceof ContactSelectForm)
+            elseif ($this->model instanceof ContactSelectForm)
             {
                 $elementClassName = 'ContactNameIdElement';
             }
