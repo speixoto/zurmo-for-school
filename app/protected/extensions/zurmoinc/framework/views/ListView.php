@@ -124,6 +124,11 @@
         {
             return $this->rowsAreSelectable;
         }
+        
+        public function setRowsAreSelectable($value)
+        {            
+            $this->rowsAreSelectable = (boolean)$value;
+        }
 
         protected function getCGridViewParams()
         {

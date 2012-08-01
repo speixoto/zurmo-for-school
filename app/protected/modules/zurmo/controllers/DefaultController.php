@@ -143,7 +143,7 @@
             $autoCompleteResults = ModelAutoCompleteUtil::
                                    getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
                                                                        $scopeData);            
-            $autoCompleteResults = array_merge($autoCompleteResults, array(array('href'      => Yii::app()->createUrl('/zurmo/default/GlobalList',
+            $autoCompleteResults = array_merge($autoCompleteResults, array(array('href'      => Yii::app()->createUrl('/zurmo/default/globallist',
                                                                                                                       $_GET),
                                                     'label'     => 'All results',
                                                     'iconClass' => 'autocomplete-icon-AllResults')));
@@ -154,18 +154,26 @@
          * Given a string return all result from the global search in a view
          */
         public function actionGlobalList()
-        {                                                                                                                              
+        {    
             $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
             $term = $_GET['term'];            
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                        'listPageSize', get_class($this->getModule()));            
-            $dataCollection = new GlobalSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);                       
-            $listView = new GlobalSearchAndListView(                                                        
-                            $dataCollection->getViews()
-                        );                                           
-            $view = new GlobalSearchPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $listView));
-            echo $view->render();                  
+                            'listPageSize', get_class($this->getModule()));            
+            $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);
+            if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"])) {
+                $selectedModule = $_GET["ajax"];
+                $selectedModule = str_replace('list-view-', '', $selectedModule);                                
+                $view = $dataCollection->getView($selectedModule);                                            
+            }
+            else
+            {                            
+                $listView = new MixedModelsSearchAndListView(
+                                $dataCollection->getViews()
+                            );               
+                $view = new MixedModelsSearchPageView(ZurmoDefaultViewUtil::
+                           makeStandardViewForCurrentUser($this, $listView));                
+            }            
+            echo $view->render();
         }
 
         /**
