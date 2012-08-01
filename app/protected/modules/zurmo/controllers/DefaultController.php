@@ -163,7 +163,7 @@
             if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"])) {
                 $selectedModule = $_GET["ajax"];
                 $selectedModule = str_replace('list-view-', '', $selectedModule);                                
-                $view = $dataCollection->getView($selectedModule);                                            
+                $view = $dataCollection->getListView($selectedModule);                                            
             }
             else
             {                            

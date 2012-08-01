@@ -26,9 +26,11 @@
         }
                 
         /*
+         * @param   string
+         * @param   bollean     Return an empty listView
          * @return  View
          */
-        public function getView($moduleName)
+        public function getListView($moduleName, $empty = false)
         {            
             $pageSize = $this->pageSize;
             $module = Yii::app()->findModule($moduleName);
@@ -46,10 +48,18 @@
             $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';
             $sortAttribute     = SearchUtil::resolveSortAttributeFromGetArray($modelClassName);
             $sortDescending    = SearchUtil::resolveSortDescendingFromGetArray($modelClassName);
+            if ($empty) 
+            { 
+                $dataProviderClass = 'EmptyDataProvider';
+            }
+            else
+            {
+                $dataProviderClass = 'RedBeanModelDataProvider';
+            }
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                     $metadataAdapter->getAdaptedMetadata(false),
                     $modelClassName,
-                    'RedBeanModelDataProvider',
+                    $dataProviderClass,
                     $sortAttribute,
                     $sortDescending,
                     $pageSize,
@@ -81,7 +91,7 @@
             {                
                 $titleView = new TitleBarView($title, null, 3);
                 $this->views['titleBar-' . $moduleName] = $titleView;
-                $this->views[$moduleName] = $this->getView($moduleName);
+                $this->views[$moduleName] = $this->getListView($moduleName, true);
             }
         }
 
@@ -103,8 +113,7 @@
         }
         
         public function getViews()
-        {     
-            $this->term = '?';
+        {                 
             $this->makeViews();
             return $this->views;
         }
