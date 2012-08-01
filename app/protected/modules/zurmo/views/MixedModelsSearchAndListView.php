@@ -36,7 +36,7 @@
         protected function renderContent()
         {            
             $content = '';
-            //$content = $this->renderSearchView();
+            $content = $this->renderSearchView();
             $content .= $this->renderListViews();             
             $script = "$(document).ready(function () {                                
                             $('.cgrid-view').each(function(){                                  

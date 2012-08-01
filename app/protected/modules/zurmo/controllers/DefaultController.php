@@ -156,7 +156,7 @@
         public function actionGlobalList()
         {    
             $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
-            $term = $_GET['term'];            
+            $term = $_GET['term'];             
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));            
             $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);

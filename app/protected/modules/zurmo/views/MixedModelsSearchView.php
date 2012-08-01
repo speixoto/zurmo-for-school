@@ -42,23 +42,36 @@
         }
 
         protected function renderContent()
-        {
-            $content  = '<div id="mixed-models-search" class="clearfix">' . $this->renderGlobalSearchContent() . '<span class="z-spinner"></span></div>';
+        {            
+            $model = new MixedModelsSearchForm;            
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                                                                'NoRequiredsActiveForm',
+                                                                array('id'                   => '',
+                                                                      'action'               => null,
+                                                                      'enableAjaxValidation' => '',
+                                                                      'clientOptions'        => '',
+
+                                                                )
+                                                            );    
+            $content = $formStart;
+            $content .= $this->renderGlobalSearchContent();                        
+            //Input for search
+            $input = new TextElement($model, 'term', $form);
+            $content .= $input->render();
+            //Search button
+            $params = array();
+            $params['label']       = Yii::t('Default', 'Search');
+            $params['htmlOptions'] = array('id' => 'mixed-models-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $searchElement = new SaveButtonActionElement(null, null, null, $params);
+            $content .= $searchElement->render();
+            $formEnd  = $clipWidget->renderEndWidget();
             return $content;
         }
 
         protected function renderGlobalSearchContent()
-        {
-            $content = "<form name='mixed-models-form' action='' method='get'>";
-            $content                 .= $this->renderGlobalSearchScopingInputContent();
-            $content .= "<input type=text name=term id=term>";         
-            $params['label']       = Yii::t('Default', 'Search');
-            $params['htmlOptions'] = array('id'      => 'search-mixed-models',
-                                           'value'   => 'search',
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);            
-            $content .= $searchElement->render();          
-            $content .= '</form>';
+        {            
+            $content = $this->renderGlobalSearchScopingInputContent();         
             return $content;
         }
 
