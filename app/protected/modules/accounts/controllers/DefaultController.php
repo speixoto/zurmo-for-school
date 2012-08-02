@@ -53,9 +53,7 @@
             $searchForm                     = new AccountsSearchForm($account);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                'Account',
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 'AccountsSearchView'
             );
@@ -72,7 +70,6 @@
                     $searchForm,
                     $pageSize,
                     AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    Yii::app()->user->userModel->id,
                     $dataProvider
                 );
             }
@@ -138,7 +135,6 @@
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
-                'Account',
                 $pageSize,
                 Yii::app()->user->userModel->id);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -176,7 +172,6 @@
             $account = new Account(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
-                'Account',
                 $pageSize,
                 Yii::app()->user->userModel->id
             );
@@ -206,7 +201,7 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return 'AccountsSearchForm';
         }

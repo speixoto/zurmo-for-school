@@ -209,28 +209,33 @@
         protected function renderAddExtraRowContent($rowCount)
         {
             assert('is_int($rowCount)');
-            $idInputHtmlOptions  = array('id' => $this->getRowCounterInputId());
-            $hiddenInputName     = 'rowCounter';
-            $ajaxOnChangeUrl     = Yii::app()->createUrl("zurmo/default/dynamicSearchAddExtraRow",
-                                   array('viewClassName'      => get_class($this),
+            $idInputHtmlOptions   = array('id' => $this->getRowCounterInputId());
+            $hiddenInputName      = 'rowCounter';
+            $ajaxOnChangeUrl      = Yii::app()->createUrl("zurmo/default/dynamicSearchAddExtraRow",
+                                    array('viewClassName'      => get_class($this),
                                          'modelClassName'     => get_class($this->model->getModel()),
                                          'formModelClassName' => get_class($this->model),
                                          'suffix'             => $this->getSearchFormId()));
-            $content             = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
+            $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
             $addFieldLabelContent = $this->getAddFieldLabelContent();
-            $content            .= ZurmoHtml::ajaxLink($addFieldLabelContent, $ajaxOnChangeUrl,
+            $aContent             = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-label'), $addFieldLabelContent);
+            $content             .= ZurmoHtml::ajaxLink($aContent, $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
+                                          'beforeSend' => 'js:function(){$(this).addClass("loading-ajax-submit"); $(this).addClass("loading"); attachLoadingSpinner("' . $this->getSearchFormId() . '");}',
                                           'success' => 'js:function(data){
                                             $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                             resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
+                                            $(this).removeClass("loading-ajax-submit"); $(this).removeClass("loading");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
-            return CHtml::tag('div', array('class' => 'add-fields-container'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'add-fields-container'), $content);
         }
 
         protected function renderAfterAddExtraRowContent($form)
@@ -294,10 +299,10 @@
             {
                 $style3 = 'display:none;';
             }
-            $content  = CHtml::link(Yii::t('Default', 'Modify Structure'), '#',
+            $content  = ZurmoHtml::link(Yii::t('Default', 'Modify Structure'), '#',
                             array('id'    => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
                                   'style' => $style1));
-            $content .= CHtml::tag('div',
+            $content .= ZurmoHtml::tag('div',
                             array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
                                   'class' => 'has-lang-label',
                                   'style' => $style2), $this->renderStructureInputContent($form));

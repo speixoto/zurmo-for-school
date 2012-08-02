@@ -75,12 +75,12 @@
             $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
 
             $content  = '<div>';
-            $content .= CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
+            $content .= ZurmoHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
             $content .= $this->renderAttributeDropDownContent();
-            $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
-            $content .= CHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
+            $content .= ZurmoHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
+            $content .= ZurmoHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
             $content .= '</div>';
-            $content .= CHtml::link(Yii::t('Default', '_'), '#', array('class' => 'remove-extra-dynamic-search-row-link'));
+            $content .= ZurmoHtml::link(Yii::t('Default', '_'), '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }
 
@@ -108,7 +108,7 @@
                                                      $this->renderAttributeDropDownOnChangeScript($id,
                                                      $this->getInputsDivId(),
                                                      $this->ajaxOnChangeUrl));
-            $content  = CHtml::dropDownList($name,
+            $content  = ZurmoHtml::dropDownList($name,
                                            $this->selectedAttribute,
                                            $this->searchableAttributeIndicesAndDerivedTypes,
                                            $htmlOptions);
@@ -127,7 +127,7 @@
 
         protected function renderAttributeDropDownOnChangeScript($id, $inputDivId, $ajaxOnChangeUrl)
         {
-            $ajaxSubmitScript  = CHtml::ajax(array(
+            $ajaxSubmitScript  = ZurmoHtml::ajax(array(
                     'type'    => 'GET',
                     'data'    => 'js:\'suffix=' . $this->suffix .
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',

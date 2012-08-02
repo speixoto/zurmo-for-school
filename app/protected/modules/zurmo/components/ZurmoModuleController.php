@@ -145,7 +145,7 @@
             return $this->getModule()->getPrimaryModelName();
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return null;
         }
@@ -153,24 +153,23 @@
         protected function export()
         {
             $modelClassName        = $this->getModelName();
-            $searchFormClassName   = $this->getSearchFormClassName();
+            $searchFormClassName   = static::getSearchFormClassName();
             // Set $pageSize to unlimited, because we don't want pagination
             $pageSize = Yii::app()->pagination->getGlobalValueByType('unlimitedPageSize');
             $model = new $modelClassName(false);
 
-            if (isset($searchFormClassName))
+            if ($searchFormClassName != null)
             {
                 $searchForm = new $searchFormClassName($model);
             }
             else
             {
-                $searchForm = null;
+                throw new NotSupportedException();
             }
             $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
 
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 $searchForm,
-                $modelClassName,
                 $pageSize,
                 Yii::app()->user->userModel->id
             );
@@ -291,9 +290,7 @@
             $searchForm                     = new $searchFormClassName($model);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                $modelClassName,
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 $stickyKey,
                 false

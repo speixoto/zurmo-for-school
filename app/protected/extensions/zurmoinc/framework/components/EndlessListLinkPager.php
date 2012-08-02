@@ -110,7 +110,7 @@
             // End Not Coding Standard
             $nextPage = $page + 1;
             $htmlOptions = array('id' => $pagerId, 'class' => 'vertical-forward-pager');
-            return '<li class="' . $class . '">' . CHtml::link($label, '#', $htmlOptions) . '</li>';
+            return '<li class="' . $class . '">' . ZurmoHtml::link($label, '#', $htmlOptions) . '</li>';
         }
     }
 ?>

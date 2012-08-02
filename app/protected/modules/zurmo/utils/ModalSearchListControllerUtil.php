@@ -60,11 +60,9 @@
             $pageSize          = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'modalListPageSize', get_class($controller->getModule()));
 
-            $dataProvider      = $controller->makeRedBeanDataProviderFromGet(
+            $dataProvider      = $controller->makeRedBeanDataProviderByDataCollection(
                                                 $searchModel,
-                                                $modelClassName,
                                                 $pageSize,
-                                                $userId,
                                                 $stateMetadataAdapterClassName);
             $searchAndListView = new $className(
                 $controller->getId(),

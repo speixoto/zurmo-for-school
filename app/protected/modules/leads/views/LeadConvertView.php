@@ -170,11 +170,11 @@
                     }
                 );
             ");
-            $createLink = CHtml::link(Yii::t('Default', 'Create AccountsModuleSingularLabel',
+            $createLink = ZurmoHtml::link(Yii::t('Default', 'Create AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-create-link'));
-            $selectLink = CHtml::link(Yii::t('Default', 'Select AccountsModuleSingularLabel',
+            $selectLink = ZurmoHtml::link(Yii::t('Default', 'Select AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-select-link'));
-            $skipLink   = CHtml::link(Yii::t('Default', 'Skip AccountsModuleSingularLabel',
+            $skipLink   = ZurmoHtml::link(Yii::t('Default', 'Skip AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-skip-link'));
             $content = $this->renderTitleContent();
             $content .= '<div class="lead-conversion-actions">';

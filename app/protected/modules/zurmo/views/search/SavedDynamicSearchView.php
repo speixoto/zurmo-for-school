@@ -53,7 +53,7 @@
             {
                 $idOrName      = static::getSavedSearchListDropDown();
                 $htmlOptions   = array('id' => $idOrName, 'empty' => Yii::t('Default', 'Load a saved search'));
-                $content       = CHtml::dropDownList($idOrName,
+                $content       = ZurmoHtml::dropDownList($idOrName,
                                                      $this->model->savedSearchId,
                                                      self::resolveSavedSearchesToIdAndLabels($savedSearches),
                                                      $htmlOptions);
@@ -131,8 +131,8 @@
 
         protected function renderAfterAddExtraRowContent($form)
         {
-            $content  = '<strong class="mp-divider"> · </strong>' . CHtml::link(Yii::t('Default', 'Save search'), '#', array('id' => 'save-as-advanced-search'));
-            $content  = CHtml::tag('div', array('class' => 'search-save-container'), $content);
+            $content  = '<strong class="mp-divider"> · </strong>' . ZurmoHtml::link(Yii::t('Default', 'Save search'), '#', array('id' => 'save-as-advanced-search'));
+            $content  = ZurmoHtml::tag('div', array('class' => 'search-save-container'), $content);
             $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
             $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);
             $content .= '</div>';
@@ -194,7 +194,7 @@
             if($this->model->savedSearchId != null)
             {
                 $label = Yii::t('Default', 'Delete') . "<span class='icon'></span>";
-                return CHtml::link($label, "#", array( 'id'		 => 'removeSavedSearch',
+                return ZurmoHtml::link($label, "#", array( 'id'		 => 'removeSavedSearch',
                                                        'class'   => 'remove',
                                                        'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));
             }

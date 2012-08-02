@@ -82,7 +82,6 @@
             $searchModel,
             $pageSize,
             $title,
-            $userId,
             $dataProvider,
             $actionBarViewClassName = 'SecuredActionBarForSearchAndListView'
             )
@@ -119,9 +118,7 @@
 
         protected function makeSearchDataProvider(
             $searchModel,
-            $listModelClassName,
             $pageSize,
-            $userId,
             $stateMetadataAdapterClassName = null,
             $stickySearchKey = null,
             $setSticky       = true)
@@ -129,6 +126,7 @@
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
             assert('is_bool($setSticky)');
+            $listModelClassName = get_class($searchModel->getModel());
             static::resolveToTriggerOnSearchEvents($listModelClassName);
             $dataCollection = new SearchAttributesDataCollection($searchModel);
             if($searchModel instanceof SavedDynamicSearchForm)
@@ -157,11 +155,9 @@
                 }
                 $searchModel->loadSavedSearchUrl = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/list/');
             }
-            $dataProvider = $this->makeRedBeanDataProviderFromGet(
+            $dataProvider = $this->makeRedBeanDataProviderByDataCollection(
                 $searchModel,
-                $listModelClassName,
                 $pageSize,
-                $userId,
                 $stateMetadataAdapterClassName,
                 $dataCollection);
             return $dataProvider;
@@ -178,7 +174,6 @@
 
         protected function getDataProviderByResolvingSelectAllFromGet(
             $searchModel,
-            $listModelClassName,
             $pageSize,
             $userId,
             $stateMetadataAdapterClassName = null
@@ -189,9 +184,7 @@
             {
                 return $this->makeSearchDataProvider(
                     $searchModel,
-                    $listModelClassName,
                     $pageSize,
-                    $userId,
                     $stateMetadataAdapterClassName);
             }
             else

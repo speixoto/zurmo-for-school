@@ -55,7 +55,7 @@
             }
             elseif($this->name !== null)
             {
-                $value = CHtml::value($data, $this->name);
+                $value = ZurmoHtml::value($data, $this->name);
             }
             if($value===null)
             {

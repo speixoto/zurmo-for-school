@@ -46,8 +46,8 @@
                                                                 $this->model, $this->attribute, $this->form, $params);
             $activeCurrenciesElement->editableTemplate = '{content}{error}';
             $content  = '<div class="hasParallelFields">';
-            $content .= CHtml::tag('div', array('class' => 'quarter'), $activeCurrenciesElement->render());
-            $content .= CHtml::tag('div', array('class' => 'threeQuarters'),
+            $content .= ZurmoHtml::tag('div', array('class' => 'quarter'), $activeCurrenciesElement->render());
+            $content .= ZurmoHtml::tag('div', array('class' => 'threeQuarters'),
                             $this->renderEditableValueTextField($currencyValueModel, $this->form, $this->attribute, 'value'));
             $content .= '</div>';
             return $content;

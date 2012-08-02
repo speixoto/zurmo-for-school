@@ -153,7 +153,7 @@
             return $result;
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return null;
         }
@@ -161,7 +161,7 @@
         protected function processList($params)
         {
             $modelClassName = $this->getModelName();
-            $searchFormClassName = $this->getSearchFormClassName();
+            $searchFormClassName = static::getSearchFormClassName();
 
             try
             {
@@ -199,15 +199,13 @@
                 }
                 else
                 {
-                    $searchForm = null;
+                    throw new NotSupportedException();
                 }
 
                 $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
-                $dataProvider = $this->makeRedBeanDataProviderFromGet(
+                $dataProvider = $this->makeRedBeanDataProviderByDataCollection(
                     $searchForm,
-                    $modelClassName,
                     $pageSize,
-                    Yii::app()->user->userModel->id,
                     $stateMetadataAdapterClassName
                 );
 

@@ -57,7 +57,6 @@
             $searchForm = new LeadsSearchForm($contact);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'LeadsStateMetadataAdapter',
@@ -76,7 +75,6 @@
                     $searchForm,
                     $pageSize,
                     LeadsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    Yii::app()->user->userModel->id,
                     $dataProvider
                 );
             }
@@ -341,7 +339,7 @@
             return new $editViewClassName($renderType, $this->getId(), $this->getModule()->getId(), $model);
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return 'LeadsSearchForm';
         }

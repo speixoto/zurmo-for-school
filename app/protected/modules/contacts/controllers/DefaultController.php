@@ -54,7 +54,6 @@
             $searchForm                     = new ContactsSearchForm($contact);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter',
@@ -73,7 +72,6 @@
                     $searchForm,
                     $pageSize,
                     ContactsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    Yii::app()->user->userModel->id,
                     $dataProvider
                 );
             }
@@ -253,7 +251,7 @@
             echo CJSON::encode($autoCompleteResults);
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return 'ContactsSearchForm';
         }

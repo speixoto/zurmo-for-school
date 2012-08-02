@@ -60,7 +60,7 @@
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateElement'];
-            return CHtml::tag('div', array('class' => 'has-date-select'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
         }
 
         /**
