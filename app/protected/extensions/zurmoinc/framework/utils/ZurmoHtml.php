@@ -254,6 +254,10 @@
             {
                 $labelClass = null;
             }
+            if(isset($htmlOptions['labelClass']))
+            {
+                $labelClass .= ' ' . $htmlOptions['labelClass'];
+            }
             return $hidden . parent::tag("label", array("class" => "hasCheckBox" . $labelClass), self::inputField('checkbox', $name, $value, $htmlOptions));
         }
 

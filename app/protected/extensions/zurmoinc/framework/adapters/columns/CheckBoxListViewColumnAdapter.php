@@ -30,7 +30,7 @@
         {
             return array(
                 'name'  => $this->attribute,
-                'value' => 'ZurmoHtml::tag("label", array("class" => "hasCheckBox disabled"), ZurmoHtml::checkBox(null, $data->' . $this->attribute . ', array("disabled" => "disabled")))',
+                'value' => 'ZurmoHtml::checkBox(null, $data->' . $this->attribute . ', array("labelClass" => "disabled", "disabled" => "disabled"))',
                 'type'  => 'raw', //could do Boolean and remove value line above. would render true/false instead.
             );
         }

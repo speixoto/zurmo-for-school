@@ -125,9 +125,7 @@ END;
                 $checked = false;
                 $disabled = '';
                 $htmlOptions = array('disabled' => $disabled);
-                echo ZurmoHtml::tag("label",
-                                array("class" => "hasCheckBox"),
-                                ZurmoHtml::checkBox($this->id . '_all', $checked, $htmlOptions));
+                echo Zurmohtml::checkBox($this->id . '_all', $checked, $htmlOptions);
             }
             else
             {
@@ -170,9 +168,7 @@ END;
             unset($options['name']);
             $options['value']         = $value;
             $options['id']            = $this->id . '_' . $row;
-            echo ZurmoHtml::tag("label",
-                            array("class" => "hasCheckBox"),
-                            ZurmoHtml::checkBox($name, $checked, $options));
+            echo ZurmoHtml::checkBox($name, $checked, $options);
         }
     }
 ?>
