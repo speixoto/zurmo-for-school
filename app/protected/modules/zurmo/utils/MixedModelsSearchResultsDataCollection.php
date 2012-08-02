@@ -86,10 +86,10 @@
          * @return  array   moduleName => listView
          */
         private function makeViews()
-        {                        
+        {                                                
             foreach ($this->getSearchedModules() as $moduleName => $title)
             {                
-                $titleView = new TitleBarView($title, null, 3);
+                $titleView = new TitleBarView($title, null, 1);
                 $this->views['titleBar-' . $moduleName] = $titleView;
                 $this->views[$moduleName] = $this->getListView($moduleName, true);
             }
