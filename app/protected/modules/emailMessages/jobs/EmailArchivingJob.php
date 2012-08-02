@@ -317,7 +317,9 @@
             {
                 $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
                 $notificationMessage                    = new NotificationMessage();
-                $notificationMessage->htmlContent       = Yii::t('Default', 'Email messages from dropbox folder doesn\'t match any accounts, contatcs, leads or users. <a href="{url}">Click here</a> to manually match them!',
+                $notificationMessage->htmlContent       = Yii::t('Default', 'At least one archived email messagee does ' .
+                                                                 'not match any records in the system. ' .
+                                                                 '<a href="{url}">Click here</a> to manually match them',
                     array(
                         '{url}'      => Yii::app()->createUrl('emailMessages/default/matchingList'),
                     )
