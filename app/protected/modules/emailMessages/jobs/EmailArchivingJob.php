@@ -316,6 +316,14 @@
             if ($emailSenderOrRecepientEmailNotFoundInSystem)
             {
                 $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
+                $notificationMessage                    = new NotificationMessage();
+                $notificationMessage->htmlContent       = Yii::t('Default', 'Email messages from dropbox folder doesn\'t match any accounts, contatcs, leads or users. <a href="{url}">Click here</a> to manually match them!',
+                    array(
+                        '{url}'      => Yii::app()->createUrl('emailMessages/default/matchingList'),
+                    )
+                );
+                $rules                      = new EmailMessageArchivingEmailAddreessNotMachingNotificationRules();
+                NotificationsUtil::submit($notificationMessage, $rules);
             }
             else
             {
