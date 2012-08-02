@@ -27,7 +27,7 @@
     class MeetingEditAndDetailsView extends SecuredEditAndDetailsView
     {
         public static function getDefaultMetadata()
-        {            
+        {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
@@ -37,7 +37,7 @@
                             array('type' => 'SaveButton',  'renderType' => 'Edit'),
                             array('type' => 'EditLink',    'renderType' => 'Details'),
                             array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),
-                            
+
                         ),
                     ),
                     'derivedAttributeTypes' => array(

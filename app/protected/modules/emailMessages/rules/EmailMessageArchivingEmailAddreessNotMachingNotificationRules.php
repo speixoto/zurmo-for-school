@@ -25,56 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Model for storing information about conversation participants and whether they have read or not read the
-     * latest comment in a conversation.
+     * Inform user that export process is completed, and that user can download exported file.
      */
-    class ConversationParticipant extends OwnedModel
+    class EmailMessageArchivingEmailAddreessNotMachingNotificationRules extends JobsManagerAccessNotificationRules
     {
-        public function __toString()
+        protected $critical    = false;
+
+        protected $allowDuplicates = false;
+
+        public static function getDisplayName()
         {
-            try
-            {
-                if ($this->person->id > 0)
-                {
-                    return strval($this->person);
-                }
-            }
-            catch (NotFoundException $e)
-            {
-            }
-            return Yii::t('Default', '(Unnamed)');
+            return Yii::t('Default', 'Match archived emails.');
         }
 
-        public static function getModuleClassName()
+        public static function getType()
         {
-            return 'ConversationsModule';
-        }
-
-        public static function canSaveMetadata()
-        {
-            return false;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'hasReadLatest',
-                ),
-                'relations' => array(
-                    'person'      => array(RedBeanModel::HAS_ONE, 'Item'),
-                ),
-                'rules' => array(
-                    array('hasReadLatest', 'boolean'),
-                )
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            return 'EmailMessageArchivingEmailAddreessNotMaching';
         }
     }
 ?>

@@ -61,7 +61,7 @@
                 'attributeName'        => 'owner',
                 'relatedAttributeName' => 'id',
                 'operatorType'         => 'equals',
-                'value'                =>Yii::app()->user->userModel->id,
+                'value'                => Yii::app()->user->userModel->id,
             );
             $structure .= $startingCount . ' and ' . ($startingCount +1);
             if (empty($metadata['structure']))

@@ -40,11 +40,11 @@
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule', $user);
             $userCanCreateContact  = RightsUtil::doesUserHaveAllowByRightName('ContactsModule', ContactsModule::getCreateRight(), $user);
             $userCanCreateLead     = RightsUtil::doesUserHaveAllowByRightName('LeadsModule',    LeadsModule::getCreateRight(), $user);
-            if($userCanAccessLeads && $userCanAccessContacts)
+            if ($userCanAccessLeads && $userCanAccessContacts)
             {
                 $selectForm = new AnyContactSelectForm();
             }
-            elseif(!$userCanAccessLeads && $userCanAccessContacts)
+            elseif (!$userCanAccessLeads && $userCanAccessContacts)
             {
                 $selectForm = new ContactSelectForm();
             }
@@ -52,11 +52,11 @@
             {
                 $selectForm = new LeadSelectForm();
             }
-            if($userCanCreateContact && $userCanCreateLead)
+            if ($userCanCreateContact && $userCanCreateLead)
             {
                 $gridSize = 3;
             }
-            elseif($userCanCreateContact || $userCanCreateLead)
+            elseif ($userCanCreateContact || $userCanCreateLead)
             {
                 $gridSize = 2;
             }
@@ -86,16 +86,16 @@
          */
         public static function resolveEmailAddressAndNameToContact(EmailMessage $emailMessage, $contact)
         {
-            if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->id < 0)
+            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->id < 0)
             {
                  $contact->primaryEmail->emailAddress   = $emailMessage->sender->fromAddress;
                  self::resolveFullNameToFirstAndLastName($emailMessage->sender->fromName, $contact);
             }
-            elseif($emailMessage->recipients->count() > 0)
+            elseif ($emailMessage->recipients->count() > 0)
             {
-                foreach($emailMessage->recipients as $recipient)
+                foreach ($emailMessage->recipients as $recipient)
                 {
-                    if($recipient->personOrAccount->id < 0)
+                    if ($recipient->personOrAccount->id < 0)
                     {
                         $contact->primaryEmail->emailAddress = $recipient->toAddress;
                         self::resolveFullNameToFirstAndLastName($recipient->toName, $contact);
@@ -111,28 +111,28 @@
          */
         public static function resolveEmailAddressToContactIfEmailRelationAvailable(EmailMessage $emailMessage, $contact)
         {
-            if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->isSame($contact))
+            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->isSame($contact))
             {
-                if($contact->primaryEmail->emailAddress == null)
+                if ($contact->primaryEmail->emailAddress == null)
                 {
                     $contact->primaryEmail->emailAddress     = $emailMessage->sender->fromAddress;
                 }
-                elseif($contact->secondaryEmail->emailAddress == null)
+                elseif ($contact->secondaryEmail->emailAddress == null)
                 {
                     $contact->secondaryEmail->emailAddress   = $emailMessage->sender->fromAddress;
                 }
             }
-            elseif($emailMessage->recipients->count() > 0)
+            elseif ($emailMessage->recipients->count() > 0)
             {
-                foreach($emailMessage->recipients as $recipient)
+                foreach ($emailMessage->recipients as $recipient)
                 {
-                    if($recipient->personOrAccount->isSame($contact))
+                    if ($recipient->personOrAccount->isSame($contact))
                     {
-                        if($contact->primaryEmail->emailAddress == null)
+                        if ($contact->primaryEmail->emailAddress == null)
                         {
                             $contact->primaryEmail->emailAddress   = $recipient->toAddress;
                         }
-                        elseif($contact->secondaryEmail->emailAddress == null)
+                        elseif ($contact->secondaryEmail->emailAddress == null)
                         {
                             $contact->secondaryEmail->emailAddress   = $recipient->toAddress;
                         }
@@ -148,17 +148,16 @@
          */
         public static function resolveContactToSenderOrRecipient(EmailMessage $emailMessage, $contact)
         {
-
-            if($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->id < 0)
+            if ($emailMessage->sender->id > 0 && $emailMessage->sender->personOrAccount->id < 0)
             {
                  $emailMessage->sender->personOrAccount = $contact;
                  return;
             }
-            elseif($emailMessage->recipients->count() > 0)
+            elseif ($emailMessage->recipients->count() > 0)
             {
-                foreach($emailMessage->recipients as $key => $recipient)
+                foreach ($emailMessage->recipients as $key => $recipient)
                 {
-                    if($recipient->personOrAccount->id < 0)
+                    if ($recipient->personOrAccount->id < 0)
                     {
                         $emailMessage->recipients->offsetGet($key)->personOrAccount = $contact;
                         return;

@@ -167,5 +167,10 @@
         {
             return Yii::t('Default', 'Fewer Options');
         }
+
+        public static function getDisplayDescription()
+        {
+            return null;
+        }
     }
 ?>
