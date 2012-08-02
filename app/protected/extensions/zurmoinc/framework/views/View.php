@@ -38,6 +38,8 @@
          */
         protected $cssClasses = array();
 
+        protected $title;
+
         /**
          * Tells View that it can render the extending class' divs with
          * and id matching their name. Must be overridden to return
@@ -129,6 +131,16 @@
         protected function getViewStyle()
         {
             return null;
+        }
+
+        protected function renderTitleContent()
+        {
+            return StringUtil::renderFluidTitleContent($this->getTitle());
+        }
+
+        public function getTitle()
+        {
+            return $this->title;
         }
     }
 ?>

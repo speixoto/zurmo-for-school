@@ -77,9 +77,9 @@
             return $content;
         }
 
-        protected function renderTitleContent()
+        public function getTitle()
         {
-            return '<h1>' . Yii::t('Default', 'Job Manager: Home') . '</h1>';
+            return Yii::t('Default', 'Job Manager: Home');
         }
 
         /**

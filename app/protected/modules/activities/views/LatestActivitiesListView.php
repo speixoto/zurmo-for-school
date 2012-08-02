@@ -243,7 +243,7 @@
             {
                 $startingStyle = null;
             }
-            $content .= '<div class="filter-latest-activities-bar" style="' . $startingStyle . '">';
+            $content .= '<div id="filter-portlet-model-bar-' . $this->uniquePageId . '" class="filter-portlet-model-bar" style="' . $startingStyle . '">';
             $element                       = new LatestActivitiesMashableFilterRadioElement($this->configurationForm,
                                                                                       'filteredByModelName',
                                                                                       $form);
@@ -287,7 +287,7 @@
             );
             $('#filter-latest-activities-link').click( function()
                 {
-                    $('.filter-latest-activities-bar').toggle();
+                    $('#filter-portlet-model-bar-" . $this->uniquePageId . "').toggle();
                     return false;
                 }
             );

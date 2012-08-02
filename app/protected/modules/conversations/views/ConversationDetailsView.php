@@ -46,9 +46,9 @@
             //override since the details are done @see renderConversationContent
         }
 
-        protected function renderTitleContent()
+        public function getTitle()
         {
-            return '<h1>' . strval($this->model) . "</h1>";
+            return strval($this->model);
         }
 
         protected function renderRightSideContent($form = null)
@@ -90,7 +90,7 @@
 
         protected function renderConversationContent()
         {
-            $content  = '<div class="comment conversation-subject">';
+            $content  = '<div class="comment model-details-summary">';
             $content .= '<span class="comment-details"><strong>'.
                             DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                     $this->model->createdDateTime, 'long', null) . '</strong> ';
@@ -107,7 +107,7 @@
             $element->nonEditableTemplate = '<div>{content}</div>';
             $content .= $element->render();
             $content .= '</div>';
-            return Chtml::tag('div', array('id' => 'ConversationSummaryView'), $content);
+            return Chtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);
         }
 
         protected function renderConversationCommentsContent()
@@ -127,7 +127,7 @@
         {
             $content       = Chtml::tag('h2', array(), Yii::t('Default', 'Add Comment'));
             $comment       = new Comment();
-            $uniquePageId  = 'CommentInlineEditForConversationView';
+            $uniquePageId  = 'CommentInlineEditForModelView';
             $redirectUrl   = Yii::app()->createUrl('/conversations/default/inlineCreateCommentFromAjax',
                                                     array('id' => $this->model->id,
                                                           'uniquePageId' => $uniquePageId));
@@ -139,7 +139,7 @@
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
             $content      .= $inlineView->render();
-            return Chtml::tag('div', array('id' => 'CommentInlineEditForConversationView'), $content);
+            return Chtml::tag('div', array('id' => 'CommentInlineEditForModelView'), $content);
         }
 
         protected function getPortletDetailsUrl()

@@ -4857,7 +4857,7 @@ span.tooltip {
   position: relative;
   top: 0;
 }
-.conversation-date {
+.list-row-model-date {
   float: right;
   margin-right: 10px;
 }
@@ -4923,30 +4923,30 @@ span.tooltip {
 #ConversationDetailsAndRelationsView #right-side-edit-view-panel {
   top: 55px;
 }
-#ConversationSummaryView,
+#ModelDetailsSummaryView,
 #CommentList {
   padding: 10px 0 0 15px;
 }
-#ConversationSummaryView h2,
+#ModelDetailsSummaryView h2,
 #CommentList h2 {
   margin-bottom: 15px;
 }
-#ConversationSummaryView .comment-details,
+#ModelDetailsSummaryView .comment-details,
 #CommentList .comment-details {
   margin-bottom: 5px;
   display: block;
 }
-#ConversationSummaryView .delete-comment,
+#ModelDetailsSummaryView .delete-comment,
 #CommentList .delete-comment {
   visibility: hidden;
   display: block;
   margin-top: 4px;
 }
-#ConversationSummaryView .delete-comment a,
+#ModelDetailsSummaryView .delete-comment a,
 #CommentList .delete-comment a {
   margin-left: 4px;
 }
-#ConversationSummaryView .delete-comment:before,
+#ModelDetailsSummaryView .delete-comment:before,
 #CommentList .delete-comment:before {
   font-weight: normal;
   font-size: 18px;
@@ -4974,17 +4974,17 @@ span.tooltip {
   line-height: 150%;
   font-style: italic;
 }
-#ConversationSummaryView,
-#CommentInlineEditForConversationView,
+#ModelDetailsSummaryView,
+#CommentInlineEditForModelView,
 #CommentsForRelatedModelView {
   width: 70%;
   float: left;
 }
-#CommentInlineEditForConversationView h2 {
+#CommentInlineEditForModelView h2 {
   margin-bottom: 15px;
   margin-left: 15px;
 }
-#CommentInlineEditForConversationView .wide.form {
+#CommentInlineEditForModelView .wide.form {
   padding: 0;
   border: none;
   background: none;
@@ -4994,34 +4994,34 @@ span.tooltip {
   -ms-box-shadow: none;
   box-shadow: none;
 }
-#CommentInlineEditForConversationView form {
+#CommentInlineEditForModelView form {
   padding: 0;
 }
-#CommentInlineEditForConversationView .panel {
+#CommentInlineEditForModelView .panel {
   width: 100%;
   float: none;
   border-bottom: 1px solid #CCCCCC;
 }
-#CommentInlineEditForConversationView #inline-edit-form {
+#CommentInlineEditForModelView #inline-edit-form {
   padding-left: 15px;
 }
-#CommentInlineEditForConversationView #inline-edit-form table {
+#CommentInlineEditForModelView #inline-edit-form table {
   border-bottom: none;
 }
-#CommentInlineEditForConversationView #inline-edit-form td {
+#CommentInlineEditForModelView #inline-edit-form td {
   padding-left: 0 !important;
 }
-#CommentInlineEditForConversationView #inline-edit-form .files {
+#CommentInlineEditForModelView #inline-edit-form .files {
   margin-bottom: 0;
 }
-#CommentInlineEditForConversationView #inline-edit-form .files td {
+#CommentInlineEditForModelView #inline-edit-form .files td {
   padding-bottom: 0;
 }
-#CommentInlineEditForConversationView .view-toolbar-container {
+#CommentInlineEditForModelView .view-toolbar-container {
   border-top: 1px solid #fff;
   padding-top: 13px;
 }
-#CommentInlineEditForConversationView .view-toolbar-container a {
+#CommentInlineEditForModelView .view-toolbar-container a {
   color: #fff !important;
 }
 .attachments {
@@ -9562,14 +9562,14 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar,
 .LatestActivitiesView .latest-activity-toolbar,
-.LatestActivitiesListView .filter-latest-activities-bar,
-.LatestActivitiesView .filter-latest-activities-bar {
+.LatestActivitiesListView .filter-portlet-model-bar,
+.LatestActivitiesView .filter-portlet-model-bar {
   padding-left: 8px;
 }
 .LatestActivitiesListView .latest-activity-toolbar label,
 .LatestActivitiesView .latest-activity-toolbar label,
-.LatestActivitiesListView .filter-latest-activities-bar label,
-.LatestActivitiesView .filter-latest-activities-bar label {
+.LatestActivitiesListView .filter-portlet-model-bar label,
+.LatestActivitiesView .filter-portlet-model-bar label {
   cursor: pointer;
   border: none;
   background: none;
@@ -9580,8 +9580,8 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar label:hover,
 .LatestActivitiesView .latest-activity-toolbar label:hover,
-.LatestActivitiesListView .filter-latest-activities-bar label:hover,
-.LatestActivitiesView .filter-latest-activities-bar label:hover {
+.LatestActivitiesListView .filter-portlet-model-bar label:hover,
+.LatestActivitiesView .filter-portlet-model-bar label:hover {
   background: #262877;
   color: #FFF;
   -webkit-border-radius: 3px !important;
@@ -9593,19 +9593,19 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar input[type="radio"],
 .LatestActivitiesView .latest-activity-toolbar input[type="radio"],
-.LatestActivitiesListView .filter-latest-activities-bar input[type="radio"],
-.LatestActivitiesView .filter-latest-activities-bar input[type="radio"],
+.LatestActivitiesListView .filter-portlet-model-bar input[type="radio"],
+.LatestActivitiesView .filter-portlet-model-bar input[type="radio"],
 .LatestActivitiesListView .latest-activity-toolbar input[type="checkbox"],
 .LatestActivitiesView .latest-activity-toolbar input[type="checkbox"],
-.LatestActivitiesListView .filter-latest-activities-bar input[type="checkbox"],
-.LatestActivitiesView .filter-latest-activities-bar input[type="checkbox"] {
+.LatestActivitiesListView .filter-portlet-model-bar input[type="checkbox"],
+.LatestActivitiesView .filter-portlet-model-bar input[type="checkbox"] {
   visibility: hidden;
   display: none;
 }
 .LatestActivitiesListView .latest-activity-toolbar .ui-state-active,
 .LatestActivitiesView .latest-activity-toolbar .ui-state-active,
-.LatestActivitiesListView .filter-latest-activities-bar .ui-state-active,
-.LatestActivitiesView .filter-latest-activities-bar .ui-state-active {
+.LatestActivitiesListView .filter-portlet-model-bar .ui-state-active,
+.LatestActivitiesView .filter-portlet-model-bar .ui-state-active {
   background: #262877;
   color: #FFF;
   -webkit-border-radius: 3px !important;
@@ -9617,13 +9617,13 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar .ui-button-text,
 .LatestActivitiesView .latest-activity-toolbar .ui-button-text,
-.LatestActivitiesListView .filter-latest-activities-bar .ui-button-text,
-.LatestActivitiesView .filter-latest-activities-bar .ui-button-text {
+.LatestActivitiesListView .filter-portlet-model-bar .ui-button-text,
+.LatestActivitiesView .filter-portlet-model-bar .ui-button-text {
   padding: 0;
   margin: 0;
 }
-.LatestActivitiesListView .filter-latest-activities-bar,
-.LatestActivitiesView .filter-latest-activities-bar {
+.LatestActivitiesListView .filter-portlet-model-bar,
+.LatestActivitiesView .filter-portlet-model-bar {
   border-bottom: 1px solid #DFDFDF;
   overflow: hidden;
   height: 40px;

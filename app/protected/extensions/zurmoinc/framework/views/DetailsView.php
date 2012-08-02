@@ -76,14 +76,6 @@
             return $content;
         }
 
-        protected function renderTitleContent()
-        {
-            if ($this->title != null)
-            {
-                return '<h1>' . $this->title . "</h1>";
-            }
-        }
-
         protected function renderRightSideContent($form = null)
         {
         }
@@ -360,6 +352,11 @@
         protected function getLessPanelsLinkLabel()
         {
             return Yii::t('Default', 'Fewer Details');
+        }
+
+        public function getTitle()
+        {
+            return $this->title;
         }
     }
 ?>

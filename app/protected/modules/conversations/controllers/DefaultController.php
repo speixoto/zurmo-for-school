@@ -237,7 +237,7 @@
                                    'relatedModelClassName'    => 'Conversation',
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
-            $uniquePageId  = 'CommentInlineEditForConversationView';
+            $uniquePageId  = 'CommentInlineEditForModelView';
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                        $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);

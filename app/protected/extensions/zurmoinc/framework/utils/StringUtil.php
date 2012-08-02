@@ -65,4 +65,23 @@
                return $integer. $ends[$integer % 10];
             }
         }
+
+        public static function renderFluidTitleContent($title)
+        {
+            assert('$title == null || is_string($title)');
+            if($title != null)
+            {
+                // Begin Not Coding Standard
+                Yii::app()->clientScript->registerScript('TruncateTitleText', "
+                    $(function() {
+                        $('.truncated-title').ThreeDots({ max_rows:1 });
+                    });");
+                // End Not Coding Standard
+                return "<h1>
+                            <span class='truncated-title'>
+                                <span class='ellipsis-content'>" . $title . "</span>
+                            </span>
+                        </h1>";
+            }
+        }
     }
