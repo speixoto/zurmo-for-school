@@ -24,6 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Used by controller actions to determine if a user should be able to access a mission. This is required because
+     * even though read/write is added to the everyone group, we only want the owner to be able to edit or delete
+     * a mission.
+     */
     class MissionAccessUtil
     {
         /**

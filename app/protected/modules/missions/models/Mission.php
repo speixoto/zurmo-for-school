@@ -142,7 +142,7 @@
         }
 
         /**
-         * Alter hasReadLatest and/or ownerHasReadLatest based on comments being added.
+         * Alter takenByUserHasReadLatest and/or ownerHasReadLatest based on comments being added.
          * (non-PHPdoc)
          * @see Item::beforeSave()
          */
