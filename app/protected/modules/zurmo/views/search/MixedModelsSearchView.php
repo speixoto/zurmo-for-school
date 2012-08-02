@@ -32,49 +32,52 @@
         protected $moduleNamesAndLabelsAndAll;
 
         protected $sourceUrl;
-
-        public function __construct($moduleNamesAndLabelsAndAll, $sourceUrl)
+        
+        protected $gridIdSuffix;
+                                               
+        public function __construct($moduleNamesAndLabelsAndAll, $sourceUrl, $gridSuffix = null)
         {
             assert('is_array($moduleNamesAndLabelsAndAll)');
-            assert('is_string($sourceUrl)');
-            $this->moduleNamesAndLabelsAndAll = $moduleNamesAndLabelsAndAll;
-            $this->sourceUrl            = $sourceUrl;
+            assert('is_string($sourceUrl)');           
+            $this->moduleNamesAndLabelsAndAll   = $moduleNamesAndLabelsAndAll;
+            $this->sourceUrl                    = $sourceUrl;
+            $this->gridIdSuffix                 = $gridSuffix;
         }
 
         protected function renderContent()
         {            
-            $model = new MixedModelsSearchForm;            
+            $model = new MixedModelsSearchForm();    
+            $model->setGlobalSearchAttributeNamesAndLabelsAndAll($this->moduleNamesAndLabelsAndAll);            
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'NoRequiredsActiveForm',
-                                                                array('id'                   => '',
-                                                                      'action'               => null,
-                                                                      'enableAjaxValidation' => '',
-                                                                      'clientOptions'        => '',
-
+                                                                array('id'                   => $this->getSearchFormId(),                                                                      
+                                                                      'enableAjaxValidation' => false,
+                                                                      'clientOptions'        => array(),
+                                                                      'focus'                => array($model,'term'),
+                                                                      'method'               => 'get',
                                                                 )
                                                             );    
-            $content = $formStart;
-            $content .= $this->renderGlobalSearchContent();                        
-            //Input for search
-            $input = new TextElement($model, 'term', $form);
-            $content .= $input->render();
+            $content = $formStart;            
+            $scope = new MixedModelsSearchElement($model, 'term', $form, array( 'htmlOptions' => array ('id' => 'term')));
+            $content .= $scope->render();           
             //Search button
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
-            $params['htmlOptions'] = array('id' => 'mixed-models-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $params['htmlOptions'] = array('id' => $this->getSearchFormId() . '-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content .= $searchElement->render();
-            $formEnd  = $clipWidget->renderEndWidget();
+            $formEnd  = $clipWidget->renderEndWidget(); 
             return $content;
         }
-
+        /*
         protected function renderGlobalSearchContent()
         {            
             $content = $this->renderGlobalSearchScopingInputContent();         
             return $content;
-        }
+        }*/
 
+        /*
         protected function renderGlobalSearchScopingInputContent()
         {
             $cClipWidget   = new CClipWidget();
@@ -82,8 +85,8 @@
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.ScopedSearchJuiMultiSelect', array(
                 'dataAndLabels'  => $this->moduleNamesAndLabelsAndAll,
                 'selectedValue'  => 'All',
-                'inputId'        => 'mixedModelsSearchScope',
-                'inputName'      => 'mixedModelsSearchScope',
+                'inputId'        => 'scope',
+                'inputName'      => 'scope',
                 'options'        => array(
                                           'selectedText' => '',
                                           'noneSelectedText' => '', 'header' => false,
@@ -94,5 +97,10 @@
             $content = $cClipWidget->getController()->clips['MixedModelsScopedJuiMultiSelect'];
             return $content;
         }
+        */    
+        protected function getSearchFormId()
+        {         
+            return 'mixed-models-form' . $this->gridIdSuffix;        
+        }        
     }
 ?>

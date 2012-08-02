@@ -144,7 +144,7 @@
                                    getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
                                                                        $scopeData);            
             $autoCompleteResults = array_merge($autoCompleteResults, array(array('href'      => Yii::app()->createUrl('/zurmo/default/globallist',
-                                                                                                                      $_GET),
+                                                                             array('MixedModelsSearchForm' => array('term' => $_GET['term'], 'anyMixedAttributesScope' => $_GET['globalSearchScope']))),
                                                     'label'     => 'All results',
                                                     'iconClass' => 'autocomplete-icon-AllResults')));
             echo CJSON::encode($autoCompleteResults);            
@@ -154,9 +154,16 @@
          * Given a string return all result from the global search in a view
          */
         public function actionGlobalList()
-        {    
-            $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
-            $term = $_GET['term'];             
+        {   
+            if (!isset($_GET['MixedModelsSearchForm']['anyMixedAttributesScope']) || in_array('All', $_GET['MixedModelsSearchForm']['anyMixedAttributesScope']))
+            {
+                $scopeData = null;
+            }
+            else
+            {
+                $scopeData = $_GET['MixedModelsSearchForm']['anyMixedAttributesScope'];
+            }                
+            $term = $_GET['MixedModelsSearchForm']['term'];                                        
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));            
             $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);

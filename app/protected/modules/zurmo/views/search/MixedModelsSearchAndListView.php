@@ -55,7 +55,7 @@
         {
             $moduleNamesAndLabels     = GlobalSearchUtil::
                                         getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
-            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
+            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalist');
             GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption(
                                         $moduleNamesAndLabels);
             $searchView = new MixedModelsSearchView($moduleNamesAndLabels, $sourceUrl);
