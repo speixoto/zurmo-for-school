@@ -55,7 +55,6 @@
                 $searchForm,
                 'Opportunity',
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 'OpportunitiesSearchView'
             );
@@ -159,7 +158,6 @@
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new OpportunitiesSearchForm($opportunity),
-                'Opportunity',
                 $pageSize,
                 Yii::app()->user->userModel->id);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -197,7 +195,6 @@
             $opportunity = new Opportunity(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new OpportunitiesSearchForm($opportunity),
-                'Opportunity',
                 $pageSize,
                 Yii::app()->user->userModel->id
             );

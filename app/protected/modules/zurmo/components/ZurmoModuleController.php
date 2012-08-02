@@ -158,19 +158,18 @@
             $pageSize = Yii::app()->pagination->getGlobalValueByType('unlimitedPageSize');
             $model = new $modelClassName(false);
 
-            if (isset($searchFormClassName))
+            if ($searchFormClassName != null)
             {
                 $searchForm = new $searchFormClassName($model);
             }
             else
             {
-                $searchForm = null;
+                throw new NotSupportedException();
             }
             $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
 
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 $searchForm,
-                $modelClassName,
                 $pageSize,
                 Yii::app()->user->userModel->id
             );

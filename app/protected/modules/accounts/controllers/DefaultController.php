@@ -55,7 +55,6 @@
                 $searchForm,
                 'Account',
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 'AccountsSearchView'
             );
@@ -137,7 +136,6 @@
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
-                'Account',
                 $pageSize,
                 Yii::app()->user->userModel->id);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -175,7 +173,6 @@
             $account = new Account(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
-                'Account',
                 $pageSize,
                 Yii::app()->user->userModel->id
             );
