@@ -50,7 +50,7 @@
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     ),
-                'hintText' => Yii::t('Default', 'Type a User\'s name '),
+                'hintText' => Yii::t('Default', 'Type a User\'s name'),
                 'onAdd'    => $this->getOnAddContent(),
                 'onDelete' => $this->getOnDeleteContent(),
             ));
@@ -123,7 +123,8 @@
                         $existingPeople[] = array('id' => $contact->getClassId('Item'),
                                                     'name' => strval($contact));
                     }
-                    else {
+                    else
+                    {
                         throw new NotFoundException();
                     }
                 }
@@ -136,16 +137,7 @@
                         //Owner is always added first.
                         if (get_class($user) == 'User' && $user->id != $this->model->owner->id)
                         {
-                            //The current user can only remove themselves from the detailview and clicking on the special
-                            //remove button.
-                            if(Yii::app()->user->userModel->id == $user->id)
-                            {
-                                $readOnly = true;
-                            }
-                            else
-                            {
-                                $readOnly = false;
-                            }
+                            $readOnly = false;
                             $existingPeople[] = array('id'       => $user->getClassId('Item'),
                                                       'name'     => strval($user),
                                                       'readonly' => $readOnly);

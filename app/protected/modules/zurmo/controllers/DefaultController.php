@@ -192,7 +192,7 @@
             $content = DynamicSearchUtil::renderDynamicSearchAttributeInput( $viewClassName,
                                                                              $modelClassName,
                                                                              $formModelClassName,
-                                                                             $rowNumber,
+                                                                             (int)$rowNumber,
                                                                              $attributeIndexOrDerivedType,
                                                                              array(),
                                                                              $suffix);
@@ -222,6 +222,7 @@
                     if($searchForm->validate())
                     {
                         $this->processSaveSearch($searchForm, $viewClassName);
+                        Yii::app()->end(0, false);
                     }
                 }
                 else
@@ -268,6 +269,11 @@
                 $postData['dynamicClauses']       = $sanitizedDynamicSearchAttributes;
             }
             return $postData;
+        }
+
+        public function actionClearStickySearch($key)
+        {
+            StickySearchUtil::clearDataByKey($key);
         }
     }
 ?>

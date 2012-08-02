@@ -74,12 +74,13 @@
             $hiddenInputId       = $this->formModelClassName . '_' . DynamicSearchForm::DYNAMIC_NAME . '_' . $this->rowNumber . '_structurePosition';
             $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
 
-            $content  = CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
+            $content  = '<div>';
+            $content .= CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
             $content .= $this->renderAttributeDropDownContent();
             $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
-            $content .= CHtml::tag('div', array('id' => $this->getInputsDivId()), $this->inputContent);
-            $content .= '&#160;' . CHtml::link(Yii::t('Default', 'Remove Field'),
-                        '#', array('class' => 'remove-extra-dynamic-search-row-link'));
+            $content .= CHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
+            $content .= '</div>';
+            $content .= CHtml::link(Yii::t('Default', '_'), '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }
 
@@ -100,7 +101,7 @@
         {
             $name        = $this->formModelClassName . '[' . DynamicSearchForm::DYNAMIC_NAME . '][' . $this->rowNumber . '][attributeIndexOrDerivedType]';
             $id          = $this->formModelClassName . '_' . DynamicSearchForm::DYNAMIC_NAME . '_' . $this->rowNumber . '_attributeIndexOrDerivedType';
-            $htmlOptions = array('id' => $id,
+            $htmlOptions = array('id' => $id, 'class' => 'attribute-dropdown',
                 'empty' => Yii::t('Default', 'Select a field')
             );
             Yii::app()->clientScript->registerScript('AttributeDropDown' . $id,
@@ -118,6 +119,7 @@
                     formId = $(this).closest('form').attr('id');
                     $(this).parent().remove();
                     rebuildDynamicSearchRowNumbersAndStructureInput(formId);
+                    resolveClearLinkPrefixLabelAndVisibility(formId);
                 }
             );");
             return $content;

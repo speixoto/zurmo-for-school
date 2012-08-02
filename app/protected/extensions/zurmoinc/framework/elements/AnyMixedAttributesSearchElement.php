@@ -50,10 +50,9 @@
          */
         protected function getHtmlOptions()
         {
-            $htmlOptions             = array('class'   => 'input-hint',
-                                             'onfocus' => '$(this).removeClass("input-hint"); $(this).val("");',
-                                             'size'    => 80,
-                                             'value'   => Yii::t('Default', 'Start typing to search'));
+            $htmlOptions             = array('class'   => 'input-hint anyMixedAttributes-input',
+                                             'onfocus' => '$(this).select();',
+                                             'size'    => 80);
             return array_merge(parent::getHtmlOptions(), $htmlOptions);
         }
 
@@ -116,8 +115,8 @@
                                     }
                                 }
                             }
-                            $('#" . $inputId . "').unbind('input propertychange keyup');
-                            $('#" . $inputId . "').bind('input propertychange keyup', basicSearchHandler);
+                            $('#" . $inputId . "').unbind('input.ajax propertychange.ajax keyup.ajax');
+                            $('#" . $inputId . "').bind('input.ajax propertychange.ajax keyup.ajax', basicSearchHandler);
                             ";
             Yii::app()->clientScript->registerScript('basicSearchAjaxSubmit', $script);
         }

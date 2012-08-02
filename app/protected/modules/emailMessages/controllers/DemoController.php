@@ -227,5 +227,49 @@
                 throw new NotSupportedException();
             }
         }
+
+        public function actionSendDemoEmailNotifications()
+        {
+            if (Yii::app()->user->userModel->username != 'super')
+            {
+                throw new NotSupportedException();
+            }
+            $template        = "{message}<br/>";
+            $messageStreamer = new MessageStreamer($template);
+            $messageStreamer->setExtraRenderBytes(0);
+            $messageLogger = new MessageLogger($messageStreamer);
+
+            if (Yii::app()->user->userModel->primaryEmail->emailAddress == null)
+            {
+                $messageLogger->addErrorMessage('Cannot send test emails because the current user does not have an email address');
+                Yii::app()->end(0, false);
+            }
+            $messageLogger->addInfoMessage('Using type:' . Yii::app()->emailHelper->outboundType);
+            $messageLogger->addInfoMessage('Using host:' . Yii::app()->emailHelper->outboundHost);
+            $messageLogger->addInfoMessage('Using port:' . Yii::app()->emailHelper->outboundPort);
+            $messageLogger->addInfoMessage('Using username:' . Yii::app()->emailHelper->outboundUsername);
+            if (Yii::app()->emailHelper->outboundPassword != null)
+            {
+                $messageLogger->addInfoMessage('Using password: Yes');
+            }
+            else
+            {
+                $messageLogger->addInfoMessage('Using password: No');
+            }
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                $notificationClassNames = $module::getAllClassNamesByPathFolder('data');
+                foreach ($notificationClassNames as $notificationClassName)
+                {
+                    if (!strpos($notificationClassName, 'DemoEmailNotifications') === false)
+                    {
+                        $demoNotification = new $notificationClassName();
+                        $demoNotification->run(Yii::app()->user->userModel, $messageLogger);
+                    }
+                }
+            }
+            Yii::app()->emailHelper->sendQueued();
+        }
     }
 ?>

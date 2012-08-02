@@ -58,7 +58,8 @@
             $attributeIndexOrDerivedTypeAndLabels = array();
             foreach($attributesLayoutAdapter->makeDesignerLayoutAttributes()->get() as $attributeIndexOrDerivedType => $data)
             {
-                if($searchFormClassName::isAttributeSearchable($attributeIndexOrDerivedType))
+                //special case with anyMixedAttributes since it is searchable but in the basic search part so never dynamically searchable
+                if($searchFormClassName::isAttributeSearchable($attributeIndexOrDerivedType) && $attributeIndexOrDerivedType != 'anyMixedAttributes')
                 {
                     $attributeIndexOrDerivedTypeAndLabels[$attributeIndexOrDerivedType] = $data['attributeLabel'];
                 }
@@ -226,6 +227,7 @@
             else
             {
                 $model                 = new $modelClassName(false);
+                $model->setScenario('importModel'); //this is so attributes such as modified user can be set
                 $modelToUse            = new $formModelClassName($model);
                 $modelToUse->setAttributes($searchAttributes);
                 $inputPrefix           = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
@@ -262,7 +264,6 @@
             assert('is_string($formModelClassName)');
             assert('is_int($rowNumber)');
             assert('is_string($attributeIndexOrDerivedType) || $attributeIndexOrDerivedType == null');
-            assert('is_array($searchAttributes)');
             assert('is_string($suffix) || $suffix == null');
             assert('is_bool($renderAsAjax)');
             $searchableAttributeIndicesAndDerivedTypes = DynamicSearchUtil::

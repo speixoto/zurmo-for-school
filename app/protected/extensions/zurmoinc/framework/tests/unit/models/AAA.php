@@ -32,6 +32,7 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'aaaMember',
+                    'aaaMember2',
                     'aaaBoolean',
                 ),
                 'relations' => array(
@@ -41,7 +42,8 @@
                     'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
                 ),
                 'rules' => array(
-                    array('aaaMember', 'type', 'type' => 'string'),
+                    array('aaaMember',  'type', 'type' => 'string'),
+                    array('aaaMember2', 'type', 'type' => 'string'),
                     array('aaaBoolean', 'boolean'),
                 ),
                 'customFields' => array(

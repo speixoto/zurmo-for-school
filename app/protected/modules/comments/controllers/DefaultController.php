@@ -45,7 +45,7 @@
             $relatedModelId           = ArrayUtil::getArrayValue($getData, 'relatedModelId');
             $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
             $relatedModelRelationName = ArrayUtil::getArrayValue($getData, 'relatedModelRelationName');
-            if(ArrayUtil::getArrayValue($getData, 'noPaging'))
+            if (ArrayUtil::getArrayValue($getData, 'noPaging'))
             {
                 $pageSize                 = null;
                 $retrievalPageSize        = null;
@@ -77,8 +77,9 @@
             $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
             $comment                  = Comment::getById(intval($id));
             $relatedModel             = $relatedModelClassName::getById(intval($relatedModelId));
-            if($comment->createdByUser->id != Yii::app()->user->userModel->id &&
-               $relatedModel->owner->id    != Yii::app()->user->userModel->id)
+            if ($comment->createdByUser->id      != Yii::app()->user->userModel->id &&
+               $relatedModel->owner->id         != Yii::app()->user->userModel->id &&
+               $relatedModel->createdByUser->id != Yii::app()->user->userModel->id)
             {
                 $messageView = new AccessFailureAjaxView();
                 $view        = new AjaxPageView($messageView);
@@ -86,7 +87,7 @@
                 Yii::app()->end(0, false);
             }
             $deleted = $comment->delete();
-            if(!$deleted)
+            if (!$deleted)
             {
                 throw new FailedToDeleteModelException();
             }
@@ -115,7 +116,7 @@
             $relatedModelId           = ArrayUtil::getArrayValue($getData, 'relatedModelId');
             $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
             $relatedModelRelationName = ArrayUtil::getArrayValue($getData, 'relatedModelRelationName');
-            if($relatedModelId == null || $relatedModelClassName == null || $relatedModelRelationName == null)
+            if ($relatedModelId == null || $relatedModelClassName == null || $relatedModelRelationName == null)
             {
                 throw new NotSupportedException();
             }

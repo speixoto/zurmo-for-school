@@ -133,31 +133,9 @@
                     $emailHelper->outboundSecurity = $configurationForm->security;
                     $userToSendMessagesFrom        = User::getById((int)$configurationForm->userIdOfUserToSendNotificationsAs);
 
-                    $emailMessage              = new EmailMessage();
-                    $emailMessage->owner       = Yii::app()->user->userModel;
-                    $emailMessage->subject     = Yii::t('Default', 'A test email from Zurmo');
-                    $emailContent              = new EmailMessageContent();
-                    $emailContent->textContent = Yii::t('Default', 'A test text message from Zurmo');
-                    $emailContent->htmlContent = Yii::t('Default', 'A test text message from Zurmo');
-                    $emailMessage->content     = $emailContent;
-                    $sender                    = new EmailMessageSender();
-                    $sender->fromAddress       = $emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                    $sender->fromName          = strval($userToSendMessagesFrom);
-                    $emailMessage->sender      = $sender;
-                    $recipient                 = new EmailMessageRecipient();
-                    $recipient->toAddress      = $configurationForm->aTestToAddress;
-                    $recipient->toName         = 'Test Recipient';
-                    $recipient->type           = EmailMessageRecipient::TYPE_TO;
-                    $emailMessage->recipients->add($recipient);
-                    $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                    $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-                    $validated                 = $emailMessage->validate();
-                    if (!$validated)
-                    {
-                        throw new NotSupportedException();
-                    }
+                    $emailMessage = EmailMessageHelper::sendTestEmail($emailHelper, $userToSendMessagesFrom,
+                                                                      $configurationForm->aTestToAddress);
                     $messageContent  = null;
-                    $emailHelper->sendImmediately($emailMessage);
                     if (!$emailMessage->hasSendError())
                     {
                         $messageContent .= Yii::t('Default', 'Message successfully sent') . "\n";
@@ -267,7 +245,7 @@
                                         'EmailMessage',
                                         $dataProvider,
                                         'ArchivedEmailMatchingListView',
-                                        Yii::t('Default', 'Some title'),
+                                        Yii::t('Default', 'Unmatched archived emails'),
                                         array(),
                                         false);
             $view = new EmailMessagesPageView(ZurmoDefaultViewUtil::
@@ -281,17 +259,16 @@
             $emailMessage          = EmailMessage::getById((int)$id);
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule', Yii::app()->user->userModel);
-            if(!$userCanAccessContacts && !$userCanAccessLeads)
+            if (!$userCanAccessContacts && !$userCanAccessLeads)
             {
                 throw new NotSupportedException();
             }
             $selectForm            = self::makeSelectForm($userCanAccessLeads, $userCanAccessContacts);
 
-            if(isset($_POST[get_class($selectForm)]))
+            if (isset($_POST[get_class($selectForm)]))
             {
                 if (isset($_POST['ajax']) && $_POST['ajax'] === 'select-contact-form-' . $id)
                 {
-
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);
                     $selectForm->validate();
                     $errorData = array();
@@ -310,7 +287,7 @@
                     ArchivedEmailMatchingUtil::resolveEmailAddressToContactIfEmailRelationAvailable($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
                                                                          EmailFolder::TYPE_ARCHIVED_UNMATCHED);
-                    if(!$emailMessage->save())
+                    if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
                     }
@@ -327,7 +304,7 @@
         {
             assert('$type == "Contact" || $type == "Lead"');
             assert('is_int($emailMessageId)');
-            if(isset($_POST[$type]))
+            if (isset($_POST[$type]))
             {
                 if (isset($_POST['ajax']) && $_POST['ajax'] === strtolower($type) . '-inline-create-form-' . $emailMessageId)
                 {
@@ -346,14 +323,14 @@
                 {
                     $contact = new Contact();
                     $contact->setAttributes($_POST[$type][$emailMessageId]);
-                    if(!$contact->save())
+                    if (!$contact->save())
                     {
                         throw new FailedToSaveModelException();
                     }
                     ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
                                                                          EmailFolder::TYPE_ARCHIVED_UNMATCHED);
-                    if(!$emailMessage->save())
+                    if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
                     }
@@ -363,11 +340,11 @@
 
         protected static function makeSelectForm($userCanAccessLeads, $userCanAccessContacts)
         {
-            if($userCanAccessLeads && $userCanAccessContacts)
+            if ($userCanAccessLeads && $userCanAccessContacts)
             {
                 $selectForm = new AnyContactSelectForm();
             }
-            elseif(!$userCanAccessLeads && $userCanAccessContacts)
+            elseif (!$userCanAccessLeads && $userCanAccessContacts)
             {
                 $selectForm = new ContactSelectForm();
             }

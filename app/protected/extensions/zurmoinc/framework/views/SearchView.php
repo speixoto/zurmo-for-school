@@ -110,24 +110,55 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
-            $clearSearchLink = CHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink        = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
+            $clearSearchLabel             = $this->getClearSearchLabelContent();
+            $clearSearchLinkStartingStyle = $this->getClearSearchLinkStartingStyle();
+            $clearSearchLink              = CHtml::link($clearSearchLabelPrefix . $clearSearchLabel, '#',
+                                                        array('id'    => 'clear-search-link' . $this->gridIdSuffix,
+                                                              'style' => $clearSearchLinkStartingStyle));
             $startingDivStyle = null;
             if ($this->hideAllSearchPanelsToStart)
             {
                 $startingDivStyle = "style='display:none;'";
             }
             $content  = '<div class="search-form-tools">';
-            $content .= $moreSearchOptionsLink . '&#160;|&#160;';
+            $content .= $moreSearchOptionsLink;
             $content .= $clearSearchLink;
             $content .= $this->renderFormBottomPanelExtraLinks();
+            $content .= $this->renderClearingSearchInputContent();
             $content .= '</div>';
             return $content;
+        }
+
+        protected function getClearSearchLabelPrefixContent()
+        {
+        }
+
+        protected function getClearSearchLabelContent()
+        {
+            return Yii::t('Default', 'Clear');
+        }
+
+        protected function getClearSearchLinkStartingStyle()
+        {
         }
 
         protected function getExtraRenderForClearSearchLinkScript()
         {
 
+        }
+
+        protected function renderClearingSearchInputContent()
+        {
+            $idInputHtmlOptions  = array('id' => $this->getClearingSearchInputId());
+            $hiddenInputName     = 'clearingSearch';
+            return ZurmoHtml::hiddenField($hiddenInputName, null, $idInputHtmlOptions);
+        }
+
+        protected function getClearingSearchInputId()
+        {
+            return 'clearingSearch-' . $this->getSearchFormId();
         }
 
         protected function registerScripts()
@@ -149,8 +180,21 @@
                 $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
                 $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function()
                     {
+                        $('#" . $this->getClearingSearchInputId() . "').val('1');
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
+                        //Reseting DropKick Information                        
+                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){                                                                            
+                            $(this).removeData('dropkick');
+                        });
+                        $(this).closest('form').find('div.dk_container').each(function(){
+                            $(this).remove();
+                        });
+                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){                                                
+                            $(this).dropkick();
+                            $(this).dropkick('rebindToggle');
+                        });
                         $(this).closest('form').submit();
+                        $('#" . $this->getClearingSearchInputId() . "').val('');
                         return false;
                     }
                 );
@@ -223,7 +267,7 @@
         {
             $metadata       = self::getMetadata();
             $maxCellsPerRow = $this->getMaxCellsPerRow();
-            $content        = null;
+            $content        = $this->renderSummaryCloneContent();
             $content       .= TableUtil::getColGroupContent($this->getColumnCount($metadata['global']));
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)
@@ -252,6 +296,11 @@
             return $content;
         }
 
+        protected function renderSummaryCloneContent()
+        {
+            return '<div class="list-view-items-summary-clone"></div>';
+        }
+
         protected function renderViewToolBarContainerForAdvancedSearch($form)
         {
             $content  = '<div class="view-toolbar-container clearfix">';
@@ -263,12 +312,12 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $content  = CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
-            $params['htmlOptions'] = array('id' => 'search-advanced-search');
+            $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content .= $searchElement->render();
+            $content  = $searchElement->render();
+            $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
             return $content;
         }
 
@@ -408,6 +457,11 @@
         protected function getSearchFormId()
         {
             return 'search-form' . $this->gridIdSuffix;
+        }
+
+        protected function getListViewId()
+        {
+            return $this->gridId . $this->gridIdSuffix;
         }
 
         protected function getMaxCellsPerRow()

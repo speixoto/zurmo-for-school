@@ -109,11 +109,11 @@
         protected function renderChangeDashboardLinkActionContent()
         {
             $dashboardsData = Dashboard::getRowsByUserId(Yii::app()->user->userModel->id);
-            if(count($dashboardsData) > 1)
+            if (count($dashboardsData) > 1)
             {
                 foreach ($dashboardsData as $key =>  $dashboardData)
                 {
-                    if($dashboardData['id'] == $this->model->id)
+                    if ($dashboardData['id'] == $this->model->id)
                     {
                         unset($dashboardsData[$key]);
                     }

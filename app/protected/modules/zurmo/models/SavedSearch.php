@@ -35,6 +35,12 @@
             return $this->name;
         }
 
+        public static function getByName($name)
+        {
+            assert('is_string($name) && $name != ""');
+            return self::getSubset(null, null, null, "name = '$name'");
+        }
+
         public static function getByOwnerAndViewClassName(User $user, $viewClassName)
         {
             assert('$user->id > 0');

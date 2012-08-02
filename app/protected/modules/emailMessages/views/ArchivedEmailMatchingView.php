@@ -146,7 +146,7 @@
                                                                     $this->urlParameters), 0, 0);
             $row = 1;
             $content = $this->renderEmailMessageContentAndResolveLink();
-            if($this->userCanCreateContact)
+            if ($this->userCanCreateContact)
             {
                 $this->setView(new ContactInlineCreateForArchivedEmailCreateView(
                                         $this->controllerId,
@@ -156,9 +156,9 @@
                                         $this->uniqueId,
                                         $this->saveActionId,
                                         $this->urlParameters), $row, 0);
-                $row ++;
+                $row++;
             }
-            if($this->userCanCreateLead)
+            if ($this->userCanCreateLead)
             {
                 $this->setView(new LeadInlineCreateForArchivedEmailCreateView(
                                         $this->controllerId,
@@ -194,7 +194,7 @@
         protected function renderEmailMessageContentAndResolveLink()
         {
             $rules    = new EmailMessageMashableActivityRules();
-            
+
             $content  = '<div class="email-matching-summary-content">';
             $content .= $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
             $content .= CHtml::tag('span', array(), strval($this->emailMessage));
@@ -205,8 +205,6 @@
             $content .= '<div class="email-matching-show-less" style="display:none;">';
             $content .= '<span class="icon-up-arrow"></span>Collapse';
             $content .= '</div>';
-            
-            
             return $content;
         }
 
@@ -238,7 +236,6 @@
                 );
                 $('.contact-select-link').click( function()
                     {
-
                         $(this).parent().parent().find('.contact-select-title').show();
                         $(this).parent().parent().find('.lead-create-title').hide();
                         $(this).parent().parent().find('.contact-create-title').hide();
@@ -275,13 +272,13 @@
 
         protected function renderSelectLinkContent()
         {
-            if($this->userCanAccessContacts && $this->userCanAccessLeads)
+            if ($this->userCanAccessContacts && $this->userCanAccessLeads)
             {
                 return CHtml::link(Yii::t('Default', 'Select ContactsModuleSingularLabel / LeadsModuleSingularLabel',
                                 LabelUtil::getTranslationParamsForAllModules()), '#',
                                     array('class' => 'contact-select-link'));
             }
-            if($this->userCanAccessContacts)
+            if ($this->userCanAccessContacts)
             {
                 return CHtml::link(Yii::t('Default', 'Select ContactsModuleSingularLabel',
                                 LabelUtil::getTranslationParamsForAllModules()), '#',
@@ -297,12 +294,12 @@
 
         protected function renderSelectContent()
         {
-            if($this->userCanAccessContacts && $this->userCanAccessLeads)
+            if ($this->userCanAccessContacts && $this->userCanAccessLeads)
             {
                 return Yii::t('Default', 'Select ContactsModuleSingularLabel / LeadsModuleSingularLabel',
                                 LabelUtil::getTranslationParamsForAllModules());
             }
-            if($this->userCanAccessContacts)
+            if ($this->userCanAccessContacts)
             {
                 return Yii::t('Default', 'Select ContactsModuleSingularLabel',
                                 LabelUtil::getTranslationParamsForAllModules());
@@ -321,11 +318,11 @@
             assert('is_string($createContactLink)');
             $content  = '<div id="contact-select-title-' . $this->uniqueId . '" class="contact-select-title">';
             $content .= $selectContent .  ' ' . Yii::t('Default', 'or') . ' ';
-            if($this->userCanCreateContact && $this->userCanCreateLead)
+            if ($this->userCanCreateContact && $this->userCanCreateLead)
             {
                 $content .= $createLeadLink . ' ' . Yii::t('Default', 'or') . ' ' . $createContactLink;
             }
-            elseif($this->userCanCreateContact)
+            elseif ($this->userCanCreateContact)
             {
                 $content .= $createContactLink;
             }
@@ -345,7 +342,7 @@
             $content  = '<div id="lead-create-title-' . $this->uniqueId . '" class="lead-create-title" style="display:none">';
             $content .= $selectContent . Yii::t('Default', 'or') . ' ';
             $content .= $createLeadContent;
-            if($this->userCanCreateContact)
+            if ($this->userCanCreateContact)
             {
                 $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createContactLink;
             }
@@ -360,9 +357,9 @@
             assert('is_string($createContactContent)');
             $content  = '<div id="contact-create-title-' . $this->uniqueId . '" class="contact-create-title" style="display:none">';
             $content .= $selectContent . Yii::t('Default', 'or') . ' ';
-            if($this->userCanCreateLead)
+            if ($this->userCanCreateLead)
             {
-                $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createLeadLink;
+                $content .= ' ' . $createLeadLink;
             }
             $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createContactContent;
             $content .= '</div>';

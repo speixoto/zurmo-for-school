@@ -57,7 +57,8 @@
                 'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'ContactsStateMetadataAdapter'
+                'ContactsStateMetadataAdapter',
+                'ContactsSearchView'
             );
             if(isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
@@ -86,9 +87,11 @@
             $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($contact), 'ContactsModule'), $contact);
+            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ContactsSearchView', $contact);
             $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'ContactsModule',
                                                                           'ContactDetailsAndRelationsView',
-                                                                          Yii::app()->request->getRequestUri());
+                                                                          Yii::app()->request->getRequestUri(),
+                                                                          $breadCrumbView);
             $view = new ContactsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();

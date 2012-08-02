@@ -96,7 +96,7 @@
 
         public static function createArchivedUnmatchedReceivedMessage(User $user)
         {
-            if($user->primaryEmail->emailAddress == null)
+            if ($user->primaryEmail->emailAddress == null)
             {
                 throw new NotSupportedException();
             }
@@ -131,7 +131,7 @@
 
         public static function createArchivedUnmatchedSentMessage(User $user)
         {
-            if($user->primaryEmail->emailAddress == null)
+            if ($user->primaryEmail->emailAddress == null)
             {
                 throw new NotSupportedException();
             }

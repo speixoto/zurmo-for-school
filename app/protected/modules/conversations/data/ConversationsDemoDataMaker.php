@@ -43,15 +43,16 @@
             assert('$demoDataHelper->isSetRange("Account")');
 
             $conversations = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            foreach (self::getConversationData() as $randomConversationData)
             {
-                $randomConversationData     = self::getRandomConversationData();
-                $postData                   = array();
-                $conversation               = new Conversation();
-                $conversation->owner        = $demoDataHelper->getRandomByModelName('User');
+                $postData                    = array();
+                $conversation                = new Conversation();
+                $conversation->setScenario('importModel');
+                $conversation->owner         = $demoDataHelper->getRandomByModelName('User');
+                $conversation->createdByUser = $conversation->owner;
                 $conversation->conversationItems->add($demoDataHelper->getRandomByModelName('Account'));
-                $conversation->subject      = $randomConversationData['subject'];
-                $conversation->description  = $randomConversationData['description'];
+                $conversation->subject       = $randomConversationData['subject'];
+                $conversation->description   = $randomConversationData['description'];
                 //Add some comments
                 foreach ($randomConversationData['comments'] as $commentDescription)
                 {
@@ -76,7 +77,7 @@
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                      makeBySecurableItem($conversation);
                 ConversationParticipantsUtil::resolveConversationHasManyParticipantsFromPost(
-                                                $conversation, $postData, $explicitReadWriteModelPermissions);
+                                                $conversation, $postData, $explicitReadWriteModelPermissions, false);
                 $saved = $conversation->save();
                 assert('$saved');
                 $success = ExplicitReadWriteModelPermissionsUtil::
@@ -90,9 +91,9 @@
 
         protected static function addItemIdToPostData(& $postData, $itemId)
         {
-            if(isset($postData['itemIds']))
+            if (isset($postData['itemIds']))
             {
-                $postData['itemIds'] .= ',' . $itemId;
+                $postData['itemIds'] .= ',' . $itemId; // Not Coding Standard
             }
             else
             {
@@ -100,7 +101,7 @@
             }
         }
 
-        protected static function getRandomConversationData()
+        protected static function getConversationData()
         {
             $data = array(
                     array('subject'     => 'Should we consider building a new corporate headquarters on Mars?',
@@ -133,7 +134,7 @@
                               'We should have a company retreat in Hawaii.  That would be fun!'
                           )),
             );
-            return RandomDataUtil::getRandomValueFromArray($data);
+            return $data;
         }
     }
 ?>

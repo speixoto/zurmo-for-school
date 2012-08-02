@@ -73,6 +73,8 @@
                     $('#" . $this->getRowCounterInputId() . "').val(0);
                     $('#" . $this->getStructureInputId() . "').val('');
                     $('.search-view-1').hide();
+                    resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
+                    rebuildDynamicSearchRowNumbersAndStructureInput('" . $this->getSearchFormId() . "')
             ";
         }
 
@@ -111,7 +113,18 @@
                             $this->listModelClassName . "_sort=" .
                             $this->getExtraQueryPartForSearchFormScriptSubmitFunction() ."' // Not Coding Standard
                          }
-                        );";
+                        );
+                        $('#" . $this->getClearingSearchInputId() . "').val('');
+                        ";
+        }
+
+        protected function getExtraRenderFormBottomPanelScriptPart()
+        {
+            return parent::getExtraRenderFormBottomPanelScriptPart() .
+                    "$('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').unbind('input.clear propertychange.clear keyup.clear');
+                     $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event){
+                         resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
+                });";
         }
 
         /**
@@ -174,6 +187,7 @@
                 }
             }
             $content .= $this->renderAddExtraRowContent($rowCount);
+            $content .= $this->renderAfterAddExtraRowContent($form);
             $content .= $this->renderDynamicSearchStructureContent($form);
            return $content;
         }
@@ -195,26 +209,43 @@
         protected function renderAddExtraRowContent($rowCount)
         {
             assert('is_int($rowCount)');
-            $idInputHtmlOptions  = array('id' => $this->getRowCounterInputId());
-            $hiddenInputName     = 'rowCounter';
-            $ajaxOnChangeUrl     = Yii::app()->createUrl("zurmo/default/dynamicSearchAddExtraRow",
-                                   array('viewClassName'      => get_class($this),
+            $idInputHtmlOptions   = array('id' => $this->getRowCounterInputId());
+            $hiddenInputName      = 'rowCounter';
+            $ajaxOnChangeUrl      = Yii::app()->createUrl("zurmo/default/dynamicSearchAddExtraRow",
+                                    array('viewClassName'      => get_class($this),
                                          'modelClassName'     => get_class($this->model->getModel()),
                                          'formModelClassName' => get_class($this->model),
                                          'suffix'             => $this->getSearchFormId()));
-            $content             = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
+            $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
-            $content            .= ZurmoHtml::ajaxLink(Yii::t('Default', 'Add Field'), $ajaxOnChangeUrl,
+            $addFieldLabelContent = $this->getAddFieldLabelContent();
+            $aContent             = CHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent            .= CHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent            .= CHtml::tag('span', array('class' => 'z-label'), $addFieldLabelContent);
+            $content             .= ZurmoHtml::ajaxLink($aContent, $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
+                                          'beforeSend' => 'js:function(){$(this).addClass("loading-ajax-submit"); $(this).addClass("loading"); attachLoadingSpinner("' . $this->getSearchFormId() . '");}',
                                           'success' => 'js:function(data){
                                             $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
+                                            resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
+                                            $(this).removeClass("loading-ajax-submit"); $(this).removeClass("loading");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
-            return CHtml::tag('div', array(), $content);
+            return CHtml::tag('div', array('class' => 'add-fields-container'), $content);
+        }
+
+        protected function renderAfterAddExtraRowContent($form)
+        {
+
+        }
+
+        protected function getAddFieldLabelContent()
+        {
+            return ZurmoHtml::tag('span', array(), Yii::t('Default', 'Add criteria'));
         }
 
         protected function renderAfterFormLayout($form)
@@ -260,22 +291,33 @@
                 $style1 = 'display:none;';
                 $style2 = '';
             }
-            $content  = CHtml::link(Yii::t('Default', 'More Options'), '#',
+            if(count($this->model->dynamicClauses) > 0)
+            {
+                $style3 = '';
+            }
+            else
+            {
+                $style3 = 'display:none;';
+            }
+            $content  = CHtml::link(Yii::t('Default', 'Modify Structure'), '#',
                             array('id'    => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
                                   'style' => $style1));
             $content .= CHtml::tag('div',
                             array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
+                                  'class' => 'has-lang-label',
                                   'style' => $style2), $this->renderStructureInputContent($form));
+            $content  = ZurmoHtml::tag('span', array('id'    => 'show-dynamic-search-structure-wrapper-' . $this->getSearchFormId(),
+                                                     'style' => $style3), $content);
             return $content;
         }
 
         protected function renderStructureInputContent($form)
         {
-            $content             = Yii::t('Default', 'Search Structure') . ':';
             $idInputHtmlOptions  = array('id'    => $this->getStructureInputId(),
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'dynamic-search-structure-input');
-            $content            .= $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
+            $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
+            $content            .= Yii::t('Default', '<span>Search Structure</span>');
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
         }
@@ -283,6 +325,39 @@
         protected function shouldHideDynamicSearchStructureByDefault()
         {
             return true;
+        }
+
+        protected function getClearSearchLabelPrefixContent()
+        {
+            $criteriaCount = count($this->model->dynamicClauses);
+            if($this->model->anyMixedAttributes != null)
+            {
+                $criteriaCount++;
+            }
+            if($criteriaCount == 0)
+            {
+                $criteriaCountContent = '';
+            }
+            else
+            {
+                $criteriaCountContent = $criteriaCount . ' ';
+            }
+            return ZurmoHtml::tag('span',
+                                  array('class' => 'clear-search-link-criteria-selected-count'),
+                                  $criteriaCountContent);
+        }
+
+        protected function getClearSearchLabelContent()
+        {
+            return Yii::t('Default', 'Criteria Selected <span class="icon-clear">Z</span>');
+        }
+
+        protected function getClearSearchLinkStartingStyle()
+        {
+            if ($this->model->anyMixedAttributes == null && count($this->model->dynamicClauses) == 0)
+            {
+                return "display:none;";
+            }
         }
     }
 ?>

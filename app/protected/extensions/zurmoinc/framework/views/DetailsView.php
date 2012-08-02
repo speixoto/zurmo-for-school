@@ -132,6 +132,7 @@
             assert('is_array($metadata)');
             assert('is_int($maxCellsPerRow)');
             assert('$form == null || $form instanceof ZurmoActiveForm');
+            $maximumColumnCount = DetailsViewFormLayout::getMaximumColumnCountForAllPanels($metadata);
             foreach ($metadata['global']['panels'] as $panelNumber => $panel)
             {
                 foreach ($panel['rows'] as $rowIndex => $row)
@@ -142,7 +143,8 @@
                         {
                             foreach ($cell['elements'] as $elementIndex => $elementInformation)
                             {
-                                if (count($row['cells']) == 1 && count($row['cells']) < $maxCellsPerRow)
+                                if (count($row['cells']) == 1 && count($row['cells']) < $maxCellsPerRow &&
+                                    count($row['cells']) < $maximumColumnCount)
                                 {
                                     $elementInformation['wide'] = true;
                                 }
@@ -339,7 +341,7 @@
             parent::assertMetadataIsValid($metadata);
             $attributeNames = array();
             $derivedTypes   = array();
-            assert('is_int($metadata["global"]["panelsDisplayType"])');
+            assert('!isset($metadata["global"]["panelsDisplayType"]) || is_int($metadata["global"]["panelsDisplayType"])');
         }
 
         /**

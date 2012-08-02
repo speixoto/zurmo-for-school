@@ -49,36 +49,6 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAddExtraRow');
             $this->assertNotNull($content);
 
-            //Test null attribute
-            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
-                                        'modelClassName'              => 'Account',
-                                        'formModelClassName'          => 'AccountsSearchForm',
-                                        'rowNumber'                   => 5,
-                                        'attributeIndexOrDerivedType' => ''));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
-            $this->assertNotNull($content);
-
-            //Test Account attribute
-            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
-                                        'modelClassName'              => 'Account',
-                                        'formModelClassName'          => 'AccountsSearchForm',
-                                        'rowNumber'                   => 5,
-                                        'attributeIndexOrDerivedType' => 'name'));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
-            $this->assertNotNull($content);
-
-            //Test AccountsSearchForm attribute
-            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
-                                        'modelClassName'              => 'Account',
-                                        'formModelClassName'          => 'AccountsSearchForm',
-                                        'rowNumber'                   => 5,
-                                        'attributeIndexOrDerivedType' => 'anyCountry'));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
-            $this->assertNotNull($content);
-
             //Test not passing validation post var
             $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
                                         'modelClassName'              => 'Account',
@@ -171,6 +141,41 @@
                                                       ))))));
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
             $this->assertEmpty($content);
+        }
+
+        public function testDynamicSearchAttributeInputTypes()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            //Test null attribute
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => ''));
+            $this->resetPostArray();
+            $this->runControllerWithExitExceptionAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+
+            //Test Account attribute
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => 'name'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            $this->assertNotNull($content);
+
+            //Test AccountsSearchForm attribute
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => 'anyCountry'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            $this->assertNotNull($content);
+
+            //todo: test additional types
         }
     }
 ?>

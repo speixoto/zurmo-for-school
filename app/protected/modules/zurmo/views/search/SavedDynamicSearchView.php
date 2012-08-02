@@ -79,16 +79,36 @@
 
         protected function renderSavedSearchDropDownOnChangeScript($id, $onChangeUrl)
         {
-            //Currently supports only if there is no additional get params. Todo, merge if there is an existing get param.
+            //To support adicional params if set $onChangeUrl
+            $onChangeUrlParams = parse_url($onChangeUrl);
+            if (isset($onChangeUrlParams['query'])) {
+                $onChangeUrl .= "&savedSearchId";
+            }
+            else
+            {
+                $onChangeUrl .= "?savedSearchId";
+            }
             Yii::app()->clientScript->registerScript('savedSearchLoadScript', "
                 $('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
                 {
                     if($(this).val() != '')
                     {
-                        window.location = '" . $onChangeUrl . "?savedSearchId=' + $(this).val();
+                        savedSearchId = $(this).val();
+                        $.ajax({
+                          url: '" . $this->getClearStickySearchUrlAndParams() . "',
+                          complete: function(data){
+                              window.location = '" . $onChangeUrl .  "=' + savedSearchId;
+                          },
+                        });
                     }
                 });");
         }
+
+        protected function getClearStickySearchUrlAndParams()
+        {
+            return Yii::app()->createUrl('zurmo/default/clearStickySearch/', array('key' => get_class($this)));
+        }
+
 
         protected function getExtraRenderFormBottomPanelScriptPart()
         {
@@ -96,7 +116,6 @@
                     "$('#save-as-advanced-search').click( function()
                     {
                         $('#save-search-area').show();
-                        $('#save-as-advanced-search').hide();
                         return false;
                     }
                 );";
@@ -110,15 +129,10 @@
                        parent::renderConfigSaveAjax($formName);
         }
 
-        protected function renderViewToolBarLinksForAdvancedSearch($form)
+        protected function renderAfterAddExtraRowContent($form)
         {
-            $content  = CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
-            $content .= CHtml::link(Yii::t('Default', 'Save As'), '#', array('id' => 'save-as-advanced-search'));
-            $params = array();
-            $params['label']       = Yii::t('Default', 'Search');
-            $params['htmlOptions'] = array('id' => 'search-advanced-search');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content .= $searchElement->render();
+            $content  = '<strong class="mp-divider"> · </strong>' . CHtml::link(Yii::t('Default', 'Save search'), '#', array('id' => 'save-as-advanced-search'));
+            $content  = CHtml::tag('div', array('class' => 'search-save-container'), $content);
             $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
             $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);
             $content .= '</div>';
@@ -128,7 +142,6 @@
         protected function renderSaveInputAndSaveButtonContentForAdvancedSearch($form)
         {
             $content               = $form->textField($this->model, 'savedSearchName');
-            $content              .= $form->error($this->model, 'savedSearchName');
             $content              .= $form->hiddenField($this->model, 'savedSearchId');
             $params['label']       = Yii::t('Default', 'Save');
             $params['htmlOptions'] = array('id'      => 'save-advanced-search',
@@ -137,6 +150,7 @@
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content .= $searchElement->render();
             $content .= $this->renderDeleteLinkContent();
+            $content .= $form->error($this->model, 'savedSearchName');
             return $content;
         }
 
@@ -194,6 +208,8 @@
                      $('#dk_container_" . static::getSavedSearchListDropDown() . "').remove();
                      $('#" . static::getSavedSearchListDropDown() . "').dropkick();
                      $('#" . static::getSavedSearchListDropDown() . "').dropkick('rebindToggle');
+                     $('#save-search-area').hide();
+                     jQuery.yii.submitForm(this, '', {}); return false;
             ";
         }
     }

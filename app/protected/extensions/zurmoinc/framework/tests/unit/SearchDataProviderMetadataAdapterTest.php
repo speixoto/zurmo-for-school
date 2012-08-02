@@ -34,6 +34,24 @@
             Yii::app()->user->userModel = $super;
         }
 
+        public function testEmptyConcatedValue()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $searchAttributes = array(
+                'concatedName' => null, //should resolve to no clause
+            );
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                new AAASearchFormTestModel(new AAA(false)),
+                1,
+                $searchAttributes
+            );
+            $metadata         = $metadataAdapter->getAdaptedMetadata();
+            $compareStructure = '';
+            $this->assertEquals(array(), $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
         public function testSearchingOnACustomFieldWithMultipleValues()
         {
             $searchAttributes = array(
