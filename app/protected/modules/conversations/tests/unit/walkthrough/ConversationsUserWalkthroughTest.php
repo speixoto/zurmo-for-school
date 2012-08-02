@@ -416,7 +416,7 @@
          */
         public function testCreateFromModel()
         {
-            if(!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
             {
                 return;
             }

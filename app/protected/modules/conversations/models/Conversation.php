@@ -180,7 +180,7 @@
                 if ($this->comments->isModified() || $this->getIsNewModel())
                 {
                     $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-                    if($this->getIsNewModel())
+                    if ($this->getIsNewModel())
                     {
                         $this->ownerHasReadLatest = true;
                     }
