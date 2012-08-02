@@ -59,7 +59,8 @@
                                                                       'method'               => 'get',
                                                                 )
                                                             );    
-            $content .= $formStart;           
+            $content .= $formStart;
+            //Scope search
             $content .= "<div class=search-view-0>";
             $scope = new MixedModelsSearchElement($model, 'term', $form, array( 'htmlOptions' => array ('id' => 'term')));
             $content .= $scope->render();           
@@ -74,34 +75,7 @@
             $content .= "</div>";
             return $content;
         }
-        /*
-        protected function renderGlobalSearchContent()
-        {            
-            $content = $this->renderGlobalSearchScopingInputContent();         
-            return $content;
-        }*/
-
-        /*
-        protected function renderGlobalSearchScopingInputContent()
-        {
-            $cClipWidget   = new CClipWidget();
-            $cClipWidget->beginClip("MixedModelsScopedJuiMultiSelect");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.ScopedSearchJuiMultiSelect', array(
-                'dataAndLabels'  => $this->moduleNamesAndLabelsAndAll,
-                'selectedValue'  => 'All',
-                'inputId'        => 'scope',
-                'inputName'      => 'scope',
-                'options'        => array(
-                                          'selectedText' => '',
-                                          'noneSelectedText' => '', 'header' => false,
-                                          'position' => array('my' =>  'right top', 'at' => 'right bottom')),
-                'htmlOptions'    => array('class' => 'ignore-style')
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['MixedModelsScopedJuiMultiSelect'];
-            return $content;
-        }
-        */    
+        
         protected function getSearchFormId()
         {         
             return 'mixed-models-form' . $this->gridIdSuffix;        
