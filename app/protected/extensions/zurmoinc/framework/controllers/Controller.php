@@ -84,7 +84,7 @@
             $sortDescending            = SearchUtil::resolveSortDescendingFromGetArray($listModelClassName);
             $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                 $searchModel,
-                Yii::app()->user->userModel,
+                Yii::app()->user->userModel->id,
                 $sanitizedSearchAttributes
             );
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),

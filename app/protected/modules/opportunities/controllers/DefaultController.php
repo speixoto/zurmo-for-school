@@ -53,7 +53,6 @@
             $searchForm = new OpportunitiesSearchForm($opportunity);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                'Opportunity',
                 $pageSize,
                 null,
                 'OpportunitiesSearchView'

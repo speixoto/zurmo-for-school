@@ -54,7 +54,6 @@
             $searchForm                     = new ContactsSearchForm($contact);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter',

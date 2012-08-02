@@ -53,7 +53,6 @@
             $searchForm                     = new AccountsSearchForm($account);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                'Account',
                 $pageSize,
                 null,
                 'AccountsSearchView'

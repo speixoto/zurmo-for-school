@@ -290,9 +290,7 @@
             $searchForm                     = new $searchFormClassName($model);
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
-                $modelClassName,
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 $stickyKey,
                 false
