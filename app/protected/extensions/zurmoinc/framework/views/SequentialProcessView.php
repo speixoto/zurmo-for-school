@@ -100,7 +100,7 @@
             }
             $urlParams = array_merge($urlParams, array('step' => $this->nextStep));
             $url       = Yii::app()->createUrl($this->route, $urlParams);
-            $script = ZurmoHtml::ajax(array(
+            $script = CHtml::ajax(array(
                     'type' => 'GET',
                     'dataType' => 'html',
                     'url'  => $url,

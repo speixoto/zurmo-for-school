@@ -145,7 +145,7 @@
 
         protected function getCreateProgressBarAjax($progressBarId)
         {
-            return ZurmoHtml::ajax(array(
+            return CHtml::ajax(array(
                     'type' => 'POST',
                     'dataType' => 'json',
                     'data' => yii::app()->getUrlManager()->createPathInfo($_POST, '=', '&'),

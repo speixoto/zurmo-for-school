@@ -54,7 +54,7 @@
             $content  .= '<a href="' . $homeUrl . '"><img src="' . $imagePath . 'Zurmo_logo.png" alt="Zurmo Logo"/></a>';
             if ($this->applicationName != null)
             {
-                $content  .= ZurmoHtml::tag('span', array(), $this->applicationName);
+                $content  .= CHtml::tag('span', array(), $this->applicationName);
             }
             $content  .= '</div>';
             $content  .= '<div id="user-toolbar" class="clearfix">';
@@ -112,9 +112,9 @@
             // Begin Not Coding Standard
             $content  .= "<a id=\"notifications-flyout-link\" href=\"#\" class=\"notifications-link unread\">";
             $content  .= "<span id='notifications-link' class='tooltip'>" . $count ."</span></a>";
-            $content  .= ZurmoHtml::tag('div',
+            $content  .= CHtml::tag('div',
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
-                                    ZurmoHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
+                                    CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
             Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
                 $('#notifications-flyout-link').unbind('click');
                 $('#notifications-flyout-link').bind('click', function()

@@ -33,7 +33,7 @@
 
         public function render()
         {
-            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+            return CHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
                 $this->getAjaxLinkOptions(),
                 $this->getHtmlOptions()
             );

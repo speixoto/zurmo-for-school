@@ -128,7 +128,7 @@
             {
                 $halfClassString = ' half';
             }
-            return ZurmoHtml::tag('div', array('class' => 'overlay-label-field' . $halfClassString), $label . $textField . $error);
+            return CHtml::tag('div', array('class' => 'overlay-label-field' . $halfClassString), $label . $textField . $error);
         }
 
          /**
@@ -150,7 +150,7 @@
                                                                          'latitude'      => $addressModel->latitude,
                                                                          'longitude'     => $addressModel->longitude));
             $id           = $this->getEditableInputId($this->attribute, 'MapLink');
-            $content      = ZurmoHtml::ajaxLink(Yii::t('Default', 'map'), $mapRenderUrl,
+            $content      = CHtml::ajaxLink(Yii::t('Default', 'map'), $mapRenderUrl,
                                 static::resolveAjaxOptionsForMapLink(),
                                 array('id' => $id, 'class' => 'map-link')
             );

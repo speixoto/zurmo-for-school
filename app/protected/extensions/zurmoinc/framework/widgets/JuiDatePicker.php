@@ -65,24 +65,24 @@
             {
                 if ($this->hasModel())
                 {
-                    echo ZurmoHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
+                    echo CHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
                 }
                 else
                 {
-                    echo ZurmoHtml::textField($name, $this->value, $this->htmlOptions);
+                    echo CHtml::textField($name, $this->value, $this->htmlOptions);
                 }
             }
             else
             {
                 if ($this->hasModel())
                 {
-                    echo ZurmoHtml::activeHiddenField($this->model, $this->attribute, $this->htmlOptions);
+                    echo CHtml::activeHiddenField($this->model, $this->attribute, $this->htmlOptions);
                     $attribute = $this->attribute;
                     $this->options['defaultDate'] = $this->model->$attribute;
                 }
                 else
                 {
-                    echo ZurmoHtml::hiddenField($name, $this->value, $this->htmlOptions);
+                    echo CHtml::hiddenField($name, $this->value, $this->htmlOptions);
                     $this->options['defaultDate'] = $this->value;
                 }
 
@@ -94,7 +94,7 @@
                 $id = $this->htmlOptions['id'] = $this->htmlOptions['id'].'_container';
                 $this->htmlOptions['name'] = $this->htmlOptions['name'].'_container';
 
-                echo ZurmoHtml::tag('div', $this->htmlOptions, '');
+                echo CHtml::tag('div', $this->htmlOptions, '');
             }
 
             $options = CJavaScript::encode($this->options);

@@ -97,7 +97,7 @@
 
         protected function renderConfigSaveAjax($formName, $moduleId, $controllerId, $actionSave, $uniquePortletPageId)
         {
-            return ZurmoHtml::ajax(array(
+            return CHtml::ajax(array(
                     'type' => 'POST',
                     'data' => 'js:$("#' . $formName . '").serialize()',
                     'url'  => Yii::app()->createUrl($moduleId . '/' . $controllerId . '/' . $actionSave, $_GET),

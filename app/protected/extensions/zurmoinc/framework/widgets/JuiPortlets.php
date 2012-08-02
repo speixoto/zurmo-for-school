@@ -167,7 +167,7 @@
             );
             if (!$renderOnClickEvent)
             {
-                return ZurmoHtml::link(Yii::t('Default', 'Edit') . '<span class="icon"></span>', '#', $htmlOptions);
+                return CHtml::link(Yii::t('Default', 'Edit') . '<span class="icon"></span>', '#', $htmlOptions);
             }
             else
             {
@@ -178,7 +178,7 @@
                 'uniqueLayoutId' => $uniqueLayoutId,
                 'portletId'      => $portletId,
             ));
-            return ZurmoHtml::ajaxLink(Yii::t('Default', 'Edit') . '<span class="icon"></span>', $url,
+            return CHtml::ajaxLink(Yii::t('Default', 'Edit') . '<span class="icon"></span>', $url,
                 static::resolveAjaxOptionsForEditLink(),
                 $htmlOptions
             );

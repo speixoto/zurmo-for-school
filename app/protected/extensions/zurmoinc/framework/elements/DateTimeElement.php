@@ -71,7 +71,7 @@
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];
-            return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
+            return CHtml::tag('div', array('class' => 'has-date-select'), $content);
         }
 
         /**
@@ -85,7 +85,7 @@
                 $content = DateTimeUtil::
                            convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                $this->model->{$this->attribute});
-                return ZurmoHtml::encode($content);
+                return CHtml::encode($content);
             }
         }
     }

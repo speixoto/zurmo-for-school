@@ -110,8 +110,8 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink = ZurmoHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
-            $clearSearchLink = ZurmoHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $clearSearchLink = CHtml::link(Yii::t('Default', 'Clear'), '#', array('id' => 'clear-search-link' . $this->gridIdSuffix));
             $startingDivStyle = null;
             if ($this->hideAllSearchPanelsToStart)
             {
@@ -263,7 +263,7 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $content  = ZurmoHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
+            $content  = CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
             $params['htmlOptions'] = array('id' => 'search-advanced-search');

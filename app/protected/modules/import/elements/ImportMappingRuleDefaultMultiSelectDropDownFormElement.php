@@ -46,7 +46,7 @@
         {
             $dropDownArray = $this->getDropDownArray();
             $content       = null;
-            $content      .= ZurmoHtml::listBox($this->getNameForSelectInput(),
+            $content      .= CHtml::listBox($this->getNameForSelectInput(),
                                             $this->model->{$this->attribute},
                                             $this->getDropDownArray(),
                                             $this->getEditableHtmlOptions());

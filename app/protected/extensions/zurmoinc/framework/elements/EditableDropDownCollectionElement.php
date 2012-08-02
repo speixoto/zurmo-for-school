@@ -154,7 +154,7 @@
 
         protected function renderRemoveLink()
         {
-            return ZurmoHtml::link( '<span>' . Yii::t('Default', 'Remove') . '</span>', '#', array('class' => 'remove-sortable-item-link'));
+            return CHtml::link( '<span>' . Yii::t('Default', 'Remove') . '</span>', '#', array('class' => 'remove-sortable-item-link'));
         }
 
         protected function renderAddInputAndAddButton()
@@ -167,10 +167,10 @@
             $content .= '<tbody>';
             $content .= '<tr>';
             $content .= '<td>';
-            $content .= '<div class="has-lang-label">' . ZurmoHtml::textField( $this->attribute . '_AddInput', '', array('size' => 50));
+            $content .= '<div class="has-lang-label">' . CHtml::textField( $this->attribute . '_AddInput', '', array('size' => 50));
             $content .= static::renderLanguageLabelHtmlContent($activeLanguagesData[$baseLanguage]);
             $content .= '</div>';
-            $content .= ZurmoHtml::button(Yii::t('Default', 'Add Item'), array('id' => $this->attribute . '_AddInputButton'));
+            $content .= CHtml::button(Yii::t('Default', 'Add Item'), array('id' => $this->attribute . '_AddInputButton'));
             $content .= '<div id="' . $this->attribute . '_AddInput_em_" class="errorMessage" style="display:none"></div>';
             $content .= '</td>';
             $content .= '</tr>';

@@ -101,11 +101,11 @@
                                         '<span class="pass">' . Yii::t('Default', 'PASS') . '</span>');
             }
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(Yii::t('Default', 'Recheck System'), $currentPageUrl);
+            $content .= CHtml::link(Yii::t('Default', 'Recheck System'), $currentPageUrl);
             if (count($this->checkResultsDisplayData[$failedIndexId][$requiredIndexId]) == 0)
             {
                 $content .= ' ' . Yii::t('Default', 'or') . ' ';
-                $content .= ZurmoHtml::link(Yii::t('Default', 'Continue'), $nextPageUrl);
+                $content .= CHtml::link(Yii::t('Default', 'Continue'), $nextPageUrl);
             }
             $content .= '</td></tr></table>';
             $content .= '</div>';

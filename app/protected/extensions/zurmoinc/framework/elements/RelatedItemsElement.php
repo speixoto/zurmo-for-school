@@ -219,7 +219,7 @@
 
         protected function renderLabel()
         {
-            return ZurmoHtml::label(Yii::t('Default', 'Related to'), false);
+            return CHtml::label(Yii::t('Default', 'Related to'), false);
         }
 
         public static function getDisplayName()

@@ -214,7 +214,7 @@
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
-            return ZurmoHtml::tag('div', array(), $content);
+            return CHtml::tag('div', array(), $content);
         }
 
         protected function renderAfterFormLayout($form)
@@ -260,10 +260,10 @@
                 $style1 = 'display:none;';
                 $style2 = '';
             }
-            $content  = ZurmoHtml::link(Yii::t('Default', 'More Options'), '#',
+            $content  = CHtml::link(Yii::t('Default', 'More Options'), '#',
                             array('id'    => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
                                   'style' => $style1));
-            $content .= ZurmoHtml::tag('div',
+            $content .= CHtml::tag('div',
                             array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
                                   'style' => $style2), $this->renderStructureInputContent($form));
             return $content;

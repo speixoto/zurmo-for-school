@@ -52,7 +52,7 @@
             {
                 return Yii::t('Default', 'Unknown');
             }
-            $content = ZurmoHtml::encode(
+            $content = CHtml::encode(
                         DateTimeUtil::
                         convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->{$dateTimeAttributeName}));
 

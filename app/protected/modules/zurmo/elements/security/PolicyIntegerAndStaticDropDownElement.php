@@ -54,7 +54,7 @@
                 'onchange' => 'enableDisablePolicyTextField($(this).val(), \''. $inputId . '\', \''. $compareValue . '\');',
             );
             $content       = $this->getInheritedContent();
-            $content      .= ZurmoHtml::dropDownList(
+            $content      .= CHtml::dropDownList(
                                 $this->getNameForHelperInput(),
                                 $this->getHelperValue(),
                                 $dropDownArray,

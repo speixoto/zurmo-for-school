@@ -225,7 +225,7 @@
             {
                 $content .= '<div class="horizontal-line latest-activity-toolbar">';
                 $content .= $innerContent;
-                $content .= ZurmoHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
+                $content .= CHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
                 $content .= '</div>' . "\n";
             }
             if ($innerContent != null &&
@@ -252,7 +252,7 @@
             assert('$form instanceof ZurmoActiveForm');
             $urlScript = 'js:$.param.querystring("' . $this->portletDetailsUrl . '", "' .
                          $this->dataProvider->getPagination()->pageVar . '=1")'; // Not Coding Standard
-            $ajaxSubmitScript = ZurmoHtml::ajax(array(
+            $ajaxSubmitScript = CHtml::ajax(array(
                     'type'       => 'GET',
                     'data'       => 'js:$("#' . $form->getId() . '").serialize()',
                     'url'        =>  $urlScript,

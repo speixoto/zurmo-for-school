@@ -47,7 +47,7 @@
                     $options['class'] = $class;
                 }
             }
-            echo ZurmoHtml::openTag('div', $options);
+            echo CHtml::openTag('div', $options);
             $this->owner->renderDataCellContentFromOutsideClass($row, $data);
             echo '</div>';
         }

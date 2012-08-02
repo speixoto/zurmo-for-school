@@ -41,7 +41,7 @@
             {
                 $url = 'http://' . $url;
             }
-            return ZurmoHtml::link(ZurmoHtml::encode($value), $url, $htmlOptions);
+            return CHtml::link(CHtml::encode($value), $url, $htmlOptions);
         }
     }
 ?>

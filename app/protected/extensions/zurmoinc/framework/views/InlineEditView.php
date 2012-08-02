@@ -115,7 +115,7 @@
 
         protected function renderConfigSaveAjax($formName)
         {
-            return ZurmoHtml::ajax(array(
+            return CHtml::ajax(array(
                     'type' => 'POST',
                     'data' => 'js:$("#' . $formName . '").serialize()',
                     'url'  =>  $this->getValidateAndSaveUrl(),

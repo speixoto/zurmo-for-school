@@ -49,7 +49,7 @@
                 $element->editableTemplate = $editableTemplate;
                 $content .= $element->render();
             }
-             return ZurmoHtml::tag('div', array('class' => 'has-lang-label'), $content);
+             return CHtml::tag('div', array('class' => 'has-lang-label'), $content);
         }
 
         /**
@@ -62,7 +62,7 @@
             {
                 return $label;
             }
-            return ZurmoHtml::label($label, false);
+            return CHtml::label($label, false);
         }
 
         protected function getElementViewMetadata()

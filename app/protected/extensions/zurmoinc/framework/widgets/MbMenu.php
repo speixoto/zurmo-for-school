@@ -181,7 +181,7 @@
         {
             foreach ($items as $item)
             {
-                echo ZurmoHtml::openTag('li', isset($item['itemOptions']) ? $item['itemOptions'] : array());
+                echo CHtml::openTag('li', isset($item['itemOptions']) ? $item['itemOptions'] : array());
                 if (isset($item['linkOptions']))
                 {
                      $htmlOptions = $item['linkOptions'];
@@ -194,23 +194,23 @@
                                         static::resolveAndGetSpanAndDynamicLabelContent($item) . '</span>';
                 if ((isset($item['ajaxLinkOptions'])))
                 {
-                    echo ZurmoHtml::ajaxLink($resolvedLabelContent, $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
+                    echo CHtml::ajaxLink($resolvedLabelContent, $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
                 }
                 elseif (isset($item['url']))
                 {
-                    echo ZurmoHtml::link('<span></span>' . $resolvedLabelContent, $item['url'], $htmlOptions);
+                    echo CHtml::link('<span></span>' . $resolvedLabelContent, $item['url'], $htmlOptions);
                 }
                 else
                 {
-                    echo ZurmoHtml::link($resolvedLabelContent, "javascript:void(0);", $htmlOptions);
+                    echo CHtml::link($resolvedLabelContent, "javascript:void(0);", $htmlOptions);
                 }
                 if (isset($item['items']) && count($item['items']))
                 {
-                    echo "\n" . ZurmoHtml::openTag('ul', $this->submenuHtmlOptions) . "\n";
+                    echo "\n" . CHtml::openTag('ul', $this->submenuHtmlOptions) . "\n";
                     $this->renderMenuRecursive($item['items']);
-                    echo ZurmoHtml::closeTag('ul') . "\n";
+                    echo CHtml::closeTag('ul') . "\n";
                 }
-                echo ZurmoHtml::closeTag('li') . "\n";
+                echo CHtml::closeTag('li') . "\n";
             }
         }
 
@@ -218,7 +218,7 @@
         {
             if(isset($item['dynamicLabelContent']))
             {
-                return ZurmoHtml::tag('span', array(), $item['dynamicLabelContent']);
+                return CHtml::tag('span', array(), $item['dynamicLabelContent']);
             }
         }
 

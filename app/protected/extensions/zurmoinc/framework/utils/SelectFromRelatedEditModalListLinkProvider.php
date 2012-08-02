@@ -60,7 +60,7 @@
 
         public function getLinkString($attributeString)
         {
-            $string  = 'ZurmoHtml::link(';
+            $string  = 'CHtml::link(';
             $string .= $attributeString . ', ';
             $string .= '"javascript:transferModalValues(\"#modalContainer\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");"';
             $string .= ')';

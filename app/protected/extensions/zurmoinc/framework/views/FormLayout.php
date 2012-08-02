@@ -94,7 +94,7 @@
          */
         protected static function makeUniqueId()
         {
-            return ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++;
+            return CHtml::ID_PREFIX . CHtml::$count++;
         }
 
         /**

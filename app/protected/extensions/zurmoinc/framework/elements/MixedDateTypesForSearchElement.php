@@ -97,7 +97,7 @@
         protected function renderEditableValueTypeContent()
         {
             $value     = $this->model->{$this->attribute};
-            return       ZurmoHtml::dropDownList($this->getEditableInputName($this->attribute, 'type'),
+            return       CHtml::dropDownList($this->getEditableInputName($this->attribute, 'type'),
                                              ArrayUtil::getArrayValue($value, 'type'),
                                              $this->getValueTypeDropDownArray(),
                                              $this->getEditableValueTypeHtmlOptions());
@@ -129,7 +129,7 @@
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateElement'];
-            return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
+            return CHtml::tag('div', array('class' => 'has-date-select'), $content);
         }
 
         protected function renderEditableSecondDateContent()
@@ -158,7 +158,7 @@
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateElement'];
-            return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
+            return CHtml::tag('div', array('class' => 'has-date-select'), $content);
         }
 
         protected function getEditableValueTypeHtmlOptions()
@@ -192,7 +192,7 @@
             {
                 return $label;
             }
-            return ZurmoHtml::label($label, false);
+            return CHtml::label($label, false);
         }
     }
 ?>

@@ -166,7 +166,7 @@
         protected function renderAttributeNameSelectionContent(DropDownDependencyCustomFieldMapping $mapping)
         {
             $inputName            = $this->formName . '[mappingData][' . $mapping->getPosition() . '][attributeName]';
-            $inputId              = ZurmoHtml::getIdByName($inputName);
+            $inputId              = CHtml::getIdByName($inputName);
             $htmlOptions          = array();
             $htmlOptions['id']    = $inputId;
 
@@ -182,7 +182,7 @@
             }
             Yii::app()->clientScript->registerScript('DropDownDependency' . $inputId,
                                                      $this->renderAttributeDropDownOnChangeScript($inputId));
-            $content = ZurmoHtml::dropDownList($inputName, $mapping->getAttributeName(), $data, $htmlOptions);
+            $content = CHtml::dropDownList($inputName, $mapping->getAttributeName(), $data, $htmlOptions);
             return $content;
         }
 
@@ -191,7 +191,7 @@
             assert('is_string($id)');
             $ajaxOnChangeUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' .
                                                        $this->ajaxActionId, $_GET);
-            $ajaxSubmitScript  = ZurmoHtml::ajax(array(
+            $ajaxSubmitScript  = CHtml::ajax(array(
                     'type'    => 'POST',
                     'url'     =>  $ajaxOnChangeUrl,
                     'update'  => '#' . $this->mappingDataDivId,
@@ -255,7 +255,7 @@
                                     getDataIndexedByDataAndTranslatedLabelsByLanguage(
                                         $parentMapping->getCustomFieldData(),
                                         Yii::app()->language);
-            $content = ZurmoHtml::dropDownList($inputName, $selectedParentValue, $dataAndLabels, $htmlOptions);
+            $content = CHtml::dropDownList($inputName, $selectedParentValue, $dataAndLabels, $htmlOptions);
             return $content;
         }
     }

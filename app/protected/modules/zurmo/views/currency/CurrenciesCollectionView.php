@@ -110,7 +110,7 @@
                 }
                 else
                 {
-                    $content .= ZurmoHtml::link(Yii::t('Default', 'Remove'), Yii::app()->createUrl($route,
+                    $content .= CHtml::link(Yii::t('Default', 'Remove'), Yii::app()->createUrl($route,
                                             array('id' => $currency->id)));
                 }
                 $content .= '</td>';

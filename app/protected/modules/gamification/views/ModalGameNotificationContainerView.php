@@ -80,7 +80,7 @@
             echo '<div class="game-badge ' . $adapter->getIconCssName() . '"><div class="gloss"></div>' .
                                 '<strong class="badge-icon"></strong><span class="badge-message">' . $adapter->getMessageContent() . '</span></div>';
             echo '<br />';
-            echo ZurmoHtml::link(Yii::t('Default', 'Continue'), '#',
+            echo CHtml::link(Yii::t('Default', 'Continue'), '#',
                              array('class' => 'close-ModalGameNotification', 'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
             $cClipWidget->endWidget('zii.widgets.jui.CJuiDialog');
             $cClipWidget->endClip();

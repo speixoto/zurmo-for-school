@@ -292,7 +292,7 @@
             {
                 $view = new AjaxPageView($rowView);
             }
-            return ZurmoHtml::tag('div', array('class' => 'dynamic-search-row'), $view->render());
+            return CHtml::tag('div', array('class' => 'dynamic-search-row'), $view->render());
         }
     }
 ?>

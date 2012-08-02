@@ -88,7 +88,7 @@
             }
             $id = $this->htmlOptions['id'] = $this->htmlOptions['id'].'_container';
 
-            echo ZurmoHtml::tag('div', $this->htmlOptions, '');
+            echo CHtml::tag('div', $this->htmlOptions, '');
             //renderEvents before the datePicker.
             $this->renderEvents($id);
 

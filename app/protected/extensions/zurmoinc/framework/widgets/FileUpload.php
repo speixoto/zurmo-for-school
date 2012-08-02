@@ -219,7 +219,7 @@ EOD;
             echo '<div class="fileupload-buttonbar">'                       . "\n";
             echo '<label class="fileinput-button">'                         . "\n";
             echo '<span>' . $addLabel . '</span>'                           . "\n";
-            echo ZurmoHtml::fileField($this->inputName, null, $htmlOptions);
+            echo CHtml::fileField($this->inputName, null, $htmlOptions);
             echo '</label>' . $this->renderMaxSizeContent($this->maxSize)   . "\n";
             echo '</div><div class="clear"></div>'                          . "\n";
             echo '<div class="fileupload-content">'                         . "\n";

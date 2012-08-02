@@ -98,7 +98,7 @@
             }
             if (RightsUtil::canUserAccessModule($moduleClassName, Yii::app()->user->userModel))
             {
-                return ZurmoHtml::link($attributeString,
+                return CHtml::link($attributeString,
                     Yii::app()->createUrl($linkRoute, array("id" => $model->id)));
             }
             return $attributeString;
@@ -135,7 +135,7 @@
             }
             if (RightsUtil::canUserAccessModule($moduleClassName, Yii::app()->user->userModel))
             {
-                return ZurmoHtml::link($attributeString,
+                return CHtml::link($attributeString,
                     Yii::app()->createUrl($linkRoute, array("id" => $model->id, 'redirectUrl' => $redirectUrl)));
             }
             return $attributeString;

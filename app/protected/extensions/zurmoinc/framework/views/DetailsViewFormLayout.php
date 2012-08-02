@@ -159,9 +159,9 @@
             {
                 $content .= '<tr>';
                 $content .= '<td  colspan = "' . $this->maxCellsPerRow . '">';
-                $content .= ZurmoHtml::link($this->getMorePanelsLinkLabel(),
+                $content .= CHtml::link($this->getMorePanelsLinkLabel(),
                                         $this->uniqueId, array('id' => 'show-more-panels-link-' . $this->uniqueId . ''));
-                $content .= ZurmoHtml::link($this->getLessPanelsLinkLabel(),
+                $content .= CHtml::link($this->getLessPanelsLinkLabel(),
                                         $this->uniqueId,
                                         array('id' => 'show-less-panels-link-' . $this->uniqueId . '',
                                               'style' => 'display:none;'));

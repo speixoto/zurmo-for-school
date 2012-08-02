@@ -47,7 +47,7 @@
                      'This is most likely caused by setting debug=true. The cache must be cleared.'; // Not Coding Standard
                 echo '<br/>';
                 $url = Yii::app()->createUrl('zurmo/default/index/', array('clearCache' => true));
-                echo ZurmoHtml::link('Click here to clear the cache', $url);
+                echo CHtml::link('Click here to clear the cache', $url);
                 Yii::app()->end(0, false);
             }
         }

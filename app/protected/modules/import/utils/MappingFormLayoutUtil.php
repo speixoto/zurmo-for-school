@@ -116,13 +116,13 @@
             {
                 $mappableAttributeIndicesAndDerivedTypes = $this->mappableAttributeIndicesAndDerivedTypesForExtraColumns;
             }
-            $content = ZurmoHtml::dropDownList($name,
+            $content = CHtml::dropDownList($name,
                                        $attributeIndexOrDerivedType,
                                        $mappableAttributeIndicesAndDerivedTypes,
                                        $htmlOptions);
             if ($columnType == 'extraColumn')
             {
-                $content .= '&#160;' . ZurmoHtml::link(Yii::t('Default', 'Remove Field'),
+                $content .= '&#160;' . CHtml::link(Yii::t('Default', 'Remove Field'),
                             '#', array('class' => 'remove-extra-column-link'));
                 Yii::app()->clientScript->registerScript('mappingExtraColumnRemoveLink', "
                 $('.remove-extra-column-link').click( function()
@@ -140,7 +140,7 @@
             assert('$columnType == "importColumn" || $columnType == "extraColumn"');
             $idInputHtmlOptions  = array('id' => $this->mappingFormModelClassName . '_' . $columnName . '_type');
             $hiddenInputName     = $this->mappingFormModelClassName . '[' . $columnName . '][type]';
-            return ZurmoHtml::hiddenField($hiddenInputName, $columnType, $idInputHtmlOptions);
+            return CHtml::hiddenField($hiddenInputName, $columnType, $idInputHtmlOptions);
         }
 
         public function renderHeaderColumnContent($columnName, $headerValue)
@@ -251,7 +251,7 @@
             assert('is_string($id)');
             assert('is_string($columnName)');
             $mappingRulesDivId = self::getMappingRulesDivIdByColumnName($columnName);
-            $ajaxSubmitScript  = ZurmoHtml::ajax(array(
+            $ajaxSubmitScript  = CHtml::ajax(array(
                     'type'    => 'GET',
                     'data'    => 'js:\'columnName=' . $columnName . '&columnType=' . $columnType .
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',
@@ -288,6 +288,6 @@
             {
                 return $string;
             }
-            return ZurmoHtml::tag('div', array('title' => $string), substr($string, 0, 22) . '...');
+            return CHtml::tag('div', array('title' => $string), substr($string, 0, 22) . '...');
         }
     }

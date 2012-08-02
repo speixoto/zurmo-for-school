@@ -107,7 +107,7 @@
             $element->nonEditableTemplate = '<div>{content}</div>';
             $content .= $element->render();
             $content .= '</div>';
-            return ZurmoHtml::tag('div', array('id' => 'ConversationSummaryView'), $content);
+            return Chtml::tag('div', array('id' => 'ConversationSummaryView'), $content);
         }
 
         protected function renderConversationCommentsContent()
@@ -125,7 +125,7 @@
 
         protected function renderConversationCreateCommentContent()
         {
-            $content       = ZurmoHtml::tag('h2', array(), Yii::t('Default', 'Add Comment'));
+            $content       = Chtml::tag('h2', array(), Yii::t('Default', 'Add Comment'));
             $comment       = new Comment();
             $uniquePageId  = 'CommentInlineEditForConversationView';
             $redirectUrl   = Yii::app()->createUrl('/conversations/default/inlineCreateCommentFromAjax',
@@ -139,7 +139,7 @@
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
             $content      .= $inlineView->render();
-            return ZurmoHtml::tag('div', array('id' => 'CommentInlineEditForConversationView'), $content);
+            return Chtml::tag('div', array('id' => 'CommentInlineEditForConversationView'), $content);
         }
 
         protected function getPortletDetailsUrl()
