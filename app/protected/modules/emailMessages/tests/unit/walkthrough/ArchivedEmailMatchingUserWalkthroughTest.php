@@ -34,13 +34,13 @@
             parent::setUpBeforeClass();
             $super = SecurityTestHelper::createSuperAdmin();
             $super->primaryEmail->emailAddress = 'super@supertest.com';
-            if(!$super->save())
+            if (!$super->save())
             {
                 throw new NotSupportedException();
             }
             $nobody = UserTestHelper::createBasicUser('nobody');
             $nobody->primaryEmail->emailAddress = 'nobody@supertest.com';
-            if(!$nobody->save())
+            if (!$nobody->save())
             {
                 throw new NotSupportedException();
             }

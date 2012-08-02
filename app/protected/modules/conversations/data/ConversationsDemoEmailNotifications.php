@@ -32,7 +32,7 @@
             $conversation->owner       = Yii::app()->user->userModel;
             $conversation->subject     = 'My test subject';
             $conversation->description = 'My test description';
-            if(!$conversation->save())
+            if (!$conversation->save())
             {
                 throw new FailedToSaveModelException();
             }
@@ -40,5 +40,4 @@
             $messageLogger->addInfoMessage('Sending conversation invite message');
         }
     }
-
 ?>

@@ -100,7 +100,7 @@
                 'value'    => $this->getId(),
             );
             $content       = $this->form->hiddenField($this->model, $this->idAttributeId, $idInputHtmlOptions);
-            if(!$this->showOnlyHiddenInputForEditable())
+            if (!$this->showOnlyHiddenInputForEditable())
             {
                 $inputContent  = $this->renderTextField($this->getIdForHiddenField());
                 $inputContent .= $this->renderSelectLink();
@@ -353,8 +353,6 @@
             }
             return false;
         }
-
-
 
         /**
          * Gets the moduleId statically. You can override this method and get the moduleId in a non-static way

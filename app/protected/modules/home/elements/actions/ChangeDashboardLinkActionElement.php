@@ -34,7 +34,7 @@
         public function render()
         {
             $menuItems = array('label' => $this->getDefaultLabel(), 'items' => array());
-            foreach($this->getDashboardsData() as $dashboardData)
+            foreach ($this->getDashboardsData() as $dashboardData)
             {
                 $menuItems['items'][] = array('label' => $dashboardData['name'],
                                                'url'   => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/dashboardDetails/',
@@ -69,6 +69,5 @@
                 return $this->params['dashboardsData'];
             }
         }
-
     }
 ?>
