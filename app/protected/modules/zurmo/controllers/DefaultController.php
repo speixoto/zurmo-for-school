@@ -234,7 +234,7 @@
                      $errorData = array();
                     foreach ($searchForm->getErrors() as $attribute => $errors)
                     {
-                            $errorData[CHtml::activeId($searchForm, $attribute)] = $errors;
+                            $errorData[ZurmoHtml::activeId($searchForm, $attribute)] = $errors;
                     }
                     echo CJSON::encode($errorData);
                     Yii::app()->end(0, false);

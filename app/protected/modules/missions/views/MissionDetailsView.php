@@ -147,7 +147,7 @@
 
         protected function renderMissionCreateCommentContent()
         {
-            $content       = Chtml::tag('h2', array(), Yii::t('Default', 'Add Comment'));
+            $content       = ZurmoHtml::tag('h2', array(), Yii::t('Default', 'Add Comment'));
             $comment       = new Comment();
             $uniquePageId  = 'CommentInlineEditForModelView';
             $redirectUrl   = Yii::app()->createUrl('/missions/default/inlineCreateCommentFromAjax',
@@ -161,7 +161,7 @@
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
             $content      .= $inlineView->render();
-            return Chtml::tag('div', array('id' => 'CommentInlineEditForModelView'), $content);
+            return ZurmoHtml::tag('div', array('id' => 'CommentInlineEditForModelView'), $content);
         }
 
         protected function getPortletDetailsUrl()

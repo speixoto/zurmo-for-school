@@ -110,11 +110,11 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink        = CHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink        = ZurmoHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
             $clearSearchLabel             = $this->getClearSearchLabelContent();
             $clearSearchLinkStartingStyle = $this->getClearSearchLinkStartingStyle();
-            $clearSearchLink              = CHtml::link($clearSearchLabelPrefix . $clearSearchLabel, '#',
+            $clearSearchLink              = ZurmoHtml::link($clearSearchLabelPrefix . $clearSearchLabel, '#',
                                                         array('id'    => 'clear-search-link' . $this->gridIdSuffix,
                                                               'style' => $clearSearchLinkStartingStyle));
             $startingDivStyle = null;
@@ -317,7 +317,7 @@
             $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content  = $searchElement->render();
-            $content .= CHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
+            $content .= ZurmoHtml::link(Yii::t('Default', 'Close'), '#', array('id' => 'cancel-advanced-search'));
             return $content;
         }
 

@@ -102,7 +102,7 @@
             $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->rowsAreSelectable)
             {
-                $content .= CHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
             $content .= $this->renderScripts();
             return $content;
@@ -345,7 +345,7 @@
 
         public function getLinkString($attributeString)
         {
-            $string  = 'CHtml::link(';
+            $string  = 'ZurmoHtml::link(';
             $string .=  $attributeString . ', ';
             $string .= 'Yii::app()->createUrl("' .
                         $this->getGridViewActionRoute('details') . '", array("id" => $data->id))';
@@ -355,7 +355,7 @@
 
         public function getRelatedLinkString($attributeString, $attributeName, $moduleId)
         {
-            $string  = 'CHtml::link(';
+            $string  = 'ZurmoHtml::link(';
             $string .=  $attributeString . ', ';
             $string .= 'Yii::app()->createUrl("' .
                         $this->getGridViewActionRoute('details', $moduleId) . '",
