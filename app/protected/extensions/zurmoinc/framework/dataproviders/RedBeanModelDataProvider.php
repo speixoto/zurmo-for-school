@@ -98,6 +98,18 @@
                     $orderBy .= ' desc';
                 }
             }
+            else
+            {
+                $sortAttribute = self::getSortAttributeName($this->modelClassName);
+                if($sortAttribute != null)
+                {
+                    $orderBy = self::resolveSortAttributeColumnName($this->modelClassName, $joinTablesAdapter, $sortAttribute);
+                    if ($this->sortDescending)
+                    {
+                        $orderBy .= ' desc';
+                    }
+                }
+            }
             $modelClassName = $this->modelClassName;
             return $modelClassName::getSubset($joinTablesAdapter, $offset, $limit, $where, $orderBy,
                                               $this->modelClassName, $joinTablesAdapter->getSelectDistinct());
