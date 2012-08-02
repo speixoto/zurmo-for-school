@@ -82,7 +82,6 @@
             $searchModel,
             $pageSize,
             $title,
-            $userId,
             $dataProvider,
             $actionBarViewClassName = 'SecuredActionBarForSearchAndListView'
             )

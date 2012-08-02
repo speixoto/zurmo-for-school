@@ -72,7 +72,6 @@
                     $searchForm,
                     $pageSize,
                     AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    Yii::app()->user->userModel->id,
                     $dataProvider
                 );
             }
