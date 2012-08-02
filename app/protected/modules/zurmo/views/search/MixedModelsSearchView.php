@@ -48,6 +48,7 @@
         {            
             $model = new MixedModelsSearchForm();    
             $model->setGlobalSearchAttributeNamesAndLabelsAndAll($this->moduleNamesAndLabelsAndAll);            
+            $content = "<div class='wide form'>";
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'NoRequiredsActiveForm',
@@ -58,7 +59,8 @@
                                                                       'method'               => 'get',
                                                                 )
                                                             );    
-            $content = $formStart;            
+            $content .= $formStart;           
+            $content .= "<div class=search-view-0>";
             $scope = new MixedModelsSearchElement($model, 'term', $form, array( 'htmlOptions' => array ('id' => 'term')));
             $content .= $scope->render();           
             //Search button
@@ -67,7 +69,9 @@
             $params['htmlOptions'] = array('id' => $this->getSearchFormId() . '-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content .= $searchElement->render();
+            $content .= "</div>";
             $formEnd  = $clipWidget->renderEndWidget(); 
+            $content .= "</div>";
             return $content;
         }
         /*
