@@ -37,11 +37,8 @@
         protected $attribute;
         protected $form;
         protected $params;
-        //public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}</td>';
-        //public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}</td>';
-        
-        public $editableTemplate = '<th>{label}</th><td>{content}{error}</td>';
-        public $nonEditableTemplate = '<th>{label}</th><td>{content}</td>';
+        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}</td>';
+        public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}</td>';
 
         /**
          * Constructs the element specifying the model and attribute.
