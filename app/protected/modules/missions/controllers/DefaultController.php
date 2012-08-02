@@ -48,7 +48,7 @@
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class($this->getModule()));
             $mission          = new Mission(false);
-            $activeActionElementType = MissionsUtil::makeActiveActionElementType($type);
+            $activeActionElementType = MissionsUtil::makeActiveActionElementType((int)$type);
             $dataProvider            = MissionsUtil::makeDataProviderByType($mission, $type, $pageSize);
             $actionBarAndListView = new ActionBarAndListView(
                 $this->getId(),
@@ -157,7 +157,6 @@
                     $mission->takenByUser = Yii::app()->user->userModel;
                 }
             }
-
             if($save)
             {
                 $mission->status = $status;

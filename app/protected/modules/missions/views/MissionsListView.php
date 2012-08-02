@@ -66,7 +66,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'latestDateTime', 'type' => 'MissionStatus'),
+                                                array('attributeName' => 'status', 'type' => 'MissionStatus'),
                                             ),
                                         ),
                                     )

@@ -41,12 +41,6 @@
             return 'Mission';
         }
 
-        public static function getDescription($description)
-        {
-            assert('is_string($description) && $description != ""');
-            return self::getSubset(null, null, null, "description = '$description'");
-        }
-
         public function __toString()
         {
             try

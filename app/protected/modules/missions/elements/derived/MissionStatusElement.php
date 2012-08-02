@@ -45,7 +45,7 @@
          */
         protected function renderControlNonEditable()
         {
-            assert('$this->attribute == "null"');
+            assert('$this->attribute == "status"');
             assert('$this->model instanceof Mission');
             return self::renderStatusTextAndActionArea($this->model);
         }
@@ -132,7 +132,7 @@
             assert('is_int($newStatus)');
             assert('is_int($missionId)');
             assert('is_string($label)');
-            assert('is_string($updateDivId');
+            assert('is_string($updateDivId)');
             $url     =   Yii::app()->createUrl('missions/default/ajaxChangeStatus',
                                                array('status' => $newStatus, 'id' => $missionId));
             $aContent                = CHtml::tag('span', array('class' => 'z-spinner'), null);

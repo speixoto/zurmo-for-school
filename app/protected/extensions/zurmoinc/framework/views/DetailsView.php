@@ -353,5 +353,10 @@
         {
             return Yii::t('Default', 'Fewer Details');
         }
+
+        public function getTitle()
+        {
+            return $this->title;
+        }
     }
 ?>
