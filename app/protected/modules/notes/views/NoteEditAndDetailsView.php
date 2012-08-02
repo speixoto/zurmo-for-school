@@ -34,15 +34,15 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelLink', 'renderType' => 'Edit'),
+                            array('type' => 'CancelLink', 'renderType' => 'Edit', 'label' => Yii::t('Default', 'Cancel changes')),
+                            array('type' => 'NoteDeleteLink'),
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
                             array('type' => 'EditLink', 'renderType' => 'Details'),
                             array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),
-                            array('type' => 'NoteDeleteLink'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(
-                        'NoteActivityItems',
+                        'ActivityItems',
                         'Files',
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -84,7 +84,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'NoteActivityItems'),
+                                                array('attributeName' => 'null', 'type' => 'ActivityItems'),
                                             ),
                                         ),
                                     )

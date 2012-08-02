@@ -33,8 +33,8 @@
             => 'Si prega di inserire un indirizzo e-mail per inviare una email di prova.',
         'A test email from Zurmo'
             => 'Un messaggio di prova da Zurmo',
-        'A test text message from Zurmo'
-            => 'Un messaggio SMS di prova da Zurmo',
+        'A test text message from Zurmo.'
+            => 'Un messaggio SMS di prova da Zurmo.',
         'Access Email Configuration'
             => 'Accesso alla configurazione di mail',
         'Access Emails Tab'
@@ -93,8 +93,8 @@
             => 'Contenuto HTML',
         'Inbox'
             => 'Posta in arrivo',
-        'Invalid email address.'
-            => 'Indirizzo email non valido.',
+        'Invalid email address'
+            => 'Indirizzo email non valido',
         'Manage Email Configuration'
             => 'Gestione email',
         'Message failed to send'
@@ -113,6 +113,8 @@
             => 'Errore con la posta in uscita',
         'Person'
             => 'Persona',
+        'Person Or Account'
+            => 'Person Or Account', // Same Word Translated
         'Port'
             => 'Porta',
         'Process Inbound Email Job'
