@@ -100,14 +100,20 @@
             }
             else
             {
-                $sortAttribute = self::getSortAttributeName($this->modelClassName);
-                if($sortAttribute != null)
+                try
                 {
-                    $orderBy = self::resolveSortAttributeColumnName($this->modelClassName, $joinTablesAdapter, $sortAttribute);
-                    if ($this->sortDescending)
+                    $sortAttribute = self::getSortAttributeName($this->modelClassName);
+                    if($sortAttribute != null)
                     {
-                        $orderBy .= ' desc';
+                        $orderBy = self::resolveSortAttributeColumnName($this->modelClassName, $joinTablesAdapter, $sortAttribute);
+                        if ($this->sortDescending)
+                        {
+                            $orderBy .= ' desc';
+                        }
                     }
+                }
+                catch(NotImplementedException $e)
+                {
                 }
             }
             $modelClassName = $this->modelClassName;
@@ -149,7 +155,7 @@
                 if ($modelClassName == 'RedBeanModel')
                 {
                     //This means the sortAttribute value was not found.
-                    throw new notImplementedException();
+                    throw new NotImplementedException();
                 }
             }
             assert('isset($metadata[$modelClassName]["defaultSortAttribute"])');

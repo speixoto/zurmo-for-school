@@ -72,7 +72,10 @@
                                                                     $appendStructureAsAnd);
                 }
             }
-            $structure = $this->appendStructureAsAnd ? $structure : '(' . $structure . ')';
+            if(!$appendStructureAsAnd)
+            {
+                $structure = '(' . $structure . ')';
+            }
             $adaptedMetadata['structure'] = $structure;
             return $adaptedMetadata;
         }
