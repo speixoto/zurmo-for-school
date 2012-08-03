@@ -77,11 +77,9 @@
                         $('.truncated-title').ThreeDots({ max_rows:1 });
                     });");
                 // End Not Coding Standard
-                return "<h1>
-                            <span class='truncated-title'>
-                                <span class='ellipsis-content'>" . $title . "</span>
-                            </span>
-                        </h1>";
+                $innerContent = ZurmoHtml::tag('span', array('class' => 'ellipsis-content'), $title);
+                $content      = ZurmoHtml::tag('span', array('class' => 'truncated-title'), $innerContent);
+                return          ZurmoHtml::tag('h1',   array(), $content);
             }
         }
     }

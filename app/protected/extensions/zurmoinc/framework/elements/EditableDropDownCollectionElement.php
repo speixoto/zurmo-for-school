@@ -154,7 +154,8 @@
 
         protected function renderRemoveLink()
         {
-            return ZurmoHtml::link( '<span>' . Yii::t('Default', 'Remove') . '</span>', '#', array('class' => 'remove-sortable-item-link'));
+            return ZurmoHtml::link( ZurmoHtml::tag('span', array(), Yii::t('Default', 'Remove')), '#',
+                                    array('class' => 'remove-sortable-item-link'));
         }
 
         protected function renderAddInputAndAddButton()
@@ -421,7 +422,7 @@
 
         protected static function renderLanguageLabelHtmlContent($label)
         {
-            return '<span>' . $label . '</span>';
+            return ZurmoHtml::tag('span', array(), $label);
         }
     }
 ?>
