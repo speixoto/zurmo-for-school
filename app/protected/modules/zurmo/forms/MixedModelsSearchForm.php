@@ -29,9 +29,11 @@
      */
     class MixedModelsSearchForm extends CFormModel
     {               
-        
+              
         public $term;                
-                
+        
+        public $anyMixedAttributesScope;
+        
         private $moduleNamesAndLabelsAndAll = array();
                 
         public function rules()
@@ -42,7 +44,7 @@
         public function attributeLabels()
         {
             return array(
-                'term'          => '',        
+                'term'          => '',                   
             );
         }
         

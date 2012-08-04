@@ -37,13 +37,8 @@
         {            
             $content = '';
             $content = $this->renderSearchView();
-            $content .= $this->renderListViews();             
-            $script = "$(document).ready(function () {                                
-                            $('.cgrid-view').each(function(){                                  
-                                $(this).find('.pager').find('.first').find('a').click();                                
-                            });                                
-                       });";
-            Yii::app()->clientScript->registerScript('LoadListViews', $script);
+            $content .= $this->renderListViews();                         
+            $this->renderScripts();
             return $content;
         }
         
@@ -54,7 +49,7 @@
         {
             $moduleNamesAndLabels     = GlobalSearchUtil::
                                         getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
-            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalist');
+            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globallist');
             GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption(
                                         $moduleNamesAndLabels);
             $searchView = new MixedModelsSearchView($moduleNamesAndLabels, $sourceUrl);
@@ -75,6 +70,17 @@
                 $gridView->setView($view, $row++, 0);                                
             }             
             return $gridView->render();
+        }
+        
+        protected function renderScripts()
+        {
+            //On page ready load all the List View with data
+            $script = "$(document).ready(function () {                                
+                            $('.cgrid-view').each(function(){                                  
+                                $(this).find('.pager').find('.first').find('a').click();                                
+                            });                                
+                       });";
+            Yii::app()->clientScript->registerScript('LoadListViews', $script);
         }
     }
 ?>

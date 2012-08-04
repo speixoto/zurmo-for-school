@@ -46,13 +46,16 @@
 
         protected function renderContent()
         {            
+            $titleView = new TitleBarView(Yii::t('Default', 'Global search'), null, 1);
+            $content = $titleView->render();
             $model = new MixedModelsSearchForm();    
             $model->setGlobalSearchAttributeNamesAndLabelsAndAll($this->moduleNamesAndLabelsAndAll);            
-            $content = "<div class='wide form'>";
+            $content .= "<div class='wide form'>";
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'NoRequiredsActiveForm',
-                                                                array('id'                   => $this->getSearchFormId(),                                                                      
+                                                                array('id'                   => $this->getSearchFormId(),
+                                                                      'action'               => $this->sourceUrl,
                                                                       'enableAjaxValidation' => false,
                                                                       'clientOptions'        => array(),
                                                                       'focus'                => array($model,'term'),
@@ -71,8 +74,9 @@
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content .= $searchElement->render();
             $content .= "</div>";
-            $formEnd  = $clipWidget->renderEndWidget(); 
-            $content .= "</div>";
+            $clipWidget->renderEndWidget(); 
+            $content .= "</div>";            
+            $this->registerScripts();            
             return $content;
         }
         
@@ -80,5 +84,25 @@
         {         
             return 'mixed-models-form' . $this->gridIdSuffix;        
         }        
+        
+        protected function registerScripts()
+        {
+            $searchFormId = $this->getSearchFormId();            
+            //Submit form and update all listViews
+            $script   = " 
+                            $('#{$searchFormId}').unbind('submit');
+                            $('#{$searchFormId}').bind('submit', function(event)
+                            {
+                                var listData = $(this).serialize();
+                                var list = '';
+                                $('div.cgrid-view').each(function(index)
+                                {
+                                    list = $(this).attr('id');
+                                    $.fn.yiiGridView.update(list, {data: listData});
+                                });                                
+                                return false;
+                            });";                                                                                                                                                                                       
+            Yii::app()->clientScript->registerScript('mixedModelsSearchAjaxSubmit', $script);
+        }
     }
 ?>

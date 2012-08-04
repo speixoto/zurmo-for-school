@@ -51,10 +51,12 @@
             if ($empty) 
             { 
                 $dataProviderClass = 'EmptyRedBeanDataProvider';
+                $emptyText = '';
             }
             else
             {
                 $dataProviderClass = 'RedBeanModelDataProvider';
+                $emptyText = null;
             }
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                     $metadataAdapter->getAdaptedMetadata(false),
@@ -77,7 +79,8 @@
                         'class' => 'SimpleListLinkPager'
                       )
                  );
-            $listView->setRowsAreSelectable(false);
+            $listView->setRowsAreSelectable(false);            
+            $listView->setEmptyText($emptyText);
             return $listView;
         }
         

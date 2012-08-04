@@ -65,6 +65,8 @@
         protected $gridViewPagerParams;
         
         private $resolvedMetadata;
+        
+        protected $emptyText = null;
 
         /**
          * Constructs a list view specifying the controller as
@@ -199,9 +201,14 @@
 
         protected function getEmptyText()
         {
-            return null;
+            return $this->emptyText;
         }
 
+        public function setEmptyText($text)
+        {            
+            $this->emptyText = $text;
+        }
+        
         public function getGridViewId()
         {
             return $this->gridId . $this->gridIdSuffix;

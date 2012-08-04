@@ -154,32 +154,39 @@
          * Given a string return all result from the global search in a view
          */
         public function actionGlobalList()
-        {   
+        {                   
             if (!isset($_GET['MixedModelsSearchForm']['anyMixedAttributesScope']) || in_array('All', $_GET['MixedModelsSearchForm']['anyMixedAttributesScope']))
             {
                 $scopeData = null;
             }
             else
             {
-                $scopeData = $_GET['MixedModelsSearchForm']['anyMixedAttributesScope'];
+                $scopeData = $_GET['MixedModelsSearchForm']['anyMixedAttributesScope'];                
             }                
-            $term = $_GET['MixedModelsSearchForm']['term'];                                        
+            $term = $_GET['MixedModelsSearchForm']['term'];            
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));            
             $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);
-            if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"])) {
-                $selectedModule = $_GET["ajax"];
-                $selectedModule = str_replace('list-view-', '', $selectedModule);                                
-                $view = $dataCollection->getListView($selectedModule);                                            
+            if (isset($_GET["ajax"])) { print_r($_GET["ajax"]); }
+            if (Yii::app()->request->getIsAjaxRequest()) {                
+                if (isset($_GET["ajax"])) {
+                    $selectedModule = $_GET["ajax"];
+                    $selectedModule = str_replace('list-view-', '', $selectedModule);                                
+                    $view = $dataCollection->getListView($selectedModule);
+                }
+                else
+                {
+                    echo "llll";
+                }
             }
             else
-            {                            
+            {                                       
                 $listView = new MixedModelsSearchAndListView(
                                 $dataCollection->getViews()
                             );               
                 $view = new MixedModelsSearchPageView(ZurmoDefaultViewUtil::
                            makeStandardViewForCurrentUser($this, $listView));                
-            }            
+            }                        
             echo $view->render();
         }
 

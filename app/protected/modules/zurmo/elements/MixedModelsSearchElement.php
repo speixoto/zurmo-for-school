@@ -42,7 +42,7 @@
                
         /**
          * Override so On keyUp, the search should not be conducted.
-         */
+         */       
         protected function renderEditableScripts()
         {
             return null;
