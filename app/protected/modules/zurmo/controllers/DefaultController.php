@@ -166,18 +166,11 @@
             $term = $_GET['MixedModelsSearchForm']['term'];            
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));            
-            $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);
-            if (isset($_GET["ajax"])) { print_r($_GET["ajax"]); }
-            if (Yii::app()->request->getIsAjaxRequest()) {                
-                if (isset($_GET["ajax"])) {
-                    $selectedModule = $_GET["ajax"];
-                    $selectedModule = str_replace('list-view-', '', $selectedModule);                                
-                    $view = $dataCollection->getListView($selectedModule);
-                }
-                else
-                {
-                    echo "llll";
-                }
+            $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);            
+            if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"])) {                                
+                $selectedModule = $_GET["ajax"];
+                $selectedModule = str_replace('list-view-', '', $selectedModule);                                
+                $view = $dataCollection->getListView($selectedModule);          
             }
             else
             {                                       

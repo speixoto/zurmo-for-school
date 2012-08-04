@@ -56,7 +56,7 @@
                                                                 'NoRequiredsActiveForm',
                                                                 array('id'                   => $this->getSearchFormId(),
                                                                       'action'               => $this->sourceUrl,
-                                                                      'enableAjaxValidation' => false,
+                                                                      'enableAjaxValidation' => false,                                                                      
                                                                       'clientOptions'        => array(),
                                                                       'focus'                => array($model,'term'),
                                                                       'method'               => 'get',
@@ -64,14 +64,14 @@
                                                             );    
             $content .= $formStart;
             //Scope search
-            $content .= "<div class=search-view-0>";
+            $content .= "<div class='search-view-0'>";
             $scope = new MixedModelsSearchElement($model, 'term', $form, array( 'htmlOptions' => array ('id' => 'term')));
             $content .= $scope->render();           
             //Search button
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
             $params['htmlOptions'] = array('id' => $this->getSearchFormId() . '-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
+            $searchElement = new SaveButtonActionElement(null, null, null, $params);           
             $content .= $searchElement->render();
             $content .= "</div>";
             $clipWidget->renderEndWidget(); 
@@ -87,21 +87,34 @@
         
         protected function registerScripts()
         {
-            $searchFormId = $this->getSearchFormId();            
+            $searchFormId = $this->getSearchFormId();           
             //Submit form and update all listViews
             $script   = " 
                             $('#{$searchFormId}').unbind('submit');
                             $('#{$searchFormId}').bind('submit', function(event)
                             {
+                                //Makes spinner on button search
+                                beforeValidateAction($('#{$searchFormId}'));
                                 var listData = $(this).serialize();
                                 var list = '';
                                 $('div.cgrid-view').each(function(index)
                                 {
                                     list = $(this).attr('id');
-                                    $.fn.yiiGridView.update(list, {data: listData});
-                                });                                
-                                return false;
-                            });";                                                                                                                                                                                       
+                                    $.fn.yiiGridView.update(list, 
+                                    {
+                                        data: listData,
+                                        //Removes spin on search button
+                                        complete: function(jqXHR, status) {
+                                            if (status=='success'){                                                
+                                                $('#{$searchFormId}').find('.attachLoadingTarget').removeClass('loading');
+                                                $('#{$searchFormId}').find('.attachLoadingTarget').removeClass('loading-ajax-submit');
+                                            }
+                                        }     
+                                    });
+                                });                                          
+                                return false;                                
+                            });                            
+                         ";   
             Yii::app()->clientScript->registerScript('mixedModelsSearchAjaxSubmit', $script);
         }
     }
