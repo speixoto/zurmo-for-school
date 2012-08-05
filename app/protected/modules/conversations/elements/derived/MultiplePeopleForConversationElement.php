@@ -50,7 +50,7 @@
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     ),
-                'hintText' => Yii::t('Default', 'Type a User\'s name '),
+                'hintText' => Yii::t('Default', 'Type a User\'s name'),
                 'onAdd'    => $this->getOnAddContent(),
                 'onDelete' => $this->getOnDeleteContent(),
             ));
@@ -123,7 +123,8 @@
                         $existingPeople[] = array('id' => $contact->getClassId('Item'),
                                                     'name' => strval($contact));
                     }
-                    else {
+                    else
+                    {
                         throw new NotFoundException();
                     }
                 }

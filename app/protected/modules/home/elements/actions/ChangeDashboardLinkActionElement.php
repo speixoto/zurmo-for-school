@@ -34,7 +34,7 @@
         public function render()
         {
             $menuItems = array('label' => $this->getDefaultLabel(), 'items' => array());
-            foreach($this->getDashboardsData() as $dashboardData)
+            foreach ($this->getDashboardsData() as $dashboardData)
             {
                 $menuItems['items'][] = array('label' => $dashboardData['name'],
                                                'url'   => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/dashboardDetails/',
@@ -54,7 +54,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Change Dashboard');
+            return Yii::t('Default', 'Switch Dashboard');
         }
 
         protected function getDefaultRoute()
@@ -69,6 +69,5 @@
                 return $this->params['dashboardsData'];
             }
         }
-
     }
 ?>

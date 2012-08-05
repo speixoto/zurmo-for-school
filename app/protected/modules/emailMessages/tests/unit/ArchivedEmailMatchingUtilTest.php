@@ -31,7 +31,7 @@
             parent::setUpBeforeClass();
             $super = SecurityTestHelper::createSuperAdmin();
             $super->primaryEmail->emailAddress = 'super@supertest.com';
-            if(!$super->save())
+            if (!$super->save())
             {
                 throw new NotSupportedException();
             }

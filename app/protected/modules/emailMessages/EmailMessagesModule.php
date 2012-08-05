@@ -38,6 +38,7 @@
         {
             return array(
                 'configuration',
+                'leads',
                 'zurmo',
             );
         }

@@ -259,17 +259,16 @@
             $emailMessage          = EmailMessage::getById((int)$id);
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule', Yii::app()->user->userModel);
-            if(!$userCanAccessContacts && !$userCanAccessLeads)
+            if (!$userCanAccessContacts && !$userCanAccessLeads)
             {
                 throw new NotSupportedException();
             }
             $selectForm            = self::makeSelectForm($userCanAccessLeads, $userCanAccessContacts);
 
-            if(isset($_POST[get_class($selectForm)]))
+            if (isset($_POST[get_class($selectForm)]))
             {
                 if (isset($_POST['ajax']) && $_POST['ajax'] === 'select-contact-form-' . $id)
                 {
-
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);
                     $selectForm->validate();
                     $errorData = array();
@@ -288,7 +287,7 @@
                     ArchivedEmailMatchingUtil::resolveEmailAddressToContactIfEmailRelationAvailable($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
                                                                          EmailFolder::TYPE_ARCHIVED_UNMATCHED);
-                    if(!$emailMessage->save())
+                    if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
                     }
@@ -305,7 +304,7 @@
         {
             assert('$type == "Contact" || $type == "Lead"');
             assert('is_int($emailMessageId)');
-            if(isset($_POST[$type]))
+            if (isset($_POST[$type]))
             {
                 if (isset($_POST['ajax']) && $_POST['ajax'] === strtolower($type) . '-inline-create-form-' . $emailMessageId)
                 {
@@ -324,14 +323,14 @@
                 {
                     $contact = new Contact();
                     $contact->setAttributes($_POST[$type][$emailMessageId]);
-                    if(!$contact->save())
+                    if (!$contact->save())
                     {
                         throw new FailedToSaveModelException();
                     }
                     ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
                                                                          EmailFolder::TYPE_ARCHIVED_UNMATCHED);
-                    if(!$emailMessage->save())
+                    if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
                     }
@@ -341,11 +340,11 @@
 
         protected static function makeSelectForm($userCanAccessLeads, $userCanAccessContacts)
         {
-            if($userCanAccessLeads && $userCanAccessContacts)
+            if ($userCanAccessLeads && $userCanAccessContacts)
             {
                 $selectForm = new AnyContactSelectForm();
             }
-            elseif(!$userCanAccessLeads && $userCanAccessContacts)
+            elseif (!$userCanAccessLeads && $userCanAccessContacts)
             {
                 $selectForm = new ContactSelectForm();
             }

@@ -38,7 +38,7 @@
                             array('type' => 'NoteDeleteLink'),
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
                             array('type' => 'EditLink', 'renderType' => 'Details'),
-                            array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),                            
+                            array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(

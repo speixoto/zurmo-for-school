@@ -33,5 +33,4 @@
             $messageLogger->addInfoMessage('Sending test SMTP setup message');
         }
     }
-
 ?>
