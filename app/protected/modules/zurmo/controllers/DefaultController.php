@@ -140,13 +140,22 @@
             $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
             $pageSize  = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ModelAutoCompleteUtil::
-                                   getGlobalSearchResultsByPartialTerm($term, $pageSize, Yii::app()->user->userModel,
-                                                                       $scopeData);            
-            $autoCompleteResults = array_merge($autoCompleteResults, array(array('href'      => Yii::app()->createUrl('/zurmo/default/globallist',
-                                                                             array('MixedModelsSearchForm' => array('term' => $_GET['term'], 'anyMixedAttributesScope' => $_GET['globalSearchScope']))),
-                                                    'label'     => 'All results',
-                                                    'iconClass' => 'autocomplete-icon-AllResults')));
+            $autoCompleteResults = ModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm(
+                                           $term, 
+                                           $pageSize, 
+                                           Yii::app()->user->userModel,
+                                           $scopeData
+                                        );            
+            $autoCompleteResults = array_merge(
+                    $autoCompleteResults, 
+                    array(
+                        array('href'      => Yii::app()->createUrl(
+                                                    '/zurmo/default/globallist', 
+                                                    array('MixedModelsSearchForm' => array('term'                    => $_GET['term'], 
+                                                                                           'anyMixedAttributesScope' => $_GET['globalSearchScope']))
+                                                ),
+                              'label'     => 'All results','iconClass' => 'autocomplete-icon-AllResults'))
+              );
             echo CJSON::encode($autoCompleteResults);            
         }
 
@@ -155,7 +164,8 @@
          */
         public function actionGlobalList()
         {                   
-            if (!isset($_GET['MixedModelsSearchForm']['anyMixedAttributesScope']) || in_array('All', $_GET['MixedModelsSearchForm']['anyMixedAttributesScope']))
+            if (!isset($_GET['MixedModelsSearchForm']['anyMixedAttributesScope']) 
+                    || in_array('All', $_GET['MixedModelsSearchForm']['anyMixedAttributesScope']))
             {
                 $scopeData = null;
             }
@@ -166,11 +176,12 @@
             $term = $_GET['MixedModelsSearchForm']['term'];            
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));            
-            $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel, $scopeData);            
+            $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize,
+                    Yii::app()->user->userModel, $scopeData);            
             if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"])) {                                
                 $selectedModule = $_GET["ajax"];
-                $selectedModule = str_replace('list-view-', '', $selectedModule);                                
-                $view = $dataCollection->getListView($selectedModule);          
+                $selectedModule = str_replace('list-view-', '', $selectedModule);                
+                $view = $dataCollection->getListView($selectedModule);
             }
             else
             {                                       

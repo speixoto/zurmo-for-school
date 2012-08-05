@@ -32,9 +32,29 @@
     class MixedModelsSearchElement extends AnyMixedAttributesSearchElement
     {
       
+        private $value = null;
+                
+        /**
+         * Override
+         */
+        protected function renderControlEditable()
+        {            
+            $content  = $this->renderSearchScopingInputContent();
+            //$content .= parent::renderControlEditable();
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $this->getEditableInputId();
+            $htmlOptions['name']     = $this->getEditableInputName();
+            $htmlOptions['disabled'] = $this->getDisabledValue();
+            $htmlOptions['value']    = $this->getValue();
+            $htmlOptions             = array_merge($this->getHtmlOptions(), $htmlOptions);
+            $content .= $this->form->textField($this->model, $this->attribute, $htmlOptions);
+            $this->renderEditableScripts();
+            return $content;
+        }
+               
         protected function getHtmlOptions()
         {
-            $htmlOptions             = array('class'   => 'input-hint anyMixedAttributes-input',
+            $htmlOptions             = array('class'   => 'input-hint mixedModels-input',
                                              'onfocus' => '$(this).select();',
                                              'size'    => 20);
             return array_merge(parent::getHtmlOptions(), $htmlOptions);
@@ -47,5 +67,17 @@
         {
             return null;
         }
+                
+        protected function getValue()
+        {
+            return $this->value;
+        }
+        
+        public function setValue($value)
+        {
+            assert('is_string($value)');
+            $this->value = $value;
+        }
+        
     }
 ?>

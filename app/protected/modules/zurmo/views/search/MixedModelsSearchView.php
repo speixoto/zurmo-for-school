@@ -46,37 +46,50 @@
 
         protected function renderContent()
         {            
-            $titleView = new TitleBarView(Yii::t('Default', 'Global search'), null, 1);
+            $titleView = new TitleBarView(Yii::t('Default', 'Global search'), null, 1);            
             $content = $titleView->render();
             $model = new MixedModelsSearchForm();    
-            $model->setGlobalSearchAttributeNamesAndLabelsAndAll($this->moduleNamesAndLabelsAndAll);            
+            $model->setGlobalSearchAttributeNamesAndLabelsAndAll($this->moduleNamesAndLabelsAndAll);                        
             $content .= "<div class='wide form'>";
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                                'NoRequiredsActiveForm',
-                                                                array('id'                   => $this->getSearchFormId(),
-                                                                      'action'               => $this->sourceUrl,
-                                                                      'enableAjaxValidation' => false,                                                                      
-                                                                      'clientOptions'        => array(),
-                                                                      'focus'                => array($model,'term'),
-                                                                      'method'               => 'get',
-                                                                )
-                                                            );    
+                    'NoRequiredsActiveForm',
+                        array('id'                   => $this->getSearchFormId(),
+                              'action'               => $this->sourceUrl,
+                              'enableAjaxValidation' => false,                                                                      
+                              'clientOptions'        => array(),
+                              'focus'                => array($model,'term'),
+                              'method'               => 'get',
+                            )
+                    );    
             $content .= $formStart;
             //Scope search
             $content .= "<div class='search-view-0'>";
-            $scope = new MixedModelsSearchElement($model, 'term', $form, array( 'htmlOptions' => array ('id' => 'term')));
+            $scope = new MixedModelsSearchElement($model, 'term', 
+                    $form, array( 'htmlOptions' => array ('id' => 'term')));
+            $getData                  = GetUtil::getData();            
+            $term                     = $getData['MixedModelsSearchForm']['term'];
+            $scopeData                = $getData['MixedModelsSearchForm']['anyMixedAttributesScope'];    
+            if(isset($term))
+            {
+                $scope->setValue($term);
+            }
+            if (isset($scopeData))
+            {
+                $scope->setSelectedValue($scopeData);
+            }
             $content .= $scope->render();           
             //Search button
             $params = array();
             $params['label']       = Yii::t('Default', 'Search');
-            $params['htmlOptions'] = array('id' => $this->getSearchFormId() . '-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $params['htmlOptions'] = array('id' => $this->getSearchFormId() . '-search', 
+                'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);           
             $content .= $searchElement->render();
             $content .= "</div>";
             $clipWidget->renderEndWidget(); 
-            $content .= "</div>";            
-            $this->registerScripts();            
+            $content .= "</div>";                      
+            $this->renderScripts();            
             return $content;
         }
         
@@ -85,33 +98,46 @@
             return 'mixed-models-form' . $this->gridIdSuffix;        
         }        
         
-        protected function registerScripts()
+        protected function renderScripts()
         {
             $searchFormId = $this->getSearchFormId();           
             //Submit form and update all listViews
-            $script   = " 
+            $script   = "                             
                             $('#{$searchFormId}').unbind('submit');
                             $('#{$searchFormId}').bind('submit', function(event)
                             {
                                 //Makes spinner on button search
                                 beforeValidateAction($('#{$searchFormId}'));
                                 var listData = $(this).serialize();
-                                var list = '';
+                                var list = '';                                
                                 $('div.cgrid-view').each(function(index)
-                                {
+                                {                                                                        
                                     list = $(this).attr('id');
+                                    //get name of module
+                                    var array_list = list.split('-');  
+                                    var module = array_list[2];
+                                    //If all or module selected make it visible else invisible
+                                    if ($('#MixedModelsSearchForm_anyMixedAttributesScope option[value=All]').prop('selected') ||
+                                            $('#MixedModelsSearchForm_anyMixedAttributesScope option[value=' + module + ']').prop('selected'))
+                                    {
+                                        $('#' + list  + '').parent('div').show().prev().show();
+                                    }
+                                    else
+                                    {
+                                        $('#' + list  + '').parent('div').hide().prev().hide();
+                                    }
                                     $.fn.yiiGridView.update(list, 
                                     {
                                         data: listData,
                                         //Removes spin on search button
                                         complete: function(jqXHR, status) {
-                                            if (status=='success'){                                                
+                                            if (status=='success'){                                                                                                
                                                 $('#{$searchFormId}').find('.attachLoadingTarget').removeClass('loading');
                                                 $('#{$searchFormId}').find('.attachLoadingTarget').removeClass('loading-ajax-submit');
                                             }
                                         }     
-                                    });
-                                });                                          
+                                    });                                    
+                                });                                                                          
                                 return false;                                
                             });                            
                          ";   

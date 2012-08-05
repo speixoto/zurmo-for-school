@@ -41,22 +41,19 @@
             $this->renderScripts();
             return $content;
         }
-        
-        /*
-         * 
-         */
+
         protected function renderSearchView()
         {
             $moduleNamesAndLabels     = GlobalSearchUtil::
                                         getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
-            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globallist');
+            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globallist');                      
             GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption(
                                         $moduleNamesAndLabels);
             $searchView = new MixedModelsSearchView($moduleNamesAndLabels, $sourceUrl);
             return $searchView->render();
         }
         
-        /*
+        /**
          * Render a group of lists that contais the search result from GlobalList
          *        
          */
@@ -74,11 +71,9 @@
         
         protected function renderScripts()
         {
-            //On page ready load all the List View with data
-            $script = "$(document).ready(function () {                                
-                            $('.cgrid-view').each(function(){                                  
-                                $(this).find('.pager').find('.first').find('a').click();                                
-                            });                                
+            //On page ready load all the List View with data            
+            $script = "$(document).ready(function () {                                                            
+                            $('#MixedModelsSearchView').find('a').click();                            
                        });";
             Yii::app()->clientScript->registerScript('LoadListViews', $script);
         }
