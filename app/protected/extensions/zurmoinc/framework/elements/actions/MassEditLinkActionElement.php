@@ -56,7 +56,6 @@
                         }
                         if (options.url.split( '?' ).length == 2)
                         {
-                            alert(options.url.split( '?' )[0] + options.url.split( '?' )[1]);
                             options.url = options.baseUrl +'/'+ 'massEdit' + '?' + options.url.split( '?' )[1];
                         }
                         else
