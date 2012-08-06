@@ -36,6 +36,10 @@
 
         const STATUS_ACCEPTED  = 5;
 
+        private $sendOwnerUnreadCommentNotification = false;
+
+        private $sendTakenByUserUnreadCommentNotification = false;
+
         public static function getMashableActivityRulesType()
         {
             return 'Mission';
@@ -110,7 +114,7 @@
                     'dueDateTime'       => 'DateTime',
                     'files'             => 'Files',
                     'latestDateTime'    => 'DateTime',
-                    'reward' => 'TextArea',
+                    'reward'            => 'TextArea',
                 ),
                 'defaultSortAttribute' => 'subject',
                 'noAudit' => array(
@@ -119,7 +123,6 @@
                     'latestDateTime',
                     'ownerHasReadLatest',
                     'reward',
-                    'status',
                     'takenByUserHasReadLatest'
                 ),
             );
@@ -166,11 +169,15 @@
                         {
                             if(Yii::app()->user->userModel != $this->owner)
                             {
-                                $this->ownerHasReadLatest = false;
+                                $this->ownerHasReadLatest                 = false;
+                                $this->sendOwnerUnreadCommentNotification = true;
+
+
                             }
-                            if(Yii::app()->user->userModel != $this->takenByUser)
+                            if(Yii::app()->user->userModel != $this->takenByUser && $this->takenByUser->id > 0)
                             {
-                                $this->takenByUserHasReadLatest = false;
+                                $this->takenByUserHasReadLatest                 = false;
+                                $this->sendTakenByUserUnreadCommentNotification = true;
                             }
                         }
                     }
@@ -181,6 +188,44 @@
             {
                 return false;
             }
+        }
+
+        protected function afterSave()
+        {
+            if (((isset($this->originalAttributeValues['status'])) && !$this->isNewModel) &&
+                $this->originalAttributeValues['status'] != $this->status)
+            {
+                if($this->status == self::STATUS_TAKEN)
+                {
+                    $messageContent = Yii::t('Default', 'A mission you created has been taken on by {takenByUserName}',
+                                                        array('{takenByUserName}' => strval($this->takenByUser)));
+                    MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->owner, $this->id, $messageContent);
+                }
+                elseif($this->status == self::STATUS_COMPLETED)
+                {
+                    $messageContent = Yii::t('Default', 'A mission you created has been completed');
+                    MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->owner, $this->id, $messageContent);
+                }
+                elseif($this->status == self::STATUS_REJECTED && $this->takenByUser->id > 0)
+                {
+                    $messageContent = Yii::t('Default', 'A mission you completed has been rejected');
+                    MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->takenByUser, $this->id, $messageContent);
+                }
+                elseif($this->status == self::STATUS_ACCEPTED && $this->takenByUser->id > 0)
+                {
+                    $messageContent = Yii::t('Default', 'A mission you completed has been accepted');
+                    MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->takenByUser, $this->id, $messageContent);
+                }
+            }
+            if($this->sendOwnerUnreadCommentNotification)
+            {
+                MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->owner);
+            }
+            elseif($this->sendTakenByUserUnreadCommentNotification && $this->takenByUser->id > 0)
+            {
+                MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->takenByUser);
+            }
+            parent::afterSave();
         }
 
         public static function hasRelatedItems()

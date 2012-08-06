@@ -145,5 +145,44 @@
             );
             return $dataProvider;
         }
+
+        /**
+         * Create and submit a notification when a status changes.
+         * @param User $userToReceiveMessage
+         * @param integer $missionId
+         * @param string $messageContent
+         */
+        public static function makeAndSubmitStatusChangeNotificationMessage(User $userToReceiveMessage, $missionId, $messageContent)
+        {
+            assert('$userToReceiveMessage->id > 0');
+            assert('is_int($missionId)');
+            assert('is_string($messageContent)');
+            $message                      = new NotificationMessage();
+            $message->htmlContent         = $messageContent;
+            $url                          = Yii::app()->createAbsoluteUrl('missions/default/details/',
+                                                                array('id' => $missionId));
+            $message->htmlContent        .= '-' . ZurmoHtml::link(Yii::t('Default', 'Click Here'), $url);
+            $rules                        = new MissionStatusChangeNotificationRules();
+            $rules->addUser($userToReceiveMessage);
+            $rules->setAllowDuplicates(true);
+            NotificationsUtil::submit($message, $rules);
+        }
+
+        /**
+         * Create at most one notification for a user when there are new unread comments.
+         * @param User $userToReceiveMessage
+         * @param integer $missionId
+         * @param string $messageContent
+         */
+        public static function makeAndSubmitNewCommentNotificationMessage(User $userToReceiveMessage)
+        {
+            assert('$userToReceiveMessage->id > 0');
+            $message                      = new NotificationMessage();
+            $url                          = Yii::app()->createAbsoluteUrl('missions/default/list/');
+            $message->htmlContent         = ZurmoHtml::link(Yii::t('Default', 'Click Here'), $url);
+            $rules                        = new MissionUnreadCommentNotificationRules();
+            $rules->addUser($userToReceiveMessage);
+            NotificationsUtil::submit($message, $rules);
+        }
     }
 ?>
