@@ -177,7 +177,7 @@
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));            
             $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize,
-                    Yii::app()->user->userModel, $scopeData);            
+                    Yii::app()->user->userModel);            
             if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"])) {                                
                 $selectedModule = $_GET["ajax"];
                 $selectedModule = str_replace('list-view-', '', $selectedModule);                

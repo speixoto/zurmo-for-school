@@ -31,8 +31,7 @@
     class MixedModelsSearchResultsDataCollection
     {
 
-        private $term;
-        private $scopeData;
+        private $term;       
         private $user;
         private $views = array();        
 
@@ -42,13 +41,12 @@
          * @param   User        User model
          * @param   array       Modules to be searched
          */
-        public function __construct($term, $pageSize, User $user, Array $scopeData = null) {            
+        public function __construct($term, $pageSize, User $user) {            
             assert('is_string($term)');
             assert('is_int($pageSize)');
             $this->term      = $term;
             $this->pageSize  = $pageSize;
             $this->user      = $user;
-            $this->scopeData = $scopeData;            
         }
                 
         /**
