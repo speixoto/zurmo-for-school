@@ -33,7 +33,7 @@
         {
             return <<<EOD
     USAGE
-      zurmoc updgradeZurmo <username>
+      zurmoc updgradeZurmo <username> <upgradeToVersion>
 
     DESCRIPTION
       This command runs a Zurmo upgrade.
@@ -41,6 +41,7 @@
     PARAMETERS
      * username: username to log in as and run the import processes. Typically 'super'.
                   This user must be a super administrator.
+     * upgradeToVersion: version to which to upgrade(optional, if not provided, it will upgrade to latest).
 EOD;
     }
 
@@ -76,6 +77,8 @@ EOD;
         $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process.'));
         $messageLogger = new MessageLogger($messageStreamer);
 
+        // To-Do: Allow to specify version upgrade to be used, because sometime
+        // user might not want to upgrade to latest.
         UpgradeUtil::run($messageLogger);
 
         $endTime = microtime(true);

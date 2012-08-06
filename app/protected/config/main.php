@@ -66,13 +66,19 @@
         require_once($perInstanceConfigInSameDirAsMainConfig);
     }
 
+    if (!isset($maintananceMode))
+    {
+        $maintananceMode = false;
+    }
+
     $config = CMap::mergeArray(
         require(COMMON_ROOT . '/protected/config/common.php'),
         array(
-            'language' => $language,
-            'theme'    => $theme,
-            'installed' => $installed,
-            'components' => array(
+            'language'        => $language,
+            'theme'           => $theme,
+            'installed'       => $installed,
+            'maintananceMode' => $maintananceMode,
+            'components'  => array(
                 'db' => array(
                     'connectionString' => $connectionString,
                     'username'         => $username,

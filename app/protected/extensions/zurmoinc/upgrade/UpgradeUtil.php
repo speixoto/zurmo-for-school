@@ -38,7 +38,7 @@
     {
         public static $currentZurmoVersion;
 
-        public static function run()
+        public static function run(MessageLogger $messageLogger)
         {
             try {
                 self::isApplicationInUpgradeMode();
@@ -53,6 +53,9 @@
 
                 $source = $upgradeExtractPath . '/filesToUpload';
                 $destination = COMMON_ROOT . '/../';
+                self::processBeforeConfigFiles();
+                self::processConfigFiles($source, $destination, $configuration);
+                self::processAfterConfigFiles();
                 self::processBeforeFiles();
                 self::processFiles($source, $destination, $configuration);
                 self::processAfterFiles();
@@ -228,6 +231,30 @@
         public function clearCache()
         {
             ForgetAllCacheUtil::forgetAllCaches();
+        }
+
+        /**
+         * This is just wrapper function to call function from UpgraderComponent
+         */
+        public function processBeforeConfigFiles()
+        {
+            Yii::app()->upgrader->processBeforeConfigFiles();
+        }
+
+        /**
+         * This is just wrapper function to call function from UpgraderComponent
+         */
+        public function processConfigFiles($source, $destination, $configuration)
+        {
+            Yii::app()->upgrader->processConfigFiles($source, $destination, $configuration);
+        }
+
+        /**
+         * This is just wrapper function to call function from UpgraderComponent
+         */
+        public function processAfterConfigFiles()
+        {
+            Yii::app()->upgrader->processAfterConfigFiles();
         }
 
         /**

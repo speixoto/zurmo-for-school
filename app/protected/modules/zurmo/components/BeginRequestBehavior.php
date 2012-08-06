@@ -28,6 +28,7 @@
     {
         public function attach($owner)
         {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleMaintananceMode'));
             if (Yii::app()->apiRequest->isApiRequest())
             {
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
@@ -78,6 +79,15 @@
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
                 }
+            }
+        }
+
+        public function handleMaintananceMode()
+        {
+            if (Yii::app()->isApplicationInMaintananceMode())
+            {
+                echo "Application is in maintanance mode. Please try again latter.";
+                exit;
             }
         }
 
