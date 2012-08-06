@@ -125,7 +125,7 @@ END;
                 $checked = false;
                 $disabled = '';
                 $htmlOptions = array('disabled' => $disabled);
-                echo Zurmohtml::checkBox($this->id . '_all', $checked, $htmlOptions);
+                echo ZurmoHtml::checkBox($this->id . '_all', $checked, $htmlOptions);
             }
             else
             {

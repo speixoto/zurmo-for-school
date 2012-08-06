@@ -63,6 +63,7 @@
                     $searchForm,
                     $dataProvider
                 );
+                $view = new AccountsPageView($mixedView);
             }
             else
             {
@@ -72,9 +73,9 @@
                     AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
                     $dataProvider
                 );
-            }
-            $view = new AccountsPageView(ZurmoDefaultViewUtil::
+                $view = new AccountsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
+            }
             echo $view->render();
         }
 

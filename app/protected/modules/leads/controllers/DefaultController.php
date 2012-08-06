@@ -68,6 +68,7 @@
                     $searchForm,
                     $dataProvider
                 );
+                $view = new LeadsPageView($mixedView);
             }
             else
             {
@@ -77,9 +78,9 @@
                     LeadsModule::getModuleLabelByTypeAndLanguage('Plural'),
                     $dataProvider
                 );
-            }
-            $view = new LeadsPageView(ZurmoDefaultViewUtil::
+                $view = new LeadsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
+            }
             echo $view->render();
         }
 

@@ -65,6 +65,7 @@
                     $searchForm,
                     $dataProvider
                 );
+                $view = new ContactsPageView($mixedView);
             }
             else
             {
@@ -74,9 +75,9 @@
                     ContactsModule::getModuleLabelByTypeAndLanguage('Plural'),
                     $dataProvider
                 );
-            }
-            $view = new ContactsPageView(ZurmoDefaultViewUtil::
+                $view = new ContactsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
+            }
             echo $view->render();
         }
 

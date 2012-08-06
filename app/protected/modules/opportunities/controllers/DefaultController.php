@@ -63,6 +63,7 @@
                     $searchForm,
                     $dataProvider
                 );
+                $view = new OpportunitiesPageView($mixedView);
             }
             else
             {
@@ -72,9 +73,9 @@
                     OpportunitiesModule::getModuleLabelByTypeAndLanguage('Plural'),
                     $dataProvider
                 );
-            }
-            $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
+                $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
+            }
             echo $view->render();
         }
 
