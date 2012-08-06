@@ -324,7 +324,7 @@
                         '{url}'      => Yii::app()->createUrl('emailMessages/default/matchingList'),
                     )
                 );
-                $rules                      = new EmailMessageArchivingEmailAddreessNotMachingNotificationRules();
+                $rules                      = new EmailMessageArchivingEmailAddressNotMachingNotificationRules();
                 NotificationsUtil::submit($notificationMessage, $rules);
             }
             else
