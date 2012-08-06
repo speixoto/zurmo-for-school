@@ -31,8 +31,6 @@
     return array(
         'Access Conversations Tab'
             => 'Accesso ai Conversazioni',
-        'Add Comment'
-            => 'Aggiungi commento',
         'Conversation'
             => 'Conversazione',
         'Conversation Latest'

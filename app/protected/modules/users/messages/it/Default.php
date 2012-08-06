@@ -103,9 +103,9 @@
             => 'Ricerca Utente',
         'Users'
             => 'Utenti',
-        'Users Home'
-            => 'Utenti Home',
         'Users cannot be deleted.  You can however change their status to inactive.'
             => 'Gli utenti non possono essere cancellati. È tuttavia possibile cambiare il proprio status di inattivo.',
+        'Users Home'
+            => 'Utenti Home',
     );
 ?>

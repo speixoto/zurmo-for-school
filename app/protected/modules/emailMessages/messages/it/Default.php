@@ -59,8 +59,8 @@
             => 'Cancellare Emails',
         'Draft'
             => 'Bozza',
-        'Email address does not exist in system.'
-            => 'L\'indirizzo e-mail non esiste.',
+        'Email address does not exist in system'
+            => 'L\'indirizzo e-mail non esiste',
         'Email Archiving Configuration (IMAP)'
             => 'Connessione IMAP per archiviare mail',
         'Email Configuration'
@@ -155,8 +155,8 @@
             => 'Ai Destinatari',
         'to: {recipientContent}'
             => 'a: {recipientContent}',
-        'You do not have rights to access, create, or connect emails in the system.'
-            => 'Non si dispone di diritti di accesso, creare o collegare e-mails nel sistema.',
+        'You do not have rights to access, create, or connect emails in the system'
+            => 'Non si dispone di diritti di accesso, creare o collegare e-mails nel sistema',
         'Zurmo sends out system notifications.  The notifications must appear as coming from a super administrative user.'
             => 'Notificazioni del sistema.  Le notificazioni devono mandare di un utente super admin.',
     );

@@ -75,6 +75,8 @@
             => 'Les langues actives sont disponibles aux utilisateurs. Impossible de désactiver la langue système ou une langue actuellement utilisée par un utilisateur',
         'Ad-hoc / Owner'
             => 'De circonstance / Resp. du compte',
+        'Add Comment'
+            => 'Ajouter commentaire',
         'Add Currency'
             => 'Ajouter la Devise',
         'Add new fields, remove ones you don\'t need and change the layout using Designer.'

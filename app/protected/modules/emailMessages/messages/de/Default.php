@@ -59,8 +59,8 @@
             => 'Emails entfernen',
         'Draft'
             => 'Entwurf',
-        'Email address does not exist in system.'
-            => 'Die E-Mail-Adresse existiert nicht.',
+        'Email address does not exist in system'
+            => 'Die E-Mail-Adresse existiert nicht',
         'Email Archiving Configuration (IMAP)'
             => 'Konto-Einstellungen für archivierte Mails (IMAP)',
         'Email Configuration'
@@ -155,8 +155,8 @@
             => 'An Empfänger',
         'to: {recipientContent}'
             => 'an: {recipientContent}',
-        'You do not have rights to access, create, or connect emails in the system.'
-            => 'Du hast keine Rechte auf Zugang, erstellen oder zu verknüpfen E-Mails in das System.',
+        'You do not have rights to access, create, or connect emails in the system'
+            => 'Du hast keine Rechte auf Zugang, erstellen oder zu verknüpfen E-Mails in das System',
         'Zurmo sends out system notifications.  The notifications must appear as coming from a super administrative user.'
             => 'Zurmo sendet System Benachrichtigungen. Die Benachrichtigungen müssen von einem Super-administrativen Benutzerrechten angezeigt werden.',
     );

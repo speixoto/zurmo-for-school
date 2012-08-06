@@ -31,8 +31,6 @@
     return array(
         'Access Conversations Tab'
             => 'Accès aux Conversations',
-        'Add Comment'
-            => 'Ajouter commentaire',
         'Conversation'
             => 'Conversation', // Same Word Translated
         'Conversation Latest'
