@@ -173,9 +173,156 @@
                                         'attributeIndexOrDerivedType' => 'anyCountry'));
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            $this->assertNotNull($content);                       
+        }
+        
+        public function testDynamicSearchAttributeInputCheckBox()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createCheckBoxCustomFieldByModule('AccountsModule', 'checkbox');                                  
+            $content = $this->auxTestDynamicSearchAttribute('checkbox');
             $this->assertNotNull($content);
-
-            //todo: test additional types
+        }
+        
+        public function testDynamicSearchAttributeInputCurrency()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createCurrencyValueCustomFieldByModule('AccountsModule', 'currency');                                  
+            $content = $this->auxTestDynamicSearchAttribute('currency');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputDate()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDateCustomFieldByModule('AccountsModule', 'date');                                  
+            $content = $this->auxTestDynamicSearchAttribute('date__date');
+            print_r($content);
+            //$this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputDateTime()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDateTimeCustomFieldByModule('AccountsModule', 'datetime');
+            $content = $this->auxTestDynamicSearchAttribute('datetime__datetime');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputDecimal()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDecimalCustomFieldByModule('AccountsModule', 'decimal');                                  
+            $content = $this->auxTestDynamicSearchAttribute('decimal');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputPicklist()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDropDownCustomFieldByModule('AccountsModule', 'picklist');                                  
+            $content = $this->auxTestDynamicSearchAttribute('picklist');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputCountrypicklist()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDependentDropDownCustomFieldByModule('AccountsModule', 'countrypicklist');                                  
+            $content = $this->auxTestDynamicSearchAttribute('countrypicklist');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputMultiselect()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createMultiSelectDropDownCustomFieldByModule('AccountsModule', 'multiselect');                                  
+            $content = $this->auxTestDynamicSearchAttribute('multiselect');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputTagcloud()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createTagCloudCustomFieldByModule('AccountsModule', 'tagcloud');                                  
+            $content = $this->auxTestDynamicSearchAttribute('tagcloud');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputCalculatednumber()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createCalculatedNumberCustomFieldByModule('AccountsModule', 'calculatednumber');                                  
+            $content = $this->auxTestDynamicSearchAttribute('calculatednumber');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputDropdowndependency()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDropDownDependencyCustomFieldByModule('AccountsModule', 'dropdowndependency');                                  
+            $content = $this->auxTestDynamicSearchAttribute('dropdowndependency');
+            $this->assertNotNull($content);
+        }
+                
+        public function testDynamicSearchAttributeInputInteger()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createIntegerCustomFieldByModule('AccountsModule', 'integer');                                  
+            $content = $this->auxTestDynamicSearchAttribute('integer');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputPhone()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createPhoneCustomFieldByModule('AccountsModule', 'phone');                                  
+            $content = $this->auxTestDynamicSearchAttribute('phone');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputRadio()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createRadioDropDownCustomFieldByModule('AccountsModule', 'radio');                                  
+            $content = $this->auxTestDynamicSearchAttribute('radio');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputText()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createTextCustomFieldByModule('AccountsModule', 'text');                                  
+            $content = $this->auxTestDynamicSearchAttribute('text');
+            $this->assertNotNull($content);
+        }
+                       
+        public function testDynamicSearchAttributeInputTextarea()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createTextAreaCustomFieldByModule('AccountsModule', 'textarea');                                  
+            $content = $this->auxTestDynamicSearchAttribute('textarea');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputUrl()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createUrlCustomFieldByModule('AccountsModule', 'url');                                  
+            $content = $this->auxTestDynamicSearchAttribute('url');
+            $this->assertNotNull($content);
+        }
+        
+        private function auxTestDynamicSearchAttribute($name)
+        {
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => $name));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            return $content;
         }
     }
 ?>
