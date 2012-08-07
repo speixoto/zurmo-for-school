@@ -61,6 +61,8 @@
 
         private $resolvedMetadata;
 
+        private $listAttributesSelector;
+
         /**
          * Constructs a list view specifying the controller as
          * well as the model that will have its details displayed.
@@ -71,11 +73,13 @@
             $modelClassName,
             $dataProvider,
             $selectedIds,
-            $gridIdSuffix = null
+            $gridIdSuffix = null,
+            $listAttributesSelector = null
         )
         {
             assert('is_array($selectedIds)');
             assert('is_string($modelClassName)');
+            assert('$listAttributesSelector == null || $listAttributesSelector instanceof ListAttributesSelector');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->modelClassName         = $modelClassName;
@@ -84,6 +88,7 @@
             $this->selectedIds            = $selectedIds;
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridId                 = 'list-view';
+            $this->listAttributesSelector = $listAttributesSelector;
         }
 
         /**
@@ -237,6 +242,10 @@
 
         protected function resolveMetadata()
         {
+            if($this->listAttributesSelector != null)
+            {
+                return $this->listAttributesSelector->getResolvedMetadata();
+            }
             return self::getMetadata();
         }
 

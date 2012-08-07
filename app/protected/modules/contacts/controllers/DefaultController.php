@@ -52,10 +52,11 @@
                                               'listPageSize', get_class($this->getModule()));
             $contact                        = new Contact(false);
             $searchForm                     = new ContactsSearchForm($contact);
-            $dataProvider = $this->makeSearchDataProvider(
+            $listAttributesSelector         = new ListAttributesSelector('ContactsListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter',
                 'ContactsSearchView'
             );

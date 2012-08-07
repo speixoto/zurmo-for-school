@@ -49,9 +49,11 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));
-            $opportunity = new Opportunity(false);
-            $searchForm = new OpportunitiesSearchForm($opportunity);
-            $dataProvider = $this->makeSearchDataProvider(
+            $opportunity                    = new Opportunity(false);
+            $searchForm                     = new OpportunitiesSearchForm($opportunity);
+            $listAttributesSelector         = new ListAttributesSelector('OpportunitiesListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,

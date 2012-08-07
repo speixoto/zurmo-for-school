@@ -263,12 +263,12 @@
          * second panel is hidden by default in the user interface.
          * @return A string containing the element's content.
          */
-        protected function renderFormLayout($form = null)
+        protected function renderFormLayout(ZurmoActiveForm $form)
         {
             $metadata       = self::getMetadata();
             $maxCellsPerRow = $this->getMaxCellsPerRow();
             $content        = $this->renderSummaryCloneContent();
-            $content       .= $this->renderColumnSelectionContent();
+            $content       .= $this->renderListAttributesSelectionContent($form);
             $content       .= TableUtil::getColGroupContent($this->getColumnCount($metadata['global']));
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)
@@ -302,9 +302,15 @@
             return '<div class="list-view-items-summary-clone"></div>';
         }
 
-        protected function renderColumnSelectionContent()
+        protected function renderListAttributesSelectionContent(ZurmoActiveForm $form)
         {
-
+            if($this->model->getListAttributesSelector() == null)
+            {
+                return;
+            }
+            $element = new ListAttributesSelectionElement($this->model, null, $form, array());
+            $element->editableTemplate = '{content}';
+            return ZurmoHtml::tag('div', array('class' => 'list-view-attributes-selection'), $element->render());
         }
 
         protected function renderViewToolBarContainerForAdvancedSearch($form)
