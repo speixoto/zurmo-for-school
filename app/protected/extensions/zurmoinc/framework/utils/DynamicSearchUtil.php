@@ -219,6 +219,8 @@
                 //Dynamic Search needs to always assume there is an available SearchForm
                 //Always assumes the SearchView to use matches the exact pluralCamelCasedName.
                 //Does not support nested relations to leads persay.  It will resolve as a Contact.
+                //This is not a problem since you can't relate a model to a lead, it is related to a contact.
+                //So this scenario would not come up naturally.
                 $moduleClassName             = $model->getModel()->getModuleClassName();
                 $viewClassName               = $moduleClassName::getPluralCamelCasedName() . 'SearchView';
                 $element                     = DynamicSearchUtil::getCellElement($viewClassName, $cellElementModelClassName,

@@ -27,7 +27,7 @@
     /**
      * Inform user that export process is completed, and that user can download exported file.
      */
-    class EmailMessageArchivingEmailAddreessNotMachingNotificationRules extends JobsManagerAccessNotificationRules
+    class EmailMessageArchivingEmailAddressNotMachingNotificationRules extends JobsManagerAccessNotificationRules
     {
         protected $critical    = false;
 
@@ -40,7 +40,7 @@
 
         public static function getType()
         {
-            return 'EmailMessageArchivingEmailAddreessNotMaching';
+            return 'EmailMessageArchivingEmailAddressNotMaching';
         }
     }
 ?>
