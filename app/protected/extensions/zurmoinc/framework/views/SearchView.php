@@ -182,14 +182,14 @@
                     {
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
-                        //Reseting DropKick Information                        
-                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){                                                                            
+                        //Reseting DropKick Information
+                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){
                             $(this).removeData('dropkick');
                         });
                         $(this).closest('form').find('div.dk_container').each(function(){
                             $(this).remove();
                         });
-                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){                                                
+                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){
                             $(this).dropkick();
                             $(this).dropkick('rebindToggle');
                         });
@@ -268,6 +268,7 @@
             $metadata       = self::getMetadata();
             $maxCellsPerRow = $this->getMaxCellsPerRow();
             $content        = $this->renderSummaryCloneContent();
+            $content       .= $this->renderColumnSelectionContent();
             $content       .= TableUtil::getColGroupContent($this->getColumnCount($metadata['global']));
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)
@@ -299,6 +300,11 @@
         protected function renderSummaryCloneContent()
         {
             return '<div class="list-view-items-summary-clone"></div>';
+        }
+
+        protected function renderColumnSelectionContent()
+        {
+
         }
 
         protected function renderViewToolBarContainerForAdvancedSearch($form)
