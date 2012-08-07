@@ -47,5 +47,5 @@
     unset($common_config['theme']);
     //Not applicable for console applications.
     unset($common_config['controllerMap']);
-    return $common_config;
+    return $common_config
 ?>

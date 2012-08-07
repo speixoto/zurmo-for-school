@@ -158,15 +158,7 @@
                     $entry = "$directory/$entry";
                     if (is_file($entry) || is_link($entry))
                     {
-                        if (IS_LINUX)
-                        {
-                            unlink($entry);
-                        }
-                        else
-                        {
-                            assert(IS_WINNT); // Not Coding Standard
-                            unlink($entry);
-                        }
+                        unlink($entry);
                     }
                     else
                     {

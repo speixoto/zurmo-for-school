@@ -233,7 +233,5 @@
         {
             return $this->maintananceMode;
         }
-
-
     }
 ?>

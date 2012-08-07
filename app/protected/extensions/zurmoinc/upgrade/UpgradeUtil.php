@@ -135,7 +135,6 @@
             $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . "upgrade";
             if (!is_dir($upgradePath))
             {
-                closedir($handle);
                 throw new NotFoundException();
             }
 
@@ -310,7 +309,7 @@
          */
         public function clearAssetsAndRunTimeStuff()
         {
-            Yii::app()->upgrader->clearAssetsAndRunTimeStuff();
+            Yii::app()->upgrader->clearAssetsAndRunTimeItems();
         }
 
         /**
