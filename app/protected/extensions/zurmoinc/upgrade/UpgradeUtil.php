@@ -51,22 +51,27 @@
                 self::loadUpgraderComponent($upgradeExtractPath);
                 self::clearCache();
 
-                $source = $upgradeExtractPath . '/filesToUpload';
-                $destination = COMMON_ROOT . '/../';
+                $source = $upgradeExtractPath . DIRECTORY_SEPARATOR . 'filesToUpload';
+                $destination = COMMON_ROOT . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+
+                $pathToConfigurationFolder = COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'config';
                 self::processBeforeConfigFiles();
-                self::processConfigFiles($source, $destination, $configuration);
+                self::processConfigFiles($pathToConfigurationFolder);
                 self::processAfterConfigFiles();
+
                 self::processBeforeFiles();
                 self::processFiles($source, $destination, $configuration);
                 self::processAfterFiles();
+
                 self::processBeforeUpdateSchema();
                 self::processUpdateSchema();
                 self::processAfterUpdateSchema();
-                self::clearAssetsAndRunTimeStuff(); //includes runtimecache
+                self::clearAssetsAndRunTimeItems();
+
                 self::processFinalTouches();
                 self::clearCache(); // you might have to do this after each of these steps.
                 self::markUpgradeDone(); // should we do here or admin should do this?
-                self::removeUpgradeZip();  //Can we do this? It will be removed when we clear runtime folder!
+                self::removeUpgradeZip();  //Should we do this?
             }
             catch (CException $e)
             {
@@ -191,12 +196,12 @@
         {
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'manifest.php');
             //preg_match('/^\d+\.\d+$/', $actualVersion);
-            if (preg_match_all('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $fromVersionMatches) != false)
+            if (preg_match_all('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $fromVersionMatches) !== false)
             {
                 if (preg_match_all('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['toVersion'], $toVersionMatches) !== false)
                 {
-                    if ($fromVersionMatches[1] == MAJOR_VERSION && $fromVersionMatches[2] == MINOR_VERSION &&
-                        $fromVersionMatches[3] == PATCH_VERSION)
+                    if ($fromVersionMatches[1][0] == MAJOR_VERSION && $fromVersionMatches[2][0] == MINOR_VERSION &&
+                        $fromVersionMatches[3][0] == PATCH_VERSION)
                     {
                         return $configuration;
                     }
@@ -243,9 +248,9 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processConfigFiles($source, $destination, $configuration)
+        public function processConfigFiles($pathToConfigurationFolder)
         {
-            Yii::app()->upgrader->processConfigFiles($source, $destination, $configuration);
+            Yii::app()->upgrader->processConfigFiles($pathToConfigurationFolder);
         }
 
         /**
@@ -307,7 +312,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function clearAssetsAndRunTimeStuff()
+        public function clearAssetsAndRunTimeItems()
         {
             Yii::app()->upgrader->clearAssetsAndRunTimeItems();
         }
@@ -317,6 +322,7 @@
          */
         public function processFinalTouches()
         {
+            Yii::app()->upgrader->processFinalTouches();
         }
 
         public function markUpgradeDone()

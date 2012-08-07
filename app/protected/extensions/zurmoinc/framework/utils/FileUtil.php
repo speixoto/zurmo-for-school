@@ -146,15 +146,33 @@
         /**
          * Delete folder and all its contents
          * @param string $directory
+         * @param boolean $removeDirectoryItself - Should directory be removed also, or just its content
+         * @param array $filesOrFoldersToSkip - List of files/folders not to be deleted
          */
-        public static function deleteDirectoryRecoursive($directory)
+        public static function deleteDirectoryRecoursive($directory, $removeDirectoryItself = true, $filesOrFoldersToSkip = array())
         {
             assert(is_dir($directory)); // Not Coding Standard
+            assert(($removeDirectoryItself && empty($skip)) || !$removeDirectoryItself); // Not Coding Standard
             $entries = scandir($directory);
             foreach ($entries as $entry)
             {
                 if ($entry != "." && $entry != "..")
                 {
+                    if (!empty($filesOrFoldersToSkip))
+                    {
+                        $skipFileOrFolder = false;
+                        foreach ($filesOrFoldersToSkip as $fileOrFoldersToSkip)
+                        {
+                            if (trim($fileOrFoldersToSkip, DIRECTORY_SEPARATOR) == trim($entry, DIRECTORY_SEPARATOR))
+                            {
+                                $skipFileOrFolder = true;
+                            }
+                        }
+                        if ($skipFileOrFolder)
+                        {
+                            continue;
+                        }
+                    }
                     $entry = "$directory/$entry";
                     if (is_file($entry) || is_link($entry))
                     {
@@ -162,11 +180,14 @@
                     }
                     else
                     {
-                        self::deleteDirectoryRecoursive($entry);
+                        self::deleteDirectoryRecoursive($entry, true);
                     }
                 }
             }
-            rmdir($directory);
+            if ($removeDirectoryItself)
+            {
+                rmdir($directory);
+            }
         }
     }
 ?>
