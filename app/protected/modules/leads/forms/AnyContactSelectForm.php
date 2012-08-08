@@ -32,7 +32,7 @@
         public function attributeLabels()
         {
             return array(
-                'contactId'          => Yii::t('Default', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel Id',
+                'contactId'          => Yii::t('Default', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel ID',
                                             LabelUtil::getTranslationParamsForAllModules()),
                 'contactName'        => Yii::t('Default', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel Name',
                                             LabelUtil::getTranslationParamsForAllModules()),
