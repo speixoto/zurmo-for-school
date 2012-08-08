@@ -36,8 +36,10 @@
             assert('$this->attribute == null');
             assert('$this->model->getListAttributesSelector() != null');
             $content  = $this->renderSelectionContent();
+            $content .= $this->renderApplyLinkContent();
+            $content .= $this->renderApplyResetContent();
             $this->renderEditableScripts();
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'list-view-attributes-selection'), $content);
         }
 
         /**
@@ -70,9 +72,9 @@
                 'options'        => array(
                                           'selectedText'     => '',
                                           'noneSelectedText' => '',
-                                          'header'           => false,
+                                          'header'           => false
                                           ),
-                'htmlOptions'    => array('class' => 'ignore-style')
+                'htmlOptions'    => array('class' => 'ignore-style ignore-clearform')
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['ListAttributesSelectionMultiSelect'];
@@ -83,32 +85,42 @@
          */
         protected function renderEditableScripts()
         {
-            $x = $this->model->getListAttributesSelector()->getMetadataDefinedListAttributeNames();
-            //echo "<pre>";
-            //print_r($x);
-           // echo "</pre>";
-            return;
-            //todo:
-            $inputId = $this->getEditableInputId();
-            $script   = " basicSearchQueued = 0;";
-            $script  .= " basicSearchOldValue = '';";
-            $script  .= "   var basicSearchHandler = function(event)
-                            {
-                                if ($(this).val() != '')
-                                {
-                                    if (basicSearchOldValue != $(this).val())
-                                    {
-                                        basicSearchOldValue = $(this).val();
-                                        basicSearchQueued = basicSearchQueued  + 1;
-                                        setTimeout('basicSearchQueued = basicSearchQueued - 1', 900);
-                                        setTimeout('searchByQueuedSearch(\"" . $inputId . "\")', 1000);
-                                    }
-                                }
-                            }
-                            $('#" . $inputId . "').unbind('input.ajax propertychange.ajax keyup.ajax');
-                            $('#" . $inputId . "').bind('input.ajax propertychange.ajax keyup.ajax', basicSearchHandler);
-                            ";
-            Yii::app()->clientScript->registerScript('basicSearchAjaxSubmit', $script);
+            $defaultSelectedAttributes = $this->model->getListAttributesSelector()->getMetadataDefinedListAttributeNames();
+            Yii::app()->clientScript->registerScript('selectedListAttributesScripts', "
+                $('#list-attributes-reset').unbind('click.reset');
+                $('#list-attributes-reset').bind('click.reset', function()
+                    {
+                        resetSelectedListAttributes('" .
+                            $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "', " .
+                            CJSON::encode($defaultSelectedAttributes) . ");
+                    }
+                );
+                $('#" . $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "').bind('multiselectclick', function(event, ui){
+                    resolveLastSelectedListAttributesOption('" .
+                        $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "')
+                });
+                ");
         }
+
+        protected function renderApplyLinkContent()
+        {
+            $params = array();
+            $params['label']       = Yii::t('Default', 'Apply');
+            $params['htmlOptions'] = array('id'	     => 'list-attributes-apply',
+                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $searchElement = new SaveButtonActionElement(null, null, null, $params);
+            return $searchElement->render();
+        }
+
+        protected function renderApplyResetContent()
+        {
+            $params = array();
+            $params['label']       = Yii::t('Default', 'Reset');
+            $params['htmlOptions'] = array('id'	     => 'list-attributes-reset',
+                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $searchElement = new SaveButtonActionElement(null, null, null, $params);
+            return $searchElement->render();
+        }
+
     }
 ?>

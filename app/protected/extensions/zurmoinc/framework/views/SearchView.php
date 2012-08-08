@@ -146,7 +146,6 @@
 
         protected function getExtraRenderForClearSearchLinkScript()
         {
-
         }
 
         protected function renderClearingSearchInputContent()
@@ -308,9 +307,18 @@
             {
                 return;
             }
+            Yii::app()->clientScript->registerScript('listAttributes' . $this->getSearchFormId(), "
+                $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.reset-list-attributes');
+                $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.reset-list-attributes', function()
+                    {
+                        alert('will this always run before submit?');
+                    }
+                );");
+
             $element = new ListAttributesSelectionElement($this->model, null, $form, array());
             $element->editableTemplate = '{content}';
-            return ZurmoHtml::tag('div', array('class' => 'list-view-attributes-selection'), $element->render());
+           // $element->registerScripts()
+            return $element->render();
         }
 
         protected function renderViewToolBarContainerForAdvancedSearch($form)
