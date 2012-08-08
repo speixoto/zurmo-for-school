@@ -83,10 +83,10 @@
         }
 
         /**
-         * Check are all file and folder permissions set correctly(recoursive)
+         * Get array of files or folders in directory that are not writeable by user.
          * @param string $directory
          */
-        public static function areAllFilesAndDirectoriesWritable($directory)
+        public static function getNonWriteableFilesOrFolders($directory, &$nonWritableItems = array())
         {
             $isWritable = true;
             $handle = opendir($directory);
@@ -98,16 +98,21 @@
                     if (is_dir($path))
                     {
                         // Check if folder itself is writeable, and if all subfolders and files are writeable.
-                        $isWritable = $isWritable && is_writeable($path) && self::areAllFilesAndDirectoriesWritable($path);
+                        $nonWritableItems = self::getNonWriteableFilesOrFolders($path, $nonWritableItems);
+                        $isWritable = is_writeable($path) && empty($nonWritableItems);
                     }
                     else
                     {
-                        $isWritable = $isWritable && is_writeable($path);
+                        $isWritable = is_writeable($path);
+                    }
+                    if (!$isWritable)
+                    {
+                        $nonWritableItems[] = $path;
                     }
                 }
             }
             closedir($handle);
-            return $isWritable;
+            return $nonWritableItems;
         }
 
         /**

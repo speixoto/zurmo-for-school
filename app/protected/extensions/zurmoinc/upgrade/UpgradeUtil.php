@@ -47,7 +47,7 @@
                 self::setCurrentZurmoVersion();
                 $upgradeZipFile = self::checkForUpgradeZip();
                 $upgradeExtractPath = self::unzipUpgradeZip($upgradeZipFile);
-                $configuration = self::checkManifestThatThisVersionIsOk($upgradeExtractPath);
+                $configuration = self::checkManifestIfVersionIsOk($upgradeExtractPath);
                 self::loadUpgraderComponent($upgradeExtractPath);
                 self::clearCache();
 
@@ -70,22 +70,30 @@
 
                 self::processFinalTouches();
                 self::clearCache(); // you might have to do this after each of these steps.
-                self::markUpgradeDone(); // should we do here or admin should do this?
-                self::removeUpgradeZip();  //Should we do this?
+                self::markUpgradeDone();
+                self::removeUpgradeFiles();  //Should we do this?
             }
             catch (CException $e)
             {
-                echo "Error";
+                echo "\n\n" . 'Error during upgrade!' . "\n\n";
+                echo $e->getMessage() . "\n";
+                echo "Please fix error(s) and try again, or restore your database/files.\n\n";
                 exit;
             }
         }
 
         /*
          * Check if application is in maintanance mode
+         * @throws NotSupportedException
+         * @return boolean
          */
         public function isApplicationInUpgradeMode()
         {
-            // To-Do: Fix this latter
+            if (isset(Yii::app()->maintananceMode) && Yii::app()->maintananceMode)
+            {
+                $message = 'Application is not in maintanance mode. Please edit perInstance.php file, and set "$maintananceMode  = true;"';
+                throw new NotSupportedException($message);
+            }
             return true;
         }
 
@@ -96,17 +104,22 @@
          */
         public function checkPermissions()
         {
-            //all files/folders must be writeable
-            $areAllFilesAndDirectoriesWritable = FileUtil::areAllFilesAndDirectoriesWritable(COMMON_ROOT);
-            if (!$areAllFilesAndDirectoriesWritable)
+            // All files/folders must be writeable by user that runs upgrade process.
+            $nonWriteableFilesOrFolders = FileUtil::getNonWriteableFilesOrFolders(COMMON_ROOT);
+            if (!empty($nonWriteableFilesOrFolders))
             {
-                throw new FileNotWriteableException();
+                $message = 'Not all files and folders are writeable by upgrade user. Please make next files or folders writeable:' . "\n";
+                foreach ($nonWriteableFilesOrFolders as $nonWriteableFileOrFolder)
+                {
+                    $message .= $nonWriteableFileOrFolder . "\n";
+                }
+                throw new FileNotWriteableException($message);
             }
             return true;
         }
 
         /**
-         * Check if Zip extension is loaded.
+         * Check if PHP Zip extension is loaded.
          * @throws NotSupportedException
          * @return boolean
          */
@@ -115,7 +128,8 @@
             $isZipExtensionInstalled =  InstallUtil::checkZip();
             if (!$isZipExtensionInstalled)
             {
-                throw new NotSupportedException();
+                $message = 'Zip PHP extension is required by upgrade process, please install it.';
+                throw new NotSupportedException($message);
             }
             return true;
         }
@@ -129,18 +143,19 @@
         }
 
         /**
-         * Check if one and only one zip file exist.
+         * Check if one and only one zip file exist, so upgrade process will use it.
          * @throws NotFoundException
          * @throws NotSupportedException
-         * @return string
+         * @return string $upgradeZipFile - path to zip file
          */
         public function checkForUpgradeZip()
         {
             $numberOfZipFiles = 0;
-            $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . "upgrade";
+            $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
             if (!is_dir($upgradePath))
             {
-                throw new NotFoundException();
+                $message = 'Please upload upgrade zip file to runtime/upgrade folder.';
+                throw new NotFoundException($message);
             }
 
             $handle = opendir($upgradePath);
@@ -156,7 +171,8 @@
             if ($numberOfZipFiles != 1)
             {
                 closedir($handle);
-                throw new NotSupportedException();
+                $message = 'More then one zip files exist in runtime/upgrade folder. Please delete them all except one that you want to use for upgrade.';
+                throw new NotSupportedException($message);
             }
             closedir($handle);
             return $upgradeZipFile;
@@ -164,38 +180,39 @@
 
         /**
          * Unzip upgrade files.
-         * @param unknown_type $upgradeZipFile
+         * @param string $upgradeZipFilePath
          * @throws NotSupportedException
-         * @return string
+         * @return string - path to unzipped files
          */
-        public function unzipUpgradeZip($upgradeZipFile)
+        public function unzipUpgradeZip($upgradeZipFilePath)
         {
             $isExtracted = false;
             $zip = new ZipArchive();
             $upgradeExtractPath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . "upgrade";
-            $fileInfo = pathinfo($upgradeZipFile);
-            if ($zip->open($upgradeZipFile) === true)
+            $fileInfo = pathinfo($upgradeZipFilePath);
+            if ($zip->open($upgradeZipFilePath) === true)
             {
                 $isExtracted = $zip->extractTo($upgradeExtractPath);
                 $zip->close();
             }
             if (!$isExtracted)
             {
-                throw new NotSupportedException();
+                $message  = 'There was error during extraction process of ' . $upgradeZipFilePath . ". \n";
+                $message .= 'Please check if the file is valid zip archive.';
+                throw new NotSupportedException($message);
             }
             return $upgradeExtractPath . DIRECTORY_SEPARATOR . $fileInfo['filename'];
         }
 
         /**
-         * Check if upgrade version is correct
-         * @param unknown_type $upgradeExtractPath
+         * Check if upgrade version is correct, and if can be executed for current ZUrmo version.
+         * @param string $upgradeExtractPath
          * @throws NotSupportedException
-         * @return boolean
+         * @return array
          */
-        public function checkManifestThatThisVersionIsOk($upgradeExtractPath)
+        public function checkManifestIfVersionIsOk($upgradeExtractPath)
         {
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'manifest.php');
-            //preg_match('/^\d+\.\d+$/', $actualVersion);
             if (preg_match_all('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $fromVersionMatches) !== false)
             {
                 if (preg_match_all('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['toVersion'], $toVersionMatches) !== false)
@@ -205,22 +222,31 @@
                     {
                         return $configuration;
                     }
+                    else
+                    {
+                        $upgradeZurmoVersion = "{$fromVersionMatches[1][0]}.{$fromVersionMatches[2][0]}.{$fromVersionMatches[3][0]}";
+                        $installedZurmoVersion = MAJOR_VERSION . '.' . MINOR_VERSION . '.' . PATCH_VERSION;
+                        $message  = "This upgrade is for different version of Zurmo ($upgradeZurmoVersion) \n";
+                        $message .= "Installed Zurmo version is: {$installedZurmoVersion}";
+                        throw new NotSupportedException($message);
+                    }
                 }
                 else
                 {
-                    throw new NotSupportedException();
+                    $message = 'Could not extract upgrade to version from manifest file.';
+                    throw new NotSupportedException($message);
                 }
             }
             else
             {
-                throw new NotSupportedException();
+                $message = 'Could not extract upgrade from version from manifest file.';
+                throw new NotSupportedException($message);
             }
-            return true;
         }
 
         /**
          * Load upgrader component  as yii component from upgrade files.
-         * @param unknown_type $upgradeExtractPath
+         * @param string $upgradeExtractPath
          */
         public function loadUpgraderComponent($upgradeExtractPath)
         {
@@ -329,7 +355,7 @@
         {
         }
 
-        public function removeUpgradeZip()
+        public function removeUpgradeFiles()
         {
         }
     }

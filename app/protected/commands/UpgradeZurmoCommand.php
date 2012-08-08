@@ -69,22 +69,52 @@ EOD;
         {
             $this->usageError('The specified user is not a super administrator.');
         }
+        echo "\n";
+        echo "This is Zurmo upgrade process. Please backup files/database before you continue.\n";
+        $message = "Are you sure you want to upgrade Zurmo?";
+        $confirm = $this->confirm($message);
 
-        $startTime = microtime(true);
-        $template        = "{message}\n";
-        $messageStreamer = new MessageStreamer($template);
-        $messageStreamer->setExtraRenderBytes(0);
-        $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process.'));
-        $messageLogger = new MessageLogger($messageStreamer);
+        if ($confirm)
+        {
+            $startTime = microtime(true);
+            $template        = "{message}\n";
+            $messageStreamer = new MessageStreamer($template);
+            $messageStreamer->setExtraRenderBytes(0);
+            $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process.'));
+            $messageLogger = new MessageLogger($messageStreamer);
 
-        // To-Do: Allow to specify version upgrade to be used, because sometime
-        // user might not want to upgrade to latest.
-        UpgradeUtil::run($messageLogger);
+            // To-Do: Allow to specify version upgrade to be used, because sometime
+            // user might not want to upgrade to latest.
+            UpgradeUtil::run($messageLogger);
 
-        $endTime = microtime(true);
-        $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade complete.'));
-        $messageStreamer->add(Yii::t('Default', 'Total run time: {formattedTime} seconds.',
-                                     array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+            $endTime = microtime(true);
+            $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade complete.'));
+            $messageStreamer->add(Yii::t('Default', 'Total run time: {formattedTime} seconds.',
+                                         array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+        }
+        else
+        {
+            echo "Upgrade process halted.\n";
+        }
+    }
+
+    /**
+     * Prompt user by Yes or No
+     * @param string $message an optional message to show at prompting.
+     * @param bool $printYesNo If is true shows " [yes|no] " at prompting
+     * @return bool True if user respond Yes, otherwise, return False
+     */
+    public function confirm($message = null, $printYesNo = true)
+    {
+        if($message !== null)
+        {
+            echo $message;
+        }
+        if($printYesNo)
+        {
+            echo ' [yes|no] ';
+        }
+        return !strncasecmp(trim(fgets(STDIN)),'y',1);
     }
 }
 ?>
