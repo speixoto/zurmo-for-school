@@ -135,10 +135,14 @@
             => 'Bancaria',
         'Business Services'
             => 'Servizi di business',
+        'by <strong>{ownerStringContent}</strong>'
+            => 'di <strong>{ownerStringContent}</strong>',
         'by {ownerStringContent}'
             => 'di {ownerStringContent}',
         'Cancel'
             => 'Annulla',
+        'Cancel Changes'
+            => 'Annulla le modifiche',
         'Changes to active currencies saved successfully.'
             => 'Valute attive modificati con successo.',
         'Changes to active languages saved successfully.'

@@ -135,10 +135,14 @@
             => 'Banking', // Same Word Translated
         'Business Services'
             => 'Handelsdienstleistungen',
+        'by <strong>{ownerStringContent}</strong>'
+            => 'von <strong> {ownerStringContent}</strong>',
         'by {ownerStringContent}'
             => 'von {ownerStringContent}',
         'Cancel'
             => 'Abbrechen',
+        'Cancel Changes'
+            => 'Änderungen stornieren',
         'Changes to active currencies saved successfully.'
             => 'Änderungen an aktiven Währungen erfolgreich geändert.',
         'Changes to active languages saved successfully.'

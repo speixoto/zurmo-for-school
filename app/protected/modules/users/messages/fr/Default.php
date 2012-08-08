@@ -95,6 +95,8 @@
             => 'Le nom d\'utilisateur est trop court, il doit comprendre au minimum {minimumLength} charactères.',
         'Time Zone'
             => 'Fuseau Horaire',
+        'Turn off email notifications'
+            => 'Désactiver les notifications emails',
         'User'
             => 'Utilisateur',
         'User configuration saved successfully.'

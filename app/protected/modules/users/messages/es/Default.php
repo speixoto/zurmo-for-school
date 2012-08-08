@@ -95,6 +95,8 @@
             => 'El nombre de usuario es demasiado corto. Longitud mínima es de {minimumLength}.',
         'Time Zone'
             => 'Zona horaria',
+        'Turn off email notifications'
+            => 'Desactivar notificaciones de email',
         'User'
             => 'Usuario',
         'User configuration saved successfully.'

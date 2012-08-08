@@ -95,6 +95,8 @@
             => 'Il nome di utente è troppo corto.  La lunghezza minima è {minimumLength} carattere.',
         'Time Zone'
             => 'Fuso orario',
+        'Turn off email notifications'
+            => 'Disattivare le notifiche e-mail',
         'User'
             => 'Utente',
         'User configuration saved successfully.'

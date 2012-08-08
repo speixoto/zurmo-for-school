@@ -135,10 +135,14 @@
             => 'Bancario',
         'Business Services'
             => 'Servicios de negocios',
+        'by <strong>{ownerStringContent}</strong>'
+            => 'de <strong>{ownerStringContent}</strong>',
         'by {ownerStringContent}'
             => 'de {ownerStringContent}',
         'Cancel'
             => 'Cancelar',
+        'Cancel Changes'
+            => 'Cancelar cambios',
         'Changes to active currencies saved successfully.'
             => 'Divisas activas cambiado con éxito.',
         'Changes to active languages saved successfully.'

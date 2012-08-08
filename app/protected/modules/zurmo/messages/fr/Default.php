@@ -135,9 +135,13 @@
             => 'Bancaire',
         'Business Services'
             => 'Service de gestion',
+        'by <strong>{ownerStringContent}</strong>'
+            => 'par <strong>{ownerStringContent}</strong>',
         'by {ownerStringContent}'
             => 'par {ownerStringContent}',
         'Cancel'
+            => 'Annuler',
+        'Cancel Changes'
             => 'Annuler',
         'Changes to active currencies saved successfully.'
             => 'Les changements de devises actives sont effectués.',

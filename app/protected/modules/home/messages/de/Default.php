@@ -79,6 +79,8 @@
             => 'Wiki Lesen',
         'Return to Home'
             => 'Zurück zur Startseite',
+        'Switch Dashboard'
+            => 'Dashboard Wechseln',
         'Tip of the Day'
             => 'Tipp des Tages',
         'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .
