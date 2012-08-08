@@ -141,7 +141,7 @@
             => 'di {ownerStringContent}',
         'Cancel'
             => 'Annulla',
-        'Cancel Changes'
+        'Cancel changes'
             => 'Annulla le modifiche',
         'Changes to active currencies saved successfully.'
             => 'Valute attive modificati con successo.',

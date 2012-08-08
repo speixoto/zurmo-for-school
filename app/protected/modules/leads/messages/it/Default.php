@@ -29,7 +29,9 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-        '<h2>"Lead, follow, or get out of the way."</h2> <i>- Thomas Paine</i></i><div class="large-icon"></div><p>Leads are potential clients that should be followed up on.  Be the first to create a Lead or get out of the way so someone else can.</p>'
+        '<h2>"Lead, follow, or get out of the way."</h2> ' .
+        '<i>- Thomas Paine</i></i><div class="large-icon"></div><p>Leads are potential clients that should be followed up ' .
+        'on.  Be the first to create a Lead or get out of the way so someone else can.</p>'
             => '<h2>"Lead, follow, or get out of the way."</h2> <i>- Thomas Paine</i></i><div class="large-icon"></div><p>Leads are potential clients that should be followed up on.  Be the first to create a Lead or get out of the way so someone else can.</p>',  // Same Word Translated
         'Access LeadsModulePluralLabel Tab'
             => 'Acceso ai LeadsModulePluralLabel',

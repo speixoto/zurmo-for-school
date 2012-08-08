@@ -29,7 +29,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-        '<h2>"Skill is fine, and genius is splendid, but the right Contacts are more valuable than either."</h2><i>- Arthur Conan Doyle, Sr.</i><div class="large-icon"></div><p>Arthur understands the value of having Contacts in the CRM and it takes little skill or genius to create one. Why not be the first to do so?</p>'
+        '<h2>"Skill is fine, and genius is splendid, but the right Contacts are more ' .
+                                     'valuable than either."</h2><i>- Arthur Conan Doyle, Sr.</i><div class="large-icon"></div><p>Arthur ' .
+                                     'understands the value of having Contacts in the CRM and it takes little skill ' .
+                                     'or genius to create one. Why not be the first to do so?</p>'
             =>'<h2>"Skill is fine, and genius is splendid, but the right Contacts are more valuable than either."</h2><i>- Arthur Conan Doyle, Sr.</i><div class="large-icon"></div><p>Arthur understands the value of having Contacts in the CRM and it takes little skill or genius to create one. Why not be the first to do so?</p>', // Same Word Translated
         'Access ContactsModulePluralLabel Tab'
             => 'Acceso a ContactsModulePluralLabel',

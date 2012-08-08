@@ -141,7 +141,7 @@
             => 'von {ownerStringContent}',
         'Cancel'
             => 'Abbrechen',
-        'Cancel Changes'
+        'Cancel changes'
             => 'Änderungen stornieren',
         'Changes to active currencies saved successfully.'
             => 'Änderungen an aktiven Währungen erfolgreich geändert.',

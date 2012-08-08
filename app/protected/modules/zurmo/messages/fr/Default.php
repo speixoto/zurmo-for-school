@@ -141,7 +141,7 @@
             => 'par {ownerStringContent}',
         'Cancel'
             => 'Annuler',
-        'Cancel Changes'
+        'Cancel changes'
             => 'Annuler',
         'Changes to active currencies saved successfully.'
             => 'Les changements de devises actives sont effectués.',
