@@ -28,9 +28,13 @@
     { 
         
         private $views;
+        private $term;
+        private $scopeData;
         
-        public function __construct($views) {
-            $this->views = $views;
+        public function __construct(Array $views, $term, $scopeData) {
+            $this->views     = $views;
+            $this->term      = $term;
+            $this->scopeData = $scopeData;
         }
         
         protected function renderContent()
@@ -49,7 +53,7 @@
             $sourceUrl                = Yii::app()->createUrl('zurmo/default/globallist');                      
             GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption(
                                         $moduleNamesAndLabels);
-            $searchView = new MixedModelsSearchView($moduleNamesAndLabels, $sourceUrl);
+            $searchView = new MixedModelsSearchView($moduleNamesAndLabels, $sourceUrl, $this->term, $this->scopeData);
             return $searchView->render();
         }
         

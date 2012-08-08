@@ -29,18 +29,24 @@
      */
     class MixedModelsSearchView extends View
     {
-        protected $moduleNamesAndLabelsAndAll;
+        private $moduleNamesAndLabelsAndAll;
 
-        protected $sourceUrl;
+        private $sourceUrl;
         
-        protected $gridIdSuffix;
+        private $term;
+        
+        private $scopeData;
+        
+        private $gridIdSuffix;             
                                                
-        public function __construct($moduleNamesAndLabelsAndAll, $sourceUrl, $gridSuffix = null)
+        public function __construct($moduleNamesAndLabelsAndAll, $sourceUrl, $term, $scopeData, $gridSuffix = null)
         {
             assert('is_array($moduleNamesAndLabelsAndAll)');
             assert('is_string($sourceUrl)');           
             $this->moduleNamesAndLabelsAndAll   = $moduleNamesAndLabelsAndAll;
             $this->sourceUrl                    = $sourceUrl;
+            $this->term                         = $term;
+            $this->scopeData                    = $scopeData;
             $this->gridIdSuffix                 = $gridSuffix;
         }
 
@@ -66,18 +72,12 @@
             //Scope search
             $content .= "<div class='search-view-0'>";
             $scope = new MixedModelsSearchElement($model, 'term', 
-                    $form, array( 'htmlOptions' => array ('id' => 'term')));
-            $getData                  = GetUtil::getData();            
-            $term                     = $getData['MixedModelsSearchForm']['term'];
-            $scopeData                = $getData['MixedModelsSearchForm']['anyMixedAttributesScope'];    
-            if(isset($term))
+                    $form, array( 'htmlOptions' => array ('id' => 'term')));                                        
+            $scope->setValue($this->term);
+            if (isset($this->scopeData))
             {
-                $scope->setValue($term);
-            }
-            if (isset($scopeData))
-            {
-                $scope->setSelectedValue($scopeData);
-            }
+                $scope->setSelectedValue($this->scopeData);
+            }            
             $content .= $scope->render();           
             //Search button
             $params = array();

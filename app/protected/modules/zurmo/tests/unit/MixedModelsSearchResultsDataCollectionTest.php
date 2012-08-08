@@ -29,7 +29,7 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createSuperAdmin();          
             ContactsModule::loadStartingData();
         }
         

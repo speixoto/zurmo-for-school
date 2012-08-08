@@ -186,7 +186,9 @@
             else
             {                                       
                 $listView = new MixedModelsSearchAndListView(
-                                $dataCollection->getViews()
+                                $dataCollection->getViews(), 
+                                $term, 
+                                $scopeData
                             );               
                 $view = new MixedModelsSearchPageView(ZurmoDefaultViewUtil::
                            makeStandardViewForCurrentUser($this, $listView));                
