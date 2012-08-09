@@ -36,9 +36,9 @@
 
     class UpgradeUtil
     {
-        public static $currentZurmoVersion;
+        const UPGRADE_STATE_KEY = 'zurmoUpgrade';
 
-        public static function run(MessageLogger $messageLogger)
+        public static function initialUpgrade(MessageLogger $messageLogger)
         {
             try {
                 self::isApplicationInUpgradeMode();
@@ -46,7 +46,10 @@
                 self::checkIfZipExtensionIsLoaded();
                 self::setCurrentZurmoVersion();
                 $upgradeZipFile = self::checkForUpgradeZip();
+
                 $upgradeExtractPath = self::unzipUpgradeZip($upgradeZipFile);
+                UpgradeUtil::setUpgradeState('zurmoUpgradeFolderPath', $upgradeExtractPath);
+
                 $configuration = self::checkManifestIfVersionIsOk($upgradeExtractPath);
                 self::loadUpgraderComponent($upgradeExtractPath);
                 self::clearCache();
@@ -62,16 +65,37 @@
                 self::processBeforeFiles();
                 self::processFiles($source, $destination, $configuration);
                 self::processAfterFiles();
+                self::clearCache();
+            }
+            catch (CException $e)
+            {
+                echo "\n\n" . 'Error during upgrade!' . "\n\n";
+                echo $e->getMessage() . "\n";
+                echo "Please fix error(s) and try again, or restore your database/files.\n\n";
+                exit;
+            }
+        }
 
+        public static function reloadAppAndCompleteUpgrade(MessageLogger $messageLogger)
+        {
+            try {
+                $upgradeExtractPath = self::getUpgradeState('zurmoUpgradeFolderPath');
+
+                self::isApplicationInUpgradeMode();
+                self::clearCache();
+                self::loadUpgraderComponent($upgradeExtractPath);
+                self::clearCache();
                 self::processBeforeUpdateSchema();
-                self::processUpdateSchema();
+                self::clearCache();
+                self::processUpdateSchema($messageLogger);
+                self::clearCache();
                 self::processAfterUpdateSchema();
+                self::clearCache();
                 self::clearAssetsAndRunTimeItems();
-
+                self::clearCache();
                 self::processFinalTouches();
-                self::clearCache(); // you might have to do this after each of these steps.
-                self::markUpgradeDone();
-                self::removeUpgradeFiles();  //Should we do this?
+                self::clearCache();
+                self::removeUpgradeFiles();
             }
             catch (CException $e)
             {
@@ -87,7 +111,7 @@
          * @throws NotSupportedException
          * @return boolean
          */
-        public function isApplicationInUpgradeMode()
+        public static function isApplicationInUpgradeMode()
         {
             if (isset(Yii::app()->maintananceMode) && Yii::app()->maintananceMode)
             {
@@ -102,7 +126,7 @@
          * @throws FileNotWriteableException
          * @return boolean
          */
-        public function checkPermissions()
+        public static function checkPermissions()
         {
             // All files/folders must be writeable by user that runs upgrade process.
             $nonWriteableFilesOrFolders = FileUtil::getNonWriteableFilesOrFolders(COMMON_ROOT);
@@ -123,7 +147,7 @@
          * @throws NotSupportedException
          * @return boolean
          */
-        public function checkIfZipExtensionIsLoaded()
+        public static function checkIfZipExtensionIsLoaded()
         {
             $isZipExtensionInstalled =  InstallUtil::checkZip();
             if (!$isZipExtensionInstalled)
@@ -137,9 +161,10 @@
         /**
          * Set current Zurmo version
          */
-        public function setCurrentZurmoVersion()
+        public static function setCurrentZurmoVersion()
         {
-            self::$currentZurmoVersion = join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION));
+            $currentZurmoVersion = join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION));
+            self::setUpgradeState('zurmoVersionBeforeUpgrade', $currentZurmoVersion);
         }
 
         /**
@@ -148,7 +173,7 @@
          * @throws NotSupportedException
          * @return string $upgradeZipFile - path to zip file
          */
-        public function checkForUpgradeZip()
+        public static function checkForUpgradeZip()
         {
             $numberOfZipFiles = 0;
             $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
@@ -184,7 +209,7 @@
          * @throws NotSupportedException
          * @return string - path to unzipped files
          */
-        public function unzipUpgradeZip($upgradeZipFilePath)
+        public static function unzipUpgradeZip($upgradeZipFilePath)
         {
             $isExtracted = false;
             $zip = new ZipArchive();
@@ -210,7 +235,7 @@
          * @throws NotSupportedException
          * @return array
          */
-        public function checkManifestIfVersionIsOk($upgradeExtractPath)
+        public static function checkManifestIfVersionIsOk($upgradeExtractPath)
         {
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'manifest.php');
             if (preg_match_all('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $fromVersionMatches) !== false)
@@ -248,7 +273,7 @@
          * Load upgrader component  as yii component from upgrade files.
          * @param string $upgradeExtractPath
          */
-        public function loadUpgraderComponent($upgradeExtractPath)
+        public static function loadUpgraderComponent($upgradeExtractPath)
         {
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'UpgraderComponent.php');
             $upgraderComponent = Yii::createComponent('UpgraderComponent');
@@ -258,7 +283,7 @@
         /**
          * Clear cache
          */
-        public function clearCache()
+        public static function clearCache()
         {
             ForgetAllCacheUtil::forgetAllCaches();
         }
@@ -266,7 +291,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processBeforeConfigFiles()
+        public static function processBeforeConfigFiles()
         {
             Yii::app()->upgrader->processBeforeConfigFiles();
         }
@@ -274,7 +299,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processConfigFiles($pathToConfigurationFolder)
+        public static function processConfigFiles($pathToConfigurationFolder)
         {
             Yii::app()->upgrader->processConfigFiles($pathToConfigurationFolder);
         }
@@ -282,7 +307,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processAfterConfigFiles()
+        public static function processAfterConfigFiles()
         {
             Yii::app()->upgrader->processAfterConfigFiles();
         }
@@ -290,7 +315,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processBeforeFiles()
+        public static function processBeforeFiles()
         {
             Yii::app()->upgrader->processBeforeFiles();
         }
@@ -298,7 +323,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processFiles($source, $destination, $configuration)
+        public static function processFiles($source, $destination, $configuration)
         {
             Yii::app()->upgrader->processFiles($source, $destination, $configuration);
         }
@@ -306,7 +331,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processAfterFiles()
+        public static function processAfterFiles()
         {
             Yii::app()->upgrader->processAfterFiles();
         }
@@ -314,7 +339,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processBeforeUpdateSchema()
+        public static function processBeforeUpdateSchema()
         {
             Yii::app()->upgrader->processBeforeUpdateSchema();
         }
@@ -322,15 +347,15 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processUpdateSchema()
+        public static function processUpdateSchema($messageLogger)
         {
-            Yii::app()->upgrader->processUpdateSchema();
+            Yii::app()->upgrader->processUpdateSchema($messageLogger);
         }
 
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processAfterUpdateSchema()
+        public static function processAfterUpdateSchema()
         {
             Yii::app()->upgrader->processAfterUpdateSchema();
         }
@@ -338,7 +363,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function clearAssetsAndRunTimeItems()
+        public static function clearAssetsAndRunTimeItems()
         {
             Yii::app()->upgrader->clearAssetsAndRunTimeItems();
         }
@@ -346,17 +371,60 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public function processFinalTouches()
+        public static function processFinalTouches()
         {
             Yii::app()->upgrader->processFinalTouches();
         }
 
-        public function markUpgradeDone()
+        public static function markUpgradeDone()
         {
         }
 
-        public function removeUpgradeFiles()
+        public static function removeUpgradeFiles()
         {
+        }
+
+        /**
+         * Set upgrade state into Zurmo persistent storage
+         * @param string $key
+         * @param string $value
+         * @return boolean
+         */
+        public static function setUpgradeState($key, $value)
+        {
+            $statePersister = Yii::app()->getStatePersister();
+            $state = $statePersister->load();
+            $state[self::UPGRADE_STATE_KEY][$key] = $value;
+            $statePersister->save($state);
+            return true;
+        }
+
+        /**
+         * Get upgrade state from Zurmo persistent storage
+         * @param string $key
+         * @return mixed
+         */
+        public static function getUpgradeState($key)
+        {
+            $statePersister = Yii::app()->getStatePersister();
+            $state = $statePersister->load();
+            if (isset($state[self::UPGRADE_STATE_KEY][$key]))
+            {
+                return $state[self::UPGRADE_STATE_KEY][$key];
+            }
+            return null;
+        }
+
+        /**
+         * Clear upgrade info from Zurmo state persister
+         */
+        public static function unsetUpgradeState()
+        {
+            $statePersister = Yii::app()->getStatePersister();
+            $state = $statePersister->load();
+            unset($state[self::UPGRADE_STATE_KEY]);
+            $statePersister->save($state);
+            return true;
         }
     }
 ?>

@@ -33,7 +33,7 @@
         {
             return <<<EOD
     USAGE
-      zurmoc updgradeZurmo <username> <upgradeToVersion>
+      zurmoc updgradeZurmo <username> <action>
 
     DESCRIPTION
       This command runs a Zurmo upgrade.
@@ -41,7 +41,7 @@
     PARAMETERS
      * username: username to log in as and run the import processes. Typically 'super'.
                   This user must be a super administrator.
-     * upgradeToVersion: version to which to upgrade(optional, if not provided, it will upgrade to latest).
+     * action: optional argument, if provide it define upgrade phase("initialUpgrade" or "reloadAppAndCompleteUpgrade")
 EOD;
     }
 
@@ -51,7 +51,7 @@ EOD;
      */
     public function run($args)
     {
-        set_time_limit('300');
+        set_time_limit(0);
         if (!isset($args[0]))
         {
             $this->usageError('A username must be specified.');
@@ -69,33 +69,71 @@ EOD;
         {
             $this->usageError('The specified user is not a super administrator.');
         }
-        echo "\n";
-        echo "This is Zurmo upgrade process. Please backup files/database before you continue.\n";
+
+        $upgradeStep = 'initialUpgrade';
+
+        if (isset($args[1]) && $args[1] == 'reloadAppAndCompleteUpgrade')
+        {
+            $upgradeStep = $args[1];
+        }
+
+
+        if ($upgradeStep != 'initialUpgrade' && $upgradeStep != 'reloadAppAndCompleteUpgrade')
+        {
+            $this->usageError('Invalid step/action. Valid values are "initialUpgrade" and "reloadAppAndCompleteUpgrade".');
+        }
+
+        try
+        {
+            $template        = "{message}\n";
+            $messageStreamer = new MessageStreamer($template);
+            $messageStreamer->setExtraRenderBytes(0);
+            $messageLogger = new MessageLogger($messageStreamer);
+
+            if ($upgradeStep == 'initialUpgrade')
+            {
+                $messageLogger->addInfoMessage("Starting zurmo upgrade process.");
+                $this->initialUpgrade($messageLogger);
+                $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade phase 1 completed.'));
+                $messageLogger->addInfoMessage(Yii::t('Default', 'Please execute next command: "./zurmoc upgradeZurmo super reloadAppAndCompleteUpgrade" to complete upgrade process.'));
+            }
+            elseif ($upgradeStep == 'reloadAppAndCompleteUpgrade')
+            {
+                $messageLogger->addInfoMessage("Starting zurmo upgrade process - phase 2.");
+                $this->reloadAppAndCompleteUpgrade($messageLogger);
+                $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade completed.'));
+                UpgradeUtil::unsetUpgradeState();
+            }
+        }
+        catch (Exception $e)
+        {
+            $messageLogger->addErrorMessage(Yii::t('Default', 'An error occur during upgrade: ') . $e->getMessage());
+            exit;
+            UpgradeUtil::unsetUpgradeState();
+
+        }
+    }
+
+    protected function initialUpgrade($messageLogger)
+    {
+        $messageLogger->addInfoMessage(Yii::t('Default', 'This is Zurmo upgrade process. Please backup files/database before you continue.'));
+
         $message = "Are you sure you want to upgrade Zurmo?";
         $confirm = $this->confirm($message);
 
         if ($confirm)
         {
-            $startTime = microtime(true);
-            $template        = "{message}\n";
-            $messageStreamer = new MessageStreamer($template);
-            $messageStreamer->setExtraRenderBytes(0);
-            $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process.'));
-            $messageLogger = new MessageLogger($messageStreamer);
-
-            // To-Do: Allow to specify version upgrade to be used, because sometime
-            // user might not want to upgrade to latest.
-            UpgradeUtil::run($messageLogger);
-
-            $endTime = microtime(true);
-            $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade complete.'));
-            $messageStreamer->add(Yii::t('Default', 'Total run time: {formattedTime} seconds.',
-                                         array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+            UpgradeUtil::initialUpgrade($messageLogger);
         }
         else
         {
-            echo "Upgrade process halted.\n";
+            $messageLogger->addInfoMessage(Yii::t('Default', 'Upgrade process halted.'));
         }
+    }
+
+    protected function reloadAppAndCompleteUpgrade($messageLogger)
+    {
+            UpgradeUtil::reloadAppAndCompleteUpgrade($messageLogger);
     }
 
     /**
