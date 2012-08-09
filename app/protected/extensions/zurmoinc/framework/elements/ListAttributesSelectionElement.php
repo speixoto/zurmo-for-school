@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Element to render a set of checkboxes representing available list view attributes that can be selected when
+     * Element to renders two multi-select inputs representing available list view attributes that can be selected when
      * running a search and viewing a list.
      */
     class ListAttributesSelectionElement extends Element

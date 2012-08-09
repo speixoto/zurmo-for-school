@@ -24,6 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Manage which attributes are selected as columns for a listView.  Utilized by searchView to allow user
+     * to hide/show columns on a per search basis.
+     */
     class ListAttributesSelector
     {
         private $designerLayoutAttributes;
@@ -64,6 +68,9 @@
             $this->viewClassName            = $viewClassName;
         }
 
+        /**
+         * @return array
+         */
         public function getUnselectedListAttributesNamesAndLabelsAndAll()
         {
             $selectedValues = $this->getSelected();
@@ -79,6 +86,9 @@
             return $attributeNames;
         }
 
+        /**
+         * @return array
+         */
         public function getSelectedListAttributesNamesAndLabelsAndAll()
         {
             $selectedValues = $this->getSelected();
@@ -98,6 +108,9 @@
             return $attributeNames;
         }
 
+        /**
+         * @return array
+         */
         public function getSelected()
         {
             if($this->selectedValues != null)
@@ -115,6 +128,9 @@
             return $attributeNames;
         }
 
+        /**
+         * @return array
+         */
         public function getMetadataDefinedListAttributeNames()
         {
             $attributeNames = array();
@@ -133,6 +149,10 @@
             $this->selectedValues = $values;
         }
 
+        /**
+         * @return array of listView metadata that resolves the specifically selected attributes to override
+         * the metadata defined attributes.
+         */
         public function getResolvedMetadata()
         {
             return $this->layoutMetadataAdapter->resolveMetadataFromSelectedListAttributes($this->viewClassName,
