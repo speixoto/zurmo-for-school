@@ -99,18 +99,24 @@ EOD;
             }
             elseif ($upgradeStep == 'reloadAppAndCompleteUpgrade')
             {
-                $messageLogger->addInfoMessage("Starting zurmo upgrade process - phase 2.");
-                $this->reloadAppAndCompleteUpgrade($messageLogger);
-                $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade completed.'));
-                UpgradeUtil::unsetUpgradeState();
+                if (UpgradeUtil::isUpgradeStateValid())
+                {
+                    $messageLogger->addInfoMessage("Starting zurmo upgrade process - phase 2.");
+                    $this->reloadAppAndCompleteUpgrade($messageLogger);
+                    $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade completed.'));
+                    UpgradeUtil::unsetUpgradeState();
+                }
+                else
+                {
+                    $message = 'Upgrade state is older then one day, so please run phase one of upgrade first.';
+                    throw new NotSupportedException($message);
+                }
             }
         }
         catch (Exception $e)
         {
             $messageLogger->addErrorMessage(Yii::t('Default', 'An error occur during upgrade: ') . $e->getMessage());
-            exit;
             UpgradeUtil::unsetUpgradeState();
-
         }
     }
 
@@ -152,7 +158,7 @@ EOD;
         {
             echo ' [yes|no] ';
         }
-        return !strncasecmp(trim(fgets(STDIN)),'y',1);
+        return !strncasecmp(trim(fgets(STDIN)), 'y', 1);
     }
 }
 ?>

@@ -41,6 +41,7 @@
         public static function initialUpgrade(MessageLogger $messageLogger)
         {
             try {
+                UpgradeUtil::setUpgradeState('zurmoUpgradeTimestamp', time());
                 self::isApplicationInUpgradeMode();
                 self::checkPermissions();
                 self::checkIfZipExtensionIsLoaded();
@@ -425,6 +426,24 @@
             unset($state[self::UPGRADE_STATE_KEY]);
             $statePersister->save($state);
             return true;
+        }
+
+        /**
+         * Check if upgrade state still valid
+         * @return boolean
+         */
+        public static function isUpgradeStateValid()
+        {
+            $zurmoUpgradeTimestamp = UpgradeUtil::getUpgradeState('zurmoUpgradeTimestamp');
+            if ((time() - $zurmoUpgradeTimestamp) > 24 * 60 * 60)
+            {
+                self::unsetUpgradeState();
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 ?>
