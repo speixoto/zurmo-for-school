@@ -67,7 +67,7 @@
         {
             assert('($this->model instanceof CModel && $this->form instanceof ZurmoActiveForm) ||
                     ( $this->model == null && $this->form == null)');
-            assert('is_bool($allowSorting)');
+            assert('is_bool($this->allowSorting)');
             if($this->rightSideId == null)
             {
                 $this->rightSideId = $this->form->id . '_' . $this->rightSideAttributeName;

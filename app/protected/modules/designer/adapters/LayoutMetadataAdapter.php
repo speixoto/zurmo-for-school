@@ -138,6 +138,13 @@
             return true;
         }
 
+        /**
+         * Given an array of selected attributes, returns a well-formed metadata array with those as the placed
+         * attributes.
+         * @param string $viewClassName
+         * @param array $selectedListAttributes
+         * @return resolved metadata array
+         */
         public function resolveMetadataFromSelectedListAttributes($viewClassName, $selectedListAttributes)
         {
             assert('is_string($viewClassName)');
