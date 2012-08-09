@@ -76,7 +76,8 @@
                 'rightSideValue'		 => $this->model->getListAttributesSelector()->getSelected(),
                 'rightSideData'			 => $this->model->getListAttributesSelector()->getSelectedListAttributesNamesAndLabelsAndAll(),
                 'rightSideDisplayLabel'  => Yii::t('Default', 'Visible Columns'),
-                'formId'			     => $this->form->getId()
+                'formId'			     => $this->form->getId(),
+                'allowSorting'			 => true,
             ));
             $cClipWidget->endClip();
             $cellsContent  = $cClipWidget->getController()->clips['SortableListAttributes'];

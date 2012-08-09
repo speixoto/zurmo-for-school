@@ -61,10 +61,13 @@
 
         public $formId;
 
+        public $allowSorting = false;
+
         public function init()
         {
             assert('($this->model instanceof CModel && $this->form instanceof ZurmoActiveForm) ||
                     ( $this->model == null && $this->form == null)');
+            assert('is_bool($allowSorting)');
             if($this->rightSideId == null)
             {
                 $this->rightSideId = $this->form->id . '_' . $this->rightSideAttributeName;
@@ -108,10 +111,22 @@
             $content .= '</div><div class="multiselect-nav">';
             $content .= ZurmoHtml::button( '7', array( 'id' => $id . 'moveRight', 'class' => 'icon-right-arrow' ) ); //used 7, 8 becuase those are rendered as icons with symbly, other option is to make it an A with a SPAN inside it
             $content .= ZurmoHtml::button( '8', array( 'id' => $id . 'moveLeft', 'class' => 'icon-left-arrow' ) );
+
+
+
             $content .= '</div><div class="multiselect-right">';
             $content .= '<label>' . $this->rightSideDisplayLabel . '</label>';
             $content .= $rightListContent;
-            $content .= '</div></td>';
+            $content .= '</div>';
+
+            if($this->allowSorting)
+            {
+                $content .= '<div class="multiselect-nav">';
+                $content .= ZurmoHtml::button( 'up', array( 'id' => $id . 'moveUp', 'class' => 'icon-up-arrow' ) );
+                $content .= ZurmoHtml::button( 'down', array( 'id' => $id . 'moveDown', 'class' => 'icon-down-arrow' ) );
+                $content .= '</div>';
+            }
+            $content .= '</td>';
             echo $content;
         }
 
@@ -181,7 +196,26 @@
                   $(this).attr('selected', 'selected');
                  });
                 });
+                $('#" . $id . "moveUp').click(function()
+                {
 
+                    if($('#" . $this->rightSideId . " option:selected').first().index() > 0)
+                    {
+                        $('#" . $this->rightSideId . " option:selected').each(function(){
+                           $(this).insertBefore($(this).prev());
+                        });
+                    }
+                });
+                $('#" . $id . "moveDown').click(function()
+                {
+                    if($('#" . $this->rightSideId . " option:selected').last().index() < ($('#" . $this->rightSideId . " option').length - 1))
+                    {
+                        $($('#" . $this->rightSideId . " option:selected').get().reverse()).each(function(i, selected) {
+                            if (!$(this).next().length) return false;
+                            $(this).insertAfter($(this).next());
+                        });
+                    }
+                });
             ";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $script);
         }

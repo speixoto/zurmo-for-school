@@ -75,6 +75,7 @@
                     $attributeNames[$attributeName] = $data['attributeLabel'];
                 }
             }
+            asort($attributeNames);
             return $attributeNames;
         }
 
@@ -82,11 +83,16 @@
         {
             $selectedValues = $this->getSelected();
             $attributeNames = array();
-            foreach($this->designerLayoutAttributes->get() as $attributeName => $data)
+            $allAttributes  = $this->designerLayoutAttributes->get();
+            foreach($selectedValues as $attributeName)
             {
-                if(in_array($attributeName, $selectedValues))
+                if(key_exists($attributeName, $allAttributes))
                 {
-                    $attributeNames[$attributeName] = $data['attributeLabel'];
+                    $attributeNames[$attributeName] = $allAttributes[$attributeName]['attributeLabel'];
+                }
+                else
+                {
+                    throw NotSupportedException();
                 }
             }
             return $attributeNames;
