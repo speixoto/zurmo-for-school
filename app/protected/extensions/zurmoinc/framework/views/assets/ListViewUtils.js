@@ -45,43 +45,24 @@ function updateListViewSelectedIds(gridViewId, selectedId, selectedValue)
     $('#' + gridViewId + "-selectedIds").val(array.toString());
 }
 
-function resetSelectedListAttributes(selectedListAttributesId, defaultSelectedAttributes)
+function addListViewSelectedIdsToUrl(id, options)
 {
-    if($('#' + selectedListAttributesId).length > 0)
-    {
-        defaults = eval(defaultSelectedAttributes);
-        $('#' + selectedListAttributesId).find("option").attr("selected", false);
-
-        $('#' + selectedListAttributesId).parent().find(':checkbox').each(function(){
-
-            if(jQuery.inArray($(this).val(), defaults) == -1)
-            {
-                $(this).attr('checked', false);
-                $(this).parent().removeClass('c_on');
-            }
-            else
-            {
-                $(this).attr('checked', true);
-                $(this).parent().addClass('c_on');
-            }
-        });
-        $('#' + selectedListAttributesId).children("option").each(function(){
-            if(jQuery.inArray($(this).val(), defaults) != -1)
-            {
-                $(this).prop('selected', true);
-            }
-        });
-    }
+    options.url = $.param.querystring(options.url, 'selectedIds=' + $('#' + id + "-selectedIds").val());
 }
 
-function resolveLastSelectedListAttributesOption(selectedListAttributesId)
+function resetSelectedListAttributes(selectedListAttributesId, hiddenListAttributesId, defaultSelectedAttributes)
 {
-    if($('#' + selectedListAttributesId).parent().find('input:checkbox:checked').length == 1)
+    $('#' + selectedListAttributesId + ' option').remove().appendTo('#' + hiddenListAttributesId);
+    defaults = eval(defaultSelectedAttributes);
+    for (i = 0; i < defaults.length; ++i)
     {
-        $('#' + selectedListAttributesId).parent().find('input:checkbox:checked').parent().addClass('disabled');
-    }
-    else
-    {
-        $('#' + selectedListAttributesId).parent().find('input:checkbox').parent().removeClass('disabled');
-    }
+        $('#' + hiddenListAttributesId).find('option[value="' + defaults[i] + '"]').remove().appendTo('#' + selectedListAttributesId);
+    };
+    $('#' + hiddenListAttributesId).find("option").each(function(){
+        if(jQuery.inArray($(this).val(), defaults) != -1)
+        {
+            $(this).remove().appendTo('#' + selectedListAttributesId);
+        }
+    });
+    return false;
 }

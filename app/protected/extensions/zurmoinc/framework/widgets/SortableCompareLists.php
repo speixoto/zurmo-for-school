@@ -43,41 +43,65 @@
 
         public $rightSideDisplayLabel;
 
-        protected $leftSideId;
+        public $leftSideId;
 
-        protected $rightSideId;
+        public $leftSideName;
+
+        public $leftSideValue;
+
+        public $leftSideData;
+
+        public $rightSideId;
+
+        public $rightSideName;
+
+        public $rightSideValue;
+
+        public $rightSideData;
+
+        public $formId;
 
         public function init()
         {
-            assert('$this->model instanceof CModel');
-            assert('$this->form instanceof ZurmoActiveForm');
-            assert('$this->leftSideAttributeName != null');
-            assert('$this->rightSideAttributeName != null');
-            $this->rightSideId = $this->form->id . '_' . $this->rightSideAttributeName;
-            $this->leftSideId  = $this->form->id . '_' . $this->leftSideAttributeName;
+            assert('($this->model instanceof CModel && $this->form instanceof ZurmoActiveForm) ||
+                    ( $this->model == null && $this->form == null)');
+            if($this->rightSideId == null)
+            {
+                $this->rightSideId = $this->form->id . '_' . $this->rightSideAttributeName;
+            }
+            if($this->rightSideName == null)
+            {
+                $this->rightSideName = $this->rightSideAttributeName;
+            }
+            if($this->rightSideValue === null)
+            {
+                $this->rightSideValue = $this->model->{$this->rightSideAttributeName};
+            }
+            if($this->leftSideId == null)
+            {
+                $this->leftSideId  = $this->form->id . '_' . $this->leftSideAttributeName;
+            }
+            if($this->leftSideName == null)
+            {
+                $this->leftSideName = $this->leftSideAttributeName;
+            }
+            if($this->leftSideValue === null)
+            {
+                $this->leftSideValue = $this->model->{$this->leftSideAttributeName};
+            }
+            if($this->formId === null)
+            {
+                $this->formId = $this->form->id;
+            }
             $this->registerCoreScripts();
             parent::init();
         }
 
         public function run()
         {
-            $id = $this->getId();
-            $leftHtmlOptions = array('size' => '10', 'multiple' => true, 'class' => 'ignore-style multiple',
-            'id' => $this->leftSideId);
-            $leftListContent = $this->form->dropDownList(
-                $this->model,
-                $this->leftSideAttributeName,
-                $this->model->{$this->leftSideAttributeName},
-                $leftHtmlOptions
-            );
-            $rightHtmlOptions = array('size' => '10', 'multiple' => true, 'class' => 'ignore-style multiple',
-            'id' => $this->rightSideId);
-            $rightListContent = $this->form->dropDownList(
-                $this->model,
-                $this->rightSideAttributeName,
-                $this->model->{$this->rightSideAttributeName},
-                $rightHtmlOptions
-            );
+            $id               = $this->getId();
+            $leftListContent  = $this->resolveLeftSideListBox();
+            $rightListContent = $this->resolveRightSideListBox();
             $content  = '<td><div class="multiselect-holder"><div class="multiselect-left">';
             $content .= '<label>' . $this->leftSideDisplayLabel . '</label>';
             $content .= $leftListContent;
@@ -89,6 +113,44 @@
             $content .= $rightListContent;
             $content .= '</div></td>';
             echo $content;
+        }
+
+        protected function resolveLeftSideListBox()
+        {
+            $htmlOptions = array('size' => '10', 'multiple' => true, 'class' => 'ignore-style multiple',
+                                 'id'   => $this->leftSideId);
+            if($this->model != null)
+            {
+                return $this->form->dropDownList(
+                    $this->model,
+                    $this->leftSideName,
+                    $this->leftSideValue,
+                    $htmlOptions
+                );
+            }
+            else
+            {
+                return ZurmoHtml::listBox($this->leftSideName, $this->leftSideValue, $this->leftSideData, $htmlOptions);
+            }
+        }
+
+        protected function resolveRightSideListBox()
+        {
+            $htmlOptions = array('size' => '10', 'multiple' => true, 'class' => 'ignore-style multiple',
+                                 'id'   => $this->rightSideId);
+            if($this->model != null)
+            {
+                return $this->form->dropDownList(
+                    $this->model,
+                    $this->rightSideName,
+                    $this->rightSideValue,
+                    $htmlOptions
+                );
+            }
+            else
+            {
+                return ZurmoHtml::listBox($this->rightSideName, $this->rightSideValue, $this->rightSideData, $htmlOptions);
+            }
         }
 
         /**
@@ -108,7 +170,7 @@
                     return !$('#" . $this->rightSideId . " option:selected')
                     .remove().appendTo('#" . $this->leftSideId . "');
                 });
-                $('#" . $this->form->id . "').submit(function()
+                $('#" . $this->formId . "').submit(function()
                 {
                  $('#" . $this->leftSideId . " option').each(function(i)
                  {

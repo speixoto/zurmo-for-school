@@ -64,12 +64,30 @@
             $this->viewClassName            = $viewClassName;
         }
 
-        public function getAvailableListAttributesNamesAndLabelsAndAll()
+        public function getUnselectedListAttributesNamesAndLabelsAndAll()
         {
+            $selectedValues = $this->getSelected();
             $attributeNames = array();
             foreach($this->designerLayoutAttributes->get() as $attributeName => $data)
             {
-                $attributeNames[$attributeName] = $data['attributeLabel'];
+                if(!in_array($attributeName, $selectedValues))
+                {
+                    $attributeNames[$attributeName] = $data['attributeLabel'];
+                }
+            }
+            return $attributeNames;
+        }
+
+        public function getSelectedListAttributesNamesAndLabelsAndAll()
+        {
+            $selectedValues = $this->getSelected();
+            $attributeNames = array();
+            foreach($this->designerLayoutAttributes->get() as $attributeName => $data)
+            {
+                if(in_array($attributeName, $selectedValues))
+                {
+                    $attributeNames[$attributeName] = $data['attributeLabel'];
+                }
             }
             return $attributeNames;
         }

@@ -111,6 +111,7 @@
         protected function renderFormBottomPanel()
         {
             $moreSearchOptionsLink        = ZurmoHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $selectListAttributesLink     = $this->getSelectListAttributesLinkContent();
             $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
             $clearSearchLabel             = $this->getClearSearchLabelContent();
             $clearSearchLinkStartingStyle = $this->getClearSearchLinkStartingStyle();
@@ -124,6 +125,7 @@
             }
             $content  = '<div class="search-form-tools">';
             $content .= $moreSearchOptionsLink;
+            $content .= $selectListAttributesLink;
             $content .= $clearSearchLink;
             $content .= $this->renderFormBottomPanelExtraLinks();
             $content .= $this->renderClearingSearchInputContent();
@@ -200,6 +202,7 @@
                 $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
                 $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
                     {
+                        $('.select-list-attributes-view').hide();
                         $('.search-view-1').toggle();
                         return false;
                     }
@@ -220,6 +223,7 @@
                 $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
                     {
                         $('.search-view-1').hide();
+                        $('.select-list-attributes-view').hide();
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
                         {
@@ -267,7 +271,6 @@
             $metadata       = self::getMetadata();
             $maxCellsPerRow = $this->getMaxCellsPerRow();
             $content        = $this->renderSummaryCloneContent();
-            $content       .= $this->renderListAttributesSelectionContent($form);
             $content       .= TableUtil::getColGroupContent($this->getColumnCount($metadata['global']));
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)
@@ -292,6 +295,7 @@
                 }
                 $content .= '</div>';
             }
+            $content .= $this->renderListAttributesSelectionContent($form);
             $content .= $this->renderFormBottomPanel();
             return $content;
         }
@@ -301,6 +305,14 @@
             return '<div class="list-view-items-summary-clone"></div>';
         }
 
+        protected function getSelectListAttributesLinkContent()
+        {
+            if($this->model->getListAttributesSelector() != null)
+            {
+                return ZurmoHtml::link(Yii::t('Default', 'Columns'), '#', array('id' => 'select-list-attributes-link' . $this->gridIdSuffix));
+            }
+        }
+
         protected function renderListAttributesSelectionContent(ZurmoActiveForm $form)
         {
             if($this->model->getListAttributesSelector() == null)
@@ -308,17 +320,32 @@
                 return;
             }
             Yii::app()->clientScript->registerScript('listAttributes' . $this->getSearchFormId(), "
-                $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.reset-list-attributes');
-                $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.reset-list-attributes', function()
+                $('#select-list-attributes-link" . $this->gridIdSuffix . "').unbind('click.more');
+                $('#select-list-attributes-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
                     {
-                        alert('will this always run before submit?');
+                        $('.search-view-1').hide();
+                        $('.select-list-attributes-view').toggle();
+                        return false;
                     }
-                );");
-
+                );
+                $('#list-attributes-reset').unbind('click.close');
+                $('#list-attributes-reset').bind('click.close', function()
+                    {
+                        $('.select-list-attributes-view').hide();
+                    }
+                );
+                $('#list-attributes-apply').unbind('click.close');
+                $('#list-attributes-apply').bind('click.close', function()
+                    {
+                        $('.select-list-attributes-view').hide();
+                    }
+                );
+                ");
             $element = new ListAttributesSelectionElement($this->model, null, $form, array());
             $element->editableTemplate = '{content}';
-           // $element->registerScripts()
-            return $element->render();
+            $content = $element->render();
+            return ZurmoHtml::tag('div', array('class' => 'select-list-attributes-view',
+                                            'style'    => 'display:none'), $content);
         }
 
         protected function renderViewToolBarContainerForAdvancedSearch($form)

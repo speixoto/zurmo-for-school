@@ -35,11 +35,12 @@
             assert('$this->model instanceof SearchForm');
             assert('$this->attribute == null');
             assert('$this->model->getListAttributesSelector() != null');
-            $content  = $this->renderSelectionContent();
-            $content .= $this->renderApplyLinkContent();
-            $content .= $this->renderApplyResetContent();
+            $content      = $this->renderSelectionContent();
+            $content      = ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
+            $linkContent  = $this->renderApplyLinkContent() . $this->renderApplyResetContent();
+            $linkContent  = ZurmoHtml::tag('div', array('class' => 'form-toolbar clearfix'), $linkContent);
             $this->renderEditableScripts();
-            return ZurmoHtml::tag('div', array('class' => 'list-view-attributes-selection'), $content);
+            return $content . ZurmoHtml::tag('div', array('class' => 'view-toolbar-container'), $linkContent);
         }
 
         /**
@@ -62,22 +63,31 @@
 
         protected function renderSelectionContent()
         {
-            $cClipWidget   = new CClipWidget();
-            $cClipWidget->beginClip("ListAttributesSelectionMultiSelect");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.JuiMultiSelect', array(
-                'dataAndLabels'  => $this->model->getListAttributesSelector()->getAvailableListAttributesNamesAndLabelsAndAll(),
-                'selectedValue'  => $this->model->getListAttributesSelector()->getSelected(),
-                'inputId'        => $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES),
-                'inputName'      => $this->getEditableInputName(SearchForm::SELECTED_LIST_ATTRIBUTES),
-                'options'        => array(
-                                          'selectedText'     => '',
-                                          'noneSelectedText' => '',
-                                          'header'           => false
-                                          ),
-                'htmlOptions'    => array('class' => 'ignore-style ignore-clearform')
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("SortableListAttributes");
+            $cClipWidget->widget('ext.zurmoinc.framework.widgets.SortableCompareLists', array(
+                'leftSideId' 			 => $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . '_hidden',
+                'leftSideName'           => $this->getEditableInputName(SearchForm::SELECTED_LIST_ATTRIBUTES) . '_hidden',
+                'leftSideValue'			 => array(),
+                'leftSideData'			 => $this->model->getListAttributesSelector()->getUnselectedListAttributesNamesAndLabelsAndAll(),
+                'leftSideDisplayLabel'   => Yii::t('Default', 'Hidden Columns'),
+                'rightSideId'            => $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES),
+                'rightSideName'          => $this->getEditableInputName(SearchForm::SELECTED_LIST_ATTRIBUTES),
+                'rightSideValue'		 => $this->model->getListAttributesSelector()->getSelected(),
+                'rightSideData'			 => $this->model->getListAttributesSelector()->getSelectedListAttributesNamesAndLabelsAndAll(),
+                'rightSideDisplayLabel'  => Yii::t('Default', 'Visible Columns'),
+                'formId'			     => $this->form->getId()
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ListAttributesSelectionMultiSelect'];
+            $cellsContent  = $cClipWidget->getController()->clips['SortableListAttributes'];
+            $content       = '<table>';
+            $content      .= '<tbody>';
+            $content      .= '<tr>';
+            $content      .= $cellsContent;
+            $content      .= '</tr>';
+            $content      .= '</tbody>';
+            $content      .= '</table>';
+            return $content;
         }
 
         /**
@@ -90,23 +100,20 @@
                 $('#list-attributes-reset').unbind('click.reset');
                 $('#list-attributes-reset').bind('click.reset', function()
                     {
+                        $('.select-list-attributes-view').hide();
                         resetSelectedListAttributes('" .
-                            $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "', " .
+                            $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "', '" .
+                            $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "_hidden', " .
                             CJSON::encode($defaultSelectedAttributes) . ");
                     }
-                );
-                $('#" . $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "').bind('multiselectclick', function(event, ui){
-                    resolveLastSelectedListAttributesOption('" .
-                        $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "')
-                });
-                ");
+                );");
         }
 
         protected function renderApplyLinkContent()
         {
             $params = array();
             $params['label']       = Yii::t('Default', 'Apply');
-            $params['htmlOptions'] = array('id'	     => 'list-attributes-apply',
+            $params['htmlOptions'] = array('id'	 => 'list-attributes-apply',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();
@@ -116,7 +123,7 @@
         {
             $params = array();
             $params['label']       = Yii::t('Default', 'Reset');
-            $params['htmlOptions'] = array('id'	     => 'list-attributes-reset',
+            $params['htmlOptions'] = array('id'	 => 'list-attributes-reset',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();
