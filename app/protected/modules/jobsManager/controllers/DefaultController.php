@@ -120,8 +120,8 @@
         public function actionJobLogDetails($id)
         {
             $jobLog = JobLog::getById(intval($id));
-            $view = new JobsManagerPageView($this,
-                $this->makeTitleBarAndDetailsView($jobLog));
+            $view   = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
+                                            makeStandardViewForCurrentUser($this, $this->makeTitleBarAndDetailsView($jobLog)));
             echo $view->render();
         }
     }
