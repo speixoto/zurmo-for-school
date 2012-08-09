@@ -96,7 +96,7 @@
                 self::clearCache();
                 self::processFinalTouches();
                 self::clearCache();
-                self::removeUpgradeFiles();
+                self::removeUpgradeFiles($upgradeExtractPath);
             }
             catch (CException $e)
             {
@@ -212,10 +212,14 @@
          */
         public static function unzipUpgradeZip($upgradeZipFilePath)
         {
+            // Remove extracted files, if they already exists.
+            $fileInfo = pathinfo($upgradeZipFilePath);
+            FileUtil::deleteDirectoryRecoursive($fileInfo['dirname'], false, array($fileInfo['basename'], 'index.html'));
+
             $isExtracted = false;
             $zip = new ZipArchive();
             $upgradeExtractPath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . "upgrade";
-            $fileInfo = pathinfo($upgradeZipFilePath);
+
             if ($zip->open($upgradeZipFilePath) === true)
             {
                 $isExtracted = $zip->extractTo($upgradeExtractPath);
@@ -377,12 +381,9 @@
             Yii::app()->upgrader->processFinalTouches();
         }
 
-        public static function markUpgradeDone()
+        public static function removeUpgradeFiles($upgradeExtractPath)
         {
-        }
-
-        public static function removeUpgradeFiles()
-        {
+            FileUtil::deleteDirectoryRecoursive($upgradeExtractPath, true);
         }
 
         /**
