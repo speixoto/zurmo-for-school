@@ -70,13 +70,14 @@ EOD;
             $this->usageError('The specified user is not a super administrator.');
         }
 
-        $upgradeStep = 'initialUpgrade';
-
-        if (isset($args[1]) && $args[1] == 'reloadAppAndCompleteUpgrade')
+        if (!isset($args[1]))
+        {
+            $this->usageError('You must specify action.');
+        }
+        else
         {
             $upgradeStep = $args[1];
         }
-
 
         if ($upgradeStep != 'initialUpgrade' && $upgradeStep != 'reloadAppAndCompleteUpgrade')
         {
