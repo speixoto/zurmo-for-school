@@ -119,7 +119,7 @@
                 try
                 {
                     $sortAttribute = self::getSortAttributeName($this->modelClassName);
-                    if($sortAttribute != null)
+                    if ($sortAttribute != null)
                     {
                         $orderBy = self::resolveSortAttributeColumnName($this->modelClassName, $joinTablesAdapter, $sortAttribute);
                         if ($this->sortDescending)
@@ -128,7 +128,7 @@
                         }
                     }
                 }
-                catch(NotImplementedException $e)
+                catch (NotImplementedException $e)
                 {
                 }
             }

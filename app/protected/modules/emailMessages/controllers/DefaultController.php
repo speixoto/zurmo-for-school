@@ -245,7 +245,7 @@
                                         'EmailMessage',
                                         $dataProvider,
                                         'ArchivedEmailMatchingListView',
-                                        Yii::t('Default', 'Unmatched archived emails'),
+                                        Yii::t('Default', 'Unmatched Archived Emails'),
                                         array(),
                                         false);
             $view = new EmailMessagesPageView(ZurmoDefaultViewUtil::

@@ -402,8 +402,8 @@ To: Steve <steve@example.com>
             $this->assertEquals(1, count(EmailMessage::getAll()));
             $emailMessages = EmailMessage::getAll();
             $this->assertEquals("Invalid email address", $emailMessages[0]->subject);
-            $this->assertTrue(strpos($emailMessages[0]->content->textContent, 'Email address does not exist in system.') !== false);
-            $this->assertTrue(strpos($emailMessages[0]->content->htmlContent, 'Email address does not exist in system.') !== false);
+            $this->assertTrue(strpos($emailMessages[0]->content->textContent, 'Email address does not exist in system') !== false);
+            $this->assertTrue(strpos($emailMessages[0]->content->htmlContent, 'Email address does not exist in system') !== false);
             $this->assertEquals($originalUserAddress, $emailMessages[0]->recipients[0]->toAddress);
             $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
         }
