@@ -96,7 +96,7 @@ EOD;
                 $messageLogger->addInfoMessage("Starting zurmo upgrade process.");
                 $this->runPart1($messageLogger);
                 $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade phase 1 completed.'));
-                $messageLogger->addInfoMessage(Yii::t('Default', 'Please execute next command: "./zurmoc upgradeZurmo super reloadAppAndCompleteUpgrade" to complete upgrade process.'));
+                $messageLogger->addInfoMessage(Yii::t('Default', 'Please execute next command: "./zurmoc upgradeZurmo super runPart2" to complete upgrade process.'));
             }
             elseif ($upgradeStep == 'runPart2')
             {
