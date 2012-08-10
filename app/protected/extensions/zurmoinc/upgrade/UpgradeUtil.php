@@ -243,17 +243,29 @@
         public static function checkManifestIfVersionIsOk($upgradeExtractPath)
         {
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'manifest.php');
-            if (preg_match_all('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $fromVersionMatches) !== false)
+            if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $upgradeFromVersionMatches) !== false)
             {
-                if (preg_match_all('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['toVersion'], $toVersionMatches) !== false)
+                if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['toVersion'], $upgradeToVersionMatches) !== false)
                 {
-                    if ($fromVersionMatches[1][0] == MAJOR_VERSION && $fromVersionMatches[2][0] == MINOR_VERSION &&
-                        $fromVersionMatches[3][0] == PATCH_VERSION)
+                    $upgradeFromVersion = $fromVersionMatches[0];
+                    $upgradeToVersion   = $toVersionMatches[0];
+                    $currentZurmoVersion = MAJOR_VERSION . '.' . MINOR_VERSION . '.' . PATCH_VERSION;
+
+                    if (version_compare($currentZurmoVersion, $upgradeFromVersionMatches[0], '>=') &&
+                        version_compare($currentZurmoVersion, $upgradeToVersionMatches[0],   '<=') )
                     {
                         return $configuration;
                     }
                     else
                     {
+                        if (!version_compare($currentZurmoVersion, $upgradeFromVersionMatches[0], '>='))
+                        {
+
+                        }
+                        elseif (!version_compare($currentZurmoVersion, $upgradeToVersionMatches[0],   '<='))
+                        {
+
+                        }
                         $upgradeZurmoVersion = "{$fromVersionMatches[1][0]}.{$fromVersionMatches[2][0]}.{$fromVersionMatches[3][0]}";
                         $installedZurmoVersion = MAJOR_VERSION . '.' . MINOR_VERSION . '.' . PATCH_VERSION;
                         $message  = "This upgrade is for different version of Zurmo ($upgradeZurmoVersion) \n";
