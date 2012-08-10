@@ -72,7 +72,7 @@
                                                                     $appendStructureAsAnd);
                 }
             }
-            if(!$appendStructureAsAnd)
+            if (!$appendStructureAsAnd)
             {
                 $structure = '(' . $structure . ')';
             }
