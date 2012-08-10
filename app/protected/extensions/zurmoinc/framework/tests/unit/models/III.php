@@ -24,24 +24,45 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Filtered lists that are specific to the Accounts module.
-     */
-    class AccountsFilteredList extends FilteredList
+    class III extends RedBeanModel
     {
-        protected static function getLabel()
+        public static function getDefaultMetadata()
         {
-            return 'Filtered AccountsModuleSingularLabel List';
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'iiiMember',
+                    'iiiMember2',
+                    'date',
+                    'date2',
+                    'dateTime',
+                    'dateTime2'
+                ),
+                'relations' => array(
+                    'ccc'                => array(RedBeanModel::HAS_ONE,            'CCC'),
+                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
+                ),
+                'rules' => array(
+                    array('iiiMember',  'type', 'type' => 'string'),
+                    array('iiiMember2', 'type', 'type' => 'string'),
+                    array('date',       'type', 'type' => 'date'),
+                    array('date2',      'type', 'type' => 'date'),
+                    array('dateTime',   'type', 'type' => 'datetime'),
+                    array('dateTime2',  'type', 'type' => 'datetime'),
+                ),
+                'elements' => array(
+                    'date'      => 'Date',
+                    'date2'     => 'Date',
+                    'dateTime'  => 'DateTime',
+                    'dateTime2' => 'DateTime',
+                ),
+            );
+            return $metadata;
         }
 
-        protected static function getPluralLabel()
+        public static function getModuleClassName()
         {
-            return 'Filtered AccountsModuleSingularLabel Lists';
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            return 'IIIModule';
         }
     }
 ?>

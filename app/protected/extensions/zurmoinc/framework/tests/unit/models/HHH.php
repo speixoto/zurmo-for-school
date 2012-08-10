@@ -24,13 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FilteredListDeleteLinkActionElement extends DeleteLinkActionElement
+    class HHH extends RedBeanModel
     {
-        protected function getDefaultRoute()
+        public static function getDefaultMetadata()
         {
-            return Yii::app()->createUrl(
-                $this->moduleId . '/filteredList/deleteFilteredList/',
-                array('id' => $this->modelId));
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'aaaMember',
+                ),
+                'relations' => array(
+                    'aaa'                => array(RedBeanModel::HAS_ONE_BELONGS_TO, 'AAA'),
+                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
+                ),
+                'rules' => array(
+                    array('aaaMember', 'type', 'type' => 'string'),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

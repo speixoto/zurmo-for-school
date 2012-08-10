@@ -24,34 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Module filtered list controllers should extend this class.
-     */
-    abstract class ZurmoFilteredListController extends ZurmoBaseController
+    class BBB extends CustomFieldsModel
     {
-        public function actionEditFilteredList($id)
+        public static function getDefaultMetadata()
         {
-            $classPrefix = $this->getModule()->getPluralCamelCasedName();
-            $titleBarAndEditView = $this->makeTitleBarAndEditView(
-                $this->attemptToSaveFilteredListModelFromPost($id, $classPrefix . 'FilteredList'),
-                'TitleBarAndEditView'
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'bbbMember',
+                ),
+                'relations' => array(
+                    'aaa'                => array(RedBeanModel::HAS_MANY,            'AAA'),
+                    'ccc'                => array(RedBeanModel::HAS_ONE,             'CCC'),
+                    'ddd'                => array(RedBeanModel::MANY_MANY,           'DDD'),
+                    'fff'                => array(RedBeanModel::HAS_MANY,            'FFF'),
+                    'ggg'                => array(RedBeanModel::HAS_ONE,             'GGG'),
+                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
+                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
+                ),
+                'rules' => array(
+                    array('bbbMember', 'type', 'type' => 'string'),
+                ),
+                'customFields' => array(
+                    'industry'           => 'Industries',
+                    'multipleIndustries' => 'MultipleIndustries',
+                ),
             );
-            $pageViewClassName = $classPrefix . 'PageView';
-            $view = new $pageViewClassName($this, $titleBarAndEditView);
-            echo $view->render();
-        }
-
-        /**
-         * Removes filtered list
-         *
-         */
-        public function actionDeleteFilteredList($id)
-        {
-            assert('!empty($id)');
-            $className = $this->getModule()->getPluralCamelCasedName() . 'FilteredList';
-            $filteredList = $className::getById((int)$id);
-            $filteredList->delete();
-            $this->redirect(array('default/index'));
+            return $metadata;
         }
     }
 ?>

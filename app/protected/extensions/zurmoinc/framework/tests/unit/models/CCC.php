@@ -24,57 +24,46 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FilteredList extends Item
+    class CCC extends CustomFieldsModel
     {
-        public function __toString()
-        {
-            if (trim($this->name) == '')
-            {
-                return Yii::t('Default', '(Unnamed)');
-            }
-            return $this->name;
-        }
-
-        public static function getRowsByCreatedUserId($userId)
-        {
-            assert('is_int($userId)');
-            // Lower is to ensure like's case insensitivity for all databases.
-            $sql = 'select filteredlist.id, filteredlist.name '                       .
-                   'from filteredlist, item '                                              .
-                   'where filteredlist.item_id = item.id '                           .
-                   'order by filteredlist.name;';
-            $rows = array();
-            foreach (R::getAll($sql, array('item.createdbyuser__user_id' => $userId)) as $row)
-            {
-                $rows[$row['id']] = $row['name'];
-            }
-            return $rows;
-        }
-
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'filterByCreatedUser',
-                    'name',
-                    'serializedData',
+                    'cccMember',
+                    'cccMember2',
+                    'date',
+                    'date2',
+                    'dateTime',
+                    'dateTime2'
+                ),
+                'relations' => array(
+                    'bbb'                => array(RedBeanModel::HAS_MANY,            'BBB'),
+                    'iii'                => array(RedBeanModel::HAS_MANY,            'III'),
+                    'eee'                => array(RedBeanModel::HAS_ONE,             'EEE'),
+                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
+                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
                 ),
                 'rules' => array(
-                    array('filterByCreatedUser', 'boolean'),
-                    array('name'          ,      'required'),
-                    array('name',                'type',   'type' => 'string'),
-                    array('name',                'length', 'max'  => 64),
-                    array('serializedData',      'required'),
-                    array('serializedData',      'type', 'type' => 'string'),
-                )
+                    array('cccMember',  'type', 'type' => 'string'),
+                    array('cccMember2', 'type', 'type' => 'string'),
+                    array('date',       'type', 'type' => 'date'),
+                    array('date2',      'type', 'type' => 'date'),
+                    array('dateTime',   'type', 'type' => 'datetime'),
+                    array('dateTime2',  'type', 'type' => 'datetime'),
+                ),
+                'customFields' => array(
+                    'industry'           => 'Industries',
+                    'multipleIndustries' => 'MultipleIndustries',
+                ),
             );
             return $metadata;
         }
 
-        public static function isTypeDeletable()
+        public static function getModuleClassName()
         {
-            return false;
+            return 'CCCModule';
         }
     }
 ?>

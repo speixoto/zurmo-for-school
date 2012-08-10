@@ -24,18 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FilteredListEditLinkActionElement extends EditLinkActionElement
+    class IIIModule extends Module
     {
-        protected function getDefaultLabel()
+        public function getDependencies()
         {
-            return Yii::t('Default', 'Edit');
+            return array(
+            );
         }
 
-        protected function getDefaultRoute()
+        public static function getDefaultMetadata()
         {
-            return Yii::app()->createUrl(
-                $this->moduleId . '/filteredList/editFilteredList/',
-                array('id' => $this->modelId));
+            $metadata = array();
+            $metadata['global'] = array(
+                'globalSearchAttributeNames' => array()
+            );
+            return $metadata;
+        }
+
+        public static function getPrimaryModelName()
+        {
+            return 'III';
+        }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'IIISearchFormTestModel';
         }
     }
 ?>

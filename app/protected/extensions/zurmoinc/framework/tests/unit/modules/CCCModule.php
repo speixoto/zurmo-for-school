@@ -24,47 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Given a FilterList model, the metadata is prepared and
-     * adapted for a FilterListDataProvider.
-     *
-     */
-    class FilteredListDataProviderMetadataAdapter extends DataProviderMetadataAdapter
+    class CCCModule extends Module
     {
-        public function __construct($model, $userId, $metadata)
+        public function getDependencies()
         {
-            parent::__construct($model, $userId, $metadata);
-            assert('$model instanceof FilteredList');
-            assert('isset($metadata["clauses"])');
-            assert('isset($metadata["structure"])');
+            return array(
+            );
         }
 
-        /**
-         * Takes into account special attributes on filteredList model
-         * such as filterByCreatedUser which needs to be converted into
-         * the metadata.
-         */
-        public function getAdaptedMetadata()
+        public static function getDefaultMetadata()
         {
-            $metadata = $this->metadata;
-            if ($this->model->filterByCreatedUser)
-            {
-                $clauseCount = count($metadata['clauses']);
-                $metadata['clauses'][($clauseCount + 1)] = array(
-                        'attributeName' => 'createdByUser',
-                        'operatorType'  => 'equals',
-                        'value'         => $this->userId
-                );
-                if (empty($metadata['structure']))
-                {
-                    $metadata['structure'] = ($clauseCount + 1);
-                }
-                else
-                {
-                    $metadata['structure'] = ($clauseCount + 1) . ' and ( ' . $metadata['structure'] . ' ) ';
-                }
-            }
+            $metadata = array();
+            $metadata['global'] = array(
+                'globalSearchAttributeNames' => array()
+            );
             return $metadata;
+        }
+
+        public static function getPrimaryModelName()
+        {
+            return 'CCC';
+        }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'CCCSearchFormTestModel';
         }
     }
 ?>

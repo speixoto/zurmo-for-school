@@ -435,11 +435,6 @@
             return 'UsersSearchForm';
         }
 
-        protected function getModelFilteredListClassName()
-        {
-            return 'SearchAndListView';
-        }
-
         public function actionExport()
         {
             $this->export();

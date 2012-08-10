@@ -24,10 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Data provider utilized by filtered list component.
-     */
-    class FilteredListDataProvider extends RedBeanModelDataProvider
+    class EEE extends CustomFieldsModel
     {
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'eeeMember',
+                    'eeeMember2'
+                ),
+                'rules' => array(
+                    array('eeeMember', 'type', 'type' => 'string'),
+                    array('eeeMember2', 'type', 'type' => 'string'),
+                ),
+                'relations' => array(
+                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
+                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
+                ),
+                'customFields' => array(
+                    'industry'           => 'Industries',
+                    'multipleIndustries' => 'MultipleIndustries',
+                ),
+            );
+            return $metadata;
+        }
     }
 ?>

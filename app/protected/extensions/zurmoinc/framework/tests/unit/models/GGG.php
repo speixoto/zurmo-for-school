@@ -24,24 +24,25 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Filtered lists that are specific to the Leads module.
-     */
-    class LeadsFilteredList extends FilteredList
+    class GGG extends RedBeanModel
     {
-        protected static function getLabel()
+        public static function getDefaultMetadata()
         {
-            return 'Filtered LeadsModuleSingularLabel List';
-        }
-
-        protected static function getPluralLabel()
-        {
-            return 'Filtered LeadsModuleSingularLabel Lists';
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'gggMember',
+                    'gggMember2',
+                ),
+                'relations' => array(
+                    'eee'                => array(RedBeanModel::HAS_ONE,            'EEE'),
+                ),
+                'rules' => array(
+                    array('gggMember',  'type', 'type' => 'string'),
+                    array('gggMember2', 'type', 'type' => 'string'),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>
