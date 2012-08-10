@@ -38,7 +38,7 @@
     {
         const UPGRADE_STATE_KEY = 'zurmoUpgrade';
 
-        public static function initialUpgrade(MessageLogger $messageLogger)
+        public static function runPart1(MessageLogger $messageLogger)
         {
             try {
                 UpgradeUtil::setUpgradeState('zurmoUpgradeTimestamp', time());
@@ -77,7 +77,7 @@
             }
         }
 
-        public static function reloadAppAndCompleteUpgrade(MessageLogger $messageLogger)
+        public static function runPart2(MessageLogger $messageLogger)
         {
             try {
                 $upgradeExtractPath = self::getUpgradeState('zurmoUpgradeFolderPath');
@@ -247,10 +247,7 @@
             {
                 if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['toVersion'], $upgradeToVersionMatches) !== false)
                 {
-                    $upgradeFromVersion = $fromVersionMatches[0];
-                    $upgradeToVersion   = $toVersionMatches[0];
                     $currentZurmoVersion = MAJOR_VERSION . '.' . MINOR_VERSION . '.' . PATCH_VERSION;
-
                     if (version_compare($currentZurmoVersion, $upgradeFromVersionMatches[0], '>=') &&
                         version_compare($currentZurmoVersion, $upgradeToVersionMatches[0],   '<=') )
                     {
@@ -258,18 +255,8 @@
                     }
                     else
                     {
-                        if (!version_compare($currentZurmoVersion, $upgradeFromVersionMatches[0], '>='))
-                        {
-
-                        }
-                        elseif (!version_compare($currentZurmoVersion, $upgradeToVersionMatches[0],   '<='))
-                        {
-
-                        }
-                        $upgradeZurmoVersion = "{$fromVersionMatches[1][0]}.{$fromVersionMatches[2][0]}.{$fromVersionMatches[3][0]}";
-                        $installedZurmoVersion = MAJOR_VERSION . '.' . MINOR_VERSION . '.' . PATCH_VERSION;
-                        $message  = "This upgrade is for different version of Zurmo ($upgradeZurmoVersion) \n";
-                        $message .= "Installed Zurmo version is: {$installedZurmoVersion}";
+                        $message  = "This upgrade is for Zurmo ({$upgradeFromVersionMatches[0]} - {$upgradeToVersionMatches[0]}) \n";
+                        $message .= "Installed Zurmo version is: {$currentZurmoVersion}";
                         throw new NotSupportedException($message);
                     }
                 }

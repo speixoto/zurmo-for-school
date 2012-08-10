@@ -41,7 +41,7 @@
     PARAMETERS
      * username: username to log in as and run the import processes. Typically 'super'.
                   This user must be a super administrator.
-     * action: optional argument, if provide it define upgrade phase("initialUpgrade" or "reloadAppAndCompleteUpgrade")
+     * action: define upgrade phase(possible options: "runPart1" or "runPart2")
 EOD;
     }
 
@@ -79,9 +79,9 @@ EOD;
             $upgradeStep = $args[1];
         }
 
-        if ($upgradeStep != 'initialUpgrade' && $upgradeStep != 'reloadAppAndCompleteUpgrade')
+        if ($upgradeStep != 'runPart1' && $upgradeStep != 'runPart2')
         {
-            $this->usageError('Invalid step/action. Valid values are "initialUpgrade" and "reloadAppAndCompleteUpgrade".');
+            $this->usageError('Invalid step/action. Valid values are "runPart1" and "runPart2".');
         }
 
         try
@@ -91,19 +91,19 @@ EOD;
             $messageStreamer->setExtraRenderBytes(0);
             $messageLogger = new MessageLogger($messageStreamer);
 
-            if ($upgradeStep == 'initialUpgrade')
+            if ($upgradeStep == 'runPart1')
             {
                 $messageLogger->addInfoMessage("Starting zurmo upgrade process.");
-                $this->initialUpgrade($messageLogger);
+                $this->runPart1($messageLogger);
                 $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade phase 1 completed.'));
                 $messageLogger->addInfoMessage(Yii::t('Default', 'Please execute next command: "./zurmoc upgradeZurmo super reloadAppAndCompleteUpgrade" to complete upgrade process.'));
             }
-            elseif ($upgradeStep == 'reloadAppAndCompleteUpgrade')
+            elseif ($upgradeStep == 'runPart2')
             {
                 if (UpgradeUtil::isUpgradeStateValid())
                 {
                     $messageLogger->addInfoMessage("Starting zurmo upgrade process - phase 2.");
-                    $this->reloadAppAndCompleteUpgrade($messageLogger);
+                    $this->runPart2($messageLogger);
                     $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade completed.'));
                     UpgradeUtil::unsetUpgradeState();
                 }
@@ -121,7 +121,7 @@ EOD;
         }
     }
 
-    protected function initialUpgrade($messageLogger)
+    protected function runPart1($messageLogger)
     {
         $messageLogger->addInfoMessage(Yii::t('Default', 'This is Zurmo upgrade process. Please backup files/database before you continue.'));
 
@@ -130,7 +130,7 @@ EOD;
 
         if ($confirm)
         {
-            UpgradeUtil::initialUpgrade($messageLogger);
+            UpgradeUtil::runPart1($messageLogger);
         }
         else
         {
@@ -138,9 +138,9 @@ EOD;
         }
     }
 
-    protected function reloadAppAndCompleteUpgrade($messageLogger)
+    protected function runPart2($messageLogger)
     {
-            UpgradeUtil::reloadAppAndCompleteUpgrade($messageLogger);
+            UpgradeUtil::runPart2($messageLogger);
     }
 
     /**
