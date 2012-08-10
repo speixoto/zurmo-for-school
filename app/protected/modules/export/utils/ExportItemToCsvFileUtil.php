@@ -82,7 +82,7 @@
             return $csv;
         }
 
-        public static function csvToArray($csv, $delimiter = ',', $enclosure = '"', $escape = '\\', $terminator = PHP_EOL) // Not Coding Standard
+        public static function csvToArray($csv, $delimiter = ',', $enclosure = '"', $escape = '\\', $terminator = "\n") // Not Coding Standard
         {
             $result = array();
             $rows = explode($terminator, trim($csv));

@@ -76,7 +76,7 @@
                                                                     $structure);
                 }
             }
-            if(!$appendStructureAsAnd)
+            if (!$appendStructureAsAnd)
             {
                 $structure = '(' . $structure . ')';
             }
