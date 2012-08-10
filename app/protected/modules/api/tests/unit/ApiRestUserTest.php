@@ -536,7 +536,7 @@
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/api/create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
-            $this->assertEquals(3, count($response['errors']));
+            $this->assertEquals(2, count($response['errors']));
 
             $id = $user->id;
             $data = array();
