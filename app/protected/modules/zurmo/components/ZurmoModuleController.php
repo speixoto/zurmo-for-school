@@ -293,7 +293,6 @@
                 $searchForm,
                 $modelClassName,
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 $stickyKey,
                 false

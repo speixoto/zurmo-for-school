@@ -56,7 +56,7 @@
         protected function getFormAttributes()
         {
             $attributes = array();
-            foreach ($this->model->getAttributes() as $attributeName => $notUsed)
+            foreach ($this->model->getSearchableAttributes() as $attributeName => $notUsed)
             {
                 ModelAttributeCollectionUtil::populateCollection(
                     $attributes,

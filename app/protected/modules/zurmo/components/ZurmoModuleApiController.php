@@ -207,7 +207,6 @@
                     $searchForm,
                     $modelClassName,
                     $pageSize,
-                    Yii::app()->user->userModel->id,
                     $stateMetadataAdapterClassName
                 );
 

@@ -68,8 +68,7 @@
             $dataProvider    = $this->makeRedBeanDataProviderFromGet(
                 $searchForm,
                 'User',
-                $pageSize,
-                Yii::app()->user->userModel->id
+                $pageSize
             );
             $actionBarSearchAndListView = $this->makeActionBarSearchAndListView(
                 $searchForm,
