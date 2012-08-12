@@ -32,18 +32,19 @@
         }
 
         protected function getCategoryData()
-        {            
-            $categories = array();           
+        {
+            $categories = array();
             $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Clear Cache'),
                                                 'descriptionLabel'    => Yii::t('Default', 'In the case where you have reloaded the database, some cached items '.
                                                                          'might still exist.  This is a way to clear that cache.'),
                                                 'route'               => 'zurmo/development?clearCache=1'
-                                            );            
+                                            );
             $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Resolve Custom Data'),
                                                 'descriptionLabel'    => Yii::t('Default', 'If you changed metadata and want zurmo to resolve it, use this option.'),
                                                 'route'               => 'zurmo/development?resolveCustomData=1'
-                                            );            
-            return $categories;                        
+                                            );
+            $this->setLinkText(Yii::t('Default', 'Run'));
+            return $categories;
         }
     }
 ?>
