@@ -444,6 +444,51 @@
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
 
+        public function testSearchingOnMultipleValuesCustomFieldsWithVariousNullOrEmptyValues()
+        {
+            $searchAttributes = array(
+                'multipleIndustries' => array(
+                    'values'    => array(0 => null),
+                )
+            );
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                new TestCustomFieldsModel(false),
+                1,
+                $searchAttributes
+            );
+            $metadata = $metadataAdapter->getAdaptedMetadata();
+            $this->assertEquals(array(), $metadata['clauses']);
+            $this->assertEquals(null, $metadata['structure']);
+
+            $searchAttributes = array(
+                'multipleIndustries' => array(
+                    'values'    => null,
+                )
+            );
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                new TestCustomFieldsModel(false),
+                1,
+                $searchAttributes
+            );
+            $metadata = $metadataAdapter->getAdaptedMetadata();
+            $this->assertEquals(array(), $metadata['clauses']);
+            $this->assertEquals(null, $metadata['structure']);
+
+            $searchAttributes = array(
+                'multipleIndustries' => array(
+                    'values'    => array(0 => ''),
+                )
+            );
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                new TestCustomFieldsModel(false),
+                1,
+                $searchAttributes
+            );
+            $metadata = $metadataAdapter->getAdaptedMetadata();
+            $this->assertEquals(array(), $metadata['clauses']);
+            $this->assertEquals(null, $metadata['structure']);
+        }
+
         public function testGetAdaptedMetadataUsingOrClause()
         {
             $super = User::getByUsername('super');
