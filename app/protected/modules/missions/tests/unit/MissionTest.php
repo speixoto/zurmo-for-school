@@ -61,7 +61,7 @@
             $mission->forget();
             unset($mission);
 
-            $mission = MIssion::getById($id);
+            $mission = Mission::getById($id);
             $this->assertEquals('My test description',            $mission->description);
             $this->assertEquals('My test reward',                 $mission->reward);
             $this->assertEquals(Mission::STATUS_AVAILABLE,        $mission->status);
@@ -125,15 +125,45 @@
             //todo: test also takenByUserHasReadLatest
         }
 
-            /**
+        /**
+         * Test mission notifications
+         * @depends testCreateAndGetMissionById
+         */
+        public function testMissionNotifications()
+        {
+            $super      = User::getByUsername('super');
+            $steven     = User::getByUsername('steven');
+            $this->assertEquals(1, Notification::getCountByUser($super));
+            $this->assertEquals(1, Notification::getCountByUser($steven));
+            $missions   = Mission::getAll();
+            $mission = $missions[0];
+            $mission->status = Mission::STATUS_TAKEN;
+            $this->assertTrue($mission->save());
+            $this->assertEquals(2, Notification::getCountByUser($super));
+            $this->assertEquals(1, Notification::getCountByUser($steven));
+            $mission->status = Mission::STATUS_COMPLETED;
+            $this->assertTrue($mission->save());
+            $this->assertEquals(3, Notification::getCountByUser($super));
+            $this->assertEquals(1, Notification::getCountByUser($steven));
+            $mission->status = Mission::STATUS_REJECTED;
+            $this->assertTrue($mission->save());
+            $this->assertEquals(3, Notification::getCountByUser($super));
+            $this->assertEquals(2, Notification::getCountByUser($steven));
+            $mission->status = Mission::STATUS_ACCEPTED;
+            $this->assertTrue($mission->save());
+            $this->assertEquals(3, Notification::getCountByUser($super));
+            $this->assertEquals(3, Notification::getCountByUser($steven));
+        }
+
+        /**
          * @depends testAddingComments
          */
         public function testDeleteMission()
         {
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
-            $comments = Mission::getAll();
-            $this->assertEquals(1, count($comments));
+            $comments = Comment::getAll();
+            $this->assertEquals(2, count($comments));
 
             foreach($missions as $mission)
             {
