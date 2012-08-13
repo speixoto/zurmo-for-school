@@ -40,10 +40,39 @@
          */
         public function handleScoreLogin($event)
         {
-            $scoreType           = 'LoginUser';
-            $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
-            $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
-            $gameScore->addValue();
+            if (Yii::app()->gamificationObserver->enabled)
+            {
+                $scoreType           = 'LoginUser';
+                $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
+                $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
+                $gameScore->addValue();
+                self::resolveSaveGameScoreAndAddPointsByCategory($gameScore, $category);
+                if (Yii::app()->timeZoneHelper->isCurrentUsersTimeZoneConfirmed())
+                {
+                    $hour = date('G');
+                    if ($hour >= 22 || $hour < 4)
+                    {
+                        $scoreType           = 'NightOwl';
+                        $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
+                        $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
+                        $gameScore->addValue();
+                        self::resolveSaveGameScoreAndAddPointsByCategory($gameScore, $category);
+                    }
+                    elseif ($hour >= 4 && $hour < 8)
+                    {
+                        $scoreType           = 'EarlyBird';
+                        $category            = GamificationRules::SCORE_CATEGORY_LOGIN_USER;
+                        $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
+                        $gameScore->addValue();
+                        self::resolveSaveGameScoreAndAddPointsByCategory($gameScore, $category);
+                    }
+                }
+            }
+        }
+
+        public static function resolveSaveGameScoreAndAddPointsByCategory($gameScore, $category)
+        {
+            assert('is_string($category)');
             $saved = $gameScore->save();
             if (!$saved)
             {

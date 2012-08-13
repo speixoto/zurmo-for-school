@@ -39,6 +39,8 @@
             => 'Cambiar las contraseñas de Usuarios',
         'Confirm Password'
             => 'Confirmar contraseña',
+        'Confirm your time zone'
+            => 'Confirmar su zona horaria',
         'Create User'
             => 'Crear Usuario',
         'Create Users'
@@ -49,6 +51,8 @@
             => 'Forzar contraseñas robustas',
         'Hash'
             => 'Almohadilla',
+        'Hide welcome page'
+            => 'Ocultar la página de inicio',
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Los usuarios inactivos no pueden iniciar sesión en el uso de la web, móvil o web API. Inicio de sesión de usuarios activos es controlado por los derechos de grupo.',
         'Inherited Value:'
@@ -69,6 +73,8 @@
             => 'Vida útil mínima de las contraseñas',
         'Profile'
             => 'Perfil',
+        'Quick Tip'
+            => 'Consejo rápido',
         'Sign in Via Mobile'
             => 'Conexión móvil',
         'Sign in Via Web'
@@ -89,6 +95,8 @@
             => 'El nombre de usuario es demasiado corto. Longitud mínima es de {minimumLength}.',
         'Time Zone'
             => 'Zona horaria',
+        'Turn off email notifications'
+            => 'Desactivar notificaciones de email',
         'User'
             => 'Usuario',
         'User configuration saved successfully.'
@@ -97,6 +105,8 @@
             => 'Busqueda de Usuarios',
         'Users'
             => 'Usuarios',
+        'Users cannot be deleted.  You can however change their status to inactive.'
+            => 'No se puede eliminar usuarios. Sin embargo, puede cambiar su estado a inactivo.',
         'Users Home'
             => 'Accueil Utilisateurs',
     );

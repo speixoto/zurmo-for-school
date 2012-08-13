@@ -48,22 +48,50 @@
         'Create Dashboards'
             => 'Dashboards erstellen',
         'Dashboard'
-            => 'Dashboard',
+            => 'Dashboard', // Same Word Translated
         'Delete Dashboard'
             => 'Dashboard löschen',
         'Delete Dashboards'
             => 'Dashboards löschen',
+        'Don\'t show me this screen again'
+            => 'Zeige mir nicht diesen Bildschirm wieder',
+        'Don\'t worry you can turn it on again'
+            => 'Keine Sorge, du kannst es wieder einschalten ',
         'Edit Dashboard'
             => 'Dashboard bearbeiten',
+        'Go to the dashboard'
+            => 'Weiter zum Dashboard',
+        'Helpful Links'
+            => 'Nützliche Links',
         'Home'
             => 'Startseite',
         'Is Default'
             => 'Ist Standard',
+        'Join the forum'
+            => 'Forum beitreten',
         'Layout Id'
-            => 'Layout Id',
+            => 'Layout Id', // Same Word Translated
         'Layout Type'
             => 'Layout-Typ',
+        'Next Tip'
+            => 'Nächste Tipp',
+        'Read the wiki'
+            => 'Wiki Lesen',
         'Return to Home'
             => 'Zurück zur Startseite',
+        'Switch Dashboard'
+            => 'Dashboard Wechseln',
+        'Tip of the Day'
+            => 'Tipp des Tages',
+        'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .
+        'collect badges, and compete against co-workers while getting your job done.'
+            => 'CRM sollte keine langweilige Aufgabe sein. Mit Zurmo du kannst Punkte und ' .
+               'Badges sammeln, und freundschaftlichen Wettbewerb mit deinen Kollegen haben.',
+        'View a tutorial'
+            => 'Ein Tutorial Anzeigen',
+        'Watch a video'
+            => 'Ein Video sehen',
+        'Welcome to Zurmo'
+            => 'Willkommen bei Zurmo',
     );
 ?>

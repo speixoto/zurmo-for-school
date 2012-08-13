@@ -53,6 +53,12 @@
             return false;
         }
 
+        protected static function getGridTemplate()
+        {
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
+            return "\n{items}\n{pager}" . $preloader;
+        }
+
         protected function getEmptyText()
         {
             $moduleClassName = static::getModuleClassName();
@@ -141,7 +147,6 @@
         protected function getCGridViewPagerParams()
         {
             return array(
-                    'cssFile'          => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
                     'prevPageLabel'    => '<span>previous</span>',
                     'nextPageLabel'    => '<span>next</span>',
                     'paginationParams' => array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId'])),

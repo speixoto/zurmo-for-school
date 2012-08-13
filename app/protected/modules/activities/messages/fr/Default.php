@@ -31,7 +31,7 @@
     return array(
         'Activities'
             => 'Activités',
-         'Activity'
+        'Activity'
             => 'Activité',
         'Activity Items'
             => 'Éléments d\'activité',
@@ -39,6 +39,8 @@
             => 'Sommaire des activités',
         'All Activities'
             => 'Toutes les Activités',
+        'for {relatedModelsStringContent}'
+            => 'pour {relatedModelsStringContent}',
         'Latest Activities'
             => 'Activités récentes',
         'Latest Date Time'
@@ -47,10 +49,6 @@
             => 'À moi',
         'No Activities found.'
             => 'Aucune Activité trouvée.',
-        'Related'
-            => 'Associé',
-        'Related to'
-            => 'Associé à',
         'Roll Up'
             => 'Rollup',
         'Show more'
@@ -61,5 +59,7 @@
             => 'Activez la fonction de rollup pour voir les activités associées.',
         'View'
             => 'Vue',
+        'with {relatedContactsStringContent}'
+            => 'avec {relatedContactsStringContent}',
     );
 ?>

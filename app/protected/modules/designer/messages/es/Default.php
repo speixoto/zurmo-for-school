@@ -90,7 +90,7 @@
         'Custom Fields'
             => 'Campos personalizados',
         'Decimal'
-            => 'Decimal',
+            => 'Decimal', // Same Word Translated
         'Dependency Mapping'
             => 'Mapping dependiente',
         'Dependent Pick Lists'
@@ -107,6 +107,8 @@
             => 'Vista de detalles',
         'Display Name'
             => 'Etiqueta del campo',
+        'Display {label} when'
+            => 'Mostrar {label} cuando',
         'Dropdown Dependency Mapping'
             => 'Mapping de la dependencia de la lista desplegable',
         'Each item must be uniquely named'
@@ -142,7 +144,7 @@
         'Formula Name'
             => 'Nombre de fórmula',
         'General'
-            => 'General',
+            => 'General', // Same Word Translated
         'How does this work?'
             => '¿Cómo funciona?',
         'Invalid panel configuration type'
@@ -194,7 +196,7 @@
         'Precision'
             => 'precisión',
         'Radio Pick List'
-            => 'Radio Pick List',
+            => 'Radio Pick List', // Same Word Translated
         'Related List View'
             => 'Vista de lista relacionada',
         'Required Field'
@@ -226,7 +228,7 @@
         'Track Audit Log'
             => 'Auditar este campo',
         'URL'
-            => 'URL',
+            => 'URL', // Same Word Translated
         'You can only have at most 4 pick-lists selected.'
             => 'Puede tener hasta 4 listas desplegables.',
         'You must first select a field type'

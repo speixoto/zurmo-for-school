@@ -141,12 +141,16 @@
             }
         }
 
+        /**
+         * Added forgetAllCaches in case you are debugging and want to run this action again with a saved db.
+         */
         public function actionInstallDemoData()
         {
             RedBeanDatabase::setup(Yii::app()->db->connectionString,
                                    Yii::app()->db->username,
                                    Yii::app()->db->password);
             InstallUtil::freezeDatabase();
+            ForgetAllCacheUtil::forgetAllCaches();
             Yii::app()->user->userModel = User::getByUsername('super');
             $nextView = new InstallCompleteView($this->getId(), $this->getModule()->getId());
             $view = new InstallPageView($nextView);
@@ -155,7 +159,7 @@
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->add(Yii::t('Default', 'Starting to load demo data.'));
             $messageLogger = new MessageLogger($messageStreamer);
-            DemoDataUtil::load($messageLogger, 3);
+            DemoDataUtil::load($messageLogger, 6);
             $messageStreamer->add(Yii::t('Default', 'Finished loading demo data.'));
             $messageStreamer->add(Yii::t('Default', 'Locking Installation.'));
             InstallUtil::writeInstallComplete(INSTANCE_ROOT);

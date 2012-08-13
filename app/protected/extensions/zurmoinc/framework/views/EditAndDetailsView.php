@@ -63,7 +63,7 @@
             {
                 return parent::renderContent();
             }
-            $content  = '<div>';
+            $content  = '<div class="wrapper">';
             $content .= $this->renderTitleContent();
             $maxCellsPresentInAnyRow = $this->resolveMaxCellsPresentInAnyRow($this->getFormLayoutMetadata());
             if ($maxCellsPresentInAnyRow > 1)
@@ -79,7 +79,7 @@
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',
                                                                 array_merge(
-                                                                    array('id' => 'edit-form',
+                                                                    array('id' => static::getFormId(),
                                                                     'htmlOptions' => $this->resolveFormHtmlOptions()),
                                                                     $this->resolveActiveFormAjaxValidationOptions()
                                                                 )
@@ -113,7 +113,7 @@
             return '<h1>' . $this->getNewModelTitleLabel() . '</h1>';
         }
 
-        protected function renderRightSideContent($form)
+        protected function renderRightSideContent($form = null)
         {
             assert('$form == null || $form instanceof ZurmoActiveForm');
             if ($form != null)
@@ -121,7 +121,7 @@
                 $rightSideContent = $this->renderRightSideFormLayoutForEdit($form);
                 if ($rightSideContent != null)
                 {
-                    $content  = '<div id="permissions-module"><div class="buffer"><div>';
+                    $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
                     $content .= $rightSideContent;
                     $content .= '</div></div></div>';
                     return $content;
@@ -181,9 +181,14 @@
             return false;
         }
 
+        protected static function getFormId()
+        {
+            return 'edit-form';
+        }
+
         protected function resolveFormHtmlOptions()
         {
-            $data = array();
+            $data = array('onSubmit' => 'js:return attachLoadingOnSubmit("' . static::getFormId() . '")');
             if ($this->viewContainsFileUploadElement)
             {
                 $data['enctype'] = 'multipart/form-data';

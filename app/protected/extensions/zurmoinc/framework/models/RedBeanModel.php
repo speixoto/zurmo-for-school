@@ -182,7 +182,13 @@
          * is deleted it owns the related models and they are deleted along with it.
          * If not specified the related model is independent and is not deleted.
          */
-        const OWNED = true;
+        const OWNED     = true;
+
+        /**
+         * @see const OWNED for more information.
+         * @var boolean
+         */
+        const NOT_OWNED = false;
 
         /**
          * Returns the static model of the specified AR class.
@@ -273,9 +279,9 @@
                 $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             }
             $tableName = self::getTableName($modelClassName);
-            $sql = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
-                                                     $orderBy, false, $selectDistinct);
-            $ids = R::getCol($sql);
+            $sql       = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
+                                                           $orderBy, false, $selectDistinct);
+            $ids       = R::getCol($sql);
             $tableName = self::getTableName($modelClassName);
             $beans = R::batch ($tableName, $ids);
             return self::makeModels($beans, $modelClassName);
@@ -664,7 +670,7 @@
                 {
                     foreach ($metadata[$modelClassName]['relations'] as $relationName => $relationTypeModelClassNameAndOwns)
                     {
-                        assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3))');
+                        assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3, 4))');
 
                         $relationType           = $relationTypeModelClassNameAndOwns[0];
                         $relationModelClassName = $relationTypeModelClassNameAndOwns[1];
@@ -678,19 +684,34 @@
                                       array('{relationName}' => $relationName,
                                             '{relationModelClassName}' => $relationModelClassName)));
                         }
-                        if (count($relationTypeModelClassNameAndOwns) == 3)
+                        if (count($relationTypeModelClassNameAndOwns) >= 3 &&
+                            $relationTypeModelClassNameAndOwns[2] == self::OWNED)
                         {
-                            $relationTypeModelClassNameAndOwns[2] == self::OWNED;
                             $owns = true;
                         }
                         else
                         {
                             $owns = false;
                         }
+                        if (count($relationTypeModelClassNameAndOwns) == 4 && $relationType != self::HAS_MANY)
+                        {
+                            throw new NotSupportedException();
+                        }
+                        if (count($relationTypeModelClassNameAndOwns) == 4)
+                        {
+                            $relationPolyOneToManyName = $relationTypeModelClassNameAndOwns[3];
+                        }
+                        else
+                        {
+                            $relationPolyOneToManyName = null;
+                        }
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                         $this->attributeNameToBeanAndClassName[$relationName] = array($bean, $modelClassName);
-                        $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName] = array($relationType, $relationModelClassName, $owns);
+                        $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName] = array($relationType,
+                                                                                                $relationModelClassName,
+                                                                                                $owns,
+                                                                                                $relationPolyOneToManyName);
                         if (!in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, self::MANY_MANY)))
                         {
                             $this->attributeNamesNotBelongsToOrManyMany[] = $relationName;
@@ -1122,7 +1143,8 @@
                 {
                     if (!array_key_exists($attributeName, $this->relationNameToRelatedModel))
                     {
-                        list($relationType, $relatedModelClassName, $owns) = $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
+                        list($relationType, $relatedModelClassName, $owns, $relationPolyOneToManyName) =
+                             $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
                         $relatedTableName = self::getTableName($relatedModelClassName);
                         switch ($relationType)
                         {
@@ -1187,7 +1209,12 @@
                                 break;
 
                             case self::HAS_MANY:
-                                $this->relationNameToRelatedModel[$attributeName] = new RedBeanOneToManyRelatedModels($bean, $relatedModelClassName, $attributeModelClassName, $owns);
+                                $this->relationNameToRelatedModel[$attributeName] =
+                                    new RedBeanOneToManyRelatedModels($bean,
+                                                                      $relatedModelClassName,
+                                                                      $attributeModelClassName,
+                                                                      $owns,
+                                                                      $relationPolyOneToManyName);
                                 break;
 
                             case self::MANY_MANY:
@@ -1203,7 +1230,7 @@
             }
             else
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException('Invalid Attribute: ' . $attributeName);
             }
         }
 
@@ -1270,7 +1297,8 @@
                 }
                 else
                 {
-                    list($relationType, $relatedModelClassName, $owns) = $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
+                    list($relationType, $relatedModelClassName, $owns, $relationPolyOneToManyName) =
+                        $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
                     $relatedTableName = self::getTableName($relatedModelClassName);
                     $linkName = strtolower($attributeName);
                     if ($linkName == strtolower($relatedModelClassName))
@@ -1785,9 +1813,14 @@
                                                                self::HAS_MANY_BELONGS_TO)))
                             {
                                 if ($relatedModel->isModified() ||
-                                    ($this->isAttributeRequired($relationName) ))
+                                    ($this->isAttributeRequired($relationName)))
                                 {
-                                    if ($this->isSavableFromRelation)
+                                    //If the attribute is required, but already exists and has not been modified we do
+                                    //not have to worry about saving it.
+                                    if ($this->isSavableFromRelation &&
+                                       !($this->isAttributeRequired($relationName) &&
+                                         !$relatedModel->isModified() &&
+                                         $relatedModel->id > 0))
                                     {
                                         if (!$relatedModel->save(false))
                                         {
@@ -2097,6 +2130,7 @@
             {
                 $this->deleteOwnedRelatedModels  ($modelClassName);
                 $this->deleteForeignRelatedModels($modelClassName);
+                $this->deleteManyManyRelations ($modelClassName);
             }
             foreach ($this->modelClassNameToBean as $modelClassName => $bean)
             {
@@ -2116,7 +2150,7 @@
         {
             foreach ($this->relationNameToRelationTypeModelClassNameAndOwns as $relationName => $relationTypeModelClassNameAndOwns)
             {
-                assert('count($relationTypeModelClassNameAndOwns) == 3');
+                assert('count($relationTypeModelClassNameAndOwns) == 3 || count($relationTypeModelClassNameAndOwns) == 4');
                 $relationType = $relationTypeModelClassNameAndOwns[0];
                 $owns         = $relationTypeModelClassNameAndOwns[2];
                 if ($owns)
@@ -2178,6 +2212,24 @@
             $foreignKeyName = strtolower($modelClassName) . '_id';
             $beans = RedBean_Plugin_Finder::where($tableName, "$foreignKeyName = $id");
             return self::makeModels($beans, $relatedModelClassName);
+        }
+
+        protected function deleteManyManyRelations($modelClassName)
+        {
+            $metadata = $this->getMetadata();
+            if (isset($metadata[$modelClassName]['relations']))
+            {
+                foreach ($metadata[$modelClassName]['relations'] as $relationName => $relationTypeModelClassNameAndOwns)
+                {
+                    assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3, 4))');
+                    $relationType           = $relationTypeModelClassNameAndOwns[0];
+                    if ($relationType == self::MANY_MANY)
+                    {
+                        $this->{$relationName}->removeAll();
+                        $this->{$relationName}->save();
+                    }
+                }
+            }
         }
 
         /**

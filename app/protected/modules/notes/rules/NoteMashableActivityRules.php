@@ -31,20 +31,44 @@
     {
         public function getLatestActivityExtraDisplayStringByModel($model)
         {
-            $content = null;
-            if ($model->files->count() > 0)
+            return FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($model, 'files');
+        }
+
+        /**
+         * (non-PHPdoc)
+         * @see MashableActivityRules::getSummaryContentTemplate()
+         */
+        public function getSummaryContentTemplate($ownedByFilter, $viewModuleClassName)
+        {
+            assert('is_string($ownedByFilter)');
+            assert('is_string($viewModuleClassName)');
+            if ($ownedByFilter != LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER &&
+               $viewModuleClassName != 'UsersModule')
             {
-                foreach ($model->files as $fileModel)
+                if ($viewModuleClassName == 'HomeModule')
                 {
-                    if ($content != null)
-                    {
-                        $content .= ', ';
-                    }
-                $content .= FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($model,
-                                                                                                       $fileModel);
+                    return "<span>{modelStringContent}</span><br/><span>{relatedModelsByImportanceContent} " .
+                           "</span><span class='less-pronounced-text'>" .
+                           Yii::t('Default', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";
+                }
+                else
+                {
+                    return "<span>{modelStringContent} </span><span class='less-pronounced-text'>" .
+                           Yii::t('Default', 'by {ownerStringContent}') . "</span><span>{extraContent}</span>";
                 }
             }
-            return $content;
+            else
+            {
+                if ($viewModuleClassName == 'HomeModule' || $viewModuleClassName == 'UsersModule')
+                {
+                    return "<span>{modelStringContent}</span><br/><span>{relatedModelsByImportanceContent} " .
+                           "</span><span>{extraContent}</span>";
+                }
+                else
+                {
+                    return "<span>{modelStringContent}</span><span>{extraContent}</span>";
+                }
+            }
         }
     }
 ?>

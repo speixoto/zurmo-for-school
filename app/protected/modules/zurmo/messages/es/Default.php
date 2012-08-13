@@ -75,12 +75,16 @@
             => 'Idiomas activos pueden ser utilizados por los usuarios. El idioma del sistema y de cualquier idioma utilizado por un usuario no puede ser desactivado.',
         'Ad-hoc / Owner'
             => 'Ad-hoc / Propietario',
+        'Add Comment'
+            => 'Añadir comentario',
         'Add Currency'
             => 'Añadir divisa',
+        'Add new fields, remove ones you don\'t need and change the layout using Designer.'
+            => 'Añadir nuevos campos, eliminar los no necesita y cambiar el diseño con el Diseñador.',
         'Address'
             => 'Dirección',
         'Admin'
-            => 'Admin',
+            => 'Admin', // Same Word Translated
         'Alert'
             => 'Alerta',
         'Allow'
@@ -111,6 +115,8 @@
             => 'Nombre de systema',
         'are required.'
             => 'son obligatorios.',
+        'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
+            => '¿Es el número uno {spaceAndFirstName}? Compárese con sus colegas en la tabla clasificatoria.',
         'Are you sure you want to remove this group?'
             => '¿Está seguro que desea eliminar este grupo?',
         'Are you sure you want to remove this role?'
@@ -129,8 +135,14 @@
             => 'Bancario',
         'Business Services'
             => 'Servicios de negocios',
+        'by <strong>{ownerStringContent}</strong>'
+            => 'de <strong>{ownerStringContent}</strong>',
+        'by {ownerStringContent}'
+            => 'de {ownerStringContent}',
         'Cancel'
             => 'Cancelar',
+        'Cancel changes'
+            => 'Cancelar cambios',
         'Changes to active currencies saved successfully.'
             => 'Divisas activas cambiado con éxito.',
         'Changes to active languages saved successfully.'
@@ -139,6 +151,8 @@
             => 'Tipo de gráfico',
         'City'
             => 'Ciudad',
+        'Click on the Map link on records to see the customer location on Google Maps.'
+            => 'Haga clic en el enlace para ver el mapa de localización con Google Maps.',
         'Close'
             => 'Cerrar',
         'Code'
@@ -185,6 +199,8 @@
             => 'Días',
         'Dead'
             => 'Muerto',
+        'Decide who can view and edit a record, set Group rights and permissions.'
+            => 'Decidir quién puede ver y editar un registro, establecer los derechos de grupo y los permisos.',
         'Delete Group'
             => 'Eliminar grupo',
         'Delete Groups'
@@ -200,7 +216,9 @@
         'Description'
             => 'Descripción',
         'Dr.'
-            => 'Dr.',
+            => 'Dr.', // Same Word Translated
+        'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
+            => 'Haga clic en el icono de configuración en la parte superior derecha de cada portlet para editar gráficos en el salpicadero.',
         'Email Address'
             => 'Dirección de email',
         'Energy'
@@ -225,6 +243,8 @@
             => 'Listas filtradas',
         'Financial Services'
             => 'Servicios Financieros',
+        'Find what you need quickly using the global search at the top of the screen.'
+            => 'Utilice la búsqueda global en la parte superior de la pantalla para encontrar rápidamente lo que necesita.',
         'First Name'
             => 'Primer nombre',
         'Forums'
@@ -237,6 +257,8 @@
             => 'Configuración global guardado con éxito.',
         'Go to Search'
             => 'Ir a la búsqueda',
+        'Got questions{spaceAndFirstName}? Find answers in the Zurmo Wiki.'
+            => '¿Tiene alguna pregunta{spaceAndFirstName}? Lea el Zurmo Wiki.',
         'Group'
             => 'Grupo',
         'Group Module Permissions'
@@ -303,6 +325,8 @@
             => 'Última actualización',
         'Latitude'
             => 'Latitud',
+        'Let Zurmo crunch the numbers, add calculated fields to your records in Designer.'
+            => 'Permite Zurmo para hacer el trabajo duro, agregar campos calculados en el Diseñador.',
         'List Filters'
             => 'Filtros de lista',
         'List page size'
@@ -365,6 +389,12 @@
             => 'Srta.',
         'My List Configuration View'
             => 'Mi vista de lista configuración',
+        'Need help{spaceAndFirstName}, why not ask a question in the forum?'
+            => 'Necesita ayuda{spaceAndFirstName}, ¿por qué no hacer una pregunta en el foro?',
+        'Need to see the big picture? Click Roll-Up to see activities from related records.'
+            => 'Activar el Rollup para ver todas las actividades relacionadas.',
+        'Need to update multiple records at once? Select them from the list and hit the Update button.'
+            => '¿Se necesita actualizar registros múltiples? Seleccione de la lista y pulsa el botón Actualizar.',
         'Never'
             => 'Nunca',
         'New'
@@ -384,7 +414,7 @@
         'Office Phone'
             => 'Teléfono de la Oficina',
         'Oh no!'
-            => 'Oh no!',
+            => 'Oh no!', // Same Word Translated
         'Once a day, early in the morning.'
             => 'Una vez al día, por la mañana temprano.',
         'Once a week, early in the morning.'
@@ -393,6 +423,8 @@
             => 'Sólo mis elementos',
         'Opt Out'
             => 'Opt out',
+        'owned by {ownerStringContent}'
+            => 'propiedad de {ownerStringContent}',
         'Owner'
             => 'Propietario',
         'Owner and users in'
@@ -403,12 +435,14 @@
             => 'Parent group',
         'Parent Role'
             => 'Parent role',
+        'Parlez vous Français{spaceAndFirstName}? Choose your preferred language in your My Profile area.'
+            => 'Seleccione su idioma preferido en mi perfil.',
         'Password'
             => 'Contraseña',
         'Permissions'
             => 'Permisos',
         'Permitable'
-            => 'Permitable',
+            => 'Permitable', // Same Word Translated
         'Please provide data.'
             => 'Por favor, facilite los datos.',
         'Please use FireFox, Chrome, or Internet Explorer.'
@@ -437,10 +471,14 @@
             => 'Reconstrucción de permisis lectura completo.',
         'Recently Viewed'
             => 'Visto recientemente',
+        'Recently Viewed lets you jump back to any records you have looked at lately.'
+            => 'Vistos Recientemente trae de vuelta a los registros que se han visto recientemente.',
         'Recycled'
             => 'Reciclado',
         'Remember me next time'
             => 'Recordarme la próxima vez',
+        'Remember{spaceAndFirstName}, the Audit Trail shows you what has changed on a record and who changed it.'
+            => 'El registro de actualización muestra la historia de cambios, incluyendo el nombre de usuario que ha cambiado.',
         'Retail'
             => 'Negocio al por menor',
         'Return to Admin Menu'
@@ -452,15 +490,17 @@
         'Rights Saved Successfully.'
             => 'Derechos guardado correctamente.',
         'Role'
-            => 'Role',
+            => 'Role', // Same Word Translated
         'Roles'
-            => 'Roles',
+            => 'Roles', // Same Word Translated
         'Roles Home'
             => 'Inicio de Roles',
         'Salutation'
             => 'Saludo',
         'Save Changes'
             => 'Guardar cambios',
+        'Save yourself time and click the pencil icon to jump right in and edit your record.'
+            => 'Haga clic en el icono del lápiz para editar rápidamente.',
         'Search'
             => 'Buscar',
         'Search by name, phone, or e-mail'
@@ -473,6 +513,8 @@
             => 'Artículo asegurable',
         'Security'
             => 'Seguridad',
+        'See more search results by clicking the down arrow at the bottom of the screen.'
+            => 'Haga clic en la flecha hacia abajo para mostrar más resultados de búsqueda.',
         'Select a Parent Group'
             => 'Seleccione un grupo de padres',
         'Select a Parent Role'
@@ -481,6 +523,8 @@
             => 'Seleccione un role',
         'Self-Generated'
             => 'Autogenerado',
+        'Set your preferences, password, and contact details in your My Profile area.'
+            => 'Cambiar las preferencias de usuario, contraseña y datos de contacto en mi perfil.',
         'Settings'
             => 'Configuración',
         'Shipping Address'
@@ -521,6 +565,8 @@
             => 'Actualizado correctamente',
         'Super Administrators'
             => 'Superadministradores',
+        'Tag Cloud fields allow you to tag records with values so that you can easily find them later.'
+            => 'Los campos de Nube de palabras permite asociar palabras clave con sus datos para poder recuperarlos fácilmente.',
         'Technology'
             => 'Tecnología',
         'The currency rate web service says this currency code is invalid even though zurmo says it is valid. The rate could not be automatically updated.'
@@ -531,6 +577,10 @@
             => 'La moneda no se ha eliminado porque está en uso.',
         'The ID specified was invalid.'
             => ' ID no válido.',
+        'The Import Wizard helps get your data into the system easily, find it under the config icon (that\'s the cog in the top right).'
+            => 'El Asistente de importación le permite importar fácilmente tus datos en el sistema. Busque el icono en la configuración situado en la esquina superior derecha.',
+        'The Notifications speech bubble keeps you up to date on important events.'
+            => 'La burbuja de diálogo Notificaciones le mantiene actualizado sobre los eventos importantes.',
         'The record you are trying to access does not exist.'
             => 'El registro que está intentando acceder no existe.',
         'The status specified is invalid.'
@@ -559,6 +609,8 @@
             => 'Escriba un código de divisa o nombre para buscar',
         'Update'
             => 'Actualizar',
+        'Upload attachments to a record by clicking "More Options" when adding a note.'
+            => 'Puedes subir archivos adjuntos a un registro haciendo clic en "Más opciones", al añadir una nota.',
         'User Membership'
             => 'Miembros del grupo',
         'User Membership Saved Successfully.'
@@ -573,6 +625,8 @@
             => 'Visitar <strong>Zurmo Inc.</strong> en {url}',
         'Visit the <strong>Zurmo Open Source Project</strong> at {url}.'
             => 'Visitar el <strong>Proyecto Zurmo Open Source</strong> en {url}.',
+        'Want to export your data directly to Excel? Search for the data you need and hit the Export button.'
+            => 'Para exportar los datos a Excel, realizar una búsqueda y haga clic en "Exportar".',
         'Website'
             => 'Sitio web',
         'Welcome'
@@ -594,7 +648,7 @@
         'Your Yii version is currentVersion and it should be acceptableVersion.'
             => 'Su versión de Yii es currentVersion y debe ser acceptableVersion',
         'ZurmoCRM'
-            => 'ZurmoCRM',
+            => 'ZurmoCRM', // Same Word Translated
         '{url} (installed with Yii)'
             => '{url} (instalado con Yii)',
         '{url} (version {version} is installed)'

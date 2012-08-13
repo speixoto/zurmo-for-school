@@ -58,7 +58,7 @@
         'A set of dependent pick lists'
             => 'Listes déroulantes dépendantes',
         'A tag cloud'
-            => 'Un nuage de mots-clefs',
+            => 'Un nuage de tags',
         'A text field'
             => 'Un champ texte',
         'Access Designer Tool'
@@ -96,7 +96,7 @@
         'Dependent Pick Lists'
             => 'Listes déroulantes dépendantes',
         'Designer'
-            => 'Designer',
+            => 'Designer', // Same Word Translated
         'Designer Home'
             => 'Designer',
         'Designer Tool'
@@ -107,6 +107,8 @@
             => 'Vue détaillée',
         'Display Name'
             => 'Étiquette du champ',
+        'Display {label} when'
+            => 'Exposer {label} quand',
         'Dropdown Dependency Mapping'
             => 'Mapping de la liste déroulante dépendante',
         'Each item must be uniquely named'
@@ -164,13 +166,13 @@
         'Maximum Value must be larger than the minimum value'
             => 'La valeur maximale doit être plus grande que la valeur minimale',
         'Menus'
-            => 'Menus',
+            => 'Menus', // Same Word Translated
         'Minimum Value'
             => 'Valeur minimale',
         'Module'
-            => 'Module',
+            => 'Module', // Same Word Translated
         'Modules'
-            => 'Modules',
+            => 'Modules', // Same Word Translated
         'Multi-Select Pick List'
             => 'Liste déroulante à choix multiple',
         'Name must not contain spaces or special characters'
@@ -208,9 +210,9 @@
         'Show If'
             => 'Valeur dépendante',
         'Tag Cloud'
-            => 'Nuage de mots-clés',
+            => 'Nuage de tags',
         'Tag Cloud Values'
-            => 'Valeurs du nuage de mots-clés',
+            => 'Valeurs du nuage de tags',
         'Text'
             => 'Texte',
         'Text Area'
@@ -226,7 +228,7 @@
         'Track Audit Log'
             => 'Auditer ce champ',
         'URL'
-            => 'URL',
+            => 'URL', // Same Word Translated
         'You can only have at most 4 pick-lists selected.'
             => 'Vous pouvez avoir au maximum 4 listes déroulantes.',
         'You must first select a field type'

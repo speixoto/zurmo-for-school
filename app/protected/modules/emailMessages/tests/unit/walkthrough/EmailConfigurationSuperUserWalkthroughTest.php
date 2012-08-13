@@ -57,37 +57,57 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEdit');
         }
 
-        public function testSuperUserModifyOutboundEmailConfiguration()
+        public function testSuperUserModifyEmailSmtpConfiguration()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $super2 = User::getByUsername('super2');
 
-            $this->assertEquals('smtp', Yii::app()->emailHelper->outboundType);
-            $this->assertNull(Yii::app()->emailHelper->outboundHost);
-            $this->assertEquals(25, Yii::app()->emailHelper->outboundPort);
-            $this->assertNull(Yii::app()->emailHelper->outboundUsername);
-            $this->assertNull(Yii::app()->emailHelper->outboundPassword);
             $this->assertEquals($super->id, Yii::app()->emailHelper->getUserToSendNotificationsAs()->id);
 
             //Change email settings
             $this->resetGetArray();
-            $this->setPostArray(array('OutboundEmailConfigurationForm' => array(
+            $this->setPostArray(array('EmailSmtpConfigurationForm' => array(
                                     'host'                              => 'abc',
                                     'port'                              => '565',
                                     'username'                          => 'myuser',
                                     'password'                          => 'apassword',
                                     'userIdOfUserToSendNotificationsAs' => $super2->id)));
-            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEdit');
-            $this->assertEquals('Outbound email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditOutbound');
+            $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $emailHelper = new EmailHelper;
-            $this->assertEquals('smtp',     Yii::app()->emailHelper->outboundType);
-            $this->assertEquals('abc',      Yii::app()->emailHelper->outboundHost);
-            $this->assertEquals('565',      Yii::app()->emailHelper->outboundPort);
-            $this->assertEquals('myuser',   Yii::app()->emailHelper->outboundUsername);
-            $this->assertEquals('apassword', Yii::app()->emailHelper->outboundPassword);
+            $this->assertEquals('smtp',         Yii::app()->emailHelper->outboundType);
+            $this->assertEquals('abc',          Yii::app()->emailHelper->outboundHost);
+            $this->assertEquals('565',          Yii::app()->emailHelper->outboundPort);
+            $this->assertEquals('myuser',       Yii::app()->emailHelper->outboundUsername);
+            $this->assertEquals('apassword',    Yii::app()->emailHelper->outboundPassword);
             $this->assertEquals($super2->id,    Yii::app()->emailHelper->getUserToSendNotificationsAs()->id);
+        }
+
+        public function testSuperUserModifyEmailArchivingConfiguration()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $super2 = User::getByUsername('super2');
+
+            //Change email settings
+            $this->resetGetArray();
+            $this->setPostArray(array('EmailArchivingConfigurationForm' => array(
+                                    'imapHost'                          => 'mail.example.com',
+                                    'imapUsername'                      => 'test@example.com',
+                                    'imapPassword'                      => 'abcd',
+                                    'imapPort'                          => '143',
+                                    'imapSSL'                           => '0',
+                                    'imapFolder'                        => 'INBOX')));
+            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditArchiving');
+            $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+
+            $this->assertEquals('mail.example.com',     Yii::app()->imap->imapHost);
+            $this->assertEquals('test@example.com',     Yii::app()->imap->imapUsername);
+            $this->assertEquals('abcd',     Yii::app()->imap->imapPassword);
+            $this->assertEquals('143',     Yii::app()->imap->imapPort);
+            $this->assertEquals('0',     Yii::app()->imap->imapSSL);
+            $this->assertEquals('INBOX',     Yii::app()->imap->imapFolder);
         }
     }
 ?>

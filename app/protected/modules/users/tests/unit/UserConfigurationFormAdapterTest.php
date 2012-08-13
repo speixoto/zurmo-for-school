@@ -40,28 +40,41 @@
             $sally = User::getByUsername('sally');
             Yii::app()->pagination->setGlobalValueByType('listPageSize',      50);
             Yii::app()->pagination->setGlobalValueByType('subListPageSize',   51);
+
             //Confirm sally's configuration is the defaults.
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
             $this->assertEquals(50,                 $form->listPageSize);
             $this->assertEquals(51,                 $form->subListPageSize);
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
             //Confirm billy's configuration is the defaults.
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
             $this->assertEquals(50,                 $form->listPageSize);
             $this->assertEquals(51,                 $form->subListPageSize);
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($billy));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($billy));
             //Now change configuration for Billy.
-            $form->listPageSize      = 60;
-            $form->subListPageSize   = 61;
+            $form->listPageSize                = 60;
+            $form->subListPageSize             = 61;
+            $form->hideWelcomeView             = true;
+            $form->turnOffEmailNotifications   = true;
             UserConfigurationFormAdapter::setConfigurationFromForm($form, $billy);
             //Confirm billy's settings are changed correctly.
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
             $this->assertEquals(60,                 $form->listPageSize);
             $this->assertEquals(61,                 $form->subListPageSize);
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($billy));
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($billy));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
             //Now set configuration settings for sally and confirm they are correct.
             Yii::app()->user->userModel = $sally;
             UserConfigurationFormAdapter::setConfigurationFromFormForCurrentUser($form);
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
             $this->assertEquals(60,                 $form->listPageSize);
             $this->assertEquals(61,                 $form->subListPageSize);
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
         }
     }
 ?>

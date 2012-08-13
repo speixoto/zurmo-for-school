@@ -49,7 +49,7 @@
             }
         }
 
-            public static function getModuleClassName()
+        public static function getModuleClassName()
         {
             return 'NotesModule';
         }
@@ -86,7 +86,7 @@
                     'occurredOnDateTime',
                 ),
                 'relations' => array(
-                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED),
+                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('description',        'required'),

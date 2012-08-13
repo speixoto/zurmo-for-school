@@ -39,6 +39,8 @@
             => 'Changer le mot de passe des utilisateurs',
         'Confirm Password'
             => 'Confirmation du mot de passe',
+        'Confirm your time zone'
+            => 'Confirmez votre fuseau d\'horaire',
         'Create User'
             => 'Nouvel Utilisateur',
         'Create Users'
@@ -48,7 +50,9 @@
         'Enforce Strong Passwords'
             => 'Exiger mot de passe fort',
         'Hash'
-            => 'Hash',
+            => 'Hash', // Same Word Translated
+        'Hide welcome page'
+            => 'Masquer la page d\'accueil',
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Les utilisateurs inactifs ne peuvent pas connecter par le web, mobile, ni API.  La connexion des utilisateurs est contrôlée par les droits de sécurité des groupes.',
         'Inherited Value:'
@@ -69,6 +73,8 @@
             => 'Durée de vie minimale des mots de passe',
         'Profile'
             => 'Profil',
+        'Quick Tip'
+            => 'Astuce',
         'Sign in Via Mobile'
             => 'Connexion mobile',
         'Sign in Via Web'
@@ -89,6 +95,8 @@
             => 'Le nom d\'utilisateur est trop court, il doit comprendre au minimum {minimumLength} charactères.',
         'Time Zone'
             => 'Fuseau Horaire',
+        'Turn off email notifications'
+            => 'Désactiver les notifications emails',
         'User'
             => 'Utilisateur',
         'User configuration saved successfully.'
@@ -97,6 +105,8 @@
             => 'Recherche d\'utilisateurs',
         'Users'
             => 'Utilisateurs',
+        'Users cannot be deleted.  You can however change their status to inactive.'
+            => 'Il n\'est pas possible de supprimer un utilisateur, mais vous pouvez le rendre inactif.',
         'Users Home'
             => 'Inicio de Usuarios',
     );

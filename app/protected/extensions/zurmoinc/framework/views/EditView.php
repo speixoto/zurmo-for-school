@@ -43,7 +43,7 @@
          */
         protected function renderContent()
         {
-            $content  = '<div>';
+            $content  = '<div class="wrapper">';
             $content .= $this->renderTitleContent();
             $maxCellsPresentInAnyRow = $this->resolveMaxCellsPresentInAnyRow($this->getFormLayoutMetadata());
             if ($maxCellsPresentInAnyRow > 1)
@@ -59,13 +59,16 @@
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',
                                                                 array_merge(
-                                                                    array('id' => 'edit-form',
+                                                                    array('id' => static::getFormId(),
                                                                     'htmlOptions' => $this->resolveFormHtmlOptions()),
                                                                     $this->resolveActiveFormAjaxValidationOptions()
                                                                 )
                                                             );
             $content .= $formStart;
+            $content .= '<div class="attributesContainer">';
             $content .= $this->renderFormLayout($form);
+            $content .= $this->renderRightSideContent($form);
+            $content .= '</div>';
             $content .= $this->renderAfterFormLayout($form);
             $actionToolBarContent = $this->renderActionElementBar(true);
             if ($actionToolBarContent != null)
@@ -79,6 +82,26 @@
 
             $content .= '</div></div>';
             return $content;
+        }
+
+        protected function renderRightSideContent($form = null)
+        {
+            assert('$form == null || $form instanceof ZurmoActiveForm');
+            if ($form != null)
+            {
+                $rightSideContent = $this->renderRightSideFormLayoutForEdit($form);
+                if ($rightSideContent != null)
+                {
+                    $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
+                    $content .= $rightSideContent;
+                    $content .= '</div></div></div>';
+                    return $content;
+                }
+            }
+        }
+
+        protected function renderRightSideFormLayoutForEdit($form)
+        {
         }
 
         protected function renderAfterFormLayout($form)
@@ -106,9 +129,14 @@
             return !$detailViewOnly;
         }
 
-            protected function resolveFormHtmlOptions()
+        protected static function getFormId()
         {
-            $data = array();
+            return 'edit-form';
+        }
+
+        protected function resolveFormHtmlOptions()
+        {
+            $data = array('onSubmit' => 'js:return attachLoadingOnSubmit("' . static::getFormId() . '")');
             if ($this->viewContainsFileUploadElement)
             {
                 $data['enctype'] = 'multipart/form-data';

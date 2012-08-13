@@ -29,6 +29,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '$_SERVER does not have {vars}.'
+            => '$_SERVER non ha {vars}.',
+        '$_SERVER is accessible.'
+            => '$_SERVER è accessible. ',
         'Apache'
             => 'Apache', // Same Word Translated
         'APC'
@@ -63,7 +67,7 @@
         'Ctype extension is not loaded.'
             => 'L\'estensione Ctype non è stata caricata.',
         'Curl'
-            => 'Curl',
+            => 'Curl', // Same Word Translated
         'Database admin password'
             => 'Password relativa all\'utente del database',
         'Database admin username'
@@ -102,6 +106,8 @@
             => 'Il valore del parametro optimizer_search_depth è {searchDepth}. Il valore dovrebbe essere 0.?',
         'Database password'
             => 'Password del database',
+        'Database port.'
+            => 'Porta database',
         'Database schema creation complete.'
             => 'Creazione schema di database è completato.',
         'Database thread_stack value is:'
@@ -110,8 +116,12 @@
             => 'Il valore thread_stack del database soddisfa il requisito minimale.',
         'Database username'
             => 'Nome d\'utente del database',
+        'Do not use the RedBean Legacy version'
+            => 'Non utilizzare la versione RedBean Legacy',
         'Dropping existing tables.'
             => 'Rimuovendo tavole esistente.',
+        'Either $_SERVER["REQUEST_URI"] or $_SERVER["QUERY_STRING"] must exist.'
+            => '$_SERVER["REQUEST_URI"] o $_SERVER["QUERY_STRING"] deve esistere.',
         'Error code:'
             => 'Codice Errore:',
         'FAIL'
@@ -128,6 +138,10 @@
             => 'Il nome di host dove Zurmo va essere installato.',
         'If this website is in production mode, please remove the app/test.php file.'
             => 'Si questo webpage è en produzions, prego di rimuovere ile file app/test.php.',
+        'IMAP extension is loaded.'
+            => 'L\'estensione IMAP è stata caricata.',
+        'IMAP extension is not loaded.'
+            => 'L\'estensione IMAP non è stata caricata.',
         'In all likelihood, these items were supplied to you by your Web Host. '.
         'If you do not have this information, then you will need to contact them ' .
         'before you can continue. If you\'re all ready...'
@@ -175,23 +189,27 @@
         'Memcache port number. Default is 11211'
             => 'Numero di porta Memcache.  Il default è 11211',
         'Microsoft-IIS'
-            => 'Microsoft-IIS',
+            => 'Microsoft-IIS', // Same Word Translated
+        'Minify has been disabled due to a system issue. Try to resolve the problem and re-enable Minify.'
+            => '??',
+        'Minify library is included.'
+            => 'La libreria minify esiste.',
         'minimum requirement is:'
             => 'requisito minimo è:',
         'Minimum version required:'
             => 'La versione richiesta minimale è',
         'Mysql'
-            => 'Mysql',
+            => 'Mysql', // Same Word Translated
         'Oh no!'
-            => 'Oh no!',
+            => 'Oh no!', // Same Word Translated
         'PASS'
-            => 'PASS',
+            => 'PASS', // Same Word Translated
         'PCRE extension is loaded.'
             => 'L\'estensione PCRE è stata caricata.',
         'PCRE extension is not loaded.'
             => 'L\'estensione PCRE non è stata caricata.',
         'PHP'
-            => 'PHP',
+            => 'PHP', // Same Word Translated
         'PHP date.timezone is not set.'
             => 'Il parametro PHP date.timezone non è configurato.',
         'PHP date.timezone is set.'
@@ -219,7 +237,7 @@
         'Recheck System'
             => 'Re-controlla il sistema',
         'RedBean'
-            => 'RedBean',
+            => 'RedBean', // Same Word Translated
         'RedBean file is missing patch.'
             => 'Il file RedBean manca il patch.',
         'RedBean file is patched correctly'
@@ -268,12 +286,14 @@
             => 'Il percorso relativo del file dove Zurmo va essere installato.',
         'The system has detected that the hostInfo and/or scriptUrl are not set up. Please open the perInstance.php config file and set up these parameters.'
             => 'Il sistema ha trovato che hostInfo e/o scriptUrl non sono configurati.  Prego di aprire il file config perInstance.php e configurare questi parametri.',
+        'There is a problem with php set_include_path command. Command can fail if "php_admin_value include_path" directive is set in Apache configuration.'
+            => 'C\'è un problema con la funzione php set_include_path.  La funzione può fallire se "php_admin_value include_path" è definito nella configurazione di Apache.',
         'There was a problem creating the database Error code:'
             => 'C\'era un errore durante la creazione del database dei codice Errore:',
         'There was a problem creating the user Error code:'
             => 'C\'era un error durante la creazione del utente dei codice Errore:',
-        'Tidy'
-            => 'Tidy',
+        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"]'
+            => 'Impossibile determinare il percorso Informazioni URL. Assicurare $_SERVER["PATH_INFO"]',
         'User who can connect to the database.'
             => 'Utente che posso connettere al database.',
         'User`s password.'
@@ -288,12 +308,12 @@
                'Contrassegna questo box si specificate un database esistente.',
         'Welcome to Zurmo. Before getting started, we need some information on the database. ' .
         'You will need to know the following items before proceeding:'
-            => 'Benvenuto a Zurmo.  Avanti di cominciare, è necessario ottenere informazione del vostro database.' .
+            => 'Benvenuto a Zurmo. Avanti di cominciare, è necessario ottenere informazione del vostro database.' .
                'È necessario avere LE informazioni seguenti:',
         'Writing Configuration File.'
             => 'Creazione del file di configurazione.',
         'Yii'
-            => 'Yii',
+            => 'Yii', // Same Word Translated
         'You cannot access the installation area because the application is already installed.'
             => 'Non può accedere l\'area di installazione perche l\'applicazione è già installata.',
         'You have specified an existing database. If you would like to use this database, ' .

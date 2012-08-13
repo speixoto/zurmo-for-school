@@ -384,6 +384,16 @@
             return array();
         }
 
+        public static function getConfigureSubMenuItems()
+        {
+            $metadata = self::getMetadata();
+            if (!empty($metadata['global']['configureSubMenuItems']))
+            {
+                return $metadata['global']['configureSubMenuItems'];
+            }
+            return array();
+        }
+
         public static function getShortCutsCreateMenuItems()
         {
             $calledClass = get_called_class();
@@ -423,6 +433,15 @@
         public static function getGlobalSearchFormClassName()
         {
             return null;
+        }
+
+        /**
+         * Override when there is a module that can have module scoping or special search fields in the module
+         * list/search view but is not globally searchable.  Activities are an example of this or users.
+         */
+        public static function modelsAreNeverGloballySearched()
+        {
+            return false;
         }
 
         /**

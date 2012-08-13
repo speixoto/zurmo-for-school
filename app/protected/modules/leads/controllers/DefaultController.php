@@ -40,6 +40,11 @@
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => 'LeadEditAndDetailsView',
                    ),
+                    array(
+                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        'controller'                    => $this,
+                        'stateMetadataAdapterClassName' => 'LeadsStateMetadataAdapter'
+                   ),
                )
             );
         }
@@ -50,23 +55,32 @@
                             'listPageSize', get_class($this->getModule()));
             $contact  = new Contact(false);
             $searchForm = new LeadsSearchForm($contact);
-            $dataProvider = $this->makeSearchFilterListDataProvider(
+            $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Contact',
-                'LeadsFilteredList',
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                'LeadsStateMetadataAdapter'
+                'LeadsStateMetadataAdapter',
+                'LeadsSearchView'
             );
-            $actionBarSearchAndListView = $this->makeActionBarSearchAndListView(
-                $searchForm,
-                $pageSize,
-                LeadsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                Yii::app()->user->userModel->id,
-                $dataProvider
-            );
+            if(isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $mixedView = $this->makeListView(
+                    $searchForm,
+                    $dataProvider
+                );
+            }
+            else
+            {
+                $mixedView = $this->makeActionBarSearchAndListView(
+                    $searchForm,
+                    $pageSize,
+                    LeadsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                    Yii::app()->user->userModel->id,
+                    $dataProvider
+                );
+            }
             $view = new LeadsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $actionBarSearchAndListView));
+                                         makeStandardViewForCurrentUser($this, $mixedView));
             echo $view->render();
         }
 
@@ -82,9 +96,11 @@
             else
             {
                 AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($contact), 'LeadsModule'), $contact);
+                $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'LeadsSearchView', $contact);
                 $detailsAndRelationsView = $this->makeDetailsAndRelationsView($contact, 'LeadsModule',
                                                                               'LeadDetailsAndRelationsView',
-                                                                              Yii::app()->request->getRequestUri());
+                                                                              Yii::app()->request->getRequestUri(),
+                                                                              $breadCrumbView);
                 $view = new LeadsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
                 echo $view->render();
@@ -147,7 +163,6 @@
                 'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'LeadsFilteredList',
                 'LeadsStateMetadataAdapter');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassEdit(
@@ -187,7 +202,6 @@
                 'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'LeadsFilteredList',
                 'LeadsStateMetadataAdapter'
             );
             $this->processMassEditProgressSave(
@@ -288,8 +302,6 @@
                                             $_GET['modalTransferInformation']['sourceNameFieldId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
-                                                Yii::t('Default', 'LeadsModuleSingularLabel Search',
-                                                LabelUtil::getTranslationParamsForAllModules()),
                                                 'LeadsStateMetadataAdapter');
         }
 
@@ -331,11 +343,6 @@
         protected function getSearchFormClassName()
         {
             return 'LeadsSearchForm';
-        }
-
-        protected function getModelFilteredListClassName()
-        {
-            return 'LeadsFilteredList';
         }
 
         public function actionExport()

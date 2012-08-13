@@ -39,7 +39,7 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails',
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, autoCompleteForMultiSelectAutoComplete, confirmTimeZone',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -68,8 +68,7 @@
             $dataProvider    = $this->makeRedBeanDataProviderFromGet(
                 $searchForm,
                 'User',
-                $pageSize,
-                Yii::app()->user->userModel->id
+                $pageSize
             );
             $actionBarSearchAndListView = $this->makeActionBarSearchAndListView(
                 $searchForm,
@@ -85,7 +84,6 @@
 
         public function actionDetails($id)
         {
-            $this->resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
             $title           = Yii::t('Default', 'Profile');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
@@ -94,9 +92,9 @@
                 'controllerId'     => $this->getId(),
                 'relationModuleId' => $this->getModule()->getId(),
                 'relationModel'    => $user,
-                'rankingData'	   => GamePointUtil::getUserRankingData($user),
+                'rankingData'      => GamePointUtil::getUserRankingData($user),
                 'statisticsData'   => GameLevelUtil::getUserStatisticsData($user),
-                'badgeData'		   => GameBadge::getAllByPersonIndexedByType($user)
+                'badgeData'        => GameBadge::getAllByPersonIndexedByType($user)
             );
             $detailsAndRelationsView = new UserDetailsAndRelationsView($this->getId(),
                                                                        $this->getModule()->getId(),
@@ -108,7 +106,7 @@
 
         public function actionAuditEventsModalList($id)
         {
-            $this->resolveCanCurrentUserAccessAction(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             parent::actionAuditEventsModalList($id);
         }
 
@@ -133,7 +131,7 @@
 
         public function actionEdit($id)
         {
-            $this->resolveCanCurrentUserAccessAction(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user            = User::getById(intval($id));
             $title           = Yii::t('Default', 'Details');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
@@ -166,7 +164,7 @@
 
         public function actionChangePassword($id)
         {
-            $this->resolveCanCurrentUserAccessAction(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
             $title           = Yii::t('Default', 'Change Password');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
@@ -179,6 +177,34 @@
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($userPasswordForm),
                                                 'UserActionBarAndChangePasswordView'), $breadcrumbLinks, 'UserBreadCrumbView'));
+            echo $view->render();
+        }
+
+        public function actionConfirmTimeZone()
+        {
+            $confirmTimeZoneForm           = new UserTimeZoneConfirmationForm();
+            $confirmTimeZoneForm->timeZone = Yii::app()->timeZoneHelper->getForCurrentUser();
+            if (isset($_POST['UserTimeZoneConfirmationForm']))
+            {
+                $confirmTimeZoneForm->attributes = $_POST['UserTimeZoneConfirmationForm'];
+                if ($confirmTimeZoneForm->validate())
+                {
+                    Yii::app()->user->userModel->timeZone = $confirmTimeZoneForm->timeZone;
+                    if (Yii::app()->user->userModel->save())
+                    {
+                        Yii::app()->timeZoneHelper->confirmCurrentUsersTimeZone();
+                        $this->redirect(Yii::app()->homeUrl);
+                    }
+                }
+            }
+            $title                         = Yii::t('Default', 'Confirm your time zone');
+            $timeZoneView                  = new UserTimeZoneConfirmationView($this->getId(),
+
+                                                                 $this->getModule()->getId(),
+                                                                 $confirmTimeZoneForm,
+                                                                 $title);
+            $view                          = new UsersPageView(ZurmoDefaultViewUtil::
+                                                 makeStandardViewForCurrentUser($this, $timeZoneView));
             echo $view->render();
         }
 
@@ -207,7 +233,8 @@
                 $savedSucessfully   = false;
                 $modelToStringValue = null;
                 $oldUsername        = $model->username;
-                $model              = ZurmoControllerUtil::saveModelFromPost($sanitizedPostdata, $model,
+                $controllerUtil     = new ZurmoControllerUtil();
+                $model              = $controllerUtil->saveModelFromPost($sanitizedPostdata, $model,
                                                                            $savedSucessfully, $modelToStringValue);
                 if ($savedSucessfully)
                 {
@@ -319,13 +346,12 @@
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
                                             $_GET['modalTransferInformation']['sourceNameFieldId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
-                                                                      Yii::t('Default', 'User Search'));
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
         public function actionSecurityDetails($id)
         {
-            $this->resolveCanCurrentUserAccessAction(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
             $title           = Yii::t('Default', 'Security');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
@@ -366,7 +392,7 @@
 
         public function actionConfigurationEdit($id)
         {
-            $this->resolveCanCurrentUserAccessAction(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
             $title           = Yii::t('Default', 'Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
@@ -388,7 +414,7 @@
                     Yii::app()->user->setFlash('notification',
                         Yii::t('Default', 'User configuration saved successfully.')
                     );
-                    $this->redirect(array($this->getId() . '/index'));
+                    $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
                 }
             }
             $titleBarAndEditView = new UserActionBarAndConfigurationEditView(
@@ -403,32 +429,36 @@
             echo $view->render();
         }
 
-        protected function resolveCanCurrentUserAccessAction($userId)
-        {
-            if (Yii::app()->user->userModel->id == $userId ||
-                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
-            {
-                return;
-            }
-            $messageView = new AccessFailureView();
-            $view = new AccessFailurePageView($messageView);
-            echo $view->render();
-            Yii::app()->end(0, false);
-        }
-
         protected function getSearchFormClassName()
         {
             return 'UsersSearchForm';
         }
 
-        protected function getModelFilteredListClassName()
-        {
-            return 'SearchAndListView';
-        }
-
         public function actionExport()
         {
             $this->export();
+        }
+
+        /**
+         * Given a partial name or e-mail address, search for all contacts regardless of contact state unless the
+         * current user has security restrictions on some states.  If the adapter resolver returns false, then the
+         * user does not have access to the Leads or Contacts module.
+         * JSON encode the resulting array of contacts.
+         */
+        public function actionAutoCompleteForMultiSelectAutoComplete($term)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'autoCompleteListPageSize', get_class($this->getModule()));
+            $users    = UserSearch::getUsersByPartialFullName($term, $pageSize);
+            $autoCompleteResults  = array();
+            foreach ($users as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => $user->getClassId('Item'),
+                    'name' => strval($user)
+                );
+            }
+            echo CJSON::encode($autoCompleteResults);
         }
     }
 ?>

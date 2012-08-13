@@ -39,6 +39,7 @@
         protected $databaseHostname;
         protected $databaseUsername;
         protected $databasePassword;
+        protected $databasePort;
         protected $databaseName;
         protected $superUserPassword;
 
@@ -46,11 +47,22 @@
         {
             parent::setUp();
             $matches = array();
-            assert(preg_match("/host=([^;]+);dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+
+            assert(preg_match("/host=([^;]+);(?:port=([^;]+);)?dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+            if ($matches[2] != '')
+            {
+                $this->databasePort      = intval($matches[2]);
+            }
+            else
+            {
+                $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString(Yii::app()->db->connectionString);
+                $this->databasePort = DatabaseCompatibilityUtil::getDatabaseDefaultPort($databaseType);
+            }
+
             $this->databaseHostname          = $matches[1];
             $this->databaseUsername          = Yii::app()->db->username;
             $this->databasePassword          = Yii::app()->db->password;
-            $this->databaseName              = $matches[2];
+            $this->databaseName              = $matches[3];
             $this->superUserPassword         = 'super';
 
             $this->instanceRoot              = INSTANCE_ROOT;
@@ -127,6 +139,7 @@
                     'databaseName'          => '',
                     'databaseUsername'      => '',
                     'databasePassword'      => '',
+                    'databasePort'          => '',
                     'superUserPassword'     => '',
                     'memcacheHostname'      => '',
                     'memcachePortNumber'    => '',
@@ -139,8 +152,7 @@
             $errors = CJSON::decode($content);
             $this->assertGreaterThanOrEqual(5, count($errors));
 
-            //This validation should pass.
-            $this->setPostArray(array(
+            $postData = array(
                 'ajax'                => 'install-form',
                 'InstallSettingsForm' => array(
                     'databaseHostname'      => $this->databaseHostname,
@@ -149,14 +161,42 @@
                     'databaseName'          => $this->databaseName,
                     'databaseUsername'      => $this->databaseUsername,
                     'databasePassword'      => $this->databasePassword,
+                    'databasePort'          => $this->databasePort,
                     'superUserPassword'     => $this->superUserPassword,
-                    'memcacheHostname'      => 'localhost',
-                    'memcachePortNumber'    => '11211',
-                    'memcacheAvailable'     => '1',
                     'databaseType'          => 'mysql',
                     'removeExistingData'    => '1',
                     'installDemoData'       => '',
-                )));
+                )
+            );
+            if (MEMCACHE_ON)
+            {
+                $memcacheSettings = array(
+                    'memcacheHostname'      => 'localhost',
+                    'memcachePortNumber'    => '11211',
+                    'memcacheAvailable'     => '1',
+                );
+            }
+            else
+            {
+                $memcacheSettings = array(
+                    'memcacheHostname'      => '',
+                    'memcachePortNumber'    => '',
+                    'memcacheAvailable'     => '0',
+                );
+            }
+            $postData['InstallSettingsForm'] = array_merge(
+                $postData['InstallSettingsForm'], $memcacheSettings
+            );
+
+            $this->setPostArray($postData);
+
+            $content = $this->runControllerWithExitExceptionAndGetContent('install/default/settings');
+            $errors = CJSON::decode($content);
+            $this->assertEquals(1, count($errors));
+
+            $postData['InstallSettingsForm']['hostInfo'] = 'http://www.example.com';
+            $this->setPostArray($postData);
+
             $content = $this->runControllerWithExitExceptionAndGetContent('install/default/settings');
             $errors = CJSON::decode($content);
             $this->assertEquals(0, count($errors));
@@ -170,6 +210,7 @@
                     'databaseName'          => $this->databaseName,
                     'databaseUsername'      => $this->databaseUsername,
                     'databasePassword'      => $this->databasePassword,
+                    'databasePort'          => $this->databasePort,
                     'superUserPassword'     => $this->superUserPassword,
                     'memcacheHostname'      => 'localhost',
                     'memcachePortNumber'    => '11211',
@@ -177,6 +218,7 @@
                     'databaseType'          => 'mysql',
                     'removeExistingData'    => '1',
                     'installDemoData'       => '',
+                    'hostInfo'              => 'http://www.example.com'
                 )));
 
             //Close db connection(new will be created during installation process).

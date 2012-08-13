@@ -29,6 +29,12 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>"In the middle of difficulty lies Opportunity."</h2> ' .
+                                     '<i>- Albert Einstein</i></i><div class="large-icon"></div><p>In the middle of a well-implemented ' .
+                                     'CRM system lies Opportunities, or expressions of potential revenue. ' .
+                                     'Nothing difficult about creating an Opportunity, so go ahead and create the ' .
+                                     'first one!</p>'
+            => '<h2>"In the middle of difficulty lies Opportunity."</h2> <i>- Albert Einstein</i></i><div class="large-icon"></div><p>In the middle of a well-implemented CRM system lies Opportunities, or expressions of potential revenue. Nothing difficult about creating an Opportunity, so go ahead and create the first one!</p>', // Same Word Translated
         'Access OpportunitiesModulePluralLabel Tab'
             => 'Accès aux OpportunitiesModulePluralLabel',
         'Close Date'
@@ -54,13 +60,13 @@
         'Opportunities By Sales Stage'
             => 'Opportunités par étape de vente',
         'OpportunitiesModulePluralLabel'
-            => 'OpportunitiesModulePluralLabel',
+            => 'OpportunitiesModulePluralLabel', // Same Word Translated
         'OpportunitiesModulePluralLabel For AccountsModuleSingularLabel'
             => 'OpportunitiesModulePluralLabel pour un AccountsModuleSingularLabel',
         'OpportunitiesModulePluralLabel For ContactsModuleSingularLabel'
             => 'OpportunitiesModulePluralLabel pour un ContactsModuleSingularLabel',
         'OpportunitiesModuleSingularLabel'
-            => 'OpportunitiesModuleSingularLabel',
+            => 'OpportunitiesModuleSingularLabel', // Same Word Translated
         'OpportunitiesModuleSingularLabel Search'
             => 'Recherche OpportunitiesModuleSingularLabel',
         'Opportunity'
@@ -70,8 +76,16 @@
         'Prospecting'
             => 'Prospection',
         'Qualification'
-            => 'Qualification',
+            => 'Qualification', // Same Word Translated
         'Verbal'
-            => 'Verbal',
+            => 'Verbal', // Same Word Translated
+        '{n} OpportunitiesModuleSingularLabel created|{n} OpportunitiesModulePluralLabel created'
+            => '{n} OpportunitiesModuleSingularLabel crée|{n} OpportunitiesModulePluralLabel crées',
+        '{n} OpportunitiesModuleSingularLabel mass updated|{n} OpportunitiesModulePluralLabel mass updated'
+            => '{n} OpportunitiesModuleSingularLabel a été mise à jour|{n} OpportunitiesModulePluralLabel ont été mises à jour',
+        '{n} OpportunitiesModuleSingularLabel search completed|{n} OpportunitiesModuleSingularLabel searches completed'
+            => '{n} recherche OpportunitiesModuleSingularLabel complétée|{n} recherches OpportunitiesModuleSingularLabel complétées',
+        '{n} OpportunitiesModuleSingularLabel won|{n} OpportunitiesModulePluralLabel won'
+            => '{n} OpportunitiesModuleSingularLabel gagnée|{n} OpportunitiesModulePluralLabel gagnées',
     );
 ?>

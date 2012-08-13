@@ -40,16 +40,18 @@
         'Delete NotesModulePluralLabel'
             => 'Supprimer NotesModulePluralLabel',
         'Note'
-            => 'Note',
+            => 'Note', // Same Word Translated
         'Notes'
-            => 'Notes',
+            => 'Notes', // Same Word Translated
         'NotesModulePluralLabel'
-            => 'NotesModulePluralLabel',
+            => 'NotesModulePluralLabel', // Same Word Translated
         'NotesModuleSingularLabel'
-            => 'NotesModuleSingularLabel',
+            => 'NotesModuleSingularLabel', // Same Word Translated
         'Occurred On'
             => 'Date',
         'The NotesModulePluralLabel form cannot be displayed.'
             => 'Le formulaire des NotesModulePluralLabel être affiché.',
+        '{n} NotesModuleSingularLabel created|{n} NotesModulePluralLabel created'
+            => '{n} NotesModuleSingularLabel crée|{n} NotesModulePluralLabel crées',
     );
 ?>

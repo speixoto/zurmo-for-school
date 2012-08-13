@@ -29,24 +29,29 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>"As we must Account for every idle word, so must we Account for every idle ' .
+                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Account and, ' .
+                                     'as Ben would say, "So must we Account for every company, organization, or ' .
+                                     'customer we interact with."</p>'
+            => '<h2>"As we must Account for every idle word, so must we Account for every idle silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Account and, as Ben would say, "So must we Account for every company, organization, or customer we interact with."</p>',  // Same Word Translated
         'Access AccountsModulePluralLabel Tab'
             => 'Zugang AccountsModulePluralLabel Tab',
         'Account'
-            => 'Account',
+            => 'Account', // Same Word Translated
         'Accounts'
-            => 'Accounts',
+            => 'Accounts', // Same Word Translated
         'AccountsModulePluralLabel'
-            => 'AccountsModulePluralLabel',
+            => 'AccountsModulePluralLabel', // Same Word Translated
         'AccountsModulePluralLabel For AccountsModuleSingularLabel'
             => 'AccountsModulePluralLabel für AccountsModuleSingularLabel',
         'AccountsModuleSingularLabel'
-            => 'AccountsModuleSingularLabel',
+            => 'AccountsModuleSingularLabel', // Same Word Translated
         'AccountsModuleSingularLabel Id'
             => 'AccountsModuleSingularLabel ID',
         'AccountsModuleSingularLabel Name'
             => 'AccountsModuleSingularLabel Bezeichnung',
         'AccountsModuleSingularLabel Search'
-            => 'AccountsModuleSingularLabel Search',
+            => 'AccountsModuleSingularLabel Search', // Same Word Translated
         'An account field'
             => 'Ein Account Datenfeld',
         'Annual Revenue'
@@ -66,12 +71,18 @@
         'My AccountsModulePluralLabel'
             => 'Meine AccountsModulePluralLabel',
         'Parent AccountsModuleSingularLabel'
-            => 'Parent AccountsModuleSingularLabel',
+            => 'Parent AccountsModuleSingularLabel', // Same Word Translated
         'Prospect'
-            => 'Prospect',
+            => 'Prospect', // Same Word Translated
         'Related AccountsModulePluralLabel'
             => 'Verwandte AccountsModulePluralLabel',
         'Vendor'
             => 'Verkäufer',
+        '{n} AccountsModuleSingularLabel created|{n} AccountsModulePluralLabel created'
+            => '{n} AccountsModuleSingularLabel erstellt|{n} AccountsModulePluralLabel erstellt',
+        '{n} AccountsModuleSingularLabel mass updated|{n} AccountsModulePluralLabel mass updated'
+            => '{n} AccountsModuleSingularLabel wurde aktualisiert|{n} AccountsModulePluralLabel wurden aktualisiert',
+        '{n} AccountsModuleSingularLabel search completed|{n} AccountsModuleSingularLabel searches completed'
+            => '{n} AccountsModuleSingularLabel Suche wurde abgeschlossen|{n} AccountsModuleSingularLabel Suchen wurden abgeschlossen',
     );
 ?>

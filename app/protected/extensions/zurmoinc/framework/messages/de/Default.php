@@ -66,13 +66,15 @@
         'Cell Settings'
             => 'Zelle Einstellungen',
         'Celsius'
-            => 'Celsius',
+            => 'Celsius', // Same Word Translated
         'Change Log'
             => 'Änderungsprotokoll',
         'Changed'
             => 'Geändert',
         'Clear'
             => 'Löschen',
+        'Click Here'
+            => 'Hier klicken',
         'Create'
             => 'Erstellen',
         'Created By User'
@@ -89,6 +91,8 @@
             => 'Datum',
         'Date Time'
             => 'Datum Uhrzeit',
+        'Default data loaded for {moduleName}'
+            => 'Standard Daten für {moduleName} geladen',
         'Default Value'
             => 'Ausgangswert',
         'Delete'
@@ -96,7 +100,7 @@
         'Detail View Only'
             => 'Nur Detailansicht',
         'Details'
-            => 'Details',
+            => 'Details', // Same Word Translated
         'Done'
             => 'Fertig',
         'Edit'
@@ -108,7 +112,7 @@
         'Export'
             => 'Exportieren',
         'Fahrenheit'
-            => 'Fahrenheit',
+            => 'Fahrenheit', // Same Word Translated
         'Fewer Details'
             => 'Weniger Details',
         'Fewer Options'
@@ -124,7 +128,7 @@
         'firstDateTime must occur before secondDateTime'
             => 'firstDateTime muss vor secondDateTime kommen',
         'Float'
-            => 'Float',
+            => 'Float', // Same Word Translated
         'from'
             => 'von',
         'Full Name'
@@ -134,7 +138,7 @@
         'Hour'
             => 'Stunde',
         'Info'
-            => 'Info',
+            => 'Info', // Same Word Translated
         'Inline Edit View'
             => 'Inline Edit Ansicht',
         'Integer'
@@ -152,13 +156,13 @@
         'List'
             => 'Liste',
         'Loading'
-            => 'Loading',
+            => 'Loading', // Same Word Translated
         'Mass Update'
             => 'Massenaktualisierung',
         'Max upload size: {maxSize}'
             => 'Max Upload-Größe: {maxSize}',
         'Minute'
-            => 'Minute',
+            => 'Minute', // Same Word Translated
         'Missing the attribute labels.'
             => 'Attribut-Tags fehlt',
         'Model Class Name'
@@ -178,7 +182,7 @@
         'My List View'
             => 'Meine Liste Ansicht',
         'Name'
-            => 'Name',
+            => 'Name', // Same Word Translated
         'Name must not contain spaces or special characters'
             => 'Der Name darf keine Sonderzeichen oder Leerzeichen haben',
         'Next 7 Days'
@@ -202,23 +206,27 @@
         'On{visibility}'
             => 'Eingeschaltet',
         'Opted Out'
-            => 'Opted Out',
+            => 'Opted Out', // Same Word Translated
         'Options'
             => 'Optionen',
         'or'
             => 'oder',
         'Panel'
-            => 'Panel',
+            => 'Panel', // Same Word Translated
         'Panel Settings'
             => 'Panel Einstellungen',
         'Panel Title'
             => 'Panel-Titel',
         'Radio Drop Down'
-            => 'Radio Drop Down',
+            => 'Radio Drop Down', // Same Word Translated
         'record'
             => 'Datensatz',
         'records'
             => 'Datensätze',
+        'Related'
+            => 'Bezug',
+        'Related to'
+            => 'In Bezug auf',
         'Remove'
             => 'Entfernen',
         'Return to List'
@@ -248,7 +256,7 @@
         'Start typing to search'
             => 'Geben Sie hier Ihren Suchbegriff ein',
         'Tab'
-            => 'Tab',
+            => 'Tab', // Same Word Translated
         'The file did not exist'
             => 'Diese Datei existierte nicht',
         'There was an error uploading the file.'

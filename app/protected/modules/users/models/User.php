@@ -36,6 +36,7 @@
             {
                 throw new NotFoundException();
             }
+            RedBeansCache::cacheBean($bean, User::getTableName('User') . $bean->id);
             return self::makeModel($bean);
         }
 
@@ -345,6 +346,8 @@
                     'fullName' => 'Name',
                     'timeZone' => 'Time Zone',
                     'title'    => 'Salutation',
+                    'primaryEmail' => 'Email',
+                    'primaryAddress' => 'Address',
                 )
             );
         }
@@ -553,7 +556,7 @@
                     'groups'     => array(RedBeanModel::MANY_MANY,           'Group'),
                     'manager'    => array(RedBeanModel::HAS_ONE,             'User'),
                     'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'User'),
+                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'EmailBox'),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',
@@ -563,7 +566,7 @@
                     array('hash',     'type',    'type' => 'string'),
                     array('hash',     'length',  'min'   => 32, 'max' => 32),
                     array('language', 'type',    'type'  => 'string'),
-                    array('language', 'length',  'max'   => 5),
+                    array('language', 'length',  'max'   => 10),
                     array('timeZone', 'type',    'type'  => 'string'),
                     array('timeZone', 'length',  'max'   => 64),
                     array('timeZone', 'default', 'value' => 'UTC'),
@@ -585,7 +588,6 @@
                 'noApiExport' => array(
                     'hash'
                 ),
-
             );
             return $metadata;
         }

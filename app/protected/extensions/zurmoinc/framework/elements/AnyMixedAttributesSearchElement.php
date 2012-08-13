@@ -50,10 +50,9 @@
          */
         protected function getHtmlOptions()
         {
-            $htmlOptions             = array('class'   => 'input-hint',
-                                             'onfocus' => '$(this).removeClass("input-hint"); $(this).val("");',
-                                             'size'    => 80,
-                                             'value'   => Yii::t('Default', 'Start typing to search'));
+            $htmlOptions             = array('class'   => 'input-hint anyMixedAttributes-input',
+                                             'onfocus' => '$(this).select();',
+                                             'size'    => 80);
             return array_merge(parent::getHtmlOptions(), $htmlOptions);
         }
 
@@ -82,8 +81,8 @@
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.ScopedSearchJuiMultiSelect', array(
                 'dataAndLabels'  => $this->model->getGlobalSearchAttributeNamesAndLabelsAndAll(),
                 'selectedValue'  => 'All',
-                'inputId'        => $this->getEditableInputId(SearchUtil::ANY_MIXED_ATTRIBUTES_SCOPE_NAME),
-                'inputName'      => $this->getEditableInputName(SearchUtil::ANY_MIXED_ATTRIBUTES_SCOPE_NAME),
+                'inputId'        => $this->getEditableInputId(SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME),
+                'inputName'      => $this->getEditableInputName(SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME),
                 'options'        => array(
                                           'selectedText' => '',
                                           'noneSelectedText' => '', 'header' => false,
@@ -100,22 +99,10 @@
          */
         protected function renderEditableScripts()
         {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
-                    ) . '/FormUtils.js',
-                CClientScript::POS_END
-            );
             $inputId = $this->getEditableInputId();
             $script   = " basicSearchQueued = 0;";
             $script  .= " basicSearchOldValue = '';";
-            $script  .= "   $('#" . $inputId . "').removeAttr('clearForm'); ";
-            $script  .= "   $('#" . $inputId . "').clearform(
-                                {
-                                    form: '#" . $this->form->getId() . "',
-                                }
-                            );
-                            var basicSearchHandler = function(event)
+            $script  .= "   var basicSearchHandler = function(event)
                             {
                                 if ($(this).val() != '')
                                 {
@@ -128,8 +115,8 @@
                                     }
                                 }
                             }
-                            $('#" . $inputId . "').unbind('input propertychange keyup');
-                            $('#" . $inputId . "').bind('input propertychange keyup', basicSearchHandler);
+                            $('#" . $inputId . "').unbind('input.ajax propertychange.ajax keyup.ajax');
+                            $('#" . $inputId . "').bind('input.ajax propertychange.ajax keyup.ajax', basicSearchHandler);
                             ";
             Yii::app()->clientScript->registerScript('basicSearchAjaxSubmit', $script);
         }

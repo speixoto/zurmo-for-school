@@ -60,6 +60,12 @@
         public $outboundPassword;
 
         /**
+         * Outbound mail server security. Options: null, 'ssl', 'tls'
+         * @var string
+         */
+        public $outboundSecurity;
+
+        /**
          * Contains array of settings to load during initialization from the configuration table.
          * @see loadOutboundSettings
          * @var array
@@ -69,7 +75,8 @@
             'outboundHost',
             'outboundPort',
             'outboundUsername',
-            'outboundPassword'
+            'outboundPassword',
+            'outboundSecurity'
         );
 
         /**
@@ -187,6 +194,7 @@
             $mailer->port     = $this->outboundPort;
             $mailer->username = $this->outboundUsername;
             $mailer->password = $this->outboundPassword;
+            $mailer->security = $this->outboundSecurity;
             $mailer->Subject  = $emailMessage->subject;
             if ($emailMessage->content->htmlContent == null && $emailMessage->content->textContent != null)
             {
@@ -206,6 +214,15 @@
             foreach ($emailMessage->recipients as $recipient)
             {
                 $mailer->addAddressByType($recipient->toAddress, $recipient->toName, $recipient->type);
+            }
+
+            if (isset($emailMessage->files) && !empty($emailMessage->files))
+            {
+                foreach ($emailMessage->files as $file)
+                {
+                    $attachment = $mailer->attachDynamicContent($file->fileContent->content, $file->name, $file->type);
+                    $emailMessage->attach($attachment);
+                }
             }
         }
 
@@ -231,8 +248,9 @@
                 }
                 else
                 {
-                    $emailMessage->error    = null;
-                    $emailMessage->folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+                    $emailMessage->error        = null;
+                    $emailMessage->folder       = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+                    $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 }
             }
             catch (OutboundEmailSendException $e)
@@ -316,7 +334,7 @@
          * address.  @see EmailHelper::defaultFromAddress
          * @param User $user
          */
-        public function resolveFromAddressByUser(User$user)
+        public function resolveFromAddressByUser(User $user)
         {
             assert('$user->id >0');
             if ($user->primaryEmail->emailAddress == null)

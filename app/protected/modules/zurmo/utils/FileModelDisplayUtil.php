@@ -60,8 +60,7 @@
             assert('$model instanceof RedBeanModel');
             assert('$fileModel instanceof FileModel');
             $content = null;
-            $content .= '<span class="ui-icon ui-icon-document" style="display:inline-block;">';
-            $content .= Yii::t('Default', 'Attachment') . '</span>';
+            $content .= '<span class="ui-icon ui-icon-document" style="display:inline-block;"></span>';
             $content .= CHtml::link(
                     Yii::app()->format->text($fileModel->name),
                     Yii::app()->createUrl('zurmo/fileModel/download/',
@@ -69,6 +68,26 @@
                               'modelClassName' => get_class($model),
                               'id' => $fileModel->id))
             );
+            return $content;
+        }
+
+        public static function renderFileDataDetailsWithDownloadLinksContent($model, $filesRelationName, $showHeaderLabel = false)
+        {
+            $content = null;
+            if ($model->{$filesRelationName}->count() > 0)
+            {
+                $content .= '<ul class="attachments">';
+                if ($showHeaderLabel)
+                {
+                    $content .= '<li><strong>' . Yii::t('Default', 'Attachments'). '</strong></li>';
+                }
+                foreach ($model->{$filesRelationName} as $fileModel)
+                {
+                    $content .= '<li><span class="icon-attachment"></span>' .
+                                FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($model, $fileModel) . '</li>';
+                }
+                $content .= '</ul>';
+            }
             return $content;
         }
     }

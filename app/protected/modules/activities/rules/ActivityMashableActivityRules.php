@@ -76,5 +76,94 @@
         public function getLatestActivityExtraDisplayStringByModel($model)
         {
         }
+
+        /**
+         * Renders related models. But only renders one type of related model given that the $model supplied
+         * is connected to more than one type of activity item.  There is an order of importance that is checked
+         * starting with Account, then Contact, then Opportunity. If none are found, then it grabs the first available.
+         * @see getActivityItemsStringContentByModelClassName
+         * @param RedBeanModel $model
+         */
+        public function renderRelatedModelsByImportanceContent(RedBeanModel $model)
+        {
+            if ($model->activityItems->count() == 0)
+            {
+                return;
+            }
+            $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Account');
+            if ($stringContent != null)
+            {
+                return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
+            }
+            $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Contact');
+            if ($stringContent != null)
+            {
+                return Yii::t('Default', 'with {relatedContactsStringContent}', array('{relatedContactsStringContent}' => $stringContent));
+            }
+            $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Opportunity');
+            if ($stringContent != null)
+            {
+                return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
+            }
+            $metadata      = Activity::getMetadata();
+            $stringContent =  self::getFirstActivityItemStringContent($metadata['Activity']['activityItemsModelClassNames'], $model);
+            if ($stringContent != null)
+            {
+                return Yii::t('Default', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
+            }
+        }
+
+        protected static function getActivityItemsStringContentByModelClassName(RedBeanModel $model, $castDownModelClassName)
+        {
+            assert('is_string($castDownModelClassName)');
+            $existingModels = array();
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($castDownModelClassName);
+            foreach ($model->activityItems as $item)
+            {
+                try
+                {
+                    $castedDownModel = $item->castDown(array($modelDerivationPathToItem));
+                    if (get_class($castedDownModel) == $castDownModelClassName)
+                    {
+                        if (strval($castedDownModel) != null)
+                        {
+                            $params          = array('label' => strval($castedDownModel));
+                            $moduleClassName = $castedDownModel->getModuleClassName();
+                            $moduleId        = $moduleClassName::getDirectoryName();
+                            $element         = new DetailsLinkActionElement('default', $moduleId,
+                                                                            $castedDownModel->id, $params);
+                            $existingModels[] = $element->render();
+                        }
+                    }
+                }
+                catch (NotFoundException $e)
+                {
+                    //do nothing
+                }
+            }
+            return self::resolveStringValueModelsDataToStringContent($existingModels);
+        }
+
+        protected static function getFirstActivityItemStringContent($relationModelClassNames, RedBeanModel $model)
+        {
+            assert('is_array($relationModelClassNames)');
+            foreach ($relationModelClassNames as $relationModelClassName)
+            {
+                //ASSUMES ONLY A SINGLE ATTACHED ACTIVITYITEM PER RELATION TYPE.
+                foreach ($model->activityItems as $item)
+                {
+                    try
+                    {
+                        $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($relationModelClassName);
+                        $castedDownModel = $item->castDown(array($modelDerivationPathToItem));
+                        return strval($castedDownModel);
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        //do nothing
+                    }
+                }
+            }
+        }
     }
 ?>

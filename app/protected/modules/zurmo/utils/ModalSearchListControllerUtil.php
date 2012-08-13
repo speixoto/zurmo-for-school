@@ -30,23 +30,19 @@
     class ModalSearchListControllerUtil
     {
         public static function setAjaxModeAndRenderModalSearchList(CController $controller, $modalListLinkProvider,
-                                                 $pageTitle = null,
                                                  $stateMetadataAdapterClassName = null)
         {
             Yii::app()->getClientScript()->setToAjaxMode();
-            return self::renderModalSearchList($controller, $modalListLinkProvider, $pageTitle,
-                                               $stateMetadataAdapterClassName);
+            return self::renderModalSearchList($controller, $modalListLinkProvider, $stateMetadataAdapterClassName);
         }
 
         /**
          * @return rendered content from view as string.
          */
         protected static function renderModalSearchList(CController $controller, $modalListLinkProvider,
-                                                        $pageTitle = null,
                                                         $stateMetadataAdapterClassName = null)
         {
             assert('$modalListLinkProvider instanceof ModalListLinkProvider');
-            $userId              = Yii::app()->user->userModel->id;
             $className           = $controller->getModule()->getPluralCamelCasedName() . 'ModalSearchAndListView';
             $modelClassName      = $controller->getModule()->getPrimaryModelName();
             $searchViewClassName = $className::getSearchViewClassName();
@@ -67,7 +63,6 @@
                                                 $searchModel,
                                                 $modelClassName,
                                                 $pageSize,
-                                                $userId,
                                                 $stateMetadataAdapterClassName);
             $searchAndListView = new $className(
                 $controller->getId(),
@@ -79,10 +74,7 @@
                 $dataProvider,
                 'modal'
             );
-            $view = new ModalView($controller,
-                $searchAndListView,
-                'modalContainer',
-                $pageTitle);
+            $view = new ModalView($controller, $searchAndListView);
             return $view->render();
         }
     }

@@ -29,6 +29,11 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>"Skill is fine, and genius is splendid, but the right Contacts are more ' .
+                                     'valuable than either."</h2><i>- Arthur Conan Doyle, Sr.</i><div class="large-icon"></div><p>Arthur ' .
+                                     'understands the value of having Contacts in the CRM and it takes little skill ' .
+                                     'or genius to create one. Why not be the first to do so?</p>'
+            => '<h2>"Skill is fine, and genius is splendid, but the right Contacts are more valuable than either."</h2><i>- Arthur Conan Doyle, Sr.</i><div class="large-icon"></div><p>Arthur understands the value of having Contacts in the CRM and it takes little skill or genius to create one. Why not be the first to do so?</p>', // Same Word Translated
         'Access ContactsModulePluralLabel Tab'
             => 'Acceso ai ContactsModulePluralLabel',
         'Company Name'
@@ -44,17 +49,21 @@
         'Contacts'
             => 'Contatti',
         'ContactsModulePluralLabel'
-            => 'ContactsModulePluralLabel',
+            => 'ContactsModulePluralLabel', // Same Word Translated
         'ContactsModulePluralLabel For AccountsModuleSingularLabel'
             => 'ContactsModulePluralLabel per AccountsModuleSingularLabel',
         'ContactsModulePluralLabel For OpportunitiesModuleSingularLabel'
             => 'ContactsModulePluralLabel per OpportunitiesModuleSingularLabel',
         'ContactsModuleSingularLabel'
-            => 'ContactsModuleSingularLabel',
+            => 'ContactsModuleSingularLabel', // Same Word Translated
+        'ContactsModuleSingularLabel ID'
+            => 'ID ContactsModuleSingularLabel',
+        'ContactsModuleSingularLabel Name'
+            => 'Nome completo',
         'ContactsModuleSingularLabel or LeadsModuleSingularLabel'
             => 'ContactsModuleSingularLabel o LeadsModuleSingularLabel',
         'ContactsModuleSingularLabel Search'
-            => 'ContactsModuleSingularLabel Search',
+            => 'Ricerca ContactsModuleSingularLabel',
         'Create ContactsModulePluralLabel'
             => 'Crea ContactsModulePluralLabel',
         'Create ContactsModuleSingularLabel'
@@ -63,6 +72,10 @@
             => 'Elimina ContactsModulePluralLabel',
         'Each ContactsModuleSingularLowerCaseLabel state must be uniquely named'
             => 'Ogni  stato de ContactsModuleSingularLowerCaseLabel deve avere un nome unico',
+        'LeadsModuleSingularLabel and ContactsModuleSingularLabel Search'
+            => 'Ricerca LeadsModuleSingularLabel e ContactsModuleSingularLabel',
+        'Matching Archived Emails'
+            => 'Collegare Mails Archiviate',
         'My ContactsModulePluralLabel'
             => 'I miei ContactsModulePluralLabel',
         'Order'
@@ -81,5 +94,11 @@
             => 'Il stato specificato non esiste.',
         'The status specified is not unique and is invalid.'
             => 'Il stato specificato non è unico e non è valido.',
+        '{n} ContactsModuleSingularLabel created|{n} ContactsModulePluralLabel created'
+            => '{n} ContactsModuleSingularLabel create|{n} ContactsModulePluralLabel creati',
+        '{n} ContactsModuleSingularLabel mass updated|{n} ContactsModulePluralLabel mass updated'
+            => '{n} ContactsModuleSingularLabel è stato aggiornato|{n} ContactsModulePluralLabel sono stati aggiornati',
+        '{n} ContactsModuleSingularLabel search completed|{n} ContactsModuleSingularLabel searches completed'
+            => '{n} recherche ContactsModuleSingularLabel completata|{n} recherche ContactsModuleSingularLabel completate',
     );
 ?>

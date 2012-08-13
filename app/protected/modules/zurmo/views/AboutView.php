@@ -85,6 +85,7 @@
                                     <li>Evan Fazio       - Gamification</li>
                                     <li>Justin Ferguson  - Documentation</li>
                                     <li>Theresa Neil     - User Interface Design</li>
+                                    <li>Sérgio Peixoto   - Portugese Translation and Development</li>
                                     <li>Mandy Robinson   - Icons</li>
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
                                     <li>Sacha Telgenhof  - Language Infrastructure</li>
@@ -92,38 +93,9 @@
                                 </ul>
                             </div>
                         </div>';
-            $content .= '<div id="rightCol">
-                        <ul class="social-links clearfix">
-                            <li>
-                                <a href="https://www.facebook.com/pages/Zurmo/117701404997971" class="facebook" title="zurmo on facebook" target="_blank">
-                                    <span>Zurmo CRM on Facebook</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://twitter.com/ZurmoCRM" class="twitter" title="zurmo on twitter" target="_blank">
-                                    <span>Zurmo CRM on Twitter</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://www.linkedin.com/company/zurmo-open-source" class="linkedin" title="zurmo on linkedin" target="_blank">
-                                    <span>Zurmo CRM on LinkedIn</span>
-                                </a>
-                            </li>
-                            <li><a href="https://bitbucket.org/zurmo/" class="bitbucket" title="zurmo on bitbucket" target="_blank">
-                                <span>Zurmo CRM on BitBucket</span>
-                            </a></li>
-                            <li>
-                                <a href="https://www.pivotaltracker.com/projects/380027" class="pivotal" title="zurmo on pivotal tracker" target="_blank">
-                                    <span>Zurmo CRM on Pivotal Tracker</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://zurmo.org/feed" class="rss" title="zurmo rss" target="_blank">
-                                    <span>Zurmo CRM RSS</span>
-                                </a>
-                            </li>
-                        </ul>
-            <div><h3>Application Info</h3><p>';
+            $content .= '<div id="rightCol">';
+            $content .= static::renderSocialLinksContent();
+            $content .= '<div><h3>Application Info</h3><p>';
             $content .= Yii::t('Default', 'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.',
                         array('{zurmoVersion}' => $zurmoVersion));
             $content .= '</p>';
@@ -144,29 +116,35 @@
             $content .= '<a href="http://www.jquery.com">jQuery JavaScript Framework</a> (with Yii)';
             $content .= '</li>';
             $content .= '</ul></p></div>
-
                 <div>
                     <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
                     <script>
-                    new TWTR.Widget({
+                    new TWTR.Widget(
+                    {
                       version: 2,
                       type: "profile",
                       rpp: 4,
                       interval: 30000,
                       width: "auto",
                       height: 300,
-                      theme: {
-                        shell: {
+                      theme:
+                      {
+                        shell:
+                        {
                           background: "#f4f4f4",
                           color: "#262777"
-                        },
-                        tweets: {
+                        }
+                        ,
+                        tweets:
+                        {
                           background: "#f4f4f4",
                           color: "#545454",
                           links: "#262777"
                         }
-                      },
-                      features: {
+                      }
+                      ,
+                      features:
+                      {
                         scrollbar: false,
                         loop: false,
                         live: false,
@@ -198,6 +176,40 @@
                 $zurmoVersion = substr($zurmoVersion, 0, -2);
             }
             return $zurmoVersion;
+        }
+
+        public static function renderSocialLinksContent()
+        {
+            return '<ul class="social-links clearfix">
+                            <li>
+                                <a href="https://www.facebook.com/pages/Zurmo/117701404997971" class="facebook" title="zurmo on facebook" target="_blank">
+                                    <span>Zurmo CRM on Facebook</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://twitter.com/ZurmoCRM" class="twitter" title="zurmo on twitter" target="_blank">
+                                    <span>Zurmo CRM on Twitter</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.linkedin.com/company/zurmo-open-source" class="linkedin" title="zurmo on linkedin" target="_blank">
+                                    <span>Zurmo CRM on LinkedIn</span>
+                                </a>
+                            </li>
+                            <li><a href="https://bitbucket.org/zurmo/" class="bitbucket" title="zurmo on bitbucket" target="_blank">
+                                <span>Zurmo CRM on BitBucket</span>
+                            </a></li>
+                            <li>
+                                <a href="https://www.pivotaltracker.com/projects/380027" class="pivotal" title="zurmo on pivotal tracker" target="_blank">
+                                    <span>Zurmo CRM on Pivotal Tracker</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://zurmo.org/feed" class="rss" title="zurmo rss" target="_blank">
+                                    <span>Zurmo CRM RSS</span>
+                                </a>
+                            </li>
+                        </ul>';
         }
     }
 ?>

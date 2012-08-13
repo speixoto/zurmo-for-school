@@ -99,12 +99,21 @@
             // Begin Not Coding Standard
             return "js:function(dateText, inst) {
                 $.ajax({
-                    url      : $.param.querystring('" . $this->getPortletSelectDayUrl() . "', '&displayStringTime=' + dateText + '&stringTime=' + $('#calendarSelectedDate" . $this->uniqueLayoutId . "').val()),
+                    url      : $.param.querystring('" . $this->getPortletSelectDayUrl() . "', '&stringTime=' + $('#calendarSelectedDate" . $this->uniqueLayoutId . "').val()),
                     async    : false,
                     type     : 'GET',
+                    'beforeSend' : function(){
+                                        jQuery('#modalContainer').html('');
+                    makeLargeLoadingSpinner('modalContainer');
+                                        jQuery('#modalContainer').dialog({'title': dateText,
+                                                                          'autoOpen':true,
+                                                                          'modal': true,
+                                                                          'height': 'auto',
+                                                                          'position': 'center',
+                                                                          'width':600}); return true;},
                     success  : function(data)
                     {
-                        jQuery('#calendarSelectedDate" . $this->uniqueLayoutId . "').html(data)
+                        jQuery('#modalContainer').html(data)
                         //Since the home page for some reason cannot render this properly in beforeShow, we are using a trick.
                         setTimeout('addSpansToDatesOnCalendar(\"' + inst.id + '\")', 100);
                     },
@@ -141,7 +150,9 @@
             $dayEvents = $this->makeDataProvider($year . '-' . $month . '-01')->getData();
             foreach ($dayEvents as $event)
             {
-                echo "calendarEvents[new Date('" . $event['date'] . "')] = new CalendarEvent('" . $event['label'] . "', '" . $event['className'] . "'); \n";
+                $dateTimestamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($event['dbDate']);
+                $dateForJavascript = date('M j, Y', $dateTimestamp);
+                echo "console.log('" . $dateForJavascript . "');calendarEvents[new Date('" . $dateForJavascript . "')] = new CalendarEvent('" . $event['label'] . "', '" . $event['className'] . "'); \n";
             }
         }
 

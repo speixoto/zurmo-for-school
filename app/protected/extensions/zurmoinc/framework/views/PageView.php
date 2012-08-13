@@ -34,6 +34,13 @@
      */
     class PageView extends View
     {
+        /**
+         * Flags that the error handler was called.
+         */
+        public static $foundErrors = false;
+
+        public static $xhtmlValidationErrors = array();
+
         private $containedView;
 
         /**
@@ -67,19 +74,19 @@
             }
             if (YII_DEBUG)
             {
-                if ($this->validate($content))
+                $this->validate($content);
+                if (!empty(self::$xhtmlValidationErrors))
                 {
-                    $content = $this->tidy($content);
-                }
-                else
-                {
-                    echo '<span style="background-color: yellow; color: #c00000">Skipping tidy so that the line numbers in the error messages match the source, (if there are any).</span><br />';
+                    foreach (self::$xhtmlValidationErrors as $error)
+                    {
+                        $content = $this->appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $error);
+                    }
                 }
                 if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
                 {
                     $endTime      = microtime(true);
                     $endTotalTime = Yii::app()->performance->endClockAndGet();
-                    $performanceMessage .= '<span>Total page view time including validation and tidy: ' . number_format(($endTime - $startTime), 3) . ' seconds.</span><br />';
+                    $performanceMessage .= '<span>Total page view time including validation: ' . number_format(($endTime - $startTime), 3) . ' seconds.</span><br />';
                     $performanceMessage .= '<span>Total page time: ' . number_format(($endTotalTime), 3) . ' seconds.</span><br />';
                 }
             }
@@ -102,45 +109,15 @@
                 {
                     $performanceMessage .= 'Timing: ' . $id . ' total time: ' . number_format(($time), 3) . "</br>";
                 }
-                $content .= '<div class="performance-info">' . $performanceMessage . '</div>';
+                $performanceMessageHtml = '<div class="performance-info">' . $performanceMessage . '</div>';
+                $content = $this->appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $performanceMessageHtml);
             }
             if (YII_DEBUG && Yii::app()->isApplicationInstalled())
             {
-                $content .= '<span style="background-color: lightgreen; color: green">Database: \'' . Yii::app()->db->connectionString . '\', username: \'' . Yii::app()->db->username . '\'.</span><br />';
+                $dbInfoHtml = '<span style="background-color: lightgreen; color: green">Database: \'' . Yii::app()->db->connectionString . '\', username: \'' . Yii::app()->db->username . '\'.</span><br />';
+                $content = $this->appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $dbInfoHtml);
             }
             return $content;
-        }
-
-        /**
-         * Tidies the page content as Xhtml with numerical
-         * entities. In YII_DEBUG mode the source is indented.
-         * @see http://php.net/manual/en/book.tidy.php
-         */
-        protected static function tidy($content)
-        {
-            $tidyServiceHelper = new TidyServiceHelper();
-            if (!$tidyServiceHelper->runCheckAndGetIfSuccessful())
-            {
-                $content .= '<div class="xhtml-validation-info">Page is valid XHTML and has not been tidied, because tidy extension is not loaded.</div>';
-                return $content;
-            }
-            else
-            {
-                $tidy = new Tidy();
-                $tidyConfig = array(
-                    'accessibility-check' => 3,
-                    'indent'              => defined('YII_DEBUG'),
-                    'newline'             => 'LF',
-                    'numeric-entities'    => true,
-                    'output-xhtml'        => true,
-                    'quote-ampersand'     => false,
-                    'wrap'                => 0,
-                );
-                $tidy->parseString($content, $tidyConfig);
-                $content = $tidy->root()->value;
-                $content .= '<div class="xhtml-validation-info">Page is valid XHTML and has been tidied.</div>';
-                return $content;
-            }
         }
 
         /**
@@ -172,18 +149,13 @@
             }
             else
             {
-                echo '<span style="background-color: yellow; color: #c00000">Loading found errors, skipping validation.</span><br />';
+                self::$xhtmlValidationErrors[] = '<span style="background-color: yellow; color: #c00000">Loading found errors, skipping validation.</span><br />';
             }
 
             restore_error_handler();
 
             return $valid;
         }
-
-        /**
-         * Flags that the error handler was called.
-         */
-        public static $foundErrors = false;
 
         /**
          * Error handler that writes the errors directly to
@@ -195,10 +167,10 @@
 
             if ($first)
             {
-                echo '<span style="background-color: yellow; color: #c00000;"><b>THIS IS NOT A VALID XHTML FILE</b></span><br />';
+                self::$xhtmlValidationErrors[] = '<span style="background-color: yellow; color: #c00000;"><b>THIS IS NOT A VALID XHTML FILE</b></span><br />';
                 $first = false;
             }
-            echo "<span style=\"background-color: yellow; color: #c00000;\">$errstr</span><br />";
+            self::$xhtmlValidationErrors[] = "<span style=\"background-color: yellow; color: #c00000;\">$errstr</span><br />";
 
             self::$foundErrors = true;
         }
@@ -252,9 +224,9 @@
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" href="' .
-                                      Yii::app()->baseUrl . '/' . $theme . '/css/less/newui.less"/>';
+                                      Yii::app()->baseUrl . '/' . $theme . '/less/newui.less"/>';
                 $specialCssContent .= '<!--[if lt IE 10]><link rel="stylesheet/less" type="text/css" href="' .
-                                      Yii::app()->baseUrl . '/' . $theme . '/css/less/ie.less"/><![endif]-->';
+                                      Yii::app()->baseUrl . '/' . $theme . '/less/ie.less"/><![endif]-->';
             }
             else
             {
@@ -382,14 +354,28 @@
         public static function getScriptFilesThatLoadOnAllPages()
         {
             $scriptData = array();
-            if(MINIFY_SCRIPTS)
+            if (MINIFY_SCRIPTS)
             {
-                foreach(Yii::app()->minScript->usingAjaxShouldNotIncludeJsPathAliasesAndFileNames as $data)
+                foreach (Yii::app()->minScript->usingAjaxShouldNotIncludeJsPathAliasesAndFileNames as $data)
                 {
                    $scriptData[] = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias($data[0])) . $data[1];
                 }
             }
             return $scriptData;
+        }
+
+        /**
+         * Add additional html conent before html body end("</body>") tag and html end tag ("</html>")
+         * @param string $content
+         * @param string $additionalContent
+         * @return string
+         */
+        public function appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $additionalContent)
+        {
+            $content = str_replace($this->renderXHtmlBodyEnd() . $this->renderXHtmlEnd() ,
+                                   $additionalContent . $this->renderXHtmlBodyEnd() . $this->renderXHtmlEnd(),
+                                   $content );
+            return $content;
         }
     }
 ?>

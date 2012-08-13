@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GamificationDefaultController extends ZurmoBaseController
+    class GamificationDefaultController extends ZurmoModuleController
     {
         public function actionIndex()
         {
@@ -33,19 +33,19 @@
 
         public function actionLeaderboard($type = null)
         {
-            if($type == null)
+            if ($type == null)
             {
                 $type = GamePointUtil::LEADERBOARD_TYPE_WEEKLY;
             }
-            if($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
+            if ($type == GamePointUtil::LEADERBOARD_TYPE_WEEKLY)
             {
                 $activeActionElementType = 'LeaderboardWeeklyLink';
             }
-            elseif($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
+            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_MONTHLY)
             {
                 $activeActionElementType = 'LeaderboardMonthlyLink';
             }
-            elseif($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
+            elseif ($type == GamePointUtil::LEADERBOARD_TYPE_OVERALL)
             {
                 $activeActionElementType = 'LeaderboardOverallLink';
             }

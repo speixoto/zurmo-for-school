@@ -79,11 +79,6 @@
         public $canRemoveRows;
 
         /**
-         *  @var string, which css file to utilize.
-         */
-        public $designerCssFile = 'css/designer.css';
-
-        /**
          * @var DesignerLayoutAttributes object.
          */
         public $designerLayoutAttributes;
@@ -107,6 +102,12 @@
          *  @var array, metadata to use for layout.
          */
         public $viewMetadata;
+
+        /**
+         * Set to null so the application worries about the jquery-ui.css.
+         * @var string or null
+         */
+        public $cssFile = null;
 
         protected function canRemoveElement()
         {
@@ -184,7 +185,7 @@
 
         protected function renderSaveModalSettingsButton()
         {
-            return CHtml::button(Yii::t('Default', 'Save'), array('onClick' => '$(this).closest(".modal-settings").dialog("close");'));
+            return CHtml::button(Yii::t('Default', 'Save'), array('onclick' => '$(this).closest(".modal-settings").dialog("close");'));
         }
 
         /**

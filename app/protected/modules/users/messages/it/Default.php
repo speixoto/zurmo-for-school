@@ -39,6 +39,8 @@
             => 'Cambia Password di Utente',
         'Confirm Password'
             => 'Conferma password',
+        'Confirm your time zone'
+            => 'Conferma il tuo fuso orario',
         'Create User'
             => 'Nuovo Utente',
         'Create Users'
@@ -48,7 +50,9 @@
         'Enforce Strong Passwords'
             => 'Attuare l\'uso di password forti',
         'Hash'
-            => 'Hash',
+            => 'Hash', // Same Word Translated
+        'Hide welcome page'
+            => 'Nascondere la pagina di benvenuto',
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Gli utenti inatyivi no possono login nel web, mobile, o web API.  Il login per gli utente attivi è controllato per i diritti del grupo.',
         'Inherited Value:'
@@ -56,7 +60,7 @@
         'Manage Users'
             => 'Gestione degli Utenti',
         'Manager'
-            => 'Manager',
+            => 'Manager', // Same Word Translated
         'Minimum Password Length'
             => 'Lunghezza minima della password',
         'Minimum Username Length'
@@ -68,7 +72,9 @@
         'Password Expiry Days'
             => 'Giorni de scandenza delle password',
         'Profile'
-            => 'Profile',
+            => 'Profile', // Same Word Translated
+        'Quick Tip'
+            => 'Punta Rapida',
         'Sign in Via Mobile'
             => 'Login  mobile',
         'Sign in Via Web'
@@ -89,6 +95,8 @@
             => 'Il nome di utente è troppo corto.  La lunghezza minima è {minimumLength} carattere.',
         'Time Zone'
             => 'Fuso orario',
+        'Turn off email notifications'
+            => 'Disattivare le notifiche e-mail',
         'User'
             => 'Utente',
         'User configuration saved successfully.'
@@ -97,6 +105,8 @@
             => 'Ricerca Utente',
         'Users'
             => 'Utenti',
+        'Users cannot be deleted.  You can however change their status to inactive.'
+            => 'Gli utenti non possono essere cancellati. È tuttavia possibile cambiare il proprio status di inattivo.',
         'Users Home'
             => 'Utenti Home',
     );

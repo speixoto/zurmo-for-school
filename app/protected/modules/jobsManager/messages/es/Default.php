@@ -43,12 +43,14 @@
             => 'Limpie los registros de trabajos antiguos.',
         'Clear the assets folder on server(optional).'
             => 'Limpie la carpeta Assets en el servidor (opionale).',
-        'Click Here'
-            => 'Haga clic aquí',
         'Completed'
             => 'Finalizado',
         'Completed with Errors'
             => 'Finalizado con errores',
+        'Cron or scheduled job name: {type}'
+            => 'Nombre del trabajo o cron programado: {type}',
+        'Enable Minify for CSS and JavaScript files.'
+            => 'Habilitar minify para los archivos CSS y JavaScript.',
         'End Date Time'
             => 'Fecha/hora realizada',
         'Error Log'

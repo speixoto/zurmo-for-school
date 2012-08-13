@@ -54,7 +54,7 @@
         'Tasks'
             => 'Tareas',
         'TasksModulePluralLabel'
-            => 'TasksModulePluralLabel',
+            => 'TasksModulePluralLabel', // Same Word Translated
         'TasksModulePluralLabel For AccountsModuleSingularLabel'
             => 'TasksModulePluralLabel para AccountsModuleSingularLabel',
         'TasksModulePluralLabel For ContactsModuleSingularLabel'
@@ -62,6 +62,8 @@
         'TasksModulePluralLabel For OpportunitiesModuleSingularLabel'
             => 'TasksModulePluralLabel para OpportunitiesModuleSingularLabel',
         'TasksModuleSingularLabel'
-            => 'TasksModuleSingularLabel',
+            => 'TasksModuleSingularLabel', // Same Word Translated
+        '{n} TasksModuleSingularLabel created|{n} TasksModulePluralLabel created'
+            => '{n} TasksModuleSingularLabel ha sido creado|{n} TasksModulePluralLabel han sido creados',
     );
 ?>

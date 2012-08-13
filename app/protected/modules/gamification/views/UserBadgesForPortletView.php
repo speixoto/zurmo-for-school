@@ -86,26 +86,25 @@
         protected function renderBadgeContent()
         {
             $content = null;
-            if(count($this->params['badgeData']) > 0)
+            if (count($this->params['badgeData']) > 0)
             {
-                $rowBadgeCount = 0;
-                $content .= '<div>';
-                foreach($this->params['badgeData'] as $badge)
+                foreach ($this->params['badgeData'] as $badge)
                 {
-                    if($rowBadgeCount == 4)
-                    {
-                        $content .= '</div><div>';
-                        $rowBadgeCount = 0;
-                    }
-                    $badgeClassName = $badge->type . 'GameBadgeRules';
-                    $content .= '<div>' . $badge->type . $badgeClassName::getDisplayName() . '-' . $badge->grade . '</div>';
-                    $rowBadgeCount ++;
+                    $badgeRulesClassName = $badge->type . 'GameBadgeRules';
+                    $tooltipSpanId       = 'user-badge-tooltip-' . $badge->type;
+                    $value               = $badgeRulesClassName::getItemCountByGrade($badge->grade);
+                    //$content .= '<span id="' . $tooltipSpanId . '" class="tooltip"  title="' . $badgeRulesClassName::getPassiveDisplayLabel($value) . '">';
+                    $content .= '<div class="badge ' . $badge->type . '"><div class="gloss"></div>' .
+                                '<strong class="badge-icon" title="' . $badgeRulesClassName::getPassiveDisplayLabel($value) . '"></strong><span class="badge-grade">' . $badge->grade . '</span></div>';
+                    //$content .= '</span>';
+                    $zTip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
+                    //$zTip->addQTip("#" . $tooltipSpanId);
                 }
-                $content .= '</div>';
+                $zTip->addQTip(".badge-icon");
             }
             else
             {
-                $content .= Yii::t('Default', 'No achievements earned.');
+                $content .= '<span class="empty">' . Yii::t('Default', 'No achievements earned.') . '</span>';
             }
             return $content;
         }

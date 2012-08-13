@@ -72,7 +72,7 @@
         {
             if ($attributeName == 'value')
             {
-                $this->addValue($value);
+                $this->replaceValue($value);
             }
             else
             {
@@ -146,7 +146,7 @@
             $where             = RedBeanModelDataProvider::makeWhere('GamePoint', $searchAttributeData, $joinTablesAdapter);
             $models            = self::getSubset($joinTablesAdapter, null, null, $where, null);
             $indexedModels     = array();
-            foreach($models as $gamePoint)
+            foreach ($models as $gamePoint)
             {
                 $indexedModels[$gamePoint->type] = $gamePoint;
             }
@@ -176,13 +176,13 @@
                     'transactions' => array(RedBeanModel::HAS_MANY, 'GamePointTransaction', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('type', 		   'required'),
+                    array('type',          'required'),
                     array('type',          'type',    'type' => 'string'),
                     array('type',          'length',  'min'  => 3, 'max' => 64),
-                    array('value',     	   'type',    'type' => 'integer'),
+                    array('value',         'type',    'type' => 'integer'),
                     array('value',         'numerical', 'min' => 1),
-                    array('value', 		   'required'),
-                    array('person', 	   'required'),
+                    array('value',         'required'),
+                    array('person',        'required'),
                 ),
                 'elements' => array(
                     'person' => 'Person',
@@ -215,6 +215,19 @@
         }
 
         /**
+         * Replace value with specified value.
+         */
+        public function replaceValue($value)
+        {
+            assert('is_int($value)');
+            $oldValue                               = $this->value;
+            $this->unrestrictedSet('value', $value);
+            $gamePointTransaction                   = new GamePointTransaction();
+            $gamePointTransaction->value            = $value - $oldValue;
+            $this->transactions->add($gamePointTransaction);
+        }
+
+        /**
          * Given a user and a number, determine if a user's existing total points exceeds the specified number.
          * If so, return true, otherwise return false.
          * @param User $user
@@ -226,7 +239,7 @@
             assert('is_int($points)');
             assert('is_string($levelType) && $levelType != null');
             $data = self::getSummationPointsDataByLevelTypeAndUser($user, $levelType);
-            if($data != null && $data['sum'] > $points)
+            if ($data != null && $data['sum'] > $points)
             {
                 return true;
             }
@@ -247,6 +260,25 @@
         }
 
         /**
+         * Performance function to grab all summation data by type for a given user.
+         * @param User $user
+         * @return array of summation points indexed by the level type
+         */
+        public static function getSummationPointsDataByUserIndexedByLevelType(User $user)
+        {
+            assert('$user->id > 0');
+            $sql       = "select type, sum(value) sum from gamepoint where person_item_id = " .
+                         $user->getClassId('Item') . " group by type";
+            $rows      = R::getAll($sql);
+            $indexedData = array();
+            foreach ($rows as $row)
+            {
+                $indexedData[$row['type']] = $row['sum'];
+            }
+            return $indexedData;
+        }
+
+        /**
          * Given a level type, get the corresponding where sql part to filter by point type if applicable.  Level types
          * match point types for now, so if the level type is not valid then it will thrown an exception.
          * @param string $levelType
@@ -255,7 +287,7 @@
         protected static function getPointTypeWherePartByLevelType($levelType)
         {
             assert('is_string($levelType) && $levelType != null');
-            if(!in_array($levelType, array(GameLevel::TYPE_GENERAL,
+            if (!in_array($levelType, array(GameLevel::TYPE_GENERAL,
                                      GameLevel::TYPE_SALES,
                                      GameLevel::TYPE_NEW_BUSINESS,
                                      GameLevel::TYPE_ACCOUNT_MANAGEMENT,
@@ -264,7 +296,7 @@
             {
                 throw new NotSupportedException();
             }
-            if($levelType == GameLevel::TYPE_GENERAL)
+            if ($levelType == GameLevel::TYPE_GENERAL)
             {
                 return null;
             }

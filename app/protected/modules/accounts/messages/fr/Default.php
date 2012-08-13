@@ -29,6 +29,11 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>"As we must Account for every idle word, so must we Account for every idle ' .
+                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Account and, ' .
+                                     'as Ben would say, "So must we Account for every company, organization, or ' .
+                                     'customer we interact with."</p>'
+            => '<h2>"As we must Account for every idle word, so must we Account for every idle silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Account and, as Ben would say, "So must we Account for every company, organization, or customer we interact with."</p>',  // Same Word Translated
         'Access AccountsModulePluralLabel Tab'
             => 'Accès aux AccountsModulePluralLabel',
         'Account'
@@ -36,11 +41,11 @@
         'Accounts'
             => 'Comptes',
         'AccountsModulePluralLabel'
-            => 'AccountsModulePluralLabel',
+            => 'AccountsModulePluralLabel', // Same Word Translated
         'AccountsModulePluralLabel For AccountsModuleSingularLabel'
             => 'AccountsModulePluralLabel pour AccountsModuleSingularLabel',
         'AccountsModuleSingularLabel'
-            => 'AccountsModuleSingularLabel',
+            => 'AccountsModuleSingularLabel', // Same Word Translated
         'AccountsModuleSingularLabel Id'
             => 'ID du AccountsModuleSingularLabel',
         'AccountsModuleSingularLabel Name'
@@ -68,10 +73,16 @@
         'Parent AccountsModuleSingularLabel'
             => 'AccountsModuleSingularLabel Parent',
         'Prospect'
-            => 'Prospect',
+            => 'Prospect', // Same Word Translated
         'Related AccountsModulePluralLabel'
             => 'AccountsModulePluralLabel principal',
         'Vendor'
             => 'Vendeur',
-    );
+        '{n} AccountsModuleSingularLabel created|{n} AccountsModulePluralLabel created'
+            => '{n} AccountsModuleSingularLabel crée|{n} AccountsModulePluralLabel creés',
+        '{n} AccountsModuleSingularLabel mass updated|{n} AccountsModulePluralLabel mass updated'
+            => '{n} AccountsModuleSingularLabel a été mis à jour|{n} AccountsModulePluralLabel ont été mis à jour',
+        '{n} AccountsModuleSingularLabel search completed|{n} AccountsModuleSingularLabel searches completed'
+            => '{n} recherche AccountsModuleSingularLabel complétée|{n} recherches AccountsModuleSingularLabel complétées',
+   );
 ?>

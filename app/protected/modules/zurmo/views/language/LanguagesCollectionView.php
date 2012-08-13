@@ -56,7 +56,11 @@
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',
-                                                                array('id' => 'language-collection-form')
+                                                                array('id' => 'language-collection-form',
+                                                                        'htmlOptions' =>
+                                                                            array('onSubmit' =>
+                                                                                        'js:return attachLoadingOnSubmit("language-collection-form")')
+                                                                )
                                                             );
             $content .= $formStart;
 
@@ -155,8 +159,8 @@
         protected static function renderActiveHeaderContent()
         {
             $title       = Yii::t('Default', 'Active languages can be used by users. The system language and any language in use by a user cannot be inactivated');
-            $content     = Yii::t('Default', 'Active') . '&#160;';
-            $content    .= '<span id="active-languages-tooltip" class="tooltip" title="' . $title . '">';
+            //$content     = Yii::t('Default', 'Active') . '&#160;';
+            $content    = '<span id="active-languages-tooltip" class="tooltip" title="' . $title . '">';
             $content    .= '?</span>';
             $qtip = new ZurmoTip();
             $qtip->addQTip("#active-languages-tooltip");

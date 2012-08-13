@@ -61,6 +61,24 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'hideWelcomeView', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'turnOffEmailNotifications', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),

@@ -74,6 +74,12 @@
 
         protected $params;
 
+        /**
+         * Associated moduleClassName of the containing view.
+         * @var string
+         */
+        protected $containerModuleClassName;
+
         public function __construct(RedBeanModelsDataProvider $dataProvider,
                                     LatestActivitiesConfigurationForm $configurationForm,
                                     $controllerId,
@@ -81,7 +87,8 @@
                                     $portletDetailsUrl,
                                     $redirectUrl,
                                     $uniquePageId,
-                                    $params)
+                                    $params,
+                                    $containerModuleClassName)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -89,16 +96,18 @@
             assert('is_string($redirectUrl)');
             assert('is_string($uniquePageId)');
             assert('is_array($params)');
-            $this->dataProvider           = $dataProvider;
-            $this->configurationForm      = $configurationForm;
-            $this->controllerId           = $controllerId;
-            $this->moduleId               = $moduleId;
-            $this->portletDetailsUrl      = $portletDetailsUrl;
-            $this->redirectUrl            = $redirectUrl;
-            $this->uniquePageId           = $uniquePageId;
-            $this->gridIdSuffix           = $uniquePageId;
-            $this->gridId                 = 'list-view';
-            $this->params                 = $params;
+            assert('is_string($containerModuleClassName)');
+            $this->dataProvider             = $dataProvider;
+            $this->configurationForm        = $configurationForm;
+            $this->controllerId             = $controllerId;
+            $this->moduleId                 = $moduleId;
+            $this->portletDetailsUrl        = $portletDetailsUrl;
+            $this->redirectUrl              = $redirectUrl;
+            $this->uniquePageId             = $uniquePageId;
+            $this->gridIdSuffix             = $uniquePageId;
+            $this->gridId                   = 'list-view';
+            $this->params                   = $params;
+            $this->containerModuleClassName = $containerModuleClassName;
         }
 
         protected function renderContent()
@@ -110,6 +119,12 @@
             $cClipWidget->endClip();
             $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
             return $content;
+        }
+
+        protected static function getGridTemplate()
+        {
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
+            return "\n{items}\n{pager}" . $preloader;
         }
 
         public static function getDefaultMetadata()
@@ -150,7 +165,6 @@
         protected function getCGridViewPagerParams()
         {
             return array(
-                    'cssFile'          => Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name . '/css/cgrid-view.css',
                     'prevPageLabel'    => '<span>previous</span>',
                     'nextPageLabel'    => '<span>next</span>',
                     'class'            => 'SimpleListLinkPager',
@@ -196,7 +210,7 @@
             assert('$form instanceof ZurmoActiveForm');
             $content      = null;
             $innerContent = null;
-            if($this->showOwnedByFilter)
+            if ($this->showOwnedByFilter)
             {
                 $element                   = new LatestActivitiesOwnedByFilterRadioElement($this->configurationForm,
                                                                                           'ownedByFilter',
@@ -205,7 +219,7 @@
                 $ownedByFilterContent      = $element->render();
                 $innerContent             .= $ownedByFilterContent;
             }
-            if($this->showRollUpToggle)
+            if ($this->showRollUpToggle)
             {
                 $element                   = new LatestActivitiesRollUpFilterRadioElement($this->configurationForm,
                                                                                        'rollup', $form);
@@ -213,14 +227,14 @@
                 $rollupElementContent      = $element->render();
                 $innerContent .= '<div id="LatestActivitiesConfigurationForm_rollup_area">' . $rollupElementContent . '</div>';
             }
-            if($innerContent != null)
+            if ($innerContent != null)
             {
                 $content .= '<div class="horizontal-line latest-activity-toolbar">';
                 $content .= $innerContent;
                 $content .= CHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
                 $content .= '</div>' . "\n";
             }
-            if($innerContent != null &&
+            if ($innerContent != null &&
                $this->configurationForm->filteredByModelName == LatestActivitiesConfigurationForm::FILTERED_BY_ALL)
             {
                 $startingStyle = "display:none";
@@ -245,10 +259,12 @@
             $urlScript = 'js:$.param.querystring("' . $this->portletDetailsUrl . '", "' .
                          $this->dataProvider->getPagination()->pageVar . '=1")'; // Not Coding Standard
             $ajaxSubmitScript = CHtml::ajax(array(
-                    'type' => 'GET',
-                    'data' => 'js:$("#' . $form->getId() . '").serialize()',
-                    'url'  =>  $urlScript,
-                    'update' => '#' . $this->uniquePageId,
+                    'type'       => 'GET',
+                    'data'       => 'js:$("#' . $form->getId() . '").serialize()',
+                    'url'        =>  $urlScript,
+                    'update'     => '#' . $this->uniquePageId,
+                    'beforeSend' => 'js:function(){makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
+                    'complete'   => 'js:function(){$("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");}'
             ));
             Yii::app()->clientScript->registerScript($this->uniquePageId, "
             $('#LatestActivitiesConfigurationForm_rollup_area').buttonset();
@@ -281,6 +297,16 @@
         public function isUniqueToAPage()
         {
             return false;
+        }
+
+        public function getOwnedByFilter()
+        {
+            return $this->configurationForm->ownedByFilter;
+        }
+
+        public function getContainerModuleClassName()
+        {
+            return $this->containerModuleClassName;
         }
     }
 ?>

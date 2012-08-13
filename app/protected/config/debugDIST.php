@@ -34,7 +34,7 @@
 
     // Turn this on to see additional performance information. Turn it off in production.
     // Check it in as true!
-    $performanceOn = true;
+    $performanceOn = false;
 
     // Turn this on to see RedBean queries. Turn it off in production.
     // Check it in as false!
@@ -70,7 +70,7 @@
     // memcache. A model's related models are not serialized
     // along with it.
     // Check it in as true!
-    $memcacheLevelCaching = true;
+    $memcacheLevelCaching = false;
 
     // Turn this off to test without db level caching of permissions.
     // Check it in as true!
@@ -97,7 +97,7 @@
     $seleniumTestResultsPath        = '';
     $seleniumServerPort             = '4048';
     $seleniumBrowsersToRun          = 'All';
-    $seleniumDbControlUrl           = '';
+    $seleniumControlUrl           = '';
 
     if ($debugOn)
     {

@@ -30,14 +30,15 @@
     class EmailMessagesModule extends SecurableModule
     {
         const RIGHT_ACCESS_CONFIGURATION         = 'Access Email Configuration';
-        const RIGHT_CREATE_EMAIL_MESSAGES        = 'Create Email Messages';
-        const RIGHT_DELETE_EMAIL_MESSAGES        = 'Delete Email Messages';
-        const RIGHT_ACCESS_EMAIL_MESSAGES        = 'Access Email Messages Tab';
+        const RIGHT_CREATE_EMAIL_MESSAGES        = 'Create Emails';
+        const RIGHT_DELETE_EMAIL_MESSAGES        = 'Delete Emails';
+        const RIGHT_ACCESS_EMAIL_MESSAGES        = 'Access Emails Tab';
 
         public function getDependencies()
         {
             return array(
                 'configuration',
+                'leads',
                 'zurmo',
             );
         }
@@ -59,9 +60,9 @@
         {
             $labels                                    = array();
             $labels[self::RIGHT_ACCESS_CONFIGURATION]  = 'Access Email Configuration';
-            $labels[self::RIGHT_CREATE_EMAIL_MESSAGES] = 'Create EmailMessagesModulePluralLabel';
-            $labels[self::RIGHT_DELETE_EMAIL_MESSAGES] = 'Delete EmailMessagesModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_EMAIL_MESSAGES] = 'Access EmailMessagesModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_EMAIL_MESSAGES] = 'Create Emails';
+            $labels[self::RIGHT_DELETE_EMAIL_MESSAGES] = 'Delete Emails';
+            $labels[self::RIGHT_ACCESS_EMAIL_MESSAGES] = 'Access Emails Tab';
             return $labels;
         }
 
@@ -78,6 +79,30 @@
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),
                 ),
+                'headerMenuItems' => array(
+                    array(
+                        'label' => 'Data Cleanup',
+                        'url' => array('/emailMessages/default/matchingList'),
+                        'right' => self::RIGHT_ACCESS_EMAIL_MESSAGES,
+                        'order' => 7,
+                    ),
+                ),
+                'configureSubMenuItems' => array(
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'Email SMTP Configuration',
+                        'descriptionLabel' => 'Manage Email SMTP Configuration',
+                        'route'            => '/emailMessages/default/configurationEditOutbound',
+                        'right'            => self::RIGHT_ACCESS_CONFIGURATION,
+                    ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'Email Archiving Configuration',
+                        'descriptionLabel' => 'Manage Email Archiving Configuration',
+                        'route'            => '/emailMessages/default/configurationEditArchiving',
+                        'right'            => self::RIGHT_ACCESS_CONFIGURATION,
+                    ),
+                )
             );
             return $metadata;
         }
@@ -110,6 +135,26 @@
         public static function hasPermissions()
         {
             return true;
+        }
+
+        /**
+        * Get last Zurmo Stable version from global configuration property.
+        */
+        public static function getLastImapDropboxCheckTime()
+        {
+            $lastImapDropboxCheckTime = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'lastImapDropboxCheckTime');
+            return $lastImapDropboxCheckTime;
+        }
+
+        /**
+         * Set lastZurmoStableVersion global pconfiguration property.
+         * @param string $zurmoVersion
+         */
+        public static function setLastImapDropboxCheckTime($lastImapDropboxCheckTime)
+        {
+            assert('isset($lastImapDropboxCheckTime)');
+            assert('$lastImapDropboxCheckTime != ""');
+            ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', 'lastImapDropboxCheckTime', $lastImapDropboxCheckTime);
         }
     }
 ?>

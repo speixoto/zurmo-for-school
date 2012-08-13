@@ -29,6 +29,11 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>"As we must Account for every idle word, so must we Account for every idle ' .
+                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Account and, ' .
+                                     'as Ben would say, "So must we Account for every company, organization, or ' .
+                                     'customer we interact with."</p>'
+            => '<h2>"As we must Account for every idle word, so must we Account for every idle silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Account and, as Ben would say, "So must we Account for every company, organization, or customer we interact with."</p>',  // Same Word Translated
         'Access AccountsModulePluralLabel Tab'
             => 'Acceso ai AccountsModulePluralLabel',
         'Account'
@@ -36,13 +41,13 @@
         'Accounts'
             => 'Aziende',
         'AccountsModulePluralLabel'
-            => 'AccountsModulePluralLabel',
+            => 'AccountsModulePluralLabel', // Same Word Translated
         'AccountsModulePluralLabel For AccountsModuleSingularLabel'
             => 'AccountsModulePluralLabel per AccountsModuleSingularLabel',
         'AccountsModuleSingularLabel'
-            => 'AccountsModuleSingularLabel',
+            => 'AccountsModuleSingularLabel', // Same Word Translated
         'AccountsModuleSingularLabel Id'
-            => 'AccountsModuleSingularLabel Id',
+            => 'AccountsModuleSingularLabel Id', // Same Word Translated
         'AccountsModuleSingularLabel Name'
             => 'Nome AccountsModuleSingularLabel',
         'AccountsModuleSingularLabel Search'
@@ -68,10 +73,16 @@
         'Parent AccountsModuleSingularLabel'
             => 'AccountsModuleSingularLabel Genetori',
         'Prospect'
-            => 'Prospect',
+            => 'Prospect', // Same Word Translated
         'Related AccountsModulePluralLabel'
             => 'AccountsModulePluralLabel principale',
         'Vendor'
             => 'Fornitore',
-    );
+        '{n} AccountsModuleSingularLabel created|{n} AccountsModulePluralLabel created'
+            => '{n} AccountsModuleSingularLabel creato|{n} AccountsModulePluralLabel creati',
+        '{n} AccountsModuleSingularLabel mass updated|{n} AccountsModulePluralLabel mass updated'
+            => '{n} AccountsModuleSingularLabel è stato aggiornato|{n} AccountsModulePluralLabel sono stati aggiornati',
+        '{n} AccountsModuleSingularLabel search completed|{n} AccountsModuleSingularLabel searches completed'
+            => '{n} ricerca AccountsModuleSingularLabel completata|{n} ricerche AccountsModuleSingularLabel completate',
+   );
 ?>

@@ -41,9 +41,9 @@
 
         protected $theme;
 
-        protected $cssFile         = 'css/mbmenu.css';
+        protected $cssFile;
 
-        protected $cssIeStylesFile = 'css/mbmenu-iestyles.css';
+        protected $cssIeStylesFile = null;
 
         private $nljs;
 
@@ -141,7 +141,14 @@
                 $this->getController()->getRoute(),
                 $hasActiveChild
             );
-            $this->htmlOptions['class']= 'nav';
+            if (isset($this->htmlOptions['class']))
+            {
+                $this->htmlOptions['class'] .= ' nav';
+            }
+            else
+            {
+                $this->htmlOptions['class'] = 'nav';
+            }
         }
 
         /**
@@ -159,8 +166,11 @@
         public function registerCssFile()
         {
             $cs = Yii::app()->getClientScript();
-            $cs->registerCssFile($this->themeUrl . '/' . $this->theme . '/' . $this->cssFile, 'screen');
-            if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 8)
+            if ($this->cssFile != null)
+            {
+                $cs->registerCssFile($this->themeUrl . '/' . $this->theme . '/' . $this->cssFile, 'screen');
+            }
+            if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 8 && $this->cssIeStylesFile != null)
             {
                 $cs->registerCssFile($this->themeUrl . '/' . $this->theme . '/' . $this->cssIeStylesFile, 'screen');
             }
@@ -179,17 +189,19 @@
                 {
                     $htmlOptions = array();
                 }
+                $resolvedLabelContent = '<span>' . $item['label'] .
+                                        static::resolveAndGetSpanAndDynamicLabelContent($item) . '</span>';
                 if ((isset($item['ajaxLinkOptions'])))
                 {
-                    echo CHtml::ajaxLink('<span>' . $item['label'] . '</span>', $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
+                    echo CHtml::ajaxLink($resolvedLabelContent, $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
                 }
                 elseif (isset($item['url']))
                 {
-                    echo CHtml::link('<span></span><span>' . $item['label'] . '</span>', $item['url'], $htmlOptions);
+                    echo CHtml::link('<span></span>' . $resolvedLabelContent, $item['url'], $htmlOptions);
                 }
                 else
                 {
-                    echo CHtml::link('<span>' . $item['label'] . '</span>', "javascript:void(0);", $htmlOptions);
+                    echo CHtml::link($resolvedLabelContent, "javascript:void(0);", $htmlOptions);
                 }
                 if (isset($item['items']) && count($item['items']))
                 {
@@ -198,6 +210,14 @@
                     echo CHtml::closeTag('ul') . "\n";
                 }
                 echo CHtml::closeTag('li') . "\n";
+            }
+        }
+
+        protected static function resolveAndGetSpanAndDynamicLabelContent($item)
+        {
+            if (isset($item['dynamicLabelContent']))
+            {
+                return CHtml::tag('span', array(), $item['dynamicLabelContent']);
             }
         }
 
@@ -260,13 +280,7 @@
         {
             $this->registerClientScripts();
             $this->registerCssFile();
-            $htmlOptions['class'] = $this->navContainerClass;
-            //echo CHtml::openTag('div', $htmlOptions) . "\n";
-            $htmlOptions['class'] = $this->navBarClass;
-            //echo CHtml::openTag('div', $htmlOptions) . "\n";
             parent::run();
-            //echo CHtml::closeTag('div');
-            //echo CHtml::closeTag('div');
         }
     }
 ?>

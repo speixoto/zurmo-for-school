@@ -29,6 +29,12 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>"In the middle of difficulty lies Opportunity."</h2> ' .
+                                     '<i>- Albert Einstein</i></i><div class="large-icon"></div><p>In the middle of a well-implemented ' .
+                                     'CRM system lies Opportunities, or expressions of potential revenue. ' .
+                                     'Nothing difficult about creating an Opportunity, so go ahead and create the ' .
+                                     'first one!</p>'
+            => '<h2>"In the middle of difficulty lies Opportunity."</h2> <i>- Albert Einstein</i></i><div class="large-icon"></div><p>In the middle of a well-implemented CRM system lies Opportunities, or expressions of potential revenue. Nothing difficult about creating an Opportunity, so go ahead and create the first one!</p>', // Same Word Translated
         'Access OpportunitiesModulePluralLabel Tab'
             => 'Accesso ai OpportunitiesModulePluralLabel',
         'Close Date'
@@ -54,13 +60,13 @@
         'Opportunities By Sales Stage'
             => 'Opportunità per fase di vendita',
         'OpportunitiesModulePluralLabel'
-            => 'OpportunitiesModulePluralLabel',
+            => 'OpportunitiesModulePluralLabel', // Same Word Translated
         'OpportunitiesModulePluralLabel For AccountsModuleSingularLabel'
             => 'OpportunitiesModulePluralLabel per AccountsModuleSingularLabel',
         'OpportunitiesModulePluralLabel For ContactsModuleSingularLabel'
             => 'OpportunitiesModulePluralLabel per ContactsModuleSingularLabel',
         'OpportunitiesModuleSingularLabel'
-            => 'OpportunitiesModuleSingularLabel',
+            => 'OpportunitiesModuleSingularLabel', // Same Word Translated
         'OpportunitiesModuleSingularLabel Search'
             => 'Ricerca OpportunitiesModuleSingularLabel',
         'Opportunity'
@@ -73,5 +79,13 @@
             => 'Qualificazione',
         'Verbal'
             => 'Verbale',
+        '{n} OpportunitiesModuleSingularLabel created|{n} OpportunitiesModulePluralLabel created'
+            => '{n} OpportunitiesModuleSingularLabel create|{n} OpportunitiesModulePluralLabel creati',
+        '{n} OpportunitiesModuleSingularLabel mass updated|{n} OpportunitiesModulePluralLabel mass updated'
+            => '{n} OpportunitiesModuleSingularLabel è stata aggiornata|{n} OpportunitiesModulePluralLabel sono state aggiornate',
+        '{n} OpportunitiesModuleSingularLabel search completed|{n} OpportunitiesModuleSingularLabel searches completed'
+            => '{n} recherche OpportunitiesModuleSingularLabel completata|{n} recherches OpportunitiesModuleSingularLabel completate',
+        '{n} OpportunitiesModuleSingularLabel won|{n} OpportunitiesModulePluralLabel won'
+            => '{n} OpportunitiesModuleSingularLabel vinta|{n} OpportunitiesModulePluralLabel vinte',
     );
 ?>

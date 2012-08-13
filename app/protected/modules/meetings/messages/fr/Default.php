@@ -52,17 +52,15 @@
         'Meetings'
             => 'Rendez-vous',
         'MeetingsModulePluralLabel'
-            => 'MeetingsModulePluralLabel',
+            => 'MeetingsModulePluralLabel', // Same Word Translated
         'MeetingsModulePluralLabel For AccountsModuleSingularLabel'
             => 'MeetingsModulePluralLabel pour AccountsModuleSingularLabel',
         'MeetingsModulePluralLabel For ContactsModuleSingularLabel'
             => 'MeetingsModulePluralLabel pour ContactsModuleSingularLabel',
         'MeetingsModulePluralLabel For OpportunitiesModuleSingularLabel'
             => 'MeetingsModulePluralLabel pour OpportunitiesModuleSingularLabel',
-        'MeetingsModulePluralLabel On {displayStringTime}'
-            => 'MeetingsModulePluralLabel Le {displayStringTime}',
         'MeetingsModuleSingularLabel'
-            => 'MeetingsModuleSingularLabel',
+            => 'MeetingsModuleSingularLabel', // Same Word Translated
         'MeetingsModuleSingularLabel Day Summary'
             => 'Sommaire des MeetingsModulePluralLabel',
         'My Upcoming MeetingsModulePluralLabel'
@@ -75,9 +73,13 @@
             => 'Tapez un ContactsModuleSingularLowerCaseLabel ou LeadsModuleSingularLowerCaseLabel: nom ou adresse email',
         'Upcoming MeetingsModulePluralLabel'
             => 'Prochains MeetingsModulePluralLabel',
+        '{n} Call created|{n} Calls created'
+            => '{n} Appel crée|{n} Appels crées',
+        '{n} MeetingsModuleSingularLabel created|{n} MeetingsModulePluralLabel created'
+            => '{n} MeetingsModuleSingularLabel crée|{n} MeetingsModulePluralLabel crées',
         '{quantity} MeetingsModulePluralLabel'
-            => '{quantity} MeetingsModulePluralLabel',
+            => '{quantity} MeetingsModulePluralLabel', // Same Word Translated
         '{quantity} MeetingsModuleSingularLabel'
-            => '{quantity} MeetingsModuleSingularLabel',
+            => '{quantity} MeetingsModuleSingularLabel', // Same Word Translated
     );
 ?>

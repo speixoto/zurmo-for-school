@@ -39,6 +39,8 @@
             => 'Ändern Kennwörter von Benutzern',
         'Confirm Password'
             => 'Kennwort bestätigen',
+        'Confirm your time zone'
+            => 'Deine Zeitzone bestätigen',
         'Create User'
             => 'Benutzer erstellen',
         'Create Users'
@@ -48,7 +50,9 @@
         'Enforce Strong Passwords'
             => 'Erzwingen sicherer Kennwörter',
         'Hash'
-            => 'Hash',
+            => 'Hash', // Same Word Translated
+        'Hide welcome page'
+            => 'Startseite verstecken',
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Inaktive Benutzer können sich nicht anmelden über die Web-, Mobil-oder Web-API. Anmeldung für aktive Benutzer wird durch Gruppenrechte kontrolliert.',
         'Inherited Value:'
@@ -56,7 +60,7 @@
         'Manage Users'
             => 'Benutzer verwalten',
         'Manager'
-            => 'Manager',
+            => 'Manager', // Same Word Translated
         'Minimum Password Length'
             => 'Minimale Kennwortlänge',
         'Minimum Username Length'
@@ -69,6 +73,8 @@
             => 'Kennwort Ablauf Tage',
         'Profile'
             => 'Profil',
+        'Quick Tip'
+            => 'Quick-Tipp',
         'Sign in Via Mobile'
             => 'Anmelden via Mobile',
         'Sign in Via Web'
@@ -89,6 +95,8 @@
             => 'Der Benutzername ist zu kurz. Minimale Länge ist {minimumLength}.',
         'Time Zone'
             => 'Zeitzone',
+        'Turn off email notifications'
+            => 'Deaktivieren Email-Benachrichtigungen',
         'User'
             => 'Benutzer',
         'User configuration saved successfully.'
@@ -97,6 +105,8 @@
             => 'Benutzer Suche',
         'Users'
             => 'Benutzern',
+        'Users cannot be deleted.  You can however change their status to inactive.'
+            => 'Benutzer kann nicht gelöscht werden. Allerdings können Sie seinen Status auf inaktiv zu ändern.',
         'Users Home'
             => 'Startseite Benutzerkonto',
     );

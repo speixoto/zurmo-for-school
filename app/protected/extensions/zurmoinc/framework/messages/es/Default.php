@@ -73,6 +73,8 @@
             => 'Cambiado',
         'Clear'
             => 'Borrar',
+        'Click Here'
+            => 'Haga clic aquí',
         'Create'
             => 'Crear',
         'Created By User'
@@ -89,6 +91,8 @@
             => 'Fecha',
         'Date Time'
             => 'Fecha Hora',
+        'Default data loaded for {moduleName}'
+            => 'Datos predeterminados están cargados para {moduleName}',
         'Default Value'
             => 'Valor predeterminado',
         'Delete'
@@ -104,11 +108,11 @@
         'Edit Portlet'
             => 'Modificar portlet',
         'Error'
-            => 'Error',
+            => 'Error', // Same Word Translated
         'Export'
             => 'Exportar',
         'Fahrenheit'
-            => 'Fahrenheit',
+            => 'Fahrenheit', // Same Word Translated
         'Fewer Details'
             => 'Menos detalles',
         'Fewer Options'
@@ -124,7 +128,7 @@
         'firstDateTime must occur before secondDateTime'
             => 'firstDateTime debe ocurrir antes secondDateTime',
         'Float'
-            => 'Float',
+            => 'Float', // Same Word Translated
         'from'
             => 'de',
         'Full Name'
@@ -134,7 +138,7 @@
         'Hour'
             => 'Hora',
         'Info'
-            => 'Info',
+            => 'Info', // Same Word Translated
         'Inline Edit View'
             => 'Formulario de inscripción inline',
         'Integer'
@@ -184,7 +188,7 @@
         'Next 7 Days'
             => 'Próximos 7 días',
         'No'
-            => 'No',
+            => 'No', // Same Word Translated
         'No import processes found.'
             => 'Ningún procesos de importación encontrado',
         'No {moduleLabelPluralLowerCase} found'
@@ -208,7 +212,7 @@
         'or'
             => 'o',
         'Panel'
-            => 'Panel',
+            => 'Panel', // Same Word Translated
         'Panel Settings'
             => 'Configuración de panel',
         'Panel Title'
@@ -219,6 +223,10 @@
             => 'registro',
         'records'
             => 'registros',
+        'Related'
+            => 'Relacionados',
+        'Related to'
+            => 'Relacionados con',
         'Remove'
             => 'Eliminar',
         'Return to List'
@@ -248,7 +256,7 @@
         'Start typing to search'
             => 'Escriba su búsqueda aquí',
         'Tab'
-            => 'Tab',
+            => 'Tab', // Same Word Translated
         'The file did not exist'
             => 'El archivo no existe',
         'There was an error uploading the file.'
@@ -272,7 +280,7 @@
         'Tomorrow'
             => 'Mañana',
         'total'
-            => 'total',
+            => 'total', // Same Word Translated
         'Type'
             => 'Tipo',
         'Type to find a tag'

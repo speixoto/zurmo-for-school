@@ -31,6 +31,10 @@
     {
         public function testApiServerUrl()
         {
+            if (!$this->isApiTestUrlConfigured())
+            {
+                $this->markTestSkipped(Yii::t('Default', 'API test url is not configured in perInstanceTest.php file.'));
+            }
             $this->assertTrue(strlen($this->serverUrl) > 0);
         }
 
@@ -87,6 +91,9 @@
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
+        /**
+        * @depends testApiServerUrl
+        */
         public function testCreateUser()
         {
             $super = User::getByUsername('super');
@@ -472,6 +479,9 @@
             $this->assertEquals('fifth', $response['data']['items'][0]['username']);
         }
 
+        /**
+        * @depends testApiServerUrl
+        */
         public function testEditUserWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -503,6 +513,9 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
+        /**
+        * @depends testApiServerUrl
+        */
         public function testEditUserWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');
@@ -518,7 +531,7 @@
             $user = UserTestHelper::createBasicUser('JosephSmith');
 
             // Provide data with wrong type.
-            $data['language']         = "AAAAAAA";
+            $data['language']         = "AAAAAAAAAAAA";
 
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/api/create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
@@ -527,7 +540,7 @@
 
             $id = $user->id;
             $data = array();
-            $data['language']         = "AAAAAAA";
+            $data['language']         = "AAAAAAAAAAAA";
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/api/update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);

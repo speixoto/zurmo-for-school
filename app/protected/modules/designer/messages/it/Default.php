@@ -58,7 +58,7 @@
         'A set of dependent pick lists'
             => 'Picklists dipendenti',
         'A tag cloud'
-            => 'Una nuvola di etichette',
+            => 'Una nuvola di tag',
         'A text field'
             => 'Un campo di testo',
         'Access Designer Tool'
@@ -96,7 +96,7 @@
         'Dependent Pick Lists'
             => 'Picklists dipendenti',
         'Designer'
-            => 'Designer',
+            => 'Designer', // Same Word Translated
         'Designer Home'
             => 'Designer',
         'Designer Tool'
@@ -107,6 +107,8 @@
             => 'Layout dettaglio',
         'Display Name'
             => 'Etichetta campo',
+        'Display {label} when'
+            => 'Esporre {label} quando',
         'Dropdown Dependency Mapping'
             => 'Mapping della lista a cascata dipendenta',
         'Each item must be uniquely named'
@@ -138,7 +140,7 @@
         'First select level {number}'
             => 'Primo, scegliete livello {number}',
         'Formula'
-            => 'Formula',
+            => 'Formula', // Same Word Translated
         'Formula Name'
             => 'Nome Formula',
         'General'
@@ -150,7 +152,7 @@
         'Layout saved successfully.'
             => 'Layout salvato con successo',
         'Layouts'
-            => 'Layouts',
+            => 'Layouts', // Same Word Translated
         'Level: {number}'
             => 'Livello: {number}',
         'Manage module fields, layouts, and labels.'
@@ -182,7 +184,7 @@
         'Phone'
             => 'Telefono',
         'Pick List'
-            => 'Pick List',
+            => 'Pick List', // Same Word Translated
         'Pick List Value Translations'
             => 'Traduzioni dei valori del pick list',
         'Pick List Values'
@@ -208,9 +210,9 @@
         'Show If'
             => 'Valore dipendente',
         'Tag Cloud'
-            => 'Nuvola di etichette',
+            => 'Nuvola di tag',
         'Tag Cloud Values'
-            => 'Parole del nuvola di etichette',
+            => 'Parole del nuvola di tag',
         'Text'
             => 'Testo',
         'Text Area'
@@ -226,7 +228,7 @@
         'Track Audit Log'
             => 'Audit questo campo',
         'URL'
-            => 'URL',
+            => 'URL', // Same Word Translated
         'You can only have at most 4 pick-lists selected.'
             => 'Potete avere al massimo 4 picklists.',
         'You must first select a field type'

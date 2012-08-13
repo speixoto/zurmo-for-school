@@ -33,8 +33,14 @@
          * Is set in order to properly route action elements in view.
          */
         public $userId;
+
         public $listPageSize;
+
         public $subListPageSize;
+
+        public $hideWelcomeView = false;
+
+        public $turnOffEmailNotifications = false;
 
         public function __construct($userId)
         {
@@ -54,12 +60,14 @@
         public function rules()
         {
             return array(
-                array('listPageSize',             'required'),
-                array('listPageSize',             'type',      'type' => 'integer'),
-                array('listPageSize',             'numerical', 'min' => 1),
-                array('subListPageSize',          'required'),
-                array('subListPageSize',          'type',      'type' => 'integer'),
-                array('subListPageSize',          'numerical', 'min' => 1),
+                array('listPageSize',              'required'),
+                array('listPageSize',              'type',      'type' => 'integer'),
+                array('listPageSize',              'numerical', 'min' => 1),
+                array('subListPageSize',           'required'),
+                array('subListPageSize',           'type',      'type' => 'integer'),
+                array('subListPageSize',           'numerical', 'min' => 1),
+                array('hideWelcomeView',           'boolean'),
+                array('turnOffEmailNotifications', 'boolean')
             );
         }
 
@@ -68,6 +76,8 @@
             return array(
                 'listPageSize'              => Yii::t('Default', 'List page size'),
                 'subListPageSize'           => Yii::t('Default', 'Sublist page size'),
+                'hideWelcomeView'           => Yii::t('Default', 'Hide welcome page'),
+                'turnOffEmailNotifications' => Yii::t('Default', 'Turn off email notifications')
             );
         }
     }

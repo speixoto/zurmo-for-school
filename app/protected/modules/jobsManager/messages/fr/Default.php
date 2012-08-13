@@ -43,12 +43,14 @@
             => 'Nettoyage des vieux job logs.',
         'Clear the assets folder on server(optional).'
             => 'Suppression du dossier Assets sur le serveur (optionnel)',
-        'Click Here'
-            => 'Cliquez ici',
         'Completed'
             => 'Réalisé',
         'Completed with Errors'
             => 'Réalisé avec des erreurs',
+        'Cron or scheduled job name: {type}'
+            => 'Nom du cron ou job planifié: {type}',
+        'Enable Minify for CSS and JavaScript files.'
+            => 'Activer Minify pour les fichiers CSS et Javascript.',
         'End Date Time'
             => 'Date/heure réalisé?',
         'Error Log'
@@ -86,7 +88,7 @@
         'Manage Scheduled Jobs'
             => 'Gestion des tâches système',
         'Message'
-            => 'Message',
+            => 'Message', // Same Word Translated
         'Monitor Job'
             => 'Suivi des tâches système',
         'New stable Zurmo release available'

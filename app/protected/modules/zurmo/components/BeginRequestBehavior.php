@@ -33,7 +33,9 @@
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
                 $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
@@ -69,6 +71,9 @@
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleUserTimeZoneConfirmed'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
@@ -83,12 +88,15 @@
         */
         public function handleApplicationCache($event)
         {
-            $memcacheServiceHelper = new MemcacheServiceHelper();
-            if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
+            if (MEMCACHE_ON)
             {
-                $cacheComponent = Yii::createComponent('CMemCache',
-                    array('servers' => Yii::app()->params['memcacheServers']));
-                Yii::app()->setComponent('cache', $cacheComponent);
+                $memcacheServiceHelper = new MemcacheServiceHelper();
+                if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
+                {
+                    $cacheComponent = Yii::createComponent('CMemCache',
+                        array('servers' => Yii::app()->params['memcacheServers']));
+                    Yii::app()->setComponent('cache', $cacheComponent);
+                }
             }
         }
 
@@ -188,6 +196,35 @@
             {
                 $url = Yii::app()->createUrl('zurmo/default/unsupportedBrowser', array('name' => $browserName));
                 Yii::app()->request->redirect($url);
+            }
+        }
+
+        /**
+         * Called if installed, and logged in.
+         * @param CEvent $event
+         */
+        public function handleUserTimeZoneConfirmed($event)
+        {
+            if (!Yii::app()->user->isGuest && !Yii::app()->timeZoneHelper->isCurrentUsersTimeZoneConfirmed())
+            {
+                $allowedTimeZoneConfirmBypassUrls = array (
+                    Yii::app()->createUrl('users/default/confirmTimeZone'),
+                    Yii::app()->createUrl('min/serve'),
+                );
+                $reqestedUrl = Yii::app()->getRequest()->getUrl();
+                $isUrlAllowedToByPass = false;
+                foreach ($allowedTimeZoneConfirmBypassUrls as $url)
+                {
+                    if (strpos($reqestedUrl, $url) === 0)
+                    {
+                        $isUrlAllowedToByPass = true;
+                    }
+                }
+                if (!$isUrlAllowedToByPass)
+                {
+                    $url = Yii::app()->createUrl('users/default/confirmTimeZone');
+                    Yii::app()->request->redirect($url);
+                }
             }
         }
 
@@ -338,10 +375,27 @@
             }
         }
 
+        public function handleLoadActivitiesObserver($event)
+        {
+            $activitiesObserver = new ActivitiesObserver();
+            $activitiesObserver->init(); //runs init();
+        }
+
+        public function handleLoadConversationsObserver($event)
+        {
+            $conversationsObserver = new ConversationsObserver();
+            $conversationsObserver->init(); //runs init();
+        }
+
         public function handleLoadGamification($event)
         {
             Yii::app()->gameHelper;
             Yii::app()->gamificationObserver; //runs init();
+        }
+
+        public function handleDisableGamification($event)
+        {
+            Yii::app()->gamificationObserver->enabled = false;
         }
      }
 ?>

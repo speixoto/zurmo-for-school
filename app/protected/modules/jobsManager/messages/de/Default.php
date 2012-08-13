@@ -43,12 +43,14 @@
             => 'Reinigen Sie die alte Job-Protokolle.',
         'Clear the assets folder on server(optional).'
             => 'Reinigen Sie den Ordner Assets auf dem Server (opionale).',
-        'Click Here'
-            => 'Hier klicken',
         'Completed'
             => 'Fertiggestellt',
         'Completed with Errors'
             => 'Abgeschlossen mit Fehlern',
+        'Cron or scheduled job name: {type}'
+            => 'Cron oder geplanten Job-Name: {type}',
+        'Enable Minify for CSS and JavaScript files.'
+            => 'Aktivieren minify für CSS-und JavaScript-Dateien.',
         'End Date Time'
             => 'Datum/Zeit durchgeführt',
         'Error Log'
@@ -72,7 +74,7 @@
         'Job completed with errors.'
             => 'Fehler bei der Ausführung der Arbeit.',
         'Job Log'
-            => 'Job Log',
+            => 'Job Log', // Same Word Translated
         'Job Log for {jobDisplayName}'
             => 'Registrierungsdatei für {jobDisplayName}',
         'Job Manager'
@@ -98,7 +100,7 @@
         'Remove the api test entry script for production use.'
             => 'Entfernen das script test API für Produktion.',
         'Reset'
-            => 'Reset',
+            => 'Reset', // Same Word Translated
         'Return to Job Manager'
             => 'Zurück zum Job Manager',
         'Scheduled jobs are stuck'

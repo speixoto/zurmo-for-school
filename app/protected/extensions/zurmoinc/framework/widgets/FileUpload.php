@@ -34,7 +34,7 @@
         public $scriptFile = array('jquery.fileupload.js',
                                    'jquery.fileupload-ui.js', 'jquery.tmpl.min.js', 'jquery.iframe-transport.js');
 
-        public $cssFile    = 'jquery.fileupload-ui.css';
+        public $cssFile    = null;
 
         public $assetFolderName = 'fileUpload';
 
@@ -223,8 +223,7 @@ EOD;
             echo '</label>' . $this->renderMaxSizeContent($this->maxSize)   . "\n";
             echo '</div><div class="clear"></div>'                          . "\n";
             echo '<div class="fileupload-content">'                         . "\n";
-            echo '<table class="files"><tbody><tr><td colspan="6">'         . "\n";
-            echo '</td></tr></tbody></table>'                               . "\n";
+            echo '<table class="files"><tbody></tbody></table>'             . "\n";
             echo '</div>'                                                   . "\n";
             echo '</div>'                                                   . "\n";
             echo $this->makeUploadRowScriptContent()                        . "\n";
@@ -233,7 +232,7 @@ EOD;
 
         private function makeDownloadRowScriptContent()
         {
-            $deleteLabel = Yii::t('Default', 'Delete');
+            $deleteLabel = Yii::t('Default', '<!--Delete-->');
 $scriptContent = <<<EOD
 <script id="template-download" type="text/x-jquery-tmpl">
     <tr class="template-download{{if error}} ui-state-error{{/if}}">
@@ -259,12 +258,12 @@ EOD;
         private function makeUploadRowScriptContent()
         {
             $startLabel  = Yii::t('Default', 'Start');
-            $cancelLabel = Yii::t('Default', 'Cancel');
+            $cancelLabel = Yii::t('Default', ' Cancel');
 $scriptContent = <<<EOD
 <script id="template-upload" type="text/x-jquery-tmpl">
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">
         <td class="preview"></td>
-        <td class="name">\${name}</td>
+        <td class="name" colspan="4">\${name}</td>
         <td class="size">\${sizef}</td>
         {{if error}}
             <td class="error" colspan="2">\${error}</td>

@@ -33,6 +33,10 @@ class SwiftMailer extends Mailer
      */
     public $password;
     /**
+     * SMTP security
+     */
+    public $security = null;
+    /**
      * @param string Message Subject
      */
     public $Subject;
@@ -48,6 +52,8 @@ class SwiftMailer extends Mailer
      * @param string Alternative message body (plain text)
      */
     public $altBody=null;
+
+    public $attachments = array();
 
     protected $toAddressesAndNames = array();
 
@@ -132,6 +138,15 @@ class SwiftMailer extends Mailer
         if($this->altBody) {
             $message->setBody($this->altBody);
         }
+
+        if (!empty($this->attachments))
+        {
+            foreach ($this->attachments as $attachment)
+            {
+                $message->attach($attachment);
+            }
+        }
+
         $result = $mailer->send($message);
         $this->clearAddresses();
         return $result;
@@ -168,9 +183,9 @@ class SwiftMailer extends Mailer
         return Swift_Image;
     }
 
-    public function smtpTransport($host = null, $port = null)
+    public function smtpTransport($host = null, $port = null, $security = null)
     {
-        return Swift_SmtpTransport::newInstance($host, $port);
+        return Swift_SmtpTransport::newInstance($host, $port, $security);
     }
 
     public function sendmailTransport($command = null)
@@ -187,8 +202,8 @@ class SwiftMailer extends Mailer
     {
         if($this->mailer == 'smtp')
         {
-            $transport = static::smtpTransport($this->host, $this->port);
-            $transport->setUsername($this->username)->setPassword($this->password);
+            $transport = static::smtpTransport($this->host, $this->port, $this->security);
+            $transport->setUsername($this->username)->setPassword($this->password)->setEncryption($this->security);
         }
         elseif($this->mailer == 'mail')
         {
@@ -199,5 +214,33 @@ class SwiftMailer extends Mailer
             $transport = static::sendmailTransport($this->sendmailCommand);
         }
         return $transport;
+    }
+
+    /**
+    * Create Swift_Attachment based on dynamic content(for example when content
+    * is stored in database), filename and type.
+    *
+    * @param binary $content
+    * @param string $filename, for example 'image.png'
+    * @param string $contentType, for example 'application/octet-stream'
+    * @see SwiftMailer::attachment()
+    */
+    public function attachDynamicContent($content, $filename, $contentType)
+    {
+        $attachment = Swift_Attachment::newInstance($content, $filename, $contentType);
+        $this->attachments[] = $attachment;
+        return $attachment;
+    }
+
+    /**
+     * Create Swift_Attachment based on file.
+     * @param string $path
+     * @return Swift_Mime_Attachment
+     */
+    public function attachFromPath($path)
+    {
+        $attachment = Swift_Attachment::fromPath($path);
+        $this->attachments[] = $attachment;
+        return $attachment;
     }
 }

@@ -80,7 +80,7 @@
                 assert('is_string($leaderboardData["userLabel"])');
                 assert('is_int($leaderboardData["points"])');
                 $content .= '<tr>';
-                $content .= '<td>' . $leaderboardData['rank'] . '</td>';
+                $content .= '<td><span class="ranking">' . $leaderboardData['rank'] . '</span></td>';
                 $content .= '<td>' . $leaderboardData['userLabel'] . '</td>';
                 $content .= '<td><span class="points">' . $leaderboardData['points'] . '</span></td>';
                 $content .= '</tr>';
@@ -123,7 +123,7 @@
         protected function resolveActionElementInformationDuringRender(& $elementInformation)
         {
             parent::resolveActionElementInformationDuringRender($elementInformation);
-            if($elementInformation['type'] == $this->activeActionElementType)
+            if ($elementInformation['type'] == $this->activeActionElementType)
             {
                 $elementInformation['htmlOptions']['class'] .= ' active';
             }

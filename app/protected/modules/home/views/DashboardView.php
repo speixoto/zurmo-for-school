@@ -34,6 +34,7 @@
 
         public function __construct($controllerId, $moduleId, $uniqueLayoutId, $model, $params)
         {
+            assert('$model instanceof Dashboard');
             $this->controllerId        = $controllerId;
             $this->moduleId            = $moduleId;
             $this->uniqueLayoutId      = $uniqueLayoutId;
@@ -90,7 +91,8 @@
                 $this->controllerId,
                 $this->moduleId,
                 $this->modelId,
-                array('htmlOptions' => array('confirm' => Yii::t('Default', 'Are you sure want to delete this dashboard?')))
+                array('htmlOptions' => array('class'   => 'icon-delete',
+                                             'confirm' => Yii::t('Default', 'Are you sure want to delete this dashboard?')))
             );
             if (!ActionSecurityUtil::canCurrentUserPerformAction($deleteDashboardLinkActionElement->getActionType(), $this->model))
             {
@@ -98,9 +100,31 @@
             }
             if (!$this->isDefaultDashboard)
             {
-                $content .= '&#160;|&#160;' . $deleteDashboardLinkActionElement->render();
+                $content .= $deleteDashboardLinkActionElement->render();
             }
+            $content .= $this->renderChangeDashboardLinkActionContent();
             return $content;
+        }
+
+        protected function renderChangeDashboardLinkActionContent()
+        {
+            $dashboardsData = Dashboard::getRowsByUserId(Yii::app()->user->userModel->id);
+            if (count($dashboardsData) > 1)
+            {
+                foreach ($dashboardsData as $key =>  $dashboardData)
+                {
+                    if ($dashboardData['id'] == $this->model->id)
+                    {
+                        unset($dashboardsData[$key]);
+                    }
+                }
+                $changeDashboardLinkActionElement  = new ChangeDashboardLinkActionElement(
+                    $this->controllerId,
+                    $this->moduleId,
+                    $this->modelId,
+                    array('dashboardsData' => $dashboardsData));
+                return $changeDashboardLinkActionElement->render();
+            }
         }
     }
 ?>

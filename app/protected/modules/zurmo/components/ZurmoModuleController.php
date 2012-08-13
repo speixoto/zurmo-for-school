@@ -31,16 +31,22 @@
      */
     abstract class ZurmoModuleController extends ZurmoBaseController
     {
+        const ZERO_MODELS_CHECK_FILTER_PATH = 'application.modules.zurmo.controllers.filters.ZeroModelsCheckControllerFilter';
+
         public function actionIndex()
         {
             $this->actionList();
         }
 
-        public function actionMassExport()
+        public function actionLoadSavedSearch($id, $redirectAction = 'list')
         {
-            echo 'mass export<br/>';
-            echo 'not implemented yet';
-            exit;
+            $savedSearch = SavedSearch::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedSearch);
+            $getParams   = unserialize($savedSearch->serializedData);
+            $getParams   = array_merge($getParams, array('savedSearchId' => $id));
+            $url         = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/' .
+                                                 $redirectAction, $getParams);
+            $this->redirect($url);
         }
 
         /**
@@ -58,7 +64,6 @@
                                                     $relationAttributeName,
                                                     $relationModelId,
                                                     $relationModuleId,
-                                                    $pageTitle = null,
                                                     $stateMetadataAdapterClassName = null)
         {
             $portlet = Portlet::getById((int)$portletId);
@@ -72,8 +77,7 @@
                                             $this->getModule()->getId()
             );
             echo ModalSearchListControllerUtil::
-                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $pageTitle,
-                                                     $stateMetadataAdapterClassName);
+                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
         }
 
         public function actionAutoComplete($term)
@@ -133,8 +137,7 @@
             $searchAttributeData = AuditEventsListControllerUtil::makeSearchAttributeDataByAuditedModel($model);
             $dataProvider = AuditEventsListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
             Yii::app()->getClientScript()->setToAjaxMode();
-            echo AuditEventsListControllerUtil::renderList($this, $dataProvider,
-                                                           strval($model) . ' ' . Yii::t('Default', 'Audit Trail'));
+            echo AuditEventsListControllerUtil::renderList($this, $dataProvider);
         }
 
         protected function getModelName()
@@ -147,18 +150,12 @@
             return null;
         }
 
-        protected function getModelFilteredListClassName()
-        {
-            return null;
-        }
-
         protected function export()
         {
             $modelClassName        = $this->getModelName();
             $searchFormClassName   = $this->getSearchFormClassName();
-            $filteredListClassName = $this->getModelFilteredListClassName();
             // Set $pageSize to unlimited, because we don't want pagination
-            $pageSize = 0;
+            $pageSize = Yii::app()->pagination->getGlobalValueByType('unlimitedPageSize');
             $model = new $modelClassName(false);
 
             if (isset($searchFormClassName))
@@ -175,8 +172,7 @@
                 $searchForm,
                 $modelClassName,
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                $filteredListClassName
+                Yii::app()->user->userModel->id
             );
 
             if (!$dataProvider)
@@ -278,6 +274,59 @@
                 $view            = new ModelNotFoundPageView($messageView);
                 echo $view->render();
                 Yii::app()->end(0, false);
+            }
+        }
+
+        public function actionRenderStickyListBreadCrumbContent($stickyOffset, $stickyKey, $stickyModelId)
+        {
+            if($stickyOffset == null)
+            {
+                Yii::app()->end(0, false);
+            }
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $modelClassName                 = $this->getModule()->getPrimaryModelName();
+            $searchFormClassName            = $this->getSearchFormClassName(); //maybe replace to call getGlobalSearchFormClassName depending on 0.7.4 refactor
+            $model                          = new $modelClassName(false);
+            $searchForm                     = new $searchFormClassName($model);
+            $dataProvider = $this->makeSearchDataProvider(
+                $searchForm,
+                $modelClassName,
+                $pageSize,
+                null,
+                $stickyKey,
+                false
+            );
+            $totalCount  = $dataProvider->calculateTotalItemCount();
+            $finalOffset = StickySearchUtil::resolveFinalOffsetForStickyList((int)$stickyOffset, (int)$pageSize, (int)$totalCount);
+            $dataProvider->setOffset($finalOffset);
+            $dataList   = $dataProvider->getData();
+            if(count($dataList) > 0)
+            {
+                $menuItems = array('label' => '▾');
+                foreach($dataList as $row => $data)
+                {
+                    $url = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/details',
+                                                  array('id' => $data->id, 'stickyOffset'  => $row + $finalOffset));
+                    if($data->id == $stickyModelId)
+                    {
+                        $menuItems['items'][] = array(  'label'       => strval($data),
+                                                        'url'         => $url,
+                                                        'itemOptions' => array('class' => 'strong'));
+                    }
+                    else
+                    {
+                        $menuItems['items'][] = array('label' => strval($data), 'url'   => $url);
+                    }
+                }
+                $cClipWidget     = new CClipWidget();
+                $cClipWidget->beginClip("StickyList");
+                $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
+                    'htmlOptions' => array('id' => 'StickyListMenu'),
+                    'items'                   => array($menuItems),
+                ));
+                $cClipWidget->endClip();
+                echo $cClipWidget->getController()->clips['StickyList'];
             }
         }
     }

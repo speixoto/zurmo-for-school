@@ -143,7 +143,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'primaryEmail', 'type' => 'EmailAddressInformation'),
+                                                array('attributeName' => 'primaryEmail',
+                                                      'type'          => 'EmailAddressInformation',
+                                                      'hideOptOut'    => true),
                                             ),
                                         ),
                                     )
@@ -213,9 +215,11 @@
         {
             return array('enableAjaxValidation' => true,
                 'clientOptions' => array(
-                    'validateOnSubmit' => true,
-                    'validateOnChange' => false,
-                    'inputContainer' => 'td',
+                    'beforeValidate'    => 'js:beforeValidateAction',
+                    'afterValidate'     => 'js:afterValidateAction',
+                    'validateOnSubmit'  => true,
+                    'validateOnChange'  => false,
+                    'inputContainer'    => 'td',
                 )
             );
         }
@@ -233,6 +237,15 @@
         protected function getNewModelTitleLabel()
         {
             return Yii::t('Default', 'Create User');
+        }
+
+        protected function renderRightSideFormLayoutForEdit($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $content = parent::renderRightSideFormLayoutForEdit($form);
+            $content .= "<h3>".Yii::t('Default', 'Quick Tip') . '</h3>';
+            $content .= Yii::t('Default', 'Users cannot be deleted.  You can however change their status to inactive.');
+            return $content;
         }
     }
 ?>

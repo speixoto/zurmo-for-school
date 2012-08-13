@@ -29,6 +29,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '$_SERVER does not have {vars}.'
+            => '$_SERVER hat nicht {vars}.',
+        '$_SERVER is accessible.'
+            => '$_SERVER ist zugänglich',
         'Apache'
             => 'Apache', // Same Word Translated
         'APC'
@@ -64,7 +68,7 @@
         'Ctype extension is not loaded.'
             => 'Die Erweiterung ctype ist nicht geladen',
         'Curl'
-            => 'Curl',
+            => 'Curl', // Same Word Translated
         'Database admin password'
             => 'Datenbank Administrator-Passwort',
         'Database admin username'
@@ -103,6 +107,8 @@
             => 'Der einstellwert optimizer_search_depth ist {searchDepth}. Der Wert muss 0 sein.',
         'Database password'
             => 'Datenbankkennwort',
+        'Database port.'
+            => 'Datenbank-Port',
         'Database schema creation complete.'
             => 'Datenbankschema Erstellung abzuschließen',
         'Database thread_stack value is:'
@@ -111,8 +117,12 @@
             => 'Wert von Datenbank thread_stack erfüllt Mindestanforderung.',
         'Database username'
             => 'Datenbank Benutzername',
+        'Do not use the RedBean Legacy version'
+            => 'Verwenden nicht den RedBean Legacy-Version',
         'Dropping existing tables.'
             => 'Löschen vorhandenen Tabellen',
+        'Either $_SERVER["REQUEST_URI"] or $_SERVER["QUERY_STRING"] must exist.'
+            => '$_SERVER["REQUEST_URI"] oder $_SERVER["QUERY_STRING"] existiert nicht.',
         'Error code:'
             => 'Fehlercode:',
         'FAIL'
@@ -129,6 +139,10 @@
             => 'Der Name des Hosts, auf dem Zurmo installiert werden soll.',
         'If this website is in production mode, please remove the app/test.php file.'
             => 'Wenn diese Web-Seite in Produktion ist, entfernen Sie bitte die Datei app/test.php.',
+        'IMAP extension is loaded.'
+            => 'IMAP Extension wird geladen.',
+        'IMAP extension is not loaded.'
+            => 'IMAP Extension ist nicht geladen.',
         'In all likelihood, these items were supplied to you by your Web Host. '.
         'If you do not have this information, then you will need to contact them ' .
         'before you can continue. If you\'re all ready...'
@@ -144,7 +158,7 @@
         'Installation in progress. Please wait.'
             => 'Die Installation ist im Gange. Bitte warten.',
         'Installation Output:'
-            => 'Installation Output:',
+            => 'Installation Output:', // Same Word Translated
         'is installed, but the version is unknown.'
             => 'ist installiert, aber die Version ist unbekannt.',
         'is not installed.'
@@ -167,7 +181,7 @@
         'Memcache extension'
             => 'Memcache Extension',
         'Memcache host'
-            => 'Memcache host',
+            => 'Memcache host', // Same Word Translated
         'Memcache host name. Default is 127.0.0.1'
             => 'Memcache Hostname. Standard ist 127.0.0.1',
         'Memcache port number'
@@ -175,23 +189,27 @@
         'Memcache port number. Default is 11211'
             => 'Memcache Port-Nummer. Standard ist 11211',
         'Microsoft-IIS'
-            => 'Microsoft-IIS',
+            => 'Microsoft-IIS', // Same Word Translated
+        'Minify has been disabled due to a system issue. Try to resolve the problem and re-enable Minify.'
+            => 'Aufgrund eines Systemfehlers Minify wurde deaktiviert. Versuchst du, das Problem zu lösen und Minify wieder aktivieren.',
+        'Minify library is included.'
+            => 'Minify Bibliothek enthalten.',
         'minimum requirement is:'
             => 'Mindestanforderung ist:',
         'Minimum version required:'
             => 'Minimum Version erforderlich:',
         'Mysql'
-            => 'Mysql',
+            => 'Mysql', // Same Word Translated
         'Oh no!'
             => 'Ach nein!',
         'PASS'
-            => 'PASS',
+            => 'PASS', // Same Word Translated
         'PCRE extension is loaded.'
             => 'Die PCRE-Erweiterung ist geladen.',
         'PCRE extension is not loaded.'
             => 'Die PCRE ist nicht geladen.',
         'PHP'
-            => 'PHP',
+            => 'PHP', // Same Word Translated
         'PHP date.timezone is not set.'
             => 'PHP date.timezone ist nicht gesetzt.',
         'PHP date.timezone is set.'
@@ -219,7 +237,7 @@
         'Recheck System'
             => 'System überprüfen',
         'RedBean'
-            => 'RedBean',
+            => 'RedBean', // Same Word Translated
         'RedBean file is missing patch.'
             => 'RedBean Datei fehlt Patch',
         'RedBean file is patched correctly'
@@ -268,12 +286,14 @@
             => 'Der relative Pfad, wo Zurmo installiert werden soll.',
         'The system has detected that the hostInfo and/or scriptUrl are not set up. Please open the perInstance.php config file and set up these parameters.'
             => 'Das System hat erkannt, dass die hostInfo und / oder ScriptUrl nicht eingerichtet sind. Bitte öffnen Sie die perInstance.php config-Datei und  konfigurieren dieser Parameter.',
+        'There is a problem with php set_include_path command. Command can fail if "php_admin_value include_path" directive is set in Apache configuration.'
+            => 'Es gibt ein Problem mit PHP set_include_path. Der Befehl kann fehlschlagen, wenn die Richtlinie "php_admin_value include_path" in der Apache-Konfiguration aktiviert ist.',
         'There was a problem creating the database Error code:'
             => 'Es gab ein Problem beim Erstellen der Datenbank Fehlercode:',
         'There was a problem creating the user Error code:'
             => 'Es gab ein Problem beim Erstellen des Benutzers Fehlercode:',
-        'Tidy'
-            => 'Tidy',
+        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"]'
+            => 'Kann URL-Pfad Daten nicht bestimmen. Bitte stellen Sie sicher, $ _SERVER ["PATH_INFO"]',
         'User who can connect to the database.'
             => 'Benutzer, die mit der Datenbank verbinden kann.',
         'User`s password.'
@@ -293,7 +313,7 @@
         'Writing Configuration File.'
             => 'Erstellen der Konfigurationsdatei',
         'Yii'
-            => 'Yii',
+            => 'Yii', // Same Word Translated
         'You cannot access the installation area because the application is already installed.'
             => 'Sie haben keinen Zugriff auf die Installations-Bereich, weil die Anwendung schon installiert ist.',
         'You have specified an existing database. If you would like to use this database, ' .
@@ -313,12 +333,12 @@
         'Zurmo administrative password. The username is `super`.  You can change this later.'
             => 'Zurmo administrative Passwort. Der Benutzername ist `super`. Sie können dieses später ändern.',
         'Zurmo Installation'
-            => 'Zurmo Installation',
+            => 'Zurmo Installation', // Same Word Translated
         'Zurmo Version'
-            => 'Zurmo Version',
+            => 'Zurmo Version', // Same Word Translated
         '{folderPath} is missing.'
             => '{folderPath} fehlt',
         '{folderPath} is not writable.'
             => '{folderPath} ist nicht beschreibbar.',
-    ); // Not Coding Standard
+    );
 ?>

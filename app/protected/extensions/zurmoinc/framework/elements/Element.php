@@ -105,7 +105,8 @@
          */
         protected function renderError()
         {
-            return $this->form->error($this->model, $this->attribute);
+            return $this->form->error($this->model, $this->attribute,
+                    array('inputID' => $this->getEditableInputId()));
         }
 
         /**
@@ -328,7 +329,11 @@
 
         protected function resolveInputNamePrefix()
         {
-            $inputIdPrefix = $this->resolveInputPrefix();
+            return static::resolveInputIdPrefixIntoString($this->resolveInputPrefix());
+        }
+
+        public static function resolveInputIdPrefixIntoString($inputIdPrefix)
+        {
             if (is_array($inputIdPrefix))
             {
                 if (count($inputIdPrefix) > 1)

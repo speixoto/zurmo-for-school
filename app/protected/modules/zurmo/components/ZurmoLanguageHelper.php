@@ -90,14 +90,29 @@
         /**
          * Get supported languages and translates names of language. Uses language id as
          * key.
+         * @param bool $localDisplay Display names of languages in local language?
          * @return array of language keys/ translated names.
          */
-        public function getSupportedLanguagesData()
+        public function getSupportedLanguagesData($localDisplay = false)
         {
             $data = array();
             foreach (Yii::app()->params['supportedLanguages'] as $language => $name)
             {
-                $data[$language] = Yii::t('Default', $name);
+                if ($localDisplay)
+                {
+                    $data[$language] = Yii::app()->getLocale($language)->getLanguage($language);
+                }
+                else
+                {
+                    $data[$language] = Yii::app()->getLocale($this->getForCurrentUser())->getLanguage($language);
+                }
+
+                // In case the language name in local language is not available,
+                // fallback to the base language for the language name.
+                if (!isset($data[$language]))
+                {
+                    $data[$language] = Yii::app()->getLocale($this->baseLanguage)->getLanguage($language);
+                }
             }
             return $data;
         }
@@ -150,11 +165,13 @@
         /**
          * Returns an array of active language data which includes the language as the index, and the translated
          * name of the language as the value.
+         * @param bool $localDisplay Display names of languages in local language?
          */
-        public function getActiveLanguagesData()
+        public function getActiveLanguagesData($localDisplay = false)
         {
-            $supportedLanguages = $this->getSupportedLanguagesData();
+            $supportedLanguages = $this->getSupportedLanguagesData($localDisplay);
             $activeLanguages    = $this->getActiveLanguages();
+
             foreach ($supportedLanguages as $language => $notUsed)
             {
                 if (!in_array($language, $activeLanguages))
@@ -162,6 +179,10 @@
                     unset($supportedLanguages[$language]);
                 }
             }
+
+            // Sort languages alphabetically
+            ksort($supportedLanguages);
+
             return $supportedLanguages;
         }
 

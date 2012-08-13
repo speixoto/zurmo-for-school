@@ -30,7 +30,7 @@
     abstract class InlineEditView extends EditView
     {
         /**
-         * Action id to use by ajax for validating and saving the note.
+         * Action id to use by ajax for validating and saving the model.
          * @var string
          */
         protected $saveActionId;
@@ -53,7 +53,7 @@
             assert('is_string($moduleId)');
             assert('is_string($saveActionId)');
             assert('is_array($urlParameters)');
-            assert('is_string($uniquePageId)');
+            assert('is_string($uniquePageId) || $uniquePageId == null');
             $this->model              = $model;
             $this->modelClassName     = get_class($model);
             $this->controllerId       = $controllerId;
@@ -76,9 +76,10 @@
                     'action' => $this->getValidateAndSaveUrl(),
                     'enableAjaxValidation' => true,
                     'clientOptions' => array(
-                        'validateOnSubmit' => true,
-                        'validateOnChange' => false,
-                        'afterValidate'    => 'js:afterValidateAjaxAction',
+                        'validateOnSubmit'  => true,
+                        'validateOnChange'  => false,
+                        'beforeValidate'    => 'js:beforeValidateAction',
+                        'afterValidate'     => 'js:afterValidateAjaxAction',
                         'afterValidateAjax' => $afterValidateAjax,
                     ),
                 )
@@ -91,22 +92,15 @@
                     ) . '/Modal.js',
                 CClientScript::POS_END
             );
-            $cs->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
-                    ) . '/FormUtils.js',
-                CClientScript::POS_END
-            );
-
             $content .= $formStart;
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderAfterFormLayout($form);
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {
-                $content .= '<div class="view-toolbar-container clearfix">';
+                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar clearfix">';
                 $content .= $actionElementContent;
-                $content .= '</div>';
+                $content .= '</div></div>';
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
@@ -172,6 +166,11 @@
         protected function getLessPanelsLinkLabel()
         {
             return Yii::t('Default', 'Fewer Options');
+        }
+
+        public static function getDisplayDescription()
+        {
+            return null;
         }
     }
 ?>

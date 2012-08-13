@@ -85,16 +85,19 @@
             }
             else
             {
-                $modelClassName  = $moduleClassName::getPrimaryModelName();
-                $model           = new $modelClassName();
-                $adapter         = new ModelAttributesAdapter($model);
+                $modelClassName           = $moduleClassName::getPrimaryModelName();
+                $model                    = new $modelClassName();
+                $adapter                  = new ModelAttributesAdapter($model);
+                $derivedAttributesAdapter = new DerivedAttributesAdapter(get_class($model));
+                $customAttributes         = array_merge($adapter->getCustomAttributes(),
+                                                        $derivedAttributesAdapter->getAttributes());
                 $canvasView = new StandardAndCustomAttributesListView(
                             $this->getId(),
                             $this->getModule()->getId(),
                             $module,
                             $moduleClassName::getModuleLabelByTypeAndLanguage('Plural'),
                             $adapter->getStandardAttributes(),
-                            $adapter->getCustomAttributes(),
+                            $customAttributes,
                             $modelClassName
                 );
             }
@@ -162,45 +165,10 @@
             }
         }
 
-        protected static function resolveAttributeDetailsTitle(AttributeForm $model)
-        {
-            return Yii::t('Default', 'Field')   . ': ' .strval($model);
-        }
-
         protected function actionAttributeValidate($attributeForm)
         {
             echo ZurmoActiveForm::validate($attributeForm);
             Yii::app()->end(0, false);
-        }
-
-        public function actionAttributeDetails()
-        {
-            assert('!empty($_GET["moduleClassName"])');
-            assert('!empty($_GET["attributeTypeName"])');
-            assert('!empty($_GET["attributeName"])');
-            $moduleClassName = $_GET['moduleClassName'];
-            $module          = new $_GET['moduleClassName'](null, null);
-            $modelClassName  = $moduleClassName::getPrimaryModelName();
-            $model           = new $modelClassName();
-            $attributeForm   = AttributesFormFactory::createAttributeFormByAttributeName($model, $_GET["attributeName"]);
-            $title           = static::resolveAttributeDetailsTitle($attributeForm);
-            $breadcrumbLinks = array(
-                    $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . ': ' . Yii::t('Default', 'Fields') =>
-                    array('default/attributesList',  'moduleClassName' => $_GET['moduleClassName']),
-                $title,
-            );
-            $canvasView = new ActionBarAndAttributeDetailsView(
-                        $this->getId(),
-                        $this->getModule()->getId(),
-                        $module,
-                        $_GET['attributeTypeName'],
-                        $modelClassName,
-                        $attributeForm,
-                        $title
-            );
-            $view = new DesignerPageView(ZurmoDefaultAdminViewUtil::
-                            makeViewWithBreadcrumbsForCurrentUser($this, $canvasView, $breadcrumbLinks, 'DesignerBreadCrumbView'));
-            echo $view->render();
         }
 
         protected function actionAttributeSave($attributeForm, $model)
@@ -223,9 +191,7 @@
             }
             RedBeanModelsCache::forgetAll(); //Ensures existing models that are cached see the new dropdown.
             $routeParams = array_merge(
-                array('default/attributeDetails'),
-                $_GET,
-                array('attributeName' => $attributeForm->attributeName)
+                array('default/attributesList'), $_GET
             );
             $this->redirect($routeParams);
         }
@@ -278,15 +244,17 @@
         {
             assert('!empty($_GET["moduleClassName"])');
             assert('!empty($_GET["viewClassName"])');
-            $viewClassName           = $_GET['viewClassName'];
-            $moduleClassName         = $_GET['moduleClassName'];
-            $modelClassName          = $moduleClassName::getPrimaryModelName();
-            $editableMetadata        = $viewClassName::getMetadata();
-            $designerRulesType       = $viewClassName::getDesignerRulesType();
-            $designerRulesClassName  = $designerRulesType . 'DesignerRules';
-            $designerRules           = new $designerRulesClassName();
-            $modelAttributesAdapter  = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
-            $attributeCollection     = $modelAttributesAdapter->getAttributes();
+            $viewClassName            = $_GET['viewClassName'];
+            $moduleClassName          = $_GET['moduleClassName'];
+            $modelClassName           = $moduleClassName::getPrimaryModelName();
+            $editableMetadata         = $viewClassName::getMetadata();
+            $designerRulesType        = $viewClassName::getDesignerRulesType();
+            $designerRulesClassName   = $designerRulesType . 'DesignerRules';
+            $designerRules            = new $designerRulesClassName();
+            $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
+            $derivedAttributesAdapter = new DerivedAttributesAdapter($modelClassName);
+            $attributeCollection      = array_merge($modelAttributesAdapter->getAttributes(),
+                                                        $derivedAttributesAdapter->getAttributes());
             $attributesLayoutAdapter = AttributesLayoutAdapterUtil::makeAttributesLayoutAdapter(
                 $attributeCollection,
                 $designerRules,
@@ -432,6 +400,7 @@
             }
             $content = DropDownDependencyAttributeEditView::
                        renderContainerAndMappingLayoutContent($attributeForm, $this->getId(), $this->getModule()->getId(), false);
+            Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;
         }

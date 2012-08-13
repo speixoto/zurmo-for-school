@@ -29,9 +29,26 @@
      */
     class LoginUserGameBadgeRules extends GameBadgeRules
     {
-        public static function getDisplayName()
+       public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 10,
+            3  => 25,
+            4  => 50,
+            5  => 75,
+            6  => 100,
+            7  => 125,
+            8  => 150,
+            9  => 175,
+            10 => 200,
+            11 => 225,
+            12 => 250,
+            13 => 300
+        );
+
+        public static function getPassiveDisplayLabel($value)
         {
-            return Yii::t('Default', 'Logging into the application');
+            return Yii::t('Default', '{n} Zurmo login|{n} Zurmo logins',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
@@ -40,62 +57,7 @@
             assert('is_array($userScoresByType)');
             if (isset($userScoresByType['LoginUser']))
             {
-                if ($userScoresByType['LoginUser']->value < 1)
-                {
-                    return 0;
-                }
-                if ($userScoresByType['LoginUser']->value < 2)
-                {
-                    return 1;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 11)
-                {
-                    return 2;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 26)
-                {
-                    return 3;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 51)
-                {
-                    return 4;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 76)
-                {
-                    return 5;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 101)
-                {
-                    return 6;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 126)
-                {
-                    return 7;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 151)
-                {
-                    return 8;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 176)
-                {
-                    return 9;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 201)
-                {
-                    return 10;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 226)
-                {
-                    return 11;
-                }
-                elseif ($userScoresByType['LoginUser']->value < 251)
-                {
-                    return 12;
-                }
-                elseif ($userScoresByType['LoginUser']->value >= 300)
-                {
-                    return 13;
-                }
+                return static::getBadgeGradeByValue((int)$userScoresByType['LoginUser']->value);
             }
             return 0;
         }

@@ -75,8 +75,8 @@ EOD;
     public function actionSend($username,
                                $toAddress,
                                $subject          = 'A test email from Zurmo',
-                               $textContent      = 'A test text message from Zurmo',
-                               $htmlContent      = 'A test html message from Zurmo',
+                               $textContent      = 'A test text message from Zurmo.',
+                               $htmlContent      = 'A test html message from Zurmo.',
                                $host             = null,
                                $port             = null,
                                $outboundUsername = null,
@@ -132,7 +132,7 @@ EOD;
         $sender                    = new EmailMessageSender();
         $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
         $sender->fromName          = strval(Yii::app()->user->userModel);
-        $sender->person            = Yii::app()->user->userModel;
+        $sender->personOrAccount   = Yii::app()->user->userModel;
         $emailMessage->sender      = $sender;
         $recipient                 = new EmailMessageRecipient();
         $recipient->toAddress      = $toAddress;

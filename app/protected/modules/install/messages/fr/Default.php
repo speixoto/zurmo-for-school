@@ -29,6 +29,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '$_SERVER does not have {vars}.'
+            => '$_SERVER n\'a pas {vars}.',
+        '$_SERVER is accessible.'
+            => '$_SERVER est accessible.',
         'Apache'
             => 'Apache', // Same Word Translated
         'APC'
@@ -63,7 +67,7 @@
         'Ctype extension is not loaded.'
             => 'L\'extension ctype n\'est pas chargée.',
         'Curl'
-            => 'Curl',
+            => 'Curl', // Same Word Translated
         'Database admin password'
             => 'Mot de passe administrateur',
         'Database admin username'
@@ -102,6 +106,8 @@
             => 'La valeur du paramètre optimizer_search_depth est {searchDepth}. La valeur doit être 0.',
         'Database password'
             => 'Mot de passe de la base de données',
+        'Database port.'
+            => 'Port (base de données)',
         'Database schema creation complete.'
             => 'Schéma de la base de données crée.',
         'Database thread_stack value is:'
@@ -110,8 +116,12 @@
             => 'La valeur du thread_stack de la base de données répond aux exigences minimales.',
         'Database username'
             => 'Nom de l\'utilisateur de la base de données',
+        'Do not use the RedBean Legacy version'
+            => 'N\'utilisez pas la version RedBean Legacy',
         'Dropping existing tables.'
             => 'Suppression des tables existantes.',
+        'Either $_SERVER["REQUEST_URI"] or $_SERVER["QUERY_STRING"] must exist.'
+            => '$_SERVER["REQUEST_URI"] ou $_SERVER["QUERY_STRING"] doit exister.',
         'Error code:'
             => 'Code d\'Erreur',
         'FAIL'
@@ -128,6 +138,10 @@
             => 'Le nom de l\'hôte où Zurmo va être installé.',
         'If this website is in production mode, please remove the app/test.php file.'
             => 'Si ce site web est en production, veuillez supprimer le fichier app/test.php.',
+        'IMAP extension is loaded.'
+            => 'L\'extension IMAP est chargée.',
+        'IMAP extension is not loaded.'
+            => 'L\'extension IMAP n\'est pas chargée.',
         'In all likelihood, these items were supplied to you by your Web Host. ' .
         'If you do not have this information, then you will need to contact them ' .
         'before you can continue. If you\'re all ready...'
@@ -175,13 +189,17 @@
         'Memcache port number. Default is 11211'
             => 'Memcache numéro du port.  Le défault est 11211.',
         'Microsoft-IIS'
-            => 'Microsoft-IIS',
+            => 'Microsoft-IIS', // Same Word Translated
+        'Minify has been disabled due to a system issue. Try to resolve the problem and re-enable Minify.'
+            => '??',
+        'Minify library is included.'
+            => 'La biliothèque Minify est inclue.',
         'minimum requirement is:'
             => 'Exigence minimale:',
         'Minimum version required:'
             => 'Version minimale requise:',
         'Mysql'
-            => 'Mysql',
+            => 'Mysql', // Same Word Translated
         'Oh no!'
             => 'Zut!',
         'PASS'
@@ -191,7 +209,7 @@
         'PCRE extension is not loaded.'
             => 'L\'extension PCRE n\'est pas chargée.',
         'PHP'
-            => 'PHP',
+            => 'PHP', // Same Word Translated
         'PHP date.timezone is not set.'
             => 'Le paramètre PHP date.timezone n\'est pas configuré.',
         'PHP date.timezone is set.'
@@ -219,7 +237,7 @@
         'Recheck System'
             => 'Revérifie le système',
         'RedBean'
-            => 'RedBean',
+            => 'RedBean', // Same Word Translated
         'RedBean file is missing patch.'
             => 'Le fichier RedBean manque le correctif.',
         'RedBean file is patched correctly'
@@ -268,12 +286,14 @@
             => 'Le chemin d\'accès relatif où Zurmo va être installé.',
         'The system has detected that the hostInfo and/or scriptUrl are not set up. Please open the perInstance.php config file and set up these parameters.'
             => 'Le système a détecté que hostInfo et/ou scriptUrl ne sont pas configurés. Veuillez ouvrir le fichier config perInstance.php et configurer les paramètres.',
+        'There is a problem with php set_include_path command. Command can fail if "php_admin_value include_path" directive is set in Apache configuration.'
+            => 'Il y a un problème avec la commande php set_include_path. La commande peut échouer si la directive "php_admin_value include_path" est activée dans la configuration Apache.',
         'There was a problem creating the database Error code:'
             => 'Il y a eu un problème lors de la création de la base de données d\'erreurs',
         'There was a problem creating the user Error code:'
             => 'Il y a eu un problème lors de la création du code d\'erreur d\'utilisateur',
-        'Tidy'
-            => 'Tidys',
+        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"]'
+            => 'Impossible de déterminer les informations de chemin URL. Vérifier $_SERVER["PATH_INFO"]',
         'User who can connect to the database.'
             => 'L\'utilisateur qui connecte à la base de données.',
         'User`s password.'
@@ -293,7 +313,7 @@
         'Writing Configuration File.'
             => 'Création du fichier de configuration.',
         'Yii'
-            => 'Yii',
+            => 'Yii', // Same Word Translated
         'You cannot access the installation area because the application is already installed.'
             => 'Vous ne pouvez pas accéder l\'installation parce que l\'application est déjà installée.',
         'You have specified an existing database. If you would like to use this database, ' .
@@ -320,5 +340,5 @@
             => '{folderPath} est manquant.',
         '{folderPath} is not writable.'
             => '{folderPath} n\'est pas écrivable.',
-    ); // Not Coding Standard
+    );
 ?>

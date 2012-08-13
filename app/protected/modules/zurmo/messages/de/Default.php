@@ -50,7 +50,7 @@
         '<strong>Zurmo</strong> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.'
             => '<strong> Zurmo </strong> ist unter der GPLv3 lizenziert. Sie können die Lizenz <a href="http://www.zurmo.org/license"> hier lesen</a>',
         '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:'
-            => '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:',
+            => '<strong>Zurmo</strong> nutzt die folgenden wunderbaren Open Source Tools und Frameworks:',
         'A large amount of data has been requested for export.  You will receive a notification with the download link when the export is complete.'
             => 'Viele Daten hat für den Export angefordert worden. Sie erhalten eine Benachrichtigung mit dem Download-Link, wenn der Export abgeschlossen ist.',
         'About Zurmo'
@@ -75,12 +75,16 @@
             => 'Aktive Sprachen können von den Benutzern verwendet werden. Das System Sprache und jeder Sprache in Verwendung durch einen Benutzer kann nicht inaktiviert werden',
         'Ad-hoc / Owner'
             => 'Ad-hoc / Besitzer',
+        'Add Comment'
+            => 'Kommentar hinzufügen',
         'Add Currency'
             => 'Währung hinzufügen',
+        'Add new fields, remove ones you don\'t need and change the layout using Designer.'
+            => 'Neue Felder hinzufügen, entfernan was nicht benötigt ist, und ändern das Layout mit Designer.',
         'Address'
             => 'Adresse',
         'Admin'
-            => 'Admin',
+            => 'Admin', // Same Word Translated
         'Alert'
             => 'Alarm',
         'Allow'
@@ -111,6 +115,8 @@
             => 'Systemname',
         'are required.'
             => 'Sind Erforderlich.',
+        'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
+            => 'Bist du Nummer eins{spaceAndFirstName}? Vergleiche dich mit deinen Kollegen auf dem Leaderboard.',
         'Are you sure you want to remove this group?'
             => 'Sind Sie sicher, dass Sie dieser Gruppe entfernen möchten?',
         'Are you sure you want to remove this role?'
@@ -126,11 +132,17 @@
         'Automotive'
             => 'Autoindustrie',
         'Banking'
-            => 'Banking',
+            => 'Banking', // Same Word Translated
         'Business Services'
             => 'Handelsdienstleistungen',
+        'by <strong>{ownerStringContent}</strong>'
+            => 'von <strong> {ownerStringContent}</strong>',
+        'by {ownerStringContent}'
+            => 'von {ownerStringContent}',
         'Cancel'
             => 'Abbrechen',
+        'Cancel changes'
+            => 'Änderungen stornieren',
         'Changes to active currencies saved successfully.'
             => 'Änderungen an aktiven Währungen erfolgreich geändert.',
         'Changes to active languages saved successfully.'
@@ -139,10 +151,12 @@
             => 'Diagrammtyp',
         'City'
             => 'Stadt',
+        'Click on the Map link on records to see the customer location on Google Maps.'
+            => 'Klickst du auf den Link, um den Lageplan mit Google Maps zu sehen.',
         'Close'
             => 'schließen',
         'Code'
-            => 'Code',
+            => 'Code', // Same Word Translated
         'Configuration'
             => 'Konfiguration',
         'Configure'
@@ -185,6 +199,8 @@
             => 'Tage',
         'Dead'
             => 'Tot',
+        'Decide who can view and edit a record, set Group rights and permissions.'
+            => 'Wer hat die Berechtigung zum Anzeigen und Bearbeiten eines Datensatzes und wer kann Gruppe Rechte und Berechtigungen festlegen.',
         'Delete Group'
             => 'Gruppe löschen',
         'Delete Groups'
@@ -200,7 +216,9 @@
         'Description'
             => 'Beschreibung',
         'Dr.'
-            => 'Dr.',
+            => 'Dr.', // Same Word Translated
+        'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
+            => 'Durch Klicken auf die Config-Icon in der rechten oberen Ecke jedes Portlet ermöglicht es, Diagramme auf dem Dashboard zu bearbeiten.',
         'Email Address'
             => 'E-Mail Adresse',
         'Energy'
@@ -225,10 +243,12 @@
             => 'Gefilterte Listen',
         'Financial Services'
             => 'Finanzdienstleistung',
+        'Find what you need quickly using the global search at the top of the screen.'
+            => 'Verwenden Sie die globale Suche am oberen Bildschirmrand zu finden, was du schnell brauchst.',
         'First Name'
             => 'Vorname',
         'Forums'
-            => 'Forums',
+            => 'Forums', // Same Word Translated
         'Global and Basic Search Fields'
             => 'Globale und einfache Suche Felder',
         'Global Configuration'
@@ -237,6 +257,8 @@
             => 'Globale Konfiguration wurde erfolgreich gespeichert.',
         'Go to Search'
             => 'Zugang Suche',
+        'Got questions{spaceAndFirstName}? Find answers in the Zurmo Wiki.'
+            => 'Hast du Fragen{spaceAndFirstName}? Antworten auf die Zurmo Wiki.',
         'Group'
             => 'Gruppe',
         'Group Module Permissions'
@@ -303,6 +325,8 @@
             => 'Aktualisiert',
         'Latitude'
             => 'Breite',
+        'Let Zurmo crunch the numbers, add calculated fields to your records in Designer.'
+            => 'Zurmo kann dein Zahlenfresser sein wenn du berechnete Felder in Designer hinzufügen.',
         'List Filters'
             => 'Liste Filtern',
         'List page size'
@@ -365,6 +389,12 @@
             => 'Frau',
         'My List Configuration View'
             => 'Meine Liste Konfigurationsansicht',
+        'Need help{spaceAndFirstName}, why not ask a question in the forum?'
+            => 'Brauchst du Hilfe{spaceAndFirstName}? Stell deine Fragen in den Foren.',
+        'Need to see the big picture? Click Roll-Up to see activities from related records.'
+            => 'Aktivieren Roll Up, um Aktivitäten von verknüpften Datensätzen zu sehen.',
+        'Need to update multiple records at once? Select them from the list and hit the Update button.'
+            => 'Brauchst du mehrere Datensätze zu aktualisieren? Wähle aus der Liste und die Aktualisierung Taste drücken.',
         'Never'
             => 'Nie',
         'New'
@@ -392,7 +422,9 @@
         'Only Items I Own'
             => 'Nur meine Objekte',
         'Opt Out'
-            => 'Opt Out',
+            => 'Opt Out', // Same Word Translated
+        'owned by {ownerStringContent}'
+            => 'besitz von {ownerStringContent}',
         'Owner'
             => 'Besitzer',
         'Owner and users in'
@@ -403,6 +435,8 @@
             => 'Übergeordnete Gruppe',
         'Parent Role'
             => 'übergeordneten Rolle',
+        'Parlez vous Français{spaceAndFirstName}? Choose your preferred language in your My Profile area.'
+            => 'Parlez vous français{spaceAndFirstName}? Die gewünschte Sprache kann man in meinem Profil ausgewählt.',
         'Password'
             => 'Kennwort',
         'Permissions'
@@ -437,10 +471,14 @@
             => 'Leseberechtigungen Wiederaufbau abgeschlossen',
         'Recently Viewed'
             => 'Zuletzt angesehen',
+        'Recently Viewed lets you jump back to any records you have looked at lately.'
+            => 'Zuletzt Angesehen bringts du zurück auf Datensätze, die du vor kurzem gesehen haben.',
         'Recycled'
-            => 'Recycled',
+            => 'Recycled', // Same Word Translated
         'Remember me next time'
             => 'Benutzername Behalten',
+        'Remember{spaceAndFirstName}, the Audit Trail shows you what has changed on a record and who changed it.'
+            => 'Das Update-Log zeigt die Historie der Änderungen einschließlich der Benutzername, der hat sich geändert.',
         'Retail'
             => 'Einzelhandel',
         'Return to Admin Menu'
@@ -461,6 +499,8 @@
             => 'Begrüßung',
         'Save Changes'
             => 'Änderungen speichern',
+        'Save yourself time and click the pencil icon to jump right in and edit your record.'
+            => 'Zeit sparen! Klickst du auf das Bleistift-Symbol, um deinen Eintrag zu bearbeiten.',
         'Search'
             => 'Suche',
         'Search by name, phone, or e-mail'
@@ -473,6 +513,8 @@
             => 'Sicherbare Artikel',
         'Security'
             => 'Sicherheit',
+        'See more search results by clicking the down arrow at the bottom of the screen.'
+            => 'Klickst du auf den Pfeil am unteren Rand des Bildschirms, um mehr Ergebnisse zu sehen.',
         'Select a Parent Group'
             => 'Wählen Sie einen übergeordneten Gruppe',
         'Select a Parent Role'
@@ -481,6 +523,8 @@
             => 'Wählen Sie eine Rolle',
         'Self-Generated'
             => 'Selbstgeneriert',
+        'Set your preferences, password, and contact details in your My Profile area.'
+            => 'Ändern deine Einstellungen, Kennwort und Kontaktdaten im Mein Profil.',
         'Settings'
             => 'Einstellungen',
         'Shipping Address'
@@ -510,7 +554,7 @@
         'State'
             => 'Staat',
         'Status'
-            => 'Status',
+            => 'Status', // Same Word Translated
         'Street 1'
             => 'Straße 1',
         'Street 2'
@@ -521,6 +565,8 @@
             => 'Erfolgreich aktualisiert',
         'Super Administrators'
             => 'Super Administratoren',
+        'Tag Cloud fields allow you to tag records with values so that you can easily find them later.'
+            => 'Mit Tag Cloud Felder kann man Datensätze mit Werten  markieren, so man sie leicht später finden kann.',
         'Technology'
             => 'Technologie',
         'The currency rate web service says this currency code is invalid even though zurmo says it is valid. The rate could not be automatically updated.'
@@ -531,6 +577,10 @@
             => 'Die Währung wurde nicht gelöscht, weil es in Gebrauch ist.',
         'The ID specified was invalid.'
             => 'ID ist ungültig.',
+        'The Import Wizard helps get your data into the system easily, find it under the config icon (that\'s the cog in the top right).'
+            => 'Der Import-Assistent hilft man Daten in das System leicht bekommen. Es wird unter dem Config-Symbol gefunden.',
+        'The Notifications speech bubble keeps you up to date on important events.'
+            => 'Die Benachrichtigungen Sprechblase hält dich auf dem neuesten über wichtige Ereignisse.',
         'The record you are trying to access does not exist.'
             => 'Der Datensatz existiert nicht.',
         'The status specified is invalid.'
@@ -559,6 +609,8 @@
             => 'Geben Sie eine Währung oder Name zu suchen.',
         'Update'
             => 'Aktualisierung',
+        'Upload attachments to a record by clicking "More Options" when adding a note.'
+            => '"Weitere Optionen" klicken beim Hinzufügen einer Notiz um eine Anhang zu hochladen.',
         'User Membership'
             => 'Benutzer Mitgliedschaft',
         'User Membership Saved Successfully.'
@@ -573,6 +625,8 @@
             => 'Besuchen Sie <strong>Zurmo Inc.</strong> unter {url}',
         'Visit the <strong>Zurmo Open Source Project</strong> at {url}.'
             => 'Besuchen Sie die <strong>Zurmo Open Source Project</strong> unter {url}.',
+        'Want to export your data directly to Excel? Search for the data you need and hit the Export button.'
+            => 'Um deine Daten nach Excel zu exportieren, führst du eine Suche und klickst du auf "Export".',
         'Website'
             => 'Webseite',
         'Welcome'
@@ -594,10 +648,10 @@
         'Your Yii version is currentVersion and it should be acceptableVersion.'
             => 'Ihre Yii-Version ist currentVersion und sollte acceptableVersion',
         'ZurmoCRM'
-            => 'ZurmoCRM',
+            => 'ZurmoCRM', // Same Word Translated
         '{url} (installed with Yii)'
-            => '{url} (installed with Yii)',
+            => '{url} (installed with Yii)', // Same Word Translated
         '{url} (version {version} is installed)'
-            => '{url} (version {version} is installed)',
+            => '{url} (version {version} is installed)', // Same Word Translated
     );
 ?>

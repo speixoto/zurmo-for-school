@@ -44,7 +44,7 @@
         }
 
         /**
-         * Override of parent function. Makes use of the CActiveForm
+         * Override of parent function. Makes use of the ZurmoActiveForm
          * widget to provide an editable form.
          * @return A string containing the element's content.
          */
@@ -53,7 +53,7 @@
             $content = '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                                'CActiveForm',
+                                                                'ZurmoActiveForm',
                                                                 array_merge(
                                                                     array('id' => 'install-form'),
                                                                     $this->resolveActiveFormAjaxValidationOptions()
@@ -133,6 +133,16 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'databasePort', 'type' => 'Text',
+                                                      'description' => Yii::t('Default', 'Database port.')),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'databaseAdminUsername', 'type' => 'Text',
                                                       'description' => Yii::t('Default', 'Leave this blank unless you ' .
                                                       'would like to create the user and database for Zurmo to run in.')),
@@ -144,7 +154,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'databaseAdminPassword', 'type' => 'Text',
+                                                array('attributeName' => 'databaseAdminPassword', 'type' => 'Password',
                                                       'description' => Yii::t('Default', 'Leave this blank unless you ' .
                                                       'would like to create the user and database for Zurmo to run in.'))
                                             ),
@@ -189,7 +199,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'databasePassword', 'type' => 'Text',
+                                                array('attributeName' => 'databasePassword', 'type' => 'Password',
                                                       'description' => Yii::t('Default', 'User`s password.')),
                                             ),
                                         ),
@@ -271,9 +281,11 @@
         {
             return array('enableAjaxValidation' => true,
                 'clientOptions' => array(
-                    'validateOnSubmit' => true,
-                    'validateOnChange' => false,
-                    'inputContainer' => 'td',
+                    'beforeValidate'    => 'js:beforeValidateAction',
+                    'afterValidate'     => 'js:afterValidateAction',
+                    'validateOnSubmit'  => true,
+                    'validateOnChange'  => false,
+                    'inputContainer'    => 'td',
                 )
             );
         }

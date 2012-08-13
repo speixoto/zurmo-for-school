@@ -39,6 +39,8 @@
             => 'Actividades recientes',
         'All Activities'
             => 'Todas las actividades',
+        'for {relatedModelsStringContent}'
+            => 'para {relatedModelsStringContent}',
         'Latest Activities'
             => 'Resumen de las actividades',
         'Latest Date Time'
@@ -47,12 +49,8 @@
             => 'A mí',
         'No Activities found.'
             => 'Actividades no encontradas',
-        'Related'
-            => 'Relacionados',
-        'Related to'
-            => 'Relacionados con',
         'Roll Up'
-            => 'Roll Up',
+            => 'Roll Up', // Same Word Translated
         'Show more'
             => 'Mostrar más',
         'Summary'
@@ -61,5 +59,7 @@
             => 'Activar enrollar para ver las actividades conectadas.',
         'View'
             => 'Vista',
+        'with {relatedContactsStringContent}'
+            => 'con {relatedContactsStringContent}',
     );
 ?>

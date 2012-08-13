@@ -37,6 +37,10 @@
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => $viewClassName,
                    ),
+                    array(
+                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        'controller' => $this,
+                   ),
                )
             );
         }
@@ -47,22 +51,32 @@
                             'listPageSize', get_class($this->getModule()));
             $opportunity = new Opportunity(false);
             $searchForm = new OpportunitiesSearchForm($opportunity);
-            $dataProvider = $this->makeSearchFilterListDataProvider(
+            $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 'Opportunity',
-                'OpportunitiesFilteredList',
                 $pageSize,
-                Yii::app()->user->userModel->id
+                null,
+                'OpportunitiesSearchView'
             );
-            $actionBarSearchAndListView = $this->makeActionBarSearchAndListView(
-                $searchForm,
-                $pageSize,
-                OpportunitiesModule::getModuleLabelByTypeAndLanguage('Plural'),
-                Yii::app()->user->userModel->id,
-                $dataProvider
-            );
+            if(isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $mixedView = $this->makeListView(
+                    $searchForm,
+                    $dataProvider
+                );
+            }
+            else
+            {
+                $mixedView = $this->makeActionBarSearchAndListView(
+                    $searchForm,
+                    $pageSize,
+                    OpportunitiesModule::getModuleLabelByTypeAndLanguage('Plural'),
+                    Yii::app()->user->userModel->id,
+                    $dataProvider
+                );
+            }
             $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $actionBarSearchAndListView));
+                                         makeStandardViewForCurrentUser($this, $mixedView));
             echo $view->render();
         }
 
@@ -71,9 +85,10 @@
             $opportunity = static::getModelAndCatchNotFoundAndDisplayError('Opportunity', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($opportunity);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($opportunity), 'OpportunitiesModule'), $opportunity);
+            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'OpportunitiesSearchView', $opportunity);
             $detailsAndRelationsView = $this->makeDetailsAndRelationsView($opportunity, 'OpportunitiesModule',
                                                                           'OpportunityDetailsAndRelationsView',
-                                                                          Yii::app()->request->getRequestUri());
+                                                                          Yii::app()->request->getRequestUri(), $breadCrumbView);
             $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();
@@ -146,8 +161,7 @@
                 new OpportunitiesSearchForm($opportunity),
                 'Opportunity',
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                'OpportunitiesFilteredList');
+                Yii::app()->user->userModel->id);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $opportunity = $this->processMassEdit(
                 $pageSize,
@@ -185,8 +199,7 @@
                 new OpportunitiesSearchForm($opportunity),
                 'Opportunity',
                 $pageSize,
-                Yii::app()->user->userModel->id,
-                'OpportunitiesFilteredList'
+                Yii::app()->user->userModel->id
             );
             $this->processMassEditProgressSave(
                 'Opportunity',
@@ -202,9 +215,7 @@
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
                                             $_GET['modalTransferInformation']['sourceNameFieldId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
-                                                Yii::t('Default', 'OpportunitiesModuleSingularLabel Search',
-                                                LabelUtil::getTranslationParamsForAllModules()));
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
         public function actionDelete($id)
@@ -223,28 +234,18 @@
                                                     $relationAttributeName,
                                                     $relationModelId,
                                                     $relationModuleId,
-                                                    $pageTitle = null,
                                                     $stateMetadataAdapterClassName = null)
         {
-            $pageTitle = Yii::t('Default',
-                                'OpportunitiesModuleSingularLabel Search',
-                                 LabelUtil::getTranslationParamsForAllModules());
             parent::actionSelectFromRelatedList($portletId,
                                                     $uniqueLayoutId,
                                                     $relationAttributeName,
                                                     $relationModelId,
-                                                    $relationModuleId,
-                                                    $pageTitle);
+                                                    $relationModuleId);
         }
 
         protected function getSearchFormClassName()
         {
             return 'OpportunitiesSearchForm';
-        }
-
-        protected function getModelFilteredListClassName()
-        {
-            return 'OpportunitiesFilteredList';
         }
 
         public function actionExport()

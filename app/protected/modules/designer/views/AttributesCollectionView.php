@@ -65,7 +65,8 @@
                     if ($information['elementType'] == 'EmailAddressInformation' ||
                         $information['elementType'] == 'Address' ||
                         $information['elementType'] == 'User' ||
-                        $information['isReadOnly'])
+                        $information['isReadOnly'] ||
+                        $attributeName == 'id')
                     {
                         //temporary until we figure out how to handle these types.
                         $linkContent = null;
@@ -73,12 +74,12 @@
                     else
                     {
                         $linkContent = CHtml::link(Yii::t('Default', 'Configure'), Yii::app()->createUrl($route,
-                            array(
-                                'moduleClassName' => $this->moduleClassName,
-                                'attributeTypeName' => $information['elementType'],
-                                'attributeName' => $attributeName,
-                            )
-                        ));
+                                                            array('moduleClassName' => $this->moduleClassName,
+                                                                  'attributeTypeName' => $information['elementType'],
+                                                                  'attributeName' => $attributeName)
+                                                          ),
+                                                          array('id' => 'edit-link-' . $attributeName)
+                                                  );
                     }
                     $content .= '<li>';
                     $content .= '<h4>' . $information['attributeLabel'] . '</h4>';

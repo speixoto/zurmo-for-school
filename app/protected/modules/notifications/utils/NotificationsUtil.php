@@ -95,28 +95,33 @@
 
         protected static function sendEmail(Notification $notification)
         {
-            if ($notification->owner->primaryEmail->emailAddress !== null)
+            if ($notification->owner->primaryEmail->emailAddress !== null &&
+                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($notification->owner))
             {
-                $userToSendMessagesFrom    = Yii::app()->emailHelper->getUserToSendNotificationsAs();
-                $emailMessage              = new EmailMessage();
-                $emailMessage->owner       = Yii::app()->user->userModel;
-                $emailMessage->subject     = static::getEmailSubject();
-                $emailContent              = new EmailMessageContent();
-                $emailContent->textContent = $notification->notificationMessage->textContent;
-                $emailContent->htmlContent = $notification->notificationMessage->htmlContent;
-                $emailMessage->content     = $emailContent;
-                $sender                    = new EmailMessageSender();
-                $sender->fromAddress       = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                $sender->fromName          = strval($userToSendMessagesFrom);
-                $emailMessage->sender      = $sender;
-                $recipient                 = new EmailMessageRecipient();
-                $recipient->toAddress      = $notification->owner->primaryEmail->emailAddress;
-                $recipient->toName         = strval($notification->owner);
-                $recipient->type           = EmailMessageRecipient::TYPE_TO;
-                $recipient->person         = $notification->owner;
+                $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                $emailMessage               = new EmailMessage();
+                $emailMessage->owner        = Yii::app()->user->userModel;
+                $emailMessage->subject      = static::getEmailSubject();
+                $emailContent               = new EmailMessageContent();
+                $emailContent->textContent  = EmailNotificationUtil::
+                                                resolveNotificationTextTemplate(
+                                                $notification->notificationMessage->textContent);
+                $emailContent->htmlContent  = EmailNotificationUtil::
+                                                resolveNotificationHtmlTemplate(
+                                                $notification->notificationMessage->htmlContent);
+                $emailMessage->content      = $emailContent;
+                $sender                     = new EmailMessageSender();
+                $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+                $sender->fromName           = strval($userToSendMessagesFrom);
+                $emailMessage->sender       = $sender;
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $notification->owner->primaryEmail->emailAddress;
+                $recipient->toName          = strval($notification->owner);
+                $recipient->type            = EmailMessageRecipient::TYPE_TO;
+                $recipient->personOrAccount = $notification->owner;
                 $emailMessage->recipients->add($recipient);
-                $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+                $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+                $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
                 try
                 {
                     Yii::app()->emailHelper->sendImmediately($emailMessage);
@@ -147,7 +152,7 @@
                 $searchAttributes
             );
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter,
+                $metadataAdapter->getAdaptedMetadata(),
                 'Notification',
                 'RedBeanModelDataProvider',
                 'createdDateTime',

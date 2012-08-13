@@ -27,7 +27,7 @@
     $common_config = array(
         'basePath'          => COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected',
         'name'              => 'ZurmoCRM',
-        'defaultController' => 'home/default',
+        'defaultController' => 'home/default/welcome',
         'sourceLanguage'    => 'en',
 
         'behaviors' => array(
@@ -40,15 +40,15 @@
         ),
 
         'components' => array(
-            'assetManager' => array(
-                'class' => 'ZurmoAssetManager',
-                'basePath' => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'assets/',
-            ),
             'apiRequest' => array(
                 'class' => 'application.modules.api.components.ApiRequest',
             ),
             'apiHelper' => array(
                 'class' => 'application.modules.api.components.ZurmoApiHelper',
+            ),
+            'assetManager' => array(
+                'class' => 'ZurmoAssetManager',
+                'basePath' => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'assets/',
             ),
             'browser' => array(
                 'class' => 'application.extensions.zurmoinc.framework.components.Browser',
@@ -80,6 +80,9 @@
             'fusioncharts' => array(
                 'class' => 'application.extensions.fusioncharts.fusionCharts',
             ),
+            'imap' => array(
+                'class'       => 'application.modules.emailMessages.components.ZurmoImap',
+            ),
             'gameHelper' => array(
                 'class' => 'application.modules.gamification.components.GameHelper',
             ),
@@ -90,17 +93,8 @@
                 'class' => 'application.extensions.zurmoinc.framework.components.ZurmoExtMinScript',
                 'groupMap' => array(
                     'css' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/theme.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/cgrid-view.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/designer.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/form.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/jquery-ui.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/main.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/mbmenu.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/widget-juiportlets.css',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/newui.css',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/jquery-multiselect.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fileUpload/css/jquery.fileupload-ui.css',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css'
                     ),
 
@@ -109,10 +103,12 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yii.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.ba-bbq.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jui/js/jquery-ui.min.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/qtip/assets/jquery.qtip-1.0.0-rc3.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yiiactiveform.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/qtip/assets/jquery.qtip-2.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/extendedGridView/jquery.yiigridview.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fusionChart/jquery.fusioncharts.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/elements/assets/Modal.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/dynamicSearchViewUtils.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/FormUtils.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/ListViewUtils.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/interactions.js',
@@ -133,17 +129,19 @@
                 //Add scripts here that do not need to load when using an ajax request such as a modal search box.  The scripts
                 //are already loaded in the minified script that loads on every page.
                 'usingAjaxShouldNotIncludeJsPathAliasesAndFileNames' => array(
-                    array('system.web.js.source', 										'/jquery.min.js'),
-                    array('system.web.js.source', 										'/jquery.yii.js'),
-                    array('system.web.js.source', 										'/jquery.ba-bbq.js'),
-                    array('system.web.js.source', 										'/jui/js/jquery-ui.min.js'),
-                    array('application.extensions.qtip.assets', 						'/jquery.qtip-1.0.0-rc3.min.js'),
+                    array('system.web.js.source',                                       '/jquery.min.js'),
+                    array('system.web.js.source',                                       '/jquery.yii.js'),
+                    array('system.web.js.source',                                       '/jquery.ba-bbq.js'),
+                    array('system.web.js.source',                                       '/jui/js/jquery-ui.min.js'),
+                    array('system.web.js.source',                                       '/jquery.yiiactiveform.js'),
+                    array('application.extensions.qtip.assets',                         '/jquery.qtip-2.min.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/extendedGridView/jquery.yiigridview.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/fusionChart/jquery.fusioncharts.js'),
                     array('application.extensions.zurmoinc.framework.elements.assets',  '/Modal.js'),
-                    array('application.extensions.zurmoinc.framework.views.assets', 	'/FormUtils.js'),
-                    array('application.extensions.zurmoinc.framework.views.assets', 	'/ListViewUtils.js'),
-                    array('application.extensions.zurmoinc.framework.views.assets', 	'/interactions.js'),
+                    array('application.extensions.zurmoinc.framework.views.assets',     '/FormUtils.js'),
+                    array('application.extensions.zurmoinc.framework.views.assets',     '/dynamicSearchViewUtils.js'),
+                    array('application.extensions.zurmoinc.framework.views.assets',     '/ListViewUtils.js'),
+                    array('application.extensions.zurmoinc.framework.views.assets',     '/interactions.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/rssReader/jquery.zrssfeed.min.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/juiportlets/JuiPortlets.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/jnotify/jquery.jnotify.js'),
@@ -181,6 +179,7 @@
                 'importPageSize'           => 50,
                 'dashboardListPageSize'    => 5,
                 'apiListPageSize'          => 10,
+                'unlimitedPageSize'        => 1000000000
             ),
             'performance' => array(
                 'class'          => 'application.extensions.zurmoinc.framework.components.PerformanceMeasurement',
@@ -270,10 +269,12 @@
             'application.extensions.zurmoinc.framework.utils.FileUtil',
             'application.extensions.zurmoinc.framework.utils.GeneralCache',
             'application.extensions.zurmoinc.framework.exceptions.NotFoundException',
+            'application.extensions.zurmoinc.framework.components.ZurmoLocale',
             'application.modules.api.tests.unit.models.*',
             'application.modules.api.tests.unit.forms.*',
             'application.modules.install.serviceHelpers.MemcacheServiceHelper',
             'application.modules.install.serviceHelpers.ServiceHelper',
+            'application.modules.install.serviceHelpers.SetIncludePathServiceHelper',
             'application.modules.install.utils.InstallUtil',
         ),
 
@@ -281,8 +282,10 @@
             'accounts',
             'activities',
             'api',
+            'comments',
             'configuration',
             'contacts',
+            'conversations',
             'designer',
             'emailMessages',
             'export',

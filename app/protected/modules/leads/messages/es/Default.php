@@ -29,6 +29,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>"Lead, follow, or get out of the way."</h2> ' .
+        '<i>- Thomas Paine</i></i><div class="large-icon"></div><p>Leads are potential clients that should be followed up ' .
+        'on.  Be the first to create a Lead or get out of the way so someone else can.</p>'
+            => '<h2>"Lead, follow, or get out of the way."</h2> <i>- Thomas Paine</i></i><div class="large-icon"></div><p>Leads are potential clients that should be followed up on.  Be the first to create a Lead or get out of the way so someone else can.</p>',  // Same Word Translated
         'Access LeadsModulePluralLabel Tab'
             => 'Acceso a LeadsModulePluralLabel',
         'AccountsModuleSingularLabel Optional'
@@ -37,6 +41,10 @@
             => 'Cuenta es requerida',
         'Complete LeadsModuleSingularLowerCaseLabel conversion without selecting or creating an AccountsModuleSingularLowerCaseLabel.'
             => 'Completar conversión de prospecto sin seleccionar o crear una cuenta.',
+        'ContactsModuleSingularLabel or LeadsModuleSingularLabel ID'
+            => 'ID ContactsModuleSingularLabel o LeadsModuleSingularLabel',
+        'ContactsModuleSingularLabel or LeadsModuleSingularLabel Name'
+            => 'ContactsModuleSingularLabel o LeadsModuleSingularLabel Name',
         'Conversion is set to require an AccountsModuleSingularLowerCaseLabel.  Currently you do not have access to the AccountsModulePluralLowerCaseLabel module. Please contact your administrator.'
             => 'Conversión se fija para requerir un AccountsModuleSingularLowerCaseLabel y usted no tiene el acceso. Por favor, contacte con su administrador.',
         'Conversion requires access to the ContactsModulePluralLowerCaseLabel module which you do not have. Please contact your administrator.'
@@ -56,7 +64,7 @@
         'Leads'
             => 'Prospectos',
         'LeadsModulePluralLabel'
-            => 'LeadsModulePluralLabel',
+            => 'LeadsModulePluralLabel', // Same Word Translated
         'LeadsModulePluralLabel and ContactsModulePluralLabel are the same records, ' .
         'just in a different status. To create a LeadsModuleSingularLowerCaseLabel ' .
         'field, create a ContactsModuleSingularLowerCaseLabel field, and then it ' .
@@ -66,9 +74,13 @@
                'crear un campo de ContactsModuleSingularLowerCaseLabel, y luego ' .
                'será aplacable en los diseños de LeadsModulePluralLowerCaseLabel.',
         'LeadsModuleSingularLabel'
-            => 'LeadsModuleSingularLabel',
+            => 'LeadsModuleSingularLabel', // Same Word Translated
         'LeadsModuleSingularLabel Conversion'
-            => 'conversión de LeadsModuleSingularLabel',
+            => 'Conversión de LeadsModuleSingularLabel',
+        'LeadsModuleSingularLabel ID'
+            => 'ID LeadsModuleSingularLabel',
+        'LeadsModuleSingularLabel Name'
+            => 'Nombre completo',
         'LeadsModuleSingularLabel Search'
             => 'LeadsModuleSingularLabel búsqueda',
         'LeadsModuleSingularLabel successfully converted.'
@@ -81,5 +93,7 @@
             => 'Seleccione AccountsModuleSingularLabel',
         'Skip AccountsModuleSingularLabel'
             => 'Omitir AccountsModuleSingularLabel',
+        '{n} LeadsModuleSingularLabel created|{n} LeadsModulePluralLabel created'
+            => '{n} LeadsModuleSingularLabel ha sido creado|{n} LeadsModulePluralLabel han sido creados',
     );
 ?>

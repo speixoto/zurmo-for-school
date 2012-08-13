@@ -41,9 +41,9 @@
          * (non-PHPdoc)
          * @see SwiftMailer::smtpTransport()
          */
-        public function smtpTransport($host = null, $port = null)
+        public function smtpTransport($host = null, $port = null, $security = null)
         {
-            return ZurmoSwiftSmtpTransport::newInstance($host, $port);
+            return ZurmoSwiftSmtpTransport::newInstance($host, $port, $security);
         }
 
         /**
@@ -74,6 +74,44 @@
                 catch (Swift_RfcComplianceException $e)
                 {
                     throw new OutboundEmailSendException($e->getMessage(), $e->getCode(), $e);
+                }
+            }
+
+            if (!empty($this->ccAddressesAndNames))
+            {
+                foreach ($this->ccAddressesAndNames as $address => $name)
+                {
+                    try
+                    {
+                        $message->addCc($address, $name);
+                    }
+                    catch (Swift_RfcComplianceException $e)
+                    {
+                        throw new OutboundEmailSendException($e->getMessage(), $e->getCode(), $e);
+                    }
+                }
+            }
+
+            if (!empty($this->bccAddressesAndNames))
+            {
+                foreach ($this->bccAddressesAndNames as $address => $name)
+                {
+                    try
+                    {
+                        $message->addBcc($address, $name);
+                    }
+                    catch (Swift_RfcComplianceException $e)
+                    {
+                        throw new OutboundEmailSendException($e->getMessage(), $e->getCode(), $e);
+                    }
+                }
+            }
+
+            if (!empty($this->attachments))
+            {
+                foreach ($this->attachments as $attachment)
+                {
+                    $message->attach($attachment);
                 }
             }
 

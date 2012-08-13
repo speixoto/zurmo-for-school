@@ -40,6 +40,7 @@
                 $items = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
                 GeneralCache::cacheEntry(self::getMenuViewItemsCacheIdentifier(), $items);
             }
+            static::resolveTabMenuForDynamicLabelContent($items);
             return $items;
         }
 
@@ -197,6 +198,17 @@
                                                     array('titleLabel', 'descriptionLabel'));
         }
 
+        public static function getAccessibleConfigureSubMenuByCurrentUser($moduleClassName)
+        {
+            assert('is_string($moduleClassName)');
+            $user      = Yii::app()->user->userModel;
+            $metadata  = $moduleClassName::getConfigureSubMenuItems();
+            $menuItems = MenuUtil::resolveModuleMenuForAccess($moduleClassName, $metadata, $user);
+            return self::resolveMenuItemsForLanguageLocalization(  $menuItems,
+                                                    $moduleClassName,
+                                                    array('titleLabel', 'descriptionLabel'));
+        }
+
         public static function getOrderedAccessibleHeaderMenuForCurrentUser()
         {
             $headerMenuItems = static::getAccessibleHeaderMenuForCurrentUser();
@@ -263,7 +275,7 @@
             foreach ($modules as $module)
             {
                 $metadata = $module::getMetadata();
-                if(!empty($metadata['global']['userHeaderMenuItems']))
+                if (!empty($metadata['global']['userHeaderMenuItems']))
                 {
                     $menuItems = MenuUtil::resolveModuleMenuForAccess(  get_class($module),
                                                                         $metadata['global']['userHeaderMenuItems'],
@@ -275,9 +287,9 @@
                 }
             }
             $orderedHeaderMenuItems = array();
-            foreach($headerMenuItems as $item)
+            foreach ($headerMenuItems as $item)
             {
-                if(isset($item['order']))
+                if (isset($item['order']))
                 {
                     $orderedHeaderMenuItems[$item['order']] = $item;
                 }
@@ -444,6 +456,21 @@
                 }
             }
             return $menuItems;
+        }
+
+        protected static function resolveTabMenuForDynamicLabelContent(& $items)
+        {
+            foreach ($items as $key => $item)
+            {
+                if (isset($items[$key]['dynamicLabelContent']))
+                {
+                    MetadataUtil::resolveEvaluateSubString($items[$key]['dynamicLabelContent']);
+                    if (isset($items[$key]['items']))
+                    {
+                        static::resolveTabMenuForDynamicLabelContent($items[$key]['items']);
+                    }
+                }
+            }
         }
     }
 ?>

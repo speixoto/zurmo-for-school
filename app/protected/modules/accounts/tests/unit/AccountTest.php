@@ -562,7 +562,7 @@
             $modelClassNames = AccountsModule::getModelClassNames();
             $this->assertEquals(2, count($modelClassNames));
             $this->assertEquals('Account', $modelClassNames[0]);
-            $this->assertEquals('AccountsFilteredList', $modelClassNames[1]);
+            $this->assertEquals('AccountSearch', $modelClassNames[1]);
         }
 
         public function testCreatingACustomDropDownAfterAnAccountExists()
