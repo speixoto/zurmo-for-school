@@ -202,15 +202,15 @@
                     $searchForm = null;
                 }
 
+
                 $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
+                $stateMetadataAdapterClassName = null;
                 $dataProvider = $this->makeRedBeanDataProviderFromGet(
                     $searchForm,
                     $modelClassName,
                     $pageSize,
-                    Yii::app()->user->userModel->id,
                     $stateMetadataAdapterClassName
                 );
-
                 if (isset($filterParams['pagination']['page']) && (int)$filterParams['pagination']['page'] > 0)
                 {
                     $currentPage = (int)$filterParams['pagination']['page'];

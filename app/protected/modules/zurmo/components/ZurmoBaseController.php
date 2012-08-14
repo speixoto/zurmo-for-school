@@ -121,7 +121,6 @@
             $searchModel,
             $listModelClassName,
             $pageSize,
-            $userId,
             $stateMetadataAdapterClassName = null,
             $stickySearchKey = null,
             $setSticky       = true)
@@ -161,7 +160,6 @@
                 $searchModel,
                 $listModelClassName,
                 $pageSize,
-                $userId,
                 $stateMetadataAdapterClassName,
                 $dataCollection);
             return $dataProvider;
@@ -191,7 +189,6 @@
                     $searchModel,
                     $listModelClassName,
                     $pageSize,
-                    $userId,
                     $stateMetadataAdapterClassName);
             }
             else
