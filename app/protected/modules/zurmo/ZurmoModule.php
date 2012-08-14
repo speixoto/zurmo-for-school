@@ -68,7 +68,7 @@
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
                         'titleLabel'       => 'Global Configuration',
                         'descriptionLabel' => 'Manage Global Configuration',
-                        'route'            => '/zurmo/default/configurationEdit',
+                        'route'            => '/zurmo/default',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                     array(
@@ -83,6 +83,13 @@
                         'titleLabel'       => 'Languages',
                         'descriptionLabel' => 'Manage Active Languages',
                         'route'            => '/zurmo/language/configurationList',
+                        'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
+                    ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'Developer Tools',
+                        'descriptionLabel' => 'Access Developer Tools',
+                        'route'            => '/zurmo/development/',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                 ),
