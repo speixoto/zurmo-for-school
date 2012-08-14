@@ -67,6 +67,7 @@
             $searchForm      = new UsersSearchForm(new User(false));
             $dataProvider    = $this->makeRedBeanDataProviderByDataCollection(
                 $searchForm,
+                'User',
                 $pageSize
             );
             $actionBarSearchAndListView = $this->makeActionBarSearchAndListView(

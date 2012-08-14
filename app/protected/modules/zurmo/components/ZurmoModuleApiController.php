@@ -202,13 +202,13 @@
                     throw new NotSupportedException();
                 }
 
+
                 $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
-                $dataProvider = $this->makeRedBeanDataProviderByDataCollection(
+                $dataProvider = $this->makeRedBeanDataProviderFromGet(
                     $searchForm,
                     $pageSize,
                     $stateMetadataAdapterClassName
                 );
-
                 if (isset($filterParams['pagination']['page']) && (int)$filterParams['pagination']['page'] > 0)
                 {
                     $currentPage = (int)$filterParams['pagination']['page'];

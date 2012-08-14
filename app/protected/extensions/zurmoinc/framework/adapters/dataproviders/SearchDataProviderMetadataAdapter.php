@@ -263,6 +263,20 @@
                 {
                     $relatedValue = $relatedValue['value'];
                 }
+                elseif (isset($relatedValue['value']) && empty($relatedValue['value']) &&
+                        ModelAttributeToMixedTypeUtil::getType($model, $relatedAttributeName) == 'CheckBox')
+                {
+                    //Boolean field with an empty value means there is no clause to include
+                    return false;
+                }
+                //Run this before the next set of elseifs to make this scenario is properly checked
+                elseif($model instanceof MultipleValuesCustomField && count($relatedValue) > 0)
+                {
+                    if (count($relatedValue) == 1 && $relatedValue[0] == null)
+                    {
+                        return false;
+                    }
+                }
                 elseif (($model instanceof RedBeanManyToManyRelatedModels ||
                         $model instanceof RedBeanOneToManyRelatedModels ) &&
                        is_array($relatedValue) && count($relatedValue) > 0)

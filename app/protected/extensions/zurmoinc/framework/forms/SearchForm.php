@@ -188,6 +188,19 @@
             return array(self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME, self::SELECTED_LIST_ATTRIBUTES);
         }
 
+        public function getSearchableAttributes()
+        {
+            $searchableAttributes    = array();
+            foreach ($this->getAttributes() as $attributeName => $notUsed)
+            {
+                if(!in_array($attributeName, static::getNonSearchableAttributes()))
+                {
+                    $searchableAttributes[$attributeName] = $notUsed;
+                }
+            }
+            return $searchableAttributes;
+        }
+
         /**
          * (non-PHPdoc)
          * @see ModelForm::getMetadata()

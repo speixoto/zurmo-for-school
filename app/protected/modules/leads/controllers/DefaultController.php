@@ -60,7 +60,6 @@
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 'LeadsStateMetadataAdapter',
                 'LeadsSearchView'
             );

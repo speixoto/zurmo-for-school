@@ -62,8 +62,8 @@
             $this->assertEquals('Policy', $modelClassNames[17]);
             $this->assertEquals('Right', $modelClassNames[18]);
             $this->assertEquals('Role', $modelClassNames[19]);
-            $this->assertEquals('SecurableItem', $modelClassNames[20]);
-            $this->assertEquals('ZurmoModelSearch', $modelClassNames[21]);
+            $this->assertEquals('SavedSearch', $modelClassNames[20]);
+            $this->assertEquals('SecurableItem', $modelClassNames[21]);
         }
     }
 ?>

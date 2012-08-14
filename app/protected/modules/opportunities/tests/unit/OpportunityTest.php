@@ -338,7 +338,7 @@
         {
             $modelClassNames = OpportunitiesModule::getModelClassNames();
             $this->assertEquals(1, count($modelClassNames));
-            $this->assertEquals('Opportunity', $modelClassNames[1]);
+            $this->assertEquals('Opportunity', $modelClassNames[0]);
         }
     }
 ?>
