@@ -87,8 +87,8 @@
                     ),
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Development',
-                        'descriptionLabel' => 'Development Helping Tools',
+                        'titleLabel'       => 'Developer Tools',
+                        'descriptionLabel' => 'Access Developer Tools',
                         'route'            => '/zurmo/development/',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),

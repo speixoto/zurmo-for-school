@@ -39,8 +39,8 @@
                                                                          'might still exist.  This is a way to clear that cache.'),
                                                 'route'               => 'zurmo/development?clearCache=1'
                                             );
-            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Resolve Custom Data'),
-                                                'descriptionLabel'    => Yii::t('Default', 'If you changed metadata and want zurmo to resolve it, use this option.'),
+            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Update Custom Data'),
+                                                'descriptionLabel'    => Yii::t('Default', 'If there is new metadata to load using CustomManagement, use this option.'),
                                                 'route'               => 'zurmo/development?resolveCustomData=1'
                                             );
             $this->setLinkText(Yii::t('Default', 'Run'));
