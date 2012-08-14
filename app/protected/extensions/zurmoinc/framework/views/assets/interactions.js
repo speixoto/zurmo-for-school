@@ -1,6 +1,7 @@
 $(window).ready(function(){
 
     //main menu flyouts or mbmenu releacment
+    /*
     $( '.nav > .parent' ).hover(
         function(){
             if ( $(this).find('ul').length > 0 ){
@@ -13,6 +14,22 @@ $(window).ready(function(){
             }
         }
     );
+    */
+    $('.nav > .parent').live({
+        mouseenter: function() {
+            if ( $(this).find('ul').length > 0 ){
+                $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
+            }
+        },
+        mouseleave: function() {
+            if ( $(this).find('ul').length > 0 ){
+                $(this).find('ul').stop(true, true).fadeOut(250);
+            }
+        }
+    });
+    
+    
+    
 
     //Main nav hover
      $('#MenuView a, #RecentlyViewedView a').hover(
@@ -98,6 +115,25 @@ $(window).ready(function(){
            }
        },
    1000 );
+   
+   
+   $( '.loading', '#stickyListLoadingArea' ).spin({
+        lines : 9, // The number of lines to draw
+        length : 3, // The length of each line
+        width : 2, // The line thickness
+        radius : 4, // The radius of the inner circle
+        rotate : 0, // The rotation offset
+        color : '#999', // #rgb or #rrggbb
+        speed : 2, // Rounds per second
+        trail : 100, // Afterglow percentage
+        shadow : false, // Whether to render a shadow
+        hwaccel : false, // Whether to use hardware acceleration
+        className : 'spinner', // The CSS class to assign to the spinner
+        zIndsex : 2e9, // The z-index (defaults to 2000000000)
+        top : 0, // Top position relative to parent in px
+        left : 0 // Left position relative to parent in px
+    });	
+   
 });
 
 /*
