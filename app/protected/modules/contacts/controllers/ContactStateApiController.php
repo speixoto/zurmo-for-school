@@ -75,11 +75,11 @@
             {
                 if ($state =='contact')
                 {
-                    $states = ContactsUtil::getContactStateDataFromStartingStateOnAndKeyedById(); //getContactStateDataFromStartingStateKeyedByIdAndLabelByLanguage
+                    $states = ContactsUtil::getContactStateDataFromStartingStateKeyedByIdAndLabelByLanguage(Yii::app()->language);
                 }
                 elseif ($state == 'lead')
                 {
-                    $states = LeadsUtil::getLeadStateDataFromStartingStateOnAndKeyedById(); //getLeadStateDataFromStartingStateKeyedByIdAndLabelByLanguage($language)
+                    $states = LeadsUtil::getLeadStateDataFromStartingStateKeyedByIdAndLabelByLanguage(Yii::app()->language);
                 }
                 $data['totalCount'] = count($states);
                 $data['currentPage'] = 1;
