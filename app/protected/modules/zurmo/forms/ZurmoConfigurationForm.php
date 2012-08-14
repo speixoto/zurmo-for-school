@@ -68,7 +68,7 @@
                 'subListPageSize'                       => Yii::t('Default', 'Sublist page size'),
                 'modalListPageSize'                     => Yii::t('Default', 'Popup list page size'),
                 'dashboardListPageSize'                 => Yii::t('Default', 'Dashboard portlet list page size'),
-                'gamificationModalNotificationsEnabled' => Yii::t('Default', 'Enable Gamification Notification Popup window'),
+                'gamificationModalNotificationsEnabled' => Yii::t('Default', 'Enable Game Notification Popup'),
             );
         }
     }
