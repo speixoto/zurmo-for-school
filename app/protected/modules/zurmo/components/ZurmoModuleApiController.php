@@ -202,14 +202,15 @@
                     $searchForm = null;
                 }
 
+
                 $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
+                $stateMetadataAdapterClassName = null;
                 $dataProvider = $this->makeRedBeanDataProviderFromGet(
                     $searchForm,
                     $modelClassName,
                     $pageSize,
                     $stateMetadataAdapterClassName
                 );
-
                 if (isset($filterParams['pagination']['page']) && (int)$filterParams['pagination']['page'] > 0)
                 {
                     $currentPage = (int)$filterParams['pagination']['page'];
