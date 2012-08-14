@@ -58,7 +58,6 @@
             $dataProvider = $this->makeSearchDataProvider(
                 $searchForm,
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 'LeadsStateMetadataAdapter',
                 'LeadsSearchView'
             );

@@ -43,7 +43,6 @@
                                                         $stateMetadataAdapterClassName = null)
         {
             assert('$modalListLinkProvider instanceof ModalListLinkProvider');
-            $userId              = Yii::app()->user->userModel->id;
             $className           = $controller->getModule()->getPluralCamelCasedName() . 'ModalSearchAndListView';
             $modelClassName      = $controller->getModule()->getPrimaryModelName();
             $searchViewClassName = $className::getSearchViewClassName();

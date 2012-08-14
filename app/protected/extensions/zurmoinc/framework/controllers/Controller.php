@@ -88,7 +88,7 @@
                 $sanitizedSearchAttributes
             );
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
-                                                                              Yii::app()->user->userModel, $dataCollection);
+                                                                              $dataCollection);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,
@@ -100,7 +100,7 @@
             );
         }
 
-        protected static function resolveDynamicSearchMetadata($searchModel, $metadata, $userId, SearchAttributesDataCollection $dataCollection)
+        protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)
         {
 
             $dynamicSearchAttributes          = $dataCollection->getDynamicSearchAttributes();
@@ -116,7 +116,7 @@
             {
                 $dynamicSearchMetadataAdapter = new DynamicSearchDataProviderMetadataAdapter($metadata,
                                                                                              $searchModel,
-                                                                                             $userId,
+                                                                                             Yii::app()->user->userModel->id,
                                                                                              $sanitizedDynamicSearchAttributes,
                                                                                              $dynamicStructure);
                 $metadata                     = $dynamicSearchMetadataAdapter->getAdaptedDataProviderMetadata();
