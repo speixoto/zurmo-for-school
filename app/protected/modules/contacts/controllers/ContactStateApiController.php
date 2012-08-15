@@ -39,6 +39,11 @@
             return 'ContactStateSearchForm';
         }
 
+        public function getStateMetadataAdapterClassName()
+        {
+            return null;
+        }
+
         public function actionCreate()
         {
             throw new ApiUnsupportedException();

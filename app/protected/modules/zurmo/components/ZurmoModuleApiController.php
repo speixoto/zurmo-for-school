@@ -202,9 +202,15 @@
                     $searchForm = null;
                 }
 
+                if (method_exists($this, 'getStateMetadataAdapterClassName'))
+                {
+                    $stateMetadataAdapterClassName = $this->getStateMetadataAdapterClassName();
+                }
+                else
+                {
+                    $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
+                }
 
-                $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
-                $stateMetadataAdapterClassName = null;
                 $dataProvider = $this->makeRedBeanDataProviderFromGet(
                     $searchForm,
                     $modelClassName,
