@@ -202,15 +202,21 @@
                     $searchForm = null;
                 }
 
-                $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
+                if (method_exists($this, 'getStateMetadataAdapterClassName'))
+                {
+                    $stateMetadataAdapterClassName = $this->getStateMetadataAdapterClassName();
+                }
+                else
+                {
+                    $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
+                }
+
                 $dataProvider = $this->makeRedBeanDataProviderFromGet(
                     $searchForm,
                     $modelClassName,
                     $pageSize,
-                    Yii::app()->user->userModel->id,
                     $stateMetadataAdapterClassName
                 );
-
                 if (isset($filterParams['pagination']['page']) && (int)$filterParams['pagination']['page'] > 0)
                 {
                     $currentPage = (int)$filterParams['pagination']['page'];
