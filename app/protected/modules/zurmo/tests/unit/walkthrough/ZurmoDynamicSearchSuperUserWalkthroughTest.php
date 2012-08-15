@@ -261,9 +261,10 @@
             $content = $this->runControllerWithNotSupportedExceptionAndGetContent('zurmo/default/dynamicSearchAttributeInput');
             $this->assertNotNull($content);
         }
-        
-        //DropDownDependency is not used
-        /*
+                
+        /**
+         * @expectedException NotSupportedException
+         */
         public function testDynamicSearchAttributeInputDropdowndependency()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
@@ -276,7 +277,7 @@
             $this->resetPostArray();
             $content = $this->runControllerWithNotSupportedExceptionAndGetContent('zurmo/default/dynamicSearchAttributeInput');
             $this->assertNotNull($content);
-        }*/
+        }
                 
         public function testDynamicSearchAttributeInputInteger()
         {
@@ -331,7 +332,7 @@
             $content = $this->insertSearchAttributeAndGetContent('url');
             $this->assertNotNull($content);
         }
-        
+                  
         /**
          * Auxiliar function to return content when a new search attribute is inserted
          * @param   string    name of attibute to insert
