@@ -224,10 +224,9 @@
             $searchForm->dynamicClauses   = array(
                                                 array('structurePosition'           => '1',
                                                       'attributeIndexOrDerivedType' => 'primaryA',
-                                                      'primaryA' => ''));
+                                                      'primaryA' => array('name' => 'xtz')));                                                      
             $searchForm->dynamicStructure = '1';
-            $searchForm->validateDynamicClauses('dynamicClauses',array());
-            print_r($searchForm->getErrors());
+            $searchForm->validateDynamicClauses('dynamicClauses',array());            
             $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
         }
