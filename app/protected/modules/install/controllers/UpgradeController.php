@@ -26,6 +26,31 @@
 
     class InstallUpgradeController extends ZurmoModuleController
     {
+        public function filters()
+        {
+            $filters = array(
+                'upgradeAccessControl'
+            );
+            return array_merge($filters, parent::filters());
+        }
+
+        /**
+         * Allow access to all upgrade actions only to Super Administrators.
+         * @param CFilterChain $filterChain
+         */
+        public function filterUpgradeAccessControl($filterChain)
+        {
+            $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if (!$group->users->contains(Yii::app()->user->userModel))
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $filterChain->run();
+        }
+
         public function actionIndex()
         {
             $nextView = new UpgradeStartCompleteView($this->getId(), $this->getModule()->getId());
@@ -33,6 +58,10 @@
             echo $view->render();
         }
 
+        /**
+         * Upgrade step one include:
+         *
+         */
         public function actionStepOne()
         {
             $nextView = new UpgradeStepOneCompleteView($this->getId(), $this->getModule()->getId());
@@ -48,6 +77,9 @@
             echo CHtml::script('$("#progress-table").hide(); $("#upgrade-step-two").show();');
         }
 
+        /**
+         * Upgrade step two:
+         */
         public function actionStepTwo()
         {
             $nextView = new UpgradeStepTwoCompleteView($this->getId(), $this->getModule()->getId());

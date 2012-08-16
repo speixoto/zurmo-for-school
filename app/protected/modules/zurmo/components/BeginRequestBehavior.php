@@ -242,20 +242,22 @@
 
         public function handleBeginRequest($event)
         {
+            // Create list of allowed urls.
+            // Those urls should be accessed during upgrade process too.
             $allowedGuestUserUrls = array (
-                    Yii::app()->createUrl('zurmo/default/unsupportedBrowser'),
-                    Yii::app()->createUrl('zurmo/default/login'),
-                    Yii::app()->createUrl('min/serve'),
-                );
-                $reqestedUrl = Yii::app()->getRequest()->getUrl();
-                $isUrlAllowedToGuests = false;
-                foreach ($allowedGuestUserUrls as $url)
+                Yii::app()->createUrl('zurmo/default/unsupportedBrowser'),
+                Yii::app()->createUrl('zurmo/default/login'),
+                Yii::app()->createUrl('min/serve'),
+            );
+            $reqestedUrl = Yii::app()->getRequest()->getUrl();
+            $isUrlAllowedToGuests = false;
+            foreach ($allowedGuestUserUrls as $url)
+            {
+                if (strpos($reqestedUrl, $url) === 0)
                 {
-                    if (strpos($reqestedUrl, $url) === 0)
-                    {
-                        $isUrlAllowedToGuests = true;
-                    }
+                    $isUrlAllowedToGuests = true;
                 }
+            }
 
             if (Yii::app()->user->isGuest)
             {
@@ -267,7 +269,6 @@
                         exit;
                     }
                 }
-
                 if (!$isUrlAllowedToGuests)
                 {
                     Yii::app()->user->loginRequired();
@@ -277,6 +278,7 @@
             {
                 if (Yii::app()->isApplicationInMaintenanceMode())
                 {
+                    // Allow access only to users that belongs to Super Administrators.
                     $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
                     if (!$group->users->contains(Yii::app()->user->userModel))
                     {
@@ -287,8 +289,8 @@
                     {
                         if ($this->isUpgradeMode())
                         {
-                            //$url = Yii::app()->createUrl('install/upgrade/index', array('upgradeZurmo' => 1));
-                            //Yii::app()->request->redirect($url);
+                            // Don't force Super Administrators only to upgrade pages, let them access all pages.
+                            // This can be refactored.
                         }
                         elseif (!$this->isUpgradeMode() && !$isUrlAllowedToGuests)
                         {

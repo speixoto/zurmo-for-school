@@ -38,6 +38,16 @@
     {
         const UPGRADE_STATE_KEY = 'zurmoUpgrade';
 
+        /**
+         * Run first part of upgrade process, which includes:
+         * - Checking if application is in maintenance mode
+         * - Check file permissions
+         * - Check if php zip extension is loaded
+         * - Load UpgraderComponent from extracted upgrade files
+         * - Modify configure files if needed
+         * - Copy, add and remove files
+         * @param MessageStreamer $messageStreamer
+         */
         public static function runPart1(MessageStreamer $messageStreamer)
         {
             try {
@@ -86,6 +96,15 @@
             }
         }
 
+        /**
+         * Run second and last part of upgrade process, which include:
+         * - Update schema
+         * - Clean assets and runtime foders
+         * - Process final tasks
+         * - Remove upgrade files
+         * - Clear cache
+         * @param MessageStreamer $messageStreamer
+         */
         public static function runPart2(MessageStreamer $messageStreamer)
         {
             try {
@@ -93,32 +112,32 @@
                 $upgradeExtractPath = self::getUpgradeState('zurmoUpgradeFolderPath');
 
                 self::isApplicationInUpgradeMode();
-                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Loading UpgraderComponent.'));
                 self::loadUpgraderComponent($upgradeExtractPath);
-                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Running tasks before updating schema.'));
                 self::processBeforeUpdateSchema();
-                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
                 $messageLogger = new MessageLogger($messageStreamer);
-                $messageStreamer->add(Yii::t('Default', 'Updaing schema.'));
+                $messageStreamer->add(Yii::t('Default', 'Updating schema.'));
                 self::processUpdateSchema($messageLogger);
-                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Running tasks after schema is updated.'));
                 self::processAfterUpdateSchema();
                 $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Clearng assets and runtime folders.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing assets and runtime folders.'));
                 self::clearAssetsAndRunTimeItems();
-                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Process final touches.'));
                 self::processFinalTouches();
-                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Removing upgrade files.'));
                 self::removeUpgradeFiles($upgradeExtractPath);
