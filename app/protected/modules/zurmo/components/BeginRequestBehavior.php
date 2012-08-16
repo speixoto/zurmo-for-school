@@ -289,8 +289,8 @@
                     {
                         if ($this->isUpgradeMode())
                         {
-                            // Don't force Super Administrators only to upgrade pages, let them access all pages.
-                            // This can be refactored.
+                            // Super Administrators can access all pages, but inform them that application is in maintenance mode.
+                            Yii::app()->user->setFlash('notification', Yii::t('Default', 'Application is in maintenance mode, and only Super Administrators can access it.'));
                         }
                         elseif (!$this->isUpgradeMode() && !$isUrlAllowedToGuests)
                         {
