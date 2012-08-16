@@ -89,23 +89,22 @@ EOD;
             $template        = "{message}\n";
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
-            $messageLogger = new MessageLogger($messageStreamer);
 
             if ($upgradeStep == 'runPart1')
             {
-                $messageLogger->addInfoMessage("Starting zurmo upgrade process.");
-                $this->runPart1($messageLogger);
-                $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade phase 1 completed.'));
-                $messageLogger->addInfoMessage(Yii::t('Default', 'Please execute next command: "./zurmoc upgradeZurmo super runPart2" to complete upgrade process.'));
+                $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process.'));
+                $this->runPart1($messageStreamer);
+                $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade phase 1 completed.'));
+                $messageStreamer->add(Yii::t('Default', 'Please execute next command: "{command}" to complete upgrade process.',
+                        array('{command}' => './zurmoc upgradeZurmo super runPart2')));
             }
             elseif ($upgradeStep == 'runPart2')
             {
                 if (UpgradeUtil::isUpgradeStateValid())
                 {
-                    $messageLogger->addInfoMessage("Starting zurmo upgrade process - phase 2.");
-                    $this->runPart2($messageLogger);
-                    $messageLogger->addInfoMessage(Yii::t('Default', 'Zurmo upgrade completed.'));
-                    UpgradeUtil::unsetUpgradeState();
+                    $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process - phase 2.'));
+                    $this->runPart2($messageStreamer);
+                    $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade completed.'));
                 }
                 else
                 {
@@ -116,31 +115,31 @@ EOD;
         }
         catch (Exception $e)
         {
-            $messageLogger->addErrorMessage(Yii::t('Default', 'An error occur during upgrade: ') . $e->getMessage());
+            $messageStreamer->add(Yii::t('Default', 'An error occur during upgrade: ') . $e->getMessage());
             UpgradeUtil::unsetUpgradeState();
         }
     }
 
-    protected function runPart1($messageLogger)
+    protected function runPart1($messageStreamer)
     {
-        $messageLogger->addInfoMessage(Yii::t('Default', 'This is Zurmo upgrade process. Please backup files/database before you continue.'));
+        $messageStreamer->add(Yii::t('Default', 'This is Zurmo upgrade process. Please backup files/database before you continue.'));
 
-        $message = "Are you sure you want to upgrade Zurmo?";
-        $confirm = $this->confirm($message);
+        $message = Yii::t('Default', 'Are you sure you want to upgrade Zurmo? [yes|no]');
+        $confirm = $this->confirm($messageStreamer, $message);
 
         if ($confirm)
         {
-            UpgradeUtil::runPart1($messageLogger);
+            UpgradeUtil::runPart1($messageStreamer);
         }
         else
         {
-            $messageLogger->addInfoMessage(Yii::t('Default', 'Upgrade process halted.'));
+            $messageStreamer->add(Yii::t('Default', 'Upgrade process halted.'));
         }
     }
 
-    protected function runPart2($messageLogger)
+    protected function runPart2($messageStreamer)
     {
-            UpgradeUtil::runPart2($messageLogger);
+        UpgradeUtil::runPart2($messageStreamer);
     }
 
     /**
@@ -149,15 +148,11 @@ EOD;
      * @param bool $printYesNo If is true shows " [yes|no] " at prompting
      * @return bool True if user respond Yes, otherwise, return False
      */
-    public function confirm($message = null, $printYesNo = true)
+    public function confirm($messageStreamer, $message = null)
     {
         if($message !== null)
         {
-            echo $message;
-        }
-        if($printYesNo)
-        {
-            echo ' [yes|no] ';
+            $messageStreamer->add($message);
         }
         return !strncasecmp(trim(fgets(STDIN)), 'y', 1);
     }

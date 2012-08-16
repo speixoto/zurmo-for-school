@@ -46,19 +46,19 @@
         protected $installed;
 
         /**
-         * Is application in maintanance mode or not.
+         * Is application in maintenance mode or not.
          * @var boolean
          */
-        protected $maintananceMode;
+        protected $maintenanceMode;
 
         public function isApplicationInstalled()
         {
             return $this->installed;
         }
 
-        public function isApplicationInMaintananceMode()
+        public function isApplicationInMaintenanceMode()
         {
-            return $this->maintananceMode;
+            return $this->maintenanceMode;
         }
 
         protected function registerCoreComponents()

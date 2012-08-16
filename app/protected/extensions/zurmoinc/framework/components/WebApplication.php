@@ -33,10 +33,10 @@
         protected $installed;
 
         /**
-         * Is application in maintanance mode or not.
+         * Is application in maintenance mode or not.
          * @var boolean
          */
-        protected $maintananceMode;
+        protected $maintenanceMode;
 
         /**
          * Override to handle when debug is turned on and the checksum fails on cached models.
@@ -229,9 +229,9 @@
             return true;
         }
 
-        public function isApplicationInMaintananceMode()
+        public function isApplicationInMaintenanceMode()
         {
-            return $this->maintananceMode;
+            return $this->maintenanceMode;
         }
     }
 ?>

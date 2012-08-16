@@ -38,71 +38,98 @@
     {
         const UPGRADE_STATE_KEY = 'zurmoUpgrade';
 
-        public static function runPart1(MessageLogger $messageLogger)
+        public static function runPart1(MessageStreamer $messageStreamer)
         {
             try {
+                set_time_limit(3600);
+                $messageStreamer->add(Yii::t('Default', 'Checking permissions, files, upgrade version....'));
                 UpgradeUtil::setUpgradeState('zurmoUpgradeTimestamp', time());
                 self::isApplicationInUpgradeMode();
                 self::checkPermissions();
                 self::checkIfZipExtensionIsLoaded();
                 self::setCurrentZurmoVersion();
                 $upgradeZipFile = self::checkForUpgradeZip();
-
                 $upgradeExtractPath = self::unzipUpgradeZip($upgradeZipFile);
                 UpgradeUtil::setUpgradeState('zurmoUpgradeFolderPath', $upgradeExtractPath);
 
                 $configuration = self::checkManifestIfVersionIsOk($upgradeExtractPath);
+                $messageStreamer->add(Yii::t('Default', 'Checking completed.'));
+                $messageStreamer->add(Yii::t('Default', 'Load UpgraderComponent.'));
                 self::loadUpgraderComponent($upgradeExtractPath);
+                $messageStreamer->add(Yii::t('Default', 'UpgraderComponent loaded.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
 
                 $source = $upgradeExtractPath . DIRECTORY_SEPARATOR . 'filesToUpload';
                 $destination = COMMON_ROOT . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
 
+                $messageStreamer->add(Yii::t('Default', 'Altering configuration files.'));
                 $pathToConfigurationFolder = COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'config';
                 self::processBeforeConfigFiles();
                 self::processConfigFiles($pathToConfigurationFolder);
                 self::processAfterConfigFiles();
 
+                $messageStreamer->add(Yii::t('Default', 'Coping files.'));
                 self::processBeforeFiles();
                 self::processFiles($source, $destination, $configuration);
                 self::processAfterFiles();
                 self::clearCache();
+                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
+                $messageStreamer->add(Yii::t('Default', 'Part 1 complete.'));
             }
             catch (CException $e)
             {
-                echo "\n\n" . 'Error during upgrade!' . "\n\n";
-                echo $e->getMessage() . "\n";
-                echo "Please fix error(s) and try again, or restore your database/files.\n\n";
+                $messageStreamer->add(Yii::t('Default', 'Error during upgrade!'));
+                $messageStreamer->add(Yii::t('Default', $e->getMessage()));
+                $messageStreamer->add(Yii::t('Default', 'Please fix error(s) and try again, or restore your database/files.'));
                 exit;
             }
         }
 
-        public static function runPart2(MessageLogger $messageLogger)
+        public static function runPart2(MessageStreamer $messageStreamer)
         {
             try {
+                set_time_limit(12 * 60 * 60);
                 $upgradeExtractPath = self::getUpgradeState('zurmoUpgradeFolderPath');
 
                 self::isApplicationInUpgradeMode();
+                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
                 self::clearCache();
+                $messageStreamer->add(Yii::t('Default', 'Loading UpgraderComponent.'));
                 self::loadUpgraderComponent($upgradeExtractPath);
+                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
                 self::clearCache();
+                $messageStreamer->add(Yii::t('Default', 'Running tasks before updating schema.'));
                 self::processBeforeUpdateSchema();
+                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
                 self::clearCache();
+                $messageLogger = new MessageLogger($messageStreamer);
+                $messageStreamer->add(Yii::t('Default', 'Updaing schema.'));
                 self::processUpdateSchema($messageLogger);
+                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
                 self::clearCache();
+                $messageStreamer->add(Yii::t('Default', 'Running tasks after schema is updated.'));
                 self::processAfterUpdateSchema();
+                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
                 self::clearCache();
+                $messageStreamer->add(Yii::t('Default', 'Clearng assets and runtime folders.'));
                 self::clearAssetsAndRunTimeItems();
+                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
                 self::clearCache();
+                $messageStreamer->add(Yii::t('Default', 'Process final touches.'));
                 self::processFinalTouches();
+                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
                 self::clearCache();
+                $messageStreamer->add(Yii::t('Default', 'Removing upgrade files.'));
                 self::removeUpgradeFiles($upgradeExtractPath);
+                self::unsetUpgradeState();
+                $messageStreamer->add(Yii::t('Default', 'Upgrade process completed.'));
             }
             catch (CException $e)
             {
-                echo "\n\n" . 'Error during upgrade!' . "\n\n";
-                echo $e->getMessage() . "\n";
-                echo "Please fix error(s) and try again, or restore your database/files.\n\n";
+                $messageStreamer->add(Yii::t('Default', 'Error during upgrade!'));
+                $messageStreamer->add(Yii::t('Default', $e->getMessage()));
+                $messageStreamer->add(Yii::t('Default', 'Please fix error(s) and try again, or restore your database/files.'));
                 exit;
             }
         }
@@ -114,9 +141,9 @@
          */
         public static function isApplicationInUpgradeMode()
         {
-            if (isset(Yii::app()->maintananceMode) && Yii::app()->maintananceMode)
+            if (isset(Yii::app()->maintenanceMode) && Yii::app()->maintenanceMode)
             {
-                $message = 'Application is not in maintanance mode. Please edit perInstance.php file, and set "$maintananceMode  = true;"';
+                $message = Yii::t('Default', 'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode  = true;"');
                 throw new NotSupportedException($message);
             }
             return true;
@@ -133,7 +160,7 @@
             $nonWriteableFilesOrFolders = FileUtil::getNonWriteableFilesOrFolders(COMMON_ROOT);
             if (!empty($nonWriteableFilesOrFolders))
             {
-                $message = 'Not all files and folders are writeable by upgrade user. Please make next files or folders writeable:' . "\n";
+                $message = Yii::t('Default', 'Not all files and folders are writeable by upgrade user. Please make next files or folders writeable:');
                 foreach ($nonWriteableFilesOrFolders as $nonWriteableFileOrFolder)
                 {
                     $message .= $nonWriteableFileOrFolder . "\n";
@@ -153,7 +180,7 @@
             $isZipExtensionInstalled =  InstallUtil::checkZip();
             if (!$isZipExtensionInstalled)
             {
-                $message = 'Zip PHP extension is required by upgrade process, please install it.';
+                $message = Yii::t('Default', 'Zip PHP extension is required by upgrade process, please install it.');
                 throw new NotSupportedException($message);
             }
             return true;
@@ -180,14 +207,15 @@
             $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
             if (!is_dir($upgradePath))
             {
-                $message = 'Please upload upgrade zip file to runtime/upgrade folder.';
+                $message = Yii::t('Default', 'Please upload upgrade zip file to runtime/upgrade folder.');
                 throw new NotFoundException($message);
             }
 
             $handle = opendir($upgradePath);
             while (($item = readdir($handle)) !== false)
             {
-                if (end(explode('.', $item)) == 'zip')
+                $filePath = explode('.', $item);
+                if (end($filePath) == 'zip')
                 {
                     $upgradeZipFile = $upgradePath . DIRECTORY_SEPARATOR . $item;
                     $numberOfZipFiles++;
@@ -197,7 +225,7 @@
             if ($numberOfZipFiles != 1)
             {
                 closedir($handle);
-                $message = 'More then one zip files exist in runtime/upgrade folder. Please delete them all except one that you want to use for upgrade.';
+                $message = Yii::t('Default', 'More then one zip files exist in runtime/upgrade folder. Please delete them all except one that you want to use for upgrade.');
                 throw new NotSupportedException($message);
             }
             closedir($handle);
@@ -227,8 +255,8 @@
             }
             if (!$isExtracted)
             {
-                $message  = 'There was error during extraction process of ' . $upgradeZipFilePath . ". \n";
-                $message .= 'Please check if the file is valid zip archive.';
+                $message  = Yii::t('Default', 'There was error during extraction process of {zipFilePath}', array('{zipFilePath}' => $upgradeZipFilePath));
+                $message .= Yii::t('Default', 'Please check if the file is valid zip archive.');
                 throw new NotSupportedException($message);
             }
             return $upgradeExtractPath . DIRECTORY_SEPARATOR . $fileInfo['filename'];
@@ -255,20 +283,22 @@
                     }
                     else
                     {
-                        $message  = "This upgrade is for Zurmo ({$upgradeFromVersionMatches[0]} - {$upgradeToVersionMatches[0]}) \n";
-                        $message .= "Installed Zurmo version is: {$currentZurmoVersion}";
+                        $message  = Yii::t('Default', 'This upgrade is for Zurmo ({fromVersion} - {toVersion})',
+                            array ('{fromVersion}' => $upgradeFromVersionMatches[0], '{toVersion}' => $upgradeToVersionMatches[0]));
+                        $message .= Yii::t('Default', 'Installed Zurmo version is: {currentZurmoVersion}',
+                            array('{currentZurmoVersion}' => $currentZurmoVersion));
                         throw new NotSupportedException($message);
                     }
                 }
                 else
                 {
-                    $message = 'Could not extract upgrade to version from manifest file.';
+                    $message = Yii::t('Default', 'Could not extract upgrade to version from manifest file.');
                     throw new NotSupportedException($message);
                 }
             }
             else
             {
-                $message = 'Could not extract upgrade from version from manifest file.';
+                $message = Yii::t('Default', 'Could not extract upgrade from version from manifest file.');
                 throw new NotSupportedException($message);
             }
         }
@@ -279,9 +309,17 @@
          */
         public static function loadUpgraderComponent($upgradeExtractPath)
         {
-            require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'UpgraderComponent.php');
-            $upgraderComponent = Yii::createComponent('UpgraderComponent');
-            Yii::app()->setComponent('upgrader', $upgraderComponent);
+            if (file_exists($upgradeExtractPath . DIRECTORY_SEPARATOR . 'UpgraderComponent.php'))
+            {
+                require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'UpgraderComponent.php');
+                $upgraderComponent = Yii::createComponent('UpgraderComponent');
+                Yii::app()->setComponent('upgrader', $upgraderComponent);
+            }
+            else
+            {
+                $message = Yii::t('Default', 'Upgrade file is missing.');
+                throw new NotSupportedException($message);
+            }
         }
 
         /**

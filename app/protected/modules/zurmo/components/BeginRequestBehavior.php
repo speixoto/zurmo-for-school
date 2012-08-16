@@ -28,7 +28,6 @@
     {
         public function attach($owner)
         {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleMaintananceMode'));
             if (Yii::app()->apiRequest->isApiRequest())
             {
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
@@ -82,13 +81,16 @@
             }
         }
 
-        public function handleMaintananceMode()
+        /**
+         *
+         */
+        public function isUpgradeMode()
         {
-            if (Yii::app()->isApplicationInMaintananceMode())
+            if (isset($_GET['upgradeZurmo']) && $_GET['upgradeZurmo'] == 1)
             {
-                echo "Application is in maintanance mode. Please try again latter.";
-                exit;
+                return true;
             }
+            return false;
         }
 
         /**
@@ -240,9 +242,7 @@
 
         public function handleBeginRequest($event)
         {
-            if (Yii::app()->user->isGuest)
-            {
-                $allowedGuestUserUrls = array (
+            $allowedGuestUserUrls = array (
                     Yii::app()->createUrl('zurmo/default/unsupportedBrowser'),
                     Yii::app()->createUrl('zurmo/default/login'),
                     Yii::app()->createUrl('min/serve'),
@@ -256,15 +256,59 @@
                         $isUrlAllowedToGuests = true;
                     }
                 }
+
+            if (Yii::app()->user->isGuest)
+            {
+                if (Yii::app()->isApplicationInMaintenanceMode())
+                {
+                    if (!$this->isUpgradeMode())
+                    {
+                        echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
+                        exit;
+                    }
+                }
+
                 if (!$isUrlAllowedToGuests)
                 {
                     Yii::app()->user->loginRequired();
+                }
+            }
+            else
+            {
+                if (Yii::app()->isApplicationInMaintenanceMode())
+                {
+                    $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+                    if (!$group->users->contains(Yii::app()->user->userModel))
+                    {
+                        echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
+                        exit;
+                    }
+                    else
+                    {
+                        if ($this->isUpgradeMode())
+                        {
+                            //$url = Yii::app()->createUrl('install/upgrade/index', array('upgradeZurmo' => 1));
+                            //Yii::app()->request->redirect($url);
+                        }
+                        elseif (!$this->isUpgradeMode() && !$isUrlAllowedToGuests)
+                        {
+                            echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
+                            exit;
+                        }
+                    }
                 }
             }
         }
 
         public function handleBeginApiRequest($event)
         {
+            if (Yii::app()->isApplicationInMaintenanceMode())
+            {
+                $message = Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
+                $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
+                Yii::app()->apiHelper->sendResponse($result);
+                exit;
+            }
             if (Yii::app()->user->isGuest)
             {
                 $allowedGuestUserUrls = array (

@@ -66,9 +66,9 @@
         require_once($perInstanceConfigInSameDirAsMainConfig);
     }
 
-    if (!isset($maintananceMode))
+    if (!isset($maintenanceMode))
     {
-        $maintananceMode = false;
+        $maintenanceMode = false;
     }
 
     $config = CMap::mergeArray(
@@ -77,7 +77,7 @@
             'language'        => $language,
             'theme'           => $theme,
             'installed'       => $installed,
-            'maintananceMode' => $maintananceMode,
+            'maintenanceMode' => $maintenanceMode,
             'components'  => array(
                 'db' => array(
                     'connectionString' => $connectionString,
