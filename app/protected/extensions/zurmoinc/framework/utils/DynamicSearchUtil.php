@@ -243,6 +243,7 @@
                                                               $form, array_slice($element, 2));
             $element->editableTemplate = '{content}{error}';
             $content                  .= $element->render();
+            $content                  .= $element->renderEditablePartForUseInDynamicSearchContent();
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);

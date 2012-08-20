@@ -90,5 +90,20 @@
             $id = $this->getEditableInputId($this->attribute, 'value');
             return $this->form->labelEx($this->model, $this->attribute, array('for' => $id));
         }
+
+        /**
+         * CurrencyValue is special because you can pass the value and the currency id so the relatedData is needed
+         * to be added as a hidden input.
+         * (non-PHPdoc)
+         * @see Element::renderEditablePartForUseInDynamicSearchContent()
+         */
+        public function renderEditablePartForUseInDynamicSearchContent()
+        {
+            $name = $this->getEditableInputName($this->attribute, 'relatedData');
+            $htmlOptions = array(
+                'id'   => $this->getEditableInputId($this->attribute, 'relatedData'),
+            );
+            return ZurmoHtml::hiddenField($name, true, $htmlOptions);
+        }
     }
 ?>
