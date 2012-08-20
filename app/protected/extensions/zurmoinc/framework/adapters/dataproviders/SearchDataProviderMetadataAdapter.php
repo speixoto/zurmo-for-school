@@ -277,6 +277,10 @@
                         return false;
                     }
                 }
+                elseif ($model instanceof MultipleValuesCustomField && count($relatedValue) == 0)
+                {
+                    return false;
+                }
                 elseif (($model instanceof RedBeanManyToManyRelatedModels ||
                         $model instanceof RedBeanOneToManyRelatedModels ) &&
                        is_array($relatedValue) && count($relatedValue) > 0)
