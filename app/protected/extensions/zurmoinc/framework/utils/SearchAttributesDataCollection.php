@@ -30,7 +30,6 @@
      */
     class SearchAttributesDataCollection
     {
-
         protected $model;
 
         public function __construct($model)

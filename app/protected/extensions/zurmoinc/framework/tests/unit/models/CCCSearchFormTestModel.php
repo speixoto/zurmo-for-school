@@ -37,7 +37,6 @@
         public function __construct(RedBeanModel $model)
         {
             parent::__construct($model);
-
         }
 
         public function rules()

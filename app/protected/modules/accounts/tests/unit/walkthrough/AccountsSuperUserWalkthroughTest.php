@@ -46,7 +46,6 @@
             AccountTestHelper::createAccountByNameForOwner('superAccount4', $super);
             //Setup default dashboard.
             Dashboard::getByLayoutIdAndUser(Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
-
         }
 
         public function testSuperUserAllDefaultControllerActions()

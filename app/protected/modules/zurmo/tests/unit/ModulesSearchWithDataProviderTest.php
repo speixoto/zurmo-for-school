@@ -58,7 +58,7 @@
                 'phone'          => null,
                 'radioDropDown'  => array('value' => null), //single select dropdown with no value present
                 'string'         => null,
-                'tagCloud'		 => array('values' => null), //null vs array with null like multiDropDown condition above.
+                'tagCloud'       => array('values' => null), //null vs array with null like multiDropDown condition above.
                 'textArea'       => null,
                 'url'            => null,
             );
