@@ -361,5 +361,13 @@
             }
             return $inputIdPrefix;
         }
+
+        /**
+         * Override and return content if there is any special hidden inputs that are required for displaying
+         * editable input for the dynamic search
+         */
+        public function renderEditablePartForUseInDynamicSearchContent()
+        {
+        }
     }
 ?>

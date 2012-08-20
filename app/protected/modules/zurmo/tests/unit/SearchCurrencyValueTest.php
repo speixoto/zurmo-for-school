@@ -41,32 +41,148 @@
             $searchForm = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
             $searchForm->dynamicClauses   = array(
                                                 array('structurePosition'           => '1',
-                                                      'attributeIndexOrDerivedType' => 'amount',                                                                                                          
-                                                      'amount' => array ('value' => '100'),         
+                                                      'attributeIndexOrDerivedType' => 'amount',
+                                                      'amount' => array ('value' => '100'),
                                                      )
                                                  );
             $searchForm->dynamicStructure = '1';
-            $searchForm->validateDynamicClauses('dynamicClauses',array());          
+            $searchForm->validateDynamicClauses('dynamicClauses',array());
             $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
-                       
+
         }
-        
-        public function testSearchCurrencyValueWithPassingCurrencyid()
+
+        public function testSearchCurrencyValueWithPassingCurrencyidAndValue()
         {
-            $super = User::getByUsername('super');
+            $super              = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $searchForm = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
-            $searchForm->dynamicClauses   = array(
-                                                array('structurePosition'           => '1',
-                                                      'attributeIndexOrDerivedType' => 'amount',                                                                                                                                                                
-                                                      'amount' => array('currency' => array('id' => '1')),
-                                                      ));
+            $searchAttributes   = array(array('structurePosition'           => '1',
+                                              'attributeIndexOrDerivedType' => 'amount',
+                                              'amount' => array('relatedData' => true,
+                                                                  'currency'    => array('id' => '1'),
+                                                                  'value'       => '100'),
+                                              ));
+            $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
+            $searchForm->dynamicClauses   = $searchAttributes;
             $searchForm->dynamicStructure = '1';
-            $searchForm->validateDynamicClauses('dynamicClauses',array());          
+            $searchForm->validateDynamicClauses('dynamicClauses',array());
             $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
-                       
+
+            $dynamicStructure = '1';
+            $metadata         = array('clauses' => array(), 'structure' => '');
+            $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
+                $metadata,
+                new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
+                (int)Yii::app()->user->userModel->id,
+                $searchAttributes,
+                $dynamicStructure);
+            $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'amount',
+                    'relatedModelData'     => array(
+                        'attributeName'        => 'currency',
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'equals',
+                        'value'                => '1',
+                    ),
+                ),
+                2 => array(
+                    'attributeName'        => 'amount',
+                    'relatedModelData'     => array(
+                        'attributeName'        => 'value',
+                        'operatorType'         => 'equals',
+                        'value'                => '100',
+                    ),
+                ),
+            );
+            $compareStructure = '(1 and 2)';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        public function testSearchCurrencyValueWithPassingCurrencyidAndNoValue()
+        {
+            $super              = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $searchAttributes   = array(array('structurePosition'           => '1',
+                                              'attributeIndexOrDerivedType' => 'amount',
+                                              'amount' => array('relatedData' => true,
+                                                                  'currency'    => array('id' => '1')),
+                                              ));
+            $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
+            $searchForm->dynamicClauses   = $searchAttributes;
+            $searchForm->dynamicStructure = '1';
+            $searchForm->validateDynamicClauses('dynamicClauses',array());
+            $this->assertFalse($searchForm->hasErrors());
+            $searchForm->clearErrors();
+
+            $dynamicStructure = '1';
+            $metadata         = array('clauses' => array(), 'structure' => '');
+            $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
+                $metadata,
+                new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
+                (int)Yii::app()->user->userModel->id,
+                $searchAttributes,
+                $dynamicStructure);
+            $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'amount',
+                    'relatedModelData'     => array(
+                        'attributeName'        => 'currency',
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'equals',
+                        'value'                => '1',
+                    ),
+                ),
+            );
+            $compareStructure = '(1)';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        public function testSearchCurrencyValueWithPassingCurrencyidAndANullValue()
+        {
+            $super              = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $searchAttributes   = array(array('structurePosition'           => '1',
+                                              'attributeIndexOrDerivedType' => 'amount',
+                                              'amount' => array('relatedData' => true,
+                                                                  'currency'    => array('id' => '1'),
+                                                                  'value'       => null),
+                                              ));
+            $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
+            $searchForm->dynamicClauses   = $searchAttributes;
+            $searchForm->dynamicStructure = '1';
+            $searchForm->validateDynamicClauses('dynamicClauses',array());
+            $this->assertFalse($searchForm->hasErrors());
+            $searchForm->clearErrors();
+
+            $dynamicStructure = '1';
+            $metadata         = array('clauses' => array(), 'structure' => '');
+            $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
+                $metadata,
+                new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
+                (int)Yii::app()->user->userModel->id,
+                $searchAttributes,
+                $dynamicStructure);
+            $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'amount',
+                    'relatedModelData'     => array(
+                        'attributeName'        => 'currency',
+                        'relatedAttributeName' => 'id',
+                        'operatorType'         => 'equals',
+                        'value'                => '1',
+                    ),
+                ),
+            );
+            $compareStructure = '(1)';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
         }
     }
 ?>
