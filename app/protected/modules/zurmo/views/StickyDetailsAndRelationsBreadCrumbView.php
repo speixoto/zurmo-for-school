@@ -50,7 +50,7 @@
         protected function renderContent()
         {
             $content = parent::renderContent();
-            if($this->stickyLoadUrl != null)
+            if ($this->stickyLoadUrl != null)
             {
                 $content .= '<div id="stickyListLoadingArea"><span class="loading"></span></div>';
             }
@@ -60,7 +60,7 @@
 
         protected function renderScripts()
         {
-            if($this->stickyLoadUrl != null)
+            if ($this->stickyLoadUrl != null)
             {
                 $ajaxLoadScript  = CHtml::ajax(array(
                         'type'    => 'GET',

@@ -203,7 +203,7 @@
                 }
 
                 // In case of ContactState model, we can't use Module::getStateMetadataAdapterClassName() function,
-                // because it references to Contact model, so we defined new function 
+                // because it references to Contact model, so we defined new function
                 // ContactsContactStateApiController::getStateMetadataAdapterClassName() which return null.
                 if (method_exists($this, 'getStateMetadataAdapterClassName'))
                 {

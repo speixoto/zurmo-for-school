@@ -81,7 +81,6 @@
             $this->assertTrue($view instanceof StickyDetailsAndRelationsBreadCrumbView);
             $content = $view->render();
             $this->assertFalse(strpos($content, 'stickyListLoadingArea') === false);
-
         }
     }
 ?>

@@ -57,8 +57,8 @@
                 'session' => array(
                     'class' => 'CHttpSession',
                 ),
-                'themeManager'=>array(
-                   'class'=>'CThemeManager',
+                'themeManager' => array(
+                   'class' => 'CThemeManager',
                 )
             );
 
@@ -94,8 +94,10 @@
          */
         public function getTheme()
         {
-            if(is_string($this->_theme))
-                $this->_theme=$this->getThemeManager()->getTheme($this->_theme);
+            if (is_string($this->_theme))
+            {
+                $this->_theme = $this->getThemeManager()->getTheme($this->_theme);
+            }
             return $this->_theme;
         }
 
@@ -104,7 +106,7 @@
          */
         public function setTheme($value)
         {
-            $this->_theme=$value;
+            $this->_theme = $value;
         }
     }
 ?>

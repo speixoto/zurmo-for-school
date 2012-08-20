@@ -146,7 +146,6 @@
 
         protected function getExtraRenderForClearSearchLinkScript()
         {
-
         }
 
         protected function renderClearingSearchInputContent()
@@ -182,14 +181,14 @@
                     {
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
-                        //Reseting DropKick Information                        
-                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){                                                                            
+                        //Reseting DropKick Information
+                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){
                             $(this).removeData('dropkick');
                         });
                         $(this).closest('form').find('div.dk_container').each(function(){
                             $(this).remove();
                         });
-                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){                                                
+                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){
                             $(this).dropkick();
                             $(this).dropkick('rebindToggle');
                         });
@@ -278,7 +277,7 @@
                     $startingDivStyle = "style='display:none;'";
                 }
                 $content .= '<div class="search-view-' . $key . '" ' . $startingDivStyle . '>';
-                if($key == 1)
+                if ($key == 1)
                 {
                    $content .= $this->renderAdvancedSearchForFormLayout($panel, $maxCellsPerRow, $form);
                 }
