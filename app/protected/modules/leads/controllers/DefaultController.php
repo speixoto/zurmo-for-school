@@ -59,7 +59,6 @@
                 $searchForm,
                 'Contact',
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 'LeadsStateMetadataAdapter',
                 'LeadsSearchView'
             );

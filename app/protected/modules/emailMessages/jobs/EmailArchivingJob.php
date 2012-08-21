@@ -91,8 +91,6 @@
                 foreach ($messages as $message)
                 {
                     Yii::app()->user->userModel = self::$jobOwnerUserModel;
-
-                    $emailSenderOrRecepientEmailNotFoundInSystem = false;
                     $lastMessageCreatedTime = strtotime($message->createdDate);
                     if (strtotime($message->createdDate) > strtotime($lastCheckTime))
                     {
@@ -248,7 +246,7 @@
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
                 return false;
             }
-
+            $emailSenderOrRecepientEmailNotFoundInSystem = false;
             Yii::app()->user->userModel = $emailOwner;
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    Yii::app()->user->userModel);

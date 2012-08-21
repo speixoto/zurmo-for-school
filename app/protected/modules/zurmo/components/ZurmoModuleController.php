@@ -276,7 +276,6 @@
                 Yii::app()->end(0, false);
             }
         }
-
         public function actionRenderStickyListBreadCrumbContent($stickyOffset, $stickyKey, $stickyModelId)
         {
             if($stickyOffset == null)
@@ -293,7 +292,6 @@
                 $searchForm,
                 $modelClassName,
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 $stickyKey,
                 false
@@ -304,7 +302,7 @@
             $dataList   = $dataProvider->getData();
             if(count($dataList) > 0)
             {
-                $menuItems = array('label' => '▾');
+                $menuItems = array('label' => '?');
                 foreach($dataList as $row => $data)
                 {
                     $url = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/details',

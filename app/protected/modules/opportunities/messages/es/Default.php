@@ -34,7 +34,7 @@
                                      'CRM system lies Opportunities, or expressions of potential revenue. ' .
                                      'Nothing difficult about creating an Opportunity, so go ahead and create the ' .
                                      'first one!</p>'
-            =>'<h2>"In the middle of difficulty lies Opportunity."</h2> <i>- Albert Einstein</i></i><div class="large-icon"></div><p>In the middle of a well-implemented CRM system lies Opportunities, or expressions of potential revenue. Nothing difficult about creating an Opportunity, so go ahead and create the first one!</p>', // Same Word Translated
+            => '<h2>"In the middle of difficulty lies Opportunity."</h2> <i>- Albert Einstein</i></i><div class="large-icon"></div><p>In the middle of a well-implemented CRM system lies Opportunities, or expressions of potential revenue. Nothing difficult about creating an Opportunity, so go ahead and create the first one!</p>', // Same Word Translated
         'Access OpportunitiesModulePluralLabel Tab'
             => 'Acceso a OpportunitiesModulePluralLabel',
         'Close Date'

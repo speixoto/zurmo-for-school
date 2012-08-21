@@ -209,24 +209,29 @@
         protected function renderAddExtraRowContent($rowCount)
         {
             assert('is_int($rowCount)');
-            $idInputHtmlOptions  = array('id' => $this->getRowCounterInputId());
-            $hiddenInputName     = 'rowCounter';
-            $ajaxOnChangeUrl     = Yii::app()->createUrl("zurmo/default/dynamicSearchAddExtraRow",
-                                   array('viewClassName'      => get_class($this),
+            $idInputHtmlOptions   = array('id' => $this->getRowCounterInputId());
+            $hiddenInputName      = 'rowCounter';
+            $ajaxOnChangeUrl      = Yii::app()->createUrl("zurmo/default/dynamicSearchAddExtraRow",
+                                    array('viewClassName'      => get_class($this),
                                          'modelClassName'     => get_class($this->model->getModel()),
                                          'formModelClassName' => get_class($this->model),
                                          'suffix'             => $this->getSearchFormId()));
-            $content             = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
+            $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
             $addFieldLabelContent = $this->getAddFieldLabelContent();
-            $content            .= ZurmoHtml::ajaxLink($addFieldLabelContent, $ajaxOnChangeUrl,
+            $aContent             = CHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent            .= CHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent            .= CHtml::tag('span', array('class' => 'z-label'), $addFieldLabelContent);
+            $content             .= ZurmoHtml::ajaxLink($aContent, $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
+                                          'beforeSend' => 'js:function(){$(this).addClass("loading-ajax-submit"); $(this).addClass("loading"); attachLoadingSpinner("' . $this->getSearchFormId() . '");}',
                                           'success' => 'js:function(data){
                                             $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                             resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
+                                            $(this).removeClass("loading-ajax-submit"); $(this).removeClass("loading");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard

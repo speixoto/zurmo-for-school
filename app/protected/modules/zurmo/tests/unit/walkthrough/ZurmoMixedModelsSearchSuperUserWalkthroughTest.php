@@ -25,53 +25,329 @@
      ********************************************************************************/
 
     /**
-     * Walkthrough for the super user of mixed models search actions
+     * Walkthrough for the super user of dynamic search actions
      */
-    class ZurmoMixedModelsSearchSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class ZurmoDynamicSearchSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
-            parent::setUpBeforeClass();            
-            $super = SecurityTestHelper::createSuperAdmin();
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
-            ContactsModule::loadStartingData();            
-
-            //Setup test data owned by the super user.
-            AccountTestHelper::createAccountByNameForOwner('Dinamite', $super);
-            AccountTestHelper::createAccountByNameForOwner('dino', $super);
         }
 
-        public function testSuperUserGlobalList()
+        public function testSuperUserAllDefaultControllerActions()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');            
-            
-            //Test if actionGlobalList return a list view for all modules
-            $this->setGetArray(array('MixedModelsSearchForm' => array('anyMixedAttributesScope' => array('All'),
-                                                                      'term'                    => 't'
-                )));
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $this->setGetArray(array(   'viewClassName'      => 'AccountsSearchView',
+                                        'modelClassName'     => 'Account',
+                                        'formModelClassName' => 'AccountsSearchForm',
+                                        'rowNumber'			 => 5));
             $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/globallist');
-            $this->assertContains('<div class="cgrid-view" id="list-view-accounts">', $content);
-            $this->assertContains('<div class="cgrid-view" id="list-view-contacts">', $content);
-            $this->assertContains('<div class="cgrid-view" id="list-view-leads">', $content);
-            $this->assertContains('<div class="cgrid-view" id="list-view-opportunities">', $content);            
-            //Even if there are results it should return a cgridview with no text
-            $this->assertNotContains('No results found.', $content);                      
-                      
-            //Test if actionGlobalList only show the module requested
-            ContactTestHelper::createContactByNameForOwner('tim', $super);
-            $_SERVER['HTTP_X_REQUESTED_WITH']='XMLHttpRequest';
-            $this->setGetArray(array('MixedModelsSearchForm' => array('term' => 'd'),
-                                     'ajax'                  => 'list-view-accounts')
-                    );
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAddExtraRow');
+            $this->assertNotNull($content);
+
+            //Test not passing validation post var
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
             $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/globallist');
-            $this->assertContains('id="AccountsListView"', $content);
-            $this->assertNotContains('id="ContactsListView"', $content);            
-            $this->assertNotContains('id="LeadsListView"', $content);
-            $this->assertNotContains('id="OpportunitiesListView">', $content);  
-            //TODO: Should test if show the accounts created                     
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
+            $this->assertEmpty($content);
+
+            //Test form that validates
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'                          => 'search-form',
+                                      'AccountsSearchForm'            => array()));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
+            $this->assertEmpty($content);
+
+            //Test a form that does not validate because it is missing a field selection
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'               => 'search-form',
+                                        'AccountsSearchForm' => array(
+                                            'dynamicStructure' => '1',
+                                            'dynamicClauses'   => array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => '')))));
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/default/validateDynamicSearch');
+            $this->assertEquals('{"AccountsSearchForm_dynamicClauses":["You must select a field for row 1"]}', $content);
+
+
+            //Test a form that does not validate because it is missing a field selection
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'               => 'search-form',
+                                        'AccountsSearchForm' => array(
+                                            'dynamicStructure' => '1',
+                                            'dynamicClauses'   => array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => 'name',
+                                                      'name' => '')))));
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/default/validateDynamicSearch');
+            $this->assertEquals('{"AccountsSearchForm_dynamicClauses":["You must select a value for row 1"]}', $content);
+
+            //Test a form that validates a dynamic clause
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'               => 'search-form',
+                                        'AccountsSearchForm' => array(
+                                            'dynamicStructure' => '1',
+                                            'dynamicClauses'   => array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => 'name',
+                                                      'name' => 'someValue')))));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
+            $this->assertEmpty($content);
+
+            //Test a form that does not validate recursive dynamic clause attributes
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'               => 'search-form',
+                                        'AccountsSearchForm' => array(
+                                            'dynamicStructure' => '1',
+                                            'dynamicClauses'   => array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => 'name',
+                                                      'contacts' => array(
+                                                        'relatedData'   => true,
+                                                        'firstName'		=> '',
+                                                      ))))));
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/default/validateDynamicSearch');
+            $this->assertEquals('{"AccountsSearchForm_dynamicClauses":["You must select a value for row 1"]}', $content);
+
+            //Test a form that does validate recursive dynamic clause attributes
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm'));
+            $this->setPostArray(array('ajax'               => 'search-form',
+                                        'AccountsSearchForm' => array(
+                                            'dynamicStructure' => '1',
+                                            'dynamicClauses'   => array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => 'name',
+                                                      'contacts' => array(
+                                                        'relatedData'   => true,
+                                                        'firstName'		=> 'Jason',
+                                                      ))))));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
+            $this->assertEmpty($content);
         }
+
+        public function testDynamicSearchAttributeInputTypes()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            //Test null attribute
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => ''));
+            $this->resetPostArray();
+            $this->runControllerWithExitExceptionAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+
+            //Test Account attribute
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => 'name'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            $this->assertNotNull($content);
+
+            //Test AccountsSearchForm attribute
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => 'anyCountry'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            $this->assertNotNull($content);                       
+        }
+        
+        public function testDynamicSearchAttributeInputCheckBox()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createCheckBoxCustomFieldByModule('AccountsModule', 'checkbox');                                  
+            $content = $this->insertSearchAttributeAndGetContent('checkbox');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputCurrency()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createCurrencyValueCustomFieldByModule('AccountsModule', 'currency');                                  
+            $content = $this->insertSearchAttributeAndGetContent('currency');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputDate()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDateCustomFieldByModule('AccountsModule', 'date');                                  
+            $content = $this->insertSearchAttributeAndGetContent('date__Date');           
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputDateTime()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDateTimeCustomFieldByModule('AccountsModule', 'datetime');
+            $content = $this->insertSearchAttributeAndGetContent('datetime__DateTime');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputDecimal()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDecimalCustomFieldByModule('AccountsModule', 'decimal');                                  
+            $content = $this->insertSearchAttributeAndGetContent('decimal');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputPicklist()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDropDownCustomFieldByModule('AccountsModule', 'picklist');                                  
+            $content = $this->insertSearchAttributeAndGetContent('picklist');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputCountrypicklist()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDependentDropDownCustomFieldByModule('AccountsModule', 'countrypicklist');                                  
+            $content = $this->insertSearchAttributeAndGetContent('countrypicklist');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputMultiselect()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createMultiSelectDropDownCustomFieldByModule('AccountsModule', 'multiselect');                                  
+            $content = $this->insertSearchAttributeAndGetContent('multiselect');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputTagcloud()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createTagCloudCustomFieldByModule('AccountsModule', 'tagcloud');                                  
+            $content = $this->insertSearchAttributeAndGetContent('tagcloud');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputCalculatednumber()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createCalculatedNumberCustomFieldByModule('AccountsModule', 'calculatednumber');                                  
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => 'calculatednumber'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNotSupportedExceptionAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            $this->assertNotNull($content);
+        }
+        
+        //DropDownDependency is not used
+        /*
+        public function testDynamicSearchAttributeInputDropdowndependency()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createDropDownDependencyCustomFieldByModule('AccountsModule', 'dropdowndependency');                                  
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => 'dropdowndependency'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNotSupportedExceptionAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            $this->assertNotNull($content);
+        }*/
+                
+        public function testDynamicSearchAttributeInputInteger()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createIntegerCustomFieldByModule('AccountsModule', 'integer');                                  
+            $content = $this->insertSearchAttributeAndGetContent('integer');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputPhone()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createPhoneCustomFieldByModule('AccountsModule', 'phone');                                  
+            $content = $this->insertSearchAttributeAndGetContent('phone');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputRadio()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createRadioDropDownCustomFieldByModule('AccountsModule', 'radio');                                  
+            $content = $this->insertSearchAttributeAndGetContent('radio');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputText()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createTextCustomFieldByModule('AccountsModule', 'text');                                  
+            $content = $this->insertSearchAttributeAndGetContent('text');
+            $this->assertNotNull($content);
+        }
+                       
+        public function testDynamicSearchAttributeInputTextarea()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');                        
+            $this->createTextAreaCustomFieldByModule('AccountsModule', 'textarea');                                  
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => 'textarea'));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNotSupportedExceptionAndGetContent('zurmo/default/dynamicSearchAttributeInput');
+            $this->assertNotNull($content);
+        }
+        
+        public function testDynamicSearchAttributeInputUrl()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->createUrlCustomFieldByModule('AccountsModule', 'url');                                  
+            $content = $this->insertSearchAttributeAndGetContent('url');
+            $this->assertNotNull($content);
+        }
+        
+        /**
+         * Auxiliar function to return content when a new search attribute is inserted
+         * @param   string    name of attibute to insert
+         * @return  string    content to be inserted in the page that make the inserted attribute searcheble
+         */
+        private function insertSearchAttributeAndGetContent($name)
+        {
+            $this->setGetArray(array(   'viewClassName'               => 'AccountsSearchView',
+                                        'modelClassName'              => 'Account',
+                                        'formModelClassName'          => 'AccountsSearchForm',
+                                        'rowNumber'                   => 5,
+                                        'attributeIndexOrDerivedType' => $name));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');            
+            return $content;
+        }
+                
     }
 ?>

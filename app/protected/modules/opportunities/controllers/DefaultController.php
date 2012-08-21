@@ -55,7 +55,6 @@
                 $searchForm,
                 'Opportunity',
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 'OpportunitiesSearchView'
             );

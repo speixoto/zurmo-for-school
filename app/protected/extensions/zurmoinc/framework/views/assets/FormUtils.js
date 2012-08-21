@@ -113,9 +113,13 @@ function searchByQueuedSearch(inputId)
     }
 }
 
-function attachLoadingSpinner(formId)
+function attachLoadingSpinner(divId, spinnerClassName)
 {
-    $('.z-spinner', '#' + formId).spin({
+    if(spinnerClassName == null)
+    {
+        spinnerClassName = 'z-spinner';
+    }
+    $('.' +  spinnerClassName, '#' + divId).spin({
         lines : 11, // The number of lines to draw
         length : 2.3, // The length of each line
         width : 2, // The line thickness

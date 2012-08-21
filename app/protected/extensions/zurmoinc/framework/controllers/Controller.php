@@ -66,7 +66,6 @@
             $searchModel,
             $listModelClassName,
             $pageSize,
-            $userId,
             $stateMetadataAdapterClassName = null,
             $dataCollection = null)
         {
@@ -85,11 +84,11 @@
             $sortDescending            = SearchUtil::resolveSortDescendingFromGetArray($listModelClassName);
             $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                 $searchModel,
-                $userId,
+                Yii::app()->user->userModel->id,
                 $sanitizedSearchAttributes
             );
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
-                                                                              $userId, $dataCollection);
+                                                                              $dataCollection);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,
@@ -101,9 +100,9 @@
             );
         }
 
-        protected static function resolveDynamicSearchMetadata($searchModel, $metadata, $userId, SearchAttributesDataCollection $dataCollection)
+        protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)
         {
-
+            );
             $dynamicSearchAttributes          = $dataCollection->getDynamicSearchAttributes();
             if($dynamicSearchAttributes == null)
             {
@@ -117,7 +116,7 @@
             {
                 $dynamicSearchMetadataAdapter = new DynamicSearchDataProviderMetadataAdapter($metadata,
                                                                                              $searchModel,
-                                                                                             $userId,
+                                                                                             Yii::app()->user->userModel->id,
                                                                                              $sanitizedDynamicSearchAttributes,
                                                                                              $dynamicStructure);
                 $metadata                     = $dynamicSearchMetadataAdapter->getAdaptedDataProviderMetadata();

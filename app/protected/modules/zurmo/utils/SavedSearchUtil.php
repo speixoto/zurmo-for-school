@@ -65,7 +65,7 @@
                 {
                     $searchForm->anyMixedAttributes = $unserializedData['anyMixedAttributes'];
                 }
-                if(isset($unserializedData['anyMixedAttributes']))
+                if(isset($unserializedData['anyMixedAttributesScope']))
                 {
                     $searchForm->setAnyMixedAttributesScope($unserializedData['anyMixedAttributesScope']);
                 }
@@ -113,7 +113,7 @@
             {
                 $model->anyMixedAttributes = $stickyData['anyMixedAttributes'];
             }
-            if(isset($stickyData['anyMixedAttributes']))
+            if(isset($stickyData['anyMixedAttributesScope']))
             {
                 $model->setAnyMixedAttributesScope($stickyData['anyMixedAttributesScope']);
             }

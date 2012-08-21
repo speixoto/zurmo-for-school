@@ -140,7 +140,7 @@
         'Process Outbound Email Job'
             => 'Inicie el proceso de correo saliente',
         'Recipient info can\'t be extracted from email message'
-            => '??',
+            => 'Información del destinatario no se puede extraer del email',
         'Response from Server'
             => 'Respuesta del Servidor',
         'Select ContactsModuleSingularLabel'

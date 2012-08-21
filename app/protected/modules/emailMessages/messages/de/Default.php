@@ -110,11 +110,11 @@
         'Manage Email Configuration'
             => 'E-Mail Konfiguration',
         'Manage your email preferences'
-            => '??',
+            => 'Deine E-Mail-Einstellungen verwalten',
         'Match archived emails'
             => 'Archivierte E-Mails entsprechen',
         'Matching archived emails requires access to either ContactsModulePluralLowerCaseLabel or LeadsModulePluralLowerCaseLabel both of which you do not have. Please contact your administrator.'
-            => '??',
+            => 'Passende archivierten E-Mails benötigt Zugriff auf entweder ContactsModulePluralLowerCaseLabel oder LeadsModulePluralLowerCaseLabel. Du hast keines. Bitte informierst du deinen Administrator.',
         'Message failed to send'
             => 'Nachricht nicht gesendet',
         'Message successfully sent'
@@ -140,7 +140,7 @@
         'Process Outbound Email Job'
             => 'Ausgehende E-Mail Prozess starten',
         'Recipient info can\'t be extracted from email message'
-            => 'Passende archivierten E-Mails erfordert den Zugang zu beiden ContactsModulePluralLowerCaseLabel oder LeadsModulePluralLowerCaseLabel die du beide nicht hast. Bitte deinen Administrator kontaktieren.',
+            => 'Empfänger Info kann nicht von E-Mail-Nachricht extrahiert werden',
         'Response from Server'
             => 'Server Response',
         'Select ContactsModuleSingularLabel'

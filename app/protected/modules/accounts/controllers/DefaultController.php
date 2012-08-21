@@ -55,7 +55,6 @@
                 $searchForm,
                 'Account',
                 $pageSize,
-                Yii::app()->user->userModel->id,
                 null,
                 'AccountsSearchView'
             );

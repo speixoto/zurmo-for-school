@@ -68,9 +68,11 @@
             => 'Benutzernamen schreiben',
         'You have been invited to participate in a conversation'
             => 'Du bist eingeladen, an einer Konversation teilzunehmen.',
+        '{headerStartTag}Join the Conversation{headerEndTag}{headerLineBreak}{ownerName} ' .
+        'would like you to join a conversation {strongStartTag}"{conversationSubject}"{strongEndTag}'
+            => '{headerStartTag}Konversation teilnehmen{headerEndTag}{headerLineBreak}{ownerName} ' .
+               'möchte, dass du an einem Konversation teilzunehmen {strongStartTag}"{conversationSubject}"{strongEndTag}',
         '{n} Conversation created|{n} Conversations created'
-            => 'Du bist eingeladen, an einer Konversation teilzunehmen',
-        '{ownerName} would like you to join a conversation "{conversationSubject}".'
-            => '{ownerName} möchte, dass du an einem Konversation teilzunehmen.',
+            => '{n} Konversation erstellt|{n} Konversationen erstellt',
     );
 ?>

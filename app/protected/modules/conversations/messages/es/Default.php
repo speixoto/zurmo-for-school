@@ -68,9 +68,11 @@
             => 'Introduce el nombre de usuario',
         'You have been invited to participate in a conversation'
             => 'Usted está invitado a participar en una conversación',
+        '{headerStartTag}Join the Conversation{headerEndTag}{headerLineBreak}{ownerName} ' .
+        'would like you to join a conversation {strongStartTag}"{conversationSubject}"{strongEndTag}'
+            => '{headerStartTag}Participar en la conversación{headerEndTag}{headerLineBreak}{ownerName} ' .
+               'quiere que usted participa en la conversación {strongStartTag}"{conversationSubject}"{strongEndTag}',
         '{n} Conversation created|{n} Conversations created'
             => '{n} creados Conversación | {n} conversaciones creadas',
-        '{ownerName} would like you to join a conversation "{conversationSubject}".'
-            => '{ownerName} quiere que usted participa en la conversación.',
     );
 ?>

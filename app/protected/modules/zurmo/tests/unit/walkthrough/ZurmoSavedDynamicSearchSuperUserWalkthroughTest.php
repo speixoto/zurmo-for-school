@@ -56,6 +56,13 @@
             $savedSearches = SavedSearch::getAll();
             $this->assertEquals(1, count($savedSearches));
             $this->assertEquals('a new name', $savedSearches[0]->name);
+            
+            //Test loading saved search
+            Yii::app()->user->setState('AccountsSearchView', null);
+            $this->setGetArray(array('savedSearchId' => $savedSearches[0]->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
+            $id = $savedSearches[0]->id;
+            $this->assertContains("<option value=\"{$id}\" selected=\"selected\">a new name</option>", $content);            
 
             //Test deleting saved search
             $this->setGetArray(array('id' => $savedSearches[0]->id));
