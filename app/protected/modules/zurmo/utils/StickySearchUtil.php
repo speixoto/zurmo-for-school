@@ -39,7 +39,7 @@
         {
             assert('is_string($key)');
             $stickyData = Yii::app()->user->getState($key);
-            if($stickyData == null)
+            if ($stickyData == null)
             {
                 return null;
             }
@@ -58,11 +58,11 @@
             assert('is_int($stickyOffset)');
             assert('is_int($pageSize)');
             assert('is_int($totalCount)');
-            if($stickyOffset == 0)
+            if ($stickyOffset == 0)
             {
                 $finalOffset = 0;
             }
-            elseif($pageSize >= $totalCount)
+            elseif ($pageSize >= $totalCount)
             {
                 $finalOffset = 0;
             }
@@ -72,11 +72,11 @@
                 $lowerBoundryOffset = $stickyOffset - round($pageSize / 2);
                 //upper boundry of half the page size from stickyOffset
                 $upperBoundryOffset = $stickyOffset + round($pageSize / 2);
-                if($lowerBoundryOffset < 0)
+                if ($lowerBoundryOffset < 0)
                 {
                     $finalOffset = 0;
                 }
-                elseif($upperBoundryOffset > ($totalCount -1))
+                elseif ($upperBoundryOffset > ($totalCount -1))
                 {
                     $finalOffset = $lowerBoundryOffset - ($upperBoundryOffset - ($totalCount- 1));
                 }
@@ -92,7 +92,7 @@
                                                                            RedBeanModel $model)
         {
             assert('is_string($stickySearchKey)');
-            if(ArrayUtil::getArrayValue(GetUtil::getData(), 'stickyOffset') !== null &&
+            if (ArrayUtil::getArrayValue(GetUtil::getData(), 'stickyOffset') !== null &&
                StickySearchUtil::getDataByKey($stickySearchKey) != null)
             {
                  $stickyLoadUrl = Yii::app()->createUrl($controller->getModule()->getId() . '/' . $controller->getId() . '/renderStickyListBreadCrumbContent',

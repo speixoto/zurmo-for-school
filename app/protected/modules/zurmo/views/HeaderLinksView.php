@@ -116,12 +116,21 @@
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
                                     CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
             Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
+                //Hides the container on click outside it
+                $(document).mouseup(function (e)
+                {          
+                    var container = $('#notifications-flyout');                    
+                    if (container.has(e.target).length === 0)
+                    {
+                        container.hide();
+                    }
+                });
                 $('#notifications-flyout-link').unbind('click');
                 $('#notifications-flyout-link').bind('click', function()
                 {
                     if ($('#notifications-flyout').css('display') == 'none')
                     {
-                        $('#notifications-flyout').show();
+                        $('#notifications-flyout').show();                       
                         $.ajax({
                             url 	 : '" . $this->notificationsUrl . "',
                             type     : 'GET',
@@ -131,12 +140,8 @@
                                 jQuery('#notifications-flyout').html(html);
                             }
                         });
-                    }
-                    else
-                    {
-                        $('#notifications-flyout').hide();
-                    }
-                });
+                    }                    
+                });                
             ", CClientScript::POS_END);
             Yii::app()->clientScript->registerScript('deleteNotificationFromAjaxListViewScript', "
                 function deleteNotificationFromAjaxListView(element, modelId)

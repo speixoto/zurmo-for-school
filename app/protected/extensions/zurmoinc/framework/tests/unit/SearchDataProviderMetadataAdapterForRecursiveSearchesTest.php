@@ -29,8 +29,6 @@
      * @see ModelDataProviderUtilRecursiveDataTest
 
     Models and relations used in this class
-
-
                                 III -> hasOne EEE
                                   |
                                   | CCC hasMany III
@@ -38,10 +36,10 @@
                                 CCC -> hasOne EEE
                                   |
                                   | CCC hasMany BBB
-         /-> hasOne EEE			  | BBB hasOne  CCC
-         |						  |
-         |						  |/---> BBB hasOne GGG -> hasOne EEE
-         |						  ||
+         /-> hasOne EEE           | BBB hasOne  CCC
+         |                        |
+         |                        |/---> BBB hasOne GGG -> hasOne EEE
+         |                        ||
          |                        ||
          FFF <-hasOnehasMany ->  BBB <- manyMany -> DDD -> hasOne EEE
                                   |
@@ -106,34 +104,34 @@
                 //Standard attribute on related model
                 2 => array(
                     'attributeName'        => 'bbb',
-                        'relatedModelData'	=> array(
-                            'attributeName' 	=> 'bbbMember',
-                            'operatorType'	    => 'startsWith',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'bbbMember',
+                            'operatorType'      => 'startsWith',
                             'value'             => 'bbbMemberValue',
                         ),
                 ),
                 //Standard attribute on related related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'cccMemberValue',
                             ),
                     ),
                 ),
                 //Standard attribute on related related related model
                 4 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	    => 'eee',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'         => 'eee',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eeeMember',
+                                        'operatorType'          => 'startsWith',
                                         'value'                 => 'eeeMemberValue',
                                     ),
                             ),
@@ -141,50 +139,50 @@
                 ),
                 //Concated nested attribute first part
                 5 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'Jimmy Jam',
                             ),
                     ),
                 ),
                 //Concated nested attribute second part
                 6 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember2',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember2',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'Jimmy Jam',
                             ),
                     ),
                 ),
                 //Concated nested attribute third part
                 7 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'concatedAttributeNames' 	=> array('cccMember', 'cccMember2'),
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'concatedAttributeNames'    => array('cccMember', 'cccMember2'),
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'Jimmy Jam',
                             ),
                     ),
                 ),
                 //Concated nested nested attribute first part
                 8 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'iiiMember',
-                                        'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'     => 'iiiMember',
+                                        'operatorType'      => 'startsWith',
                                         'value'             => 'Jimmy Jam',
                                     ),
                             ),
@@ -192,14 +190,14 @@
                 ),
                 //Concated nested nested attribute second part
                 9 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'iiiMember2',
-                                        'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'     => 'iiiMember2',
+                                        'operatorType'      => 'startsWith',
                                         'value'             => 'Jimmy Jam',
                                     ),
                             ),
@@ -207,14 +205,14 @@
                 ),
                 //Concated nested nested attribute third part
                 10 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'concatedAttributeNames' 	=> array('iiiMember', 'iiiMember2'),
-                                        'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'concatedAttributeNames'    => array('iiiMember', 'iiiMember2'),
+                                        'operatorType'      => 'startsWith',
                                         'value'             => 'Jimmy Jam',
                                     ),
                             ),
@@ -222,16 +220,16 @@
                 ),
                 //Standard nested nested nested attribute
                 11 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	    => 'eee',
-                                            'relatedModelData'	=> array(
-                                                'attributeName' 	=> 'eeeMember',
-                                                'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eee',
+                                            'relatedModelData'  => array(
+                                                'attributeName'         => 'eeeMember',
+                                                'operatorType'          => 'startsWith',
                                                 'value'                 => 'eeeMemberValue',
                                             ),
                                     ),
@@ -278,20 +276,20 @@
                 //Standard attribute on related model
                 2 => array(
                     'attributeName'        => 'bbb',
-                        'relatedModelData'	=> array(
-                            'attributeName' 	=> 'id',
-                            'operatorType'	    => 'equals',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'id',
+                            'operatorType'      => 'equals',
                             'value'             => '6',
                         ),
                 ),
                 //Standard attribute on related related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'aaa',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'id',
-                                'operatorType'	    => 'equals',
+                        'attributeName'     => 'aaa',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'id',
+                                'operatorType'      => 'equals',
                                 'value'             => '7',
                             ),
                     ),
@@ -336,20 +334,20 @@
                 //Standard attribute on related model
                 2 => array(
                     'attributeName'        => 'bbb',
-                        'relatedModelData'	=> array(
-                            'attributeName' 	=> 'bbbMember',
-                            'operatorType'	    => 'startsWith',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'bbbMember',
+                            'operatorType'      => 'startsWith',
                             'value'             => 'bbbMemberValue',
                         ),
                 ),
                 //Standard attribute on related related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'aaa',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'aaaMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'aaa',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'aaaMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'aaaMemberValue',
                             ),
                     ),
@@ -394,20 +392,20 @@
                 //Standard attribute on related model
                 2 => array(
                     'attributeName'        => 'bbb',
-                        'relatedModelData'	=> array(
-                            'attributeName' 	=> 'bbbMember',
-                            'operatorType'	    => 'startsWith',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'bbbMember',
+                            'operatorType'      => 'startsWith',
                             'value'             => 'bbbMemberValue',
                         ),
                 ),
                 //Standard attribute on related related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'aaa',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'aaaMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'aaa',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'aaaMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'aaaMemberValue',
                             ),
                     ),
@@ -463,50 +461,50 @@
                 //Standard attribute on related model
                 2 => array(
                     'attributeName'        => 'bbb',
-                        'relatedModelData'	=> array(
-                            'attributeName' 	=> 'bbbMember',
-                            'operatorType'	    => 'startsWith',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'bbbMember',
+                            'operatorType'      => 'startsWith',
                             'value'             => 'bbbMemberValue',
                         ),
                 ),
                 //Standard attribute on related related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'cccMemberValue',
                             ),
                     ),
                 ),
                 //Standard attribute on related related related model
                 4 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	    => 'eee',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'         => 'eee',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eeeMember',
+                                        'operatorType'          => 'startsWith',
                                         'value'                 => 'eeeMemberValue',
                                     ),
                             ),
                     ),
                 ),
                 5 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	    => 'eee',
-                                            'relatedModelData'	=> array(
-                                                'attributeName' 	=> 'eeeMember',
-                                                'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eee',
+                                            'relatedModelData'  => array(
+                                                'attributeName'         => 'eeeMember',
+                                                'operatorType'          => 'startsWith',
                                                 'value'                 => 'eeeMemberValue',
                                             ),
                                     ),
@@ -518,7 +516,6 @@
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
-
 
         /**
          * @depends testGetAdaptedMetadataForAttributesAcrossRelations
@@ -574,7 +571,7 @@
                 //Standard attribute on related model
                 2 => array(
                     'attributeName'        => 'bbb',
-                        'relatedModelData'	=> array(
+                        'relatedModelData'  => array(
                             'attributeName'        => 'industry',
                             'relatedAttributeName' => 'value',
                             'operatorType'         => 'oneOf',
@@ -583,22 +580,22 @@
                 ),
                 //Standard attribute on related related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'cccMemberValue',
                             ),
                     ),
                 ),
                 //Custom Field attribute on related related model
                 4 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
                                 'attributeName'        => 'industry',
                                 'relatedAttributeName' => 'value',
                                 'operatorType'         => 'oneOf',
@@ -608,14 +605,14 @@
                 ),
                 //Standard attribute on related related related model
                 5 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	    => 'eee',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'         => 'eee',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eeeMember',
+                                        'operatorType'          => 'startsWith',
                                         'value'                 => 'eeeMemberValue',
                                     ),
                             ),
@@ -623,14 +620,14 @@
                 ),
                 //Custom Field attribute on related related related related model
                 6 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	    => 'eee',
-                                            'relatedModelData'	=> array(
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eee',
+                                            'relatedModelData'  => array(
                                                 'attributeName'        => 'industry',
                                                 'relatedAttributeName' => 'value',
                                                 'operatorType'         => 'oneOf',
@@ -642,16 +639,16 @@
                 ),
                 //Standard attribute on related related related related model
                 7 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	    => 'eee',
-                                            'relatedModelData'	=> array(
-                                                'attributeName' 	=> 'eeeMember',
-                                                'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eee',
+                                            'relatedModelData'  => array(
+                                                'attributeName'         => 'eeeMember',
+                                                'operatorType'          => 'startsWith',
                                                 'value'                 => 'eeeMemberValue',
                                             ),
                                     ),
@@ -711,26 +708,26 @@
                 //Standard attribute on model
                 //Standard attribute on related related model
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'cccMemberValue',
                             ),
                     ),
                 ),
                 //Standard attribute on related related related model
                 2 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	    => 'eee',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'         => 'eee',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eeeMember',
+                                        'operatorType'          => 'startsWith',
                                         'value'                 => 'eeeMemberValue',
                                     ),
                             ),
@@ -738,16 +735,16 @@
                 ),
                 //Standard attribute on related related related related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	    => 'eee',
-                                            'relatedModelData'	=> array(
-                                                'attributeName' 	=> 'eeeMember',
-                                                'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eee',
+                                            'relatedModelData'  => array(
+                                                'attributeName'         => 'eeeMember',
+                                                'operatorType'          => 'startsWith',
                                                 'value'                 => 'eeeMemberValue',
                                             ),
                                     ),
@@ -759,7 +756,6 @@
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
-
 
         /**
          * Testing out nested search form attributes that need to be converted property to be adapted into metadata.
@@ -776,7 +772,7 @@
                     'bbbMember'  => 'bbbMemberValue',
                     'ccc'    => array(
                         'relatedData' => true,
-                        'cccMember'				 => 'cccMemberValue',
+                        'cccMember'              => 'cccMemberValue',
                         'CCCName'                => 'someCCCValue',
                         'differentOperatorA'   => '1',
                         'differentOperatorB'   => 'something',
@@ -813,82 +809,82 @@
                 //Standard attribute on related model
                 2 => array(
                     'attributeName'        => 'bbb',
-                        'relatedModelData'	=> array(
-                            'attributeName' 	=> 'bbbMember',
-                            'operatorType'	    => 'startsWith',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'bbbMember',
+                            'operatorType'      => 'startsWith',
                             'value'             => 'bbbMemberValue',
                         ),
                 ),
                 //Standard attribute on related related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'cccMemberValue',
                             ),
                     ),
                 ),
                 //Search form attribute , part #1 of 2
                 4 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'someCCCValue',
                             ),
                     ),
                 ),
                 //Search form attribute , part #2 of 2
                 5 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember2',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember2',
+                                'operatorType'      => 'startsWith',
                                 'value'             => 'someCCCValue',
                             ),
                     ),
                 ),
                 //Search form attribute , owner Only
                 6 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'startsWith',
                                 'value'             => $super->id,
                             ),
                     ),
                 ),
                 //Search form attribute , alternative operator
                 7 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'cccMember',
-                                'operatorType'	    => 'endsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'cccMember',
+                                'operatorType'      => 'endsWith',
                                 'value'             => 'something',
                             ),
                     ),
                 ),
                 //Standard attribute on related related related model
                 8 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	    => 'eee',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'         => 'eee',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eeeMember',
+                                        'operatorType'          => 'startsWith',
                                         'value'                 => 'eeeMemberValue',
                                     ),
                             ),
@@ -896,14 +892,14 @@
                 ),
                 //Search form attribute , part #1 of 2 (recursively nested)
                 9 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	    => 'iiiMember',
-                                        'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'iiiMember',
+                                        'operatorType'          => 'startsWith',
                                         'value'                 => 'someIIIValue',
                                     ),
                             ),
@@ -911,14 +907,14 @@
                 ),
                 //Search form attribute , part #2 of 2 (recursively nested)
                 10 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	    => 'iiiMember2',
-                                        'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'iiiMember2',
+                                        'operatorType'          => 'startsWith',
                                         'value'                 => 'someIIIValue',
                                     ),
                             ),
@@ -926,14 +922,14 @@
                 ),
                 //Search form attribute , owner Only (recursively nested)
                 11 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'iiiMember',
-                                        'operatorType'	    => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'     => 'iiiMember',
+                                        'operatorType'      => 'startsWith',
                                         'value'             => $super->id,
                                     ),
                             ),
@@ -941,14 +937,14 @@
                 ),
                 //Search form attribute , alternative operator
                 12 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'iiiMember',
-                                        'operatorType'	    => 'endsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'     => 'iiiMember',
+                                        'operatorType'      => 'endsWith',
                                         'value'             => 'something',
                                     ),
                             ),
@@ -956,16 +952,16 @@
                 ),
                 //Standard attribute recursively nested
                 13 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	    => 'eee',
-                                            'relatedModelData'	=> array(
-                                                'attributeName' 	=> 'eeeMember',
-                                                'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eee',
+                                            'relatedModelData'  => array(
+                                                'attributeName'         => 'eeeMember',
+                                                'operatorType'          => 'startsWith',
                                                 'value'                 => 'eeeMemberValue',
                                             ),
                                     ),
@@ -978,7 +974,6 @@
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
 
-
         public function testSearchFormDynamicAttributes()
         {
             $super                      = User::getByUsername('super');
@@ -990,7 +985,7 @@
                     'ccc'    => array(
                         'relatedData' => true,
                         'date__Date'          => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER,
-                                                         'firstDate'  => '1991-03-04'),
+                                                       'firstDate'  => '1991-03-04'),
                         'dateTime__DateTime'  => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY),
                         'dateTime2__DateTime' => array('value'        => null),
                         'eee' => array(
@@ -1000,7 +995,7 @@
                         'iii'    => array(
                            'relatedData' => true,
                                 'date__Date'          => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER,
-                                                                 'firstDate'  => '1991-03-04'),
+                                                               'firstDate'  => '1991-03-04'),
                                 'dateTime__DateTime'  => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY),
                                 'dateTime2__DateTime' => array('value'        => null),
                         )
@@ -1026,22 +1021,22 @@
                 ),
                 //Standard date attribute on related model
                 2 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'date',
-                                'operatorType'	    => 'greaterThanOrEqualTo',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'date',
+                                'operatorType'      => 'greaterThanOrEqualTo',
                                 'value'             => '1991-03-04',
                             ),
                     ),
                 ),
                 //Standard dateTime attribute on related model
                 3 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
                                 'attributeName'        => 'dateTime',
                                 'operatorType'         => 'greaterThanOrEqualTo',
                                 'value'                => DateTimeUtil::
@@ -1051,10 +1046,10 @@
                 ),
                 //Standard dateTime attribute on related model
                 4 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
                                 'attributeName'        => 'dateTime',
                                 'operatorType'         => 'lessThanOrEqualTo',
                                 'value'                => DateTimeUtil::
@@ -1064,14 +1059,14 @@
                 ),
                 //Standard attribute recursively nested
                 5 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	    => 'eee',
-                                    'relatedModelData'	=> array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	        => 'startsWith',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'         => 'eee',
+                                    'relatedModelData'  => array(
+                                        'attributeName'         => 'eeeMember',
+                                        'operatorType'          => 'startsWith',
                                         'value'                 => 'eeeMemberValue',
                                     ),
                             ),
@@ -1079,27 +1074,27 @@
                 ),
                 //Date attribute recursively nested
                 6 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
-                                'attributeName' 	=> 'date',
-                                'operatorType'	    => 'greaterThanOrEqualTo',
-                                'value'             => '1991-03-04',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
+                                        'attributeName'     => 'date',
+                                        'operatorType'      => 'greaterThanOrEqualTo',
+                                        'value'             => '1991-03-04',
                                     ),
                             ),
                     ),
                 ),
                 //DateTime attribute recursively nested
                 7 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
                                         'attributeName'        => 'dateTime',
                                         'operatorType'         => 'greaterThanOrEqualTo',
                                         'value'                => DateTimeUtil::
@@ -1110,12 +1105,12 @@
                 ),
                 //DateTime attribute recursively nested
                 8 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'iii',
-                                    'relatedModelData'	=> array(
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'iii',
+                                    'relatedModelData'  => array(
                                         'attributeName'        => 'dateTime',
                                         'operatorType'         => 'lessThanOrEqualTo',
                                         'value'                => DateTimeUtil::

@@ -39,6 +39,15 @@
             return 'ContactStateSearchForm';
         }
 
+        /**
+        * We cant use Module::getStateMetadataAdapterClassName() because that references
+        * to Contact model and we are using ContactState model.
+        */
+        public function getStateMetadataAdapterClassName()
+        {
+            return null;
+        }
+
         public function actionCreate()
         {
             throw new ApiUnsupportedException();

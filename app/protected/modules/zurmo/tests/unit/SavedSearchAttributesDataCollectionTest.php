@@ -73,7 +73,6 @@
             $_GET['AAASearchFormTestModel']['anyMixedAttributes'] = '46';
             $searchAttributes        = $dataCollection->resolveSearchAttributesFromSourceData();
             $this->assertEquals(array('anyMixedAttributes' => '46'), $searchAttributes);
-
         }
 
         public function testResolveAnyMixedAttributesScopeForSearchModelFromSourceData()

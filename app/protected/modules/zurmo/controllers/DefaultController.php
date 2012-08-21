@@ -170,7 +170,6 @@
 
         public function actionDynamicSearchAddExtraRow($viewClassName, $modelClassName, $formModelClassName, $rowNumber, $suffix = null)
         {
-
             echo DynamicSearchUtil::renderDynamicSearchRowContent($viewClassName,
                                                                   $modelClassName,
                                                                   $formModelClassName,
@@ -179,13 +178,12 @@
                                                                   null,
                                                                   $suffix,
                                                                   true);
-
         }
 
         public function actionDynamicSearchAttributeInput($viewClassName, $modelClassName, $formModelClassName, $rowNumber,
                                                           $attributeIndexOrDerivedType, $suffix = null)
         {
-            if($attributeIndexOrDerivedType == null)
+            if ($attributeIndexOrDerivedType == null)
             {
                 Yii::app()->end(0, false);
             }
@@ -208,7 +206,7 @@
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
                 //$rawPostFormData           = $_POST[$formModelClassName];
-                if(isset($_POST[$formModelClassName]['anyMixedAttributesScope']))
+                if (isset($_POST[$formModelClassName]['anyMixedAttributesScope']))
                 {
                     $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName]['anyMixedAttributesScope']);
                     unset($_POST[$formModelClassName]['anyMixedAttributesScope']);
@@ -216,10 +214,10 @@
                 $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
                 $searchForm->setAttributes($sanitizedSearchData);
-                if(isset($_POST['save']) && $_POST['save'] == 'saveSearch')
+                if (isset($_POST['save']) && $_POST['save'] == 'saveSearch')
                 {
                     $searchForm->setScenario('validateSaveSearch');
-                    if($searchForm->validate())
+                    if ($searchForm->validate())
                     {
                         $this->processSaveSearch($searchForm, $viewClassName);
                         Yii::app()->end(0, false);
@@ -229,7 +227,7 @@
                 {
                     $searchForm->setScenario('validateDynamic');
                 }
-                if(!$searchForm->validate())
+                if (!$searchForm->validate())
                 {
                      $errorData = array();
                     foreach ($searchForm->getErrors() as $attribute => $errors)
@@ -245,7 +243,7 @@
         protected function processSaveSearch($searchForm, $viewClassName)
         {
             $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName);
-            if(!$savedSearch->save())
+            if (!$savedSearch->save())
             {
                 throw new FailedToSaveModelException();
             }
@@ -260,7 +258,7 @@
 
         protected function resolveAndSanitizeDynamicSearchAttributesByPostData($postData, DynamicSearchForm $searchForm)
         {
-            if(isset($postData['dynamicClauses']))
+            if (isset($postData['dynamicClauses']))
             {
                 $dynamicSearchAttributes          = SearchUtil::getSearchAttributesFromSearchArray($postData['dynamicClauses']);
                 $sanitizedDynamicSearchAttributes = SearchUtil::

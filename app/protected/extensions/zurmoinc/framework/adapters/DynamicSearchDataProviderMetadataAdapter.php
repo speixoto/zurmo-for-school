@@ -69,22 +69,22 @@
             $this->processData($this->sanitizedDynamicSearchAttributes, $clauseCount, $correctlyPositionedClauses, $metadata);
             krsort($correctlyPositionedClauses);
             //Resolve any unused clauses first before replacing real clauses.
-            foreach($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
+            foreach ($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
             {
-                if($correctlyPositionedClauseData[$position] == self::NOT_USED_STRUCTURE_POSITION)
+                if ($correctlyPositionedClauseData[$position] == self::NOT_USED_STRUCTURE_POSITION)
                 {
                     $structure = strtr(strtolower($structure), $correctlyPositionedClauseData);
                     unset($correctlyPositionedClauses[$position]);
                 }
             }
             //Replace clauses still used.
-            foreach($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
+            foreach ($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
             {
                 $structure = strtr(strtolower($structure), $correctlyPositionedClauseData);
             }
             //Now resolve and remove any unused clauses and nearby operators.
-            $structure = str_ireplace(' or '  . self::NOT_USED_STRUCTURE_POSITION, 			 '', $structure);
-            $structure = str_ireplace(' and ' . self::NOT_USED_STRUCTURE_POSITION, 			 '', $structure);
+            $structure = str_ireplace(' or '  . self::NOT_USED_STRUCTURE_POSITION,           '', $structure);
+            $structure = str_ireplace(' and ' . self::NOT_USED_STRUCTURE_POSITION,           '', $structure);
             $structure = str_ireplace('('     . self::NOT_USED_STRUCTURE_POSITION . ' or ',  '(', $structure);
             $structure = str_ireplace('('     . self::NOT_USED_STRUCTURE_POSITION . ' and ', '(', $structure);
             if (empty($metadata['structure']))
@@ -100,7 +100,7 @@
 
         protected function processData($searchAttributes, & $clauseCount, & $correctlyPositionedClauses, & $metadata)
         {
-            foreach($searchAttributes as $position => $searchAttribute)
+            foreach ($searchAttributes as $position => $searchAttribute)
             {
                 $structurePosition = self::resolveUnsetAndGetSructurePosition($searchAttribute);
                 self::resolveUnsetAttributeIndexOrDerivedType($searchAttribute);
@@ -110,7 +110,7 @@
                     $searchAttribute
                 );
                 $searchItemMetadata = $metadataAdapter->getAdaptedMetadata(true, ($clauseCount + 1));
-                if(count($searchItemMetadata['clauses']) > 0)
+                if (count($searchItemMetadata['clauses']) > 0)
                 {
                     $metadata['clauses']                            = $metadata['clauses'] + $searchItemMetadata['clauses'];
                     $clauseCount                                    = $clauseCount + count($searchItemMetadata['clauses']);
@@ -127,7 +127,7 @@
 
         protected static function resolveUnsetAndGetSructurePosition(& $searchAttribute)
         {
-            if(isset($searchAttribute['structurePosition']))
+            if (isset($searchAttribute['structurePosition']))
             {
                 $structurePosition = $searchAttribute['structurePosition'];
                 unset($searchAttribute['structurePosition']);
@@ -137,7 +137,7 @@
 
         protected static function resolveUnsetAttributeIndexOrDerivedType(& $searchAttribute)
         {
-            if(isset($searchAttribute['attributeIndexOrDerivedType']))
+            if (isset($searchAttribute['attributeIndexOrDerivedType']))
             {
                 unset($searchAttribute['attributeIndexOrDerivedType']);
             }
