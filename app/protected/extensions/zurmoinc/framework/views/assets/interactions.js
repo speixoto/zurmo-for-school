@@ -14,23 +14,27 @@ $(window).ready(function(){
             }
         }
     );
-    */
+    */   
     $('.nav > .parent').live({
-        mouseenter: function() {
-            if ( $(this).find('ul').length > 0 ){
-                $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
-            }
+        click: function() {                 
+            if ($(this).find('ul:visible').length == 0)
+            {
+                if ( $(this).find('ul').length > 0 ){
+                    $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
+                }
+            } 
+            else
+            {
+                 $(this).find('ul').stop(true, true).fadeOut(250);
+            }               
         },
-        mouseleave: function() {
+        focusout: function() {
             if ( $(this).find('ul').length > 0 ){
                 $(this).find('ul').stop(true, true).fadeOut(250);
             }
         }
-    });
-    
-    
-    
-
+    });        
+       
     //Main nav hover
      $('#MenuView a, #RecentlyViewedView a').hover(
         function(){
