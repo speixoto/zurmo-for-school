@@ -140,7 +140,7 @@
                 'emptyText'            => $this->getEmptyText(),
                 'template'             => static::getGridTemplate(),
                 'summaryText'          => $this->getSummaryText(),
-                'summaryCssClass'	   => $this->getSummaryCssClass(),
+                'summaryCssClass'      => $this->getSummaryCssClass(),
             );
         }
 
@@ -152,7 +152,7 @@
 
         protected static function getSummaryText()
         {
-            return Yii::t('zii','{count} result(s)');
+            return Yii::t('zii', '{count} result(s)');
         }
 
         protected static function getSummaryCssClass()

@@ -56,10 +56,10 @@
                 $editableMetadata
             );
             $attributeIndexOrDerivedTypeAndLabels = array();
-            foreach($attributesLayoutAdapter->makeDesignerLayoutAttributes()->get() as $attributeIndexOrDerivedType => $data)
+            foreach ($attributesLayoutAdapter->makeDesignerLayoutAttributes()->get() as $attributeIndexOrDerivedType => $data)
             {
                 //special case with anyMixedAttributes since it is searchable but in the basic search part so never dynamically searchable
-                if($searchFormClassName::isAttributeSearchable($attributeIndexOrDerivedType) && $attributeIndexOrDerivedType != 'anyMixedAttributes')
+                if ($searchFormClassName::isAttributeSearchable($attributeIndexOrDerivedType) && $attributeIndexOrDerivedType != 'anyMixedAttributes')
                 {
                     $attributeIndexOrDerivedTypeAndLabels[$attributeIndexOrDerivedType] = $data['attributeLabel'];
                 }
@@ -118,16 +118,16 @@
             assert('is_string($viewClassName)');
             assert('is_array($attributeIndexOrDerivedTypeAndLabels)');
             $metadata = $viewClassName::getMetadata();
-            if(isset($metadata['global']['definedNestedAttributes']))
+            if (isset($metadata['global']['definedNestedAttributes']))
             {
-                foreach($metadata['global']['definedNestedAttributes'] as $definedNestedAttribute)
+                foreach ($metadata['global']['definedNestedAttributes'] as $definedNestedAttribute)
                 {
                     $attributeIndexOrDerivedLabel = null;
                     $attributeIndexOrDerivedType  = self::makeDefinedNestedAttributeIndexOrDerivedTypeRecursively(
                                                             $model,
                                                             $attributeIndexOrDerivedLabel,
                                                             $definedNestedAttribute);
-                    if($attributeIndexOrDerivedLabel == null)
+                    if ($attributeIndexOrDerivedLabel == null)
                     {
                         throw new NotSupportedException();
                     }
@@ -141,14 +141,14 @@
             assert('$model instanceof SearchForm || $model instanceof RedBeanModel');
             assert('is_string($attributeIndexOrDerivedLabel) || $attributeIndexOrDerivedLabel == null');
             assert('is_array($definedNestedAttribute)');
-            if(count($definedNestedAttribute) > 1)
+            if (count($definedNestedAttribute) > 1)
             {
                 //Each defined attribute should be in its own sub-array.
                 throw new NotSupportedException();
             }
-            foreach($definedNestedAttribute as $positionOrAttributeName => $nestedAttributeDataOrAttributeName)
+            foreach ($definedNestedAttribute as $positionOrAttributeName => $nestedAttributeDataOrAttributeName)
             {
-                if(is_array($nestedAttributeDataOrAttributeName))
+                if (is_array($nestedAttributeDataOrAttributeName))
                 {
                     $attributeIndexOrDerivedLabel .= $model->getAttributeLabel($positionOrAttributeName) . ' - ';
                     $modelToUse      = SearchUtil::resolveModelToUseByModelAndAttributeName(
@@ -184,7 +184,7 @@
             assert('is_array($searchAttributes)');
             assert('is_string($suffix) || $suffix == null');
             $content          = null;
-            if(count(explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType)) > 1)
+            if (count(explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType)) > 1)
             {
                 $model            = new $modelClassName(false);
                 $nestedAttributes = explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType);
@@ -193,24 +193,24 @@
                 $processCount     = 1;
                 $nestedSearchAttributes = $searchAttributes;
 
-                foreach($nestedAttributes as $attribute)
+                foreach ($nestedAttributes as $attribute)
                 {
-                    if($processCount < $totalNestedCount && isset($nestedSearchAttributes[$attribute]))
+                    if ($processCount < $totalNestedCount && isset($nestedSearchAttributes[$attribute]))
                     {
                         $nestedSearchAttributes = $nestedSearchAttributes[$attribute];
-                        if(isset($nestedSearchAttributes['relatedData']))
+                        if (isset($nestedSearchAttributes['relatedData']))
                         {
                             unset($nestedSearchAttributes['relatedData']);
                         }
                     }
-                    if($processCount < $totalNestedCount)
+                    if ($processCount < $totalNestedCount)
                     {
                         $model           = SearchUtil::resolveModelToUseByModelAndAttributeName($model, $attribute);
                         $inputPrefix[]   = $attribute;
                         $relatedDataName = Element::resolveInputIdPrefixIntoString($inputPrefix) . '[relatedData]';
                         $content        .= ZurmoHtml::hiddenField($relatedDataName, true);
                     }
-                    $processCount ++;
+                    $processCount++;
                 }
                 $attributeIndexOrDerivedType = $attribute;
                 $modelToUse                  = $model;
@@ -243,6 +243,7 @@
                                                               $form, array_slice($element, 2));
             $element->editableTemplate = '{content}{error}';
             $content                  .= $element->render();
+            $content                  .= $element->renderEditablePartForUseInDynamicSearchContent();
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);
@@ -286,8 +287,7 @@
                                     $attributeIndexOrDerivedType,
                                     $inputContent);
 
-
-            if(!$renderAsAjax)
+            if (!$renderAsAjax)
             {
                 $view = $rowView;
             }

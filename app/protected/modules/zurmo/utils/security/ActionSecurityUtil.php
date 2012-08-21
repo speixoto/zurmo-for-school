@@ -101,7 +101,7 @@
             if (RightsUtil::canUserAccessModule($moduleClassName, Yii::app()->user->userModel))
             {
                 $params = array("id" => $model->id);
-                if($offset !== null)
+                if ($offset !== null)
                 {
                     $params['stickyOffset'] = $offset;
                 }

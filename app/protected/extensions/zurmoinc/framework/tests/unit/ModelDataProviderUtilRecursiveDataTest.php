@@ -37,10 +37,10 @@
                                 CCC -> hasOne EEE
                                   |
                                   | CCC hasMany BBB
-         /-> hasOne EEE			  | BBB hasOne  CCC
-         |						  |
-         |						  |/---> BBB hasOne GGG -> hasOne EEE
-         |						  ||
+         /-> hasOne EEE           | BBB hasOne  CCC
+         |                        |
+         |                        |/---> BBB hasOne GGG -> hasOne EEE
+         |                        ||
          |                        ||
          FFF <-hasOnehasMany ->  BBB <- manyMany -> DDD -> hasOne EEE
                                   |
@@ -68,14 +68,14 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'eee',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'eee',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'eeeMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
@@ -126,13 +126,13 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ccc',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	    => 'eee',
-                                'relatedAttributeName' 	=> 'eeeMember',
-                                'operatorType'	        => 'equals',
+                        'attributeName'     => 'ccc',
+                            'relatedModelData'  => array(
+                                'attributeName'         => 'eee',
+                                'relatedAttributeName'  => 'eeeMember',
+                                'operatorType'          => 'equals',
                                 'value'                 => 'somevalue',
                         ),
                     ),
@@ -181,14 +181,14 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'fff',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'eee',
+                        'attributeName'     => 'fff',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'eee',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'eeeMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
@@ -239,14 +239,14 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ddd',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'eee',
+                        'attributeName'     => 'ddd',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'eee',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'eeeMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
@@ -300,14 +300,14 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ggg',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'eee',
+                        'attributeName'     => 'ggg',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'eee',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'eeeMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
@@ -358,14 +358,14 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'fff',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'eee',
+                        'attributeName'     => 'fff',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'eee',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'eeeMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
@@ -419,14 +419,14 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ggg',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'eee',
+                        'attributeName'     => 'ggg',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'eee',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'eeeMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
@@ -480,28 +480,28 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ggg',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'eee',
+                        'attributeName'     => 'ggg',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'eee',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'eeeMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'eeeMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
                     ),
                 ),
                 2 => array(
-                    'attributeName'	=> 'bbb',
+                    'attributeName' => 'bbb',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'ggg',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'eee',
+                        'attributeName'     => 'ggg',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'eee',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'eeeMember2',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'eeeMember2',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
@@ -556,14 +556,14 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'aaa',
+                    'attributeName' => 'aaa',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'bbb',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'ggg',
+                        'attributeName'     => 'bbb',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'ggg',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'gggMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'gggMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
@@ -614,28 +614,28 @@
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'	=> 'aaa',
+                    'attributeName' => 'aaa',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'bbb',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'ggg',
+                        'attributeName'     => 'bbb',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'ggg',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'gggMember',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'gggMember',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),
                     ),
                 ),
                 2 => array(
-                    'attributeName'	=> 'aaa',
+                    'attributeName' => 'aaa',
                     'relatedModelData' => array(
-                        'attributeName' 	=> 'bbb',
-                            'relatedModelData'	=> array(
-                                'attributeName' 	=> 'ggg',
+                        'attributeName'     => 'bbb',
+                            'relatedModelData'  => array(
+                                'attributeName'     => 'ggg',
                                     'relatedModelData' => array(
-                                        'attributeName' 	=> 'gggMember2',
-                                        'operatorType'	    => 'equals',
+                                        'attributeName'     => 'gggMember2',
+                                        'operatorType'      => 'equals',
                                         'value'             => 'somevalue',
                             ),
                         ),

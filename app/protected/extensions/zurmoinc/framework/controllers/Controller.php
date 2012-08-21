@@ -102,9 +102,8 @@
 
         protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)
         {
-
             $dynamicSearchAttributes          = $dataCollection->getDynamicSearchAttributes();
-            if($dynamicSearchAttributes == null)
+            if ($dynamicSearchAttributes == null)
             {
                 return $metadata;
             }
@@ -128,7 +127,7 @@
         {
             assert('$model instanceof RedBeanModel || $model instanceof CModel');
             assert('$breadCrumbView == null || $breadCrumbView instanceof BreadCrumbView');
-            if($breadCrumbView != null)
+            if ($breadCrumbView != null)
             {
                 $verticalColumns   = 2;
                 $primaryViewColumn = 1;
@@ -146,16 +145,13 @@
                 'redirectUrl'      => $redirectUrl,
             );
             $gridView = new GridView($verticalColumns, 1);
-            if($breadCrumbView != null)
+            if ($breadCrumbView != null)
             {
                $gridView->setView($breadCrumbView, 0, 0);
             }
             $gridView->setView(new $viewClassName(  $this->getId(),
                                                     $this->getModule()->getId(),
                                                     $params), $primaryViewColumn, 0);
-
-
-
             return $gridView;
         }
 

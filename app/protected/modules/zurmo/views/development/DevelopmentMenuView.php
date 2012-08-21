@@ -24,50 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Override class for CDataColumn in order to allow public access to renderDataCellContent and to allow offset
-     * information to properly pass into each column
-     * @see CGridView class
-     */
-    class DataColumn extends CDataColumn
+    class DevelopmentMenuView extends ConfigureModulesMenuView
     {
-        /**
-         * Override to add in offset information
-         * (non-PHPdoc)
-         * @see CDataColumn::renderDataCellContent()
-         */
-        protected function renderDataCellContent($row, $data)
+        public function getTitle()
         {
-            if ($this->value !== null)
-            {
-                $pagination = $this->grid->dataProvider->getPagination();
-                if (isset($pagination))
-                {
-                    $offset = $pagination->getOffset();
-                }
-                else
-                {
-                    $offset = 0;
-                }
-                $value = $this->evaluateExpression($this->value, array('data' => $data, 'row' => $row, 'offset' => ($offset + $row)));
-            }
-            elseif ($this->name !== null)
-            {
-                $value = ZurmoHtml::value($data, $this->name);
-            }
-            if ($value === null)
-            {
-                echo $this->grid->nullDisplay;
-            }
-            else
-            {
-                echo $this->grid->getFormatter()->format($value, $this->type);
-            }
+            return '<h1>' . Yii::t('Default', 'Development Tools') . '</h1>';
         }
 
-        public function renderDataCellContentFromOutsideClass($row, $data)
+        protected function getCategoryData()
         {
-            $this->renderDataCellContent($row, $data);
+            $categories = array();
+            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Clear Cache'),
+                                                'descriptionLabel'    => Yii::t('Default', 'In the case where you have reloaded the database, some cached items '.
+                                                                         'might still exist.  This is a way to clear that cache.'),
+                                                'route'               => 'zurmo/development?clearCache=1' // Not Coding Standard
+                                            );
+            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Update Custom Data'),
+                                                'descriptionLabel'    => Yii::t('Default', 'If there is new metadata to load using CustomManagement, use this option.'),
+                                                'route'               => 'zurmo/development?resolveCustomData=1' // Not Coding Standard
+                                            );
+            $this->setLinkText(Yii::t('Default', 'Run'));
+            return $categories;
         }
     }
 ?>

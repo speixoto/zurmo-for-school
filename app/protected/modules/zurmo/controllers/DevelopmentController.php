@@ -25,49 +25,36 @@
      ********************************************************************************/
 
     /**
-     * Override class for CDataColumn in order to allow public access to renderDataCellContent and to allow offset
-     * information to properly pass into each column
-     * @see CGridView class
+     * Controller Class for Development Tools
+     *
      */
-    class DataColumn extends CDataColumn
+    class ZurmoDevelopmentController extends ZurmoModuleController
     {
-        /**
-         * Override to add in offset information
-         * (non-PHPdoc)
-         * @see CDataColumn::renderDataCellContent()
-         */
-        protected function renderDataCellContent($row, $data)
+        public function filters()
         {
-            if ($this->value !== null)
-            {
-                $pagination = $this->grid->dataProvider->getPagination();
-                if (isset($pagination))
-                {
-                    $offset = $pagination->getOffset();
-                }
-                else
-                {
-                    $offset = 0;
-                }
-                $value = $this->evaluateExpression($this->value, array('data' => $data, 'row' => $row, 'offset' => ($offset + $row)));
-            }
-            elseif ($this->name !== null)
-            {
-                $value = ZurmoHtml::value($data, $this->name);
-            }
-            if ($value === null)
-            {
-                echo $this->grid->nullDisplay;
-            }
-            else
-            {
-                echo $this->grid->getFormatter()->format($value, $this->type);
-            }
+            return array(
+                array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH,
+                    'moduleClassName' => 'ZurmoModule',
+                    'rightName' => ZurmoModule::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
+               ),
+            );
         }
 
-        public function renderDataCellContentFromOutsideClass($row, $data)
+        public function actionIndex()
         {
-            $this->renderDataCellContent($row, $data);
+            if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
+            {
+                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Cache has been successfully cleaned.'));
+            }
+            if (isset($_GET['resolveCustomData']) && $_GET['resolveCustomData'] == 1)
+            {
+                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Custom data successfully resolved.'));
+            }
+
+            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                                  makeStandardViewForCurrentUser($this, new DevelopmentListView()));
+            echo $view->render();
         }
     }
 ?>

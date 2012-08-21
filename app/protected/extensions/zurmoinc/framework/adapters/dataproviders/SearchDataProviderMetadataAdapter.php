@@ -31,6 +31,7 @@
     class SearchDataProviderMetadataAdapter extends DataProviderMetadataAdapter
     {
         protected $appendStructureAsAnd;
+
         /**
          * Override to make sure the model is a RedBeanModel or a SearchForm model.
          */
@@ -38,7 +39,6 @@
         {
             assert('$model instanceof RedBeanModel || $model instanceof SearchForm');
             parent::__construct($model, $userId, $metadata);
-
         }
 
         /**
@@ -97,7 +97,7 @@
             assert('is_array($relatedMetaData)');
             assert('is_int($depth)');
             $startingOperatorType = $operatorType;
-            foreach($relatedMetaData as $attributeName => $value)
+            foreach ($relatedMetaData as $attributeName => $value)
             {
                 //If attribute is a pseudo attribute on the SearchForm
                 if ($model instanceof SearchForm && $model->isAttributeOnForm($attributeName))
@@ -183,7 +183,7 @@
                 }
             }
             //relation attribute that is relatedData
-            elseif(isset($value['relatedData']) && $value['relatedData'] == true)
+            elseif (isset($value['relatedData']) && $value['relatedData'] == true)
             {
                 $partToAppend                    = array('attributeName'    => $attributeName,
                                                          'relatedModelData' => array());
@@ -194,10 +194,10 @@
                 unset($value['relatedData']);
 
                 $finalModel = static::resolveAsRedBeanModel($model->$attributeName);
-                if($finalModel::getModuleClassName() != null)
+                if ($finalModel::getModuleClassName() != null)
                 {
                     $moduleClassName = $finalModel::getModuleClassName();
-                    if($moduleClassName::getGlobalSearchFormClassName() != null)
+                    if ($moduleClassName::getGlobalSearchFormClassName() != null)
                     {
                         $searchFormClassName = $moduleClassName::getGlobalSearchFormClassName();
                         $finalModel          = new $searchFormClassName($finalModel);
@@ -219,7 +219,7 @@
                 foreach ($value as $relatedAttributeName => $relatedValue)
                 {
                     $currentClauseCount = $clauseCount;
-                    if(static::resolveRelatedValueWhenArray( $model->$attributeName,
+                    if (static::resolveRelatedValueWhenArray( $model->$attributeName,
                                                              $relatedAttributeName,
                                                              $relatedValue,
                                                              $operatorType))
@@ -270,12 +270,16 @@
                     return false;
                 }
                 //Run this before the next set of elseifs to make this scenario is properly checked
-                elseif($model instanceof MultipleValuesCustomField && count($relatedValue) > 0)
+                elseif ($model instanceof MultipleValuesCustomField && count($relatedValue) > 0)
                 {
                     if (count($relatedValue) == 1 && $relatedValue[0] == null)
                     {
                         return false;
                     }
+                }
+                elseif ($model instanceof MultipleValuesCustomField && count($relatedValue) == 0)
+                {
+                    return false;
                 }
                 elseif (($model instanceof RedBeanManyToManyRelatedModels ||
                         $model instanceof RedBeanOneToManyRelatedModels ) &&
@@ -349,14 +353,14 @@
                                                                                         $value,
                                                                                         $operatorType);
             }
-            elseif($model instanceof SearchForm)
+            elseif ($model instanceof SearchForm)
             {
                 $mixedType = ModelAttributeToMixedTypeUtil::getType($model->getModel(), $attributeName);
                 static::resolveBooleanFalseValueAndOperatorTypeForAdaptedMetadataClause($mixedType,
                                                                                         $value,
                                                                                         $operatorType);
             }
-            if($previousAttributeName == null)
+            if ($previousAttributeName == null)
             {
                 $adaptedMetadataClause['attributeName']        = $attributeName;
             }
@@ -460,7 +464,7 @@
                                                        getAdaptedMetadataClauseBasePartAtRequiredDepth(
                                                        $adaptedMetadataClauseBasePart, $depth);
                     $currentClauseCount           = $clauseCount;
-                    if($searchFormClause['concatedAttributeNames']['value'] != null)
+                    if ($searchFormClause['concatedAttributeNames']['value'] != null)
                     {
                         $this->populateClausesAndStructureForConcatedAttributes( $model,
                                                                                  $searchFormClause['concatedAttributeNames'][0],
@@ -569,7 +573,7 @@
         {
             assert('is_array($adaptedMetadataClauseBasePart)');
             assert('is_int($depth)');
-            if($depth == 0)
+            if ($depth == 0)
             {
                 return $adaptedMetadataClauseBasePart;
             }
@@ -586,7 +590,7 @@
             assert('is_array($adaptedMetadataClauseBasePart)');
             assert('is_array($partToAppend)');
             assert('is_int($depth)');
-            if($depth == 0)
+            if ($depth == 0)
             {
                 return $partToAppend;
             }

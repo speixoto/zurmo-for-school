@@ -132,7 +132,8 @@
                     'data'    => 'js:\'suffix=' . $this->suffix .
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',
                     'url'     =>  $ajaxOnChangeUrl,
-                    'success' => 'js:function(data){
+                    'success' => 'js:function(data)
+                                  {
                                       $("#' . $inputDivId . '").html(data);
                                   }',
             ));
