@@ -74,12 +74,12 @@
                     'viewClassName'
                 ),
                 'rules' => array(
-                    array('name', 			     'required'),
+                    array('name',                'required'),
                     array('name',                'type',   'type' => 'string'),
                     array('name',                'length', 'max'  => 64),
                     array('serializedData',      'required'),
                     array('serializedData',      'type', 'type' => 'string'),
-                    array('viewClassName', 		 'required'),
+                    array('viewClassName',       'required'),
                     array('viewClassName',       'type',   'type' => 'string'),
                     array('viewClassName',       'length', 'max'  => 64),
                 )

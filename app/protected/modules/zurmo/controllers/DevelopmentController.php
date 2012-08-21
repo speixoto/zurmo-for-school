@@ -51,11 +51,10 @@
             {
                 Yii::app()->user->setFlash('notification', Yii::t('Default', 'Custom data successfully resolved.'));
             }
-            
+
             $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                                   makeStandardViewForCurrentUser($this, new DevelopmentListView()));
             echo $view->render();
         }
-             
     }
 ?>

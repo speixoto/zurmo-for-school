@@ -57,7 +57,7 @@
             $cs->registerCoreScript('jquery');
             $cs->registerCoreScript('yii');
             $handler                 = "jQuery.yii.submitForm(this, '', $params); return false;";
-            if(isset($htmlOptions['onclick']))
+            if (isset($htmlOptions['onclick']))
             {
                 $htmlOptions['onclick']  = $htmlOptions['onclick'] . $handler;
             }

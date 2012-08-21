@@ -37,11 +37,11 @@
             $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Clear Cache'),
                                                 'descriptionLabel'    => Yii::t('Default', 'In the case where you have reloaded the database, some cached items '.
                                                                          'might still exist.  This is a way to clear that cache.'),
-                                                'route'               => 'zurmo/development?clearCache=1'
+                                                'route'               => 'zurmo/development?clearCache=1' // Not Coding Standard
                                             );
             $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Update Custom Data'),
                                                 'descriptionLabel'    => Yii::t('Default', 'If there is new metadata to load using CustomManagement, use this option.'),
-                                                'route'               => 'zurmo/development?resolveCustomData=1'
+                                                'route'               => 'zurmo/development?resolveCustomData=1' // Not Coding Standard
                                             );
             $this->setLinkText(Yii::t('Default', 'Run'));
             return $categories;

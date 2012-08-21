@@ -34,9 +34,9 @@
             Yii::app()->user->userModel = $super;
         }
         
-        /*
-        * Test valid structure uses
-        */
+        /**
+         * Test valid structure uses
+         */
         public function testValidStructure ()
         {            
             $searchForm = new AAASearchFormTestModel(new A());                                                          
@@ -78,9 +78,9 @@
             $searchForm->clearErrors();
         }
         
-        /*
-         * Test valid uses if no clauses
-         */
+        /**
+          * Test valid uses if no clauses
+          */
         public function testValidUseIfNoClauses(){
             $searchForm = new AAASearchFormTestModel(new A());
             $searchForm->dynamicClauses   = array();
@@ -101,9 +101,9 @@
             $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
         }
-        /*
-        * Test invalide use of parenthesis
-        */                       
+        /**
+         * Test invalide use of parenthesis
+         */                       
         public function testInvalidParenthesisInStructure()
         {        
             $searchForm = new AAASearchFormTestModel(new A());
@@ -124,9 +124,9 @@
             $searchForm->clearErrors();
         }
         
-        /*
-        * Test if its used a number that isnt a structurePosition number
-        */            
+        /**
+         * Test if its used a number that isnt a structurePosition number
+         */            
         public function testInvalidNumberInStructurePosition()
         {               
             $searchForm = new AAASearchFormTestModel(new A());                                                          
@@ -159,9 +159,9 @@
             $searchForm->clearErrors();
         }        
 
-        /*
-        * Test invalid use of operators
-        */            
+        /**
+         * Test invalid use of operators
+         */            
         public function testInvalidOperatorInStructurePosition()
         {
             $searchForm = new AAASearchFormTestModel(new A());                                                          
@@ -182,9 +182,9 @@
             $searchForm->clearErrors();
         }
         
-        /*
-        * Test other invalid expressions
-        */            
+        /**
+         * Test other invalid expressions
+         */            
         public function testOtherInvalidExpressionsInStructurePosition()
         {
             $searchForm = new AAASearchFormTestModel(new A());                                                          
@@ -210,6 +210,24 @@
             $searchForm->dynamicStructure = '5 AND';
             $searchForm->validateDynamicStructure('dynamicStructure',array());
             $this->assertTrue($searchForm->hasErrors());
+            $searchForm->clearErrors();
+        }
+        
+        /**
+         * Test validating agains a MixedRelationsModel
+         */
+        public function testValidateDynamicClauses()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm->dynamicClauses   = array(
+                                                array('structurePosition'           => '1',
+                                                      'attributeIndexOrDerivedType' => 'primaryA',
+                                                      'primaryA' => array('name' => 'xtz')));                                                      
+            $searchForm->dynamicStructure = '1';
+            $searchForm->validateDynamicClauses('dynamicClauses',array());            
+            $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
         }
     }

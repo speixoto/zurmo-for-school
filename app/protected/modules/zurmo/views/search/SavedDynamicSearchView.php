@@ -49,7 +49,7 @@
         protected function renderSavedSearchList()
         {
             $savedSearches = SavedSearch::getByOwnerAndViewClassName(Yii::app()->user->userModel, get_class($this));
-            if(count($savedSearches) > 0)
+            if (count($savedSearches) > 0)
             {
                 $idOrName      = static::getSavedSearchListDropDown();
                 $htmlOptions   = array('id' => $idOrName, 'empty' => Yii::t('Default', 'Load a saved search'));
@@ -70,7 +70,7 @@
         protected static function resolveSavedSearchesToIdAndLabels($savedSearches)
         {
             $data = array();
-            foreach($savedSearches as $savedSearch)
+            foreach ($savedSearches as $savedSearch)
             {
                 $data[$savedSearch->id] = strval($savedSearch);
             }
@@ -81,7 +81,8 @@
         {
             //To support adicional params if set $onChangeUrl
             $onChangeUrlParams = parse_url($onChangeUrl);
-            if (isset($onChangeUrlParams['query'])) {
+            if (isset($onChangeUrlParams['query']))
+            {
                 $onChangeUrl .= "&savedSearchId";
             }
             else
@@ -91,14 +92,16 @@
             Yii::app()->clientScript->registerScript('savedSearchLoadScript', "
                 $('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
                 {
-                    if($(this).val() != '')
+                    if ($(this).val() != '')
                     {
                         savedSearchId = $(this).val();
-                        $.ajax({
+                        $.ajax(
+                        {
                           url: '" . $this->getClearStickySearchUrlAndParams() . "',
-                          complete: function(data){
+                          complete: function(data)
+                          {
                               window.location = '" . $onChangeUrl .  "=' + savedSearchId;
-                          },
+                          }
                         });
                     }
                 });");
@@ -108,7 +111,6 @@
         {
             return Yii::app()->createUrl('zurmo/default/clearStickySearch/', array('key' => get_class($this)));
         }
-
 
         protected function getExtraRenderFormBottomPanelScriptPart()
         {
@@ -191,10 +193,10 @@
                 }
             ", CClientScript::POS_END);
             // End Not Coding Standard
-            if($this->model->savedSearchId != null)
+            if ($this->model->savedSearchId != null)
             {
                 $label = Yii::t('Default', 'Delete') . "<span class='icon'></span>";
-                return CHtml::link($label, "#", array( 'id'		 => 'removeSavedSearch',
+                return CHtml::link($label, "#", array( 'id'      => 'removeSavedSearch',
                                                        'class'   => 'remove',
                                                        'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));
             }

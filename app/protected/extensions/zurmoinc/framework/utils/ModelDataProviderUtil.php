@@ -113,7 +113,7 @@
                     $joinTablesAdapter,
                     $where);
             }
-            elseif(isset($clauseInformation['relatedModelData']))
+            elseif (isset($clauseInformation['relatedModelData']))
             {
                 static::processMetadataContainingRelatedModelDataClause($modelClassName,
                                                                         $clausePosition,
@@ -169,16 +169,16 @@
             assert('is_string($modelClassName) && $modelClassName != ""');
             assert('$joinTablesAdapter instanceof RedBeanModelJoinTablesQueryAdapter');
             assert('is_int($clausePosition)');
-            if(is_array($clauseInformation['relatedModelData']) && count($clauseInformation['relatedModelData']) > 0)
+            if (is_array($clauseInformation['relatedModelData']) && count($clauseInformation['relatedModelData']) > 0)
             {
                 //if there is no more relatedModelData then we know this is the end of the nested information.
-                if(isset($clauseInformation['relatedModelData']['relatedModelData']))
+                if (isset($clauseInformation['relatedModelData']['relatedModelData']))
                 {
                     $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
                                                                $modelClassName,
                                                                $clauseInformation['attributeName'],
                                                                $clauseInformation['relatedModelData']['attributeName']);
-                    if($modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
+                    if ($modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
                     {
                         static::buildJoinForManyToManyRelatedAttributeAndGetWhereClauseData($modelAttributeToDataProviderAdapter,
                                                                                             $joinTablesAdapter);
@@ -202,7 +202,7 @@
                                                   $where,
                                                   $joinTablesAdapter);
                 }
-                elseif(!isset($clauseInformation['relatedModelData']['relatedAttributeName']))
+                elseif (!isset($clauseInformation['relatedModelData']['relatedAttributeName']))
                 {
                     $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
                                                                    $modelClassName,
@@ -471,7 +471,7 @@
                     $joinTablesAdapter->setSelectDistinctToTrue();
                 }
             }
-            elseif($modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_ONE_BELONGS_TO)
+            elseif ($modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_ONE_BELONGS_TO)
             {
                 $tableJoinIdName   = $onTableAliasName . '_id';
                 $onTableJoinIdName = 'id';
@@ -649,7 +649,6 @@
                         $relationWhere, 1, $whereClauseData[0], $whereClauseData[1]);
                         $where[$whereKey] = strtr('1', $relationWhere);
         }
-
 
         protected static function buildJoinForManyToManyRelatedAttributeAndGetWhereClauseData(
                                     RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter,
