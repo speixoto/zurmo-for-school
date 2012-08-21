@@ -24,27 +24,41 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModalSearchViewDesignerRules extends SearchViewDesignerRules
+    /**
+     * Modal search requires a different behavior.  Because a modal search could have a currencyValue attribute
+     * by default in the advanced search, it must be made sure it does not interfer with the search unless specific
+     * values are inputed.
+     */
+    class CurrencyValueForModalSearchElement extends CurrencyValueForSearchElement
     {
-        public function getDisplayName()
+        protected function renderExtraEditableContent()
         {
-            return Yii::t('Default', 'Popup Search View');
+            $name = $this->getEditableInputName($this->attribute, 'relatedData');
+            $htmlOptions = array(
+                'id'   => $this->getEditableInputId($this->attribute, 'relatedData'),
+            );
+            return ZurmoHtml::hiddenField($name, true, $htmlOptions);
         }
 
         /**
-         * Specifically defining CurrencyValueForModalSearch since modal behaves differently than advanced search.
+         * Default the currency Id to 'none';
          * (non-PHPdoc)
-         * @see SearchViewDesignerRules::getSavableMetadataRules()
+         * @see CurrencyValueForSearchElement::resolveParamsForCurrencyId()
          */
-        public function getSavableMetadataRules()
+        protected function resolveParamsForCurrencyId(& $params)
         {
-            return array(
-                'AddBlankForDropDown',
-                'BooleanAsDropDown',
-                'CurrencyValueForModalSearch',
-                'DropDownAsMultiSelect',
-                'TextAreaAsText'
-            );
+            parent::resolveParamsForCurrencyId($params);
+            $params['defaultToBlank'] = true;
+        }
+
+        /**
+         * Should not default to 0 as the currencyValue
+         * (non-PHPdoc)
+         * @see CurrencyValueForSearchElement::resolveAndGetEditableValue()
+         */
+        protected function resolveAndGetEditableValue($model, $attribute)
+        {
+            return '';
         }
     }
 ?>

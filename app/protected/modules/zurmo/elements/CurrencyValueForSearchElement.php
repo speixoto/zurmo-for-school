@@ -24,27 +24,25 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModalSearchViewDesignerRules extends SearchViewDesignerRules
+    /**
+     * Override of CurrencyValueElement to properly handle when a currencyValue is placed in a search panel.
+     * It requires an extra hidden input to be passed.
+     */
+    class CurrencyValueForSearchElement extends CurrencyValueElement
     {
-        public function getDisplayName()
+        protected function renderExtraEditableContent()
         {
-            return Yii::t('Default', 'Popup Search View');
+            $name = $this->getEditableInputName($this->attribute, 'relatedData');
+            $htmlOptions = array(
+                'id'   => $this->getEditableInputId($this->attribute, 'relatedData'),
+            );
+            return ZurmoHtml::hiddenField($name, true, $htmlOptions);
         }
 
-        /**
-         * Specifically defining CurrencyValueForModalSearch since modal behaves differently than advanced search.
-         * (non-PHPdoc)
-         * @see SearchViewDesignerRules::getSavableMetadataRules()
-         */
-        public function getSavableMetadataRules()
+        protected function resolveParamsForCurrencyId(& $params)
         {
-            return array(
-                'AddBlankForDropDown',
-                'BooleanAsDropDown',
-                'CurrencyValueForModalSearch',
-                'DropDownAsMultiSelect',
-                'TextAreaAsText'
-            );
+            assert('is_array($params)');
+            $params['addBlank'] = true;
         }
     }
 ?>

@@ -24,27 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModalSearchViewDesignerRules extends SearchViewDesignerRules
+    /**
+     * @see CurrencyValueForSearchElement
+     */
+    class CurrencyValueForSearchViewMetadataRules
     {
-        public function getDisplayName()
+        public static function resolveElementMetadata($elementInformation, & $elementMetadata)
         {
-            return Yii::t('Default', 'Popup Search View');
-        }
-
-        /**
-         * Specifically defining CurrencyValueForModalSearch since modal behaves differently than advanced search.
-         * (non-PHPdoc)
-         * @see SearchViewDesignerRules::getSavableMetadataRules()
-         */
-        public function getSavableMetadataRules()
-        {
-            return array(
-                'AddBlankForDropDown',
-                'BooleanAsDropDown',
-                'CurrencyValueForModalSearch',
-                'DropDownAsMultiSelect',
-                'TextAreaAsText'
-            );
+            $elementclassname = $elementInformation['type'] . 'Element';
+            if ($elementclassname == 'CurrencyValueElement' ||
+                is_subclass_of($elementclassname, 'CurrencyValueElement'))
+            {
+                $elementMetadata['type']     = 'CurrencyValueForSearch';
+            }
         }
     }
 ?>
