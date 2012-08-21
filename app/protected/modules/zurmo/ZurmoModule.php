@@ -68,7 +68,7 @@
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
                         'titleLabel'       => 'Global Configuration',
                         'descriptionLabel' => 'Manage Global Configuration',
-                        'route'            => '/zurmo/default',
+                        'route'            => '/zurmo/default/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                     array(
