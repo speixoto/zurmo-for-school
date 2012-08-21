@@ -102,14 +102,11 @@
 
         protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)
         {
-            $dynamicSearchAttributes          = $dataCollection->getDynamicSearchAttributes();
-            if ($dynamicSearchAttributes == null)
+            $sanitizedDynamicSearchAttributes          = $dataCollection->getSanitizedDynamicSearchAttributes();
+            if ($sanitizedDynamicSearchAttributes == null)
             {
                 return $metadata;
             }
-            $sanitizedDynamicSearchAttributes = SearchUtil::
-                                                sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
-                                                                                                            $dynamicSearchAttributes);
             $dynamicStructure                 = $dataCollection->getDynamicStructure();
             if ($sanitizedDynamicSearchAttributes != null)
             {
