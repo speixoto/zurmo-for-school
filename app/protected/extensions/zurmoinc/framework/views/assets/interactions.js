@@ -14,8 +14,21 @@ $(window).ready(function(){
             }
         }
     );
-    */   
-    $('.nav > .parent').live({
+    */
+    $('.nav:not(.headerNav) > .parent').live({
+        mouseenter: function() {
+            if ( $(this).find('ul').length > 0 ){
+                $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
+            }
+        },
+        mouseleave: function() {
+            if ( $(this).find('ul').length > 0 ){
+                $(this).find('ul').stop(true, true).fadeOut(250);
+            }
+        }
+    });
+    
+        $('.headerNav > .parent').live({
         click: function() {                 
             if ($(this).find('ul:visible').length == 0)
             {
@@ -33,8 +46,9 @@ $(window).ready(function(){
                 $(this).find('ul').stop(true, true).fadeOut(250);
             }
         }
-    });        
-       
+    }); 
+    
+
     //Main nav hover
      $('#MenuView a, #RecentlyViewedView a').hover(
         function(){
