@@ -24,45 +24,25 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class StandardAndCustomAttributesListView extends GridView
+    /**
+     * Override of CurrencyValueElement to properly handle when a currencyValue is placed in a search panel.
+     * It requires an extra hidden input to be passed.
+     */
+    class CurrencyValueForSearchElement extends CurrencyValueElement
     {
-        protected $cssClasses =  array( 'AdministrativeArea');
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $module,
-            $moduleDisplayName,
-            $standardAttributesCollection,
-            $customAttributesCollection,
-            $modelClassName
-        )
+        protected function renderExtraEditableContent()
         {
-            parent::__construct(3, 1);
-            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerFieldsLink'), 0, 0);
-            $title = $moduleDisplayName . ': ' .  Yii::t('Default', 'Custom Fields');
-            $this->setView(new CustomAttributesCollectionView(
-                $controllerId,
-                $moduleId,
-                $customAttributesCollection,
-                get_class($module),
-                $modelClassName,
-                $title
-            ), 1, 0);
-            $title = $moduleDisplayName . ': ' .  Yii::t('Default', 'Standard Fields');
-            $this->setView(new AttributesCollectionView(
-                $controllerId,
-                $moduleId,
-                $standardAttributesCollection,
-                get_class($module),
-                $modelClassName,
-                $title
-            ), 2, 0);
+            $name = $this->getEditableInputName($this->attribute, 'relatedData');
+            $htmlOptions = array(
+                'id'   => $this->getEditableInputId($this->attribute, 'relatedData'),
+            );
+            return ZurmoHtml::hiddenField($name, true, $htmlOptions);
         }
 
-        public function isUniqueToAPage()
+        protected function resolveParamsForCurrencyId(& $params)
         {
-            return true;
+            assert('is_array($params)');
+            $params['addBlank'] = true;
         }
     }
 ?>

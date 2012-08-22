@@ -24,45 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class StandardAndCustomAttributesListView extends GridView
+    /**
+     * @see CurrencyValueForSearchElement
+     */
+    class CurrencyValueForSearchViewMetadataRules
     {
-        protected $cssClasses =  array( 'AdministrativeArea');
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $module,
-            $moduleDisplayName,
-            $standardAttributesCollection,
-            $customAttributesCollection,
-            $modelClassName
-        )
+        public static function resolveElementMetadata($elementInformation, & $elementMetadata)
         {
-            parent::__construct(3, 1);
-            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerFieldsLink'), 0, 0);
-            $title = $moduleDisplayName . ': ' .  Yii::t('Default', 'Custom Fields');
-            $this->setView(new CustomAttributesCollectionView(
-                $controllerId,
-                $moduleId,
-                $customAttributesCollection,
-                get_class($module),
-                $modelClassName,
-                $title
-            ), 1, 0);
-            $title = $moduleDisplayName . ': ' .  Yii::t('Default', 'Standard Fields');
-            $this->setView(new AttributesCollectionView(
-                $controllerId,
-                $moduleId,
-                $standardAttributesCollection,
-                get_class($module),
-                $modelClassName,
-                $title
-            ), 2, 0);
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
+            $elementclassname = $elementInformation['type'] . 'Element';
+            if ($elementclassname == 'CurrencyValueElement' ||
+                is_subclass_of($elementclassname, 'CurrencyValueElement'))
+            {
+                $elementMetadata['type']     = 'CurrencyValueForSearch';
+            }
         }
     }
 ?>

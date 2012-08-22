@@ -41,6 +41,30 @@
                 $searchArray = $this->model->dynamicClauses;
                 return SearchUtil::getSearchAttributesFromSearchArray($searchArray);
             }
+            else
+            {
+                return array();
+            }
+        }
+
+        public function getSanitizedDynamicSearchAttributes()
+        {
+            $searchArray = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
+            if (!empty($searchArray))
+            {
+                return SearchUtil::
+                   sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($this->model, $searchArray);
+            }
+            elseif ($this->model->dynamicClauses != null)
+            {
+                $searchArray = $this->model->dynamicClauses;
+                return SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            }
+            else
+            {
+                return array();
+            }
+
         }
 
         public function getDynamicStructure()

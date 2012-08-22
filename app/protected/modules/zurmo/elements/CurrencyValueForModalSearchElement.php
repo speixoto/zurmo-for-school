@@ -24,45 +24,41 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class StandardAndCustomAttributesListView extends GridView
+    /**
+     * Modal search requires a different behavior.  Because a modal search could have a currencyValue attribute
+     * by default in the advanced search, it must be made sure it does not interfer with the search unless specific
+     * values are inputed.
+     */
+    class CurrencyValueForModalSearchElement extends CurrencyValueForSearchElement
     {
-        protected $cssClasses =  array( 'AdministrativeArea');
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $module,
-            $moduleDisplayName,
-            $standardAttributesCollection,
-            $customAttributesCollection,
-            $modelClassName
-        )
+        protected function renderExtraEditableContent()
         {
-            parent::__construct(3, 1);
-            $this->setView(new ActionBarForDesignerModuleView($controllerId, $moduleId, $module, 'DesignerFieldsLink'), 0, 0);
-            $title = $moduleDisplayName . ': ' .  Yii::t('Default', 'Custom Fields');
-            $this->setView(new CustomAttributesCollectionView(
-                $controllerId,
-                $moduleId,
-                $customAttributesCollection,
-                get_class($module),
-                $modelClassName,
-                $title
-            ), 1, 0);
-            $title = $moduleDisplayName . ': ' .  Yii::t('Default', 'Standard Fields');
-            $this->setView(new AttributesCollectionView(
-                $controllerId,
-                $moduleId,
-                $standardAttributesCollection,
-                get_class($module),
-                $modelClassName,
-                $title
-            ), 2, 0);
+            $name = $this->getEditableInputName($this->attribute, 'relatedData');
+            $htmlOptions = array(
+                'id'   => $this->getEditableInputId($this->attribute, 'relatedData'),
+            );
+            return ZurmoHtml::hiddenField($name, true, $htmlOptions);
         }
 
-        public function isUniqueToAPage()
+        /**
+         * Default the currency Id to 'none';
+         * (non-PHPdoc)
+         * @see CurrencyValueForSearchElement::resolveParamsForCurrencyId()
+         */
+        protected function resolveParamsForCurrencyId(& $params)
         {
-            return true;
+            parent::resolveParamsForCurrencyId($params);
+            $params['defaultToBlank'] = true;
+        }
+
+        /**
+         * Should not default to 0 as the currencyValue
+         * (non-PHPdoc)
+         * @see CurrencyValueForSearchElement::resolveAndGetEditableValue()
+         */
+        protected function resolveAndGetEditableValue($model, $attribute)
+        {
+            return '';
         }
     }
 ?>

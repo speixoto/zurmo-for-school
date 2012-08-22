@@ -36,7 +36,12 @@
 
         public $dynamicStructure;
 
-        public $dynamicClauses;
+        /**
+         * Make sure to populate with sanitized clauses
+         * @see SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel
+         * @var array
+         */
+        public $dynamicClauses = array();
 
         public static function getNonSearchableAttributes()
         {
