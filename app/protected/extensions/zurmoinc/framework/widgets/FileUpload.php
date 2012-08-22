@@ -258,7 +258,7 @@ EOD;
         private function makeUploadRowScriptContent()
         {
             $startLabel  = Yii::t('Default', 'Start');
-            $cancelLabel = Yii::t('Default', ' Cancel');
+            $cancelLabel = Yii::t('Default', 'Cancel');
 $scriptContent = <<<EOD
 <script id="template-upload" type="text/x-jquery-tmpl">
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">

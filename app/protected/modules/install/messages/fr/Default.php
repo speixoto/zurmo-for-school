@@ -191,7 +191,7 @@
         'Microsoft-IIS'
             => 'Microsoft-IIS', // Same Word Translated
         'Minify has been disabled due to a system issue. Try to resolve the problem and re-enable Minify.'
-            => '??',
+            => 'En raison d\'un problème de système, Minify a été désactivé. Tentez de résoudre le problème et re-activer Minify.',
         'Minify library is included.'
             => 'La biliothèque Minify est inclue.',
         'minimum requirement is:'

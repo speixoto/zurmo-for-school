@@ -49,7 +49,7 @@
             }
             if (isset($_GET['resolveCustomData']) && $_GET['resolveCustomData'] == 1)
             {
-                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Custom data successfully resolved.'));
+                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Custom data updated successfully.'));
             }
 
             $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
