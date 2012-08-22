@@ -28,7 +28,7 @@
     {
         protected function renderTitleContent()
         {
-            return '<h1>' . Yii::t('Default', 'Development Tools') . '</h1>';
+            return '<h1>' . Yii::t('Default', 'Developer Tools') . '</h1>';
         }
 
         protected function getCategoryData()
