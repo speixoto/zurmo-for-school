@@ -41,7 +41,7 @@
          * @see SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel
          * @var array
          */
-        public $dynamicClauses;
+        public $dynamicClauses = array();
 
         public static function getNonSearchableAttributes()
         {
