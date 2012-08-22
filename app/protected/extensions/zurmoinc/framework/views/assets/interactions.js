@@ -33,17 +33,17 @@ $(window).ready(function(){
             if ($(this).find('ul:visible').length == 0)
             {
                 if ( $(this).find('ul').length > 0 ){
-                    $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
+                    $(this).find('ul').show();
                 }
             } 
             else
             {
-                 $(this).find('ul').stop(true, true).fadeOut(250);
+                 $(this).find('ul').hide();
             }               
         },
         focusout: function() {
             if ( $(this).find('ul').length > 0 ){
-                $(this).find('ul').stop(true, true).fadeOut(250);
+                $(this).find('ul').hide();
             }
         }
     }); 
