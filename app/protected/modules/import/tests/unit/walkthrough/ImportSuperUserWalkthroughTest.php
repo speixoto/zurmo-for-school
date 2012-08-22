@@ -41,6 +41,8 @@
             $this->assertTrue($import->save());
 
             //Test all attributeIndex and Derived types to make sure all types of mapping rules load properly.
+            $this->runMappingRulesEditAction($import->id, 'owner');
+            $this->runMappingRulesEditAction($import->id, 'hasOne');
             $this->runMappingRulesEditAction($import->id, 'firstName');
             $this->runMappingRulesEditAction($import->id, 'lastName');
             $this->runMappingRulesEditAction($import->id, 'date');
