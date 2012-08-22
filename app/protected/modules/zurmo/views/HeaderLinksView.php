@@ -116,15 +116,11 @@
             $content  .= CHtml::tag('div',
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
                                     CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');            
-            Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "                 
-                //Hides the container on click outside it
-                $(document).mouseup(function (e)
-                {                       
-                    var container = $('#notifications-flyout');                    
-                    if (container.has(e.target).length === 0 && e.target.id != 'notifications-link')
-                    {
-                        container.hide();
-                    }
+            Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "                               
+                $('#notifications-link').unbind('focusout');
+                $('#notifications-link').bind('focusout', function(e)
+                {  
+                    $('#notifications-flyout').stop(true, true).fadeOut(250);  
                 });
                 $('#notifications-link').unbind('click');
                 $('#notifications-link').bind('click', function(e)
@@ -138,7 +134,9 @@
                             dataType : 'html',
                             success  : function(html)
                             {                                
-                                jQuery('#notifications-flyout').html(html);                               
+                                jQuery('#notifications-flyout').html(html);
+                                $('#notifications-link').attr('tabindex',-1).focus();
+
                             }
                         });
                     }      
