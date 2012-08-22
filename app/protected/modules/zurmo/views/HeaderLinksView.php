@@ -115,16 +115,20 @@
             $content  .= "<span id='notifications-link' class='tooltip'>" . $count ."</span></a>";
             $content  .= CHtml::tag('div',
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
-                                    CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
-            Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "                
-                $('#notifications-flyout-link').unbind('focusout');
-                $('#notifications-flyout-link').bind('focusout', function()
-                {  
-                     $('#notifications-flyout').hide(); 
+                                    CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');            
+            Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "                 
+                //Hides the container on click outside it
+                $(document).mouseup(function (e)
+                {                       
+                    var container = $('#notifications-flyout');                    
+                    if (container.has(e.target).length === 0 && e.target.id != 'notifications-link')
+                    {
+                        container.hide();
+                    }
                 });
-                $('#notifications-flyout-link').unbind('click');
-                $('#notifications-flyout-link').bind('click', function()
-                {                    
+                $('#notifications-link').unbind('click');
+                $('#notifications-link').bind('click', function(e)
+                {                                             
                     if ($('#notifications-flyout').css('display') == 'none')
                     {                       
                         $('#notifications-flyout').show();                       
@@ -133,9 +137,8 @@
                             type     : 'GET',
                             dataType : 'html',
                             success  : function(html)
-                            {
-                                
-                                jQuery('#notifications-flyout').html(html);
+                            {                                
+                                jQuery('#notifications-flyout').html(html);                               
                             }
                         });
                     }      
