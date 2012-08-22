@@ -173,6 +173,11 @@
             $searchArray = array('testMultiSelectDropDown' => array('values' => array(0 => null)));
             $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
             $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testMultiSelectDropDown' => array('values' => array(0 => null, 1 => 'xyz')));
+            $resultArray = array('testMultiSelectDropDown' => array('values' => array(1 => 'xyz')));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
         }
 
         public function testGetSearchAttributesFromSearchArrayForSavingExistingSearchCriteria()
