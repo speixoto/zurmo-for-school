@@ -60,6 +60,16 @@
             => 'Suivant',
         'Correctly Installed Services'
             => 'Services optionnels installés avec succès',
+        'Could not get value of database default collation.'
+            => 'Impossible d\'obtenir la valeur de default collation de la base de données.',
+        'Could not get value of database max_allowed_packet.'
+            => 'Impossible d\'obtenir la valeur de max_allowed_packet de la base de données.',
+        'Could not get value of database max_sp_recursion_depth.'
+            => 'Impossible d\'obtenir la valeur de max_sp_recursion_depth de la base de données.',
+        'Could not get value of database optimizer_search_depth.'
+            => 'Impossible d\'obtenir la valeur de optimizer_search_depth de la base de données.',
+        'Could not get value of database thread_stack.'
+            => 'Impossible d\'obtenir la valeur de thread_stack de la base de données.',
         'Creating super user.'
             => 'Creation du super-utilisateur.',
         'Ctype extension is loaded.'
@@ -208,6 +218,14 @@
             => 'L\'extension PCRE est chargée.',
         'PCRE extension is not loaded.'
             => 'L\'extension PCRE n\'est pas chargée.',
+        'pdo is installed.'
+            => 'pdo est installé.',
+        'pdo is not installed.'
+            => 'pdo n\'est pas installé.',
+        'pdo_mysql is installed.'
+            => 'pdo_mysql est installé.',
+        'pdo_mysql is not installed.'
+            => 'pdo_mysql n\'est pas installé.',
         'PHP'
             => 'PHP', // Same Word Translated
         'PHP date.timezone is not set.'
@@ -334,6 +352,8 @@
             => 'Zurmo mot de passe administrateur.  Le nom d\'utilisateur est \'super\'. Vous pouvez modifier le nom plus tard.',
         'Zurmo Installation'
             => 'Installation de Zurmo',
+        'Zurmo runs only on Apache {apacheMinVersion} and higher or Microsoft-IIS {iisMinVersion} or higher web servers.'
+            => 'Zurmo fonctionne uniquement sur le serveur web Apache {apacheMinVersion} ou supérieure ou Microsoft-IIS {iisMinVersion} ou supérieure.',
         'Zurmo Version'
             => 'Version de Zurmo',
         '{folderPath} is missing.'
