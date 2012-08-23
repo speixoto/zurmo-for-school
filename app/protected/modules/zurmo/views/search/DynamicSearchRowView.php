@@ -77,10 +77,10 @@
             $content  = '<div>';
             $content .= ZurmoHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
             $content .= $this->renderAttributeDropDownContent();
-            $content .= ZurmoHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
+            $content .= ZurmoHtml::hiddenField($hiddenInputName, ($this->rowNumber + 1), $idInputHtmlOptions);
             $content .= ZurmoHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
             $content .= '</div>';
-            $content .= ZurmoHtml::link(Yii::t('Default', '_'), '#', array('class' => 'remove-extra-dynamic-search-row-link'));
+            $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }
 

@@ -42,6 +42,8 @@
             $currencyValueModel        = $this->model->{$this->attribute};
             $params                    = array();
             $params['inputPrefix']     = $this->resolveInputPrefix();
+            $this->resolveParamsForCurrencyId($params);
+            //need to somehow override to pass not to default to currency
             $activeCurrenciesElement   = new CurrencyIdForAModelsRelatedCurrencyValueDropDownElement(
                                                                 $this->model, $this->attribute, $this->form, $params);
             $activeCurrenciesElement->editableTemplate = '{content}{error}';
@@ -49,15 +51,18 @@
             $content .= ZurmoHtml::tag('div', array('class' => 'quarter'), $activeCurrenciesElement->render());
             $content .= ZurmoHtml::tag('div', array('class' => 'threeQuarters'),
                             $this->renderEditableValueTextField($currencyValueModel, $this->form, $this->attribute, 'value'));
+            $content .= $this->renderExtraEditableContent();
             $content .= '</div>';
             return $content;
         }
 
         protected function renderEditableValueTextField($model, $form, $inputNameIdPrefix, $attribute)
         {
+            //need to override a resolveValue to NOT default to 0 if not specifically null
             $htmlOptions = array(
-                'name' => $this->getEditableInputName($inputNameIdPrefix, $attribute),
-                'id'   => $this->getEditableInputId($inputNameIdPrefix, $attribute),
+                'name' =>  $this->getEditableInputName($inputNameIdPrefix, $attribute),
+                'id'   =>  $this->getEditableInputId($inputNameIdPrefix, $attribute),
+                'value' => $this->resolveAndGetEditableValue($model, $attribute),
             );
             $textField = $form->textField($model, $attribute, $htmlOptions);
             $error     = $form->error    ($model, $attribute);
@@ -92,18 +97,22 @@
         }
 
         /**
-         * CurrencyValue is special because you can pass the value and the currency id so the relatedData is needed
-         * to be added as a hidden input.
-         * (non-PHPdoc)
-         * @see Element::renderEditablePartForUseInDynamicSearchContent()
+         * Override as needed
          */
-        public function renderEditablePartForUseInDynamicSearchContent()
+        protected function renderExtraEditableContent()
         {
-            $name = $this->getEditableInputName($this->attribute, 'relatedData');
-            $htmlOptions = array(
-                'id'   => $this->getEditableInputId($this->attribute, 'relatedData'),
-            );
-            return ZurmoHtml::hiddenField($name, true, $htmlOptions);
+        }
+
+        /**
+         * Override as needed
+         */
+        protected function resolveParamsForCurrencyId(& $params)
+        {
+        }
+
+        protected function resolveAndGetEditableValue($model, $attribute)
+        {
+            return $model->$attribute;
         }
     }
 ?>

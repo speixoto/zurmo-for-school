@@ -25,36 +25,24 @@
      ********************************************************************************/
 
     /**
-     * Controller Class for Development Tools
-     *
+     * Override of CurrencyValueElement to properly handle when a currencyValue is placed in a search panel.
+     * It requires an extra hidden input to be passed.
      */
-    class ZurmoDevelopmentController extends ZurmoModuleController
+    class CurrencyValueForSearchElement extends CurrencyValueElement
     {
-        public function filters()
+        protected function renderExtraEditableContent()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
-               ),
+            $name = $this->getEditableInputName($this->attribute, 'relatedData');
+            $htmlOptions = array(
+                'id'   => $this->getEditableInputId($this->attribute, 'relatedData'),
             );
+            return ZurmoHtml::hiddenField($name, true, $htmlOptions);
         }
 
-        public function actionIndex()
+        protected function resolveParamsForCurrencyId(& $params)
         {
-            if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
-            {
-                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Cache has been successfully cleaned.'));
-            }
-            if (isset($_GET['resolveCustomData']) && $_GET['resolveCustomData'] == 1)
-            {
-                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Custom data updated successfully.'));
-            }
-
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new DevelopmentListView()));
-            echo $view->render();
+            assert('is_array($params)');
+            $params['addBlank'] = true;
         }
     }
 ?>

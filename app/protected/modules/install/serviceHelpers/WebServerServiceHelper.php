@@ -44,7 +44,7 @@
             }
             else
             {
-                $this->message  = Yii::t('Default', 'Zurmo works only on Apache {apacheMinVersion} and higher or Microsoft-IIS  {iisMinVersion} or higher web servers.',
+                $this->message  = Yii::t('Default', 'Zurmo runs only on Apache {apacheMinVersion} and higher or Microsoft-IIS {iisMinVersion} or higher web servers.',
                         array(
                               '{apacheMinVersion}' => $this->minimumVersion['apache'],
                               '{iisMinVersion}'    => $this->minimumVersion['microsoft-iis'])

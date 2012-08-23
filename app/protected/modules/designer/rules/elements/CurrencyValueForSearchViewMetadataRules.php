@@ -25,36 +25,18 @@
      ********************************************************************************/
 
     /**
-     * Controller Class for Development Tools
-     *
+     * @see CurrencyValueForSearchElement
      */
-    class ZurmoDevelopmentController extends ZurmoModuleController
+    class CurrencyValueForSearchViewMetadataRules
     {
-        public function filters()
+        public static function resolveElementMetadata($elementInformation, & $elementMetadata)
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
-               ),
-            );
-        }
-
-        public function actionIndex()
-        {
-            if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
+            $elementclassname = $elementInformation['type'] . 'Element';
+            if ($elementclassname == 'CurrencyValueElement' ||
+                is_subclass_of($elementclassname, 'CurrencyValueElement'))
             {
-                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Cache has been successfully cleaned.'));
+                $elementMetadata['type']     = 'CurrencyValueForSearch';
             }
-            if (isset($_GET['resolveCustomData']) && $_GET['resolveCustomData'] == 1)
-            {
-                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Custom data updated successfully.'));
-            }
-
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new DevelopmentListView()));
-            echo $view->render();
         }
     }
 ?>
