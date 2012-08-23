@@ -67,14 +67,13 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            $import = new Import();
-            $import->serializedData = serialize(array('importRulesType' => 'Accounts'));
-            $this->assertTrue($import->save());
-
             $this->createDateCustomFieldByModule                ('AccountsModule', 'datetest');
             $this->createDateTimeCustomFieldByModule            ('AccountsModule', 'datetimetest');
 
             //Test All custom created types since their rules could vary
+            $import = new Import();
+            $import->serializedData = serialize(array('importRulesType' => 'Accounts'));
+            $this->assertTrue($import->save());
             $this->runMappingRulesEditAction($import->id, 'datetest');
             $this->runMappingRulesEditAction($import->id, 'datetimetest');
             //todo: add the rest of the custom field types that are importable
