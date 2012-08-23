@@ -252,7 +252,7 @@
             foreach($this->allowedGuestUserRoutes as $allowedGuestUserRoute)
             {
                 $allowedGuestUserUrls[] = Yii::app()->createUrl($allowedGuestUserRoute);
-            }  
+            }
             $reqestedUrl = Yii::app()->getRequest()->getUrl();
             $isUrlAllowedToGuests = false;
             foreach ($allowedGuestUserUrls as $url)
@@ -265,12 +265,14 @@
 
             if (Yii::app()->user->isGuest)
             {
-                if (!$this->isUpgradeMode() && !$isUrlAllowedToGuests)
+                if (Yii::app()->isApplicationInMaintenanceMode())
                 {
-                    echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
-                    exit;
+                    if (!$this->isUpgradeMode() && !$isUrlAllowedToGuests)
+                    {
+                        echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
+                        exit;
+                    }
                 }
-            
                 if (!$isUrlAllowedToGuests)
                 {
                     Yii::app()->user->loginRequired();
