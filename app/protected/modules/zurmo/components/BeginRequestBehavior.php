@@ -263,7 +263,7 @@
             {
                 if (Yii::app()->isApplicationInMaintenanceMode())
                 {
-                    if (!$this->isUpgradeMode())
+                    if (!$this->isUpgradeMode() && !$isUrlAllowedToGuests)
                     {
                         echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
                         exit;
