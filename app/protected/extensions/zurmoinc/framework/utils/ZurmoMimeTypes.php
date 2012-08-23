@@ -37,7 +37,7 @@
         'pptx' => 'application/vnd.ms-powerpoint',
         'xlsx' => 'application/vnd.ms-excel',
         'csv'  => 'text/csv',
-        //'asc'  => 'text/plain'
+        'asc'  => 'text/plain'
     ));
     return $extensions;
 ?>
