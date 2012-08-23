@@ -43,118 +43,118 @@
                   This user must be a super administrator.
      * action: define upgrade phase(possible options: "runPart1" or "runPart2")
 EOD;
-    }
-
-    /**
-     * Execute the action.
-     * @param array command line parameters specific for this command
-     */
-    public function run($args)
-    {
-        set_time_limit(0);
-        if (!isset($args[0]))
-        {
-            $this->usageError('A username must be specified.');
-        }
-        try
-        {
-            Yii::app()->user->userModel = User::getByUsername($args[0]);
-        }
-        catch (NotFoundException $e)
-        {
-            $this->usageError('The specified username does not exist.');
-        }
-        $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-        if (!$group->users->contains(Yii::app()->user->userModel))
-        {
-            $this->usageError('The specified user is not a super administrator.');
         }
 
-        if (!isset($args[1]))
+        /**
+         * Execute the action.
+         * @param array command line parameters specific for this command
+         */
+        public function run($args)
         {
-            $this->usageError('You must specify action.');
-        }
-        else
-        {
-            $upgradeStep = $args[1];
-        }
-
-        if ($upgradeStep != 'runPart1' && $upgradeStep != 'runPart2')
-        {
-            $this->usageError('Invalid step/action. Valid values are "runPart1" and "runPart2".');
-        }
-
-        try
-        {
-            $template        = "{message}\n";
-            $messageStreamer = new MessageStreamer($template);
-            $messageStreamer->setExtraRenderBytes(0);
-
-            if ($upgradeStep == 'runPart1')
+            set_time_limit(0);
+            if (!isset($args[0]))
             {
-                $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process.'));
-                $this->runPart1($messageStreamer);
-                $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade phase 1 completed.'));
-                $messageStreamer->add(Yii::t('Default', 'Please execute next command: "{command}" to complete upgrade process.',
-                        array('{command}' => './zurmoc upgradeZurmo super runPart2')));
+                $this->usageError('A username must be specified.');
             }
-            elseif ($upgradeStep == 'runPart2')
+            try
             {
-                if (UpgradeUtil::isUpgradeStateValid())
+                Yii::app()->user->userModel = User::getByUsername($args[0]);
+            }
+            catch (NotFoundException $e)
+            {
+                $this->usageError('The specified username does not exist.');
+            }
+            $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if (!$group->users->contains(Yii::app()->user->userModel))
+            {
+                $this->usageError('The specified user is not a super administrator.');
+            }
+
+            if (!isset($args[1]))
+            {
+                $this->usageError('You must specify action.');
+            }
+            else
+            {
+                $upgradeStep = $args[1];
+            }
+
+            if ($upgradeStep != 'runPart1' && $upgradeStep != 'runPart2')
+            {
+                $this->usageError('Invalid step/action. Valid values are "runPart1" and "runPart2".');
+            }
+
+            try
+            {
+                $template        = "{message}\n";
+                $messageStreamer = new MessageStreamer($template);
+                $messageStreamer->setExtraRenderBytes(0);
+
+                if ($upgradeStep == 'runPart1')
                 {
-                    $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process - phase 2.'));
-                    $this->runPart2($messageStreamer);
-                    $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade completed.'));
+                    $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process.'));
+                    $this->runPart1($messageStreamer);
+                    $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade phase 1 completed.'));
+                    $messageStreamer->add(Yii::t('Default', 'Please execute next command: "{command}" to complete upgrade process.',
+                            array('{command}' => './zurmoc upgradeZurmo super runPart2')));
                 }
-                else
+                elseif ($upgradeStep == 'runPart2')
                 {
-                    $message = 'Upgrade state is older then one day, so please run phase one of upgrade first.';
-                    throw new NotSupportedException($message);
+                    if (UpgradeUtil::isUpgradeStateValid())
+                    {
+                        $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process - phase 2.'));
+                        $this->runPart2($messageStreamer);
+                        $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade completed.'));
+                    }
+                    else
+                    {
+                        $message = 'Upgrade state is older then one day, so please run phase one of upgrade first.';
+                        throw new NotSupportedException($message);
+                    }
                 }
             }
+            catch (Exception $e)
+            {
+                $messageStreamer->add(Yii::t('Default', 'An error occur during upgrade: ') . $e->getMessage());
+                UpgradeUtil::unsetUpgradeState();
+            }
         }
-        catch (Exception $e)
+
+        protected function runPart1($messageStreamer)
         {
-            $messageStreamer->add(Yii::t('Default', 'An error occur during upgrade: ') . $e->getMessage());
-            UpgradeUtil::unsetUpgradeState();
+            $messageStreamer->add(Yii::t('Default', 'This is Zurmo upgrade process. Please backup files/database before you continue.'));
+
+            $message = Yii::t('Default', 'Are you sure you want to upgrade Zurmo? [yes|no]');
+            $confirm = $this->confirm($messageStreamer, $message);
+
+            if ($confirm)
+            {
+                UpgradeUtil::runPart1($messageStreamer);
+            }
+            else
+            {
+                $messageStreamer->add(Yii::t('Default', 'Upgrade process halted.'));
+            }
+        }
+
+        protected function runPart2($messageStreamer)
+        {
+            UpgradeUtil::runPart2($messageStreamer);
+        }
+
+        /**
+         * Prompt user by Yes or No
+         * @param string $message an optional message to show at prompting.
+         * @param bool $printYesNo If is true shows " [yes|no] " at prompting
+         * @return bool True if user respond Yes, otherwise, return False
+         */
+        public function confirm($messageStreamer, $message = null)
+        {
+            if($message !== null)
+            {
+                $messageStreamer->add($message);
+            }
+            return !strncasecmp(trim(fgets(STDIN)), 'y', 1);
         }
     }
-
-    protected function runPart1($messageStreamer)
-    {
-        $messageStreamer->add(Yii::t('Default', 'This is Zurmo upgrade process. Please backup files/database before you continue.'));
-
-        $message = Yii::t('Default', 'Are you sure you want to upgrade Zurmo? [yes|no]');
-        $confirm = $this->confirm($messageStreamer, $message);
-
-        if ($confirm)
-        {
-            UpgradeUtil::runPart1($messageStreamer);
-        }
-        else
-        {
-            $messageStreamer->add(Yii::t('Default', 'Upgrade process halted.'));
-        }
-    }
-
-    protected function runPart2($messageStreamer)
-    {
-        UpgradeUtil::runPart2($messageStreamer);
-    }
-
-    /**
-     * Prompt user by Yes or No
-     * @param string $message an optional message to show at prompting.
-     * @param bool $printYesNo If is true shows " [yes|no] " at prompting
-     * @return bool True if user respond Yes, otherwise, return False
-     */
-    public function confirm($messageStreamer, $message = null)
-    {
-        if($message !== null)
-        {
-            $messageStreamer->add($message);
-        }
-        return !strncasecmp(trim(fgets(STDIN)), 'y', 1);
-    }
-}
 ?>

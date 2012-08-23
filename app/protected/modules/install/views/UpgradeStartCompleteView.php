@@ -45,13 +45,15 @@
         {
             $cs = Yii::app()->getClientScript();
             $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jquery.min.js', CClientScript::POS_END);
-            $zurmoUpgradeStepOneUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/stepOne/', array('upgradeZurmo' => '1'));
+            $zurmoUpgradeStepOneUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/stepOne/');
 
             $content  = '<div class="MetadataView">';
             $content .= '<table><tr><td>';
             $content .= '<div id="upgrade-step-two">';
             $content .= '<table><tr><td>';
-            $content .= Yii::t('Default', 'This is Zurmo upgrade process.Please backup all files and database before you continue.');
+            $content .= Yii::t('Default', 'This is Zurmo upgrade process. Please backup all files and database before you continue.');
+            $content .= '<br/>';
+            $content .= Yii::t('Default', 'Copy upgrade file to app/protected/runtime/upgrade folder and start upgrade process.');
             $content .= '<br/><br/>';
             $content .= CHtml::link(Yii::t('Default', 'Click here to start upgrade'), $zurmoUpgradeStepOneUrl);
             $content .= '</td></tr></table>';

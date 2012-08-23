@@ -47,7 +47,7 @@
             $progressBarImageContent = CHtml::image($imagePath, 'Progress Bar');
             $cs = Yii::app()->getClientScript();
             $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jquery.min.js', CClientScript::POS_END);
-            $zurmoUpgradeStepTwoUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/stepTwo/', array('upgradeZurmo' => '1'));
+            $zurmoUpgradeStepTwoUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/stepTwo/');
             $loginUrl = Yii::app()->createUrl('zurmo/default');
 
             $content  = '<div class="MetadataView">';

@@ -87,18 +87,6 @@
         }
 
         /**
-         *
-         */
-        public function isUpgradeMode()
-        {
-            if (isset($_GET['upgradeZurmo']) && $_GET['upgradeZurmo'] == 1)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /**
         * Load memcache extension if memcache extension is
         * loaded and if memcache server is avalable
         * @param $event
@@ -265,14 +253,6 @@
 
             if (Yii::app()->user->isGuest)
             {
-                if (Yii::app()->isApplicationInMaintenanceMode())
-                {
-                    if (!$this->isUpgradeMode() && !$isUrlAllowedToGuests)
-                    {
-                        echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
-                        exit;
-                    }
-                }
                 if (!$isUrlAllowedToGuests)
                 {
                     Yii::app()->user->loginRequired();
@@ -282,24 +262,19 @@
             {
                 if (Yii::app()->isApplicationInMaintenanceMode())
                 {
-                    // Allow access only to users that belongs to Super Administrators.
-                    $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-                    if (!$group->users->contains(Yii::app()->user->userModel))
+                    if (!$isUrlAllowedToGuests)
                     {
-                        echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
-                        exit;
-                    }
-                    else
-                    {
-                        if ($this->isUpgradeMode())
-                        {
-                            // Super Administrators can access all pages, but inform them that application is in maintenance mode.
-                            Yii::app()->user->setFlash('notification', Yii::t('Default', 'Application is in maintenance mode, and only Super Administrators can access it.'));
-                        }
-                        elseif (!$this->isUpgradeMode() && !$isUrlAllowedToGuests)
+                        // Allow access only to users that belongs to Super Administrators.
+                        $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+                        if (!$group->users->contains(Yii::app()->user->userModel))
                         {
                             echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
                             exit;
+                        }
+                        else
+                        {
+                            // Super Administrators can access all pages, but inform them that application is in maintenance mode.
+                            Yii::app()->user->setFlash('notification', Yii::t('Default', 'Application is in maintenance mode, and only Super Administrators can access it.'));
                         }
                     }
                 }
