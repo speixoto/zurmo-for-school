@@ -63,7 +63,7 @@
 
         public function validateSaveSearch($attribute, $params)
         {
-            if($this->$attribute == null)
+            if ($this->$attribute == null)
             {
                 $this->addError('savedSearchName', Yii::t('yii', '{attribute} cannot be blank.',
                                                         array('{attribute}' => Yii::t('Default', 'Name'))));

@@ -30,7 +30,6 @@
      */
     class SearchAttributesDataCollection
     {
-
         protected $model;
 
         public function __construct($model)
@@ -39,9 +38,30 @@
             $this->model = $model;
         }
 
+        public function getModel()
+        {
+            return $this->model;
+        }
+
         public function getDynamicSearchAttributes()
         {
-            return SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
+            $dynamicSearchAttributes = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
+            if($dynamicSearchAttributes == null)
+            {
+                return array();
+            }
+            return $dynamicSearchAttributes;
+        }
+
+        public function getSanitizedDynamicSearchAttributes()
+        {
+            $dynamicSearchAttributes = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
+            if($dynamicSearchAttributes == null)
+            {
+                return array();
+            }
+            return SearchUtil::
+                   sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($this->model, $dynamicSearchAttributes);
         }
 
         public function getDynamicStructure()

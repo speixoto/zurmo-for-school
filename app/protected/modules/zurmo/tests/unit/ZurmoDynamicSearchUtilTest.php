@@ -92,7 +92,7 @@
             $compareData = array(
                                 'account___name' => 'Account - Name',
                                 'account___opportunities___name' => 'Account - Opportunities - Name',
-                                'opportunities___account___name' => 'Opportunities - Account - Name',);
+                                'opportunities___account___name' => 'Opportunities - Account - Name');
             $this->assertEquals($compareData, $attributeIndexOrDerivedTypeAndLabels);
             //Reset metadata.
             ContactsSearchView::setMetadata($tempMetadata);

@@ -72,7 +72,7 @@
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('$dataCollection instanceof SearchAttributesDataCollection || $dataCollection == null');
-            if($dataCollection == null)
+            if ($dataCollection == null)
             {
                 $dataCollection = new SearchAttributesDataCollection($searchModel);
             }
@@ -102,15 +102,11 @@
 
         protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)
         {
-
-            $dynamicSearchAttributes          = $dataCollection->getDynamicSearchAttributes();
-            if($dynamicSearchAttributes == null)
+            $sanitizedDynamicSearchAttributes          = $dataCollection->getSanitizedDynamicSearchAttributes();
+            if ($sanitizedDynamicSearchAttributes == null)
             {
                 return $metadata;
             }
-            $sanitizedDynamicSearchAttributes = SearchUtil::
-                                                sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
-                                                                                                            $dynamicSearchAttributes);
             $dynamicStructure                 = $dataCollection->getDynamicStructure();
             if ($sanitizedDynamicSearchAttributes != null)
             {
@@ -128,7 +124,7 @@
         {
             assert('$model instanceof RedBeanModel || $model instanceof CModel');
             assert('$breadCrumbView == null || $breadCrumbView instanceof BreadCrumbView');
-            if($breadCrumbView != null)
+            if ($breadCrumbView != null)
             {
                 $verticalColumns   = 2;
                 $primaryViewColumn = 1;
@@ -146,16 +142,13 @@
                 'redirectUrl'      => $redirectUrl,
             );
             $gridView = new GridView($verticalColumns, 1);
-            if($breadCrumbView != null)
+            if ($breadCrumbView != null)
             {
                $gridView->setView($breadCrumbView, 0, 0);
             }
             $gridView->setView(new $viewClassName(  $this->getId(),
                                                     $this->getModule()->getId(),
                                                     $params), $primaryViewColumn, 0);
-
-
-
             return $gridView;
         }
 

@@ -36,7 +36,12 @@
 
         public $dynamicStructure;
 
-        public $dynamicClauses;
+        /**
+         * Make sure to populate with sanitized clauses
+         * @see SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel
+         * @var array
+         */
+        public $dynamicClauses = array();
 
         public static function getNonSearchableAttributes()
         {
@@ -72,16 +77,16 @@
                 }
                 else
                 {
-                    $formula = str_replace("(","", $formula);
-                    $formula = str_replace(")","", $formula);
+                    $formula = str_replace("(", "", $formula);
+                    $formula = str_replace(")", "", $formula);
                     $arguments = preg_split("/or|and/", $formula);
                     foreach ($arguments as $argument)
                     {
                         $argument = trim($argument);
-                        if (!is_numeric($argument)
-                            || !(intval($argument) <= count($this->dynamicClauses))
-                            || !(intval($argument) > 0)
-                            || !(preg_match("/\./", $argument) === 0) )
+                        if (!is_numeric($argument) ||
+                            !(intval($argument) <= count($this->dynamicClauses)) ||
+                            !(intval($argument) > 0) ||
+                            !(preg_match("/\./", $argument) === 0) )
                         {
                             $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));
                         }
@@ -100,7 +105,8 @@
         protected function  validateParenthesis($formula)
         {
             $val = 0;
-            for ($i = 0; $i <= strlen($formula); $i++) {
+            for ($i = 0; $i <= strlen($formula); $i++)
+            {
                 $char = substr($formula, $i, 1);
                 if ($char === "(")
                 {
@@ -115,7 +121,7 @@
                     return false;
                 }
             }
-            if ($val!==0)
+            if ($val !== 0)
             {
                 return false;
             }
@@ -127,12 +133,12 @@
 
         public function validateDynamicClauses($attribute, $params)
         {
-            if($this->$attribute != null)
+            if ($this->$attribute != null)
             {
-                foreach($this->$attribute as $key => $rowData)
+                foreach ($this->$attribute as $key => $rowData)
                 {
                     $structurePosition = $rowData['structurePosition'];
-                    if($rowData['attributeIndexOrDerivedType'] == null)
+                    if ($rowData['attributeIndexOrDerivedType'] == null)
                     {
                         $this->addError('dynamicClauses', Yii::t('Default', 'You must select a field for row {rowNumber}',
                         array('{rowNumber}' => $structurePosition)));
@@ -150,7 +156,7 @@
                             $dynamicStructure
                         );
                         $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
-                        if(count($metadata['clauses']) == 0)
+                        if (count($metadata['clauses']) == 0)
                         {
                             $this->addError('dynamicClauses', Yii::t('Default', 'You must select a value for row {rowNumber}',
                             array('{rowNumber}' => $structurePosition)));

@@ -71,7 +71,7 @@
             $savedSearches = SavedSearch::getByName('myTest');
             $this->assertEquals(1, count($savedSearches));
             $getData = array(
-                'savedSearchId'		      => $savedSearches[0]->id,
+                'savedSearchId'           => $savedSearches[0]->id,
                 'anyMixedAttributes'      => 'a search',
                 'anyMixedAttributesScope' => 'some',
                 'dynamicStructure'        => '1 or 5',
@@ -83,7 +83,7 @@
             $this->assertEquals(null,          $searchForm->anyMixedAttributes);
             $this->assertEquals(null,          $searchForm->getAnyMixedAttributesScope());
             $this->assertEquals('1 or 6',      $searchForm->dynamicStructure);
-            $this->assertEquals(null,          $searchForm->dynamicClauses);
+            $this->assertEquals(array(),          $searchForm->dynamicClauses);
         }
 
         public function testSetGetClearStickySearchByKey()

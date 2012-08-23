@@ -80,7 +80,7 @@
             $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
             $content .= CHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
             $content .= '</div>';
-            $content .= CHtml::link(Yii::t('Default', '_'), '#', array('class' => 'remove-extra-dynamic-search-row-link'));
+            $content .= CHtml::link('_', '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }
 
@@ -132,7 +132,8 @@
                     'data'    => 'js:\'suffix=' . $this->suffix .
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',
                     'url'     =>  $ajaxOnChangeUrl,
-                    'success' => 'js:function(data){
+                    'success' => 'js:function(data)
+                                  {
                                       $("#' . $inputDivId . '").html(data);
                                   }',
             ));

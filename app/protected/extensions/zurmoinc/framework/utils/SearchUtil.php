@@ -43,7 +43,7 @@
             if (!empty($_GET[$getArrayName]))
             {
                 $searchAttributes = SearchUtil::getSearchAttributesFromSearchArray($_GET[$getArrayName]);
-                foreach($formModelClassName::getNonSearchableAttributes() as $attribute)
+                foreach ($formModelClassName::getNonSearchableAttributes() as $attribute)
                 {
                     if (isset($searchAttributes[$attribute]) ||
                         key_exists($attribute, $searchAttributes))
@@ -158,7 +158,7 @@
         {
             assert('$searchArray != null');
             array_walk_recursive($searchArray, 'SearchUtil::changeEmptyValueToNull');
-            SearchUtil::changeEmptyArrayValuesToNull($searchArray);
+            self::changeEmptyArrayValuesToNull($searchArray);
             return $searchArray;
         }
 
@@ -189,8 +189,24 @@
                         if ($subValue == null)
                         {
                             unset($searchArray[$key]['values'][$subKey]);
+                            $searchArray[$key]['values'] = array_values($searchArray[$key]['values']);
                         }
                     }
+                }
+                if (is_array($value) && isset($value['value']) && is_array($value['value']))
+                {
+                    foreach ($value['value'] as $subKey => $subValue)
+                    {
+                        if ($subValue == null)
+                        {
+                            unset($searchArray[$key]['value'][$subKey]);
+                            $searchArray[$key]['value'] = array_values($searchArray[$key]['value']);
+                        }
+                    }
+                }
+                elseif (is_array($value))
+                {
+                    self::changeEmptyArrayValuesToNull($searchArray[$key]);
                 }
             }
         }
@@ -204,6 +220,7 @@
         public static function getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray)
         {
             array_walk_recursive($searchArray, 'SearchUtil::changeEmptyValueToNullExceptNumeric');
+            self::changeEmptyArrayValuesToNull($searchArray);
             return $searchArray;
         }
 
@@ -257,7 +274,6 @@
             return $searchAttributesReadyToSetToModel;
         }
 
-
         /**
          * @param string $getArrayName
          */
@@ -268,13 +284,13 @@
                 isset($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_NAME]))
             {
                 $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_NAME]);
-                if(isset($dynamicSearchAttributes[DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]))
+                if (isset($dynamicSearchAttributes[DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]))
                 {
                     unset($dynamicSearchAttributes[DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]);
                 }
-                foreach($dynamicSearchAttributes as $key => $data)
+                foreach ($dynamicSearchAttributes as $key => $data)
                 {
-                    if(is_string($data) && $data == 'undefined')
+                    if (is_string($data) && $data == 'undefined')
                     {
                         unset($dynamicSearchAttributes[$key]);
                     }
@@ -292,7 +308,7 @@
         {
             assert('is_array($dynamicSearchAttributes)');
             $sanitizedDynamicSearchAttributes = array();
-            foreach($dynamicSearchAttributes as $key => $searchAttributeData)
+            foreach ($dynamicSearchAttributes as $key => $searchAttributeData)
             {
                 $attributeIndexOrDerivedType = $searchAttributeData['attributeIndexOrDerivedType'];
                 $structurePosition           = $searchAttributeData['structurePosition'];
@@ -309,9 +325,9 @@
         protected static function processDynamicSearchAttributesDataForSavingModelRecursively($searchModel, & $searchAttributeData)
         {
             $processRecursively = false;
-            foreach($searchAttributeData as $attributeName => $attributeData)
+            foreach ($searchAttributeData as $attributeName => $attributeData)
             {
-                if( isset($attributeData['relatedModelData']) &&
+                if ( isset($attributeData['relatedModelData']) &&
                     is_array($attributeData) &&
                     $attributeData['relatedModelData'] == true)
                 {
@@ -320,7 +336,7 @@
                     break;
                 }
             }
-            if($processRecursively)
+            if ($processRecursively)
             {
                 $modelToUse      = self::resolveModelToUseByModelAndAttributeName($searchModel, $attributeName);
                 self::processDynamicSearchAttributesDataForSavingModelRecursively($modelToUse,
@@ -344,10 +360,10 @@
             assert('is_string($attributeName)');
             $modelToUse      = SearchDataProviderMetadataAdapter::resolveAsRedBeanModel($model->$attributeName);
             $moduleClassName = $modelToUse->getModuleClassName();
-            if($moduleClassName != null)
+            if ($moduleClassName != null)
             {
                 $formClassName   = $moduleClassName::getGlobalSearchFormClassName();
-                if($formClassName != null)
+                if ($formClassName != null)
                 {
                     $modelToUse = new $formClassName($modelToUse);
                 }

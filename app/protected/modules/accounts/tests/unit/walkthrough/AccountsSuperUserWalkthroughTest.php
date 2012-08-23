@@ -46,7 +46,6 @@
             AccountTestHelper::createAccountByNameForOwner('superAccount4', $super);
             //Setup default dashboard.
             Dashboard::getByLayoutIdAndUser(Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
-
         }
 
         public function testSuperUserAllDefaultControllerActions()
@@ -312,7 +311,7 @@
             $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes' => 'xyz')));
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/');
             $data = StickySearchUtil::getDataByKey('AccountsSearchView');
-            $compareData = array('dynamicClauses'          => null,
+            $compareData = array('dynamicClauses'          => array(),
                                  'dynamicStructure'        => null,
                                  'anyMixedAttributes'      => 'xyz',
                                  'anyMixedAttributesScope' => null,
@@ -321,7 +320,7 @@
             $this->setGetArray(array('clearingSearch' => true));
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default');
             $data = StickySearchUtil::getDataByKey('AccountsSearchView');
-            $compareData = array('dynamicClauses'          => null,
+            $compareData = array('dynamicClauses'          => array(),
                                  'dynamicStructure'        => null,
                                  'anyMixedAttributesScope' => null,
             );
