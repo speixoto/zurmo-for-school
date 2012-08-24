@@ -310,8 +310,8 @@
             => 'Hubo un problema al crear la base de datos de errores',
         'There was a problem creating the user Error code:'
             => 'Hubo un problema al crear el código de error de usuario',
-        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"]'
-            => 'No se puede determinar info ruta URL. Por favor, asegúrese $_SERVER ["PATH_INFO"]',
+        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"] (or $_SERVER["PHP_SELF"] and $_SERVER["SCRIPT_NAME"]) contains proper value.'
+            => 'No se puede determinar info ruta URL. Por favor, asegúrese $_SERVER ["PATH_INFO"] (o $_SERVER["PHP_SELF"] y $_SERVER["SCRIPT_NAME"]) contiene el valor correcto.',
         'User who can connect to the database.'
             => 'El usuario que puede conectarse a la base de datos.',
         'User`s password.'

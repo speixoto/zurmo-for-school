@@ -331,6 +331,8 @@
             => '{attribute} è tropo preciso (la precisione massima è {precision}).',
         '{count} result(s)'
             => '{count} risultati',
+        '{moduleSingularLabel} Search'
+            => 'Ricerca {moduleSingularLabel}',
         '{start}-{end} of {count} result(s).'
             => '{start}-{end} di {count} risultati.',
     );

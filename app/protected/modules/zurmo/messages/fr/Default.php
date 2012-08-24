@@ -79,7 +79,7 @@
             => 'De circonstance / Resp. du compte',
         'Add Comment'
             => 'Ajouter commentaire',
-        'Add Criteria'
+        'Add criteria'
             => 'Ajouter des critères',
         'Add Currency'
             => 'Ajouter la Devise',
@@ -295,7 +295,7 @@
             => 'Dans le cas où il y a  de nouvelles métadonnées à charger par CustomManagement, cliquez pour exécuter.',
         'In Progress'
             => 'En cours',
-        'In the case where you have reloaded the database, some cached items might still exist.  This is a way to clear that cache.'
+        'In the case where you have reloaded the database, some cached items might still exist. This is a way to clear that cache.'
             => 'Dans le cas où vous avez rechargé la base de données, certains éléments mis en cache pourrait encore exister. Cliquez pour effacer le cache.',
         'Inbound Call'
             => 'Appel Entrant',
@@ -545,6 +545,8 @@
             => 'Cliquez sur la flèche vers le bas pour afficher plus de résultats de votre recherche.',
         'Select a field'
             => 'Choisissez un champ',
+        'Select a Group'
+            => 'Sélectionner le groupe',
         'Select a Parent Group'
             => 'Sélectionner le groupe Parent',
         'Select a Parent Role'

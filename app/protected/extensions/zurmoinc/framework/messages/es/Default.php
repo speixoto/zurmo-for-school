@@ -331,6 +331,8 @@
             => '{attribute} es demasiado preciso (máximo de decimales es {precision}).',
         '{count} result(s)'
             => '{count} resultado(s)',
+        '{moduleSingularLabel} Search'
+            => '{moduleSingularLabel} búsqueda',
         '{start}-{end} of {count} result(s).'
             => '{start}-{end} de {count} resultado(s).',
     );

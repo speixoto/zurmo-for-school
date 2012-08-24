@@ -310,8 +310,8 @@
             => 'C\'era un errore durante la creazione del database dei codice Errore:',
         'There was a problem creating the user Error code:'
             => 'C\'era un error durante la creazione del utente dei codice Errore:',
-        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"]'
-            => 'Impossibile determinare il percorso Informazioni URL. Assicurare $_SERVER["PATH_INFO"]',
+        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"] (or $_SERVER["PHP_SELF"] and $_SERVER["SCRIPT_NAME"]) contains proper value.'
+            => 'Impossibile determinare il percorso Informazioni URL. Assicurare $_SERVER["PATH_INFO"](o $_SERVER["PHP_SELF"] e $_SERVER["SCRIPT_NAME"]) contiene il valore coretto.',
         'User who can connect to the database.'
             => 'Utente che posso connettere al database.',
         'User`s password.'

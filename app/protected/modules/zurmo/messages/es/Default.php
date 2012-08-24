@@ -79,7 +79,7 @@
             => 'Ad-hoc / Propietario',
         'Add Comment'
             => 'Añadir comentario',
-        'Add Criteria'
+        'Add criteria'
             => 'Añadir criterios',
         'Add Currency'
             => 'Añadir divisa',
@@ -295,7 +295,7 @@
             => 'Si hay nuevos metadatos a cargar con CustomManagement, utilice esta opción.',
         'In Progress'
             => 'En progreso',
-        'In the case where you have reloaded the database, some cached items might still exist.  This is a way to clear that cache.'
+        'In the case where you have reloaded the database, some cached items might still exist. This is a way to clear that cache.'
             => 'Si hay nuevos metadatos a cargar con CustomManagement, utilice esta opción. En caso que haya recargado la base de datos, algunos elementos almacenados en caché aún puedan existir. Esta es una manera de limpiar esa caché.',
         'Inbound Call'
             => 'Llamada entrante',
@@ -545,6 +545,8 @@
             => 'Haga clic en la flecha hacia abajo para mostrar más resultados de búsqueda.',
         'Select a field'
             => 'Seleccione un campo',
+        'Select a Group'
+            => 'Seleccione un grupo',
         'Select a Parent Group'
             => 'Seleccione un grupo de padres',
         'Select a Parent Role'

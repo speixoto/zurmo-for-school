@@ -331,6 +331,8 @@
             => '{attribute} ist zu genau (maximum decimal places is {precision})',
         '{count} result(s)'
             => '{count} Resultat(e)',
+        '{moduleSingularLabel} Search'
+            => '{moduleSingularLabel} Suchen',
         '{start}-{end} of {count} result(s).'
             => '{start}-{end} von {count} Resultat(e).',
     );
