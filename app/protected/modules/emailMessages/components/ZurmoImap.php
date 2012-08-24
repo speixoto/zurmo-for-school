@@ -298,7 +298,7 @@
             {
                 foreach ($messages as $message)
                 {
-                    $this->deleteMessage($message->msgNumber);
+                    $this->deleteMessage($message->uid);
                 }
             }
             if ($expunge)
@@ -314,7 +314,7 @@
          */
         public function deleteMessage($msgNumber)
         {
-            imap_delete($this->imapStream, $msgNumber);
+            imap_delete($this->imapStream, $msgNumber, FT_UID);
         }
 
         /**
