@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     class UserDetailsView extends DetailsView
-    {
+    {  
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -184,6 +184,13 @@
             {
                 throw new NotSupportedException();
             }
+        }
+        
+        protected function renderRightSideContent()
+        {                
+            $avatarUrl = UserAvatarUtil::getAvatarUrl($this->model, 250);
+            $content = '<div><img src="' . $avatarUrl . '" alt="" /><div>';
+            return $content;
         }
     }
 ?>
