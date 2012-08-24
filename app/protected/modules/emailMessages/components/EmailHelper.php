@@ -112,16 +112,6 @@
             }
         }
 
-        public function loadOutbound2Settings($settings)
-        {
-            foreach ($this->settingsToLoad as $keyName)
-            {
-                if (null !== $keyValue = $settings[$keyName])
-                {
-                    $this->$keyName = $keyValue;
-                }
-            }
-        }
         /**
          * Set outbound settings into the database.
          */
