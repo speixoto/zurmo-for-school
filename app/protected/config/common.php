@@ -308,6 +308,7 @@
             'notifications',
             'opportunities',
             'rssReader',
+            'socialItems',
             'tasks',
             'zurmo' => array(
                 'modules' => array(

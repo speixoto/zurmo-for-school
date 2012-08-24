@@ -24,8 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SocialItemsModule extends Module
+    class SocialItemsModule extends SecurableModule
     {
+        const RIGHT_ACCESS_SOCIAL_ITEMS = 'Access Social Items';
+
         public function getDependencies()
         {
             return array();
@@ -34,6 +36,13 @@
         public function getRootModelNames()
         {
             return array('SocialItem');
+        }
+
+            public static function getUntranslatedRightsLabels()
+        {
+            $labels                           = array();
+            $labels[self::RIGHT_ACCESS_SOCIAL_ITEMS] = 'Access Social Feed';
+            return $labels;
         }
 
         public static function getDefaultMetadata()
@@ -55,17 +64,22 @@
             return 'SocialItem';
         }
 
+        public static function getAccessRight()
+        {
+            return self::RIGHT_ACCESS_SOCIAL_ITEMS;
+        }
+
         public static function getDemoDataMakerClassName()
         {
             return 'SocialItemsDemoDataMaker';
         }
 
-        public static function getGamificationRulesType()
+        public static function modelsAreNeverGloballySearched()
         {
-            return 'SocialItemGamification';
+            return true;
         }
 
-        public static function modelsAreNeverGloballySearched()
+        public static function hasPermissions()
         {
             return true;
         }

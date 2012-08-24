@@ -24,10 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Model for storing comments that relate to a variety of different models across the application.
-     */
-    class Comment extends Item
+    class SocialItem extends OwnedSecurableItem
     {
         public static function getByDescription($description)
         {
@@ -44,28 +41,9 @@
             return $this->description;
         }
 
-        /**
-         * Given a related model type, a related model id, and a page size, return a list of comment models.
-         * @param string $type
-         * @param integer $relatedId
-         * @param integer $pageSize
-         */
-        public static function getCommentsByRelatedModelTypeIdAndPageSize($type,  $relatedId, $pageSize)
-        {
-            assert('is_string($type)');
-            assert('is_int($relatedId)');
-            assert('is_int($pageSize) || $pageSize = null');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Comment');
-            $orderByColumnName = RedBeanModelDataProvider::
-                                 resolveSortAttributeColumnName('Comment', $joinTablesAdapter, 'createdDateTime');
-            $where             = "relatedmodel_type = '" . strtolower($type) . "' AND relatedmodel_id = '" . $relatedId . "'";
-            $orderBy           = $orderByColumnName . ' desc';
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $orderBy);
-        }
-
         public static function getModuleClassName()
         {
-            return 'CommentModule';
+            return 'SocialItemsModule';
         }
 
         public static function canSaveMetadata()
@@ -79,17 +57,24 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'description',
+                    'latestDateTime',
                 ),
                 'relations' => array(
-                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'comments'  => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
+                    'note'      => array(RedBeanModel::HAS_ONE,  'Comment'),
+                    'files'     => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('description', 'required'),
                     array('description', 'type',    'type' => 'string'),
+                    array('latestDateTime', 'required'),
+                    array('latestDateTime', 'readOnly'),
+                    array('latestDateTime', 'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
                     'description'        => 'TextArea',
                     'files'              => 'Files',
+                    'latestDateTime'     => 'DateTime'
                 ),
             );
             return $metadata;
@@ -102,7 +87,28 @@
 
         public static function getGamificationRulesType()
         {
-            return 'CommentGamification';
+            return 'SocialItemtGamification';
+        }
+
+        /**
+         * update latestDateTime based on new related comments
+         * (non-PHPdoc)
+         * @see Item::beforeSave()
+         */
+        protected function beforeSave()
+        {
+            if (parent::beforeSave())
+            {
+                if ($this->comments->isModified() || $this->getIsNewModel())
+                {
+                    $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>
