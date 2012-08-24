@@ -366,7 +366,7 @@
                 {
                     throw new NotSupportedException();
                 }
-                Yii::app()->imap->deleteMessage($message->msgNumber);
+                Yii::app()->imap->deleteMessage($message->uid);
             }
             catch (NotSupportedException $e)
             {
