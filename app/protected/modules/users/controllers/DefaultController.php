@@ -89,9 +89,12 @@
             $userAvatarForm = new UserAvatarForm($user);            
             $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');            
             $userChangeAvatarView = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
-            $view = new ModalView($this, $userChangeAvatarView);           
-            Yii::app()->getClientScript()->setToAjaxMode();
-            echo $view->render();                                    
+            $view = new ModalView($this, $userChangeAvatarView);
+            if (!isset($_POST['UserAvatarForm']))
+            {    
+                Yii::app()->getClientScript()->setToAjaxMode();
+                echo $view->render();
+            }
         }
         
         public function actionDetails($id)

@@ -33,11 +33,7 @@
     class UserAvatarForm extends ModelForm
     {
         
-        public $avatarType;
-        
-        public $customAvatarEmail = null;
-        
-        public $galleryAvatar = null;
+        public $avatar;                
 
         public function __construct(User $model)
         {
@@ -47,20 +43,21 @@
         public function rules()
         {
             return array(
-                array('avatarType',                  'required'),
-                array('avatarType',                  'type',      'type' => 'integer'),
-                array('customAvatarEmail',           'email'),
-                array('galleryAvatar',               'type',      'type' => 'integer')                
+                array('avatar', 'required'),
+                array('avatar', 'validateAvatar'),                
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'avatarType'              => Yii::t('Default', 'User Avatar'),
-                'customAvatarEmail'       => Yii::t('Default', 'Gravatar Email'),
-                'galleryAvatar'           => Yii::t('Default', 'Avatar from gallery')               
+                'avatar'              => Yii::t('Default', 'User Avatar'),                
             );
+        }
+        
+        public function validateAvatar($attribute, $params)
+        {
+         
         }
     }
 ?>

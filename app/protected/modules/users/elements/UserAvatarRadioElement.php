@@ -31,25 +31,18 @@
     {              
         protected function renderControlEditable()
         {            
-            $content  = ZurmoHtml::radioButtonList($this->getEditableInputName($this->attribute), 
+            $content  = ZurmoHtml::radioButtonList($this->getEditableInputName($this->attribute) . '[type]', 
                                                    '0', 
                                                    $this->resolveRadioOptions(), 
-                                                   array('id' => $this->getEditableInputId($this->attribute))
-                    );  
+                                                   array('id' => $this->getEditableInputId($this->attribute) . '_type'));  
             $content .= ZurmoHtml::tag('div', 
-                           array('id'    => 'avatarRadioElement_customEmailInput',
-                                 'style' => 'display:none;'
-                            ), 
-                           $this->renderCustomEmailInput());
+                                       array('id'    => 'avatarRadioElement_customEmailInput',
+                                             'style' => 'display:none;'), 
+                                       $this->renderCustomEmailInput());
             $content .= ZurmoHtml::tag('div', 
-                           array('id'    => 'avatarRadioElement_galleryRadio',
-                                 'style' => 'display:none;'
-                            ), 
-                           $this->renderGalleryRadio());    
-            //print_r($this->model);
-            //print_r($this->attribute);
-            //print_r($this->form);
-            print_r($this->params);
+                                       array('id'    => 'avatarRadioElement_galleryRadio',
+                                             'style' => 'display:none;'), 
+                                       $this->renderGalleryRadio());              
             $this->renderScripts();
             return $content;
         }
@@ -71,7 +64,9 @@
         
         private function renderCustomEmailInput()
         {
-            $content = CHtml::textField($this->getEditableInputName('customAvatarEmail'), null,array('id'=> $this->getEditableInputId('customAvatarEmail')));
+            $content = CHtml::textField($this->getEditableInputName($this->attribute) . '[customAvatarEmail]', 
+                                                                    null,
+                                                                    array('id'=> $this->getEditableInputId($this->attribute) . '_customAvatarEmail'));
             return $content;
         }
         
@@ -82,21 +77,25 @@
                                  '3' => "<img src='http://mediacdn.disqus.com/1345757376/images/noavatar32.png' />",
                                  '4' => "<img src='http://mediacdn.disqus.com/1345757376/images/noavatar32.png' />",
                                  '5' => "<img src='http://mediacdn.disqus.com/1345757376/images/noavatar32.png' />");
-            $content = ZurmoHtml::radioButtonList($this->getEditableInputName('galleryAvatar'), '', $radioOption, array('id' => $this->getEditableInputId('galleryAvatar')));
+            $content = ZurmoHtml::radioButtonList($this->getEditableInputName($this->attribute) . '[galleryAvatarImage]', 
+                                                  '', 
+                                                  $radioOption, 
+                                                  array('id' => $this->getEditableInputId($this->attribute) . '_galleryAvatarImage'));
             return $content;
         }
         
         private function renderScripts()
-        {
-             Yii::app()->clientScript->registerScript('userAvatarRadioElement', "   
-                console.log('dsadasasdasd');                
+        {            
+             $inputName = $this->getEditableInputId($this->attribute);     
+             //TODO: Put closest int the customEmail and galleryRadio div?
+             Yii::app()->clientScript->registerScript('userAvatarRadioElement', "                                 
                 $('#edit-form').change(function() {
-                    if ($('#UserAvatarForm_avatarType_2').attr('checked')) {
+                    if ($('#{$inputName}_type_2').attr('checked')) {
                         $('#avatarRadioElement_customEmailInput').show();
                     } else {
                         $('#avatarRadioElement_customEmailInput').hide();
                     }
-                    if ($('#UserAvatarForm_avatarType_3').attr('checked')) {
+                    if ($('#{$inputName}_type_3').attr('checked')) {
                         $('#avatarRadioElement_galleryRadio').show();
                     } else {
                         $('#avatarRadioElement_galleryRadio').hide();

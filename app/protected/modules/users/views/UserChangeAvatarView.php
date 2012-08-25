@@ -44,7 +44,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'avatarType',                                                      
+                                                array('attributeName' => 'avatar',                                                      
                                                       'type' => 'UserAvatarRadio'),
                                             ),
                                         ),
@@ -56,6 +56,19 @@
                 ),
             );
             return $metadata;
+        }
+        
+        protected function resolveActiveFormAjaxValidationOptions()
+        {
+            return array('enableAjaxValidation' => true,
+                'clientOptions' => array(
+                    'beforeValidate'    => 'js:beforeValidateAction',
+                    'afterValidate'     => 'js:afterValidateAction',
+                    'validateOnSubmit'  => true,
+                    'validateOnChange'  => false,
+                    'inputContainer'    => 'td',
+                )
+            );
         }
 
     }
