@@ -189,7 +189,7 @@
         protected function renderRightSideContent()
         {                
             $avatarUrl = UserAvatarUtil::getAvatarUrl($this->model, 250);
-            $avatarImage = '<img src="' . $avatarUrl . '" alt="" />';
+            $avatarImage = ZurmoHtml::image($avatarUrl);
             $url = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
             $modalTitle = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Avatar') . ": " . strval($this->model));            
             $content = ZurmoHtml::ajaxLink($avatarImage,

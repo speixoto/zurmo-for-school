@@ -44,7 +44,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'avatarType', 'type' => 'UserAvatarRadio'),
+                                                array('attributeName' => 'avatarType',                                                      
+                                                      'type' => 'UserAvatarRadio'),
                                             ),
                                         ),
                                     )
