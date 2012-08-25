@@ -189,7 +189,13 @@
         protected function renderRightSideContent()
         {                
             $avatarUrl = UserAvatarUtil::getAvatarUrl($this->model, 250);
-            $content = '<div><img src="' . $avatarUrl . '" alt="" /><div>';
+            $avatarImage = '<img src="' . $avatarUrl . '" alt="" />';
+            $url = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
+            $modalTitle = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Avatar') . ": " . strval($this->model));            
+            $content = ZurmoHtml::ajaxLink($avatarImage,
+                                           $url,
+                                           $modalTitle
+                    );            
             return $content;
         }
     }
