@@ -67,7 +67,7 @@
                 $jobLog->isProcessed   = true;
                 $jobLog->message       = 'A test message.';
                 $saved                 = $jobLog->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }

@@ -66,7 +66,7 @@
             }
             self::resolveAndAddViewDefinedNestedAttributes($modelAttributesAdapter->getModel(), $viewClassName, $attributeIndexOrDerivedTypeAndLabels);
 
-            if(is_subclass_of($viewClassName, 'DynamicSearchView'))
+            if (is_subclass_of($viewClassName, 'DynamicSearchView'))
             {
                 $viewClassName::
                 resolveAttributeIndexOrDerivedTypeAndLabelsForDynamicSearchRow($attributeIndexOrDerivedTypeAndLabels);

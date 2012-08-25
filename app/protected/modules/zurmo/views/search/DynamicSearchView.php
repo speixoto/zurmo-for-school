@@ -369,7 +369,6 @@
         public static function resolveAttributeIndexOrDerivedTypeAndLabelsForDynamicSearchRow(
                                & $attributeIndexOrDerivedTypeAndLabels)
         {
-
         }
     }
 ?>

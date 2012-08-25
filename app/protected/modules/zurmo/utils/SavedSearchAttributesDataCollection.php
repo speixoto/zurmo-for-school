@@ -64,7 +64,6 @@
             {
                 return array();
             }
-
         }
 
         public function getDynamicStructure()
