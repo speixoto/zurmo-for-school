@@ -35,6 +35,60 @@
         }
 
         /**
+         * Testing using between, since it has more than 1 clause for the first position
+         */
+        public function testDynamicSearchUsingInBetweenDateTime()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $sanitizedDynamicSearchAttributes = array(
+                0 => array(
+                    'dateTime__DateTime'          => array( 'type'       => 'Between',
+                                                            'firstDate'  => '2012-08-01',
+                                                            'secondDate' => '2012-08-15'),
+                    'attributeIndexOrDerivedType' => 'dateTime__DateTime',
+                    'structurePosition'           => '1',
+                ),
+                1 => array(
+                    'iiiMember'                   => 'abc',
+                    'attributeIndexOrDerivedType' => 'iiiMember',
+                    'structurePosition'           => '2',
+                ),
+            );
+            $dynamicStructure = '1 AND 2';
+            $metadata         = array('clauses' => array(), 'structure' => '');
+            $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
+                $metadata,
+                new IIISearchFormTestModel(new III(false)),
+                (int)Yii::app()->user->userModel->id,
+                $sanitizedDynamicSearchAttributes,
+                $dynamicStructure);
+            $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'dateTime',
+                    'operatorType'         => 'greaterThanOrEqualTo',
+                    'value'                => '2012-08-01 00:00:00',
+                ),
+                2 => array(
+                    'attributeName'        => 'dateTime',
+                    'operatorType'         => 'lessThanOrEqualTo',
+                    'value'                => '2012-08-15 23:59:59',
+                ),
+                3 => array(
+                    'attributeName'        => 'iiiMember',
+                    'operatorType'         => 'startsWith',
+                    'value'                => 'abc',
+                ),
+            );
+            $compareStructure = '((1 and 2) and 3)';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        /**
+         * @depends testDynamicSearchUsingInBetweenDateTime
          * Test a regular attribute, a single level of nesting, and deeper nesting.
          */
         public function testDynamicSearchWithNestedData()
