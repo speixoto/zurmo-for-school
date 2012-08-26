@@ -345,22 +345,22 @@
             $avatar = unserialize($this->avatar);
             if ($avatar['type'] == 0)
             {
-                $avatarUrl = 'http://mediacdn.disqus.com/1345757376/images/noavatar32.png';
+                $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g";
             }
             elseif ($avatar['type'] == 1)
             {
                 $email      = $this->primaryEmail->emailAddress;
-                $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}";
+                $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=retro&r=g";
             }
             elseif ($avatar['type'] == 2)
             {
                 $email      = $avatar['customAvatarEmail'];
-                $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}";
-            }
-            elseif ($avatar['type'] == 3)
+                $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=retro&r=g";
+            }            
+            else
             {
-                $avatarUrl = $avatar['galleryAvatarImage'] . "s={$size}";
-            }
+                $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g";
+            }      
             return $avatarUrl;
         }
         

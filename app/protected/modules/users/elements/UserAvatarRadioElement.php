@@ -38,11 +38,7 @@
             $content .= ZurmoHtml::tag('div', 
                                        array('id'    => 'avatarRadioElement_customEmailInput',
                                              'style' => 'display:none;'), 
-                                       $this->renderCustomEmailInput());
-            $content .= ZurmoHtml::tag('div', 
-                                       array('id'    => 'avatarRadioElement_galleryRadio',
-                                             'style' => 'display:none;'), 
-                                       $this->renderGalleryRadio());              
+                                       $this->renderCustomEmailInput());             
             $this->renderScripts();
             return $content;
         }
@@ -57,8 +53,7 @@
             $primaryEmail = $this->model->primaryEmail;                        
             $radioOptions = array('0' => "Default Avatar",
                                   '1' => "Use gravatar with primary email ({$primaryEmail})",                                  
-                                  '2' => "Use gravatar with custom email",
-                                  '3' => "Select avatar from gallery");            
+                                  '2' => "Use gravatar with custom email",);            
             return $radioOptions;
         }
         
@@ -68,18 +63,7 @@
                                                                     null,
                                                                     array('id'=> $this->getEditableInputId($this->attribute) . '_customAvatarEmail'));
             return $content;
-        }
-        
-        private function renderGalleryRadio()
-        {
-            $radioOption = array('http://www.gravatar.com/avatar/996629fd6cb5cb14318af472021cd2d4?d=identicon&' => "<img src='http://www.gravatar.com/avatar/996629fd6cb5cb14318af472021cd2d4?d=identicon&s=16' />",
-                                 'http://www.gravatar.com/avatar/b702d5ed5d1f982fd445ae005a0801c7?d=identicon&' => "<img src='http://www.gravatar.com/avatar/b702d5ed5d1f982fd445ae005a0801c7?d=identicon&s=16' />",);
-            $content = ZurmoHtml::radioButtonList($this->getEditableInputName($this->attribute) . '[galleryAvatarImage]', 
-                                                  'http://www.gravatar.com/avatar/996629fd6cb5cb14318af472021cd2d4?d=identicon&', 
-                                                  $radioOption, 
-                                                  array('id' => $this->getEditableInputId($this->attribute) . '_galleryAvatarImage'));
-            return $content;
-        }
+        }               
         
         private function renderScripts()
         {            
@@ -91,12 +75,7 @@
                         $('#avatarRadioElement_customEmailInput').show();
                     } else {
                         $('#avatarRadioElement_customEmailInput').hide();
-                    }
-                    if ($('#{$inputId}_type_3').attr('checked')) {
-                        $('#avatarRadioElement_galleryRadio').show();
-                    } else {
-                        $('#avatarRadioElement_galleryRadio').hide();
-                    }
+                    }                    
                 });
             ", CClientScript::POS_END);
         }
