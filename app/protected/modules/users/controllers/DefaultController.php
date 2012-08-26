@@ -85,26 +85,23 @@
         public function actionChangeAvatar($id)
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
-            $user = User::getById(intval($id));                                    
-            $userAvatarForm = new UserAvatarForm($user);            
-            $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');            
-            $userChangeAvatarView = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);                                    
-            
-           
-           
+            $user                 = User::getById(intval($id));
+            $userAvatarForm       = new UserAvatarForm($user);
+            $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
+            $userChangeAvatarView = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
             $view = new ModalView($this, $userChangeAvatarView);
             if (!isset($_POST['UserAvatarForm']))
-            {    
+            {
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
             } else {
                 $this->attemptToSaveModelFromPost($userAvatarForm);
             }
         }
-        
+
         public function actionDetails($id)
         {
-            $user = User::getById(intval($id));           
+            $user = User::getById(intval($id));
             $title           = Yii::t('Default', 'Profile');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($user), 'UsersModule'), $user);
