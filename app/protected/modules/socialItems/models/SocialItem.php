@@ -32,6 +32,12 @@
             return self::getSubset(null, null, null, "description = '$description'");
         }
 
+        public function onCreated()
+        {
+            parent::onCreated();
+            $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+        }
+
         public function __toString()
         {
             if (trim($this->description) == '')
@@ -60,13 +66,14 @@
                     'latestDateTime',
                 ),
                 'relations' => array(
-                    'comments'  => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
-                    'note'      => array(RedBeanModel::HAS_ONE,  'Comment'),
-                    'files'     => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'comments'  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED, 'relatedModel'),
+                    'note'      => array(RedBeanModel::HAS_ONE,  'Note'),
+                    'files'     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'toUser'    => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules' => array(
-                    array('description', 'required'),
-                    array('description', 'type',    'type' => 'string'),
+                    array('description', 	'required'),
+                    array('description', 	'type',    'type' => 'string'),
                     array('latestDateTime', 'required'),
                     array('latestDateTime', 'readOnly'),
                     array('latestDateTime', 'type', 'type' => 'datetime'),
@@ -87,7 +94,7 @@
 
         public static function getGamificationRulesType()
         {
-            return 'SocialItemtGamification';
+            return 'SocialItemGamification';
         }
 
         /**
