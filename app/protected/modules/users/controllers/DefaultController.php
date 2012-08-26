@@ -88,18 +88,23 @@
             $user = User::getById(intval($id));                                    
             $userAvatarForm = new UserAvatarForm($user);            
             $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');            
-            $userChangeAvatarView = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
+            $userChangeAvatarView = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);                                    
+            
+           
+           
             $view = new ModalView($this, $userChangeAvatarView);
             if (!isset($_POST['UserAvatarForm']))
             {    
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
+            } else {
+                $this->attemptToSaveModelFromPost($userAvatarForm);
             }
         }
         
         public function actionDetails($id)
         {
-            $user = User::getById(intval($id));
+            $user = User::getById(intval($id));           
             $title           = Yii::t('Default', 'Profile');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($user), 'UsersModule'), $user);
@@ -229,7 +234,7 @@
          */
         protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
         {
-            assert('$model instanceof User || $model instanceof UserPasswordForm');
+            assert('$model instanceof User || $model instanceof UserPasswordForm || $model instanceof UserAvatarForm');
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
             $postVariableName   = get_class($model);
             if (isset($_POST[$postVariableName]))
@@ -255,7 +260,7 @@
                 {
                     if ($userStatus != null)
                     {
-                        if ($model instanceof UserPasswordForm)
+                        if ($model instanceof UserPasswordForm || $model instanceof UserAvatarForm)
                         {
                             UserStatusUtil::resolveUserStatus($model->getModel(), $userStatus);
                         }

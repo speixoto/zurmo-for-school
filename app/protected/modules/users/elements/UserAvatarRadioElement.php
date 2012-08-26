@@ -72,13 +72,10 @@
         
         private function renderGalleryRadio()
         {
-            $radioOption = array('1' => "<img src='http://mediacdn.disqus.com/1345757376/images/noavatar32.png' />",
-                                 '2' => "<img src='http://mediacdn.disqus.com/1345757376/images/noavatar32.png' />",
-                                 '3' => "<img src='http://mediacdn.disqus.com/1345757376/images/noavatar32.png' />",
-                                 '4' => "<img src='http://mediacdn.disqus.com/1345757376/images/noavatar32.png' />",
-                                 '5' => "<img src='http://mediacdn.disqus.com/1345757376/images/noavatar32.png' />");
+            $radioOption = array('http://www.gravatar.com/avatar/996629fd6cb5cb14318af472021cd2d4?d=identicon&' => "<img src='http://www.gravatar.com/avatar/996629fd6cb5cb14318af472021cd2d4?d=identicon&s=16' />",
+                                 'http://www.gravatar.com/avatar/b702d5ed5d1f982fd445ae005a0801c7?d=identicon&' => "<img src='http://www.gravatar.com/avatar/b702d5ed5d1f982fd445ae005a0801c7?d=identicon&s=16' />",);
             $content = ZurmoHtml::radioButtonList($this->getEditableInputName($this->attribute) . '[galleryAvatarImage]', 
-                                                  '', 
+                                                  'http://www.gravatar.com/avatar/996629fd6cb5cb14318af472021cd2d4?d=identicon&', 
                                                   $radioOption, 
                                                   array('id' => $this->getEditableInputId($this->attribute) . '_galleryAvatarImage'));
             return $content;
@@ -86,16 +83,16 @@
         
         private function renderScripts()
         {            
-             $inputName = $this->getEditableInputId($this->attribute);     
+             $inputId = $this->getEditableInputId($this->attribute);     
              //TODO: Put closest int the customEmail and galleryRadio div?
              Yii::app()->clientScript->registerScript('userAvatarRadioElement', "                                 
                 $('#edit-form').change(function() {
-                    if ($('#{$inputName}_type_2').attr('checked')) {
+                    if ($('#{$inputId}_type_2').attr('checked')) {
                         $('#avatarRadioElement_customEmailInput').show();
                     } else {
                         $('#avatarRadioElement_customEmailInput').hide();
                     }
-                    if ($('#{$inputName}_type_3').attr('checked')) {
+                    if ($('#{$inputId}_type_3').attr('checked')) {
                         $('#avatarRadioElement_galleryRadio').show();
                     } else {
                         $('#avatarRadioElement_galleryRadio').hide();

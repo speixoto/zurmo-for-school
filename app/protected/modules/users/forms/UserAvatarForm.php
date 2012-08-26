@@ -55,9 +55,26 @@
             );
         }
         
+        public function afterValidate()
+        {
+            parent::afterValidate();
+            $this->model->setAvatar($this->avatar);
+        }
+        
         public function validateAvatar($attribute, $params)
         {
-         
+            $avatar = $this->$attribute;
+            if ($avatar['type'] == '2' && $avatar['customAvatarEmail'] !== '')
+            {
+                // make sure string length is limited to avoid DOS attacks
+                $pattern = '/^[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/';
+                $valid=is_string($avatar['customAvatarEmail']) && strlen($avatar['customAvatarEmail'])<=254 && (preg_match($pattern,$avatar['customAvatarEmail']));
+                if (!$valid)
+                {
+                    $this->addError('avatar',
+                        Yii::t('Default', 'Your did not chose a valid email address, please fix it.'));
+                }
+            }
         }
     }
 ?>

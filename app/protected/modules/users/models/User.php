@@ -334,6 +334,36 @@
             $this->hash = md5($password);
         }
 
+        public function setAvatar(Array $avatar)
+        {            
+            $this->avatar = serialize($avatar);
+        }
+        
+        public function getAvatar($size = 250)
+        {
+            assert('is_int($size)');
+            $avatar = unserialize($this->avatar);
+            if ($avatar['type'] == 0)
+            {
+                $avatarUrl = 'http://mediacdn.disqus.com/1345757376/images/noavatar32.png';
+            }
+            elseif ($avatar['type'] == 1)
+            {
+                $email      = $this->primaryEmail->emailAddress;
+                $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}";
+            }
+            elseif ($avatar['type'] == 2)
+            {
+                $email      = $avatar['customAvatarEmail'];
+                $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}";
+            }
+            elseif ($avatar['type'] == 3)
+            {
+                $avatarUrl = $avatar['galleryAvatarImage'] . "s={$size}";
+            }
+            return $avatarUrl;
+        }
+        
         public static function mangleTableName()
         {
             return true;
@@ -550,6 +580,7 @@
                     'language',
                     'timeZone',
                     'username',
+                    'avatar'
                 ),
                 'relations' => array(
                     'currency'   => array(RedBeanModel::HAS_ONE,             'Currency'),
@@ -578,6 +609,7 @@
                     array('username', 'match',   'pattern' => '/^[^A-Z]+$/', // Not Coding Standard
                                                'message' => 'Username must be lowercase.'),
                     array('username', 'length',  'max'   => 64),
+                    array('avatar',   'type',  'type' => 'string')
                 ),
                 'elements' => array(
                 ),
