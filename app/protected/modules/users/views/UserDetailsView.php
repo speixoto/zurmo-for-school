@@ -165,7 +165,7 @@
                                             ),
                                         ),
                                     )
-                                ),
+                                ),                                
                             ),
                         ),
                     ),
@@ -187,13 +187,19 @@
         }
 
         protected function renderRightSideContent()
-        {
-            $avatarUrl   = $this->model->getAvatar();
-            $avatarImage = ZurmoHtml::image($avatarUrl);
-            $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
-            $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Avatar') . ": " . strval($this->model));
-            $content     = ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);
-            return $content;
-        }
+        {           
+            $element = new AvatarTypeAndEmailElement($this->model, null);            
+            if (Yii::app()->user->userModel->id == $this->model->id ||
+                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
+            {
+                return $element->render();
+            }
+            else
+            {                
+                $avatarUrl   = $this->model->getAvatar();
+                $avatarImage = ZurmoHtml::image($avatarUrl);
+                return $avatarImage;
+            }
+        }        
     }
 ?>

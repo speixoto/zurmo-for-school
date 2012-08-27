@@ -39,7 +39,8 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, autoCompleteForMultiSelectAutoComplete, confirmTimeZone',
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, ' . 
+                        'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -83,16 +84,25 @@
         }
 
         public function actionChangeAvatar($id)
-        {            
-            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
-            $user                 = User::getById(intval($id));
-            $userAvatarForm       = new UserAvatarForm($user);
-            $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
-            $userChangeAvatarView = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
-            $view = new ModalView($this, $userChangeAvatarView);
-            $this->attemptToSaveModelFromPost($userAvatarForm);
+        {                                    
+            if (Yii::app()->user->userModel->id == intval($id) ||
+                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
+            {
+                $user                 = User::getById(intval($id));
+                $userAvatarForm       = new UserAvatarForm($user);
+                $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
+                $viewForModal = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
+                $this->attemptToSaveModelFromPost($userAvatarForm);
+            }
+            else
+            {
+                $viewForModal = new AccessFailureView();                                
+            }
+            
+            $view = new ModalView($this, $viewForModal);            
             Yii::app()->getClientScript()->setToAjaxMode();
-            echo $view->render();                                        
+            echo $view->render();
+            
         }
 
         public function actionDetails($id)

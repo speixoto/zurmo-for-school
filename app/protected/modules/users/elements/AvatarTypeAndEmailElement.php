@@ -31,15 +31,20 @@
     {              
         protected function renderControlEditable()
         {                            
-            $content  = $this->renderAvatarTypeRadio($this->model, $this->form, 'avatarType');  
+            $content  = $this->renderAvatarTypeRadio              ($this->model, $this->form, 'avatarType');  
             $content .= $this->renderCustomAvatarEmailAddressInput($this->model, $this->form, 'customAvatarEmailAddress');            
             $this->renderScripts();            
             return $content;
         }
 
         protected function renderControlNonEditable()
-        {
-            return null;
+        {            
+            $avatarUrl   = $this->model->getAvatar();
+            $avatarImage = ZurmoHtml::image($avatarUrl);
+            $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
+            $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Avatar') . ": " . strval($this->model));
+            $content     = ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);            
+            return $content;
         }
         
         private function renderAvatarTypeRadio($model, $form, $attribute)
@@ -47,8 +52,7 @@
             $id          = $this->getEditableInputId($attribute);
             $htmlOptions = array(
                 'name' => $this->getEditableInputName($attribute),
-                'id'   => $id,
-            );
+                'id'   => $id);
             $label       = $form->labelEx        ($model, $attribute, array('for'   => $id));            
             $radioInput  = $form->radioButtonList($model, $attribute, $this->resolveRadioOptions(), $htmlOptions);
             $error       = $form->error          ($model, $attribute, array('inputID' => $id));
@@ -63,9 +67,10 @@
         private function resolveRadioOptions()
         {            
             $primaryEmail = $this->model->primaryEmail;                        
-            $radioOptions = array(User::AVATAR_TYPE_DEFAULT => "Default Avatar",
-                                  User::AVATAR_TYPE_PRIMARY_EMAIL => "Use gravatar with primary email ({$primaryEmail})",                                  
-                                  User::AVATAR_TYPE_CUSTOM_EMAIL => "Use gravatar with custom email",);            
+            $radioOptions = array(User::AVATAR_TYPE_DEFAULT       => Yii::t('Default', 'Default Avatar'),
+                                  User::AVATAR_TYPE_PRIMARY_EMAIL => Yii::t('Default', 'Use gravatar with primary email ({primaryEmail})',
+                                                                            array('{primaryEmail}' => $primaryEmail)),
+                                  User::AVATAR_TYPE_CUSTOM_EMAIL  => Yii::t('Default', 'Use gravatar with custom email'),);            
             return $radioOptions;
         }
         
@@ -93,7 +98,7 @@
         
         protected static function renderTooltipContent()
         {
-            $title       = Yii::t('Default', 'Your Gravatar is an image that follows you from site to site appearing beside your '.
+            $title       = Yii::t('Default', 'Your Gravatar is an image that follows you from site to site appearing beside your ' .
                                              'name when you do things like comment or post on a blog.');
             $content     = '<span id="user-gravatar-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= '?</span>';
@@ -104,9 +109,8 @@
         
         private function renderScripts()
         {            
-             $inputId = $this->getEditableInputId('avatarType');     
-             //TODO: Put closest int the customEmail and galleryRadio div?
-             Yii::app()->clientScript->registerScript('userAvatarRadioElement', "                                 
+             $inputId = $this->getEditableInputId('avatarType');             
+             Yii::app()->clientScript->registerScript('userAvatarRadioElement', "
                 $('#edit-form').change(function() {
                     if ($('#{$inputId}_2').attr('checked')) {
                         $('#customAvatarEmailAddressInput').show();
@@ -115,6 +119,6 @@
                     }                    
                 });
             ", CClientScript::POS_END);
-        }
+        }               
     }
 ?>

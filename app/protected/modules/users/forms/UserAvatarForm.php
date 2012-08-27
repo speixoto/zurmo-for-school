@@ -37,22 +37,24 @@
         {
             $this->model = $model;
             $avatar = unserialize($this->model->avatar);
-            $this->avatarType = $avatar['avatarType'];
-            $this->customAvatarEmailAddress = $avatar['customAvatarEmailAddress'];
+            if (isset($avatar['avatarType'])){
+                $this->avatarType = $avatar['avatarType'];
+                $this->customAvatarEmailAddress = $avatar['customAvatarEmailAddress'];
+            }
         }
         
         public function rules()
         {
             return array(                                
                 array('customAvatarEmailAddress', 'email'),
-                array('avatarType',               'validateType'),
+                array('avatarType',               'validateType'),                
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'avatarType'               => Yii::t('Default', 'User Avatar'),
+                'avatarType'               => Yii::t('Default', 'User Avatar Type'),
                 'customAvatarEmailAddress' => Yii::t('Default', 'Custom Gravatar Email Address'),
             );
         }
@@ -62,7 +64,7 @@
             if ($this->avatarType == User::AVATAR_TYPE_CUSTOM_EMAIL && $this->customAvatarEmailAddress == null)
             {
                  $this->addError('customAvatarEmailAddress',
-                    Yii::t('Default', 'You need to chose a custom email address.'));
+                    Yii::t('Default', 'You need to choose a custom email address.'));
             }
         }
         

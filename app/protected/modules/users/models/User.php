@@ -350,7 +350,7 @@
             $avatar = unserialize($this->avatar);           
             if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
             {
-                $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g";
+                $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
             }
             elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_PRIMARY_EMAIL)
             {
@@ -364,7 +364,7 @@
             }            
             else
             {
-                $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g";
+                $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
             }      
             return $avatarUrl;
         }

@@ -391,5 +391,16 @@
             $this->assertEquals('Some', $user->firstName);
             $this->assertEquals('Body', $user->lastName);
         }
+        
+        public function testSuperUserChangeAvatar()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $aUser = User::getByUsername('auser');
+            $user1 = User::getById($aUser->id);
+            
+            //Super user as access to change every users avatar
+            $this->setGetArray(array('id' => $aUser->id));            
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/changeAvatar');
+        }
     }
 ?>
