@@ -71,9 +71,12 @@
 
         public function actionIndex()
         {
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
             $nextView = new UpgradeStartCompleteView($this->getId(), $this->getModule()->getId());
             $view = new InstallPageView($nextView);
             echo $view->render();
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+
         }
 
         /**
@@ -82,6 +85,7 @@
          */
         public function actionStepOne()
         {
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
             $nextView = new UpgradeStepOneCompleteView($this->getId(), $this->getModule()->getId());
             $view = new InstallPageView($nextView);
             echo $view->render();
@@ -93,6 +97,8 @@
             UpgradeUtil::runPart1($messageStreamer);
             ForgetAllCacheUtil::forgetAllCaches();
             echo CHtml::script('$("#progress-table").hide(); $("#upgrade-step-two").show();');
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+
         }
 
         /**
@@ -100,6 +106,7 @@
          */
         public function actionStepTwo()
         {
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
             $nextView = new UpgradeStepTwoCompleteView($this->getId(), $this->getModule()->getId());
             $view = new InstallPageView($nextView);
             echo $view->render();
@@ -111,6 +118,7 @@
             UpgradeUtil::runPart2($messageStreamer);
             ForgetAllCacheUtil::forgetAllCaches();
             echo CHtml::script('$("#progress-table").hide(); $("#upgrade-step-two").show();');
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
         }
     }
 ?>
