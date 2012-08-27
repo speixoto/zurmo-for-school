@@ -71,7 +71,7 @@
             if ($this->avatarType == User::AVATAR_TYPE_CUSTOM_EMAIL && $this->customAvatarEmailAddress == null)
             {
                  $this->addError('customAvatarEmailAddress',
-                    Yii::t('Default', 'You need to choose a custom email address.'));
+                    Yii::t('Default', 'You need to choose an email address.'));
             }
         }
 
