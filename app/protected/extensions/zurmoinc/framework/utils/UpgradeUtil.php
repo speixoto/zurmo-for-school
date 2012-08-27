@@ -53,6 +53,8 @@
             try {
                 set_time_limit(3600);
                 $messageStreamer->add(Yii::t('Default', 'Checking permissions, files, upgrade version....'));
+                $messageLogger = new MessageLogger($messageStreamer);
+
                 UpgradeUtil::setUpgradeState('zurmoUpgradeTimestamp', time());
                 self::isApplicationInUpgradeMode();
                 self::checkPermissions();
@@ -65,7 +67,7 @@
                 $configuration = self::checkManifestIfVersionIsOk($upgradeExtractPath);
                 $messageStreamer->add(Yii::t('Default', 'Checking completed.'));
                 $messageStreamer->add(Yii::t('Default', 'Load UpgraderComponent.'));
-                self::loadUpgraderComponent($upgradeExtractPath);
+                self::loadUpgraderComponent($upgradeExtractPath, $messageLogger);
                 $messageStreamer->add(Yii::t('Default', 'UpgraderComponent loaded.'));
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
@@ -108,21 +110,23 @@
         public static function runPart2(MessageStreamer $messageStreamer)
         {
             try {
+                // Upgrade process can take much time, because upgrade schema script.
+                // Set timeout for upgrade to 12 hours.
                 set_time_limit(12 * 60 * 60);
                 $upgradeExtractPath = self::getUpgradeState('zurmoUpgradeFolderPath');
+                $messageLogger = new MessageLogger($messageStreamer);
 
                 self::isApplicationInUpgradeMode();
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Loading UpgraderComponent.'));
-                self::loadUpgraderComponent($upgradeExtractPath);
+                self::loadUpgraderComponent($upgradeExtractPath, $messageLogger);
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Running tasks before updating schema.'));
                 self::processBeforeUpdateSchema();
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
-                $messageLogger = new MessageLogger($messageStreamer);
                 $messageStreamer->add(Yii::t('Default', 'Updating schema.'));
                 self::processUpdateSchema($messageLogger);
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
@@ -326,12 +330,15 @@
          * Load upgrader component  as yii component from upgrade files.
          * @param string $upgradeExtractPath
          */
-        public static function loadUpgraderComponent($upgradeExtractPath)
+        public static function loadUpgraderComponent($upgradeExtractPath, MessageLogger $messageLogger)
         {
             if (file_exists($upgradeExtractPath . DIRECTORY_SEPARATOR . 'UpgraderComponent.php'))
             {
                 require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'UpgraderComponent.php');
-                $upgraderComponent = Yii::createComponent('UpgraderComponent');
+
+                $upgraderComponent = Yii::createComponent(
+                    array('class' => 'UpgraderComponent', 'messageLogger' => $messageLogger)
+                );
                 Yii::app()->setComponent('upgrader', $upgraderComponent);
             }
             else
