@@ -60,7 +60,7 @@
         {
             if (!Yii::app()->isApplicationInMaintenanceMode())
             {
-                $message = "Please set maintatnceMode in perInstance file.";
+                $message = Yii::t('Default', 'Please set $maintenanceMode=true in perInstance.php config file.');
                 $messageView = new AccessFailureView($message);
                 $view        = new AccessFailurePageView($messageView);
                 echo $view->render();
