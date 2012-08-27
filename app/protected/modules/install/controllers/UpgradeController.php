@@ -29,7 +29,8 @@
         public function filters()
         {
             $filters = array(
-                'upgradeAccessControl'
+                'upgradeAccessControl',
+                'maintananceModeAccessControl'
             );
             return array_merge($filters, parent::filters());
         }
@@ -44,6 +45,23 @@
             if (!$group->users->contains(Yii::app()->user->userModel))
             {
                 $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $filterChain->run();
+        }
+
+         /**
+         * Allow access to all upgrade actions only to Super Administrators.
+         * @param CFilterChain $filterChain
+         */
+        public function filterMaintananceModeAccessControl($filterChain)
+        {
+            if (!Yii::app()->isApplicationInMaintenanceMode())
+            {
+                $message = "Please set maintatnceMode in perInstance file.";
+                $messageView = new AccessFailureView($message);
                 $view        = new AccessFailurePageView($messageView);
                 echo $view->render();
                 Yii::app()->end(0, false);
