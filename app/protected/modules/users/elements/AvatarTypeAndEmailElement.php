@@ -38,12 +38,21 @@
         }
 
         protected function renderControlNonEditable()
-        {            
+        {       
             $avatarUrl   = $this->model->getAvatar();
             $avatarImage = ZurmoHtml::image($avatarUrl);
-            $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
-            $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Avatar') . ": " . strval($this->model));
-            $content     = ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);            
+            if (Yii::app()->user->userModel->id == $this->model->id ||
+                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
+            {                
+                $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
+                $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Avatar') . ": " . strval($this->model));
+                $content     = ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);       
+            }
+            else
+            {                                
+                $content = $avatarImage;
+            }
+                 
             return $content;
         }
         

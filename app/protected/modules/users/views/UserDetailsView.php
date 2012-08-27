@@ -39,12 +39,21 @@
                     'nonPlaceableAttributeNames' => array(
                         'title',
                         'firstName',
-                        'lastName',
+                        'lastName',                 
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
                         array(
                             'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'avatar', 'type' => 'AvatarTypeAndEmail'), // Not Coding Standard
+                                            ),
+                                        ),
+                                    )
+                                ),
                                 array('cells' =>
                                     array(
                                         array(
@@ -165,7 +174,7 @@
                                             ),
                                         ),
                                     )
-                                ),                                
+                                ),                                               
                             ),
                         ),
                     ),
@@ -185,21 +194,5 @@
                 throw new NotSupportedException();
             }
         }
-
-        protected function renderRightSideContent()
-        {           
-            $element = new AvatarTypeAndEmailElement($this->model, null);            
-            if (Yii::app()->user->userModel->id == $this->model->id ||
-                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
-            {
-                return $element->render();
-            }
-            else
-            {                
-                $avatarUrl   = $this->model->getAvatar();
-                $avatarImage = ZurmoHtml::image($avatarUrl);
-                return $avatarImage;
-            }
-        }        
     }
 ?>

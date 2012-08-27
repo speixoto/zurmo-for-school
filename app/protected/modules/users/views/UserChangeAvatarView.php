@@ -44,7 +44,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => null,                                                      
+                                                array('attributeName' => 'avatar',                                                      
                                                       'type' => 'AvatarTypeAndEmail'),
                                             ),
                                         ),

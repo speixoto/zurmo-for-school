@@ -395,12 +395,37 @@
         public function testSuperUserChangeAvatar()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $aUser = User::getByUsername('auser');
-            $user1 = User::getById($aUser->id);
+            $aUser = User::getByUsername('auser');            
             
             //Super user as access to change every users avatar
             $this->setGetArray(array('id' => $aUser->id));            
             $this->runControllerWithNoExceptionsAndGetContent('users/default/changeAvatar');
+            
+            //Failed change avatar validation
+            $this->setGetArray(array('id' => $aUser->id));
+            $this->setPostArray(array('ajax'           => 'edit-form',
+                                      'UserAvatarForm' => array('avatarType'               => '3',
+                                                                'customAvatarEmailAddress' => ''))
+                                );
+            $content = $this->runControllerWithExitExceptionAndGetContent('users/default/changeAvatar');            
+            $this->assertContains('You need to choose a custom email address', $content);
+            
+            //Successful change avatar validation
+            $this->setGetArray (array('id'      => $aUser->id));
+            $this->setPostArray(array('ajax'           => 'edit-form',
+                                      'UserAvatarForm' => array('avatarType'               => '1',
+                                                                'customAvatarEmailAddress' => ''))
+                                );
+            $content = $this->runControllerWithExitExceptionAndGetContent('users/default/changeAvatar');
+            $this->assertContains('[]', $content);
+            
+            //Successful save avatar change.
+            $this->setGetArray(array('id' => $aUser->id));
+            $this->setPostArray(array('save'           => 'Save',
+                                      'UserAvatarForm' => array('avatarType'               => '2',
+                                                                'customAvatarEmailAddress' => ''))
+                                );
+            $this->runControllerWithRedirectExceptionAndGetContent('users/default/changeAvatar');                             
         }
     }
 ?>
