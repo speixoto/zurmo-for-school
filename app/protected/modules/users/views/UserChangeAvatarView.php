@@ -44,12 +44,13 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'avatar',                                                      
-                                                      'type' => 'AvatarTypeAndEmail'),
+                                                array('attributeName' => 'serializedAvatarData',
+                                                      'type' => 'AvatarTypeAndEmail',
+                                                      'editableTemplate' => 'td colspan="{colspan}">{content}{error}</td>'),
                                             ),
                                         ),
                                     )
-                                ),                                                                
+                                ),
                             ),
                         ),
                     ),
@@ -57,7 +58,7 @@
             );
             return $metadata;
         }
-        
+
         protected function resolveActiveFormAjaxValidationOptions()
         {
             return array('enableAjaxValidation' => true,

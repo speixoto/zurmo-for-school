@@ -25,86 +25,88 @@
      ********************************************************************************/
 
     /**
-     * Radio element to choose witch avatar to use     
+     * Radio element to choose witch avatar to use
      */
     class AvatarTypeAndEmailElement extends Element
-    {              
+    {
         protected function renderControlEditable()
-        {                            
-            $content  = $this->renderAvatarTypeRadio              ($this->model, $this->form, 'avatarType');  
-            $content .= $this->renderCustomAvatarEmailAddressInput($this->model, $this->form, 'customAvatarEmailAddress');            
-            $this->renderScripts();            
+        {
+            $this->editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
+            $content  = $this->renderAvatarTypeRadio              ($this->model, $this->form, 'avatarType');
+            $content .= $this->renderCustomAvatarEmailAddressInput($this->model, $this->form, 'customAvatarEmailAddress');
+            $this->renderScripts();
             return $content;
         }
 
         protected function renderControlNonEditable()
-        {       
-            $avatarUrl   = $this->model->getAvatar();
+        {
+            $this->nonEditableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
+            $avatarUrl   = $this->model->getAvatarImageUrl();
             $avatarImage = ZurmoHtml::image($avatarUrl);
             if (Yii::app()->user->userModel->id == $this->model->id ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
-            {                
+            {
                 $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
-                $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Avatar') . ": " . strval($this->model));
-                $content     = ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);       
+                $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Profile Picture') . ": " . strval($this->model));
+                $content     = ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);
             }
             else
-            {                                
+            {
                 $content = $avatarImage;
             }
-                 
+
             return $content;
         }
-        
+
         private function renderAvatarTypeRadio($model, $form, $attribute)
         {
             $id          = $this->getEditableInputId($attribute);
             $htmlOptions = array(
                 'name' => $this->getEditableInputName($attribute),
                 'id'   => $id);
-            $label       = $form->labelEx        ($model, $attribute, array('for'   => $id));            
-            $radioInput  = $form->radioButtonList($model, $attribute, $this->resolveRadioOptions(), $htmlOptions);
+            $label       = $form->labelEx        ($model, $attribute, array('for'   => $id));
+            $radioInput  = $form->radioButtonList($model, $attribute, $this->resolveRadioOptions(), $this->getEditableHtmlOptions());
             $error       = $form->error          ($model, $attribute, array('inputID' => $id));
             if ($model->$attribute != null)
             {
                  $label = null;
-            }            
+            }
             $content = ZurmoHtml::tag('div', array(), $label . $radioInput . $error);
             return $content;
         }
-        
+
         private function resolveRadioOptions()
-        {            
-            $primaryEmail = $this->model->primaryEmail;                        
-            $radioOptions = array(User::AVATAR_TYPE_DEFAULT       => Yii::t('Default', 'Default Avatar'),
+        {
+            $primaryEmail = $this->model->primaryEmail;
+            $radioOptions = array(User::AVATAR_TYPE_DEFAULT       => Yii::t('Default', 'No Profile Picture'),
                                   User::AVATAR_TYPE_PRIMARY_EMAIL => Yii::t('Default', 'Use gravatar with primary email ({primaryEmail})',
                                                                             array('{primaryEmail}' => $primaryEmail)),
-                                  User::AVATAR_TYPE_CUSTOM_EMAIL  => Yii::t('Default', 'Use gravatar with custom email'),);            
+                                  User::AVATAR_TYPE_CUSTOM_EMAIL  => Yii::t('Default', 'Use gravatar with custom email'),);
             return $radioOptions;
         }
-        
+
         private function renderCustomAvatarEmailAddressInput($model, $form, $attribute)
-        {                        
+        {
             $id          = $this->getEditableInputId($attribute);
             $htmlOptions = array(
                 'name' => $this->getEditableInputName($attribute),
                 'id'   => $id,
             );
-            $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));            
+            $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
             $textField   = $form->textField($model, $attribute, $htmlOptions);
             $error       = $form->error    ($model, $attribute, array('inputID' => $id));
             $tooltip     = $this->renderTooltipContent();
             if ($model->$attribute != null)
             {
                  $label = null;
-            }            
-            $content = ZurmoHtml::tag('div', 
+            }
+            $content = ZurmoHtml::tag('div',
                                       array('id'    => 'customAvatarEmailAddressInput',
-                                            'style' => 'display:none'), 
+                                            'style' => 'display:none'),
                                       $label . $textField . $error . $tooltip);
             return $content;
-        }               
-        
+        }
+
         protected static function renderTooltipContent()
         {
             $title       = Yii::t('Default', 'Your Gravatar is an image that follows you from site to site appearing beside your ' .
@@ -115,19 +117,25 @@
             $qtip->addQTip("#user-gravatar-tooltip");
             return $content;
         }
-        
+
+        protected function getEditableHtmlOptions()
+        {
+            $htmlOptions['template'] =  '<div class="radio-input">{input}{label}</div>';
+            return $htmlOptions;
+        }
+
         private function renderScripts()
-        {            
-             $inputId = $this->getEditableInputId('avatarType');             
+        {
+             $inputId = $this->getEditableInputId('avatarType');
              Yii::app()->clientScript->registerScript('userAvatarRadioElement', "
                 $('#edit-form').change(function() {
                     if ($('#{$inputId}_2').attr('checked')) {
                         $('#customAvatarEmailAddressInput').show();
                     } else {
                         $('#customAvatarEmailAddressInput').hide();
-                    }                    
+                    }
                 });
             ", CClientScript::POS_END);
-        }               
+        }
     }
 ?>

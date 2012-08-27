@@ -39,7 +39,7 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, ' . 
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, ' .
                         'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
@@ -84,7 +84,7 @@
         }
 
         public function actionChangeAvatar($id)
-        {                                    
+        {
             if (Yii::app()->user->userModel->id == intval($id) ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
@@ -96,13 +96,13 @@
             }
             else
             {
-                $viewForModal = new AccessFailureView();                                
+                $viewForModal = new AccessFailureView();
             }
-            
-            $view = new ModalView($this, $viewForModal);            
+
+            $view = new ModalView($this, $viewForModal);
             Yii::app()->getClientScript()->setToAjaxMode();
             echo $view->render();
-            
+
         }
 
         public function actionDetails($id)

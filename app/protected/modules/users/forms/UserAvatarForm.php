@@ -29,36 +29,43 @@
      */
     class UserAvatarForm extends ModelForm
     {
-        
-        public $avatarType;                
+
+        public $avatarType;
         public $customAvatarEmailAddress;
 
         public function __construct(User $model)
         {
             $this->model = $model;
-            $avatar = unserialize($this->model->avatar);
+            if (isset($this->model->serializedAvatarData))
+            {
+                $avatar = unserialize($this->model->serializedAvatarData);
+            }
             if (isset($avatar['avatarType'])){
                 $this->avatarType = $avatar['avatarType'];
                 $this->customAvatarEmailAddress = $avatar['customAvatarEmailAddress'];
             }
+            else
+            {
+                $this->avatarType = User::AVATAR_TYPE_DEFAULT;
+            }
         }
-        
+
         public function rules()
         {
-            return array(                                
+            return array(
                 array('customAvatarEmailAddress', 'email'),
-                array('avatarType',               'validateType'),                
+                array('avatarType',               'validateType'),
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'avatarType'               => Yii::t('Default', 'User Avatar Type'),
-                'customAvatarEmailAddress' => Yii::t('Default', 'Custom Gravatar Email Address'),
+                'avatarType'               => Yii::t('Default', 'Type'),
+                'customAvatarEmailAddress' => Yii::t('Default', 'Email Address'),
             );
         }
-        
+
         public function validateType()
         {
             if ($this->avatarType == User::AVATAR_TYPE_CUSTOM_EMAIL && $this->customAvatarEmailAddress == null)
@@ -67,12 +74,13 @@
                     Yii::t('Default', 'You need to choose a custom email address.'));
             }
         }
-        
+
         public function afterValidate()
         {
-            parent::afterValidate();            
-            $this->model->setAvatar(array('avatarType' => $this->avatarType, 'customAvatarEmailAddress' => $this->customAvatarEmailAddress));            
+            parent::afterValidate();
+            $this->model->serializeAndSetAvatarData(array('avatarType' => $this->avatarType,
+                                                          'customAvatarEmailAddress' => $this->customAvatarEmailAddress));
         }
-               
+
     }
 ?>
