@@ -58,26 +58,39 @@
 
         public function actionList()
         {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $user                           = new User(false);
+            $searchForm                     = new UsersSearchForm($user);
+            $dataProvider = $this->makeSearchDataProvider(
+                $searchForm,
+                $pageSize,
+                null,
+                'UsersSearchView'
+            );
             $title           = Yii::t('Default', 'Users');
             $breadcrumbLinks = array(
                  $title,
             );
-            $pageSize        = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                               'listPageSize', get_class($this->getModule()));
-            $searchForm      = new UsersSearchForm(new User(false));
-            $dataProvider    = $this->makeRedBeanDataProviderByDataCollection(
-                $searchForm,
-                'User',
-                $pageSize
-            );
-            $actionBarSearchAndListView = $this->makeActionBarSearchAndListView(
-                $searchForm,
-                $pageSize,
-                UsersModule::getModuleLabelByTypeAndLanguage('Plural'),
-                $dataProvider
-            );
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $actionBarSearchAndListView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $mixedView = $this->makeListView(
+                    $searchForm,
+                    $dataProvider
+                );
+                $view = new UsersPageView($mixedView);
+            }
+            else
+            {
+                $mixedView = $this->makeActionBarSearchAndListView(
+                    $searchForm,
+                    $pageSize,
+                    UsersModule::getModuleLabelByTypeAndLanguage('Plural'),
+                    $dataProvider
+                );
+                $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            }
             echo $view->render();
         }
 

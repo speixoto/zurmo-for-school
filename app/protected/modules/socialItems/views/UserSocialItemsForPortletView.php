@@ -46,21 +46,9 @@
         }
 
         /**
-         * Override to default to 'mine' instead of 'all' activities.
-         * (non-PHPdoc)
-         * @see LatestActivtiesForPortletView::makeLatestActivitiesConfigurationForm()
-         */
-        protected function makeLatestActivitiesConfigurationForm()
-        {
-            $form                = new LatestActivitiesConfigurationForm();
-            $form->ownedByFilter = intval($this->params['relationModel']->id);
-            return $form;
-        }
-
-        /**
          * Override to ensure the user id is properly set in the Id parameter.
          * (non-PHPdoc)
-         * @see LatestActivtiesForPortletView::getPortletDetailsUrl()
+         * @see SocialItemsForPortletView::getPortletDetailsUrl()
          */
         protected function getPortletDetailsUrl()
         {
@@ -71,28 +59,32 @@
                                                             'id' => $this->params['relationModel']->id)));
         }
 
-        protected function getDataProvider($uniquePageId, $form)
+        protected function getDataProvider($uniquePageId)
         {
             assert('is_string($uniquePageId)');
-            assert('$form instanceOf LatestActivitiesConfigurationForm');
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
-            $filteredMashableModelClassNames = LatestActivitiesUtil::resolveMashableModelClassNamesByFilteredBy(
-                                                    array_keys($form->mashableModelClassNamesAndDisplayLabels),
-                                                    $form->filteredByModelName);
-            $modelClassNamesAndSearchAttributeData = // Not Coding Standard
-                LatestActivitiesUtil::
-                    getSearchAttributesDataByModelClassNamesAndRelatedItemIds($filteredMashableModelClassNames,
-                                                                              array(), $form->ownedByFilter);
-            $modelClassNamesAndSortAttributes =      // Not Coding Standard
-                LatestActivitiesUtil::getSortAttributesByMashableModelClassNames($filteredMashableModelClassNames);
-            return new RedBeanModelsDataProvider($uniquePageId, $modelClassNamesAndSortAttributes,
-                                                          true, $modelClassNamesAndSearchAttributeData,
-                                                          array('pagination' => array('pageSize' => $pageSize)));
-        }
-
-        public function getSocialItemsViewClassName()
-        {
-            return 'SocialItemsForUserListView';
+            $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'owner',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => intval($this->params['relationModel']->id),
+                ),
+                2 => array(
+                    'attributeName'        => 'toUser',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => intval($this->params['relationModel']->id),
+                ),
+            );
+            $searchAttributeData['structure'] = '1 or 2';
+            return new RedBeanModelDataProvider('SocialItem', 'latestDateTime', true, $searchAttributeData,
+                                                   array(
+                                                        'pagination' => array(
+                                                            'pageSize' => $pageSize,
+                                                        )
+                                                    ));
         }
     }
 ?>

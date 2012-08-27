@@ -46,8 +46,6 @@
 
         protected $viewData;
 
-        abstract protected function getSocialItemsViewClassName();
-
         /**
          * Some extra assertions are made to ensure this view is used in a way that it supports.
          */
@@ -91,7 +89,6 @@
         protected function renderNewSocialItemContent()
         {
             $socialItem = new  SocialItem();
-            //$note->activityItems->add($this->params["relationModel"]); //hmm.
             $urlParameters = array('relatedUserId'            => $this->params['relationModel']->id,
                                    'redirectUrl'              => $this->getPortletDetailsUrl()); //After save, the url to go to.
             $uniquePageId  = get_called_class();
@@ -102,34 +99,15 @@
 
         protected function renderSocialItemsContent()
         {
-            return 'something in the future' .mt_rand(0,1111111);
-            if (count($mashableModelClassNamesAndDisplayLabels) > 0)
-            {
-                $uniquePageId  = get_called_class();
-                $latestActivitiesConfigurationForm = $this->makeLatestActivitiesConfigurationForm();
-                $latestActivitiesConfigurationForm->mashableModelClassNamesAndDisplayLabels =
-                    $mashableModelClassNamesAndDisplayLabels;
-                if (isset($_GET[get_class($latestActivitiesConfigurationForm)]))
-                {
-                    $latestActivitiesConfigurationForm->setAttributes($_GET[get_class($latestActivitiesConfigurationForm)]);
-                }
-                $latestActivitiesViewClassName = $this->getLatestActivitiesViewClassName();
-                $dataProvider = $this->getDataProvider($uniquePageId, $latestActivitiesConfigurationForm);
-                $latestView = new $latestActivitiesViewClassName($dataProvider,
-                                                                 $latestActivitiesConfigurationForm,
-                                                                 'latestActivities', 'activities',
-                                                                 $this->getPortletDetailsUrl(),
-                                                                 $this->getNonAjaxRedirectUrl(),
-                                                                 $uniquePageId,
-                                                                 $this->params,
-                                                                 get_class(Yii::app()->findModule($this->moduleId)));
-                return $latestView->render();
-            }
-        }
-
-        protected function makeLatestActivitiesConfigurationForm()
-        {
-            return new LatestActivitiesConfigurationForm();
+            $uniquePageId  = get_called_class();
+            $dataProvider  = $this->getDataProvider($uniquePageId);
+            $view          = new SocialItemsListView($dataProvider, 'default', 'socialItems',
+                                                  $this->getPortletDetailsUrl(),
+                                                  $this->getNonAjaxRedirectUrl(),
+                                                  $uniquePageId,
+                                                  $this->params,
+                                                  get_class(Yii::app()->findModule($this->moduleId)));
+            return $view->render();
         }
 
         /**
@@ -154,34 +132,7 @@
                                                         array( 'id' => $this->params['relationModel']->id));
         }
 
-        protected function getDataProvider($uniquePageId, $form)
-        {
-            assert('is_string($uniquePageId)');
-            assert('$form instanceOf LatestActivitiesConfigurationForm');
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
-            $filteredMashableModelClassNames = LatestActivitiesUtil::resolveMashableModelClassNamesByFilteredBy(
-                                                    array_keys($form->mashableModelClassNamesAndDisplayLabels),
-                                                    $form->filteredByModelName);
-            $relationItemId = (int)$this->params['relationModel']->getClassId('Item');
-            if ($form->rollup)
-            {
-                $relationItemsIds = ModelRollUpUtil::getItemIdsByModelAndUser($this->params['relationModel'],
-                                                                              Yii::app()->user->userModel);
-            }
-            else
-            {
-                $relationItemsIds = array($relationItemId);
-            }
-            $modelClassNamesAndSearchAttributeData = // Not Coding Standard
-                LatestActivitiesUtil::
-                    getSearchAttributesDataByModelClassNamesAndRelatedItemIds($filteredMashableModelClassNames,
-                                                                              $relationItemsIds, $form->ownedByFilter);
-            $modelClassNamesAndSortAttributes =      // Not Coding Standard
-                LatestActivitiesUtil::getSortAttributesByMashableModelClassNames($filteredMashableModelClassNames);
-            return new RedBeanModelsDataProvider($uniquePageId, $modelClassNamesAndSortAttributes,
-                                                          true, $modelClassNamesAndSearchAttributeData,
-                                                          array('pagination' => array('pageSize' => $pageSize)));
-        }
+        abstract protected function getDataProvider($uniquePageId);
 
         public static function canUserConfigure()
         {
