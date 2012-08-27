@@ -70,7 +70,6 @@
             assert('is_string($redirectUrl)');
             assert('is_string($uniquePageId)');
             assert('is_array($params)');
-            assert('is_string($containerModuleClassName)');
             $this->dataProvider             = $dataProvider;
             $this->controllerId             = $controllerId;
             $this->moduleId                 = $moduleId;

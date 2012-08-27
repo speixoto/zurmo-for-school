@@ -93,7 +93,11 @@
             }
             else
             {
-                $id = '';
+                $id = $this->getId();
+                if($id != null)
+                {
+                    $id = " id=\"$id\"";
+                }
             }
             $classes = join(' ', array_merge($this->getCssClasses(), $classes));
             if ($classes != '')
@@ -111,6 +115,13 @@
             {
                 return "<div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
             }
+        }
+
+        /**
+         * @returns id of view if UniqueToAPage is false.  Override if you want to pass an id in.
+         */
+        protected function getId()
+        {
         }
 
         /**

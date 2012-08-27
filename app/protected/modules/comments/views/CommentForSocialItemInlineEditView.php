@@ -28,13 +28,13 @@
      * An inline edit view for a comment.
      *
      */
-    class CommentInlineEditView extends InlineEditView
+    class CommentForSocialItemInlineEditView extends CommentInlineEditView
     {
-        protected $viewContainsFileUploadElement = true;
+        protected $viewContainsFileUploadElement = false;
 
         public function getFormName()
         {
-            return "comment-inline-edit-form";
+            return "comment-inline-edit-form" . $this->uniquePageId;
         }
 
         public static function getDefaultMetadata()
@@ -65,42 +65,12 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'Files'),
-                                            ),
-                                        ),
-                                    )
-                                ),
                             ),
                         ),
                     ),
                 ),
             );
             return $metadata;
-        }
-
-        /**
-         * Override to change the editableTemplate to place the label above the input.
-         * @see DetailsView::resolveElementDuringFormLayoutRender()
-         */
-        protected function resolveElementDuringFormLayoutRender(& $element)
-        {
-            if ($element->getAttribute() == 'description')
-            {
-                $element->editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
-            }
-            elseif ($element instanceOf FilesElement)
-            {
-                $element->editableTemplate = '<td colspan="{colspan}">' .
-                                             '<div class="file-upload-box">{content}{error}</div></td>';
-            }
-            else
-            {
-                $element->editableTemplate = '<td colspan="{colspan}">{label}<br/>{content}{error}</td>';
-            }
         }
 
         /**
@@ -118,14 +88,10 @@
                     'update' => '#' . $this->uniquePageId,
                     'complete' => "function(XMLHttpRequest, textStatus){
                         //find if there is a comment thread to refresh
-                        $('.hiddenCommentRefresh').click();}"
+                        $('#hiddenCommentRefresh" . $this->uniquePageId . "').click();
+                    }"
                 ));
             // End Not Coding Standard
-        }
-
-        protected function doesLabelHaveOwnCell()
-        {
-            return false;
         }
     }
 ?>

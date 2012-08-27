@@ -32,7 +32,7 @@
          */
         public function actionInlineCreateSave($redirectUrl = null)
         {
-            if (isset($_POST['ajax']) && $_POST['ajax'] === 'inline-edit-form')
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'social-item-inline-edit-form')
             {
                 $this->actionInlineEditValidate(new SocialItem(), 'SocialItem');
             }
@@ -68,6 +68,25 @@
             }
             $relatedUser = User::getById((int)$relatedUserId);
             return new SocialItemZurmoControllerUtil($relatedUser);
+        }
+
+        public function actionInlineCreateCommentFromAjax($id, $uniquePageId)
+        {
+            $comment       = new Comment();
+            $redirectUrl   = Yii::app()->createUrl('/socialItems/default/inlineCreateCommentFromAjax',
+                                                    array('id'           => $id,
+                                                          'uniquePageId' => $uniquePageId));
+            $urlParameters = array('uniquePageId'			  => $uniquePageId,
+                                   'relatedModelId'           => (int)$id,
+                                   'relatedModelClassName'    => 'SocialItem',
+                                   'relatedModelRelationName' => 'comments',
+                                   'redirectUrl'              => $redirectUrl); //After save, the url to go to.
+            $socialItem    = SocialItem::getById($id);
+            $uniquePageId  = SocialItemsUtil::makeUniquePageIdByModel($socialItem);
+            $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
+                                                                    $urlParameters, $uniquePageId);
+            $view          = new AjaxPageView($inlineView);
+            echo $view->render();
         }
     }
 ?>

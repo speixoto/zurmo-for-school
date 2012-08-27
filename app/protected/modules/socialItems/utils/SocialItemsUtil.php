@@ -45,14 +45,67 @@
             $content .= '<em class="'.get_class($model).'"></em>';
             $content .= '<strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                     $model->latestDateTime, 'long', null) . '</strong><br/>';
-            //todo: -why do we pass renderItemAndCommentsContent(SocialItem $model, $redirectUrl) here? oh many for comments?
-            //Render display content
-            $x = $model->description;
-            //still need to figure out
-            //todo: files too (extra render check how this is done below for notes.
-            $content .= '<span>' . strval($model->owner) . ' ' . $x . '</span>';
+            $content .= ZurmoHtml::tag('span', array(), strval($model->owner) . ' ' . $model->description);
+            $content .= static::renderItemFileContent($model);
+
+            $content .= '<div>';
+            $content .= static::renderCommentsContent($model);
+            $content .= static::renderCreateCommentContent($model);
+            $content .= '</div>';
+
             $content .= '</div>';
             return $content;
+        }
+
+        private static function renderItemFileContent(SocialItem $model)
+        {
+            return ZurmoHtml::tag('span', array(), FileModelDisplayUtil::
+                                                   renderFileDataDetailsWithDownloadLinksContent($model, 'files'));
+        }
+
+        public static function makeUniquePageIdByModel(SocialItem $model)
+        {
+            return 'CreateCommentForSocialItem-' . $model->id;
+        }
+
+        private static function renderCommentsContent(SocialItem $model)
+        {
+            $getParams    = array('uniquePageId'             => self::makeUniquePageIdByModel($model),
+                                  'relatedModelId'           => $model->id,
+                                  'relatedModelClassName'    => 'SocialItem',
+                                  'relatedModelRelationName' => 'comments');
+            $pageSize     = 5;
+            $commentsData = Comment::getCommentsByRelatedModelTypeIdAndPageSize('SocialItem',
+                                                                                $model->id, ($pageSize + 1));
+            $view         = new CommentsForRelatedModelView('default',
+                                                            'comments',
+                                                            $commentsData,
+                                                            $model,
+                                                            $pageSize,
+                                                            $getParams,
+                                                            self::makeUniquePageIdByModel($model));
+            $content      = $view->render();
+            return $content;
+        }
+
+        private static function renderCreateCommentContent(SocialItem $model)
+        {
+            $content       = Yii::t('Default', 'Comment');
+            $comment       = new Comment();
+            $uniquePageId  = self::makeUniquePageIdByModel($model);
+            $redirectUrl   = Yii::app()->createUrl('/socialItems/default/inlineCreateCommentFromAjax',
+                                                    array('id' => $model->id,
+                                                          'uniquePageId' => $uniquePageId));
+            $urlParameters = array('uniquePageId'             => $uniquePageId,
+                                   'relatedModelId'           => $model->id,
+                                   'relatedModelClassName'    => 'SocialItem',
+                                   'relatedModelRelationName' => 'comments',
+                                   'redirectUrl'              => $redirectUrl); //After save, the url to go to.
+
+            $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
+                                                      $urlParameters, $uniquePageId);
+            $content      .= $inlineView->render();
+            return ZurmoHtml::tag('div', array('id' => $uniquePageId), $content);
         }
     }
 ?>

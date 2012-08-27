@@ -77,7 +77,7 @@
                     'value'                => intval($this->params['relationModel']->id),
                 ),
             );
-            $searchAttributeData['structure'] = '1 or 2';
+            $searchAttributeData['structure'] = '(1 or 2)';
             return new RedBeanModelDataProvider('SocialItem', 'latestDateTime', true, $searchAttributeData,
                                                    array(
                                                         'pagination' => array(

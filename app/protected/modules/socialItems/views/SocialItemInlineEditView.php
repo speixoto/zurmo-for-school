@@ -32,6 +32,11 @@
     {
         protected $viewContainsFileUploadElement = true;
 
+        public function getFormName()
+        {
+            return "social-item-inline-edit-form";
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -96,27 +101,6 @@
             {
                 $element->editableTemplate = '<td colspan="{colspan}">{label}<br/>{content}{error}</td>';
             }
-        }
-
-        /**
-         * Override to allow the comment thread, if it exists to be refreshed.
-         * (non-PHPdoc)
-         * @see InlineEditView::renderConfigSaveAjax()
-         */
-        protected function renderConfigSaveAjax($formName)
-        {
-            // Begin Not Coding Standard
-            return ZurmoHtml::ajax(array(
-                    'type' => 'POST',
-                    'data' => 'js:$("#' . $formName . '").serialize()',
-                    'url'  =>  $this->getValidateAndSaveUrl(),
-                    'update' => '#' . $this->uniquePageId,
-                    'complete' => "function(XMLHttpRequest, textStatus){
-                        //find if there is a comment thread to refresh
-                        //$('.hiddenCommentRefresh').click();
-                    }"
-                ));
-            // End Not Coding Standard
         }
 
         protected function doesLabelHaveOwnCell()
