@@ -41,6 +41,7 @@
         {
             assert('is_string($redirectUrl) || $redirectUrl == null');
             $content  = '<div class="social-item">';
+            //todo: use user's avatar (owner)
             $content .= '<em class="'.get_class($model).'"></em>';
             $content .= '<strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                     $model->latestDateTime, 'long', null) . '</strong><br/>';

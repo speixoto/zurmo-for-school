@@ -59,9 +59,8 @@
                                                             'id' => $this->params['relationModel']->id)));
         }
 
-        protected function getDataProvider($uniquePageId)
+        protected function getDataProvider()
         {
-            assert('is_string($uniquePageId)');
             $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(

@@ -65,9 +65,8 @@
             return Yii::app()->createUrl('/' . $this->moduleId . '/default/index');
         }
 
-        protected function getDataProvider($uniquePageId)
+        protected function getDataProvider()
         {
-            assert('is_string($uniquePageId)');
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
             $searchAttributeData              = array();
             $searchAttributeData['clauses']   = array();

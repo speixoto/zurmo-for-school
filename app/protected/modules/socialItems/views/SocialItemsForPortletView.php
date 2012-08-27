@@ -105,8 +105,7 @@
                                                   $this->getPortletDetailsUrl(),
                                                   $this->getNonAjaxRedirectUrl(),
                                                   $uniquePageId,
-                                                  $this->params,
-                                                  get_class(Yii::app()->findModule($this->moduleId)));
+                                                  $this->params);
             return $view->render();
         }
 
@@ -131,8 +130,6 @@
             return Yii::app()->createUrl('/' . $this->moduleId . '/default/details',
                                                         array( 'id' => $this->params['relationModel']->id));
         }
-
-        abstract protected function getDataProvider($uniquePageId);
 
         public static function canUserConfigure()
         {

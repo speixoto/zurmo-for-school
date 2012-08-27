@@ -56,20 +56,13 @@
 
         protected $params;
 
-        /**
-         * Associated moduleClassName of the containing view.
-         * @var string
-         */
-        protected $containerModuleClassName;
-
         public function __construct(RedBeanModelDataProvider $dataProvider,
                                     $controllerId,
                                     $moduleId,
                                     $portletDetailsUrl,
                                     $redirectUrl,
                                     $uniquePageId,
-                                    $params,
-                                    $containerModuleClassName)
+                                    $params)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -87,7 +80,6 @@
             $this->gridIdSuffix             = $uniquePageId;
             $this->gridId                   = 'list-view';
             $this->params                   = $params;
-            $this->containerModuleClassName = $containerModuleClassName;
         }
 
         protected function renderContent()
@@ -168,11 +160,6 @@
         public function isUniqueToAPage()
         {
             return false;
-        }
-
-        public function getContainerModuleClassName()
-        {
-            return $this->containerModuleClassName;
         }
     }
 ?>
