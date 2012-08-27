@@ -39,22 +39,27 @@
         }
 
         protected function renderControlNonEditable()
-        {
-            $this->nonEditableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
+        {            
+            $this->nonEditableTemplate = '<td colspan="{colspan}">{content}</td>';            
             $avatarUrl   = $this->model->getAvatarImageUrl();
-            $avatarImage = ZurmoHtml::image($avatarUrl);
+            $avatarImage = ZurmoHtml::image($avatarUrl, null, array('onMouseOver' => "$('#profile-picture-tooltip').show();",
+                                                                    'onMouseOut'  => "$('#profile-picture-tooltip').hide();"));
             if (Yii::app()->user->userModel->id == $this->model->id ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
+                $content     = ZurmoHtml::tag('div', 
+                                      array('style' => 'display:none',
+                                            'id'    => 'profile-picture-tooltip'),
+                                      Yii::t('Default', 'Click me to change the profile picture.'), 
+                                      true);
                 $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
                 $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Profile Picture') . ": " . strval($this->model));
-                $content     = ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);
+                $content    .= ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);
             }
             else
             {
                 $content = $avatarImage;
-            }
-
+            }                      
             return $content;
         }
 
