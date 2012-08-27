@@ -31,9 +31,9 @@
     {
         protected $relatedUser;
 
-        public function __construct(User $relatedUser)
+        public function __construct($relatedUser)
         {
-            assert('$relatedUser->id > 0');
+            assert('$relatedUser == null || ($relatedUser instanceof User && $relatedUser->id > 0)');
             $this->relatedUser = $relatedUser;
         }
 
@@ -41,7 +41,7 @@
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
-            if(!Yii::app()->user->userModel->isSame($this->relatedUser))
+            if($this->relatedUser != null && !Yii::app()->user->userModel->isSame($this->relatedUser))
             {
                 $model->toUser = $this->relatedUser;
             }

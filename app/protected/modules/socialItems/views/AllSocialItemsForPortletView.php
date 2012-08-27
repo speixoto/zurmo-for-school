@@ -43,6 +43,16 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        protected function renderNewSocialItemContent()
+        {
+            $socialItem    = new  SocialItem();
+            $urlParameters = array('redirectUrl'              => $this->getPortletDetailsUrl()); //After save, the url to go to.
+            $uniquePageId  = get_called_class();
+            $inlineView    = new SocialItemInlineEditView($socialItem, 'default', 'socialItems', 'inlineCreateSave',
+                                                      $urlParameters, $uniquePageId);
+            return $inlineView->render();
+        }
+
         /**
          * Override to properly use myListDetails instead of just details as the action.
          * (non-PHPdoc)

@@ -64,9 +64,12 @@
             $relatedUserId           = ArrayUtil::getArrayValue($getData, 'relatedUserId');
             if ($relatedUserId == null)
             {
-                throw new NotSupportedException();
+                $relatedUser = null;
             }
-            $relatedUser = User::getById((int)$relatedUserId);
+            else
+            {
+                $relatedUser = User::getById((int)$relatedUserId);
+            }
             return new SocialItemZurmoControllerUtil($relatedUser);
         }
 
@@ -81,7 +84,7 @@
                                    'relatedModelClassName'    => 'SocialItem',
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
-            $socialItem    = SocialItem::getById($id);
+            $socialItem    = SocialItem::getById((int)$id);
             $uniquePageId  = SocialItemsUtil::makeUniquePageIdByModel($socialItem);
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                                     $urlParameters, $uniquePageId);
