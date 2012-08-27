@@ -26,6 +26,11 @@
 
     class User extends Permitable
     {
+        
+        const AVATAR_TYPE_DEFAULT       = 1;
+        const AVATAR_TYPE_PRIMARY_EMAIL = 2;
+        const AVATAR_TYPE_CUSTOM_EMAIL  = 3;
+        
         public static function getByUsername($username)
         {
             assert('is_string($username)');
@@ -336,25 +341,25 @@
 
         public function setAvatar(Array $avatar)
         {            
-            $this->avatar = serialize($avatar);
+            $this->avatar = serialize($avatar);            
         }
         
         public function getAvatar($size = 250)
         {
             assert('is_int($size)');
-            $avatar = unserialize($this->avatar);
-            if ($avatar['type'] == 0)
+            $avatar = unserialize($this->avatar);           
+            if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
             {
                 $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g";
             }
-            elseif ($avatar['type'] == 1)
+            elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_PRIMARY_EMAIL)
             {
                 $email      = $this->primaryEmail->emailAddress;
                 $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=retro&r=g";
             }
-            elseif ($avatar['type'] == 2)
+            elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_CUSTOM_EMAIL)
             {
-                $email      = $avatar['customAvatarEmail'];
+                $email      = $avatar['customAvatarEmailAddress'];
                 $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=retro&r=g";
             }            
             else
@@ -619,6 +624,9 @@
                 ),
                 'noApiExport' => array(
                     'hash'
+                ),
+                'noAudit' => array(
+                    'avatar',               
                 ),
             );
             return $metadata;

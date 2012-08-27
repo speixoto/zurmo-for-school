@@ -83,20 +83,16 @@
         }
 
         public function actionChangeAvatar($id)
-        {
+        {            
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user                 = User::getById(intval($id));
             $userAvatarForm       = new UserAvatarForm($user);
             $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
             $userChangeAvatarView = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
             $view = new ModalView($this, $userChangeAvatarView);
-            if (!isset($_POST['UserAvatarForm']))
-            {
-                Yii::app()->getClientScript()->setToAjaxMode();
-                echo $view->render();
-            } else {
-                $this->attemptToSaveModelFromPost($userAvatarForm);
-            }
+            $this->attemptToSaveModelFromPost($userAvatarForm);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            echo $view->render();                                        
         }
 
         public function actionDetails($id)

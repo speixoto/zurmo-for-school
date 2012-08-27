@@ -26,55 +26,51 @@
 
     /**
      * Form to edit the user avatar
-     * @param integer       (0=noAvatar, 1=primaryEmail, 2=customEmail, 3=galleryAvatar)
-     * @param string        custom email for gravatar
-     * @param galleryAvatar id of the gallery avatar
      */
     class UserAvatarForm extends ModelForm
     {
         
-        public $avatar;                
+        public $avatarType;                
+        public $customAvatarEmailAddress;
 
         public function __construct(User $model)
         {
             $this->model = $model;
+            $avatar = unserialize($this->model->avatar);
+            $this->avatarType = $avatar['avatarType'];
+            $this->customAvatarEmailAddress = $avatar['customAvatarEmailAddress'];
         }
         
         public function rules()
         {
-            return array(
-                array('avatar', 'required'),
-                array('avatar', 'validateAvatar'),                
+            return array(                                
+                array('customAvatarEmailAddress', 'email'),
+                array('avatarType',               'validateType'),
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'avatar'              => Yii::t('Default', 'User Avatar'),                
+                'avatarType'               => Yii::t('Default', 'User Avatar'),
+                'customAvatarEmailAddress' => Yii::t('Default', 'Custom Gravatar Email Address'),
             );
+        }
+        
+        public function validateType()
+        {
+            if ($this->avatarType == User::AVATAR_TYPE_CUSTOM_EMAIL && $this->customAvatarEmailAddress == null)
+            {
+                 $this->addError('customAvatarEmailAddress',
+                    Yii::t('Default', 'You need to chose a custom email address.'));
+            }
         }
         
         public function afterValidate()
         {
-            parent::afterValidate();
-            $this->model->setAvatar($this->avatar);
+            parent::afterValidate();            
+            $this->model->setAvatar(array('avatarType' => $this->avatarType, 'customAvatarEmailAddress' => $this->customAvatarEmailAddress));            
         }
-        
-        public function validateAvatar($attribute, $params)
-        {
-            $avatar = $this->$attribute;
-            if ($avatar['type'] == '2' && $avatar['customAvatarEmail'] !== '')
-            {
-                // make sure string length is limited to avoid DOS attacks
-                $pattern = '/^[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/';
-                $valid=is_string($avatar['customAvatarEmail']) && strlen($avatar['customAvatarEmail'])<=254 && (preg_match($pattern,$avatar['customAvatarEmail']));
-                if (!$valid)
-                {
-                    $this->addError('avatar',
-                        Yii::t('Default', 'Your did not chose a valid email address, please fix it.'));
-                }
-            }
-        }
+               
     }
 ?>
