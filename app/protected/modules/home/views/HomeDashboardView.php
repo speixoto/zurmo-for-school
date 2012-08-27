@@ -64,6 +64,9 @@
                                 array(
                                     'type' => 'TasksMyList',
                                 ),
+                                array(
+                                    'type' => 'OpportunitiesBySourceChart',
+                                ),
                             )
                         ),
                         array(
@@ -72,7 +75,7 @@
                                     'type' => 'OpportunitiesByStageChart',
                                 ),
                                 array(
-                                    'type' => 'OpportunitiesBySourceChart',
+                                    'type' => 'AllSocialItemsForPortlet',
                                 ),
                                 array(
                                     'type' => 'MyMissionsForPortlet',

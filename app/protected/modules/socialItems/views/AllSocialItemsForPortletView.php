@@ -25,21 +25,19 @@
      ********************************************************************************/
 
     /**
-     * Wrapper view for displaying a user's latest activities feed.
+     * Wrapper view for displaying a feed of all social items on a dashboard.
      */
-    class UserLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class AllSocialItemsForPortletView extends SocialItemsForPortletView
     {
-       /**
+        /**
          * Some extra assertions are made to ensure this view is used in a way that it supports.
          */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('is_array($viewData) || $viewData == null');
             assert('isset($params["portletId"])');
-            assert('isset($params["relationModuleId"])');
-            assert('isset($params["relationModel"])');
             assert('is_string($uniqueLayoutId)');
-            $this->moduleId       = 'users';
+            $this->moduleId       = 'home';
             $this->viewData       = $viewData;
             $this->params         = $params;
             $this->uniqueLayoutId = $uniqueLayoutId;
@@ -53,22 +51,30 @@
         protected function makeLatestActivitiesConfigurationForm()
         {
             $form                = new LatestActivitiesConfigurationForm();
-            $form->ownedByFilter = intval($this->params['relationModel']->id);
+            $form->ownedByFilter = LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER;
             return $form;
         }
 
         /**
-         * Override to ensure the user id is properly set in the Id parameter.
+         * Override to properly use myListDetails instead of just details as the action.
          * (non-PHPdoc)
          * @see LatestActivtiesForPortletView::getPortletDetailsUrl()
          */
         protected function getPortletDetailsUrl()
         {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
+            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/myListDetails',
                                                         array_merge(GetUtil::getData(), array( 'portletId' =>
                                                                                     $this->params['portletId'],
-                                                            'uniqueLayoutId' => $this->uniqueLayoutId,
-                                                            'id' => $this->params['relationModel']->id)));
+                                                            'uniqueLayoutId' => $this->uniqueLayoutId)));
+        }
+
+       /**
+         * Url to go to after an action is completed. Typically returns user to either a model's detail view or
+         * the home page dashboard.
+         */
+        protected function getNonAjaxRedirectUrl()
+        {
+            return Yii::app()->createUrl('/' . $this->moduleId . '/default/index');
         }
 
         protected function getDataProvider($uniquePageId, $form)
@@ -90,14 +96,18 @@
                                                           array('pagination' => array('pageSize' => $pageSize)));
         }
 
-        public function getLatestActivitiesViewClassName()
+        public function getSocialItemsViewClassName()
         {
-            return 'LatestActivitiesForUserListView';
+            return 'AllSocialItemsListView';
         }
 
-        protected static function includeHavingRelatedItemsWhenRenderingMashableModels()
+        /**
+         * What kind of PortletRules this view follows
+         * @return PortletRulesType as string.
+         */
+        public static function getPortletRulesType()
         {
-            return true;
+            return 'AllSocialItemsList';
         }
     }
 ?>

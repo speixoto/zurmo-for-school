@@ -117,5 +117,10 @@
                 return false;
             }
         }
+
+        public static function hasReadPermissionsOptimization()
+        {
+            return true;
+        }
     }
 ?>
