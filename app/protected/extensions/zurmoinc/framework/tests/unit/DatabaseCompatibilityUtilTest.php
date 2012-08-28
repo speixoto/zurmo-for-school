@@ -519,7 +519,7 @@
         public function testGetDatabaseNameFromConnectionString()
         {
             $originalConnectionString = Yii::app()->db->connectionString;
-            Yii::app()->db->connectionString = 'mysql:host=localhost;port=3306;dbname=zurmo';
+            Yii::app()->db->connectionString = 'mysql:host=localhost;port=3306;dbname=zurmo'; // Not Coding Standard
             $databaseName = DatabaseCompatibilityUtil::getDatabaseNameFromConnectionString();
             Yii::app()->db->connectionString = $originalConnectionString;
             $this->assertEquals('zurmo', $databaseName);

@@ -44,7 +44,7 @@
 
             $sanitizedDynamicSearchAttributes = array(
                 0 => array(
-                    'dateTime__DateTime'	      => array( 'type'       => 'Between',
+                    'dateTime__DateTime'          => array( 'type'       => 'Between',
                                                             'firstDate'  => '2012-08-01',
                                                             'secondDate' => '2012-08-15'),
                     'attributeIndexOrDerivedType' => 'dateTime__DateTime',
