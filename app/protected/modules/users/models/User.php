@@ -368,8 +368,17 @@
             else
             {
                 $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
+            }     
+            //Check connection to gravatar and return offline picture
+            $htmlHeaders = @get_headers($avatarUrl);               
+            if (preg_match("|200|", $htmlHeaders[0]))
+            {
+                return $avatarUrl;
             }
-            return $avatarUrl;
+            else
+            {
+                return Yii::app()->theme->baseUrl . '/images/offline_user.png';
+            }               
         }
 
         public static function mangleTableName()
