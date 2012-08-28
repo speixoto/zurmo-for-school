@@ -25,36 +25,40 @@
      ********************************************************************************/
 
     /**
-     * Controller Class for Development Tools
-     *
+     * Modal search requires a different behavior.  Because a modal search could have a currencyValue attribute
+     * by default in the advanced search, it must be made sure it does not interfer with the search unless specific
+     * values are inputed.
      */
-    class ZurmoDevelopmentController extends ZurmoModuleController
+    class CurrencyValueForModalSearchElement extends CurrencyValueForSearchElement
     {
-        public function filters()
+        protected function renderExtraEditableContent()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
-               ),
+            $name = $this->getEditableInputName($this->attribute, 'relatedData');
+            $htmlOptions = array(
+                'id'   => $this->getEditableInputId($this->attribute, 'relatedData'),
             );
+            return ZurmoHtml::hiddenField($name, true, $htmlOptions);
         }
 
-        public function actionIndex()
+        /**
+         * Default the currency Id to 'none';
+         * (non-PHPdoc)
+         * @see CurrencyValueForSearchElement::resolveParamsForCurrencyId()
+         */
+        protected function resolveParamsForCurrencyId(& $params)
         {
-            if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
-            {
-                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Cache has been successfully cleaned.'));
-            }
-            if (isset($_GET['resolveCustomData']) && $_GET['resolveCustomData'] == 1)
-            {
-                Yii::app()->user->setFlash('notification', Yii::t('Default', 'Custom data updated successfully.'));
-            }
+            parent::resolveParamsForCurrencyId($params);
+            $params['defaultToBlank'] = true;
+        }
 
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new DevelopmentListView()));
-            echo $view->render();
+        /**
+         * Should not default to 0 as the currencyValue
+         * (non-PHPdoc)
+         * @see CurrencyValueForSearchElement::resolveAndGetEditableValue()
+         */
+        protected function resolveAndGetEditableValue($model, $attribute)
+        {
+            return '';
         }
     }
 ?>

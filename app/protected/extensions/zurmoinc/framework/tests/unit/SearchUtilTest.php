@@ -173,6 +173,40 @@
             $searchArray = array('testMultiSelectDropDown' => array('values' => array(0 => null)));
             $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
             $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testMultiSelectDropDown' => array('values' => array(0 => null, 1 => 'xyz')));
+            $resultArray = array('testMultiSelectDropDown' => array('values' => array(0 => 'xyz')));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array(0 => '')));
+            $resultArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array()));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array(0 => null)));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array(0 => null, 1 => 'xyz')));
+            $resultArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array(0 => 'xyz')));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            //Test recursion
+            $searchArray = array('testDropDownAsMultiSelectDropDown' =>
+                                    array('abc' => array('value' => array(0 => null, 1 => 'xyz'))));
+            $resultArray = array('testDropDownAsMultiSelectDropDown' =>
+                                    array('abc' => array('value' => array(0 => 'xyz'))));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testMultiSelectDropDown' =>
+                                    array('abc' => array('values' => array(0 => null, 1 => 'xyz'))));
+            $resultArray = array('testMultiSelectDropDown' =>
+                                    array('abc' => array('values' => array(0 => 'xyz'))));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
         }
 
         public function testGetSearchAttributesFromSearchArrayForSavingExistingSearchCriteria()
@@ -219,6 +253,36 @@
             );
             $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
             $this->assertEquals(array('a' => '0'), $newArray);
+
+            $searchArray = array(
+                'a' => array('values' => array(0 => '')),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('values' => array())), $newArray);
+
+            $searchArray = array(
+                'a' => array('value' => array(0 => '')),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('value' => array())), $newArray);
+
+            $searchArray = array(
+                'a' => array('values' => array(0 => null)),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('values' => array())), $newArray);
+
+            $searchArray = array(
+                'a' => array('value' => array(0 => null)),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('value' => array())), $newArray);
+
+            $searchArray = array(
+                'a' => array('value' => array(0 => null, 1 => 'xyz')),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('value' => array(0 => 'xyz'))), $newArray);
         }
 
         public function testAdaptSearchAttributesToSetInRedBeanModel()

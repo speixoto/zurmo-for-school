@@ -318,7 +318,7 @@
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'dynamic-search-structure-input');
             $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
-            $content            .= Yii::t('Default', '<span>Search Structure</span>');
+            $content            .= ZurmoHtml::tag('span', array(), Yii::t('Default', 'Search Operator'));
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
         }
@@ -359,6 +359,16 @@
             {
                 return "display:none;";
             }
+        }
+
+        /**
+         * Override and manipulate as needed. This method can be used to change the ordering that the dynamic search
+         * attribute dropdown shows attributes in for example.
+         * @param array $attributeIndexOrDerivedTypeAndLabels
+         */
+        public static function resolveAttributeIndexOrDerivedTypeAndLabelsForDynamicSearchRow(
+                               & $attributeIndexOrDerivedTypeAndLabels)
+        {
         }
     }
 ?>

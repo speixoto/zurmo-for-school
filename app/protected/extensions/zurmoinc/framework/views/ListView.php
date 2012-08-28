@@ -166,7 +166,7 @@
 
         protected static function getSummaryText()
         {
-            return Yii::t('zii', '{count} result(s)');
+            return Yii::t('Default', '{count} result(s)');
         }
 
         protected static function getSummaryCssClass()
