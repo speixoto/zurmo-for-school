@@ -65,7 +65,7 @@
 
         public static function getModuleClassName()
         {
-            return 'CommentModule';
+            return 'CommentsModule';
         }
 
         public static function canSaveMetadata()

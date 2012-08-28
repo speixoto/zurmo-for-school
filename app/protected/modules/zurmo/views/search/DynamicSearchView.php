@@ -360,5 +360,15 @@
                 return "display:none;";
             }
         }
+
+        /**
+         * Override and manipulate as needed. This method can be used to change the ordering that the dynamic search
+         * attribute dropdown shows attributes in for example.
+         * @param array $attributeIndexOrDerivedTypeAndLabels
+         */
+        public static function resolveAttributeIndexOrDerivedTypeAndLabelsForDynamicSearchRow(
+                               & $attributeIndexOrDerivedTypeAndLabels)
+        {
+        }
     }
 ?>

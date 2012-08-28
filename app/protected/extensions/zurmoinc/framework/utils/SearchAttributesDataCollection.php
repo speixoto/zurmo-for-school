@@ -46,7 +46,7 @@
         public function getDynamicSearchAttributes()
         {
             $dynamicSearchAttributes = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
-            if($dynamicSearchAttributes == null)
+            if ($dynamicSearchAttributes == null)
             {
                 return array();
             }
@@ -56,7 +56,7 @@
         public function getSanitizedDynamicSearchAttributes()
         {
             $dynamicSearchAttributes = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
-            if($dynamicSearchAttributes == null)
+            if ($dynamicSearchAttributes == null)
             {
                 return array();
             }

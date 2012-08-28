@@ -62,7 +62,7 @@
         {
             return array_merge(parent::attributeLabels(), array(
                                'dynamicClauses' => Yii::t('Default', 'Advanced Search Rows'),
-                               'dynamicStructure' => Yii::t('Default', 'Clause Ordering'),
+                               'dynamicStructure' => Yii::t('Default', 'Search Operator'),
             ));
         }
 
