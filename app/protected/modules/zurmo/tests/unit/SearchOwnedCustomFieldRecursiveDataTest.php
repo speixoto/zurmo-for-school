@@ -86,7 +86,7 @@
             $compareSubsetSql .= 'limit 5 offset 1';
             $this->assertEquals($compareSubsetSql, $subsetSql);
             //Make sure the sql runs properly.
-            $data = AAA::getSubset($joinTablesAdapter, 0, 5, $where, null, null, $joinTablesAdapter->getSelectDistinct());
+            $data = Contact::getSubset($joinTablesAdapter, 0, 5, $where, null, null, $joinTablesAdapter->getSelectDistinct());
         }
     }
 ?>
