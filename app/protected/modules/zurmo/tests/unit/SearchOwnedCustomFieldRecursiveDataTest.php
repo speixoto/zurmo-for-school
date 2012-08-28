@@ -24,6 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Test class to illustrate a bug related to nested search from a many-many relationship when searching a
+     * dropdown field.  This test which now works, shows that this bug is fixed.
+     */
     class SearchOwnedCustomFieldRecursiveDataTest extends BaseTest
     {
         public static function setUpBeforeClass()
