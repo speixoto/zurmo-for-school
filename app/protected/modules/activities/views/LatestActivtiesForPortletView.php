@@ -106,7 +106,7 @@
                 $dataProvider = $this->getDataProvider($uniquePageId, $latestActivitiesConfigurationForm);
                 $latestView = new $latestActivitiesViewClassName($dataProvider,
                                                                  $latestActivitiesConfigurationForm,
-                                                                 'latestActivities', 'activities',
+                                                                 'default', 'activities',
                                                                  $this->getPortletDetailsUrl(),
                                                                  $this->getNonAjaxRedirectUrl(),
                                                                  $uniquePageId,
