@@ -25,13 +25,13 @@
      ********************************************************************************/
 
     /**
-    * Contacts API Controller
+    * Tasks API Controller
     */
-    class ContactsApiController extends ZurmoModuleApiController
+    class TasksTaskApiController extends ZurmoModuleApiController
     {
         protected function getSearchFormClassName()
         {
-            return 'ContactsSearchForm';
+            return 'TasksSearchForm';
         }
     }
 ?>

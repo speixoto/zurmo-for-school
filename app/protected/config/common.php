@@ -214,16 +214,7 @@
                 'showScriptName' => true,
                 'rules' => array(
                     // API REST patterns
-                    array('zurmo/api/logout',             'pattern' => 'zurmo/api/logout',                    'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/api/read',            'pattern' => '<module:\w+>/api/read/<id:\d+>',      'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/api/list',            'pattern' => '<module:\w+>/api/list/*',             'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/api/update',          'pattern' => '<module:\w+>/api/update/<id:\d+>',    'verb' => 'PUT'),    // Not Coding Standard
-                    array('<module>/api/delete',          'pattern' => '<module:\w+>/api/delete/<id:\d+>',    'verb' => 'DELETE'), // Not Coding Standard
-                    array('<module>/api/create',          'pattern' => '<module:\w+>/api/create/',            'verb' => 'POST'),   // Not Coding Standard
-                    array('<module>/api/addRelation',     'pattern' => '<module:\w+>/api/addRelation/*',      'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/api/removeRelation',  'pattern' => '<module:\w+>/api/removeRelation/*',   'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/api/<action>',        'pattern' => '<module:\w+>/api/<action>/*'),                             // Not Coding Standard
-
+                    array('zurmo/api/logout',                   'pattern' => 'zurmo/api/logout',                              'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\d+>',    'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\w+>',    'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/*',           'verb' => 'GET'),    // Not Coding Standard

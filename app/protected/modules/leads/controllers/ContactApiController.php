@@ -25,13 +25,13 @@
      ********************************************************************************/
 
     /**
-    * Users API Controller
+    * Leads API Controller
     */
-    class UsersApiController extends ZurmoModuleApiController
+    class LeadsContactApiController extends ZurmoModuleApiController
     {
         protected function getSearchFormClassName()
         {
-            return 'UsersSearchForm';
+            return 'LeadsSearchForm';
         }
     }
 ?>

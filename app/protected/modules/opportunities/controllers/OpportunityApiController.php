@@ -25,13 +25,13 @@
      ********************************************************************************/
 
     /**
-    * Meetings API Controller
+    * Opportunities API Controller
     */
-    class MeetingsApiController extends ZurmoModuleApiController
+    class OpportunitiesOpportunityApiController extends ZurmoModuleApiController
     {
         protected function getSearchFormClassName()
         {
-            return 'MeetingsSearchForm';
+            return 'OpportunitiesSearchForm';
         }
     }
 ?>

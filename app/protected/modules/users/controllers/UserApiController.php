@@ -23,14 +23,15 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
+
     /**
-    * Accounts API Controller
+    * Users API Controller
     */
-    class AccountsApiController extends ZurmoModuleApiController
+    class UsersUserApiController extends ZurmoModuleApiController
     {
         protected function getSearchFormClassName()
         {
-            return 'AccountsSearchForm';
+            return 'UsersSearchForm';
         }
     }
 ?>
