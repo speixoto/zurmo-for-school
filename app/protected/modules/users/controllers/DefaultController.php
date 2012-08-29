@@ -39,7 +39,7 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, autoCompleteForMultiSelectAutoComplete, confirmTimeZone',
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, mailConfiguration, securityDetails, autoCompleteForMultiSelectAutoComplete, confirmTimeZone',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -432,10 +432,23 @@
         public function actionMailConfiguration($id)
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
-            $user = User::getById(intval($id));
-            $title           = Yii::t('Default', 'Email Configuration');
+            $user  = User::getById(intval($id));
+            $title = Yii::t('Default', 'Email Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
-            $mailConfigurationForm = new UserMailConfigurationForm($user->id);
+            $mailConfigurationForm = UserMailConfigurationFormAdapter::makeFormFromUserMailConfiguration($user);
+            $postVariableName   = get_class($mailConfigurationForm);
+            if (isset($_POST[$postVariableName]))
+            {
+                $mailConfigurationForm->setAttributes($_POST[$postVariableName]);
+                if ($mailConfigurationForm->validate())
+                {
+                    UserMailConfigurationFormAdapter::setUserMailConfigurationFromForm($mailConfigurationForm, $user);
+                    Yii::app()->user->setFlash('notification',
+                        Yii::t('Default', 'User email configuration saved successfully.')
+                    );
+                    $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
+                }
+            }
             $titleBarAndEditView = new UserActionBarAndMailConfigurationEditView(
                                     $this->getId(),
                                     $this->getModule()->getId(),

@@ -39,7 +39,7 @@
                             array('type' => 'SaveButton'),
                         ),
                     ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -83,12 +83,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'outboundType', 'type' => 'OutboundType'),
+                                                array('attributeName' => 'outboundType', 'type' => 'OutboundTypeStaticDropDown'),
                                             ),
                                         ),
                                     )
                                 ),
-                               array('cells' =>
+                            ),
+                        ),
+                        array(
+                            'rows' => array(
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
@@ -149,6 +153,34 @@
                 ),
             );
             return $metadata;
+        }
+
+        protected function renderAfterFormLayout($form)
+        {
+            parent::renderAfterFormLayout($form);
+            $dropDownId = $this->modelClassName . '_outboundType_value';
+            Yii::app()->clientScript->registerScript('userMailConfigurationOutbound', "
+                    $('#{$dropDownId}').change(function(){
+                        if ($(this).val() == " . UserMailConfigurationForm::EMAIL_OUTBOUND_SYSTEM_SETTINGS . ")
+                        {
+                            $(this).closest('.panel').next('.panel').hide();
+                        }
+                        else
+                        {
+                            $(this).closest('.panel').next('.panel').show();
+                        }
+                    });
+                ");
+        }
+
+        protected function getMorePanelsLinkLabel()
+        {
+            return null;
+        }
+
+        protected function getLessPanelsLinkLabel()
+        {
+            return null;
         }
     }
 ?>

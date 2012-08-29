@@ -29,10 +29,11 @@
      */
     class UserMailConfigurationForm extends ConfigurationForm
     {
-        /**
-         * Is set in order to properly route action elements in view.
-         */
-        public $userId;
+        const EMAIL_OUTBOUND_SYSTEM_SETTINGS = 1;
+
+        const EMAIL_OUTBOUND_CUSTOM_SETTINGS = 2;
+
+        public $user;
 
         public $fromName;
 
@@ -56,10 +57,9 @@
 
         public $aTestToAddress;
 
-        public function __construct($userId)
+        public function __construct(User $user)
         {
-            assert('is_int($userId) && $userId > 0');
-            $this->userId = $userId;
+            $this->user = $user;
         }
 
         /**
@@ -68,13 +68,13 @@
          */
         public function getId()
         {
-            return $this->userId;
+            return $this->user->id;
         }
 
         public function rules()
         {
             return array(
-                array('fromName, fromAddress, outboundType',
+                array('fromName, fromAddress',
                     'required'),
                 array('fromName, replyToName, outboundHost, outboundUsername, outboundPassword, outboundSecurity',
                     'type',      'type' => 'string'),
@@ -88,6 +88,11 @@
                     'numerical', 'min'  => 1),
                 array('fromAddress, replyToAddress, aTestToAddress',
                     'email'),
+                array('outboundType',
+                    'outboundSettings', 'nonEmptyFields' => array('outboundHost',
+                                                                  'outboundPort',
+                                                                  'outboundUsername',
+                                                                  'outboundPassword')),
             );
         }
 
@@ -106,6 +111,26 @@
                 'outboundSecurity'      => Yii::t('Default', 'Outbound Extra Mail Settings'),
                 'aTestToAddress'        => Yii::t('Default', 'Send a test email to'),
             );
+        }
+
+        public function outboundSettings($attribute,$params)
+        {
+            if ($this->outboundType == self::EMAIL_OUTBOUND_CUSTOM_SETTINGS)
+            {
+                $haveError = false;
+                foreach ($params['nonEmptyFields'] as $field)
+                {
+                    if ($this->$field == null)
+                    {
+                        $this->addError($field, Yii::t('Default', 'This field is required'));
+                        $haveError = true;
+                    }
+                }
+                if ($haveError)
+                {
+                    $this->addError($attribute, Yii::t('Default', 'You need to change to system default or fill your custom settings.'));
+                }
+            }
         }
     }
 ?>
