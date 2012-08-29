@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Class to render link to mass edit from a listview.
+     * Class to render link user configuration
      */
     class UserConfigurationLinkActionElement extends LinkActionElement
     {
@@ -38,6 +38,7 @@
         {
             $menuItems = array('label' => $this->getLabel(),
                                'url'   => null,
+                               'itemOptions' => array('class' => 'icon-user-config'),
                                'items' => array(
                                    array('label'   => Yii::t('Default', 'General'),
                                        'url'     => $this->route . '/configurationEdit?id=' . $this->modelId),
@@ -48,7 +49,6 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
-                'htmlOptions' => array('class' => 'icon-user-config'),
                 'items'       => array($menuItems),
             ));
             $cClipWidget->endClip();

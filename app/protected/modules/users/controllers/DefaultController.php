@@ -429,6 +429,25 @@
             echo $view->render();
         }
 
+        public function actionMailConfiguration($id)
+        {
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
+            $user = User::getById(intval($id));
+            $title           = Yii::t('Default', 'Email Configuration');
+            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            $mailConfigurationForm = new UserMailConfigurationForm($user->id);
+            $titleBarAndEditView = new UserActionBarAndMailConfigurationEditView(
+                                    $this->getId(),
+                                    $this->getModule()->getId(),
+                                    $user,
+                                    $mailConfigurationForm
+            );
+            $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
+            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            echo $view->render();
+        }
+
         protected function getSearchFormClassName()
         {
             return 'UsersSearchForm';
