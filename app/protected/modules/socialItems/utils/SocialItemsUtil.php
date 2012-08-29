@@ -47,7 +47,7 @@
                                     $model->latestDateTime, 'long', null) . '</strong><br/>';
             $content .= ZurmoHtml::tag('span', array(), strval($model->owner) . ' ' . $model->description);
             $content .= static::renderItemFileContent($model);
-
+            $content .= '<span class="delete-social-item">' . static::renderDeleteLinkContent($model) . '</span>';
             $content .= '<div>';
             $content .= static::renderCommentsContent($model);
             $content .= static::renderCreateCommentContent($model);
@@ -67,6 +67,21 @@
         public static function makeUniquePageIdByModel(SocialItem $model)
         {
             return 'CreateCommentForSocialItem-' . $model->id;
+        }
+
+        private static function renderDeleteLinkContent(SocialItem $model)
+        {
+            $url     =   Yii::app()->createUrl('socialItems/default/deleteViaAjax',
+                                               array('id' => $model->id));
+            // Begin Not Coding Standard
+            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete Post'), $url,
+                         array('type'     => 'GET',
+                               'complete' => "function(XMLHttpRequest, textStatus){
+                                              $('#deleteSocialItemLink" . $model->id . "').parent().parent().parent().parent().remove();}"),
+                         array('id'         => 'deleteSocialItemLink'   . $model->id,
+                                'class'     => 'deleteSocialItemLink'   . $model->id,
+                                'namespace' => 'delete'));
+            // End Not Coding Standard
         }
 
         private static function renderCommentsContent(SocialItem $model)

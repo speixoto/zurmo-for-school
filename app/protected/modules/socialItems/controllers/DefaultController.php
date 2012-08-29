@@ -91,5 +91,23 @@
             $view          = new AjaxPageView($inlineView);
             echo $view->render();
         }
+
+        public function actionDeleteViaAjax($id)
+        {
+            $socialItem               = SocialItem::getById(intval($id));
+            if ($socialItem->owner->id  != Yii::app()->user->userModel->id &&
+                $socialItem->toUser->id != Yii::app()->user->userModel->id)
+            {
+                $messageView = new AccessFailureAjaxView();
+                $view        = new AjaxPageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $deleted = $socialItem->delete();
+            if (!$deleted)
+            {
+                throw new FailedToDeleteModelException();
+            }
+        }
     }
 ?>
