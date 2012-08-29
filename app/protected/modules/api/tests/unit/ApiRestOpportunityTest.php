@@ -587,6 +587,88 @@
         }
 
         /**
+        * Test get opportunities that are releted with contacts(MANY_MANY relationship)
+        * @depends testAdvancedSearchOpportunities
+        */
+        public function testGetOpportunitiesThatAreRelatedWithContact()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $firstContact = ContactTestHelper::createContactByNameForOwner('First Contact', $super);
+            $secondContact = ContactTestHelper::createContactByNameForOwner('Second Contact', $super);
+
+            $opportunities = Opportunity::getByName('First Opportunity');
+            $firstOpportunity = $opportunities[0];
+
+            $opportunities = Opportunity::getByName('Second Opportunity');
+            $secondOpportunity = $opportunities[0];
+
+            $opportunities = Opportunity::getByName('Third Opportunity');
+            $thirdOpportunity = $opportunities[0];
+
+            $opportunities = Opportunity::getByName('Forth Opportunity');
+            $forthOpportunity = $opportunities[0];
+
+            $firstContact->opportunities->add($firstOpportunity);
+            $firstContact->opportunities->add($secondOpportunity);
+            $firstContact->opportunities->add($thirdOpportunity);
+            $firstContact->save();
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $searchParams = array(
+                'dynamicSearch' => array(
+                    'dynamicClauses' => array(
+                        array(
+                            'attributeIndexOrDerivedType' => 'contacts'. DynamicSearchUtil::RELATION_DELIMITER .'id',
+                            'structurePosition' => 1,
+                            'contacts' => array(
+                                'id' => $firstContact->id,
+                                'relatedData' => true
+                            )
+                        ),
+                    ),
+                    'dynamicStructure' => '1',
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 2,
+                ),
+                'sort' => 'name.desc',
+           );
+
+            $searchParamsQuery = http_build_query($searchParams);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = json_decode($response, true);
+
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(1, $response['data']['currentPage']);
+            $this->assertEquals('Third Opportunity', $response['data']['items'][0]['name']);
+            $this->assertEquals('Second Opportunity', $response['data']['items'][1]['name']);
+
+            // Get second page
+            $searchParams['pagination']['page'] = 2;
+            $searchParamsQuery = http_build_query($searchParams);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(2, $response['data']['currentPage']);
+            $this->assertEquals('First Opportunity', $response['data']['items'][0]['name']);
+        }
+
+        /**
         * @depends testApiServerUrl
         */
         public function testEditOpportunityWithIncompleteData()
