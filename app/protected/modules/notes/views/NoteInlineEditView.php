@@ -38,7 +38,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'SaveButton'),
+                            array('type' => 'SaveAndPostNoteToProfileButton'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(

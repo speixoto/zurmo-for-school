@@ -45,17 +45,48 @@
             $content .= '<em class="'.get_class($model).'"></em>';
             $content .= '<strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                     $model->latestDateTime, 'long', null) . '</strong><br/>';
-            $content .= ZurmoHtml::tag('span', array(), strval($model->owner) . ' ' . $model->description);
-            $content .= static::renderItemFileContent($model);
-            $content .= '<span class="delete-social-item">' . static::renderDeleteLinkContent($model) . '</span>';
+            $content .= ZurmoHtml::tag('span', array(), strval($model->owner) . ' ' .
+                                                        self::renderModelDescription($model));
+            $content .= self::renderAfterDescriptionContent($model);
+            $content .= self::renderItemFileContent($model);
+            $content .= '<span class="delete-social-item">' . self::renderDeleteLinkContent($model) . '</span>';
             $content .= '<div>';
-            $content .= static::renderCommentsContent($model);
-            $content .= static::renderCreateCommentContent($model);
+            $content .= self::renderCommentsContent($model);
+            $content .= self::renderCreateCommentContent($model);
             $content .= '</div>';
 
             $content .= '</div>';
             self::registerListColumnScripts();
             return $content;
+        }
+
+        private static function renderModelDescription(SocialItem $model)
+        {
+            if($model->note->id > 0)
+            {
+                return $model->note->description;
+            }
+            else
+            {
+                return $model->description;
+            }
+
+        }
+
+        private static function renderAfterDescriptionContent(SocialItem $model)
+        {
+            if($model->note->id > 0)
+            {
+                $content = null;
+                if($model->note->activityItems->count() > 0)
+                {
+                    $content                     .= '<br/>';
+                    $element                      = new NoteActivityItemsForSocialItemsListElement($model->note, null);
+                    $element->nonEditableTemplate = '{content}';
+                    $content                     .= $element->render();
+                }
+                return $content;
+            }
         }
 
         private static function renderItemFileContent(SocialItem $model)
