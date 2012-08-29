@@ -73,6 +73,13 @@
             Yii::app()->apiHelper->sendResponse($result);
         }
 
+        public function actionSearch()
+        {
+            $params = Yii::app()->apiHelper->getRequestParams();
+            $result    =  $this->processSearch($params);
+            Yii::app()->apiHelper->sendResponse($result);
+        }
+
         public function actionCreate()
         {
             $params = Yii::app()->apiHelper->getRequestParams();
@@ -191,6 +198,14 @@
                 {
                     $_GET[$searchFormClassName] = $filterParams['search'];
                 }
+                if (isset($filterParams['dynamicSearch']) &&
+                    isset($searchFormClassName) &&
+                    !empty($filterParams['dynamicSearch']['dynamicClauses']) &&
+                    !empty($filterParams['dynamicSearch']['dynamicStructure']))
+                {
+                    $_GET[$searchFormClassName]['dynamicClauses'] = $filterParams['dynamicSearch']['dynamicClauses'];
+                    $_GET[$searchFormClassName]['dynamicStructure'] = $filterParams['dynamicSearch']['dynamicStructure'];
+                }
 
                 $model = new $modelClassName(false);
                 if (isset($searchFormClassName))
@@ -214,12 +229,13 @@
                     $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
                 }
 
-                $dataProvider = $this->makeRedBeanDataProviderFromGet(
+                $dataProvider = $this->makeSearchDataProvider(
                     $searchForm,
                     $modelClassName,
                     $pageSize,
                     $stateMetadataAdapterClassName
                 );
+
                 if (isset($filterParams['pagination']['page']) && (int)$filterParams['pagination']['page'] > 0)
                 {
                     $currentPage = (int)$filterParams['pagination']['page'];

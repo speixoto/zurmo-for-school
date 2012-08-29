@@ -513,6 +513,76 @@
             $this->assertEquals('Fifth Note', $response['data']['items'][2]['description']);
         }
 
+    /**
+        * @depends testSearchNotes
+        */
+        public function testAdvancedSearchNotes()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $searchParams = array(
+                'dynamicSearch' => array(
+                    'dynamicClauses' => array(
+                        array(
+                            'attributeIndexOrDerivedType' => 'owner',
+                            'structurePosition' => 1,
+                            'owner' => array(
+                                'id' => Yii::app()->user->userModel->id,
+                            ),
+                        ),
+                        array(
+                            'attributeIndexOrDerivedType' => 'name',
+                            'structurePosition' => 2,
+                            'description' => 'Fi',
+                        ),
+                        array(
+                            'attributeIndexOrDerivedType' => 'name',
+                            'structurePosition' => 3,
+                            'description' => 'Se',
+                        ),
+                    ),
+                    'dynamicStructure' => '1 AND (2 OR 3)',
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 2,
+                ),
+                'sort' => 'description.asc',
+           );
+
+            $searchParamsQuery = http_build_query($searchParams);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/notes/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(1, $response['data']['currentPage']);
+            $this->assertEquals('Fifth Note', $response['data']['items'][0]['description']);
+            $this->assertEquals('First Note', $response['data']['items'][1]['description']);
+
+            // Get second page
+            $searchParams['pagination']['page'] = 2;
+            $searchParamsQuery = http_build_query($searchParams);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/notes/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(2, $response['data']['currentPage']);
+            $this->assertEquals('Second Note', $response['data']['items'][0]['description']);
+        }
+
         /**
         * @depends testApiServerUrl
         */

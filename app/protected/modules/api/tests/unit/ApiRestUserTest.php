@@ -480,6 +480,69 @@
         }
 
         /**
+        * @depends testSearchUsers
+        */
+        public function testAdvancedSearchUsers()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $searchParams = array(
+                'dynamicSearch' => array(
+                    'dynamicClauses' => array(
+                        array(
+                            'attributeIndexOrDerivedType' => 'name',
+                            'structurePosition' => 1,
+                            'username' => 'Fi',
+                        ),
+                        array(
+                            'attributeIndexOrDerivedType' => 'name',
+                            'structurePosition' => 2,
+                            'username' => 'Se',
+                        ),
+                    ),
+                    'dynamicStructure' => '1 OR 2',
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 2,
+                ),
+                'sort' => 'username.asc',
+           );
+
+            $searchParamsQuery = http_build_query($searchParams);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(1, $response['data']['currentPage']);
+            $this->assertEquals('fifth', $response['data']['items'][0]['username']);
+            $this->assertEquals('first', $response['data']['items'][1]['username']);
+
+            // Get second page
+            $searchParams['pagination']['page'] = 2;
+            $searchParamsQuery = http_build_query($searchParams);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(2, $response['data']['currentPage']);
+            $this->assertEquals('second', $response['data']['items'][0]['username']);
+        }
+
+        /**
         * @depends testApiServerUrl
         */
         public function testEditUserWithIncompleteData()
