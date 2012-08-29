@@ -429,7 +429,7 @@
         /**
         * @depends testUnprivilegedUserViewUpdateDeleteContacts
         */
-        public function testSearchAccounts()
+        public function testSearchContacts()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
