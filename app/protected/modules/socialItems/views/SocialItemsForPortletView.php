@@ -86,8 +86,16 @@
             return $content;
         }
 
+        /**
+         * If this is an ajax call, it is most likely a paging request which means we should not show the view for
+         * posting a new social item.
+         */
         protected function renderNewSocialItemContent()
         {
+            if(ArrayUtil::getArrayValue(GetUtil::getData(), 'ajax') != null)
+            {
+                return;
+            }
             $socialItem = new  SocialItem();
             $urlParameters = array('relatedUserId'            => $this->params['relationModel']->id,
                                    'redirectUrl'              => $this->getPortletDetailsUrl()); //After save, the url to go to.
@@ -102,11 +110,22 @@
             $uniquePageId  = get_called_class();
             $dataProvider  = $this->getDataProvider($uniquePageId);
             $view          = new SocialItemsListView($dataProvider, 'default', 'socialItems',
-                                                  $this->getPortletDetailsUrl(),
-                                                  $this->getNonAjaxRedirectUrl(),
-                                                  $uniquePageId,
-                                                  $this->params);
+                                                      $this->resolveAndGetPaginationRoute(),
+                                                      $this->resolveAndGetPaginationParams(),
+                                                      $this->getNonAjaxRedirectUrl(),
+                                                      $uniquePageId,
+                                                      $this->params);
             return $view->render();
+        }
+
+        protected function resolveAndGetPaginationRoute()
+        {
+            return 'defaultPortlet/myListDetails';
+        }
+
+        protected function resolveAndGetPaginationParams()
+        {
+            return array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId']));
         }
 
         /**

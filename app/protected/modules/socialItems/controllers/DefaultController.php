@@ -73,6 +73,9 @@
             return new SocialItemZurmoControllerUtil($relatedUser);
         }
 
+        /**
+         * @see SocialItemsUtil::renderCreateCommentContent for a similar render that occurs on initial page load
+         */
         public function actionInlineCreateCommentFromAjax($id, $uniquePageId)
         {
             $comment       = new Comment();
@@ -86,10 +89,13 @@
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
             $socialItem    = SocialItem::getById((int)$id);
             $uniquePageId  = SocialItemsUtil::makeUniquePageIdByModel($socialItem);
+            $content       = ZurmoHtml::tag('span', array(),
+                                            ZurmoHtml::link(Yii::t('Default', 'Comment'), '#',
+                                                            array('class' => 'show-create-comment')));
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                                     $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);
-            echo $view->render();
+            echo $content . ZurmoHtml::tag('div', array('style' => 'display:none;'), $view->render());
         }
 
         public function actionDeleteViaAjax($id)

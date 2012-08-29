@@ -45,6 +45,10 @@
 
         protected function renderNewSocialItemContent()
         {
+            if(ArrayUtil::getArrayValue(GetUtil::getData(), 'ajax') != null)
+            {
+                return;
+            }
             $socialItem    = new  SocialItem();
             $urlParameters = array('redirectUrl'              => $this->getPortletDetailsUrl()); //After save, the url to go to.
             $uniquePageId  = get_called_class();

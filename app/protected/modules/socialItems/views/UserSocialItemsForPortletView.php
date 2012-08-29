@@ -45,6 +45,17 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        protected function resolveAndGetPaginationRoute()
+        {
+            return 'defaultPortlet/details';
+        }
+
+        protected function resolveAndGetPaginationParams()
+        {
+            return array_merge(GetUtil::getData(), array('id'        => $this->params["relationModel"]->id,
+                                                         'portletId' => $this->params['portletId']));
+        }
+
         /**
          * Override to ensure the user id is properly set in the Id parameter.
          * (non-PHPdoc)

@@ -36,10 +36,16 @@
         protected $dataProvider;
 
         /**
-         * Ajax url to use after actions are completed from the user interface for a portlet.
+         * Ajax route for calling pagination actions
          * @var string
          */
-        protected $portletDetailsUrl;
+        protected $paginationRoute;
+
+        /**
+         * Params to use when calling pagination actions
+         * @var array
+         */
+        protected $paginationParams;
 
         /**
          * The url to use as the redirect url when going to another action. This will return the user
@@ -59,21 +65,24 @@
         public function __construct(RedBeanModelDataProvider $dataProvider,
                                     $controllerId,
                                     $moduleId,
-                                    $portletDetailsUrl,
+                                    $paginationRoute,
+                                    $paginationParams,
                                     $redirectUrl,
                                     $uniquePageId,
                                     $params)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
-            assert('is_string($portletDetailsUrl)');
+            assert('is_string($paginationRoute)');
+            assert('is_array($paginationParams)');
             assert('is_string($redirectUrl)');
             assert('is_string($uniquePageId)');
             assert('is_array($params)');
             $this->dataProvider             = $dataProvider;
             $this->controllerId             = $controllerId;
             $this->moduleId                 = $moduleId;
-            $this->portletDetailsUrl        = $portletDetailsUrl;
+            $this->paginationRoute          = $paginationRoute;
+            $this->paginationParams         = $paginationParams;
             $this->redirectUrl              = $redirectUrl;
             $this->uniquePageId             = $uniquePageId;
             $this->gridIdSuffix             = $uniquePageId;
@@ -136,9 +145,9 @@
             return array(
                     'prevPageLabel'    => '<span>previous</span>',
                     'nextPageLabel'    => '<span>next</span>',
-                    'class'            => 'SimpleListLinkPager',
-                    'paginationParams' => array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId'])),
-                    'route'            => 'defaultPortlet/details',
+                    'class'            => 'EndlessListLinkPager',
+                    'paginationParams' => $this->paginationParams,
+                    'route'            => $this->paginationRoute,
                 );
         }
 

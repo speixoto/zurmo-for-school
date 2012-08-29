@@ -104,6 +104,10 @@
             return $content;
         }
 
+        /**
+         * @see SocialItemsDefaultController::actionInlineCreateCommentFromAjax for a similar render that occurs
+         * on ajax load instead of this method which renders on the initial page load
+         */
         private static function renderCreateCommentContent(SocialItem $model)
         {
             $content       = ZurmoHtml::tag('span', array(),
@@ -130,8 +134,7 @@
         {
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('socialItemComments', "
-                $('.show-create-comment').unbind('click');
-                $('.show-create-comment').bind('click', function()
+                $('.show-create-comment').live('click', function()
                     {
                         $(this).parent().parent().find('div:first').show();
                         $(this).parent().hide();
