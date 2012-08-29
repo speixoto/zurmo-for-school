@@ -54,6 +54,7 @@
             $content .= '</div>';
 
             $content .= '</div>';
+            self::registerListColumnScripts();
             return $content;
         }
 
@@ -90,7 +91,9 @@
 
         private static function renderCreateCommentContent(SocialItem $model)
         {
-            $content       = Yii::t('Default', 'Comment');
+            $content       = ZurmoHtml::tag('span', array(),
+                                            ZurmoHtml::link(Yii::t('Default', 'Comment'), '#',
+                                                            array('class' => 'show-create-comment')));
             $comment       = new Comment();
             $uniquePageId  = self::makeUniquePageIdByModel($model);
             $redirectUrl   = Yii::app()->createUrl('/socialItems/default/inlineCreateCommentFromAjax',
@@ -104,8 +107,24 @@
 
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
-            $content      .= $inlineView->render();
+            $content      .= ZurmoHtml::tag('div', array('style' => 'display:none;'), $inlineView->render());
             return ZurmoHtml::tag('div', array('id' => $uniquePageId), $content);
+        }
+
+        private static function registerListColumnScripts()
+        {
+            // Begin Not Coding Standard
+            Yii::app()->clientScript->registerScript('socialItemComments', "
+                $('.show-create-comment').unbind('click');
+                $('.show-create-comment').bind('click', function()
+                    {
+                        $(this).parent().parent().find('div:first').show();
+                        $(this).parent().hide();
+                        return false;
+                    }
+                );
+            ");
+            // End Not Coding Standard
         }
     }
 ?>
