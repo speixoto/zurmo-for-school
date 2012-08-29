@@ -116,6 +116,20 @@
             Yii::app()->apiHelper->sendResponse($result);
         }
 
+        public function actionAddRelation()
+        {
+            $params = Yii::app()->apiHelper->getRequestParams();
+            $result    =  $this->processAddRelation($params);
+            Yii::app()->apiHelper->sendResponse($result);
+        }
+
+        public function actionRemoveRelation()
+        {
+            $params = Yii::app()->apiHelper->getRequestParams();
+            $result    =  $this->processRemoveRelation($params);
+            Yii::app()->apiHelper->sendResponse($result);
+        }
+
         protected function getModelName()
         {
             return $this->getModule()->getPrimaryModelName();
@@ -272,6 +286,79 @@
             return $result;
         }
 
+        protected function processAddRelation($params)
+        {
+            $modelClassName = $this->getModelName();
+            try
+            {
+                $data = array();
+                if (isset($params['data']) && $params['data'] != '')
+                {
+                    parse_str($params['data'], $data);
+                }
+                $relationName = $data['relationName'];
+                $modelId = $data['id'];
+                $relatedId = $data['relatedId'];
+
+                $model = $modelClassName::getById(intval($modelId));
+                $relatedModelClassName = $model->getRelationModelClassName($relationName);
+                $relatedModel = $relatedModelClassName::getById(intval($relatedId));
+                $model->{$relationName}->add($relatedModel);
+
+                if ($model->save())
+                {
+                    $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null);
+                }
+                else
+                {
+                    $message = Yii::t('Default', 'Could not save relation.');
+                    throw new ApiException($message);
+                }
+            }
+            catch (Exception $e)
+            {
+                $message = $e->getMessage();
+                throw new ApiException($message);
+            }
+            return $result;
+        }
+
+        protected function processRemoveRelation($params)
+        {
+            $modelClassName = $this->getModelName();
+            try
+            {
+                $data = array();
+                if (isset($params['data']) && $params['data'] != '')
+                {
+                    parse_str($params['data'], $data);
+                }
+                $relationName = $data['relationName'];
+                $modelId = $data['id'];
+                $relatedId = $data['relatedId'];
+
+                $model = $modelClassName::getById(intval($modelId));
+                $relatedModelClassName = $model->getRelationModelClassName($relationName);
+                $relatedModel = $relatedModelClassName::getById(intval($relatedId));
+                $model->{$relationName}->remove($relatedModel);
+
+                if ($model->save())
+                {
+                    $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null);
+                }
+                else
+                {
+                    $message = Yii::t('Default', 'Could not remove relation.');
+                    throw new ApiException($message);
+                }
+            }
+            catch (Exception $e)
+            {
+                $message = $e->getMessage();
+                throw new ApiException($message);
+            }
+            return $result;
+        }
         protected function processCreate($data)
         {
             $modelClassName = $this->getModelName();

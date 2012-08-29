@@ -636,7 +636,7 @@
         * Test get contacts that are releted with particular opportunity(MANY_MANY relationship)
         * @depends testAdvancedSearchContacts
         */
-        public function testGetOpportunitiesThatAreRelatedWithContact()
+        public function testGetContactsThatAreRelatedWithOpportunity()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -712,6 +712,86 @@
             $this->assertEquals(3, $response['data']['totalCount']);
             $this->assertEquals(2, $response['data']['currentPage']);
             $this->assertEquals('First Contact', $response['data']['items'][0]['firstName']);
+        }
+
+        /**
+        * @depends testApiServerUrl
+        */
+        public function testAddRelation()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('My Opportunity', $super);
+            $contact = ContactTestHelper::createContactByNameForOwner('My Contact', $super);
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $relationParams = array(
+                'relationName' => 'opportunities',
+                'id'           => $contact->id,
+                'relatedId'    => $opportunity->id
+            );
+            $relationParamsQuery = http_build_query($relationParams);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/api/addRelation/data/' . $relationParamsQuery, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+
+            RedBeanModel::forgetAll();
+            $updatedContact = Contact::getById($contact->id);
+            $this->assertEquals(1, count($updatedContact->opportunities));
+            $this->assertEquals($opportunity->id, $updatedContact->opportunities[0]->id);
+
+            $updatedOpportunity = Opportunity::getById($opportunity->id);
+            $this->assertEquals(1, count($updatedOpportunity->contacts));
+            $this->assertEquals($contact->id, $updatedOpportunity->contacts[0]->id);
+        }
+
+        /**
+        * @depends testAddRelation
+        */
+        public function testRemoveRelation()
+        {
+            RedBeanModel::forgetAll();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $contacts = Contact::getByName('My Contact My Contactson');
+            $contact = $contacts[0];
+
+            $opportunities = Opportunity::getByName('My Opportunity');
+            $opportunity = $opportunities[0];
+
+            $relationParams = array(
+                'relationName' => 'opportunities',
+                'id'           => $contact->id,
+                'relatedId'    => $opportunity->id
+            );
+            $relationParamsQuery = http_build_query($relationParams);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/api/removeRelation/data/' . $relationParamsQuery, 'GET', $headers);
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+
+            $updatedContact = Contact::getById($contact->id);
+            $this->assertEquals(0, count($updatedContact->opportunities));
+
+            $updatedOpportunity = Opportunity::getById($opportunity->id);
+            $this->assertEquals(0, count($updatedOpportunity->contacts));
         }
 
         /**
