@@ -51,12 +51,15 @@
 
         public function render()
         {
-
+            if(!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
+            {
+                return parent::render();
+            }
             $postToProfileContent  = Yii::t('Default', 'Post to profile');
             $postToProfileContent .= static::renderHelpSpan();
             $postToProfileContent .= ZurmoHtml::checkBox('postToProfile', false);
-            $content = parent::render();
-            $content.= ZurmoHtml::tag('span', array(), $postToProfileContent);
+            $content               = parent::render();
+            $content              .= ZurmoHtml::tag('span', array(), $postToProfileContent);
             return $content;
         }
 

@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Adapter to take a GameNotification object and render content for the modal notification dialog box.
+     * Adapter to take a GameNotification object and render content for a social item.
      */
-    class GameNotificationToModalContentAdapter extends GameNotificationToContentAdapter
+    class GameNotificationToSocialItemContentAdapter extends GameNotificationToContentAdapter
     {
         /**
          * @return string content of the notification message content to display.
@@ -37,25 +37,26 @@
             $data = $this->getAndValidateUnserializedData();
             if ($data['type'] == GameNotification::TYPE_LEVEL_CHANGE)
             {
-                $content  = '<h2>' . Yii::t('Default', 'Congratulations!') . '</h2>';
-                $content .= '<h3>' . Yii::t('Default', 'You have reached level {nextLevel}',
-                                            array('{nextLevel}' => $data['levelValue'])) . '</h3>';
-                return $content;
+                return Yii::t('Default', 'I reached level {nextLevel}', array('{nextLevel}' => $data['levelValue']));
             }
             elseif ($data['type'] == GameNotification::TYPE_NEW_BADGE)
             {
                 $gameBadgeRulesClassName = $data['badgeType'] . 'GameBadgeRules';
                 $value                   = $gameBadgeRulesClassName::getItemCountByGrade(1);
-                $content   = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
-                $content  .= '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
+                $content                 = Yii::t('Default', 'Game on!') . ' ' .
+                                           Yii::t('Default', 'I received a new badge: {badgeContent}',
+                                           array('{badgeContent}' =>
+                                                 $gameBadgeRulesClassName::getPassiveDisplayLabel($value)));
                 return $content;
             }
             elseif ($data['type'] == GameNotification::TYPE_BADGE_GRADE_CHANGE)
             {
                 $gameBadgeRulesClassName = $data['badgeType'] . 'GameBadgeRules';
                 $value                   = $gameBadgeRulesClassName::getItemCountByGrade((int)$data['grade']);
-                $content   = '<h2>' . Yii::t('Default', 'New Badge') . '</h2>';
-                $content  .= '<h3>' . $gameBadgeRulesClassName::getPassiveDisplayLabel($value) . '</h3>';
+                $content                 = Yii::t('Default', 'Game on!') . ' ' .
+                                           Yii::t('Default', 'I received a new badge: {badgeContent}',
+                                           array('{badgeContent}' =>
+                                                 $gameBadgeRulesClassName::getPassiveDisplayLabel($value)));
                 return $content;
             }
             else
