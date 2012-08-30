@@ -435,14 +435,14 @@
             $user  = User::getById(intval($id));
             $title = Yii::t('Default', 'Email Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
-            $mailConfigurationForm = UserMailConfigurationFormAdapter::makeFormFromUserMailConfiguration($user);
+            $mailConfigurationForm = UserMailConfigurationFormAdapter::makeFormFromEmailAccount($user);
             $postVariableName   = get_class($mailConfigurationForm);
             if (isset($_POST[$postVariableName]))
             {
                 $mailConfigurationForm->setAttributes($_POST[$postVariableName]);
                 if ($mailConfigurationForm->validate())
                 {
-                    UserMailConfigurationFormAdapter::setUserMailConfigurationFromForm($mailConfigurationForm, $user);
+                    UserMailConfigurationFormAdapter::setEmailAccountFromForm($mailConfigurationForm, $user);
                     Yii::app()->user->setFlash('notification',
                         Yii::t('Default', 'User email configuration saved successfully.')
                     );

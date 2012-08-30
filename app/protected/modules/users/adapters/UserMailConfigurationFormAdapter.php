@@ -50,12 +50,13 @@
         /**
          * @return UserMailConfigurationForm
          */
-        public static function makeFormFromUserMailConfiguration(User $user)
+        public static function makeFormFromEmailAccount(User $user)
         {
             $form = new UserMailConfigurationForm($user);
+            $emailAccount = EmailAccount::getByUserAndName($user);
             foreach (static::$formFieldsToSave as $keyName)
             {
-                $form->$keyName = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'EmailMessagesModule', $keyName);
+                $form->$keyName = $emailAccount->$keyName;
                 if (!isset($form->$keyName))
                 {
                     if ($keyName == 'fromName' || $keyName == 'replyToName')
@@ -72,12 +73,13 @@
         }
 
         /**
-         * Given a UserMailConfigurationForm, save the values in the user's configuration.
+         * Given a UserMailConfigurationForm, save or creates a default EmailAccount.
          * @param UserMailConfigurationForm $form
          * @param User $user
          */
-        public static function setUserMailConfigurationFromForm(UserMailConfigurationForm $form, User $user)
+        public static function setEmailAccountFromForm(UserMailConfigurationForm $form, User $user)
         {
+            $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);
             foreach (static::$formFieldsToSave as $keyName)
             {
                 if ($form->outboundType == UserMailConfigurationForm::EMAIL_OUTBOUND_CUSTOM_SETTINGS &&
@@ -85,14 +87,14 @@
                     $keyName != 'outboundUsername' || $keyName != 'outboundPassword' ||
                     $keyName != 'outboundSecurity'))
                 {
-                    ZurmoConfigurationUtil::setByUserAndModuleName($user, 'EmailMessagesModule', $keyName, $form->$keyName);
+                    $emailAccount->$keyName = $form->$keyName;
                 }
                 elseif (!($form->outboundType == UserMailConfigurationForm::EMAIL_OUTBOUND_CUSTOM_SETTINGS))
                 {
-                    ZurmoConfigurationUtil::setByUserAndModuleName($user, 'EmailMessagesModule', $keyName, $form->$keyName);
+                    $emailAccount->$keyName = $form->$keyName;
                 }
             }
-
+            $emailAccount->save();
        }
     }
 ?>
