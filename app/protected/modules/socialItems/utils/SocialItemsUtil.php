@@ -64,13 +64,12 @@
         {
             if($model->note->id > 0)
             {
-                return $model->note->description;
+                return Yii::app()->format->html($model->note->description);
             }
             else
             {
-                return $model->description;
+                return Yii::app()->format->html($model->description);
             }
-
         }
 
         private static function renderAfterDescriptionContent(SocialItem $model)
