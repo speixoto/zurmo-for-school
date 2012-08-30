@@ -303,15 +303,25 @@
                 $model = $modelClassName::getById(intval($modelId));
                 $relatedModelClassName = $model->getRelationModelClassName($relationName);
                 $relatedModel = $relatedModelClassName::getById(intval($relatedId));
-                $model->{$relationName}->add($relatedModel);
 
-                if ($model->save())
+                if ($model->getRelationType($relationName) == RedBeanModel::HAS_MANY ||
+                    $model->getRelationType($relationName) == RedBeanModel::MANY_MANY)
                 {
-                    $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null);
+                    $model->{$relationName}->add($relatedModel);
+
+                    if ($model->save())
+                    {
+                        $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null);
+                    }
+                    else
+                    {
+                        $message = Yii::t('Default', 'Could not save relation.');
+                        throw new ApiException($message);
+                    }
                 }
                 else
                 {
-                    $message = Yii::t('Default', 'Could not save relation.');
+                    $message = Yii::t('Default', 'Could not use this API call for HAS_ONE relationships.');
                     throw new ApiException($message);
                 }
             }
@@ -340,15 +350,23 @@
                 $model = $modelClassName::getById(intval($modelId));
                 $relatedModelClassName = $model->getRelationModelClassName($relationName);
                 $relatedModel = $relatedModelClassName::getById(intval($relatedId));
-                $model->{$relationName}->remove($relatedModel);
-
-                if ($model->save())
+                if ($model->getRelationType($relationName) == RedBeanModel::HAS_MANY ||
+                    $model->getRelationType($relationName) == RedBeanModel::MANY_MANY)
                 {
-                    $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null);
+                    $model->{$relationName}->remove($relatedModel);
+                    if ($model->save())
+                    {
+                        $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null);
+                    }
+                    else
+                    {
+                        $message = Yii::t('Default', 'Could not remove relation.');
+                        throw new ApiException($message);
+                    }
                 }
                 else
                 {
-                    $message = Yii::t('Default', 'Could not remove relation.');
+                    $message = Yii::t('Default', 'Could not use this API call for HAS_ONE relationships.');
                     throw new ApiException($message);
                 }
             }

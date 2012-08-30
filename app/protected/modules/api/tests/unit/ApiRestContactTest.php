@@ -716,7 +716,7 @@
         /**
         * @depends testApiServerUrl
         */
-        public function testAddRelation()
+        public function testAddManyManyRelation()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -753,9 +753,9 @@
         }
 
         /**
-        * @depends testAddRelation
+        * @depends testAddManyManyRelation
         */
-        public function testRemoveRelation()
+        public function testRemoveManyManyRelation()
         {
             RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
