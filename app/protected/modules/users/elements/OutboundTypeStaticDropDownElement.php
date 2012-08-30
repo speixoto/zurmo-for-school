@@ -29,9 +29,9 @@
         protected function getDropDownArray()
         {
             return array(
-                UserMailConfigurationForm::EMAIL_OUTBOUND_SYSTEM_SETTINGS
+                EmailAccount::OUTBOUND_SYSTEM_SETTINGS
                     => Yii::t('Default', 'System default'),
-                UserMailConfigurationForm::EMAIL_OUTBOUND_CUSTOM_SETTINGS
+                EmailAccount::OUTBOUND_CUSTOM_SETTINGS
                     => Yii::t('Default', 'Custom'),
             );
         }

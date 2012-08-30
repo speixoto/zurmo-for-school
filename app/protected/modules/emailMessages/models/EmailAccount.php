@@ -29,6 +29,9 @@
      */
     class EmailAccount extends Item
     {
+        const OUTBOUND_SYSTEM_SETTINGS = 1;
+
+        const OUTBOUND_CUSTOM_SETTINGS = 2;
 
         const DEFAULT_NAME    = 'Default';
 
@@ -78,10 +81,15 @@
             }
             catch (NotFoundException $e)
             {
-                $emailAccount = new EmailAccount();
-                $emailAccount->user = $user;
-                $emailAccount->name = $name;
-                $saved  = $emailAccount->save();
+                $emailAccount                   = new EmailAccount();
+                $emailAccount->user             = $user;
+                $emailAccount->name             = self::DEFAULT_NAME;
+                $emailAccount->fromName         = $user->getFullName();
+                $emailAccount->replyToName      = $user->getFullName();
+                $emailAccount->fromAddress      = $user->primaryEmail;
+                $emailAccount->replyToAddress   = $user->primaryEmail;
+                $emailAccount->outboundType     = self::OUTBOUND_SYSTEM_SETTINGS;
+                $saved                          = $emailAccount->save();
                 assert('$saved');
             }
             return $emailAccount;
@@ -109,11 +117,27 @@
                     'user'     => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules'     => array(
-                    array('fromName, replyToName, fromAddress, replyToAddress, outboundHost, outboundUsername' .
-                          ', outboundPassword, outboundSecurity',
-                                        'type',      'type' => 'string'),
-                    array('outboundType, outboundPort',
-                                        'type',      'type' => 'integer')
+                                  array('fromName, fromAddress, outboundType',
+                                                    'required'),
+                                  array('fromName, outboundHost, outboundUsername, outboundPassword, outboundSecurity',
+                                                    'type',      'type' => 'string'),
+                                  array('fromName',
+                                                    'length', 'min'  => 1, 'max' => 64),
+                                  array('replyToName, outboundHost, outboundUsername, outboundPassword',
+                                                    'length', 'min'  => 0, 'max' => 64),
+                                  array('outboundSecurity',
+                                                    'length', 'min'  => 0, 'max' => 3),
+                                  array('outboundType, outboundPort',
+                                                    'type',      'type' => 'integer'),
+                                  array('outboundType',
+                                                    'numerical', 'min'  => 1),
+                                  array('fromAddress, replyToAddress',
+                                                    'email'),
+                                  array('outboundType',
+                                                    'OutboundSettingsValidator', 'nonEmptyFields' => array('outboundHost',
+                                                                                                            'outboundPort',
+                                                                                                            'outboundUsername',
+                                                                                                            'outboundPassword'))
                 )
             );
             return $metadata;

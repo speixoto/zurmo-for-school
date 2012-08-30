@@ -435,14 +435,15 @@
             $user  = User::getById(intval($id));
             $title = Yii::t('Default', 'Email Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
-            $mailConfigurationForm = UserMailConfigurationFormAdapter::makeFormFromEmailAccount($user);
-            $postVariableName   = get_class($mailConfigurationForm);
+            $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);
+            $postVariableName   = get_class($emailAccount);
             if (isset($_POST[$postVariableName]))
             {
-                $mailConfigurationForm->setAttributes($_POST[$postVariableName]);
-                if ($mailConfigurationForm->validate())
+                $emailAccount->setAttributes($_POST[$postVariableName]);
+                if ($emailAccount->validate())
                 {
-                    UserMailConfigurationFormAdapter::setEmailAccountFromForm($mailConfigurationForm, $user);
+                    $emailAccount = EmailAccount::getByUserAndName($user);
+                    $emailAccount->save();
                     Yii::app()->user->setFlash('notification',
                         Yii::t('Default', 'User email configuration saved successfully.')
                     );
@@ -453,7 +454,7 @@
                                     $this->getId(),
                                     $this->getModule()->getId(),
                                     $user,
-                                    $mailConfigurationForm
+                                    $emailAccount
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
             $view = new UsersPageView(ZurmoDefaultAdminViewUtil::

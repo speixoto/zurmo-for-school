@@ -30,13 +30,13 @@
             $controllerId,
             $moduleId,
             User $user,
-            ConfigurationForm $formModel
+            EmailAccount $emailAccount
             )
         {
             parent::__construct(2, 1);
             $this->setView(new ActionBarForUserEditAndDetailsView ($controllerId, $moduleId, $user, 'UserConfigurationEditLink'), 0, 0);
             $title = strval($user) . ': ' . Yii::t('Default', 'Email Configuration');
-            $this->setView(new UserMailConfigurationEditView($controllerId, $moduleId, $formModel, $title), 1, 0);
+            $this->setView(new UserMailConfigurationEditView($controllerId, $moduleId, $emailAccount, $title), 1, 0);
         }
     }
 ?>

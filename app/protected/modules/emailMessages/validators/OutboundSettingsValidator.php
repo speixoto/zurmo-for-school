@@ -25,37 +25,32 @@
      ********************************************************************************/
 
     /**
-     * Display email message content.
+     * This validator is used to insure that if outbound custom settings is choosed then all the
+     * requires field are filled
+     * @param array $nonEmptyFields attributeNames the should not be empty when outboundType is custom
      */
-    class EmailMessageContentElement extends Element
+    class OutboundSettingsValidator extends CValidator
     {
-        protected function renderControlNonEditable()
-        {
-            assert('$this->model->{$this->attribute} instanceof EmailMessageContent');
-            $emailMessageContent = $this->model->{$this->attribute};
-            if ($emailMessageContent->htmlContent != null)
-            {
-                return Yii::app()->format->html($emailMessageContent->htmlContent);
-            }
-            elseif ($emailMessageContent->textContent != null)
-            {
-                return Yii::app()->format->text($emailMessageContent->textContent);
-            }
-        }
+        public $nonEmptyFields;
 
-        protected function renderControlEditable()
+        protected function validateAttribute($model, $attributeName)
         {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['rows']     = 20;
-            $htmlOptions['cols']     = 50;
-            return $this->form->textArea($this->model, $this->attribute, $htmlOptions);
-        }
-
-        protected function renderLabel()
-        {
-            return Yii::t('Default', 'Body');
+            if ($model->outboundType == EmailAccount::OUTBOUND_CUSTOM_SETTINGS)
+            {
+                $haveError = false;
+                foreach ($this->nonEmptyFields as $field)
+                {
+                    if ($model->$field == null)
+                    {
+                        $this->addError($model, $field, Yii::t('Default', 'This field is required'));
+                        $haveError = true;
+                    }
+                }
+                if ($haveError)
+                {
+                    $this->addError($model, $attributeName, Yii::t('Default', 'You need to change to system default or fill your custom settings.'));
+                }
+            }
         }
     }
 ?>

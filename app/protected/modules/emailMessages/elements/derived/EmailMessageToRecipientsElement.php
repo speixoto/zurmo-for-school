@@ -38,12 +38,24 @@
 
         protected function renderControlEditable()
         {
-            throw new NotImplementedException();
-        }
-
-        protected function renderError()
-        {
-            throw new NotImplementedException();
+            assert('$this->model instanceof EmailMessage');
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ModelElement");
+            $cClipWidget->widget('ext.zurmoinc.framework.widgets.MultiSelectAutoComplete', array(
+                'name'        => $this->getNameForIdField(),
+                'id'          => $this->getIdForIdField(),
+                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels()),
+                'sourceUrl'   => Yii::app()->createUrl('users/default/autoCompleteForMultiSelectAutoComplete'),
+                'htmlOptions' => array(
+                    'disabled' => $this->getDisabledValue(),
+                    ),
+                'hintText' => Yii::t('Default', 'Type a User\'s name'),
+                'onAdd'    => $this->getOnAddContent(),
+                'onDelete' => $this->getOnDeleteContent(),
+            ));
+            $cClipWidget->endClip();
+            $content = $cClipWidget->getController()->clips['ModelElement'];
+            return $content;
         }
 
         protected function renderLabel()
@@ -59,6 +71,73 @@
         public static function getModelAttributeNames()
         {
             return array();
+        }
+
+        protected function getNameForIdField()
+        {
+                return 'ToRecipientsForm[itemIds]';
+        }
+
+        protected function getIdForIdField()
+        {
+            return 'ToRecipientsForm_item_ids';
+        }
+
+        protected function getOnAddContent()
+        {
+        }
+
+        protected function getOnDeleteContent()
+        {
+        }
+
+        protected function getExistingPeopleRelationsIdsAndLabels()
+        {
+            $existingPeople = array(
+                                array(  'id'       => $this->model->owner->getClassId('Item'),
+                                        'name'     => strval($this->model->owner),
+                                        'readonly' => true));
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
+            /*
+            foreach ($this->model->conversationParticipants as $participant)
+            {
+                try
+                {
+                    $contact = $participant->person->castDown(array($modelDerivationPathToItem));
+                    if (get_class($contact) == 'Contact')
+                    {
+                        $existingPeople[] = array('id' => $contact->getClassId('Item'),
+                                                    'name' => strval($contact));
+                    }
+                    else
+                    {
+                        throw new NotFoundException();
+                    }
+                }
+                catch (NotFoundException $e)
+                {
+                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+                    try
+                    {
+                        $user = $participant->person->castDown(array($modelDerivationPathToItem));
+                        //Owner is always added first.
+                        if (get_class($user) == 'User' && $user->id != $this->model->owner->id)
+                        {
+                            $readOnly = false;
+                            $existingPeople[] = array('id'       => $user->getClassId('Item'),
+                                                      'name'     => strval($user),
+                                                      'readonly' => $readOnly);
+                        }
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        //This means the item is not a recognized or expected supported model.
+                        throw new NotSupportedException();
+                    }
+                }
+            }
+             */
+            return $existingPeople;
         }
     }
 ?>

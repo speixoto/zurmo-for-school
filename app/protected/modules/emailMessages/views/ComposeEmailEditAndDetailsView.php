@@ -24,22 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Edit and details view for a user's email configuration view.
-     */
-    class UserMailConfigurationEditView extends EditView
+    class ComposeEmailEditAndDetailsView extends EditAndDetailsView
     {
+        protected function renderTitleContent()
+        {
+            return '<h1>' . Yii::t('Default', 'Compose email') . '</h1>';
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelLink'),
-                            array('type' => 'SaveButton'),
+                            array('type'  => 'CancelLink'),
+                            array('type'  => 'SaveButton', 'label' => Yii::t('Default', 'Send')),
                         ),
                     ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
+                    'derivedAttributeTypes' => array(
+                        'EmailMessageToRecipients',
+                        'EmailMessageCcRecipients',
+                        'EmailMessageContent'
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -47,7 +56,47 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'fromName', 'type' => 'Text'),
+                                                array('attributeName' => 'sentDateTime', 'type' => 'DateTime'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                /*
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'sender', 'type' => 'EmailMessageSender'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                */
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'EmailMessageToRecipients'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                /*
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'EmailMessageCcRecipients'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                 */
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'subject', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -56,83 +105,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'fromAddress', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'replyToName', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'replyToAddress', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundType', 'type' => 'OutboundTypeStaticDropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundHost', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundPort', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundUsername', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundPassword', 'type' => 'Password'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundSecurity', 'type' => 'Text'),
+                                                array('attributeName' => 'content', 'type' => 'EmailMessageContent'),
                                             ),
                                         ),
                                     )
@@ -143,34 +116,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        protected function renderAfterFormLayout($form)
-        {
-            parent::renderAfterFormLayout($form);
-            $dropDownId = $this->modelClassName . '_outboundType_value';
-            Yii::app()->clientScript->registerScript('userMailConfigurationOutbound', "
-                    $('#{$dropDownId}').change(function(){
-                        if ($(this).val() == " . EmailAccount::OUTBOUND_SYSTEM_SETTINGS . ")
-                        {
-                            $(this).closest('.panel').next('.panel').hide();
-                        }
-                        else
-                        {
-                            $(this).closest('.panel').next('.panel').show();
-                        }
-                    });
-                ");
-        }
-
-        protected function getMorePanelsLinkLabel()
-        {
-            return null;
-        }
-
-        protected function getLessPanelsLinkLabel()
-        {
-            return null;
         }
     }
 ?>

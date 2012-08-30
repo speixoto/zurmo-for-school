@@ -338,6 +338,20 @@
             }
         }
 
+        public function actionComposeEmail()
+        {
+            $emailMessage = new EmailMessage();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
+                'Edit',
+                $this->getId(),
+                $this->getModule()->getId(),
+                $emailMessage
+            );
+            $view = new ModalView($this, $composeEmailEditAndDetailsView);
+            echo $composeEmailEditAndDetailsView->render();
+        }
+
         protected static function makeSelectForm($userCanAccessLeads, $userCanAccessContacts)
         {
             if ($userCanAccessLeads && $userCanAccessContacts)
