@@ -30,7 +30,10 @@
 
         public function getDependencies()
         {
-            return array();
+            return array(
+                'configuration',
+                'zurmo',
+            );
         }
 
         public function getRootModelNames()
