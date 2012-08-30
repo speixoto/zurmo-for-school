@@ -122,5 +122,27 @@
             $comments = Comment::getAll();
             $this->assertEquals(0, count($comments));
         }
+
+        public function testAddingNoteAndDeletingNoteAndThenTheSocialItemsAreRemoved()
+        {
+            $super                     = User::getByUsername('super');
+            $this->assertEquals(0, count(SocialItem::getAll()));
+            $accounts                  = Account::getByName('anAccount');
+            $note                      = NoteTestHelper::createNoteWithOwnerAndRelatedAccount('aNote', $super, $accounts[0]);
+
+            $socialItem              = new SocialItem();
+            $socialItem->description = 'My test description';
+            $socialItem->note        = $note;
+            $saved                   = $socialItem->save();
+            $this->assertTrue($saved);
+            $socialItemId            = $socialItem->id;
+            $noteId                  = $note->id;
+            $note->forget();
+            $this->assertEquals(1, count(SocialItem::getAll()));
+            $note                    = Note::getById($noteId);
+            $deleted = $note->delete();
+            $this->assertTrue($deleted);
+            $this->assertEquals(0, count(SocialItem::getAll()));
+        }
     }
 ?>
