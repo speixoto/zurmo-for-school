@@ -106,7 +106,14 @@
                 ),
                 'relations' => array(
                     'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage'),
-                    'user'     => array(RedBeanModel::HAS_ONE, 'User'),
+                    'user'     => array(RedBeanModel::HAS_ONE,  'User'),
+                ),
+                'rules'     => array(
+                    array('fromName, replyToName, fromAddress, replyToAddress, outboundHost, outboundUsername' .
+                          ', outboundPassword, outboundSecurity',
+                                        'type',      'type' => 'string'),
+                    array('outboundType, outboundPort',
+                                        'type',      'type' => 'integer')
                 )
             );
             return $metadata;
