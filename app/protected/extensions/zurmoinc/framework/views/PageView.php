@@ -74,7 +74,7 @@
             }
             if (YII_DEBUG)
             {
-                if (XHTML_VALIDATION)
+                if (defined('XHTML_VALIDATION') && XHTML_VALIDATION)
                 {
                     $this->validate($content);
                     if (!empty(self::$xhtmlValidationErrors))
@@ -89,7 +89,7 @@
                 {
                     $endTime      = microtime(true);
                     $endTotalTime = Yii::app()->performance->endClockAndGet();
-                    if (XHTML_VALIDATION)
+                    if (defined('XHTML_VALIDATION') && XHTML_VALIDATION)
                     {
                         $performanceMessage .= '<span>Total page view time including validation: ' . number_format(($endTime - $startTime), 3) . ' seconds.</span><br />';
                     }
