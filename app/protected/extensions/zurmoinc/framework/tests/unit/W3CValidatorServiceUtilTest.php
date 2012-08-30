@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class PageViewTest extends BaseTest
+    class W3CValidatorServiceUtilTest extends BaseTest
     {
         public function testValidate()
         {
@@ -41,7 +41,7 @@
 </body>
 </html>
 END;
-            $this->assertTrue(PageView::validate($xHtml));
+            $this->assertEmpty(W3CValidatorServiceUtil::validate($xHtml));
 
             $xHtml = <<<END
 <?xml version="1.0" encoding="utf-8"?>
@@ -54,7 +54,7 @@ END;
 </body>
 </html>
 END;
-            $this->assertFalse(PageView::validate($xHtml));
+            $this->assertTrue(count(W3CValidatorServiceUtil::validate($xHtml)) >= 1);
 
             chdir($original_directory);
         }
