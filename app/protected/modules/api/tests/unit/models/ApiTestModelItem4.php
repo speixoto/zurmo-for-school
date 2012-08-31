@@ -39,6 +39,9 @@
                 'relations' => array(
                     'modelItem'          => array(RedBeanModel::HAS_ONE,   'ApiTestModelItem'),
                 ),
+                'elements' => array(
+                    'modelItem' => 'ApiModelTestItem',
+                ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),
                     array('name',  'length', 'max' => 32),

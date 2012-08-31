@@ -43,14 +43,14 @@
                     'name',
                 ),
                 'relations' => array(
-                    'apiTestModelItem'        => array(RedBeanModel::HAS_ONE,   'ApiTestModelItem'),
+                    'modelItem'        => array(RedBeanModel::HAS_ONE,   'ApiTestModelItem'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),
                     array('name',  'length', 'max' => 32),
                 ),
                 'elements' => array(
-                    'apiTestModelItem' => 'ApiModelTestItem',
+                    'modelItem' => 'ApiModelTestItem',
                 )
             );
             return $metadata;
