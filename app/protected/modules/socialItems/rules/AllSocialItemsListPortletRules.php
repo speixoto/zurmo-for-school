@@ -24,17 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SocialItemAndCommentsListViewColumnAdapter extends ListViewColumnAdapter
+    /**
+     * Class defines rules for the social items portlet
+     */
+    class AllSocialItemsListPortletRules extends MyListPortletRules
     {
-        public function renderGridViewData()
+        /**
+         * (non-PHPdoc)
+         * @see PortletRules::allowMultiplePlacementOnDashboard()
+         */
+        public function allowMultiplePlacementOnDashboard()
         {
-            return array(
-                    'name' => 'summary',
-                    'header' => Yii::t('Default', 'Summary'),
-                    'type'  => 'raw',
-                    'value'  => 'SocialItemsUtil::renderItemAndCommentsContent($data, "' .
-                                $this->view->redirectUrl . '")',
-            );
+            return false;
         }
     }
 ?>

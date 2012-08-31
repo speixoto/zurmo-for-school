@@ -40,7 +40,7 @@
         }
 
         /**
-         * Render the activity as a non-editable display
+         * Render the social item as a non-editable display
          * @return The element's content.
          */
         protected function renderControlNonEditable()

@@ -97,7 +97,7 @@
         }
 
         /**
-         * update latestDateTime based on new related comments
+         * Update latestDateTime based on new related comments
          * (non-PHPdoc)
          * @see Item::beforeSave()
          */

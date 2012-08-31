@@ -55,7 +55,7 @@
         }
 
         /**
-         * Override to process the note as a social item.
+         * Override to process the note as a social item when needed.
          * (non-PHPdoc)
          * @see ZurmoBaseController::actionAfterSuccessfulModelSave()
          */

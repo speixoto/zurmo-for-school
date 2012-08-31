@@ -37,6 +37,11 @@
             $this->relatedUser = $relatedUser;
         }
 
+        /**
+         * Handles when a user posts to another user's profile social feed.  Sets the toUser in that case.
+         * (non-PHPdoc)
+         * @see ZurmoControllerUtil::saveModelFromPost()
+         */
         public function saveModelFromPost($postData, $model, & $savedSucessfully, & $modelToStringValue)
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(

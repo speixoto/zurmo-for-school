@@ -66,7 +66,7 @@
         {
             $metadata = array(
                 'perUser' => array(
-                    'title' => "eval:Yii::t('Default', 'What is going on?')",
+                    'title' => "eval:Yii::t('Default', 'Social Feed')",
                 ),
             );
             return $metadata;
@@ -169,7 +169,7 @@
          */
         public static function getModuleClassName()
         {
-            return 'ActivitiesModule';
+            return 'SocialItemsModule';
         }
 
         protected function renderActionContent()
@@ -183,30 +183,6 @@
                 $content .= '</div></div>';
             }
             return $content;
-        }
-
-        /**
-         * Expects there to be a modelClassName parameter passed through the elementInformation that can be used
-         * to compare the Rights security on based on the actionType of the element.
-         * (non-PHPdoc)
-         * @see MetadataView::shouldRenderToolBarElement()
-         */
-        protected function shouldRenderToolBarElement($element, $elementInformation)
-        {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
-            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
-            {
-                return false;
-            }
-            if (isset($elementInformation['modelClassName']))
-            {
-                $modelClassName = $elementInformation['modelClassName'];
-                //Todo: figure out how to not need to new up a new model.
-                return ActionSecurityUtil::canCurrentUserPerformAction( $element->getActionType(),
-                                                                        new $modelClassName(false));
-            }
-            return true;
         }
     }
 ?>
