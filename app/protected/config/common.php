@@ -314,7 +314,7 @@
 
         'params' => array(
             'redBeanVersion'    => '1.3',
-            'yiiVersion'        => '1.1.10',
+            'yiiVersion'        => '1.1.12',
             'memcacheServers'   => $memcacheServers,
             'supportedLanguages' => array(
                 'en' => 'English',
