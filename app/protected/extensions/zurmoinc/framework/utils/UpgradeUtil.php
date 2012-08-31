@@ -66,7 +66,7 @@
 
                 $configuration = self::checkManifestIfVersionIsOk($upgradeExtractPath);
                 $messageStreamer->add(Yii::t('Default', 'Checking completed.'));
-                $messageStreamer->add(Yii::t('Default', 'Load UpgraderComponent.'));
+                $messageStreamer->add(Yii::t('Default', 'Loading UpgraderComponent.'));
                 self::loadUpgraderComponent($upgradeExtractPath, $messageLogger);
                 $messageStreamer->add(Yii::t('Default', 'UpgraderComponent loaded.'));
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
@@ -81,12 +81,12 @@
                 self::processConfigFiles($pathToConfigurationFolder);
                 self::processAfterConfigFiles();
 
-                $messageStreamer->add(Yii::t('Default', 'Coping files.'));
+                $messageStreamer->add(Yii::t('Default', 'Copying files.'));
                 self::processBeforeFiles();
                 self::processFiles($source, $destination, $configuration);
                 self::processAfterFiles();
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Clearng cache.'));
+                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 $messageStreamer->add(Yii::t('Default', 'Part 1 complete.'));
             }
             catch (CException $e)
@@ -139,7 +139,7 @@
                 self::clearAssetsAndRunTimeItems();
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Process final touches.'));
+                $messageStreamer->add(Yii::t('Default', 'Processing final touches.'));
                 self::processFinalTouches();
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
@@ -183,7 +183,7 @@
             $nonWriteableFilesOrFolders = FileUtil::getNonWriteableFilesOrFolders(COMMON_ROOT);
             if (!empty($nonWriteableFilesOrFolders))
             {
-                $message = Yii::t('Default', 'Not all files and folders are writeable by upgrade user. Please make next files or folders writeable:');
+                $message = Yii::t('Default', 'Not all files and folders are writeable by upgrade user. Please make these files or folders writeable:');
                 foreach ($nonWriteableFilesOrFolders as $nonWriteableFileOrFolder)
                 {
                     $message .= $nonWriteableFileOrFolder . "\n";
@@ -248,7 +248,8 @@
             if ($numberOfZipFiles != 1)
             {
                 closedir($handle);
-                $message = Yii::t('Default', 'More then one zip files exist in runtime/upgrade folder. Please delete them all except one that you want to use for upgrade.');
+                $message = Yii::t('Default', 'More then one zip file exists in runtime/upgrade folder. ' .
+                                             'Please delete them all except the one that you want to use for the upgrade.');
                 throw new NotSupportedException($message);
             }
             closedir($handle);
@@ -278,8 +279,8 @@
             }
             if (!$isExtracted)
             {
-                $message  = Yii::t('Default', 'There was error during extraction process of {zipFilePath}', array('{zipFilePath}' => $upgradeZipFilePath));
-                $message .= Yii::t('Default', 'Please check if the file is valid zip archive.');
+                $message  = Yii::t('Default', 'There was an error during the extraction process of {zipFilePath}', array('{zipFilePath}' => $upgradeZipFilePath));
+                $message .= Yii::t('Default', 'Please check if the file is a valid zip archive.');
                 throw new NotSupportedException($message);
             }
             return $upgradeExtractPath . DIRECTORY_SEPARATOR . $fileInfo['filename'];
@@ -315,13 +316,13 @@
                 }
                 else
                 {
-                    $message = Yii::t('Default', 'Could not extract upgrade to version from manifest file.');
+                    $message = Yii::t('Default', 'Could not extract upgrade "to version" from the manifest file.');
                     throw new NotSupportedException($message);
                 }
             }
             else
             {
-                $message = Yii::t('Default', 'Could not extract upgrade from version from manifest file.');
+                $message = Yii::t('Default', 'Could not extract upgrade "from version" from the manifest file.');
                 throw new NotSupportedException($message);
             }
         }

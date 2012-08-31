@@ -72,7 +72,7 @@ EOD;
 
             if (!isset($args[1]))
             {
-                $this->usageError('You must specify action.');
+                $this->usageError('You must specify an action.');
             }
             else
             {
@@ -92,7 +92,7 @@ EOD;
 
                 if ($upgradeStep == 'runPart1')
                 {
-                    $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process.'));
+                    $messageStreamer->add(Yii::t('Default', 'Starting Zurmo upgrade process.'));
                     $this->runPart1($messageStreamer);
                     $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade phase 1 completed.'));
                     $messageStreamer->add(Yii::t('Default', 'Please execute next command: "{command}" to complete upgrade process.',
@@ -102,13 +102,13 @@ EOD;
                 {
                     if (UpgradeUtil::isUpgradeStateValid())
                     {
-                        $messageStreamer->add(Yii::t('Default', 'Starting zurmo upgrade process - phase 2.'));
+                        $messageStreamer->add(Yii::t('Default', 'Starting Zurmo upgrade process - phase 2.'));
                         $this->runPart2($messageStreamer);
                         $messageStreamer->add(Yii::t('Default', 'Zurmo upgrade completed.'));
                     }
                     else
                     {
-                        $message = 'Upgrade state is older then one day, so please run phase one of upgrade first.';
+                        $message = 'Upgrade state is older then one day, please run phase one of the upgrade process again.';
                         throw new NotSupportedException($message);
                     }
                 }
@@ -122,7 +122,7 @@ EOD;
 
         protected function runPart1($messageStreamer)
         {
-            $messageStreamer->add(Yii::t('Default', 'This is Zurmo upgrade process. Please backup files/database before you continue.'));
+            $messageStreamer->add(Yii::t('Default', 'This is the Zurmo upgrade process. Please backup files/database before you continue.'));
 
             $message = Yii::t('Default', 'Are you sure you want to upgrade Zurmo? [yes|no]');
             $confirm = $this->confirm($messageStreamer, $message);
