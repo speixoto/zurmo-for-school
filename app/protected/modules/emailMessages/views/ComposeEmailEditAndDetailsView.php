@@ -28,7 +28,7 @@
     {
         protected function renderTitleContent()
         {
-            return '<h1>' . Yii::t('Default', 'Compose email') . '</h1>';
+            return null;
         }
 
         public static function getDefaultMetadata()
@@ -47,6 +47,8 @@
                         'EmailMessageContent'
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'sentDateTime',
+                        'sender'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -56,27 +58,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'sentDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                /*
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'sender', 'type' => 'EmailMessageSender'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                */
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'EmailMessageToRecipients'),
+                                                array('attributeName' => 'recipients', 'type' => 'EmailMessageToRecipients'),
                                             ),
                                         ),
                                     )

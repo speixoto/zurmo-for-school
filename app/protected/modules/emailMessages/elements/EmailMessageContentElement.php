@@ -45,17 +45,34 @@
 
         protected function renderControlEditable()
         {
+            $emailMessageContent     = $this->model->{$this->attribute};
+            $inputNameIdPrefix       = $this->attribute;
+            $attribute               = 'htmlContent';
+            $id                      = $this->getEditableInputId  ($inputNameIdPrefix, $attribute);
             $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['rows']     = 20;
+            $htmlOptions['id']       = $id;
+            $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
+            $htmlOptions['rows']     = 10;
             $htmlOptions['cols']     = 50;
-            return $this->form->textArea($this->model, $this->attribute, $htmlOptions);
+            $content = $this->form->textArea($emailMessageContent, $attribute, $htmlOptions);
+            //$content .= $form->error($emailMessageContent, $attribute);
+            return $content;
         }
 
         protected function renderLabel()
         {
-            return Yii::t('Default', 'Body');
+            $label = Yii::t('Default', 'Body');
+            if ($this->form === null)
+            {
+                return $label;
+            }
+            else
+            {
+                return $this->form->labelEx($this->model,
+                                            $this->attribute,
+                                            array('for' => $this->getEditableInputId($this->attribute, 'htmlContent'),
+                                                  'label' => $label));
+            }
         }
     }
 ?>

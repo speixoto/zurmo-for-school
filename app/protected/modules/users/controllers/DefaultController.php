@@ -442,7 +442,6 @@
                 $emailAccount->setAttributes($_POST[$postVariableName]);
                 if ($emailAccount->validate())
                 {
-                    $emailAccount = EmailAccount::getByUserAndName($user);
                     $emailAccount->save();
                     Yii::app()->user->setFlash('notification',
                         Yii::t('Default', 'User email configuration saved successfully.')

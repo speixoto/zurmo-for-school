@@ -340,16 +340,28 @@
 
         public function actionComposeEmail()
         {
-            $emailMessage = new EmailMessage();
             Yii::app()->getClientScript()->setToAjaxMode();
-            $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
-                'Edit',
-                $this->getId(),
-                $this->getModule()->getId(),
-                $emailMessage
-            );
-            $view = new ModalView($this, $composeEmailEditAndDetailsView);
-            echo $composeEmailEditAndDetailsView->render();
+            try
+            {
+                EmailAccount::getByUserAndName(Yii::app()->user->userModel);
+                $emailMessage = new EmailMessage();
+                //TODO: Add signature to the content
+                $emailMessage->content->htmlContent = 'My singature here';
+                $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
+                    'Edit',
+                    $this->getId(),
+                    $this->getModule()->getId(),
+                    $emailMessage
+                );
+                $view = new ModalView($this, $composeEmailEditAndDetailsView);
+                echo $view->render();
+            }
+            catch (NotFoundException $e)
+            {
+                $view = new ModalView($this, new NoEmailAccountYetView());
+                echo $view->render();
+            }
+
         }
 
         protected static function makeSelectForm($userCanAccessLeads, $userCanAccessContacts)

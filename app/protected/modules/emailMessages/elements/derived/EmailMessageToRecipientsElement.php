@@ -60,7 +60,18 @@
 
         protected function renderLabel()
         {
-            return Yii::t('Default', 'To');
+            $label = Yii::t('Default', 'To');
+            if ($this->form === null)
+            {
+                return $label;
+            }
+            else
+            {
+                return $this->form->labelEx($this->model,
+                                            $this->attribute,
+                                            array('for' => $this->getEditableInputId(),
+                                                  'label' => $label));
+            }
         }
 
         public static function getDisplayName()
@@ -93,13 +104,9 @@
 
         protected function getExistingPeopleRelationsIdsAndLabels()
         {
-            $existingPeople = array(
-                                array(  'id'       => $this->model->owner->getClassId('Item'),
-                                        'name'     => strval($this->model->owner),
-                                        'readonly' => true));
+            $existingPeople = array();
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-            /*
-            foreach ($this->model->conversationParticipants as $participant)
+            foreach ($this->model->recipients as $participant)
             {
                 try
                 {
@@ -107,7 +114,7 @@
                     if (get_class($contact) == 'Contact')
                     {
                         $existingPeople[] = array('id' => $contact->getClassId('Item'),
-                                                    'name' => strval($contact));
+                                                  'name' => strval($contact));
                     }
                     else
                     {
@@ -136,7 +143,6 @@
                     }
                 }
             }
-             */
             return $existingPeople;
         }
     }

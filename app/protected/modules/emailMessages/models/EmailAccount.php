@@ -51,7 +51,6 @@
 
         public static function getByUserAndName(User $user, $name = null)
         {
-            assert('is_string($name)');
             if ($name == null)
             {
                 $name = self::DEFAULT_NAME;
@@ -60,6 +59,7 @@
             {
                 throw new NotSupportedException(Yii::t('Default', 'For now Zurmo still does not support multiple Email Accounts'));
             }
+            assert('is_string($name)');
             $bean = R::findOne(EmailAccount::getTableName('EmailAccount'), "_user_id = ? AND name = ?", array($user->id, $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
@@ -85,9 +85,7 @@
                 $emailAccount->user             = $user;
                 $emailAccount->name             = self::DEFAULT_NAME;
                 $emailAccount->fromName         = $user->getFullName();
-                $emailAccount->replyToName      = $user->getFullName();
                 $emailAccount->fromAddress      = $user->primaryEmail;
-                $emailAccount->replyToAddress   = $user->primaryEmail;
                 $emailAccount->outboundType     = self::OUTBOUND_SYSTEM_SETTINGS;
                 $saved                          = $emailAccount->save();
                 assert('$saved');
@@ -117,27 +115,30 @@
                     'user'     => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules'     => array(
-                                  array('fromName, fromAddress, outboundType',
-                                                    'required'),
-                                  array('fromName, outboundHost, outboundUsername, outboundPassword, outboundSecurity',
-                                                    'type',      'type' => 'string'),
-                                  array('fromName',
-                                                    'length', 'min'  => 1, 'max' => 64),
-                                  array('replyToName, outboundHost, outboundUsername, outboundPassword',
-                                                    'length', 'min'  => 0, 'max' => 64),
-                                  array('outboundSecurity',
-                                                    'length', 'min'  => 0, 'max' => 3),
-                                  array('outboundType, outboundPort',
-                                                    'type',      'type' => 'integer'),
-                                  array('outboundType',
-                                                    'numerical', 'min'  => 1),
-                                  array('fromAddress, replyToAddress',
-                                                    'email'),
-                                  array('outboundType',
-                                                    'OutboundSettingsValidator', 'nonEmptyFields' => array('outboundHost',
-                                                                                                            'outboundPort',
-                                                                                                            'outboundUsername',
-                                                                                                            'outboundPassword'))
+                                  array('fromName',             'required'),
+                                  array('fromAddress',          'required'),
+                                  array('outboundType',         'required'),
+                                  array('fromName',             'type',      'type' => 'string'),
+                                  array('outboundHost',         'type',      'type' => 'string'),
+                                  array('outboundUsername',     'type',      'type' => 'string'),
+                                  array('outboundPassword',     'type',      'type' => 'string'),
+                                  array('outboundSecurity',     'type',      'type' => 'string'),
+                                  array('outboundType',         'type',      'type' => 'integer'),
+                                  array('outboundPort',         'type',      'type' => 'integer'),
+                                  array('fromName',             'length', 'min'  => 1, 'max' => 64),
+                                  array('replyToName',          'length', 'min'  => 1, 'max' => 64),
+                                  array('outboundHost',         'length', 'min'  => 1, 'max' => 64),
+                                  array('outboundUsername',     'length', 'min'  => 1, 'max' => 64),
+                                  array('outboundPassword',     'length', 'min'  => 1, 'max' => 64),
+                                  array('outboundSecurity',     'length', 'min'  => 0, 'max' => 3),
+                                  array('outboundType',         'numerical', 'min'  => 1),
+                                  array('fromAddress',          'email'),
+                                  array('replyToAddress',       'email'),
+                                  array('outboundType',         'OutboundSettingsValidator',
+                                                                'nonEmptyFields' => array('outboundHost',
+                                                                                          'outboundPort',
+                                                                                          'outboundUsername',
+                                                                                          'outboundPassword'))
                 )
             );
             return $metadata;

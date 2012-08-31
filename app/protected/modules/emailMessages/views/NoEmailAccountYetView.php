@@ -25,38 +25,17 @@
      ********************************************************************************/
 
     /**
-     * Model for user's email signatures
+     * Class for when an user tries to compose an email but dont have an Email Account yeat created
      */
-    class EmailSignature extends OwnedModel
+    class NoEmailAccountYetView extends View
     {
-
-        public static function getDefaultMetadata()
+        protected function renderContent()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'textContent',
-                    'htmlContent'
-                ),
-                'relations' => array(
-                    'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage'),
-                    'user'     => array(RedBeanModel::HAS_ONE,  'User'),
-                ),
-                'rules' => array(
-                     array('htmlContent', 'type', 'type' => 'string'),
-                     array('textContent', 'type', 'type' => 'string')
-                ),
-                'elements' => array(
-                    'htmlContent'     => 'TextArea',
-                    'textContent'     => 'TextArea',
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            $url        = Yii::app()->createUrl('/users/default/mailConfiguration', array('id' => Yii::app()->user->userModel->id));
+            $link       = ZurmoHtml::link(Yii::t('Default', 'here'), $url);
+            $content    = Yii::t('Default', 'You need to create an Email Account before you can start sending emails.' .
+                                        ' Please click {link} to create one.', array('{link}' => $link));
+            return $content;
         }
     }
 ?>
