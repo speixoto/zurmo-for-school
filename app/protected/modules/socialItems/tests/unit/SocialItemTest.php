@@ -104,8 +104,10 @@
         {
             $socialItems = SocialItem::getAll();
             $this->assertEquals(1, count($socialItems));
-            $comments = Comment::getAll();
+            $comments    = Comment::getAll();
             $this->assertEquals(1, count($comments));
+            $fileModels  = FileModel::getAll();
+            $this->assertEquals(1, count($fileModels));
 
             foreach ($socialItems as $socialItem)
             {
@@ -119,8 +121,10 @@
             $socialItems = SocialItem::getAll();
             $this->assertEquals(0, count($socialItems));
             //check that all comments are removed, since they are owned.
-            $comments = Comment::getAll();
+            $comments    = Comment::getAll();
             $this->assertEquals(0, count($comments));
+            $fileModels  = FileModel::getAll();
+            $this->assertEquals(0, count($fileModels));
         }
 
         public function testAddingNoteAndDeletingNoteAndThenTheSocialItemsAreRemoved()
