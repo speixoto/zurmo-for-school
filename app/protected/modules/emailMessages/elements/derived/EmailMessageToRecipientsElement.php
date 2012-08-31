@@ -45,11 +45,11 @@
                 'name'        => $this->getNameForIdField(),
                 'id'          => $this->getIdForIdField(),
                 'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels()),
-                'sourceUrl'   => Yii::app()->createUrl('users/default/autoCompleteForMultiSelectAutoComplete'),
+                'sourceUrl'   => Yii::app()->createUrl('emailMessages/default/autoCompleteForMultiSelectAutoComplete'),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     ),
-                'hintText' => Yii::t('Default', 'Type a User\'s name'),
+                'hintText' => Yii::t('Default', 'Type name or email'),
                 'onAdd'    => $this->getOnAddContent(),
                 'onDelete' => $this->getOnDeleteContent(),
             ));
@@ -104,7 +104,9 @@
 
         protected function getExistingPeopleRelationsIdsAndLabels()
         {
+            //TODO: Implement to prepopulate with selected recipients
             $existingPeople = array();
+            /*
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
             foreach ($this->model->recipients as $participant)
             {
@@ -142,7 +144,7 @@
                         throw new NotSupportedException();
                     }
                 }
-            }
+            }*/
             return $existingPeople;
         }
     }

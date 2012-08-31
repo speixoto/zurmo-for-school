@@ -39,7 +39,6 @@
                     'htmlContent'
                 ),
                 'relations' => array(
-                    'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage'),
                     'user'     => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules' => array(

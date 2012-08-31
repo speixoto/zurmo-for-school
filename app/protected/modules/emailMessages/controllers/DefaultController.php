@@ -340,20 +340,26 @@
 
         public function actionComposeEmail()
         {
-            Yii::app()->getClientScript()->setToAjaxMode();
+            //Yii::app()->getClientScript()->setToAjaxMode();
             try
             {
                 EmailAccount::getByUserAndName(Yii::app()->user->userModel);
                 $emailMessage = new EmailMessage();
                 //TODO: Add signature to the content
-                $emailMessage->content->htmlContent = 'My singature here';
+                $emailMessage->content->htmlContent = '';
                 $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
                     'Edit',
                     $this->getId(),
                     $this->getModule()->getId(),
                     $emailMessage
                 );
-                $view = new ModalView($this, $composeEmailEditAndDetailsView);
+
+
+                $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                         makeStandardViewForCurrentUser($this, $composeEmailEditAndDetailsView));
+
+
+                //$view = new ModalView($this, $composeEmailEditAndDetailsView);
                 echo $view->render();
             }
             catch (NotFoundException $e)
@@ -362,6 +368,47 @@
                 echo $view->render();
             }
 
+        }
+
+        /**
+         * Given a partial name or e-mail address, search for all Users, Leads or Contacts
+         * JSON encode the resulting array of contacts.
+         */
+        public function actionAutoCompleteForMultiSelectAutoComplete($term)
+        {
+            $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                                'autoCompleteListPageSize', get_class($this->getModule()));
+            $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize);
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains');
+            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains');
+            $autoCompleteResults    = array();
+            foreach ($usersByEmailAddress as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => $user->getClassId('Item'),
+                    'name' => strval($user) . ' (' . $user->primaryEmail . ')',
+                );
+            }
+            foreach ($usersByFullName as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => $user->getClassId('Item'),
+                    'name' => strval($user) . ' (' . $user->primaryEmail . ')',
+                );
+            }
+            foreach ($contacts as $contact)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => $contact->getClassId('Item'),
+                    'name' => strval($contact) . ' (' . $contact->primaryEmail . ')',
+                );
+            }
+            $emailValidator = new CEmailValidator();
+            if (count($autoCompleteResults) == 0 && $emailValidator->validateValue($term))
+            {
+                $autoCompleteResults[] = array('id' => $term, 'name' => $term);
+            }
+            echo CJSON::encode($autoCompleteResults);
         }
 
         protected static function makeSelectForm($userCanAccessLeads, $userCanAccessContacts)
