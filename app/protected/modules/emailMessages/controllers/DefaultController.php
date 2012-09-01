@@ -340,13 +340,21 @@
 
         public function actionComposeEmail()
         {
-            //Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->setToAjaxMode();
             try
             {
-                //EmailAccount::getByUserAndName(Yii::app()->user->userModel);
+                EmailAccount::getByUserAndName(Yii::app()->user->userModel);
                 $emailMessage = new EmailMessage();
                 //TODO: Add signature to the content
                 $emailMessage->content->htmlContent = '';
+                if (isset($_GET['toRecipients']))
+                {
+                    $recipient                 = new EmailMessageRecipient();
+                    $recipient->toAddress      = $_GET['toRecipients']['toAddress'];
+                    $recipient->toName         = $_GET['toRecipients']['toName'];
+                    $recipient->type           = EmailMessageRecipient::TYPE_TO;
+                    $emailMessage->recipients->add($recipient);
+                }
                 $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
                     'Edit',
                     $this->getId(),

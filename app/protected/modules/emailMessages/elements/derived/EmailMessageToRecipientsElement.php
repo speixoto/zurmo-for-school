@@ -60,17 +60,16 @@
 
         protected function renderLabel()
         {
-            $label = Yii::t('Default', 'To');
             if ($this->form === null)
             {
-                return $label;
+                return $this->getDisplayName();
             }
             else
             {
                 return $this->form->labelEx($this->model,
                                             $this->attribute,
                                             array('for' => $this->getEditableInputId(),
-                                                  'label' => $label));
+                                                  'label' => $this->getDisplayName()));
             }
         }
 
@@ -106,45 +105,13 @@
         {
             //TODO: Implement to prepopulate with selected recipients
             $existingPeople = array();
-            /*
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
-            foreach ($this->model->recipients as $participant)
+            foreach ($this->model->recipients as $recipient)
             {
-                try
-                {
-                    $contact = $participant->person->castDown(array($modelDerivationPathToItem));
-                    if (get_class($contact) == 'Contact')
-                    {
-                        $existingPeople[] = array('id' => $contact->getClassId('Item'),
-                                                  'name' => strval($contact));
-                    }
-                    else
-                    {
-                        throw new NotFoundException();
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
-                    try
-                    {
-                        $user = $participant->person->castDown(array($modelDerivationPathToItem));
-                        //Owner is always added first.
-                        if (get_class($user) == 'User' && $user->id != $this->model->owner->id)
-                        {
-                            $readOnly = false;
-                            $existingPeople[] = array('id'       => $user->getClassId('Item'),
-                                                      'name'     => strval($user),
-                                                      'readonly' => $readOnly);
-                        }
-                    }
-                    catch (NotFoundException $e)
-                    {
-                        //This means the item is not a recognized or expected supported model.
-                        throw new NotSupportedException();
-                    }
-                }
-            }*/
+                $existingPeople[] = array('id'   => $recipient->toAddress,
+                                          'name' => $recipient->toName . '(' . $recipient->toAddress . ')'
+                        );
+
+            }
             return $existingPeople;
         }
     }

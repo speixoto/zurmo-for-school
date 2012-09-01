@@ -88,12 +88,13 @@
         {
             $addressModel    = $this->model->{$this->attribute};
             $emailAddress    = $addressModel->emailAddress;
-            $optOut    = $addressModel->optOut;
-            $isInvalid    = $addressModel->isInvalid;
+            $optOut          = $addressModel->optOut;
+            $isInvalid       = $addressModel->isInvalid;
             $content = null;
             if (!empty($emailAddress))
             {
-                $url         = Yii::app()->createUrl('/emailMessages/default/composeEmail');
+                $url         = Yii::app()->createUrl('/emailMessages/default/composeEmail',
+                                                     array('toRecipients' => array( 'toAddress' => $emailAddress, 'toName' => $this->model)));
                 $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Compose Email'));
                 $content    .= ZurmoHtml::ajaxLink($emailAddress, $url, $modalTitle);
                 if ($optOut || $isInvalid)
