@@ -198,6 +198,15 @@ function setupCheckboxStyling( $context ) {
        });
 }
 
+function onAjaxSubmitRelatedListAction(confirmTitle, gridId)
+{
+    if(!confirm(confirmTitle))
+    {
+        return false;
+    }
+    $('#' + gridId).addClass("loading");
+    makeSmallLoadingSpinner(gridId);
+}
 
 function makeSmallLoadingSpinner(id){
     $( '.z-spinner', '#' + id ).spin({

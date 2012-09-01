@@ -215,6 +215,22 @@
 
         public function actionDelete($id)
         {
+            echo 'test';
+            exit;
+            $contact = Contact::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($contact);
+            $contact->delete();
+            $this->redirect(array($this->getId() . '/index'));
+        }
+
+        public function actionUnlink($id)
+        {
+            echo 'test';
+            echo "<pre>";
+            print_r($_GET);
+            print_r($_POST);
+            echo "</pre>";
+            exit;
             $contact = Contact::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($contact);
             $contact->delete();

@@ -205,10 +205,14 @@
                 );
                 array_push($columns, $firstColumn);
             }
-            $lastColumn = $this->getCGridViewLastColumn();
-            if (!empty($lastColumn))
+            $menuColumn = $this->getGridViewMenuColumn();
+            if($menuColumn == null)
             {
-                array_push($columns, $lastColumn);
+                $lastColumn = $this->getCGridViewLastColumn();
+                if (!empty($lastColumn))
+                {
+                    array_push($columns, $lastColumn);
+                }
             }
             $metadata = $this->getResolvedMetadata();
             foreach ($metadata['global']['panels'] as $panel)
@@ -232,6 +236,10 @@
                 }
             }
 
+            if (!empty($menuColumn))
+            {
+                array_push($columns, $menuColumn);
+            }
             return $columns;
         }
 
@@ -334,6 +342,23 @@
             );
         }
 
+        protected function getGridViewMenuColumn()
+        {
+            $metadata = $this::getMetadata();
+            $content = null;
+            $first = true;
+            if (isset($metadata['global']['rowMenu']) && is_array($metadata['global']['rowMenu']['elements']))
+            {
+                return array(
+                    'class'           => 'RowMenuColumn',
+                    'rowMenu'		  => $metadata['global']['rowMenu'],
+                    'listView'		  => $this,
+                    'redirectUrl'	  => ArrayUtil::getArrayValue($this->params, 'redirectUrl')
+                );
+            }
+            return $content;
+        }
+
         protected function getGridViewActionRoute($action, $moduleId = null)
         {
             if ($moduleId == null)
@@ -387,6 +412,16 @@
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/ListViewUtils.js');
+        }
+
+        public function getModuleId()
+        {
+            return $this->moduleId;
+        }
+
+        public function getControllerId()
+        {
+            return $this->controllerId;
         }
     }
 ?>

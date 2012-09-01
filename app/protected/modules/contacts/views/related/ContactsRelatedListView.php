@@ -40,6 +40,15 @@
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
                         ),
                     ),
+                    'rowMenu' => array(
+                        'elements' => array(
+                            array('type' => 'EditLink'),
+                            array('type' => 'RelatedDeleteLink'),
+                            array('type'                   => 'RelatedUnlink',
+                                  'relationModelClassName' => 'eval:get_class($this->params["relationModel"])',
+                                  'relationModelId'        => 'eval:$this->params["relationModel"]->id'),
+                        ),
+                    ),
                     'derivedAttributeTypes' => array(
                         'FullName',
                     ),
