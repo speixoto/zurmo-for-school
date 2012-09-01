@@ -343,7 +343,7 @@
             //Yii::app()->getClientScript()->setToAjaxMode();
             try
             {
-                EmailAccount::getByUserAndName(Yii::app()->user->userModel);
+                //EmailAccount::getByUserAndName(Yii::app()->user->userModel);
                 $emailMessage = new EmailMessage();
                 //TODO: Add signature to the content
                 $emailMessage->content->htmlContent = '';
@@ -355,11 +355,11 @@
                 );
 
 
-                $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $composeEmailEditAndDetailsView));
+                //$view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                //                         makeStandardViewForCurrentUser($this, $composeEmailEditAndDetailsView));
 
 
-                //$view = new ModalView($this, $composeEmailEditAndDetailsView);
+                $view = new ModalView($this, $composeEmailEditAndDetailsView);
                 echo $view->render();
             }
             catch (NotFoundException $e)

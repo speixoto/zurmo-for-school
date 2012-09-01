@@ -93,7 +93,9 @@
             $content = null;
             if (!empty($emailAddress))
             {
-                $content  .= Yii::app()->format->email($emailAddress);
+                $url         = Yii::app()->createUrl('/emailMessages/default/composeEmail');
+                $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Compose Email'));
+                $content    .= ZurmoHtml::ajaxLink($emailAddress, $url, $modalTitle);
                 if ($optOut || $isInvalid)
                 {
                     $content  .= '&#160;&#40;';

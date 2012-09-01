@@ -134,11 +134,13 @@
                                   array('outboundType',         'numerical', 'min'  => 1),
                                   array('fromAddress',          'email'),
                                   array('replyToAddress',       'email'),
+                                  //TODO: See what's the problem with this validator
+                                  /*
                                   array('outboundType',         'OutboundSettingsValidator',
                                                                 'nonEmptyFields' => array('outboundHost',
                                                                                           'outboundPort',
                                                                                           'outboundUsername',
-                                                                                          'outboundPassword'))
+                                                                                          'outboundPassword'))*/
                 )
             );
             return $metadata;
