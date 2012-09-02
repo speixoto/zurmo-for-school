@@ -340,7 +340,7 @@
 
         public function actionComposeEmail()
         {
-            Yii::app()->getClientScript()->setToAjaxMode();
+            //Yii::app()->getClientScript()->setToAjaxMode();
             try
             {
                 EmailAccount::getByUserAndName(Yii::app()->user->userModel);
@@ -363,11 +363,11 @@
                 );
 
 
-                //$view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                //                         makeStandardViewForCurrentUser($this, $composeEmailEditAndDetailsView));
+                $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                         makeStandardViewForCurrentUser($this, $composeEmailEditAndDetailsView));
 
 
-                $view = new ModalView($this, $composeEmailEditAndDetailsView);
+                //$view = new ModalView($this, $composeEmailEditAndDetailsView);
                 echo $view->render();
             }
             catch (NotFoundException $e)

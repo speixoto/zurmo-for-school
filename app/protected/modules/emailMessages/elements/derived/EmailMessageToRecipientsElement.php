@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Display email message content.
+     * Display email message to recipients.
      */
     class EmailMessageToRecipientsElement extends Element implements DerivedElementInterface
     {
@@ -39,12 +39,30 @@
         protected function renderControlEditable()
         {
             assert('$this->model instanceof EmailMessage');
+            $toContent  = $this->renderTokenInput('To', true);
+            $toContent .= ZurmoHtml::link('Cc/Bcc', '#', array('onclick' => "js:$('#cc-bcc-fields').toggle();"));
+            $ccContent  = $this->renderTokenInput('Cc');
+            $bccContent = $this->renderTokenInput('Bcc');
+            return $toContent . CHtml::tag('div',
+                                           array('id' => 'cc-bcc-fields',
+                                                 'style'   => 'display: none;'
+                                               ),
+                                           $ccContent . $bccContent);
+        }
+
+        protected function renderTokenInput($prefix, $isPrePopulated = false)
+        {
+            $content = $this->form->labelEx($this->model,
+                                            $this->attribute,
+                                            array('for' => $prefix . $this->getEditableInputId(),
+                                                  'label' => $prefix));
+
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.MultiSelectAutoComplete', array(
-                'name'        => $this->getNameForIdField(),
-                'id'          => $this->getIdForIdField(),
-                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels()),
+                'name'        => $prefix . $this->getNameForIdField(),
+                'id'          => $prefix . $this->getIdForIdField(),
+                'jsonEncodedIdsAndLabels'   => $prePopulatedTokens = $isPrePopulated ? CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels()) : null,
                 'sourceUrl'   => Yii::app()->createUrl('emailMessages/default/autoCompleteForMultiSelectAutoComplete'),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
@@ -54,7 +72,7 @@
                 'onDelete' => $this->getOnDeleteContent(),
             ));
             $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ModelElement'];
+            $content  .= $cClipWidget->getController()->clips['ModelElement'];
             return $content;
         }
 
@@ -75,7 +93,7 @@
 
         public static function getDisplayName()
         {
-            return Yii::t('Default', 'To Recipients');
+            return Yii::t('Default', 'Recipients');
         }
 
         public static function getModelAttributeNames()
@@ -85,12 +103,12 @@
 
         protected function getNameForIdField()
         {
-                return 'ToRecipientsForm[itemIds]';
+                return 'RecipientsForm[itemIds]';
         }
 
         protected function getIdForIdField()
         {
-            return 'ToRecipientsForm_item_ids';
+            return 'RecipientsForm_item_ids';
         }
 
         protected function getOnAddContent()
