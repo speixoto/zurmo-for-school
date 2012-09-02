@@ -2167,15 +2167,20 @@ div.wide.form{
         float:left;
     }
     .search-view-1{
-        margin-top:15px;
+        //margin-top:15px;
         z-index:100;
         min-width:400px;
+        max-width:75%;
         height:auto;
         position:absolute;
         left:250px;
         top:35px;
         padding:20px 20px 20px 20px;
         .flyout();
+        input, select{
+            position: relative;
+            z-index: 5000;
+        }
     }
     #clear-search-linkmodal{
         margin-left:10px;
