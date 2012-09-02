@@ -327,5 +327,32 @@
                 echo $cClipWidget->getController()->clips['StickyList'];
             }
         }
+
+        public function actionUnlink($id)
+        {
+            $relationModelClassName    = ArrayUtil::getArrayValue(GetUtil::getData(), 'relationModelClassName');
+            $relationModelId           = ArrayUtil::getArrayValue(GetUtil::getData(), 'relationModelId');
+            $relationModelRelationName = ArrayUtil::getArrayValue(GetUtil::getData(), 'relationModelRelationName');
+            if($relationModelClassName == null || $relationModelId == null || $relationModelRelationName == null)
+            {
+                throw new NotSupportedException();
+            }
+            $relationModel  = $relationModelClassName::GetById(intval($relationModelId));
+            if($relationModel->getRelationType($relationModelRelationName) != RedBeanModel::HAS_MANY &&
+                       $relationModel->getRelationType($relationModelRelationName) != RedBeanModel::MANY_MANY)
+            {
+                throw new NotSupportedException();
+            }
+            $modelClassName = $relationModel->getRelationModelClassName($relationModelRelationName);
+            $model          = $modelClassName::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($relationModel);
+            $relationModel->$relationModelRelationName->remove($model);
+            $saved          = $relationModel->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+        }
     }
 ?>

@@ -24,46 +24,47 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class RelatedDeleteLinkActionElement extends ListRowActionElement
+    /**
+     * Base class to use for actions that appear in a menu for either list or related list rows.
+     */
+    abstract class ListRowActionElement extends ActionElement
     {
-        public function getActionType()
+        public function render()
         {
-            return 'Delete';
+            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
         }
 
-        protected function getDefaultLabel()
+        protected function getAjaxLinkOptions()
         {
-            return Yii::t('Default', 'Delete');
+            return array('success'    => "js:function(){\$('#" . $this->getLinkId() . "').closest('.items').parent()
+                                                        .find('.pager').find('.first').find('a').click();}");
         }
 
-        protected function getHtmlOptions()
+        public function renderMenuItem()
         {
-            $confirmTitle           = Yii::t('Default', 'Are you sure you want to remove this {modelLabel}?',
-                                                        array('{modelLabel}' => $this->getModelSingularLabel()));
-            $confirmTitle           = Yii::app()->format->text($confirmTitle);
-            $htmlOptions            = parent::getHtmlOptions();
-            $htmlOptions['id']      = $this->getLinkId();
-            $htmlOptions['onclick'] = 'if(!onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
-            return $htmlOptions;
+            return array('label'           => $this->getLabel(),
+                         'url'             => $this->getDefaultRoute(),
+                         'linkOptions'     => $this->getHtmlOptions(),
+                         'ajaxLinkOptions' => $this->getAjaxLinkOptions()
+            );
         }
 
-        protected function getDefaultRoute()
+        protected function getGridId()
         {
-            $params = array('id' => $this->modelId);
-            if (Yii::app()->request->getParam('redirectUrl') != null)
+            if(!isset($this->params['gridId']))
             {
-                $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
+                throw new NotSupportedException();
             }
-            elseif ($this->getRedirectUrl() != null)
-            {
-                $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
-            }
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/delete/', $params);
+            return $this->params['gridId'];
         }
 
-        protected function getLinkId()
+        protected function getModelSingularLabel()
         {
-            return $this->getGridId(). '-delete-' . $this->modelId;
+            $modelClassName = $this->params['modelClassName'];
+            return $modelClassName::getModelLabelByTypeAndLanguage('SingularLowerCase');
         }
     }
 ?>

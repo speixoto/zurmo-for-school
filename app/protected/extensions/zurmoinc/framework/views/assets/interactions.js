@@ -206,6 +206,7 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId)
     }
     $('#' + gridId).addClass("loading");
     makeSmallLoadingSpinner(gridId);
+    return true;
 }
 
 function makeSmallLoadingSpinner(id){

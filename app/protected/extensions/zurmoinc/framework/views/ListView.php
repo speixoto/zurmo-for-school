@@ -346,14 +346,14 @@
         {
             $metadata = $this::getMetadata();
             $content = null;
-            $first = true;
             if (isset($metadata['global']['rowMenu']) && is_array($metadata['global']['rowMenu']['elements']))
             {
                 return array(
                     'class'           => 'RowMenuColumn',
                     'rowMenu'		  => $metadata['global']['rowMenu'],
                     'listView'		  => $this,
-                    'redirectUrl'	  => ArrayUtil::getArrayValue($this->params, 'redirectUrl')
+                    'redirectUrl'	  => ArrayUtil::getArrayValue($this->params, 'redirectUrl'),
+                    'modelClassName'  => $this->modelClassName
                 );
             }
             return $content;

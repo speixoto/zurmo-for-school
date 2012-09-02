@@ -48,9 +48,16 @@
 
         public $redirectUrl;
 
+        /**
+         *Utilized to distinguish what model the view is building a list for
+         * @var string
+         */
+        public $modelClassName;
+
         public function init()
         {
             assert('$this->listView instanceof ListView');
+            assert('is_string($modelClassName) && $modelClassName != null');
         }
 
         /**
@@ -66,19 +73,23 @@
             {
                 foreach ($this->rowMenu['elements'] as $elementInformation)
                 {
+
                     $elementclassname = $elementInformation['type'] . 'ActionElement';
                     $params = array_slice($elementInformation, 1);
                     if(!isset($params['redirectUrl']))
                     {
                         $params['redirectUrl'] = $this->redirectUrl;
                     }
+                    $params['modelClassName'] = $this->modelClassName;
                     $params['gridId'] = $this->grid->getId();
                     array_walk($params, array($this->listView, 'resolveEvaluateSubString'));
                     $element  = new $elementclassname($this->listView->getControllerId(),
                                                       $this->listView->getModuleId(),
                                                       $data->id, $params);
 
-                    if (!ActionSecurityUtil::canCurrentUserPerformAction( $element->getActionType(), $data))
+                    if (!ActionSecurityUtil::canCurrentUserPerformAction( $element->getActionType(), $data) ||
+                        (isset($params['userHasRelatedModelAccess']) &&
+                        $params['userHasRelatedModelAccess'] == false))
                     {
                         continue;
                     }

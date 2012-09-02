@@ -24,7 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class RelatedUnlinkActionElement extends ActionElement
+    /**
+     * Unlink or disconnect a model from a related model.
+     */
+    class RelatedUnlinkActionElement extends ListRowActionElement
     {
         public function getActionType()
         {
@@ -36,39 +39,15 @@
             return Yii::t('Default', 'Unlink');
         }
 
-        //todo: move to a method abstracted ListRowActionElement
-        public function render()
-        {
-            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
-                $this->getAjaxLinkOptions(),
-                $this->getHtmlOptions()
-            );
-        }
-
-        //todo: move to a method abstracted ListRowActionElement
-        protected function getAjaxLinkOptions()
-        {
-            return array('success'    => "js:function(){\$('#" . $this->getLinkId() . "').closest('.items').parent()
-                                                        .find('.pager').find('.first').find('a').click();}");
-        }
-
-        //todo: move to a method abstracted ListRowActionElement
-       public function renderMenuItem()
-        {
-            return array('label'           => $this->getLabel(),
-                         'url'             => $this->getDefaultRoute(),
-                         'linkOptions'     => $this->getHtmlOptions(),
-                         'ajaxLinkOptions' => $this->getAjaxLinkOptions()
-            );
-        }
-
         protected function getHtmlOptions()
         {
-            $confirmTitle           = Yii::t('Default', 'Are you sure you want to unlink this XXXX?');
+
+            $confirmTitle           = Yii::t('Default', 'Are you sure you want to unlink this {modelLabel}?',
+                                                        array('{modelLabel}' => $this->getModelSingularLabel()));
             $confirmTitle           = Yii::app()->format->text($confirmTitle);
             $htmlOptions            = parent::getHtmlOptions();
             $htmlOptions['id']      = $this->getLinkId();
-            $htmlOptions['onclick'] = 'onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '");';
+            $htmlOptions['onclick'] = 'if(!onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
             return $htmlOptions;
         }
 
@@ -76,8 +55,9 @@
         {
             assert('is_string($this->params["relationModelClassName"]) && is_string($this->params["relationModelId"])');
             $params = array('id' => $this->modelId);
-            $params['relattionModelClassName'] = $this->params['relationModelClassName'];
-            $params['relationModelId']         = $this->params['relationModelId'];
+            $params['relationModelClassName']    = $this->params['relationModelClassName'];
+            $params['relationModelId']           = $this->params['relationModelId'];
+            $params['relationModelRelationName'] = $this->params['relationModelRelationName'];
             if (Yii::app()->request->getParam('redirectUrl') != null)
             {
                 $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
@@ -89,20 +69,9 @@
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/unlink/', $params);
         }
 
-        //todo: move to a method abstracted ListRowActionElement
         protected function getLinkId()
         {
-            return $this->getGridId(). '-link-' . $this->modelId;
-        }
-
-        //todo: move to a method abstracted ListRowActionElement
-        protected function getGridId()
-        {
-            if(!isset($this->params['gridId']))
-            {
-                throw new NotSupportedException();
-            }
-            return $this->params['gridId'];
+            return $this->getGridId(). '-unlink-' . $this->modelId;
         }
     }
 ?>
