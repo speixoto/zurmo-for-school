@@ -54,14 +54,14 @@
                 $messageStreamer->add(Yii::t('Default', 'Checking permissions, files, upgrade version....'));
                 $messageLogger = new MessageLogger($messageStreamer);
 
-                UpgradeUtil::setUpgradeState('zurmoUpgradeTimestamp', time());
+                self::setUpgradeState('zurmoUpgradeTimestamp', time());
                 self::isApplicationInUpgradeMode();
                 self::checkPermissions();
                 self::checkIfZipExtensionIsLoaded();
                 self::setCurrentZurmoVersion();
                 $upgradeZipFile = self::checkForUpgradeZip();
                 $upgradeExtractPath = self::unzipUpgradeZip($upgradeZipFile);
-                UpgradeUtil::setUpgradeState('zurmoUpgradeFolderPath', $upgradeExtractPath);
+                self::setUpgradeState('zurmoUpgradeFolderPath', $upgradeExtractPath);
 
                 $configuration = self::checkManifestIfVersionIsOk($upgradeExtractPath);
                 $messageStreamer->add(Yii::t('Default', 'Checking completed.'));
@@ -170,7 +170,7 @@
          * @throws FileNotWriteableException
          * @return boolean
          */
-        public static function checkPermissions()
+        protected static function checkPermissions()
         {
             // All files/folders must be writeable by user that runs upgrade process.
             $nonWriteableFilesOrFolders = FileUtil::getNonWriteableFilesOrFolders(COMMON_ROOT);
@@ -191,7 +191,7 @@
          * @throws NotSupportedException
          * @return boolean
          */
-        public static function checkIfZipExtensionIsLoaded()
+        protected static function checkIfZipExtensionIsLoaded()
         {
             $isZipExtensionInstalled =  InstallUtil::checkZip();
             if (!$isZipExtensionInstalled)
@@ -205,7 +205,7 @@
         /**
          * Set current Zurmo version
          */
-        public static function setCurrentZurmoVersion()
+        protected static function setCurrentZurmoVersion()
         {
             $currentZurmoVersion = join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION));
             self::setUpgradeState('zurmoVersionBeforeUpgrade', $currentZurmoVersion);
@@ -217,7 +217,7 @@
          * @throws NotSupportedException
          * @return string $upgradeZipFile - path to zip file
          */
-        public static function checkForUpgradeZip()
+        protected static function checkForUpgradeZip()
         {
             $numberOfZipFiles = 0;
             $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
@@ -255,7 +255,7 @@
          * @throws NotSupportedException
          * @return string - path to unzipped files
          */
-        public static function unzipUpgradeZip($upgradeZipFilePath)
+        protected static function unzipUpgradeZip($upgradeZipFilePath)
         {
             // Remove extracted files, if they already exists.
             $fileInfo = pathinfo($upgradeZipFilePath);
@@ -285,7 +285,7 @@
          * @throws NotSupportedException
          * @return array
          */
-        public static function checkManifestIfVersionIsOk($upgradeExtractPath)
+        protected static function checkManifestIfVersionIsOk($upgradeExtractPath)
         {
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'manifest.php');
             if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $upgradeFromVersionMatches) !== false)
@@ -324,7 +324,7 @@
          * Load upgrader component  as yii component from upgrade files.
          * @param string $upgradeExtractPath
          */
-        public static function loadUpgraderComponent($upgradeExtractPath, MessageLogger $messageLogger)
+        protected static function loadUpgraderComponent($upgradeExtractPath, MessageLogger $messageLogger)
         {
             if (file_exists($upgradeExtractPath . DIRECTORY_SEPARATOR . 'UpgraderComponent.php'))
             {
@@ -345,7 +345,7 @@
         /**
          * Clear cache
          */
-        public static function clearCache()
+        protected static function clearCache()
         {
             ForgetAllCacheUtil::forgetAllCaches();
         }
@@ -353,7 +353,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processBeforeConfigFiles()
+        protected static function processBeforeConfigFiles()
         {
             Yii::app()->upgrader->processBeforeConfigFiles();
         }
@@ -361,7 +361,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processConfigFiles($pathToConfigurationFolder)
+        protected static function processConfigFiles($pathToConfigurationFolder)
         {
             Yii::app()->upgrader->processConfigFiles($pathToConfigurationFolder);
         }
@@ -369,7 +369,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processAfterConfigFiles()
+        protected static function processAfterConfigFiles()
         {
             Yii::app()->upgrader->processAfterConfigFiles();
         }
@@ -377,7 +377,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processBeforeFiles()
+        protected static function processBeforeFiles()
         {
             Yii::app()->upgrader->processBeforeFiles();
         }
@@ -387,7 +387,7 @@
          * @param string $upgradeExtractPath
          * @param array $configuration
          */
-        public static function processFiles($upgradeExtractPath, $configuration)
+        protected static function processFiles($upgradeExtractPath, $configuration)
         {
             $source = $upgradeExtractPath . DIRECTORY_SEPARATOR . 'filesToUpload';
             $destination = COMMON_ROOT . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
@@ -397,7 +397,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processAfterFiles()
+        protected static function processAfterFiles()
         {
             Yii::app()->upgrader->processAfterFiles();
         }
@@ -405,7 +405,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processBeforeUpdateSchema()
+        protected static function processBeforeUpdateSchema()
         {
             Yii::app()->upgrader->processBeforeUpdateSchema();
         }
@@ -413,7 +413,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processUpdateSchema($messageLogger)
+        protected static function processUpdateSchema($messageLogger)
         {
             Yii::app()->upgrader->processUpdateSchema($messageLogger);
         }
@@ -421,7 +421,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processAfterUpdateSchema()
+        protected static function processAfterUpdateSchema()
         {
             Yii::app()->upgrader->processAfterUpdateSchema();
         }
@@ -429,7 +429,7 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function clearAssetsAndRunTimeItems()
+        protected static function clearAssetsAndRunTimeItems()
         {
             Yii::app()->upgrader->clearAssetsAndRunTimeItems();
         }
@@ -437,12 +437,12 @@
         /**
          * This is just wrapper function to call function from UpgraderComponent
          */
-        public static function processFinalTouches()
+        protected static function processFinalTouches()
         {
             Yii::app()->upgrader->processFinalTouches();
         }
 
-        public static function removeUpgradeFiles($upgradeExtractPath)
+        protected static function removeUpgradeFiles($upgradeExtractPath)
         {
             FileUtil::deleteDirectoryRecoursive($upgradeExtractPath, true);
         }
@@ -496,7 +496,7 @@
          */
         public static function isUpgradeStateValid()
         {
-            $zurmoUpgradeTimestamp = UpgradeUtil::getUpgradeState('zurmoUpgradeTimestamp');
+            $zurmoUpgradeTimestamp = self::getUpgradeState('zurmoUpgradeTimestamp');
             if ((time() - $zurmoUpgradeTimestamp) > 24 * 60 * 60)
             {
                 self::unsetUpgradeState();

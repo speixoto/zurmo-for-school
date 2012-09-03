@@ -95,7 +95,7 @@
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(4096);
             $messageStreamer->add(Yii::t('Default', 'Starting upgrade process.'));
-            UpgradeUtil::runPart1($messageStreamer, 3600));
+            UpgradeUtil::runPart1($messageStreamer);
             ForgetAllCacheUtil::forgetAllCaches();
             echo CHtml::script('$("#progress-table").hide(); $("#upgrade-step-two").show();');
             Yii::app()->gameHelper->unmuteScoringModelsOnSave();
