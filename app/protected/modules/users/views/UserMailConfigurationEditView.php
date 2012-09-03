@@ -39,7 +39,9 @@
                             array('type' => 'SaveButton'),
                         ),
                     ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
+                    //'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
+                    //TODO: Change the useSystemSettings to a check box
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -83,11 +85,22 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'outboundType', 'type' => 'OutboundTypeStaticDropDown'),
+                                                array('attributeName' => 'useSystemSettings', 'type' => 'OutboundTypeStaticDropDown'),
                                             ),
                                         ),
                                     )
                                 ),
+                                // For now we only support smtp
+                                /*
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'outboundType', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),*/
                             ),
                         ),
                         array(
@@ -151,7 +164,7 @@
             $dropDownId = $this->modelClassName . '_outboundType_value';
             Yii::app()->clientScript->registerScript('userMailConfigurationOutbound', "
                     $('#{$dropDownId}').change(function(){
-                        if ($(this).val() == " . EmailAccount::OUTBOUND_SYSTEM_SETTINGS . ")
+                        if ($(this).val() == true)
                         {
                             $(this).closest('.panel').next('.panel').hide();
                         }

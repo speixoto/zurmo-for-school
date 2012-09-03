@@ -66,6 +66,18 @@
         public $outboundSecurity;
 
         /**
+         * Name to use in the email sent
+         * @var string
+         */
+        public $fromName;
+
+        /**
+         * Address to use in the email sent
+         * @var string
+         */
+        public $fromAddress;
+
+        /**
          * Contains array of settings to load during initialization from the configuration table.
          * @see loadOutboundSettings
          * @var array
@@ -109,6 +121,31 @@
                 {
                     $this->$keyName = $keyValue;
                 }
+            }
+        }
+
+        /**
+         * Load user's outbound settings from user's email account or the system settings
+         * @param User   $user
+         * @param string $name  EmailAccount name or null for default name
+         */
+        public function loadOutboundSettingsFromUserEmailAccount(User $user, $name = null)
+        {
+            $userEmailAccount = EmailAccount::getByUserAndName($user, $name);
+            if (!$userEmailAccount->useSystemSettings)
+            {
+                $settingsToLoad = array_merge($this->settingsToLoad, array('fromName', 'fromAddress'));
+                foreach ($settingsToLoad as $keyName)
+                {
+                    $this->$keyName = $userEmailAccount->$keyName;
+
+                }
+            }
+            else
+            {
+                $this->loadOutboundSettings();
+                $this->fromName = strval(Yii::app()->user->userModel);
+                $this->fromName = $this->resolveFromAddressByUser(Yii::app()->user->userModel);
             }
         }
 
@@ -330,7 +367,7 @@
         }
 
         /**
-         * Given a user, attempt to get the user's emal address, but if it is not available, then return the default
+         * Given a user, attempt to get the user's email address, but if it is not available, then return the default
          * address.  @see EmailHelper::defaultFromAddress
          * @param User $user
          */

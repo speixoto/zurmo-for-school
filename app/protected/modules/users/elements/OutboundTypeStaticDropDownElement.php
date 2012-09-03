@@ -29,10 +29,8 @@
         protected function getDropDownArray()
         {
             return array(
-                EmailAccount::OUTBOUND_SYSTEM_SETTINGS
-                    => Yii::t('Default', 'System default'),
-                EmailAccount::OUTBOUND_CUSTOM_SETTINGS
-                    => Yii::t('Default', 'Custom'),
+                true  => Yii::t('Default', 'System default'),
+                false => Yii::t('Default', 'Custom'),
             );
         }
     }

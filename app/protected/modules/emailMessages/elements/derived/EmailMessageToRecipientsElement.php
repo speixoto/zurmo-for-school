@@ -52,16 +52,18 @@
 
         protected function renderTokenInput($prefix, $isPrePopulated = false)
         {
-            $content = $this->form->labelEx($this->model,
+            $inputId   = $this->getEditableInputId($this->attribute, $prefix);
+            $inputName = $this->getEditableInputName($this->attribute, $prefix);
+            $content   = $this->form->labelEx($this->model,
                                             $this->attribute,
-                                            array('for' => $prefix . $this->getEditableInputId(),
+                                            array('for' => $inputId,
                                                   'label' => $prefix));
 
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.MultiSelectAutoComplete', array(
-                'name'        => $prefix . $this->getNameForIdField(),
-                'id'          => $prefix . $this->getIdForIdField(),
+                'name'        => $inputName,
+                'id'          => $inputId,
                 'jsonEncodedIdsAndLabels'   => $prePopulatedTokens = $isPrePopulated ? CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels()) : null,
                 'sourceUrl'   => Yii::app()->createUrl('emailMessages/default/autoCompleteForMultiSelectAutoComplete'),
                 'htmlOptions' => array(
@@ -101,16 +103,6 @@
             return array();
         }
 
-        protected function getNameForIdField()
-        {
-                return 'RecipientsForm[itemIds]';
-        }
-
-        protected function getIdForIdField()
-        {
-            return 'RecipientsForm_item_ids';
-        }
-
         protected function getOnAddContent()
         {
         }
@@ -121,7 +113,6 @@
 
         protected function getExistingPeopleRelationsIdsAndLabels()
         {
-            //TODO: Implement to prepopulate with selected recipients
             $existingPeople = array();
             foreach ($this->model->recipients as $recipient)
             {

@@ -341,11 +341,29 @@
         public function actionComposeEmail()
         {
             //Yii::app()->getClientScript()->setToAjaxMode();
+            //TODO: Redo if's to make validation work on the form
+            if (isset($_POST['EmailMessage']))
+            {
+                $emailMessage = EmailMessageHelper::sendEmailFromPost(Yii::app()->user->userModel);
+                if ($emailMessage->validate())
+                {
+                    $emailMessage->save();
+                    Yii::app()->user->setFlash('notification',
+                        Yii::t('Default', 'Your message has been sent to outbox.')
+                    );
+                    $this->redirect('home/default/');
+                    //TODO: Emails are not connected to contacts/leads if more than one recipient
+                }
+                else
+                {
+                    print_r($emailMessage->getErrors());
+                }
+            }
             try
             {
                 EmailAccount::getByUserAndName(Yii::app()->user->userModel);
-                $emailMessage = new EmailMessage();
                 //TODO: Add signature to the content
+                $emailMessage       = new EmailMessage();
                 $emailMessage->content->htmlContent = '';
                 if (isset($_GET['toRecipients']))
                 {
@@ -393,21 +411,21 @@
             foreach ($usersByEmailAddress as $user)
             {
                 $autoCompleteResults[] = array(
-                    'id'   => $user->getClassId('Item'),
+                    'id'   => strval($user->primaryEmail),
                     'name' => strval($user) . ' (' . $user->primaryEmail . ')',
                 );
             }
             foreach ($usersByFullName as $user)
             {
                 $autoCompleteResults[] = array(
-                    'id'   => $user->getClassId('Item'),
+                    'id'   => strval($user->primaryEmail),
                     'name' => strval($user) . ' (' . $user->primaryEmail . ')',
                 );
             }
             foreach ($contacts as $contact)
             {
                 $autoCompleteResults[] = array(
-                    'id'   => $contact->getClassId('Item'),
+                    'id'   => strval($contact->primaryEmail),
                     'name' => strval($contact) . ' (' . $contact->primaryEmail . ')',
                 );
             }

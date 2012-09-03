@@ -35,7 +35,7 @@
 
         protected function validateAttribute($model, $attributeName)
         {
-            if ($model->outboundType == EmailAccount::OUTBOUND_CUSTOM_SETTINGS)
+            if ($model->useSystemSettings)
             {
                 $haveError = false;
                 foreach ($this->nonEmptyFields as $field)

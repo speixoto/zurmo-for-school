@@ -81,13 +81,14 @@
             }
             catch (NotFoundException $e)
             {
-                $emailAccount                   = new EmailAccount();
-                $emailAccount->user             = $user;
-                $emailAccount->name             = self::DEFAULT_NAME;
-                $emailAccount->fromName         = $user->getFullName();
-                $emailAccount->fromAddress      = $user->primaryEmail;
-                $emailAccount->outboundType     = self::OUTBOUND_SYSTEM_SETTINGS;
-                $saved                          = $emailAccount->save();
+                $emailAccount                    = new EmailAccount();
+                $emailAccount->user              = $user;
+                $emailAccount->name              = self::DEFAULT_NAME;
+                $emailAccount->fromName          = $user->getFullName();
+                $emailAccount->fromAddress       = $user->primaryEmail;
+                $emailAccount->useSystemSettings = true;
+                $emailAccount->outboundType      = 'smtp';
+                $saved                           = $emailAccount->save();
                 assert('$saved');
             }
             return $emailAccount;
@@ -103,6 +104,7 @@
                     'fromName',
                     'replyToName',
                     'replyToAddress',
+                    'useSystemSettings',
                     'outboundType',
                     'outboundHost',
                     'outboundPort',
@@ -117,7 +119,6 @@
                 'rules'     => array(
                                   array('fromName',             'required'),
                                   array('fromAddress',          'required'),
-                                  array('outboundType',         'required'),
                                   array('name',                 'type',      'type' => 'string'),
                                   array('fromName',             'type',      'type' => 'string'),
                                   array('replyToName',          'type',      'type' => 'string'),
@@ -126,15 +127,16 @@
                                   array('outboundUsername',     'type',      'type' => 'string'),
                                   array('outboundPassword',     'type',      'type' => 'string'),
                                   array('outboundSecurity',     'type',      'type' => 'string'),
-                                  array('outboundType',         'type',      'type' => 'integer'),
+                                  array('outboundType',         'type',      'type' => 'string'),
                                   array('outboundPort',         'type',      'type' => 'integer'),
+                                  array('useSystemSettings',    'type',      'type' => 'boolean'),
                                   array('fromName',             'length',    'min'  => 0, 'max' => 64),
                                   array('replyToName',          'length',    'min'  => 0, 'max' => 64),
+                                  array('outboundType',         'length',    'min'  => 0, 'max' => 4),
                                   array('outboundHost',         'length',    'min'  => 0, 'max' => 64),
                                   array('outboundUsername',     'length',    'min'  => 0, 'max' => 64),
                                   array('outboundPassword',     'length',    'min'  => 0, 'max' => 64),
                                   array('outboundSecurity',     'length',    'min'  => 0, 'max' => 3),
-                                  array('outboundType',         'numerical', 'min'  => 1),
                                   array('fromAddress',          'email'),
                                   //array('replyToAddress',       'email'), TODO: Gettin errors with this on in the updateShcema
                                   //TODO: See what's the problem with this validator

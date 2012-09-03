@@ -117,4 +117,65 @@
             $emailHelper->sendImmediately($emailMessage);
             return $emailMessage;
         }
+
+        /**
+         * Send Email from $_POST data
+         * @param User $userToSendMessagesFrom
+         * @return boolean
+         */
+        public static function sendEmailFromPost(User $userToSendMessagesFrom)
+        {
+            $emailMessage       = new EmailMessage();
+            $postVariableName   = get_class($emailMessage);
+            //$emailHelper = new EmailHelper();
+            Yii::app()->emailHelper->loadOutboundSettingsFromUserEmailAccount($userToSendMessagesFrom);
+
+            $toRecipients = explode(",", $_POST[$postVariableName]['recipients']['To']);
+            static::attachRecipientsToMessage($toRecipients, $emailMessage, EmailMessageRecipient::TYPE_TO);
+            $ccRecipients = explode(",", $_POST[$postVariableName]['recipients']['Cc']);
+            static::attachRecipientsToMessage($ccRecipients, $emailMessage, EmailMessageRecipient::TYPE_CC);
+            $bccRecipients = explode(",", $_POST[$postVariableName]['recipients']['Bcc']);
+            static::attachRecipientsToMessage($bccRecipients, $emailMessage, EmailMessageRecipient::TYPE_BCC);
+            unset($_POST[$postVariableName]['recipients']);
+            $emailMessage->setAttributes($_POST[$postVariableName]);
+            $emailMessage->owner       = $userToSendMessagesFrom;
+            $emailAccount              = EmailAccount::getByUserAndName(Yii::app()->user->userModel);
+            $sender                    = new EmailMessageSender();
+            $sender->fromName          = Yii::app()->emailHelper->fromName;
+            $sender->fromAddress       = Yii::app()->emailHelper->fromAddress;
+            $sender->personOrAccount   = $userToSendMessagesFrom;
+            $emailMessage->sender      = $sender;
+            $emailMessage->account     = $emailAccount;
+            $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
+            return $emailMessage;
+        }
+
+        public static function attachRecipientsToMessage($recipients, $emailMessage, $type)
+        {
+            foreach ($recipients as $recipient)
+            {
+                //TODO: Make or search for some method to search both user or contacts by email, ou name, or email and name
+                $toName = null;
+                $person = null;
+                $users    = UserSearch::getUsersByEmailAddress($recipient, 'equals');
+                if (count($users)>0)
+                {
+                    $person = $users[0];
+                    $toName = strval($users[0]);
+                }
+                $contacts = ContactSearch::getContactsByAnyEmailAddress($recipient);
+                if (count($contacts)>0)
+                {
+                    $person = $contacts[0];
+                    $toName = strval($contacts[0]);
+                }
+                $messageRecipient                   = new EmailMessageRecipient();
+                $messageRecipient->toName           = $toName;
+                $messageRecipient->toAddress        = $recipient;
+                $messageRecipient->type             = $type;
+                $messageRecipient->personOrAccount  = $person;
+                $emailMessage->recipients->add($messageRecipient);
+            }
+        }
     }
