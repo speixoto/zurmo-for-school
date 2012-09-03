@@ -162,12 +162,7 @@
 
         protected function registerScripts()
         {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js');
+            DropDownUtil::registerScripts();
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('search' . $this->getSearchFormId(), "
                 $('#clear-search-link" . $this->gridIdSuffix . "').removeAttr('clearForm');
