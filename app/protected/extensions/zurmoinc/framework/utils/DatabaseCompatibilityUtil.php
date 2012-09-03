@@ -904,25 +904,13 @@
             }
         }
 
-        /**
-         * Get database name from connection string
-         * Function allow two connection formats because backward compatibility
-         * 1. "host=localhost;port=3306;dbname=zurmo"
-         * 2. "host=localhost;dbname=zurmo"
-         */
-        public static function getDatabaseNameFromConnectionString()
-        {
-            assert(preg_match("/host=([^;]+);(?:port=([^;]+);)?dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
-            return $matches[3];
-        }
-
         public static function getTableRowsCountTotal()
         {
             if (RedBeanDatabase::getDatabaseType() != 'mysql')
             {
                 throw new NotSupportedException();
             }
-            $databaseName = self::getDatabaseNameFromConnectionString();
+            $databaseName = RedBeanDatabase::getDatabaseNameFromDsnString(Yii::app()->db->connectionString);
             $sql       = "show tables";
             $totalCount = 0;
             $rows       = R::getAll($sql);
@@ -946,6 +934,81 @@
             if ($databaseType == 'mysql')
             {
                 return 3306;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /**
+         * Baackup database schema and stored procedures.
+         * @param string $databaseType
+         * @param string $host
+         * @param string $username
+         * @param string $password
+         * @param string $databaseName
+         * @param string $backupFilePath
+         * @throws NotSupportedException
+         * @return boolean
+         */
+        public static function backupDatabase($databaseType = 'mysql',
+                                            $host,
+                                            $username,
+                                            $password,
+                                            $databaseName,
+                                            $backupFilePath)
+        {
+            assert('is_string($host)         && $host         != ""');
+            assert('is_string($username)     && $username     != ""');
+            assert('is_string($password)');
+            assert('is_string($databaseName) && $databaseName != ""');
+            assert('is_string($backupFilePath) && $backupFilePath != ""');
+
+            if ($databaseType == 'mysql')
+            {
+                $result = exec("mysqldump --host=$host --user=$username --password=$password --routines --add-drop-database $databaseName > $backupFilePath", $output, $returnVal);
+
+                if($returnVal !== 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public static function restoreDatabase($databaseType = 'mysql',
+                                               $host,
+                                               $username,
+                                               $password,
+                                               $databaseName,
+                                               $restoreFilePath)
+        {
+            assert('is_string($host)         && $host         != ""');
+            assert('is_string($username)     && $username     != ""');
+            assert('is_string($password)');
+            assert('is_string($databaseName) && $databaseName != ""');
+            assert('is_string($$restoreFilePath) && $$restoreFilePath != ""');
+
+            if ($databaseType == 'mysql')
+            {
+                $result = exec("mysql --host=$host --user=$username --password=$password $databaseName < $restoreFilePath", $output, $returnVal);
+                if($returnVal !== 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+                return $result;
             }
             else
             {
