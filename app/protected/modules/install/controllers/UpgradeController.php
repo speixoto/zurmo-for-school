@@ -85,6 +85,7 @@
          */
         public function actionStepOne()
         {
+            set_time_limit(3600);
             Yii::app()->gameHelper->muteScoringModelsOnSave();
             $nextView = new UpgradeStepOneCompleteView($this->getId(), $this->getModule()->getId());
             $view = new InstallPageView($nextView);
@@ -94,7 +95,7 @@
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(4096);
             $messageStreamer->add(Yii::t('Default', 'Starting upgrade process.'));
-            UpgradeUtil::runPart1($messageStreamer);
+            UpgradeUtil::runPart1($messageStreamer, 3600));
             ForgetAllCacheUtil::forgetAllCaches();
             echo CHtml::script('$("#progress-table").hide(); $("#upgrade-step-two").show();');
             Yii::app()->gameHelper->unmuteScoringModelsOnSave();
@@ -106,6 +107,9 @@
          */
         public function actionStepTwo()
         {
+            // Upgrade process can take much time, because upgrade schema script.
+            // Set timeout for upgrade to 12 hours.
+            set_time_limit(12 * 60 * 60);
             Yii::app()->gameHelper->muteScoringModelsOnSave();
             $nextView = new UpgradeStepTwoCompleteView($this->getId(), $this->getModule()->getId());
             $view = new InstallPageView($nextView);
@@ -115,6 +119,7 @@
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(4096);
             $messageStreamer->add(Yii::t('Default', 'Starting upgrade process.'));
+
             UpgradeUtil::runPart2($messageStreamer);
             ForgetAllCacheUtil::forgetAllCaches();
             echo CHtml::script('$("#progress-table").hide(); $("#upgrade-step-two").show();');

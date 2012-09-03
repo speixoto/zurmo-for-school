@@ -51,7 +51,6 @@
         public static function runPart1(MessageStreamer $messageStreamer)
         {
             try {
-                set_time_limit(3600);
                 $messageStreamer->add(Yii::t('Default', 'Checking permissions, files, upgrade version....'));
                 $messageLogger = new MessageLogger($messageStreamer);
 
@@ -91,7 +90,7 @@
                 $messageStreamer->add(Yii::t('Default', 'Error during upgrade!'));
                 $messageStreamer->add($e->getMessage());
                 $messageStreamer->add(Yii::t('Default', 'Please fix error(s) and try again, or restore your database/files.'));
-                exit;
+                Yii::app()->end();
             }
         }
 
@@ -107,9 +106,6 @@
         public static function runPart2(MessageStreamer $messageStreamer)
         {
             try {
-                // Upgrade process can take much time, because upgrade schema script.
-                // Set timeout for upgrade to 12 hours.
-                set_time_limit(12 * 60 * 60);
                 $upgradeExtractPath = self::getUpgradeState('zurmoUpgradeFolderPath');
                 $messageLogger = new MessageLogger($messageStreamer);
 
@@ -150,7 +146,7 @@
                 $messageStreamer->add(Yii::t('Default', 'Error during upgrade!'));
                 $messageStreamer->add($e->getMessage());
                 $messageStreamer->add(Yii::t('Default', 'Please fix error(s) and try again, or restore your database/files.'));
-                exit;
+                Yii::app()->end();
             }
         }
 

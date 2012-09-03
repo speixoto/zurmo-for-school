@@ -121,6 +121,7 @@ EOD;
 
         protected function runPart1($messageStreamer)
         {
+            set_time_limit(3600);
             $messageStreamer->add(Yii::t('Default', 'This is the Zurmo upgrade process. Please backup files/database before you continue.'));
 
             $message = Yii::t('Default', 'Are you sure you want to upgrade Zurmo? [yes|no]');
@@ -138,6 +139,9 @@ EOD;
 
         protected function runPart2($messageStreamer)
         {
+            // Upgrade process can take much time, because upgrade schema script.
+            // Set timeout for upgrade to 12 hours.
+            set_time_limit(12 * 60 * 60);
             UpgradeUtil::runPart2($messageStreamer);
         }
 
