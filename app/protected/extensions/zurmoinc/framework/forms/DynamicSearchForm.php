@@ -36,7 +36,12 @@
 
         public $dynamicStructure;
 
-        public $dynamicClauses;
+        /**
+         * Make sure to populate with sanitized clauses
+         * @see SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel
+         * @var array
+         */
+        public $dynamicClauses = array();
 
         public static function getNonSearchableAttributes()
         {
@@ -47,9 +52,9 @@
         {
             return array_merge(parent::rules(), array(
                                array('dynamicStructure', 'safe'),
-                               array('dynamicStructure',   'validateDynamicStructure', 'on' => 'validateDynamic'),
+                               array('dynamicStructure',   'validateDynamicStructure', 'on' => 'validateDynamic, validateSaveSearch'),
                                array('dynamicClauses',   'safe'),
-                               array('dynamicClauses',   'validateDynamicClauses', 'on' => 'validateDynamic'),
+                               array('dynamicClauses',   'validateDynamicClauses', 'on' => 'validateDynamic, validateSaveSearch'),
             ));
         }
 
@@ -57,7 +62,7 @@
         {
             return array_merge(parent::attributeLabels(), array(
                                'dynamicClauses' => Yii::t('Default', 'Advanced Search Rows'),
-                               'dynamicStructure' => Yii::t('Default', 'Clause Ordering'),
+                               'dynamicStructure' => Yii::t('Default', 'Search Operator'),
             ));
         }
 

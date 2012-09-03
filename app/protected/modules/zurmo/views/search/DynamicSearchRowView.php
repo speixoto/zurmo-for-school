@@ -75,12 +75,12 @@
             $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
 
             $content  = '<div>';
-            $content .= CHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
+            $content .= ZurmoHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
             $content .= $this->renderAttributeDropDownContent();
-            $content .= CHtml::hiddenField($hiddenInputName, $this->rowNumber, $idInputHtmlOptions);
-            $content .= CHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
+            $content .= ZurmoHtml::hiddenField($hiddenInputName, ($this->rowNumber + 1), $idInputHtmlOptions);
+            $content .= ZurmoHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
             $content .= '</div>';
-            $content .= CHtml::link(Yii::t('Default', '_'), '#', array('class' => 'remove-extra-dynamic-search-row-link'));
+            $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }
 
@@ -89,12 +89,7 @@
          */
         protected function renderScripts()
         {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js', CClientScript::POS_END);
+            DropDownUtil::registerScripts(CClientScript::POS_END);
         }
 
         protected function renderAttributeDropDownContent()

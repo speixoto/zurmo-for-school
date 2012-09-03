@@ -58,8 +58,15 @@
          * Array of model ids. Each id is for a different row checked off
          */
         protected $selectedIds;
-
+        
+        /**
+         * Array containing CGridViewPagerParams
+         */
+        protected $gridViewPagerParams;
+        
         private $resolvedMetadata;
+        
+        protected $emptyText = null;
 
         /**
          * Constructs a list view specifying the controller as
@@ -71,7 +78,8 @@
             $modelClassName,
             $dataProvider,
             $selectedIds,
-            $gridIdSuffix = null
+            $gridIdSuffix = null,
+            $gridViewPagerParams = null
         )
         {
             assert('is_array($selectedIds)');
@@ -83,6 +91,7 @@
             $this->rowsAreSelectable      = true;
             $this->selectedIds            = $selectedIds;
             $this->gridIdSuffix           = $gridIdSuffix;
+            $this->gridViewPagerParams    = $gridViewPagerParams;
             $this->gridId                 = 'list-view';
         }
 
@@ -116,6 +125,11 @@
         public function getRowsAreSelectable()
         {
             return $this->rowsAreSelectable;
+        }
+        
+        public function setRowsAreSelectable($value)
+        {            
+            $this->rowsAreSelectable = (boolean)$value;
         }
 
         protected function getCGridViewParams()
@@ -152,7 +166,7 @@
 
         protected static function getSummaryText()
         {
-            return Yii::t('zii', '{count} result(s)');
+            return Yii::t('Default', '{count} result(s)');
         }
 
         protected static function getSummaryCssClass()
@@ -162,13 +176,22 @@
 
         protected function getCGridViewPagerParams()
         {
-            return array(
-                    'prevPageLabel'    => '<span>previous</span>',
-                    'nextPageLabel'    => '<span>next</span>',
-                    'class'            => 'EndlessListLinkPager',
-                    'paginationParams' => GetUtil::getData(),
-                    'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
-                );
+            $defaultGridViewPagerParams = array(
+                        'prevPageLabel'    => '<span>previous</span>',
+                        'nextPageLabel'    => '<span>next</span>',
+                        'class'            => 'EndlessListLinkPager',
+                        'paginationParams' => GetUtil::getData(),
+                        'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
+                    ); 
+            if (!$this->gridViewPagerParams)
+            {
+                return $defaultGridViewPagerParams;
+            } 
+            else
+            {
+                return array_merge($defaultGridViewPagerParams, $this->gridViewPagerParams);
+            }
+             
         }
 
         protected function getShowTableOnEmpty()
@@ -178,9 +201,14 @@
 
         protected function getEmptyText()
         {
-            return null;
+            return $this->emptyText;
         }
 
+        public function setEmptyText($text)
+        {            
+            $this->emptyText = $text;
+        }
+        
         public function getGridViewId()
         {
             return $this->gridId . $this->gridIdSuffix;

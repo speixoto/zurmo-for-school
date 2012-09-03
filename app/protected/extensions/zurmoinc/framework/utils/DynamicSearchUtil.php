@@ -65,6 +65,12 @@
                 }
             }
             self::resolveAndAddViewDefinedNestedAttributes($modelAttributesAdapter->getModel(), $viewClassName, $attributeIndexOrDerivedTypeAndLabels);
+
+            if (is_subclass_of($viewClassName, 'DynamicSearchView'))
+            {
+                $viewClassName::
+                resolveAttributeIndexOrDerivedTypeAndLabelsForDynamicSearchRow($attributeIndexOrDerivedTypeAndLabels);
+            }
             return $attributeIndexOrDerivedTypeAndLabels;
         }
 
@@ -243,13 +249,7 @@
                                                               $form, array_slice($element, 2));
             $element->editableTemplate = '{content}{error}';
             $content                  .= $element->render();
-            $content                  .= $element->renderEditablePartForUseInDynamicSearchContent();
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js', CClientScript::POS_END);
+            DropDownUtil::registerScripts(CClientScript::POS_END);
             return $content;
         }
 
