@@ -37,13 +37,13 @@
       zurmoc database <action> <filePath>
 
     DESCRIPTION
-      This command is used to backup or restore Zurmo database.
-      Please set \$maintenanceMode=true in perInstance.php config file before you start process.
+      This command is used to backup or restore the Zurmo database.
+      Please set \$maintenanceMode=true in the perInstance.php config file before you start this process.
 
     PARAMETERS
      * action: action(possible options: "backup" or "restore")
      * filePath: path to file
-                   a. For backup, file where database backup will be stored
+                   a. For backup, filepath where the database backup will be stored
                    b. For restore, path to file from which database will be restored
 
 EOD;
@@ -68,7 +68,7 @@ EOD;
 
             if (!isset($args[1]))
             {
-                $this->usageError('You must specify a path to file.');
+                $this->usageError('You must specify a path to the file.');
             }
             else
             {
@@ -77,7 +77,7 @@ EOD;
 
             if (!Yii::app()->isApplicationInMaintenanceMode())
             {
-                $this->usageError('Please set $maintenanceMode=true in perInstance.php config file.');
+                $this->usageError('Please set $maintenanceMode=true in the perInstance.php config file.');
                 Yii::app()->end();
             }
 
@@ -117,7 +117,7 @@ EOD;
             // If file already exist, ask user to confirm that want to overwrite it.
             if (file_exists($filePath))
             {
-                $message = Yii::t('Default', 'Backup file already exist. Are you sure you want to overwrite existing file?.');
+                $message = Yii::t('Default', 'Backup file already exists. Are you sure you want to overwrite the existing file?.');
                 if (!$this->confirm($message))
                 {
                     $messageStreamer->add(Yii::t('Default', 'Backup not completed.'));
@@ -166,7 +166,7 @@ EOD;
             $tables = DatabaseCompatibilityUtil::getAllTableNames();
             if (!empty($tables))
             {
-                $messageStreamer->add(Yii::t('Default', 'Database need to be empty.'));
+                $messageStreamer->add(Yii::t('Default', 'Database needs to be empty.'));
                 $messageStreamer->add(Yii::t('Default', 'Database is not restored.'));
                 Yii::app()->end();
             }
