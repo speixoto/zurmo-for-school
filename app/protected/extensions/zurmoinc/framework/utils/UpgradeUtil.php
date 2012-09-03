@@ -72,9 +72,6 @@
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 self::clearCache();
 
-                $source = $upgradeExtractPath . DIRECTORY_SEPARATOR . 'filesToUpload';
-                $destination = COMMON_ROOT . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
-
                 $messageStreamer->add(Yii::t('Default', 'Altering configuration files.'));
                 $pathToConfigurationFolder = COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'config';
                 self::processBeforeConfigFiles();
@@ -83,7 +80,7 @@
 
                 $messageStreamer->add(Yii::t('Default', 'Copying files.'));
                 self::processBeforeFiles();
-                self::processFiles($source, $destination, $configuration);
+                self::processFiles($upgradeExtractPath, $configuration);
                 self::processAfterFiles();
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
@@ -92,7 +89,7 @@
             catch (CException $e)
             {
                 $messageStreamer->add(Yii::t('Default', 'Error during upgrade!'));
-                $messageStreamer->add(Yii::t('Default', $e->getMessage()));
+                $messageStreamer->add($e->getMessage());
                 $messageStreamer->add(Yii::t('Default', 'Please fix error(s) and try again, or restore your database/files.'));
                 exit;
             }
@@ -151,7 +148,7 @@
             catch (CException $e)
             {
                 $messageStreamer->add(Yii::t('Default', 'Error during upgrade!'));
-                $messageStreamer->add(Yii::t('Default', $e->getMessage()));
+                $messageStreamer->add($e->getMessage());
                 $messageStreamer->add(Yii::t('Default', 'Please fix error(s) and try again, or restore your database/files.'));
                 exit;
             }
@@ -391,9 +388,13 @@
 
         /**
          * This is just wrapper function to call function from UpgraderComponent
+         * @param string $upgradeExtractPath
+         * @param array $configuration
          */
-        public static function processFiles($source, $destination, $configuration)
+        public static function processFiles($upgradeExtractPath, $configuration)
         {
+            $source = $upgradeExtractPath . DIRECTORY_SEPARATOR . 'filesToUpload';
+            $destination = COMMON_ROOT . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
             Yii::app()->upgrader->processFiles($source, $destination, $configuration);
         }
 

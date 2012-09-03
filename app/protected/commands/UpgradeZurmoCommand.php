@@ -79,11 +79,6 @@ EOD;
                 $upgradeStep = $args[1];
             }
 
-            if ($upgradeStep != 'runPart1' && $upgradeStep != 'runPart2')
-            {
-                $this->usageError('Invalid step/action. Valid values are "runPart1" and "runPart2".');
-            }
-
             try
             {
                 $template        = "{message}\n";
@@ -111,6 +106,10 @@ EOD;
                         $message = 'Upgrade state is older then one day, please run phase one of the upgrade process again.';
                         throw new NotSupportedException($message);
                     }
+                }
+                else
+                {
+                    $this->usageError('Invalid step/action. Valid values are "runPart1" and "runPart2".');
                 }
             }
             catch (Exception $e)
