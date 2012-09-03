@@ -999,8 +999,7 @@
 
             if ($databaseType == 'mysql')
             {
-                $result = exec("mysqldump --host=$host --user=$username --password=$password $databaseName < $restoreFilePath", $output, $returnVal);
-
+                $result = exec("mysql --host=$host --user=$username --password=$password $databaseName < $restoreFilePath", $output, $returnVal);
                 if($returnVal !== 0)
                 {
                     return false;

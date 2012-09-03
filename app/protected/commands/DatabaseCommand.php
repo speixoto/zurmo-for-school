@@ -34,15 +34,13 @@
         {
             return <<<EOD
     USAGE
-      zurmoc database <username> <action> <filePath>
+      zurmoc database <action> <filePath>
 
     DESCRIPTION
       This command is used to backup or restore Zurmo database.
       Please set \$maintenanceMode=true in perInstance.php config file before you start process.
 
     PARAMETERS
-     * username: username to log in as and run the import processes. Typically 'super'.
-                  This user must be a super administrator.
      * action: action(possible options: "backup" or "restore")
      * filePath: path to file
                    a. For backup, file where database backup will be stored
@@ -58,40 +56,23 @@ EOD;
         public function run($args)
         {
             set_time_limit('3600');
-            if (!isset($args[0]))
-            {
-                $this->usageError('A username must be specified.');
-            }
-            try
-            {
-                Yii::app()->user->userModel = User::getByUsername($args[0]);
-            }
-            catch (NotFoundException $e)
-            {
-                $this->usageError('The specified username does not exist.');
-            }
-            $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (!$group->users->contains(Yii::app()->user->userModel))
-            {
-                $this->usageError('The specified user is not a super administrator.');
-            }
 
-            if (!isset($args[1]))
+            if (!isset($args[0]))
             {
                 $this->usageError('You must specify an action.');
             }
             else
             {
-                $action = $args[1];
+                $action = $args[0];
             }
 
-            if (!isset($args[2]))
+            if (!isset($args[1]))
             {
                 $this->usageError('You must specify a path to file.');
             }
             else
             {
-                $filePath = $args[2];
+                $filePath = $args[1];
             }
 
             if (!Yii::app()->isApplicationInMaintenanceMode())
@@ -182,7 +163,8 @@ EOD;
             $messageStreamer->add(Yii::t('Default', 'Starting database restore process.'));
             $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString(Yii::app()->db->connectionString);
 
-            if (DatabaseCompatibilityUtil::getAllTableNames() != '')
+            $tables = DatabaseCompatibilityUtil::getAllTableNames();
+            if (!empty($tables))
             {
                 $messageStreamer->add(Yii::t('Default', 'Database need to be empty.'));
                 $messageStreamer->add(Yii::t('Default', 'Database is not restored.'));
