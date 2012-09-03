@@ -24,26 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    // This is the configuration for zurmoc console application.
-    // Any writable CConsoleApplication properties can be configured here.
-    $common_config = CMap::mergeArray(
-        require('main.php'),
-        array(
-            'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-            'name' => 'Zurmo Console Application',
-        )
-    );
-    $common_config['import'][] = 'application.extensions.zurmoinc.framework.utils.UpgradeUtil.php';
-    //Utilize a custom begin request behavior class.
-    $common_config['behaviors']['onBeginRequest'] = array(
-        'class' => 'application.modules.zurmo.components.CommandBeginRequestBehavior'
-    );
+    /**
+     * Checks if zip extension is installed.
+     */
+    class ZipServiceHelper extends ServiceHelper
+    {
+        protected $required = false;
 
-    //Turn off gamification
-    $common_config['components']['gamificationObserver']['enabled'] = false;
-    //Not applicable for console applications.
-    unset($common_config['defaultController']);
-    //Not applicable for console applications.
-    unset($common_config['controllerMap']);
-    return $common_config
+        protected function checkService()
+        {
+            $zipInstalled =  InstallUtil::checkZip();
+            if ($zipInstalled)
+            {
+                $this->message  = Yii::t('Default', 'Zip extension is loaded.');
+                return true;
+            }
+            else
+            {
+                $this->message  = Yii::t('Default', 'Zip extension is not loaded.');
+                return false;
+            }
+        }
+    }
 ?>
