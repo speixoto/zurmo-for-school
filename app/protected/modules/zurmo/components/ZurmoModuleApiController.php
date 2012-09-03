@@ -451,6 +451,7 @@
                         try
                         {
                             $this->manageModelRelations($model, $modelRelations);
+                            $model->save();
                         }
                         catch (Exception $e)
                         {
@@ -528,11 +529,12 @@
                         try
                         {
                             $this->manageModelRelations($model, $modelRelations);
+                            $model->save();
                         }
                         catch (Exception $e)
                         {
                             $message = Yii::t('Default', 'Model was updated, but there was issue with relations.');
-                            $message .= $e->getMessage();
+                            $message .= ' ' . $e->getMessage();
                             throw new ApiException($message);
                         }
                     }
@@ -573,32 +575,39 @@
             {
                 if (isset($modelRelations) && !empty($modelRelations))
                 {
-                    foreach($modelRelations as $modelRelation)
+                    foreach($modelRelations as $modelRelation => $relations)
                     {
-                        if ($model->isAttribute($modelRelation['relationName']) &&
-                            ($model->getRelationType($modelRelation['relationName']) == RedBeanModel::HAS_MANY ||
-                            $model->getRelationType($modelRelation['relationName']) == RedBeanModel::MANY_MANY))
+                        if ($model->isAttribute($modelRelation) &&
+                            ($model->getRelationType($modelRelation) == RedBeanModel::HAS_MANY ||
+                            $model->getRelationType($modelRelation) == RedBeanModel::MANY_MANY))
                         {
-                            $relatedModelClassName = $model->getRelationModelClassName($modelRelation['relationName']);
-                            $relatedModel = $relatedModelClassName::getById(intval($modelRelation['relatedModelId']));
+                            $relatedModelClassName = $model->getRelationModelClassName($modelRelation);
 
-                            if ($modelRelation['action'] == 'addRelation')
+                            foreach ($relations as $relation)
                             {
-                                $model->{$modelRelation['relationName']}->add($relatedModel);
-                            }
-                            elseif ($modelRelation['action'] == 'removeRelation')
-                            {
-                                $model->{$modelRelation['relationName']}->remove($relatedModel);
-                            }
-                            else
-                            {
-                                $message = Yii::t('Default', 'Unsupported action.');
-                                throw new NotSupportedException($message);
-                            }
-                            if (!$model->save())
-                            {
-                                $message = Yii::t('Default', 'Could not save relation.');
-                                throw new FailedToSaveModelException($message);
+                                try
+                                {
+                                    $relatedModel = $relatedModelClassName::getById(intval($relation['modelId']));
+                                }
+                                catch (Exception $e)
+                                {
+                                    $message = Yii::t('Default', 'The related model ID specified was invalid.');
+                                    throw new NotFoundException($message);
+                                }
+
+                                if ($relation['action'] == 'add')
+                                {
+                                    $model->{$modelRelation}->add($relatedModel);
+                                }
+                                elseif ($relation['action'] == 'remove')
+                                {
+                                    $model->{$modelRelation}->remove($relatedModel);
+                                }
+                                else
+                                {
+                                    $message = Yii::t('Default', 'Unsupported action.');
+                                    throw new NotSupportedException($message);
+                                }
                             }
                         }
                         else

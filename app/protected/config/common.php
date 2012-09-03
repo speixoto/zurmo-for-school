@@ -221,8 +221,6 @@
                     array('<module>/<model>Api/update',         'pattern' => '<module:\w+>/<model:\w+>/api/update/<id:\d+>',  'verb' => 'PUT'),    // Not Coding Standard
                     array('<module>/<model>Api/delete',         'pattern' => '<module:\w+>/<model:\w+>/api/delete/<id:\d+>',  'verb' => 'DELETE'), // Not Coding Standard
                     array('<module>/<model>Api/create',         'pattern' => '<module:\w+>/<model:\w+>/api/create/',          'verb' => 'POST'),   // Not Coding Standard
-                    array('<module>/<model>Api/addRelation',    'pattern' => '<module:\w+>/<model:\w+>/api/addRelation/*',    'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/<model>Api/removeRelation', 'pattern' => '<module:\w+>/<model:\w+>/api/removeRelation/*', 'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/<action>',       'pattern' => '<module:\w+>/<model:\w+>/api/<action>/*'),                           // Not Coding Standard
 
                     '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',                       // Not Coding Standard

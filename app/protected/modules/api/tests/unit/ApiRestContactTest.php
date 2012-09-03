@@ -716,13 +716,10 @@
         /**
         * @depends testApiServerUrl
         */
-        public function testAddManyManyRelation()
+        public function testCreateWithRelations()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
-            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('My Opportunity', $super);
-            $contact = ContactTestHelper::createContactByNameForOwner('My Contact', $super);
 
             $authenticationData = $this->login();
             $headers = array(
@@ -732,32 +729,42 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $relationParams = array(
-                'relationName' => 'opportunities',
-                'id'           => $contact->id,
-                'relatedId'    => $opportunity->id
+            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('My Opportunity', $super);
+
+            $data['firstName']           = "Freddy";
+            $data['lastName']            = "Smith";
+            $data['state']['id']         = ContactsUtil::getStartingState()->id;
+
+            $data['modelRelations'] = array(
+                'opportunities' => array(
+                    array(
+                        'action' => 'add',
+                        'modelId' => $opportunity->id
+                    ),
+                ),
             );
-            $relationParamsQuery = http_build_query($relationParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/addRelation/data/' . $relationParamsQuery, 'GET', $headers);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/create/', 'POST', $headers, array('data' => $data));
+
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($data['firstName'], $response['data']['firstName']);
+            $this->assertEquals($data['lastName'], $response['data']['lastName']);
 
             RedBeanModel::forgetAll();
-            $updatedContact = Contact::getById($contact->id);
-            $this->assertEquals(1, count($updatedContact->opportunities));
-            $this->assertEquals($opportunity->id, $updatedContact->opportunities[0]->id);
+            $contact = Contact::getById($response['data']['id']);
+            $this->assertEquals(1, count($contact->opportunities));
+            $this->assertEquals($opportunity->id, $contact->opportunities[0]->id);
 
-            $updatedOpportunity = Opportunity::getById($opportunity->id);
-            $this->assertEquals(1, count($updatedOpportunity->contacts));
-            $this->assertEquals($contact->id, $updatedOpportunity->contacts[0]->id);
+            $opportunity = Opportunity::getById($opportunity->id);
+            $this->assertEquals(1, count($opportunity->contacts));
+            $this->assertEquals($contact->id, $opportunity->contacts[0]->id);
         }
 
         /**
-        * @depends testAddManyManyRelation
+        * @depends testCreateWithRelations
         */
-        public function testRemoveManyManyRelation()
+        public function testUpdateWithRelations()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -769,28 +776,58 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $contacts = Contact::getByName('My Contact My Contactson');
-            $contact = $contacts[0];
+            $contact  = ContactTestHelper::createContactByNameForOwner('Simon', $super);
+            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('My Opportunity', $super);
 
-            $opportunities = Opportunity::getByName('My Opportunity');
-            $opportunity = $opportunities[0];
+            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($contact);
+            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $contact->forget();
 
-            $relationParams = array(
-                'relationName' => 'opportunities',
-                'id'           => $contact->id,
-                'relatedId'    => $opportunity->id
+            $data['modelRelations'] = array(
+                'opportunities' => array(
+                    array(
+                        'action' => 'add',
+                        'modelId' => $opportunity->id
+                    ),
+                ),
             );
-            $relationParamsQuery = http_build_query($relationParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/removeRelation/data/' . $relationParamsQuery, 'GET', $headers);
+            $data['firstName'] = 'Fred';
 
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            unset($response['data']['modifiedDateTime']);
+            unset($compareData['modifiedDateTime']);
+            $compareData['firstName'] = 'Fred';
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($compareData, $response['data']);
+
+            RedBeanModel::forgetAll();
+            $contact = Contact::getById($compareData['id']);
+            $this->assertEquals(1, count($contact->opportunities));
+            $this->assertEquals($opportunity->id, $contact->opportunities[0]->id);
+
+            $opportunity = Opportunity::getById($opportunity->id);
+            $this->assertEquals(1, count($opportunity->contacts));
+            $this->assertEquals($contact->id, $opportunity->contacts[0]->id);
+
+            // Now test remove relations
+            $data['modelRelations'] = array(
+                'opportunities' => array(
+                    array(
+                        'action' => 'remove',
+                        'modelId' => $opportunity->id
+                    ),
+                ),
+            );
+
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-
-            $updatedContact = Contact::getById($contact->id);
-            $this->assertEquals(0, count($updatedContact->opportunities));
-
-            $updatedOpportunity = Opportunity::getById($opportunity->id);
-            $this->assertEquals(0, count($updatedOpportunity->contacts));
+            RedBeanModel::forgetAll();
+            $contact = Contact::getById($compareData['id']);
+            $this->assertEquals(0, count($contact->opportunities));
+            $opportunity = Opportunity::getById($opportunity->id);
+            $this->assertEquals(0, count($opportunity->contacts));
         }
 
         /**

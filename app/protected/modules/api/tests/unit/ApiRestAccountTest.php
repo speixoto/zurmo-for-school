@@ -607,87 +607,12 @@
         /**
         * @depends testApiServerUrl
         */
-        public function testAddHasManyAccountsRelation()
+        public function testCreateWithRelations()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $account1 = AccountTestHelper::createAccountByNameForOwner('Zurmo', $super);
             $account2 = AccountTestHelper::createAccountByNameForOwner('Faber', $super);
-
-            $authenticationData = $this->login();
-            $headers = array(
-                'Accept: application/json',
-                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
-                'ZURMO_TOKEN: ' . $authenticationData['token'],
-                'ZURMO_API_REQUEST_TYPE: REST',
-            );
-
-            $relationParams = array(
-                'relationName' => 'accounts',
-                'id'           => $account1->id,
-                'relatedId'    => $account2->id
-            );
-            $relationParamsQuery = http_build_query($relationParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/addRelation/data/' . $relationParamsQuery, 'GET', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-
-            RedBeanModel::forgetAll();
-            $updatedAccount = Account::getById($account1->id);
-            $this->assertEquals(1, count($updatedAccount->accounts));
-            $this->assertEquals($account2->id, $updatedAccount->accounts[0]->id);
-
-            $relatedAccount = Account::getById($account2->id);
-            $this->assertEquals($account1->id, $relatedAccount->account->id);
-        }
-
-        /**
-        * @depends testAddHasManyAccountsRelation
-        */
-        public function testRemoveHasManyAccountsRelation()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $accounts = Account::getByName('Zurmo');
-            $account1 = $accounts[0];
-
-            $accounts = Account::getByName('Faber');
-            $account2 = $accounts[0];
-
-            $authenticationData = $this->login();
-            $headers = array(
-                'Accept: application/json',
-                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
-                'ZURMO_TOKEN: ' . $authenticationData['token'],
-                'ZURMO_API_REQUEST_TYPE: REST',
-            );
-
-            $relationParams = array(
-                'relationName' => 'accounts',
-                'id'           => $account1->id,
-                'relatedId'    => $account2->id
-            );
-            $relationParamsQuery = http_build_query($relationParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/removeRelation/data/' . $relationParamsQuery, 'GET', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-
-            RedBeanModel::forgetAll();
-            $updatedAccount = Account::getById($account1->id);
-            $this->assertEquals(0, count($updatedAccount->accounts));
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
-        public function testAddHasManyContactsRelation()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $account = AccountTestHelper::createAccountByNameForOwner('Zurmo2', $super);
             $contact = ContactTestHelper::createContactByNameForOwner('Simon', $super);
 
             $authenticationData = $this->login();
@@ -698,38 +623,47 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $relationParams = array(
-                'relationName' => 'contacts',
-                'id'           => $account->id,
-                'relatedId'    => $contact->id
+            $data['name'] = 'Zurmo';
+            $data['modelRelations'] = array(
+                'accounts' => array(
+                    array(
+                        'action' => 'add',
+                        'modelId' => $account2->id
+                    ),
+                ),
+                'contacts' => array(
+                    array(
+                        'action' => 'add',
+                        'modelId' => $contact->id
+                    ),
+                ),
             );
-            $relationParamsQuery = http_build_query($relationParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/addRelation/data/' . $relationParamsQuery, 'GET', $headers);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/create/', 'POST', $headers, array('data' => $data));
+
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
             RedBeanModel::forgetAll();
-            $updatedAccount = Account::getById($account->id);
-            $this->assertEquals(1, count($updatedAccount->contacts));
-            $this->assertEquals($contact->id, $updatedAccount->contacts[0]->id);
+            $account = Account::getById($response['data']['id']);
+            $this->assertEquals(1, count($account->accounts));
+            $this->assertEquals($account2->id, $account->accounts[0]->id);
+            $this->assertEquals(1, count($account->contacts));
+            $this->assertEquals($contact->id, $account->contacts[0]->id);
 
-            $updatedContact = Contact::getById($contact->id);
-            $this->assertEquals($account->id, $updatedContact->account->id);
+            $account2 = Account::getById($account2->id);
+            $this->assertEquals($account->id, $account2->account->id);
+
+            $contact = Contact::getById($contact->id);
+            $this->assertEquals($account->id, $contact->account->id);
         }
 
         /**
-        * @depends testAddHasManyContactsRelation
+        * @depends testCreateWithRelations
         */
-        public function testRemoveHasManyContactsRelation()
+        public function testUpdateWithRelations()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
-            $accounts = Account::getByName('Zurmo2');
-            $account = $accounts[0];
-
-            $contacts = Contact::getByName('Simon Simonson');
-            $contact = $contacts[0];
 
             $authenticationData = $this->login();
             $headers = array(
@@ -739,19 +673,92 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $relationParams = array(
-                'relationName' => 'contacts',
-                'id'           => $account->id,
-                'relatedId'    => $contact->id
+            $account  = AccountTestHelper::createAccountByNameForOwner('Factor X', $super);
+            $account1 = AccountTestHelper::createAccountByNameForOwner('Miko', $super);
+            $account2 = AccountTestHelper::createAccountByNameForOwner('Troter', $super);
+            $contact  = ContactTestHelper::createContactByNameForOwner('Simon', $super);
+
+            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($account);
+            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $account->forget();
+
+            $data['modelRelations'] = array(
+                'accounts' => array(
+                    array(
+                        'action' => 'add',
+                        'modelId' => $account1->id
+                    ),
+                    array(
+                        'action' => 'add',
+                        'modelId' => $account2->id
+                    ),
+                ),
+                'contacts' => array(
+                    array(
+                        'action' => 'add',
+                        'modelId' => $contact->id
+                    ),
+                ),
             );
-            $relationParamsQuery = http_build_query($relationParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/removeRelation/data/' . $relationParamsQuery, 'GET', $headers);
+            $data['name'] = 'Zurmo Inc.';
+
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
+            unset($response['data']['modifiedDateTime']);
+            unset($compareData['modifiedDateTime']);
+            $compareData['name'] = 'Zurmo Inc.';
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($compareData, $response['data']);
 
             RedBeanModel::forgetAll();
-            $updatedAccount = Account::getById($account->id);
-            $this->assertEquals(0, count($updatedAccount->contacts));
+            $account = Account::getById($compareData['id']);
+            $this->assertEquals(2, count($account->accounts));
+            $this->assertEquals($account1->id, $account->accounts[0]->id);
+            $this->assertEquals($account2->id, $account->accounts[1]->id);
+            $this->assertEquals(1, count($account->contacts));
+            $this->assertEquals($contact->id, $account->contacts[0]->id);
+
+            $account1 = Account::getById($account1->id);
+            $this->assertEquals($account->id, $account1->account->id);
+            $account2 = Account::getById($account2->id);
+            $this->assertEquals($account->id, $account2->account->id);
+            $contact = Contact::getById($contact->id);
+            $this->assertEquals($account->id, $contact->account->id);
+
+            // Now test remove relations
+            $data['modelRelations'] = array(
+                'accounts' => array(
+                    array(
+                        'action' => 'remove',
+                        'modelId' => $account1->id
+                    ),
+                    array(
+                        'action' => 'remove',
+                        'modelId' => $account2->id
+                    ),
+                ),
+                'contacts' => array(
+                    array(
+                        'action' => 'remove',
+                        'modelId' => $contact->id
+                    ),
+                ),
+            );
+
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            RedBeanModel::forgetAll();
+            $updatedModel = Account::getById($compareData['id']);
+            $this->assertEquals(0, count($updatedModel->accounts));
+            $this->assertEquals(0, count($updatedModel->contacts));
+
+            $account1 = Account::getById($account1->id);
+            $this->assertLessThanOrEqual(0, $account1->account->id);
+            $account2 = Account::getById($account2->id);
+            $this->assertLessThanOrEqual(0, $account2->account->id);
+            $contact = Contact::getById($contact->id);
+            $this->assertLessThanOrEqual(0, $contact->account->id);
         }
 
         /**
