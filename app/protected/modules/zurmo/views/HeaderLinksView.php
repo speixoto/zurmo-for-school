@@ -129,7 +129,7 @@
                             success  : function(html)
                             {
                                 jQuery('#notifications-flyout').html(html);
-                                $(document).one('mouseup',function (e)
+                                $(document).one('click',function (e)
                                 {
                                     var container = $('#notifications-flyout');
                                     if (container.has(e.target).length === 0 && e.target.id != 'notifications-link')

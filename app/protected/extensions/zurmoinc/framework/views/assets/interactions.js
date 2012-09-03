@@ -35,7 +35,7 @@ $(window).ready(function(){
             {
                 if ($(this).find('ul').length > 0){
                     $(this).find('ul').show();
-                    $(document).one('mouseup',function (e)
+                    $(document).one('click',function (e)
                     {
                         var container = $(this).find('ul').find('ul');
                         if (container.has(e.target).length === 0 && $(e.target).closest('ul.headerNav').attr('id') != attrId)
