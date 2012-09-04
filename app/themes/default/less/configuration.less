@@ -152,6 +152,26 @@ table.configuration-list{
     }
 }
 
+#DevelopmentMenuView{
+    .configuration-list{
+        li a{
+            &:before{
+                content: "";
+                margin-right:0px;
+            }
+            &:after{
+                content: "7";
+                .symbly(20px);
+                margin-left:5px;
+                position:relative;
+                top:0px;
+                font-weight: normal !important;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
 /*Groups*/
 .ActionBarForSecurityTreeListView,
 #ActionBarForGroupsEditAndDetailsView{
