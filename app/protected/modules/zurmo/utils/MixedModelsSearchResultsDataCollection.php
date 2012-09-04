@@ -120,7 +120,7 @@
             foreach ($globalSearchModuleNamesAndLabelsData as $moduleName => $label)
             {
                 $titleView                              = new TitleBarView($label, null, 1);
-                $iconClassName                          = Yii::app()->findModule($moduleName)->getPrimaryModelName();
+                $iconClassName                          = Yii::app()->findModule($moduleName)->getSingularCamelCasedName();
                 $titleView->setCssClasses(array($iconClassName));
                 $this->views['titleBar-' . $moduleName] = $titleView;
                 $this->views[$moduleName]               = $this->getListView($moduleName, true);
