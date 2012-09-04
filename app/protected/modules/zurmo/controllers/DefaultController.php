@@ -150,9 +150,11 @@
                     $autoCompleteResults,
                     array(
                         array('href'      => Yii::app()->createUrl(
-                                                    '/zurmo/default/globallist',
-                                                    array('MixedModelsSearchForm' => array('term'                    => $_GET['term'],
-                                                                                           'anyMixedAttributesScope' => $scopeData))
+                                                '/zurmo/default/globallist',
+                                                array('MixedModelsSearchForm' =>
+                                                    array('term'                    => $_GET['term'],
+                                                          'anyMixedAttributesScope' => ArrayUtil::getArrayValue(
+                                                              GetUtil::getData(), 'globalSearchScope')))
                                                 ),
                               'label'     => 'All results','iconClass' => 'autocomplete-icon-AllResults'))
               );
