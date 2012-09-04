@@ -219,7 +219,8 @@
                     $searchForm->setScenario('validateSaveSearch');
                     if ($searchForm->validate())
                     {
-                        $this->processSaveSearch($searchForm, $viewClassName);
+                        $savedSearch = $this->processSaveSearch($searchForm, $viewClassName);
+                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name));
                         Yii::app()->end(0, false);
                     }
                 }
@@ -247,6 +248,7 @@
             {
                 throw new FailedToSaveModelException();
             }
+            return $savedSearch;
         }
 
         public function actionDeleteSavedSearch($id)
