@@ -3014,6 +3014,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   height: auto;
   font-size: 1em;
 }
+.ui-icon {
+  cursor: pointer;
+}
 .ui-icon-trash:after {
   content: "_";
   font-weight: normal;
@@ -10099,7 +10102,7 @@ div.hasHalfs .twoThirds {
 .AppContent.MassEditView .hasCheckBox {
   margin-top: 0 !important;
   position: relative;
-  top: -8px;
+  top: 10px;
 }
 .AppContent.MassEditView tr th:first-child {
   padding: 0 !important;
