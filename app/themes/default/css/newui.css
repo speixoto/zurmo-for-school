@@ -10383,11 +10383,11 @@ div.hasHalfs .twoThirds {
 .pivotal span {
   background-position: 100% bottom !important;
 }
-/*tasks portlet on dashboard*/
+/*=tasks portlet on dashboard*/
 .TasksMyListView .checkbox-column .hasCheckBox {
   margin-left: 0;
 }
-/*RSS Widget*/
+/*=RSS Widget*/
 .rssBody ul {
   list-style: none;
 }
@@ -10397,4 +10397,14 @@ div.hasHalfs .twoThirds {
 }
 .rssBody li:last-child {
   border-bottom: none;
+}
+/*=Search Results - Mixed Search Results*/
+#MixedModelsSearchView h1 {
+  margin-bottom: 15px;
+}
+#MixedModelsMultipleListsView {
+  margin-top: 15px;
+}
+#MixedModelsMultipleListsView h1 {
+  margin-bottom: 15px;
 }
