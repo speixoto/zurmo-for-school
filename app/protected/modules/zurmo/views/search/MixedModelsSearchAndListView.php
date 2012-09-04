@@ -25,23 +25,23 @@
      ********************************************************************************/
 
     class MixedModelsSearchAndListView extends View
-    { 
-        
+    {
+
         private $views;
         private $term;
         private $scopeData;
-        
+
         public function __construct(Array $views, $term, $scopeData) {
             $this->views     = $views;
             $this->term      = $term;
             $this->scopeData = $scopeData;
         }
-        
+
         protected function renderContent()
-        {            
+        {
             $content = '';
             $content = $this->renderSearchView();
-            $content .= $this->renderListViews();                         
+            $content .= $this->renderListViews();
             $this->renderScripts();
             return $content;
         }
@@ -50,34 +50,34 @@
         {
             $moduleNamesAndLabels     = GlobalSearchUtil::
                                         getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
-            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globallist');                      
+            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globallist');
             GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption(
                                         $moduleNamesAndLabels);
             $searchView = new MixedModelsSearchView($moduleNamesAndLabels, $sourceUrl, $this->term, $this->scopeData);
             return $searchView->render();
         }
-        
+
         /**
          * Render a group of lists that contais the search result from GlobalList
-         *        
+         *
          */
         protected function renderListViews()
-        {            
-            $rows = count($this->views); 
-            $gridView = new GridView($rows, 1);            
-            $row = 0;        
+        {
+            $rows = count($this->views);
+            $gridView = new GridView($rows, 1);
+            $row = 0;
             foreach ($this->views as $view)
-            {                               
-                $gridView->setView($view, $row++, 0);                                
-            }             
-            return $gridView->render();
+            {
+                $gridView->setView($view, $row++, 0);
+            }
+            return ZurmoHtml::tag('div', array('id' => 'MixedModelsMultipleListsView'), $gridView->render());
         }
-        
+
         protected function renderScripts()
         {
-            //On page ready load all the List View with data            
-            $script = "$(document).ready(function () {                                                            
-                            $('#MixedModelsSearchView').find('a').click();                            
+            //On page ready load all the List View with data
+            $script = "$(document).ready(function () {
+                            $('#MixedModelsSearchView').find('a').click();
                        });";
             Yii::app()->clientScript->registerScript('LoadListViews', $script);
         }
