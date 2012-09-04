@@ -31,9 +31,9 @@
     class MixedModelsSearchResultsDataCollection
     {
 
-        private $term;       
+        private $term;
         private $user;
-        private $views = array();        
+        private $views = array();
 
         /**
          * @param   string
@@ -41,26 +41,26 @@
          * @param   User        User model
          * @param   array       Modules to be searched
          */
-        public function __construct($term, $pageSize, User $user) {            
+        public function __construct($term, $pageSize, User $user) {
             assert('is_string($term)');
             assert('is_int($pageSize)');
             $this->term      = $term;
             $this->pageSize  = $pageSize;
             $this->user      = $user;
         }
-                
+
         /**
          * @param   string
          * @param   bollean     Return an empty listView
          * @return  View
          */
         public function getListView($moduleName, $forceEmptyResults = false)
-        {                                    
+        {
             assert('is_string($moduleName)');
             $pageSize = $this->pageSize;
             $module = Yii::app()->findModule($moduleName);
             $searchFormClassName = $module::getGlobalSearchFormClassName();
-            $modelClassName = $module::getPrimaryModelName();            
+            $modelClassName = $module::getPrimaryModelName();
             $model = new $modelClassName(false);
             $searchForm = new $searchFormClassName($model);
             $sanitizedSearchAttributes = MixedTermSearchUtil::
@@ -73,8 +73,8 @@
             $listViewClassName = $module::getPluralCamelCasedName() . 'ListView';
             $sortAttribute     = SearchUtil::resolveSortAttributeFromGetArray($modelClassName);
             $sortDescending    = SearchUtil::resolveSortDescendingFromGetArray($modelClassName);
-            if ($forceEmptyResults) 
-            { 
+            if ($forceEmptyResults)
+            {
                 $dataProviderClass = 'EmptyRedBeanModelDataProvider';
                 $emptyText = '';
             }
@@ -104,29 +104,31 @@
                         'class' => 'SimpleListLinkPager'
                       )
                  );
-            $listView->setRowsAreSelectable(false);            
-            $listView->setEmptyText($emptyText);            
+            $listView->setRowsAreSelectable(false);
+            $listView->setEmptyText($emptyText);
             return $listView;
         }
-        
+
         /**
          * makeViews
          * @return  array   moduleName => listView
          */
         private function makeViews()
-        {                                                
+        {
             $globalSearchModuleNamesAndLabelsData = GlobalSearchUtil::
                     getGlobalSearchScopingModuleNamesAndLabelsDataByUser($this->user);
             foreach ($globalSearchModuleNamesAndLabelsData as $moduleName => $label)
-            {                                    
-                $titleView                              = new TitleBarView($label, null, 1);                                
+            {
+                $titleView                              = new TitleBarView($label, null, 1);
+                $iconClassName                          = Yii::app()->findModule($moduleName)->getPrimaryModelName();
+                $titleView->setCssClasses(array($iconClassName));
                 $this->views['titleBar-' . $moduleName] = $titleView;
                 $this->views[$moduleName]               = $this->getListView($moduleName, true);
             }
         }
-    
+
         public function getViews()
-        {                 
+        {
             $this->makeViews();
             return $this->views;
         }
