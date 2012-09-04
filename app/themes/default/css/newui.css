@@ -9157,14 +9157,10 @@ div.wide.form a {
   list-style: none;
 }
 .BreadCrumbView #StickyListMenu > li > a > span {
-  font-weight: normal;
-  font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  top: 2px;
+  top: 0px;
   position: relative;
   display: block;
   padding: 0 5px;
-  color: #999;
 }
 .BreadCrumbView #StickyListMenu ul {
   border: 1px solid #b6b6b6;
@@ -10406,4 +10402,40 @@ div.hasHalfs .twoThirds {
 }
 #MixedModelsMultipleListsView h1 {
   margin-bottom: 15px;
+}
+.TitleBarView.Account h1:before {
+  content: "P";
+  font-weight: normal;
+  font-size: 36px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 15px;
+  position: relative;
+  top: 0;
+}
+.TitleBarView.Contact h1:before {
+  content: "y";
+  font-weight: normal;
+  font-size: 36px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 15px;
+  position: relative;
+  top: 1px;
+}
+.TitleBarView.Opportunity h1:before {
+  content: "9";
+  font-weight: normal;
+  font-size: 36px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 15px;
+  position: relative;
+  top: 1px;
+}
+.TitleBarView.Lead h1:before {
+  content: ".";
+  font-weight: normal;
+  font-size: 36px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 15px;
+  position: relative;
+  top: 1px;
 }
