@@ -816,6 +816,21 @@ table.configuration-list tr td:last-child a:before {
   position: relative;
   top: 0px;
 }
+#DevelopmentMenuView .configuration-list li a:before {
+  content: "";
+  margin-right: 0px;
+}
+#DevelopmentMenuView .configuration-list li a:after {
+  content: "7";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-left: 5px;
+  position: relative;
+  top: 0px;
+  font-weight: normal !important;
+  vertical-align: middle;
+}
 /*Groups*/
 .ActionBarForSecurityTreeListView .view-toolbar,
 #ActionBarForGroupsEditAndDetailsView .view-toolbar {
