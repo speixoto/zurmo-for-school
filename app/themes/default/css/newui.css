@@ -7173,7 +7173,7 @@ table.items thead tr:hover {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
 a.attachLoading {
-  color: #FFF;
+  color: #FFF !important;
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
@@ -7924,6 +7924,9 @@ div.wide.form a {
 #more-search-link:after {
   content: "▾";
   margin-left: 5px;
+}
+#mixed-models-form-search {
+  margin-left: 15px;
 }
 #ModalView .list-view-items-summary-clone {
   margin: 10px 10px 0 0;
