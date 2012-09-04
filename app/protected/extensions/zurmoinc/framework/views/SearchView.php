@@ -177,16 +177,7 @@
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
                         //Reseting DropKick Information
-                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){
-                            $(this).removeData('dropkick');
-                        });
-                        $(this).closest('form').find('div.dk_container').each(function(){
-                            $(this).remove();
-                        });
-                        $(this).closest('form').find('select:not(.ignore-style)').each(function(){
-                            $(this).dropkick();
-                            $(this).dropkick('rebindToggle');
-                        });
+                        resetDropKickDropDowns($(this));
                         $(this).closest('form').submit();
                         $('#" . $this->getClearingSearchInputId() . "').val('');
                         return false;
