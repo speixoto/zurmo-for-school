@@ -7007,6 +7007,9 @@ table.items thead tr:hover {
   padding-left: 15px;
   display: block;
 }
+td.empty {
+  display: table-cell;
+}
 /*forms*/
 .form input[type="checkbox"] {
   margin: 0 0 10px 0 !important;
