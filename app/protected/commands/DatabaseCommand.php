@@ -78,7 +78,11 @@ EOD;
             if (!Yii::app()->isApplicationInMaintenanceMode())
             {
                 $this->usageError('Please set $maintenanceMode=true in the perInstance.php config file.');
-                Yii::app()->end();
+            }
+
+            if(!function_exists('exec'))
+            {
+                $this->usageError('exec() command is not available in PHP environment.');
             }
 
             try

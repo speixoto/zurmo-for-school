@@ -995,7 +995,7 @@
             assert('is_string($username)     && $username     != ""');
             assert('is_string($password)');
             assert('is_string($databaseName) && $databaseName != ""');
-            assert('is_string($$restoreFilePath) && $$restoreFilePath != ""');
+            assert('is_string($restoreFilePath) && $restoreFilePath != ""');
 
             if ($databaseType == 'mysql')
             {
