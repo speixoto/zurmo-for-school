@@ -119,6 +119,11 @@
             $testItem3_2->name     = 'Jim';
             $this->assertTrue($testItem3_2->save());
 
+            $testItemRelated = new ApiTestModelItem();
+            $testItemRelated->lastName     = 'AAAA';
+            $testItemRelated->string        = 'some string';
+            $this->assertTrue($testItemRelated->save());
+
             $testItem = new ApiTestModelItem();
 
             $testItem->firstName     = 'Bob5';
@@ -137,6 +142,7 @@
             $testItem->modelItems3->add($testItem3_1);
             $testItem->modelItems3->add($testItem3_2);
             $testItem->modelItems4->add($testItem4);
+            $testItem->modelItems->add($testItemRelated);
 
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 1';
@@ -169,6 +175,7 @@
             unset($data['createdByUser']);
             unset($data['modifiedByUser']);
 
+            $this->assertTrue($testItemRelated->delete());
             $testItem->delete();
             $testItem->forget();
             unset($testItem);
@@ -349,7 +356,9 @@
 
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
-
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+//echo "OK";
+//            exit;
             RedBeanModel::forgetAll();
             $updatedModel = ApiTestModelItem::getById($response['data']['id']);
             $this->assertEquals(2, count($updatedModel->modelItems3));
@@ -379,11 +388,15 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $testModels = ApiTestModelItem::getByName('Bob6');
-            $this->assertEquals(1, count($testModels));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModels[0]);
+            $testModel = new ApiTestModelItem();
+            $testModel->firstName = "Ruth";
+            $testModel->lastName  = "Tester";
+            $testModel->string    = "aString";
+            $this->assertTrue($testModel->save());
+
+            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($testModel);
             $compareData  = $redBeanModelToApiDataUtil->getData();
-            $testModels[0]->forget();
+            $testModel->forget();
 
             $testItem4 = new ApiTestModelItem4();
             $testItem4->name     = 'John7';
@@ -439,7 +452,7 @@
             $this->assertEquals($compareData, $response['data']);
 
             RedBeanModel::forgetAll();
-            $updatedModel = ApiTestModelItem::getById($testModels[0]->id);
+            $updatedModel = ApiTestModelItem::getById($compareData['id']);
             $this->assertEquals(2, count($updatedModel->modelItems3));
             $this->assertEquals($testItem3_1->id, $updatedModel->modelItems3[0]->id);
             $this->assertEquals($testItem3_2->id, $updatedModel->modelItems3[1]->id);
@@ -479,7 +492,7 @@
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             RedBeanModel::forgetAll();
-            $updatedModel = ApiTestModelItem::getById($testModels[0]->id);
+            $updatedModel = ApiTestModelItem::getById($compareData['id']);
             $this->assertEquals(0, count($updatedModel->modelItems3));
             $this->assertEquals(0, count($updatedModel->modelItems4));
             $this->assertEquals(0, count($updatedModel->modelItems));
