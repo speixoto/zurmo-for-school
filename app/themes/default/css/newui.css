@@ -9158,10 +9158,14 @@ div.wide.form a {
   list-style: none;
 }
 .BreadCrumbView #StickyListMenu > li > a > span {
-  top: 0;
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  top: 2px;
   position: relative;
   display: block;
   padding: 0 5px;
+  color: #999;
 }
 .BreadCrumbView #StickyListMenu ul {
   border: 1px solid #b6b6b6;

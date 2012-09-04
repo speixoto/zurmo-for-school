@@ -302,7 +302,7 @@
             $dataList   = $dataProvider->getData();
             if(count($dataList) > 0)
             {
-                $menuItems = array('label' => '?');
+                $menuItems = array('label' => '6');
                 foreach($dataList as $row => $data)
                 {
                     $url = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/details',
