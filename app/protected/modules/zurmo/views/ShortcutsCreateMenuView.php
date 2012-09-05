@@ -44,14 +44,6 @@
             $this->menuItems    = $menuItems;
         }
 
-        /**
-         * Just renderContent. Do not wrap with any divs.
-         */
-        public function render()
-        {
-            return $this->renderContent();
-        }
-
         protected function renderContent()
         {
             if (empty($this->menuItems))
