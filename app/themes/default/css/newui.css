@@ -10023,7 +10023,7 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: 0 0 1px 1px #262877;
   -ms-box-shadow: 0 0 1px 1px #262877;
   box-shadow: 0 0 1px 1px #262877;
-  z-index: 1000;
+  z-index: 10000;
 }
 /* The outer container of the options */
 .dk_options {
