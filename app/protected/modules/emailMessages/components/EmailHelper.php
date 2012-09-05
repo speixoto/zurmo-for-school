@@ -144,8 +144,8 @@
             else
             {
                 $this->loadOutboundSettings();
-                $this->fromName = strval(Yii::app()->user->userModel);
-                $this->fromName = $this->resolveFromAddressByUser(Yii::app()->user->userModel);
+                $this->fromName = strval($user);
+                $this->fromName = $this->resolveFromAddressByUser($user);
             }
         }
 

@@ -341,7 +341,7 @@
         public function actionComposeEmail()
         {
             //Yii::app()->getClientScript()->setToAjaxMode();
-            //TODO: Redo if's to make validation work on the form
+            //TODO: Make modal view work
             if (isset($_POST['EmailMessage']))
             {
                 $emailMessage = EmailMessageHelper::sendEmailFromPost(Yii::app()->user->userModel);
@@ -356,7 +356,7 @@
                 }
                 else
                 {
-                    print_r($emailMessage->getErrors());
+                    //TODO: Redo if's to make validation work on the form
                 }
             }
             try

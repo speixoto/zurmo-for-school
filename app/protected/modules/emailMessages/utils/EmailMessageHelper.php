@@ -127,9 +127,7 @@
         {
             $emailMessage       = new EmailMessage();
             $postVariableName   = get_class($emailMessage);
-            //$emailHelper = new EmailHelper();
             Yii::app()->emailHelper->loadOutboundSettingsFromUserEmailAccount($userToSendMessagesFrom);
-
             $toRecipients = explode(",", $_POST[$postVariableName]['recipients']['To']);
             static::attachRecipientsToMessage($toRecipients, $emailMessage, EmailMessageRecipient::TYPE_TO);
             $ccRecipients = explode(",", $_POST[$postVariableName]['recipients']['Cc']);
@@ -151,7 +149,7 @@
             return $emailMessage;
         }
 
-        public static function attachRecipientsToMessage($recipients, $emailMessage, $type)
+        public static function attachRecipientsToMessage(Array $recipients, $emailMessage, $type)
         {
             foreach ($recipients as $recipient)
             {

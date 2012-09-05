@@ -28,11 +28,7 @@
      * Model for user's email accounts
      */
     class EmailAccount extends Item
-    {
-        const OUTBOUND_SYSTEM_SETTINGS = 1;
-
-        const OUTBOUND_CUSTOM_SETTINGS = 2;
-
+    {        
         const DEFAULT_NAME    = 'Default';
 
         public function __toString()

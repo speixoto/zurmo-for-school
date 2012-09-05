@@ -110,5 +110,94 @@
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             }
         }
+
+        public function testSendEmailFromPost()
+        {
+            //Test with no users/person in recipients
+            $billy                      = UserTestHelper::createBasicUser('billy');
+            Yii::app()->user->userModel = $billy;
+            EmailMessageTestHelper::createEmailAccount($billy);
+            $_POST = array('EmailMessage' => array ('recipients' => array('To'  => 'a@zurmo.com,b@zurmo.com',
+                                                                          'Cc'  => 'c@zurmo.com,d@zurmo.com',
+                                                                          'Bcc' => 'e@zurmo.com,f@zurmo.com'),
+                                                    'subject' => 'Test Email From Post',
+                                                    'content' => array('htmlContent' => 'This is a test email')
+                ));
+            $emailMessage = EmailMessageHelper::sendEmailFromPost($billy);
+            //Message should have 6 recipients 2 of each type
+            $this->assertEquals('6', count($emailMessage->recipients));
+            $recipients = $emailMessage->recipients;
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[1]->type);
+            $this->assertEquals(EmailMessageRecipient::TYPE_CC, $recipients[2]->type);
+            $this->assertEquals(EmailMessageRecipient::TYPE_CC, $recipients[3]->type);
+            $this->assertEquals(EmailMessageRecipient::TYPE_BCC, $recipients[4]->type);
+            $this->assertEquals(EmailMessageRecipient::TYPE_BCC, $recipients[5]->type);
+            $this->assertEquals('a@zurmo.com', $recipients[0]->toAddress);
+            $this->assertEquals('b@zurmo.com', $recipients[1]->toAddress);
+            $this->assertEquals('c@zurmo.com', $recipients[2]->toAddress);
+            $this->assertEquals('d@zurmo.com', $recipients[3]->toAddress);
+            $this->assertEquals('e@zurmo.com', $recipients[4]->toAddress);
+            $this->assertEquals('f@zurmo.com', $recipients[5]->toAddress);
+            $this->assertNull($recipients[0]->toName);
+            $this->assertNull($recipients[1]->toName);
+            $this->assertNull($recipients[2]->toName);
+            $this->assertNull($recipients[3]->toName);
+            $this->assertNull($recipients[4]->toName);
+            $this->assertNull($recipients[5]->toName);
+            //Recipients are not personOrAccount
+            $this->assertLessThan(0, $recipients[0]->personOrAccount->id);
+            $this->assertLessThan(0, $recipients[1]->personOrAccount->id);
+            $this->assertLessThan(0, $recipients[2]->personOrAccount->id);
+            $this->assertLessThan(0, $recipients[3]->personOrAccount->id);
+            $this->assertLessThan(0, $recipients[4]->personOrAccount->id);
+            $this->assertLessThan(0, $recipients[5]->personOrAccount->id);
+            //The message should go to the default outbox folder
+            $this->assertEquals(EmailFolder::getDefaultOutboxName(), $emailMessage->folder->name);
+            $this->assertEquals(EmailFolder::TYPE_OUTBOX, $emailMessage->folder->type);
+            unset($emailMessage);
+            unset($recipients);
+            unset($_POST);
+
+            //Test with no personOrAccount in recipients
+            $sally = UserTestHelper::createBasicUser('sally');;
+            $email = new Email();
+            $email->emailAddress = 'sally@example.com';
+            $sally->primaryEmail = $email;
+            $sally->save();
+            $_POST = array('EmailMessage' => array ('recipients' => array('To'  => 'sally@example.com',
+                                                                          'Cc'  => null,
+                                                                          'Bcc' => null),
+                                                    'subject' => 'Test Email From Post',
+                                                    'content' => array('htmlContent' => 'This is a test email')
+                ));
+            $emailMessage = EmailMessageHelper::sendEmailFromPost($billy);
+            $this->assertEquals($emailMessage->recipients[0]->personOrAccount->id, $sally->id);
+        }
+
+        /**
+         * @depends testSendEmailFromPost
+         */
+        public function testAttachRecipientsToMessage()
+        {
+            $billy                      = User::getByUsername('billy');
+            Yii::app()->user->userModel = $billy;
+            $emailMessage = new EmailMessage();
+            //Attach non personOrAccount recipient
+            EmailMessageHelper::attachRecipientsToMessage(array('a@zurmo.com', 'b@zurmo.com', 'c@zurmo.com'), $emailMessage, EmailMessageRecipient::TYPE_TO);
+            $this->assertEquals('3', count($emailMessage->recipients));
+            $this->assertLessThan(0, $emailMessage->recipients[0]->personOrAccount->id);
+            $this->assertLessThan(0, $emailMessage->recipients[1]->personOrAccount->id);
+            $this->assertLessThan(0, $emailMessage->recipients[2]->personOrAccount->id);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[0]->type);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[1]->type);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[2]->type);
+            //Attach personOrAccount recipient
+            $sally = User::getByUsername('sally');
+            EmailMessageHelper::attachRecipientsToMessage(array('sally@example.com'), $emailMessage, EmailMessageRecipient::TYPE_BCC);
+            $this->assertEquals('4', count($emailMessage->recipients));
+            $this->assertEquals($emailMessage->recipients[3]->personOrAccount->id, $sally->id);
+            $this->assertEquals(EmailMessageRecipient::TYPE_BCC, $emailMessage->recipients[3]->type);
+        }
     }
 ?>
