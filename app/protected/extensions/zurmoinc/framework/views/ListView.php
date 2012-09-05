@@ -58,14 +58,14 @@
          * Array of model ids. Each id is for a different row checked off
          */
         protected $selectedIds;
-        
+
         /**
          * Array containing CGridViewPagerParams
          */
         protected $gridViewPagerParams;
-        
+
         private $resolvedMetadata;
-        
+
         protected $emptyText = null;
 
         private $listAttributesSelector;
@@ -81,7 +81,7 @@
             $dataProvider,
             $selectedIds,
             $gridIdSuffix = null,
-            $gridViewPagerParams = null
+            $gridViewPagerParams = null,
             $listAttributesSelector = null
         )
         {
@@ -131,9 +131,9 @@
         {
             return $this->rowsAreSelectable;
         }
-        
+
         public function setRowsAreSelectable($value)
-        {            
+        {
             $this->rowsAreSelectable = (boolean)$value;
         }
 
@@ -187,16 +187,16 @@
                         'class'            => 'EndlessListLinkPager',
                         'paginationParams' => GetUtil::getData(),
                         'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
-                    ); 
+                    );
             if (!$this->gridViewPagerParams)
             {
                 return $defaultGridViewPagerParams;
-            } 
+            }
             else
             {
                 return array_merge($defaultGridViewPagerParams, $this->gridViewPagerParams);
             }
-             
+
         }
 
         protected function getShowTableOnEmpty()
@@ -210,10 +210,10 @@
         }
 
         public function setEmptyText($text)
-        {            
+        {
             $this->emptyText = $text;
         }
-        
+
         public function getGridViewId()
         {
             return $this->gridId . $this->gridIdSuffix;
