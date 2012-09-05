@@ -218,6 +218,7 @@
                     array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\d+>',    'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\w+>',    'verb' => 'GET'),    // Not Coding Standard
                     array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/*',           'verb' => 'GET'),    // Not Coding Standard
+                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/',            'verb' => 'POST'),    // Not Coding Standard
                     array('<module>/<model>Api/update',         'pattern' => '<module:\w+>/<model:\w+>/api/update/<id:\d+>',  'verb' => 'PUT'),    // Not Coding Standard
                     array('<module>/<model>Api/delete',         'pattern' => '<module:\w+>/<model:\w+>/api/delete/<id:\d+>',  'verb' => 'DELETE'), // Not Coding Standard
                     array('<module>/<model>Api/create',         'pattern' => '<module:\w+>/<model:\w+>/api/create/',          'verb' => 'POST'),   // Not Coding Standard

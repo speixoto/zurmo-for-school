@@ -539,7 +539,7 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $searchParams = array(
+            $data = array(
                 'dynamicSearch' => array(
                     'dynamicClauses' => array(
                         array(
@@ -569,8 +569,7 @@
                 'sort' => 'name.asc',
            );
 
-            $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/tasks/task/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/tasks/task/api/list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -581,9 +580,8 @@
             $this->assertEquals('First Task', $response['data']['items'][1]['name']);
 
             // Get second page
-            $searchParams['pagination']['page'] = 2;
-            $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/tasks/task/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $data['pagination']['page'] = 2;
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/tasks/task/api/list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
