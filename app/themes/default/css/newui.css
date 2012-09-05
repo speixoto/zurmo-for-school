@@ -1372,6 +1372,11 @@ table.configuration-list tr td:last-child a:before {
 .multi-select-checkbox-input .hasCheckBox {
   margin: 0 10px 0 0 !important;
 }
+.has-lang-label {
+  position: relative;
+  margin-bottom: 15px;
+  clear: left;
+}
 .has-lang-label input {
   position: relative;
   padding-left: 80px;
@@ -1379,10 +1384,10 @@ table.configuration-list tr td:last-child a:before {
 .has-lang-label input + span {
   background: url(../images/lang-label.png) left top no-repeat;
   display: inline-block;
-  position: relative;
+  position: absolute;
   left: 1px;
   line-height: 24px;
-  top: -25px;
+  top: 1px;
   width: 80px;
   text-align: center;
   border-right: 1px solid #cccccc;
@@ -1391,6 +1396,9 @@ table.configuration-list tr td:last-child a:before {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+}
+.has-lang-label .errorMessage {
+  margin-bottom: 15px;
 }
 .add-custom-field > div {
   padding: 15px 15px 15px 15px;
@@ -3285,6 +3293,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   margin: 15px 0 0 0;
+  float: left;
+  clear: both;
 }
 .AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -5218,6 +5228,11 @@ span.tooltip {
   -ms-box-shadow: inset 0 0 0 2px #ffffff;
   box-shadow: inset 0 0 0 2px #ffffff;
 }
+@media screen and (min-width: 1600px) {
+  .AppContainer {
+    margin: 0 auto !important;
+  }
+}
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -5445,17 +5460,9 @@ section {
 }
 /*=MastHead*/
 #HeaderLinksView {
-  background-color: #262877;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#202264), to(#262877));
-  background-image: -moz-linear-gradient(top, #202264, #262877);
-  background-image: -ms-linear-gradient(top, #202264, #262877);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #202264), color-stop(100%, #262877));
-  background-image: -webkit-linear-gradient(top, #202264, #262877);
-  background-image: -o-linear-gradient(top, #202264, #262877);
-  background-image: linear-gradient(top, #202264, #262877);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202264', endColorstr='#262877', GradientType=0);
   height: 38px;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 #corp-logo {
   float: left;
@@ -5534,6 +5541,14 @@ section {
 #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background: #7cb730;
+}
+#HeaderLinksView + div {
+  background: url(../images/header-bar-2.png) left top repeat-x;
+  -webkit-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
+  box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
 }
 .notifications-link {
   margin-top: 12px;
@@ -5691,12 +5706,8 @@ section {
 }
 #GlobalSearchView {
   height: 40px;
-  background: url(../images/header-bar-2.png) left top repeat-x;
-  -webkit-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
-  -moz-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
-  -o-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
-  -ms-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
-  box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
+  max-width: 1600px;
+  margin: 0 auto;
 }
 #app-search {
   margin-left: 3%;
@@ -5868,6 +5879,7 @@ section {
 }
 .AppContainer {
   min-width: 900px;
+  max-width: 1600px;
   height: 100%;
   margin: 0 3% 0 3%;
   background: #ffffff url(../images/nav.png) left top repeat-y;
@@ -5950,6 +5962,16 @@ section {
 #HeaderView {
   position: relative;
   z-index: 9999;
+  background-color: #262877;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#202264), to(#262877));
+  background-image: -moz-linear-gradient(top, #202264, #262877);
+  background-image: -ms-linear-gradient(top, #202264, #262877);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #202264), color-stop(100%, #262877));
+  background-image: -webkit-linear-gradient(top, #202264, #262877);
+  background-image: -o-linear-gradient(top, #202264, #262877);
+  background-image: linear-gradient(top, #202264, #262877);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202264', endColorstr='#262877', GradientType=0);
 }
 /*=Shortcuts nav*/
 .GridView {
@@ -5968,7 +5990,6 @@ section {
   padding: 0 10px;
   display: block;
   line-height: 23px;
-  background: red;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
