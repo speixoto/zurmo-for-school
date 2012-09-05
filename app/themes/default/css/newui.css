@@ -3344,9 +3344,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   input[type="button"] {
     height: 26px;
   }
-  #JobsCollectionView .tooltip {
-    margin-top: -11px;
-  }
 }
 span.tooltip {
   width: 15px;
