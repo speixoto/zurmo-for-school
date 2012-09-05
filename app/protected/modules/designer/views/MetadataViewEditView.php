@@ -154,12 +154,7 @@
             $element  = new LayoutPanelsTypeStaticDropDownElement($formModel, 'type', $form);
             $element->editableTemplate = '{content}';
             $content .= $element->render();
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js');
+            DropDownUtil::registerScripts();
             return $content;
         }
 
