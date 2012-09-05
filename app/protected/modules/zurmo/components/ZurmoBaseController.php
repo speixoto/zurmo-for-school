@@ -139,14 +139,14 @@
         private function makeDataCollectionAndResolveSavedSearch($searchModel, $stickySearchKey = null, $setSticky = true)
         {
             $dataCollection = new SearchAttributesDataCollection($searchModel);
-            if($searchModel instanceof SavedDynamicSearchForm)
+            if ($searchModel instanceof SavedDynamicSearchForm)
             {
                 $getData = GetUtil::getData();
-                if($stickySearchKey != null && isset($getData['clearingSearch']) && $getData['clearingSearch'])
+                if ($stickySearchKey != null && isset($getData['clearingSearch']) && $getData['clearingSearch'])
                 {
                     StickySearchUtil::clearDataByKey($stickySearchKey);
                 }
-                if($stickySearchKey != null && null != $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey))
+                if ($stickySearchKey != null && null != $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey))
                 {
                     SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
                     $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
@@ -154,12 +154,12 @@
                 else
                 {
                     SavedSearchUtil::resolveSearchFormByGetData(GetUtil::getData(), $searchModel);
-                    if($searchModel->savedSearchId != null)
+                    if ($searchModel->savedSearchId != null)
                     {
                         $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                     }
                 }
-                if($stickySearchKey != null && $setSticky)
+                if ($stickySearchKey != null && $setSticky)
                 {
                     SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection);
                 }

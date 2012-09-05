@@ -202,6 +202,17 @@
                     throw new NotSupportedException();
                 }
 
+                // In case of ContactState model, we can't use Module::getStateMetadataAdapterClassName() function,
+                // because it references to Contact model, so we defined new function
+                // ContactsContactStateApiController::getStateMetadataAdapterClassName() which return null.
+                if (method_exists($this, 'getStateMetadataAdapterClassName'))
+                {
+                    $stateMetadataAdapterClassName = $this->getStateMetadataAdapterClassName();
+                }
+                else
+                {
+                    $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
+                }
 
                 $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
                 $dataProvider = $this->makeRedBeanDataProviderFromGet(

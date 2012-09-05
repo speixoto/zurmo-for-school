@@ -36,11 +36,9 @@
          * (non-PHPdoc)
          * @see CDataColumn::renderDataCellContent()
          */
-        protected function renderDataCellContent($row,$data)
+        protected function renderDataCellContent($row, $data)
         {
-
-
-            if($this->value !== null)
+            if ($this->value !== null)
             {
                 $pagination = $this->grid->dataProvider->getPagination();
                 if (isset($pagination))
@@ -51,22 +49,21 @@
                 {
                     $offset = 0;
                 }
-                $value = $this->evaluateExpression($this->value,array('data'=>$data,'row'=>$row, 'offset' => ($offset + $row)));
+                $value = $this->evaluateExpression($this->value, array('data' => $data, 'row' => $row, 'offset' => ($offset + $row)));
             }
-            elseif($this->name !== null)
+            elseif ($this->name !== null)
             {
                 $value = ZurmoHtml::value($data, $this->name);
             }
-            if($value===null)
+            if ($value === null)
             {
                 echo $this->grid->nullDisplay;
             }
             else
             {
-                echo $this->grid->getFormatter()->format($value,$this->type);
+                echo $this->grid->getFormatter()->format($value, $this->type);
             }
         }
-
 
         public function renderDataCellContentFromOutsideClass($row, $data)
         {

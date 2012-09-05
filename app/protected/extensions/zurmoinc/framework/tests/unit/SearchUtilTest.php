@@ -177,6 +177,40 @@
             $searchArray = array('testMultiSelectDropDown' => array('values' => array(0 => null)));
             $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
             $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testMultiSelectDropDown' => array('values' => array(0 => null, 1 => 'xyz')));
+            $resultArray = array('testMultiSelectDropDown' => array('values' => array(0 => 'xyz')));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array(0 => '')));
+            $resultArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array()));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array(0 => null)));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array(0 => null, 1 => 'xyz')));
+            $resultArray = array('testDropDownAsMultiSelectDropDown' => array('value' => array(0 => 'xyz')));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            //Test recursion
+            $searchArray = array('testDropDownAsMultiSelectDropDown' =>
+                                    array('abc' => array('value' => array(0 => null, 1 => 'xyz'))));
+            $resultArray = array('testDropDownAsMultiSelectDropDown' =>
+                                    array('abc' => array('value' => array(0 => 'xyz'))));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
+
+            $searchArray = array('testMultiSelectDropDown' =>
+                                    array('abc' => array('values' => array(0 => null, 1 => 'xyz'))));
+            $resultArray = array('testMultiSelectDropDown' =>
+                                    array('abc' => array('values' => array(0 => 'xyz'))));
+            $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            $this->assertEquals($resultArray, $newArray);
         }
 
         public function testGetSearchAttributesFromSearchArrayForSavingExistingSearchCriteria()
@@ -223,6 +257,36 @@
             );
             $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
             $this->assertEquals(array('a' => '0'), $newArray);
+
+            $searchArray = array(
+                'a' => array('values' => array(0 => '')),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('values' => array())), $newArray);
+
+            $searchArray = array(
+                'a' => array('value' => array(0 => '')),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('value' => array())), $newArray);
+
+            $searchArray = array(
+                'a' => array('values' => array(0 => null)),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('values' => array())), $newArray);
+
+            $searchArray = array(
+                'a' => array('value' => array(0 => null)),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('value' => array())), $newArray);
+
+            $searchArray = array(
+                'a' => array('value' => array(0 => null, 1 => 'xyz')),
+            );
+            $newArray = SearchUtil::getSearchAttributesFromSearchArrayForSavingExistingSearchCriteria($searchArray);
+            $this->assertEquals(array('a' => array('value' => array(0 => 'xyz'))), $newArray);
         }
 
         public function testAdaptSearchAttributesToSetInRedBeanModel()
@@ -375,7 +439,6 @@
             $newArray = SearchUtil::sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($searchModel,
                                                                                                 $dynamicSearchAttributes);
             $this->assertEquals($dynamicSearchAttributes, $newArray);
-
         }
 
         public function testSanitizeDynamicSearchAttributesByDesignerTypeForSavingModelWithSanitizableItems()
@@ -440,15 +503,15 @@
             $dynamicSearchAttributes = array(
                                         0 => array('attributeIndexOrDerivedType' => 'iii' . DynamicSearchUtil::RELATION_DELIMITER . 'date__Date',
                                                     'structurePosition'          => '1',
-                                                    'iii'						 => array(
-                                                    'relatedModelData'			 => true,
+                                                    'iii'                        => array(
+                                                    'relatedModelData'           => true,
                                                     'date__Date'                 =>
                                                         array('firstDate' => '5/4/11',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
                                         1 => array('attributeIndexOrDerivedType' => 'iii' . DynamicSearchUtil::RELATION_DELIMITER . 'dateTime__DateTime',
                                                     'structurePosition'          => '1',
-                                                    'iii'						 => array(
-                                                    'relatedModelData'			 => true,
+                                                    'iii'                        => array(
+                                                    'relatedModelData'           => true,
                                                     'dateTime__DateTime'         =>
                                                         array('firstDate' => '5/7/11',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
@@ -459,15 +522,15 @@
             $compareData = array(
                                         0 => array('attributeIndexOrDerivedType' => 'iii' . DynamicSearchUtil::RELATION_DELIMITER . 'date__Date',
                                                     'structurePosition'          => '1',
-                                                    'iii'						 => array(
-                                                    'relatedModelData'			 => true,
+                                                    'iii'                        => array(
+                                                    'relatedModelData'           => true,
                                                     'date__Date'                 =>
                                                         array('firstDate' => '2011-05-04',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
                                         1 => array('attributeIndexOrDerivedType' => 'iii' . DynamicSearchUtil::RELATION_DELIMITER . 'dateTime__DateTime',
                                                     'structurePosition'          => '1',
-                                                    'iii'						 => array(
-                                                    'relatedModelData'			 => true,
+                                                    'iii'                        => array(
+                                                    'relatedModelData'           => true,
                                                     'dateTime__DateTime'         =>
                                                         array('firstDate' => '2011-05-07',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))),
@@ -486,12 +549,12 @@
                                                     DynamicSearchUtil::RELATION_DELIMITER . 'iii' .
                                                     DynamicSearchUtil::RELATION_DELIMITER . 'date__Date',
                                                     'structurePosition'          => '1',
-                                                    'bbb'						 => array(
-                                                    'relatedModelData'			 => true,
-                                                    'ccc'						 => array(
-                                                    'relatedModelData'			 => true,
-                                                    'iii'						 => array(
-                                                    'relatedModelData'			 => true,
+                                                    'bbb'                        => array(
+                                                    'relatedModelData'           => true,
+                                                    'ccc'                        => array(
+                                                    'relatedModelData'           => true,
+                                                    'iii'                        => array(
+                                                    'relatedModelData'           => true,
                                                     'date__Date'                 =>
                                                         array('firstDate' => '5/4/11',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
@@ -500,12 +563,12 @@
                                                     DynamicSearchUtil::RELATION_DELIMITER . 'iii' .
                                                     DynamicSearchUtil::RELATION_DELIMITER . 'dateTime__DateTime',
                                                     'structurePosition'          => '1',
-                                                    'bbb'						 => array(
-                                                    'relatedModelData'			 => true,
-                                                    'ccc'						 => array(
-                                                    'relatedModelData'			 => true,
-                                                    'iii'						 => array(
-                                                    'relatedModelData'			 => true,
+                                                    'bbb'                        => array(
+                                                    'relatedModelData'           => true,
+                                                    'ccc'                        => array(
+                                                    'relatedModelData'           => true,
+                                                    'iii'                        => array(
+                                                    'relatedModelData'           => true,
                                                     'date__Date'                 =>
                                                         array('firstDate' => '5/7/11',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
@@ -519,12 +582,12 @@
                                                     DynamicSearchUtil::RELATION_DELIMITER . 'iii' .
                                                     DynamicSearchUtil::RELATION_DELIMITER . 'date__Date',
                                                     'structurePosition'          => '1',
-                                                    'bbb'						 => array(
-                                                    'relatedModelData'			 => true,
-                                                    'ccc'						 => array(
-                                                    'relatedModelData'			 => true,
-                                                    'iii'						 => array(
-                                                    'relatedModelData'			 => true,
+                                                    'bbb'                        => array(
+                                                    'relatedModelData'           => true,
+                                                    'ccc'                        => array(
+                                                    'relatedModelData'           => true,
+                                                    'iii'                        => array(
+                                                    'relatedModelData'           => true,
                                                     'date__Date'                 =>
                                                         array('firstDate' => '2011-05-04',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),
@@ -533,12 +596,12 @@
                                                     DynamicSearchUtil::RELATION_DELIMITER . 'iii' .
                                                     DynamicSearchUtil::RELATION_DELIMITER . 'dateTime__DateTime',
                                                     'structurePosition'          => '1',
-                                                    'bbb'						 => array(
-                                                    'relatedModelData'			 => true,
-                                                    'ccc'						 => array(
-                                                    'relatedModelData'			 => true,
-                                                    'iii'						 => array(
-                                                    'relatedModelData'			 => true,
+                                                    'bbb'                        => array(
+                                                    'relatedModelData'           => true,
+                                                    'ccc'                        => array(
+                                                    'relatedModelData'           => true,
+                                                    'iii'                        => array(
+                                                    'relatedModelData'           => true,
                                                     'date__Date'                 =>
                                                         array('firstDate' => '2011-05-07',
                                                               'type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER))))),

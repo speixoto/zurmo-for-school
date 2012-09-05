@@ -78,16 +78,23 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $contactStates = ContactsUtil::getContactStateDataFromStartingStateOnAndKeyedById();
+
+            $contactStates                 = ContactsUtil::getContactStateDataFromStartingStateLabelByLanguage(Yii::app()->language);
+            $compareData = array();
+            foreach ($contactStates as $contactState)
+            {
+                $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($contactState);
+                $compareData[] = $redBeanModelToApiDataUtil->getData();
+            }
 
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contactState/api/listContactStates/', 'GET', $headers);
             $response = json_decode($response, true);
 
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals(count($contactStates), count($response['data']['items']));
-            $this->assertEquals(count($contactStates), $response['data']['totalCount']);
+            $this->assertEquals(count($compareData), count($response['data']['items']));
+            $this->assertEquals(count($compareData), $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
-            $this->assertEquals($contactStates, $response['data']['items']);
+            $this->assertEquals($compareData, $response['data']['items']);
         }
 
         /**
@@ -105,16 +112,23 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $contactStates = LeadsUtil::getLeadStateDataFromStartingStateOnAndKeyedById();
+            $leadStates                 = LeadsUtil::getLeadStateDataFromStartingStateLabelByLanguage(Yii::app()->language);
+
+            $compareData = array();
+            foreach ($leadStates as $leadState)
+            {
+                $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($leadState);
+                $compareData[] = $redBeanModelToApiDataUtil->getData();
+            }
 
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contactState/api/listLeadStates/', 'GET', $headers);
             $response = json_decode($response, true);
 
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals(count($contactStates), count($response['data']['items']));
-            $this->assertEquals(count($contactStates), $response['data']['totalCount']);
+            $this->assertEquals(count($compareData), count($response['data']['items']));
+            $this->assertEquals(count($compareData), $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
-            $this->assertEquals($contactStates, $response['data']['items']);
+            $this->assertEquals($compareData, $response['data']['items']);
         }
 
         /**
@@ -143,7 +157,6 @@
 
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contactState/api/list/', 'GET', $headers);
             $response = json_decode($response, true);
-
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(6, count($response['data']['items']));
             $this->assertEquals(6, $response['data']['totalCount']);

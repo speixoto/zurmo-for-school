@@ -176,7 +176,7 @@
          */
         public static function isAttributeSearchable($attributeName)
         {
-            if(in_array($attributeName, static::getNonSearchableAttributes()))
+            if (in_array($attributeName, static::getNonSearchableAttributes()))
             {
                 return false;
             }
@@ -193,7 +193,7 @@
             $searchableAttributes    = array();
             foreach ($this->getAttributes() as $attributeName => $notUsed)
             {
-                if(!in_array($attributeName, static::getNonSearchableAttributes()))
+                if (!in_array($attributeName, static::getNonSearchableAttributes()))
                 {
                     $searchableAttributes[$attributeName] = $notUsed;
                 }

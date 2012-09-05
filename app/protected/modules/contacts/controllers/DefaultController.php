@@ -60,7 +60,7 @@
                 'ContactsStateMetadataAdapter',
                 'ContactsSearchView'
             );
-            if(isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView(
                     $searchForm,

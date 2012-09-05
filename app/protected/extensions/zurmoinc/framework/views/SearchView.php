@@ -281,7 +281,7 @@
                     $startingDivStyle = "style='display:none;'";
                 }
                 $content .= '<div class="search-view-' . $key . '" ' . $startingDivStyle . '>';
-                if($key == 1)
+                if ($key == 1)
                 {
                    $content .= $this->renderAdvancedSearchForFormLayout($panel, $maxCellsPerRow, $form);
                 }

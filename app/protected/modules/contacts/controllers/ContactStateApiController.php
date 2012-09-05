@@ -39,6 +39,15 @@
             return 'ContactStateSearchForm';
         }
 
+        /**
+        * We cant use Module::getStateMetadataAdapterClassName() because that references
+        * to Contact model and we are using ContactState model.
+        */
+        public function getStateMetadataAdapterClassName()
+        {
+            return null;
+        }
+
         public function actionCreate()
         {
             throw new ApiUnsupportedException();
@@ -73,17 +82,23 @@
         {
             try
             {
+                $states = array();
                 if ($state =='contact')
                 {
-                    $states = ContactsUtil::getContactStateDataFromStartingStateKeyedByIdAndLabelByLanguage(Yii::app()->language);
+                    $states = ContactsUtil::getContactStateDataFromStartingStateLabelByLanguage(Yii::app()->language);
                 }
                 elseif ($state == 'lead')
                 {
-                    $states = LeadsUtil::getLeadStateDataFromStartingStateKeyedByIdAndLabelByLanguage(Yii::app()->language);
+                    $states = LeadsUtil::getLeadStateDataFromStartingStateLabelByLanguage(Yii::app()->language);
                 }
-                $data['totalCount'] = count($states);
+                foreach ($states as $model)
+                {
+                    $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
+                    $data['items'][] = $redBeanModelToApiDataUtil->getData();
+                }
+
+                $data['totalCount'] = count($data['items']);
                 $data['currentPage'] = 1;
-                $data['items'] = $states;
                 $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 Yii::app()->apiHelper->sendResponse($result);
             }

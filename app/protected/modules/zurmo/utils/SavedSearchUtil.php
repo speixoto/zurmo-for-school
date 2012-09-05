@@ -32,7 +32,7 @@
         public static function makeSavedSearchBySearchForm(DynamicSearchForm $searchForm, $viewClassName)
         {
             assert('is_string($viewClassName)');
-            if($searchForm->savedSearchId != null)
+            if ($searchForm->savedSearchId != null)
             {
                 $savedSearch       = SavedSearch::getById((int)$searchForm->savedSearchId);
             }
@@ -60,17 +60,17 @@
 
         public static function resolveSearchFormByGetData(array $getData, DynamicSearchForm $searchForm)
         {
-            if(isset($getData['savedSearchId']) && $getData['savedSearchId'] != '')
+            if (isset($getData['savedSearchId']) && $getData['savedSearchId'] != '')
             {
                 $savedSearch                 = SavedSearch::getById((int)$getData['savedSearchId']);
                 $searchForm->savedSearchName = $savedSearch->name;
                 $searchForm->savedSearchId   = $savedSearch->id;
                 $unserializedData            = unserialize($savedSearch->serializedData);
-                if(isset($unserializedData['anyMixedAttributes']))
+                if (isset($unserializedData['anyMixedAttributes']))
                 {
                     $searchForm->anyMixedAttributes = $unserializedData['anyMixedAttributes'];
                 }
-                if(isset($unserializedData['anyMixedAttributesScope']))
+                if (isset($unserializedData['anyMixedAttributesScope']))
                 {
                     $searchForm->setAnyMixedAttributesScope($unserializedData['anyMixedAttributesScope']);
                 }
@@ -84,7 +84,7 @@
                 {
                     $searchForm->dynamicStructure = $unserializedData['dynamicStructure'];
                 }
-                if(isset($unserializedData['dynamicClauses']))
+                if (isset($unserializedData['dynamicClauses']))
                 {
                     $searchForm->dynamicClauses = $unserializedData['dynamicClauses'];
                 }
@@ -94,10 +94,10 @@
         public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection)
         {
             assert('is_string($key)');
-            $stickyData['dynamicClauses']          = $dataCollection->getDynamicSearchAttributes();
+            $stickyData['dynamicClauses']          = $dataCollection->getSanitizedDynamicSearchAttributes();
             $stickyData['dynamicStructure']        = $dataCollection->getDynamicStructure();
             $anyMixedAttributes                    = $dataCollection->resolveSearchAttributesFromSourceData();
-            if(isset($anyMixedAttributes['anyMixedAttributes']))
+            if (isset($anyMixedAttributes['anyMixedAttributes']))
             {
                 $stickyData['anyMixedAttributes']      = $anyMixedAttributes['anyMixedAttributes'];
             }
@@ -107,7 +107,7 @@
 
             $stickyData['anyMixedAttributesScope']            = $dataCollection->getAnyMixedAttributesScopeFromModel();
             $stickyData[SearchForm::SELECTED_LIST_ATTRIBUTES] = $dataCollection->getSelectedListAttributesFromModel();
-            if($dataCollection instanceof SavedSearchAttributesDataCollection)
+            if ($dataCollection instanceof SavedSearchAttributesDataCollection)
             {
                 $stickyData['savedSearchId']           = $dataCollection->getSavedSearchId();
             }
@@ -117,25 +117,25 @@
         public static function resolveSearchFormByStickyDataAndModel($stickyData, SavedDynamicSearchForm $model)
         {
             assert('$stickyData != null && is_array($stickyData)');
-            if(isset($stickyData['savedSearchId']) && $stickyData['savedSearchId'] != '')
+            if (isset($stickyData['savedSearchId']) && $stickyData['savedSearchId'] != '')
             {
                 $savedSearch            = SavedSearch::getById((int)$stickyData['savedSearchId']);
                 $model->savedSearchName = $savedSearch->name;
                 $model->savedSearchId   = $savedSearch->id;
             }
-            if(isset($stickyData['anyMixedAttributes']))
+            if (isset($stickyData['anyMixedAttributes']))
             {
                 $model->anyMixedAttributes = $stickyData['anyMixedAttributes'];
             }
-            if(isset($stickyData['anyMixedAttributesScope']))
+            if (isset($stickyData['anyMixedAttributesScope']))
             {
                 $model->setAnyMixedAttributesScope($stickyData['anyMixedAttributesScope']);
             }
-            if(isset($stickyData['dynamicStructure']))
+            if (isset($stickyData['dynamicStructure']))
             {
                 $model->dynamicStructure = $stickyData['dynamicStructure'];
             }
-            if(isset($stickyData['dynamicClauses']))
+            if (isset($stickyData['dynamicClauses']))
             {
                 $model->dynamicClauses = $stickyData['dynamicClauses'];
             }

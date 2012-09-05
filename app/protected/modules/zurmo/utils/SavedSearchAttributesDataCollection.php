@@ -32,21 +32,44 @@
         public function getDynamicSearchAttributes()
         {
             $searchArray = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
-            if(!empty($searchArray))
+            if (!empty($searchArray))
             {
                 return $searchArray;
             }
-            elseif($this->model->dynamicClauses != null)
+            elseif ($this->model->dynamicClauses != null)
             {
                 $searchArray = $this->model->dynamicClauses;
                 return SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            }
+            else
+            {
+                return array();
+            }
+        }
+
+        public function getSanitizedDynamicSearchAttributes()
+        {
+            $searchArray = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
+            if (!empty($searchArray))
+            {
+                return SearchUtil::
+                   sanitizeDynamicSearchAttributesByDesignerTypeForSavingModel($this->model, $searchArray);
+            }
+            elseif ($this->model->dynamicClauses != null)
+            {
+                $searchArray = $this->model->dynamicClauses;
+                return SearchUtil::getSearchAttributesFromSearchArray($searchArray);
+            }
+            else
+            {
+                return array();
             }
         }
 
         public function getDynamicStructure()
         {
             $dynamicStructure = SearchUtil::getDynamicSearchStructureFromGetArray(get_class($this->model));
-            if($dynamicStructure != null)
+            if ($dynamicStructure != null)
             {
                 return $dynamicStructure;
             }
@@ -56,11 +79,11 @@
         public function resolveSearchAttributesFromSourceData()
         {
             $anyMixedAttributes = SearchUtil::resolveSearchAttributesFromGetArray(get_class($this->model), get_class($this->model));
-            if($anyMixedAttributes != null)
+            if ($anyMixedAttributes != null)
             {
                 return $anyMixedAttributes;
             }
-            if($this->model->anyMixedAttributes != null)
+            if ($this->model->anyMixedAttributes != null)
             {
                 //might need to run this through the @see SearchUtil::getSearchAttributesFromSearchArray but not sure.
                 return array('anyMixedAttributes' => $this->model->anyMixedAttributes);

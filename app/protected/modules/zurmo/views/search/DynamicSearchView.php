@@ -67,7 +67,8 @@
         protected function getExtraRenderForClearSearchLinkScript()
         {
             return parent::getExtraRenderForClearSearchLinkScript() .
-                    "$(this).closest('form').find('.search-view-1').find('.dynamic-search-row').each(function(){
+                    "$(this).closest('form').find('.search-view-1').find('.dynamic-search-row').each(function()
+                    {
                         $(this).remove();
                     });
                     $('#" . $this->getRowCounterInputId() . "').val(0);
@@ -124,9 +125,10 @@
         {
             return parent::getExtraRenderFormBottomPanelScriptPart() .
                     "$('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').unbind('input.clear propertychange.clear keyup.clear');
-                     $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event){
+                     $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event)
+                     {
                          resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
-                });";
+                     });";
         }
 
         /**
@@ -140,7 +142,7 @@
 
         protected function renderAdvancedSearchForFormLayout($panel, $maxCellsPerRow, $form = null)
         {
-            if(isset($panel['advancedSearchType']) &&
+            if (isset($panel['advancedSearchType']) &&
                $panel['advancedSearchType'] == self::ADVANCED_SEARCH_TYPE_DYNAMIC)
             {
                 return $this->renderDynamicAdvancedSearchRows($panel, $maxCellsPerRow, $form);
@@ -161,12 +163,12 @@
             $viewClassName      = get_class($this);
             $modelClassName     = get_class($this->model->getModel());
             $formModelClassName = get_class($this->model);
-            if($this->model->dynamicClauses!= null)
+            if ($this->model->dynamicClauses!= null)
             {
-                foreach($this->model->dynamicClauses as $dynamicClause)
+                foreach ($this->model->dynamicClauses as $dynamicClause)
                 {
                     $attributeIndexOrDerivedType = ArrayUtil::getArrayValue($dynamicClause, 'attributeIndexOrDerivedType');
-                    if($attributeIndexOrDerivedType != null)
+                    if ($attributeIndexOrDerivedType != null)
                     {
                         $searchAttributes = self::resolveSearchAttributeValuesForDynamicRow($dynamicClause,
                                                                                             $attributeIndexOrDerivedType);
@@ -184,7 +186,7 @@
                                                                                              $attributeIndexOrDerivedType,
                                                                                              $inputContent,
                                                                                              $suffix);
-                        $rowCount ++;
+                        $rowCount++;
                     }
                 }
             }
@@ -197,11 +199,11 @@
         protected static function resolveSearchAttributeValuesForDynamicRow($dynamicClause, $attributeIndexOrDerivedType)
         {
             $dynamicClauseOnlyWithAttributes = $dynamicClause;
-            if(isset($dynamicClause['structurePosition']))
+            if (isset($dynamicClause['structurePosition']))
             {
                 unset($dynamicClauseOnlyWithAttributes['structurePosition']);
             }
-            if(isset($dynamicClause['attributeIndexOrDerivedType']))
+            if (isset($dynamicClause['attributeIndexOrDerivedType']))
             {
                 unset($dynamicClauseOnlyWithAttributes['attributeIndexOrDerivedType']);
             }
@@ -242,7 +244,6 @@
 
         protected function renderAfterAddExtraRowContent($form)
         {
-
         }
 
         protected function getAddFieldLabelContent()
@@ -283,7 +284,7 @@
 
         protected function renderDynamicSearchStructureContent($form)
         {
-            if($this->shouldHideDynamicSearchStructureByDefault())
+            if ($this->shouldHideDynamicSearchStructureByDefault())
             {
                 $style1 = '';
                 $style2 = 'display:none;';
@@ -293,7 +294,7 @@
                 $style1 = 'display:none;';
                 $style2 = '';
             }
-            if(count($this->model->dynamicClauses) > 0)
+            if (count($this->model->dynamicClauses) > 0)
             {
                 $style3 = '';
             }
@@ -319,7 +320,7 @@
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'dynamic-search-structure-input');
             $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
-            $content            .= Yii::t('Default', '<span>Search Structure</span>');
+            $content            .= ZurmoHtml::tag('span', array(), Yii::t('Default', 'Search Operator'));
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
         }
@@ -332,11 +333,11 @@
         protected function getClearSearchLabelPrefixContent()
         {
             $criteriaCount = count($this->model->dynamicClauses);
-            if($this->model->anyMixedAttributes != null)
+            if ($this->model->anyMixedAttributes != null)
             {
                 $criteriaCount++;
             }
-            if($criteriaCount == 0)
+            if ($criteriaCount == 0)
             {
                 $criteriaCountContent = '';
             }
@@ -360,6 +361,16 @@
             {
                 return "display:none;";
             }
+        }
+
+        /**
+         * Override and manipulate as needed. This method can be used to change the ordering that the dynamic search
+         * attribute dropdown shows attributes in for example.
+         * @param array $attributeIndexOrDerivedTypeAndLabels
+         */
+        public static function resolveAttributeIndexOrDerivedTypeAndLabelsForDynamicSearchRow(
+                               & $attributeIndexOrDerivedTypeAndLabels)
+        {
         }
     }
 ?>
