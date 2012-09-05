@@ -22,6 +22,7 @@
 @import 'tablet.less';
 @import 'conversations.less';
 @import 'email.less';
+@import 'media-queries.less';
 
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
@@ -151,10 +152,10 @@ body{
     color:#545454;
     -webkit-font-smoothing: antialiased;
     /* @doubtful_existance: I don’t think these even exist? Can’t hurt much, I guess. */
--moz-font-smoothing: antialiased;
--o-font-smoothing: antialiased;
-/* end @doubtful_existance */
-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    /* end @doubtful_existance */
+    font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -295,8 +296,10 @@ footer, header, hgroup, menu, nav, section {
 /*=MastHead*/
 #HeaderLinksView{
     //background: url(../images/header-bar-1.png) left top repeat-x;
-    #gradient > .vertical( darken(@themeColor, 5%), @themeColor );
+    //#gradient > .vertical( darken(@themeColor, 5%), @themeColor );
     height:38px;
+    max-width: 1600px;
+    margin:0 auto;
 }
 
 #corp-logo{
@@ -345,6 +348,10 @@ footer, header, hgroup, menu, nav, section {
 
 #HeaderLinksView ul ul{
     .headerDropDown();
+}
+#HeaderLinksView + div{
+     background: url(../images/header-bar-2.png) left top repeat-x;
+    .b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
 }
 
 .headerDropDown(){
@@ -422,7 +429,7 @@ footer, header, hgroup, menu, nav, section {
     .flyout();
     width:400px;
     right:72px;
-    top:38px;
+    top:33px;
     position:absolute;
     z-index:99999;
     padding:5px 10px;
@@ -514,8 +521,10 @@ footer, header, hgroup, menu, nav, section {
 
 #GlobalSearchView{
     height:40px;
-    background: url(../images/header-bar-2.png) left top repeat-x;
-    .b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
+    max-width: 1600px;
+    margin:0 auto;
+    //background: url(../images/header-bar-2.png) left top repeat-x;
+    //.b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
 }
 
 #app-search{
@@ -681,6 +690,7 @@ footer, header, hgroup, menu, nav, section {
 
 .AppContainer{
     min-width:900px;
+    max-width: 1600px;
     height:100%;
     margin:0 3% 0 3%;
     background:#fff url(../images/nav.png) left top repeat-y;
@@ -761,6 +771,7 @@ footer, header, hgroup, menu, nav, section {
 #HeaderView{
     position:relative;
     z-index:9999;
+    #gradient > .vertical( darken(@themeColor, 5%), @themeColor );
 }
 
 /*=Shortcuts nav*/
@@ -779,7 +790,7 @@ footer, header, hgroup, menu, nav, section {
             padding:0 10px;
             display:block;
             line-height:23px;
-            background:red;
+            //background:red;
             .radius(4px);
             font-size:13px;
             color:#333333;
@@ -1538,6 +1549,9 @@ table.items thead tr:hover{
     padding-left:15px;
     display:block;
 }
+td.empty{
+    display: table-cell;
+}
 
 /*forms*/
 .form{
@@ -1645,7 +1659,7 @@ table.items thead tr:hover{
 }
 
 a.attachLoading{
-    color:#FFF;
+    color:#FFF !important;
     .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
     //.b-shadow(inset 0 1px 1px 0 rgba(255, 255, 255, 0.5));
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
@@ -2157,6 +2171,10 @@ div.wide.form{
     }
 }
 
+#mixed-models-form-search{
+    margin-left:15px;
+}
+
 #ModalView{
     .list-view-items-summary-clone{
         margin:10px 10px 0 0;
@@ -2167,15 +2185,20 @@ div.wide.form{
         float:left;
     }
     .search-view-1{
-        margin-top:15px;
+        //margin-top:15px;
         z-index:100;
         min-width:400px;
+        max-width:75%;
         height:auto;
         position:absolute;
         left:250px;
         top:35px;
         padding:20px 20px 20px 20px;
         .flyout();
+        input, select{
+            position: relative;
+            z-index: 5000;
+        }
     }
     #clear-search-linkmodal{
         margin-left:10px;
@@ -3126,8 +3149,8 @@ div.wide.form{
     #StickyListMenu{
         list-style: none;
         > li > a > span{
-            //.symbly(22px);
-            top:0;
+            //.symbly(18px);
+            top:0px;
             position: relative;
             display: block;
             padding:0 5px;
@@ -3751,7 +3774,7 @@ div.hasHalfs{
 
 .dk_open {
     .b-shadow(0 0 1px 1px @themeColor);
-    z-index: 1000;
+    z-index: 10000;
 }
 
 /* The outer container of the options */
@@ -3848,7 +3871,7 @@ div.hasHalfs{
     .hasCheckBox{
         margin-top:0 !important;
         position:relative;
-        top:-8px;
+        top:10px;
     }
     tr th:first-child{
         padding:0 !important;
@@ -4048,7 +4071,7 @@ div.hasHalfs{
     background-position: 100% bottom !important;
 }
 
-/*tasks portlet on dashboard*/
+/*=tasks portlet on dashboard*/
 .TasksMyListView{
     .checkbox-column{
         .hasCheckBox{
@@ -4056,8 +4079,7 @@ div.hasHalfs{
         }
     }
 }
-
-/*RSS Widget*/
+/*=RSS Widget*/
 .rssBody{
 	ul{
 		list-style: none;
@@ -4071,3 +4093,45 @@ div.hasHalfs{
 	}
 }
 
+/*=Search Results - Mixed Search Results*/
+#MixedModelsSearchView{
+    h1{
+        margin-bottom:15px;
+    }
+}
+#MixedModelsMultipleListsView{
+    margin-top:15px;
+    h1{
+        margin-bottom: 15px;
+    }
+}
+.TitleBarView{
+    &.Account h1:before{
+        content: "P";
+        .symbly(36px);
+        margin-right:15px;
+        position: relative;
+        top:0;
+    }
+    &.Contact h1:before{
+        content: "y";
+        .symbly(36px);
+        margin-right:15px;
+        position: relative;
+        top:1px;
+    }
+    &.Opportunity h1:before{
+        content: "9";
+        .symbly(36px);
+        margin-right:15px;
+        position: relative;
+        top:1px;
+    }
+    &.Lead h1:before{
+        content: ".";
+        .symbly(36px);
+        margin-right:15px;
+        position: relative;
+        top:1px;
+    } 
+}
