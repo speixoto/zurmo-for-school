@@ -100,7 +100,6 @@
 }
 .juiportlet-widget-column2 {
   padding: 0;
-  padding: 0;
   list-style: none;
 }
 .juiportlet-column-split-even-2 {
@@ -816,6 +815,20 @@ table.configuration-list tr td:last-child a:before {
   margin-right: 5px;
   position: relative;
   top: 0px;
+}
+#DevelopmentMenuView .configuration-list li a:before {
+  content: "";
+  margin-right: 0px;
+}
+#DevelopmentMenuView .configuration-list li a:after {
+  content: "7";
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
+  font-weight: normal !important;
 }
 /*Groups*/
 .ActionBarForSecurityTreeListView .view-toolbar,
@@ -1560,12 +1573,12 @@ table.configuration-list tr td:last-child a:before {
 #send-test-email-field > div {
   margin-right: 130px;
 }
-#send-test-email-field  + span {
+#send-test-email-field + span {
   float: left;
   width: 130px;
   margin-left: -130px;
 }
-#send-test-email-field  + span input {
+#send-test-email-field + span input {
   float: right;
 }
 /*Import window*/
@@ -1641,7 +1654,7 @@ table.configuration-list tr td:last-child a:before {
 #ImportWizardUploadFileView .hasCheckBox {
   margin: 0 !important;
 }
-#ImportWizardUploadFileView .hasCheckBox  + label {
+#ImportWizardUploadFileView .hasCheckBox + label {
   margin: 5px 0 0 10px !important;
 }
 /*= Step 3*/
@@ -3001,6 +3014,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   height: auto;
   font-size: 1em;
 }
+.ui-icon {
+  cursor: pointer;
+}
 .ui-icon-trash:after {
   content: "_";
   font-weight: normal;
@@ -3398,7 +3414,6 @@ span.tooltip {
 .ui-tooltip-content {
   position: relative;
   padding: 5px 9px;
-  overflow: hidden;
   text-align: left;
   word-wrap: break-word;
   overflow: hidden;
@@ -3643,7 +3658,7 @@ span.tooltip {
 .ui-tooltip-youtube .ui-tooltip-content {
   padding: .75em;
   font: 12px arial, sans-serif;
-  filter: progid:dximagetransform.microsoft.gradient(GradientType=0, StartColorStr=#4a4a4a, EndColorStr=#000000);
+  filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#4a4a4a, EndColorStr=#000000);
   -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);";
 }
 .ui-tooltip-youtube .ui-tooltip-icon {
@@ -3670,11 +3685,11 @@ span.tooltip {
 /* IE Specific */
 .ui-tooltip-jtools .ui-tooltip-titlebar {
   background-color: transparent;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr=#717171, endColorstr=#4a4a4a);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#717171, endColorstr=#4a4a4a);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#717171,endColorstr=#4A4A4A)";
 }
 .ui-tooltip-jtools .ui-tooltip-content {
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr=#4a4a4a, endColorstr=#232323);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4a4a4a, endColorstr=#232323);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323)";
 }
 .ui-tooltip-jtools .ui-tooltip-titlebar,
@@ -3753,7 +3768,7 @@ span.tooltip {
   background: #3A79B8;
   background-image: -moz-linear-gradient(top, #3a79b8, #2e629d);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#3a79b8), to(#2e629d));
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr=#3a79b8, endColorstr=#2e629d);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#3a79b8, endColorstr=#2e629d);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D)";
 }
 .ui-tooltip-tipped .ui-tooltip-icon {
@@ -5580,7 +5595,7 @@ section {
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   width: 400px;
   right: 72px;
-  top: 38px;
+  top: 33px;
   position: absolute;
   z-index: 99999;
   padding: 5px 10px;
@@ -6102,7 +6117,6 @@ section {
   clear: both;
 }
 #MenuView a {
-  display: block;
   height: 35px;
   width: 100%;
   display: block;
@@ -6489,7 +6503,6 @@ section {
   padding: 0 10px;
   line-height: 30px;
   display: inline-block;
-  border-left: 1px solid #bababa;
   position: relative;
   border-left: 1px solid #bababa;
   text-indent: 0 !important;
@@ -7011,6 +7024,9 @@ table.items thead tr:hover {
   padding-left: 15px;
   display: block;
 }
+td.empty {
+  display: table-cell;
+}
 /*forms*/
 .form input[type="checkbox"] {
   margin: 0 0 10px 0 !important;
@@ -7177,7 +7193,7 @@ table.items thead tr:hover {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
 a.attachLoading {
-  color: #FFF;
+  color: #FFF !important;
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
@@ -7388,7 +7404,6 @@ a.simple-select:before {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  width: 100%;
   height: 40px;
   line-height: 40px;
   background-color: #ededed;
@@ -7491,7 +7506,7 @@ label.hasCheckBox.disabled {
   -moz-opacity: 0.5;
   opacity: 0.5;
 }
-label.hasCheckBox  + label {
+label.hasCheckBox + label {
   margin-left: 8px;
   margin-top: 6px;
 }
@@ -7839,7 +7854,6 @@ div.wide.form a {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  border-left: none;
   font-style: italic;
   color: #999;
   text-indent: 10px;
@@ -7931,6 +7945,9 @@ div.wide.form a {
   content: "▾";
   margin-left: 5px;
 }
+#mixed-models-form-search {
+  margin-left: 15px;
+}
 #ModalView .list-view-items-summary-clone {
   margin: 10px 10px 0 0;
 }
@@ -7940,9 +7957,9 @@ div.wide.form a {
   float: left;
 }
 #ModalView .search-view-1 {
-  margin-top: 15px;
   z-index: 100;
   min-width: 400px;
+  max-width: 75%;
   height: auto;
   position: absolute;
   left: 250px;
@@ -7964,6 +7981,11 @@ div.wide.form a {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+}
+#ModalView .search-view-1 input,
+#ModalView .search-view-1 select {
+  position: relative;
+  z-index: 5000;
 }
 #ModalView #clear-search-linkmodal {
   margin-left: 10px;
@@ -9138,7 +9160,7 @@ div.wide.form a {
   list-style: none;
 }
 .BreadCrumbView #StickyListMenu > li > a > span {
-  top: 0;
+  top: 0px;
   position: relative;
   display: block;
   padding: 0 5px;
@@ -10080,7 +10102,7 @@ div.hasHalfs .twoThirds {
 .AppContent.MassEditView .hasCheckBox {
   margin-top: 0 !important;
   position: relative;
-  top: -8px;
+  top: 10px;
 }
 .AppContent.MassEditView tr th:first-child {
   padding: 0 !important;
@@ -10359,11 +10381,11 @@ div.hasHalfs .twoThirds {
 .pivotal span {
   background-position: 100% bottom !important;
 }
-/*tasks portlet on dashboard*/
+/*=tasks portlet on dashboard*/
 .TasksMyListView .checkbox-column .hasCheckBox {
   margin-left: 0;
 }
-/*RSS Widget*/
+/*=RSS Widget*/
 .rssBody ul {
   list-style: none;
 }
@@ -10373,4 +10395,50 @@ div.hasHalfs .twoThirds {
 }
 .rssBody li:last-child {
   border-bottom: none;
+}
+/*=Search Results - Mixed Search Results*/
+#MixedModelsSearchView h1 {
+  margin-bottom: 15px;
+}
+#MixedModelsMultipleListsView {
+  margin-top: 15px;
+}
+#MixedModelsMultipleListsView h1 {
+  margin-bottom: 15px;
+}
+.TitleBarView.Account h1:before {
+  content: "P";
+  font-weight: normal;
+  font-size: 36px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 15px;
+  position: relative;
+  top: 0;
+}
+.TitleBarView.Contact h1:before {
+  content: "y";
+  font-weight: normal;
+  font-size: 36px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 15px;
+  position: relative;
+  top: 1px;
+}
+.TitleBarView.Opportunity h1:before {
+  content: "9";
+  font-weight: normal;
+  font-size: 36px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 15px;
+  position: relative;
+  top: 1px;
+}
+.TitleBarView.Lead h1:before {
+  content: ".";
+  font-weight: normal;
+  font-size: 36px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 15px;
+  position: relative;
+  top: 1px;
 }
