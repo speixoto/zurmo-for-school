@@ -120,8 +120,10 @@
                 CClientScript::POS_END
             );
             $htmlOptions             = array();
-            $htmlOptions['class']    = 'attachLoading z-button';
-            $aContent                = CHtml::tag('span', array('class' => 'z-spinner'), null);
+            $htmlOptions['id']       = 'saveLayout';
+			$htmlOptions['name']     = 'saveLayout';
+			$htmlOptions['class']    = 'attachLoading z-button';
+			$aContent                = CHtml::tag('span', array('class' => 'z-spinner'), null);
             $aContent               .= CHtml::tag('span', array('class' => 'z-icon'), null);
             $aContent               .= CHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Save Layout'));
             return ZurmoHtml::ajaxLink($aContent, '#', array(
