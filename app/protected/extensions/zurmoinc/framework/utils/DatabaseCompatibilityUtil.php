@@ -205,18 +205,28 @@
          */
         public static function getDatabaseMaxColumnNameLength()
         {
+
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
-                return 64;
+                $maxColumnNameLength = 64;
             }
             elseif (RedBeanDatabase::getDatabaseType() == 'pgsql')
             {
-                return 31;
+                $maxColumnNameLength = 31;
+            }
+            elseif (RedBeanDatabase::getDatabaseType() == 'oci')
+            {
+                $maxColumnNameLength = 30;
+            }
+            elseif (RedBeanDatabase::getDatabaseType() == 'mssql')
+            {
+                $maxColumnNameLength = 128;
             }
             else
             {
                 throw new NotSupportedException();
             }
+            return $maxColumnNameLength;
         }
 
         /**
