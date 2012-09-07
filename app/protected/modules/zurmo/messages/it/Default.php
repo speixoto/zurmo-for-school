@@ -115,6 +115,10 @@
             => 'Provincia',
         'Any Street'
             => 'Via',
+        'Application is in maintenance mode, and only Super Administrators can access it.'
+            => '??',
+        'Application is in maintenance mode. Please try again later.'
+            => '??',
         'Application Name'
             => 'Nome dell\'applicazione',
         'are required.'
@@ -173,6 +177,10 @@
             => 'Converti',
         'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
             => 'Copyright &#169; Zurmo Inc., 2012. Tutti i diritti riservati.',
+        'Could not remove relation.'
+            => '??',
+        'Could not save relation.'
+            => '??',
         'Country'
             => 'Paese',
         'Create Group'
@@ -271,6 +279,8 @@
             => 'Configurazione globale',
         'Global configuration saved successfully.'
             => 'Configurazione globale modificata con successo.',
+        'Global search'
+            => '??',
         'Go to Search'
             => 'alla Ricerca',
         'Got questions{spaceAndFirstName}? Find answers in the Zurmo Wiki.'
@@ -391,6 +401,8 @@
             => 'Il modello non era creato.',
         'Model was not updated.'
             => 'Il modello non era aggiornato.',
+        'Model was updated, but there were issues with relations.'
+            => '??',
         'Modify Structure'
             => 'Modifica la struttura',
         'Module Name - Plural'
@@ -615,6 +627,8 @@
             => 'La bolla di notifica vi tiene aggiornati sugli eventi importanti.',
         'The record you are trying to access does not exist.'
             => 'Questo record è stato cancellato.',
+        'The related model ID specified was invalid.'
+            => '??',
         'The status specified is invalid.'
             => 'Il stato specificate non é valido.',
         'There are no recently viewed items.'
@@ -639,6 +653,8 @@
             => 'Fiera',
         'Type a currency code or name to search.'
             => 'Inserisci il codice o il nome.',
+        'Unsupported action.'
+            => '??',
         'Update'
             => 'Aggiorna',
         'Update Custom Data'
@@ -673,6 +689,8 @@
             => 'Passaparola',
         'Write'
             => 'Scrivere',
+        'You can add relations only for HAS_MANY and MANY_MANY relations.'
+            => '??',
         'You have tried to access a page you do not have access to.'
             => 'Non si è autorizzati a visualizzare questa pagina.',
         'You must have at least one active currency.'

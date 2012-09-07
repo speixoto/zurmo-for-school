@@ -54,7 +54,7 @@
             $content .= '<table><tr><td>';
             $content .= '<div id="upgrade-step-two" style="display:none;">';
             $content .= '<table><tr><td>';
-            $content .= Yii::t('Default', 'The next step is to reload application and upgrade schema.');
+            $content .= Yii::t('Default', 'The next step is to reload the application and upgrade the schema.');
             $content .= '<br/><br/>';
             $content .= CHtml::link(Yii::t('Default', 'Click Here to continue with next step'), $zurmoUpgradeStepTwoUrl);
             $content .= '</td></tr></table>';

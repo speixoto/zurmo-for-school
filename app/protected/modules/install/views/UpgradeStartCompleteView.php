@@ -51,7 +51,7 @@
             $content .= '<table><tr><td>';
             $content .= '<div id="upgrade-step-two">';
             $content .= '<table><tr><td>';
-            $content .= Yii::t('Default', 'This is Zurmo upgrade process. Please backup all files and database before you continue.');
+            $content .= Yii::t('Default', 'This is the Zurmo upgrade process. Please backup all files and the database before you continue.');
             $content .= '<br/>';
             $content .= Yii::t('Default', 'Copy upgrade file to app/protected/runtime/upgrade folder and start upgrade process.');
             $content .= '<br/><br/>';
