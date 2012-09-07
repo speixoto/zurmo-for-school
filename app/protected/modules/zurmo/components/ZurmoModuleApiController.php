@@ -220,10 +220,19 @@
             try
             {
                 $filterParams = array();
-                if (isset($params['filter']) && $params['filter'] != '')
+
+                if (strtolower($_SERVER['REQUEST_METHOD']) != 'post')
                 {
-                    parse_str($params['filter'], $filterParams);
+                    if (isset($params['filter']) && $params['filter'] != '')
+                    {
+                        parse_str($params['filter'], $filterParams);
+                    }
                 }
+                else
+                {
+                    $filterParams = $params['data'];
+                }
+
                 $pageSize    = Yii::app()->pagination->getGlobalValueByType('apiListPageSize');
 
                 if (isset($filterParams['pagination']['pageSize']))

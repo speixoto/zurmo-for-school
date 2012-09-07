@@ -185,5 +185,11 @@
                 throw new NotSupportedException();
             }
         }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            $element = new AvatarTypeAndEmailElement($this->model, 'serializedAvatarData');
+            return $element->render();
+        }
     }
 ?>

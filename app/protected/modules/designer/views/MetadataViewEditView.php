@@ -115,6 +115,8 @@
                 CClientScript::POS_END
             );
             $htmlOptions             = array();
+            $htmlOptions['id']       = 'saveLayout';
+            $htmlOptions['name']     = 'saveLayout';
             $htmlOptions['class']    = 'attachLoading z-button';
             $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
             $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
