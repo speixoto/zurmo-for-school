@@ -24,48 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ShortcutsCreateMenuView extends View
+    /**
+     * Base view for displaying a global search and shortcuts create menu view
+     */
+    class GlobalSearchAndShortcutsCreateMenuView extends View
     {
-        protected $controllerId;
+        protected $moduleNamesAndLabelsAndAll;
 
-        protected $moduleId;
+        protected $sourceUrl;
 
-        protected $menuItems;
+        protected $shortcutsCreateMenuView;
 
-        protected $displayName;
-
-        public function __construct($controllerId, $moduleId, $menuItems)
+        public function __construct($moduleNamesAndLabelsAndAll, $sourceUrl, $shortcutsCreateMenuView)
         {
-            assert('is_string($controllerId)');
-            assert('is_string($moduleId)');
-            assert('$menuItems == null || is_array($menuItems)');
-            $this->controllerId = $controllerId;
-            $this->moduleId     = $moduleId;
-            $this->menuItems    = $menuItems;
-        }
-
-        /**
-         * Just renderContent. Do not wrap with any divs.
-         */
-        public function render()
-        {
-            return $this->renderContent();
+            assert('is_array($moduleNamesAndLabelsAndAll)');
+            assert('is_string($sourceUrl)');
+            assert('$shortcutsCreateMenuView instanceof ShortcutsCreateMenuView');
+            $this->moduleNamesAndLabelsAndAll = $moduleNamesAndLabelsAndAll;
+            $this->sourceUrl                  = $sourceUrl;
+            $this->shortcutsCreateMenuView    = $shortcutsCreateMenuView;
         }
 
         protected function renderContent()
         {
-            if (empty($this->menuItems))
-            {
-                return;
-            }
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("Shortcuts");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ShortcutsMenu'),
-                'items'                   => array($this->menuItems),
-            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['Shortcuts'];
+            $globalSearchView = new GlobalSearchView($this->moduleNamesAndLabelsAndAll, $this->sourceUrl);
+            return $globalSearchView->render() . $this->shortcutsCreateMenuView->render();
         }
     }
 ?>
