@@ -5232,12 +5232,6 @@ span.tooltip {
   .AppContainer {
     margin: 0 auto !important;
   }
-  #app-search {
-    margin-left: 0 !important;
-  }
-  #ShortcutsMenu {
-    margin-right: 0 !important;
-  }
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
@@ -5710,7 +5704,7 @@ section {
 #settings-header-menu ul {
   margin-left: -97px;
 }
-#GlobalSearchView {
+#GlobalSearchAndShortcutsCreateMenuView {
   height: 40px;
   max-width: 1600px;
   margin: 0 auto;
@@ -5929,27 +5923,11 @@ section {
 .GridView {
   position: relative;
 }
-#ShortcutsCreateMenuView {
-  zoom: 1;
-  height: 40px;
-  max-width: 1600px;
-  margin: -40px auto 0 auto;
-  position: relative;
-}
-#ShortcutsCreateMenuView:before {
-  content: "";
-  display: table;
-}
-#ShortcutsCreateMenuView:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 #ShortcutsMenu {
   position: absolute;
   float: right;
   right: 3%;
-  top: 5px;
+  top: 7px;
 }
 #ShortcutsMenu > li {
   list-style: none !important;
@@ -8039,6 +8017,10 @@ div.wide.form a {
   display: inline-block;
   margin: 15px 3px 10px 0;
 }
+.add-fields-container .z-spinner {
+  display: block !important;
+  margin-top: -5px;
+}
 #show-dynamic-search-structure-wrapper-search-form {
   display: block;
   width: 100%;
@@ -8047,6 +8029,7 @@ div.wide.form a {
 #show-dynamic-search-structure-div-link-search-form {
   display: block;
   margin-bottom: 15px;
+  margin-left: 23px;
 }
 #save-search-area {
   width: 50%;

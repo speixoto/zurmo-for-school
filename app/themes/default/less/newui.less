@@ -514,7 +514,7 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-#GlobalSearchView{
+#GlobalSearchAndShortcutsCreateMenuView{
     height:40px;
     max-width: 1600px;
     margin:0 auto;
@@ -713,19 +713,11 @@ footer, header, hgroup, menu, nav, section {
     position:relative;
 }
 
-#ShortcutsCreateMenuView{
-    .clearfix();
-    height:40px;
-    max-width: 1600px;
-    margin:-40px auto 0 auto;
-    position: relative;
-}
-
 #ShortcutsMenu{
     position: absolute;
     float:right;
     right:3%;
-    top:5px;
+    top:7px;
     > li{
         list-style:none !important;
         > a{
@@ -2167,7 +2159,12 @@ div.wide.form{
     display: inline-block;
     margin:15px 3px 10px 0;
 }
-
+.add-fields-container{
+    .z-spinner{
+        display: block !important;
+        margin-top: -5px;
+    }
+}
 
 #show-dynamic-search-structure-wrapper-search-form{
     display: block;
@@ -2178,6 +2175,7 @@ div.wide.form{
 #show-dynamic-search-structure-div-link-search-form{
     display: block;
     margin-bottom: 15px;
+    margin-left:23px;
 }
 
 #save-search-area{

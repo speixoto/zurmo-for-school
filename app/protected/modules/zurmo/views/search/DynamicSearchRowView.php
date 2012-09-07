@@ -128,7 +128,7 @@
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',
                     'url'     =>  $ajaxOnChangeUrl,
                     'beforeSend' => 'js:function(){
-                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></hi>");
+                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
                         attachLoadingSpinner("' . $inputDivId . '");
                         }',
                     'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
