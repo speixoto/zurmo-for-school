@@ -626,7 +626,7 @@
         'The Notifications speech bubble keeps you up to date on important events.'
             => 'Die Benachrichtigungen Sprechblase hält dich auf dem neuesten über wichtige Ereignisse.',
         'The record you are trying to access does not exist.'
-            => 'Der Datensatz existiert nicht.',+
+            => 'Der Datensatz existiert nicht.',
         'The related model ID specified was invalid.'
             => '??',
         'The status specified is invalid.'
