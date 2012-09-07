@@ -125,7 +125,7 @@ function attachLoadingSpinner(divId, spinnerClassName)
         width : 2, // The line thickness
         radius : 3, // The radius of the inner circle
         rotate : 0, // The rotation offset
-        color : '#fff', // #rgb or #rrggbb
+        color : '#999', // #rgb or #rrggbb
         speed : 2, // Rounds per second
         trail : 37, // Afterglow percentage
         shadow : false, // Whether to render a shadow
