@@ -127,10 +127,11 @@
                     'data'    => 'js:\'suffix=' . $this->suffix .
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',
                     'url'     =>  $ajaxOnChangeUrl,
-                    'success' => 'js:function(data)
-                                  {
-                                      $("#' . $inputDivId . '").html(data);
-                                  }',
+                    'beforeSend' => 'js:function(){
+                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></hi>");
+                        attachLoadingSpinner("' . $inputDivId . '");
+                        }',
+                    'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
             ));
             return "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {

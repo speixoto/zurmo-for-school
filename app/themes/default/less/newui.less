@@ -295,8 +295,6 @@ footer, header, hgroup, menu, nav, section {
 
 /*=MastHead*/
 #HeaderLinksView{
-    //background: url(../images/header-bar-1.png) left top repeat-x;
-    //#gradient > .vertical( darken(@themeColor, 5%), @themeColor );
     height:38px;
     max-width: 1600px;
     margin:0 auto;
@@ -323,7 +321,6 @@ footer, header, hgroup, menu, nav, section {
 }
 
 #HeaderLinksView > div{
-    //margin:0 40px 0 40px;
     margin:0 3% 0 3%;
 }
 
@@ -350,7 +347,7 @@ footer, header, hgroup, menu, nav, section {
     .headerDropDown();
 }
 #HeaderLinksView + div{
-     background: url(../images/header-bar-2.png) left top repeat-x;
+    background: url(../images/header-bar-2.png) left top repeat-x;
     .b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
 }
 
@@ -511,8 +508,6 @@ footer, header, hgroup, menu, nav, section {
         content: "n"; //Q o n
         color:#ccc;
         .symbly(26px);
-        //.opacity(75);
-        //font-smooth:always;
     }
     ul{
         margin-left:-97px;
@@ -523,8 +518,6 @@ footer, header, hgroup, menu, nav, section {
     height:40px;
     max-width: 1600px;
     margin:0 auto;
-    //background: url(../images/header-bar-2.png) left top repeat-x;
-    //.b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
 }
 
 #app-search{
@@ -600,6 +593,11 @@ footer, header, hgroup, menu, nav, section {
     margin-right:8px;
     content: "e";
 }
+.autocomplete-icon-AllResults:before{
+    .symbly(20px);
+    margin-right:8px;
+    content: "k";
+}
 
 .global-search-loopa{
     padding:0;
@@ -624,14 +622,17 @@ footer, header, hgroup, menu, nav, section {
     float:right;
   }
 }
+
 .ui-multiselect-single .ui-multiselect-checkboxes input {
   position:absolute !important;
   top:auto !important;
   left:-9999px;
 }
+
 .ui-multiselect-single .ui-multiselect-checkboxes label {
   padding:5px !important;
 }
+
 .ui-multiselect-header {
   margin-bottom:0;
   padding:0;
@@ -656,12 +657,14 @@ footer, header, hgroup, menu, nav, section {
     padding-right:0;
   }
 }
+
 .ui-multiselect-menu {
   display:none;
   padding:0;
   position:absolute;
   z-index:10000;
 }
+
 .ui-multiselect-checkboxes {
   position:relative;
   overflow-y:auto;
@@ -687,7 +690,6 @@ footer, header, hgroup, menu, nav, section {
   }
 }
 
-
 .AppContainer{
     min-width:900px;
     max-width: 1600px;
@@ -699,74 +701,6 @@ footer, header, hgroup, menu, nav, section {
     z-index: 0;
     position:relative;
 }
-/*
-.AppContent{
-     .radius(0 0 5px 5px);
-    .single-column{
-    	background:pink !important;
-		padding-right:0 !important;
-		.GridView{
-			display:block;
-			width:100% !important;
-		}
-		.GridView:first-child{
-			display:block;
-			width:100% !important;
-		}
-		.panel{
-			width:70%;
-			float:left;
-			td, th{
-				padding-bottom:10px !important;
-			}
-		}
-		.details-table{
-			.clearfix();
-		}
-		#right-side-edit-view-panel{
-			top:55px;
-		}
-	}
-}
-*/
-/*
-
-.single-coloumn-details-view,
-#ConversationDetailsView,
-#ConversationDetailsAndRelationsView{
-	&.AppContent{
-		padding-right:0;
-	}
-	.GridView{
-		display:none;
-	}
-	.GridView:first-child{
-		display:block;
-		width:100%;
-	}
-	.panel{
-		width:70%;
-		float:left;
-		td, th{
-			padding-bottom:10px !important;
-		}
-	}
-	.details-table{
-		.clearfix();
-	}
-	#right-side-edit-view-panel{
-		top:55px;
-	}
-	
-}
-*/
-
-
-
-
-
-
-
 
 #HeaderView{
     position:relative;
@@ -779,18 +713,25 @@ footer, header, hgroup, menu, nav, section {
     position:relative;
 }
 
+#ShortcutsCreateMenuView{
+    .clearfix();
+    height:40px;
+    max-width: 1600px;
+    margin:-40px auto 0 auto;
+    position: relative;
+}
+
 #ShortcutsMenu{
     position: absolute;
     float:right;
     right:3%;
-    top:8px;
+    top:5px;
     > li{
         list-style:none !important;
         > a{
             padding:0 10px;
             display:block;
             line-height:23px;
-            //background:red;
             .radius(4px);
             font-size:13px;
             color:#333333;
@@ -895,34 +836,15 @@ footer, header, hgroup, menu, nav, section {
             .opacity(0);
         }
         /*Conversation button*/
-        /*> span {
-        	margin-left:10px;
-        	background: @themeColor2;
-        	padding:0;
-        	width:16px;
-        	height:16px;
-        	line-height:16px;
-        	text-align:center;
-        	text-indent:0;
-        	display:inline-block;
-        	color:#fff;
-        	.radius(50%);
-        } */
         > span{
             margin-left:10px;
-            //margin-top:12px;
             width:18px;
             height:16px;
-            //padding:0 10px 0 10px;
             background: url(../images/notifications-bubble.png) center top no-repeat;
-            //border-left:1px solid #fff;
-            //border-right:1px solid #fff;
-            //float:left;
             line-height:11px;
             text-align:center;
             text-indent:0;
             font-size: 10px;
-
             display:inline-block;
             background-color:none !important;
             &.unread{
@@ -948,8 +870,6 @@ footer, header, hgroup, menu, nav, section {
     background-position-x: 0;
     background-position-y: 0;
      > span{
-    	//.b-shadow(inset 0 0 2px 0 #333);
-    	//background: #fff;
     	color:@themeColor;
     }
 }
@@ -958,8 +878,6 @@ footer, header, hgroup, menu, nav, section {
     background-color:@themeColor2;
     color:#fff;
     > span{
-    	//.b-shadow(inset 0 0 2px 0 #333);
-    	//background: #fff;
     	color:@themeColor;
     }
 }
@@ -1124,13 +1042,6 @@ footer, header, hgroup, menu, nav, section {
     margin-bottom:20px;
     #gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #ffffff );
     .clearfix();
-    
-    /*> .MetadataView{
-    	padding-right:20px;
-    	.box-sizing();
-    	.clearfix();
-    }*/
-    
     .single-column{
     	padding-right:0 !important;
 		> .GridView{
@@ -1158,7 +1069,6 @@ footer, header, hgroup, menu, nav, section {
 		#inline-edit-form .panel{
 			width:100%;
 		}
-		
 	}
 }
 
@@ -1407,18 +1317,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-/*=Forms with clearfix issues
-#ZurmoConfigurationEditAndDetailsView,
-#EmailConfigurationEditAndDetailsView,
-#MapConfigurationView,
-#AccountConvertToView,
-#AccountsMassEditView{
-    #edit-form:after{
-        display:none;
-    }
-}
-*/
-
 /*General table style, tables still need 'cellspacing="0"' in the markup */
 table {
     border-collapse: separate;
@@ -1471,8 +1369,6 @@ table.items{
 		}
 	}
 }
-
-
 
 .juiportlet-widget table.items thead tr th:first-child,
 .juiportlet-widget table.items tbody tr td:first-child{
@@ -1661,7 +1557,6 @@ td.empty{
 a.attachLoading{
     color:#FFF !important;
     .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
-    //.b-shadow(inset 0 1px 1px 0 rgba(255, 255, 255, 0.5));
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
     #gradient > .vertical(#97c43d, #6fa82d );
     cursor:pointer;
@@ -1744,6 +1639,7 @@ a.simple-select{
         content:""  !important;
     }
 }
+
 .portlet-toolbar{
     a.simple-select{
         background:none !important;
@@ -1851,7 +1747,6 @@ a.simple-select{
     width: 100%;
     height: 100%;
     background:rgba(255, 255, 255, 0.5 );
-    //.opacity(50);
 }
 
 /*=Checkboxes*/
@@ -1908,35 +1803,12 @@ div.wide.form{
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 
-/*
-.summary{
-    padding:5px;
-    text-align: right;
-    font-weight:bold !important;
-    border:1px solid #DFDFDF;
-    border-top:none;
-    border-bottom: none;
-    #gradient > .vertical(#e3e3e3, #f5f5f5);
-    & + .items{
-        //border-top:none !important;
-    }
-}
-.summary + .items{
-    //border-top:1px solid red;
-     border-top:none !important;
-    thead{
-        th{
-            border-top:none !important;
-        }
-    }
-}
-*/
 .summary{
     display: none;
 }
+
 .list-view-items-summary-clone{
     float: right;
-    //font-weight: bold;
     margin:20px 0 0 0;
     color:#666;
     .t-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
@@ -1986,7 +1858,6 @@ div.wide.form{
     }
 }
 
-
 .ZeroModelsYetView{
     h2{
         font-family:"Times New Roman", Times, serif;
@@ -1995,7 +1866,6 @@ div.wide.form{
         line-height:60px;
         font-weight:normal;
         padding:15px 50px 15px 30px;
-        //text-align:center;
     }
     i{
         font-size:13px;
@@ -2031,7 +1901,6 @@ div.wide.form{
     .large-icon{
         width:25%;
         text-align:center;
-        //padding:0 30px 0 10px;
         margin-top:30px;
         border-right:1px solid #ccc;
         float:left;
@@ -2061,12 +1930,7 @@ div.wide.form{
         .symbly(230px);
         line-height: 90%;
     }
-
 }
-
-/*#FilteredListView, .summary{
-    display:none;
-}*/
 
 .ZurmoSearchView{
     padding:0;
@@ -2107,8 +1971,6 @@ div.wide.form{
 
 .search-view-0{
     margin:15px 0 0 0;
-    //width:220px;
-    //float:left;
     display: block;
     position: relative;
     .clearfix;
@@ -2226,15 +2088,12 @@ div.wide.form{
         .t-shadow(none);
     }
     .view-toolbar-container{
-        //margin-top:15px;
         border-top:1px solid #CCCCCC;
     }
     > div{
         display: block;
     }
     .dk_container{
-        //float: left;
-        //width: 100%;
     }
     .view-toolbar-container{
         display: inline-block;
@@ -2294,7 +2153,6 @@ div.wide.form{
         }
     }
     .dynamic-search-row-number-label{
-        //display: none;
         float: left;
         line-height: 26px;
         margin-right:15px;
@@ -2305,7 +2163,6 @@ div.wide.form{
 
 .add-fields-container,
 .search-save-container{
-    //width: 100%;
     float: left;
     display: inline-block;
     margin:15px 3px 10px 0;
@@ -2355,8 +2212,6 @@ div.wide.form{
         font-weight:bold;
     }
 }
-
-
 
 .ui-multiselect-menu{
     padding:10px !important;
@@ -2438,7 +2293,6 @@ div.wide.form{
 }
 
 .attributesContainer{
-    /*min-height: 260px;*/
     padding-bottom:15px;
     .clearfix();
 }
@@ -2488,73 +2342,70 @@ div.wide.form{
 }
 
 #right-side-edit-view-panel{
-        position:absolute;
-        right:15px;
-        top:15px;
-        width:30%;
-        float:right;
-        h3{
-            margin-bottom:8px;
+    position:absolute;
+    right:15px;
+    top:15px;
+    width:30%;
+    float:right;
+    h3{
+        margin-bottom:8px;
+    }
+    .buffer > div{
+    }
+    label{
+        width: 100%;
+        display: block;
+        line-height: 100%;
+        padding-top:0;
+    }
+    #owner-box{
+        margin-bottom:15px;
+        position: relative;
+        label, &+label{
+            font-size:12px;
+            font-weight:600;
         }
-        .buffer > div{
-            //float:left;
-            //padding:8px 10px;
-            //background:#F4F4F4;
-        }
-        label{
-            width: 100%;
-            display: block;
-            line-height: 100%;
-            padding-top:0;
-        }
-        #owner-box{
-            margin-bottom:15px;
+        input{
             position: relative;
-            label, &+label{
-                font-size:12px;
-                font-weight:600;
-            }
-            input{
-                position: relative;
-                z-index:0;
-            }
-        }
-        .ui-autocomplete{
-        	width:auto !important;
-        }
-        input[type="text"]{
-            margin-bottom: 4px;
-        }
-        #owner-box + label{
-            margin-bottom:15px;
-        }
-        .radio-input{
-            margin-bottom:10px;
-            width:100%;
-            float:left;
-            display: block;
-            label{
-                width:auto;
-                float:left;
-                vertical-align: middle;
-            }
-            input[type="radio"]{
-                float:left;
-                margin:0 8px 0 10px;
-                vertical-align: middle;
-            }
-            select, .dk_container{
-                margin-top:8px;
-                margin-left:30px;
-                margin-bottom:0;
-                width:80%;
-                background:#fff;
-            }
-        }
-        input[type="text"], select{
-            margin-top:6px;
+            z-index:0;
         }
     }
+    .ui-autocomplete{
+        width:auto !important;
+    }
+    input[type="text"]{
+        margin-bottom: 4px;
+    }
+    #owner-box + label{
+        margin-bottom:15px;
+    }
+    .radio-input{
+        margin-bottom:10px;
+        width:100%;
+        float:left;
+        display: block;
+        label{
+            width:auto;
+            float:left;
+            vertical-align: middle;
+        }
+        input[type="radio"]{
+            float:left;
+            margin:0 8px 0 10px;
+            vertical-align: middle;
+        }
+        select, .dk_container{
+            margin-top:8px;
+            margin-left:30px;
+            margin-bottom:0;
+            width:80%;
+            background:#fff;
+        }
+    }
+    input[type="text"], select{
+        margin-top:6px;
+    }
+}
 
 
 .has-date-select, .has-model-select{
@@ -2812,14 +2663,12 @@ div.wide.form{
     th{
         color:#999;
         text-align:right;
-        //line-height: 24px;
     }
     td, td a{
         color:#525252;
     }
     th, td{
         font-weight:600;
-        //padding:0 0 15px 0;
     	padding-top:15px !important;
     	vertical-align: top !important;
     }
@@ -2831,9 +2680,7 @@ div.wide.form{
     //for address fields
     td > label{
         &:first-child{
-            //margin-top:5px;
         }
-        //margin-top:10px;
     }
     //for 2 columns
     td + th{
@@ -3429,9 +3276,6 @@ div.hasHalfs{
     }
 }
 
-
-
-
 /*=Latest Activity*/
 .less-pronounced-text{
     font-style:italic;
@@ -3581,6 +3425,7 @@ div.hasHalfs{
 	    }
     }
 }
+
 #activities-rollup-tooltip{
     position:relative;
     margin-top:-9px;
@@ -3628,8 +3473,6 @@ div.hasHalfs{
 
 /*=Search User Modal*/
 .search-view-0{
-    //.clearfix();
-    //width:230px !important;
     input[type="text"]{
         float:left;
         margin-right:0;
@@ -3864,7 +3707,6 @@ div.hasHalfs{
 
 /*=Mass Edit view*/
 .AppContent.MassEditView{
-    //padding-right:0;
     #edit-form table{
         width:100%;
     }
@@ -4079,6 +3921,7 @@ div.hasHalfs{
         }
     }
 }
+
 /*=RSS Widget*/
 .rssBody{
 	ul{
@@ -4099,12 +3942,14 @@ div.hasHalfs{
         margin-bottom:15px;
     }
 }
+
 #MixedModelsMultipleListsView{
     margin-top:15px;
     h1{
         margin-bottom: 15px;
     }
 }
+
 .TitleBarView{
     &.Account h1:before{
         content: "P";
