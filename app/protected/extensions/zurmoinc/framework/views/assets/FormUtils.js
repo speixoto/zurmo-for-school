@@ -40,7 +40,7 @@ function attachLoadingOnSubmit(formId)
         return false;
     }
     $('#' + formId).find(".attachLoading:first").addClass("loading");
-    attachLoadingSpinner(formId);
+    attachLoadingSpinner(formId, true);
 
     return true;
 }
@@ -67,7 +67,7 @@ function beforeValidateAction(form)
         form.find(".attachLoading:first").addClass("loading");
         form.find(".attachLoading:first").addClass("loading-ajax-submit");
     }
-    attachLoadingSpinner(form.attr('id'));
+    attachLoadingSpinner(form.attr('id'), true);
     return true;
 }
 
@@ -113,8 +113,16 @@ function searchByQueuedSearch(inputId)
     }
 }
 
-function attachLoadingSpinner(id, state)
+function attachLoadingSpinner( id, state, color )
 {
+    var color;
+    
+    if ( color === 'dark' ){
+        color = '#999';
+    } else {
+        color = '#fff';
+    }
+    
     if ( state === true )
     {
         $( '.z-spinner', '#' + id ).spin({
@@ -123,7 +131,7 @@ function attachLoadingSpinner(id, state)
             width : 2, // The line thickness
             radius : 3, // The radius of the inner circle
             rotate : 0, // The rotation offset
-            color : '#999', // #rgb or #rrggbb
+            color : color, // #rgb or #rrggbb
             speed : 2, // Rounds per second
             trail : 37, // Afterglow percentage
             shadow : false, // Whether to render a shadow
@@ -133,9 +141,9 @@ function attachLoadingSpinner(id, state)
             top : 4, // Top position relative to parent in px
             left : 0 // Left position relative to parent in px
         });
-        }
-        else
-        {
+    }
+    else
+    {
         $( '.z-spinner', '#' + id ).spin(false);
     }
 }

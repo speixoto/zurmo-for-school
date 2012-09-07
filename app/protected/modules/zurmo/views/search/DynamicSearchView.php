@@ -228,7 +228,7 @@
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
                                           'beforeSend' => 'js:function(){
-                                            attachLoadingSpinner("' . $this->getSearchFormId() . '", true);
+                                            attachLoadingSpinner("' . $this->getSearchFormId() . '", true, "dark");
                                             }',
                                           'success' => 'js:function(data){
                                             $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
