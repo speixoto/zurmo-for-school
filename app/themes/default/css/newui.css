@@ -5796,6 +5796,13 @@ section {
   margin-right: 8px;
   content: "e";
 }
+.autocomplete-icon-AllResults:before {
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 8px;
+  content: "k";
+}
 .global-search-loopa {
   padding: 0;
   margin: 7px 0 0 0;
