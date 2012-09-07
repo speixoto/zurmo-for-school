@@ -89,12 +89,7 @@
          */
         protected function renderScripts()
         {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js', CClientScript::POS_END);
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js', CClientScript::POS_END);
+            DropDownUtil::registerScripts(CClientScript::POS_END);
         }
 
         protected function renderAttributeDropDownContent()
@@ -132,10 +127,11 @@
                     'data'    => 'js:\'suffix=' . $this->suffix .
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',
                     'url'     =>  $ajaxOnChangeUrl,
-                    'success' => 'js:function(data)
-                                  {
-                                      $("#' . $inputDivId . '").html(data);
-                                  }',
+                    'beforeSend' => 'js:function(){
+                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
+                        attachLoadingSpinner("' . $inputDivId . '", true);
+                        }',
+                    'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
             ));
             return "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {
