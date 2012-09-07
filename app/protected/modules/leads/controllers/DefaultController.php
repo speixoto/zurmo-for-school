@@ -53,9 +53,11 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'listPageSize', get_class($this->getModule()));
-            $contact  = new Contact(false);
-            $searchForm = new LeadsSearchForm($contact);
-            $dataProvider = $this->makeSearchDataProvider(
+            $contact                        = new Contact(false);
+            $searchForm                     = new LeadsSearchForm($contact);
+            $listAttributesSelector         = new ListAttributesSelector('LeadsListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 'LeadsStateMetadataAdapter',

@@ -90,7 +90,7 @@
                                           'selectedText' => '',
                                           'noneSelectedText' => '', 'header' => false,
                                           ),
-                'htmlOptions'    => array('class' => 'ignore-style')
+                'htmlOptions'    => array('class' => 'ignore-style ignore-clearform')
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['ScopedJuiMultiSelect'];

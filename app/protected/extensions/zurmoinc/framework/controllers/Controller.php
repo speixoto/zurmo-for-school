@@ -78,6 +78,7 @@
             }
             $searchAttributes          = $dataCollection->resolveSearchAttributesFromSourceData();
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
+            $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
             $sortAttribute             = SearchUtil::resolveSortAttributeFromGetArray($listModelClassName);

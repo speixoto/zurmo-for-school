@@ -58,15 +58,17 @@
          * Array of model ids. Each id is for a different row checked off
          */
         protected $selectedIds;
-        
+
         /**
          * Array containing CGridViewPagerParams
          */
         protected $gridViewPagerParams;
-        
+
         private $resolvedMetadata;
-        
+
         protected $emptyText = null;
+
+        private $listAttributesSelector;
 
         /**
          * Constructs a list view specifying the controller as
@@ -79,11 +81,13 @@
             $dataProvider,
             $selectedIds,
             $gridIdSuffix = null,
-            $gridViewPagerParams = null
+            $gridViewPagerParams = null,
+            $listAttributesSelector = null
         )
         {
             assert('is_array($selectedIds)');
             assert('is_string($modelClassName)');
+            assert('$listAttributesSelector == null || $listAttributesSelector instanceof ListAttributesSelector');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->modelClassName         = $modelClassName;
@@ -93,6 +97,7 @@
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridViewPagerParams    = $gridViewPagerParams;
             $this->gridId                 = 'list-view';
+            $this->listAttributesSelector = $listAttributesSelector;
         }
 
         /**
@@ -126,9 +131,9 @@
         {
             return $this->rowsAreSelectable;
         }
-        
+
         public function setRowsAreSelectable($value)
-        {            
+        {
             $this->rowsAreSelectable = (boolean)$value;
         }
 
@@ -182,16 +187,16 @@
                         'class'            => 'EndlessListLinkPager',
                         'paginationParams' => GetUtil::getData(),
                         'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
-                    ); 
+                    );
             if (!$this->gridViewPagerParams)
             {
                 return $defaultGridViewPagerParams;
-            } 
+            }
             else
             {
                 return array_merge($defaultGridViewPagerParams, $this->gridViewPagerParams);
             }
-             
+
         }
 
         protected function getShowTableOnEmpty()
@@ -205,10 +210,10 @@
         }
 
         public function setEmptyText($text)
-        {            
+        {
             $this->emptyText = $text;
         }
-        
+
         public function getGridViewId()
         {
             return $this->gridId . $this->gridIdSuffix;
@@ -273,6 +278,10 @@
 
         protected function resolveMetadata()
         {
+            if($this->listAttributesSelector != null)
+            {
+                return $this->listAttributesSelector->getResolvedMetadata();
+            }
             return self::getMetadata();
         }
 

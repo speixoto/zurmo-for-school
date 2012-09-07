@@ -51,7 +51,9 @@
                                               'listPageSize', get_class($this->getModule()));
             $account                        = new Account(false);
             $searchForm                     = new AccountsSearchForm($account);
-            $dataProvider = $this->makeSearchDataProvider(
+            $listAttributesSelector         = new ListAttributesSelector('AccountsListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,

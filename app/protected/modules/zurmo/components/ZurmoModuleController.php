@@ -287,7 +287,7 @@
             $searchFormClassName            = $this->getSearchFormClassName(); //maybe replace to call getGlobalSearchFormClassName depending on 0.7.4 refactor
             $model                          = new $modelClassName(false);
             $searchForm                     = new $searchFormClassName($model);
-            $dataProvider = $this->makeSearchDataProvider(
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,
