@@ -117,9 +117,9 @@
             $billy                      = UserTestHelper::createBasicUser('billy');
             Yii::app()->user->userModel = $billy;
             EmailMessageTestHelper::createEmailAccount($billy);
-            $_POST = array('EmailMessage' => array ('recipients' => array('To'  => 'a@zurmo.com,b@zurmo.com',
-                                                                          'Cc'  => 'c@zurmo.com,d@zurmo.com',
-                                                                          'Bcc' => 'e@zurmo.com,f@zurmo.com'),
+            $_POST = array('EmailMessage' => array ('recipients' => array('to'  => 'a@zurmo.com,b@zurmo.com',
+                                                                          'cc'  => 'c@zurmo.com,d@zurmo.com',
+                                                                          'bcc' => 'e@zurmo.com,f@zurmo.com'),
                                                     'subject' => 'Test Email From Post',
                                                     'content' => array('htmlContent' => 'This is a test email')
                 ));
@@ -165,9 +165,9 @@
             $email->emailAddress = 'sally@example.com';
             $sally->primaryEmail = $email;
             $sally->save();
-            $_POST = array('EmailMessage' => array ('recipients' => array('To'  => 'sally@example.com',
-                                                                          'Cc'  => null,
-                                                                          'Bcc' => null),
+            $_POST = array('EmailMessage' => array ('recipients' => array('to'  => 'sally@example.com',
+                                                                          'cc'  => null,
+                                                                          'bcc' => null),
                                                     'subject' => 'Test Email From Post',
                                                     'content' => array('htmlContent' => 'This is a test email')
                 ));
@@ -198,6 +198,9 @@
             $this->assertEquals('4', count($emailMessage->recipients));
             $this->assertEquals($emailMessage->recipients[3]->personOrAccount->id, $sally->id);
             $this->assertEquals(EmailMessageRecipient::TYPE_BCC, $emailMessage->recipients[3]->type);
+            //Attach an empty email
+            EmailMessageHelper::attachRecipientsToMessage(array(''), $emailMessage, EmailMessageRecipient::TYPE_CC);
+            $this->assertEquals('4', count($emailMessage->recipients));
         }
     }
 ?>

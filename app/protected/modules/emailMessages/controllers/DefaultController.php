@@ -342,23 +342,6 @@
         {
             //Yii::app()->getClientScript()->setToAjaxMode();
             //TODO: Make modal view work
-            if (isset($_POST['EmailMessage']))
-            {
-                $emailMessage = EmailMessageHelper::sendEmailFromPost(Yii::app()->user->userModel);
-                if ($emailMessage->validate())
-                {
-                    $emailMessage->save();
-                    Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'Your message has been sent to outbox.')
-                    );
-                    $this->redirect('home/default/');
-                    //TODO: Emails are not connected to contacts/leads if more than one recipient
-                }
-                else
-                {
-                    //TODO: Redo if's to make validation work on the form
-                }
-            }
             try
             {
                 EmailAccount::getByUserAndName(Yii::app()->user->userModel);
@@ -373,27 +356,34 @@
                     $recipient->type           = EmailMessageRecipient::TYPE_TO;
                     $emailMessage->recipients->add($recipient);
                 }
+                if (isset($_POST['EmailMessage']))
+                {
+                    $emailMessage = EmailMessageHelper::sendEmailFromPost(Yii::app()->user->userModel);
+                    if ($emailMessage->validate())
+                    {
+                        $emailMessage->save();
+                        Yii::app()->user->setFlash('notification',
+                            Yii::t('Default', 'Your message has been sent to outbox.')
+                        );
+                        $this->redirect('home/default/');
+                        //TODO: Emails are not connected to contacts/leads if more than one recipient
+                    }
+                }
                 $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
                     'Edit',
                     $this->getId(),
                     $this->getModule()->getId(),
-                    $emailMessage
-                );
-
-
+                    $emailMessage);
                 $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $composeEmailEditAndDetailsView));
-
-
                 //$view = new ModalView($this, $composeEmailEditAndDetailsView);
-                echo $view->render();
             }
             catch (NotFoundException $e)
             {
                 $view = new ModalView($this, new NoEmailAccountYetView());
-                echo $view->render();
-            }
 
+            }
+            echo $view->render();
         }
 
         /**

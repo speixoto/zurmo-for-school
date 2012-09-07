@@ -128,11 +128,11 @@
             $emailMessage       = new EmailMessage();
             $postVariableName   = get_class($emailMessage);
             Yii::app()->emailHelper->loadOutboundSettingsFromUserEmailAccount($userToSendMessagesFrom);
-            $toRecipients = explode(",", $_POST[$postVariableName]['recipients']['To']);
+            $toRecipients = explode(",", $_POST[$postVariableName]['recipients']['to']);
             static::attachRecipientsToMessage($toRecipients, $emailMessage, EmailMessageRecipient::TYPE_TO);
-            $ccRecipients = explode(",", $_POST[$postVariableName]['recipients']['Cc']);
+            $ccRecipients = explode(",", $_POST[$postVariableName]['recipients']['cc']);
             static::attachRecipientsToMessage($ccRecipients, $emailMessage, EmailMessageRecipient::TYPE_CC);
-            $bccRecipients = explode(",", $_POST[$postVariableName]['recipients']['Bcc']);
+            $bccRecipients = explode(",", $_POST[$postVariableName]['recipients']['bcc']);
             static::attachRecipientsToMessage($bccRecipients, $emailMessage, EmailMessageRecipient::TYPE_BCC);
             unset($_POST[$postVariableName]['recipients']);
             $emailMessage->setAttributes($_POST[$postVariableName]);
@@ -168,12 +168,15 @@
                     $person = $contacts[0];
                     $toName = strval($contacts[0]);
                 }
-                $messageRecipient                   = new EmailMessageRecipient();
-                $messageRecipient->toName           = $toName;
-                $messageRecipient->toAddress        = $recipient;
-                $messageRecipient->type             = $type;
-                $messageRecipient->personOrAccount  = $person;
-                $emailMessage->recipients->add($messageRecipient);
+                if ($recipient != '')
+                {
+                    $messageRecipient                   = new EmailMessageRecipient();
+                    $messageRecipient->toName           = $toName;
+                    $messageRecipient->toAddress        = $recipient;
+                    $messageRecipient->type             = $type;
+                    $messageRecipient->personOrAccount  = $person;
+                    $emailMessage->recipients->add($messageRecipient);
+                }
             }
         }
     }

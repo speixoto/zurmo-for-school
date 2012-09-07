@@ -39,10 +39,10 @@
         protected function renderControlEditable()
         {
             assert('$this->model instanceof EmailMessage');
-            $toContent  = $this->renderTokenInput('To', true);
+            $toContent  = $this->renderTokenInput('to');
             $toContent .= ZurmoHtml::link('Cc/Bcc', '#', array('onclick' => "js:$('#cc-bcc-fields').toggle();"));
-            $ccContent  = $this->renderTokenInput('Cc');
-            $bccContent = $this->renderTokenInput('Bcc');
+            $ccContent  = $this->renderTokenInput('cc');
+            $bccContent = $this->renderTokenInput('bcc');
             return $toContent . CHtml::tag('div',
                                            array('id' => 'cc-bcc-fields',
                                                  'style'   => 'display: none;'
@@ -50,21 +50,21 @@
                                            $ccContent . $bccContent);
         }
 
-        protected function renderTokenInput($prefix, $isPrePopulated = false)
+        protected function renderTokenInput($prefix)
         {
             $inputId   = $this->getEditableInputId($this->attribute, $prefix);
             $inputName = $this->getEditableInputName($this->attribute, $prefix);
             $content   = $this->form->labelEx($this->model,
                                             $this->attribute,
                                             array('for' => $inputId,
-                                                  'label' => $prefix));
+                                                  'label' => ucfirst($prefix)));
 
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.MultiSelectAutoComplete', array(
                 'name'        => $inputName,
                 'id'          => $inputId,
-                'jsonEncodedIdsAndLabels'   => $prePopulatedTokens = $isPrePopulated ? CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels()) : null,
+                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels($prefix)),
                 'sourceUrl'   => Yii::app()->createUrl('emailMessages/default/autoCompleteForMultiSelectAutoComplete'),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
@@ -111,15 +111,16 @@
         {
         }
 
-        protected function getExistingPeopleRelationsIdsAndLabels()
+        protected function getExistingPeopleRelationsIdsAndLabels($prefix)
         {
             $existingPeople = array();
             foreach ($this->model->recipients as $recipient)
             {
-                $existingPeople[] = array('id'   => $recipient->toAddress,
-                                          'name' => $recipient->toName . '(' . $recipient->toAddress . ')'
-                        );
-
+                if($recipient->type == constant('EmailMessageRecipient::TYPE_' . strtoupper($prefix)))
+                {
+                    $existingPeople[] = array('id'   => $recipient->toAddress,
+                                              'name' => $recipient->toName . ' (' . $recipient->toAddress . ')');
+                }
             }
             return $existingPeople;
         }
