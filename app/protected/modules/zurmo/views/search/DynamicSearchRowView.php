@@ -129,7 +129,7 @@
                     'url'     =>  $ajaxOnChangeUrl,
                     'beforeSend' => 'js:function(){
                         $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
-                        attachLoadingSpinner("' . $inputDivId . '");
+                        attachLoadingSpinner("' . $inputDivId . '", true);
                         }',
                     'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
             ));
