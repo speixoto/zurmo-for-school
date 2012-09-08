@@ -268,7 +268,7 @@
                         $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
                         if (!$group->users->contains(Yii::app()->user->userModel))
                         {
-                            echo Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
+                            echo Yii::t('Default', 'Application is in maintenance mode. Please try again later.');
                             exit;
                         }
                         else

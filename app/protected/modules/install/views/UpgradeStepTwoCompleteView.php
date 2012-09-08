@@ -53,9 +53,9 @@
             $content .= '<table><tr><td>';
             $content .= '<div id="upgrade-step-two" style="display:none;">';
             $content .= '<table><tr><td>';
-            $content .= Yii::t('Default', 'Upgrade process is complited. Please edit perInstance.php file, and unset maintenance mode.');
+            $content .= Yii::t('Default', 'Upgrade process is completed. Please edit perInstance.php file, and disable maintenance mode.');
             $content .= '<br/><br/>';
-            $content .= CHtml::link(Yii::t('Default', 'Click here to access index page, after you unset maintenance mode.'), $loginUrl);
+            $content .= CHtml::link(Yii::t('Default', 'Click here to access index page, after you disable maintenance mode.'), $loginUrl);
             $content .= '</td></tr></table>';
             $content .= '</div>';
             $content .= '<div id="progress-table">';

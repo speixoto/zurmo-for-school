@@ -128,8 +128,8 @@
                                  '&attributeIndexOrDerivedType=\' + $(this).val()',
                     'url'     =>  $ajaxOnChangeUrl,
                     'beforeSend' => 'js:function(){
-                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></hi>");
-                        attachLoadingSpinner("' . $inputDivId . '");
+                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
+                        attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         }',
                     'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
             ));

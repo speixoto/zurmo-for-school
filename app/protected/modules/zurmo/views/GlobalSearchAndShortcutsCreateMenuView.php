@@ -25,42 +25,30 @@
      ********************************************************************************/
 
     /**
-     * View for upgrade.
+     * Base view for displaying a global search and shortcuts create menu view
      */
-    class UpgradeStartCompleteView extends View
+    class GlobalSearchAndShortcutsCreateMenuView extends View
     {
-        private $controlerId;
+        protected $moduleNamesAndLabelsAndAll;
 
-        private $moduleId;
+        protected $sourceUrl;
 
-        public function __construct($controllerId, $moduleId)
+        protected $shortcutsCreateMenuView;
+
+        public function __construct($moduleNamesAndLabelsAndAll, $sourceUrl, $shortcutsCreateMenuView)
         {
-            assert('is_string($controllerId) && $controllerId != ""');
-            assert('is_string($moduleId) && $moduleId != ""');
-            $this->controllerId = $controllerId;
-            $this->moduleId     = $moduleId;
+            assert('is_array($moduleNamesAndLabelsAndAll)');
+            assert('is_string($sourceUrl)');
+            assert('$shortcutsCreateMenuView instanceof ShortcutsCreateMenuView');
+            $this->moduleNamesAndLabelsAndAll = $moduleNamesAndLabelsAndAll;
+            $this->sourceUrl                  = $sourceUrl;
+            $this->shortcutsCreateMenuView    = $shortcutsCreateMenuView;
         }
 
         protected function renderContent()
         {
-            $cs = Yii::app()->getClientScript();
-            $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jquery.min.js', CClientScript::POS_END);
-            $zurmoUpgradeStepOneUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/stepOne/');
-
-            $content  = '<div class="MetadataView">';
-            $content .= '<table><tr><td>';
-            $content .= '<div id="upgrade-step-two">';
-            $content .= '<table><tr><td>';
-            $content .= Yii::t('Default', 'This is the Zurmo upgrade process. Please backup all files and the database before you continue.');
-            $content .= '<br/>';
-            $content .= Yii::t('Default', 'Copy upgrade file to app/protected/runtime/upgrade folder and start upgrade process.');
-            $content .= '<br/><br/>';
-            $content .= CHtml::link(Yii::t('Default', 'Click here to start upgrade'), $zurmoUpgradeStepOneUrl);
-            $content .= '</td></tr></table>';
-            $content .= '</div>';
-            $content .= '</td></tr></table>';
-            $content .= '</div>';
-            return $content;
+            $globalSearchView = new GlobalSearchView($this->moduleNamesAndLabelsAndAll, $this->sourceUrl);
+            return $globalSearchView->render() . $this->shortcutsCreateMenuView->render();
         }
     }
 ?>
