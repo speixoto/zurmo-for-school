@@ -100,9 +100,13 @@
                 'value'    => $this->getId(),
             );
             $content       = $this->form->hiddenField($this->model, $this->idAttributeId, $idInputHtmlOptions);
-            $inputContent  = $this->renderTextField($this->getIdForHiddenField());
-            $inputContent .= $this->renderSelectLink();
-            return $content . CHtml::tag('div', array('class' => 'has-model-select'), $inputContent);
+            if (!$this->showOnlyHiddenInputForEditable())
+            {
+                $inputContent  = $this->renderTextField($this->getIdForHiddenField());
+                $inputContent .= $this->renderSelectLink();
+                $content       = $content . CHtml::tag('div', array('class' => 'has-model-select'), $inputContent);
+            }
+            return $content;
         }
 
         /**
@@ -161,11 +165,11 @@
         protected function renderSelectLink()
         {
             $id = $this->getIdForSelectLink();
-            $content = ZurmoHtml::ajaxLink('<span>' . Yii::t('Default', '<!--Select-->') . '</span>',
+            $content = ZurmoHtml::ajaxLink('<span></span>',
                 Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'. static::$modalActionId .'/', array(
                 'modalTransferInformation' => $this->getModalTransferInformation(),
                 )),
-                static::resolveAjaxOptionsForSelectingModel($id),
+                $this->resolveAjaxOptionsForSelectingModel($id),
                 array(
                 'id'        => $id,
                 'style'     => $this->getSelectLinkStartingStyle(),
@@ -175,16 +179,19 @@
             return $content;
         }
 
-        protected static function resolveAjaxOptionsForSelectingModel($formId)
+        protected function resolveAjaxOptionsForSelectingModel($formId)
         {
             assert('is_string($formId)');
-            $title = static::getModalTitleForSelectingModel();
+            $title = $this->getModalTitleForSelectingModel();
             return   ModalView::getAjaxOptionsForModalLink($title);
         }
 
-        protected static function getModalTitleForSelectingModel()
+        protected function getModalTitleForSelectingModel()
         {
-            return null;
+            $module              = Yii::app()->getModule(static::$moduleId);
+            $moduleSingularLabel = $module->getModuleLabelByTypeAndLanguage('Singular');
+            return Yii::t('Default', '{moduleSingularLabel} Search',
+                                      array('{moduleSingularLabel}' => $moduleSingularLabel));
         }
 
         protected function getSelectLinkControllerId()
@@ -335,6 +342,19 @@
                 return false;
             }
             return true;
+        }
+
+        /**
+         * Determines if the editable content should only include the hidden input.  This is utilized if there is
+         * a security edge case that needs to be gracefully handled.
+         */
+        protected function showOnlyHiddenInputForEditable()
+        {
+            if (isset($this->params['onlyHiddenInput']) && $this->params['onlyHiddenInput'])
+            {
+                return true;
+            }
+            return false;
         }
 
         /**

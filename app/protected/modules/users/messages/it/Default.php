@@ -73,6 +73,8 @@
             => 'Giorni de scandenza delle password',
         'Profile'
             => 'Profile', // Same Word Translated
+        'Quick Tip'
+            => 'Punta Rapida',
         'Sign in Via Mobile'
             => 'Login  mobile',
         'Sign in Via Web'
@@ -93,6 +95,8 @@
             => 'Il nome di utente è troppo corto.  La lunghezza minima è {minimumLength} carattere.',
         'Time Zone'
             => 'Fuso orario',
+        'Turn off email notifications'
+            => 'Disattivare le notifiche e-mail',
         'User'
             => 'Utente',
         'User configuration saved successfully.'
@@ -101,6 +105,8 @@
             => 'Ricerca Utente',
         'Users'
             => 'Utenti',
+        'Users cannot be deleted.  You can however change their status to inactive.'
+            => 'Gli utenti non possono essere cancellati. È tuttavia possibile cambiare il proprio status di inattivo.',
         'Users Home'
             => 'Utenti Home',
     );

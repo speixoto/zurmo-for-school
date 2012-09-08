@@ -255,6 +255,22 @@
             $this->assertNotNull(InstallUtil::checkPCRE());
         }
 
+        /**
+        * Simple test to confirm the check doesnt break.
+        */
+        public function testCheckImap()
+        {
+            $this->assertNotNull(InstallUtil::checkImap());
+        }
+
+        /**
+        * Simple test to confirm the check doesnt break.
+        */
+        public function testCheckZip()
+        {
+            $this->assertNotNull(InstallUtil::checkZip());
+        }
+
         public function testCheckServerVariable()
         {
             $error = null;
@@ -483,7 +499,6 @@
                                         '_user',
                                         'account',
                                         'account_read',
-                                        'accountsfilteredlist',
                                         'activity',
                                         'activity_item',
                                         'actual_permissions_cache',
@@ -492,7 +507,6 @@
                                         'contact',
                                         'contact_opportunity',
                                         'contact_read',
-                                        'contactsfilteredlist',
                                         'contactstate',
                                         'currency',
                                         'currencyvalue',
@@ -503,10 +517,8 @@
                                         'email',
                                         'filecontent',
                                         'filemodel',
-                                        'filteredlist',
                                         'globalmetadata',
                                         'item',
-                                        'leadsfilteredlist',
                                         'log',
                                         'mashableactivity',
                                         'meeting',
@@ -514,7 +526,6 @@
                                         'namedsecurableitem',
                                         'note',
                                         'note_read',
-                                        'opportunitiesfilteredlist',
                                         'opportunity',
                                         'opportunity_read',
                                         'ownedcustomfield',

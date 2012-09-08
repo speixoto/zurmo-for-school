@@ -60,19 +60,21 @@
                 Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
                 Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
                 Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
+                Yii::app()->emailHelper->outboundSecurity = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundSecurity'];
                 Yii::app()->emailHelper->sendEmailThroughTransport = true;
                 Yii::app()->emailHelper->setOutboundSettings();
                 Yii::app()->emailHelper->init();
 
-                $userSmtpMailer = new EmailHelperForTesting();
-                $userSmtpMailer->outboundHost     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundHost'];
-                $userSmtpMailer->outboundPort     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPort'];
-                $userSmtpMailer->outboundUsername = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundUsername'];
-                $userSmtpMailer->outboundPassword = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPassword'];
-                $userSmtpMailer->setOutboundSettings();
-                $userSmtpMailer->init();
-                $userSmtpMailer->sendEmailThroughTransport = true;
-                self::$userMailer = $userSmtpMailer;
+                //$userSmtpMailer = new EmailHelperForTesting();
+                self::$userMailer['outboundHost']     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundHost'];
+                self::$userMailer['outboundPort']     = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPort'];
+                self::$userMailer['outboundUsername'] = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundUsername'];
+                self::$userMailer['outboundPassword'] = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundPassword'];
+                self::$userMailer['outboundSecurity'] = Yii::app()->params['emailTestAccounts']['userSmtpSettings']['outboundSecurity'];
+                //$userSmtpMailer->setOutboundSettings();
+                //$userSmtpMailer->init();
+                //$userSmtpMailer->sendEmailThroughTransport = true;
+                //self::$userMailer = $userSmtpMailer;
             }
         }
 
@@ -110,6 +112,7 @@
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
+            $this->assertEquals(0, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
 
             $messages = EmailMessage::getAll();
             foreach ($messages as $message)
@@ -138,11 +141,10 @@
                                                   '<strong>Email</strong> from Steve',
                                                   array(Yii::app()->imap->imapUsername),
                                                   null,
-                                                  array($filePath_1, $filePath_2, $filePath_3)
+                                                  array($filePath_1, $filePath_2, $filePath_3),
+                                                  self::$userMailer
             );
-
             sleep(30);
-
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
 
@@ -171,12 +173,15 @@
                 $this->assertTrue($attachment->size > 0);
             }
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
         }
 
         /**
         * Test case when user send email to somebody, and bcc to dropbox
         * This is best practice to be used in reality, because other recipients will not see that user
-        * bcc-ed email to dropbox
+        * bcc-ed email to dropbox.
+        *
+        * @depends testRunCaseOne
         */
         public function testRunCaseTwo()
         {
@@ -216,7 +221,8 @@
                                                   '<strong>Email</strong> from Steve',
                                                   null,
                                                   array(Yii::app()->imap->imapUsername),
-                                                  array($filePath_1, $filePath_2, $filePath_3)
+                                                  array($filePath_1, $filePath_2, $filePath_3),
+                                                  self::$userMailer
             );
 
             sleep(30);
@@ -249,10 +255,13 @@
                 $this->assertTrue($attachment->size > 0);
             }
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
         }
 
         /**
         * Test case when somebody send email to Zurmo user, and user forward it to dropbox
+        *
+        * @depends testRunCaseTwo
         */
         public function testRunCaseThree()
         {
@@ -313,7 +322,8 @@ To: Steve <steve@example.com>
                                                   $htmlBody,
                                                   null,
                                                   null,
-                                                  array($filePath_1, $filePath_2)
+                                                  array($filePath_1, $filePath_2),
+                                                  self::$userMailer
             );
 
             sleep(10);
@@ -339,11 +349,14 @@ To: Steve <steve@example.com>
                 $this->assertTrue($attachment->size > 0);
             }
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
         }
 
         /**
         * Test case when sender email is not user primary email.
         * In this case system should send email to user.
+        *
+        * @depends testRunCaseThree
         */
         public function testRunCaseFour()
         {
@@ -377,7 +390,8 @@ To: Steve <steve@example.com>
                                                   '<strong>Some</strong> content here',
                                                   null,
                                                   null,
-                                                  null);
+                                                  null,
+                                                  self::$userMailer);
 
             // Change user email address.
             $originalUserAddress = $user->primaryEmail->emailAddress;
@@ -391,14 +405,17 @@ To: Steve <steve@example.com>
 
             $this->assertEquals(1, count(EmailMessage::getAll()));
             $emailMessages = EmailMessage::getAll();
-            $this->assertEquals("Invalid email address.", $emailMessages[0]->subject);
-            $this->assertTrue(strpos($emailMessages[0]->content->textContent, 'Email address does not exist in system.') !== false);
-            $this->assertTrue(strpos($emailMessages[0]->content->htmlContent, 'Email address does not exist in system.') !== false);
+            $this->assertEquals("Invalid email address", $emailMessages[0]->subject);
+            $this->assertTrue(strpos($emailMessages[0]->content->textContent, 'Email address does not exist in system') !== false);
+            $this->assertTrue(strpos($emailMessages[0]->content->htmlContent, 'Email address does not exist in system') !== false);
             $this->assertEquals($originalUserAddress, $emailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
         }
 
         /**
         * Check if only new messages are pulled from dropdown
+        *
+        * @depends testRunCaseFour
         */
         public function testRunCaseFive()
         {
@@ -437,8 +454,10 @@ To: Steve <steve@example.com>
                                                   'Email from Steve',
                                                   '<strong>Email</strong> from Steve',
                                                   null,
-                                                  array(Yii::app()->imap->imapUsername)
-                                                  );
+                                                  array(Yii::app()->imap->imapUsername),
+                                                  null,
+                                                  self::$userMailer
+            );
 
             sleep(30);
 
@@ -470,6 +489,7 @@ To: Steve <steve@example.com>
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
             $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
         }
     }
 ?>

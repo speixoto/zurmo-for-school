@@ -73,6 +73,8 @@
             => 'Durée de vie minimale des mots de passe',
         'Profile'
             => 'Profil',
+        'Quick Tip'
+            => 'Astuce',
         'Sign in Via Mobile'
             => 'Connexion mobile',
         'Sign in Via Web'
@@ -93,6 +95,8 @@
             => 'Le nom d\'utilisateur est trop court, il doit comprendre au minimum {minimumLength} charactères.',
         'Time Zone'
             => 'Fuseau Horaire',
+        'Turn off email notifications'
+            => 'Désactiver les notifications emails',
         'User'
             => 'Utilisateur',
         'User configuration saved successfully.'
@@ -101,6 +105,8 @@
             => 'Recherche d\'utilisateurs',
         'Users'
             => 'Utilisateurs',
+        'Users cannot be deleted.  You can however change their status to inactive.'
+            => 'Il n\'est pas possible de supprimer un utilisateur, mais vous pouvez le rendre inactif.',
         'Users Home'
             => 'Inicio de Usuarios',
     );

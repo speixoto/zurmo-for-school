@@ -56,7 +56,7 @@
             // dependence hierarchy it needed concern itself, other than
             // with the models that are specific to itself.
             return array('AuditEvent', 'NamedSecurableItem', 'GlobalMetadata', 'PerUserMetadata', 'Portlet', 'CustomFieldData',
-                         'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata');
+                         'CalculatedDerivedAttributeMetadata', 'DropDownDependencyDerivedAttributeMetadata', 'SavedSearch');
         }
 
         public static function getDefaultMetadata()
@@ -85,6 +85,13 @@
                         'route'            => '/zurmo/language/configurationList',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'Developer Tools',
+                        'descriptionLabel' => 'Access Developer Tools',
+                        'route'            => '/zurmo/development/',
+                        'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
+                    ),
                 ),
                 'headerMenuItems' => array(
                     array(
@@ -96,12 +103,12 @@
                     array(
                         'label' => 'Forums',
                         'url' => 'http://zurmo.org/forums/',
-                        'order' => 7,
+                        'order' => 8,
                     ),
                     array(
                         'label' => 'About Zurmo',
                         'url' => array('/zurmo/default/about'),
-                        'order' => 8,
+                        'order' => 9,
                     ),
                 ),
                 'adminTabMenuItemsModuleOrdering' => array(
@@ -118,8 +125,10 @@
                     'accounts',
                     'leads',
                     'contacts',
-                    'opportunities'
+                    'opportunities',
+                    'conversations'
                 ),
+                'test' => 'aaa',
             );
             return $metadata;
         }

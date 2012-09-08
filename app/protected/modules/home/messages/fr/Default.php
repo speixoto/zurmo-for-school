@@ -53,8 +53,10 @@
             => 'Supprimer le tableau de bord',
         'Delete Dashboards'
             => 'Supprimer les Tableaux de bord',
-        'Don\'t show me this screen again (Don\'t worry you can turn it on again)'
-            => 'Ne plus afficher cette page (vous pouvez rétablir son affichage)',
+        'Don\'t show me this screen again'
+            => 'Ne plus afficher cette page',
+        'Don\'t worry you can turn it on again'
+            => 'vous pouvez rétablir son affichage',
         'Edit Dashboard'
             => 'Modifier le tableau de bord',
         'Go to the dashboard'
@@ -77,6 +79,8 @@
             => 'Lire le wiki',
         'Return to Home'
             => 'Retourner a l\'acceuil',
+        'Switch Dashboard'
+            => 'Changer le Tableau',
         'Tip of the Day'
             => 'Conseil du jour',
         'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .

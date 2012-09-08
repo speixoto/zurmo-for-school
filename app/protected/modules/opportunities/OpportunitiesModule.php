@@ -40,7 +40,7 @@
 
         public function getRootModelNames()
         {
-            return array('Opportunity', 'OpportunitiesFilteredList');
+            return array('Opportunity');
         }
 
         public static function getUntranslatedRightsLabels()
@@ -70,18 +70,6 @@
                         'label' => 'OpportunitiesModulePluralLabel',
                         'url'   => array('/opportunities/default'),
                         'right' => self::RIGHT_ACCESS_OPPORTUNITIES,
-                        'items' => array(
-                            array(
-                                'label' => 'Create OpportunitiesModuleSingularLabel',
-                                'url'   => array('/opportunities/default/create'),
-                                'right' => self::RIGHT_CREATE_OPPORTUNITIES
-                            ),
-                            array(
-                                'label' => 'OpportunitiesModulePluralLabel',
-                                'url'   => array('/opportunities/default'),
-                                'right' => self::RIGHT_ACCESS_OPPORTUNITIES
-                            ),
-                        ),
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(

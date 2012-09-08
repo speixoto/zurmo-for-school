@@ -53,8 +53,10 @@
             => 'Eliminar Panel de Portlets',
         'Delete Dashboards'
             => 'Eliminar Panel de Portlets',
-        'Don\'t show me this screen again (Don\'t worry you can turn it on again)'
-            => 'No volver a mostrar esta ventana (se puede regresar)',
+        'Don\'t show me this screen again'
+            => 'No volver a mostrar esta ventana',
+        'Don\'t worry you can turn it on again'
+            => 'se puede regresar',
         'Edit Dashboard'
             => 'Editar el Panel de Portlets',
         'Go to the dashboard'
@@ -77,6 +79,8 @@
             => 'Leer el wiki',
         'Return to Home'
             => 'Volver a Inicio',
+        'Switch Dashboard'
+            => 'Cambiar Dashboard',
         'Tip of the Day'
             => 'Sugerencia del día',
         'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .

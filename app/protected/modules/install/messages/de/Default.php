@@ -29,6 +29,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '$_SERVER does not have {vars}.'
+            => '$_SERVER hat nicht {vars}.',
+        '$_SERVER is accessible.'
+            => '$_SERVER ist zugänglich',
         'Apache'
             => 'Apache', // Same Word Translated
         'APC'
@@ -43,10 +47,16 @@
             => 'Kann entweder ein Domain-Name oder eine IP-Adresse sein.',
         'Click below to go to the login page. The username is <b>super</b>'
             => 'Klicken Sie unten, um zur Login-Seite zu gelangen. Der Benutzername ist <b>super</b>',
+        'Click here to access index page, after you unset maintenance mode.'
+            => '??',
+        'Click Here to continue with next step'
+            => '??',
         'Click Here to install the demo data'
             => 'Klicken Sie hier, um die Demo zu installieren',
         'Click to start'
             => 'Klicken Sie zu starten',
+        'Click here to start upgrade'
+            => '??',
         'Congratulations! The demo data has been successfully loaded.'
             => 'Herzlichen Glückwunsch! Die Demo-Daten wurde erfolgreich geladen.',
         'Congratulations! The installation of Zurmo is complete.'
@@ -55,8 +65,20 @@
             => 'Datenbank verbinden',
         'Continue'
             => 'Weiter',
+        'Copy upgrade file to app/protected/runtime/upgrade folder and start upgrade process.'
+            => '??',
         'Correctly Installed Services'
             => 'Dienstleistungen installiert mit Erfolg',
+        'Could not get value of database default collation.'
+            => 'Datenbank Standardsortierung ist nicht möglich zu erhalten.',
+        'Could not get value of database max_allowed_packet.'
+            => 'max_allowed_packet Wert ist nicht möglich zu erhalten.',
+        'Could not get value of database max_sp_recursion_depth.'
+            => 'max_sp_recursion_depth Wert ist nicht möglich zu erhalten.',
+        'Could not get value of database optimizer_search_depth.'
+            => 'optimizer_search_depth Wert ist nicht möglich zu erhalten.',
+        'Could not get value of database thread_stack.'
+            => 'database thread_stack Wert ist nicht möglich zu erhalten.',
         'Creating super user.'
             => 'Erstellen Super User',
         'Ctype extension is loaded.'
@@ -117,6 +139,8 @@
             => 'Verwenden nicht den RedBean Legacy-Version',
         'Dropping existing tables.'
             => 'Löschen vorhandenen Tabellen',
+        'Either $_SERVER["REQUEST_URI"] or $_SERVER["QUERY_STRING"] must exist.'
+            => '$_SERVER["REQUEST_URI"] oder $_SERVER["QUERY_STRING"] existiert nicht.',
         'Error code:'
             => 'Fehlercode:',
         'FAIL'
@@ -202,6 +226,14 @@
             => 'Die PCRE-Erweiterung ist geladen.',
         'PCRE extension is not loaded.'
             => 'Die PCRE ist nicht geladen.',
+        'pdo is installed.'
+            => 'pdo ist installiert.',
+        'pdo is not installed.'
+            => 'pdo ist nicht installiert.',
+        'pdo_mysql is installed.'
+            => 'pdo_mysql ist installiert.',
+        'pdo_mysql is not installed.'
+            => 'pdo_mysql ist nicht installiert.',
         'PHP'
             => 'PHP', // Same Word Translated
         'PHP date.timezone is not set.'
@@ -226,6 +258,8 @@
             => 'PHP upload_max_filesize erfüllt Mindestanforderung.',
         'Please delete all files from assets folder on server.'
             => 'Bitte löschen Sie alle Dateien im Ordner Assets.',
+        'Please set $maintenanceMode=true in perInstance.php config file.'
+            => '??',
         'Rebuilding Permissions.'
             => 'Rekonstruktion von Berechtigungen.',
         'Recheck System'
@@ -260,6 +294,8 @@
             => 'Begann Update-Schema.',
         'Starting to load demo data.'
             => 'Erstellen der Demo-Datenbank',
+        'Starting upgrade process.'
+            => '??',
         'The database name specified does not exist or the user specified does not have access.'
             => 'Der Name der Datenbank ist nicht vorhanden, oder der Benutzer angegeben hat keinen Zugriff.',
         'The debug.php config file is not writable.'
@@ -272,6 +308,8 @@
             => 'Name der Datenbank für zurmo.',
         'The next step is to install the demo data.'
             => 'Der nächste Schritt ist die Demo Daten zu installieren.',
+        'The next step is to reload the application and upgrade the schema.'
+            => '??',
         'The perInstance.php config file is not writable.'
             => 'Die perInstance.php config-Datei ist nicht beschreibbar.',
         'The perInstance.php config file is writable.'
@@ -286,6 +324,16 @@
             => 'Es gab ein Problem beim Erstellen der Datenbank Fehlercode:',
         'There was a problem creating the user Error code:'
             => 'Es gab ein Problem beim Erstellen des Benutzers Fehlercode:',
+        'This is the Zurmo upgrade process. Please backup all files and the database before you continue.'
+            => '??',
+        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"] (or $_SERVER["PHP_SELF"] and $_SERVER["SCRIPT_NAME"]) contains proper value.'
+            => 'Kann URL-Pfad Daten nicht bestimmen. Bitte stellen Sie sicher, $ _SERVER ["PATH_INFO"] (oder $_SERVER["PHP_SELF"] under $_SERVER["SCRIPT_NAME"]) enthält richtigen Wert.',
+        'Upgrade in progress. Please wait.'
+            => '??',
+        'Upgrade Output:'
+            => '??',
+        'Upgrade process is completed. Please edit perInstance.php file, and disable maintenance mode.'
+            => '??',
         'User who can connect to the database.'
             => 'Benutzer, die mit der Datenbank verbinden kann.',
         'User`s password.'
@@ -322,15 +370,21 @@
             'Ansonsten wählen Sie einen Datenbank-Benutzernamen, der nicht existiert.',
         'Your ZurmoCRM software is outdated, new stable release available:'
             => 'Ihre Zumo Version ist veraltet, eine neue stabile Version ist Verfügbar:',
+        'Zip extension is loaded.'
+            => '??',
+        'Zip extension is not loaded.'
+            => '??',
         'Zurmo administrative password. The username is `super`.  You can change this later.'
             => 'Zurmo administrative Passwort. Der Benutzername ist `super`. Sie können dieses später ändern.',
         'Zurmo Installation'
             => 'Zurmo Installation', // Same Word Translated
+        'Zurmo runs only on Apache {apacheMinVersion} and higher or Microsoft-IIS {iisMinVersion} or higher web servers.'
+            => 'Zurmo läuft nur auf Apache {apacheMinVersion} und höher oder den Microsoft-IIS {iisMinVersion} oder höher Web-Servern.',
         'Zurmo Version'
             => 'Zurmo Version', // Same Word Translated
         '{folderPath} is missing.'
             => '{folderPath} fehlt',
         '{folderPath} is not writable.'
             => '{folderPath} ist nicht beschreibbar.',
-    ); // Not Coding Standard
+    );
 ?>

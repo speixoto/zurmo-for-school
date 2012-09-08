@@ -53,8 +53,10 @@
             => 'Elimina Dashboard',
         'Delete Dashboards'
             => 'Elimina i Dashboards',
-        'Don\'t show me this screen again (Don\'t worry you can turn it on again)'
-            => 'Non visualizzare più questa finestra (è possibile riattivarla)',
+        'Don\'t show me this screen again'
+            => 'Non visualizzare più questa finestra',
+        'Don\'t worry you can turn it on again'
+            => 'è possibile riattivarla',
         'Edit Dashboard'
             => 'Modifica Dashboard',
         'Go to the dashboard'
@@ -77,6 +79,8 @@
             => 'Leggere il wiki',
         'Return to Home'
             => 'Ritorno a Home',
+        'Switch Dashboard'
+            => 'Cambiare Dashboard',
         'Tip of the Day'
             => 'Suggerimenti del giorno',
         'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .

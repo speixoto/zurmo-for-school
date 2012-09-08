@@ -49,7 +49,7 @@
             }
         }
 
-            public static function getModuleClassName()
+        public static function getModuleClassName()
         {
             return 'NotesModule';
         }
@@ -143,6 +143,11 @@
         public static function hasReadPermissionsOptimization()
         {
             return true;
+        }
+
+        public static function getGamificationRulesType()
+        {
+            return 'NoteGamification';
         }
     }
 ?>

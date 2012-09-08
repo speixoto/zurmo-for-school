@@ -113,7 +113,7 @@
             return '<h1>' . $this->getNewModelTitleLabel() . '</h1>';
         }
 
-        protected function renderRightSideContent($form)
+        protected function renderRightSideContent($form = null)
         {
             assert('$form == null || $form instanceof ZurmoActiveForm');
             if ($form != null)
@@ -121,7 +121,7 @@
                 $rightSideContent = $this->renderRightSideFormLayoutForEdit($form);
                 if ($rightSideContent != null)
                 {
-                    $content  = '<div id="permissions-module"><div class="buffer"><div>';
+                    $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
                     $content .= $rightSideContent;
                     $content .= '</div></div></div>';
                     return $content;
@@ -135,12 +135,7 @@
 
         protected function renderAfterFormLayout($form)
         {
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js');
+            DropDownUtil::registerScripts();
         }
 
         protected function resolveActiveFormAjaxValidationOptions()

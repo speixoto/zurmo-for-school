@@ -97,9 +97,8 @@
             $cClipWidget->beginClip("headerMenu");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
                 'items'                   => $menuItems,
-                'navContainerClass'       => 'nav-single-container',
-                'navBarClass'             => 'nav-single-bar',
-                'htmlOptions' => array('id' => $menuId),
+                'htmlOptions' => array('id'     => $menuId,
+                                       'class'  => 'headerNav'),
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['headerMenu'];
@@ -118,8 +117,7 @@
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
                                     CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
             Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
-                $('#notifications-flyout-link').unbind('click');
-                $('#notifications-flyout-link').bind('click', function()
+                $('#notifications-link').live('click', function()
                 {
                     if ($('#notifications-flyout').css('display') == 'none')
                     {
@@ -131,6 +129,14 @@
                             success  : function(html)
                             {
                                 jQuery('#notifications-flyout').html(html);
+                                $(document).one('click',function (e)
+                                {
+                                    var container = $('#notifications-flyout');
+                                    if (container.has(e.target).length === 0 && e.target.id != 'notifications-link')
+                                    {
+                                        container.hide();
+                                    }
+                                });
                             }
                         });
                     }
@@ -139,7 +145,7 @@
                         $('#notifications-flyout').hide();
                     }
                 });
-            ", CClientScript::POS_END);
+            ", CClientScript::POS_HEAD);
             Yii::app()->clientScript->registerScript('deleteNotificationFromAjaxListViewScript', "
                 function deleteNotificationFromAjaxListView(element, modelId)
                 {

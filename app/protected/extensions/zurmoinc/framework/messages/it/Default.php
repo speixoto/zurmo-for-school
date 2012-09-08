@@ -41,14 +41,20 @@
             => 'Avanzata',
         'Advanced Search'
             => 'Ricerca avanzata',
+        'Advanced Search Rows'
+            => 'Righe de ricerca avanzata',
         'After'
             => 'Dopo',
         'All'
             => 'Tutti',
         'All Results'
             => 'Lista completa',
+        'Altering configuration files.'
+            => '??',
         'and'
             => 'e',
+        'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"'
+            => '??',
         'Basic Search'
             => 'Ricerca',
         'Basic Search Fields'
@@ -71,8 +77,26 @@
             => 'Log cambiamenti',
         'Changed'
             => 'Cambiato',
+        'Checking completed.'
+            => '??',
+        'Checking permissions, files, upgrade version....'
+            => '??',
         'Clear'
             => 'Cancella',
+        'Clearing cache.'
+            => '??',
+        'Clearing cache.'
+            => '??',
+        'Click Here'
+            => 'Clicca qui',
+        'Close'
+            => 'Chiude',
+        'Copying files.'
+            => '??',
+        'Could not extract upgrade "from version" in the manifest file.'
+            => '??',
+        'Could not extract upgrade "from version" in the manifest file.'
+            => '??',
         'Create'
             => 'Crea',
         'Created By User'
@@ -89,6 +113,8 @@
             => 'Data',
         'Date Time'
             => 'Data e Ora di Inizio',
+        'Default data loaded for {moduleName}'
+            => 'Dati di default caricati per {moduleName}',
         'Default Value'
             => 'Valore predefinito',
         'Delete'
@@ -105,6 +131,8 @@
             => 'Modifica il portlet',
         'Error'
             => 'Errore',
+        'Error during upgrade!'
+            => '??',
         'Export'
             => 'Esporta',
         'Fahrenheit'
@@ -137,6 +165,8 @@
             => 'Info', // Same Word Translated
         'Inline Edit View'
             => 'Vista Modifica Inline',
+        'Installed Zurmo version is: {currentZurmoVersion}'
+            => '??',
         'Integer'
             => 'Numero intero',
         'Invalid'
@@ -153,6 +183,8 @@
             => 'Lista',
         'Loading'
             => 'Caricamento',
+        'Loading UpgraderComponent.'
+            => '??',
         'Mass Update'
             => 'Aggiornamento globale',
         'Max upload size: {maxSize}'
@@ -175,6 +207,8 @@
             => 'Altre informazioni',
         'More Options'
             => 'Altre opzioni',
+        'More then one zip file exists in runtime/upgrade folder. Please delete them all except the one that you want to use for the upgrade.'
+            => '??',
         'My List View'
             => 'La mia vista elenco',
         'Name'
@@ -191,6 +225,8 @@
             => 'Nessun risultato trovato',
         'None'
             => 'Ninguno',
+        'Not all files and folders are writeable by upgrade user. Please make these files or folders writeable:'
+            => '??',
         'Now'
             => 'Adesso',
         'of'
@@ -213,22 +249,50 @@
             => 'Impostazioni del pannello',
         'Panel Title'
             => 'Titolo del pannello',
+        'Part 1 complete.'
+            => '??',
+        'Please check if the file is a valid zip archive.'
+            => '??',
+        'Please fix error(s) and try again, or restore your database/files.'
+            => '??',
+        'Please fix your parenthesis.'
+            => 'Si prega di risolvere il tuo parentesi.',
+        'Please upload upgrade zip file to runtime/upgrade folder.'
+            => '??',
+        'Please use only integers lesser than {max}.'
+            => 'Si prega di utilizzare solo numeri interi minori di {max}.',
+        'Processing final touches.'
+            => '??',
         'Radio Drop Down'
             => 'Eelementi del bottone radio',
         'record'
             => 'record', // Same Word Translated
         'records'
             => 'record',
+        'Related'
+            => 'Collegato',
+        'Related to'
+            => 'Collegato a',
         'Remove'
             => 'Rimuovi',
+        'Removing upgrade files.'
+            => '??',
         'Return to List'
             => 'Ritorna alla lista',
         'Row'
             => 'Riga',
+        'Running tasks after schema is updated.'
+            => '??',
+        'Running tasks before updating schema.'
+            => '??',
         'Save'
             => 'Salva',
+        'Save and Close'
+            => '??',
         'Search'
             => 'Ricerca',
+        'Search Operator'
+            => 'Operatore di ricerca',
         'Second'
             => 'Secondo',
         'Select'
@@ -250,7 +314,11 @@
         'Tab'
             => 'Tab', // Same Word Translated
         'The file did not exist'
-            => 'il file non esiste.',
+            => 'Il file non esiste.',
+        'The structure is invalid. {error}'
+            => 'La struttura non è valido. {error}',
+        'There was an error during the extraction process of {zipFilePath}'
+            => '??',
         'There was an error uploading the file.'
             => 'Errore nel caricamento di file.',
         'There was an error with the web service.'
@@ -261,6 +329,8 @@
             => 'Questo dropdown è utilizzato in più di uno modulo.',
         'This portlet will be removed, ok?'
             => 'Sicuro di voler eliminar questo portlet?',
+        'This upgrade is for Zurmo ({fromVersion} - {toVersion})'
+            => '??',
         'Time'
             => 'Tempo',
         'Title/First/LastName'
@@ -285,6 +355,14 @@
             => 'aggiornato con successo.',
         'Updating'
             => 'Aggiornamento',
+        'Updating schema.'
+            => '??',
+        'Upgrade file is missing.'
+            => '??',
+        'Upgrade process completed.'
+            => '??',
+        'UpgraderComponent loaded.'
+            => '??',
         'User'
             => 'Utente',
         'Users'
@@ -295,15 +373,27 @@
             => 'Ieri',
         'You must enter a value'
             => 'Campo obbligatorio',
+        'You must select a field for row {rowNumber}'
+            => 'È necessario selezionare un campo per criteri {rowNumber}',
+        'You must select a value for row {rowNumber}'
+            => 'È necessario selezionare un valore per criteri {rowNumber}',
         'You must select at least one field to modify.'
             => 'Prego selezionare almeno un campo.',
         'You must select at least one record'
             => 'Prego selezionare almeno un record',
         'You must specify a value.'
             => 'Prego specificare un valore.',
+        'Zip PHP extension is required by upgrade process, please install it.'
+            => '??',
         '{attribute} "{value}" is already in use.'
             => '{attribute} "{value}" è già utilizzato',
         '{attribute} is too precise (maximum decimal places is {precision}).'
             => '{attribute} è tropo preciso (la precisione massima è {precision}).',
+        '{count} result(s)'
+            => '{count} risultati',
+        '{moduleSingularLabel} Search'
+            => 'Ricerca {moduleSingularLabel}',
+        '{start}-{end} of {count} result(s).'
+            => '{start}-{end} di {count} risultati.',
     );
 ?>

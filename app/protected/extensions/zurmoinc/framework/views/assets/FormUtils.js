@@ -31,7 +31,6 @@
 
 function attachLoadingOnSubmit(formId)
 {
-
     if($('#' + formId).find(".attachLoading:first").hasClass("loading-ajax-submit"))
     {
         return true;
@@ -41,7 +40,7 @@ function attachLoadingOnSubmit(formId)
         return false;
     }
     $('#' + formId).find(".attachLoading:first").addClass("loading");
-    attachLoadingSpinner(formId);
+    attachLoadingSpinner(formId, true);
 
     return true;
 }
@@ -54,13 +53,21 @@ function detachLoadingOnSubmit(formId)
 
 function beforeValidateAction(form)
 {
-    if(form.find(".attachLoading:first").hasClass("loading"))
+    if(form.find(".attachLoadingTarget").hasClass("loading") || form.find(".attachLoading:first").hasClass("loading"))
     {
         return false;
     }
-    form.find(".attachLoading:first").addClass("loading");
-    form.find(".attachLoading:first").addClass("loading-ajax-submit");
-    attachLoadingSpinner(form.attr('id'));
+    if(form.find(".attachLoadingTarget").length)
+    {
+        form.find(".attachLoadingTarget").addClass("loading");
+        form.find(".attachLoadingTarget").addClass("loading-ajax-submit");
+    }
+    else
+    {
+        form.find(".attachLoading:first").addClass("loading");
+        form.find(".attachLoading:first").addClass("loading-ajax-submit");
+    }
+    attachLoadingSpinner(form.attr('id'), true);
     return true;
 }
 
@@ -68,8 +75,16 @@ function afterValidateAction(form, data, hasError)
 {
     if(hasError)
     {
-        form.find(".attachLoading:first").removeClass("loading");
-        form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+        if(form.find(".attachLoadingTarget").length)
+        {
+            form.find(".attachLoadingTarget").removeClass("loading");
+            form.find(".attachLoadingTarget").removeClass("loading-ajax-submit");
+        }
+        else
+        {
+            form.find(".attachLoading:first").removeClass("loading");
+            form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+        }
         return false;
     }
     else
@@ -98,23 +113,38 @@ function searchByQueuedSearch(inputId)
     }
 }
 
-function attachLoadingSpinner(formId)
+function attachLoadingSpinner( id, state, color )
 {
-    $('.z-spinner', '#' + formId).spin({
-        lines : 11, // The number of lines to draw
-        length : 2.3, // The length of each line
-        width : 2, // The line thickness
-        radius : 3, // The radius of the inner circle
-        rotate : 0, // The rotation offset
-        color : '#fff', // #rgb or #rrggbb
-        speed : 2, // Rounds per second
-        trail : 37, // Afterglow percentage
-        shadow : false, // Whether to render a shadow
-        hwaccel : false, // Whether to use hardware acceleration
-        className : 'spinner', // The CSS class to assign to the spinner
-        zIndex : 2e9, // The z-index (defaults to 2000000000)
-        top : 4, // Top position relative to parent in px
-        left : 0 // Left position relative to parent in px
-    });
+    var color;
+    
+    if ( color === 'dark' ){
+        color = '#999';
+    } else {
+        color = '#fff';
+    }
+    
+    if ( state === true )
+    {
+        $( '.z-spinner', '#' + id ).spin({
+            lines : 11, // The number of lines to draw
+            length : 2.3, // The length of each line
+            width : 2, // The line thickness
+            radius : 3, // The radius of the inner circle
+            rotate : 0, // The rotation offset
+            color : color, // #rgb or #rrggbb
+            speed : 2, // Rounds per second
+            trail : 37, // Afterglow percentage
+            shadow : false, // Whether to render a shadow
+            hwaccel : false, // Whether to use hardware acceleration
+            className : 'spinner', // The CSS class to assign to the spinner
+            zIndex : 2e9, // The z-index (defaults to 2000000000)
+            top : 4, // Top position relative to parent in px
+            left : 0 // Left position relative to parent in px
+        });
+    }
+    else
+    {
+        $( '.z-spinner', '#' + id ).spin(false);
+    }
 }
 

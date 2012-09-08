@@ -109,6 +109,7 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/fusionChart/jquery.fusioncharts.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/widgets/assets/amChart/amcharts.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/elements/assets/Modal.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/dynamicSearchViewUtils.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/FormUtils.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/ListViewUtils.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/zurmoinc/framework/views/assets/interactions.js',
@@ -139,6 +140,7 @@
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/fusionChart/jquery.fusioncharts.js'),
                     array('application.extensions.zurmoinc.framework.elements.assets',  '/Modal.js'),
                     array('application.extensions.zurmoinc.framework.views.assets',     '/FormUtils.js'),
+                    array('application.extensions.zurmoinc.framework.views.assets',     '/dynamicSearchViewUtils.js'),
                     array('application.extensions.zurmoinc.framework.views.assets',     '/ListViewUtils.js'),
                     array('application.extensions.zurmoinc.framework.views.assets',     '/interactions.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/rssReader/jquery.zrssfeed.min.js'),
@@ -213,16 +215,16 @@
                 'showScriptName' => true,
                 'rules' => array(
                     // API REST patterns
-                    array('zurmo/api/logout',      'pattern' => 'zurmo/api/logout',                    'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/api/read',     'pattern' => '<module:\w+>/api/read/<id:\d+>',      'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/api/list',     'pattern' => '<module:\w+>/api/list/*',             'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/api/update',   'pattern' => '<module:\w+>/api/update/<id:\d+>',    'verb' => 'PUT'),    // Not Coding Standard
-                    array('<module>/api/delete',   'pattern' => '<module:\w+>/api/delete/<id:\d+>',    'verb' => 'DELETE'), // Not Coding Standard
-                    array('<module>/api/create',   'pattern' => '<module:\w+>/api/create/',            'verb' => 'POST'),   // Not Coding Standard
+                    array('zurmo/api/logout',                   'pattern' => 'zurmo/api/logout',                              'verb' => 'GET'),    // Not Coding Standard
+                    array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\d+>',    'verb' => 'GET'),    // Not Coding Standard
+                    array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\w+>',    'verb' => 'GET'),    // Not Coding Standard
+                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/*',           'verb' => 'GET'),    // Not Coding Standard
+                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/',            'verb' => 'POST'),    // Not Coding Standard
+                    array('<module>/<model>Api/update',         'pattern' => '<module:\w+>/<model:\w+>/api/update/<id:\d+>',  'verb' => 'PUT'),    // Not Coding Standard
+                    array('<module>/<model>Api/delete',         'pattern' => '<module:\w+>/<model:\w+>/api/delete/<id:\d+>',  'verb' => 'DELETE'), // Not Coding Standard
+                    array('<module>/<model>Api/create',         'pattern' => '<module:\w+>/<model:\w+>/api/create/',          'verb' => 'POST'),   // Not Coding Standard
+                    array('<module>/<model>Api/<action>',       'pattern' => '<module:\w+>/<model:\w+>/api/<action>/*'),                           // Not Coding Standard
 
-                    array('zurmo/<model>Api/read', 'pattern' => 'zurmo/<model:\w+>/api/read/<id:\d+>', 'verb' => 'GET'),    // Not Coding Standard
-                    array('zurmo/<model>Api/read', 'pattern' => 'zurmo/<model:\w+>/api/read/<id:\w+>', 'verb' => 'GET'),    // Not Coding Standard
-                    array('zurmo/<model>Api/list', 'pattern' => 'zurmo/<model:\w+>/api/list/*',        'verb' => 'GET'),    // Not Coding Standard
                     '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',                       // Not Coding Standard
                 )
             ),
@@ -230,11 +232,11 @@
                 'allowAutoLogin' => true,
                 'class'          => 'WebUser',
                 'loginUrl'       => array('zurmo/default/login'),
-        'behaviors' => array(
-            'onAfterLogin' => array(
-                'class' => 'application.modules.gamification.behaviors.WebUserAfterLoginGamificationBehavior'
-            ),
-        ),
+                'behaviors' => array(
+                    'onAfterLogin' => array(
+                        'class' => 'application.modules.gamification.behaviors.WebUserAfterLoginGamificationBehavior'
+                    ),
+                ),
             ),
             'widgetFactory' => array(
                 'widgets' => array(
@@ -281,8 +283,10 @@
             'accounts',
             'activities',
             'api',
+            'comments',
             'configuration',
             'contacts',
+            'conversations',
             'designer',
             'emailMessages',
             'export',
@@ -310,7 +314,7 @@
 
         'params' => array(
             'redBeanVersion'    => '1.3',
-            'yiiVersion'        => '1.1.10',
+            'yiiVersion'        => '1.1.12',
             'memcacheServers'   => $memcacheServers,
             'supportedLanguages' => array(
                 'en' => 'English',
@@ -325,17 +329,5 @@
             'sanitizer'
         ),
     );
-
-    // Routes for api test
-    $testApiConfig['components']['urlManager']['rules'] = array(
-        array('api/<model>Api/read',     'pattern' => 'api/<model:\w+>/api/read/<id:\d+>',   'verb' => 'GET'),    // Not Coding Standard
-        array('api/<model>Api/list',     'pattern' => 'api/<model:\w+>/api/list/*',          'verb' => 'GET'),    // Not Coding Standard
-        array('api/<model>Api/update',   'pattern' => 'api/<model:\w+>/api/update/<id:\d+>', 'verb' => 'PUT'),    // Not Coding Standard
-        array('api/<model>Api/delete',   'pattern' => 'api/<model:\w+>/api/delete/<id:\d+>', 'verb' => 'DELETE'), // Not Coding Standard
-        array('api/<model>Api/create',   'pattern' => 'api/<model:\w+>/api/create/',         'verb' => 'POST'),   // Not Coding Standard
-        array('api/<model>Api/<action>', 'pattern' => 'api/<model:\w+>/api/<action>/*'),                          // Not Coding Standard
-    );
-
-    $common_config = CMap::mergeArray($testApiConfig, $common_config);
     return $common_config;
 ?>

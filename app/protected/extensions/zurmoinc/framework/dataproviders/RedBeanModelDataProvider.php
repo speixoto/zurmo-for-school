@@ -34,6 +34,7 @@
         private $sortDescending;
         private $searchAttributeData;
         private $calculatedTotalItemCount;
+        private $offset;
 
         /**
          * @sortAttribute - Currently supports only non-related attributes.
@@ -63,6 +64,17 @@
         }
 
         /**
+         * Override the offset value that comes from the pagination object if needed.  Used by sticky search for example
+         * when retrieving a sticky list in the detail view of a model.
+         * @param  integer $offset
+         */
+        public function setOffset($offset)
+        {
+            assert('is_int($offset)');
+            $this->offset = $offset;
+        }
+
+        /**
          * If the count query results in 0, the data query will not be run and an empty array will be returned. This
          * helps to reduce queries to the database.
          * See the yii documentation.
@@ -82,6 +94,10 @@
                 $offset = 0;
                 $limit  = null;
             }
+            if ($this->offset != null)
+            {
+                $offset = $this->offset;
+            }
             if ($totalItemCount == 0)
             {
                 return array();
@@ -96,6 +112,24 @@
                 if ($this->sortDescending)
                 {
                     $orderBy .= ' desc';
+                }
+            }
+            else
+            {
+                try
+                {
+                    $sortAttribute = self::getSortAttributeName($this->modelClassName);
+                    if ($sortAttribute != null)
+                    {
+                        $orderBy = self::resolveSortAttributeColumnName($this->modelClassName, $joinTablesAdapter, $sortAttribute);
+                        if ($this->sortDescending)
+                        {
+                            $orderBy .= ' desc';
+                        }
+                    }
+                }
+                catch (NotImplementedException $e)
+                {
                 }
             }
             $modelClassName = $this->modelClassName;
@@ -137,7 +171,7 @@
                 if ($modelClassName == 'RedBeanModel')
                 {
                     //This means the sortAttribute value was not found.
-                    throw new notImplementedException();
+                    throw new NotImplementedException();
                 }
             }
             assert('isset($metadata[$modelClassName]["defaultSortAttribute"])');
@@ -176,8 +210,8 @@
         public function calculateTotalItemCount()
         {
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($this->modelClassName);
-            $where = $this->makeWhere($this->modelClassName, $this->searchAttributeData, $joinTablesAdapter);
-            $modelClassName = $this->modelClassName;
+            $where             = $this->makeWhere($this->modelClassName, $this->searchAttributeData, $joinTablesAdapter);
+            $modelClassName    = $this->modelClassName;
             return $modelClassName::getCount($joinTablesAdapter, $where, $this->modelClassName, $joinTablesAdapter->getSelectDistinct());
         }
 

@@ -102,6 +102,16 @@
             return !empty($timezone);
         }
 
+        public static function isPdoInstalled()
+        {
+            return extension_loaded("pdo");
+        }
+
+        public static function isPdoMysqlInstalled()
+        {
+            return extension_loaded("pdo_mysql");
+        }
+
         public static function isMbStringInstalled()
         {
             return function_exists('mb_strlen');
@@ -247,6 +257,14 @@
         public static function checkImap()
         {
             return extension_loaded("imap");
+        }
+
+        /**
+        * @returns true if zip extension is loaded, or false if not loaded.
+        */
+        public static function checkZip()
+        {
+            return extension_loaded("zip");
         }
 
         /**
