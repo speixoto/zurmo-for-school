@@ -352,7 +352,7 @@
                     Yii::app()->user->userModel->emailSignatures->add($messageSignature);
                 }
                 $emailMessage       = new EmailMessage();
-                $emailMessage->content->htmlContent = Yii::app()->user->userModel->emailSignatures[0]->htmlContent;
+                $emailMessage->content->htmlContent = ' ' . PHP_EOL . Yii::app()->user->userModel->emailSignatures[0]->htmlContent;
                 if (isset($_GET['toRecipients']))
                 {
                     $toRecipients = explode(",", $_GET['toRecipients']);
@@ -368,7 +368,7 @@
                         Yii::app()->user->setFlash('notification',
                             Yii::t('Default', 'Your message has been sent to outbox.')
                         );
-                        $this->redirect('home/default/');
+                        $this->redirect(Yii::app()->createUrl('/home/default'));
                         //TODO: Emails are not connected to contacts/leads if more than one recipient
                     }
                 }
