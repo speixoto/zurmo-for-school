@@ -94,7 +94,7 @@
             if (!empty($emailAddress))
             {
                 $url         = Yii::app()->createUrl('/emailMessages/default/composeEmail',
-                                                     array('toRecipients' => array( 'toAddress' => $emailAddress, 'toName' => $this->model)));
+                                                     array('toRecipients' => $emailAddress));
                 $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Compose Email'));
                 //$content    .= ZurmoHtml::ajaxLink($emailAddress, $url, $modalTitle);
                 $content    .= ZurmoHtml::link($emailAddress, $url);

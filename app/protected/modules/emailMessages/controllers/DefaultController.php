@@ -345,9 +345,14 @@
             try
             {
                 EmailAccount::getByUserAndName(Yii::app()->user->userModel);
-                //TODO: Add signature to the content
+                if (count(Yii::app()->user->userModel->emailSignatures) == 0 )  //TODO: Test this
+                {
+                    $messageSignature       = new EmailSignature();
+                    $messageSignature->user = Yii::app()->user->userModel;
+                    Yii::app()->user->userModel->emailSignatures->add($messageSignature);
+                }
                 $emailMessage       = new EmailMessage();
-                $emailMessage->content->htmlContent = '';
+                $emailMessage->content->htmlContent = Yii::app()->user->userModel->emailSignatures[0]->htmlContent;
                 if (isset($_GET['toRecipients']))
                 {
                     $toRecipients = explode(",", $_GET['toRecipients']);
@@ -423,6 +428,28 @@
                 $autoCompleteResults[] = array('id' => $term, 'name' => $term);
             }
             echo CJSON::encode($autoCompleteResults);
+        }
+
+        //TODO: Test this
+        public function actionSaveEmailSignature()
+        {
+            if (isset($_POST['EmailSignature']))
+            {
+                if (count(Yii::app()->user->userModel->emailSignatures) == 0 )  //TODO: Test this
+                {
+                    $messageSignature       = new EmailSignature();
+                    $messageSignature->user = Yii::app()->user->userModel;
+                    $messageSignature->htmlContent = $_POST['EmailSignature']['htmlContent'];
+                    Yii::app()->user->userModel->emailSignatures->add($messageSignature);
+                    Yii::app()->user->userModel->save();
+                }
+                else
+                {
+                    $messageSignature = Yii::app()->user->userModel->emailSignatures[0];
+                    $messageSignature->htmlContent = $_POST['EmailSignature']['htmlContent'];
+                    Yii::app()->user->userModel->save();
+                }
+            }
         }
 
         protected static function makeSelectForm($userCanAccessLeads, $userCanAccessContacts)
