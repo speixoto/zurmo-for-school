@@ -350,11 +350,9 @@
                 $emailMessage->content->htmlContent = '';
                 if (isset($_GET['toRecipients']))
                 {
-                    $recipient                 = new EmailMessageRecipient();
-                    $recipient->toAddress      = $_GET['toRecipients']['toAddress'];
-                    $recipient->toName         = $_GET['toRecipients']['toName'];
-                    $recipient->type           = EmailMessageRecipient::TYPE_TO;
-                    $emailMessage->recipients->add($recipient);
+                    $toRecipients = explode(",", $_GET['toRecipients']);
+                    EmailMessageHelper::attachRecipientsToMessage($toRecipients, $emailMessage, EmailMessageRecipient::TYPE_TO);
+                    unset($_GET['toRecipients']);
                 }
                 if (isset($_POST['EmailMessage']))
                 {

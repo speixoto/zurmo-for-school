@@ -73,7 +73,8 @@
                     $pageSize,
                     ContactsModule::getModuleLabelByTypeAndLanguage('Plural'),
                     Yii::app()->user->userModel->id,
-                    $dataProvider
+                    $dataProvider,
+                    'ContactsActionBarForListView'
                 );
             }
             $view = new ContactsPageView(ZurmoDefaultViewUtil::
@@ -260,6 +261,11 @@
         public function actionExport()
         {
             $this->export();
+        }
+
+        public function actionComposeEmail()
+        {
+            $this->composeEmail();
         }
     }
 ?>
