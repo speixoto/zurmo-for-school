@@ -165,7 +165,7 @@
                 $this->addToAssertionCount(1);
             }
 
-            //Load outbound setting when EmailAccount isSystemSettings = true
+            //Load outbound setting when EmailAccount useCustomSettings = false
             EmailMessageTestHelper::createEmailAccount($billy);
             $emailHelper->loadOutboundSettingsFromUserEmailAccount($billy);
             $this->assertEquals('smtp', $emailHelper->outboundType);
@@ -177,9 +177,9 @@
             $this->assertEquals('notifications@zurmoalerts.com', $emailHelper->fromName);
             $this->assertNull($emailHelper->fromAddress);
 
-            //Load outbound setting when EmailAccount isSystemSettings = false
+            //Load outbound setting when EmailAccount useCustomSettings = true
             $emailAccount = EmailAccount::getByUserAndName($billy);
-            $emailAccount->useSystemSettings = false;
+            $emailAccount->useCustomSettings = true;
             $emailAccount->outboundType = 'xyz';
             $emailAccount->outboundPort = 55;
             $emailAccount->outboundHost = 'zurmo.com';

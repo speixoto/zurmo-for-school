@@ -83,7 +83,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'useSystemSettings', 'type' => 'OutboundSettingsCheckBox'),
+                                                array('attributeName' => 'useCustomSettings', 'type' => 'OutboundSettingsCheckBox'),
                                             ),
                                         ),
                                     )

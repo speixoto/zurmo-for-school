@@ -120,9 +120,21 @@
         {
             $configurationForm = EmailSmtpConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
-            if (isset($_POST[$postVariableName]))
+            if (isset($_POST[$postVariableName]) || (isset($_POST['EmailAccount'])))
             {
-                $configurationForm->setAttributes($_POST[$postVariableName]);
+                if (isset($_POST[$postVariableName]))
+                {
+                    $configurationForm->setAttributes($_POST[$postVariableName]);
+                }
+                else
+                {
+                    $configurationForm->host            = $_POST['EmailAccount']['outboundHost'];
+                    $configurationForm->port            = $_POST['EmailAccount']['outboundPort'];
+                    $configurationForm->username        = $_POST['EmailAccount']['outboundUsername'];
+                    $configurationForm->password        = $_POST['EmailAccount']['outboundPassword'];
+                    $configurationForm->security        = $_POST['EmailAccount']['outboundSecurity'];
+                    $configurationForm->aTestToAddress  = $_POST['EmailAccount']['aTestToAddress'];
+                }
                 if ($configurationForm->aTestToAddress != null)
                 {
                     $emailHelper = new EmailHelper;

@@ -35,7 +35,7 @@
 
         protected function validateAttribute($model, $attributeName)
         {
-            if ($model->useSystemSettings)
+            if (!$model->useCustomSettings)
             {
                 $haveError = false;
                 foreach ($this->nonEmptyFields as $field)

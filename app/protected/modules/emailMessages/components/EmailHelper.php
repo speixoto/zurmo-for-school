@@ -132,7 +132,7 @@
         public function loadOutboundSettingsFromUserEmailAccount(User $user, $name = null)
         {
             $userEmailAccount = EmailAccount::getByUserAndName($user, $name);
-            if (!$userEmailAccount->useSystemSettings)
+            if ($userEmailAccount->useCustomSettings)
             {
                 $settingsToLoad = array_merge($this->settingsToLoad, array('fromName', 'fromAddress'));
                 foreach ($settingsToLoad as $keyName)

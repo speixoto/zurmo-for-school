@@ -169,7 +169,7 @@
             $emailAccount->name              = EmailAccount::DEFAULT_NAME;
             $emailAccount->fromName          = $user->getFullName();
             $emailAccount->fromAddress       = 'user@zurmo.com';
-            $emailAccount->useSystemSettings = true;
+            $emailAccount->useCustomSettings = false;
             $emailAccount->outboundType      = 'smtp';
             $emailAccount->save();
         }

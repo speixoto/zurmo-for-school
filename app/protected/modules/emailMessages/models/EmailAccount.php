@@ -28,7 +28,7 @@
      * Model for user's email accounts
      */
     class EmailAccount extends Item
-    {        
+    {
         const DEFAULT_NAME    = 'Default';
 
         public function __toString()
@@ -82,7 +82,7 @@
                 $emailAccount->name              = self::DEFAULT_NAME;
                 $emailAccount->fromName          = $user->getFullName();
                 $emailAccount->fromAddress       = $user->primaryEmail;
-                $emailAccount->useSystemSettings = true;
+                $emailAccount->useCustomSettings = false;
                 $emailAccount->outboundType      = 'smtp';
                 $saved                           = $emailAccount->save();
                 assert('$saved');
@@ -100,13 +100,14 @@
                     'fromName',
                     'replyToName',
                     'replyToAddress',
-                    'useSystemSettings',
+                    'useCustomSettings',
                     'outboundType',
                     'outboundHost',
                     'outboundPort',
                     'outboundUsername',
                     'outboundPassword',
-                    'outboundSecurity'
+                    'outboundSecurity',
+                    'aTestToAddress'
                 ),
                 'relations' => array(
                     'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage'),
@@ -125,7 +126,7 @@
                                   array('outboundSecurity',     'type',      'type' => 'string'),
                                   array('outboundType',         'type',      'type' => 'string'),
                                   array('outboundPort',         'type',      'type' => 'integer'),
-                                  array('useSystemSettings',    'type',      'type' => 'boolean'),
+                                  array('useCustomSettings',    'type',      'type' => 'boolean'),
                                   array('fromName',             'length',    'min'  => 0, 'max' => 64),
                                   array('replyToName',          'length',    'min'  => 0, 'max' => 64),
                                   array('outboundType',         'length',    'min'  => 0, 'max' => 4),
@@ -134,6 +135,7 @@
                                   array('outboundPassword',     'length',    'min'  => 0, 'max' => 64),
                                   array('outboundSecurity',     'length',    'min'  => 0, 'max' => 3),
                                   array('fromAddress',          'email'),
+                                  array('aTestToAddress',       'email'),
                                   //array('replyToAddress',       'email'), TODO: Gettin errors with this on in the updateShcema
                                   //TODO: See what's the problem with this validator
                                   /*

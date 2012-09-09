@@ -28,23 +28,37 @@
     {
         protected function renderControlEditable()
         {
-            $attribute = $this->attribute;
-            $isHidden = $this->model->$attribute;
-            $content  = parent::renderControlEditable();
+            $attribute     = $this->attribute;
+            $isHidden      = !$this->model->$attribute;
+            if ($isHidden)
+            {
+                $style = 'display: none;';
+            }
+            else
+            {
+                $style = null;
+            }
+            $checkBox      = parent::renderControlEditable();
+            $sendTestEmail = new SendATestEmailToElement($this->model, 'aTestToAddress', $this->form);
+            $sendTestEmail->editableTemplate = '{label}{content}{error}';
+            $content       = CHtml::tag('div', array('class' => 'beforeToolTip'), $checkBox);
+            $content      .= self::renderTooltipContent();
             //For now we only support SMTP type so this is not used
             //$content .= $this->renderEditableTextField($this->model, $this->form, 'outboundType');
-            $content .= $this->renderEditableTextField($this->model, $this->form, 'outboundHost', $isHidden);
-            $content .= $this->renderEditableTextField($this->model, $this->form, 'outboundPort', $isHidden);
-            $content .= $this->renderEditableTextField($this->model, $this->form, 'outboundUsername', $isHidden);
-            $content .= $this->renderEditableTextField($this->model, $this->form, 'outboundPassword', $isHidden);
-            $content .= $this->renderEditableTextField($this->model, $this->form, 'outboundSecurity', $isHidden);
+            $settings      = $this->renderEditableTextField($this->model, $this->form, 'outboundHost');
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundPort');
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundUsername');
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundPassword');
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundSecurity');
+            $settings     .= $sendTestEmail->renderEditable();
+            $content      .= ZurmoHtml::tag('div', array('class' => 'outbound-settings', 'style' => $style),
+                                         $settings);
             $this->renderScripts();
             return $content;
         }
 
-        public function renderEditableTextField($model, $form, $attribute, $isHidden = false)
+        public function renderEditableTextField($model, $form, $attribute)
         {
-            $style = $isHidden ? 'display: none;' : null;
             $id          = $this->getEditableInputId($attribute);
             $htmlOptions = array(
                 'name'  => $this->getEditableInputName($attribute),
@@ -53,8 +67,27 @@
             $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
             $textField   = $form->textField($model, $attribute, $htmlOptions);
             $error       = $form->error    ($model, $attribute);
-            return ZurmoHtml::tag('div', array('class' => 'outbound-settings', 'style' => $style),
-                                         $label . $textField . $error);
+            return $label . $textField . $error;
+        }
+
+        protected static function renderTooltipContent()
+        {
+            $title       = Yii::t('Default', 'If unchecked, will use system outbound email settings.');
+            $content     = '<span id="custom-outbound-settings-tooltip" class="tooltip"  title="' . $title . '">';
+            $content    .= '?</span>';
+            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
+            $qtip->addQTip("#custom-outbound-settings-tooltip");
+            return $content;
+        }
+
+        protected function renderLabel()
+        {
+            $label = Yii::t('Default', 'Customize Outbound Email Settings');
+            if ($this->form === null)
+            {
+                return $this->getFormattedAttributeLabel();
+            }
+            return $this->form->labelEx($this->model, $label, array('for' => $this->getEditableInputId()));
         }
 
         protected function renderScripts()
