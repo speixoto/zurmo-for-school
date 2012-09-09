@@ -138,6 +138,7 @@
                     array('application.extensions.qtip.assets',                         '/jquery.qtip-2.min.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/extendedGridView/jquery.yiigridview.js'),
                     array('application.extensions.zurmoinc.framework.widgets.assets',   '/fusionChart/jquery.fusioncharts.js'),
+                    array('application.extensions.zurmoinc.framework.widgets.assets',   '/amChart/amcharts.js'),
                     array('application.extensions.zurmoinc.framework.elements.assets',  '/Modal.js'),
                     array('application.extensions.zurmoinc.framework.views.assets',     '/FormUtils.js'),
                     array('application.extensions.zurmoinc.framework.views.assets',     '/dynamicSearchViewUtils.js'),
