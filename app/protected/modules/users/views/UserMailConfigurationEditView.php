@@ -39,8 +39,6 @@
                             array('type' => 'SaveButton'),
                         ),
                     ),
-                    //'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
-                    //TODO: Change the useSystemSettings to a check box
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
@@ -85,67 +83,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'useSystemSettings', 'type' => 'OutboundTypeStaticDropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                // For now we only support smtp
-                                /*
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundType', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),*/
-                            ),
-                        ),
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundHost', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundPort', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundUsername', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundPassword', 'type' => 'Password'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundSecurity', 'type' => 'Text'),
+                                                array('attributeName' => 'useSystemSettings', 'type' => 'OutboundSettingsCheckBox'),
                                             ),
                                         ),
                                     )
@@ -156,34 +94,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        protected function renderAfterFormLayout($form)
-        {
-            parent::renderAfterFormLayout($form);
-            $dropDownId = $this->modelClassName . '_outboundType_value';
-            Yii::app()->clientScript->registerScript('userMailConfigurationOutbound', "
-                    $('#{$dropDownId}').change(function(){
-                        if ($(this).val() == true)
-                        {
-                            $(this).closest('.panel').next('.panel').hide();
-                        }
-                        else
-                        {
-                            $(this).closest('.panel').next('.panel').show();
-                        }
-                    });
-                ");
-        }
-
-        protected function getMorePanelsLinkLabel()
-        {
-            return null;
-        }
-
-        protected function getLessPanelsLinkLabel()
-        {
-            return null;
         }
     }
 ?>
