@@ -440,6 +440,24 @@
             $postVariableName   = get_class($emailAccount);
             if (isset($_POST[$postVariableName]))
             {
+                //TODO: Test this
+                if (isset($_POST['EmailSignature']))
+                {
+                    if (count(Yii::app()->user->userModel->emailSignatures) == 0 )
+                    {
+                        $messageSignature       = new EmailSignature();
+                        $messageSignature->user = Yii::app()->user->userModel;
+                        $messageSignature->htmlContent = $_POST['EmailSignature']['htmlContent'];
+                        Yii::app()->user->userModel->emailSignatures->add($messageSignature);
+                        Yii::app()->user->userModel->save();
+                    }
+                    else
+                    {
+                        $messageSignature = Yii::app()->user->userModel->emailSignatures[0];
+                        $messageSignature->htmlContent = $_POST['EmailSignature']['htmlContent'];
+                        Yii::app()->user->userModel->save();
+                    }
+                }
                 $emailAccount->setAttributes($_POST[$postVariableName]);
                 if ($emailAccount->validate())
                 {

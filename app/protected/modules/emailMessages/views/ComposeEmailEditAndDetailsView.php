@@ -43,8 +43,7 @@
                     ),
                     'derivedAttributeTypes' => array(
                         'EmailMessageToRecipients',
-                        'EmailMessageCcRecipients',
-                        'EmailMessageContent'
+                        'EmailMessageCcRecipients'
                     ),
                     'nonPlaceableAttributeNames' => array(
                         'sentDateTime',
@@ -87,17 +86,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        protected function renderRightSideFormLayoutForEdit($form)
-        {
-            $content  = "<h3>" . Yii::t('Default', 'Email Signature') . '</h3>';
-            $model = Yii::app()->user->userModel->emailSignatures[0];
-            $attribute = 'htmlContent';
-            $element  = new EmailMessageSignatureElement($model, $attribute, $form);
-            $element->editableTemplate = '{label}{content}{error}';
-            $content .= $element->render();
-            return $content;
         }
     }
 ?>

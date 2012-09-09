@@ -31,17 +31,7 @@
     {
         protected function renderControlNonEditable()
         {
-            /*
-            assert('$this->model->{$this->attribute} instanceof EmailMessageSignature');
-            $emailMessageSignature = $this->model->{$this->attribute};
-            if ($emailMessageSignature->htmlContent != null)
-            {
-                return Yii::app()->format->html($emailMessageSignature->htmlContent);
-            }
-            elseif ($emailMessageSignature->textContent != null)
-            {
-                return Yii::app()->format->text($emailMessageSignature->textContent);
-            }*/
+            throw new NotSupportedException();
         }
 
         protected function renderControlEditable()
@@ -55,7 +45,6 @@
             $htmlOptions['rows']     = 3;
             $htmlOptions['cols']     = 10;
             $content  = $this->form->textArea($emailMessageSignature, $attribute, $htmlOptions);
-            $content .= $this->renderSaveButton();
             return $content;
         }
 
@@ -70,27 +59,6 @@
             {
                 return null;
             }
-        }
-
-        protected function renderSaveButton()
-        {
-            $content  = '<span>';
-            $content .= ZurmoHtml::ajaxButton(Yii::t('Default', 'Save'),
-                Yii::app()->createUrl('emailMessages/default/saveEmailSignature/'),
-                    static::resolveAjaxOptionsForSaveEmailSignature($this->form->getId()),
-                    array('id' => 'SaveEmailSignature')
-            );
-            $content .= '</span>';
-            return $content;
-        }
-
-        protected static function resolveAjaxOptionsForSaveEmailSignature($formId)
-        {
-            assert('is_string($formId)');
-            $ajaxOptions = array();
-            $ajaxOptions['type'] = 'POST';
-            $ajaxOptions['data'] = 'js:$("#' . $formId . '").serialize()';
-            return $ajaxOptions;
         }
     }
 ?>
