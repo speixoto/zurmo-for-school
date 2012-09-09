@@ -145,7 +145,7 @@
             {
                 $this->loadOutboundSettings();
                 $this->fromName = strval($user);
-                $this->fromName = $this->resolveFromAddressByUser($user);
+                $this->fromAddress = $this->resolveFromAddressByUser($user);
             }
         }
 

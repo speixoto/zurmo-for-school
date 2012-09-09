@@ -174,8 +174,8 @@
             $this->assertNull($emailHelper->outboundUsername);
             $this->assertNull($emailHelper->outboundPassword);
             $this->assertNull($emailHelper->outboundSecurity);
-            $this->assertEquals('notifications@zurmoalerts.com', $emailHelper->fromName);
-            $this->assertNull($emailHelper->fromAddress);
+            $this->assertEquals('notifications@zurmoalerts.com', $emailHelper->fromAddress);
+            $this->assertEquals(strval($billy), $emailHelper->fromName);
 
             //Load outbound setting when EmailAccount useCustomSettings = true
             $emailAccount = EmailAccount::getByUserAndName($billy);
