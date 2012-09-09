@@ -48,7 +48,7 @@
             $settings      = $this->renderEditableTextField($this->model, $this->form, 'outboundHost');
             $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundPort');
             $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundUsername');
-            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundPassword');
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundPassword', true);
             $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundSecurity');
             $settings     .= $sendTestEmail->renderEditable();
             $content      .= ZurmoHtml::tag('div', array('class' => 'outbound-settings', 'style' => $style),
@@ -57,7 +57,7 @@
             return $content;
         }
 
-        public function renderEditableTextField($model, $form, $attribute)
+        public function renderEditableTextField($model, $form, $attribute, $isPassword = false)
         {
             $id          = $this->getEditableInputId($attribute);
             $htmlOptions = array(
@@ -65,7 +65,15 @@
                 'id'    => $id,
             );
             $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
-            $textField   = $form->textField($model, $attribute, $htmlOptions);
+            if (!$isPassword)
+            {
+                $textField = $form->textField($model, $attribute, $htmlOptions);
+            }
+            else
+            {
+                
+                $textField = $form->passwordField($model, $attribute, $htmlOptions);
+            }
             $error       = $form->error    ($model, $attribute);
             return $label . $textField . $error;
         }
