@@ -81,7 +81,6 @@
             $alphaToNumberMap = array();
             foreach ($correctlyPositionedClauses as $position => $correctlyPositionedClauseData)
             {
-
                 $alphaCode = static::getAlphaCodeByInteger((int)$correctlyPositionedClauseData[$position]);
                 $correctlyPositionedClauses[$position][$position] = $alphaCode;
                 $alphaToNumberMap[] = array($alphaCode => $correctlyPositionedClauseData[$position]);
@@ -91,7 +90,7 @@
             {
                 $structure = strtr(strtolower($structure), $correctlyPositionedClauseData);
             }
-            foreach($alphaToNumberMap as $alphaCodeToNumber)
+            foreach ($alphaToNumberMap as $alphaCodeToNumber)
             {
                 $structure = strtr(strtolower($structure), $alphaCodeToNumber);
             }
@@ -174,13 +173,12 @@
          * @param	bool	upper case the letter on return?
          * @return	string	letters from number input
          */
-        public static function numberToLetter($num, $uppercase = FALSE)
+        public static function numberToLetter($num, $uppercase = false)
         {
             $num -= 1;
-
-            $letter  = 	chr(($num % 26) + 97);
-            $letter .= 	(floor($num / 26) > 0) ? str_repeat($letter, floor($num / 26)) : '';
-            return 		($uppercase ? strtoupper($letter) : $letter);
+            $letter  =  chr(($num % 26) + 97);
+            $letter .=  (floor($num / 26) > 0) ? str_repeat($letter, floor($num / 26)) : '';
+            return      ($uppercase ? strtoupper($letter) : $letter);
         }
     }
 ?>

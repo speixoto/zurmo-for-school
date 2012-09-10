@@ -28,31 +28,30 @@
      * Form used for selecting an account
      */
     class MixedModelsSearchForm extends CFormModel
-    {               
-              
-        public $term;                
-        
+    {
+        public $term;
+
         public $anyMixedAttributesScope;
-        
+
         private $moduleNamesAndLabelsAndAll = array();
-                
+
         public function rules()
         {
             return array();
         }
-        
+
         public function attributeLabels()
         {
             return array(
-                'term'          => '',                   
+                'term'          => '',
             );
         }
-        
+
         public function setGlobalSearchAttributeNamesAndLabelsAndAll($moduleNamesAndLabelsAndAll)
         {
-            $this->moduleNamesAndLabelsAndAll = $moduleNamesAndLabelsAndAll;            
+            $this->moduleNamesAndLabelsAndAll = $moduleNamesAndLabelsAndAll;
         }
-        
+
         public function getGlobalSearchAttributeNamesAndLabelsAndAll()
         {
             return $this->moduleNamesAndLabelsAndAll;

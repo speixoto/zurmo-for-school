@@ -38,19 +38,14 @@
 	<td>\10</td>
 </tr>
 <tr>
-	<td>keyDown</td>
-	<td>id=globalSearchInput</td>
-	<td>\40</td>
-</tr>
-<tr>
-	<td>keyDown</td>
-	<td>id=globalSearchInput</td>
-	<td>\40</td>
-</tr>
-<tr>
 	<td>waitForTextPresent</td>
 	<td>All results</td>
 	<td></td>
+</tr>
+<tr>
+	<td>mouseOver</td>
+	<td>//a[@class='ui-corner-all']/span[. = &quot;All results&quot;]</td>
+	<td><br /></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -172,18 +167,13 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td></td>
 	<td>All results</td>
+	<td></td>
 </tr>
 <tr>
-	<td>keyDown</td>
-	<td>id=globalSearchInput</td>
-	<td>\40</td>
-</tr>
-<tr>
-	<td>keyDown</td>
-	<td>id=globalSearchInput</td>
-	<td>\40</td>
+	<td>mouseOver</td>
+	<td>//a[@class='ui-corner-all']/span[. = &quot;All results&quot;]</td>
+	<td><br /></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -191,9 +181,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTable</td>
-	<td>css=#list-view-leads &gt; table.items.1.1</td>
+	<td>waitForTextPresent</td>
 	<td>My Contact ${randomSuffix}</td>
+	<td></td>
 </tr>
 <!--Convert lead to contact and search for it in leads-->
 <tr>
@@ -243,18 +233,13 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td></td>
 	<td>All results</td>
+	<td></td>
 </tr>
 <tr>
-	<td>keyDown</td>
-	<td>id=globalSearchInput</td>
-	<td>\40</td>
-</tr>
-<tr>
-	<td>keyDown</td>
-	<td>id=globalSearchInput</td>
-	<td>\40</td>
+	<td>mouseOver</td>
+	<td>//a[@class='ui-corner-all']/span[. = &quot;All results&quot;]</td>
+	<td><br /></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -308,9 +293,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTable</td>
-	<td>css=#list-view-contacts &gt; table.items.1.1</td>
+	<td>waitForTextPresent</td>
 	<td>My Contact ${randomSuffix}</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -348,9 +333,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTable</td>
-	<td>css=#list-view-contacts &gt; table.items.1.1</td>
+	<td>waitForTextPresent</td>
 	<td>My Contact ${randomSuffix}</td>
+	<td></td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>

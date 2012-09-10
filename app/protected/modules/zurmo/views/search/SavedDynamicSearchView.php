@@ -128,10 +128,11 @@
         protected function renderConfigSaveAjax($formName)
         {
             return     "var inputId = '" . static::getSavedSearchListDropDown() . "';
-                        if(data.id != undefined)
+                        if (data.id != undefined)
                         {
                             var existingSearchFound = false;
-                            $('#' + inputId + ' > option').each(function(){
+                            $('#' + inputId + ' > option').each(function()
+                            {
                                if (this.value == data.id)
                                {
                                    $('#' + inputId + ' option[value=\'' + this.value + '\']').text(data.name);
@@ -140,12 +141,12 @@
                                     resetDropKickDropDowns($('#' + inputId));
                                }
                             });
-                            if(!existingSearchFound)
+                            if (!existingSearchFound)
                             {
                                 $('#' + inputId).removeClass('ignore-style');
                                 $('#' + inputId)
                                     .append($('<option></option>')
-                                    .attr('value',data.id)
+                                    .attr('value', data.id)
                                     .text(data.name))
                                 //$('#' + inputId).val(data.id); Do not select new saved search since it is not sticky at this point.
                                 $('#" . get_class($this->model) . "_savedSearchId').val(data.id);

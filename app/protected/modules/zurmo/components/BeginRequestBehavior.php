@@ -237,7 +237,7 @@
         {
             // Create list of allowed urls.
             // Those urls should be accessed during upgrade process too.
-            foreach($this->allowedGuestUserRoutes as $allowedGuestUserRoute)
+            foreach ($this->allowedGuestUserRoutes as $allowedGuestUserRoute)
             {
                 $allowedGuestUserUrls[] = Yii::app()->createUrl($allowedGuestUserRoute);
             }

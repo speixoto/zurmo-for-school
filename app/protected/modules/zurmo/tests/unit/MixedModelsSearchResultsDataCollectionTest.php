@@ -29,54 +29,52 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();          
+            SecurityTestHelper::createSuperAdmin();
             ContactsModule::loadStartingData();
         }
-        
+
         public function setUp()
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
         }
-        
+
         public function testGetListView()
         {
             $term = "green";
-            $pageSize = 5;            
-            $collection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel);            
+            $pageSize = 5;
+            $collection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel);
             $accountsView = $collection->getListView('contacts');
-            $this->assertInstanceOf('View',$accountsView);            
-            $this->assertAttributeInstanceOf('RedBeanModelDataProvider', 'dataProvider', $accountsView);                       
+            $this->assertInstanceOf('View', $accountsView);
+            $this->assertAttributeInstanceOf('RedBeanModelDataProvider', 'dataProvider', $accountsView);
             //Get a listView with no empty results
             $accountsView = $collection->getListView('accounts', true);
-            $this->assertInstanceOf('View',$accountsView);
+            $this->assertInstanceOf('View', $accountsView);
             $this->assertAttributeInstanceOf('EmptyRedBeanModelDataProvider', 'dataProvider', $accountsView);
         }
-        
+
         public function testGetViews()
         {
             $term = "green";
             $pageSize = 5;
             $collection = new MixedModelsSearchResultsDataCollection($term, $pageSize, Yii::app()->user->userModel);
             $testViews = $collection->getViews();
-            $i=1;
+            $i = 1;
             $oldModuleName = '';
             foreach ($testViews as $moduleName => $view)
-            {                
-                if(($i++ % 2) === 1)
-                {                    
+            {
+                if (($i++ % 2) === 1)
+                {
                     $oldModuleName = str_replace('titleBar-', '', $moduleName);
-                    $this->assertInstanceOf('TitleBarView',$view);
+                    $this->assertInstanceOf('TitleBarView', $view);
                 }
                 else
-                {                    
+                {
                     $this->assertEquals($oldModuleName, $moduleName);
-                    $this->assertInstanceOf('View',$view);                
+                    $this->assertInstanceOf('View', $view);
                     $this->assertAttributeInstanceOf('EmptyRedBeanModelDataProvider', 'dataProvider', $view);
                 }
-                
             }
         }
-        
     }
 ?>
