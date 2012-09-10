@@ -74,3 +74,111 @@
 		width:100% !important;
 	}
 }
+
+/*Social Items*/
+#AllSocialItemsForPortletView{
+    .wide.form{
+        border:none;
+        background: none !important;
+        .b-shadow(none);
+        form{
+            border:none;
+            background: none !important;
+            .b-shadow(none);
+        }
+        table.files{
+            border-bottom: none;
+        }
+        .panel > table{
+            padding-bottom: 10px;
+        }
+    }
+    .social-item{
+        padding: 10px 15px;
+    }
+    .delete-social-item{
+        margin-left:5px;
+        a{
+            margin-left:4px;
+        }
+        &:before{
+            .symbly(18px);
+            content: "_";
+        }
+    }
+}
+
+/*Missions*/
+#MyMissionsForPortletView{
+    > div{
+        float: none;
+    }
+    .filter-portlet-model-bar{
+        padding-left:8px;
+        border-bottom:1px solid #DFDFDF;
+        padding:10px 15px;
+        #gradient > .vertical(#f6f6f6, #ededed);
+        .b-shadow(inset 0 1px 0 0 #ffffff);
+        > div{
+            &:first-child{
+                //border-right:2px solid @themeColor;
+                //padding-right:10px;
+                //margin-right:10px;
+            }
+        }
+        /*
+        #LatestActivitiesConfigurationForm_ownedByFilter_area{
+            display:inline-block;
+        }
+        #LatestActivitiesConfigurationForm_rollup_area{
+            display:inline-block;
+        }
+        #filter-latest-activities-link{
+            color:@themeColor !important;
+            margin-left:20px;
+            text-decoration: underline;
+             .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
+             &:hover{
+                 color:@themeColor2  !important;
+             }
+        }
+        */
+        
+        
+        label{
+            cursor:pointer;
+            border:none;
+            background:none;
+            font-size:11px !important;
+            padding:4px;
+            margin:0 3px;
+            color:@themeColor;
+            span{
+                font-size: 11px;
+            }
+            &:hover{
+                background:@themeColor;
+                color:#FFF;
+                .radius(3px) !important;
+                border:none;
+            }
+        }
+        input[type="radio"], input[type="checkbox"]{
+            visibility:hidden;
+            display:none;
+        }
+        .ui-state-active{
+            background:@themeColor;
+            color:#FFF;
+            .radius(3px) !important;
+            border:none;
+        }
+        .ui-button-text{
+            padding:0;
+            margin:0;
+        }
+    }
+}
+
+    
+

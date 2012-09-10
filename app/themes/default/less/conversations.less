@@ -78,19 +78,8 @@
         margin-bottom:5px;
         display:block;
     }
-    .delete-comment{
-        visibility:hidden;
-        display:block;
-        margin-top:4px;
-        a{
-            margin-left:4px;
-        }
-        &:before{
-            .symbly(18px);
-            content:"_";
-        }
-    }
 }
+
 .comment{
     margin-bottom:15px;
     line-height: 140%;
@@ -104,6 +93,18 @@
     }
     &.unread{
         font-weight:bold;
+    }
+    .delete-comment{
+        visibility:hidden;
+        display:block;
+        margin-top:4px;
+        a{
+            margin-left:4px;
+        }
+        &:before{
+            .symbly(18px);
+            content:"_";
+        }
     }
 }
 .conversation-subject{
