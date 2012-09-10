@@ -193,7 +193,7 @@
                             $searchArray[$key]['values'] = array_values($searchArray[$key]['values']);
                         }
                     }
-                    if(count($searchArray[$key]) == 1 && count($searchArray[$key]['values']) == 0)
+                    if (count($searchArray[$key]) == 1 && count($searchArray[$key]['values']) == 0)
                     {
                         $keysToUnset[] = $key;
                     }
@@ -208,7 +208,7 @@
                             $searchArray[$key]['value'] = array_values($searchArray[$key]['value']);
                         }
                     }
-                    if(count($searchArray[$key]) == 1 && count($searchArray[$key]['value']) == 0)
+                    if (count($searchArray[$key]) == 1 && count($searchArray[$key]['value']) == 0)
                     {
                         $keysToUnset[] = $key;
                     }
@@ -218,7 +218,7 @@
                     self::changeEmptyArrayValuesToNull($searchArray[$key]);
                 }
             }
-            foreach($keysToUnset as $key)
+            foreach ($keysToUnset as $key)
             {
                 unset($searchArray[$key]);
             }

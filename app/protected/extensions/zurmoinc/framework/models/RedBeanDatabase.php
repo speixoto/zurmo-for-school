@@ -162,7 +162,7 @@
                 if (empty($matches['3']))
                 {
                     $databaseType = $matches['1'];
-                    $databasePort= DatabaseCompatibilityUtil::getDatabaseDefaultPort($databaseType);
+                    $databasePort = DatabaseCompatibilityUtil::getDatabaseDefaultPort($databaseType);
                 }
                 else
                 {

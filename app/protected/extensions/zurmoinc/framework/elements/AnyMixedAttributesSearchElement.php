@@ -31,9 +31,8 @@
      */
     class AnyMixedAttributesSearchElement extends TextElement
     {
-                
         private $selectedValue = array('All');
-        
+
         /**
          * Override to ensure the attributeName is anyMixedAttributes
          */
@@ -123,12 +122,12 @@
                             ";
             Yii::app()->clientScript->registerScript('basicSearchAjaxSubmit', $script);
         }
-        
+
         protected function getSelectedValue()
         {
             return $this->selectedValue;
         }
-        
+
         public function setSelectedValue(Array $selectedValue)
         {
             assert('is_array($selectedValue)');

@@ -49,13 +49,13 @@
 
             $url = 'http://validator.w3.org/check';
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL,$url);
+            curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params); // multipart encoding
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-            curl_setopt($ch, CURLOPT_REFERER,'');
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
-            curl_setopt($ch, CURLOPT_TIMEOUT,60);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_REFERER, '');
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 
             $xml = curl_exec($ch);
             if (curl_errno($ch))
@@ -79,7 +79,8 @@
             {
                 $xhtmlValidationErrors[] = 'THIS IS NOT A VALID XHTML FILE';
                 $xhtmlValidationErrors[] = 'There are ' . $errorcount . ' errors';
-                foreach ($nodes as $node) {
+                foreach ($nodes as $node)
+                {
                     $nodes = $node->xpath('m:line');
                     $line = strval($nodes[0]);
                     $nodes = $node->xpath('m:col');

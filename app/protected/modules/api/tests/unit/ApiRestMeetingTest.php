@@ -586,6 +586,7 @@
             $this->assertEquals(2, $response['data']['currentPage']);
             $this->assertEquals('Second Meeting', $response['data']['items'][0]['name']);
         }
+
         /**
         * @depends testApiServerUrl
         */

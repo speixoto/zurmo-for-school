@@ -88,7 +88,7 @@
             {
                 try
                 {
-                    if((int)$value <= 0)
+                    if ((int)$value <= 0)
                     {
                         throw new InvalidValueToSanitizeException(Yii::t('Default', 'The user id specified did not match any existing records.'));
                     }

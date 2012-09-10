@@ -258,7 +258,7 @@
             => 'PHP upload_max_filesize soddisfa il requisito minimale.',
         'Please delete all files from assets folder on server.'
             => 'Prego di eliminare tutti i file della cartella Assets.',
-        'Please set $maintenanceMode=true in perInstance.php config file.'
+        'Please set $maintenanceMode = true in perInstance.php config file.'
             => '??',
         'Rebuilding Permissions.'
             => 'Ricostruzione dei privilegi.',

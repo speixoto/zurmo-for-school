@@ -38,7 +38,7 @@
 
     DESCRIPTION
       This command is used to backup or restore the Zurmo database.
-      Please set \$maintenanceMode=true in the perInstance.php config file before you start this process.
+      Please set \$maintenanceMode = true in the perInstance.php config file before you start this process.
 
     PARAMETERS
      * action: action(possible options: "backup" or "restore")
@@ -77,10 +77,10 @@ EOD;
 
             if (!Yii::app()->isApplicationInMaintenanceMode())
             {
-                $this->usageError('Please set $maintenanceMode=true in the perInstance.php config file.');
+                $this->usageError('Please set $maintenanceMode = true in the perInstance.php config file.');
             }
 
-            if(!function_exists('exec'))
+            if (!function_exists('exec'))
             {
                 $this->usageError('exec() command is not available in PHP environment.');
             }

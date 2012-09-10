@@ -122,6 +122,7 @@
 
         protected function renderAttributeDropDownOnChangeScript($id, $inputDivId, $ajaxOnChangeUrl)
         {
+            // Begin Not Coding Standard
             $ajaxSubmitScript  = CHtml::ajax(array(
                     'type'    => 'GET',
                     'data'    => 'js:\'suffix=' . $this->suffix .
@@ -138,6 +139,7 @@
                 $ajaxSubmitScript
             }
             );";
+            // End Not Coding Standard
         }
 
         protected function getInputsDivId()

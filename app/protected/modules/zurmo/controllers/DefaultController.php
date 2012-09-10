@@ -156,7 +156,7 @@
                                                           'anyMixedAttributesScope' => ArrayUtil::getArrayValue(
                                                               GetUtil::getData(), 'globalSearchScope')))
                                                 ),
-                              'label'     => 'All results','iconClass' => 'autocomplete-icon-AllResults'))
+                              'label'     => 'All results', 'iconClass' => 'autocomplete-icon-AllResults'))
               );
             echo CJSON::encode($autoCompleteResults);
         }
@@ -166,8 +166,8 @@
          */
         public function actionGlobalList()
         {
-            if (!isset($_GET['MixedModelsSearchForm']['anyMixedAttributesScope'])
-                    || in_array('All', $_GET['MixedModelsSearchForm']['anyMixedAttributesScope']))
+            if (!isset($_GET['MixedModelsSearchForm']['anyMixedAttributesScope']) ||
+                    in_array('All', $_GET['MixedModelsSearchForm']['anyMixedAttributesScope']))
             {
                 $scopeData = null;
             }
@@ -180,7 +180,8 @@
                             'listPageSize', get_class($this->getModule()));
             $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize,
                     Yii::app()->user->userModel);
-            if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"])) {
+            if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"]))
+            {
                 $selectedModule = $_GET["ajax"];
                 $selectedModule = str_replace('list-view-', '', $selectedModule);
                 $view = $dataCollection->getListView($selectedModule);
