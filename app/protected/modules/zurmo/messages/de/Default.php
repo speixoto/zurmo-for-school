@@ -181,6 +181,8 @@
             => '??',
         'Could not save relation.'
             => '??',
+        'Could not use this API call for HAS_ONE relationships.'
+            => '??',
         'Country'
             => 'Land',
         'Create Group'

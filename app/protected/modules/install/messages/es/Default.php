@@ -46,16 +46,16 @@
             => 'Puede ser un nombre de dominio o una dirección IP.',
         'Click below to go to the login page. The username is <b>super</b>'
             => 'Haga clic abajo para ir a la página de login. El usuario es <b>súper</ b>',
-        'Click here to access index page, after you unset maintenance mode.'
+        'Click here to access index page, after you disable maintenance mode.'
             => '??',
         'Click Here to continue with next step'
             => '??',
         'Click Here to install the demo data'
             => 'Haga clic aquí para instalar los datos demo',
-        'Click to start'
-            => 'Haga clic para iniciar',
         'Click here to start upgrade'
             => '??',
+        'Click to start'
+            => 'Haga clic para iniciar',
         'Congratulations! The demo data has been successfully loaded.'
             => '¡Felicidades! Los datos demo se ha cargado correctamente.',
         'Congratulations! The installation of Zurmo is complete.'
