@@ -204,7 +204,7 @@
          */
         public static function getDatabaseMaxColumnNameLength()
         {
-            $maxColumnNameLength = 12;
+            $maxColumnNameLength = 31;
             return $maxColumnNameLength;
         }
 
