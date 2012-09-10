@@ -54,8 +54,15 @@
             $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
             $htmlOptions['rows']     = 10;
             $htmlOptions['cols']     = 50;
-            $content = $this->form->textArea($emailMessageContent, $attribute, $htmlOptions);
-            //$content .= $form->error($emailMessageContent, $attribute);
+            $cClipWidget   = new CClipWidget();
+            $cClipWidget->beginClip("Redactor");
+            $cClipWidget->widget('ext.zurmoinc.framework.widgets.Redactor', array(
+                                        'htmlOptions' => $htmlOptions,
+                                        'content'     => $emailMessageContent->$attribute,
+            ));
+            $cClipWidget->endClip();
+            $content  = $cClipWidget->getController()->clips['Redactor'];
+            $content .= $this->form->error($emailMessageContent, $attribute);
             return $content;
         }
 
