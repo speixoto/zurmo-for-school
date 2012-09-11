@@ -77,13 +77,13 @@
             => 'Registro de Cambios',
         'Changed'
             => 'Cambiado',
-        'Checking completed.'
+        'Check completed.'
             => '??',
         'Checking permissions, files, upgrade version....'
             => '??',
         'Clear'
             => 'Borrar',
-        'Clearing cache.'
+        'Clearing assets and runtime folders.'
             => '??',
         'Clearing cache.'
             => '??',
@@ -95,7 +95,7 @@
             => '??',
         'Could not extract upgrade "from version" in the manifest file.'
             => '??',
-        'Could not extract upgrade "from version" in the manifest file.'
+        'Could not extract upgrade "to version" in the manifest file.'
             => '??',
         'Create'
             => 'Crear',
