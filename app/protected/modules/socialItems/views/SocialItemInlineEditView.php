@@ -60,7 +60,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
+                                                array('attributeName' => 'description', 'type' => 'TextArea', 'rows' => 2),
                                             ),
                                         ),
                                     )
