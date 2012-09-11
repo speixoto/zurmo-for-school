@@ -239,6 +239,7 @@
             => 'Dovrebbe avere almeno uno pannello per salvare un layout.',
         'You must select at least 2 pick-lists.'
             => 'Si deve scegliere al minimo 2 picklists.',
-
+        '"{$attributeName}" field name is a database reserved word. Please enter a different one.'
+            => 'Il nome del campo "{$attributeName}" è una parola riservata per il database. Prego di scegliere un altro nome.',
     );
 ?>
