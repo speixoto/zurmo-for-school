@@ -120,7 +120,11 @@
                     $rows++;
                     continue;
                 }
-                $stringContent  = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                
+                $avatarUrl = $comment->createdByUser->getAvatarImageUrl(24);
+                $avatarImage = ZurmoHtml::image($avatarUrl);
+                
+                $stringContent  = $avatarImage . '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $comment->createdDateTime, 'long', null) . '</strong> ';
                 $stringContent .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
                                         array('{ownerStringContent}' => strval($comment->createdByUser)));
