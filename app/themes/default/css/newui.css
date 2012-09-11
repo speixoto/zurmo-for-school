@@ -5354,6 +5354,10 @@ span.tooltip {
     margin: 0 auto !important;
   }
 }
+.CommentList {
+  margin-top: 10px;
+  padding-left: 35px;
+}
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
