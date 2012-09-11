@@ -31,6 +31,8 @@
         const AVATAR_TYPE_PRIMARY_EMAIL = 2;
         const AVATAR_TYPE_CUSTOM_EMAIL  = 3;
 
+        private $avatarImageUrl;
+
         public static function getByUsername($username)
         {
             assert('is_string($username)');
@@ -347,38 +349,46 @@
         public function getAvatarImageUrl($size = 250)
         {
             assert('is_int($size)');
-            if (isset($this->serializedAvatarData))
+            if (isset($this->avatarImageUrl))
             {
-                $avatar = unserialize($this->serializedAvatarData);
-            }
-            if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
-            {
-                $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
-            }
-            elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_PRIMARY_EMAIL)
-            {
-                $email      = $this->primaryEmail->emailAddress;
-                $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g";
-            }
-            elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_CUSTOM_EMAIL)
-            {
-                $email      = $avatar['customAvatarEmailAddress'];
-                $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g";
+                return $this->avatarImageUrl;
             }
             else
             {
-                $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
-            }     
-            //Check connection to gravatar and return offline picture
-            $htmlHeaders = @get_headers($avatarUrl);               
-            if (preg_match("|200|", $htmlHeaders[0]))
-            {
-                return $avatarUrl;
+                if (isset($this->serializedAvatarData))
+                {
+                    $avatar = unserialize($this->serializedAvatarData);
+                }
+                if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
+                {
+                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
+                }
+                elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_PRIMARY_EMAIL)
+                {
+                    $email      = $this->primaryEmail->emailAddress;
+                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g";
+                }
+                elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_CUSTOM_EMAIL)
+                {
+                    $email      = $avatar['customAvatarEmailAddress'];
+                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g";
+                }
+                else
+                {
+                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
+                }
+                //Check connection to gravatar and return offline picture
+                $htmlHeaders = @get_headers($avatarUrl);
+                if (preg_match("|200|", $htmlHeaders[0]))
+                {
+                    $this->avatarImageUrl = $avatarUrl;
+                }
+                else
+                {
+                    $this->avatarImageUrl = Yii::app()->theme->baseUrl . '/images/offline_user.png';
+                }
+                return $this->avatarImageUrl;
             }
-            else
-            {
-                return Yii::app()->theme->baseUrl . '/images/offline_user.png';
-            }               
         }
 
         public static function mangleTableName()
