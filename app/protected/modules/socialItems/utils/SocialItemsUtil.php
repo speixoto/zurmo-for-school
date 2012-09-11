@@ -42,14 +42,26 @@
             assert('is_string($redirectUrl) || $redirectUrl == null');
             $content  = '<div class="social-item">';
             //todo: use user's avatar (owner)
-            $content .= '<em class="'.get_class($model).'"></em>';
-            $content .= '<strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                    $model->latestDateTime, 'long', null) . '</strong><br/>';
-            $content .= ZurmoHtml::tag('span', array(), strval($model->owner) . ' ' .
-                                                        self::renderModelDescription($model));
+            $avatarUrl = null;// $model->getAvatarImageUrl(24);
+            $avatarImage = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
+                
+            $content .= '<span class="user-details clearfix">' . $avatarImage;
+            $content .= ZurmoHtml::tag('strong', array(), strval($model->owner) );
+            $content .= '</span>';
+            
+            $content .= '<div class="comment-content"><p>' . self::renderModelDescription($model) . '</p></div>';
+            
+            //$content .= '<em class="'.get_class($model).'"></em>';
+            
             $content .= self::renderAfterDescriptionContent($model);
             $content .= self::renderItemFileContent($model);
-            $content .= '<span class="delete-social-item">' . self::renderDeleteLinkContent($model) . '</span>';
+            
+            $content .= '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                    $model->latestDateTime, 'long', null) . '</strong>';
+            
+            $content .= '<span class="delete-social-item">' . self::renderDeleteLinkContent($model) . '</span></span>';
+            
+            
             $content .= '<div>';
             $content .= self::renderCommentsContent($model);
             $content .= self::renderCreateCommentContent($model);

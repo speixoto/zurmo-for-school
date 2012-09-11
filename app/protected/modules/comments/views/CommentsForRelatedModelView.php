@@ -122,14 +122,15 @@
                 }
                 
                 $avatarUrl = $comment->createdByUser->getAvatarImageUrl(24);
-                $avatarImage = ZurmoHtml::image($avatarUrl);
+                $avatarImage = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
                 
-                $stringContent  = $avatarImage . '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                              $comment->createdDateTime, 'long', null) . '</strong> ';
-                $stringContent .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
+                $stringContent  = '<span class="user-details clearfix">' . $avatarImage;
+                $stringContent .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                         array('{ownerStringContent}' => strval($comment->createdByUser)));
                 $stringContent .= '</span>';
+                
                 $stringContent .= '<div class="comment-content">' . $comment->description . '</div>';
+
                 //attachments
                 if ($comment->files->count() > 0)
                 {
@@ -139,8 +140,15 @@
                    $this->relatedModel->createdByUser == Yii::app()->user->userModel ||
                    ($this->relatedModel instanceof OwnedSecurableItem && $this->relatedModel->owner == Yii::app()->user->userModel))
                 {
-                    $stringContent .= '<span class="delete-comment">' . $this->renderDeleteLinkContent($comment) . '</span>';
+                    $deleteCommentLink = '<span class="delete-comment_">' . $this->renderDeleteLinkContent($comment) . '</span>';
                 }
+                else
+                {
+                    $deleteCommentLink = null;
+                }
+                $stringContent .= '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                              $comment->createdDateTime, 'long', null) . '</strong></span>' . $deleteCommentLink;
+                
                 $content .= '<div class="comment">' . $stringContent . '</div>';
                 $rows++;
             }
