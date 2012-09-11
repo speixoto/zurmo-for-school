@@ -153,7 +153,7 @@ EOD;
          */
         public function confirm($messageStreamer, $message = null)
         {
-            if($message !== null)
+            if ($message !== null)
             {
                 $messageStreamer->add($message);
             }

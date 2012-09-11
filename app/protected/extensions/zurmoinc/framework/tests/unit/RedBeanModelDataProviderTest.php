@@ -772,7 +772,6 @@
             $this->assertEquals('customfield', $leftTables[0]['tableName']);
         }
 
-
         /**
          * @depends testResolveSortAttributeColumnName
          * Issue with more than 10 clauses meaning 11 and 12 can get replaced with the value for 1 and 2.

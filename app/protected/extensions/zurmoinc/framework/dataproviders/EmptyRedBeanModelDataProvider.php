@@ -28,9 +28,9 @@
      * A data provider that returns no results.
      */
     class EmptyRedBeanModelDataProvider extends RedBeanModelDataProvider
-    {        
+    {
         /**
-         * Return an empty array         
+         * Return an empty array
          */
         protected function fetchData()
         {

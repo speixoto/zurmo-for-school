@@ -237,7 +237,7 @@
         {
             // Create list of allowed urls.
             // Those urls should be accessed during upgrade process too.
-            foreach($this->allowedGuestUserRoutes as $allowedGuestUserRoute)
+            foreach ($this->allowedGuestUserRoutes as $allowedGuestUserRoute)
             {
                 $allowedGuestUserUrls[] = Yii::app()->createUrl($allowedGuestUserRoute);
             }
@@ -285,7 +285,7 @@
         {
             if (Yii::app()->isApplicationInMaintenanceMode())
             {
-                $message = Yii::t('Default', 'Application is in maintenance mode. Please try again latter.');
+                $message = Yii::t('Default', 'Application is in maintenance mode. Please try again later.');
                 $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
                 Yii::app()->apiHelper->sendResponse($result);
                 exit;

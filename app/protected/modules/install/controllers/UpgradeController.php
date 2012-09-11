@@ -60,7 +60,7 @@
         {
             if (!Yii::app()->isApplicationInMaintenanceMode())
             {
-                $message = Yii::t('Default', 'Please set $maintenanceMode=true in perInstance.php config file.');
+                $message = Yii::t('Default', 'Please set $maintenanceMode = true in perInstance.php config file.');
                 $messageView = new AccessFailureView($message);
                 $view        = new AccessFailurePageView($messageView);
                 echo $view->render();
@@ -76,7 +76,6 @@
             $view = new InstallPageView($nextView);
             echo $view->render();
             Yii::app()->gameHelper->unmuteScoringModelsOnSave();
-
         }
 
         /**
@@ -99,7 +98,6 @@
             ForgetAllCacheUtil::forgetAllCaches();
             echo CHtml::script('$("#progress-table").hide(); $("#upgrade-step-two").show();');
             Yii::app()->gameHelper->unmuteScoringModelsOnSave();
-
         }
 
         /**

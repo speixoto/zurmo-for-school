@@ -125,9 +125,8 @@
                     $model->savedSearchName = $savedSearch->name;
                     $model->savedSearchId   = $savedSearch->id;
                 }
-                catch(NotFoundException $e)
+                catch (NotFoundException $e)
                 {
-
                 }
             }
             if (isset($stickyData['anyMixedAttributes']))

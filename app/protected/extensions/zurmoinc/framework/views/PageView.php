@@ -144,7 +144,7 @@
                 $xhtmlValidationErrors = W3CValidatorServiceUtil::validate($content);
                 if (count($xhtmlValidationErrors))
                 {
-                    foreach($xhtmlValidationErrors as $xhtmlValidationError)
+                    foreach ($xhtmlValidationErrors as $xhtmlValidationError)
                     {
                         self::$xhtmlValidationErrors[] = str_replace('{text}', $xhtmlValidationError, $wrapper);
                     }
