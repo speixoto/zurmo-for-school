@@ -239,5 +239,7 @@
             => 'Vous devez avoir au moins un panneau pour publier la présentation de page.',
         'You must select at least 2 pick-lists.'
             => 'Vous devez choisir au minimum 2 listes déroulantes.',
+        '"{$attributeName}" field name is a database reserved word. Please enter a different one.'
+            => 'Le nom du champ "{$attributeName}" est réservé pour la base de données. Veuillez choisir un autre nom.',
     );
 ?>
