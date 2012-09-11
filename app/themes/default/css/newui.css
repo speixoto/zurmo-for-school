@@ -8716,6 +8716,7 @@ div.wide.form a {
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
   border-bottom: 1px solid #ccc;
+  overflow: hidden;
 }
 .ProgressView p,
 #MetadataViewEditView p,
