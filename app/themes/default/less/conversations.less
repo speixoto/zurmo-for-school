@@ -15,6 +15,7 @@
         
     }
 }
+
 .list-row-model-date{
     float: right;
     margin-right:10px;
@@ -59,6 +60,9 @@
         td, th{
             padding-bottom:10px !important;
         }
+        > table{
+            border-bottom: none;
+        }
     }
     .details-table{
         .clearfix();
@@ -75,9 +79,16 @@
         margin-bottom:15px;
     }
     .comment-details{
-        margin-bottom:5px;
-        display:block;
+        //margin-bottom:5px;
+        //display:block;
+        strong{
+            color: #999;
+            font-weight: normal !important;
+        }
     }
+}
+#CommentList{
+    padding-left: 45px;
 }
 
 .comment{
@@ -85,6 +96,8 @@
     line-height: 140%;
     .comment-content{
         font-size: 12px;
+        padding-left:35px;
+        margin:5px 0;
     }
     &:hover{
         .delete-comment{
@@ -96,8 +109,9 @@
     }
     .delete-comment{
         visibility:hidden;
-        display:block;
-        margin-top:4px;
+        //display:block;
+        //margin-top:4px;
+        margin-left:5px;
         a{
             margin-left:4px;
         }
@@ -112,7 +126,6 @@
     .comment-content{
         font-size: 15px;
         line-height: 150%;
-        
         font-style: italic;
     }
 }
@@ -123,10 +136,12 @@
 #CommentsForRelatedModelView{
     width:70%;
     float:left;
+    max-width: 600px;
 }
 
 #CommentInlineEditForModelView{
-     h2{
+    margin-top: 15px;
+    h2{
         margin-bottom:15px;
         margin-left:15px;
     }
@@ -142,7 +157,7 @@
     .panel{
         width:100%;
         float:none;
-        border-bottom: 1px solid #CCCCCC;
+        //border-bottom: 1px solid #CCCCCC;
     }
     #inline-edit-form{
         padding-left:15px;
@@ -160,13 +175,16 @@
         }
     }
     .view-toolbar-container{
-        border-top:1px solid #fff;
+        //border-top:1px solid #fff;
         padding-top:13px;
         //text-align:center;
         a{
             //float:none !important;
             color:#fff !important;
         }
+    }
+    .form-toolbar{
+        border-top: none;
     }
 }
 .attachments{

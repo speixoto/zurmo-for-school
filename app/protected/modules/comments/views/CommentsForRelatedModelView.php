@@ -140,7 +140,7 @@
                    $this->relatedModel->createdByUser == Yii::app()->user->userModel ||
                    ($this->relatedModel instanceof OwnedSecurableItem && $this->relatedModel->owner == Yii::app()->user->userModel))
                 {
-                    $deleteCommentLink = '<span class="delete-comment_">' . $this->renderDeleteLinkContent($comment) . '</span>';
+                    $deleteCommentLink = '<span class="delete-comment">' . $this->renderDeleteLinkContent($comment) . '</span>';
                 }
                 else
                 {
