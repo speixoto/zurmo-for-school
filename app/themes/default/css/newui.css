@@ -1967,6 +1967,7 @@ table.configuration-list tr td:last-child a:before {
 /*Missions*/
 #MyMissionsForPortletView > div {
   float: none;
+  margin-bottom: 0;
 }
 #MyMissionsForPortletView .filter-portlet-model-bar {
   padding-left: 8px;
