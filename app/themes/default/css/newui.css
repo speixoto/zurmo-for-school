@@ -5356,7 +5356,16 @@ span.tooltip {
 }
 .CommentList {
   margin-top: 10px;
-  padding-left: 35px;
+  padding-left: 10px;
+}
+.gravatar {
+  float: left;
+  margin-right: 10px;
+  margin-top: 3px;
+}
+.comment-details {
+  margin-left: 35px;
+  display: block;
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
