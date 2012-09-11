@@ -31,14 +31,13 @@
      */
     class MixedModelsSearchElement extends AnyMixedAttributesSearchElement
     {
-      
         private $value = null;
-                
+
         /**
          * Override
          */
         protected function renderControlEditable()
-        {            
+        {
             $content  = $this->renderSearchScopingInputContent();
             //$content .= parent::renderControlEditable();
             $htmlOptions             = array();
@@ -51,7 +50,7 @@
             $this->renderEditableScripts();
             return $content;
         }
-               
+
         protected function getHtmlOptions()
         {
             $htmlOptions             = array('class'   => 'input-hint mixedModels-input',
@@ -59,25 +58,24 @@
                                              'size'    => 20);
             return array_merge(parent::getHtmlOptions(), $htmlOptions);
         }
-               
+
         /**
          * Override so On keyUp, the search should not be conducted.
-         */       
+         */
         protected function renderEditableScripts()
         {
             return null;
         }
-                
+
         protected function getValue()
         {
             return $this->value;
         }
-        
+
         public function setValue($value)
         {
             assert('is_string($value)');
             $this->value = $value;
         }
-        
     }
 ?>

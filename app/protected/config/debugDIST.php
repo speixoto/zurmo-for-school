@@ -84,7 +84,7 @@
 
     // Turn this off if you are not fixing validation error.
     // W3C online validator is used, so pages render slow when validator is turned on.
-    // Works only in debug mode (when debugOn=true).
+    // Works only in debug mode (when $debugOn = true).
     $xhtmlValidation = false;
 
     // Set information related to function tests

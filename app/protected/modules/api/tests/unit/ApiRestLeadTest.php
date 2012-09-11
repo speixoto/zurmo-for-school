@@ -630,6 +630,7 @@
             $this->assertEquals(2, $response['data']['currentPage']);
             $this->assertEquals('Second Lead', $response['data']['items'][0]['firstName']);
         }
+
         /**
         * @depends testApiServerUrl
         */

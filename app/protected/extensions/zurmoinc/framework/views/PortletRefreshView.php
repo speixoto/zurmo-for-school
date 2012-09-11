@@ -67,7 +67,7 @@
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['JuiPortlet'];
         }
-        
+
         protected function arePortletsRemovable()
         {
             return true;

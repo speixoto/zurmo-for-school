@@ -31,16 +31,16 @@
          */
         public function testGetDatabaseTypeFromDsnString()
         {
-            $dsn = 'mysql:host=localhost;port=3306;dbname=zurmo';
+            $dsn = 'mysql:host=localhost;port=3306;dbname=zurmo'; // Not Coding Standard
             $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString($dsn);
             $this->assertEquals('mysql', $databaseType);
 
-            $dsn = 'oci:host=localhost;dbname=zurmo';
+            $dsn = 'oci:host=localhost;dbname=zurmo'; // Not Coding Standard
             $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString($dsn);
             $this->assertEquals('oci', $databaseType);
 
             // Invalid connection string, so NotSupportedException should be thrown.
-            $dsn = 'host=localhost;dbname=zurmo';
+            $dsn = 'host=localhost;dbname=zurmo'; // Not Coding Standard
             $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString($dsn);
         }
 
@@ -49,7 +49,7 @@
          */
         public function testGetDatabaseInfoFromConnectionString()
         {
-            $dsn = 'mysql:host=localhost;port=3306;dbname=zurmo';
+            $dsn = 'mysql:host=localhost;port=3306;dbname=zurmo'; // Not Coding Standard
             $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);
             $compareData = array(
                 'databaseType' => 'mysql',
@@ -59,7 +59,7 @@
             );
             $this->assertEquals($compareData, $databaseConnectionInfo);
 
-            $dsn = 'mysql:host=127.0.0.1;dbname=zurmo';
+            $dsn = 'mysql:host=127.0.0.1;dbname=zurmo'; // Not Coding Standard
             $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);
             $compareData = array(
                 'databaseType' => 'mysql',
@@ -69,7 +69,7 @@
             );
             $this->assertEquals($compareData, $databaseConnectionInfo);
 
-            $dsn = 'mysql:host=localhost;dbname=zurmo;port=3306;';
+            $dsn = 'mysql:host=localhost;dbname=zurmo;port=3306;'; // Not Coding Standard
             $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);
             $compareData = array(
                 'databaseType' => 'mysql',
@@ -79,7 +79,7 @@
             );
             $this->assertEquals($compareData, $databaseConnectionInfo);
 
-            $dsn = 'mysql:host=localhost;';
+            $dsn = 'mysql:host=localhost;'; // Not Coding Standard
             $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);
         }
 
@@ -92,7 +92,7 @@
             $databaseName = RedBeanDatabase::getDatabaseNameFromDsnString($dsn);
             $this->assertEquals('zurmo', $databaseName);
 
-            $dsn = 'mysql:host=localhost;';
+            $dsn = 'mysql:host=localhost;'; // Not Coding Standard
             $databaseName = RedBeanDatabase::getDatabaseNameFromDsnString($dsn);
         }
     }

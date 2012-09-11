@@ -47,16 +47,16 @@
             => 'Kann entweder ein Domain-Name oder eine IP-Adresse sein.',
         'Click below to go to the login page. The username is <b>super</b>'
             => 'Klicken Sie unten, um zur Login-Seite zu gelangen. Der Benutzername ist <b>super</b>',
-        'Click here to access index page, after you unset maintenance mode.'
+        'Click here to access index page, after you disable maintenance mode.'
             => '??',
         'Click Here to continue with next step'
             => '??',
         'Click Here to install the demo data'
             => 'Klicken Sie hier, um die Demo zu installieren',
-        'Click to start'
-            => 'Klicken Sie zu starten',
         'Click here to start upgrade'
             => '??',
+        'Click to start'
+            => 'Klicken Sie zu starten',
         'Congratulations! The demo data has been successfully loaded.'
             => 'Herzlichen Glückwunsch! Die Demo-Daten wurde erfolgreich geladen.',
         'Congratulations! The installation of Zurmo is complete.'
@@ -258,7 +258,7 @@
             => 'PHP upload_max_filesize erfüllt Mindestanforderung.',
         'Please delete all files from assets folder on server.'
             => 'Bitte löschen Sie alle Dateien im Ordner Assets.',
-        'Please set $maintenanceMode=true in perInstance.php config file.'
+        'Please set $maintenanceMode = true in perInstance.php config file.'
             => '??',
         'Rebuilding Permissions.'
             => 'Rekonstruktion von Berechtigungen.',

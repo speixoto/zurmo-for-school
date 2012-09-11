@@ -431,6 +431,7 @@
             }
             return $result;
         }
+
         /**
          * Create new model
          * @param array $data
@@ -580,7 +581,7 @@
             {
                 if (isset($modelRelations) && !empty($modelRelations))
                 {
-                    foreach($modelRelations as $modelRelation => $relations)
+                    foreach ($modelRelations as $modelRelation => $relations)
                     {
                         if ($model->isAttribute($modelRelation) &&
                             ($model->getRelationType($modelRelation) == RedBeanModel::HAS_MANY ||

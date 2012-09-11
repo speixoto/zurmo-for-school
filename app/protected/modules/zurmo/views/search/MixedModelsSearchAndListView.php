@@ -26,12 +26,12 @@
 
     class MixedModelsSearchAndListView extends View
     {
-
         private $views;
         private $term;
         private $scopeData;
 
-        public function __construct(Array $views, $term, $scopeData) {
+        public function __construct(Array $views, $term, $scopeData)
+        {
             $this->views     = $views;
             $this->term      = $term;
             $this->scopeData = $scopeData;
@@ -75,11 +75,13 @@
 
         protected function renderScripts()
         {
+            // Begin Not Coding Standard
             //On page ready load all the List View with data
             $script = "$(document).ready(function () {
                             $('#MixedModelsSearchView').find('a').click();
                        });";
             Yii::app()->clientScript->registerScript('LoadListViews', $script);
+            // End Not Coding Standard
         }
     }
 ?>

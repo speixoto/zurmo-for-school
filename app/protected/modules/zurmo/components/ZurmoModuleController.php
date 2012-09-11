@@ -275,9 +275,10 @@
                 Yii::app()->end(0, false);
             }
         }
+
         public function actionRenderStickyListBreadCrumbContent($stickyOffset, $stickyKey, $stickyModelId)
         {
-            if($stickyOffset == null)
+            if ($stickyOffset == null)
             {
                 Yii::app()->end(0, false);
             }
@@ -298,14 +299,14 @@
             $finalOffset = StickySearchUtil::resolveFinalOffsetForStickyList((int)$stickyOffset, (int)$pageSize, (int)$totalCount);
             $dataProvider->setOffset($finalOffset);
             $dataList   = $dataProvider->getData();
-            if(count($dataList) > 0)
+            if (count($dataList) > 0)
             {
                 $menuItems = array('label' => '▾'); //char code is &#9662;
-                foreach($dataList as $row => $data)
+                foreach ($dataList as $row => $data)
                 {
                     $url = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/details',
                                                   array('id' => $data->id, 'stickyOffset'  => $row + $finalOffset));
-                    if($data->id == $stickyModelId)
+                    if ($data->id == $stickyModelId)
                     {
                         $menuItems['items'][] = array(  'label'       => strval($data),
                                                         'url'         => $url,

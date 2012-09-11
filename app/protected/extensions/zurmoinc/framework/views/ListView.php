@@ -196,7 +196,6 @@
             {
                 return array_merge($defaultGridViewPagerParams, $this->gridViewPagerParams);
             }
-
         }
 
         protected function getShowTableOnEmpty()
