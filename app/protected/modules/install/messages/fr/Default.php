@@ -374,8 +374,8 @@
             => 'L\'extension Zip est chargée.',
         'Zip extension is not loaded.'
             => 'L\'extension Zip n\'est pas chargée.',
-        'Zurmo administrative password. The username is `super`.  You can change this later.'
-            => 'Zurmo mot de passe administrateur.  Le nom d\'utilisateur est \'super\'. Vous pouvez modifier le nom plus tard.',
+        'Zurmo administrative password. The username is `super`. You can change this later.'
+            => 'Zurmo mot de passe administrateur. Le nom d\'utilisateur est \'super\'. Vous pouvez modifier le nom plus tard.',
         'Zurmo Installation'
             => 'Installation de Zurmo',
         'Zurmo runs only on Apache {apacheMinVersion} and higher or Microsoft-IIS {iisMinVersion} or higher web servers.'

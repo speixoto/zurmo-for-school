@@ -239,5 +239,7 @@
             => 'Debe tener al menos un panel para guardar un diseño.',
         'You must select at least 2 pick-lists.'
             => 'Debe elegir al menos 2 listas desplegables.',
+        '"{$attributeName}" field name is a database reserved word. Please enter a different one.'
+            => '??',
     );
 ?>
