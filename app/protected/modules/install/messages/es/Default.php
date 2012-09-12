@@ -259,7 +259,7 @@
         'Please delete all files from assets folder on server.'
             => 'Por favor, elimine todos los archivos en la carpeta Assets.',
         'Please set $maintenanceMode = true in perInstance.php config file.'
-            => 'Por favor, defina $maintenanceMode=true en el archivo de configuración perInstance.php.',
+            => 'Por favor, defina $maintenanceMode = true en el archivo de configuración perInstance.php.',
         'Rebuilding Permissions.'
             => 'Reconstruido de permissos',
         'Recheck System'
