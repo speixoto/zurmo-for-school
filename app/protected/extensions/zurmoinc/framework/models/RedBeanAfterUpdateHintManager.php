@@ -34,14 +34,15 @@
 
         public function __construct($toolbox)
         {
-            $this->dateOptimizer     = new RedBean_Plugin_Optimizer_Date    ($toolbox);
-            $this->datetimeOptimizer = new RedBean_Plugin_Optimizer_Datetime($toolbox);
-            $this->idOptimizer       = new RedBean_Plugin_Optimizer_Id      ($toolbox);
+            //$this->dateOptimizer     = new RedBean_Plugin_Optimizer_Date    ($toolbox);
+            //$this->datetimeOptimizer = new RedBean_Plugin_Optimizer_Datetime($toolbox);
+            //$this->idOptimizer       = new RedBean_Plugin_Optimizer_Id      ($toolbox);
         }
 
         public function onEvent($type, $info)
         {
             assert('$type == "after_update"');
+
             if (RedBeanDatabase::isFrozen())
             {
                 return;
@@ -52,27 +53,20 @@
                 assert('is_array($hints)');
                 foreach ($hints as $key => $value)
                 {
+
+
                     switch ($value)
                     {
                     case 'date':
-                        $this->dateOptimizer    ->setTable($info->getMeta("type"));
-                        $this->dateOptimizer    ->setColumn($key);
-                        $this->dateOptimizer    ->setValue($info->$key);
-                        $this->dateOptimizer    ->optimize();
+                        RedBeanColumnTypeOptimizer::dateColumn($info->getMeta("type"), $key, $info->$key, RedBean_QueryWriter_MySQL::C_DATATYPE_SPECIAL_DATE);
                         break;
 
                     case 'datetime':
-                        $this->datetimeOptimizer->setTable($info->getMeta("type"));
-                        $this->datetimeOptimizer->setColumn($key);
-                        $this->datetimeOptimizer->setValue($info->$key);
-                        $this->datetimeOptimizer->optimize();
+                        RedBeanColumnTypeOptimizer::dateColumn($info->getMeta("type"), $key, $info->$key, RedBean_QueryWriter_MySQL::C_DATATYPE_SPECIAL_DATETIME);
                         break;
 
                     case 'id':
-                        $this->idOptimizer      ->setTable($info->getMeta("type"));
-                        $this->idOptimizer      ->setColumn($key);
-                        $this->idOptimizer      ->setValue($info->$key);
-                        $this->idOptimizer      ->optimize();
+                        RedBeanColumnTypeOptimizer::idColumn($info->getMeta("type"), $key, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
                         break;
                     }
                 }

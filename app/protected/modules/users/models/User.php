@@ -80,7 +80,7 @@
             else
             {
                 $userBean = $this->getClassBean('User');
-                $personBean = R::getBean($userBean, $tableName);
+                $personBean = ZurmoRedBeanLinkManager::getBean($userBean, $tableName);
                 assert('$personBean !== null');
             }
             $this->setClassBean                  ($modelClassName, $personBean);
@@ -126,23 +126,23 @@
                 }
                 if ($baseBean !== null)
                 {
-                    R::$linkManager->link($bean, $baseBean);
+                    ZurmoRedBeanLinkManager::link($bean, $baseBean);
                     if (!RedBeanDatabase::isFrozen())
                     {
                         $tableName  = self::getTableName(get_class($this));
                         $columnName = 'person_id';
-                        RedBean_Plugin_Optimizer_Id::ensureIdColumnIsINT11($tableName, $columnName);
+                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
                     }
                 }
                 $baseBean = $bean;
             }
             $userBean   = $this->modelClassNameToBean['User'];
             $personBean = $this->modelClassNameToBean['Person'];
-            R::$linkManager->link($userBean, $personBean);
+            ZurmoRedBeanLinkManager::link($userBean, $personBean);
             if (!RedBeanDatabase::isFrozen())
             {
                 $tableName  = self::getTableName(get_class($this));
-                RedBean_Plugin_Optimizer_Id::ensureIdColumnIsINT11($tableName, 'person_id');
+                RedBeanColumnTypeOptimizer::idColumn($tableName, 'person_id', RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
             }
         }
 

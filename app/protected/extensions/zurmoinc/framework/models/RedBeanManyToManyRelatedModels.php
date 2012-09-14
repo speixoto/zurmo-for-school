@@ -90,7 +90,7 @@
                     foreach ($types as $type)
                     {
                         $columnName = "{$type}_id";
-                        RedBean_Plugin_Optimizer_Id::ensureIdColumnIsINT11($tableName, $columnName);
+                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
                     }
                 }
             }

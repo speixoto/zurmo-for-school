@@ -346,7 +346,7 @@
             $sql = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, null, null, $where, null, true,
                                                      $selectDistinct);
             $count = R::getCell($sql);
-            if ($count === null)
+            if ($count === null || empty($count))
             {
                 $count = 0;
             }
@@ -373,7 +373,7 @@
                 $modelClassName = get_called_class();
             }
             $tableName = self::getTableName($modelClassName);
-            $beans = RedBean_Plugin_Finder::where($tableName, "id = '$id'");
+            $beans = R::find($tableName, "id = '$id'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
             {
@@ -444,7 +444,7 @@
                     else
                     {
                         $tableName = self::getTableName($modelClassName);
-                        $lastBean = R::getBean($lastBean, $tableName);
+                        $lastBean = ZurmoRedBeanLinkManager::getBean($lastBean, $tableName);
                         if ($lastBean === null)
                         {
                             throw new MissingBeanException();
@@ -456,6 +456,7 @@
                 }
                 $this->modelClassNameToBean = array_reverse($this->modelClassNameToBean);
             }
+
             $this->constructDerived($bean, $setDefaults);
             if ($forceTreatAsCreation)
             {
@@ -1151,7 +1152,7 @@
                             case self::HAS_ONE_BELONGS_TO:
                                 $linkName          = strtolower(get_class($this));
                                 $columnName        = $linkName . '_id';
-                                $relatedBeans      = RedBean_Plugin_Finder::where($relatedTableName, $columnName . " = " . $bean->id);
+                                $relatedBeans      = R::find($relatedTableName, $columnName . " = " . $bean->id);
                                 if (count($relatedBeans) > 1)
                                 {
                                     throw new NotFoundException();
@@ -1182,7 +1183,7 @@
                                 }
                                 if ($bean->id > 0 && !in_array($attributeName, $this->unlinkedRelationNames))
                                 {
-                                    $linkFieldName = R::$linkManager->getLinkField($relatedTableName, $linkName);
+                                    $linkFieldName = ZurmoRedBeanLinkManager::getLinkField($relatedTableName, $linkName);
                                     if ((int)$bean->$linkFieldName > 0)
                                     {
                                         $beanIdentifier = $relatedTableName .(int)$bean->$linkFieldName;
@@ -1192,7 +1193,7 @@
                                         }
                                         catch (NotFoundException $e)
                                         {
-                                            $relatedBean = R::getBean($bean, $relatedTableName, $linkName);
+                                            $relatedBean = ZurmoRedBeanLinkManager::getBean($bean, $relatedTableName, $linkName);
                                             RedBeansCache::cacheBean($relatedBean, $beanIdentifier);
                                         }
                                         if ($relatedBean !== null && $relatedBean->id > 0)
@@ -1802,7 +1803,7 @@
                             {
                                 $linkName = null;
                             }
-                            R::$linkManager->breakLink($bean, $relatedTableName, $linkName);
+                            ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
                             unset($this->unlinkedRelationNames[$key]);
                         }
                         assert('count($this->unlinkedRelationNames) == 0');
@@ -1861,12 +1862,13 @@
                                 {
                                     $relatedModel = $this->relationNameToRelatedModel[$relationName];
                                     $relatedBean  = $relatedModel->getClassBean($relatedModelClassName);
-                                    R::$linkManager->link($bean, $relatedBean, $linkName);
+                                    ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
+
                                     if (!RedBeanDatabase::isFrozen())
                                     {
                                         $tableName  = self::getTableName($this->getAttributeModelClassName($relationName));
                                         $columnName = self::getForeignKeyName(get_class($this), $relationName);
-                                        RedBean_Plugin_Optimizer_Id::ensureIdColumnIsINT11($tableName, $columnName);
+                                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
                                     }
                                 }
                             }
@@ -1913,7 +1915,7 @@
             {
                 $tableName  = self::getTableName($modelClassName);
                 $columnName = self::getTableName($baseModelClassName) . '_id';
-                RedBean_Plugin_Optimizer_Id::ensureIdColumnIsINT11($tableName, $columnName);
+                RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
             }
         }
 
@@ -1996,12 +1998,12 @@
             {
                 if ($baseBean !== null)
                 {
-                    R::$linkManager->link($bean, $baseBean);
+                    ZurmoRedBeanLinkManager::link($bean, $baseBean);
                     if (!RedBeanDatabase::isFrozen())
                     {
                         $tableName  = self::getTableName($modelClassName);
                         $columnName = self::getTableName($baseModelClassName) . '_id';
-                        RedBean_Plugin_Optimizer_Id::ensureIdColumnIsINT11($tableName, $columnName);
+                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
                     }
                 }
                 $baseModelClassName = $modelClassName;
@@ -2210,7 +2212,7 @@
             }
             $tableName = self::getTableName($relatedModelClassName);
             $foreignKeyName = strtolower($modelClassName) . '_id';
-            $beans = RedBean_Plugin_Finder::where($tableName, "$foreignKeyName = $id");
+            $beans = R::find($tableName, "$foreignKeyName = $id");
             return self::makeModels($beans, $relatedModelClassName);
         }
 

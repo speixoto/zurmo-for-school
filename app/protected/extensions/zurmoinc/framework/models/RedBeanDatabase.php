@@ -86,14 +86,17 @@
         public static function close()
         {
             // TODO - find out if there is a proper way.
+            R::$toolboxes          = array();
             R::$toolbox            = null;
             R::$redbean            = null;
             R::$writer             = null;
             R::$adapter            = null;
-            R::$treeManager        = null;
             R::$associationManager = null;
             R::$extAssocManager    = null;
-            R::$linkManager        = null;
+            R::$exporter           = null;
+            R::$tagManager         = null;
+            R::$currentDB          = '';
+            R::$f                  = null;
             self::$isSetup = false;
         }
 

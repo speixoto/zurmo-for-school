@@ -33,13 +33,14 @@
 
         public function __construct($toolbox)
         {
-            $this->blobOptimizer     = new RedBean_Plugin_Optimizer_Blob($toolbox);
-            $this->booleanOptimizer  = new RedBean_Plugin_Optimizer_Boolean($toolbox);
+            //$this->blobOptimizer     = new RedBean_Plugin_Optimizer_Blob($toolbox);
+            //$this->booleanOptimizer  = new RedBean_Plugin_Optimizer_Boolean($toolbox);
         }
 
         public function onEvent($type, $info)
         {
             assert('$type == "update"');
+
             if (RedBeanDatabase::isFrozen())
             {
                 return;
@@ -53,22 +54,32 @@
                     switch ($value)
                     {
                     case 'blob':
+                        RedBeanColumnTypeOptimizer::blobColumn($info->getMeta("type"), $key, 'blob');
+                        //R::$writer->widenColumn($info->getMeta("type"), $key, 'blob');
+                        /*
                         $this->blobOptimizer->setTable($info->getMeta("type"));
                         $this->blobOptimizer->setColumn($key);
                         $this->blobOptimizer->setValue($info->$key);
                         $this->blobOptimizer->optimize();
+                        */
                         break;
                     case 'longblob':
+                        RedBeanColumnTypeOptimizer::blobColumn($info->getMeta("type"), $key, 'longblob');
+                        /*
                         $this->blobOptimizer->setTable($info->getMeta("type"));
                         $this->blobOptimizer->setColumn($key);
                         $this->blobOptimizer->setValue($info->$key);
                         $this->blobOptimizer->optimize('longblob');
+                        */
                         break;
                    case 'boolean':
+                        RedBeanColumnTypeOptimizer::idColumn($info->getMeta("type"), $key, RedBean_QueryWriter_MySQL::C_DATATYPE_BOOL);
+                        /*
                         $this->booleanOptimizer ->setTable($info->getMeta("type"));
                         $this->booleanOptimizer ->setColumn($key);
                         $this->booleanOptimizer ->setValue($info->$key);
                         $this->booleanOptimizer ->optimize();
+                        */
                         break;
                     }
                 }
