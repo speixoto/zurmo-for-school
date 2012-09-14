@@ -33,7 +33,7 @@
 
         protected function checkService()
         {
-            $this->minimumVersion = Yii::app()->params['redBeanVersion'];
+            $this->minimumVersion = Yii::app()->params['yiiVersion'];
             return $this->checkServiceAndSetMessagesByMethodNameAndDisplayLabel('checkYii', Yii::t('Default', 'Yii'));
         }
     }
