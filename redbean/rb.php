@@ -1317,6 +1317,7 @@ class RedBean_OODBBean implements IteratorAggregate, ArrayAccess, Countable {
    * @return mixed $mixed
    */
   public function __call($method, $args) {
+    return null;
     if (!isset($this->__info['model'])) {
       $model = $this->beanHelper->getModelForBean($this);
       if (!$model) return;
@@ -2540,9 +2541,17 @@ abstract class RedBean_QueryWriter_AQueryWriter {
         $sql = " WHERE $addSql ";
       }
     }
+    if ($delete)
+    {
+        //echo "\n\n".'DELETE FROM ' . $table.$sql."\n\n";
+        //print_r($bindings);
+    }
     $sql = (($delete) ? 'DELETE FROM ' : 'SELECT * FROM ').$table.$sql;
     $rows = $this->adapter->get($sql,$bindings);
-    return $rows;
+    if (!$delete)
+    {
+        return $rows;
+    }
   }
 
 
@@ -2629,6 +2638,7 @@ abstract class RedBean_QueryWriter_AQueryWriter {
    * @return void
    */
   public function addFK( $type, $targetType, $field, $targetField, $isDependent = false) {
+    return true;
     $table = $this->safeTable($type);
     $tableNoQ = $this->safeTable($type,true);
     $targetTable = $this->safeTable($targetType);
@@ -3125,6 +3135,7 @@ class RedBean_QueryWriter_MySQL extends RedBean_QueryWriter_AQueryWriter impleme
    * @return boolean $succes whether the constraint has been applied
    */
   protected function constrain($table, $table1, $table2, $property1, $property2) {
+    return true;
     try{
       $db = $this->adapter->getCell('select database()');
       $fks =  $this->adapter->getCell("
@@ -5396,7 +5407,7 @@ class RedBean_OODB extends RedBean_Observable {
       RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_TABLE)
       )) throw $e;
     }
-    $bean->id = 0;
+    //$bean->id = 0;
     $this->signal('after_delete', $bean );
   }
 
@@ -6522,6 +6533,7 @@ class RedBean_ModelHelper implements RedBean_Observer {
    * @return mixed $result   either self or result depending on mode
    */
   public function __call($funcName,$args=array()) {
+    return null;
     $funcName = str_replace('_',' ',$funcName);
     if ($this->capture) {
       $this->sql .= ' '.$funcName . ' '.implode(',', $args);
@@ -7310,7 +7322,7 @@ class RedBean_Facade {
   public static function findOne( $type, $sql=null, $values=array()) {
     $items = self::find($type,$sql,$values);
     $found = reset($items);
-    if (!$found) return null;
+//  if (!$found) return null;
     return $found;
   }
 
