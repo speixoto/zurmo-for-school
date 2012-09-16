@@ -5222,6 +5222,22 @@ span.tooltip {
   color: #262877;
   font-weight: bold;
 }
+#MissionDetailsView .details-table {
+  zoom: 1;
+  margin-right: 0 !important;
+}
+#MissionDetailsView .details-table:before {
+  content: "";
+  display: table;
+}
+#MissionDetailsView .details-table:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#MissionDetailsView .panel > table {
+  border-bottom: none;
+}
 #ArchivedEmailMatchingListView .items td {
   padding-right: 10px;
 }
@@ -6297,6 +6313,8 @@ section {
   opacity: 0;
 }
 #MenuView a > span > span {
+  position: relative;
+  top: -2px;
   margin-left: 10px;
   width: 18px;
   height: 16px;
@@ -6307,6 +6325,7 @@ section {
   font-size: 10px;
   display: inline-block;
   background-color: none !important;
+  padding-top: 1px;
 }
 #MenuView a > span > span.unread #notifications-link.tooltip {
   color: #ff0000 !important;
