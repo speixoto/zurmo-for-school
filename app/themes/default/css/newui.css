@@ -4816,6 +4816,38 @@ span.tooltip {
   width: 310px;
   height: 310px;
 }
+/*=User Profile Page*/
+.UserSocialItemsForPortletView {
+  margin-right: 20px !important;
+}
+.UserSocialItemsForPortletView .wide.form {
+  border: none !important;
+  background: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+}
+.UserSocialItemsForPortletView #social-item-inline-edit-form {
+  border: none !important;
+  background: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+}
+.UserSocialItemsForPortletView #social-item-inline-edit-form .panel > table {
+  border-bottom: none !important;
+  padding-bottom: 10px;
+}
+.UserSocialItemsForPortletView #social-item-inline-edit-form .files {
+  border-bottom: none;
+}
+.UserSocialItemsForPortletView #social-item-inline-edit-form .view-toolbar-container {
+  border-top: 1px solid #cccccc;
+}
 #WelcomeView {
   padding-right: 20px !important;
 }
@@ -5237,6 +5269,9 @@ span.tooltip {
 }
 #MissionDetailsView .panel > table {
   border-bottom: none;
+}
+#MissionEditView .panel {
+  width: 100% !important;
 }
 #ArchivedEmailMatchingListView .items td {
   padding-right: 10px;
