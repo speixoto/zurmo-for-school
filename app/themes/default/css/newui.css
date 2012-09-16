@@ -2048,6 +2048,17 @@ table.configuration-list tr td:last-child a:before {
   padding: 0;
   margin: 0;
 }
+#MyMissionsForPortletView .items td {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+#MyMissionsForPortletView .items td:last-child {
+  border-top: none;
+}
+.mission-change-status-link {
+  float: right;
+  margin-top: -5px;
+}
 /*Upload Files Box (in selected account, in Note)*/
 .file-upload-box {
   -moz-box-sizing: border-box;
@@ -5049,6 +5060,11 @@ span.tooltip {
 #ConversationDetailsAndRelationsView .panel th {
   padding-bottom: 10px !important;
 }
+.single-coloumn-details-view .panel > table,
+#ConversationDetailsView .panel > table,
+#ConversationDetailsAndRelationsView .panel > table {
+  border-bottom: none;
+}
 .single-coloumn-details-view .details-table,
 #ConversationDetailsView .details-table,
 #ConversationDetailsAndRelationsView .details-table {
@@ -5080,10 +5096,13 @@ span.tooltip {
 #CommentList h2 {
   margin-bottom: 15px;
 }
-#ModelDetailsSummaryView .comment-details,
-#CommentList .comment-details {
-  margin-bottom: 5px;
-  display: block;
+#ModelDetailsSummaryView .comment-details strong,
+#CommentList .comment-details strong {
+  color: #999;
+  font-weight: normal !important;
+}
+#CommentList {
+  padding-left: 45px;
 }
 .comment {
   margin-bottom: 15px;
@@ -5091,6 +5110,8 @@ span.tooltip {
 }
 .comment .comment-content {
   font-size: 12px;
+  padding-left: 35px;
+  margin: 5px 0;
 }
 .comment:hover .delete-comment {
   visibility: visible !important;
@@ -5100,8 +5121,7 @@ span.tooltip {
 }
 .comment .delete-comment {
   visibility: hidden;
-  display: block;
-  margin-top: 4px;
+  margin-left: 5px;
 }
 .comment .delete-comment a {
   margin-left: 4px;
@@ -5125,6 +5145,10 @@ span.tooltip {
 #CommentsForRelatedModelView {
   width: 70%;
   float: left;
+  max-width: 600px;
+}
+#CommentInlineEditForModelView {
+  margin-top: 15px;
 }
 #CommentInlineEditForModelView h2 {
   margin-bottom: 15px;
@@ -5146,7 +5170,6 @@ span.tooltip {
 #CommentInlineEditForModelView .panel {
   width: 100%;
   float: none;
-  border-bottom: 1px solid #CCCCCC;
 }
 #CommentInlineEditForModelView #inline-edit-form {
   padding-left: 15px;
@@ -5164,11 +5187,13 @@ span.tooltip {
   padding-bottom: 0;
 }
 #CommentInlineEditForModelView .view-toolbar-container {
-  border-top: 1px solid #fff;
   padding-top: 13px;
 }
 #CommentInlineEditForModelView .view-toolbar-container a {
   color: #fff !important;
+}
+#CommentInlineEditForModelView .form-toolbar {
+  border-top: none;
 }
 .attachments {
   margin-top: 5px;
@@ -5376,7 +5401,6 @@ span.tooltip {
 }
 .comment-details {
   margin-left: 35px;
-  display: block;
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';

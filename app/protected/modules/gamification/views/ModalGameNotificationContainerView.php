@@ -97,11 +97,10 @@
             }
             else
             {
-                $content  = static::renderPostToProfileLinkContent($notification, $index);
-                $content .= '<br/>';
-                $content .= ZurmoHtml::link(Yii::t('Default', 'Skip posting, just continue'), '#',
-                                 array('class'   => 'close-ModalGameNotification',
+                $content = ZurmoHtml::link(Yii::t('Default', 'Skip posting, just continue'), '#',
+                                 array('class'   => 'close-ModalGameNotification simple-select',
                                        'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
+                $content .= static::renderPostToProfileLinkContent($notification, $index);
                 return $content;
             }
         }
@@ -113,10 +112,9 @@
             $url       =   Yii::app()->createUrl('socialItems/default/postGameNotificationToProfile',
                                                array('content' => $socialItemAdapter->getMessageContent()));
 
-            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'),
-                                                                    Yii::t('Default', 'Post to Profile'));
+            //$aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            //$aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent               = ZurmoHtml::tag('span', null, Yii::t('Default', 'Post to Profile'));
             // Begin Not Coding Standard
             $content   = ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'     => 'GET',
