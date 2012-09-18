@@ -2541,11 +2541,6 @@ abstract class RedBean_QueryWriter_AQueryWriter {
         $sql = " WHERE $addSql ";
       }
     }
-    if ($delete)
-    {
-        //echo "\n\n".'DELETE FROM ' . $table.$sql."\n\n";
-        //print_r($bindings);
-    }
     $sql = (($delete) ? 'DELETE FROM ' : 'SELECT * FROM ').$table.$sql;
     $rows = $this->adapter->get($sql,$bindings);
     if (!$delete)

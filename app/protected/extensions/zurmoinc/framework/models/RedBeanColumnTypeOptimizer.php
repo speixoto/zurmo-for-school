@@ -120,7 +120,6 @@
             return (boolean) (preg_match($pattern, $value));
         }
 
-        //public static function idColumn($type, $column, $datatype) {
         public static function idColumn($type, $column, $datatype) {
             try
             {

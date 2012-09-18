@@ -24,21 +24,8 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    // http://groups.google.com/group/redbeanorm/browse_thread/thread/7eb59797e8478a89/61eae7941cae1970
-    // This was supplied in the RedBean forum by Gabor.
     class RedBeanAfterUpdateHintManager implements RedBean_Observer
     {
-        protected $dateOptimizer;
-        protected $datetimeOptimizer;
-        protected $idOptimizer;
-
-        public function __construct($toolbox)
-        {
-            //$this->dateOptimizer     = new RedBean_Plugin_Optimizer_Date    ($toolbox);
-            //$this->datetimeOptimizer = new RedBean_Plugin_Optimizer_Datetime($toolbox);
-            //$this->idOptimizer       = new RedBean_Plugin_Optimizer_Id      ($toolbox);
-        }
-
         public function onEvent($type, $info)
         {
             assert('$type == "after_update"');
@@ -53,8 +40,6 @@
                 assert('is_array($hints)');
                 foreach ($hints as $key => $value)
                 {
-
-
                     switch ($value)
                     {
                     case 'date':
