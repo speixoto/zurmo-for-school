@@ -1577,6 +1577,37 @@
         }
 
         /**
+         * See the yii documentation.
+         * RedBeanModels utilize untranslatedAbbreviatedAttributeLabels to store any abbreviated attribute information, which
+         * can then be translated in this method.
+         */
+        public function abbreviatedAttributeLabels()
+        {
+            $abbreviatedAttributeLabels = array();
+            foreach ($this->untranslatedAbbreviatedAttributeLabels() as $attributeName => $label)
+            {
+                $abbreviatedAttributeLabels[$attributeName] = Yii::t('Default', $label);
+            }
+            return $abbreviatedAttributeLabels;
+        }
+
+        /**
+         * Array of untranslated abbreviated attribute labels.
+         */
+        protected function untranslatedAbbreviatedAttributeLabels()
+        {
+            return array();
+        }
+
+        /**
+         * Public for message checker only.
+         */
+        public function getUntranslatedAbbreviatedAttributeLabels()
+        {
+            return $this->untranslatedAbbreviatedAttributeLabels();
+        }
+
+        /**
          * Performs validation using the validators specified in the 'rules'
          * meta data by the extending class's getMetadata() method.
          * Validation occurs on a new model or a modified model, but only
@@ -2334,6 +2365,36 @@
         protected static function getPluralLabel()
         {
             return static::getLabel() . 's';
+        }
+
+        /**
+         * See the yii documentation.
+         */
+        public function getAbbreviatedAttributeLabel($attributeName)
+        {
+            return $this->getAbbreviatedAttributeLabelByLanguage($attributeName, Yii::app()->language);
+        }
+
+        /**
+         * Given an attributeName and a language, retrieve the translated attribute label. Attempts to find a customized
+         * label in the metadata first, before falling back on the standard attribute label for the specified attribute.
+         * @return string - translated attribute label
+         */
+        protected function getAbbreviatedAttributeLabelByLanguage($attributeName, $language)
+        {
+            assert('is_string($attributeName)');
+            assert('is_string($language)');
+            $labels = $this->untranslatedAbbreviatedAttributeLabels();
+            if (isset($labels[$attributeName]))
+            {
+                return CHtml::tag('span', array('title' => $this->generateAttributeLabel($attributeName)),
+                                  Yii::t('Default', $labels[$attributeName],
+                                  LabelUtil::getTranslationParamsForAllModules(), null, $language));
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /**
