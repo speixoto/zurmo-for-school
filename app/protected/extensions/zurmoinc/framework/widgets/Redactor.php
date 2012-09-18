@@ -31,7 +31,7 @@
         public $cssFile = 'redactor.css';
 
         public $htmlOptions;
-        
+
         public $content;
 
         public $buttons = "['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
@@ -45,6 +45,8 @@
 
         public $paragraphy = "true";
 
+        public $wim = "false";
+
         public function run()
         {
             $id         = $this->htmlOptions['id'];
@@ -57,6 +59,7 @@
                                 buttons:    {$this->buttons},
                                 source:     {$this->source},
                                 paragraphy: {$this->paragraphy},
+                                wim:        {$this->wim},
                             });
                         }
                     );";

@@ -52,13 +52,16 @@
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
-            $htmlOptions['rows']     = 10;
-            $htmlOptions['cols']     = 50;
             $cClipWidget   = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $emailMessageContent->$attribute,
+                                        'buttons'     => "['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
+                                                           'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+                                                           'fontcolor', 'backcolor', '|',
+                                                           'alignleft', 'aligncenter', 'alignright', 'justify', '|',
+                                                           'horizontalrule']",
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Redactor'];

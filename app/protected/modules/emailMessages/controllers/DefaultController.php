@@ -367,7 +367,7 @@
                 $emailSignature     = Yii::app()->user->userModel->emailSignatures[0]->htmlContent;
                 if ($emailSignature != '')
                 {
-                    $emailMessage->content->htmlContent = ' ' . PHP_EOL . $emailSignature;
+                    $emailMessage->content->htmlContent = '<p>' . $emailSignature . '</p>';
                 }
                 if (isset($_GET['toRecipients']))
                 {
