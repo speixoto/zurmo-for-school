@@ -47,7 +47,8 @@
             if (Yii::app()->user->userModel->id == $this->model->id ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
-                $content     = ZurmoHtml::tag('div',
+                $content     = '<div class="gravatar-container">';
+                $content    .= ZurmoHtml::tag('span',
                                       array('style' => 'display:none',
                                             'id'    => 'profile-picture-tooltip'),
                                       Yii::t('Default', 'Click me to change the profile picture.'),
@@ -55,6 +56,7 @@
                 $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
                 $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Profile Picture') . ": " . strval($this->model));
                 $content    .= ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);
+                $content    .= '</div>';
             }
             else
             {
