@@ -63,7 +63,7 @@
                                               'listPageSize', get_class($this->getModule()));
             $user                           = new User(false);
             $searchForm                     = new UsersSearchForm($user);
-            $dataProvider = $this->makeSearchDataProvider(
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,
