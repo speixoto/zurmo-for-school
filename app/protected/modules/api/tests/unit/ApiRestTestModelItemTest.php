@@ -333,23 +333,27 @@
                 'modelItems3' => array(
                     array(
                         'action' => 'add',
-                        'modelId' => $testItem3_1->id
+                        'modelId' => $testItem3_1->id,
+                        'modelClassName' => 'ApiTestModelItem3'
                     ),
                     array(
                         'action' => 'add',
-                        'modelId' => $testItem3_2->id
+                        'modelId' => $testItem3_2->id,
+                        'modelClassName' => 'ApiTestModelItem3'
                     ),
                 ),
                 'modelItems4' => array(
                     array(
                         'action' => 'add',
-                        'modelId' => $testItem4->id
+                        'modelId' => $testItem4->id,
+                        'modelClassName' => 'ApiTestModelItem4'
                     ),
                 ),
                 'modelItems' => array(
                     array(
                         'action' => 'add',
-                        'modelId' => $testItemRelated->id
+                        'modelId' => $testItemRelated->id,
+                        'modelClassName' => 'ApiTestModelItem'
                     ),
                 ),
             );
@@ -419,23 +423,27 @@
                 'modelItems3' => array(
                     array(
                         'action' => 'add',
-                        'modelId' => $testItem3_1->id
+                        'modelId' => $testItem3_1->id,
+                        'modelClassName' => 'ApiTestModelItem3'
                     ),
                     array(
                         'action' => 'add',
-                        'modelId' => $testItem3_2->id
+                        'modelId' => $testItem3_2->id,
+                        'modelClassName' => 'ApiTestModelItem3'
                     ),
                 ),
                 'modelItems4' => array(
                     array(
                         'action' => 'add',
-                        'modelId' => $testItem4->id
+                        'modelId' => $testItem4->id,
+                        'modelClassName' => 'ApiTestModelItem4'
                     ),
                 ),
                 'modelItems' => array(
                     array(
                         'action' => 'add',
-                        'modelId' => $testItemRelated->id
+                        'modelId' => $testItemRelated->id,
+                        'modelClassName' => 'ApiTestModelItem'
                     ),
                 ),
             );
@@ -468,23 +476,27 @@
                 'modelItems3' => array(
                     array(
                         'action' => 'remove',
-                        'modelId' => $testItem3_1->id
+                        'modelId' => $testItem3_1->id,
+                        'modelClassName' => 'ApiTestModelItem3'
                     ),
                     array(
                         'action' => 'remove',
-                        'modelId' => $testItem3_2->id
+                        'modelId' => $testItem3_2->id,
+                        'modelClassName' => 'ApiTestModelItem3'
                     ),
                 ),
                 'modelItems4' => array(
                     array(
                         'action' => 'remove',
-                        'modelId' => $testItem4->id
+                        'modelId' => $testItem4->id,
+                        'modelClassName' => 'ApiTestModelItem4'
                     ),
                 ),
                 'modelItems' => array(
                     array(
                         'action' => 'remove',
-                        'modelId' => $testItemRelated->id
+                        'modelId' => $testItemRelated->id,
+                        'modelClassName' => 'ApiTestModelItem'
                     ),
                 ),
             );
@@ -502,7 +514,8 @@
                 'modelItems' => array(
                     array(
                         'action' => 'invalidAction',
-                        'modelId' => $testItemRelated->id
+                        'modelId' => $testItemRelated->id,
+                        'modelClassName' => 'ApiTestModelItem'
                     ),
                 ),
             );
@@ -515,7 +528,8 @@
                 'aaad' => array(
                     array(
                         'action' => 'remove',
-                        'modelId' => $testItemRelated->id
+                        'modelId' => $testItemRelated->id,
+                        'modelClassName' => 'ApiTestModelItem'
                     ),
                 ),
             );
@@ -528,7 +542,8 @@
                 'modelItems3' => array(
                     array(
                         'action' => 'remove',
-                        'modelId' => 345
+                        'modelId' => 345,
+                        'modelClassName' => 'ApiTestModelItem3'
                     ),
                 ),
             );
