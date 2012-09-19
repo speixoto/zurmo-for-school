@@ -245,6 +245,41 @@
             $note->delete();
         }
 
+        /**
+         * @depends testCreateAndGetNoteById
+         */
+        public function testRemoveActivityItemFromItem()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $firstNote = NoteTestHelper::createNoteByNameForOwner('Note with relations', $super);
+            $secondNote = NoteTestHelper::createNoteByNameForOwner('Second note with relations', $super);
+
+            $thirdContact = ContactTestHelper::createContactByNameForOwner('Third', $super);
+            $firstContact = ContactTestHelper::createContactByNameForOwner('First', $super);
+            $secondContact = ContactTestHelper::createContactByNameForOwner('Second', $super);
+
+
+            $firstNote->activityItems->add($firstContact);
+            $firstNote->save();
+            $firstNote->activityItems->add($secondContact);
+            $firstNote->save();
+
+            $this->assertEquals(2, count($firstNote->activityItems));
+            $this->assertEquals($firstContact->id, $firstNote->activityItems[0]->id);
+            $this->assertEquals($secondContact->id, $firstNote->activityItems[1]->id);
+
+            $noteId = $firstNote->id;
+            $firstNote->forget();
+
+            $firstNote = Note::getById($noteId);
+            $firstNote->activityItems->remove($firstContact);
+            $firstNote->save();
+            $this->assertEquals(1, count($firstNote->activityItems));
+            $this->assertEquals($secondContact->id, $firstNote->activityItems[0]->id);
+        }
+
         public function testGetModelClassNames()
         {
             $modelClassNames = NotesModule::getModelClassNames();
