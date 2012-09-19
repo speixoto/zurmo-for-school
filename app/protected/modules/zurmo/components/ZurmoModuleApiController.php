@@ -595,6 +595,7 @@
 
                             foreach ($relations as $relation)
                             {
+                                $relatedModelClassName = $relation['modelClassName'];
                                 try
                                 {
                                     $relatedModel = $relatedModelClassName::getById(intval($relation['modelId']));
