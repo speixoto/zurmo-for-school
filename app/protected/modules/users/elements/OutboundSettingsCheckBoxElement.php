@@ -71,7 +71,7 @@
             }
             else
             {
-                
+
                 $textField = $form->passwordField($model, $attribute, $htmlOptions);
             }
             $error       = $form->error    ($model, $attribute);
@@ -95,7 +95,7 @@
             {
                 return $this->getFormattedAttributeLabel();
             }
-            return $this->form->labelEx($this->model, $label, array('for' => $this->getEditableInputId()));
+            return ZurmoHtml::label($label, $this->getEditableInputId());
         }
 
         protected function renderScripts()

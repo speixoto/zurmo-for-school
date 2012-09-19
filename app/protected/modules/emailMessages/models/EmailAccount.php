@@ -81,10 +81,12 @@
                 $emailAccount->user              = $user;
                 $emailAccount->name              = self::DEFAULT_NAME;
                 $emailAccount->fromName          = $user->getFullName();
-                $emailAccount->fromAddress       = $user->primaryEmail;
+                //TODO: What should we do if no primaryEmail is set to user?
+                $emailAccount->fromAddress       = $user->primaryEmail->emailAddress;
                 $emailAccount->useCustomSettings = false;
                 $emailAccount->outboundType      = 'smtp';
                 $saved                           = $emailAccount->save();
+                $emailAccount->validate();
                 assert('$saved');
             }
             return $emailAccount;
@@ -115,7 +117,8 @@
                 ),
                 'rules'     => array(
                                   array('fromName',             'required'),
-                                  array('fromAddress',          'required'),
+                                  //TODO: Should we mark fromAddress as required? If so, how to deal with blanck primaryEmail?
+                                  //array('fromAddress',          'required'),
                                   array('name',                 'type',      'type' => 'string'),
                                   array('fromName',             'type',      'type' => 'string'),
                                   array('replyToName',          'type',      'type' => 'string'),

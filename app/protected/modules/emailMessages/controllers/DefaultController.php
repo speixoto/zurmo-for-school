@@ -357,12 +357,6 @@
             try
             {
                 EmailAccount::getByUserAndName(Yii::app()->user->userModel);
-                if (count(Yii::app()->user->userModel->emailSignatures) == 0)  //TODO: Test this
-                {
-                    $messageSignature       = new EmailSignature();
-                    $messageSignature->user = Yii::app()->user->userModel;
-                    Yii::app()->user->userModel->emailSignatures->add($messageSignature);
-                }
                 $emailMessage       = new EmailMessage();
                 $emailSignature     = Yii::app()->user->userModel->emailSignatures[0]->htmlContent;
                 if ($emailSignature != '')
