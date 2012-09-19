@@ -105,7 +105,7 @@
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("OptionMenu");
                 $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
-                    'htmlOptions' => array('class' => 'options-menu'),
+                    'htmlOptions' => array('class' => 'options-menu edit-row-menu'),
                     'items'                   => array($menuItems),
                 ));
                 $cClipWidget->endClip();

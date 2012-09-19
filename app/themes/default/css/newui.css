@@ -3992,6 +3992,18 @@ span.tooltip {
 #LeaderboardView .items th:first-child {
   padding-left: 15px;
 }
+#LeaderboardView .user-label img {
+  margin-right: 10px;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  float: left;
+}
+#LeaderboardView .user-label span {
+  line-height: 24px;
+  display: inline-block;
+  float: left;
+}
 .icon-leaderboard-weekly:before {
   content: "x";
   font-weight: normal;
@@ -8992,6 +9004,49 @@ div.wide.form a {
 .AttributeDetailsView .toolbar-mbmenu {
   top: 8px;
 }
+/*
+.edit-row-menu{
+    .flyout();
+    list-style: none !important;
+    //margin-top:-8px;
+    padding-top:3px;
+    padding-bottom:3px;
+    //display:none;
+    font-weight:normal !important;
+    display: inline-block;
+    width:auto;
+    ul{
+        display: none;
+        list-style: none;
+        position: absolute;
+    }
+    > .parent > a{
+        text-align:center;
+        font-size:11px;
+        color: #666 !important;
+        padding:5px;
+        span{
+            content: "n";
+            .symbly(26px);
+        }
+    }
+    a{
+        text-indent:0;
+        color: #666;
+        font-size: 11px;
+        font-weight: normal;
+        display: block;
+        padding: 5px 10px 5px 10px;
+        margin: 0 2px;
+        line-height: normal;
+        .t-shadow(none);
+        &:hover{
+            background:@themeColor2 !important;
+            color:#fff !important;
+        }
+    }
+}
+*/
 .DetailsAndRelationsView,
 #AccountDetailsAndRelationsView {
   zoom: 1;

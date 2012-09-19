@@ -67,7 +67,7 @@
         {
             $content  = '<table class="items">';
             $content .= '<colgroup>';
-            $content .= '<col style="width:60%" /><col style="width:20%" /><col style="width:20%" />';
+            $content .= '<col style="width:10%" /><col style="width:80%" /><col style="width:10%" />';
             $content .= '</colgroup>';
             $content .= '<tbody>';
             $content .= '<tr><th>' . Yii::t('Default', 'Rank') . '</th>';
@@ -79,9 +79,14 @@
                 assert('is_string($leaderboardData["rank"])');
                 assert('is_string($leaderboardData["userLabel"])');
                 assert('is_int($leaderboardData["points"])');
+                
+                
+                $avatarUrl = null;// $model->getAvatarImageUrl(24);
+                $avatarImage = ZurmoHtml::image($avatarUrl, null);
+                
                 $content .= '<tr>';
                 $content .= '<td><span class="ranking">' . $leaderboardData['rank'] . '</span></td>';
-                $content .= '<td>' . $leaderboardData['userLabel'] . '</td>';
+                $content .= '<td class="user-label">' . $avatarImage . '<span>' . $leaderboardData['userLabel'] . '</span></td>';
                 $content .= '<td><span class="points">' . $leaderboardData['points'] . '</span></td>';
                 $content .= '</tr>';
             }
