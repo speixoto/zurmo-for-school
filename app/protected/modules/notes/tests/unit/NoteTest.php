@@ -261,13 +261,13 @@
 
             $this->assertEquals(1, count($note->activityItems));
             $this->assertEquals($contact->id, $note->activityItems[0]->id);
-            $activityItemId = $note->activityItems[0]->id;
             $noteId = $note->id;
             $note->forget();
+            $contactItemId = $contact->getClassId('Item');
 
             $note = Note::getById($noteId);
             $this->assertEquals(1, count($note->activityItems));
-            $this->assertEquals($contact->id, $note->activityItems[0]->id);
+            $this->assertEquals($contactItemId, $note->activityItems[0]->id);
         }
 
         /**
@@ -298,18 +298,18 @@
             $firstNote->forget();
             $firstNote = Note::getById($noteId);
             $this->assertEquals(2, count($firstNote->activityItems));
-            $this->assertEquals($firstContact->id, $firstNote->activityItems[0]->id);
-            $this->assertEquals($secondContact->id, $firstNote->activityItems[1]->id);
+            $this->assertEquals($firstContact->getClassId('Item'), $firstNote->activityItems[0]->id);
+            $this->assertEquals($secondContact->getClassId('Item'), $firstNote->activityItems[1]->id);
 
             $firstNote->activityItems->remove($firstContact);
             $firstNote->save();
             $this->assertEquals(1, count($firstNote->activityItems));
-            $this->assertEquals($secondContact->id, $firstNote->activityItems[0]->id);
+            $this->assertEquals($secondContact->getClassId('Item'), $firstNote->activityItems[0]->id);
 
             $firstNote->forget();
             $firstNote = Note::getById($noteId);
             $this->assertEquals(1, count($firstNote->activityItems));
-            $this->assertEquals($secondContact->id, $firstNote->activityItems[0]->id);
+            $this->assertEquals($secondContact->getClassId('Item'), $firstNote->activityItems[0]->id);
         }
 
         public function testGetModelClassNames()
