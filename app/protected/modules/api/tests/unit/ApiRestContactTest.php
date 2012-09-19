@@ -60,8 +60,6 @@
 
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/read/' . $contact->id, 'GET', $headers);
             $response = json_decode($response, true);
-            print_r($response['data']);
-            exit;
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
         }
