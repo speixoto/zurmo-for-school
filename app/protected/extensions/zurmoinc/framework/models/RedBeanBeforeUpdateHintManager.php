@@ -49,7 +49,7 @@
                         RedBeanColumnTypeOptimizer::blobColumn($info->getMeta("type"), $key, 'longblob');
                         break;
                    case 'boolean':
-                        RedBeanColumnTypeOptimizer::idColumn($info->getMeta("type"), $key, RedBean_QueryWriter_MySQL::C_DATATYPE_BOOL);
+                        RedBeanColumnTypeOptimizer::booleanColumn($info->getMeta("type"), $key, RedBean_QueryWriter_MySQL::C_DATATYPE_BOOL);
                         break;
                     }
                 }
