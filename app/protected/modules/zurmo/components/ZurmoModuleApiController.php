@@ -591,8 +591,6 @@
                             ($model->getRelationType($modelRelation) == RedBeanModel::HAS_MANY ||
                             $model->getRelationType($modelRelation) == RedBeanModel::MANY_MANY))
                         {
-                            $relatedModelClassName = $model->getRelationModelClassName($modelRelation);
-
                             foreach ($relations as $relation)
                             {
                                 $relatedModelClassName = $relation['modelClassName'];

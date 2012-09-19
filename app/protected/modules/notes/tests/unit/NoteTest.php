@@ -248,21 +248,45 @@
         /**
          * @depends testCreateAndGetNoteById
          */
-        public function testRemoveActivityItemFromItem()
+        public function testNoteActivityItemsAreSameAfterLoadNote()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $firstNote = NoteTestHelper::createNoteByNameForOwner('Note with relations', $super);
+            $note = NoteTestHelper::createNoteByNameForOwner('Another note with relations', $super);
+            $contact = ContactTestHelper::createContactByNameForOwner('Tom', $super);
+
+            $note->activityItems->add($contact);
+            $note->save();
+
+            $this->assertEquals(1, count($note->activityItems));
+            $this->assertEquals($contact->id, $note->activityItems[0]->id);
+            $activityItemId = $note->activityItems[0]->id;
+            $noteId = $note->id;
+            $note->forget();
+
+            $note = Note::getById($noteId);
+            $this->assertEquals(1, count($note->activityItems));
+            $this->assertEquals($contact->id, $note->activityItems[0]->id);
+        }
+
+        /**
+         * @depends testCreateAndGetNoteById
+         */
+        public function testRemoveActivityItemFromActivity()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $firstNote  = NoteTestHelper::createNoteByNameForOwner('Note with relations', $super);
             $secondNote = NoteTestHelper::createNoteByNameForOwner('Second note with relations', $super);
 
-            $thirdContact = ContactTestHelper::createContactByNameForOwner('Third', $super);
-            $firstContact = ContactTestHelper::createContactByNameForOwner('First', $super);
+            $thirdContact  = ContactTestHelper::createContactByNameForOwner('Third', $super);
+            $firstContact  = ContactTestHelper::createContactByNameForOwner('First', $super);
             $secondContact = ContactTestHelper::createContactByNameForOwner('Second', $super);
 
 
             $firstNote->activityItems->add($firstContact);
-            $firstNote->save();
             $firstNote->activityItems->add($secondContact);
             $firstNote->save();
 
@@ -272,10 +296,18 @@
 
             $noteId = $firstNote->id;
             $firstNote->forget();
-
             $firstNote = Note::getById($noteId);
+            $this->assertEquals(2, count($firstNote->activityItems));
+            $this->assertEquals($firstContact->id, $firstNote->activityItems[0]->id);
+            $this->assertEquals($secondContact->id, $firstNote->activityItems[1]->id);
+
             $firstNote->activityItems->remove($firstContact);
             $firstNote->save();
+            $this->assertEquals(1, count($firstNote->activityItems));
+            $this->assertEquals($secondContact->id, $firstNote->activityItems[0]->id);
+
+            $firstNote->forget();
+            $firstNote = Note::getById($noteId);
             $this->assertEquals(1, count($firstNote->activityItems));
             $this->assertEquals($secondContact->id, $firstNote->activityItems[0]->id);
         }
