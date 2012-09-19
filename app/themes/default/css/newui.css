@@ -4841,6 +4841,18 @@ span.tooltip {
   -ms-box-shadow: none;
   box-shadow: none;
 }
+.UserSocialItemsForPortletView .details-view {
+  zoom: 1;
+}
+.UserSocialItemsForPortletView .details-view:before {
+  content: "";
+  display: table;
+}
+.UserSocialItemsForPortletView .details-view:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .UserSocialItemsForPortletView #social-item-inline-edit-form {
   border: none !important;
   background: none !important;
@@ -4859,6 +4871,17 @@ span.tooltip {
 }
 .UserSocialItemsForPortletView #social-item-inline-edit-form .view-toolbar-container {
   border-top: 1px solid #cccccc;
+}
+.gravatar-container {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+.gravatar-container a {
+  float: right;
+}
+.gravatar-container span {
+  float: right;
 }
 #WelcomeView {
   padding-right: 20px !important;
@@ -10270,6 +10293,7 @@ div.hasHalfs .twoThirds {
   position: absolute;
   right: 0;
   width: 100%;
+  overflow-y: scroll !important;
 }
 .dk_options a,
 .dk_options a:link,
