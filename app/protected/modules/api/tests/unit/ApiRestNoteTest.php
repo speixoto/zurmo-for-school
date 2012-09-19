@@ -583,15 +583,17 @@
 
         /**
         * Test get notes that are related with particular contact(MANY_MANY relationship)
-        * @depends testAdvancedSearchNotes
+        *
         */
-        public function atestGetNotesThatAreRelatedWithContact()
+        public function testGetNotesThatAreRelatedWithContactModel()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $firstNote = NoteTestHelper::createNoteByNameForOwner('Note with relations', $super);
+            $firstNote = NoteTestHelper::createNoteByNameForOwner('First note with relations', $super);
             $secondNote = NoteTestHelper::createNoteByNameForOwner('Second note with relations', $super);
+            $thirdNote = NoteTestHelper::createNoteByNameForOwner('Third note with relations', $super);
+            $forthNote = NoteTestHelper::createNoteByNameForOwner('Forth note with relations', $super);
 
             $firstContact = ContactTestHelper::createContactByNameForOwner('First', $super);
             $secondContact = ContactTestHelper::createContactByNameForOwner('Second', $super);
@@ -601,6 +603,16 @@
             $firstNote->save();
             $firstNote->activityItems->add($secondContact);
             $firstNote->save();
+            $thirdNote->activityItems->add($firstContact);
+            $thirdNote->save();
+            $forthNote->activityItems->add($firstContact);
+            $forthNote->save();
+
+            $this->assertEquals(2, count($firstNote->activityItems));
+            $this->assertEquals($firstContact->id, $firstNote->activityItems[0]->id);
+            $this->assertEquals($secondContact->id, $firstNote->activityItems[1]->id);
+
+            $id = $firstContact->getClassId('Item');
 
             $authenticationData = $this->login();
             $headers = array(
@@ -614,12 +626,12 @@
                 'dynamicSearch' => array(
                     'dynamicClauses' => array(
                         array(
-                            'attributeIndexOrDerivedType' => 'notes'. DynamicSearchUtil::RELATION_DELIMITER .'id',
+                            'attributeIndexOrDerivedType' => 'activityItems',
                             'structurePosition' => 1,
                             'activityItems' => array(
-                                'id' => $firstContact->id
-                            )
-                        ),
+                                'id' => $id,
+                            ),
+                        )
                     ),
                     'dynamicStructure' => '1',
                 ),
@@ -627,29 +639,28 @@
                     'page'     => 1,
                     'pageSize' => 2,
                 ),
-                //'sort' => 'firstName.desc',
+                'sort' => 'description.asc',
            );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/notes/note/api/list/filter/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
-print_r($response);
+
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, count($response['data']['items']));
             $this->assertEquals(3, $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
-            $this->assertEquals('Third Contact', $response['data']['items'][0]['firstName']);
-            $this->assertEquals('Second Contact', $response['data']['items'][1]['firstName']);
+            $this->assertEquals('First note with relations', $response['data']['items'][0]['description']);
+            $this->assertEquals('Forth note with relations', $response['data']['items'][1]['description']);
 
             // Get second page
             $data['pagination']['page'] = 2;
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/contacts/contact/api/list/filter/', 'POST', $headers, array('data' => $data));
-
+            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/notes/note/api/list/filter/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(1, count($response['data']['items']));
             $this->assertEquals(3, $response['data']['totalCount']);
             $this->assertEquals(2, $response['data']['currentPage']);
-            $this->assertEquals('First Contact', $response['data']['items'][0]['firstName']);
+            $this->assertEquals('Third note with relations', $response['data']['items'][0]['description']);
         }
 
         /**
@@ -757,8 +768,6 @@ print_r($response);
             );
 
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/notes/note/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
-            //print_r($response);
-            //exit;
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             RedBeanModel::forgetAll();
