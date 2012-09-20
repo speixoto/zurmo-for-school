@@ -1698,8 +1698,12 @@ table.configuration-list tr td:last-child a:before {
 #ImportWizardMappingView td {
   text-align: left;
   padding-top: 15px;
+  padding-bottom: 15px;
   padding-left: 15px !important;
   border-bottom: 1px solid #DFDFDF;
+}
+#ImportWizardMappingView .column-import-data {
+  margin-top: 5px;
 }
 #ImportWizardMappingView tr td:last-child {
   padding-right: 15px;
@@ -1759,29 +1763,19 @@ table.configuration-list tr td:last-child a:before {
 #ImportWizardDataAnalysisCompleteView > div #edit-form:after {
   display: none;
 }
+#ImportWizardImportRulesView span {
+  text-align: left;
+  display: block;
+  margin-bottom: 20px;
+}
 #ImportWizardImportRulesView .radio-input {
-  margin-top: 20px;
-  zoom: 1;
+  margin-bottom: 10px !important;
 }
-#ImportWizardImportRulesView .radio-input:before {
-  content: "";
-  display: table;
-}
-#ImportWizardImportRulesView .radio-input:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-#ImportWizardImportRulesView .radio-input input {
-  float: left;
-  margin-right: 10px;
-  margin-top: 1px;
+#ImportWizardImportRulesView table {
+  margin-bottom: 0 !important;
 }
 .process-container-view {
   padding: 15px 15px 0 15px;
-}
-#ImportSequentialProcessContainerView {
-  padding-right: 0;
 }
 #ImportSequentialProcessContainerView #edit-form {
   padding: 0 0 15px 0 !important;
@@ -1803,6 +1797,21 @@ table.configuration-list tr td:last-child a:before {
 #ImportSequentialProcessContainerView h3 + span {
   margin-bottom: 15px;
   display: block;
+}
+#ImportSequentialProcessContainerView .process-container-view {
+  zoom: 1;
+}
+#ImportSequentialProcessContainerView .process-container-view:before {
+  content: "";
+  display: table;
+}
+#ImportSequentialProcessContainerView .process-container-view:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#ImportSequentialProcessContainerView .process-container-view:after {
+  clear: none !important;
 }
 #ImportWizardCreateUpdateModelsCompleteView > div {
   padding: 0 !important;
@@ -8565,6 +8574,7 @@ div.wide.form a {
 }
 .radio-input input {
   float: left;
+  margin-top: 1px !important;
 }
 .radio-input label {
   margin-left: 10px;
