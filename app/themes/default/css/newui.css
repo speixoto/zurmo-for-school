@@ -1600,6 +1600,7 @@ table.configuration-list tr td:last-child a:before {
   padding-left: 0;
 }
 .AppContent.ImportWizardView h3 {
+  margin-top: 10px;
   margin-bottom: 15px;
 }
 .AppContent.ImportWizardView #right-side-edit-view-panel {
@@ -2226,7 +2227,7 @@ table.configuration-list tr td:last-child a:before {
   border-width: 0 0 100px 200px;
   opacity: 0;
   filter: alpha(opacity=0);
-  -moz-transform: translate(-300px, 0) scale(4);
+  -moz-transform: translate(-500px, 0) scale(4);
   direction: ltr;
   cursor: pointer;
 }
