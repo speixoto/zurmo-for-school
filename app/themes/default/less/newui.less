@@ -2038,6 +2038,18 @@ div.wide.form{
     }
 }
 
+#select-list-attributes-link{
+    margin-left:25px;
+    color:@themeColor;
+    &:after{
+        content: "▾";
+        margin-left:5px;
+    }
+}
+
+
+
+
 #mixed-models-form-search{
     margin-left:15px;
 }
@@ -2074,7 +2086,7 @@ div.wide.form{
         margin-top:15px;
     }
 }
-
+.select-list-attributes-view,
 .search-view-1{
     margin-top:15px;
     z-index:100;
@@ -2102,6 +2114,14 @@ div.wide.form{
     }
     .view-toolbar-container{
         display: inline-block;
+    }
+}
+.select-list-attributes-view{
+    table{
+        border-bottom: none;
+    }
+    .attributesContainer:after{
+        display: none !important;
     }
 }
 
