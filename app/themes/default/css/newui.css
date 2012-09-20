@@ -8558,6 +8558,17 @@ div.wide.form a {
 #edit-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
 }
+.radio-input {
+  clear: left;
+  float: left;
+  margin-bottom: 5px;
+}
+.radio-input input {
+  float: left;
+}
+.radio-input label {
+  margin-left: 10px;
+}
 #right-side-edit-view-panel {
   position: absolute;
   right: 15px;
