@@ -1,3 +1,4 @@
+.icon-missions-created:before,
 .icon-conversations-created:before{
     content:"w";
     .view-toolbar-icons();
@@ -8,6 +9,18 @@
     content:"b";
     .view-toolbar-icons();
     top:0;
+}
+
+.icon-missions-available:before{
+    content:"{";
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+.icon-missions-taken-but-not-accepted:before{
+    content:"e";
+    .view-toolbar-icons();
+    top:-2px;
 }
 
 #ConversationsListView{
@@ -233,4 +246,8 @@
     .panel{
         width:100% !important;
     }
+}
+
+.mission-change-status-link{
+    margin-right:10px;
 }

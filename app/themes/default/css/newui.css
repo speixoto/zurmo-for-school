@@ -5058,6 +5058,7 @@ span.tooltip {
     min-width: none;
   }
 }
+.icon-missions-created:before,
 .icon-conversations-created:before {
   content: "w";
   font-weight: normal;
@@ -5085,6 +5086,34 @@ span.tooltip {
   vertical-align: middle;
   position: relative;
   top: 0;
+}
+.icon-missions-available:before {
+  content: "{";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-missions-taken-but-not-accepted:before {
+  content: "e";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .list-row-model-date {
   float: right;
@@ -5319,6 +5348,9 @@ span.tooltip {
 }
 #MissionEditView .panel {
   width: 100% !important;
+}
+.mission-change-status-link {
+  margin-right: 10px;
 }
 #ArchivedEmailMatchingListView .items td {
   padding-right: 10px;
@@ -6596,6 +6628,12 @@ section {
 }
 #RecentlyViewedView li.type-EmailMessageModule em:before {
   content: "g";
+}
+#RecentlyViewedView li.type-MissionsModule em {
+  padding-top: 1px;
+}
+#RecentlyViewedView li.type-MissionsModule em:before {
+  content: "{";
 }
 /*=Content*/
 .AppContent {
