@@ -121,15 +121,11 @@
                     continue;
                 }
                 
-                $avatarUrl = $comment->createdByUser->getAvatarImageUrl(24);
-                $avatarImage = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
-                
-                $stringContent  = '<span class="user-details clearfix">' . $avatarImage;
-                $stringContent .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
+                $avatarUrl = $comment->createdByUser->getAvatarImageUrl(36);
+                $stringContent = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
+                $userName = Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                         array('{ownerStringContent}' => strval($comment->createdByUser)));
-                $stringContent .= '</span>';
-                
-                $stringContent .= '<div class="comment-content">' . $comment->description . '</div>';
+                $stringContent .= '<div class="comment-content">' . $userName . ': ' . $comment->description;
 
                 //attachments
                 if ($comment->files->count() > 0)
@@ -148,6 +144,8 @@
                 }
                 $stringContent .= '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $comment->createdDateTime, 'long', null) . '</strong></span>' . $deleteCommentLink;
+                
+                $stringContent .= '</div>';
                 
                 $content .= '<div class="comment">' . $stringContent . '</div>';
                 $rows++;

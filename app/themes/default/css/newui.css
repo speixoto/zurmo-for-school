@@ -5158,28 +5158,37 @@ span.tooltip {
   top: 55px;
 }
 #ModelDetailsSummaryView,
-#CommentList {
-  padding: 10px 0 0 15px;
+#CommentList,
+.CommentList {
+  padding: 10px 0 0 45px;
 }
 #ModelDetailsSummaryView h2,
-#CommentList h2 {
+#CommentList h2,
+.CommentList h2 {
   margin-bottom: 15px;
 }
+#ModelDetailsSummaryView .comment-details,
+#CommentList .comment-details,
+.CommentList .comment-details {
+  margin-top: 2px;
+  display: block;
+}
 #ModelDetailsSummaryView .comment-details strong,
-#CommentList .comment-details strong {
+#CommentList .comment-details strong,
+.CommentList .comment-details strong {
   color: #999;
   font-weight: normal !important;
 }
-#CommentList {
-  padding-left: 45px;
+.CommentList {
+  padding-left: 25px;
 }
 .comment {
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   line-height: 140%;
 }
 .comment .comment-content {
   font-size: 12px;
-  padding-left: 35px;
+  padding-left: 50px;
   margin: 5px 0;
 }
 .comment:hover .delete-comment {
@@ -5215,6 +5224,7 @@ span.tooltip {
   width: 70%;
   float: left;
   max-width: 600px;
+  padding-left: 50px;
 }
 #CommentInlineEditForModelView {
   margin-top: 15px;
@@ -5478,17 +5488,8 @@ span.tooltip {
     right: 0 !important;
   }
 }
-.CommentList {
-  margin-top: 10px;
-  padding-left: 10px;
-}
 .gravatar {
   float: left;
-  margin-right: 10px;
-  margin-top: 3px;
-}
-.comment-details {
-  margin-left: 35px;
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
