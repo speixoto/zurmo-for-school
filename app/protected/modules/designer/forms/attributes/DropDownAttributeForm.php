@@ -173,6 +173,17 @@
                     }
                 }
             }
+            if (!empty($data))
+            {
+                 foreach ($data as $picklistValue)
+                 {
+                     if($picklistValue == '')
+                     {
+                        $this->addError('customFieldDataData', Yii::t('Default', 'Value cannot be blank.'));
+                        return;
+                     }
+                 }
+            }
         }
 
         /**
