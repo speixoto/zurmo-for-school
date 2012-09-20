@@ -90,16 +90,20 @@
 
         protected function renderConversationContent()
         {
+            //@TODO get gravatar for user who made the conversation
+            $avatarUrl = null;// $this->model->getAvatarImageUrl(56);
+            $avatarImage = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
             $content  = '<div class="comment model-details-summary">';
-            $content .= '<span class="comment-details"><strong>'.
-                            DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                    $this->model->createdDateTime, 'long', null) . '</strong> ';
-            $content .= Yii::t('Default', 'by <strong>{ownerStringContent}</strong>',
+            $content .= '<span class="user-details clearfix">';           
+            $content .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                     array('{ownerStringContent}' => strval($this->model->createdByUser)));
             $content .= '</span>';
             $element  = new TextAreaElement($this->model, 'description');
             $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
             $content .= $element->render();
+            $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                              $this->model->createdDateTime, 'long', null) . '</strong></span>';
+            $content .= $date; 
             $element  = new FilesElement($this->model, 'null');
             $element->nonEditableTemplate = '<div>{content}</div>';
             $content .= $element->render();
