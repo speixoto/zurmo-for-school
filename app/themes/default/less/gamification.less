@@ -565,9 +565,6 @@
         background: none !important;
         .b-shadow(none);
     }
-    .details-view{
-        .clearfix();
-    }
     #social-item-inline-edit-form{
         border: none !important;
         background: none !important;
@@ -584,16 +581,29 @@
         }
     }
 }
+#UserDetailsView{
+    .details-table{
+        .clearfix() !important;
+        position: relative !important;
+    }
+}
 
 .gravatar-container{
-    position: absolute;
-    right: 15px;
-    top:15px;
+    float: right;
+    margin: 15px 15px 0 0;
     a{
-        float: right;
+        //position: absolute;
+        //z-index: 0;
+        //float: right;
     }
+    img{}
     span{
-        float: right;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        display: block;
+        width:100%;
+        height: 100%;
     }
 }
 

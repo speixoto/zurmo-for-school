@@ -4841,18 +4841,6 @@ span.tooltip {
   -ms-box-shadow: none;
   box-shadow: none;
 }
-.UserSocialItemsForPortletView .details-view {
-  zoom: 1;
-}
-.UserSocialItemsForPortletView .details-view:before {
-  content: "";
-  display: table;
-}
-.UserSocialItemsForPortletView .details-view:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 .UserSocialItemsForPortletView #social-item-inline-edit-form {
   border: none !important;
   background: none !important;
@@ -4872,16 +4860,30 @@ span.tooltip {
 .UserSocialItemsForPortletView #social-item-inline-edit-form .view-toolbar-container {
   border-top: 1px solid #cccccc;
 }
-.gravatar-container {
-  position: absolute;
-  right: 15px;
-  top: 15px;
+#UserDetailsView .details-table {
+  zoom: 1;
+  position: relative !important;
 }
-.gravatar-container a {
+#UserDetailsView .details-table:before {
+  content: "";
+  display: table;
+}
+#UserDetailsView .details-table:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.gravatar-container {
   float: right;
+  margin: 15px 15px 0 0;
 }
 .gravatar-container span {
-  float: right;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 #WelcomeView {
   padding-right: 20px !important;
