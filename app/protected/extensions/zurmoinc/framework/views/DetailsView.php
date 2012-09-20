@@ -69,6 +69,7 @@
                 $content .= $actionElementContent;
                 $content .= '</div></div>';
             }
+            $content .= $this->renderBeforeFormLayoutForDetailsContent();
             $content .= $this->renderFormLayout();
             $content .= $this->renderRightSideContent();
             $content .= $this->renderAfterFormLayoutForDetailsContent();
@@ -77,6 +78,10 @@
         }
 
         protected function renderRightSideContent($form = null)
+        {
+        }
+
+        protected function renderBeforeFormLayoutForDetailsContent()
         {
         }
 
