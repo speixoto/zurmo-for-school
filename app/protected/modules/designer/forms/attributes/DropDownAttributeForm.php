@@ -171,18 +171,12 @@
                         $this->addError('customFieldDataData', Yii::t('Default', 'Each value must not contain a comma.'));
                         return;
                     }
-                }
-            }
-            if (!empty($data))
-            {
-                 foreach ($data as $picklistValue)
-                 {
-                     if($picklistValue == '')
-                     {
+                    elseif($value == '')
+                    {
                         $this->addError('customFieldDataData', Yii::t('Default', 'Value cannot be blank.'));
                         return;
-                     }
-                 }
+                    }
+                }
             }
         }
 
