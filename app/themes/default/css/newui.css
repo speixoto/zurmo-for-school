@@ -7300,7 +7300,7 @@ td.empty {
   -o-border-radius: 3px;
   border-radius: 3px;
   font-size: 12px;
-  color: #999;
+  color: #666 !important;
   text-indent: 6px;
   line-height: 24px;
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
