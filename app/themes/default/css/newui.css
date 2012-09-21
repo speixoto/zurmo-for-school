@@ -4393,6 +4393,10 @@ span.tooltip {
 .CreateConversation .badge-icon:before {
   content: "O";
 }
+.game-badge-CreateMission .badge-icon:before,
+.CreateMission .badge-icon:before {
+  content: "{";
+}
 /*Night Icons*/
 .game-badge-NightOwl .badge-icon:before,
 .NightOwl .badge-icon:before {
@@ -4885,7 +4889,7 @@ span.tooltip {
 }
 .gravatar-container {
   float: right;
-  margin: 15px 15px 0 0;
+  margin: 15px 15px 15px 0;
 }
 .gravatar-container span {
   padding: 10px;
@@ -4894,6 +4898,60 @@ span.tooltip {
   display: block;
   width: 100%;
   height: 100%;
+}
+#UserChangeAvatarView {
+  zoom: 1;
+}
+#UserChangeAvatarView:before {
+  content: "";
+  display: table;
+}
+#UserChangeAvatarView:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#UserChangeAvatarView .col-0 {
+  width: 100%;
+}
+#UserChangeAvatarView .col-1 {
+  width: 0;
+}
+#UserChangeAvatarView .wrapper {
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  margin-bottom: 0 !important;
+}
+#UserChangeAvatarView .wrapper table {
+  margin-bottom: 0 !important;
+}
+#UserChangeAvatarView .wrapper td {
+  padding-left: 0 !important;
+}
+#UserChangeAvatarView .view-toolbar-container {
+  margin-top: 0 !important;
+}
+#customAvatarEmailAddressInput {
+  float: left;
+  width: 100%;
+  margin-top: 3px;
+}
+#customAvatarEmailAddressInput label {
+  float: left;
+  margin-top: 5px;
+}
+#customAvatarEmailAddressInput input {
+  width: 70%;
+}
+#user-gravatar-tooltip {
+  margin-top: 4px;
+  margin-left: 10px;
 }
 #WelcomeView {
   padding-right: 20px !important;

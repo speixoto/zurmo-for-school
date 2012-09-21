@@ -343,6 +343,12 @@
 		content: "O";
 	}
 }
+.game-badge-CreateMission,
+.CreateMission{
+	.badge-icon:before{
+		content: "{";
+	}
+}
 
 
 
@@ -590,15 +596,9 @@
 
 .gravatar-container{
     float: right;
-    margin: 15px 15px 0 0;
-    a{
-        //position: absolute;
-        //z-index: 0;
-        //float: right;
-    }
-    img{
-        
-    }
+    margin: 15px 15px 15px 0;
+    a{}
+    img{}
     span{
         padding: 10px;
         position: absolute;
@@ -609,4 +609,45 @@
     }
 }
 
+#UserChangeAvatarView{
+    .clearfix();
+    .col-0{
+        width:100%;
+    }
+    .col-1{
+        width:0;
+    }
+    .wrapper{
+        padding:0 !important;
+        border: none !important;
+        background:none !important;
+        .b-shadow(none);
+        margin-bottom: 0 !important;
+        table{
+            margin-bottom: 0 !important;
+        }
+        td{
+            padding-left: 0 !important;
+        }
+    }
+    .view-toolbar-container{
+        margin-top: 0 !important;
+    }
+}
+#customAvatarEmailAddressInput{
+    float: left;
+    width:100%;
+    margin-top:3px;
+    label{
+        float: left;
+        margin-top:5px;
+    }
+    input{
+        width:70%;
+    }
+}
+#user-gravatar-tooltip{
+    margin-top:4px;
+    margin-left:10px;
+}
 

@@ -41,13 +41,13 @@
         protected function renderControlNonEditable()
         {
             $this->nonEditableTemplate = '<td colspan="{colspan}">{content}</td>';
-            $avatarUrl   = $this->model->getAvatarImageUrl();
+            $avatarUrl   = $this->model->getAvatarImageUrl(200);
             $avatarImage = ZurmoHtml::image($avatarUrl, null, array('onMouseOver' => "$('#profile-picture-tooltip').show();"));
             if (Yii::app()->user->userModel->id == $this->model->id ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
                 $content     = '<div class="gravatar-container">';
-                $content    .= ZurmoHtml::tag('span',
+                $span        = ZurmoHtml::tag('span',
                                       array('style' => 'display:none',
                                             'id'    => 'profile-picture-tooltip',
                                             'onMouseOut'  => "$('#profile-picture-tooltip').hide();"),
@@ -55,7 +55,7 @@
                                       true);
                 $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
                 $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Profile Picture') . ": " . strval($this->model));
-                $content    .= ZurmoHtml::ajaxLink($avatarImage, $url, $modalTitle);
+                $content    .= ZurmoHtml::ajaxLink($span.$avatarImage, $url, $modalTitle);
                 $content    .= '</div>';
             }
             else
