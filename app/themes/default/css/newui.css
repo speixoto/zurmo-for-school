@@ -2442,7 +2442,7 @@ div.wide.form .errorMessage {
   text-shadow: #000000 0 1px 0;
 }
 .ui-datepicker .ui-datepicker-calendar {
-  width: 100%;
+  width: 100.1%;
   border-color: #BBB;
   border-style: solid;
   border-width: 0 0 1px 1px;
@@ -10132,6 +10132,17 @@ div.hasHalfs .twoThirds {
 .LatestActivitiesListView .Conversation:after,
 .LatestActivitiesView .Conversation:after {
   content: "b";
+  position: relative;
+  top: -3px;
+  color: #666 !important;
+  font-weight: normal;
+  font-size: 42px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 28px;
+}
+.LatestActivitiesListView .Mission:after,
+.LatestActivitiesView .Mission:after {
+  content: "{";
   position: relative;
   top: -3px;
   color: #666 !important;
