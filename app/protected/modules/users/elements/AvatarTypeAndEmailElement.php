@@ -42,15 +42,13 @@
         {
             $this->nonEditableTemplate = '<td colspan="{colspan}">{content}</td>';
             $avatarUrl   = $this->model->getAvatarImageUrl(200);
-            $avatarImage = ZurmoHtml::image($avatarUrl, null, array('onMouseOver' => "$('#profile-picture-tooltip').show();"));
+            $avatarImage = ZurmoHtml::image($avatarUrl, 'gravatar', array());
             if (Yii::app()->user->userModel->id == $this->model->id ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
                 $content     = '<div class="gravatar-container">';
                 $span        = ZurmoHtml::tag('span',
-                                      array('style' => 'display:none',
-                                            'id'    => 'profile-picture-tooltip',
-                                            'onMouseOut'  => "$('#profile-picture-tooltip').hide();"),
+                                      array('id'    => 'profile-picture-tooltip'),
                                       Yii::t('Default', 'Click me to change the profile picture.'),
                                       true);
                 $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));

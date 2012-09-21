@@ -4892,12 +4892,22 @@ span.tooltip {
   margin: 15px 15px 15px 0;
 }
 .gravatar-container span {
+  text-align: center;
   padding: 10px;
   position: absolute;
   z-index: 1;
-  display: block;
+  display: none;
   width: 100%;
   height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  width: auto;
+  height: auto;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.gravatar-container:hover span {
+  display: block;
 }
 #UserChangeAvatarView {
   zoom: 1;
@@ -7350,6 +7360,15 @@ td.empty {
 .form input[type="password"],
 .form select.multiple,
 .form textarea {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* @doubtful_existance: I don’t think these even exist? Can’t hurt much, I guess. */
+
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  /* end @doubtful_existance */
+
+  font-smoothing: antialiased;
   display: inline-block;
   border: 1px solid #ccc;
   -webkit-border-radius: 3px;
@@ -10313,7 +10332,7 @@ div.hasHalfs .twoThirds {
   -o-border-radius: 3px;
   border-radius: 3px;
   font-size: 12px;
-  color: #999;
+  color: #666;
   text-indent: 0;
   line-height: 24px;
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -10347,7 +10366,7 @@ div.hasHalfs .twoThirds {
   padding-left: 6px;
   display: block !important;
   font-weight: normal !important;
-  color: #999 !important;
+  color: #666 !important;
 }
 .dk_toggle:hover {
   background: url(../images/dropdown-arrow.png) right bottom no-repeat;
@@ -10382,7 +10401,7 @@ div.hasHalfs .twoThirds {
   padding: 0 6px;
   line-height: 24px;
   font-weight: normal !important;
-  color: #999 !important;
+  color: #666 !important;
 }
 .dk_options li:last-child a {
   border-bottom: none;
@@ -10399,7 +10418,7 @@ div.hasHalfs .twoThirds {
   border: 1px solid #ccc;
   border-bottom-width: 2px;
   border-bottom-color: #ccc;
-  color: #999;
+  color: #666;
   max-height: 250px;
   -webkit-border-radius: 0 0 3px 3px;
   -moz-border-radius: 0 0 3px 3px;

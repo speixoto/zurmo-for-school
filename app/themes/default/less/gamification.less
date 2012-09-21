@@ -600,12 +600,22 @@
     a{}
     img{}
     span{
+        text-align: center;
         padding: 10px;
         position: absolute;
         z-index: 1;
-        display: block;
+        display: none;
         width:100%;
         height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        width:auto;
+        height:auto;
+        .box-sizing();
+    }
+    &:hover{
+        span{
+            display: block;
+        }
     }
 }
 
