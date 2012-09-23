@@ -135,6 +135,10 @@
             $bccRecipients = explode(",", $_POST[$postVariableName]['recipients']['bcc']);
             static::attachRecipientsToMessage($bccRecipients, $emailMessage, EmailMessageRecipient::TYPE_BCC);
             unset($_POST[$postVariableName]['recipients']);
+            if (isset($_POST['filesIds']))
+            {
+                static::attachFilesToMessage($_POST['filesIds'], $emailMessage);
+            }
             $emailMessage->setAttributes($_POST[$postVariableName]);
             $emailMessage->owner       = $userToSendMessagesFrom;
             $emailAccount              = EmailAccount::getByUserAndName(Yii::app()->user->userModel);
@@ -149,11 +153,21 @@
             return $emailMessage;
         }
 
+        public static function attachFilesToMessage(Array $filesIds, $emailMessage)
+        {
+            foreach ($filesIds as $fileId)
+            {
+                $attachment = FileModel::getById((int)$fileId);
+                $emailMessage->files->add($attachment);
+            }
+        }
+
         public static function attachRecipientsToMessage(Array $recipients, $emailMessage, $type)
         {
             foreach ($recipients as $recipient)
             {
                 //TODO: Make or search for some method to search both user or contacts by email, ou name, or email and name
+                //maybe use EmailArchivingUtil::resolvePersonOrAccountByEmailAddress or EmailArchivingJos::createEmailMessageRecipient
                 $toName = null;
                 $person = null;
                 $users    = UserSearch::getUsersByEmailAddress($recipient, 'equals');

@@ -173,6 +173,46 @@
                 ));
             $emailMessage = EmailMessageHelper::sendEmailFromPost($billy);
             $this->assertEquals($emailMessage->recipients[0]->personOrAccount->id, $sally->id);
+            unset($emailMessage);
+            unset($recipients);
+            unset($_POST);
+
+            //Test with attachments
+            $email = new Email();
+            $filesIds = array();
+            $fileDocx = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+            $filesIds[] = $fileDocx->id;
+            $fileTxt = ZurmoTestHelper::createFileModel('testImage.png', 'FileModel');
+            $filesIds[] = $fileTxt->id;
+            $_POST = array('EmailMessage' => array ('recipients' => array('to'  => 'sally@example.com',
+                                                                          'cc'  => null,
+                                                                          'bcc' => null),
+                                                    'subject' => 'Test Email From Post',
+                                                    'content' => array('htmlContent' => 'This is a test email')
+                                             ),
+                           'filesIds'     => $filesIds,
+                );
+            $emailMessage = EmailMessageHelper::sendEmailFromPost($billy);
+            $this->assertEquals($emailMessage->recipients[0]->personOrAccount->id, $sally->id);
+            $this->assertEquals(2, count($emailMessage->files));
+        }
+
+        public function testAttachFilesToMessage()
+        {
+            $billy = User::getByUsername('billy');
+            Yii::app()->user->userModel = $billy;
+            $filesIds = array();
+            $fileTxt = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+            $filesIds[] = $fileTxt->id;
+            $filePng = ZurmoTestHelper::createFileModel('testImage.png', 'FileModel');
+            $filesIds[] = $filePng->id;
+            $fileZip = ZurmoTestHelper::createFileModel('testZip.zip', 'FileModel');
+            $filesIds[] = $fileZip->id;
+            $filePdf = ZurmoTestHelper::createFileModel('testPDF.pdf', 'FileModel');
+            $filesIds[] = $filePdf->id;
+            $emailMessage = new EmailMessage();
+            EmailMessageHelper::attachFilesToMessage($filesIds, $emailMessage);
+            $this->assertEquals('4', count($emailMessage->files));
         }
 
         /**

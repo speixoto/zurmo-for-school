@@ -43,7 +43,8 @@
                     ),
                     'derivedAttributeTypes' => array(
                         'EmailMessageToRecipients',
-                        'EmailMessageCcRecipients'
+                        'EmailMessageCcRecipients',
+                        'Files',
                     ),
                     'nonPlaceableAttributeNames' => array(
                         'sentDateTime',

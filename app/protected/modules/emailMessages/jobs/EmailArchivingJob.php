@@ -213,9 +213,9 @@
         }
 
         /**
-         * Create EmailFileModel
+         * Create FileModel
          * @param array $attachment
-         * @return EmailFileModel
+         * @return FileModel
          */
         protected function createEmailAttachment($attachment)
         {
@@ -224,7 +224,7 @@
             {
                 $fileContent          = new FileContent();
                 $fileContent->content = $attachment['attachment'];
-                $file                 = new EmailFileModel();
+                $file                 = new FileModel();
                 $file->fileContent    = $fileContent;
                 $file->name           = $attachment['filename'];
                 $file->type           = ZurmoFileHelper::getMimeType($attachment['filename']);
@@ -346,7 +346,7 @@
                         continue;
                     }
                     $file = $this->createEmailAttachment($attachment);
-                    if ($file instanceof EmailFileModel)
+                    if ($file instanceof FileModel)
                     {
                         $emailMessage->files->add($file);
                     }
