@@ -166,29 +166,14 @@
         {
             foreach ($recipients as $recipient)
             {
-                //TODO: Make or search for some method to search both user or contacts by email, ou name, or email and name
-                //maybe use EmailArchivingUtil::resolvePersonOrAccountByEmailAddress or EmailArchivingJos::createEmailMessageRecipient
-                $toName = null;
-                $person = null;
-                $users    = UserSearch::getUsersByEmailAddress($recipient, 'equals');
-                if (count($users)>0)
-                {
-                    $person = $users[0];
-                    $toName = strval($users[0]);
-                }
-                $contacts = ContactSearch::getContactsByAnyEmailAddress($recipient);
-                if (count($contacts)>0)
-                {
-                    $person = $contacts[0];
-                    $toName = strval($contacts[0]);
-                }
+                $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($recipient, true, true, true, true);
                 if ($recipient != '')
                 {
                     $messageRecipient                   = new EmailMessageRecipient();
-                    $messageRecipient->toName           = $toName;
+                    $messageRecipient->toName           = strval($personOrAccount);
                     $messageRecipient->toAddress        = $recipient;
                     $messageRecipient->type             = $type;
-                    $messageRecipient->personOrAccount  = $person;
+                    $messageRecipient->personOrAccount  = $personOrAccount;
                     $emailMessage->recipients->add($messageRecipient);
                 }
             }

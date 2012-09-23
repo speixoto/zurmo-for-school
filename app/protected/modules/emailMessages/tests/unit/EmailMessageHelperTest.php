@@ -139,12 +139,12 @@
             $this->assertEquals('d@zurmo.com', $recipients[3]->toAddress);
             $this->assertEquals('e@zurmo.com', $recipients[4]->toAddress);
             $this->assertEquals('f@zurmo.com', $recipients[5]->toAddress);
-            $this->assertNull($recipients[0]->toName);
-            $this->assertNull($recipients[1]->toName);
-            $this->assertNull($recipients[2]->toName);
-            $this->assertNull($recipients[3]->toName);
-            $this->assertNull($recipients[4]->toName);
-            $this->assertNull($recipients[5]->toName);
+            $this->assertEquals('', $recipients[0]->toName);
+            $this->assertEquals('', $recipients[1]->toName);
+            $this->assertEquals('', $recipients[2]->toName);
+            $this->assertEquals('', $recipients[3]->toName);
+            $this->assertEquals('', $recipients[4]->toName);
+            $this->assertEquals('', $recipients[5]->toName);
             //Recipients are not personOrAccount
             $this->assertLessThan(0, $recipients[0]->personOrAccount->id);
             $this->assertLessThan(0, $recipients[1]->personOrAccount->id);
