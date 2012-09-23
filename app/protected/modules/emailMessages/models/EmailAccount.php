@@ -139,14 +139,12 @@
                                   array('outboundSecurity',     'length',    'min'  => 0, 'max' => 3),
                                   array('fromAddress',          'email'),
                                   array('aTestToAddress',       'email'),
-                                  //array('replyToAddress',       'email'), TODO: Gettin errors with this on in the updateShcema
-                                  //TODO: See what's the problem with this validator
-                                  /*
-                                  array('outboundType',         'OutboundSettingsValidator',
+//                                  array('replyToAddress',       'email'), TODO: Gettin errors with this on in the updateShcema
+                                  array('useCustomSettings',    'customOutboundSettings',
                                                                 'nonEmptyFields' => array('outboundHost',
                                                                                           'outboundPort',
                                                                                           'outboundUsername',
-                                                                                          'outboundPassword'))*/
+                                                                                          'outboundPassword'))
                 )
             );
             return $metadata;
@@ -155,6 +153,22 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        public function customOutboundSettings($attribute,$params)
+        {
+            if ($this->$attribute)
+            {
+                $haveError = false;
+                foreach ($params['nonEmptyFields'] as $field)
+                {
+                    if ($this->$field == null)
+                    {
+                        $this->addError($field, Yii::t('Default', 'This field is required'));
+                        $haveError = true;
+                    }
+                }
+            }
         }
     }
 ?>
