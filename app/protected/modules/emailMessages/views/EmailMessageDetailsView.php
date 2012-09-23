@@ -72,15 +72,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'EmailMessageCcRecipients'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'subject', 'type' => 'Text'),
                                             ),
                                         ),
@@ -91,6 +82,15 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'content', 'type' => 'EmailMessageContent'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'Files'),
                                             ),
                                         ),
                                     )

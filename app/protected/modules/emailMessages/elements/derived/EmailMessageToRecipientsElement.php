@@ -32,8 +32,16 @@
         protected function renderControlNonEditable()
         {
             assert('$this->model instanceof EmailMessage');
-            return Yii::app()->format->html(EmailMessageMashableActivityRules::
-                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_TO));
+            $toContent  = Yii::app()->format->html('To: ' . EmailMessageMashableActivityRules::
+                            getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_TO));
+            $content    = CHtml::tag('div', array(), $toContent);
+            $ccContent  = Yii::app()->format->html('Cc: ' . EmailMessageMashableActivityRules::
+                            getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_CC));
+            $content   .= CHtml::tag('div', array(), $ccContent);
+            $bccContent = Yii::app()->format->html('Bcc: ' . EmailMessageMashableActivityRules::
+                            getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_BCC));
+            $content   .= CHtml::tag('div', array(), $bccContent);
+            return $content;
         }
 
         protected function renderControlEditable()
