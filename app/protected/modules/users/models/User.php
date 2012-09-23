@@ -346,7 +346,15 @@
             $this->serializedAvatarData = serialize($avatar);
         }
 
-        public function getAvatarImageUrl($size = 250)
+        public function getAvatarImage($size = 250)
+        {
+            $avatarUrl = $this->getAvatarImageUrl($size);
+            return ZurmoHtml::image($avatarUrl, null, array('class'  => 'gravatar',
+                                                            'width'  => $size,
+                                                            'height' => $size));
+        }
+
+        private function getAvatarImageUrl($size)
         {
             assert('is_int($size)');
             if (isset($this->avatarImageUrl))
