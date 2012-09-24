@@ -5264,11 +5264,6 @@ span.tooltip {
 #ConversationDetailsAndRelationsView #right-side-edit-view-panel {
   top: 55px;
 }
-#ModelDetailsSummaryView,
-#CommentList,
-.CommentList {
-  padding: 10px 0 0 45px;
-}
 #ModelDetailsSummaryView h2,
 #CommentList h2,
 .CommentList h2 {
@@ -5286,11 +5281,12 @@ span.tooltip {
   color: #999;
   font-weight: normal !important;
 }
+#CommentList,
 .CommentList {
-  padding-left: 25px;
+  margin-left: 130px;
 }
 .comment {
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   line-height: 140%;
 }
 .comment .comment-content {
@@ -5306,7 +5302,6 @@ span.tooltip {
 }
 .comment .delete-comment {
   visibility: hidden;
-  margin-left: 5px;
 }
 .comment .delete-comment a {
   margin-left: 4px;
@@ -5316,6 +5311,18 @@ span.tooltip {
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
   content: "_";
+}
+.model-details-summary {
+  padding-left: 130px;
+  padding-top: 15px;
+}
+.model-details-summary img {
+  margin-left: -115px;
+}
+.model-details-summary .comment-content {
+  font-size: 12px;
+  padding-left: 0;
+  margin: 5px 0;
 }
 .conversation-subject {
   margin-bottom: 30px;
@@ -5331,14 +5338,37 @@ span.tooltip {
   width: 70%;
   float: left;
   max-width: 600px;
-  padding-left: 50px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 #CommentInlineEditForModelView {
   margin-top: 15px;
+  padding-left: 120px;
+  /*
+    #comment-inline-edit-form{
+        padding-left:15px;
+        table{
+            border-bottom:none;
+        }
+        td{
+            padding-left:0 !important;
+        }
+        .files{
+            margin-bottom:0;
+            td{
+                padding-bottom: 0;
+            }
+        }
+    }
+    */
+
+}
+#CommentInlineEditForModelView td {
+  padding-right: 0 !important;
 }
 #CommentInlineEditForModelView h2 {
-  margin-bottom: 15px;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 #CommentInlineEditForModelView .wide.form {
   padding: 0;
@@ -5357,29 +5387,17 @@ span.tooltip {
   width: 100%;
   float: none;
 }
-#CommentInlineEditForModelView #inline-edit-form {
-  padding-left: 15px;
-}
-#CommentInlineEditForModelView #inline-edit-form table {
-  border-bottom: none;
-}
-#CommentInlineEditForModelView #inline-edit-form td {
-  padding-left: 0 !important;
-}
-#CommentInlineEditForModelView #inline-edit-form .files {
+#CommentInlineEditForModelView table {
   margin-bottom: 0;
-}
-#CommentInlineEditForModelView #inline-edit-form .files td {
-  padding-bottom: 0;
-}
-#CommentInlineEditForModelView .view-toolbar-container {
-  padding-top: 13px;
-}
-#CommentInlineEditForModelView .view-toolbar-container a {
-  color: #fff !important;
 }
 #CommentInlineEditForModelView .form-toolbar {
   border-top: none;
+  padding-top: 0;
+  text-align: right;
+}
+#CommentInlineEditForModelView .form-toolbar a {
+  color: #fff !important;
+  margin-right: 0;
 }
 .attachments {
   margin-top: 5px;

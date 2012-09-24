@@ -86,8 +86,8 @@
 }
 
 #ModelDetailsSummaryView,
-#CommentList, .CommentList{
-    padding:10px 0 0 45px;
+#CommentList,
+.CommentList{
     h2{
         margin-bottom:15px;
     }
@@ -101,12 +101,14 @@
     }
 }
 
+#CommentList,
 .CommentList{
-    padding-left: 25px;
+    margin-left: 130px;
 }
 
+
 .comment{
-    margin-bottom:30px;
+    margin-bottom:15px;
     line-height: 140%;
     .comment-content{
         font-size: 12px;
@@ -125,7 +127,7 @@
         visibility:hidden;
         //display:block;
         //margin-top:4px;
-        margin-left:5px;
+        //margin-left:5px;
         a{
             margin-left:4px;
         }
@@ -135,6 +137,20 @@
         }
     }
 }
+
+.model-details-summary{
+    padding-left: 130px;
+    padding-top:15px;
+    img{
+        margin-left: -115px;
+    }
+    .comment-content{
+        font-size: 12px;
+        padding-left:0;
+        margin:5px 0;
+    }
+}
+
 .conversation-subject{
     margin-bottom: 30px;   
     .comment-content{
@@ -151,14 +167,17 @@
     width:70%;
     float:left;
     max-width: 600px;
-    padding-left:50px;
+    .box-sizing();
 }
 
 #CommentInlineEditForModelView{
     margin-top: 15px;
+    padding-left: 120px;
+    td{
+        padding-right: 0 !important;
+    }
     h2{
-        margin-bottom:15px;
-        margin-left:15px;
+        margin-left:10px;
     }
     .wide.form{
         padding:0;
@@ -174,7 +193,11 @@
         float:none;
         //border-bottom: 1px solid #CCCCCC;
     }
-    #inline-edit-form{
+    table{
+        margin-bottom: 0;
+    }
+    /*
+    #comment-inline-edit-form{
         padding-left:15px;
         table{
             border-bottom:none;
@@ -189,19 +212,25 @@
             }
         }
     }
+    */
     .view-toolbar-container{
         //border-top:1px solid #fff;
-        padding-top:13px;
+        //padding-top:13px;
         //text-align:center;
-        a{
-            //float:none !important;
-            color:#fff !important;
-        }
+        
     }
     .form-toolbar{
         border-top: none;
+        padding-top: 0;
+        text-align: right;
+        a{
+            //float:none !important;
+            color:#fff !important;
+            margin-right:0;
+        }
     }
 }
+
 .attachments{
     margin-top:5px;
     list-style: none;

@@ -94,6 +94,7 @@
             $avatarUrl = null;// $this->model->getAvatarImageUrl(56);
             $avatarImage = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
             $content  = '<div class="comment model-details-summary">';
+            $content .= '<img src="../user_offline.png" class="gravatar" width="100" height="100" />';
             $content .= '<span class="user-details clearfix">';           
             $content .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                     array('{ownerStringContent}' => strval($this->model->createdByUser)));
