@@ -140,7 +140,7 @@
                     if (!RedBeanDatabase::isFrozen())
                     {
                         $tableName  = RedBeanModel::getTableName($this->modelClassName);
-                        RedBeanColumnTypeOptimizer::idColumn($tableName, $polyIdFieldName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                        RedBeanColumnTypeOptimizer::optimize($tableName, $polyIdFieldName, 'id');
                     }
                 }
                 else
@@ -150,7 +150,7 @@
                     {
                         $tableName  = RedBeanModel::getTableName($this->modelClassName);
                         $columnName = RedBeanModel::getTableName($this->relatedModelClassName) . '_id';
-                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                     }
                 }
                 R::store($bean);

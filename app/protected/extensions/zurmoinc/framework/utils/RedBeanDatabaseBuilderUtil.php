@@ -479,18 +479,14 @@
 
         protected static function getUniqueString($minLength, $maxLength, $unique)
         {
-            if ($maxLength == null)
+            if ($minLength == null)
             {
-                $maxLength = 1024;
+                $minLength = 1;
             }
             do
             {
                 $s = chr(rand(ord('A'), ord('Z')));
-                $length = max($minLength, $maxLength);
-                if ($maxLength !== null)
-                {
-                    $length = min($length, $maxLength);
-                }
+                $length = min($minLength, $maxLength);
                 while (strlen($s) < $length)
                 {
                     $s .= chr(rand(ord('a'), ord('z')));

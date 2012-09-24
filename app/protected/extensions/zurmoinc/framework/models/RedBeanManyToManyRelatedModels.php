@@ -90,7 +90,7 @@
                     foreach ($types as $type)
                     {
                         $columnName = "{$type}_id";
-                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                     }
                 }
             }

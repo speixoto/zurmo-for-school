@@ -26,7 +26,7 @@
 
     class RedBeanColumnTypeOptimizer
     {
-        /**
+         /**
        * @param string  $type   name of the table
        * @param string  $column name of the column
        * @param mixed $value
@@ -35,140 +35,23 @@
        * @return boolean
        *
        */
-        public static function dateColumn($type, $column, $value, $datatype)
+        public static function optimize($table, $columnName, $datatype)
         {
-            if (!self::matchesDate($value))
-            {
-                return true;
-            }
-            $fields = R::$writer->getColumns($type);
-            if (!in_array($column, array_keys($fields)))
-            {
-                return false;
-            }
-
-            $typeInField = R::$writer->code($fields[$column]);
-            if ($typeInField != "date")
-            {
-                if (self::matchesDate($value))
-                {
-                    $cnt = (int)R::getCell("select count(*) as n from {$type} where ".
-                              "{$column} regexp '[0-9]{4}-[0-1][0-9]-[0-3][0-9]' " .
-                              "OR {$column} IS null");
-                    $total = (int)R::getCell("SELECT count(*) FROM ".$type);
-                    if ($total===$cnt)
-                    {
-                        R::$writer->widenColumn($type, $column, RedBean_QueryWriter_MySQL::C_DATATYPE_SPECIAL_DATE);
-                    }
-                    return false;
-                }
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-
-        protected static function matchesDate($value)
-        {
-            $pattern = "/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])$/";
-            return (boolean) (preg_match($pattern, $value));
-        }
-
-        public static function dateTimeColumn($type, $column, $value, $datatype)
-        {
-
-            if (!self::matchesDateTime($value))
-            {
-                return true;
-            }
-
-            $fields = R::$writer->getColumns($type);
-
-            if (!in_array($column, array_keys($fields)))
-            {
-                return false;
-            }
-
-            $typeInField = R::$writer->code($fields[$column]);
-
-            if ($typeInField!="datetime")
-            {
-              if (self::matchesDateTime($value))
-              {
-                $cnt = (int)R::getCell("select count(*) as n from $type where
-                      {$column} regexp '[0-9]{4}-[0-1][0-9]-[0-3][0-9] [0-2][0-9]:[0-5][0-9]:[0-5][0-9]'
-                      OR {$column} IS NULL");
-                $total = (int)R::getCell("SELECT count(*) FROM ".$type);
-
-                if ($total===$cnt)
-                {
-                  R::exec("ALTER TABLE ".$type." change ".$column." ".$column." datetime ");
-                }
-                return false;
-              }
-              return true;
-            }
-            else {
-              return false;
-            }
-        }
-
-        protected static function matchesDateTime($value)
-        {
-            $pattern = "/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9]) (?:([0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/";
-            return (boolean) (preg_match($pattern, $value));
-        }
-
-        public static function idColumn($type, $column, $datatype) {
             try
             {
-                $fields = R::$writer->getColumns($type);
-                if (in_array($column,array_keys($fields)))
+                $databaseColumnType = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($datatype);
+                $fields = R::$writer->getColumns($table);
+                if (in_array($columnName,array_keys($fields)))
                 {
-                    $columnType = $fields[$column];
-                    if (R::$writer->code($columnType) != RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32)
-                    {
-                        R::$writer->widenColumn($type, $column, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
-                    }
-                }
-                else
-                {
-                    R::$writer->addColumn($type, $column, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
-                }
-            }
-            catch (RedBean_Exception_SQL $e)
-            {
-                //42S02 - Table does not exist.
-                if (!in_array($e->getSQLState(), array('42S02')))
-                {
-                    throw $e;
-                }
-                else
-                {
-                    R::$writer->createTable($type);
-                    R::$writer->addColumn($type, $column, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
-                }
-            }
-        }
-
-      public static function blobColumn($type, $column, $datatype)
-      {
-          assert('$datatype == "blob" || $datatype == "longblob"');
-            try
-            {
-                $columnNamesToTypes = R::$writer->getColumns($type);
-                if (array_key_exists($column, $columnNamesToTypes))
-                {
-                    $columnType = $columnNamesToTypes[$column];
+                    $columnType = $fields[$columnName];
                     if ($columnType != $datatype)
                     {
-                        R::exec("alter table {$type} change {$column} {$column} " . $datatype);
+                        R::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
                     }
                 }
                 else
                 {
-                    R::exec("alter table {$type} add {$column} " . $datatype);
+                    R::exec("alter table {$table} add {$columnName} " . $databaseColumnType);
                 }
             }
             catch (RedBean_Exception_SQL $e)
@@ -180,82 +63,16 @@
                 }
                 else
                 {
-                    R::$writer->createTable($type);
-                    R::exec("alter table {$type} add {$column} " . $datatype);
+                    R::$writer->createTable($table);
+                    R::exec("alter table {$table} add {$columnName} " . $databaseColumnType);
                 }
             }
         }
 
-      public static function booleanColumn($type, $column, $datatype)
-      {
-          try
-          {
-              $fields = R::$writer->getColumns($type);
-              if (in_array($column,array_keys($fields)))
-              {
-                  $columnType = $fields[$column];
-                  if ($columnType != RedBean_QueryWriter_MySQL::C_DATATYPE_BOOL)
-                  {
-                      R::$writer->widenColumn($type, $column, RedBean_QueryWriter_MySQL::C_DATATYPE_BOOL);
-                  }
-              }
-              else
-              {
-                  R::$writer->addColumn($type, $column, RedBean_QueryWriter_MySQL::C_DATATYPE_BOOL);
-              }
-          }
-          catch (RedBean_Exception_SQL $e)
-          {
-              //42S02 - Table does not exist.
-              if (!in_array($e->getSQLState(), array('42S02')))
-              {
-                  throw $e;
-              }
-              else
-              {
-                  R::$writer->createTable($type);
-                  R::$writer->addColumn($type, $column, RedBean_QueryWriter_MySQL::C_DATATYPE_BOOL);
-              }
-          }
-      }
-
-        public static function externalIdColumn($type, $column, $length = 40)
+        public static function externalIdColumn($table, $columnName, $length = 40)
         {
-            try
-            {
-                $fields = R::$writer->getColumns($type);
-                if (array_key_exists($column, $fields))
-                {
-                    $columnType = $fields[$column];
-                    if ($columnType != static::getExternalIdType($length))
-                    {
-                        R::exec("alter table {$type} change {$column} {$column} " . static::getExternalIdType($length));
-                    }
-                }
-                else
-                {
-                    R::exec("alter table {$type} add {$column} " . static::getExternalIdType($length));
-                }
-            }
-            catch (RedBean_Exception_SQL $e)
-            {
-                //42S02 - Table does not exist.
-                if (!in_array($e->getSQLState(), array('42S02')))
-                {
-                    throw $e;
-                }
-                else
-                {
-                    R::$writer->createTable($type);
-                    R::exec("alter table {$type} add {$column} " . static::getExternalIdType($length));
-                }
-            }
-        }
-
-        protected static function getExternalIdType($length = 40)
-        {
-            assert('is_int($length)');
-            return "varchar(" . $length . ") null";
+            self::optimize($table, $columnName, 'string');
+            // To-Do: In future we can use $length to limit length of varchar type
         }
     }
 ?>

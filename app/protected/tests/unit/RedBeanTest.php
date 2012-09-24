@@ -23,24 +23,6 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-
-    // HintManager copied from...
-    // http://groups.google.com/group/redbeanorm/browse_thread/thread/7eb59797e8478a89/61eae7941cae1970
-    // Used in testDateTimeHinting, and maybe other things, below. null test added.
-    class HintManager implements RedBean_Observer {                                                 // Not Coding Standard                                                                                 // Not Coding Standard
-                                                                                                    // Not Coding Standard
-            public function onEvent( $type, $info ) {                                               // Not Coding Standard
-                    $hints = $info->getMeta("hint");                                                // Not Coding Standard
-                    if ($hints !== null) {                                                          // Not Coding Standard
-                            foreach ($hints as $k=>$v) {                                            // Not Coding Standard
-                                    if ($v=="date"){ //or select an optimizer based on value in $v  // Not Coding Standard
-                                        RedBeanColumnTypeOptimizer::dateColumn($info->getMeta("type"), $k, $info->$k, RedBean_QueryWriter_MySQL::C_DATATYPE_SPECIAL_DATE);
-                                    }                                                               // Not Coding Standard
-                            }                                                                       // Not Coding Standard
-                    }
-            }
-    }
-
     // This is for testing details of how RedBean works.
     class RedBeanTest extends BaseTest
     {
@@ -303,12 +285,9 @@
                                                 Yii::app()->db->username,
                                                 Yii::app()->db->password);
 
-            $hint = new HintManager( R::$toolbox );                 // Not Coding Standard
-            R::$redbean->addEventListener( "after_update", $hint ); // Not Coding Standard
-
             R::exec("drop table if exists bean");                   // Not Coding Standard
             $bean = R::dispense("bean");                            // Not Coding Standard
-            $bean->setMeta("hint",array("prop"=>"date"));           // Not Coding Standard
+            $bean->setMeta("hint",array("prop"=>"datetime"));           // Not Coding Standard
             $bean->prop = "2010-01-01 10:00:00";                    // Not Coding Standard
             R::store($bean);                                        // Not Coding Standard
 

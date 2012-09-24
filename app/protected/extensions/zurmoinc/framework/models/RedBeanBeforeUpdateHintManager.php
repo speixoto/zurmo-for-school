@@ -43,13 +43,28 @@
                     switch ($value)
                     {
                     case 'blob':
-                        RedBeanColumnTypeOptimizer::blobColumn($info->getMeta("type"), $key, 'blob');
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'blob');
                         break;
                     case 'longblob':
-                        RedBeanColumnTypeOptimizer::blobColumn($info->getMeta("type"), $key, 'longblob');
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'longblob');
                         break;
                    case 'boolean':
-                        RedBeanColumnTypeOptimizer::booleanColumn($info->getMeta("type"), $key, RedBean_QueryWriter_MySQL::C_DATATYPE_BOOL);
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'boolean');
+                        break;
+                   case 'date':
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'date');
+                        break;
+                    case 'datetime':
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'datetime');
+                        break;
+                    case 'string':
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'string');
+                        break;
+                   case 'longString':
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'text');
+                        break;
+                    case 'id':
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'id');
                         break;
                     }
                 }

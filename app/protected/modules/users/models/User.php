@@ -131,7 +131,7 @@
                     {
                         $tableName  = self::getTableName(get_class($this));
                         $columnName = 'person_id';
-                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                     }
                 }
                 $baseBean = $bean;
@@ -142,7 +142,7 @@
             if (!RedBeanDatabase::isFrozen())
             {
                 $tableName  = self::getTableName(get_class($this));
-                RedBeanColumnTypeOptimizer::idColumn($tableName, 'person_id', RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                RedBeanColumnTypeOptimizer::optimize($tableName, 'person_id', 'id');
             }
         }
 

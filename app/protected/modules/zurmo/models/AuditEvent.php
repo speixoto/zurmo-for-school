@@ -89,7 +89,7 @@
             if (!AuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
             {
                 $tableName  = self::getTableName('AuditEvent');
-                RedBeanColumnTypeOptimizer::idColumn($tableName, strtolower('modelId'), RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                RedBeanColumnTypeOptimizer::optimize($tableName, strtolower('modelId'), 'id');
                 $auditEvent = new AuditEvent();
                 $auditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $auditEvent->moduleName     = $moduleName;

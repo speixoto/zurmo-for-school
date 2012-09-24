@@ -719,10 +719,12 @@
                         }
                     }
                 }
+                // Add model validators. Parent validators are already applied.
                 if (isset($metadata[$modelClassName]['rules']))
                 {
                     foreach ($metadata[$modelClassName]['rules'] as $validatorMetadata)
                     {
+
                         assert('isset($validatorMetadata[0])');
                         assert('isset($validatorMetadata[1])');
                         $attributeName       = $validatorMetadata[0];
@@ -740,6 +742,7 @@
                             $validatorName = self::$yiiValidatorsToRedBeanValidators[$validatorName];
                         }
                         $validator = CValidator::createValidator($validatorName, $this, $attributeName, $validatorParameters);
+
                         switch ($validatorName)
                         {
                             case 'RedBeanModelTypeValidator':
@@ -749,7 +752,7 @@
                                 {
                                     unset($hints[$columnName]);
                                 }
-                                if (in_array($validator->type, array('date', 'datetime', 'blob', 'longblob')))
+                                if (in_array($validator->type, array('date', 'datetime', 'blob', 'longblob', 'string')))
                                 {
                                     $hints[$columnName] = $validator->type;
                                 }
@@ -779,6 +782,50 @@
                         }
                         $this->validators[] = $validator;
                     }
+
+                    // Check if we need to update string type to long string type, based on validators.
+                        if (isset($metadata[$modelClassName]['members']))
+                        {
+                            foreach ($metadata[$modelClassName]['members'] as $memberName)
+                            {
+                                $allValidators = $this->getValidators($memberName);
+                                foreach($allValidators as $validator)
+                                {
+                                    if ((get_class($validator) == 'RedBeanModelTypeValidator' ||
+                                        get_class($validator) == 'TypeValidator') &&
+                                        $validator->type == 'string')
+                                    {
+                                        $columnName = strtolower($validator->attributes[0]);
+                                        if (count($allValidators) > 1)
+                                        {
+
+                                            $haveCStringValidator = false;
+                                            foreach ($allValidators as $innerValidator)
+                                            {
+                                                if (get_class($innerValidator) == 'CStringValidator' &&
+                                                    isset($innerValidator->max) &&
+                                                    $innerValidator->max > 255)
+                                                {
+                                                    $hints[$columnName] = 'longString';
+                                                }
+                                                if (get_class($innerValidator) == 'CStringValidator')
+                                                {
+                                                    $haveCStringValidator = true;
+                                                }
+                                            }
+                                            if (!$haveCStringValidator)
+                                            {
+                                                $hints[$columnName] = 'longString';
+                                            }
+                                        }
+                                        else
+                                        {
+                                            $hints[$columnName] = 'longString';
+                                        }
+                                    }
+                                }
+                            }
+                        }
                 }
                 $bean->setMeta('hint', $hints);
             }
@@ -1899,7 +1946,7 @@
                                     {
                                         $tableName  = self::getTableName($this->getAttributeModelClassName($relationName));
                                         $columnName = self::getForeignKeyName(get_class($this), $relationName);
-                                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                                     }
                                 }
                             }
@@ -1946,7 +1993,7 @@
             {
                 $tableName  = self::getTableName($modelClassName);
                 $columnName = self::getTableName($baseModelClassName) . '_id';
-                RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
             }
         }
 
@@ -2034,7 +2081,7 @@
                     {
                         $tableName  = self::getTableName($modelClassName);
                         $columnName = self::getTableName($baseModelClassName) . '_id';
-                        RedBeanColumnTypeOptimizer::idColumn($tableName, $columnName, RedBean_QueryWriter_MySQL::C_DATATYPE_UINT32);
+                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                     }
                 }
                 $baseModelClassName = $modelClassName;
