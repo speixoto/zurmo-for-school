@@ -81,8 +81,7 @@
                 assert('is_int($leaderboardData["points"])');
 
                 $user        = User::getById($userId);
-                $avatarUrl   = $user->getAvatarImageUrl(24);
-                $avatarImage = ZurmoHtml::image($avatarUrl, null);
+                $avatarImage = $user->getAvatarImage(24);
 
                 $content .= '<tr>';
                 $content .= '<td><span class="ranking">' . $leaderboardData['rank'] . '</span></td>';

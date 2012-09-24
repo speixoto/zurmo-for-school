@@ -41,8 +41,7 @@
         protected function renderControlNonEditable()
         {
             $this->nonEditableTemplate = '<td colspan="{colspan}">{content}</td>';
-            $avatarUrl   = $this->model->getAvatarImageUrl(200);
-            $avatarImage = ZurmoHtml::image($avatarUrl, 'gravatar', array());
+            $avatarImage = $this->model->getAvatarImage(200);
             if (Yii::app()->user->userModel->id == $this->model->id ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {

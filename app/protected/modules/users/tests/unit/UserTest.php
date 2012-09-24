@@ -942,8 +942,11 @@
             $user->username = 'avatar';
             $user->lastName = 'User';
             $this->assertTrue($user->save());
-            $this->assertEquals('http://www.gravatar.com/avatar/?s=250&r=g&d=mm', $user->getAvatarImageUrl());
-            $this->assertEquals('http://www.gravatar.com/avatar/?s=50&r=g&d=mm' , $user->getAvatarImageUrl(50));
+            $this->assertContains('width="250" height="250" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',
+                    $user->getAvatarImage());
+            //When calling getAvatarImage it should return the same url to avoid querying gravatar twice
+            $this->assertContains('width="50" height="50" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',
+                    $user->getAvatarImage(50));
             unset($user);
 
             //Add avatar info to the user and confirm it gets saved
@@ -954,45 +957,55 @@
             $this->assertTrue($user->save());
             unset($user);
             $user = User::getByUsername('avatar');
-            $this->assertEquals('http://www.gravatar.com/avatar/?s=250&r=g&d=mm', $user->getAvatarImageUrl());
-            $this->assertEquals('http://www.gravatar.com/avatar/?s=50&r=g&d=mm' , $user->getAvatarImageUrl(50));
+            $this->assertContains('width="250" height="250" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',
+                    $user->getAvatarImage());
+            $this->assertContains('width="50" height="50" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',
+                    $user->getAvatarImage(50));
             unset($user);
 
             //Change avatar to primary email address
-            $user = User::getByUsername('avatar');
+            $user = new User();
+            $user->username = 'avatar2';
+            $user->lastName = 'User';
             $emailAddress = 'avatar@zurmo.org';
             $user->primaryEmail->emailAddress = $emailAddress;
             $user->primaryEmail->optOut       = 1;
             $user->primaryEmail->isInvalid    = 0;
             $avatar = array('avatarType' => 2);
             $user->serializeAndSetAvatarData($avatar);
-            $this->assertEquals(serialize($avatar), $user->serializedAvatarData);
+            $this->assertContains(serialize($avatar), $user->serializedAvatarData);
             $this->assertTrue($user->save());
             unset($user);
-            $user = User::getByUsername('avatar');
-            $size = 250;
-            $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($emailAddress))) . "?s={$size}&d=retro&r=g";
-            $this->assertEquals($avatarUrl, $user->getAvatarImageUrl());
-            $size = 5;
-            $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($emailAddress))) . "?s={$size}&d=retro&r=g";
-            $this->assertEquals($avatarUrl, $user->getAvatarImageUrl($size));
+            $user = User::getByUsername('avatar2');
+            $avatarUrl   = 'width="250" height="250" src="http://www.gravatar.com/avatar/' .
+                    md5(strtolower(trim($emailAddress))) .
+                    '?s=250&amp;d=identicon&amp;r=g';
+            $this->assertContains($avatarUrl, $user->getAvatarImage());
+            $avatarUrl   = 'width="5" height="5" src="http://www.gravatar.com/avatar/' .
+                    md5(strtolower(trim($emailAddress))) .
+                    '?s=250&amp;d=identicon&amp;r=g';
+            $this->assertContains($avatarUrl, $user->getAvatarImage(5));
             unset($user);
 
             //Change avatar to custom avatar email address
-            $user = User::getByUsername('avatar');
+            $user = new User();
+            $user->username = 'avatar3';
+            $user->lastName = 'User';
             $emailAddress = 'avatar-custom@zurmo.org';
             $avatar = array('avatarType' => 3, 'customAvatarEmailAddress' => $emailAddress);
             $user->serializeAndSetAvatarData($avatar);
             $this->assertEquals(serialize($avatar), $user->serializedAvatarData);
             $this->assertTrue($user->save());
             unset($user);
-            $user = User::getByUsername('avatar');
-            $size = 250;
-            $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($emailAddress))) . "?s={$size}&d=retro&r=g";
-            $this->assertEquals($avatarUrl, $user->getAvatarImageUrl());
-            $size = 2500;
-            $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($emailAddress))) . "?s={$size}&d=retro&r=g";
-            $this->assertEquals($avatarUrl, $user->getAvatarImageUrl($size));
+            $user = User::getByUsername('avatar3');
+            $avatarUrl   = 'width="250" height="250" src="http://www.gravatar.com/avatar/' .
+                    md5(strtolower(trim($emailAddress))) .
+                    "?s=250&amp;d=identicon&amp;r=g";
+            $this->assertContains($avatarUrl, $user->getAvatarImage());
+            $avatarUrl   = 'width="2500" height="2500" src="http://www.gravatar.com/avatar/' .
+                    md5(strtolower(trim($emailAddress))) .
+                    "?s=250&amp;d=identicon&amp;r=g";
+            $this->assertContains($avatarUrl, $user->getAvatarImage(2500));
             unset($user);
         }
     }
