@@ -5136,6 +5136,9 @@ span.tooltip {
     min-width: none;
   }
 }
+.gravatar {
+  float: left;
+}
 .icon-missions-created:before,
 .icon-conversations-created:before {
   content: "w";
@@ -5289,6 +5292,9 @@ span.tooltip {
   margin-bottom: 15px;
   line-height: 140%;
 }
+.comment .gravatar {
+  margin-top: 1px;
+}
 .comment .comment-content {
   font-size: 12px;
   padding-left: 50px;
@@ -5316,7 +5322,7 @@ span.tooltip {
   padding-left: 130px;
   padding-top: 15px;
 }
-.model-details-summary img {
+.model-details-summary .gravatar {
   margin-left: -115px;
 }
 .model-details-summary .comment-content {
@@ -5331,6 +5337,11 @@ span.tooltip {
   font-size: 15px;
   line-height: 150%;
   font-style: italic;
+}
+.showAllCommentsLink {
+  margin-left: 130px;
+  margin-bottom: 10px;
+  display: block;
 }
 #ModelDetailsSummaryView,
 #CommentInlineEditForModelView,
@@ -5448,6 +5459,7 @@ span.tooltip {
 .mission-change-status-link {
   margin-right: 10px;
 }
+/*=Social Items*/
 #ArchivedEmailMatchingListView .items td {
   padding-right: 10px;
 }
@@ -5615,9 +5627,6 @@ span.tooltip {
     top: -25px !important;
     right: 0 !important;
   }
-}
-.gravatar {
-  float: left;
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';

@@ -40,19 +40,18 @@
         public static function renderItemAndCommentsContent(SocialItem $model, $redirectUrl)
         {
             assert('is_string($redirectUrl) || $redirectUrl == null');
+            
             $content  = '<div class="social-item">';
             //todo: use user's avatar (owner)
-            $avatarUrl = null;// $model->getAvatarImageUrl(24);
+            $avatarUrl = null;// $model->getAvatarImageUrl(50);
             $avatarImage = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
-                
+            $content .= '<div class="comment model-details-summary">';
+            $content .= '<img src="user_offline.png" width="50" height="50" class="gravatar" />';
             $content .= '<span class="user-details clearfix">' . $avatarImage;
             $content .= ZurmoHtml::tag('strong', array(), strval($model->owner) );
             $content .= '</span>';
             
             $content .= '<div class="comment-content"><p>' . self::renderModelDescription($model) . '</p></div>';
-            
-            //$content .= '<em class="'.get_class($model).'"></em>';
-            
             $content .= self::renderAfterDescriptionContent($model);
             $content .= self::renderItemFileContent($model);
             
@@ -60,12 +59,10 @@
                                     $model->latestDateTime, 'long', null) . '</strong>';
             
             $content .= '<span class="delete-social-item">' . self::renderDeleteLinkContent($model) . '</span></span>';
+            $content .= '</div>';
             
-            
-            $content .= '<div>';
             $content .= self::renderCommentsContent($model);
             $content .= self::renderCreateCommentContent($model);
-            $content .= '</div>';
 
             $content .= '</div>';
             self::registerListColumnScripts();
@@ -153,7 +150,7 @@
         private static function renderCreateCommentContent(SocialItem $model)
         {
             $content       = ZurmoHtml::tag('span', array(),
-                                            ZurmoHtml::link(Yii::t('Default', 'Comment'), '#',
+                                            ZurmoHtml::link(Yii::t('Default', 'Add your comment'), '#',
                                                             array('class' => 'show-create-comment')));
             $comment       = new Comment();
             $uniquePageId  = self::makeUniquePageIdByModel($model);
