@@ -1070,7 +1070,7 @@
         }
 
         /**
-         * Get hint type for database, and convert into database valid type
+         * Map hint type into database valid type
          * @param string $hintType
          * @throws NotSupportedException
          * @return string
