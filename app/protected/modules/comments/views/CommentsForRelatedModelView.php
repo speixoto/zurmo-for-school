@@ -120,7 +120,7 @@
                     $rows++;
                     continue;
                 }
-                
+
                 $stringContent = $comment->createdByUser->getAvatarImage(36);
                 $userName = Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                         array('{ownerStringContent}' => strval($comment->createdByUser)));
