@@ -44,7 +44,7 @@
                 if (in_array($columnName,array_keys($fields)))
                 {
                     $columnType = $fields[$columnName];
-                    if ($columnType != $datatype)
+                    if (strtolower($columnType) != strtolower($databaseColumnType))
                     {
                         R::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
                     }
