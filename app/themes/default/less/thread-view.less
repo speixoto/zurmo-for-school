@@ -124,6 +124,9 @@
     &:hover{
         .delete-comment{
             visibility:visible !important;
+            a{
+                color:@themeColor !important;
+            }
         }
     }
     &.unread{
@@ -267,10 +270,11 @@
 
 
 /*=Social Items*/
+.SocialItemsListView,
 #AllSocialItemsForPortletView{
     tr:hover{
         background: none !important;
-        color: inherit;
+        color: inherit !important;
     }
     .CommentList{
         margin-left: 80px;
@@ -321,3 +325,21 @@
     }
 }
 
+#SocialItemInlineEditView{
+    .form-toolbar{
+        text-align: right;
+        a{
+            color:#fff !important;
+            margin-right:0;
+        }
+    }
+}
+
+.social-item{
+    form{
+        td{
+           padding-left: 65px !important;
+           padding-top: 0 !important;
+        }
+    }
+}
