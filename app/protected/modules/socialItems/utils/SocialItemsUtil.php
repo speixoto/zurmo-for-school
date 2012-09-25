@@ -40,27 +40,24 @@
         public static function renderItemAndCommentsContent(SocialItem $model, $redirectUrl)
         {
             assert('is_string($redirectUrl) || $redirectUrl == null');
-            
+
             $content  = '<div class="social-item">';
-            //todo: use user's avatar (owner)
-            $avatarUrl = null;// $model->getAvatarImageUrl(50);
-            $avatarImage = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
+            $avatarImage = $model->owner->getAvatarImage(50);
             $content .= '<div class="comment model-details-summary clearfix">';
-            $content .= '<img src="user_offline.png" width="50" height="50" class="gravatar" />';
             $content .= '<span class="user-details">' . $avatarImage;
             $content .= ZurmoHtml::tag('strong', array(), strval($model->owner) );
             $content .= '</span>';
-            
+
             $content .= '<div class="comment-content"><p>' . self::renderModelDescription($model) . '</p></div>';
             $content .= self::renderAfterDescriptionContent($model);
             $content .= self::renderItemFileContent($model);
-            
+
             $content .= '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                     $model->latestDateTime, 'long', null) . '</strong>';
-            
+
             $content .= '<span class="delete-social-item">' . self::renderDeleteLinkContent($model) . '</span></span>';
             $content .= '</div>';
-            
+
             $content .= self::renderCommentsContent($model);
             $content .= self::renderCreateCommentContent($model);
 
