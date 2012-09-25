@@ -47,7 +47,7 @@
             $avatarImage = ZurmoHtml::image($avatarUrl, null, array('class' => 'gravatar'));
             $content .= '<div class="comment model-details-summary clearfix">';
             $content .= '<img src="user_offline.png" width="50" height="50" class="gravatar" />';
-            $content .= '<span class="user-details clearfix">' . $avatarImage;
+            $content .= '<span class="user-details">' . $avatarImage;
             $content .= ZurmoHtml::tag('strong', array(), strval($model->owner) );
             $content .= '</span>';
             
