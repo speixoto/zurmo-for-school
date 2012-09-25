@@ -1934,46 +1934,6 @@ table.configuration-list tr td:last-child a:before {
 #DashboardEditView .panel {
   width: 100% !important;
 }
-/*Social Items*/
-#AllSocialItemsForPortletView .wide.form {
-  border: none;
-  background: none !important;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
-}
-#AllSocialItemsForPortletView .wide.form form {
-  border: none;
-  background: none !important;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
-}
-#AllSocialItemsForPortletView .wide.form table.files {
-  border-bottom: none;
-}
-#AllSocialItemsForPortletView .wide.form .panel > table {
-  padding-bottom: 10px;
-}
-#AllSocialItemsForPortletView .social-item {
-  padding: 10px 15px;
-}
-#AllSocialItemsForPortletView .delete-social-item {
-  margin-left: 5px;
-}
-#AllSocialItemsForPortletView .delete-social-item a {
-  margin-left: 4px;
-}
-#AllSocialItemsForPortletView .delete-social-item:before {
-  font-weight: normal;
-  font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  content: "_";
-}
 /*Missions*/
 #MyMissionsForPortletView > div {
   float: none;
@@ -4397,6 +4357,10 @@ span.tooltip {
 .CreateMission .badge-icon:before {
   content: "{";
 }
+.game-badge-CreateSocialItem .badge-icon:before,
+.CreateSocialItem .badge-icon:before {
+  content: "u";
+}
 /*Night Icons*/
 .game-badge-NightOwl .badge-icon:before,
 .NightOwl .badge-icon:before {
@@ -5303,6 +5267,9 @@ span.tooltip {
 .comment:hover .delete-comment {
   visibility: visible !important;
 }
+.comment:hover .delete-comment a {
+  color: #262877 !important;
+}
 .comment.unread {
   font-weight: bold;
 }
@@ -5356,24 +5323,6 @@ span.tooltip {
 #CommentInlineEditForModelView {
   margin-top: 15px;
   padding-left: 120px;
-  /*
-    #comment-inline-edit-form{
-        padding-left:15px;
-        table{
-            border-bottom:none;
-        }
-        td{
-            padding-left:0 !important;
-        }
-        .files{
-            margin-bottom:0;
-            td{
-                padding-bottom: 0;
-            }
-        }
-    }
-    */
-
 }
 #CommentInlineEditForModelView td {
   padding-right: 0 !important;
@@ -5460,6 +5409,96 @@ span.tooltip {
   margin-right: 10px;
 }
 /*=Social Items*/
+.SocialItemsListView tr:hover,
+#AllSocialItemsForPortletView tr:hover {
+  background: none !important;
+  color: inherit !important;
+}
+.SocialItemsListView .CommentList,
+#AllSocialItemsForPortletView .CommentList {
+  margin-left: 80px;
+}
+.SocialItemsListView .model-details-summary,
+#AllSocialItemsForPortletView .model-details-summary {
+  padding-left: 80px;
+  padding-top: 0;
+}
+.SocialItemsListView .model-details-summary .gravatar,
+#AllSocialItemsForPortletView .model-details-summary .gravatar {
+  margin-left: -65px;
+}
+.SocialItemsListView .show-create-comment,
+#AllSocialItemsForPortletView .show-create-comment {
+  margin-left: 80px;
+}
+.SocialItemsListView .wide.form,
+#AllSocialItemsForPortletView .wide.form {
+  border: none;
+  background: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+}
+.SocialItemsListView .wide.form form,
+#AllSocialItemsForPortletView .wide.form form {
+  border: none;
+  background: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding-bottom: 0;
+}
+.SocialItemsListView .wide.form table.files,
+#AllSocialItemsForPortletView .wide.form table.files {
+  border-bottom: none;
+}
+.SocialItemsListView .wide.form .panel > table,
+#AllSocialItemsForPortletView .wide.form .panel > table {
+  padding-bottom: 10px;
+}
+.SocialItemsListView .delete-social-item,
+#AllSocialItemsForPortletView .delete-social-item {
+  margin-left: 5px;
+}
+.SocialItemsListView .delete-social-item a,
+#AllSocialItemsForPortletView .delete-social-item a {
+  margin-left: 4px;
+}
+.SocialItemsListView .delete-social-item:before,
+#AllSocialItemsForPortletView .delete-social-item:before {
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  content: "_";
+}
+.SocialItemsListView .form-toolbar,
+#AllSocialItemsForPortletView .form-toolbar {
+  text-align: right;
+}
+.SocialItemsListView .form-toolbar a,
+#AllSocialItemsForPortletView .form-toolbar a {
+  color: #fff !important;
+  margin-right: 0;
+}
+.SocialItemsListView .comment-content,
+#AllSocialItemsForPortletView .comment-content {
+  padding-right: 15px;
+}
+#SocialItemInlineEditView .form-toolbar {
+  text-align: right;
+}
+#SocialItemInlineEditView .form-toolbar a {
+  color: #fff !important;
+  margin-right: 0;
+}
+.social-item form td {
+  padding-left: 65px !important;
+  padding-top: 0 !important;
+}
 #ArchivedEmailMatchingListView .items td {
   padding-right: 10px;
 }
@@ -5711,6 +5750,12 @@ a:hover img,
 a:active img,
 a:visited img {
   border: none;
+}
+a:link:focus,
+a:hover:focus,
+a:active:focus,
+a:visited:focus {
+  outline: none;
 }
 a:hover {
   color: #262877 !important;
@@ -10800,6 +10845,9 @@ div.hasHalfs .twoThirds {
   margin-left: 0;
 }
 /*=RSS Widget*/
+.rssBody {
+  line-height: 140%;
+}
 .rssBody ul {
   list-style: none;
 }
