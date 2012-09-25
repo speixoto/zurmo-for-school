@@ -134,6 +134,7 @@
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
             $uniquePageId  = 'CommentInlineEditForModelView';
+            echo             ZurmoHtml::tag('h2', array(), Yii::t('Default', 'Add Comment'));
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                        $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);
