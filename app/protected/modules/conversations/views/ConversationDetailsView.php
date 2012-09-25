@@ -91,7 +91,7 @@
         protected function renderConversationContent()
         {
             $content  = '<div class="comment model-details-summary">';
-            $content .= $this->model->owner->getAvatarImage(100);
+            $content .= $this->model->createdByUser->getAvatarImage(100);
             $content .= '<span class="user-details clearfix">';
             $content .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                     array('{ownerStringContent}' => strval($this->model->createdByUser)));

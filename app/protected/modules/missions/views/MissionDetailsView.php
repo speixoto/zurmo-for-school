@@ -36,88 +36,14 @@
                             array('type' => 'MissionDeleteLink'),
                         ),
                     ),
-                    'derivedAttributeTypes' => array(
-                        'MissionStatus',
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'latestDateTime',
-                        'ownerHasReadLatest',
-                        'status',
-                        'takenByUserHasReadLatest',
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'status', 'type' => 'MissionStatus'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'reward', 'type' => 'TextArea'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'takenByUser', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'Files'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
                 ),
             );
             return $metadata;
+        }
+
+        protected function renderFormLayout($form = null)
+        {
+            //override since the details are done @see renderConversationContent
         }
 
         public function getTitle()
@@ -127,9 +53,59 @@
 
         protected function renderAfterFormLayoutForDetailsContent()
         {
-            $content  = $this->renderMissionCommentsContent();
+            $content  = $this->renderMissionContent();
+            $content .= $this->renderMissionCommentsContent();
             $content .= $this->renderMissionCreateCommentContent();
             return $content;
+        }
+
+        protected function renderMissionContent()
+        {
+            $content  = '<div class="comment model-details-summary">';
+            $content .= $this->model->createdByUser->getAvatarImage(100);
+            $content .= '<span class="user-details clearfix">';
+            $content .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
+                                    array('{ownerStringContent}' => strval($this->model->createdByUser)));
+            $content .= '</span>';
+            $element  = new TextAreaElement($this->model, 'description');
+            $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
+            $content .= $element->render();
+            if($this->model->reward != 0)
+            {
+                $element                      = new TextElement($this->model, 'reward');
+                $element->nonEditableTemplate = '<div class="comment-content">' .
+                                                Yii::t('Default', 'Reward') . ': {content}</div>';
+                $content                     .= $element->render();
+            }
+            if($this->model->takenByUser->id > 0)
+            {
+                $element                      = new UserElement($this->model, 'takenByUser');
+                $element->nonEditableTemplate = '<div class="comment-content">' .
+                                                Yii::t('Default', 'Taken By') . ': {content}</div>';
+                $content                     .= $element->render();
+            }
+            if(!DateTimeUtil::isDateTimeValueNull($this->model, 'dueDateTime'))
+            {
+                $element                      = new DateTimeElement($this->model, 'dueDateTime');
+                $element->nonEditableTemplate = '<div class="comment-content">' .
+                                                Yii::t('Default', 'Due') . ': {content}</div>';
+                $content                     .= $element->render();
+            }
+            $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                              $this->model->createdDateTime, 'long', null) . '</strong></span>';
+            $content .= $date;
+            if($this->model->files->count() > 0)
+            {
+                $element  = new FilesElement($this->model, 'null');
+                $element->nonEditableTemplate = '<div>{content}</div>';
+                $content .= $element->render();
+            }
+            $element                      = new MissionStatusElement($this->model, 'status');
+            $element->nonEditableTemplate = '<div class="comment-content">' .
+                                            Yii::t('Default', 'Status') . ': {content}</div>';
+            $content                     .= $element->render();
+            $content .= '</div>';
+            return ZurmoHtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);
         }
 
         protected function renderMissionCommentsContent()
