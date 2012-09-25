@@ -70,7 +70,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'Files'),
+                                                array('attributeName' => 'null', 'type' => 'Files',
+                                                      'showMaxSize'   => false),
                                             ),
                                         ),
                                     )
