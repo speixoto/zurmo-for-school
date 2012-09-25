@@ -54,10 +54,13 @@
         {
             $statusText        = self::renderStatusTextContent($mission);
             $statusAction      = self::renderStatusActionContent($mission, self::getStatusChangeDivId($mission->id));
-            $content = $statusText;
             if($statusAction != null)
             {
-                $content .= ' ' . $statusAction;
+                $content = $statusAction;
+            }
+            else
+            {
+                $content = $statusText;
             }
             return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($mission->id)), $content);
         }

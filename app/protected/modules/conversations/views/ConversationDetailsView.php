@@ -90,21 +90,33 @@
 
         protected function renderConversationContent()
         {
-            $content  = '<div class="comment model-details-summary clearfix">';
-            $content .= $this->model->owner->getAvatarImage(100);
-            $content .= '<span class="user-details">';
+            $content  = '<div class="comment model-details-summary">';
+            $content .= $this->model->createdByUser->getAvatarImage(100);
+            $content .= '<span class="user-details clearfix">';
             $content .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                     array('{ownerStringContent}' => strval($this->model->createdByUser)));
             $content .= '</span>';
-            $element  = new TextAreaElement($this->model, 'description');
-            $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
-            $content .= $element->render();
+            if($this->model->description == null)
+            {
+                $element  = new TextElement($this->model, 'subject');
+                $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
+                $content .= $element->render();
+            }
+            else
+            {
+                $element  = new TextAreaElement($this->model, 'description');
+                $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
+                $content .= $element->render();
+            }
             $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $this->model->createdDateTime, 'long', null) . '</strong></span>';
             $content .= $date;
-            $element  = new FilesElement($this->model, 'null');
-            $element->nonEditableTemplate = '<div>{content}</div>';
-            $content .= $element->render();
+            if($this->model->files->count() > 0)
+            {
+                $element  = new FilesElement($this->model, 'null');
+                $element->nonEditableTemplate = '<div>{content}</div>';
+                $content .= $element->render();
+            }
             $element  = new ConversationItemsElement($this->model, 'null');
             $element->nonEditableTemplate = '<div>{content}</div>';
             $content .= $element->render();
