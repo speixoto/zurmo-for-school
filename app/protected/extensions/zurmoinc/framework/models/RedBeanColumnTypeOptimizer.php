@@ -26,22 +26,33 @@
 
     class RedBeanColumnTypeOptimizer
     {
-         /**
-       * @param string  $type   name of the table
-       * @param string  $column name of the column
-       * @param mixed $value
-       * @param integer $datatype  data type for field
-       *
-       * @return boolean
-       *
-       */
+        public static $optimizedTableColumns;
+       /**
+        * @param string  $type   name of the table
+        * @param string  $column name of the column
+        * @param mixed $value
+        * @param integer $datatype  data type for field
+        *
+        * @return boolean
+        *
+        */
         public static function optimize($table, $columnName, $datatype)
         {
             try
             {
                 $databaseColumnType = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($datatype);
-                $fields = R::$writer->getColumns($table);
-                if (in_array($columnName,array_keys($fields)))
+                $fields1 = array();
+
+                if (isset(self::$optimizedTableColumns[$table]))
+                {
+                    $fields = self::$optimizedTableColumns[$table];
+                }
+                else
+                {
+                    $fields = R::$writer->getColumns($table);
+                }
+
+                if (in_array($columnName, array_keys($fields)))
                 {
                     $columnType = $fields[$columnName];
                     if (strtolower($columnType) != strtolower($databaseColumnType))
@@ -67,6 +78,8 @@
                     R::exec("alter table {$table} add {$columnName} " . $databaseColumnType);
                 }
             }
+            self::$optimizedTableColumns[$table] = $fields;
+            self::$optimizedTableColumns[$table][$columnName] = $databaseColumnType;
         }
 
         public static function externalIdColumn($table, $columnName, $length = 40)
