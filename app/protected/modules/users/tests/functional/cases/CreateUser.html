@@ -171,6 +171,37 @@
     <td>//div[@id='UserDetailsView']/div/div[1]/table/tbody/tr[1]/td[1]</td>
     <td>Jingo Factory</td>
 </tr>
+<!-- Assiginig this user to super admin group -->
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='MenuView']/ul/li[4]/a/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Super Administrators</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=User Membership</td>
+	<td></td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>id=edit-form_userNonMembershipData</td>
+	<td>label=Janny${randomSuffix} Jingo${randomSuffix}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=yw1moveRight</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=save</td>
+	<td></td>
+</tr>
 <tr>
     <td>click</td>
     <td>link=Sign out</td>
@@ -209,11 +240,6 @@
 <tr>
     <td>click</td>
     <td>link=Save</td>
-    <td></td>
-</tr>
-<tr>
-    <td>click</td>
-    <td>link=Sign out</td>
     <td></td>
 </tr>
 </tbody></table>
