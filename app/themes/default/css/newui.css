@@ -7916,7 +7916,7 @@ label.hasCheckBox + label {
   margin-top: 6px;
 }
 div.wide.form label.hasCheckBox {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 div.wide.form a {
   color: #262877;
@@ -9597,6 +9597,20 @@ div.wide.form a {
 #inline-edit-form .permissions-box input[type="text"],
 #inline-edit-form .permissions-box select {
   margin-top: 6px;
+}
+.post-to-profile {
+  float: right;
+  margin-right: 25px;
+  margin-top: 6px;
+}
+.post-to-profile span {
+  margin-left: 10px;
+  margin-top: -3px;
+  position: relative;
+  right: 0;
+}
+.post-to-profile label.hasCheckBox {
+  margin-top: -6px !important;
 }
 /*=Sticky search*/
 .BreadCrumbView {

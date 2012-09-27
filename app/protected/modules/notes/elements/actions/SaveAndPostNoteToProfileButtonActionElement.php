@@ -59,7 +59,7 @@
             $postToProfileContent .= static::renderHelpSpan();
             $postToProfileContent .= ZurmoHtml::checkBox('postToProfile', false);
             $content               = parent::render();
-            $content              .= ZurmoHtml::tag('span', array(), $postToProfileContent);
+            $content              .= ZurmoHtml::tag('div', array('class' => 'post-to-profile'), $postToProfileContent);
             return $content;
         }
 
