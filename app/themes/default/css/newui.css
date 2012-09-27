@@ -5263,6 +5263,7 @@ span.tooltip {
   font-size: 12px;
   padding-left: 50px;
   margin: 5px 0;
+  line-height: 140%;
 }
 .comment:hover .delete-comment {
   visibility: visible !important;
@@ -5286,6 +5287,7 @@ span.tooltip {
   content: "_";
 }
 .model-details-summary {
+  font-size: 12px !important;
   padding-left: 130px;
   padding-top: 15px;
 }
@@ -5358,6 +5360,9 @@ span.tooltip {
 #CommentInlineEditForModelView .form-toolbar a {
   color: #fff !important;
   margin-right: 0;
+}
+#CommentInlineEditForModelView .files {
+  float: left;
 }
 .attachments {
   margin-top: 5px;
