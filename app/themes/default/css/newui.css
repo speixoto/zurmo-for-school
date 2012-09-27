@@ -3060,6 +3060,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   cursor: pointer;
   float: left;
 }
+.panel-settings div.wide.form label.hasCheckBox,
+.cell-settings div.wide.form label.hasCheckBox {
+  margin-top: -5px !important;
+  margin-bottom: 0;
+}
 .sortable-row-list-container ul {
   list-style-type: none;
   clear: both;
@@ -7589,6 +7594,7 @@ td.empty {
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
+.green-button,
 a.attachLoading {
   color: #FFF !important;
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
@@ -7613,9 +7619,11 @@ a.attachLoading {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
   cursor: pointer;
 }
+.green-button:hover,
 a.attachLoading:hover {
   color: #656565 !important;
 }
+.green-button:active,
 a.attachLoading:active {
   color: #FFF !important;
   -webkit-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;

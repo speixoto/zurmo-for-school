@@ -185,7 +185,7 @@
 
         protected function renderSaveModalSettingsButton()
         {
-            return ZurmoHtml::button(Yii::t('Default', 'Save and Close'), array('onclick' => '$(this).closest(".modal-settings").dialog("close");'));
+            return ZurmoHtml::button(Yii::t('Default', 'Save and Close'), array('class' => 'z-button green-button attachLoading', 'onclick' => '$(this).closest(".modal-settings").dialog("close");'));
         }
 
         /**
