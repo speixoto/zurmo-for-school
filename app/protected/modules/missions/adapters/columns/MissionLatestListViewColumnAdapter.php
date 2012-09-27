@@ -32,8 +32,7 @@
                 'name'        => 'description',
                 'header'	  => false,
                 'type'        => 'raw',
-                'value'       => 'MissionsUtil::renderDescriptionAndLatestForDisplayView($data)',
-                'htmlOptions' => array('style' => 'width:70%;'),
+                'value'       => 'MissionsUtil::renderDescriptionAndLatestForDisplayView($data)'
             );
         }
     }

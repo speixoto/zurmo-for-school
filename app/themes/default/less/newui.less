@@ -1552,7 +1552,7 @@ td.empty{
         color:#656565 !important;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
-        &.attachLoading{
+        &.attachLoading.z-button{
             color: #fff !important;
         }
         &:not(.attachLoading){
@@ -2628,7 +2628,7 @@ div.wide.form{
         padding-left:10px;
     }
     a{
-        color:@themeColor !important;
+        color:@themeColor;
     }
     .map-link{
         display: inline-block;
@@ -3552,7 +3552,7 @@ div.hasHalfs{
     }
     &:after{
         .symbly(20px);
-        content:"6";
+        content:"6" !important;
     }
     span{
         display:none;

@@ -62,7 +62,7 @@
             {
                 $content = $statusText;
             }
-            return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($mission->id)), $content);
+            return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($mission->id), 'class' => 'missionStatusChangeArea'), $content);
         }
 
         public static function getStatusChangeDivId($missionId)

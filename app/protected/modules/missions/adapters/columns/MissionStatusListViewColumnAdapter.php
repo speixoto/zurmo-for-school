@@ -33,7 +33,7 @@
                 'header'	  => false,
                 'type'        => 'raw',
                 'value'       => 'MissionStatusElement::renderStatusTextAndActionArea($data);',
-                'htmlOptions' => array('style' => 'width:30%;'),
+                'htmlOptions' => array('style' => 'width:145px;'),
             );
         }
     }

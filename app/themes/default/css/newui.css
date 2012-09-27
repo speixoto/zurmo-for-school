@@ -1305,7 +1305,7 @@ table.configuration-list tr td:last-child a:before {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-#currency-collection-form .portlet-toolbar a.attachLoading {
+#currency-collection-form .portlet-toolbar a.attachLoading.z-button {
   color: #fff !important;
 }
 #currency-collection-form .portlet-toolbar a:not(.attachLoading) {
@@ -1958,24 +1958,6 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
-  /*
-        #LatestActivitiesConfigurationForm_ownedByFilter_area{
-            display:inline-block;
-        }
-        #LatestActivitiesConfigurationForm_rollup_area{
-            display:inline-block;
-        }
-        #filter-latest-activities-link{
-            color:@themeColor !important;
-            margin-left:20px;
-            text-decoration: underline;
-             .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
-             &:hover{
-                 color:@themeColor2  !important;
-             }
-        }
-        */
-
 }
 #MyMissionsForPortletView .filter-portlet-model-bar label {
   cursor: pointer;
@@ -2025,9 +2007,11 @@ table.configuration-list tr td:last-child a:before {
 #MyMissionsForPortletView .items td:last-child {
   border-top: none;
 }
-.mission-change-status-link {
-  float: right;
-  margin-top: -5px;
+#MyMissionsForPortletView .missionStatusChangeArea a:first-child {
+  margin-left: 0;
+}
+#MyMissionsForPortletView .missionStatusChangeArea a:last-child {
+  margin-right: 0;
 }
 /*Upload Files Box (in selected account, in Note)*/
 .file-upload-box {
@@ -5356,6 +5340,7 @@ span.tooltip {
   border-top: none;
   padding-top: 0;
   text-align: right;
+  margin-top: 15px;
 }
 #CommentInlineEditForModelView .form-toolbar a {
   color: #fff !important;
@@ -5412,6 +5397,19 @@ span.tooltip {
 }
 .mission-change-status-link {
   margin-right: 10px;
+}
+.missionStatusChangeArea {
+  display: inline-block;
+}
+.missionStatusChangeArea a {
+  float: none;
+  color: #fff !important;
+}
+.missionStatusChangeArea a:first-child {
+  margin-left: 15px;
+}
+.mission-status {
+  margin: 15px 0;
 }
 /*=Social Items*/
 .SocialItemsListView tr:hover,
@@ -7570,8 +7568,8 @@ td.empty {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-.modal-view-toolbar a.attachLoading,
-.form-toolbar a.attachLoading {
+.modal-view-toolbar a.attachLoading.z-button,
+.form-toolbar a.attachLoading.z-button {
   color: #fff !important;
 }
 .modal-view-toolbar a:not(.attachLoading),
@@ -8960,7 +8958,7 @@ div.wide.form a {
   padding-left: 10px;
 }
 .details-table a {
-  color: #262877 !important;
+  color: #262877;
 }
 .details-table .map-link {
   display: inline-block;
@@ -10255,7 +10253,7 @@ div.hasHalfs .twoThirds {
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  content: "6";
+  content: "6" !important;
 }
 .vertical-forward-pager span {
   display: none;

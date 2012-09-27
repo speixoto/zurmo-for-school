@@ -89,32 +89,6 @@
         padding:10px 15px;
         #gradient > .vertical(#f6f6f6, #ededed);
         .b-shadow(inset 0 1px 0 0 #ffffff);
-        > div{
-            &:first-child{
-                //border-right:2px solid @themeColor;
-                //padding-right:10px;
-                //margin-right:10px;
-            }
-        }
-        /*
-        #LatestActivitiesConfigurationForm_ownedByFilter_area{
-            display:inline-block;
-        }
-        #LatestActivitiesConfigurationForm_rollup_area{
-            display:inline-block;
-        }
-        #filter-latest-activities-link{
-            color:@themeColor !important;
-            margin-left:20px;
-            text-decoration: underline;
-             .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
-             &:hover{
-                 color:@themeColor2  !important;
-             }
-        }
-        */
-        
-        
         label{
             cursor:pointer;
             border:none;
@@ -154,14 +128,18 @@
             padding-right:15px !important;
         }
         td:last-child{
-            //text-align: center;
             border-top:none;
         }
     }
+    .missionStatusChangeArea{
+        a{
+            &:first-child{
+                margin-left: 0;
+            }
+            &:last-child{
+                margin-right: 0;
+            }
+        }
+    }
 }
-.mission-change-status-link{
-    float: right;
-    margin-top:-5px;
-}
-    
 
