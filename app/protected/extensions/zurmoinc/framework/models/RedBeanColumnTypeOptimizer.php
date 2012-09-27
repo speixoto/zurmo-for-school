@@ -41,11 +41,14 @@
             try
             {
                 $databaseColumnType = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($datatype);
-                $fields1 = array();
-
                 if (isset(self::$optimizedTableColumns[$table]))
                 {
                     $fields = self::$optimizedTableColumns[$table];
+                    // It is possible that filed is created outside optimizer
+                    if (!in_array($columnName, array_keys($fields)))
+                    {
+                        $fields = R::$writer->getColumns($table);
+                    }
                 }
                 else
                 {
@@ -78,7 +81,15 @@
                     R::exec("alter table {$table} add {$columnName} " . $databaseColumnType);
                 }
             }
-            self::$optimizedTableColumns[$table] = $fields;
+
+            if (isset($fields))
+            {
+                self::$optimizedTableColumns[$table] = $fields;
+            }
+            else
+            {
+                self::$optimizedTableColumns[$table] = R::$writer->getColumns($table);
+            }
             self::$optimizedTableColumns[$table][$columnName] = $databaseColumnType;
         }
 

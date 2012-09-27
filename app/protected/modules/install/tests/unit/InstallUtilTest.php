@@ -72,6 +72,7 @@
 
         public static function tearDownAfterClass()
         {
+            RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
             Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             parent::tearDownAfterClass();
         }
@@ -79,6 +80,7 @@
         public function setup()
         {
             RedBeanDatabase::close();
+            RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
         }
 
         public function tearDown()

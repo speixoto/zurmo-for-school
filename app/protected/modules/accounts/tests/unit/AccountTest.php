@@ -545,7 +545,7 @@
             $this->assertTrue($account->save());
             $account->forget();
             $account = Account::getById($id);
-            //This is strange. When frozen, it comes out as null, but unfrozen as 0. This needs to be investigated
+            //To-do: This is strange. When frozen, it comes out as null, but unfrozen as 0. This needs to be investigated
             //further at some point.
             if (!RedBeanDatabase::isFrozen())
             {
