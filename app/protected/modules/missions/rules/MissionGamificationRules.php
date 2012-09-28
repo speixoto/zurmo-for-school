@@ -29,6 +29,8 @@
      */
     class MissionGamificationRules extends GamificationRules
     {
+        protected $scoreOnUpdate = false;
+
         /**
          * @var string
          */
@@ -122,14 +124,6 @@
         public static function getPointTypesAndValuesForCreateModel()
         {
             return array(GamePoint::TYPE_COMMUNICATION => 20);
-        }
-
-        /**
-         * @see parent::getPointTypesAndValuesForUpdateModel()
-         */
-        public static function getPointTypesAndValuesForUpdateModel()
-        {
-            return array(GamePoint::TYPE_COMMUNICATION => 2);
         }
 
         /**

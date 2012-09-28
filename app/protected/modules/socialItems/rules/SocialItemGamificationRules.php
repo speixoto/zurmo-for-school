@@ -29,20 +29,14 @@
      */
     class SocialItemGamificationRules extends GamificationRules
     {
+        protected $scoreOnUpdate = false;
+
         /**
          * @see parent::getPointTypesAndValuesForCreateModel()
          */
         public static function getPointTypesAndValuesForCreateModel()
         {
-            return array(GamePoint::TYPE_COMMUNICATION => 10);
-        }
-
-        /**
-         * @see parent::getPointTypesAndValuesForUpdateModel()
-         */
-        public static function getPointTypesAndValuesForUpdateModel()
-        {
-            return array(GamePoint::TYPE_COMMUNICATION => 10);
+            return array(GamePoint::TYPE_COMMUNICATION => 15);
         }
     }
 ?>
