@@ -87,6 +87,8 @@
                     $meta = $model::getDefaultMetadata();
                     if (isset($meta[$model]['rules']))
                     {
+                        $tableName      = RedBeanModel::getTableName($model);
+                        $columns = R::$writer->getColumns($tableName);
                         foreach ($meta[$model]['rules'] as $rule)
                         {
                             if (is_array($rule) && count($rule) >= 3)
@@ -100,15 +102,28 @@
                                         if (isset($validatorParameters['type']))
                                         {
                                             $type           = $validatorParameters['type'];
-                                            $tableName      = RedBeanModel::getTableName($model);
                                             $field          = strtolower($attributeName);
-                                            $row            = R::getRow("SHOW COLUMNS FROM $tableName where field='$field'");
-                                            $compareType    = null;
-                                            if ($row !== false)
+                                            $columnType = false;
+                                            if (isset($columns[$field]))
                                             {
-                                                $compareType = $this->getDbTypeValue($row['Type']);
+                                                $columnType         = $columns[$field];
                                             }
-                                            $this->assertEquals($compareType, $type);
+                                            $compareType    = null;
+                                            $compareTypes = $this->getDatabaseTypesByType($type);
+                                            // Remove brackets from database type
+                                            $bracketPosition = stripos($columnType, '(');
+                                            if ($bracketPosition !== false)
+                                            {
+                                                $columnType = substr($columnType, 0, $bracketPosition);
+                                            }
+
+                                            $databaseColumnType = strtoupper(trim($columnType));
+                                            $compareTypeString  = implode(',', $compareTypes);
+                                            if (!in_array($databaseColumnType, $compareTypes))
+                                            {
+                                                $compareTypeString  = implode(',', $compareTypes);
+                                                $this->fail("Actual database type {$databaseColumnType} not in expected types: {$compareTypeString}.");
+                                            }
                                         }
                                         break;
                                 }
@@ -119,34 +134,33 @@
             }
         }
 
-        protected function getDbTypeValue($value)
+        /**
+         * Based on type validator from models, get database column type
+         * @param string $type
+         * @return array
+         */
+        protected function getDatabaseTypesByType($type)
         {
             $typeArray = array(
-                'string'    => array('CHAR', 'VARCHAR', 'TINYTEXT', 'TEXT', 'MEDIUMTEXT', 'LONGTEXT', 'ENUM', 'SET'),
-                'integer'   => array('TINYINT', 'SMALLINT', 'MEDIUMINT', 'INT', 'INTEGER', 'BIGINT'),
-                'float'     => array('FLOAT', 'DOUBLE', 'DECIMAL', 'NUMERIC'),
-                'timestamp' => array('TIMESTAMP'),
+                'string'    => array('VARCHAR', 'TEXT', 'LONGTEXT'),
+                'text'      => array('TEXT'),
+                'longtext'  => array('LONG_TEXT'),
+                'integer'   => array('TINYINT', 'INT', 'INTEGER', 'BIGINT'),
+                'float'     => array('FLOAT', 'DOUBLE'),
                 'year'      => array('YEAR'),
                 'date'      => array('DATE'),
-                'time'      => array('TIME'),
                 'datetime'  => array('DATETIME'),
-                'blob'      => array('TINY_BLOB', 'MEDIUM_BLOB', 'LONG_BLOB', 'BLOB')
+                'blob'      => array('BLOB'),
+                'longblob'  => array('LONG_BLOB'),
+                'boolean'   => array('TINY_INT'),
             );
-            $value              = strtoupper($value);
-            $startCuttingPos    = stripos($value, '(');
-            $searchValue        = $value;
-            if ($startCuttingPos !== false)
+
+            $databaseTypes = array();
+            if (isset($typeArray[$type]))
             {
-                $searchValue = substr($value, 0, $startCuttingPos);
+                $databaseTypes = $typeArray[$type];
             }
-            foreach ($typeArray as $type => $array)
-            {
-                if (in_array($searchValue, $array))
-                {
-                    return $type;
-                }
-            }
-            return null;
+            return $databaseTypes;
         }
     }
 ?>

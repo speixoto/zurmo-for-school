@@ -40,32 +40,10 @@
                 assert('is_array($hints)');
                 foreach ($hints as $key => $value)
                 {
-                    switch ($value)
+                    if (in_array($value, array('blob', 'longblob', 'boolean', 'date', 'datetime', 'string',
+                                               'text', 'longtext', 'id')))
                     {
-                    case 'blob':
-                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'blob');
-                        break;
-                    case 'longblob':
-                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'longblob');
-                        break;
-                   case 'boolean':
-                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'boolean');
-                        break;
-                   case 'date':
-                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'date');
-                        break;
-                    case 'datetime':
-                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'datetime');
-                        break;
-                    case 'string':
-                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'string');
-                        break;
-                   case 'longString':
-                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'text');
-                        break;
-                    case 'id':
-                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, 'id');
-                        break;
+                        RedBeanColumnTypeOptimizer::optimize($info->getMeta("type"), $key, $value);
                     }
                 }
             }

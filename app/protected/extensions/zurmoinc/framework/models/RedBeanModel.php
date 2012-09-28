@@ -806,7 +806,14 @@
                                                     isset($innerValidator->max) &&
                                                     $innerValidator->max > 255)
                                                 {
-                                                    $hints[$columnName] = 'longString';
+                                                    if ($innerValidator->max > 65535)
+                                                    {
+                                                        $hints[$columnName] = 'longtext';
+                                                    }
+                                                    else
+                                                    {
+                                                        $hints[$columnName] = 'text';
+                                                    }
                                                 }
                                                 if (get_class($innerValidator) == 'CStringValidator')
                                                 {
@@ -815,12 +822,12 @@
                                             }
                                             if (!$haveCStringValidator)
                                             {
-                                                $hints[$columnName] = 'longString';
+                                                $hints[$columnName] = 'text';
                                             }
                                         }
                                         else
                                         {
-                                            $hints[$columnName] = 'longString';
+                                            $hints[$columnName] = 'text';
                                         }
                                     }
                                 }
