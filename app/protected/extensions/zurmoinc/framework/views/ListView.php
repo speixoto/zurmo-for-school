@@ -237,15 +237,7 @@
                 );
                 array_push($columns, $firstColumn);
             }
-            $menuColumn = $this->getGridViewMenuColumn();
-            if($menuColumn == null)
-            {
-                $lastColumn = $this->getCGridViewLastColumn();
-                if (!empty($lastColumn))
-                {
-                    array_push($columns, $lastColumn);
-                }
-            }
+
             $metadata = $this->getResolvedMetadata();
             foreach ($metadata['global']['panels'] as $panel)
             {
@@ -267,8 +259,16 @@
                     }
                 }
             }
-
-            if (!empty($menuColumn))
+            $menuColumn = $this->getGridViewMenuColumn();
+            if($menuColumn == null)
+            {
+                $lastColumn = $this->getCGridViewLastColumn();
+                if (!empty($lastColumn))
+                {
+                    array_push($columns, $lastColumn);
+                }
+            }
+            else
             {
                 array_push($columns, $menuColumn);
             }
