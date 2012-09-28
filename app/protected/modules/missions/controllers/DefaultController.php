@@ -178,7 +178,8 @@
             {
                 $content .= '<div>' . Yii::t('Default', 'This mission is already taken') . '</div>';
             }
-            $content = ZurmoHtml::tag('div', array('id' => MissionStatusElement::getStatusChangeDivId($mission->id)), $content);
+            $content = ZurmoHtml::tag('div', array('id'    => MissionStatusElement::getStatusChangeDivId($mission->id),
+                                                   'class' => 'missionStatusChangeArea'), $content);
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;
