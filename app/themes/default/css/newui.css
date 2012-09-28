@@ -8429,6 +8429,18 @@ div.wide.form a {
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
 }
+.select-list-attributes-view .multiselect-nav-updown {
+  height: auto;
+  margin-top: 10px;
+  margin-right: 75px;
+  float: right;
+  width: 142px;
+}
+.select-list-attributes-view .multiselect-nav-updown input {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 0 !important;
+}
 #clear-search-link {
   background: #262877;
   padding: 1px 4px;
