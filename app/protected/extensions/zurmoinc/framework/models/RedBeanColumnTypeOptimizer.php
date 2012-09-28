@@ -27,14 +27,12 @@
     class RedBeanColumnTypeOptimizer
     {
         public static $optimizedTableColumns;
+
        /**
-        * @param string  $type   name of the table
-        * @param string  $column name of the column
-        * @param mixed $value
-        * @param integer $datatype  data type for field
-        *
-        * @return boolean
-        *
+        * Optimize table column types, based on hints
+        * @param string  $table   name of the table
+        * @param string  $columnName name of the column
+        * @param string  $datatype
         */
         public static function optimize($table, $columnName, $datatype)
         {
@@ -44,7 +42,7 @@
                 if (isset(self::$optimizedTableColumns[$table]))
                 {
                     $fields = self::$optimizedTableColumns[$table];
-                    // It is possible that filed is created outside optimizer
+                    // It is possible that field is created outside optimizer, so in this case reload fields from database
                     if (!in_array($columnName, array_keys($fields)))
                     {
                         $fields = R::$writer->getColumns($table);
@@ -93,7 +91,12 @@
             self::$optimizedTableColumns[$table][$columnName] = $databaseColumnType;
         }
 
-        public static function externalIdColumn($table, $columnName, $length = 40)
+        /**
+         * Optimize fields that will accept ids from external sources - for example during imports
+         * @param string $table
+         * @param string $columnName
+         */
+        public static function externalIdColumn($table, $columnName)
         {
             self::optimize($table, $columnName, 'string');
             // To-Do: In future we can use $length to limit length of varchar type

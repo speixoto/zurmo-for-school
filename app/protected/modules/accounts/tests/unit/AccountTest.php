@@ -529,7 +529,6 @@
         public function testOfficePhoneSetsToZeroWhenClearingAndForgetting()
         {
             $user = User::getByUsername('steven');
-
             $account = new Account();
             $account->owner       = $user;
             $account->name        = 'Test Account2';
@@ -547,14 +546,7 @@
             $account = Account::getById($id);
             //To-do: This is strange. When frozen, it comes out as null, but unfrozen as 0. This needs to be investigated
             //further at some point.
-            if (!RedBeanDatabase::isFrozen())
-            {
-                $this->assertEquals(0, $account->officePhone);
-            }
-            else
-            {
                 $this->assertEquals(null, $account->officePhone);
-            }
         }
 
         public function testGetModelClassNames()
