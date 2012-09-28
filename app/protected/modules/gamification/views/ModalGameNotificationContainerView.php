@@ -112,16 +112,19 @@
             $url       =   Yii::app()->createUrl('socialItems/default/postGameNotificationToProfile',
                                                array('content' => $socialItemAdapter->getMessageContent()));
 
-            //$aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            //$aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent               = ZurmoHtml::tag('span', array(), Yii::t('Default', 'Post to Profile'));
+            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'),    null);
+            $aContent               .= ZurmoHtml::tag('span',  array('class' => 'z-label'),
+                                                     Yii::t('Default', 'Post to Profile'));
             // Begin Not Coding Standard
             $content   = ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'     => 'GET',
-                               'beforeSend' => 'js:function(){attachLoadingSpinner("#ModalGameNotification");}',
                                'complete' => "function(XMLHttpRequest, textStatus){
                                               $('#ModalGameNotification" . $index . "').dialog('close');}"),
-                         array('class'     => 'close-ModalGameNotification'));
+                         array('class'     => 'close-ModalGameNotification',
+                               'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                              attachLoadingSpinner($(this).attr("id"), true);',
+                         ));
             // End Not Coding Standard
             return $content;
         }
