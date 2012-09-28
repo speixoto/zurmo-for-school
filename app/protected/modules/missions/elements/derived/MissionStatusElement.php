@@ -74,23 +74,23 @@
         {
             if($mission->status == Mission::STATUS_AVAILABLE)
             {
-                return Yii::t('Default', 'Available');
+                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Available'));
             }
             elseif($mission->status == Mission::STATUS_TAKEN)
             {
-                return Yii::t('Default', 'In Progress');
+                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'In Progress'));
             }
             elseif($mission->status == Mission::STATUS_COMPLETED)
             {
-                return Yii::t('Default', 'Awaiting Acceptance');
+                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Awaiting Acceptance'));
             }
             elseif($mission->status == Mission::STATUS_REJECTED)
             {
-                return Yii::t('Default', 'Rejected');
+                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Rejected'));
             }
             elseif($mission->status == Mission::STATUS_ACCEPTED)
             {
-                return Yii::t('Default', 'Accepted');
+                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Accepted'));
             }
             else
             {
@@ -148,7 +148,7 @@
                          array('class'      => 'mission-change-status-link attachLoading z-button',
                                 'namespace' => 'update',
                                 'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
-                                                        attachLoadingSpinner($(this).attr("id"));'));
+                                                        attachLoadingSpinner($(this).attr("id"), true);'));
         }
 
         protected function renderLabel()

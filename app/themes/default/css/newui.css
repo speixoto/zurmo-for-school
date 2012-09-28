@@ -2013,6 +2013,9 @@ table.configuration-list tr td:last-child a:before {
 #MyMissionsForPortletView .missionStatusChangeArea a:last-child {
   margin-right: 0;
 }
+#MyMissionsForPortletView .actions-column {
+  width: 200px;
+}
 /*Upload Files Box (in selected account, in Note)*/
 .file-upload-box {
   -moz-box-sizing: border-box;
@@ -5410,11 +5413,14 @@ span.tooltip {
   float: none;
   color: #fff !important;
 }
-.missionStatusChangeArea a:first-child {
+.comment-content .missionStatusChangeArea a:first-child {
   margin-left: 15px;
 }
 .mission-status {
-  margin: 15px 0;
+  margin: 0 5px;
+}
+#MissionsListView .actions-column {
+  width: 250px;
 }
 /*=Social Items*/
 .SocialItemsListView tr:hover,
