@@ -31,9 +31,123 @@
     {
         protected $scoreOnUpdate = false;
 
+        /**
+         * @var string
+         */
+        const SCORE_TYPE_TAKE_MISSION          = 'TakeMission';
+
+        /**
+         * @var string
+         */
+        const SCORE_TYPE_COMPLETE_MISSION      = 'CompleteMission';
+
+        /**
+         * @var string
+         */
+        const SCORE_TYPE_ACCEPTED_MISSION      = 'AcceptedMission';
+
+        /**
+         * @var string
+         */
+        const SCORE_CATEGORY_TAKE_MISSION      = 'TakeMission';
+
+        /**
+         * @var string
+         */
+        const SCORE_CATEGORY_COMPLETE_MISSION  = 'CompleteMission';
+
+        /**
+         * @var string
+         */
+        const SCORE_CATEGORY_ACCEPTED_MISSION  = 'AcceptedMission';
+
+        /**
+         * (non-PHPdoc)
+         * @see GamificationRules::scoreOnSaveModel()
+         */
+        public function scoreOnSaveModel(CEvent $event)
+        {
+            parent::scoreOnSaveModel($event);
+            //Is the Mission being taken by a user, when previously available.
+            if (array_key_exists('status', $event->sender->originalAttributeValues) &&
+                $event->sender->originalAttributeValues['status'] == Mission::STATUS_AVAILABLE &&
+                $event->sender->status == Mission::STATUS_TAKEN)
+            {
+                $scoreType = static::SCORE_TYPE_TAKE_MISSION;
+                $category  = static::SCORE_CATEGORY_TAKE_MISSION;
+                $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, $event->sender->takenByUser);
+                $gameScore->addValue();
+                $saved = $gameScore->save();
+                if (!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                               static::getPointTypeAndValueDataByCategory($category));
+            }
+            //If the mission is completed and it was previously taken.
+            elseif (array_key_exists('status', $event->sender->originalAttributeValues) &&
+                $event->sender->originalAttributeValues['status'] == Mission::STATUS_TAKEN &&
+                $event->sender->status == Mission::STATUS_COMPLETED)
+            {
+                $scoreType = static::SCORE_TYPE_COMPLETE_MISSION;
+                $category  = static::SCORE_CATEGORY_COMPLETE_MISSION;
+                $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, $event->sender->takenByUser);
+                $gameScore->addValue();
+                $saved = $gameScore->save();
+                if (!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                               static::getPointTypeAndValueDataByCategory($category));
+            }
+            //If the mission is accepted and previously completed
+            elseif (array_key_exists('status', $event->sender->originalAttributeValues) &&
+                $event->sender->originalAttributeValues['status'] == Mission::STATUS_COMPLETED &&
+                $event->sender->status == Mission::STATUS_ACCEPTED)
+            {
+                $scoreType = static::SCORE_TYPE_ACCEPTED_MISSION;
+                $category  = static::SCORE_CATEGORY_ACCEPTED_MISSION;
+                $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, $event->sender->takenByUser);
+                $gameScore->addValue();
+                $saved = $gameScore->save();
+                if (!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                               static::getPointTypeAndValueDataByCategory($category));
+            }
+        }
+
         public static function getPointTypesAndValuesForCreateModel()
         {
+            return array(GamePoint::TYPE_COMMUNICATION => 20);
+        }
+
+        /**
+         * @return Point type/value data for a user taking a mission
+         */
+        public static function getPointTypesAndValuesForTakeMission()
+        {
             return array(GamePoint::TYPE_COMMUNICATION => 10);
+        }
+
+        /**
+         * @return Point type/value data for a user completing a mission
+         */
+        public static function getPointTypesAndValuesForCompleteMission()
+        {
+            return array(GamePoint::TYPE_COMMUNICATION => 10);
+        }
+
+        /**
+         * @return Point type/value data for a user having a mission accepted
+         */
+        public static function getPointTypesAndValuesForAcceptedMission()
+        {
+            return array(GamePoint::TYPE_COMMUNICATION => 40);
         }
     }
 ?>

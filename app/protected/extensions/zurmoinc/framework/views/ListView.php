@@ -416,13 +416,21 @@
 
         public function getRelatedLinkString($attributeString, $attributeName, $moduleId)
         {
-            $string  = 'ZurmoHtml::link(';
+            $string  = 'ListView::resolveRelatedListStringContent($data->' . $attributeName . '->id, ZurmoHtml::link(';
             $string .=  $attributeString . ', ';
             $string .= 'Yii::app()->createUrl("' .
                         $this->getGridViewActionRoute('details', $moduleId) . '",
                         array("id" => $data->' . $attributeName . '->id))';
-            $string .= ')';
+            $string .= '))';
             return $string;
+        }
+
+        public static function resolveRelatedListStringContent($modelId, $linkStringContent)
+        {
+            if($modelId  > 0)
+            {
+                return $linkStringContent;
+            }
         }
 
         public static function getDesignerRulesType()
