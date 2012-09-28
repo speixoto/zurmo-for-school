@@ -145,10 +145,32 @@
                          array('type'       => 'GET',
                                'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'
                              ),
-                         array('class'      => 'mission-change-status-link attachLoading z-button',
+                         array('class'      => 'mission-change-status-link attachLoading z-button ' .
+                                               self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
                                 'namespace' => 'update',
                                 'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
                                                         attachLoadingSpinner($(this).attr("id"), true);'));
+        }
+
+        protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
+        {
+            assert('is_integer($status)');
+            if($status == Mission::STATUS_TAKEN)
+            {
+                return 'action-take';
+            }
+            elseif($status == Mission::STATUS_COMPLETED)
+            {
+                return 'action-complete';
+            }
+            elseif($status == Mission::STATUS_ACCEPTED)
+            {
+                return 'action-accept';
+            }
+            elseif($status == Mission::STATUS_REJECTED)
+            {
+                return 'action-reject';
+            }
         }
 
         protected function renderLabel()

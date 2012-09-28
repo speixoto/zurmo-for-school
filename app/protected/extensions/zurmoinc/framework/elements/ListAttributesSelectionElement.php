@@ -78,6 +78,7 @@
                 'rightSideDisplayLabel'  => Yii::t('Default', 'Visible Columns'),
                 'formId'			     => $this->form->getId(),
                 'allowSorting'			 => true,
+                'multiselectNavigationClasses' => 'multiselect-nav-updown',
             ));
             $cClipWidget->endClip();
             $cellsContent  = $cClipWidget->getController()->clips['SortableListAttributes'];
