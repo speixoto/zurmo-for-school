@@ -125,8 +125,8 @@
             if($this->allowSorting)
             {
                 $content .= '<div class="multiselect-nav' . $this->resolveMultiselectNavigationClassesContent() . '">';
-                $content .= ZurmoHtml::button( 'up', array( 'id' => $id . 'moveUp', 'class' => 'icon-up-arrow' ) );
-                $content .= ZurmoHtml::button( 'down', array( 'id' => $id . 'moveDown', 'class' => 'icon-down-arrow' ) );
+                $content .= ZurmoHtml::button( '5', array( 'id' => $id . 'moveUp', 'class' => 'icon-up-arrow' ) );     // value "up" in icon font
+                $content .= ZurmoHtml::button( '6', array( 'id' => $id . 'moveDown', 'class' => 'icon-down-arrow' ) ); // value "down" in icon font
                 $content .= '</div>';
             }
             $content .= '</td>';

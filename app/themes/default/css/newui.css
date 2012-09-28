@@ -4798,6 +4798,12 @@ span.tooltip {
   width: 310px;
   height: 310px;
 }
+a.close-ModalGameNotification.simple-select {
+  background: none !important;
+  margin-right: 10px;
+  margin-left: -5px;
+  font-size: 11px;
+}
 /*=User Profile Page*/
 .UserSocialItemsForPortletView {
   margin-right: 20px !important;
@@ -8428,6 +8434,18 @@ div.wide.form a {
 }
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
+}
+.select-list-attributes-view .multiselect-nav-updown {
+  height: auto;
+  margin-top: 10px;
+  margin-right: 75px;
+  float: right;
+  width: 142px;
+}
+.select-list-attributes-view .multiselect-nav-updown input {
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 0 !important;
 }
 #clear-search-link {
   background: #262877;
