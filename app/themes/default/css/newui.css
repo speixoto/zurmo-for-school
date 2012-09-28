@@ -8429,23 +8429,30 @@ div.wide.form a {
 .search-view-1 .view-toolbar-container {
   display: inline-block;
 }
+.select-list-attributes-view {
+  /*.multiselect-nav-updown{
+        height:auto;
+        margin-top:10px;
+        margin-right:75px;
+        float: right;
+        width:142px;
+        input{
+            float: left;
+            margin-right:10px;
+            margin-bottom: 0 !important;
+        }
+    }*/
+
+}
 .select-list-attributes-view table {
   border-bottom: none;
 }
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
 }
-.select-list-attributes-view .multiselect-nav-updown {
-  height: auto;
-  margin-top: 10px;
-  margin-right: 75px;
-  float: right;
-  width: 142px;
-}
-.select-list-attributes-view .multiselect-nav-updown input {
-  float: left;
-  margin-right: 10px;
-  margin-bottom: 0 !important;
+.select-list-attributes-view .multiselect-holder {
+  width: 750px;
+  padding-left: 60px;
 }
 #clear-search-link {
   background: #262877;
