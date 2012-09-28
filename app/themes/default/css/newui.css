@@ -4798,6 +4798,12 @@ span.tooltip {
   width: 310px;
   height: 310px;
 }
+a.close-ModalGameNotification.simple-select {
+  background: none !important;
+  margin-right: 10px;
+  margin-left: -5px;
+  font-size: 11px;
+}
 /*=User Profile Page*/
 .UserSocialItemsForPortletView {
   margin-right: 20px !important;
