@@ -544,9 +544,7 @@
             $this->assertTrue($account->save());
             $account->forget();
             $account = Account::getById($id);
-            //To-do: This is strange. When frozen, it comes out as null, but unfrozen as 0. This needs to be investigated
-            //further at some point.
-                $this->assertEquals(null, $account->officePhone);
+            $this->assertEquals(null, $account->officePhone);
         }
 
         public function testGetModelClassNames()
