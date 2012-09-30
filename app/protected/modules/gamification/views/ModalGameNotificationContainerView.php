@@ -123,7 +123,7 @@
                                               $('#ModalGameNotification" . $index . "').dialog('close');}"),
                          array('class'     => 'close-ModalGameNotification',
                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
-                                              attachLoadingSpinner($(this).attr("id"), true);',
+                                              attachLoadingSpinner($(this).attr("id"), true, "dark");',
                          ));
             // End Not Coding Standard
             return $content;

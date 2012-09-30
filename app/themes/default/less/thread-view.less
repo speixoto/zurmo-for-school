@@ -95,23 +95,31 @@
     h2{
         margin-bottom:15px;
     }
-    .comment-details{
-        margin-top:2px;
-        display:block;
-        strong{
-            color: #999;
-            font-weight: normal !important;
-        }
+    
+}
+
+.comment-details{
+    margin:2px 0;
+    display:inline-block;
+    strong{
+        color: #999;
+        font-weight: normal !important;
     }
 }
 
 #CommentList,
 .CommentList{
     margin-left: 130px;
+    .comment{
+        margin-top:15px;
+    }
+    &:last-child{
+        margin-bottom: 8px;
+    }
 }
 
 .comment{
-    margin-bottom:15px;
+    //margin-bottom:15px;
     line-height: 140%;
     .gravatar{
         margin-top:1px;
@@ -119,7 +127,7 @@
     .comment-content{
         font-size: 12px;
         padding-left:50px;
-        margin:5px 0;
+        //margin:5px 0;
         line-height: 140%;
     }
     &:hover{
@@ -135,6 +143,7 @@
     }
     .delete-comment{
         visibility:hidden;
+        margin-left: 5px;
         a{
             margin-left:4px;
         }
@@ -155,7 +164,7 @@
     .comment-content{
         font-size: 12px;
         padding-left:0;
-        margin:5px 0;
+        //margin:5px 0;
     }
 }
 

@@ -5234,15 +5234,11 @@ a.close-ModalGameNotification.simple-select {
 .CommentList h2 {
   margin-bottom: 15px;
 }
-#ModelDetailsSummaryView .comment-details,
-#CommentList .comment-details,
-.CommentList .comment-details {
-  margin-top: 2px;
-  display: block;
+.comment-details {
+  margin: 2px 0;
+  display: inline-block;
 }
-#ModelDetailsSummaryView .comment-details strong,
-#CommentList .comment-details strong,
-.CommentList .comment-details strong {
+.comment-details strong {
   color: #999;
   font-weight: normal !important;
 }
@@ -5250,8 +5246,15 @@ a.close-ModalGameNotification.simple-select {
 .CommentList {
   margin-left: 130px;
 }
+#CommentList .comment,
+.CommentList .comment {
+  margin-top: 15px;
+}
+#CommentList:last-child,
+.CommentList:last-child {
+  margin-bottom: 8px;
+}
 .comment {
-  margin-bottom: 15px;
   line-height: 140%;
 }
 .comment .gravatar {
@@ -5260,7 +5263,6 @@ a.close-ModalGameNotification.simple-select {
 .comment .comment-content {
   font-size: 12px;
   padding-left: 50px;
-  margin: 5px 0;
   line-height: 140%;
 }
 .comment:hover .delete-comment {
@@ -5274,6 +5276,7 @@ a.close-ModalGameNotification.simple-select {
 }
 .comment .delete-comment {
   visibility: hidden;
+  margin-left: 5px;
 }
 .comment .delete-comment a {
   margin-left: 4px;
@@ -5295,7 +5298,6 @@ a.close-ModalGameNotification.simple-select {
 .model-details-summary .comment-content {
   font-size: 12px;
   padding-left: 0;
-  margin: 5px 0;
 }
 .conversation-subject {
   margin-bottom: 30px;
@@ -8984,10 +8986,11 @@ div.wide.form a {
   padding: 0 5px 0 10px !important;
 }
 .details-table p {
-  color: #545454 !important;
+  /*color:#545454 !important
+        float:none;
+        clear:left;*/
+
   width: 100%;
-  float: none;
-  clear: left;
 }
 .details-table p a {
   color: #262877 !important;
@@ -9015,6 +9018,19 @@ div.wide.form a {
 .details-table .hasCheckBox {
   margin-top: 0;
   margin-left: 0;
+}
+.after-form-details-content {
+  color: #545454 !important;
+  float: none;
+  clear: left;
+  width: 100%;
+  font-size: 10px;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.after-form-details-content a {
+  color: #262877 !important;
 }
 .mapcanvas {
   width: 600px;
@@ -9053,6 +9069,20 @@ div.wide.form a {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+.ProgressView,
+#MetadataViewEditView,
+.TableOfContentsView,
+.DetailsView,
+.EditAndDetailsView {
+  /*p{
+        font-size:10px;
+        font-style:italic;
+        color:#999999;
+        text-align:center;
+        margin-bottom:10px;
+    }*/
+
 }
 .ProgressView > div,
 #MetadataViewEditView > div,
@@ -9115,17 +9145,6 @@ div.wide.form a {
   box-shadow: inset 0 1px 0 0 #ffffff;
   border-bottom: 1px solid #ccc;
   overflow: hidden;
-}
-.ProgressView p,
-#MetadataViewEditView p,
-.TableOfContentsView p,
-.DetailsView p,
-.EditAndDetailsView p {
-  font-size: 10px;
-  font-style: italic;
-  color: #999999;
-  text-align: center;
-  margin-bottom: 10px;
 }
 .ProgressView th,
 #MetadataViewEditView th,

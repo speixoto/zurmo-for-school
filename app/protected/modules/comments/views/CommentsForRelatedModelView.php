@@ -124,7 +124,7 @@
                 $stringContent = $comment->createdByUser->getAvatarImage(36);
                 $userName = Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                         array('{ownerStringContent}' => strval($comment->createdByUser)));
-                $stringContent .= '<div class="comment-content">' . $userName . ': ' . $comment->description;
+                $stringContent .= '<div class="comment-content"><p>' . $userName . ': ' . $comment->description . '</p>';
 
                 //attachments
                 if ($comment->files->count() > 0)
