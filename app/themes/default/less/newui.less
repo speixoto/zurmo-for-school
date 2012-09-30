@@ -3258,7 +3258,7 @@ div.hasHalfs{
 
 .juiportlet-widget{
     td{
-        padding-left:0 !important;
+        padding-left:0;// !important;
         &:first-child{
             border-top:none;
         }
@@ -3297,6 +3297,64 @@ div.hasHalfs{
 .juiportlet-widget.ContactsForAccountRelatedListView{
     div.button-column{
         padding-top:4px;
+    }
+}
+
+/*Related lists portlet with gear menu*/
+.RelatedListView{
+    .items{
+        td{
+            border-top:none !important;
+            &:first-child{
+                padding-left: 15px;
+            }
+        }
+        tr{
+            &:hover{
+                .edit-row-menu > li > a{
+                    .opacity(100);
+                }
+            }
+        }
+    }
+}
+.edit-row-menu{
+    float:right;
+    margin:0 15px 0 0;
+    list-style: none;
+    > li{
+        position: relative;
+        .t-shadow(none) !important;
+        > a{
+            padding:0;
+            display:block;
+            overflow: visible;
+            .opacity(25);
+            span{
+                display:inline-block;
+                text-indent:-9999px;
+                .t-shadow(none) !important;
+            }
+            &:hover{
+                .opacity(100);
+            }
+            &:after{
+                content: "n";
+                color:@themeColor;
+                .symbly(26px);
+            }
+        }
+        a{
+            .t-shadow(none) !important;
+        }
+    }
+    ul{
+        display:block;
+        width:110px;
+        margin-left:-97px;
+        list-style: none;
+        .headerDropDown();
+        top:16px;
     }
 }
 
