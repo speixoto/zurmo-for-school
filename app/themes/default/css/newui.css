@@ -13,10 +13,10 @@
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -28,11 +28,11 @@
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .zButton:not(.attachLoading),
 .z-button:not(.attachLoading) {
@@ -41,6 +41,11 @@
 .zButton:hover,
 .z-button:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .zButton:active,
 .z-button:active {
@@ -389,10 +394,10 @@ a.remove:hover .icon:after {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -404,17 +409,22 @@ a.remove:hover .icon:after {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 #InstallPageView .AppContainer a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #InstallPageView .AppContainer a:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 #InstallPageView .AppContainer a:active {
   color: #656565;
@@ -488,10 +498,10 @@ a.remove:hover .icon:after {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -503,17 +513,22 @@ a.remove:hover .icon:after {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 #InstallPageView #install-form input[type="submit"]:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #InstallPageView #install-form input[type="submit"]:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 #InstallPageView #install-form input[type="submit"]:active {
   color: #656565;
@@ -691,10 +706,10 @@ a.remove:hover .icon:after {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -706,11 +721,11 @@ a.remove:hover .icon:after {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: right;
   position: absolute;
   right: 15px;
@@ -722,6 +737,11 @@ a.remove:hover .icon:after {
 }
 .configuration-list li a:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .configuration-list li a:active {
   color: #656565;
@@ -772,10 +792,10 @@ table.configuration-list tr td:last-child a {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -787,11 +807,11 @@ table.configuration-list tr td:last-child a {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: right;
 }
 table.configuration-list tr td:last-child a:not(.attachLoading) {
@@ -799,6 +819,11 @@ table.configuration-list tr td:last-child a:not(.attachLoading) {
 }
 table.configuration-list tr td:last-child a:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 table.configuration-list tr td:last-child a:active {
   color: #656565;
@@ -898,10 +923,10 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -913,11 +938,11 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -927,6 +952,11 @@ table.configuration-list tr td:last-child a:before {
 }
 .multiselect-holder input[type="button"]:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .multiselect-holder input[type="button"]:active {
   color: #656565;
@@ -1420,10 +1450,10 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1435,17 +1465,22 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .add-custom-field .configure-custom-field-button:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .add-custom-field .configure-custom-field-button:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .add-custom-field .configure-custom-field-button:active {
   color: #656565;
@@ -1537,10 +1572,10 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1552,17 +1587,22 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .EmailTestingButton:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .EmailTestingButton:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .EmailTestingButton:active {
   color: #656565;
@@ -1616,10 +1656,10 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1631,17 +1671,22 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:active {
   color: #656565;
@@ -2039,10 +2084,10 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -2054,11 +2099,11 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   padding: 0 5px;
 }
 .file-upload-box .ui-icon-plusthick:not(.attachLoading) {
@@ -2066,6 +2111,11 @@ table.configuration-list tr td:last-child a:before {
 }
 .file-upload-box .ui-icon-plusthick:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .file-upload-box .ui-icon-plusthick:active {
   color: #656565;
@@ -2483,10 +2533,10 @@ div.wide.form .errorMessage {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -2498,11 +2548,11 @@ div.wide.form .errorMessage {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: left;
 }
 .ui-datepicker .ui-datepicker-current:not(.attachLoading) {
@@ -2510,6 +2560,11 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-current:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .ui-datepicker .ui-datepicker-current:active {
   color: #656565;
@@ -2530,10 +2585,10 @@ div.wide.form .errorMessage {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -2545,11 +2600,11 @@ div.wide.form .errorMessage {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: right;
 }
 .ui-datepicker .ui-datepicker-close:not(.attachLoading) {
@@ -2557,6 +2612,11 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-close:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .ui-datepicker .ui-datepicker-close:active {
   color: #656565;
@@ -2869,10 +2929,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -2884,11 +2944,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   margin-bottom: 15px;
 }
 .designer-toolbar input[type="submit"]:not(.attachLoading) {
@@ -2896,6 +2956,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .designer-toolbar input[type="submit"]:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .designer-toolbar input[type="submit"]:active {
   color: #656565;
@@ -3340,12 +3405,13 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .AttributeEditView .sortable .remove-sortable-item-link {
   position: absolute;
-  left: 4px;
-  top: -7px;
+  left: 6px;
+  top: 5px;
+  z-index: 100;
 }
 .AttributeEditView .sortable .remove-sortable-item-link span {
   text-indent: -9999px;
-  display: block;
+  display: inline-block;
 }
 .AttributeEditView .sortable .remove-sortable-item-link:after {
   content: "_";
@@ -3372,10 +3438,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -3387,11 +3453,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   margin: 15px 0 0 0;
   float: left;
   clear: both;
@@ -3401,6 +3467,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .AttributeEditView form div table #customFieldDataData_AddInputButton:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .AttributeEditView form div table #customFieldDataData_AddInputButton:active {
   color: #656565;
@@ -4749,10 +4820,10 @@ span.tooltip {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -4764,17 +4835,22 @@ span.tooltip {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .ModalGameNotification a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .ModalGameNotification a:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .ModalGameNotification a:active {
   color: #656565;
@@ -4951,10 +5027,10 @@ a.close-ModalGameNotification.simple-select {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -4966,11 +5042,11 @@ a.close-ModalGameNotification.simple-select {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-decoration: none !important;
   color: #656565 !important;
   margin-top: 15px;
@@ -4982,6 +5058,11 @@ a.close-ModalGameNotification.simple-select {
 }
 #WelcomeView .dashboard-link:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 #WelcomeView .dashboard-link:active {
   color: #656565;
@@ -5754,11 +5835,11 @@ h4,
 h5,
 h6 {
   color: #262877;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 a:link,
 a:hover,
@@ -7352,14 +7433,14 @@ table.items th {
   padding: 0;
 }
 .checkbox-column {
-  width: 35px;
+  width: 45px;
   text-align: center;
 }
 .checkbox-column .hasCheckBox {
   margin-top: -4px;
 }
 .button-column {
-  width: 25px;
+  width: 35px;
   text-align: center;
   vertical-align: middle !important;
 }
@@ -7609,7 +7690,7 @@ td.empty {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
 .green-button,
-a.attachLoading {
+.attachLoading {
   color: #FFF !important;
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
@@ -7634,17 +7715,65 @@ a.attachLoading {
   cursor: pointer;
 }
 .green-button:hover,
-a.attachLoading:hover {
+.attachLoading:hover {
   color: #656565 !important;
 }
 .green-button:active,
-a.attachLoading:active {
+.attachLoading:active {
   color: #FFF !important;
   -webkit-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+.action-take {
+  background-color: #ffad43;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ffad43));
+  background-image: -moz-linear-gradient(top, #ffa660, #ffad43);
+  background-image: -ms-linear-gradient(top, #ffa660, #ffad43);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43));
+  background-image: -webkit-linear-gradient(top, #ffa660, #ffad43);
+  background-image: -o-linear-gradient(top, #ffa660, #ffad43);
+  background-image: linear-gradient(top, #ffa660, #ffad43);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa660', endColorstr='#ffad43', GradientType=0);
+}
+.action-complete {
+  background-color: #6fa82d;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: linear-gradient(top, #97c43d, #6fa82d);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
+}
+.action-accept {
+  background-color: #6fa82d;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: linear-gradient(top, #97c43d, #6fa82d);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
+}
+.action-reject {
+  background-color: #a82d31;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31));
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31));
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31);
+  background-image: linear-gradient(top, #c43d53, #a82d31);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0);
 }
 .portlet-toolbar {
   position: absolute;
@@ -8040,10 +8169,10 @@ div.wide.form a {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -8055,11 +8184,11 @@ div.wide.form a {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   margin-left: 30px;
   margin-top: 15px;
   float: left;
@@ -8069,6 +8198,11 @@ div.wide.form a {
 }
 .ZeroModelsYetView a:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .ZeroModelsYetView a:active {
   color: #656565;
@@ -8291,10 +8425,10 @@ div.wide.form a {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -8306,17 +8440,22 @@ div.wide.form a {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .search-form-tools input[type="submit"]:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .search-form-tools input[type="submit"]:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .search-form-tools input[type="submit"]:active {
   color: #656565;
@@ -9232,10 +9371,10 @@ div.wide.form a {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -9247,11 +9386,11 @@ div.wide.form a {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   font-size: 11px;
   color: #666 !important;
 }
@@ -9260,6 +9399,11 @@ div.wide.form a {
 }
 .toolbar-mbmenu .options-menu > li > a:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .toolbar-mbmenu .options-menu > li > a:active {
   color: #656565;
@@ -10835,10 +10979,10 @@ div.hasHalfs .twoThirds {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
   color: #656565;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -10850,17 +10994,22 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 #progressBar-links a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 #progressBar-links a:hover {
   color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 #progressBar-links a:active {
   color: #656565;

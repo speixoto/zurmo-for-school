@@ -215,6 +215,7 @@
                         }
                         var currenInputCollectionLength = $('input[name=\"" . $this->getNameForInputField() . "\"]').length;
                         $('<li class=\"ui-state-default\" id=\"{id}\">' +
+                        '" . $this->renderRemoveLink() . "' +
                         '<span class=\"ui-icon ui-icon-arrowthick-2-n-s\">&#160;</span>' +
                         '<div class=\"has-lang-label\">' +
                         '<input name=\"" . $this->getNameForInputField() . "\" id=\"" . $inputIdPrefix .
@@ -222,7 +223,7 @@
                         $('#" . $this->attribute . "_AddInput').val()
                          + '\" size=\"50\"/>" . static::renderLanguageLabelHtmlContent($supportedLanguagesData[$baseLanguage]) . "</div>' +
                         '<input name=\"" . $this->getNameForExistingValueHiddenField() . "\" type=\"hidden\" value=\"' +
-                        $('#" . $this->attribute . "_AddInput').val() + '\" />&#160;&#160;&#160;" . $this->renderRemoveLink() . "' +
+                        $('#" . $this->attribute . "_AddInput').val() + '\" />" . "' +
                         '" . $this->renderSortableLanguageLabelInputsForAddingNewValuesJavaScriptContent(). "' +
                         '</li>').appendTo($('#" . $this->attribute . "_ul'));
                         $('#" . $this->attribute . "_AddInput').val('');

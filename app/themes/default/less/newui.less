@@ -160,7 +160,7 @@ body{
 
 h1, h2, h3, h4, h5, h6{
     color:@themeColor;
-    .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
+    .t-shadow(  0 1px 0 rgba( 255, 255, 255, 0.8 ) );
 }
 
 a:link, a:hover, a:active, a:visited{
@@ -1394,7 +1394,7 @@ table.items th{
 }
 
 .checkbox-column{
-    width:35px;
+    width:45px;
     text-align:center;
     .hasCheckBox{
         margin-top:-4px;
@@ -1402,7 +1402,7 @@ table.items th{
 }
 
 .button-column{
-    width:25px;
+    width:35px;
     text-align:center;
     vertical-align:middle !important;
 }
@@ -1569,7 +1569,7 @@ td.empty{
 }
 
 .green-button,
-a.attachLoading{
+.attachLoading{
     color:#FFF !important;
     .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
@@ -1582,6 +1582,22 @@ a.attachLoading{
         color:#FFF !important;
         .b-shadow(~"inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
     }
+}
+
+.action-take{
+    #gradient > .vertical(#ffa660, #ffad43 ); //yellow
+}
+
+.action-complete{
+    #gradient > .vertical(#97c43d, #6fa82d ); //green
+}
+
+.action-accept{
+    #gradient > .vertical(#97c43d, #6fa82d ); //green
+}
+
+.action-reject{
+    #gradient > .vertical(#c43d53, #a82d31 ); //red
 }
 
 .portlet-toolbar{
