@@ -1031,11 +1031,8 @@ footer, header, hgroup, menu, nav, section {
         }
     }
     li.type-MissionsModule{
-        em{
-            padding-top:1px;
-        }
         em:before{
-            content: "{";
+            content: "Q";
         }
     }
         
@@ -1960,6 +1957,11 @@ div.wide.form{
         content:"b";
         .symbly(230px);
         line-height: 90%;
+    }
+    .Mission .large-icon:after{
+        content:"Q";
+        .symbly(230px);
+        line-height: 80%;
     }
 }
 
@@ -3651,7 +3653,7 @@ div.hasHalfs{
 	    }
     }
     .Mission:after{
-        content: "{";
+        content: "Q";
         .latest-activity-icon();
     }
 }

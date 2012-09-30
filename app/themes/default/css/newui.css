@@ -4418,7 +4418,7 @@ span.tooltip {
 }
 .game-badge-CreateMission .badge-icon:before,
 .CreateMission .badge-icon:before {
-  content: "{";
+  content: "Q";
 }
 .game-badge-CreateSocialItem .badge-icon:before,
 .CreateSocialItem .badge-icon:before {
@@ -5212,7 +5212,7 @@ a.close-ModalGameNotification.simple-select {
   top: 0;
 }
 .icon-missions-available:before {
-  content: "{";
+  content: "Q";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -6882,11 +6882,8 @@ section {
 #RecentlyViewedView li.type-EmailMessageModule em:before {
   content: "g";
 }
-#RecentlyViewedView li.type-MissionsModule em {
-  padding-top: 1px;
-}
 #RecentlyViewedView li.type-MissionsModule em:before {
-  content: "{";
+  content: "Q";
 }
 /*=Content*/
 .AppContent {
@@ -8266,6 +8263,13 @@ div.wide.form a {
   font-size: 230px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 90%;
+}
+.ZeroModelsYetView .Mission .large-icon:after {
+  content: "Q";
+  font-weight: normal;
+  font-size: 230px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 80%;
 }
 .ZurmoSearchView {
   padding: 0;
@@ -10543,7 +10547,7 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .Mission:after,
 .LatestActivitiesView .Mission:after {
-  content: "{";
+  content: "Q";
   position: relative;
   top: -3px;
   color: #666 !important;
