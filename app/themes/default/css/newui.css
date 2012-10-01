@@ -1438,8 +1438,11 @@ table.configuration-list tr td:last-child a:before {
   position: relative;
 }
 .add-custom-field .dk_container {
-  width: 75%;
+  width: 85%;
   margin-right: 10px;
+}
+.add-custom-field .dk_options {
+  overflow-y: scroll !important;
 }
 .add-custom-field .configure-custom-field-button {
   cursor: pointer;
