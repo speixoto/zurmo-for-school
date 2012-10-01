@@ -5567,6 +5567,7 @@ a.close-ModalGameNotification.simple-select {
 .SocialItemsListView .wide.form table.files,
 #AllSocialItemsForPortletView .wide.form table.files {
   border-bottom: none;
+  float: left;
 }
 .SocialItemsListView .wide.form .panel > table,
 #AllSocialItemsForPortletView .wide.form .panel > table {
@@ -5604,6 +5605,9 @@ a.close-ModalGameNotification.simple-select {
 #SocialItemInlineEditView .form-toolbar a {
   color: #fff !important;
   margin-right: 0;
+}
+#SocialItemInlineEditView #social-item-inline-edit-form td:first-child {
+  padding-left: 0;
 }
 .social-item form td {
   padding-left: 65px !important;
@@ -9596,6 +9600,9 @@ div.wide.form a {
 }
 #NoteInlineEditView td div {
   margin-left: 0;
+}
+#NoteInlineEditView .files {
+  float: left;
 }
 #NoteInlineEditView form {
   background: none;
