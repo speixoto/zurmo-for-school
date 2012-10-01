@@ -10876,7 +10876,6 @@ div.hasHalfs .twoThirds {
   position: absolute;
   right: 0;
   width: 100%;
-  overflow-y: scroll !important;
 }
 .dk_options a,
 .dk_options a:link,
