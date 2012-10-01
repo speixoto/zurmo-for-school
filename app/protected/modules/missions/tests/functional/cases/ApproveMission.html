@@ -26,11 +26,11 @@
 	<td>A mission status has changed</td>
 	<td></td>
 </tr>
-<tr>
+<!--tr>
 	<td>assertTextPresent</td>
 	<td>A mission you created has been completed-Click Here</td>
 	<td></td>
-</tr>
+</tr-->
 <tr>
 	<td>click</td>
 	<td>css=span.icon</td>
@@ -130,12 +130,12 @@
 <!--Remove comments-->
 <tr>
 	<td>click</td>
-	<td>xpath=//div[@class='comment']/span[2]/a</td>
+	<td>xpath=//div[@class='comment-content']/span[2]/a</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>xpath=//div[@class='comment']/span[2]/a</td>
+	<td>xpath=//div[@class='comment-content']/span[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -167,6 +167,11 @@
 <tr>
 	<td>assertConfirmation</td>
 	<td>Are you sure you want to remove this Mission?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>chooseOkOnNextConfirmation</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
