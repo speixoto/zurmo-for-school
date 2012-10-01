@@ -5355,6 +5355,12 @@ a.close-ModalGameNotification.simple-select {
 .comment:hover .delete-comment a {
   color: #262877 !important;
 }
+.comment:hover .delete-social-item {
+  visibility: visible !important;
+}
+.comment:hover .delete-social-item a {
+  color: #262877 !important;
+}
 .comment.unread {
   font-weight: bold;
 }
@@ -5566,21 +5572,6 @@ a.close-ModalGameNotification.simple-select {
 #AllSocialItemsForPortletView .wide.form .panel > table {
   padding-bottom: 10px;
 }
-.SocialItemsListView .delete-social-item,
-#AllSocialItemsForPortletView .delete-social-item {
-  margin-left: 5px;
-}
-.SocialItemsListView .delete-social-item a,
-#AllSocialItemsForPortletView .delete-social-item a {
-  margin-left: 4px;
-}
-.SocialItemsListView .delete-social-item:before,
-#AllSocialItemsForPortletView .delete-social-item:before {
-  font-weight: normal;
-  font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  content: "_";
-}
 .SocialItemsListView .form-toolbar,
 #AllSocialItemsForPortletView .form-toolbar {
   text-align: right;
@@ -5593,6 +5584,19 @@ a.close-ModalGameNotification.simple-select {
 .SocialItemsListView .comment-content,
 #AllSocialItemsForPortletView .comment-content {
   padding-right: 15px;
+}
+.delete-social-item {
+  margin-left: 5px;
+  visibility: hidden;
+}
+.delete-social-item a {
+  margin-left: 4px;
+}
+.delete-social-item:before {
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  content: "_";
 }
 #SocialItemInlineEditView .form-toolbar {
   text-align: right;

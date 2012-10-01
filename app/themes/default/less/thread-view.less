@@ -137,6 +137,12 @@
                 color:@themeColor !important;
             }
         }
+        .delete-social-item{
+            visibility:visible !important;
+            a{
+                color:@themeColor !important;
+            }
+        }
     }
     &.unread{
         font-weight:bold;
@@ -353,16 +359,6 @@
             padding-bottom: 10px;
         }
     }
-    .delete-social-item{
-        margin-left:5px;
-        a{
-            margin-left:4px;
-        }
-        &:before{
-            .symbly(18px);
-            content: "_";
-        }
-    }
     .form-toolbar{
         text-align: right;
         a{
@@ -374,6 +370,19 @@
         padding-right:15px;
     }
 }
+
+.delete-social-item{
+    margin-left:5px;
+    visibility: hidden;
+    a{
+        margin-left:4px;
+    }
+    &:before{
+        .symbly(18px);
+        content: "_";
+    }
+}
+
 
 #SocialItemInlineEditView{
     .form-toolbar{
