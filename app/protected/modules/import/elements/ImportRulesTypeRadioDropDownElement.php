@@ -61,7 +61,7 @@
             {
                 throw new NotImplementedException();
             }
-            return Yii::t('Default', 'Please select the module you would like to import to:');
+            return Yii::t('Default', '<span>Please select the module you would like to import to:</span>');
         }
 
         public function getEditableHtmlOptions()

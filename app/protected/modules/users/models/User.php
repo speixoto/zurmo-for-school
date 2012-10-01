@@ -26,6 +26,13 @@
 
     class User extends Permitable
     {
+
+        const AVATAR_TYPE_DEFAULT       = 1;
+        const AVATAR_TYPE_PRIMARY_EMAIL = 2;
+        const AVATAR_TYPE_CUSTOM_EMAIL  = 3;
+
+        private $avatarImageUrl;
+
         public static function getByUsername($username)
         {
             assert('is_string($username)');
@@ -334,6 +341,64 @@
             $this->hash = md5($password);
         }
 
+        public function serializeAndSetAvatarData(Array $avatar)
+        {
+            $this->serializedAvatarData = serialize($avatar);
+        }
+
+        public function getAvatarImage($size = 250)
+        {
+            $avatarUrl = $this->getAvatarImageUrl($size);
+            return ZurmoHtml::image($avatarUrl, null, array('class'  => 'gravatar',
+                                                            'width'  => $size,
+                                                            'height' => $size));
+        }
+
+        private function getAvatarImageUrl($size)
+        {
+            assert('is_int($size)');
+            if (isset($this->avatarImageUrl))
+            {
+                return $this->avatarImageUrl;
+            }
+            else
+            {
+                if (isset($this->serializedAvatarData))
+                {
+                    $avatar = unserialize($this->serializedAvatarData);
+                }
+                if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
+                {
+                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
+                }
+                elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_PRIMARY_EMAIL)
+                {
+                    $email      = $this->primaryEmail->emailAddress;
+                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g";
+                }
+                elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_CUSTOM_EMAIL)
+                {
+                    $email      = $avatar['customAvatarEmailAddress'];
+                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g";
+                }
+                else
+                {
+                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
+                }
+                //Check connection to gravatar and return offline picture
+                $htmlHeaders = @get_headers($avatarUrl);
+                if (preg_match("|200|", $htmlHeaders[0]))
+                {
+                    $this->avatarImageUrl = $avatarUrl;
+                }
+                else
+                {
+                    $this->avatarImageUrl = Yii::app()->theme->baseUrl . '/images/offline_user.png';
+                }
+                return $this->avatarImageUrl;
+            }
+        }
+
         public static function mangleTableName()
         {
             return true;
@@ -550,6 +615,7 @@
                     'language',
                     'timeZone',
                     'username',
+                    'serializedAvatarData'
                 ),
                 'relations' => array(
                     'currency'   => array(RedBeanModel::HAS_ONE,             'Currency'),
@@ -578,6 +644,7 @@
                     array('username', 'match',   'pattern' => '/^[^A-Z]+$/', // Not Coding Standard
                                                'message' => 'Username must be lowercase.'),
                     array('username', 'length',  'max'   => 64),
+                    array('serializedAvatarData',   'type',  'type' => 'string')
                 ),
                 'elements' => array(
                 ),
@@ -587,6 +654,9 @@
                 ),
                 'noApiExport' => array(
                     'hash'
+                ),
+                'noAudit' => array(
+                    'serializedAvatarData',
                 ),
             );
             return $metadata;

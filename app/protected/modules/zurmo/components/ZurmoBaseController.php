@@ -82,7 +82,6 @@
             $searchModel,
             $pageSize,
             $title,
-            $userId,
             $dataProvider,
             $actionBarViewClassName = 'SecuredActionBarForSearchAndListView'
             )
@@ -101,25 +100,23 @@
             );
         }
 
-        protected function makeListView(
-            $searchModel,
-            $dataProvider
-            )
+        protected function makeListView(SearchForm $searchForm, $dataProvider)
         {
-            $listModel           = $searchModel->getModel();
+            $listModel           = $searchForm->getModel();
             $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
             $listView            = new $listViewClassName(
                                        $this->getId(),
                                        $this->getModule()->getId(),
                                        get_class($listModel),
                                        $dataProvider,
-                                       GetUtil::resolveSelectedIdsFromGet());
+                                       GetUtil::resolveSelectedIdsFromGet(),
+                                       null,
+                                       $searchForm->getListAttributesSelector());
             return $listView;
         }
 
-        protected function makeSearchDataProvider(
+        protected function resolveSearchDataProvider(
             $searchModel,
-            $listModelClassName,
             $pageSize,
             $stateMetadataAdapterClassName = null,
             $stickySearchKey = null,
@@ -128,7 +125,19 @@
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
             assert('is_bool($setSticky)');
+            $listModelClassName = get_class($searchModel->getModel());
             static::resolveToTriggerOnSearchEvents($listModelClassName);
+            $dataCollection = $this->makeDataCollectionAndResolveSavedSearch($searchModel, $stickySearchKey, $setSticky);
+            $dataProvider   = $this->makeRedBeanDataProviderByDataCollection(
+                $searchModel,
+                $pageSize,
+                $stateMetadataAdapterClassName,
+                $dataCollection);
+            return $dataProvider;
+        }
+
+        private function makeDataCollectionAndResolveSavedSearch($searchModel, $stickySearchKey = null, $setSticky = true)
+        {
             $dataCollection = new SearchAttributesDataCollection($searchModel);
             if ($searchModel instanceof SavedDynamicSearchForm)
             {
@@ -156,13 +165,7 @@
                 }
                 $searchModel->loadSavedSearchUrl = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/list/');
             }
-            $dataProvider = $this->makeRedBeanDataProviderFromGet(
-                $searchModel,
-                $listModelClassName,
-                $pageSize,
-                $stateMetadataAdapterClassName,
-                $dataCollection);
-            return $dataProvider;
+            return $dataCollection;
         }
 
         protected function resolveToTriggerOnSearchEvents($listModelClassName)
@@ -176,7 +179,6 @@
 
         protected function getDataProviderByResolvingSelectAllFromGet(
             $searchModel,
-            $listModelClassName,
             $pageSize,
             $userId,
             $stateMetadataAdapterClassName = null
@@ -185,9 +187,8 @@
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             if ($_GET['selectAll'])
             {
-                return $this->makeSearchDataProvider(
+                return $this->resolveSearchDataProvider(
                     $searchModel,
-                    $listModelClassName,
                     $pageSize,
                     $stateMetadataAdapterClassName);
             }
