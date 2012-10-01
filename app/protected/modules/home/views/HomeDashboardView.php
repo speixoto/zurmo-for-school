@@ -72,16 +72,13 @@
                         array(
                             'rows' => array(
                                 array(
-                                    'type' => 'OpportunitiesByStageChart',
-                                ),
-                                array(
                                     'type' => 'AllSocialItemsForPortlet',
                                 ),
                                 array(
                                     'type' => 'MyMissionsForPortlet',
                                 ),
                                 array(
-                                    'type' => 'RssReader',
+                                    'type' => 'OpportunitiesByStageChart',
                                 ),
                             )
                         )

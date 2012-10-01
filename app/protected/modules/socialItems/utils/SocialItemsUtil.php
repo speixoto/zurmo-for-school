@@ -85,10 +85,10 @@
                 $content = null;
                 if($model->note->activityItems->count() > 0)
                 {
-                    $content                     .= '<br/>';
                     $element                      = new NoteActivityItemsForSocialItemsListElement($model->note, null);
                     $element->nonEditableTemplate = '{content}';
                     $content                     .= $element->render();
+                    $content                     .= '<br/>';
                 }
                 return $content;
             }
