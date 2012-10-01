@@ -584,6 +584,7 @@
         /**
         * Test get notes that are related with particular contact(MANY_MANY relationship)
         *
+        * @depends testApiServerUrl
         */
         public function testGetNotesThatAreRelatedWithContactModel()
         {
