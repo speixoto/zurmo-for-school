@@ -58,17 +58,21 @@
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             InstallUtil::autoBuildDatabase($messageLogger);
+            if ($unfreezeWhenDone)
+            {
+                RedBeanDatabase::freeze();
+            }
+
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             //There are only 1 extra rows that are not being removed during the autobuild process.
             //These need to eventually be fixed so they are properly removed, except currency which is ok.
             //currency (1)
             $this->assertEquals($beforeRowCount, ($afterRowCount - 1));
-            if ($unfreezeWhenDone)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
+        /**
+         * @depends testAutoBuildDatabase
+         */
         public function testColumnType()
         {
             if (RedBeanDatabase::isFrozen())
@@ -134,6 +138,42 @@
             }
         }
 
+        /**
+         * @depends testAutoBuildDatabase
+         */
+        public function testAutoBuildUpgrade()
+        {
+            $unfreezeWhenDone     = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $unfreezeWhenDone = true;
+            }
+            $metadata = Account::getMetadata();
+            $metadata['Account']['members'][] = 'newField';
+            $rules = array('newField', 'type', 'type' => 'string');
+            $metadata['Account']['rules'][] = $rules;
+
+            //print_r($accountMetadata);
+            Account::setMetadata($metadata);
+
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $messageLogger              = new MessageLogger();
+            $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
+            InstallUtil::autoBuildDatabase($messageLogger);
+            if ($unfreezeWhenDone)
+            {
+                RedBeanDatabase::freeze();
+            }
+            $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
+            $this->assertEquals($beforeRowCount, $afterRowCount);
+
+            //Check Account fields
+            $tableName = RedBeanModel::getTableName('Account');
+            $columns   = R::$writer->getColumns($tableName);
+            $this->assertEquals('text', $columns['newfield']);
+        }
         /**
          * Based on type validator from models, get database column type
          * @param string $type
