@@ -57,7 +57,7 @@
         public function init()
         {
             assert('$this->listView instanceof ListView');
-            assert('is_string($modelClassName) && $modelClassName != null');
+            assert('is_string($this->modelClassName) && $this->modelClassName != null');
         }
 
         /**
