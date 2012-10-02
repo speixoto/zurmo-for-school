@@ -174,6 +174,7 @@
             $columns   = R::$writer->getColumns($tableName);
             $this->assertEquals('text', $columns['newfield']);
         }
+
         /**
          * Based on type validator from models, get database column type
          * @param string $type
