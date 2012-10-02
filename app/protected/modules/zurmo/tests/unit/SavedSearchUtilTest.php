@@ -71,7 +71,7 @@
             $savedSearches = SavedSearch::getByName('myTest');
             $this->assertEquals(1, count($savedSearches));
             $getData = array(
-                'savedSearchId'		      => $savedSearches[0]->id,
+                'savedSearchId'           => $savedSearches[0]->id,
                 'anyMixedAttributes'      => 'a search',
                 'anyMixedAttributesScope' => 'some',
                 'dynamicStructure'        => '1 or 5',

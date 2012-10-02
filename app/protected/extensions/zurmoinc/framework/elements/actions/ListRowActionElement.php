@@ -54,7 +54,7 @@
 
         protected function getGridId()
         {
-            if(!isset($this->params['gridId']))
+            if (!isset($this->params['gridId']))
             {
                 throw new NotSupportedException();
             }

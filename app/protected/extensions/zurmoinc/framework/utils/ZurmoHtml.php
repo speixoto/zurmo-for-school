@@ -254,7 +254,7 @@
             {
                 $labelClass = null;
             }
-            if(isset($htmlOptions['labelClass']))
+            if (isset($htmlOptions['labelClass']))
             {
                 $labelClass .= ' ' . $htmlOptions['labelClass'];
             }

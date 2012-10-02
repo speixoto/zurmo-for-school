@@ -259,12 +259,12 @@
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
                 //$rawPostFormData           = $_POST[$formModelClassName];
-                if(isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
+                if (isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
                     $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
                     unset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
                 }
-                if(isset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
+                if (isset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
                 {
                     unset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
                 }

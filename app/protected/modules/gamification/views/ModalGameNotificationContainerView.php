@@ -89,7 +89,7 @@
 
         protected static function resolveAndRenderPostingAndContinueLinksContent(GameNotification $notification, $index)
         {
-            if(!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
+            if (!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
             {
                 return ZurmoHtml::link(Yii::t('Default', 'Continue'), '#',
                              array('class'   => 'close-ModalGameNotification',

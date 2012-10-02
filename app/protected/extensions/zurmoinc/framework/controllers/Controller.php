@@ -72,7 +72,7 @@
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('$dataCollection instanceof SearchAttributesDataCollection || $dataCollection == null');
             $listModelClassName = get_class($searchModel->getModel());
-            if($dataCollection == null)
+            if ($dataCollection == null)
             {
                 $dataCollection = new SearchAttributesDataCollection($searchModel);
             }

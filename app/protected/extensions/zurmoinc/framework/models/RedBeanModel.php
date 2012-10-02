@@ -724,7 +724,6 @@
                 {
                     foreach ($metadata[$modelClassName]['rules'] as $validatorMetadata)
                     {
-
                         assert('isset($validatorMetadata[0])');
                         assert('isset($validatorMetadata[1])');
                         $attributeName       = $validatorMetadata[0];
@@ -789,7 +788,7 @@
                             foreach ($metadata[$modelClassName]['members'] as $memberName)
                             {
                                 $allValidators = $this->getValidators($memberName);
-                                foreach($allValidators as $validator)
+                                foreach ($allValidators as $validator)
                                 {
                                     if ((get_class($validator) == 'RedBeanModelTypeValidator' ||
                                         get_class($validator) == 'TypeValidator') &&
@@ -798,7 +797,6 @@
                                         $columnName = strtolower($validator->attributes[0]);
                                         if (count($allValidators) > 1)
                                         {
-
                                             $haveCStringValidator = false;
                                             foreach ($allValidators as $innerValidator)
                                             {

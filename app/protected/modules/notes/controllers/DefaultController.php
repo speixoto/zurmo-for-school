@@ -62,13 +62,13 @@
         protected function actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams = null)
         {
             assert('$model instanceof Note');
-            if(ArrayUtil::getArrayValue(PostUtil::getData(), 'postToProfile'))
+            if (ArrayUtil::getArrayValue(PostUtil::getData(), 'postToProfile'))
             {
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($model);
                 $socialItem                        = new SocialItem();
                 $socialItem->note                  = $model;
                 $saved                             = $socialItem->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }

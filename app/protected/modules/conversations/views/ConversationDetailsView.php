@@ -96,7 +96,7 @@
             $content .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
                                     array('{ownerStringContent}' => strval($this->model->createdByUser)));
             $content .= '</span>';
-            if($this->model->description == null)
+            if ($this->model->description == null)
             {
                 $element  = new TextElement($this->model, 'subject');
                 $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
@@ -111,7 +111,7 @@
             $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $this->model->createdDateTime, 'long', null) . '</strong></span>';
             $content .= $date;
-            if($this->model->files->count() > 0)
+            if ($this->model->files->count() > 0)
             {
                 $element  = new FilesElement($this->model, 'null');
                 $element->nonEditableTemplate = '<div>{content}</div>';

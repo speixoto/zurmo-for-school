@@ -233,9 +233,9 @@
             if ($this->model->savedSearchId != null)
             {
                 $label = Yii::t('Default', 'Delete') . "<span class='icon'></span>";
-                return ZurmoHtml::link($label, "#", array( 'id'		 => 'removeSavedSearch',
-                                                       'class'   => 'remove',
-                                                       'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));
+                return ZurmoHtml::link($label, "#", array( 'id'      => 'removeSavedSearch',
+                                                           'class'   => 'remove',
+                                                           'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));
             }
         }
 

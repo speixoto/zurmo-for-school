@@ -94,7 +94,7 @@
             else
             {
                 $id = $this->getId();
-                if($id != null)
+                if ($id != null)
                 {
                     $id = " id=\"$id\"";
                 }

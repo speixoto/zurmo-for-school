@@ -68,7 +68,7 @@
 
         private static function renderModelDescription(SocialItem $model)
         {
-            if($model->note->id > 0)
+            if ($model->note->id > 0)
             {
                 return Yii::app()->format->html($model->note->description);
             }
@@ -80,10 +80,10 @@
 
         private static function renderAfterDescriptionContent(SocialItem $model)
         {
-            if($model->note->id > 0)
+            if ($model->note->id > 0)
             {
                 $content = null;
-                if($model->note->activityItems->count() > 0)
+                if ($model->note->activityItems->count() > 0)
                 {
                     $element                      = new NoteActivityItemsForSocialItemsListElement($model->note, null);
                     $element->nonEditableTemplate = '{content}';

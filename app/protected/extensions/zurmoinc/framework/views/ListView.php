@@ -261,7 +261,7 @@
                 }
             }
             $menuColumn = $this->getGridViewMenuColumn();
-            if($menuColumn == null)
+            if ($menuColumn == null)
             {
                 $lastColumn = $this->getCGridViewLastColumn();
                 if (!empty($lastColumn))
@@ -278,7 +278,7 @@
 
         protected function resolveMetadata()
         {
-            if($this->listAttributesSelector != null)
+            if ($this->listAttributesSelector != null)
             {
                 return $this->listAttributesSelector->getResolvedMetadata();
             }
@@ -387,9 +387,9 @@
             {
                 return array(
                     'class'           => 'RowMenuColumn',
-                    'rowMenu'		  => $metadata['global']['rowMenu'],
-                    'listView'		  => $this,
-                    'redirectUrl'	  => ArrayUtil::getArrayValue($this->params, 'redirectUrl'),
+                    'rowMenu'         => $metadata['global']['rowMenu'],
+                    'listView'        => $this,
+                    'redirectUrl'     => ArrayUtil::getArrayValue($this->params, 'redirectUrl'),
                     'modelClassName'  => $this->modelClassName
                 );
             }
@@ -428,7 +428,7 @@
 
         public static function resolveRelatedListStringContent($modelId, $linkStringContent)
         {
-            if($modelId  > 0)
+            if ($modelId  > 0)
             {
                 return $linkStringContent;
             }

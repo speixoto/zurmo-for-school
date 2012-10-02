@@ -75,9 +75,9 @@
         {
             $selectedValues = $this->getSelected();
             $attributeNames = array();
-            foreach($this->designerLayoutAttributes->get() as $attributeName => $data)
+            foreach ($this->designerLayoutAttributes->get() as $attributeName => $data)
             {
-                if(!in_array($attributeName, $selectedValues))
+                if (!in_array($attributeName, $selectedValues))
                 {
                     $attributeNames[$attributeName] = $data['attributeLabel'];
                 }
@@ -94,9 +94,9 @@
             $selectedValues = $this->getSelected();
             $attributeNames = array();
             $allAttributes  = $this->designerLayoutAttributes->get();
-            foreach($selectedValues as $attributeName)
+            foreach ($selectedValues as $attributeName)
             {
-                if(key_exists($attributeName, $allAttributes))
+                if (key_exists($attributeName, $allAttributes))
                 {
                     $attributeNames[$attributeName] = $allAttributes[$attributeName]['attributeLabel'];
                 }
@@ -113,14 +113,14 @@
          */
         public function getSelected()
         {
-            if($this->selectedValues != null)
+            if ($this->selectedValues != null)
             {
                 return $this->selectedValues;
             }
             $attributeNames = array();
-            foreach($this->designerLayoutAttributes->get() as $attributeName => $data)
+            foreach ($this->designerLayoutAttributes->get() as $attributeName => $data)
             {
-                if(!$data['availableToSelect'])
+                if (!$data['availableToSelect'])
                 {
                     $attributeNames[] = $attributeName;
                 }
@@ -134,9 +134,9 @@
         public function getMetadataDefinedListAttributeNames()
         {
             $attributeNames = array();
-            foreach($this->designerLayoutAttributes->get() as $attributeName => $data)
+            foreach ($this->designerLayoutAttributes->get() as $attributeName => $data)
             {
-                if(!$data['availableToSelect'])
+                if (!$data['availableToSelect'])
                 {
                     $attributeNames[] = $attributeName;
                 }

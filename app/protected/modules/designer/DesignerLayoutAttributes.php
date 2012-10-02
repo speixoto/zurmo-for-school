@@ -58,9 +58,9 @@
         {
             $inPlaceAttributes   = array();
             $availableAttributes = array();
-            foreach($layoutAttributes as $attributeName => $data)
+            foreach ($layoutAttributes as $attributeName => $data)
             {
-                if($data['availableToSelect'])
+                if ($data['availableToSelect'])
                 {
                     $availableAttributes[$attributeName] = $data;
                 }

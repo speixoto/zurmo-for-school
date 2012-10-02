@@ -58,23 +58,23 @@
             assert('$mission->id > 0');
             assert('$user->id > 0');
             $save = false;
-            if($user == $mission->owner)
+            if ($user == $mission->owner)
             {
-                if(!$mission->ownerHasReadLatest)
+                if (!$mission->ownerHasReadLatest)
                 {
                     $mission->ownerHasReadLatest = true;
                     $save                        = true;
                 }
             }
-            elseif($user == $mission->takenByUser)
+            elseif ($user == $mission->takenByUser)
             {
-                if(!$mission->takenByUserHasReadLatest)
+                if (!$mission->takenByUserHasReadLatest)
                 {
                     $mission->takenByUserHasReadLatest = true;
                     $save                               = true;
                 }
             }
-            if($save)
+            if ($save)
             {
                 $mission->save();
             }
@@ -84,11 +84,11 @@
         {
             assert('$mission->id > 0');
             assert('$user->id > 0');
-            if($user->isSame($mission->owner))
+            if ($user->isSame($mission->owner))
             {
                 return $mission->ownerHasReadLatest;
             }
-            elseif($user == $mission->takenByUser)
+            elseif ($user == $mission->takenByUser)
             {
                 return $mission->takenByUserHasReadLatest;
             }
@@ -112,7 +112,6 @@
             }
             elseif ($type == MissionsListConfigurationForm::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
             {
-
                 return 'MissionsMineTakenButNotAcceptedLink';
             }
             else
@@ -120,7 +119,6 @@
                 throw new NotSupportedException();
             }
         }
-
 
         public static function makeDataProviderByType(Mission $mission, $type, $pageSize)
         {

@@ -70,21 +70,21 @@
             $element  = new TextAreaElement($this->model, 'description');
             $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
             $content .= $element->render();
-            if($this->model->reward != 0)
+            if ($this->model->reward != 0)
             {
                 $element                      = new TextElement($this->model, 'reward');
                 $element->nonEditableTemplate = '<div class="comment-content">' .
                                                 Yii::t('Default', 'Reward') . ': {content}</div>';
                 $content                     .= $element->render();
             }
-            if($this->model->takenByUser->id > 0)
+            if ($this->model->takenByUser->id > 0)
             {
                 $element                      = new UserElement($this->model, 'takenByUser');
                 $element->nonEditableTemplate = '<div class="comment-content">' .
                                                 Yii::t('Default', 'Taken By') . ': {content}</div>';
                 $content                     .= $element->render();
             }
-            if(!DateTimeUtil::isDateTimeValueNull($this->model, 'dueDateTime'))
+            if (!DateTimeUtil::isDateTimeValueNull($this->model, 'dueDateTime'))
             {
                 $element                      = new DateTimeElement($this->model, 'dueDateTime');
                 $element->nonEditableTemplate = '<div class="comment-content">' .
@@ -94,7 +94,7 @@
             $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $this->model->createdDateTime, 'long', null) . '</strong></span>';
             $content .= $date;
-            if($this->model->files->count() > 0)
+            if ($this->model->files->count() > 0)
             {
                 $element  = new FilesElement($this->model, 'null');
                 $element->nonEditableTemplate = '<div>{content}</div>';
@@ -130,7 +130,7 @@
                                                     array('id' => $this->model->id,
                                                           'uniquePageId' => $uniquePageId));
             $urlParameters = array('relatedModelId'           => $this->model->id,
-                                   'relatedModelClassName' 	  => 'Mission',
+                                   'relatedModelClassName'    => 'Mission',
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
 
@@ -156,12 +156,11 @@
             {
                 return false;
             }
-            if($elementInformation['type'] == 'EditLink' && $this->model->owner != Yii::app()->user->userModel)
+            if ($elementInformation['type'] == 'EditLink' && $this->model->owner != Yii::app()->user->userModel)
             {
                 return false;
             }
             return true;
         }
-
     }
 ?>

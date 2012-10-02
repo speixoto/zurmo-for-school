@@ -73,10 +73,9 @@
             {
                 foreach ($this->rowMenu['elements'] as $elementInformation)
                 {
-
                     $elementclassname = $elementInformation['type'] . 'ActionElement';
                     $params = array_slice($elementInformation, 1);
-                    if(!isset($params['redirectUrl']))
+                    if (!isset($params['redirectUrl']))
                     {
                         $params['redirectUrl'] = $this->redirectUrl;
                     }

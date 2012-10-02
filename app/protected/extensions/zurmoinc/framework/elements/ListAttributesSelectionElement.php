@@ -66,18 +66,18 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("SortableListAttributes");
             $cClipWidget->widget('ext.zurmoinc.framework.widgets.SortableCompareLists', array(
-                'leftSideId' 			 => $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . '_hidden',
+                'leftSideId'             => $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . '_hidden',
                 'leftSideName'           => $this->getEditableInputName(SearchForm::SELECTED_LIST_ATTRIBUTES) . '_hidden',
-                'leftSideValue'			 => array(),
-                'leftSideData'			 => $this->model->getListAttributesSelector()->getUnselectedListAttributesNamesAndLabelsAndAll(),
+                'leftSideValue'          => array(),
+                'leftSideData'           => $this->model->getListAttributesSelector()->getUnselectedListAttributesNamesAndLabelsAndAll(),
                 'leftSideDisplayLabel'   => Yii::t('Default', 'Hidden Columns'),
                 'rightSideId'            => $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES),
                 'rightSideName'          => $this->getEditableInputName(SearchForm::SELECTED_LIST_ATTRIBUTES),
-                'rightSideValue'		 => $this->model->getListAttributesSelector()->getSelected(),
-                'rightSideData'			 => $this->model->getListAttributesSelector()->getSelectedListAttributesNamesAndLabelsAndAll(),
+                'rightSideValue'         => $this->model->getListAttributesSelector()->getSelected(),
+                'rightSideData'          => $this->model->getListAttributesSelector()->getSelectedListAttributesNamesAndLabelsAndAll(),
                 'rightSideDisplayLabel'  => Yii::t('Default', 'Visible Columns'),
-                'formId'			     => $this->form->getId(),
-                'allowSorting'			 => true,
+                'formId'                 => $this->form->getId(),
+                'allowSorting'           => true,
                 'multiselectNavigationClasses' => 'multiselect-nav-updown',
             ));
             $cClipWidget->endClip();
@@ -115,7 +115,7 @@
         {
             $params = array();
             $params['label']       = Yii::t('Default', 'Apply');
-            $params['htmlOptions'] = array('id'	 => 'list-attributes-apply',
+            $params['htmlOptions'] = array('id'  => 'list-attributes-apply',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();
@@ -125,11 +125,10 @@
         {
             $params = array();
             $params['label']       = Yii::t('Default', 'Reset');
-            $params['htmlOptions'] = array('id'	 => 'list-attributes-reset',
+            $params['htmlOptions'] = array('id'  => 'list-attributes-reset',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();
         }
-
     }
 ?>

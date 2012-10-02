@@ -46,7 +46,7 @@
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
-            if($this->relatedUser != null && !Yii::app()->user->userModel->isSame($this->relatedUser))
+            if ($this->relatedUser != null && !Yii::app()->user->userModel->isSame($this->relatedUser))
             {
                 $model->toUser = $this->relatedUser;
             }

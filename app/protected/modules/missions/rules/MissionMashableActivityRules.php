@@ -96,9 +96,9 @@
             assert('$model instanceof Mission');
             $content      = null;
             $filesContent =  FileModelDisplayUtil::renderFileDataDetailsWithDownloadLinksContent($model, 'files');
-            if($filesContent != null)
+            if ($filesContent != null)
             {
-                if($content != null)
+                if ($content != null)
                 {
                     $content .= '<br/>';
                 }
