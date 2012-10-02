@@ -111,6 +111,7 @@
                                        $dataProvider,
                                        GetUtil::resolveSelectedIdsFromGet(),
                                        null,
+                                       array(),
                                        $searchForm->getListAttributesSelector());
             return $listView;
         }

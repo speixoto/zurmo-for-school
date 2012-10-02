@@ -62,7 +62,7 @@
         /**
          * Array containing CGridViewPagerParams
          */
-        protected $gridViewPagerParams;
+        protected $gridViewPagerParams = array();
 
         private $resolvedMetadata;
 
@@ -81,12 +81,13 @@
             $dataProvider,
             $selectedIds,
             $gridIdSuffix = null,
-            $gridViewPagerParams = null,
+            $gridViewPagerParams = array(),
             $listAttributesSelector = null
         )
         {
             assert('is_array($selectedIds)');
             assert('is_string($modelClassName)');
+            assert('is_array($this->gridViewPagerParams)');
             assert('$listAttributesSelector == null || $listAttributesSelector instanceof ListAttributesSelector');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
@@ -188,7 +189,7 @@
                         'paginationParams' => GetUtil::getData(),
                         'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
                     );
-            if (!$this->gridViewPagerParams)
+            if (empty($this->gridViewPagerParams))
             {
                 return $defaultGridViewPagerParams;
             }
