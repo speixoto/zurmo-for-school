@@ -51,7 +51,7 @@
             $this->owner->renderDataCellContentFromOutsideClass($row, $data);
             $content = ob_get_contents();
             ob_end_clean();
-            if($content != null && $content != $this->owner->grid->nullDisplay)
+            if ($content != null && $content != $this->owner->grid->nullDisplay)
             {
                 echo ZurmoHtml::openTag('div', $options);
                 echo $content;

@@ -52,7 +52,7 @@
                                       true);
                 $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
                 $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Profile Picture') . ": " . strval($this->model));
-                $content    .= ZurmoHtml::ajaxLink($span.$avatarImage, $url, $modalTitle);
+                $content    .= ZurmoHtml::ajaxLink($span . $avatarImage, $url, $modalTitle);
                 $content    .= '</div>';
             }
             else
@@ -85,7 +85,7 @@
             $radioOptions = array(User::AVATAR_TYPE_DEFAULT       => Yii::t('Default', 'No Profile Picture'),
                                   User::AVATAR_TYPE_PRIMARY_EMAIL => Yii::t('Default', 'Use gravatar with primary email ({primaryEmail})',
                                                                             array('{primaryEmail}' => $primaryEmail)),
-                                  User::AVATAR_TYPE_CUSTOM_EMAIL  => Yii::t('Default', 'Use gravatar with custom email'),);
+                                  User::AVATAR_TYPE_CUSTOM_EMAIL  => Yii::t('Default', 'Use gravatar with custom email'));
             return $radioOptions;
         }
 
@@ -132,10 +132,14 @@
         {
              $inputId = $this->getEditableInputId('avatarType');
              Yii::app()->clientScript->registerScript('userAvatarRadioElement', "
-                $('#edit-form').change(function() {
-                    if ($('#{$inputId}_2').attr('checked')) {
+                $('#edit-form').change(function()
+                {
+                    if ($('#{$inputId}_2').attr('checked'))
+                    {
                         $('#customAvatarEmailAddressInput').show();
-                    } else {
+                    }
+                    else
+                    {
                         $('#customAvatarEmailAddressInput').hide();
                     }
                 });

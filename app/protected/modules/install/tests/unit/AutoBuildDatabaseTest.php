@@ -122,10 +122,10 @@
                                             }
 
                                             $databaseColumnType = strtoupper(trim($columnType));
-                                            $compareTypeString  = implode(',', $compareTypes);
+                                            $compareTypeString  = implode(',', $compareTypes); // Not Coding Standard
                                             if (!in_array($databaseColumnType, $compareTypes))
                                             {
-                                                $compareTypeString  = implode(',', $compareTypes);
+                                                $compareTypeString  = implode(',', $compareTypes); // Not Coding Standard
                                                 $this->fail("Actual database type {$databaseColumnType} not in expected types: {$compareTypeString}.");
                                             }
                                         }

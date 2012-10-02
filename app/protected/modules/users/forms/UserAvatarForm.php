@@ -29,7 +29,6 @@
      */
     class UserAvatarForm extends ModelForm
     {
-
         public $avatarType;
         public $customAvatarEmailAddress;
 
@@ -40,7 +39,8 @@
             {
                 $avatar = unserialize($this->model->serializedAvatarData);
             }
-            if (isset($avatar['avatarType'])){
+            if (isset($avatar['avatarType']))
+            {
                 $this->avatarType = $avatar['avatarType'];
                 $this->customAvatarEmailAddress = $avatar['customAvatarEmailAddress'];
             }
@@ -81,6 +81,5 @@
             $this->model->serializeAndSetAvatarData(array('avatarType' => $this->avatarType,
                                                           'customAvatarEmailAddress' => $this->customAvatarEmailAddress));
         }
-
     }
 ?>

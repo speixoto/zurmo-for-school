@@ -69,7 +69,7 @@
         public static function renderFluidTitleContent($title)
         {
             assert('$title == null || is_string($title)');
-            if($title != null)
+            if ($title != null)
             {
                 // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript('TruncateTitleText', "

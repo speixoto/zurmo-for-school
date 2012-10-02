@@ -53,7 +53,7 @@
                 $socialItem->owner         = $demoDataHelper->getRandomByModelName('User');
                 $socialItem->createdByUser = $socialItem->owner;
                 //check if we should connect to a note
-                if(isset($randomSocialItemData['noteDescription']))
+                if (isset($randomSocialItemData['noteDescription']))
                 {
                     $note              = new Note();
                     $account           = $demoDataHelper->getRandomByModelName('Account');

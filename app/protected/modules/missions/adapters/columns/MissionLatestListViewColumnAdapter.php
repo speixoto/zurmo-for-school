@@ -30,7 +30,7 @@
         {
             return array(
                 'name'        => 'description',
-                'header'	  => false,
+                'header'      => false,
                 'type'        => 'raw',
                 'value'       => 'MissionsUtil::renderDescriptionAndLatestForDisplayView($data)'
             );

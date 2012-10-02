@@ -92,7 +92,7 @@
          */
         protected function renderNewSocialItemContent()
         {
-            if(ArrayUtil::getArrayValue(GetUtil::getData(), 'ajax') != null)
+            if (ArrayUtil::getArrayValue(GetUtil::getData(), 'ajax') != null)
             {
                 return;
             }

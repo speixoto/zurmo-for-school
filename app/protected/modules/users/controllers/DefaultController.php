@@ -114,7 +114,6 @@
             $view = new ModalView($this, $viewForModal);
             Yii::app()->getClientScript()->setToAjaxMode();
             echo $view->render();
-
         }
 
         public function actionDetails($id)

@@ -103,7 +103,7 @@
             {
                 $modelClass                = $this->modelClass;
                 $model                     = new $modelClass();
-                if($model->getAbbreviatedAttributeLabel($attribute) != null)
+                if ($model->getAbbreviatedAttributeLabel($attribute) != null)
                 {
                     return $model->getAbbreviatedAttributeLabel($attribute);
                 }

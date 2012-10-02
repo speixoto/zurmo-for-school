@@ -70,31 +70,31 @@
             assert('($this->model instanceof CModel && $this->form instanceof ZurmoActiveForm) ||
                     ( $this->model == null && $this->form == null)');
             assert('is_bool($this->allowSorting)');
-            if($this->rightSideId == null)
+            if ($this->rightSideId == null)
             {
                 $this->rightSideId = $this->form->id . '_' . $this->rightSideAttributeName;
             }
-            if($this->rightSideName == null)
+            if ($this->rightSideName == null)
             {
                 $this->rightSideName = $this->rightSideAttributeName;
             }
-            if($this->rightSideValue === null)
+            if ($this->rightSideValue === null)
             {
                 $this->rightSideValue = $this->model->{$this->rightSideAttributeName};
             }
-            if($this->leftSideId == null)
+            if ($this->leftSideId == null)
             {
                 $this->leftSideId  = $this->form->id . '_' . $this->leftSideAttributeName;
             }
-            if($this->leftSideName == null)
+            if ($this->leftSideName == null)
             {
                 $this->leftSideName = $this->leftSideAttributeName;
             }
-            if($this->leftSideValue === null)
+            if ($this->leftSideValue === null)
             {
                 $this->leftSideValue = $this->model->{$this->leftSideAttributeName};
             }
-            if($this->formId === null)
+            if ($this->formId === null)
             {
                 $this->formId = $this->form->id;
             }
@@ -115,14 +115,12 @@
             $content .= ZurmoHtml::button( '7', array( 'id' => $id . 'moveRight', 'class' => 'icon-right-arrow' ) ); //used 7, 8 becuase those are rendered as icons with symbly, other option is to make it an A with a SPAN inside it
             $content .= ZurmoHtml::button( '8', array( 'id' => $id . 'moveLeft', 'class' => 'icon-left-arrow' ) );
 
-
-
             $content .= '</div><div class="multiselect-right">';
             $content .= '<label>' . $this->rightSideDisplayLabel . '</label>';
             $content .= $rightListContent;
             $content .= '</div>';
 
-            if($this->allowSorting)
+            if ($this->allowSorting)
             {
                 $content .= '<div class="multiselect-nav' . $this->resolveMultiselectNavigationClassesContent() . '">';
                 $content .= ZurmoHtml::button( '5', array( 'id' => $id . 'moveUp', 'class' => 'icon-up-arrow' ) );     // value "up" in icon font
@@ -137,7 +135,7 @@
         {
             $htmlOptions = array('size' => '10', 'multiple' => true, 'class' => 'ignore-style multiple',
                                  'id'   => $this->leftSideId);
-            if($this->model != null)
+            if ($this->model != null)
             {
                 return $this->form->dropDownList(
                     $this->model,
@@ -156,7 +154,7 @@
         {
             $htmlOptions = array('size' => '10', 'multiple' => true, 'class' => 'ignore-style multiple',
                                  'id'   => $this->rightSideId);
-            if($this->model != null)
+            if ($this->model != null)
             {
                 return $this->form->dropDownList(
                     $this->model,
@@ -201,19 +199,20 @@
                 });
                 $('#" . $id . "moveUp').click(function()
                 {
-
-                    if($('#" . $this->rightSideId . " option:selected').first().index() > 0)
+                    if ($('#" . $this->rightSideId . " option:selected').first().index() > 0)
                     {
-                        $('#" . $this->rightSideId . " option:selected').each(function(){
+                        $('#" . $this->rightSideId . " option:selected').each(function()
+                        {
                            $(this).insertBefore($(this).prev());
                         });
                     }
                 });
                 $('#" . $id . "moveDown').click(function()
                 {
-                    if($('#" . $this->rightSideId . " option:selected').last().index() < ($('#" . $this->rightSideId . " option').length - 1))
+                    if ($('#" . $this->rightSideId . " option:selected').last().index() < ($('#" . $this->rightSideId . " option').length - 1))
                     {
-                        $($('#" . $this->rightSideId . " option:selected').get().reverse()).each(function(i, selected) {
+                        $($('#" . $this->rightSideId . " option:selected').get().reverse()).each(function(i, selected)
+                        {
                             if (!$(this).next().length) return false;
                             $(this).insertAfter($(this).next());
                         });
@@ -225,7 +224,7 @@
 
         protected function resolveMultiselectNavigationClassesContent()
         {
-            if($this->multiselectNavigationClasses != null)
+            if ($this->multiselectNavigationClasses != null)
             {
                 return ' ' . $this->multiselectNavigationClasses;
             }

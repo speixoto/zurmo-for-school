@@ -105,15 +105,15 @@
         {
             assert('$sortFunctionName == "sort" || $sortFunctionName == "asort"');
             $newArray = array();
-            foreach($array as $key => $value)
+            foreach ($array as $key => $value)
             {
                 $newArray[$key] = strtolower($value[$subKey]);
             }
-            if(!empty($newArray))
+            if (!empty($newArray))
             {
                 $sortFunctionName($newArray);
                 $finalArray = array();
-                foreach($newArray as $newKey => $unused)
+                foreach ($newArray as $newKey => $unused)
                 {
                     $finalArray[] = $array[$newKey];
                 }

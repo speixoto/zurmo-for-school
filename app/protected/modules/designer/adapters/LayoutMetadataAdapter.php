@@ -162,7 +162,7 @@
                 {
                     $metadata['panels'][0]['rows'][$rowKey]['cells'][0] = $cellMetadata;
                 }
-                $rowKey ++;
+                $rowKey++;
             }
             return $this->makeMergedSaveableMetadata($viewClassName, $metadata);
         }
