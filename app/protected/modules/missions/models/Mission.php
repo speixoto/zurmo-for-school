@@ -217,11 +217,11 @@
                     MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->takenByUser, $this->id, $messageContent);
                 }
             }
-            if($this->getScenario() == 'importModel' && $this->sendOwnerUnreadCommentNotification)
+            if($this->getScenario() != 'importModel' && $this->sendOwnerUnreadCommentNotification)
             {
                 MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->owner);
             }
-            elseif($this->getScenario() == 'importModel' &&
+            elseif($this->getScenario() != 'importModel' &&
                    $this->sendTakenByUserUnreadCommentNotification && $this->takenByUser->id > 0)
             {
                 MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->takenByUser);

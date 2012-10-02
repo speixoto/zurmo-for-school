@@ -53,7 +53,7 @@
 
         protected function getDefaultRoute()
         {
-            assert('is_string($this->params["relationModelClassName"]) && is_string($this->params["relationModelId"])');
+            assert('is_string($this->params["relationModelClassName"]) && is_int($this->params["relationModelId"])');
             $params = array('id' => $this->modelId);
             $params['relationModelClassName']    = $this->params['relationModelClassName'];
             $params['relationModelId']           = $this->params['relationModelId'];
