@@ -56,7 +56,7 @@
 
         public function getTitle()
         {
-            $this->title;
+            return $this->title;
         }
 
         public static function getDefaultMetadata()
