@@ -8115,7 +8115,7 @@ div.wide.form a {
   -ms-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
   box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
   position: absolute;
-  top: 50%;
+  top: 20%;
   left: 50%;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -8131,6 +8131,9 @@ div.wide.form a {
   height: auto;
   display: block;
   margin: 4px 0 0 4px;
+}
+.juiportlet-widget .list-preloader {
+  top: 50%;
 }
 .overlay-spinner {
   position: fixed;
