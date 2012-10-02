@@ -150,6 +150,7 @@
             $this->assertEquals('[]', $content);
 
             //Now save that comment.
+            sleep(2); //to force some time to pass.
             $this->setGetArray(array('relatedModelId'             => $missions[0]->id,
                                      'relatedModelClassName'      => 'Mission',
                                      'relatedModelRelationName'   => 'comments',

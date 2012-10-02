@@ -86,7 +86,7 @@
             $this->assertEquals(null,          $searchForm->anyMixedAttributes);
             $this->assertEquals(null,          $searchForm->getAnyMixedAttributesScope());
             $this->assertEquals('1 or 6',      $searchForm->dynamicStructure);
-            $this->assertEquals(null,          $searchForm->dynamicClauses);
+            $this->assertEquals(array(),       $searchForm->dynamicClauses);
             $this->assertEquals(array('name'), $searchForm->getListAttributesSelector()->getSelected());
         }
 

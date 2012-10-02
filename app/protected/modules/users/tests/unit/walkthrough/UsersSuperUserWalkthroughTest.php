@@ -408,7 +408,7 @@
                                                                 'customAvatarEmailAddress' => ''))
                                 );
             $content = $this->runControllerWithExitExceptionAndGetContent('users/default/changeAvatar');
-            $this->assertContains('You need to choose a custom email address', $content);
+            $this->assertContains('You need to choose an email address', $content);
 
             //Successful change avatar validation
             $this->setGetArray (array('id'      => $aUser->id));
