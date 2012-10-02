@@ -54,6 +54,11 @@
             $this->title          = $title;
         }
 
+        public function getTitle()
+        {
+            return $this->title;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
