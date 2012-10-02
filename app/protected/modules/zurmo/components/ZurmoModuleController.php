@@ -285,7 +285,7 @@
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $modelClassName                 = $this->getModule()->getPrimaryModelName();
-            $searchFormClassName            = $this->getSearchFormClassName(); //maybe replace to call getGlobalSearchFormClassName depending on 0.7.4 refactor
+            $searchFormClassName            = static::getSearchFormClassName();
             $model                          = new $modelClassName(false);
             $searchForm                     = new $searchFormClassName($model);
             $dataProvider = $this->resolveSearchDataProvider(

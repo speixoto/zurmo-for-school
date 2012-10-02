@@ -555,7 +555,7 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $user = UserTestHelper::createBasicUser('PeterSmith');
+            $user = UserTestHelper::createBasicUser('PeterSmith2');
 
             // Provide data without required fields.
             $data['username']         = "";
