@@ -32,7 +32,6 @@
     class RedBeanDatabaseBuilderUtil
     {
         protected static $modelClassNamesToSampleModels;
-        protected static $uniqueStrings = array();
 
         /**
          * Auto building of models (and therefore the database) involves...
@@ -70,7 +69,6 @@
             assert('AssertUtil::all($modelClassNames, "is_string")');
             assert('$messageLogger instanceof MessageLogger');
             self::$modelClassNamesToSampleModels = array();
-            self::$uniqueStrings                 = array();
             foreach ($modelClassNames as $modelClassName)
             {
                 $messages[] = array('info' => "Auto building $modelClassName.");
@@ -457,7 +455,13 @@
                                 // that it should be all lowercase or all
                                 // uppercase. If it still doesn't validate,
                                 // well, we'll see...
-                                $s = self::getUniqueString($minLength, $maxLength, $unique);
+                                $modelClassName = get_class($model);
+                                do
+                                {
+                                    $s = self::getRandomString($minLength, $maxLength);
+                                }
+                                while ($unique && $modelClassName::getSubset(null, null, null, "$memberName = '$s'"));
+
                                 $model->$memberName = $s;
                                 if (!$model->validate(array($memberName)))
                                 {
@@ -477,26 +481,19 @@
             }
         }
 
-        protected static function getUniqueString($minLength, $maxLength, $unique)
+        protected static function getRandomString($minLength, $maxLength)
         {
-            if ($maxLength == null)
+            if ($minLength == null)
             {
-                $maxLength = 1024;
+                $minLength = 1;
             }
-            do
+
+            $s = chr(rand(ord('A'), ord('Z')));
+            $length = min($minLength, $maxLength);
+            while (strlen($s) < $length)
             {
-                $s = chr(rand(ord('A'), ord('Z')));
-                $length = max($minLength, $maxLength);
-                if ($maxLength !== null)
-                {
-                    $length = min($length, $maxLength);
-                }
-                while (strlen($s) < $length)
-                {
-                    $s .= chr(rand(ord('a'), ord('z')));
-                }
-            } while ($unique && in_array($s, self::$uniqueStrings));
-            $uniqueStrings[] = $s;
+                $s .= chr(rand(ord('a'), ord('z')));
+            }
             return $s;
         }
     }

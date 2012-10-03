@@ -52,9 +52,10 @@
                                               'listPageSize', get_class($this->getModule()));
             $contact                        = new Contact(false);
             $searchForm                     = new ContactsSearchForm($contact);
-            $dataProvider = $this->makeSearchDataProvider(
+            $listAttributesSelector         = new ListAttributesSelector('ContactsListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
-                'Contact',
                 $pageSize,
                 'ContactsStateMetadataAdapter',
                 'ContactsSearchView'
@@ -65,6 +66,7 @@
                     $searchForm,
                     $dataProvider
                 );
+                $view = new ContactsPageView($mixedView);
             }
             else
             {
@@ -72,13 +74,11 @@
                     $searchForm,
                     $pageSize,
                     ContactsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    Yii::app()->user->userModel->id,
-                    $dataProvider,
-                    'ContactsActionBarForListView'
+                    $dataProvider
                 );
-            }
-            $view = new ContactsPageView(ZurmoDefaultViewUtil::
+                $view = new ContactsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
+            }
             echo $view->render();
         }
 
@@ -153,7 +153,6 @@
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new ContactsSearchForm($contact),
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter');
@@ -192,7 +191,6 @@
             $contact = new Contact(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new ContactsSearchForm($contact),
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'ContactsStateMetadataAdapter'
@@ -253,7 +251,7 @@
             echo CJSON::encode($autoCompleteResults);
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return 'ContactsSearchForm';
         }
@@ -261,11 +259,6 @@
         public function actionExport()
         {
             $this->export();
-        }
-
-        public function actionComposeEmail()
-        {
-            $this->composeEmail();
         }
     }
 ?>

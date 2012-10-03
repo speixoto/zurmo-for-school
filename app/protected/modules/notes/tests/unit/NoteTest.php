@@ -285,7 +285,6 @@
             $firstContact  = ContactTestHelper::createContactByNameForOwner('First', $super);
             $secondContact = ContactTestHelper::createContactByNameForOwner('Second', $super);
 
-
             $firstNote->activityItems->add($firstContact);
             $firstNote->activityItems->add($secondContact);
             $firstNote->save();
