@@ -97,5 +97,16 @@
             );
             return $metadata;
         }
+
+        protected function resolveActiveFormAjaxValidationOptions()
+        {
+            return array('enableAjaxValidation' => true,
+                         'clientOptions' => array(
+                            'validateOnSubmit'  => true,
+                            'validateOnChange'  => false,
+                            'beforeValidate'    => 'js:beforeValidateAction',
+                            'afterValidate'     => 'js:afterValidateAjaxAction',));
+        }
+
     }
 ?>

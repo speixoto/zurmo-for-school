@@ -352,8 +352,7 @@
 
         public function actionComposeEmail()
         {
-            //Yii::app()->getClientScript()->setToAjaxMode();
-            //TODO: Make modal view work
+            Yii::app()->getClientScript()->setToAjaxMode();
             try
             {
                 EmailAccount::getByUserAndName(Yii::app()->user->userModel);
@@ -389,7 +388,7 @@
                     $emailMessage);
                 $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $composeEmailEditAndDetailsView));
-                //$view = new ModalView($this, $composeEmailEditAndDetailsView);
+                $view = new ModalView($this, $composeEmailEditAndDetailsView);
             }
             catch (NotFoundException $e)
             {
