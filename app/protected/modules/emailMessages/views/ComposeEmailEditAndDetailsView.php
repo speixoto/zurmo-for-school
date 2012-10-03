@@ -105,7 +105,7 @@
                             'validateOnSubmit'  => true,
                             'validateOnChange'  => false,
                             'beforeValidate'    => 'js:beforeValidateAction',
-                            'afterValidate'     => 'js:afterValidateAjaxAction',));
+                            'afterValidate'     => 'js:afterValidateAjaxAction'));
         }
 
     }

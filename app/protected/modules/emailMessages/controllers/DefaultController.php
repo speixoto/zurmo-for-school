@@ -379,6 +379,14 @@
                         );
                         $this->redirect(Yii::app()->createUrl('/home/default'));
                         //TODO: Emails are not connected to contacts/leads if more than one recipient
+                    } else {
+                        $errorData = array();
+                        foreach ($emailMessage->getErrors() as $attribute => $errors)
+                        {
+                                $errorData[ZurmoHtml::activeId($emailMessage, $attribute)] = $errors;
+                        }
+                        echo CJSON::encode($errorData);
+                        Yii::app()->end(0, false);
                     }
                 }
                 $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
