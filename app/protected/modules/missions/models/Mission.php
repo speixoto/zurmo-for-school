@@ -97,15 +97,15 @@
                 ),
                 'rules' => array(
                     array('description',              'required'),
-                    array('description',    		  'type', 'type' => 'string'),
-                    array('dueDateTime', 	          'type', 'type' => 'datetime'),
-                    array('latestDateTime', 		  'required'),
-                    array('latestDateTime', 		  'readOnly'),
-                    array('latestDateTime', 		  'type', 'type' => 'datetime'),
-                    array('status',           		  'required'),
-                    array('status',          		  'type',    'type' => 'integer'),
+                    array('description',              'type', 'type' => 'string'),
+                    array('dueDateTime',              'type', 'type' => 'datetime'),
+                    array('latestDateTime',           'required'),
+                    array('latestDateTime',           'readOnly'),
+                    array('latestDateTime',           'type', 'type' => 'datetime'),
+                    array('status',                   'required'),
+                    array('status',                   'type',    'type' => 'integer'),
                     array('ownerHasReadLatest',       'boolean'),
-                    array('reward',  	  'type', 'type' => 'string'),
+                    array('reward',                   'type', 'type' => 'string'),
                     array('takenByUserHasReadLatest', 'boolean'),
 
                 ),
@@ -153,28 +153,26 @@
         {
             if (parent::beforeSave())
             {
-                if($this->comments->isModified() || $this->getIsNewModel())
+                if ($this->comments->isModified() || $this->getIsNewModel())
                 {
                     $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-                    if($this->getIsNewModel())
+                    if ($this->getIsNewModel())
                     {
                         $this->ownerHasReadLatest = true;
                     }
                 }
-                if($this->comments->isModified())
+                if ($this->comments->isModified())
                 {
-                    foreach($this->comments as $comment)
+                    foreach ($this->comments as $comment)
                     {
-                        if($comment->id < 0)
+                        if ($comment->id < 0)
                         {
-                            if(Yii::app()->user->userModel != $this->owner)
+                            if (Yii::app()->user->userModel != $this->owner)
                             {
                                 $this->ownerHasReadLatest                 = false;
                                 $this->sendOwnerUnreadCommentNotification = true;
-
-
                             }
-                            if(Yii::app()->user->userModel != $this->takenByUser && $this->takenByUser->id > 0)
+                            if (Yii::app()->user->userModel != $this->takenByUser && $this->takenByUser->id > 0)
                             {
                                 $this->takenByUserHasReadLatest                 = false;
                                 $this->sendTakenByUserUnreadCommentNotification = true;
@@ -195,33 +193,34 @@
             if (((isset($this->originalAttributeValues['status'])) && !$this->isNewModel) &&
                 $this->originalAttributeValues['status'] != $this->status)
             {
-                if($this->status == self::STATUS_TAKEN)
+                if ($this->status == self::STATUS_TAKEN)
                 {
                     $messageContent = Yii::t('Default', 'A mission you created has been taken on by {takenByUserName}',
                                                         array('{takenByUserName}' => strval($this->takenByUser)));
                     MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->owner, $this->id, $messageContent);
                 }
-                elseif($this->status == self::STATUS_COMPLETED)
+                elseif ($this->status == self::STATUS_COMPLETED)
                 {
                     $messageContent = Yii::t('Default', 'A mission you created has been completed');
                     MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->owner, $this->id, $messageContent);
                 }
-                elseif($this->status == self::STATUS_REJECTED && $this->takenByUser->id > 0)
+                elseif ($this->status == self::STATUS_REJECTED && $this->takenByUser->id > 0)
                 {
                     $messageContent = Yii::t('Default', 'A mission you completed has been rejected');
                     MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->takenByUser, $this->id, $messageContent);
                 }
-                elseif($this->status == self::STATUS_ACCEPTED && $this->takenByUser->id > 0)
+                elseif ($this->status == self::STATUS_ACCEPTED && $this->takenByUser->id > 0)
                 {
                     $messageContent = Yii::t('Default', 'A mission you completed has been accepted');
                     MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->takenByUser, $this->id, $messageContent);
                 }
             }
-            if($this->sendOwnerUnreadCommentNotification)
+            if($this->getScenario() != 'importModel' && $this->sendOwnerUnreadCommentNotification)
             {
                 MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->owner);
             }
-            elseif($this->sendTakenByUserUnreadCommentNotification && $this->takenByUser->id > 0)
+            elseif($this->getScenario() != 'importModel' &&
+                   $this->sendTakenByUserUnreadCommentNotification && $this->takenByUser->id > 0)
             {
                 MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->takenByUser);
             }

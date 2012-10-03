@@ -85,7 +85,7 @@
             $mission         = new Mission();
             $mission->status = Mission::STATUS_AVAILABLE;
             //Set everyone with read/write access on save
-            if(isset($_POST['Mission']))
+            if (isset($_POST['Mission']))
             {
                 $_POST['Mission']['explicitReadWriteModelPermissions']['type'] = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
             }
@@ -127,10 +127,10 @@
         {
             $comment       = new Comment();
             $redirectUrl   = Yii::app()->createUrl('/missions/default/inlineCreateCommentFromAjax',
-                                                    array('id'		     => $id,
+                                                    array('id'           => $id,
                                                           'uniquePageId' => $uniquePageId));
             $urlParameters = array('relatedModelId'           => (int)$id,
-                                   'relatedModelClassName' 	  => 'Mission',
+                                   'relatedModelClassName'    => 'Mission',
                                    'relatedModelRelationName' => 'comments',
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
             $uniquePageId  = 'CommentInlineEditForModelView';
@@ -147,9 +147,9 @@
             $save            = true;
             $mission         = Mission::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($mission);
-            if($status == Mission::STATUS_TAKEN)
+            if ($status == Mission::STATUS_TAKEN)
             {
-                if($mission->takenByUser->id > 0)
+                if ($mission->takenByUser->id > 0)
                 {
                     $save = false;
                 }
@@ -158,18 +158,18 @@
                     $mission->takenByUser = Yii::app()->user->userModel;
                 }
             }
-            if($save)
+            if ($save)
             {
                 $mission->status = $status;
                 $saved           = $mission->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new NotSupportedException();
                 }
                 $statusText        = MissionStatusElement::renderStatusTextContent($mission);
                 $statusAction      = MissionStatusElement::renderStatusActionContent($mission, MissionStatusElement::getStatusChangeDivId($mission->id));
                 $content          .= $statusText;
-                if($statusAction != null)
+                if ($statusAction != null)
                 {
                     $content .= ' ' . $statusAction;
                 }

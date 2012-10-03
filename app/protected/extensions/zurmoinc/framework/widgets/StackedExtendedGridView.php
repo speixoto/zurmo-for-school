@@ -98,7 +98,7 @@
             echo '<td>';
             foreach ($this->columns as $column)
             {
-                if($column instanceof RowMenuColumn)
+                if ($column instanceof RowMenuColumn)
                 {
                     continue;
                 }
@@ -115,7 +115,7 @@
             echo "</td>\n";
             foreach ($this->columns as $column)
             {
-                if($column instanceof RowMenuColumn)
+                if ($column instanceof RowMenuColumn)
                 {
                     $column->attachBehavior('stackedDataCell', new StackedGridColumnBehavior());
                     echo "<td>\n";

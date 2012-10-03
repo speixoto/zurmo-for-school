@@ -62,7 +62,7 @@
         /**
          * Array containing CGridViewPagerParams
          */
-        protected $gridViewPagerParams;
+        protected $gridViewPagerParams = array();
 
         private $resolvedMetadata;
 
@@ -81,12 +81,13 @@
             $dataProvider,
             $selectedIds,
             $gridIdSuffix = null,
-            $gridViewPagerParams = null,
+            $gridViewPagerParams = array(),
             $listAttributesSelector = null
         )
         {
             assert('is_array($selectedIds)');
             assert('is_string($modelClassName)');
+            assert('is_array($this->gridViewPagerParams)');
             assert('$listAttributesSelector == null || $listAttributesSelector instanceof ListAttributesSelector');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
@@ -188,7 +189,7 @@
                         'paginationParams' => GetUtil::getData(),
                         'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
                     );
-            if (!$this->gridViewPagerParams)
+            if (empty($this->gridViewPagerParams))
             {
                 return $defaultGridViewPagerParams;
             }
@@ -260,7 +261,7 @@
                 }
             }
             $menuColumn = $this->getGridViewMenuColumn();
-            if($menuColumn == null)
+            if ($menuColumn == null)
             {
                 $lastColumn = $this->getCGridViewLastColumn();
                 if (!empty($lastColumn))
@@ -277,7 +278,7 @@
 
         protected function resolveMetadata()
         {
-            if($this->listAttributesSelector != null)
+            if ($this->listAttributesSelector != null)
             {
                 return $this->listAttributesSelector->getResolvedMetadata();
             }
@@ -386,9 +387,9 @@
             {
                 return array(
                     'class'           => 'RowMenuColumn',
-                    'rowMenu'		  => $metadata['global']['rowMenu'],
-                    'listView'		  => $this,
-                    'redirectUrl'	  => ArrayUtil::getArrayValue($this->params, 'redirectUrl'),
+                    'rowMenu'         => $metadata['global']['rowMenu'],
+                    'listView'        => $this,
+                    'redirectUrl'     => ArrayUtil::getArrayValue($this->params, 'redirectUrl'),
                     'modelClassName'  => $this->modelClassName
                 );
             }
@@ -427,7 +428,7 @@
 
         public static function resolveRelatedListStringContent($modelId, $linkStringContent)
         {
-            if($modelId  > 0)
+            if ($modelId  > 0)
             {
                 return $linkStringContent;
             }

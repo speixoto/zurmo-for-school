@@ -942,10 +942,10 @@
             $user->username = 'avatar';
             $user->lastName = 'User';
             $this->assertTrue($user->save());
-            $this->assertContains('width="250" height="250" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',
+            $this->assertContains('width="250" height="250" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm', // Not Coding Standard
                     $user->getAvatarImage());
             //When calling getAvatarImage it should return the same url to avoid querying gravatar twice
-            $this->assertContains('width="50" height="50" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',
+            $this->assertContains('width="50" height="50" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',   // Not Coding Standard
                     $user->getAvatarImage(50));
             unset($user);
 
@@ -957,9 +957,9 @@
             $this->assertTrue($user->save());
             unset($user);
             $user = User::getByUsername('avatar');
-            $this->assertContains('width="250" height="250" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',
+            $this->assertContains('width="250" height="250" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm', // Not Coding Standard
                     $user->getAvatarImage());
-            $this->assertContains('width="50" height="50" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',
+            $this->assertContains('width="50" height="50" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',   // Not Coding Standard
                     $user->getAvatarImage(50));
             unset($user);
 
@@ -979,11 +979,11 @@
             $user = User::getByUsername('avatar2');
             $avatarUrl   = 'width="250" height="250" src="http://www.gravatar.com/avatar/' .
                     md5(strtolower(trim($emailAddress))) .
-                    '?s=250&amp;d=identicon&amp;r=g';
+                    '?s=250&amp;d=identicon&amp;r=g'; // Not Coding Standard
             $this->assertContains($avatarUrl, $user->getAvatarImage());
             $avatarUrl   = 'width="5" height="5" src="http://www.gravatar.com/avatar/' .
                     md5(strtolower(trim($emailAddress))) .
-                    '?s=250&amp;d=identicon&amp;r=g';
+                    '?s=250&amp;d=identicon&amp;r=g'; // Not Coding Standard
             $this->assertContains($avatarUrl, $user->getAvatarImage(5));
             unset($user);
 
@@ -1000,11 +1000,11 @@
             $user = User::getByUsername('avatar3');
             $avatarUrl   = 'width="250" height="250" src="http://www.gravatar.com/avatar/' .
                     md5(strtolower(trim($emailAddress))) .
-                    "?s=250&amp;d=identicon&amp;r=g";
+                    "?s=250&amp;d=identicon&amp;r=g"; // Not Coding Standard
             $this->assertContains($avatarUrl, $user->getAvatarImage());
             $avatarUrl   = 'width="2500" height="2500" src="http://www.gravatar.com/avatar/' .
                     md5(strtolower(trim($emailAddress))) .
-                    "?s=250&amp;d=identicon&amp;r=g";
+                    "?s=250&amp;d=identicon&amp;r=g"; // Not Coding Standard
             $this->assertContains($avatarUrl, $user->getAvatarImage(2500));
             unset($user);
         }

@@ -26,7 +26,6 @@
 
     class User extends Permitable
     {
-
         const AVATAR_TYPE_DEFAULT       = 1;
         const AVATAR_TYPE_PRIMARY_EMAIL = 2;
         const AVATAR_TYPE_CUSTOM_EMAIL  = 3;
@@ -369,21 +368,21 @@
                 }
                 if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
                 {
-                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
+                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm"; // Not Coding Standard
                 }
                 elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_PRIMARY_EMAIL)
                 {
                     $email      = $this->primaryEmail->emailAddress;
-                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g";
+                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g"; // Not Coding Standard
                 }
                 elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_CUSTOM_EMAIL)
                 {
                     $email      = $avatar['customAvatarEmailAddress'];
-                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g";
+                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g"; // Not Coding Standard
                 }
                 else
                 {
-                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm";
+                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm"; // Not Coding Standard
                 }
                 //Check connection to gravatar and return offline picture
                 $htmlHeaders = @get_headers($avatarUrl);

@@ -10892,6 +10892,7 @@ div.hasHalfs .twoThirds {
   position: absolute;
   right: 0;
   width: 100%;
+  z-index: 0;
 }
 .dk_options a,
 .dk_options a:link,

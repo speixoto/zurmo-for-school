@@ -293,7 +293,7 @@
 
         protected function getSelectListAttributesLinkContent()
         {
-            if($this->model->getListAttributesSelector() != null)
+            if ($this->model->getListAttributesSelector() != null)
             {
                 return ZurmoHtml::link(Yii::t('Default', 'Columns'), '#', array('id' => 'select-list-attributes-link' . $this->gridIdSuffix));
             }
@@ -301,7 +301,7 @@
 
         protected function renderListAttributesSelectionContent(ZurmoActiveForm $form)
         {
-            if($this->model->getListAttributesSelector() == null)
+            if ($this->model->getListAttributesSelector() == null)
             {
                 return;
             }

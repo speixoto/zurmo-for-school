@@ -42,7 +42,8 @@
             $searchView          = new $searchViewClassName($searchModel, get_class($listModel));
             $listViewClassName   = $moduleName . 'ListView';
             $listView            = new $listViewClassName($controllerId, $moduleId,
-                                                          get_class($listModel), $dataProvider, $selectedIds, null, null,
+                                                          get_class($listModel), $dataProvider,
+                                                          $selectedIds, null, array(),
                                                           $searchModel->getListAttributesSelector());
             $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
                                                                $listView->getGridViewId(),

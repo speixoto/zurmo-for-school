@@ -50,19 +50,19 @@
             //give 3 users access to social items
             $steven->setRight('SocialItemsModule',   SocialItemsModule::RIGHT_ACCESS_SOCIAL_ITEMS, Right::ALLOW);
             $saved = $steven->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new NotSupportedException();
             }
             $sally->setRight('SocialItemsModule',   SocialItemsModule::RIGHT_ACCESS_SOCIAL_ITEMS, Right::ALLOW);
             $saved = $sally->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new NotSupportedException();
             }
             $mary->setRight('SocialItemsModule',   SocialItemsModule::RIGHT_ACCESS_SOCIAL_ITEMS, Right::ALLOW);
             $saved = $mary->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new NotSupportedException();
             }
@@ -165,7 +165,7 @@
          */
         public function testAddingCommentsAndUpdatingActivityStampsOnSocialItem()
         {
-            if(!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
             {
                 return;
             }
@@ -226,7 +226,7 @@
          */
         public function testUsersCanReadAndWriteSocialItemsOkThatAreNotOwner()
         {
-            if(!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
             {
                 return;
             }
@@ -250,7 +250,7 @@
             $this->setGetArray(array('relatedModelId'             => $socialItems[0]->id,
                                      'relatedModelClassName'      => 'SocialItem',
                                      'relatedModelRelationName'   => 'comments',
-                                     'id'               		  => $maryCommentId));
+                                     'id'                         => $maryCommentId));
             $this->runControllerWithNoExceptionsAndGetContent('comments/default/deleteViaAjax', true);
             $socialItemId  = $socialItems[0]->id;
             $socialItems[0]->forget();
@@ -261,7 +261,7 @@
             $this->setGetArray(array('relatedModelId'             => $socialItems[0]->id,
                                      'relatedModelClassName'      => 'SocialItem',
                                      'relatedModelRelationName'   => 'comments',
-                                     'id'               		  => $superCommentId));
+                                     'id'                         => $superCommentId));
             $this->runControllerShouldResultInAjaxAccessFailureAndGetContent('comments/default/deleteViaAjax');
             $socialItemId  = $socialItems[0]->id;
             $socialItems[0]->forget();
@@ -280,13 +280,16 @@
             $this->assertEquals(1, count($socialItems));
         }
 
-
         /**
          * @depends testUsersCanReadAndWriteSocialItemsOkThatAreNotOwner
          */
         public function testPostGameNotificationToProfile()
         {
-            //actionPostGameNotificationToProfile($content)
+            if (!SECURITY_OPTIMIZED) //because testUsersCanReadAndWriteSocialItemsOkThatAreNotOwner
+                                     //there are cascading effects so we dont run this
+            {
+                return;
+            }
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $socialItems  = SocialItem::getAll();
             $this->assertEquals(1, count($socialItems));
@@ -305,6 +308,11 @@
          */
         public function testPostingAnNoteCarriesPermissionsCorrectly()
         {
+            if (!SECURITY_OPTIMIZED) //because testUsersCanReadAndWriteSocialItemsOkThatAreNotOwner
+                                     //there are cascading effects so we dont run this
+            {
+                return;
+            }
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $socialItems  = SocialItem::getAll();
             $this->assertEquals(2, count($socialItems));
@@ -341,7 +349,7 @@
             $mary           = User::getByUsername('mary');
             $mary->setRight('SocialItemsModule',   SocialItemsModule::RIGHT_ACCESS_SOCIAL_ITEMS, Right::DENY);
             $saved = $mary->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new NotSupportedException();
             }

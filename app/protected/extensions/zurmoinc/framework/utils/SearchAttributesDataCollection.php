@@ -76,7 +76,7 @@
 
         public function getSelectedListAttributesFromModel()
         {
-            if($this->model->getListAttributesSelector() != null)
+            if ($this->model->getListAttributesSelector() != null)
             {
                 return $this->model->getListAttributesSelector()->getSelected();
             }

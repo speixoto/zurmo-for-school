@@ -33,7 +33,7 @@
             {
                 $fieldName = "{$name}_$fieldName";
             }
-            $fieldName = preg_replace( "/\W/","", $fieldName );
+            $fieldName = preg_replace( "/\W/", "", $fieldName );
             return $fieldName;
          }
 
@@ -51,7 +51,7 @@
         public static function breakLink( RedBean_OODBBean $bean, $typeName, $name = null)
         {
             $fieldName = self::getLinkField($typeName, $name);
-            $bean->$fieldName = NULL;
+            $bean->$fieldName = null;
         }
 
         public static function getBean( RedBean_OODBBean $bean, $typeName, $name = null)
@@ -72,7 +72,7 @@
         {
             $fieldName = self::getLinkField($typeName);
             $id = (int)$bean->$fieldName;
-            $ids = R::getCol("select id from {$typeName} where ".$bean->getMeta("type")."_id"." = {$bean->id}");
+            $ids = R::getCol("select id from {$typeName} where " . $bean->getMeta("type") . "_id" . " = {$bean->id}");
             return $ids;
         }
     }

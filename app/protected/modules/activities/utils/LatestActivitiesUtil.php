@@ -54,7 +54,7 @@
                     {
                         if (RightsUtil::canUserAccessModule(get_class($module), Yii::app()->user->userModel))
                         {
-                            if(!$includeHavingRelatedItems && !$modelClassName::hasRelatedItems())
+                            if (!$includeHavingRelatedItems && !$modelClassName::hasRelatedItems())
                             {
                                 continue;
                             }

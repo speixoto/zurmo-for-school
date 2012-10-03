@@ -120,8 +120,6 @@
             $this->assertTrue($mission->save());
             $this->assertEquals(1, $mission->takenByUserHasReadLatest);
             $this->assertEquals(0, $mission->ownerHasReadLatest);
-
-
             //todo: test also takenByUserHasReadLatest
         }
 
@@ -165,7 +163,7 @@
             $comments = Comment::getAll();
             $this->assertEquals(2, count($comments));
 
-            foreach($missions as $mission)
+            foreach ($missions as $mission)
             {
                 $missionId = $mission->id;
                 $mission->forget();

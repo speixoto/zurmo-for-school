@@ -48,7 +48,7 @@
             $socialItem->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME),
                                         Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
             $saved                             = $socialItem->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -95,7 +95,7 @@
             $redirectUrl   = Yii::app()->createUrl('/socialItems/default/inlineCreateCommentFromAjax',
                                                     array('id'           => $id,
                                                           'uniquePageId' => $uniquePageId));
-            $urlParameters = array('uniquePageId'			  => $uniquePageId,
+            $urlParameters = array('uniquePageId'             => $uniquePageId,
                                    'relatedModelId'           => (int)$id,
                                    'relatedModelClassName'    => 'SocialItem',
                                    'relatedModelRelationName' => 'comments',

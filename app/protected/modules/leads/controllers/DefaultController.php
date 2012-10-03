@@ -161,7 +161,6 @@
             $contact = new Contact(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new LeadsSearchForm($contact),
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'LeadsStateMetadataAdapter');
@@ -200,7 +199,6 @@
             $contact = new Contact(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new LeadsSearchForm($contact),
-                'Contact',
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 'LeadsStateMetadataAdapter'

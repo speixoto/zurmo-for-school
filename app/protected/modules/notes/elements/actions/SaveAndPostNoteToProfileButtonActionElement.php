@@ -51,7 +51,7 @@
 
         public function render()
         {
-            if(!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
+            if (!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
             {
                 return parent::render();
             }

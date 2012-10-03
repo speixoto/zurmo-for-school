@@ -185,7 +185,7 @@
                 throw new NotSupportedException();
             }
         }
-        
+
         protected function renderBeforeFormLayoutForDetailsContent()
         {
             $element = new AvatarTypeAndEmailElement($this->model, 'serializedAvatarData');

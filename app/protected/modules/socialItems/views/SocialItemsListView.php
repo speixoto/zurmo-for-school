@@ -62,6 +62,12 @@
 
         protected $params;
 
+        /**
+         * Do not show any empty text since it would look strange in the social feed.
+         * @var string
+         */
+        protected $emptyText = '';
+
         public function __construct(RedBeanModelDataProvider $dataProvider,
                                     $controllerId,
                                     $moduleId,
@@ -166,6 +172,11 @@
         }
 
         public function isUniqueToAPage()
+        {
+            return false;
+        }
+
+        protected function getShowTableOnEmpty()
         {
             return false;
         }

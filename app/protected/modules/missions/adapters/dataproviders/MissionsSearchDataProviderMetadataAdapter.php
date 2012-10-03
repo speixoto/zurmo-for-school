@@ -31,6 +31,7 @@
     class MissionsSearchDataProviderMetadataAdapter extends SearchDataProviderMetadataAdapter
     {
         protected $type;
+
         /**
          * Override to add passing in type
          */
@@ -55,7 +56,7 @@
             $startingCount = $clauseCount + 1;
             $structure = '';
 
-            if($this->type == MissionsListConfigurationForm::LIST_TYPE_CREATED)
+            if ($this->type == MissionsListConfigurationForm::LIST_TYPE_CREATED)
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'owner',
@@ -64,7 +65,7 @@
                 );
                 $structure .= $startingCount;
             }
-            elseif($this->type == MissionsListConfigurationForm::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
+            elseif ($this->type == MissionsListConfigurationForm::LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED)
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'takenByUser',

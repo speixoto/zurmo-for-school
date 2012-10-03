@@ -156,11 +156,14 @@
             $sampleValue                = 'a';
             $columnName                 = 'SampleColumnName';
             $content                    = $mappingFormLayoutUtil->renderImportColumnContent($columnName, $sampleValue);
-            $this->assertEquals($content, '<div id="' . $columnName . '-import-data">' . $sampleValue . '</div>');
-
+            $this->assertEquals($content, '<div id="' . $columnName . '-import-data" class="column-import-data">' .
+                                          $sampleValue . '</div>');
             $sampleValue                = str_repeat('a', 24);
             $content                    = $mappingFormLayoutUtil->renderImportColumnContent($columnName, $sampleValue);
-            $this->assertEquals($content, '<div id="' . $columnName . '-import-data">' . ZurmoHtml::tag('div', array('title' => $sampleValue), str_repeat('a', 22) . '...') . '</div>');
+            $this->assertEquals($content, '<div id="' . $columnName . '-import-data" class="column-import-data">' .
+                                          ZurmoHtml::tag('div',
+                                                          array('title' => $sampleValue), str_repeat('a', 22) . '...') .
+                                                                             '</div>');
         }
 
         public function testGetSampleColumnHeaderId()

@@ -285,8 +285,7 @@
                     $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
                 }
 
-                $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
-                $dataProvider = $this->makeRedBeanDataProviderFromGet(
+                $dataProvider = $this->makeRedBeanDataProviderByDataCollection(
                     $searchForm,
                     $pageSize,
                     $stateMetadataAdapterClassName

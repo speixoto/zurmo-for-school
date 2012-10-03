@@ -130,7 +130,7 @@
             $attributesInPlace = $this->getAttributesInPlace();
             $layoutAttributes = array();
 
-            foreach($attributesInPlace as $attributeName)
+            foreach ($attributesInPlace as $attributeName)
             {
                 $availableToSelect    = false;
                 $attributeInformation = $this->attributes[$attributeName];

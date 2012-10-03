@@ -55,7 +55,7 @@
             $steven->setRight('MissionsModule', MissionsModule::RIGHT_CREATE_MISSIONS);
             $steven->setRight('MissionsModule', MissionsModule::RIGHT_DELETE_MISSIONS);
             $saved = $steven->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new NotSupportedException();
             }
@@ -63,7 +63,7 @@
             $sally->setRight('MissionsModule', MissionsModule::RIGHT_CREATE_MISSIONS);
             $sally->setRight('MissionsModule', MissionsModule::RIGHT_DELETE_MISSIONS);
             $saved = $sally->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new NotSupportedException();
             }
@@ -71,7 +71,7 @@
             $mary->setRight('MissionsModule', MissionsModule::RIGHT_CREATE_MISSIONS);
             $mary->setRight('MissionsModule', MissionsModule::RIGHT_DELETE_MISSIONS);
             $saved = $mary->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new NotSupportedException();
             }
@@ -123,7 +123,7 @@
          */
         public function testAddingCommentsAndUpdatingActivityStampsOnMission()
         {
-            if(!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
             {
                 return;
             }
@@ -150,6 +150,7 @@
             $this->assertEquals('[]', $content);
 
             //Now save that comment.
+            sleep(2); //to force some time to pass.
             $this->setGetArray(array('relatedModelId'             => $missions[0]->id,
                                      'relatedModelClassName'      => 'Mission',
                                      'relatedModelRelationName'   => 'comments',
@@ -186,7 +187,7 @@
          */
         public function testUsersCanReadAndWriteMissionsOkThatAreNotOwnerOrTakenByUser()
         {
-            if(!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
             {
                 return;
             }
@@ -210,7 +211,7 @@
             $this->setGetArray(array('relatedModelId'             => $missions[0]->id,
                                      'relatedModelClassName'      => 'Mission',
                                      'relatedModelRelationName'   => 'comments',
-                                     'id'               		  => $maryCommentId));
+                                     'id'                         => $maryCommentId));
             $this->runControllerWithNoExceptionsAndGetContent('comments/default/deleteViaAjax', true);
             $missionId  = $missions[0]->id;
             $missions[0]->forget();
@@ -221,7 +222,7 @@
             $this->setGetArray(array('relatedModelId'             => $missions[0]->id,
                                      'relatedModelClassName'      => 'Mission',
                                      'relatedModelRelationName'   => 'comments',
-                                     'id'               		  => $superCommentId));
+                                     'id'                         => $superCommentId));
             $this->runControllerShouldResultInAjaxAccessFailureAndGetContent('comments/default/deleteViaAjax');
             $missionId  = $missions[0]->id;
             $missions[0]->forget();
@@ -250,7 +251,7 @@
          */
         public function testListViewFiltering()
         {
-            if(!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
             {
                 return;
             }
@@ -276,7 +277,7 @@
          */
         public function testCommentsAjaxListForRelatedModel()
         {
-            if(!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
             {
                 return;
             }

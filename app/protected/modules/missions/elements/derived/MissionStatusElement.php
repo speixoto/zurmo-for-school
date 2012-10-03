@@ -54,7 +54,7 @@
         {
             $statusText        = self::renderStatusTextContent($mission);
             $statusAction      = self::renderStatusActionContent($mission, self::getStatusChangeDivId($mission->id));
-            if($statusAction != null)
+            if ($statusAction != null)
             {
                 $content = $statusAction;
             }
@@ -72,23 +72,23 @@
 
         public static function renderStatusTextContent(Mission $mission)
         {
-            if($mission->status == Mission::STATUS_AVAILABLE)
+            if ($mission->status == Mission::STATUS_AVAILABLE)
             {
                 return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Available'));
             }
-            elseif($mission->status == Mission::STATUS_TAKEN)
+            elseif ($mission->status == Mission::STATUS_TAKEN)
             {
                 return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'In Progress'));
             }
-            elseif($mission->status == Mission::STATUS_COMPLETED)
+            elseif ($mission->status == Mission::STATUS_COMPLETED)
             {
                 return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Awaiting Acceptance'));
             }
-            elseif($mission->status == Mission::STATUS_REJECTED)
+            elseif ($mission->status == Mission::STATUS_REJECTED)
             {
                 return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Rejected'));
             }
-            elseif($mission->status == Mission::STATUS_ACCEPTED)
+            elseif ($mission->status == Mission::STATUS_ACCEPTED)
             {
                 return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Accepted'));
             }
@@ -101,19 +101,19 @@
         public static function renderStatusActionContent(Mission $mission, $updateDivId)
         {
             assert('is_string($updateDivId)');
-            if($mission->status == Mission::STATUS_AVAILABLE &&
+            if ($mission->status == Mission::STATUS_AVAILABLE &&
                !$mission->owner->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_TAKEN, $mission->id,
                                                               Yii::t('Default', 'Start'), $updateDivId);
             }
-            elseif($mission->status == Mission::STATUS_TAKEN &&
+            elseif ($mission->status == Mission::STATUS_TAKEN &&
                    $mission->takenByUser->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_COMPLETED, $mission->id,
                                                               Yii::t('Default', 'Complete'), $updateDivId);
             }
-            elseif($mission->status == Mission::STATUS_COMPLETED &&
+            elseif ($mission->status == Mission::STATUS_COMPLETED &&
                    $mission->owner->isSame(Yii::app()->user->userModel))
             {
                 $content  = self::renderAjaxStatusActionChangeLink(      Mission::STATUS_ACCEPTED, $mission->id,
@@ -122,7 +122,7 @@
                                                                          Yii::t('Default', 'Reject'), $updateDivId);
                 return $content;
             }
-            elseif($mission->status == Mission::STATUS_REJECTED &&
+            elseif ($mission->status == Mission::STATUS_REJECTED &&
                    $mission->takenByUser->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_COMPLETED, $mission->id,
@@ -155,19 +155,19 @@
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
         {
             assert('is_integer($status)');
-            if($status == Mission::STATUS_TAKEN)
+            if ($status == Mission::STATUS_TAKEN)
             {
                 return 'action-take';
             }
-            elseif($status == Mission::STATUS_COMPLETED)
+            elseif ($status == Mission::STATUS_COMPLETED)
             {
                 return 'action-complete';
             }
-            elseif($status == Mission::STATUS_ACCEPTED)
+            elseif ($status == Mission::STATUS_ACCEPTED)
             {
                 return 'action-accept';
             }
-            elseif($status == Mission::STATUS_REJECTED)
+            elseif ($status == Mission::STATUS_REJECTED)
             {
                 return 'action-reject';
             }

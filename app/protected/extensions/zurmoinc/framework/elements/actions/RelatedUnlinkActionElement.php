@@ -41,19 +41,18 @@
 
         protected function getHtmlOptions()
         {
-
             $confirmTitle           = Yii::t('Default', 'Are you sure you want to unlink this {modelLabel}?',
                                                         array('{modelLabel}' => $this->getModelSingularLabel()));
             $confirmTitle           = Yii::app()->format->text($confirmTitle);
             $htmlOptions            = parent::getHtmlOptions();
             $htmlOptions['id']      = $this->getLinkId();
-            $htmlOptions['onclick'] = 'if(!onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
+            $htmlOptions['onclick'] = 'if (!onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
             return $htmlOptions;
         }
 
         protected function getDefaultRoute()
         {
-            assert('is_string($this->params["relationModelClassName"]) && is_string($this->params["relationModelId"])');
+            assert('is_string($this->params["relationModelClassName"]) && is_int($this->params["relationModelId"])');
             $params = array('id' => $this->modelId);
             $params['relationModelClassName']    = $this->params['relationModelClassName'];
             $params['relationModelId']           = $this->params['relationModelId'];

@@ -99,10 +99,10 @@
 
         public static function resolveRowCssClasses($grid, $row, $data)
         {
-            if(is_array($grid->rowCssClass) && ($n = count($grid->rowCssClass)) > 0)
+            if (is_array($grid->rowCssClass) && ($n = count($grid->rowCssClass)) > 0)
             {
                 $content = $grid->rowCssClass[$row%$n];
-                if(!MissionsUtil::hasUserReadMissionLatest($data, Yii::app()->user->userModel))
+                if (!MissionsUtil::hasUserReadMissionLatest($data, Yii::app()->user->userModel))
                 {
                     $content .= ' unread';
                 }

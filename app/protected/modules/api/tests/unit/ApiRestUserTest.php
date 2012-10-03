@@ -133,23 +133,24 @@
             $saved = $manager->save();
             $this->assertTrue($saved);
 
-            $data['firstName']           = "Michael";
-            $data['lastName']            = "Smith";
-            $data['jobTitle']            = "President";
-            $data['department']          = "Sales";
-            $data['officePhone']         = "653-235-7824";
-            $data['mobilePhone']         = "653-235-7821";
-            $data['officeFax']           = "653-235-7834";
-            $data['username']            = "diggy011";
-            $data['password']            = "diggy011";
-            $data['language']            = "en";
-            $data['timeZone']            = "America/Chicago";
+            $data['firstName']            = "Michael";
+            $data['lastName']             = "Smith";
+            $data['jobTitle']             = "President";
+            $data['department']           = "Sales";
+            $data['officePhone']          = "653-235-7824";
+            $data['mobilePhone']          = "653-235-7821";
+            $data['officeFax']            = "653-235-7834";
+            $data['username']             = "diggy011";
+            $data['password']             = "diggy011";
+            $data['language']             = "en";
+            $data['timeZone']             = "America/Chicago";
 
-            $data['title']['value']      = $titles[3];
-            $data['manager']['id']       = $manager->id;
+            $data['title']['value']       = $titles[3];
+            $data['manager']['id']        = $manager->id;
 
-            $data['primaryEmail']        = $primaryEmail;
-            $data['primaryAddress']      = $primaryAddress;
+            $data['primaryEmail']         = $primaryEmail;
+            $data['primaryAddress']       = $primaryAddress;
+            $data['serializedAvatarData'] = '';
 
             $data['currency']       = array(
                 'id' => $currency->id
@@ -555,7 +556,7 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $user = UserTestHelper::createBasicUser('PeterSmith');
+            $user = UserTestHelper::createBasicUser('PeterSmith2');
 
             // Provide data without required fields.
             $data['username']         = "";
