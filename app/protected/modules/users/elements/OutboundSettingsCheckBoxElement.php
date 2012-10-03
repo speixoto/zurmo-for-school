@@ -24,60 +24,88 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Utilize this element to display a dropdown of available users that are super administrators.  The key is the
-     * user id and the value is the strval of the $user.
-     */
-    class UserToSendNotificationFromElement extends Element
+    class OutboundSettingsCheckBoxElement extends CheckBoxElement
     {
-        /**
-         * Renders the editable dropdown content.
-         * @return A string containing the element's content.
-         */
         protected function renderControlEditable()
         {
-            $dropDownArray = $this->getDropDownArray();
-            $value         = $this->model->{$this->attribute};
-            $htmlOptions   = array('id'   => $this->getEditableInputId($this->attribute));
-            $content       = ZurmoHtml::dropDownList($this->getEditableInputName($this->attribute),
-                                                 $value,
-                                                 $dropDownArray,
-                                                 $htmlOptions);
-            $content       = ZurmoHtml::tag('div', array('class' => 'beforeToolTip'), $content);
+            $attribute     = $this->attribute;
+            $isHidden      = !$this->model->$attribute;
+            if ($isHidden)
+            {
+                $style = 'display: none;';
+            }
+            else
+            {
+                $style = null;
+            }
+            $checkBox      = parent::renderControlEditable();
+            $sendTestEmail = new SendATestEmailToElement($this->model, 'aTestToAddress', $this->form);
+            $sendTestEmail->editableTemplate = '{label}{content}{error}';
+            $content       = ZurmoHtml::tag('div', array('class' => 'beforeToolTip'), $checkBox);
             $content      .= self::renderTooltipContent();
+            //For now we only support SMTP type so this is not used
+            //$content .= $this->renderEditableTextField($this->model, $this->form, 'outboundType');
+            $settings      = $this->renderEditableTextField($this->model, $this->form, 'outboundHost');
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundPort');
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundUsername');
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundPassword', true);
+            $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundSecurity');
+            $settings     .= $sendTestEmail->renderEditable();
+            $content      .= ZurmoHtml::tag('div', array('class' => 'outbound-settings', 'style' => $style),
+                                         $settings);
+            $this->renderScripts();
             return $content;
         }
 
-        protected function renderControlNonEditable()
+        public function renderEditableTextField($model, $form, $attribute, $isPassword = false)
         {
-            throw new NotImplementedException();
+            $id          = $this->getEditableInputId($attribute);
+            $htmlOptions = array(
+                'name'  => $this->getEditableInputName($attribute),
+                'id'    => $id,
+            );
+            $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
+            if (!$isPassword)
+            {
+                $textField = $form->textField($model, $attribute, $htmlOptions);
+            }
+            else
+            {
+
+                $textField = $form->passwordField($model, $attribute, $htmlOptions);
+            }
+            $error       = $form->error    ($model, $attribute);
+            return $label . $textField . $error;
         }
 
         protected static function renderTooltipContent()
         {
-            $title       = Yii::t('Default', 'Zurmo sends out system notifications.  The notifications must appear ' .
-                                             'as coming from a super administrative user.');
-            $content     = '<span id="send-notifications-from-user-tooltip" class="tooltip"  title="' . $title . '">';
+            $title       = Yii::t('Default', 'If unchecked, will use system outbound email settings.');
+            $content     = '<span id="custom-outbound-settings-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= '?</span>';
             $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
-            $qtip->addQTip("#send-notifications-from-user-tooltip");
+            $qtip->addQTip("#custom-outbound-settings-tooltip");
             return $content;
         }
 
-        protected function renderError()
+        protected function renderLabel()
         {
-            return null;
+            $label = Yii::t('Default', 'Customize Outbound Email Settings');
+            if ($this->form === null)
+            {
+                return $this->getFormattedAttributeLabel();
+            }
+            return ZurmoHtml::label($label, $this->getEditableInputId());
         }
 
-        protected function getDropDownArray()
+        protected function renderScripts()
         {
-            $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            $data  = array();
-            foreach ($group->users as $user)
-            {
-                $data[$user->id] = strval($user);
-            }
-            return $data;
+            $checkBoxId = $this->getEditableInputId();
+            Yii::app()->clientScript->registerScript('userMailConfigurationOutbound', "
+                    $('#{$checkBoxId}').change(function(){
+                        $('.outbound-settings').toggle();
+                    });
+                ");
         }
     }
 ?>

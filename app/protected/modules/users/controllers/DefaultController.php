@@ -39,7 +39,7 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, ' .
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, mailConfiguration, securityDetails, ' .
                         'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
@@ -455,6 +455,52 @@
                                     $this->getModule()->getId(),
                                     $user,
                                     $configurationForm
+            );
+            $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
+            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            echo $view->render();
+        }
+
+        public function actionMailConfiguration($id)
+        {
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
+            $user  = User::getById(intval($id));
+            $title = Yii::t('Default', 'Email Configuration');
+            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);
+            $postVariableName   = get_class($emailAccount);
+            if (count(Yii::app()->user->userModel->emailSignatures) == 0 )
+            {
+                $messageSignature       = new EmailSignature();
+                $messageSignature->user = Yii::app()->user->userModel;
+                Yii::app()->user->userModel->emailSignatures->add($messageSignature);
+                Yii::app()->user->userModel->save();
+            }
+            if (isset($_POST[$postVariableName]))
+            {
+                //TODO: Test this
+                if (isset($_POST['EmailSignature']))
+                {
+                    $messageSignature = Yii::app()->user->userModel->emailSignatures[0];
+                    $messageSignature->htmlContent = $_POST['EmailSignature']['htmlContent'];
+                    Yii::app()->user->userModel->save();
+                }
+                $emailAccount->setAttributes($_POST[$postVariableName]);
+                if ($emailAccount->validate())
+                {
+                    $emailAccount->save();
+                    Yii::app()->user->setFlash('notification',
+                        Yii::t('Default', 'User email configuration saved successfully.')
+                    );
+                    $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
+                }
+            }
+            $titleBarAndEditView = new UserActionBarAndMailConfigurationEditView(
+                                    $this->getId(),
+                                    $this->getModule()->getId(),
+                                    $user,
+                                    $emailAccount
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
             $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
