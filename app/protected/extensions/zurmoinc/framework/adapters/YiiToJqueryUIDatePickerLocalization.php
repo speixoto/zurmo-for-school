@@ -69,7 +69,7 @@
                     return 'dd/mm/yy';
                 case 'yy-M-d':      //zh_cn format
                     return 'y-m-dd';
-                case 'yy/MM/dd':    //ja format
+                case 'yyyy/MM/dd':    //ja format
                     return 'y/mm/dd';
                 case 'dd-MM-yy':    //nl format
                         return 'dd-mm-y';
