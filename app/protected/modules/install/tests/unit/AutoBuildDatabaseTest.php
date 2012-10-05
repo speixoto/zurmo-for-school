@@ -67,7 +67,7 @@
             //There are only 1 extra rows that are not being removed during the autobuild process.
             //These need to eventually be fixed so they are properly removed, except currency which is ok.
             //currency (1)
-            $this->assertEquals($beforeRowCount, ($afterRowCount - 1));
+            $this->assertEquals($beforeRowCount, ($afterRowCount - 2));
         }
 
         /**
