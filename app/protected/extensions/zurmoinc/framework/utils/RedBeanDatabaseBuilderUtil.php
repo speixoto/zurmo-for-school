@@ -207,7 +207,7 @@
             $allSampleModelsDeleted = true;
             if (!empty($allSampleModels))
             {
-                foreach($allSampleModels as $key => $sampleModel)
+                foreach ($allSampleModels as $key => $sampleModel)
                 {
                     $allSampleModelsDeleted = $allSampleModelsDeleted && self::deleteSampleModelFromStatePersisterAndDatabase(
                                         $sampleModel['modelClassName'],
