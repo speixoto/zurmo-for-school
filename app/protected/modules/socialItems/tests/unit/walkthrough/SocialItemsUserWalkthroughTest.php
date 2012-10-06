@@ -189,6 +189,8 @@
             $content = $this->runControllerWithExitExceptionAndGetContent('comments/default/inlineCreateSave');
             $this->assertEquals('[]', $content);
 
+            sleep(2); // Sleeps are bad in tests, but I need some time to pass
+
             //Now save that comment.
             $this->setGetArray(array('relatedModelId'             => $socialItems[0]->id,
                                      'relatedModelClassName'      => 'SocialItem',
