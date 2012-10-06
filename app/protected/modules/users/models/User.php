@@ -52,7 +52,7 @@
             assert('$username != ""');
             assert('is_string($password)');
             $user = User::getByUsername($username);
-            if ($user->hash != md5($password))
+            if ($user->hash != self::encryptPassword($password))
             {
                 throw new BadPasswordException();
             }
@@ -337,7 +337,12 @@
         public function setPassword($password)
         {
             assert('is_string($password)');
-            $this->hash = md5($password);
+            $this->hash = self::encryptPassword($password);
+        }
+
+        public static function encryptPassword($password)
+        {
+            return md5($password);
         }
 
         public function serializeAndSetAvatarData(Array $avatar)
