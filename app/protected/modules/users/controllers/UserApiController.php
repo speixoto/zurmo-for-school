@@ -46,14 +46,7 @@
                 $message = Yii::t('Default', 'Please provide data.');
                 throw new ApiException($message);
             }
-
-            // We have to encrypt password
-            if (isset($params['data']['password']) && $params['data']['password'] != '')
-            {
-                $params['data']['hash'] = User::encryptPassword($params['data']['password']);
-            }
-            unset($params['data']['password']);
-
+            $this->resolvePasswordParameter($params);
             $result    =  $this->processCreate($params['data']);
             Yii::app()->apiHelper->sendResponse($result);
         }
@@ -70,16 +63,19 @@
                 $message = Yii::t('Default', 'The ID specified was invalid.');
                 throw new ApiException($message);
             }
+            $this->resolvePasswordParameter($params);
+            $result    =  $this->processUpdate((int)$params['id'], $params['data']);
+            Yii::app()->apiHelper->sendResponse($result);
+        }
 
+        protected function resolvePasswordParameter(& $params)
+        {
             // We have to encrypt password
             if (isset($params['data']['password']) && $params['data']['password'] != '')
             {
                 $params['data']['hash'] = User::encryptPassword($params['data']['password']);
             }
             unset($params['data']['password']);
-
-            $result    =  $this->processUpdate((int)$params['id'], $params['data']);
-            Yii::app()->apiHelper->sendResponse($result);
         }
     }
 ?>
