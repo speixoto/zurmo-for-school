@@ -613,7 +613,7 @@
             $this->assertEquals($firstContact->id, $firstNote->activityItems[0]->id);
             $this->assertEquals($secondContact->id, $firstNote->activityItems[1]->id);
 
-            $id = $firstContact->getClassId('Item');
+            //$id = $firstContact->getClassId('Item');
 
             $authenticationData = $this->login();
             $headers = array(
@@ -630,7 +630,8 @@
                             'attributeIndexOrDerivedType' => 'activityItems',
                             'structurePosition' => 1,
                             'activityItems' => array(
-                                'id' => $id,
+                                'modelClassName' => 'Contact',
+                                'modelId' => $firstContact->id,
                             ),
                         )
                     ),

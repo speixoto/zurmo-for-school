@@ -259,6 +259,8 @@
                     !empty($filterParams['dynamicSearch']['dynamicClauses']) &&
                     !empty($filterParams['dynamicSearch']['dynamicStructure']))
                 {
+                    // Convert model ids into item ids, so we can perform dynamic search
+                    DynamicSearchUtil::resolveDynamicSearchClausesForModelIdsNeedingToBeItemIds($modelClassName, $filterParams['dynamicSearch']['dynamicClauses']);
                     $_GET[$searchFormClassName]['dynamicClauses'] = $filterParams['dynamicSearch']['dynamicClauses'];
                     $_GET[$searchFormClassName]['dynamicStructure'] = $filterParams['dynamicSearch']['dynamicStructure'];
                 }
