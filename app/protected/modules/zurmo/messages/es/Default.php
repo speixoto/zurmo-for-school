@@ -143,8 +143,6 @@
             => 'Bancario',
         'Business Services'
             => 'Servicios de negocios',
-        'by <strong>{ownerStringContent}</strong>'
-            => 'de <strong>{ownerStringContent}</strong>',
         'by {ownerStringContent}'
             => 'de {ownerStringContent}',
         'Cache has been successfully cleaned.'

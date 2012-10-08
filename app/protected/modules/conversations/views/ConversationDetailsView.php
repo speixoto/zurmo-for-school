@@ -93,8 +93,7 @@
             $content  = '<div class="comment model-details-summary clearfix">';
             $content .= $this->model->createdByUser->getAvatarImage(100);
             $content .= '<span class="user-details">';
-            $content .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
-                                    array('{ownerStringContent}' => strval($this->model->createdByUser)));
+            $content .= strval($this->model->createdByUser);
             $content .= '</span>';
             if ($this->model->description == null)
             {
