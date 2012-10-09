@@ -64,8 +64,7 @@
             $content  = '<div class="comment model-details-summary">';
             $content .= $this->model->createdByUser->getAvatarImage(100);
             $content .= '<span class="user-details">';
-            $content .= Yii::t('Default', '<strong>{ownerStringContent}</strong>',
-                                    array('{ownerStringContent}' => strval($this->model->createdByUser)));
+            $content .= strval($this->model->createdByUser);
             $content .= '</span>';
             $element  = new TextAreaElement($this->model, 'description');
             $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
