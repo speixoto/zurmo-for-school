@@ -198,6 +198,17 @@
         }
 
         /**
+         * @param array $modelClassNames
+         * @param MessageLogger $messageLogger
+         */
+        public static function manageFrozenStateAndAutoBuildModels(array $modelClassNames, & $messageLogger)
+        {
+            RedBeanDatabase::unfreeze();
+            self::autoBuildModels($modelClassNames, $messageLogger);
+            RedBeanDatabase::freeze();
+        }
+
+        /**
          * Deletes all sample models from state persister and from database
          * @param MessageLogger $messageLogger
          */
@@ -278,7 +289,7 @@
         }
 
         /**
-         * Delete sample model ifrom application state persister and from database
+         * Delete sample model from application state persister and from database
          * @param string $modelClassName
          * @param inf $modelId
          * @param MessageLogger $messageLogger
