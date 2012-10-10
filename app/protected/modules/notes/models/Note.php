@@ -86,7 +86,8 @@
                     'occurredOnDateTime',
                 ),
                 'relations' => array(
-                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'files'       => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'socialItems' => array(RedBeanModel::HAS_MANY,  'SocialItem', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('description',        'required'),
@@ -143,6 +144,11 @@
         public static function hasReadPermissionsOptimization()
         {
             return true;
+        }
+
+        public static function getGamificationRulesType()
+        {
+            return 'NoteGamification';
         }
     }
 ?>

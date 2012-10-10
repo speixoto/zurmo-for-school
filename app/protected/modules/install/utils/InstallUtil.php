@@ -260,6 +260,14 @@
         }
 
         /**
+        * @returns true if zip extension is loaded, or false if not loaded.
+        */
+        public static function checkZip()
+        {
+            return extension_loaded("zip");
+        }
+
+        /**
         * @returns true if all $_SERVER variable are loaded correctly, otherwise return false.
         * Required by Yii framework.
         */
@@ -344,20 +352,6 @@
                 return self::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
-        }
-
-        public static function checkRedBeanPatched()
-        {
-            $contents = file_get_contents('../redbean/rb.php');
-            return preg_match('/public function __call\(\$method, \$args\) {\s+return null;/', $contents) != 0; // Not Coding Standard
-        }
-
-        /*
-         * @return true if its not Legacy
-         */
-        public static function checkRedBeanIsNotLegacy()
-        {
-            return class_exists('RedBean_UnitOfWork', false); // This class exists on 1.3.2 but not on 1.3.2L
         }
 
         /**

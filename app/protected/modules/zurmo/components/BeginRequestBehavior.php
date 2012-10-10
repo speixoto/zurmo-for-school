@@ -26,6 +26,11 @@
 
     class BeginRequestBehavior extends CBehavior
     {
+        protected $allowedGuestUserRoutes = array(
+                'zurmo/default/unsupportedBrowser',
+                'zurmo/default/login',
+                'min/serve');
+
         public function attach($owner)
         {
             if (Yii::app()->apiRequest->isApiRequest())
@@ -35,6 +40,7 @@
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
 
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
@@ -67,6 +73,7 @@
                 else
                 {
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginRequest'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
@@ -113,7 +120,7 @@
             catch (NotFoundException $e)
             {
                 $filesToInclude   = FileUtil::getFilesFromDir(Yii::app()->basePath . '/modules', Yii::app()->basePath . '/modules', 'application.modules');
-                $filesToIncludeFromFramework = FileUtil::getFilesFromDir(Yii::app()->basePath . '/extensions/zurmoinc/framework', Yii::app()->basePath . '/extensions/zurmoinc/framework', 'application.extensions.zurmoinc.framework');
+                $filesToIncludeFromFramework = FileUtil::getFilesFromDir(Yii::app()->basePath . '/core', Yii::app()->basePath . '/core', 'application.core');
                 $totalFilesToIncludeFromModules = count($filesToInclude);
 
                 foreach ($filesToIncludeFromFramework as $key => $file)
@@ -139,6 +146,15 @@
             if (!$instanceFoldersServiceHelper->runCheckAndGetIfSuccessful())
             {
                 echo $instanceFoldersServiceHelper->getMessage();
+                Yii::app()->end(0, false);
+            }
+        }
+
+        public function handleCheckAutoBuildCompleted($event)
+        {
+            if (!RedBeanDatabaseBuilderUtil::isAutoBuildStateValid())
+            {
+                echo Yii::t('Default', 'Database upgrade not completed. Please try latter.');
                 Yii::app()->end(0, false);
             }
         }
@@ -230,31 +246,61 @@
 
         public function handleBeginRequest($event)
         {
+            // Create list of allowed urls.
+            // Those urls should be accessed during upgrade process too.
+            foreach ($this->allowedGuestUserRoutes as $allowedGuestUserRoute)
+            {
+                $allowedGuestUserUrls[] = Yii::app()->createUrl($allowedGuestUserRoute);
+            }
+            $reqestedUrl = Yii::app()->getRequest()->getUrl();
+            $isUrlAllowedToGuests = false;
+            foreach ($allowedGuestUserUrls as $url)
+            {
+                if (strpos($reqestedUrl, $url) === 0)
+                {
+                    $isUrlAllowedToGuests = true;
+                }
+            }
+
             if (Yii::app()->user->isGuest)
             {
-                $allowedGuestUserUrls = array (
-                    Yii::app()->createUrl('zurmo/default/unsupportedBrowser'),
-                    Yii::app()->createUrl('zurmo/default/login'),
-                    Yii::app()->createUrl('min/serve'),
-                );
-                $reqestedUrl = Yii::app()->getRequest()->getUrl();
-                $isUrlAllowedToGuests = false;
-                foreach ($allowedGuestUserUrls as $url)
-                {
-                    if (strpos($reqestedUrl, $url) === 0)
-                    {
-                        $isUrlAllowedToGuests = true;
-                    }
-                }
                 if (!$isUrlAllowedToGuests)
                 {
                     Yii::app()->user->loginRequired();
+                }
+            }
+            else
+            {
+                if (Yii::app()->isApplicationInMaintenanceMode())
+                {
+                    if (!$isUrlAllowedToGuests)
+                    {
+                        // Allow access only to users that belongs to Super Administrators.
+                        $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+                        if (!$group->users->contains(Yii::app()->user->userModel))
+                        {
+                            echo Yii::t('Default', 'Application is in maintenance mode. Please try again later.');
+                            exit;
+                        }
+                        else
+                        {
+                            // Super Administrators can access all pages, but inform them that application is in maintenance mode.
+                            Yii::app()->user->setFlash('notification', Yii::t('Default', 'Application is in maintenance mode, and only Super Administrators can access it.'));
+                        }
+                    }
                 }
             }
         }
 
         public function handleBeginApiRequest($event)
         {
+            if (Yii::app()->isApplicationInMaintenanceMode())
+            {
+                $message = Yii::t('Default', 'Application is in maintenance mode. Please try again later.');
+                $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
+                Yii::app()->apiHelper->sendResponse($result);
+                exit;
+            }
             if (Yii::app()->user->isGuest)
             {
                 $allowedGuestUserUrls = array (

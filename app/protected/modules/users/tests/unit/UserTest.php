@@ -672,9 +672,6 @@
                 'newPassword' => array(
                     'The password is too short. Minimum length is 5.',
                 ),
-                'username' => array(
-                    'The username is too short. Minimum length is 3.',
-                ),
             );
             $this->assertEquals($errors, $billPasswordForm->getErrors());
             $_FAKEPOST = array(
@@ -769,6 +766,46 @@
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $this->assertFalse($identity->authenticate());
             $this->assertEquals(UserIdentity::ERROR_NO_RIGHT_WEB_LOGIN, $identity->errorCode);
+        }
+
+        /**
+         * @depends testPasswordUserNamePolicyChangesValidationAndLogin
+         */
+        public function testUserNamePolicyValidatesCorrectlyOnDifferentScenarios()
+        {
+            $bill  = User::getByUsername('abcdefg');
+            $bill->setScenario('editUser');
+            $this->assertEquals(3,    $bill->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH));
+            $_FAKEPOST = array(
+                'User' => array(
+                    'username'           => 'ab',
+                )
+            );
+            $bill->setAttributes($_FAKEPOST['User']);
+            $this->assertFalse($bill->save());
+            $errors = array(
+                'username' => array(
+                    'The username is too short. Minimum length is 3.',
+                ),
+            );
+            $this->assertEquals($errors, $bill->getErrors());
+
+            $bill  = User::getByUsername('abcdefg');
+            $bill->setScenario('createUser');
+            $this->assertEquals(3,    $bill->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH));
+            $_FAKEPOST = array(
+                'User' => array(
+                    'username'           => 'ab',
+                )
+            );
+            $bill->setAttributes($_FAKEPOST['User']);
+            $this->assertFalse($bill->save());
+            $errors = array(
+                'username' => array(
+                    'The username is too short. Minimum length is 3.',
+                ),
+            );
+            $this->assertEquals($errors, $bill->getErrors());
         }
 
         public function testValidatingUserAfterGettingAttributeValuesFromRelatedUsers()
@@ -896,6 +933,80 @@
             $user2->setPassword('myuser2');
             $this->assertTrue($user2->save());
             $this->assertEquals(Yii::app()->user->userModel, $user);
+        }
+
+        public function testAvatarForUser()
+        {
+            //Create a new user and confirm that gets the default avatar
+            $user = new User();
+            $user->username = 'avatar';
+            $user->lastName = 'User';
+            $this->assertTrue($user->save());
+            $this->assertContains('width="250" height="250" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm', // Not Coding Standard
+                    $user->getAvatarImage());
+            //When calling getAvatarImage it should return the same url to avoid querying gravatar twice
+            $this->assertContains('width="50" height="50" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',   // Not Coding Standard
+                    $user->getAvatarImage(50));
+            unset($user);
+
+            //Add avatar info to the user and confirm it gets saved
+            $user = User::getByUsername('avatar');
+            $avatar = array('avatarType' => 1);
+            $user->serializeAndSetAvatarData($avatar);
+            $this->assertEquals(serialize($avatar), $user->serializedAvatarData);
+            $this->assertTrue($user->save());
+            unset($user);
+            $user = User::getByUsername('avatar');
+            $this->assertContains('width="250" height="250" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm', // Not Coding Standard
+                    $user->getAvatarImage());
+            $this->assertContains('width="50" height="50" src="http://www.gravatar.com/avatar/?s=250&amp;r=g&amp;d=mm',   // Not Coding Standard
+                    $user->getAvatarImage(50));
+            unset($user);
+
+            //Change avatar to primary email address
+            $user = new User();
+            $user->username = 'avatar2';
+            $user->lastName = 'User';
+            $emailAddress = 'avatar@zurmo.org';
+            $user->primaryEmail->emailAddress = $emailAddress;
+            $user->primaryEmail->optOut       = 1;
+            $user->primaryEmail->isInvalid    = 0;
+            $avatar = array('avatarType' => 2);
+            $user->serializeAndSetAvatarData($avatar);
+            $this->assertContains(serialize($avatar), $user->serializedAvatarData);
+            $this->assertTrue($user->save());
+            unset($user);
+            $user = User::getByUsername('avatar2');
+            $avatarUrl   = 'width="250" height="250" src="http://www.gravatar.com/avatar/' .
+                    md5(strtolower(trim($emailAddress))) .
+                    '?s=250&amp;d=identicon&amp;r=g'; // Not Coding Standard
+            $this->assertContains($avatarUrl, $user->getAvatarImage());
+            $avatarUrl   = 'width="5" height="5" src="http://www.gravatar.com/avatar/' .
+                    md5(strtolower(trim($emailAddress))) .
+                    '?s=250&amp;d=identicon&amp;r=g'; // Not Coding Standard
+            $this->assertContains($avatarUrl, $user->getAvatarImage(5));
+            unset($user);
+
+            //Change avatar to custom avatar email address
+            $user = new User();
+            $user->username = 'avatar3';
+            $user->lastName = 'User';
+            $emailAddress = 'avatar-custom@zurmo.org';
+            $avatar = array('avatarType' => 3, 'customAvatarEmailAddress' => $emailAddress);
+            $user->serializeAndSetAvatarData($avatar);
+            $this->assertEquals(serialize($avatar), $user->serializedAvatarData);
+            $this->assertTrue($user->save());
+            unset($user);
+            $user = User::getByUsername('avatar3');
+            $avatarUrl   = 'width="250" height="250" src="http://www.gravatar.com/avatar/' .
+                    md5(strtolower(trim($emailAddress))) .
+                    "?s=250&amp;d=identicon&amp;r=g"; // Not Coding Standard
+            $this->assertContains($avatarUrl, $user->getAvatarImage());
+            $avatarUrl   = 'width="2500" height="2500" src="http://www.gravatar.com/avatar/' .
+                    md5(strtolower(trim($emailAddress))) .
+                    "?s=250&amp;d=identicon&amp;r=g"; // Not Coding Standard
+            $this->assertContains($avatarUrl, $user->getAvatarImage(2500));
+            unset($user);
         }
     }
 ?>

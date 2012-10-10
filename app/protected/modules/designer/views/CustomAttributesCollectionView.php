@@ -28,9 +28,9 @@
     {
         protected function renderBeforeTableContent()
         {
-            $dropDownContent = CHtml::dropDownList('attributeTypeName', null, $this->getValueTypeDropDownArray());
+            $dropDownContent = ZurmoHtml::dropDownList('attributeTypeName', null, $this->getValueTypeDropDownArray());
 
-            $linkContent     = CHtml::button(Yii::t('Default', 'Configure'),
+            $linkContent     = ZurmoHtml::button(Yii::t('Default', 'Configure'),
                                                         array('id' => 'attributeTypeNameButton', 'class' => 'configure-custom-field-button'));
             $url             = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/attributeEdit/',
                                                      array('moduleClassName' => $this->moduleClassName));
@@ -47,12 +47,7 @@
                     }
                 }
             );");
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dropDownInteractions.js');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/jquery.dropkick-1.0.0.js');
+            DropDownUtil::registerScripts();
             $content = null;
             $content .= '<div class="add-custom-field">';
             $content .= '<h1>' . Yii::t('Default', 'Create Field') . '</h1>';

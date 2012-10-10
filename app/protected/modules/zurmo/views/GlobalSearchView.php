@@ -41,6 +41,14 @@
             $this->sourceUrl            = $sourceUrl;
         }
 
+        /**
+         * Just renderContent. Do not wrap with any divs.
+         */
+        public function render()
+        {
+            return $this->renderContent();
+        }
+
         protected function renderContent()
         {
             $content  = '<div id="app-search" class="clearfix">' . $this->renderGlobalSearchContent() . '<span class="z-spinner"></span></div>';
@@ -89,7 +97,7 @@
         {
             $cClipWidget   = new CClipWidget();
             $cClipWidget->beginClip("ScopedJuiMultiSelect");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.ScopedSearchJuiMultiSelect', array(
+            $cClipWidget->widget('application.core.widgets.ScopedSearchJuiMultiSelect', array(
                 'dataAndLabels'  => $this->moduleNamesAndLabelsAndAll,
                 'selectedValue'  => 'All',
                 'inputId'        => 'globalSearchScope',

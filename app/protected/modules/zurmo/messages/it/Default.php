@@ -59,6 +59,8 @@
             => 'Accesso Amministrazione',
         'Access Currency Configuration'
             => 'Accesso Valute',
+        'Access Developer Tools'
+            => 'Accesso a strumenti di sviluppo',
         'Access Failure'
             => 'Fallimento nell\'accesso',
         'Access Global Configuration'
@@ -77,6 +79,8 @@
             => 'Ad-hoc / Proprietario',
         'Add Comment'
             => 'Aggiungi commento',
+        'Add criteria'
+            => 'Aggiungi criteri',
         'Add Currency'
             => 'Nuova Valuta',
         'Add new fields, remove ones you don\'t need and change the layout using Designer.'
@@ -111,6 +115,10 @@
             => 'Provincia',
         'Any Street'
             => 'Via',
+        'Application is in maintenance mode, and only Super Administrators can access it.'
+            => 'L\'applicazione è in modalità di manutenzione, e solo Super Administrator può accedervi.',
+        'Application is in maintenance mode. Please try again later.'
+            => 'L\'applicazione è in modalità di manutenzione. Si prega di riprovare più tardi.',
         'Application Name'
             => 'Nome dell\'applicazione',
         'are required.'
@@ -135,10 +143,10 @@
             => 'Bancaria',
         'Business Services'
             => 'Servizi di business',
-        'by <strong>{ownerStringContent}</strong>'
-            => 'di <strong>{ownerStringContent}</strong>',
         'by {ownerStringContent}'
             => 'di {ownerStringContent}',
+        'Cache has been successfully cleaned.'
+            => 'Cache cancella con successo.',
         'Cancel'
             => 'Annulla',
         'Cancel changes'
@@ -151,6 +159,8 @@
             => 'Tipo di grafico',
         'City'
             => 'Città',
+        'Clear Cache'
+            => 'Cancella cache',
         'Click on the Map link on records to see the customer location on Google Maps.'
             => 'Clicca sul link mappa per visualizzare la posizione geograficha con Google Maps.',
         'Close'
@@ -165,6 +175,12 @@
             => 'Converti',
         'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
             => 'Copyright &#169; Zurmo Inc., 2012. Tutti i diritti riservati.',
+        'Could not remove relation.'
+            => 'Impossibile rimuovere la relazione.',
+        'Could not save relation.'
+            => 'Impossibile salvare la relazione.',
+        'Could not use this API call for HAS_ONE relationships.'
+            => 'Impossibile utilizzare questa chiamata API per i relazioni HAS_ONE.',
         'Country'
             => 'Paese',
         'Create Group'
@@ -175,6 +191,8 @@
             => 'Nuovo Ruolo',
         'Create Roles'
             => 'Crea Ruoli',
+        'Criteria Selected <span class="icon-clear">Z</span>'
+            => 'Criteri Selezionati <span class="icon-clear">Z</span>',
         'Currencies: Create'
             => 'Valute: Crea',
         'Currencies: List'
@@ -189,6 +207,8 @@
             => 'Job corso delle valute',
         'Currency Value'
             => 'Valore',
+        'Custom data updated successfully.'
+            => 'Dati personalizzati aggiornati correttamente.',
         'Customer'
             => 'Cliente',
         'Dashboard portlet list page size'
@@ -215,12 +235,16 @@
             => 'Dipartimento',
         'Description'
             => 'Descrizione',
+        'Developer Tools'
+            => 'Strumenti per Sviluppatori',
         'Dr.'
             => 'Dr.', // Same Word Translated
         'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
             => 'Clicca sull\'icona di configurazione in alto a destra dei portlets per modificare i grafici nel Dashboard.',
         'Email Address'
             => 'Indirizzo Email',
+        'Enable game notification popup'
+            => 'Attiva la notifica popup per ludicizzazione',
         'Energy'
             => 'Energia',
         'Event Name'
@@ -255,6 +279,8 @@
             => 'Configurazione globale',
         'Global configuration saved successfully.'
             => 'Configurazione globale modificata con successo.',
+        'Global search'
+            => 'Ricerca globale',
         'Go to Search'
             => 'alla Ricerca',
         'Got questions{spaceAndFirstName}? Find answers in the Zurmo Wiki.'
@@ -275,8 +301,12 @@
             => 'qui',
         'Home'
             => 'Home', // Same Word Translated
+        'If there is new metadata to load using CustomManagement, use this option.'
+            => 'Se ci sono nuovi metadati da caricare per CustomManagement, clicca per eseguire.',
         'In Progress'
             => 'In corso',
+        'In the case where you have reloaded the database, some cached items might still exist. This is a way to clear that cache.'
+            => 'Se avete ricaricate il database, clicca per eseguire.',
         'Inbound Call'
             => 'Chiamata inbound',
         'Incorrect username or password.'
@@ -335,6 +365,8 @@
             => 'Vista Elenco',
         'Load'
             => 'Carica',
+        'Load a saved search'
+            => 'Caricare una ricerca salvata',
         'Longitude'
             => 'Longitudine',
         'Manage Active Languages'
@@ -369,6 +401,10 @@
             => 'Il modello non era creato.',
         'Model was not updated.'
             => 'Il modello non era aggiornato.',
+        'Model was updated, but there were issues with relations.'
+            => 'Il modello è stato aggiornato, ma ci sono stati problemi con le relazioni.',
+        'Modify Structure'
+            => 'Modifica la struttura',
         'Module Name - Plural'
             => 'Nome di modulo - plurale',
         'Module Name - Plural (lowercase)'
@@ -495,10 +531,14 @@
             => 'Ruoli',
         'Roles Home'
             => 'Ruoli Home',
+        'Run'
+            => 'Esegui',
         'Salutation'
             => 'Saluto',
         'Save Changes'
             => 'Salva',
+        'Save search'
+            => 'Salva la ricerca',
         'Save yourself time and click the pencil icon to jump right in and edit your record.'
             => 'Clicca sull\'icona della matita per velocemente modificare un record.',
         'Search'
@@ -515,6 +555,10 @@
             => 'Sicurezza',
         'See more search results by clicking the down arrow at the bottom of the screen.'
             => 'Clicca la freccia verso il basso per visualizzare più risultati di una ricerca.',
+        'Select a field'
+            => 'Selezionare un campo',
+        'Select a Group'
+            => 'Selezionare un gruppo',
         'Select a Parent Group'
             => 'Selezionate un gruppo padre',
         'Select a Parent Role'
@@ -583,6 +627,8 @@
             => 'La bolla di notifica vi tiene aggiornati sugli eventi importanti.',
         'The record you are trying to access does not exist.'
             => 'Questo record è stato cancellato.',
+        'The related model ID specified was invalid.'
+            => 'L\'ID del modello associato non è valido.',
         'The status specified is invalid.'
             => 'Il stato specificate non é valido.',
         'There are no recently viewed items.'
@@ -607,8 +653,12 @@
             => 'Fiera',
         'Type a currency code or name to search.'
             => 'Inserisci il codice o il nome.',
+        'Unsupported action.'
+            => 'Azione non supportato.',
         'Update'
             => 'Aggiorna',
+        'Update Custom Data'
+            => 'Aggiornamento dei dati personalizzati',
         'Upload attachments to a record by clicking "More Options" when adding a note.'
             => 'Per aggiungere un allegato a un record, clicca "Altre opzioni" quando crea una Nota.',
         'User Membership'
@@ -639,6 +689,8 @@
             => 'Passaparola',
         'Write'
             => 'Scrivere',
+        'You can add relations only for HAS_MANY and MANY_MANY relations.'
+            => 'È possibile aggiungere i rapporti solo per le relazioni HAS_MANY e MANY_MANY.',
         'You have tried to access a page you do not have access to.'
             => 'Non si è autorizzati a visualizzare questa pagina.',
         'You must have at least one active currency.'

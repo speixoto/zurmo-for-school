@@ -46,8 +46,14 @@
             => 'Peut être soit le nom de domaine ou l\'adresse IP',
         'Click below to go to the login page. The username is <b>super</b>'
             => 'Cliquez sur le lien pour atteindre la page login.  Le nom d’utilisateur est <b>super</b>',
+        'Click here to access index page, after you disable maintenance mode.'
+            => 'Cliquer ici pour accéder à la page d\'index, après avoir désactiver le maintenance mode.',
+        'Click Here to continue with next step'
+            => 'Cliquer ici pour continuer',
         'Click Here to install the demo data'
             => 'Cliquez ici pour ajouter des données de démonstration',
+        'Click here to start upgrade'
+            => 'Cliquer ici pour commencer la mise à jour',
         'Click to start'
             => 'Cliquez pour commencer',
         'Congratulations! The demo data has been successfully loaded.'
@@ -58,8 +64,20 @@
             => 'Connexion à la base de données.',
         'Continue'
             => 'Suivant',
+        'Copy upgrade file to app/protected/runtime/upgrade folder and start upgrade process.'
+            => 'Copiez le fichier de mise à jour au dossier app/protected/runtime/upgrade et commencez la mise à jour.',
         'Correctly Installed Services'
             => 'Services optionnels installés avec succès',
+        'Could not get value of database default collation.'
+            => 'Impossible d\'obtenir la valeur de default collation de la base de données.',
+        'Could not get value of database max_allowed_packet.'
+            => 'Impossible d\'obtenir la valeur de max_allowed_packet de la base de données.',
+        'Could not get value of database max_sp_recursion_depth.'
+            => 'Impossible d\'obtenir la valeur de max_sp_recursion_depth de la base de données.',
+        'Could not get value of database optimizer_search_depth.'
+            => 'Impossible d\'obtenir la valeur de optimizer_search_depth de la base de données.',
+        'Could not get value of database thread_stack.'
+            => 'Impossible d\'obtenir la valeur de thread_stack de la base de données.',
         'Creating super user.'
             => 'Creation du super-utilisateur.',
         'Ctype extension is loaded.'
@@ -191,7 +209,7 @@
         'Microsoft-IIS'
             => 'Microsoft-IIS', // Same Word Translated
         'Minify has been disabled due to a system issue. Try to resolve the problem and re-enable Minify.'
-            => '??',
+            => 'En raison d\'un problème de système, Minify a été désactivé. Tentez de résoudre le problème et re-activer Minify.',
         'Minify library is included.'
             => 'La biliothèque Minify est inclue.',
         'minimum requirement is:'
@@ -208,6 +226,14 @@
             => 'L\'extension PCRE est chargée.',
         'PCRE extension is not loaded.'
             => 'L\'extension PCRE n\'est pas chargée.',
+        'pdo is installed.'
+            => 'pdo est installé.',
+        'pdo is not installed.'
+            => 'pdo n\'est pas installé.',
+        'pdo_mysql is installed.'
+            => 'pdo_mysql est installé.',
+        'pdo_mysql is not installed.'
+            => 'pdo_mysql n\'est pas installé.',
         'PHP'
             => 'PHP', // Same Word Translated
         'PHP date.timezone is not set.'
@@ -232,6 +258,8 @@
             => 'La valeur PHP upload_max_filesize répond aux exigences minimales.',
         'Please delete all files from assets folder on server.'
             => 'Veuillez supprimer touts les fichiers du dossier Assets.',
+        'Please set $maintenanceMode = true in perInstance.php config file.'
+            => 'Veuillez modifer le paramètre pour que $maintenanceMode = true dans le fichier perInstance.php config.',
         'Rebuilding Permissions.'
             => 'Reconstruction des permissions.',
         'Recheck System'
@@ -266,6 +294,8 @@
             => 'Mise à jour du schéma à commencé.',
         'Starting to load demo data.'
             => 'Création des données de démonstration.',
+        'Starting upgrade process.'
+            => 'Préparation de la mise à jour.',
         'The database name specified does not exist or the user specified does not have access.'
             => 'La base de données n\'existe pas ou l\'utilisateur n\'est pas autorisé à accéder la source de données.',
         'The debug.php config file is not writable.'
@@ -278,6 +308,8 @@
             => 'Le nom de la base de données pour Zurmo.',
         'The next step is to install the demo data.'
             => 'La prochaine étape est d\'installer les données de démonstration.',
+        'The next step is to reload the application and upgrade the schema.'
+            => 'L\'étape suivante consiste à recharger l\'application et mettre à jour le schéma.',
         'The perInstance.php config file is not writable.'
             => 'Le fichier de configuration perInstance.php n\'est pas inscriptible.',
         'The perInstance.php config file is writable.'
@@ -292,8 +324,16 @@
             => 'Il y a eu un problème lors de la création de la base de données d\'erreurs',
         'There was a problem creating the user Error code:'
             => 'Il y a eu un problème lors de la création du code d\'erreur d\'utilisateur',
-        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"]'
-            => 'Impossible de déterminer les informations de chemin URL. Vérifier $_SERVER["PATH_INFO"]',
+        'This is the Zurmo upgrade process. Please backup all files and the database before you continue.'
+            => 'Bienvenue dans la procédure de mise à jour Zurmo. Veuillez sauvegarder tous vos fichiers et la base de données avant de commencer.',
+        'Unable to determine URL path info. Please make sure $_SERVER["PATH_INFO"] (or $_SERVER["PHP_SELF"] and $_SERVER["SCRIPT_NAME"]) contains proper value.'
+            => 'Impossible de déterminer les informations de chemin URL. Vérifiez que $_SERVER["PATH_INFO"] (ou $_SERVER["PHP_SELF"] et $_SERVER["SCRIPT_NAME"]) contient une valeur correcte.',
+        'Upgrade in progress. Please wait.'
+            => 'Mise à jour en cours. Veuillez patienter.',
+        'Upgrade Output:'
+            => 'Résultats de la mise à jour:',
+        'Upgrade process is completed. Please edit perInstance.php file, and disable maintenance mode.'
+            => 'La mise à jour est terminée. Veuillez modifer le dossier perInstance.php et désactiver le maintenance mode.',
         'User who can connect to the database.'
             => 'L\'utilisateur qui connecte à la base de données.',
         'User`s password.'
@@ -330,10 +370,16 @@
                'choisissez un nom d\'utilisateur non existant.',
         'Your ZurmoCRM software is outdated, new stable release available:'
             => 'Votre version de Zurmo est obsolète, une nouvelle version stable est disponible:',
-        'Zurmo administrative password. The username is `super`.  You can change this later.'
-            => 'Zurmo mot de passe administrateur.  Le nom d\'utilisateur est \'super\'. Vous pouvez modifier le nom plus tard.',
+        'Zip extension is loaded.'
+            => 'L\'extension Zip est chargée.',
+        'Zip extension is not loaded.'
+            => 'L\'extension Zip n\'est pas chargée.',
+        'Zurmo administrative password. The username is `super`. You can change this later.'
+            => 'Zurmo mot de passe administrateur. Le nom d\'utilisateur est \'super\'. Vous pouvez modifier le nom plus tard.',
         'Zurmo Installation'
             => 'Installation de Zurmo',
+        'Zurmo runs only on Apache {apacheMinVersion} and higher or Microsoft-IIS {iisMinVersion} or higher web servers.'
+            => 'Zurmo fonctionne uniquement sur le serveur web Apache {apacheMinVersion} ou supérieure ou Microsoft-IIS {iisMinVersion} ou supérieure.',
         'Zurmo Version'
             => 'Version de Zurmo',
         '{folderPath} is missing.'

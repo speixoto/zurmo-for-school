@@ -335,7 +335,6 @@
             $this->assertEquals(500, $gamePoint->value);
             $this->assertTrue($gameLevel->id > 0);
             $this->assertEquals(3, $gameLevel->value);
-
         }
     }
 ?>

@@ -59,8 +59,8 @@
         public static function getUserExternalSystemIds()
         {
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            RedBean_Plugin_Optimizer_ExternalSystemId::
-            ensureColumnIsVarchar(User::getTableName('User'), $columnName);
+            RedBeanColumnTypeOptimizer::
+            externalIdColumn(User::getTableName('User'), $columnName);
             $sql = 'select ' . $columnName . ' from ' . User::getTableName('User');
             return R::getCol($sql);
         }
@@ -88,7 +88,11 @@
             {
                 try
                 {
-                    return User::getById($value);
+                    if ((int)$value <= 0)
+                    {
+                        throw new InvalidValueToSanitizeException(Yii::t('Default', 'The user id specified did not match any existing records.'));
+                    }
+                    return User::getById((int)$value);
                 }
                 catch (NotFoundException $e)
                 {

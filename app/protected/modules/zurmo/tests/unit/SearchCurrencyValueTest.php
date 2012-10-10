@@ -33,7 +33,6 @@
             Yii::app()->user->userModel = $user;
         }
 
-
         public function testSearchCurrencyValueWithoutPassingCurrencyid()
         {
             $super = User::getByUsername('super');
@@ -46,10 +45,9 @@
                                                      )
                                                  );
             $searchForm->dynamicStructure = '1';
-            $searchForm->validateDynamicClauses('dynamicClauses',array());
+            $searchForm->validateDynamicClauses('dynamicClauses', array());
             $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
-
         }
 
         public function testSearchCurrencyValueWithPassingCurrencyidAndValue()
@@ -65,7 +63,7 @@
             $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
             $searchForm->dynamicClauses   = $searchAttributes;
             $searchForm->dynamicStructure = '1';
-            $searchForm->validateDynamicClauses('dynamicClauses',array());
+            $searchForm->validateDynamicClauses('dynamicClauses', array());
             $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
 
@@ -114,7 +112,7 @@
             $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
             $searchForm->dynamicClauses   = $searchAttributes;
             $searchForm->dynamicStructure = '1';
-            $searchForm->validateDynamicClauses('dynamicClauses',array());
+            $searchForm->validateDynamicClauses('dynamicClauses', array());
             $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
 
@@ -156,7 +154,7 @@
             $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
             $searchForm->dynamicClauses   = $searchAttributes;
             $searchForm->dynamicStructure = '1';
-            $searchForm->validateDynamicClauses('dynamicClauses',array());
+            $searchForm->validateDynamicClauses('dynamicClauses', array());
             $this->assertFalse($searchForm->hasErrors());
             $searchForm->clearErrors();
 

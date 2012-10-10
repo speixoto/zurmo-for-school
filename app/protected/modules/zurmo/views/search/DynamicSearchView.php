@@ -74,6 +74,7 @@
                     $('#" . $this->getRowCounterInputId() . "').val(0);
                     $('#" . $this->getStructureInputId() . "').val('');
                     $('.search-view-1').hide();
+                    $('.select-list-attributes-view').hide();
                     resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
                     rebuildDynamicSearchRowNumbersAndStructureInput('" . $this->getSearchFormId() . "')
             ";
@@ -105,6 +106,7 @@
         protected function renderConfigSaveAjax($formName)
         {
             return     "$('.search-view-1').hide();
+                        $('.select-list-attributes-view').hide();
                         $('#" . $formName . "').find('.attachLoading:first').removeClass('loading');
                         $('#" . $formName . "').find('.attachLoading:first').removeClass('loading-ajax-submit');
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
@@ -221,23 +223,25 @@
             $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
             $addFieldLabelContent = $this->getAddFieldLabelContent();
-            $aContent             = CHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent            .= CHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent            .= CHtml::tag('span', array('class' => 'z-label'), $addFieldLabelContent);
+            $aContent             = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-label'), $addFieldLabelContent);
             $content             .= ZurmoHtml::ajaxLink($aContent, $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
-                                          'beforeSend' => 'js:function(){$(this).addClass("loading-ajax-submit"); $(this).addClass("loading"); attachLoadingSpinner("' . $this->getSearchFormId() . '");}',
+                                          'beforeSend' => 'js:function(){
+                                            attachLoadingSpinner("' . $this->getSearchFormId() . '", true, "dark");
+                                            }',
                                           'success' => 'js:function(data){
                                             $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                             resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
-                                            $(this).removeClass("loading-ajax-submit"); $(this).removeClass("loading");
+                                            attachLoadingSpinner("' . $this->getSearchFormId() . '", false);
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
-            return CHtml::tag('div', array('class' => 'add-fields-container'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'add-fields-container'), $content);
         }
 
         protected function renderAfterAddExtraRowContent($form)
@@ -254,7 +258,7 @@
            parent::renderAfterFormLayout($form);
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')) . '/dynamicSearchViewUtils.js');
+                    Yii::getPathOfAlias('application.core.views.assets')) . '/dynamicSearchViewUtils.js');
             Yii::app()->clientScript->registerScript('showStructurePanels' . $this->getSearchFormId(), "
                 $('#show-dynamic-search-structure-div-link-" . $this->getSearchFormId() . "').click( function()
                     {
@@ -300,10 +304,10 @@
             {
                 $style3 = 'display:none;';
             }
-            $content  = CHtml::link(Yii::t('Default', 'Modify Structure'), '#',
+            $content  = ZurmoHtml::link(Yii::t('Default', 'Modify Structure'), '#',
                             array('id'    => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
                                   'style' => $style1));
-            $content .= CHtml::tag('div',
+            $content .= ZurmoHtml::tag('div',
                             array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
                                   'class' => 'has-lang-label',
                                   'style' => $style2), $this->renderStructureInputContent($form));
@@ -318,7 +322,7 @@
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'dynamic-search-structure-input');
             $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
-            $content            .= Yii::t('Default', '<span>Search Structure</span>');
+            $content            .= ZurmoHtml::tag('span', array(), Yii::t('Default', 'Search Operator'));
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
         }
@@ -359,6 +363,16 @@
             {
                 return "display:none;";
             }
+        }
+
+        /**
+         * Override and manipulate as needed. This method can be used to change the ordering that the dynamic search
+         * attribute dropdown shows attributes in for example.
+         * @param array $attributeIndexOrDerivedTypeAndLabels
+         */
+        public static function resolveAttributeIndexOrDerivedTypeAndLabelsForDynamicSearchRow(
+                               & $attributeIndexOrDerivedTypeAndLabels)
+        {
         }
     }
 ?>
