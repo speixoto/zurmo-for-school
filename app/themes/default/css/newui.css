@@ -10106,6 +10106,12 @@ div.hasHalfs .twoThirds {
   -moz-opacity: 1;
   opacity: 1;
 }
+.edit-row-menu > li > a:before {
+  content: "▾ ";
+  color: #262877;
+  position: relative;
+  top: -3px;
+}
 .edit-row-menu > li > a:after {
   content: "n";
   color: #262877;
