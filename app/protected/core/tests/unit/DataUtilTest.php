@@ -28,6 +28,34 @@
     {
         public function testPurifyHtml()
         {
+            $text = 'A # B';
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
+
+            $text = 'A $ B';
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
+
+            $text = 'A < B';
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
+
+            $text = 'A > B';
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
+
+            $text = 'A " B';
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
+
+            $text = 'A&B';
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
+
+            $text = 'A & B';
+            $purifiedText = DataUtil::purifyHtml($text);
+            $this->assertEquals($text, $purifiedText);
+
             $text = '<b>This</b> is <a href="http://www.zurmo.com">valid text</a>';
             $purifiedText = DataUtil::purifyHtml($text);
             $this->assertEquals($text, $purifiedText);

@@ -29,6 +29,8 @@
      */
     class DataUtil
     {
+        public static $purifyFix = array(' &amp; ' => ' & ', '&amp;' => '&', ' &lt; ' => ' < ', ' &gt; ' => ' > ');
+
         /**
         * Sanitizes data for date and date time attributes by converting them to the proper
         * format and timezone for saving.
@@ -150,6 +152,10 @@
                 $purifier = new CHtmlPurifier();
                 $purifier->options = array('Cache.SerializerPermissions' => 0777);
                 $text = $purifier->purify($text);
+
+                $replaceArray = array_keys(self::$purifyFix);
+                $replaceWithArray = array_values(self::$purifyFix);
+                $text = str_replace($replaceArray, $replaceWithArray, $text);
             }
             return $text;
         }
