@@ -55,7 +55,7 @@
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->uniqueLayoutId, $javascript);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Chart");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.AmChart', array(
+            $cClipWidget->widget('application.core.widgets.AmChart', array(
                     'id'        => $this->uniqueLayoutId,
             ));
             $cClipWidget->endClip();

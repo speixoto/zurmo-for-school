@@ -116,9 +116,9 @@
         'Any Street'
             => 'Via',
         'Application is in maintenance mode, and only Super Administrators can access it.'
-            => '??',
+            => 'L\'applicazione è in modalità di manutenzione, e solo Super Administrator può accedervi.',
         'Application is in maintenance mode. Please try again later.'
-            => '??',
+            => 'L\'applicazione è in modalità di manutenzione. Si prega di riprovare più tardi.',
         'Application Name'
             => 'Nome dell\'applicazione',
         'are required.'
@@ -143,8 +143,6 @@
             => 'Bancaria',
         'Business Services'
             => 'Servizi di business',
-        'by <strong>{ownerStringContent}</strong>'
-            => 'di <strong>{ownerStringContent}</strong>',
         'by {ownerStringContent}'
             => 'di {ownerStringContent}',
         'Cache has been successfully cleaned.'
@@ -178,9 +176,11 @@
         'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
             => 'Copyright &#169; Zurmo Inc., 2012. Tutti i diritti riservati.',
         'Could not remove relation.'
-            => '??',
+            => 'Impossibile rimuovere la relazione.',
         'Could not save relation.'
-            => '??',
+            => 'Impossibile salvare la relazione.',
+        'Could not use this API call for HAS_ONE relationships.'
+            => 'Impossibile utilizzare questa chiamata API per i relazioni HAS_ONE.',
         'Country'
             => 'Paese',
         'Create Group'
@@ -280,7 +280,7 @@
         'Global configuration saved successfully.'
             => 'Configurazione globale modificata con successo.',
         'Global search'
-            => '??',
+            => 'Ricerca globale',
         'Go to Search'
             => 'alla Ricerca',
         'Got questions{spaceAndFirstName}? Find answers in the Zurmo Wiki.'
@@ -402,7 +402,7 @@
         'Model was not updated.'
             => 'Il modello non era aggiornato.',
         'Model was updated, but there were issues with relations.'
-            => '??',
+            => 'Il modello è stato aggiornato, ma ci sono stati problemi con le relazioni.',
         'Modify Structure'
             => 'Modifica la struttura',
         'Module Name - Plural'
@@ -628,7 +628,7 @@
         'The record you are trying to access does not exist.'
             => 'Questo record è stato cancellato.',
         'The related model ID specified was invalid.'
-            => '??',
+            => 'L\'ID del modello associato non è valido.',
         'The status specified is invalid.'
             => 'Il stato specificate non é valido.',
         'There are no recently viewed items.'
@@ -654,7 +654,7 @@
         'Type a currency code or name to search.'
             => 'Inserisci il codice o il nome.',
         'Unsupported action.'
-            => '??',
+            => 'Azione non supportato.',
         'Update'
             => 'Aggiorna',
         'Update Custom Data'
@@ -690,7 +690,7 @@
         'Write'
             => 'Scrivere',
         'You can add relations only for HAS_MANY and MANY_MANY relations.'
-            => '??',
+            => 'È possibile aggiungere i rapporti solo per le relazioni HAS_MANY e MANY_MANY.',
         'You have tried to access a page you do not have access to.'
             => 'Non si è autorizzati a visualizzare questa pagina.',
         'You must have at least one active currency.'

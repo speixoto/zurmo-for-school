@@ -106,16 +106,11 @@
             return $content;
         }
 
-        protected function renderTitleContent()
-        {
-            return '<h1>' . $this->title . '</h1>';
-        }
-
         protected function renderSaveLayoutButton($notificationBarId)
         {
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets')
+                    Yii::getPathOfAlias('application.core.views.assets')
                     ) . '/FormUtils.js',
                 CClientScript::POS_END
             );
@@ -123,9 +118,9 @@
             $htmlOptions['id']       = 'saveLayout';
             $htmlOptions['name']     = 'saveLayout';
             $htmlOptions['class']    = 'attachLoading z-button';
-            $aContent                = CHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent               .= CHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent               .= CHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Save Layout'));
+            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Save Layout'));
             return ZurmoHtml::ajaxLink($aContent, '#', array(
                     'data' => 'js:designer.prepareSaveLayout("edit-form")',
                     'dataType' => 'json',
@@ -147,7 +142,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/moduleLayoutsList/',
                                                  array('moduleClassName' => $this->moduleClassName));
-            return CHtml::link(Yii::t('Default', 'Cancel'), $route);
+            return ZurmoHtml::link(Yii::t('Default', 'Cancel'), $route);
         }
 
         /**
@@ -169,7 +164,7 @@
         {
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("designerLayoutEditor");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.DesignerLayoutEditor', array(
+            $cClipWidget->widget('application.core.widgets.DesignerLayoutEditor', array(
                 'designerLayoutAttributes'      => $this->designerLayoutAttributes,
                 'canAddRows'                    => $this->designerRules->canAddRows(),
                 'canMoveRows'                   => $this->designerRules->canMoveRows(),
@@ -194,7 +189,7 @@
                 $content = '<div id = "' . $barId . '"></div>';
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("metadataViewEditViewNotificationMessage");
-                $cClipWidget->widget('ext.zurmoinc.framework.widgets.JNotify', array(
+                $cClipWidget->widget('application.core.widgets.JNotify', array(
                     'statusBarId' => $barId,
                 ));
                 $cClipWidget->endClip();
@@ -206,7 +201,7 @@
         {
             Yii::app()->getClientScript()->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.views.assets') . '/StickyUtils.jquery.js'
+                    Yii::getPathOfAlias('application.core.views.assets') . '/StickyUtils.jquery.js'
                 ),
                 CClientScript::POS_END
             );

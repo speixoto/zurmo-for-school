@@ -61,7 +61,7 @@
             $inputNameAndId = $this->getEditableInputId('files');
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("filesElement");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.FileUpload', array(
+            $cClipWidget->widget('application.core.widgets.FileUpload', array(
                 'uploadUrl'            => Yii::app()->createUrl("zurmo/fileModel/upload",
                                                         array('filesVariableName' => $inputNameAndId)),
                 'deleteUrl'            => Yii::app()->createUrl("zurmo/fileModel/delete"),
@@ -71,7 +71,8 @@
                 'formName'             => $this->form->id,
                 'allowMultipleUpload'  => true,
                 'existingFiles'        => $existingFilesInformation,
-                'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize()
+                'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize(),
+                'showMaxSize'          => $this->getShowMaxSize(),
             ));
 
             $cClipWidget->endClip();
@@ -120,6 +121,15 @@
         public static function getNonEditableActionType()
         {
             return null;
+        }
+
+        protected function getShowMaxSize()
+        {
+            if (!isset($this->params['showMaxSize']))
+            {
+                return true;
+            }
+            return $this->params['showMaxSize'];
         }
     }
 ?>

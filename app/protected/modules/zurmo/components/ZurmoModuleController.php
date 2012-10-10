@@ -145,7 +145,7 @@
             return $this->getModule()->getPrimaryModelName();
         }
 
-        protected function getSearchFormClassName()
+        protected static function getSearchFormClassName()
         {
             return null;
         }
@@ -153,24 +153,23 @@
         protected function export()
         {
             $modelClassName        = $this->getModelName();
-            $searchFormClassName   = $this->getSearchFormClassName();
+            $searchFormClassName   = static::getSearchFormClassName();
             // Set $pageSize to unlimited, because we don't want pagination
             $pageSize = Yii::app()->pagination->getGlobalValueByType('unlimitedPageSize');
             $model = new $modelClassName(false);
 
-            if (isset($searchFormClassName))
+            if ($searchFormClassName != null)
             {
                 $searchForm = new $searchFormClassName($model);
             }
             else
             {
-                $searchForm = null;
+                throw new NotSupportedException();
             }
             $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
 
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 $searchForm,
-                $modelClassName,
                 $pageSize,
                 Yii::app()->user->userModel->id
             );
@@ -276,21 +275,21 @@
                 Yii::app()->end(0, false);
             }
         }
+
         public function actionRenderStickyListBreadCrumbContent($stickyOffset, $stickyKey, $stickyModelId)
         {
-            if($stickyOffset == null)
+            if ($stickyOffset == null)
             {
                 Yii::app()->end(0, false);
             }
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $modelClassName                 = $this->getModule()->getPrimaryModelName();
-            $searchFormClassName            = $this->getSearchFormClassName(); //maybe replace to call getGlobalSearchFormClassName depending on 0.7.4 refactor
+            $searchFormClassName            = static::getSearchFormClassName();
             $model                          = new $modelClassName(false);
             $searchForm                     = new $searchFormClassName($model);
-            $dataProvider = $this->makeSearchDataProvider(
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
-                $modelClassName,
                 $pageSize,
                 null,
                 $stickyKey,
@@ -300,14 +299,14 @@
             $finalOffset = StickySearchUtil::resolveFinalOffsetForStickyList((int)$stickyOffset, (int)$pageSize, (int)$totalCount);
             $dataProvider->setOffset($finalOffset);
             $dataList   = $dataProvider->getData();
-            if(count($dataList) > 0)
+            if (count($dataList) > 0)
             {
                 $menuItems = array('label' => '▾'); //char code is &#9662;
-                foreach($dataList as $row => $data)
+                foreach ($dataList as $row => $data)
                 {
                     $url = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/details',
                                                   array('id' => $data->id, 'stickyOffset'  => $row + $finalOffset));
-                    if($data->id == $stickyModelId)
+                    if ($data->id == $stickyModelId)
                     {
                         $menuItems['items'][] = array(  'label'       => strval($data),
                                                         'url'         => $url,
@@ -320,12 +319,39 @@
                 }
                 $cClipWidget     = new CClipWidget();
                 $cClipWidget->beginClip("StickyList");
-                $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
+                $cClipWidget->widget('application.core.widgets.MbMenu', array(
                     'htmlOptions' => array('id' => 'StickyListMenu'),
                     'items'                   => array($menuItems),
                 ));
                 $cClipWidget->endClip();
                 echo $cClipWidget->getController()->clips['StickyList'];
+            }
+        }
+
+        public function actionUnlink($id)
+        {
+            $relationModelClassName    = ArrayUtil::getArrayValue(GetUtil::getData(), 'relationModelClassName');
+            $relationModelId           = ArrayUtil::getArrayValue(GetUtil::getData(), 'relationModelId');
+            $relationModelRelationName = ArrayUtil::getArrayValue(GetUtil::getData(), 'relationModelRelationName');
+            if ($relationModelClassName == null || $relationModelId == null || $relationModelRelationName == null)
+            {
+                throw new NotSupportedException();
+            }
+            $relationModel  = $relationModelClassName::GetById(intval($relationModelId));
+            if ($relationModel->getRelationType($relationModelRelationName) != RedBeanModel::HAS_MANY &&
+                       $relationModel->getRelationType($relationModelRelationName) != RedBeanModel::MANY_MANY)
+            {
+                throw new NotSupportedException();
+            }
+            $modelClassName = $relationModel->getRelationModelClassName($relationModelRelationName);
+            $model          = $modelClassName::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($relationModel);
+            $relationModel->$relationModelRelationName->remove($model);
+            $saved          = $relationModel->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
             }
         }
     }

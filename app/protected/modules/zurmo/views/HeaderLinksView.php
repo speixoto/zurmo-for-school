@@ -54,7 +54,7 @@
             $content  .= '<a href="' . $homeUrl . '"><img src="' . $imagePath . 'Zurmo_logo.png" alt="Zurmo Logo"/></a>';
             if ($this->applicationName != null)
             {
-                $content  .= CHtml::tag('span', array(), $this->applicationName);
+                $content  .= ZurmoHtml::tag('span', array(), $this->applicationName);
             }
             $content  .= '</div>';
             $content  .= '<div id="user-toolbar" class="clearfix">';
@@ -95,7 +95,7 @@
             }
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("headerMenu");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
+            $cClipWidget->widget('application.core.widgets.MbMenu', array(
                 'items'                   => $menuItems,
                 'htmlOptions' => array('id'     => $menuId,
                                        'class'  => 'headerNav'),
@@ -113,7 +113,7 @@
             // Begin Not Coding Standard
             $content  .= "<a id=\"notifications-flyout-link\" href=\"#\" class=\"notifications-link unread\">";
             $content  .= "<span id='notifications-link' class='tooltip'>" . $count ."</span></a>";
-            $content  .= CHtml::tag('div',
+            $content  .= ZurmoHtml::tag('div',
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
                                     CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
             Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
@@ -129,7 +129,7 @@
                             success  : function(html)
                             {
                                 jQuery('#notifications-flyout').html(html);
-                                $(document).one('click',function (e)
+                                $(document).bind('click',function (e)
                                 {
                                     var container = $('#notifications-flyout');
                                     if (container.has(e.target).length === 0 && e.target.id != 'notifications-link')

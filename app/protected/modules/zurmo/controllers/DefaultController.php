@@ -156,7 +156,7 @@
                                                           'anyMixedAttributesScope' => ArrayUtil::getArrayValue(
                                                               GetUtil::getData(), 'globalSearchScope')))
                                                 ),
-                              'label'     => 'All results','iconClass' => 'autocomplete-icon-AllResults'))
+                              'label'     => 'All results', 'iconClass' => 'autocomplete-icon-AllResults'))
               );
             echo CJSON::encode($autoCompleteResults);
         }
@@ -166,8 +166,8 @@
          */
         public function actionGlobalList()
         {
-            if (!isset($_GET['MixedModelsSearchForm']['anyMixedAttributesScope'])
-                    || in_array('All', $_GET['MixedModelsSearchForm']['anyMixedAttributesScope']))
+            if (!isset($_GET['MixedModelsSearchForm']['anyMixedAttributesScope']) ||
+                    in_array('All', $_GET['MixedModelsSearchForm']['anyMixedAttributesScope']))
             {
                 $scopeData = null;
             }
@@ -180,7 +180,8 @@
                             'listPageSize', get_class($this->getModule()));
             $dataCollection = new MixedModelsSearchResultsDataCollection($term, $pageSize,
                     Yii::app()->user->userModel);
-            if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"])) {
+            if (Yii::app()->request->getIsAjaxRequest() && isset($_GET["ajax"]))
+            {
                 $selectedModule = $_GET["ajax"];
                 $selectedModule = str_replace('list-view-', '', $selectedModule);
                 $view = $dataCollection->getListView($selectedModule);
@@ -258,10 +259,14 @@
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
                 //$rawPostFormData           = $_POST[$formModelClassName];
-                if (isset($_POST[$formModelClassName]['anyMixedAttributesScope']))
+                if (isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
-                    $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName]['anyMixedAttributesScope']);
-                    unset($_POST[$formModelClassName]['anyMixedAttributesScope']);
+                    $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
+                    unset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
+                }
+                if (isset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
+                {
+                    unset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
                 }
                 $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
@@ -285,7 +290,7 @@
                      $errorData = array();
                     foreach ($searchForm->getErrors() as $attribute => $errors)
                     {
-                            $errorData[CHtml::activeId($searchForm, $attribute)] = $errors;
+                            $errorData[ZurmoHtml::activeId($searchForm, $attribute)] = $errors;
                     }
                     echo CJSON::encode($errorData);
                     Yii::app()->end(0, false);

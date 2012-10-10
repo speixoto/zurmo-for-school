@@ -55,6 +55,14 @@
             {
                 $htmlOptions['style'] = "display:none;";
                 $htmlOptions['class'] = 'ignore-style';
+                $idOrName      = static::getSavedSearchListDropDown();
+                $htmlOptions   = array('id' => $idOrName, 'empty' => Yii::t('Default', 'Load a saved search'));
+                $content       = ZurmoHtml::dropDownList($idOrName,
+                                                     $this->model->savedSearchId,
+                                                     self::resolveSavedSearchesToIdAndLabels($savedSearches),
+                                                     $htmlOptions);
+                $this->renderSavedSearchDropDownOnChangeScript($idOrName, $this->model->loadSavedSearchUrl);
+                return $content;
             }
             $content       = CHtml::dropDownList($idOrName,
                                                  $this->model->savedSearchId,
@@ -128,10 +136,11 @@
         protected function renderConfigSaveAjax($formName)
         {
             return     "var inputId = '" . static::getSavedSearchListDropDown() . "';
-                        if(data.id != undefined)
+                        if (data.id != undefined)
                         {
                             var existingSearchFound = false;
-                            $('#' + inputId + ' > option').each(function(){
+                            $('#' + inputId + ' > option').each(function()
+                            {
                                if (this.value == data.id)
                                {
                                    $('#' + inputId + ' option[value=\'' + this.value + '\']').text(data.name);
@@ -140,12 +149,12 @@
                                     resetDropKickDropDowns($('#' + inputId));
                                }
                             });
-                            if(!existingSearchFound)
+                            if (!existingSearchFound)
                             {
                                 $('#' + inputId).removeClass('ignore-style');
                                 $('#' + inputId)
                                     .append($('<option></option>')
-                                    .attr('value',data.id)
+                                    .attr('value', data.id)
                                     .text(data.name))
                                 //$('#' + inputId).val(data.id); Do not select new saved search since it is not sticky at this point.
                                 $('#" . get_class($this->model) . "_savedSearchId').val(data.id);
@@ -161,8 +170,8 @@
 
         protected function renderAfterAddExtraRowContent($form)
         {
-            $content  = '<strong class="mp-divider"> · </strong>' . CHtml::link(Yii::t('Default', 'Save search'), '#', array('id' => 'save-as-advanced-search'));
-            $content  = CHtml::tag('div', array('class' => 'search-save-container'), $content);
+            $content  = '<strong class="mp-divider"> · </strong>' . ZurmoHtml::link(Yii::t('Default', 'Save search'), '#', array('id' => 'save-as-advanced-search'));
+            $content  = ZurmoHtml::tag('div', array('class' => 'search-save-container'), $content);
             $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
             $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);
             $content .= '</div>';
@@ -224,9 +233,9 @@
             if ($this->model->savedSearchId != null)
             {
                 $label = Yii::t('Default', 'Delete') . "<span class='icon'></span>";
-                return CHtml::link($label, "#", array( 'id'      => 'removeSavedSearch',
-                                                       'class'   => 'remove',
-                                                       'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));
+                return ZurmoHtml::link($label, "#", array( 'id'      => 'removeSavedSearch',
+                                                           'class'   => 'remove',
+                                                           'onclick' => "deleteSavedSearchAndRemoveFromView('" . $this->model->savedSearchId . "')"));
             }
         }
 
