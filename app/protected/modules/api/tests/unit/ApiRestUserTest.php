@@ -182,14 +182,16 @@
             unset($response['data']['title']['id']);
             unset($response['data']['id']);
             unset($response['data']['password']);
-            unset($response['data']['hash']);
             unset($response['data']['manager']['username']);
+            $hash = User::encryptPassword($data['password']);
             unset($data['password']);
+
             ksort($data);
             ksort($response['data']);
             $this->assertEquals($data, $response['data']);
             // Check if new user can log in
             $newUser = User::getByUsername('diggy011');
+            $this->assertEquals($hash, $newUser->hash);
             $newUser->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API);
             $saved = $newUser->save();
             $authenticationData = $this->login('diggy011', 'diggy011');
@@ -231,6 +233,7 @@
             $user->forget();
 
             $data['firstName']                = "John";
+            $data['password']                 = "aswe019";
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -242,6 +245,11 @@
             ksort($compareData);
             ksort($response['data']);
             $this->assertEquals($compareData, $response['data']);
+
+            // Check if password is updated
+            RedBeanModel::forgetAll();
+            $updatedUser = User::getByUsername('diggy011');
+            $this->assertEquals(User::encryptPassword($data['password']), $updatedUser->hash);
 
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/read/' . $user->id, 'GET', $headers);
             $response = json_decode($response, true);

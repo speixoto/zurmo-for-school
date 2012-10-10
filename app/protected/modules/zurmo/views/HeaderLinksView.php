@@ -95,7 +95,7 @@
             }
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("headerMenu");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
+            $cClipWidget->widget('application.core.widgets.MbMenu', array(
                 'items'                   => $menuItems,
                 'htmlOptions' => array('id'     => $menuId,
                                        'class'  => 'headerNav'),

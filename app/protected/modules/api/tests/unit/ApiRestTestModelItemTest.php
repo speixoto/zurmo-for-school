@@ -361,13 +361,14 @@
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem/api/create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-//echo "OK";
-//            exit;
+
             RedBeanModel::forgetAll();
             $updatedModel = ApiTestModelItem::getById($response['data']['id']);
             $this->assertEquals(2, count($updatedModel->modelItems3));
-            $this->assertEquals($testItem3_1->id, $updatedModel->modelItems3[0]->id);
-            $this->assertEquals($testItem3_2->id, $updatedModel->modelItems3[1]->id);
+            // We don't know order how data are pulled from database, so we compare if all expected data are in array.
+            $this->assertTrue(in_array($updatedModel->modelItems3[0]->id, array($testItem3_1->id, $testItem3_2->id)));
+            $this->assertTrue(in_array($updatedModel->modelItems3[1]->id, array($testItem3_1->id, $testItem3_2->id)));
+            $this->assertTrue($updatedModel->modelItems3[0]->id != $updatedModel->modelItems3[1]->id);
 
             $this->assertEquals(1, count($updatedModel->modelItems4));
             $this->assertEquals($testItem4->id, $updatedModel->modelItems4[0]->id);

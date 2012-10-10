@@ -143,8 +143,6 @@
             => 'Banking', // Same Word Translated
         'Business Services'
             => 'Handelsdienstleistungen',
-        'by <strong>{ownerStringContent}</strong>'
-            => 'von <strong> {ownerStringContent}</strong>',
         'by {ownerStringContent}'
             => 'von {ownerStringContent}',
         'Cache has been successfully cleaned.'

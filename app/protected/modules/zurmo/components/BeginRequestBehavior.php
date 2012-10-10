@@ -40,6 +40,7 @@
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
 
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
@@ -72,6 +73,7 @@
                 else
                 {
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginRequest'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
@@ -118,7 +120,7 @@
             catch (NotFoundException $e)
             {
                 $filesToInclude   = FileUtil::getFilesFromDir(Yii::app()->basePath . '/modules', Yii::app()->basePath . '/modules', 'application.modules');
-                $filesToIncludeFromFramework = FileUtil::getFilesFromDir(Yii::app()->basePath . '/extensions/zurmoinc/framework', Yii::app()->basePath . '/extensions/zurmoinc/framework', 'application.extensions.zurmoinc.framework');
+                $filesToIncludeFromFramework = FileUtil::getFilesFromDir(Yii::app()->basePath . '/core', Yii::app()->basePath . '/core', 'application.core');
                 $totalFilesToIncludeFromModules = count($filesToInclude);
 
                 foreach ($filesToIncludeFromFramework as $key => $file)
@@ -144,6 +146,15 @@
             if (!$instanceFoldersServiceHelper->runCheckAndGetIfSuccessful())
             {
                 echo $instanceFoldersServiceHelper->getMessage();
+                Yii::app()->end(0, false);
+            }
+        }
+
+        public function handleCheckAutoBuildCompleted($event)
+        {
+            if (!RedBeanDatabaseBuilderUtil::isAutoBuildStateValid())
+            {
+                echo Yii::t('Default', 'Database upgrade not completed. Please try latter.');
                 Yii::app()->end(0, false);
             }
         }
