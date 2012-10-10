@@ -141,7 +141,7 @@
             assert('$addressModel instanceof Address');
             Yii::app()->getClientScript()->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('ext.zurmoinc.framework.elements.assets')
+                    Yii::getPathOfAlias('application.core.elements.assets')
                     ) . '/Modal.js',
                 CClientScript::POS_END
             );
