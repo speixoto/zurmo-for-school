@@ -113,8 +113,9 @@
         {
             $id          = $this->getEditableInputId($inputNameIdPrefix, $attribute);
             $htmlOptions = array(
-                'name' => $this->getEditableInputName($inputNameIdPrefix, $attribute),
-                'id'   => $id,
+                'name'   => $this->getEditableInputName($inputNameIdPrefix, $attribute),
+                'id'     => $id,
+                'encode' => false,
             );
             $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
             $textField   = $form->textField($model, $attribute, $htmlOptions);
