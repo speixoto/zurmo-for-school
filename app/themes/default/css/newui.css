@@ -1640,7 +1640,6 @@ table.configuration-list tr td:last-child a:before {
   padding-left: 0;
 }
 .AppContent.ImportWizardView h3 {
-  margin-top: 10px;
   margin-bottom: 15px;
 }
 .AppContent.ImportWizardView #right-side-edit-view-panel {
@@ -2068,6 +2067,10 @@ table.configuration-list tr td:last-child a:before {
   box-sizing: border-box;
   padding-left: 0;
   margin: 0 !important;
+  width: 100%;
+}
+.file-upload-box > .ui-widget {
+  width: 100%;
 }
 .file-upload-box div {
   margin-left: 0 !important;
@@ -2133,81 +2136,101 @@ table.configuration-list tr td:last-child a:before {
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
-.fileupload-content .files {
-  margin-top: 15px;
+.fileupload-content {
+  width: 100%;
 }
-.fileupload-content .name {
-  color: #262877 !important;
-  line-height: 120%;
-}
-.fileupload-content .ui-button {
-  background: none;
-  border: none;
+.files td {
+  padding: 2px 0 !important;
   vertical-align: middle;
-  cursor: pointer;
+  font-weight: 400 !important;
 }
-.fileupload-content .ui-icon-trash:after {
-  content: "_";
-  font-weight: normal;
-  font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  text-align: right;
+.files .ui-state-error td {
+  color: #CC0000;
+  font-weight: bold;
+}
+.files .z-spinner {
+  display: inline-block;
+}
+.file-size {
+  font-size: 10px;
+  margin-left: 5px;
+  color: #999;
+}
+.upload-spinner {
+  display: inline-block;
+}
+.upload-actions {
   float: right;
 }
-.fileupload-content .ui-icon-cancel:after {
-  content: "_";
+.upload-actions .icon-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #262877;
+}
+.upload-actions .icon-delete:before {
+  margin: 0;
+  top: 0;
+  cursor: pointer;
+  filter: alpha(opacity=25);
+  -khtml-opacity: 0.25;
+  -moz-opacity: 0.25;
+  opacity: 0.25;
+}
+.upload-actions .icon-delete:hover:before {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+}
+.upload-actions .start,
+.upload-actions .cancel {
+  cursor: pointer;
+  border: none;
+  background: #262877;
+  font-size: 11px !important;
+  padding: 4px;
+  line-height: 1;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  margin: 0 0 0 4px;
+  color: #fff;
   font-weight: normal;
-  font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
 }
-.fileupload-content .ui-button-text {
-  vertical-align: top;
-  position: relative;
-  top: 2px;
-  color: #CC0000;
+.upload-actions .start:hover,
+.upload-actions .cancel:hover {
+  -webkit-box-shadow: 0 0 1px 0 #333333;
+  -moz-box-shadow: 0 0 1px 0 #333333;
+  -o-box-shadow: 0 0 1px 0 #333333;
+  -ms-box-shadow: 0 0 1px 0 #333333;
+  box-shadow: 0 0 1px 0 #333333;
 }
-.fileupload-content .template-download td,
-.fileupload-content .template-upload td {
-  vertical-align: middle;
-  border-top: 1px solid #efefef;
-  border-bottom: 1px solid #efefef;
-  padding: 10px 0 !important;
+.upload-actions .start {
+  background-color: #6fa82d;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
+  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
+  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
+  background-image: linear-gradient(top, #97c43d, #6fa82d);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
 }
-.fileupload-content .ui-progressbar {
-  background: url(../images/ajax-loader.gif) left top no-repeat;
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-.fileupload-content .preview {
-  display: none;
-}
-.fileupload-content .start {
-  display: none;
-}
-.fileupload-content .progress {
-  background: url(../images/ajax-loader.gif) 50% 50% no-repeat;
-}
-.fileupload-content .size {
-  width: 80px;
-}
-.fileupload-content .cancel,
-.fileupload-content .delete {
-  text-align: right;
-}
-.fileupload-content .cancel button,
-.fileupload-content .delete button {
-  color: #a7a7a7;
-}
-.fileupload-content .cancel button:hover span,
-.fileupload-content .delete button:hover span {
-  color: #262877 !important;
-  cursor: pointer;
-}
-.fileupload-content .cancel button:hover span:after,
-.fileupload-content .delete button:hover span:after {
-  color: #262877 !important;
-  cursor: pointer;
+.upload-actions .cancel {
+  background-color: #a82d31;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31));
+  background-image: -moz-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -ms-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31));
+  background-image: -webkit-linear-gradient(top, #c43d53, #a82d31);
+  background-image: -o-linear-gradient(top, #c43d53, #a82d31);
+  background-image: linear-gradient(top, #c43d53, #a82d31);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0);
 }
 .fileinput-button {
   position: relative;
@@ -2228,6 +2251,9 @@ table.configuration-list tr td:last-child a:before {
   direction: ltr;
   cursor: pointer;
 }
+.ImportWizardView .files {
+  margin-top: 15px;
+}
 .ImportWizardView .fileinput-button input {
   -moz-transform: translate(-500px, 0) scale(6);
 }
@@ -2235,25 +2261,26 @@ table.configuration-list tr td:last-child a:before {
 .fileupload-buttonbar .toggle {
   margin-bottom: 5px;
 }
+/*
 .files .progress {
-  width: 200px;
+	width: 200px;
 }
 .progress-animated .bar {
-  background: url(../images/ajax-loader.gif) !important;
-  filter: none;
+	background: url(../images/ajax-loader.gif) !important;
+	filter: none;
 }
 .fileupload-loading {
-  position: absolute;
-  left: 50%;
-  width: 128px;
-  height: 128px;
-  background: url(../img/loading.gif) center no-repeat;
-  display: none;
+	position: absolute;
+	left: 50%;
+	width: 128px;
+	height: 128px;
+	background: url(../img/loading.gif) center no-repeat;
+	display: none;
 }
 .fileupload-processing .fileupload-loading {
-  display: block;
+	display: block;
 }
-div.form input,
+*/div.form input,
 div.form textarea,
 div.form select {
   margin: 0 0 0 0;
@@ -5612,6 +5639,12 @@ a.close-ModalGameNotification.simple-select {
   color: #fff !important;
   margin-right: 0;
 }
+#SocialItemInlineEditView #social-item-inline-edit-form {
+  padding-top: 15px;
+}
+#SocialItemInlineEditView #social-item-inline-edit-form td {
+  padding-bottom: 15px;
+}
 #SocialItemInlineEditView #social-item-inline-edit-form td:first-child {
   padding-left: 0;
 }
@@ -5799,6 +5832,9 @@ a.close-ModalGameNotification.simple-select {
 /*=Functions*/
 .strong {
   font-weight: bold;
+}
+select {
+  display: none;
 }
 /*=For modern browsers */
 .clearfix {
@@ -8867,6 +8903,7 @@ div.wide.form a {
 #edit-form {
   zoom: 1;
   position: relative;
+  padding-top: 15px;
 }
 #edit-form:before {
   content: "";
@@ -8900,13 +8937,15 @@ div.wide.form a {
 }
 #edit-form table {
   border-bottom: none;
-  margin-bottom: 15px;
 }
 #edit-form table br {
   display: none;
 }
 #edit-form td table {
   width: 100%;
+}
+#edit-form td {
+  padding-bottom: 15px;
 }
 #edit-form .panelTitle {
   margin: 0;
@@ -8923,6 +8962,9 @@ div.wide.form a {
 }
 #edit-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
+}
+.address-fields div:last-child {
+  padding-bottom: 0;
 }
 .radio-input {
   clear: left;
@@ -8993,7 +9035,7 @@ div.wide.form a {
 #right-side-edit-view-panel .radio-input select,
 #right-side-edit-view-panel .radio-input .dk_container {
   margin-top: 8px;
-  margin-left: 30px;
+  margin-left: 40px;
   margin-bottom: 0;
   width: 80%;
   background: #fff;
@@ -9147,6 +9189,9 @@ div.wide.form a {
 .details-table td,
 .details-table th {
   padding: 0 5px 0 10px !important;
+  font-weight: 600;
+  padding-top: 15px !important;
+  vertical-align: top !important;
 }
 .details-table p {
   /*color:#545454 !important
@@ -9349,8 +9394,6 @@ div.wide.form a {
 .DetailsView td,
 .EditAndDetailsView td {
   font-weight: 600;
-  padding-top: 15px !important;
-  vertical-align: top !important;
 }
 .TitleBarAndDetailsView input[type="checkbox"] + label,
 .ProgressView input[type="checkbox"] + label,
@@ -9709,11 +9752,17 @@ div.wide.form a {
 #NoteInlineEditView .form-toolbar {
   border-top: none;
 }
+#inline-edit-form {
+  padding-top: 15px;
+}
 #inline-edit-form table + table {
   float: left;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+#inline-edit-form .panel td {
+  padding-bottom: 15px;
 }
 #inline-edit-form > table td > a {
   color: #262877;
@@ -9744,6 +9793,7 @@ div.wide.form a {
 }
 #inline-edit-form .form-toolbar {
   border-top: none;
+  padding-top: 0;
 }
 #inline-edit-form textarea {
   line-height: 130%;
@@ -10026,8 +10076,6 @@ div.hasHalfs .twoThirds {
 }
 .juiportlet-widget td div {
   line-height: 150%;
-  float: left
-            display:block;
 }
 .juiportlet-widget td div.button-column {
   float: left;
@@ -10071,7 +10119,7 @@ div.hasHalfs .twoThirds {
 }
 .edit-row-menu {
   float: right;
-  margin: 0 15px 0 0;
+  margin: 0 0 0 0;
   list-style: none;
 }
 .edit-row-menu > li {
@@ -10090,6 +10138,7 @@ div.hasHalfs .twoThirds {
   -khtml-opacity: 0.25;
   -moz-opacity: 0.25;
   opacity: 0.25;
+  white-space: nowrap;
 }
 .edit-row-menu > li > a span {
   display: inline-block;

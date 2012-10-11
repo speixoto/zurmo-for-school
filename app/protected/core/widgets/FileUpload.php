@@ -174,6 +174,7 @@ $(function () {
                 .appendTo($(this).find('.files')).fadeIn(function () {
                     // Fix for IE7 and lower:
                     $(this).show();
+                    makeGlobalSearchSpinner('fileUpload{$id}', true);
                 }).data('data', data);
             if ((that.options.autoUpload || data.autoUpload) &&
                     data.isValidated) {
@@ -238,24 +239,23 @@ EOD;
 
         private function makeDownloadRowScriptContent()
         {
-            $deleteLabel = '<!--Delete-->';
+            $deleteLabel = 'Delete';
 $scriptContent = <<<EOD
 <script id="template-download" type="text/x-jquery-tmpl">
     <tr class="template-download{{if error}} ui-state-error{{/if}}">
         {{if error}}
             <td class="error" colspan="4">\${error}</td>
         {{else}}
-            <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
-            <td class="name" colspan="4">\${name}</td>
-            <td class="size">\${size}</td>
-            <td class="delete">
-                <button data-url="{$this->deleteUrl}?id=\${id}">{$deleteLabel}</button>
+            <td class="name" title="\${size}">
+                \${name} <span class="file-size">(\${size})</span>
+                <span class="upload-actions">
+                    <button class="icon-delete" data-url="{$this->deleteUrl}?id=\${id}"><!--{$deleteLabel}--></button>
+                </span>
+                <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
             </td>
         {{/if}}
-
     </tr>
 </script>
-
 EOD;
             return $scriptContent;
             return $js;
@@ -268,16 +268,19 @@ EOD;
 $scriptContent = <<<EOD
 <script id="template-upload" type="text/x-jquery-tmpl">
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">
-        <td class="preview"></td>
-        <td class="name" colspan="4">\${name}</td>
-        <td class="size">\${sizef}</td>
-        {{if error}}
-            <td class="error" colspan="2">\${error}</td>
-        {{else}}
-            <td class="progress"><div></div></td>
-            <td class="start"><button>{$startLabel}</button></td>
-        {{/if}}
-        <td class="cancel"><button>{$cancelLabel}</button></td>
+        <td class="name" title="\${size}">
+            <span class="z-spinner"></span>
+            \${name} <span class="file-size">(\${size})</span>
+            {{if error}}
+                <span class="upload-error">\${error}</span>
+                <span class="upload-actions">
+            {{else}}
+                <span class="upload-actions">
+                <button class="start">{$startLabel}</button>
+            {{/if}}
+                <button class="cancel">{$cancelLabel}</button>
+            </span>
+        </td>
     </tr>
 </script>
 EOD;

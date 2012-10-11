@@ -110,6 +110,10 @@
     font-weight: bold;
 }
 
+select{
+    display: none;
+}
+
 /*=For modern browsers */
 .clearfix{
     &:before{
@@ -2369,6 +2373,7 @@ div.wide.form{
 #edit-form{
     .clearfix();
     position: relative;
+    padding-top:15px;
    .panel{
         float:left;
         width:70%;
@@ -2383,7 +2388,7 @@ div.wide.form{
     }
     table{
         border-bottom:none;
-        margin-bottom:15px;
+        //margin-bottom:15px;
         br{
             display:none;
         }
@@ -2391,6 +2396,11 @@ div.wide.form{
     td table{
         width:100%;
     }
+    
+    td{
+        padding-bottom: 15px;
+    }
+    
     .panelTitle{
         margin:0;
         padding:0;
@@ -2406,6 +2416,12 @@ div.wide.form{
         input[type="checkbox"]{
             margin-bottom:0 !important;
         }
+    }
+}
+
+.address-fields{
+    div:last-child{
+        padding-bottom:0; 
     }
 }
 
@@ -2478,7 +2494,7 @@ div.wide.form{
         }
         select, .dk_container{
             margin-top:8px;
-            margin-left:30px;
+            margin-left:40px;
             margin-bottom:0;
             width:80%;
             background:#fff;
@@ -2488,7 +2504,6 @@ div.wide.form{
         margin-top:6px;
     }
 }
-
 
 .has-date-select, .has-model-select{
     position: relative;
@@ -2642,6 +2657,9 @@ div.wide.form{
     }
     td, th{
         padding:0 5px 0 10px !important;
+        font-weight:600;
+    	padding-top:15px !important;
+    	vertical-align: top !important;
     }
     p{
         /*color:#545454 !important
@@ -2768,8 +2786,8 @@ div.wide.form{
     }
     th, td{
         font-weight:600;
-    	padding-top:15px !important;
-    	vertical-align: top !important;
+    	//padding-top:15px !important;
+    	//vertical-align: top !important;
     }
      //for opt in email checkboxes
     input[type="checkbox"] + label{
@@ -3016,9 +3034,13 @@ div.wide.form{
 }
 
 #inline-edit-form{
+    padding-top: 15px;
     table + table{
         float:left;
         .box-sizing();
+    }
+    .panel td{
+        padding-bottom: 15px;
     }
     > table{
         td > a{
@@ -3053,6 +3075,7 @@ div.wide.form{
     }
     .form-toolbar{
         border-top:none;
+        padding-top:0;
     }
     textarea{
         line-height: 130%;
@@ -3278,8 +3301,8 @@ div.hasHalfs{
         }
         div{
             line-height: 150%;
-            float:left
-            display:block;
+            //float:left;
+            //display:block;
         }
         div.button-column{
             float:left;
@@ -3334,7 +3357,7 @@ div.hasHalfs{
 }
 .edit-row-menu{
     float:right;
-    margin:0 15px 0 0;
+    margin:0 0 0 0;
     list-style: none;
     > li{
         position: relative;
@@ -3344,6 +3367,7 @@ div.hasHalfs{
             display:block;
             overflow: visible;
             .opacity(25);
+            white-space: nowrap;
             span{
                 display:inline-block;
                 text-indent:-9999px;
