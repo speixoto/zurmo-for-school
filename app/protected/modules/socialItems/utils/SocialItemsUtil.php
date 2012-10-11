@@ -147,7 +147,7 @@
         private static function renderCreateCommentContent(SocialItem $model)
         {
             $content       = ZurmoHtml::tag('span', array(),
-                                            ZurmoHtml::link(Yii::t('Default', 'Add your comment'), '#',
+                                            ZurmoHtml::link(Yii::t('Default', 'Add comment'), '#',
                                                             array('class' => 'show-create-comment')));
             $comment       = new Comment();
             $uniquePageId  = self::makeUniquePageIdByModel($model);
