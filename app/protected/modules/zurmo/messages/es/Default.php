@@ -147,10 +147,6 @@
             => 'de {ownerStringContent}',
         'Cache has been successfully cleaned.'
             => 'Caché se ha limpiado correctamente.',
-        'Cancel'
-            => 'Cancelar',
-        'Cancel changes'
-            => 'Cancelar cambios',
         'Changes to active currencies saved successfully.'
             => 'Divisas activas cambiado con éxito.',
         'Changes to active languages saved successfully.'

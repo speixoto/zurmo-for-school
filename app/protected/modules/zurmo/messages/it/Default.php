@@ -147,10 +147,6 @@
             => 'di {ownerStringContent}',
         'Cache has been successfully cleaned.'
             => 'Cache cancella con successo.',
-        'Cancel'
-            => 'Annulla',
-        'Cancel changes'
-            => 'Annulla le modifiche',
         'Changes to active currencies saved successfully.'
             => 'Valute attive modificati con successo.',
         'Changes to active languages saved successfully.'

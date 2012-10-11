@@ -147,10 +147,6 @@
             => 'par {ownerStringContent}',
         'Cache has been successfully cleaned.'
             => 'Nettoyage du cache réussi.',
-        'Cancel'
-            => 'Annuler',
-        'Cancel changes'
-            => 'Annuler',
         'Changes to active currencies saved successfully.'
             => 'Les changements de devises actives sont effectués.',
         'Changes to active languages saved successfully.'

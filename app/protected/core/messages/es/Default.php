@@ -69,6 +69,8 @@
             => 'de',
         'Cancel'
             => 'Cancelar',
+        'Cancel changes'
+            => 'Cancelar cambios',
         'Cell Settings'
             => 'Configuración de las células',
         'Celsius'
