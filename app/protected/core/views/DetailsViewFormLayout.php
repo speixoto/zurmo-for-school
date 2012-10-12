@@ -96,9 +96,7 @@
                     }
                     if (!empty($cellsContent))
                     {
-                        $content .= '<tr>';
-                        $content .= $cellsContent;
-                        $content .= '</tr>';
+                        $this->resolveRowWrapperTag($content, $cellsContent);
                     }
                 }
                 $content .= $this->renderLastPanelRowsByPanelNumber($panelNumber);
@@ -112,6 +110,26 @@
             }
             $this->renderScripts();
             return $this->resolveFormLayoutContent($content);
+        }
+
+        /**
+         * If the cell content contains a <tr at the beginning, then assume we do not
+         * need to wrap or end with a tr
+         */
+        protected function resolveRowWrapperTag(& $content, $cellsContent)
+        {
+            assert('is_string($content) || $content == null');
+            assert('is_string($cellsContent)');
+            if(strpos($cellsContent, '<tr') === 0)
+            {
+                $content .= $cellsContent;
+            }
+            else
+            {
+                $content .= '<tr>';
+                $content .= $cellsContent;
+                $content .= '</tr>';
+            }
         }
 
         protected function renderPanelHeaderByPanelNumberAndPanel($panelNumber, $panel)
