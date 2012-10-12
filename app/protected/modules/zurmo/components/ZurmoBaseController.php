@@ -380,6 +380,176 @@
         }
 
         /**
+         * This method is called after a mass delete form is first submitted.
+         * It is called from the actionMassDelete.
+         * @see actionMassDelete in the module default controllers.
+         */
+        protected function processMassDelete(
+            $pageSize,
+            $selectedRecordCount,
+            $pageViewClassName,
+            $listModel,
+            $title,
+            $dataProvider = null
+            )
+        {
+            assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
+            $modelClassName = get_class($listModel);
+            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            if (isset($_POST[$modelClassName]))
+            {
+                PostUtil::sanitizePostForSavingMassEdit($modelClassName);
+                //Generically test that the changes are valid before attempting to delete on each model.
+                $sanitizedOwnerPostData = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($_POST[$modelClassName], 'owner');
+                $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST[$modelClassName], 'owner');
+                $massEditPostrDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST['MassEdit'], 'owner');
+                $listModel->setAttributes($sanitizedPostDataWithoutOwner);
+                if ($listModel->validate(array_keys($massEditPostrDataWithoutOwner)))
+                {
+                    $passedOwnerValidation = true;
+                    if ($sanitizedOwnerPostData != null)
+                    {
+                        $listModel->setAttributes($sanitizedOwnerPostData);
+                        $passedOwnerValidation = $listModel->validate(array('owner'));
+                    }
+                    if ($passedOwnerValidation)
+                    {
+                        MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
+                        Yii::app()->gameHelper->triggerMassDeleteEvent(get_class($listModel));
+                        $this->doMassDelete(
+                            get_class($listModel),
+                            $modelClassName,
+                            $selectedRecordCount,
+                            $dataProvider,
+                            $_GET[$modelClassName . '_page'],
+                            $pageSize
+                        );
+                        /**cancel diminish of save scoring*/
+                        if ($selectedRecordCount > $pageSize)
+                        {
+                            $view = new $pageViewClassName(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this,
+                                $this->makeMassDeleteProgressView(
+                                    $listModel,
+                                    1,
+                                    $selectedRecordCount,
+                                    1,
+                                    $pageSize,
+                                    $title,
+                                    null)
+                            ));
+                            echo $view->render();
+                            Yii::app()->end(0, false);
+                        }
+                        else
+                        {
+                            $skipCount = MassDeleteInsufficientPermissionSkipSavingUtil::getCount($modelClassName);
+                            $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
+                                $selectedRecordCount, $skipCount);
+                            MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
+                            $notificationContent = Yii::t('Default', 'Successfully Deleted') . ' ' .
+                                                    $successfulCount . ' ' .
+                                                    LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
+                                                    '.';
+                            if ($skipCount > 0)
+                            {
+                                $notificationContent .= ' ' .
+                                    MassDeleteInsufficientPermissionSkipSavingUtil::getSkipCountMessageContentByModelClassName(
+                                        $skipCount, $modelClassName);
+                            }
+                            Yii::app()->user->setFlash('notification', $notificationContent);
+                            $this->redirect(array('default/'));
+                            Yii::app()->end(0, false);
+                        }
+                    }
+                }
+            }
+            return $listModel;
+        }
+        protected function processMassDeleteProgress(
+            $modelClassName,
+            $pageSize,
+            $title,
+            $dataProvider = null)
+        {
+            assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
+            $listModel = new $modelClassName(false);
+            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            PostUtil::sanitizePostForSavingMassEdit($modelClassName);
+            $this->doMassDelete(
+                get_class($listModel),
+                $modelClassName,
+                $selectedRecordCount,
+                $dataProvider,
+                $_GET[$modelClassName . '_page'],
+                $pageSize
+            );
+            $view = $this->makeMassDeleteProgressView(
+                $listModel,
+                $_GET[$modelClassName . '_page'],
+                $selectedRecordCount,
+                $this->getMassDeleteProgressStartFromGet(
+                    $modelClassName,
+                    $pageSize
+                ),
+                $pageSize,
+                $title,
+                MassDeleteInsufficientPermissionSkipSavingUtil::getCount($modelClassName)
+            );
+            echo $view->renderRefreshJSONScript();
+        }
+
+        protected function makeMassDeleteProgressView(
+            $model,
+            $page,
+            $selectedRecordCount,
+            $start,
+            $pageSize,
+            $title,
+            $skipCount)
+        {
+            assert('$skipCount == null || is_int($skipCount)');
+            return new MassDeleteProgressView(
+                $this->getId(),
+                $this->getModule()->getId(),
+                $model,
+                $selectedRecordCount,
+                $start,
+                $pageSize,
+                $page,
+                'massDeleteProgress',
+                $title,
+                $skipCount
+            );
+        }
+
+        protected function doMassDelete($modelClassName, $postVariableName, $selectedRecordCount, $dataProvider, $page, $pageSize)
+        {
+            Yii::app()->gameHelper->muteScoringModelsOnDelete();
+            $modelsToDelete = $this->getModelsToDelete($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
+            foreach ($modelsToDelete as $modelToDelete)
+            {
+                if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($modelToDelete, Permission::DELETE))
+                {
+                    $sanitizedOwnerPostData = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($_POST[$postVariableName], 'owner');
+                    $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST[$postVariableName], 'owner');
+                    $modelToDelete->setAttributes($sanitizedPostDataWithoutOwner);
+                    if ($sanitizedOwnerPostData != null)
+                    {
+                        $modelToDelete->setAttributes($sanitizedOwnerPostData);
+                    }
+                    $modelToDelete->delete(false);
+                }
+                else
+                {
+                    MassDeleteInsufficientPermissionSkipSavingUtil::setByModelIdAndName(
+                        $modelClassName, $modelToDelete->id, $modelToDelete->name);
+                }
+            }
+            Yii::app()->gameHelper->unmuteScoringModelsOnDelete();
+        }
+
+        /**
          * Check if form is posted. If form is posted attempt to save. If save is complete, confirm the current
          * user can still read the model.  If not, then redirect the user to the index action for the module.
          */

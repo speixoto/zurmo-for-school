@@ -186,6 +186,58 @@
             );
         }
 
+          /* Action MassDelete */
+        public function actionMassDelete()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'massDeletePageSize');
+            $account = new Account(false);
+            $activeAttributes = $this->resolveActiveAttributesFromMassDeletePost();
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                new AccountsSearchForm($account),
+                'Account',
+                $pageSize,
+                Yii::app()->user->userModel->id);
+            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $account = $this->processMassDelete(
+                $pageSize,
+                $activeAttributes,
+                $selectedRecordCount,
+                'AccountsPageView',
+                $account,
+                AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                $dataProvider
+            );
+            $massDeleteView = $this->makeMassDeleteView(
+                $account,
+                $activeAttributes,
+                $selectedRecordCount,
+                AccountsModule::getModuleLabelByTypeAndLanguage('Plural')
+            );
+            $view = new AccountsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $massDeleteView));
+            echo $view->render();
+            //print_r($account);
+        }
+
+        public function actionMassDeleteProgress()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'massEditProgressPageSize');
+            $account = new Account(false);
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                new AccountsSearchForm($account),
+                'Account',
+                $pageSize,
+                Yii::app()->user->userModel->id
+            );
+            $this->processMassDeleteProgress(
+                'Account',
+                $pageSize,
+                AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                $dataProvider
+            );
+        }
         public function actionModalList()
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(

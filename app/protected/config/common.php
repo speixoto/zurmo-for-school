@@ -181,6 +181,7 @@
                 'importPageSize'           => 50,
                 'dashboardListPageSize'    => 5,
                 'apiListPageSize'          => 10,
+                'massDeletePageSize'       => 5,
                 'unlimitedPageSize'        => 1000000000
             ),
             'performance' => array(
