@@ -48,7 +48,7 @@
                                        'url'     => $this->route . '/securityDetails?id=' . $this->modelId)));
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.MbMenu', array(
+            $cClipWidget->widget('application.core.widgets.MbMenu', array(
                 'items'       => array($menuItems),
             ));
             $cClipWidget->endClip();

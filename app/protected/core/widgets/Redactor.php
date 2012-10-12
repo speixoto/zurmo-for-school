@@ -75,7 +75,7 @@
                 if ($this->scriptUrl === null)
                 {
                     $this->scriptUrl = Yii::app()->getAssetManager()->publish(
-                                        Yii::getPathOfAlias('application.extensions.zurmoinc.framework.widgets.assets.redactor'));
+                                        Yii::getPathOfAlias('application.core.widgets.assets.redactor'));
                 }
             }
         }
