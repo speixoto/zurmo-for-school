@@ -37,6 +37,7 @@
         const AUDIT_EVENT_ITEM_MODIFIED           = 'Item Modified';
         const AUDIT_EVENT_ITEM_DELETED            = 'Item Deleted';
         const AUDIT_EVENT_ITEM_VIEWED             = 'Item Viewed';
+        const RIGHT_BULK_DELETE                   = 'Mass Delete'; 
 
         public function canDisable()
         {
