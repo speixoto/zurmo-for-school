@@ -2765,6 +2765,8 @@ ul.token-input-list input[type="text"] {
   -o-box-shadow: none !important;
   -ms-box-shadow: none !important;
   box-shadow: none !important;
+  position: relative;
+  z-index: 9999;
 }
 ul.token-input-list.disabled {
   pointer-events: none;
