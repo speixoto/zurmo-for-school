@@ -74,16 +74,5 @@
             );
             return $metadata;
         }
-
-        protected function renderContent() {
-            $content = parent::renderContent();
-            Yii::app()->clientScript->registerScriptFile(
-                  //Yii::app()->baseUrl. '/app/protected/extensions/juitokeninput/assets/jquery.tokeninput.js'
-                    'http://localhost/jquery.tokeninput.js'
-            );
-            $content  .= ZurmoHtml::textField('exp', null);
-            $content  .= "<script>$(document).ready(function () { $('#exp').tokenInput('/zurmo-main/app/index.php/emailMessages/default/autoCompleteForMultiSelectAutoComplete', { queryParam: 'term',hintText: 'Type name or email',prePopulate: [{'id':'Betty.Allen@NordyneDefenseD.com','name':'Betty Allen (Betty.Allen@NordyneDefenseD.com)'}],preventDuplicates: 'true', classes: {tokenList: 'token-input-list'}});});</script>";
-            return $content;
-        }
     }
 ?>
