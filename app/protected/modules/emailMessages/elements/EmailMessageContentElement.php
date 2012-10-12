@@ -54,7 +54,7 @@
             $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
             $cClipWidget   = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.Redactor', array(
+            $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $emailMessageContent->$attribute,
                                         'buttons'     => "['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',

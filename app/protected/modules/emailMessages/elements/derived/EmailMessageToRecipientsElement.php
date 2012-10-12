@@ -69,7 +69,7 @@
 
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
-            $cClipWidget->widget('ext.zurmoinc.framework.widgets.MultiSelectAutoComplete', array(
+            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
                 'name'        => $inputName,
                 'id'          => $inputId,
                 'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels($prefix)),
