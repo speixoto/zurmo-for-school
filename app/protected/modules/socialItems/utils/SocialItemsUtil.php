@@ -40,7 +40,7 @@
         public static function renderItemAndCommentsContent(SocialItem $model, $redirectUrl)
         {
             assert('is_string($redirectUrl) || $redirectUrl == null');
-            $userUrl  = Yii::app()->createUrl('/users/default/profile', array('id' => $model->owner->id));
+            $userUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $model->owner->id));
             $content  = '<div class="social-item">';
             $avatarImage = $model->owner->getAvatarImage(50);
             $content .= '<div class="comment model-details-summary clearfix">';

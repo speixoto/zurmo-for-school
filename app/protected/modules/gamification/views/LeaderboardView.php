@@ -80,7 +80,7 @@
                 assert('is_string($leaderboardData["userLabel"])');
                 assert('is_int($leaderboardData["points"])');
 
-                $userUrl  = Yii::app()->createUrl('/users/default/profile', array('id' => $userId));
+                $userUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $userId));
                 $user        = User::getById($userId);
                 $avatarImage = $user->getAvatarImage(24);
 

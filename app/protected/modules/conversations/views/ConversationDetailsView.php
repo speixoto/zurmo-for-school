@@ -90,7 +90,7 @@
 
         protected function renderConversationContent()
         {
-            $userUrl  = Yii::app()->createUrl('/users/default/profile', array('id' => $this->model->createdByUser->id));
+            $userUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $this->model->createdByUser->id));
             $content  = '<div class="comment model-details-summary clearfix">';
             $content .= ZurmoHtml::link($this->model->createdByUser->getAvatarImage(100), $userUrl);
             $content .= '<span class="user-details">';

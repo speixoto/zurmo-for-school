@@ -120,7 +120,7 @@
                     $rows++;
                     continue;
                 }
-                $userUrl        = Yii::app()->createUrl('/users/default/profile', array('id' => $comment->createdByUser->id));
+                $userUrl        = Yii::app()->createUrl('/users/default/details', array('id' => $comment->createdByUser->id));
                 $stringContent  = ZurmoHtml::link($comment->createdByUser->getAvatarImage(36), $userUrl);
                 $userName       = ZurmoHtml::link(strval($comment->createdByUser), $userUrl);
                 $stringContent .= '<div class="comment-content"><p>' . $userName . ': ' . $comment->description . '</p>';
