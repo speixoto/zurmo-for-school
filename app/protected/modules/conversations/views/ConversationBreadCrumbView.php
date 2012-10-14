@@ -24,16 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationLatestDateTimeListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * View that renders conversations module breadcrumb content
+     */
+    class ConversationBreadCrumbView extends BreadCrumbView
     {
-        public function renderGridViewData()
+        protected function getHomeLinkLabel()
         {
-            return array(
-                'name'   => $this->attribute,
-                'header' => false,
-                'value'  => '"<span class=\'list-row-model-date\'>" . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($data->' . $this->attribute . ') . "</span>"',
-                'type'   => 'raw',
-            );
+            return Yii::t('Default', 'Conversations');
         }
     }
 ?>

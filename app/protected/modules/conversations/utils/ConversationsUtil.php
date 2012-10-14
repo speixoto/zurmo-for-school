@@ -37,9 +37,14 @@
          */
         public static function renderSubjectAndLatestForDisplayView(Conversation $conversation)
         {
-            $url            = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
-            $content        = $conversation->subject;
-            return $content = ZurmoHtml::link($content, $url);
+            $url      = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
+            $content  = $conversation->subject;
+            $content .= '<div>';
+            $content .= '<span>' . Yii::t('Default', 'Updated') . ': ' .
+                                DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($conversation->latestDateTime) .
+                                '</span>';
+            $content .= '</div>';
+            return ZurmoHtml::link($content, $url);
         }
 
         /**
