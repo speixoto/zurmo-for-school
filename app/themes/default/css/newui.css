@@ -5542,6 +5542,9 @@ a.close-ModalGameNotification.simple-select {
 #MissionsListView .actions-column {
   width: 250px;
 }
+.actions-column {
+  text-align: right;
+}
 /*=Social Items*/
 .SocialItemsListView tr:hover,
 #AllSocialItemsForPortletView tr:hover {
@@ -8128,6 +8131,12 @@ div.wide.form a {
 }
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
+.list-item-details {
+  display: block;
+  font-weight: normal;
+  color: #999;
+  margin-top: 5px;
+}
 .summary {
   display: none;
 }

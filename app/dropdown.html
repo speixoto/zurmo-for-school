@@ -25,7 +25,7 @@
                     //press.which = 40;
                     //$(this).next().trigger(press);
                     event.delegateTarget = dropdown;
-                   var t = dropdown.trigger(event);                    
+                    var t = dropdown.trigger(event);                    
                     console.log(t);
                     console.log(event);
                     
@@ -57,12 +57,9 @@
         line-height: 26px;
         line-height: 1;
         width: 100%;
-        position: relative;
-        z-index: 1000;
         color: #262877;
         background: #fff;
-                background: #fff url(themes/default/images/dropdown-arrow.png) 100% 0 no-repeat;
-
+        background: #fff url(themes/default/images/dropdown-arrow.png) 100% 0 no-repeat;
         border: 1px solid #ccc;
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;
@@ -84,8 +81,11 @@
         box-sizing: border-box;   
         outline: none !important;
         cursor: pointer;
+        position: relative;
+        z-index: 5;
+        padding-right: 5px;
     }
-    select:focus, select:hover{
+    select:focus, select:hover,  div:hover select{
         outline: none;
         box-shadow: 0 0 2px 1px #262877;
     }
@@ -97,13 +97,13 @@
         top:1px;
         right: 1px;
         z-index: 1;
-        _pointer-events:none;
+        pointer-events:none;
         background: url(themes/default/images/dropdown-arrow.png) 100% 0 no-repeat;
         padding-left: 6px;
         display: block !important;
         font-weight: normal !important;
         color: #666 !important;
-        z-index: 0;
+        z-index: 3;
         cursor:pointer;
     }
     span:hover, .over-dd{

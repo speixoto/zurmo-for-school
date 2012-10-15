@@ -39,12 +39,11 @@
         {
             $url      = Yii::app()->createUrl('/missions/default/details', array('id' => $mission->id));
             $content  = $mission->description;
-            $content .= '<div>';
-            $content .= '<span>' . Yii::t('Default', 'Updated') . ': ' .
+            $details  = '<span class="list-item-details">' . Yii::t('Default', 'Updated') . ': ' .
                         DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($mission->latestDateTime) .
                         '</span>';
-            $content .= '</div>';
-            return ZurmoHtml::link($content, $url);
+            $link     = ZurmoHtml::link($content, $url);
+            return $link . $details;
         }
 
         /**

@@ -39,12 +39,11 @@
         {
             $url      = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
             $content  = $conversation->subject;
-            $content .= '<div>';
-            $content .= '<span>' . Yii::t('Default', 'Updated') . ': ' .
+            $details  = '<span class="list-item-details">' . Yii::t('Default', 'Updated') . ': ' .
                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($conversation->latestDateTime) .
                                 '</span>';
-            $content .= '</div>';
-            return ZurmoHtml::link($content, $url);
+            $link     = ZurmoHtml::link($content, $url);
+            return $link . $details;
         }
 
         /**
