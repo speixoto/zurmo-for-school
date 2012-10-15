@@ -2136,6 +2136,11 @@ table.configuration-list tr td:last-child a:before {
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
+.show-file-upload-box {
+  position: relative;
+  bottom: -18px;
+  z-index: 5;
+}
 .fileupload-content {
   width: 100%;
 }
@@ -2167,10 +2172,11 @@ table.configuration-list tr td:last-child a:before {
   border: none;
   cursor: pointer;
   color: #262877;
+  line-height: 0;
 }
 .upload-actions .icon-delete:before {
   margin: 0;
-  top: 0;
+  top: 5px;
   cursor: pointer;
   filter: alpha(opacity=25);
   -khtml-opacity: 0.25;
@@ -2238,6 +2244,9 @@ table.configuration-list tr td:last-child a:before {
   float: left;
   margin-right: 4px;
 }
+.fileinput-button span {
+  cursor: pointer;
+}
 .fileinput-button input {
   position: absolute;
   top: 0;
@@ -2261,26 +2270,7 @@ table.configuration-list tr td:last-child a:before {
 .fileupload-buttonbar .toggle {
   margin-bottom: 5px;
 }
-/*
-.files .progress {
-	width: 200px;
-}
-.progress-animated .bar {
-	background: url(../images/ajax-loader.gif) !important;
-	filter: none;
-}
-.fileupload-loading {
-	position: absolute;
-	left: 50%;
-	width: 128px;
-	height: 128px;
-	background: url(../img/loading.gif) center no-repeat;
-	display: none;
-}
-.fileupload-processing .fileupload-loading {
-	display: block;
-}
-*/div.form input,
+div.form input,
 div.form textarea,
 div.form select {
   margin: 0 0 0 0;
@@ -2792,6 +2782,8 @@ ul.token-input-list input[type="text"] {
   -o-box-shadow: none !important;
   -ms-box-shadow: none !important;
   box-shadow: none !important;
+  position: relative;
+  z-index: 9999;
 }
 ul.token-input-list.disabled {
   pointer-events: none;
@@ -5575,8 +5567,9 @@ a.close-ModalGameNotification.simple-select {
 }
 .SocialItemsListView .wide.form,
 #AllSocialItemsForPortletView .wide.form {
+  margin-bottom: 5px;
   border: none;
-  background: none !important;
+  border-bottom: 1px solid #fff !important;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -5586,26 +5579,29 @@ a.close-ModalGameNotification.simple-select {
 .SocialItemsListView .wide.form form,
 #AllSocialItemsForPortletView .wide.form form {
   border: none;
+  border-bottom: 1px solid #ccc;
   background: none !important;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  padding-bottom: 0;
 }
 .SocialItemsListView .wide.form table.files,
 #AllSocialItemsForPortletView .wide.form table.files {
   border-bottom: none;
   float: left;
+  margin-top: 5px;
 }
 .SocialItemsListView .wide.form .panel > table,
 #AllSocialItemsForPortletView .wide.form .panel > table {
-  padding-bottom: 10px;
+  border: none;
 }
 .SocialItemsListView .form-toolbar,
 #AllSocialItemsForPortletView .form-toolbar {
   text-align: right;
+  border-top: none;
+  padding-top: 0;
 }
 .SocialItemsListView .form-toolbar a,
 #AllSocialItemsForPortletView .form-toolbar a {
@@ -5642,11 +5638,14 @@ a.close-ModalGameNotification.simple-select {
 #SocialItemInlineEditView #social-item-inline-edit-form {
   padding-top: 15px;
 }
-#SocialItemInlineEditView #social-item-inline-edit-form td {
-  padding-bottom: 15px;
-}
 #SocialItemInlineEditView #social-item-inline-edit-form td:first-child {
   padding-left: 0;
+}
+#SocialItemInlineEditView .file-upload-box {
+  padding-top: 15px;
+  display: none;
+  float: left;
+  padding-bottom: 10px;
 }
 .social-item form td {
   padding-left: 65px !important;
@@ -6979,6 +6978,7 @@ section {
 .AppContent .single-column .panel {
   width: 70%;
   float: left;
+  position: relative;
 }
 .AppContent .single-column .panel td,
 .AppContent .single-column .panel th {

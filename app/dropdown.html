@@ -1,5 +1,42 @@
 <!DOCTYPE html>
 <head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.hasDropdown').hover(
+                function(){
+                    $('span', this).addClass('over-dd');
+                },
+                function(){
+                    $('span', this).removeClass('over-dd');
+                }  
+            );
+            
+            if ( $.browser.msie || true ){
+                
+                
+                $('.hasDropdown span').click(function(event){
+                    
+                    //var el = $(this).next().children()[3];
+                    var dropdown = $(this).next();
+
+                    //var press = jQuery.Event("keydown");
+                    //press.ctrlKey = false;
+                    //press.which = 40;
+                    //$(this).next().trigger(press);
+                    event.delegateTarget = dropdown;
+                   var t = dropdown.trigger(event);                    
+                    console.log(t);
+                    console.log(event);
+                    
+                    //el.focus().trigger({ type : 'keypress', which : character.charCodeAt(40) });
+                    //$(this).next()[0].click();//trigger("mousedown");
+                    //$(this).next().trigger('focusin');
+                });
+            }
+        });    
+    </script>
+    
     <style>
     body{
         padding:50px;
@@ -8,6 +45,7 @@
         width: 500px;
         margin:0 auto;
         position: relative;
+        cursor: pointer;
     }
     select{
         -moz-appearance: none;
@@ -20,9 +58,11 @@
         line-height: 1;
         width: 100%;
         position: relative;
-        z-index: 0;
+        z-index: 1000;
         color: #262877;
         background: #fff;
+                background: #fff url(themes/default/images/dropdown-arrow.png) 100% 0 no-repeat;
+
         border: 1px solid #ccc;
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;
@@ -42,10 +82,12 @@
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;   
-         outline: none !important;
+        outline: none !important;
+        cursor: pointer;
     }
-    select:focus{
+    select:focus, select:hover{
         outline: none;
+        box-shadow: 0 0 2px 1px #262877;
     }
     span{
         width: 22px;
@@ -55,28 +97,29 @@
         top:1px;
         right: 1px;
         z-index: 1;
-        pointer-events:none;   
+        _pointer-events:none;
         background: url(themes/default/images/dropdown-arrow.png) 100% 0 no-repeat;
         padding-left: 6px;
         display: block !important;
         font-weight: normal !important;
         color: #666 !important;
-        z-index: 999;
+        z-index: 0;
+        cursor:pointer;
     }
-    span:hover{
+    span:hover, .over-dd{
         background: url(themes/default/images/dropdown-arrow.png) 100% 100% no-repeat;
     }
     </style>
 </head>
 <body>
-    <div class="needed-to-position-arrow">
+    <div class="needed-to-position-arrow hasDropdown">
         <span class="the-arrow"></span>
         <select>
-            <option>some option</option>
-            <option>some option</option>
-            <option>some option</option>
-            <option>some option</option>
-            <option>some option</option>
+            <option>1 some option</option>
+            <option>2 some option</option>
+            <option>3 some option</option>
+            <option>4 some option</option>
+            <option>5 some option</option>
         </select>
     </div>
 </body>

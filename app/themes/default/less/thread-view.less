@@ -343,25 +343,32 @@
         margin-left: 80px;
     }
     .wide.form{
+        margin-bottom: 5px;
         border:none;
-        background: none !important;
+        border-bottom: 1px solid #fff !important;
+        //background: none !important;
         .b-shadow(none);
-        form{
+        form{ 
             border:none;
+            border-bottom: 1px solid #ccc;
             background: none !important;
             .b-shadow(none);
-            padding-bottom: 0;
+            //padding-bottom: 0;
         }
         table.files{
             border-bottom: none;
             float: left;
+            margin-top: 5px;
         }
         .panel > table{
-            padding-bottom: 10px;
+            //padding-bottom: 10px;
+            border:none;
         }
     }
     .form-toolbar{
         text-align: right;
+        border-top:none;
+        padding-top: 0;
         a{
             color:#fff !important;
             margin-right:0;
@@ -401,11 +408,17 @@
     #social-item-inline-edit-form{
         padding-top:15px;
         td{
-            padding-bottom: 15px;
+            //padding-bottom: 15px;
         }
         td:first-child{
             padding-left: 0;
         }
+    }
+    .file-upload-box{
+        padding-top: 15px;
+        display: none;
+        float: left;
+        padding-bottom: 10px;
     }
 }
 
