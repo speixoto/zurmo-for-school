@@ -5348,6 +5348,7 @@ a.close-ModalGameNotification.simple-select {
 .comment-details {
   margin: 2px 0;
   display: inline-block;
+  font-size: 11px;
 }
 .comment-details strong {
   color: #999;
@@ -5372,8 +5373,8 @@ a.close-ModalGameNotification.simple-select {
   margin-top: 1px;
 }
 .comment .comment-content {
-  font-size: 12px;
   padding-left: 50px;
+  margin: 3px 0;
   line-height: 140%;
 }
 .comment:hover .delete-comment {
@@ -5433,6 +5434,7 @@ a.close-ModalGameNotification.simple-select {
 #CommentInlineEditForModelView,
 #CommentsForRelatedModelView {
   width: 70%;
+  margin-right: 30%;
   float: left;
   max-width: 600px;
   -moz-box-sizing: border-box;
@@ -5551,7 +5553,8 @@ a.close-ModalGameNotification.simple-select {
 .actions-column {
   text-align: right;
 }
-#MissionDetailsView .files {
+#MissionDetailsView .files,
+#ConversationDetailsView .files {
   padding-bottom: 10px;
 }
 /*=Social Items*/
@@ -10845,14 +10848,14 @@ div.hasHalfs .twoThirds {
   cursor: pointer;
 }
 /*Dropdowns*/
-.hasDropdown {
+.hasDropDown {
   width: 100%;
   margin: 0;
   padding: 0;
   position: relative;
   cursor: pointer;
 }
-.hasDropdown span {
+.hasDropDown span {
   width: 22px;
   height: 24px;
   display: block;
@@ -10869,11 +10872,11 @@ div.hasHalfs .twoThirds {
   z-index: 3;
   cursor: pointer;
 }
-.hasDropdown span:hover,
-.hasDropdown .over-dd {
+.hasDropDown span:hover,
+.hasDropDown .over-dd {
   background-position: 100% 100%;
 }
-.hasDropdown select {
+.hasDropDown select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -10907,8 +10910,8 @@ div.hasHalfs .twoThirds {
   position: relative;
   z-index: 1;
 }
-.hasDropdown select:focus,
-.hasDropdown select:hover {
+.hasDropDown select:focus,
+.hasDropDown select:hover {
   outline: none;
   -webkit-box-shadow: 0 0 1px 1px #262877;
   -moz-box-shadow: 0 0 1px 1px #262877;
@@ -10916,7 +10919,7 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: 0 0 1px 1px #262877;
   box-shadow: 0 0 1px 1px #262877;
 }
-.hasDropdown:hover select {
+.hasDropDown:hover select {
   outline: none;
   -webkit-box-shadow: 0 0 1px 1px #262877;
   -moz-box-shadow: 0 0 1px 1px #262877;
