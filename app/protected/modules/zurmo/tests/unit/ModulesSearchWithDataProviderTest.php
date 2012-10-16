@@ -64,8 +64,6 @@
             );
             $metadataAdapter = new SearchDataProviderMetadataAdapter(new ModelToArrayAdapterTestItem(), $super->id, $fakePostData);
             $searchAttributeData = $metadataAdapter->getAdaptedMetadata();
-            print_r($searchAttributeData);
-            exit;
             $this->assertEquals(array(), $searchAttributeData['clauses']);
             $this->assertEquals(null,    $searchAttributeData['structure']);
         }
