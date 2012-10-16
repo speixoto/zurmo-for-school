@@ -1433,74 +1433,6 @@ table.configuration-list tr td:last-child a:before {
 .has-lang-label .errorMessage {
   margin-bottom: 15px;
 }
-.add-custom-field > div {
-  padding: 15px 15px 15px 15px;
-  position: relative;
-}
-.add-custom-field .dk_container {
-  width: 85%;
-  margin-right: 10px;
-}
-.add-custom-field .configure-custom-field-button {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-}
-.add-custom-field .configure-custom-field-button:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.add-custom-field .configure-custom-field-button:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.add-custom-field .configure-custom-field-button:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.add-custom-field .configure-custom-field-button.loading .z-spinner {
-  display: inline-block;
-}
-.add-custom-field .configure-custom-field-button.loading .z-icon {
-  display: none;
-}
-.add-custom-field .configure-custom-field-button:before {
-  content: "n";
-  font-weight: normal;
-  font-size: 16px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  margin-right: 5px;
-  position: relative;
-  top: 0px;
-}
 /*Users*/
 #UsersListView {
   position: relative;
@@ -2915,6 +2847,77 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 #NotificationsForUserListView .items td {
   padding-left: 15px;
   padding-right: 15px;
+}
+.add-custom-field > div {
+  padding: 15px 15px 15px 15px;
+  position: relative;
+}
+.add-custom-field .hasDropDown {
+  width: 86%;
+  margin-right: 15px;
+  float: left;
+}
+.add-custom-field .configure-custom-field-button {
+  position: relative;
+  top: 1px;
+  cursor: pointer;
+  padding: 0 15px 0 15px;
+  line-height: 23px;
+  margin: 0;
+  font-size: 10px;
+  font-weight: bold;
+  text-indent: 0;
+  display: inline-block;
+  border-top: 1px solid rgba(230, 230, 230, 0.75);
+  border-left: 1px solid rgba(215, 215, 215, 0.75);
+  border-right: 1px solid rgba(215, 215, 215, 0.75);
+  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
+  color: #656565;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+}
+.add-custom-field .configure-custom-field-button:not(.attachLoading) {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.add-custom-field .configure-custom-field-button:hover {
+  color: #7bb730 !important;
+  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
+}
+.add-custom-field .configure-custom-field-button:active {
+  color: #656565;
+  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.add-custom-field .configure-custom-field-button.loading .z-spinner {
+  display: inline-block;
+}
+.add-custom-field .configure-custom-field-button.loading .z-icon {
+  display: none;
+}
+.add-custom-field .configure-custom-field-button:before {
+  content: "n";
+  font-weight: normal;
+  font-size: 16px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 5px;
+  position: relative;
+  top: 0px;
 }
 .lead-conversion-radiobutton {
   display: block;
@@ -7441,6 +7444,7 @@ section {
   line-height: 19px;
   display: inline-block;
   margin-left: 10px;
+  font-size: 11px;
 }
 #credit-link span {
   margin-left: 70px;
@@ -8122,7 +8126,7 @@ label.hasCheckBox + label {
   margin-top: 6px;
 }
 div.wide.form label.hasCheckBox {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 div.wide.form a {
   color: #262877;
@@ -8968,7 +8972,7 @@ div.wide.form a {
   padding-bottom: 15px;
 }
 #edit-form .panelTitle {
-  margin: 0;
+  margin: 0 0 10px 0;
   padding: 0;
   font-size: 12px;
   display: block;
@@ -9052,16 +9056,16 @@ div.wide.form a {
   margin: 0 8px 0 10px;
   vertical-align: middle;
 }
-#right-side-edit-view-panel .radio-input select,
-#right-side-edit-view-panel .radio-input .dk_container {
+#right-side-edit-view-panel .radio-input .hasDropDown {
+  float: left;
   margin-top: 8px;
-  margin-left: 40px;
+  padding-left: 40px;
   margin-bottom: 0;
-  width: 80%;
-  background: #fff;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
-#right-side-edit-view-panel input[type="text"],
-#right-side-edit-view-panel select {
+#right-side-edit-view-panel input[type="text"] {
   margin-top: 6px;
 }
 .has-date-select,
@@ -9878,26 +9882,13 @@ div.wide.form a {
   margin: 0 8px 0 10px;
   vertical-align: middle;
 }
-#inline-edit-form .permissions-box div.radio-input select,
-#inline-edit-form .permissions-box div.radio-input .dk_container {
-  line-height: 24px !important;
+#inline-edit-form .permissions-box div.radio-input .hasDropDown {
+  float: left;
   margin-top: 8px;
-  margin-left: 30px;
+  padding-left: 30px;
   margin-bottom: 0;
-  width: 80%;
-  background: #fff;
 }
-#inline-edit-form .permissions-box div.radio-input select div,
-#inline-edit-form .permissions-box div.radio-input .dk_container div {
-  line-height: inherit !important;
-}
-#inline-edit-form .permissions-box div.radio-input select li,
-#inline-edit-form .permissions-box div.radio-input .dk_container li {
-  padding: 0 !important;
-  line-height: inherit !important;
-}
-#inline-edit-form .permissions-box input[type="text"],
-#inline-edit-form .permissions-box select {
+#inline-edit-form .permissions-box input[type="text"] {
   margin-top: 6px;
 }
 .post-to-profile {
@@ -10854,6 +10845,9 @@ div.hasHalfs .twoThirds {
   padding: 0;
   position: relative;
   cursor: pointer;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .hasDropDown span {
   width: 22px;
@@ -10886,7 +10880,6 @@ div.hasHalfs .twoThirds {
   line-height: 26px;
   line-height: 1;
   width: 100%;
-  background: #ffffff url(../images/dropdown-arrow.png) 100% 0 no-repeat;
   border: 1px solid #ccc;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
