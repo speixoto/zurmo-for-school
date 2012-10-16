@@ -52,13 +52,13 @@
                 'dateTimeCstm'       => null,
                 'floatCstm'          => null,
                 'integerCstm'        => null,
-                'dropDownCstm'       => array('value' => array('')), //multi-select dropdown with no value present
+                'dropDown'       => array('value' => array('')), //multi-select dropdown with no value present
                 'integerCstm'        => null,
-                'multiDropDownCstm'  => array('values' => array(0 => null)),
+                'multiDropDown'  => array('values' => array(0 => null)),
                 'phoneCstm'          => null,
-                'radioDropDownCstm'  => array('value' => null), //single select dropdown with no value present
+                'radioDropDown'  => array('value' => null), //single select dropdown with no value present
                 'stringCstm'         => null,
-                'tagCloudCstm'       => array('values' => null), //null vs array with null like multiDropDown condition above.
+                'tagCloud'       => array('values' => null), //null vs array with null like multiDropDown condition above.
                 'textAreaCstm'       => null,
                 'urlCstm'            => null,
             );
@@ -80,16 +80,16 @@
                 'checkBoxCstm'    => array('value' => '1'),
                 'currencyCstm'    => '108.45',
                 'dateCstm'        => '2007-07-01',
-                'dateTimeCstm'     => '2007-07-01 06:12:45',
-                'decimalCstm'      => '45.6',
-                'dropDownCstm'     => array('value' => '3'),
-                'integerCstm'      => '67876',
+                'dateTimeCstm'    => '2007-07-01 06:12:45',
+                'decimalCstm'     => '45.6',
+                'dropDownCstm'    => array('value' => '3'),
+                'integerCstm'     => '67876',
                 //'multiSelect'  => '', //todo:
-                'phoneCstm'        => '123456',
-                'radioCstm'        => array('value' => '2'),
-                'textCstm'         => 'Some Text',
-                'textAreaCstm'     => 'Some description',
-                'urlCstm'          => 'somesite.com',
+                'phoneCstm'       => '123456',
+                'radioCstm'       => array('value' => '2'),
+                'textCstm'        => 'Some Text',
+                'textAreaCstm'    => 'Some description',
+                'urlCstm'         => 'somesite.com',
             );
             $metadataAdapter = new SearchDataProviderMetadataAdapter(new Account(), $super->id, $fakePostData);
             $searchAttributeData = $metadataAdapter->getAdaptedMetadata();
