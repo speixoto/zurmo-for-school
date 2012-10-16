@@ -520,5 +520,29 @@ EOD;
             }
             return self::tag('span', array('id' => $baseID), implode($separator, $items));
         }
+
+    /**
+     * Override to support proper styling
+     * @see CHtml::activeDropDownList();
+     */
+    public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
+    {
+        static::resolveNameID($model, $attribute, $htmlOptions);
+        $selection  = static::resolveValue($model, $attribute);
+        $options    = "\n" . static::listOptions($selection, $data, $htmlOptions);
+        static::clientChange('change', $htmlOptions);
+        if($model->hasErrors($attribute))
+        {
+            static::addErrorCss($htmlOptions);
+        }
+        if(isset($htmlOptions['multiple']))
+        {
+            if(substr($htmlOptions['name'],-2) !== '[]')
+            {
+                $htmlOptions['name'] .= '[]';
+            }
+        }
+        return 'x'.static::tag('select', $htmlOptions, $options);
+    }
     }
 ?>

@@ -103,16 +103,16 @@ $(window).ready(function(){
             $('label', $(this)).fadeIn(250);
         }
     });
-    
+
     /*New Dropdowns
-    
+
     $('.hasDropdown').hover(
         function(){
             $('span', this).addClass('over-dd');
         },
         function(){
             $('span', this).removeClass('over-dd');
-        }  
+        }
     );
     */
     $('.hasDropdown').live({
@@ -123,17 +123,7 @@ $(window).ready(function(){
             $('span', this).removeClass('over-dd');
         }
     });
-    
-    
-    /*Dropdowns - Dropkick - also see dropDownInteractions.js */
-    $('html').click(function(e) {
-        $.each($('select:not(.ignore-style)'), function(index, value) {
-            if( $(this).attr('multiple') != 'multiple' && $(value).dropkick )
-            {
-                $(value).dropkick('close');
-            }
-        });
-    });
+
    //we're doing that because the multiselect widget isn't generated yet..
    window.setTimeout(
        function setCheckboxes(){
