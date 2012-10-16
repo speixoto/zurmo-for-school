@@ -97,7 +97,7 @@
             {
                 $element->editableTemplate = '<td colspan="{colspan}">' .
                                              '<div class="file-upload-box">{content}{error}</div>' .
-                                             '<a href="#" class="show-file-upload-box" onclick="jQuery(this).hide().prev().show(); return false;">Add Files</a>' .
+                                             '<a href="#" class="show-file-upload-box" onclick="jQuery(this).hide().prev().show().find(\'input[type=file]\').click(); return false;">Add Files</a>' .
                                              '</td>';
             }
             else

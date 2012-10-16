@@ -1,20 +1,6 @@
 $(window).ready(function(){
 
     //main menu flyouts or mbmenu releacment
-    /*
-    $( '.nav > .parent' ).hover(
-        function(){
-            if ( $(this).find('ul').length > 0 ){
-                $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
-            }
-        },
-        function(){
-            if ( $(this).find('ul').length > 0 ){
-                $(this).find('ul').stop(true, true).fadeOut(250);
-            }
-        }
-    );
-    */
     $('.nav:not(.headerNav) > .parent').live({
         mouseenter: function() {
             if ( $(this).find('ul').length > 0 ){
@@ -117,7 +103,28 @@ $(window).ready(function(){
             $('label', $(this)).fadeIn(250);
         }
     });
-
+    
+    /*New Dropdowns
+    
+    $('.hasDropdown').hover(
+        function(){
+            $('span', this).addClass('over-dd');
+        },
+        function(){
+            $('span', this).removeClass('over-dd');
+        }  
+    );
+    */
+    $('.hasDropdown').live({
+        mouseenter: function(){
+            $('span', this).addClass('over-dd');
+        },
+        mouseleave: function(){
+            $('span', this).removeClass('over-dd');
+        }
+    });
+    
+    
     /*Dropdowns - Dropkick - also see dropDownInteractions.js */
     $('html').click(function(e) {
         $.each($('select:not(.ignore-style)'), function(index, value) {

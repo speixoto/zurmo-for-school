@@ -152,7 +152,7 @@ html, body{
 
 body{
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size:11px;
+    font-size:12px;
     color:#545454;
     -webkit-font-smoothing: antialiased;
     /* @doubtful_existance: I don’t think these even exist? Can’t hurt much, I guess. */
@@ -1102,6 +1102,7 @@ footer, header, hgroup, menu, nav, section {
     width:100%;
     display:inline-block;
     position:relative;
+    font-size:11px;
 }
 
 .view-toolbar{
@@ -1827,6 +1828,7 @@ div.wide.form{
     font-weight: normal;
     color:#999;
     margin-top: 5px;
+    font-size:11px;
 }
 
 .summary{
@@ -3843,134 +3845,68 @@ div.hasHalfs{
     }
 }
 
-/*DropKick Dropdowns*/
-.dk_container {
-    background: #fff;
-    border: 1px solid #ccc;.radius(3px);
-    font-size: 12px;
-    color: #666;
-    text-indent: 0;
-    line-height: 24px;.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
+/*Dropdowns*/
+
+.hasDropdown{
     width: 100%;
-    .box-sizing();
-    display: none;
-    float: left;
+    margin: 0;
+    padding: 0;
     position: relative;
-    &:focus {
-        .b-shadow(0 0 1px 1px @themeColor);
-        outline: 0;
-    }
-    a {
-        cursor: pointer;
-        text-decoration: none;
-        outline: 0;
-    }
-}
-
-.dk_toggle {
-    background: url(../images/dropdown-arrow.png) 100% 0 no-repeat;
-    padding-left: 6px;
-    display: block !important;
-    font-weight: normal !important;
-    color: #666 !important;
-    z-index: 999;
-    &:hover {
-        background-position: 100% 100%; //top right
-    }
-}
-
-.dk_focus .dk_toggle {
-    border-color: #ccc;
-}
-
-.dk_open {
-    .b-shadow(0 0 1px 1px @themeColor);
-    z-index: 10000;
-}
-
-/* The outer container of the options */
-.dk_options {
-    .b-shadow(rgba(0, 0, 0, .2) 0 2px 8px);
-    .radius(0 0 3px 3px);
-    a {
-        background-color: #fff;
-        border-bottom: 1px solid #ccc;
-        padding: 0 6px;
-        line-height: 24px;
+    cursor: pointer;
+    span{
+        width: 22px;
+        height: 24px;
+        display: block;
+        position: absolute;
+        top:1px;
+        right: 1px;
+        z-index: 1;
+        pointer-events:none;
+        background: url(../images/dropdown-arrow.png) 100% 0 no-repeat;
+        padding-left: 6px;
+        display: block !important;
         font-weight: normal !important;
         color: #666 !important;
+        z-index: 3;
+        cursor:pointer;
     }
-    li:last-child a {
-        border-bottom: none;
+    span:hover, .over-dd{
+        background-position: 100% 100%;
     }
-}
-
-.dk_options a:hover, .dk_option_current a {
-    background-color: @themeColor;
-    border-bottom-color: #ccc;
-    color: #fff !important;
-    text-decoration: none;
-}
-
-/* Inner container for options, this is what makes the scrollbar possible. */
-.dk_options_inner {
-    border: 1px solid #ccc;
-    border-bottom-width: 2px;
-    border-bottom-color: #ccc;
-    color: #666;
-    max-height: 250px;
-    .radius(0 0 3px 3px);
-}
-
-/* Set a max-height on the options inner */
-.dk_options_inner, .dk_touch .dk_options {
-    max-height: 250px;
-}
-
-.dk_toggle {
-    display: -moz-inline-stack;
-    display: inline-block;
-    *display: inline;
-    position: relative;
-    zoom: 1;
-}
-
-.dk_open {
-    position: relative;
-}
-
-.dk_open .dk_options {
-    display: block;
-}
-
-.dk_open .dk_label {
-    color: inherit;
-}
-
-.dk_options {
-    z-index: 0;
-    display: none;
-    margin-top: 3px;
-    position: absolute;
-    right: 0;
-    width: 100%;
-    a, a:link, a:visited{
-        display: block;
+    select{
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        margin: 0;
+        padding: 3px 0;
+        height: 26px;
+        line-height: 26px;
+        line-height: 1;
+        width: 100%;
+        background: #fff url(../images/dropdown-arrow.png) 100% 0 no-repeat;
+        border: 1px solid #ccc;
+        .radius(3px);
+        font-size: 12px;
+        color: #666;
+        text-indent: 6px;
+        vertical-align: middle;
+        .box-sizing();
+        .b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
+        outline: none !important;
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
+        // for IE z-index: 5;
+        // for IE padding-right: 5px;
+        &:focus, &:hover{
+            outline: none;
+            .b-shadow(0 0 1px 1px @themeColor);
+        }
     }
-}
-
-.dk_options_inner {
-    overflow: auto;
-    position: relative;
-}
-
-.dk_touch .dk_options {
-    overflow: hidden;
-}
-
-.dk_touch .dk_options_inner {
-    //max-height: none;
-    //overflow: visible;
+    &:hover select{
+        outline: none;
+        .b-shadow(0 0 1px 1px @themeColor);
+    }
 }
 
 

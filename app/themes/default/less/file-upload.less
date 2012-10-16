@@ -68,11 +68,11 @@
         border:none;
         cursor: pointer;
         color:@themeColor;
-        line-height: 0;
+        line-height: 16px;
     }
     .icon-delete:before{
         margin:0;
-        top:5px;
+        top:0;
         cursor: pointer;
         .opacity(25);
     }
@@ -96,6 +96,7 @@
     }
     .start{
         #gradient > .vertical(#97c43d, #6fa82d );
+        display: none;
     }
     .cancel{
         #gradient > .vertical(#c43d53, #a82d31 );
@@ -107,8 +108,10 @@
 	overflow: hidden;
 	float: left;
 	margin-right: 4px;
+    cursor: pointer !important;
+    display: inline-block;
     span{
-        cursor: pointer;
+        cursor: pointer !important;
     }
     input {
         position: absolute;
@@ -122,6 +125,8 @@
         -moz-transform: translate(-300px, 0) scale(4);
         direction: ltr;
         cursor: pointer;
+        height: 30px;
+        width: auto;
     }
 }
 

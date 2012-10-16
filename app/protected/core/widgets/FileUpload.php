@@ -273,13 +273,12 @@ $scriptContent = <<<EOD
             \${name} <span class="file-size">(\${size})</span>
             {{if error}}
                 <span class="upload-error">\${error}</span>
-                <span class="upload-actions">
             {{else}}
                 <span class="upload-actions">
-                <button class="start">{$startLabel}</button>
+                    <button class="cancel">{$cancelLabel}</button>
+                </span>
             {{/if}}
-                <button class="cancel">{$cancelLabel}</button>
-            </span>
+               
         </td>
     </tr>
 </script>
