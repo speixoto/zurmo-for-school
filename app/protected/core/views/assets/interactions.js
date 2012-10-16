@@ -106,7 +106,7 @@ $(window).ready(function(){
 
     /*New Dropdowns
 
-    $('.hasDropdown').hover(
+    $('.hasDropDown').hover(
         function(){
             $('span', this).addClass('over-dd');
         },
@@ -115,7 +115,7 @@ $(window).ready(function(){
         }
     );
     */
-    $('.hasDropdown').live({
+    $('.hasDropDown').live({
         mouseenter: function(){
             $('span', this).addClass('over-dd');
         },

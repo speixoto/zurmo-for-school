@@ -521,28 +521,53 @@ EOD;
             return self::tag('span', array('id' => $baseID), implode($separator, $items));
         }
 
-    /**
-     * Override to support proper styling
-     * @see CHtml::activeDropDownList();
-     */
-    public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
-    {
-        static::resolveNameID($model, $attribute, $htmlOptions);
-        $selection  = static::resolveValue($model, $attribute);
-        $options    = "\n" . static::listOptions($selection, $data, $htmlOptions);
-        static::clientChange('change', $htmlOptions);
-        if($model->hasErrors($attribute))
+        /**
+         * Override to support proper styling
+         * @see CHtml::activeDropDownList();
+         */
+        public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
         {
-            static::addErrorCss($htmlOptions);
-        }
-        if(isset($htmlOptions['multiple']))
-        {
-            if(substr($htmlOptions['name'],-2) !== '[]')
+            static::resolveNameID($model, $attribute, $htmlOptions);
+            $selection  = static::resolveValue($model, $attribute);
+            $options    = "\n" . static::listOptions($selection, $data, $htmlOptions);
+            static::clientChange('change', $htmlOptions);
+            if($model->hasErrors($attribute))
             {
-                $htmlOptions['name'] .= '[]';
+                static::addErrorCss($htmlOptions);
             }
+            if(isset($htmlOptions['multiple']))
+            {
+                if(substr($htmlOptions['name'],-2) !== '[]')
+                {
+                    $htmlOptions['name'] .= '[]';
+                }
+            }
+            $content  = static::tag('span', array('class' => 'select-arrow'), '');
+            $content .= static::tag('select', $htmlOptions, $options);
+            return static::tag('div', array('class' => 'hasDropDown'), $content);
         }
-        return 'x'.static::tag('select', $htmlOptions, $options);
-    }
+
+        /**
+         *
+         * Override to support proper styling
+         * @see CHtml::dropDownList();
+         */
+        public static function dropDownList($name, $select, $data, $htmlOptions = array())
+        {
+            $htmlOptions['name'] = $name;
+            if(!isset($htmlOptions['id']))
+            {
+                $htmlOptions['id'] = static::getIdByName($name);
+            }
+            else if($htmlOptions['id'] === false)
+            {
+                unset($htmlOptions['id']);
+            }
+            static::clientChange('change', $htmlOptions);
+            $options  = "\n" . static::listOptions($select, $data, $htmlOptions);
+            $content  = static::tag('span', array('class' => 'select-arrow'), '');
+            $content .= static::tag('select', $htmlOptions, $options);
+            return static::tag('div', array('class' => 'hasDropDown'), $content);
+        }
     }
 ?>

@@ -3,20 +3,20 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
-            $('.hasDropdown').hover(
+            $('.hasDropDown').hover(
                 function(){
                     $('span', this).addClass('over-dd');
                 },
                 function(){
                     $('span', this).removeClass('over-dd');
-                }  
+                }
             );
-            
+
             if ( $.browser.msie || true ){
-                
-                
-                $('.hasDropdown span').click(function(event){
-                    
+
+
+                $('.hasDropDown span').click(function(event){
+
                     //var el = $(this).next().children()[3];
                     var dropdown = $(this).next();
 
@@ -25,18 +25,18 @@
                     //press.which = 40;
                     //$(this).next().trigger(press);
                     event.delegateTarget = dropdown;
-                    var t = dropdown.trigger(event);                    
+                    var t = dropdown.trigger(event);
                     console.log(t);
                     console.log(event);
-                    
+
                     //el.focus().trigger({ type : 'keypress', which : character.charCodeAt(40) });
                     //$(this).next()[0].click();//trigger("mousedown");
                     //$(this).next().trigger('focusin');
                 });
             }
-        });    
+        });
     </script>
-    
+
     <style>
     body{
         padding:50px;
@@ -78,7 +78,7 @@
         width: 100%;
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
-        box-sizing: border-box;   
+        box-sizing: border-box;
         outline: none !important;
         cursor: pointer;
         position: relative;
@@ -112,7 +112,7 @@
     </style>
 </head>
 <body>
-    <div class="needed-to-position-arrow hasDropdown">
+    <div class="needed-to-position-arrow hasDropDown">
         <span class="the-arrow"></span>
         <select>
             <option>1 some option</option>
