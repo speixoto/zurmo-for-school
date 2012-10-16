@@ -113,7 +113,6 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/ListViewUtils.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/interactions.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/dropDownInteractions.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/jquery.dropkick-1.0.0.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/jquery.truncateText.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/rssReader/jquery.zrssfeed.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/juiportlets/JuiPortlets.js',
