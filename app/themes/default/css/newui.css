@@ -5844,9 +5844,6 @@ a.close-ModalGameNotification.simple-select {
 .strong {
   font-weight: bold;
 }
-select {
-  display: none;
-}
 /*=For modern browsers */
 .clearfix {
   zoom: 1;
