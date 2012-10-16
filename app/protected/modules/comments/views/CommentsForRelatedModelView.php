@@ -69,8 +69,7 @@
 
         protected function renderContent()
         {
-            $content = '<div>';
-            $content .= '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
+            $content = '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
             if (count($this->commentsData) > 0)
             {
                 if (count($this->commentsData) > $this->pageSize && $this->pageSize != null)
@@ -79,7 +78,6 @@
                 }
                 $content .= '<div id="CommentList' . $this->uniquePageId . '" class="CommentList">' . $this->renderCommentsContent() . '</div>';
             }
-            $content .= '</div>';
             return $content;
         }
 
