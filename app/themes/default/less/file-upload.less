@@ -103,15 +103,25 @@
     }
 }
 
-.fileinput-button {
+.addfileinput-button {
 	position: relative;
 	overflow: hidden;
 	float: left;
-	margin-right: 4px;
-    cursor: pointer !important;
+    cursor: pointer;
     display: inline-block;
+    font-size: 11px;
+    font-weight: normal;
+    padding: 2px 0;
     span{
-        cursor: pointer !important;
+        cursor: pointer;
+        .zButton;
+        .b-shadow(0 0 2px 0 rgba(153, 153, 153, 0.15));
+        .symbly(36px);
+        font-size: 24px;
+        padding: 0 6px !important;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
     }
     input {
         position: absolute;
@@ -127,6 +137,11 @@
         cursor: pointer;
         height: 30px;
         width: auto;
+    }
+    &:hover{
+        span{
+            color: @themeColor2;
+        }
     }
 }
 
