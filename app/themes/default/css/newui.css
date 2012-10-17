@@ -9972,13 +9972,15 @@ div.wide.form a {
   margin-top: 6px;
 }
 .post-to-profile span {
-  margin-left: 10px;
-  margin-top: -3px;
+  margin-top: -2px;
   position: relative;
-  right: 0;
+  float: left;
 }
 .post-to-profile label.hasCheckBox {
-  margin-top: -6px !important;
+  position: relative;
+  top: -6px;
+  margin-left: 10px;
+  margin-right: 5px !important;
 }
 /*=Sticky search*/
 .BreadCrumbView {
