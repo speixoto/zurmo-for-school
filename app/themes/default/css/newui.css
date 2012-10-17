@@ -5619,6 +5619,9 @@ a.close-ModalGameNotification.simple-select {
 .comment-content .missionStatusChangeArea a:first-child {
   margin-left: 15px;
 }
+.user-link {
+  font-weight: bold;
+}
 .mission-status {
   margin: 0 5px;
 }
