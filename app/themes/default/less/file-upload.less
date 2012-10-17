@@ -36,6 +36,7 @@
 }
 
 .files{
+    font-size: 11px;
     td{
         padding:2px 0 !important;
         vertical-align: middle;
@@ -69,6 +70,9 @@
         cursor: pointer;
         color:@themeColor;
         line-height: 16px;
+        span{
+            display: none;
+        }
     }
     .icon-delete:before{
         margin:0;
@@ -79,14 +83,14 @@
     .icon-delete:hover:before{
         .opacity(100);
     }
-    .start, .cancel{
+    button.start, button.cancel{
         cursor: pointer;
         border: none;
         background: @themeColor;
-        font-size: 11px !important;
-        padding:4px;
+        font-size: 10px !important;
+        padding:2px;
         line-height: 1;
-        .radius(3px);
+        .radius(2px);
         margin: 0 0 0 4px;
         color: #fff;
         font-weight: normal;
@@ -94,11 +98,11 @@
             .b-shadow(0 0 1px 0 #333);
         }
     }
-    .start{
+    button.start{
         #gradient > .vertical(#97c43d, #6fa82d );
         display: none;
     }
-    .cancel{
+    button.cancel{
         #gradient > .vertical(#c43d53, #a82d31 );
     }
 }

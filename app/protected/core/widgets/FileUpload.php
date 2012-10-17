@@ -194,6 +194,7 @@ $(function () {
     $('.fileupload-content').removeClass('ui-widget-content ui-corner-bottom');
     $('#fileUpload{$id}').bind('fileuploaddestroy', function (e, data) {
             {$this->afterDeleteAction}
+            
     });
     $('#fileUpload{$id}').bind('fileuploadalways', function (e, data) {
         if (data == undefined || data.result == undefined ||
@@ -244,7 +245,7 @@ $scriptContent = <<<EOD
         {{else}}
             <td class="name" title="\${size}">
                 \${name} <span class="file-size">(\${size})</span>
-                <span class="upload-actions">
+                <span class="upload-actions delete">
                     <button class="icon-delete" data-url="{$this->deleteUrl}?id=\${id}"><!--{$deleteLabel}--></button>
                 </span>
                 <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
@@ -270,7 +271,7 @@ $scriptContent = <<<EOD
             {{if error}}
                 <span class="upload-error">\${error}</span>
             {{else}}
-                <span class="upload-actions">
+                <span class="upload-actions cancel">
                     <button class="cancel">{$cancelLabel}</button>
                 </span>
             {{/if}}
@@ -290,7 +291,7 @@ EOD;
             {
                 return;
             }
-            $content = '&#160;' . Yii::t('Default', 'Max upload size: {maxSize}',
+            $content = ' ' . Yii::t('Default', 'Max upload size: {maxSize}',
                        array('{maxSize}' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($maxSize)));
             return $content;
         }

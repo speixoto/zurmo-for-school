@@ -2076,6 +2076,9 @@ table.configuration-list tr td:last-child a:before {
 .fileupload-content {
   width: 100%;
 }
+.files {
+  font-size: 11px;
+}
 .files td {
   padding: 2px 0 !important;
   vertical-align: middle;
@@ -2106,6 +2109,9 @@ table.configuration-list tr td:last-child a:before {
   color: #262877;
   line-height: 16px;
 }
+.upload-actions .icon-delete span {
+  display: none;
+}
 .upload-actions .icon-delete:before {
   margin: 0;
   top: 0;
@@ -2121,32 +2127,32 @@ table.configuration-list tr td:last-child a:before {
   -moz-opacity: 1;
   opacity: 1;
 }
-.upload-actions .start,
-.upload-actions .cancel {
+.upload-actions button.start,
+.upload-actions button.cancel {
   cursor: pointer;
   border: none;
   background: #262877;
-  font-size: 11px !important;
-  padding: 4px;
+  font-size: 10px !important;
+  padding: 2px;
   line-height: 1;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   margin: 0 0 0 4px;
   color: #fff;
   font-weight: normal;
 }
-.upload-actions .start:hover,
-.upload-actions .cancel:hover {
+.upload-actions button.start:hover,
+.upload-actions button.cancel:hover {
   -webkit-box-shadow: 0 0 1px 0 #333333;
   -moz-box-shadow: 0 0 1px 0 #333333;
   -o-box-shadow: 0 0 1px 0 #333333;
   -ms-box-shadow: 0 0 1px 0 #333333;
   box-shadow: 0 0 1px 0 #333333;
 }
-.upload-actions .start {
+.upload-actions button.start {
   background-color: #6fa82d;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
@@ -2159,7 +2165,7 @@ table.configuration-list tr td:last-child a:before {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
   display: none;
 }
-.upload-actions .cancel {
+.upload-actions button.cancel {
   background-color: #a82d31;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31));
