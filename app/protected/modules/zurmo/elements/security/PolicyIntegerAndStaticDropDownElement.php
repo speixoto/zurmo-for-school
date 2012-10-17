@@ -83,7 +83,15 @@
          */
         protected function renderLabel()
         {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
+            $delimiter = FormModelUtil::DELIMITER;
+            list($moduleName, $policyName) = explode($delimiter, $this->attribute);
+            $policyDefault = $moduleName::getPolicyDefault($this->getFormattedAttributeLabel());
+            $title       = Yii::t('Default', 'The default value for this policy is ') . $policyDefault;
+            $content     = '<span id="policy-default-tooltip-' . $policyName . '" class="tooltip" title="' . $title . '">';
+            $content    .= '?</span>';
+            $qtip = new ZurmoTip();
+            $qtip->addQTip("#policy-default-tooltip-" . $policyName);
+            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel()) . $content;
         }
 
         protected function getNameForHelperInput()
