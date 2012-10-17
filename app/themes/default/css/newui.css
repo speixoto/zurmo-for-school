@@ -10860,7 +10860,6 @@ a.close-ModalGameNotification.simple-select {
   margin-bottom: 15px;
 }
 .comment-details {
-  margin: 2px 0;
   display: inline-block;
   font-size: 11px;
 }
@@ -10888,7 +10887,6 @@ a.close-ModalGameNotification.simple-select {
 }
 .comment .comment-content {
   padding-left: 50px;
-  margin: 3px 0;
   line-height: 140%;
 }
 .comment:hover .delete-comment {
@@ -10918,6 +10916,10 @@ a.close-ModalGameNotification.simple-select {
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
   content: "_";
+}
+.comment-content,
+.comment-details {
+  margin: 0 0 2px 0;
 }
 .model-details-summary {
   font-size: 12px !important;
