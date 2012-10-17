@@ -314,7 +314,8 @@
     }
 }
 
-.user-link{
+a.user-link{
+    color: @themeColor;
     font-weight: bold;
 }
 
@@ -358,6 +359,12 @@
     }
     .show-create-comment{
         margin-left: 80px;
+        font-size: 11px;
+        color:@themeColor;
+        .opacity(50);
+        &:hover{
+            .opacity(100);
+        }
     }
     .wide.form{
         margin-bottom: 5px;

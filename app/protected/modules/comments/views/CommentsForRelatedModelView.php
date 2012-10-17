@@ -120,7 +120,7 @@
                 }
                 $userUrl        = Yii::app()->createUrl('/users/default/details', array('id' => $comment->createdByUser->id));
                 $stringContent  = ZurmoHtml::link($comment->createdByUser->getAvatarImage(36), $userUrl);
-                $userName       = ZurmoHtml::link(strval($comment->createdByUser), $userUrl);
+                $userName       = ZurmoHtml::link(strval($comment->createdByUser), $userUrl, array('class' => 'user-link'));
                 $stringContent .= '<div class="comment-content"><p>' . $userName . ': ' . $comment->description . '</p>';
 
                 //attachments

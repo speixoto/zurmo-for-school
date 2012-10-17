@@ -45,10 +45,10 @@
             $avatarImage = $model->owner->getAvatarImage(50);
             $content .= '<div class="comment model-details-summary clearfix">';
             $content .= '<span class="user-details">' . ZurmoHtml::link($avatarImage, $userUrl);
-            $content .= ZurmoHtml::tag('strong', array(), ZurmoHtml::link(strval($model->owner), $userUrl) );
+            //$content .= ZurmoHtml::tag('strong', array(), ZurmoHtml::link(strval($model->owner), $userUrl) );
             $content .= '</span>';
-
-            $content .= '<div class="comment-content"><p>' . self::renderModelDescription($model) . '</p></div>';
+            $userLink = ZurmoHtml::link(strval($model->owner), $userUrl, array('class' => 'user-link'));
+            $content .= '<div class="comment-content"><p>' . $userLink . ': ' . self::renderModelDescription($model) . '</p></div>';
             $content .= self::renderAfterDescriptionContent($model);
             $content .= self::renderItemFileContent($model);
 
