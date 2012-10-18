@@ -48,18 +48,18 @@
             $this->assertEquals('bool',    ModelAttributeToCastTypeUtil::getCastType($model, 'booleanStandard'));
             $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'urlStandard'));
             //Test all custom fields
-            $this->assertEquals('bool',    ModelAttributeToCastTypeUtil::getCastType($model, 'checkBox'));
-            $this->assertEquals('float',   ModelAttributeToCastTypeUtil::getCastType($model, 'currency'));
-            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'date'));
-            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'dateTime'));
-            $this->assertEquals('float',   ModelAttributeToCastTypeUtil::getCastType($model, 'decimal'));
-            $this->assertEquals('int',     ModelAttributeToCastTypeUtil::getCastType($model, 'dropDown'));
-            $this->assertEquals('int',     ModelAttributeToCastTypeUtil::getCastType($model, 'integer'));
-            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'phone'));
-            $this->assertEquals('int',     ModelAttributeToCastTypeUtil::getCastType($model, 'radio'));
-            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'text'));
-            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'textArea'));
-            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'url'));
+            $this->assertEquals('bool',    ModelAttributeToCastTypeUtil::getCastType($model, 'checkBoxCstm'));
+            $this->assertEquals('float',   ModelAttributeToCastTypeUtil::getCastType($model, 'currencyCstm'));
+            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'dateCstm'));
+            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'dateTimeCstm'));
+            $this->assertEquals('float',   ModelAttributeToCastTypeUtil::getCastType($model, 'decimalCstm'));
+            $this->assertEquals('int',     ModelAttributeToCastTypeUtil::getCastType($model, 'dropDownCstm'));
+            $this->assertEquals('int',     ModelAttributeToCastTypeUtil::getCastType($model, 'integerCstm'));
+            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'phoneCstm'));
+            $this->assertEquals('int',     ModelAttributeToCastTypeUtil::getCastType($model, 'radioCstm'));
+            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'textCstm'));
+            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'textAreaCstm'));
+            $this->assertEquals('string',  ModelAttributeToCastTypeUtil::getCastType($model, 'urlCstm'));
         }
     }
 ?>
