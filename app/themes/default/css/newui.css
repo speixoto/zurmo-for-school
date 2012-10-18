@@ -1901,6 +1901,12 @@ td.empty {
 .form select.multiple {
   height: auto;
 }
+.form select.multiple {
+  padding: 4px 4px 4px 6px;
+}
+.form select.multiple option {
+  margin-bottom: 2px;
+}
 .form select[disabled="disabled"],
 .form input[type="text"][disabled],
 .form input[type="password"][disabled],
@@ -9052,7 +9058,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   }
   .form input[type="text"],
   .form input[type="password"],
-  .form select.multiple,
   .form textarea {
     height: 26px;
   }
