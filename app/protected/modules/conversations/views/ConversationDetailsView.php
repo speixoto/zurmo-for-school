@@ -93,7 +93,9 @@
             $userUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $this->model->createdByUser->id));
             $content  = '<div class="comment model-details-summary clearfix">';
             $content .= ZurmoHtml::link($this->model->createdByUser->getAvatarImage(100), $userUrl);
-            $userLink = ZurmoHtml::link(strval($this->model->createdByUser), $userUrl, array('class' => 'user-link'));
+            $content .= '<span class="user-details">';
+            $content .= ZurmoHtml::link(strval($this->model->createdByUser), $userUrl, array('class' => 'user-link'));
+            $content .= '</span>';
             
             if ($this->model->description == null)
             {
@@ -103,7 +105,7 @@
             {
                 $element  = new TextAreaElement($this->model, 'description');
             }
-            $element->nonEditableTemplate = '<div class="comment-content">' . $userLink . ': {content}</div>';
+            $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
             $content .= $element->render();
                 
             $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(

@@ -1812,10 +1812,6 @@ tr.even {
   text-align: center;
   vertical-align: middle !important;
 }
-.juiportlet-widget table.items thead tr th:first-child,
-.juiportlet-widget table.items tbody tr td:first-child {
-  padding-left: 15px;
-}
 .pencil {
   display: block;
   margin-top: -2px;
