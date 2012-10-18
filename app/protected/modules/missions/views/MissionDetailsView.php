@@ -65,7 +65,7 @@
             $content  = '<div class="comment model-details-summary">';
             $content .= ZurmoHtml::link($this->model->createdByUser->getAvatarImage(100), $userUrl);
             $content .= '<span class="user-details">';
-            $content .= ZurmoHtml::link(strval($this->model->createdByUser), $userUrl, array('class' => 'user-link')));
+            $content .= ZurmoHtml::link(strval($this->model->createdByUser), $userUrl, array('class' => 'user-link'));
             $content .= '</span>';
             $element  = new TextAreaElement($this->model, 'description');
             $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
