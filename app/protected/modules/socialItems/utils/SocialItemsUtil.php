@@ -124,10 +124,10 @@
             $url     =   Yii::app()->createUrl('socialItems/default/deleteViaAjax',
                                                array('id' => $model->id));
             // Begin Not Coding Standard
-            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete Post'), $url,
+            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
-                                              $('#deleteSocialItemLink" . $model->id . "').parent().parent().parent().parent().remove();}"),
+                                              $('#deleteSocialItemLink" . $model->id . "').parent().parent().parent().parent().parent().parent().remove();}"),
                          array('id'         => 'deleteSocialItemLink'   . $model->id,
                                 'class'     => 'deleteSocialItemLink'   . $model->id,
                                 'namespace' => 'delete'));
