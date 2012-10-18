@@ -38,6 +38,8 @@
 
         private $viewClassName;
 
+        private $editableMetadata;
+
         public function __construct($viewClassName, $moduleClassName)
         {
             assert('is_string($viewClassName)');
@@ -66,6 +68,42 @@
             );
             $this->designerLayoutAttributes = $attributesLayoutAdapter->makeDesignerLayoutAttributes();
             $this->viewClassName            = $viewClassName;
+            $this->editableMetadata         = $editableMetadata;
+        }
+
+        protected function getDefaultListAttributesNamesAndLabelsFromEditableMetadata($metadata)
+        {
+            assert('isset($metadata["global"]["panels"])');
+            $attributeNames = array();
+            foreach ($metadata['global']['panels'] as $panelKey => $panel)
+            {
+                foreach ($panel['rows'] as $rowKey => $row)
+                {
+                    foreach ($row['cells'] as $cellKey => $cell)
+                    {
+                        if (is_array($cell['elements']))
+                        {
+                            foreach ($cell['elements'] as $elementKey => $elementInformation)
+                            {
+                                //Expects listvie to always have a single cell per row
+                                if (count($row['cells']) !=1)
+                                {
+                                    throw new NotSupportedException();
+                                }
+                                if($elementInformation['attributeName'] != 'null')
+                                {
+                                    $attributeNames[] = $elementInformation['attributeName'];
+                                }
+                                else
+                                {
+                                    $attributeNames[] = $elementInformation['type'];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return $attributeNames;
         }
 
         /**
@@ -117,14 +155,7 @@
             {
                 return $this->selectedValues;
             }
-            $attributeNames = array();
-            foreach ($this->designerLayoutAttributes->get() as $attributeName => $data)
-            {
-                if (!$data['availableToSelect'])
-                {
-                    $attributeNames[] = $attributeName;
-                }
-            }
+            $attributeNames = $this->getDefaultListAttributesNamesAndLabelsFromEditableMetadata($this->editableMetadata);
             return $attributeNames;
         }
 
