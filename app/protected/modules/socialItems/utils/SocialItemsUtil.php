@@ -51,7 +51,8 @@
 
             if($model->toUser->id > 0 && $renderToUserString)
             {
-                $toUserLink = ZurmoHtml::link(strval($model->toUser), $userUrl, array('class' => 'user-link'));
+                $toUserUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $model->toUser->id));
+                $toUserLink = ZurmoHtml::link(strval($model->toUser), $toUserUrl, array('class' => 'user-link'));
                 $content   .= Yii::t('Default', '{postedFromUser} to {postedToUser}',
                                                 array('{postedFromUser}' => $userLink,
                                                       '{postedToUser}'   => $toUserLink));
