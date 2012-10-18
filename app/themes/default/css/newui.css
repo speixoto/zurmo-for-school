@@ -1829,6 +1829,7 @@ tr.even {
 }
 .empty {
   display: block;
+  font-size: 11px;
 }
 td.empty {
   display: table-cell;
@@ -1896,6 +1897,11 @@ td.empty {
 .form textarea,
 .form select.multiple {
   height: auto;
+}
+.form textarea {
+  line-height: 135%;
+  text-indent: 0;
+  padding: 4px;
 }
 .form select.multiple {
   padding: 4px 4px 4px 6px;
@@ -2668,6 +2674,7 @@ div.wide.form a {
   position: relative;
 }
 .juiportlet-widget-content .cgrid-view {
+  width: 100%;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -2749,6 +2756,7 @@ div.wide.form a {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
+  font-size: 11px;
 }
 .search-form-tools {
   position: absolute;
@@ -2756,6 +2764,7 @@ div.wide.form a {
   left: 265px;
   line-height: 25px;
   color: #262877;
+  font-size: 11px;
 }
 .search-form-tools input[type="submit"] {
   cursor: pointer;
@@ -2862,6 +2871,7 @@ div.wide.form a {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  font-size: 11px;
 }
 #ModalView .search-view-1 input,
 #ModalView .search-view-1 select {
@@ -3469,9 +3479,8 @@ div.wide.form a {
 }
 .details-table td,
 .details-table th {
-  padding: 0 5px 0 10px !important;
+  padding: 5px 5px 0 10px;
   font-weight: 600;
-  padding-top: 15px !important;
   vertical-align: top !important;
 }
 .details-table p {
@@ -4348,9 +4357,6 @@ div.hasHalfs .twoThirds {
 .juiportlet-widget td:first-child {
   border-top: none;
 }
-.juiportlet-widget td div {
-  line-height: 150%;
-}
 .juiportlet-widget td div.button-column {
   float: left;
   display: block;
@@ -4520,8 +4526,7 @@ div.hasHalfs .twoThirds {
   list-style: none;
 }
 .pager ul.endless-list-pager {
-  border: 1px solid #DFDFDF;
-  border-top: none;
+  border-top: 1px solid #DFDFDF;
   list-style: none;
 }
 .pager ul.endless-list-pager li {
@@ -5714,7 +5719,6 @@ a.remove:hover .icon:after {
   padding: 10px 15px 0 15px;
 }
 .juiportlet-widget-content table.items {
-  width: 100%;
   border: none !important;
 }
 .juiportlet-widget-content table.items thead > tr th,
@@ -7517,12 +7521,14 @@ table.configuration-list tr td:last-child a:before {
   position: relative;
   bottom: -18px;
   z-index: 5;
+  font-size: 11px;
 }
 .fileupload-content {
   width: 100%;
 }
 .files {
   font-size: 11px;
+  margin-top: 5px;
 }
 .files td {
   padding: 2px 0 !important;
@@ -10432,34 +10438,32 @@ a.close-ModalGameNotification.simple-select {
 /*=User Profile Page*/
 .UserSocialItemsForPortletView {
   margin-right: 20px !important;
+  /*#social-item-inline-edit-form{
+        border: none !important;
+        background: none !important;
+        .b-shadow(none);
+        .panel > table{
+            border-bottom: none !important;
+            padding-bottom: 10px;
+        }
+        .files{
+            border-bottom: none;
+        }
+        .view-toolbar-container{
+            border-top:1px solid #ccc
+        }
+    }
+    */
+
 }
 .UserSocialItemsForPortletView .wide.form {
-  border: none !important;
-  background: none !important;
+  border: none;
+  border-bottom: 1px solid #fff;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-}
-.UserSocialItemsForPortletView #social-item-inline-edit-form {
-  border: none !important;
-  background: none !important;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
-}
-.UserSocialItemsForPortletView #social-item-inline-edit-form .panel > table {
-  border-bottom: none !important;
-  padding-bottom: 10px;
-}
-.UserSocialItemsForPortletView #social-item-inline-edit-form .files {
-  border-bottom: none;
-}
-.UserSocialItemsForPortletView #social-item-inline-edit-form .view-toolbar-container {
-  border-top: 1px solid #cccccc;
 }
 #UserDetailsView .details-table {
   zoom: 1;
@@ -10823,14 +10827,6 @@ a.close-ModalGameNotification.simple-select {
   width: 70%;
   float: left;
 }
-.single-coloumn-details-view .panel td,
-#ConversationDetailsView .panel td,
-#ConversationDetailsAndRelationsView .panel td,
-.single-coloumn-details-view .panel th,
-#ConversationDetailsView .panel th,
-#ConversationDetailsAndRelationsView .panel th {
-  padding-bottom: 10px !important;
-}
 .single-coloumn-details-view .panel > table,
 #ConversationDetailsView .panel > table,
 #ConversationDetailsAndRelationsView .panel > table {
@@ -10967,10 +10963,10 @@ a.close-ModalGameNotification.simple-select {
   padding-left: 120px;
 }
 #CommentInlineEditForModelView td {
-  padding-right: 0 !important;
+  padding: 0 0 0 10px !important;
 }
 #CommentInlineEditForModelView h2 {
-  margin-left: 10px;
+  margin: 0 0 13px 10px;
 }
 #CommentInlineEditForModelView .wide.form {
   padding: 0;
@@ -10981,6 +10977,7 @@ a.close-ModalGameNotification.simple-select {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  margin-bottom: 0;
 }
 #CommentInlineEditForModelView form {
   padding: 0;
@@ -10991,19 +10988,6 @@ a.close-ModalGameNotification.simple-select {
 }
 #CommentInlineEditForModelView table {
   margin-bottom: 0;
-}
-#CommentInlineEditForModelView .form-toolbar {
-  border-top: none;
-  padding-top: 0;
-  text-align: right;
-  margin-top: 15px;
-}
-#CommentInlineEditForModelView .form-toolbar a {
-  color: #fff !important;
-  margin-right: 0;
-}
-#CommentInlineEditForModelView .files {
-  float: left;
 }
 .attachments {
   margin-top: 5px;
@@ -11120,17 +11104,22 @@ a.user-link {
 }
 .SocialItemsListView .wide.form,
 #AllSocialItemsForPortletView .wide.form {
-  margin-bottom: 5px;
+  margin-bottom: 0;
   border: none;
-  border-bottom: 1px solid #fff !important;
+  border-bottom: 1px solid #fff;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
 }
-.SocialItemsListView .wide.form form,
-#AllSocialItemsForPortletView .wide.form form {
+.SocialItemsListView .comment-content,
+#AllSocialItemsForPortletView .comment-content {
+  padding-right: 15px;
+}
+#comment-inline-edit-form,
+#social-item-inline-edit-form {
+  padding-top: 15px;
   border: none;
   border-bottom: 1px solid #ccc;
   background: none !important;
@@ -11140,33 +11129,49 @@ a.user-link {
   -ms-box-shadow: none;
   box-shadow: none;
 }
-.SocialItemsListView .wide.form table.files,
-#AllSocialItemsForPortletView .wide.form table.files {
+#comment-inline-edit-form td:first-child,
+#social-item-inline-edit-form td:first-child {
+  padding-left: 0;
+}
+#comment-inline-edit-form .file-upload-box,
+#social-item-inline-edit-form .file-upload-box {
+  padding: 11px 0 10px 0;
+  display: none;
+  float: left;
+}
+#comment-inline-edit-form .form-toolbar,
+#social-item-inline-edit-form .form-toolbar {
+  text-align: right;
+  border-top: none;
+  padding-top: 0;
+  margin-top: 2px;
+}
+#comment-inline-edit-form .form-toolbar a,
+#social-item-inline-edit-form .form-toolbar a {
+  color: #fff !important;
+  margin-right: 0;
+}
+#comment-inline-edit-form table.files,
+#social-item-inline-edit-form table.files {
   border-bottom: none;
   float: left;
   margin-top: 5px;
 }
-.SocialItemsListView .wide.form .panel > table,
-#AllSocialItemsForPortletView .wide.form .panel > table {
+#comment-inline-edit-form .panel > table,
+#social-item-inline-edit-form .panel > table {
   border: none;
 }
-.SocialItemsListView .form-toolbar,
-#AllSocialItemsForPortletView .form-toolbar {
-  text-align: right;
-  border-top: none;
-  padding-top: 0;
+#comment-inline-edit-form {
+  border-bottom: none;
 }
-.SocialItemsListView .form-toolbar a,
-#AllSocialItemsForPortletView .form-toolbar a {
-  color: #fff !important;
-  margin-right: 0;
+#comment-inline-edit-form .file-upload-box {
+  padding: 0;
 }
-.SocialItemsListView .comment-content,
-#AllSocialItemsForPortletView .comment-content {
-  padding-right: 15px;
+.SocialItemsListView .items {
+  width: 100%;
 }
-.SocialItemsListView .items td {
-  padding-left: 0 !important;
+.SocialItemsListView .items > tbody > tr > td {
+  padding: 0 !important;
 }
 .delete-social-item {
   margin-left: 5px;
@@ -11181,28 +11186,34 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   content: "_";
 }
-#SocialItemInlineEditView .form-toolbar {
-  text-align: right;
+.social-item {
+  border-bottom: 1px solid #fff;
+  padding: 15px 0;
 }
-#SocialItemInlineEditView .form-toolbar a {
-  color: #fff !important;
-  margin-right: 0;
+.social-item .wide.form {
+  border: none !important;
+  background: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
 }
-#SocialItemInlineEditView #social-item-inline-edit-form {
-  padding-top: 15px;
+.social-item .wide.form form {
+  border: none !important;
+  background: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding-bottom: 0;
 }
-#SocialItemInlineEditView #social-item-inline-edit-form td:first-child {
-  padding-left: 0;
+.social-item .wide.form form td {
+  padding: 5px 0 10px 65px !important;
 }
-#SocialItemInlineEditView .file-upload-box {
-  padding-top: 15px;
-  display: none;
-  float: left;
-  padding-bottom: 10px;
-}
-.social-item form td {
-  padding-left: 65px !important;
-  padding-top: 0 !important;
+.social-item textarea {
+  width: 100%;
 }
 #ArchivedEmailMatchingListView .items td {
   padding-right: 10px;

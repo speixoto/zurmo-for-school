@@ -1361,6 +1361,7 @@ tr.even{
 
 .empty{
     display:block;
+    font-size: 11px;
 }
 
 td.empty{
@@ -1403,6 +1404,11 @@ td.empty{
     }
     textarea, select.multiple {
         height:auto;
+    }
+    textarea{
+        line-height: 135%;
+        text-indent: 0;
+        padding: 4px;
     }
     select.multiple {
         padding: 4px 4px 4px 6px;
@@ -1931,6 +1937,7 @@ div.wide.form{
 }
 
 .juiportlet-widget-content .cgrid-view{
+    width: 100%;
     .b-shadow(none);
     .clearfix();
 }
@@ -1976,6 +1983,7 @@ div.wide.form{
     border-bottom: none;
     position: relative;
     #gradient > .vertical( #f5f5f5, #ebebeb );
+    font-size: 11px;
 }
 
 .search-form-tools{
@@ -1984,6 +1992,7 @@ div.wide.form{
     left:265px;
     line-height:25px;
     color:@themeColor;
+    font-size: 11px;
     input[type="submit"]{
         .zButton();
     }
@@ -2035,6 +2044,7 @@ div.wide.form{
         top:35px;
         padding:20px 20px 20px 20px;
         .flyout();
+        font-size: 11px;
         input, select{
             position: relative;
             z-index: 5000;
@@ -2594,9 +2604,9 @@ div.wide.form{
         vertical-align:top;
     }
     td, th{
-        padding:0 5px 0 10px !important;
+        padding:5px 5px 0 10px; //was !important
         font-weight:600;
-    	padding-top:15px !important;
+    	//padding-top:15px !important;
     	vertical-align: top !important;
     }
     p{
@@ -3235,7 +3245,7 @@ div.hasHalfs{
             border-top:none;
         }
         div{
-            line-height: 150%;
+            //line-height: 150%;
             //float:left;
             //display:block;
         }
@@ -3349,8 +3359,7 @@ div.hasHalfs{
         list-style: none;
     }
     ul.endless-list-pager{
-        border: 1px solid #DFDFDF;
-        border-top:none;
+        border-top: 1px solid #DFDFDF;
         list-style:none;
         li{
             float:none;
