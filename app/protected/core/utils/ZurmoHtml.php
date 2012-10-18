@@ -30,6 +30,16 @@
     class ZurmoHtml extends CHtml
     {
         /**
+         * Override CHtml::encode() to avoid double encode,
+         * because data are alredy encoded, when stored into database(using HtmlPurifier)
+         * @see CHtml::encode()
+         */
+        public static function encode($text)
+        {
+            return htmlspecialchars($text, ENT_QUOTES, Yii::app()->charset, false);
+        }
+
+        /**
          * Override to handle relation model error summary information.  This information needs to be parsed properly
          * otherwise it will show up as 'Array' for the error text.
          * @see CHtml::errorSummary()
