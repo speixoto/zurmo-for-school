@@ -4150,17 +4150,21 @@ div.wide.form a {
   float: right;
   margin-right: 25px;
   margin-top: 6px;
+  position: relative;
 }
 .post-to-profile span {
-  margin-top: -2px;
+  float: right;
   position: relative;
-  float: left;
+  top: 0;
+  right: 0;
+  margin-top: -1px !important;
 }
 .post-to-profile label.hasCheckBox {
+  float: right !important;
   position: relative;
-  top: -6px;
+  top: -5px;
   margin-left: 10px;
-  margin-right: 5px !important;
+  margin-right: 30px !important;
 }
 /*=Sticky search*/
 .BreadCrumbView {
