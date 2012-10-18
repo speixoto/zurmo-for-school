@@ -37,7 +37,7 @@
          * @param string $viewModuleClassName
          * @return string content
          */
-        public static function renderItemAndCommentsContent(SocialItem $model, $redirectUrl)
+        public static function renderItemAndCommentsContent(SocialItem $model, $redirectUrl, $renderToUserString)
         {
             assert('is_string($redirectUrl) || $redirectUrl == null');
             $userUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $model->owner->id));
@@ -45,10 +45,23 @@
             $avatarImage = $model->owner->getAvatarImage(50);
             $content .= '<div class="comment model-details-summary clearfix">';
             $content .= '<span class="user-details">' . ZurmoHtml::link($avatarImage, $userUrl);
-            //$content .= ZurmoHtml::tag('strong', array(), ZurmoHtml::link(strval($model->owner), $userUrl) );
             $content .= '</span>';
             $userLink = ZurmoHtml::link(strval($model->owner), $userUrl, array('class' => 'user-link'));
-            $content .= '<div class="comment-content"><p>' . $userLink . ': ' . self::renderModelDescription($model) . '</p></div>';
+            $content .= '<div class="comment-content"><p>';
+
+            if($model->toUser->id > 0 && $renderToUserString)
+            {
+                $toUserLink = ZurmoHtml::link(strval($model->toUser), $userUrl, array('class' => 'user-link'));
+                $content   .= Yii::t('Default', '{postedFromUser} to {postedToUser}',
+                                                array('{postedFromUser}' => $userLink,
+                                                      '{postedToUser}'   => $toUserLink));
+            }
+            else
+            {
+                $content   .= $userLink;
+            }
+            $content .= '</p>';
+            $content .= self::renderModelDescription($model) . '</div>';
             $content .= self::renderAfterDescriptionContent($model);
             $content .= self::renderItemFileContent($model);
 
