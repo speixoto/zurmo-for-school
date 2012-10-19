@@ -83,15 +83,32 @@
          */
         protected function renderLabel()
         {
+            $defaultTooltip = $this->resolveAndRenderPolicyDefaultStringContent();
+            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel()) . $defaultTooltip;
+        }
+
+        /**
+         * Generate a tooltip to show the user the default value of a policy.
+         * If no default value is set, the function returns null.
+         * @return String The HTML code for the tooltip.
+         */
+        protected function resolveAndRenderPolicyDefaultStringContent() {
             $delimiter = FormModelUtil::DELIMITER;
             list($moduleName, $policyName) = explode($delimiter, $this->attribute);
             $policyDefault = $moduleName::getPolicyDefault($this->getFormattedAttributeLabel());
-            $title       = Yii::t('Default', 'The default value for this policy is ') . $policyDefault;
-            $content     = '<span id="policy-default-tooltip-' . $policyName . '" class="tooltip" title="' . $title . '">';
-            $content    .= '?</span>';
-            $qtip = new ZurmoTip();
-            $qtip->addQTip("#policy-default-tooltip-" . $policyName);
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel()) . $content;
+            if (isset($policyDefault)) 
+            {
+                $title    = Yii::t('Default', 'The default value for this policy is ') . $policyDefault;
+                $content  = '<span id="policy-default-tooltip-' . $policyName . '" class="tooltip" title="' . $title . '">';
+                $content .= '?</span>';
+                $qtip = new ZurmoTip();
+                $qtip->addQTip("#policy-default-tooltip-" . $policyName);
+                return $content;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         protected function getNameForHelperInput()
