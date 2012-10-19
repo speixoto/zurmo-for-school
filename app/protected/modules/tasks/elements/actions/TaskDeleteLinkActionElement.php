@@ -29,7 +29,7 @@
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Yii::t('Default',
-                                             'Are you sure you want to remove this TasksModuleSingularLowerCaseLabel?',
+                                             'Are you sure you want to delete this TasksModuleSingularLowerCaseLabel?',
                                              LabelUtil::getTranslationParamsForAllModules());
             return $htmlOptions;
         }

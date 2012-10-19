@@ -65,7 +65,7 @@
 
         protected static function renderHelpSpan()
         {
-            $title       = Yii::t('Default', 'Post this note to your profile when you have something important to tell your colleagues');
+            $title       = Yii::t('Default', 'Post this note to your profile to share with your colleagues');
             $content    = '<span id="post-to-profile-note-tooltip" class="tooltip" title="' . $title . '">';
             $content    .= '?</span>';
             $qtip = new ZurmoTip();
