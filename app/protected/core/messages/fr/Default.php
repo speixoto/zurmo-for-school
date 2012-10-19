@@ -69,7 +69,7 @@
             => 'par',
         'Cancel'
             => 'Annuler',
-        'Cancel changes'
+        'Cancel Changes'
             => 'Annuler',
         'Cell Settings'
             => 'Paramètres des cellules',
@@ -204,7 +204,7 @@
         'Modified Date Time'
             => 'Dernière modification',
         'Module Name'
-            => 'Nom du Module',
+            => 'Etiquette de l\'onglet',
         'More Details'
             => 'Plus de détails',
         'More Options'

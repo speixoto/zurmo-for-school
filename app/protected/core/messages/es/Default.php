@@ -69,7 +69,7 @@
             => 'de',
         'Cancel'
             => 'Cancelar',
-        'Cancel changes'
+        'Cancel Changes'
             => 'Cancelar cambios',
         'Cell Settings'
             => 'Configuración de las células',

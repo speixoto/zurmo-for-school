@@ -29,7 +29,7 @@
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Yii::t('Default',
-                                             'Are you sure you want to remove this Conversation?');
+                                             'Are you sure you want to delete this Conversation?');
             return $htmlOptions;
         }
     }

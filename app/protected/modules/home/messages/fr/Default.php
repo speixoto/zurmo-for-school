@@ -42,7 +42,7 @@
         'Add Portlet'
             => 'Ajouter un portlet',
         'Are you sure want to delete this dashboard?'
-            => 'Êtes-vous sûr de vouloir supprimer ce tableau de bord?',
+            => 'Voulez vous vraiment supprimer ce tableau de bord?',
         'Create Dashboard'
             => 'Ajouter un tableau de bord',
         'Create Dashboards'

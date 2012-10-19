@@ -125,9 +125,9 @@
             => 'sono richiesti.',
         'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
             => 'Pronti? Attenti! Via! Vedete il Leaderboard per vedere como paragonate con i vostri colleghi.',
-        'Are you sure you want to remove this group?'
+        'Are you sure you want to delete this group?'
             => 'Siete sicuro di voler eliminare questo gruppo?',
-        'Are you sure you want to remove this role?'
+        'Are you sure you want to delete this role?'
             => 'Siete sicuro di voler eliminare questo ruolo?',
         'Attachment'
             => 'Allegato',

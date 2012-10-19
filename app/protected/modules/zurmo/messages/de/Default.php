@@ -125,9 +125,9 @@
             => 'Sind Erforderlich.',
         'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
             => 'Bist du Nummer eins{spaceAndFirstName}? Vergleiche dich mit deinen Kollegen auf dem Leaderboard.',
-        'Are you sure you want to remove this group?'
+        'Are you sure you want to delete this group?'
             => 'Sind Sie sicher, dass Sie dieser Gruppe entfernen möchten?',
-        'Are you sure you want to remove this role?'
+        'Are you sure you want to delete this role?'
             => 'Sind Sie sicher, dass Sie diese Rolle entfernen möchten?',
         'Attachment'
             => 'Anhang',
