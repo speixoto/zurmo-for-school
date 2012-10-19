@@ -69,6 +69,8 @@
             => 'Von',
         'Cancel'
             => 'Abbrechen',
+        'Cancel changes'
+            => 'Änderungen stornieren',
         'Cell Settings'
             => 'Zelle Einstellungen',
         'Celsius'

@@ -25,36 +25,13 @@
      ********************************************************************************/
 
     /**
-     * View that renders a list of roles in the form of a
-     * tree or noded list view.
+     * View that renders conversations module breadcrumb content
      */
-    class RolesTreeListView extends SecurityTreeListView
+    class ConversationBreadCrumbView extends BreadCrumbView
     {
-        protected function renderContent()
+        protected function getHomeLinkLabel()
         {
-            $content  = $this->renderViewToolBar(false); //why do we need it if its empty?
-            $content .= '<div>';
-            $content .= '<h1>' . Yii::t('Default', 'Roles') . '</h1>';
-            $content .= $this->renderTreeMenu('role', 'roles', Yii::t('Default', 'Role'));
-            $content .= '</div>';
-            return $content;
-        }
-
-        protected function renderTreeListView($data)
-        {
-            assert('is_array($data)');
-            $content  = '<table class="configuration-list">';
-            $content .= '<colgroup>';
-            $content .= '<col style="width:50%" />';
-            $content .= '<col style="width:25%" />';
-            $content .= '<col style="width:25%" />';
-            $content .= '</colgroup>';
-            $content .= '<tbody>';
-            $content .= '<tr><th>' . Yii::t('Default', 'Name') . '</th><th>' . Yii::t('Default', 'Users') . '</th><th></th></tr>';
-            static::renderTreeListViewNode($content, $data, 0);
-            $content .= '</tbody>';
-            $content .= '</table>';
-            return $content;
+            return Yii::t('Default', 'Conversations');
         }
     }
 ?>

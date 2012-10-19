@@ -69,6 +69,8 @@
             => 'da',
         'Cancel'
             => 'Annulla',
+        'Cancel changes'
+            => 'Annulla le modifiche',
         'Cell Settings'
             => 'Configurazione delle celle',
         'Celsius'
