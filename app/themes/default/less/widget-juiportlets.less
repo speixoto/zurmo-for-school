@@ -156,7 +156,7 @@ a.remove {
 	padding:10px 15px 0 15px;
 }
 
-.juiportlet-widget-content table.items{
+.juiportlet-widget-content .items{
 	//width:100%;
 	border:none !important;
 	thead > tr{
@@ -164,6 +164,17 @@ a.remove {
 			border-top:none !important;
 		}
     }
+    /*td:first-child{
+        div{
+            font-size:11px;
+            margin-top:3px;
+            &:first-child{
+                font-size: 12px;
+                font-weight: bold;
+                margin-top: 0;
+            }
+        }    
+    }*/
 }
 
 .juiportlet-widget-content table.items tbody tr:last-child td{
@@ -181,22 +192,34 @@ a.remove {
 }
 
 .juiportlet-widget.OpportunitiesForAccountRelatedListView{
-	h3{
-		text-indent:30px;
-		&:before{
-			.juiportlet-header-icon();
-			content: '9';
-		}
+	h3:before{
+		content: '9';
 	}
 }
 
 .juiportlet-widget.ContactsForAccountRelatedListView{
-	h3{
-		text-indent:30px;
-		&:before{
-			.juiportlet-header-icon();
-			content: 'e';
-		}
+	h3:before{
+		content: 'e';
 	}
 }
 
+.juiportlet-widget.OpportunitiesForAccountRelatedListView,
+.juiportlet-widget.ContactsForAccountRelatedListView{
+    h3{
+		text-indent:30px;
+		&:before{
+			.juiportlet-header-icon();
+		}
+	}
+    td:first-child{
+        div{
+            font-size:11px;
+            margin-top:3px;
+            &:first-child{
+                font-size: 12px;
+                font-weight: bold;
+                margin-top: 0;
+            }
+        }    
+    }
+}

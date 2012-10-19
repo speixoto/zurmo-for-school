@@ -120,32 +120,18 @@
         padding-left:50px;
         line-height: 140%;
     }
-    &:hover{
-        .delete-comment{
-            visibility:visible !important;
-            a{
-                color:@themeColor !important;
-            }
-        }
-        .delete-social-item{
-            visibility:visible !important;
-            a{
-                color:@themeColor !important;
-            }
-        }
-    }
     &.unread{
         font-weight:bold;
     }
     .delete-comment{
-        visibility:hidden;
-        margin-left: 5px;
+        color:@themeColor;
+        font-size: 11px;
         a{
-            margin-left:4px;
-        }
-        &:before{
-            .symbly(18px);
-            content:"_";
+            color:@themeColor;
+            .opacity(25);
+            &:hover{
+                .opacity(100);
+            }
         }
     }
 }
