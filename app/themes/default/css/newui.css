@@ -4160,7 +4160,7 @@ div.wide.form a {
 .post-to-profile {
   float: right;
   margin-right: 25px;
-  margin-top: 6px;
+  margin-top: 5px;
   position: relative;
 }
 .post-to-profile span {
@@ -11045,6 +11045,9 @@ a.close-ModalGameNotification.simple-select {
 .missionStatusChangeArea a {
   float: none;
   color: #fff !important;
+}
+.actions-column .missionStatusChangeArea {
+  margin-top: 0;
 }
 .comment-content .missionStatusChangeArea a:first-child {
   margin-left: 15px;
