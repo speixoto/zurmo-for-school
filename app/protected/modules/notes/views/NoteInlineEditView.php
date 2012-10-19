@@ -118,9 +118,13 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            if ($element->getAttribute() == 'description' || $element instanceOf ActivityItemsElement)
+            if ($element->getAttribute() == 'description')
             {
                 $element->editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
+            }
+            elseif ($element instanceOf ActivityItemsElement)
+            {
+                $element->editableTemplate = '{content}{error}';
             }
             elseif ($element instanceOf DerivedExplicitReadWriteModelPermissionsElement)
             {

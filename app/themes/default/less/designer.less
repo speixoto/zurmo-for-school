@@ -1,3 +1,35 @@
+.add-custom-field{
+    //.clearfix();
+    > div{
+        //width: 100%;
+        //float: left;
+        padding:15px 15px 15px 15px;
+        position:relative;
+    }
+    .hasDropDown{
+        //margin-right: 130px;
+        width: 86%;
+        margin-right: 15px;
+        float: left;
+    }
+    .configure-custom-field-button{
+        //float: left;
+        //width: 130px;
+        //margin-left: -130px;
+        position: relative;
+        top: 1px;
+        .zButton();
+        &:before{
+            content: "n";
+            .symbly(16px);
+            margin-right:5px;
+            position:relative;
+            top:0px;
+        }
+    }
+}
+
+
 .lead-conversion-radiobutton{
 	display:block;
 	margin-bottom:10px;

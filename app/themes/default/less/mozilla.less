@@ -6,14 +6,16 @@
 	.form{
 	    input[type="text"],
 	    input[type="password"],
-	    select.multiple,
+	    //select.multiple,
 	    textarea{
 	        height:26px;
 	    }
 	}
-	
 	input[type="submit"],
 	input[type="button"]{
 		height:26px;
 	}
+    input::-moz-focus-inner {
+        border: 0;
+    }
 }

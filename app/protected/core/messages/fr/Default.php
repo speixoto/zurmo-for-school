@@ -69,6 +69,8 @@
             => 'par',
         'Cancel'
             => 'Annuler',
+        'Cancel changes'
+            => 'Annuler',
         'Cell Settings'
             => 'Paramètres des cellules',
         'Celsius'
