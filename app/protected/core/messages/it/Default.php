@@ -69,7 +69,7 @@
             => 'da',
         'Cancel'
             => 'Annulla',
-        'Cancel changes'
+        'Cancel Changes'
             => 'Annulla le modifiche',
         'Cell Settings'
             => 'Configurazione delle celle',

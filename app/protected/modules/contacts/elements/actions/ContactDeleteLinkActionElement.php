@@ -29,7 +29,7 @@
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Yii::t('Default',
-                                             'Are you sure you want to remove this ContactsModuleSingularLowerCaseLabel?',
+                                             'Are you sure you want to delete this ContactsModuleSingularLowerCaseLabel?',
                                              LabelUtil::getTranslationParamsForAllModules());
             return $htmlOptions;
         }
