@@ -125,10 +125,10 @@
             => 'sont obligatoires.',
         'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
             => 'À vos marques! Prêt? Feu, partez!  Voyez comment vous concurrencez par rapport à vos collègues su le Leaderboard.',
-        'Are you sure you want to remove this group?'
-            => 'Êtes-vous sûr(e) de vouloir supprimer ce groupe?',
-        'Are you sure you want to remove this role?'
-            => 'Êtes-vous sûr(e) de vouloir supprimer ce rôle?',
+        'Are you sure you want to delete this group?'
+            => 'Voulez vous vraiment supprimer ce groupe?',
+        'Are you sure you want to delete this role?'
+            => 'Voulez vous vraiment supprimer ce rôle?',
         'Attachment'
             => 'Fichier',
         'Attachments'

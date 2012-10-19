@@ -97,7 +97,7 @@
             }
             else
             {
-                $content = ZurmoHtml::link(Yii::t('Default', 'Skip posting, just continue'), '#',
+                $content = ZurmoHtml::link(Yii::t('Default', 'Skip'), '#',
                                  array('class'   => 'close-ModalGameNotification simple-select',
                                        'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
                 $content .= static::renderPostToProfileLinkContent($notification, $index);

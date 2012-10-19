@@ -69,7 +69,7 @@
             => 'Von',
         'Cancel'
             => 'Abbrechen',
-        'Cancel changes'
+        'Cancel Changes'
             => 'Änderungen stornieren',
         'Cell Settings'
             => 'Zelle Einstellungen',

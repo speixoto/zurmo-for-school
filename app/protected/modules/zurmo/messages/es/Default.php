@@ -125,9 +125,9 @@
             => 'son obligatorios.',
         'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
             => '¿Es el número uno {spaceAndFirstName}? Compárese con sus colegas en la tabla clasificatoria.',
-        'Are you sure you want to remove this group?'
+        'Are you sure you want to delete this group?'
             => '¿Está seguro que desea eliminar este grupo?',
-        'Are you sure you want to remove this role?'
+        'Are you sure you want to delete this role?'
             => '¿Está seguro que desea eliminar este role?',
         'Attachment'
             => 'Adjunto',
