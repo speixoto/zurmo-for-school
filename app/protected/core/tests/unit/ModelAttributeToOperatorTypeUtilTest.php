@@ -47,18 +47,18 @@
             $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'booleanStandard'));
             $this->assertEquals('contains',   ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'urlStandard'));
             //Test all custom fields
-            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'checkBox'));
-            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'currency'));
-            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'date'));
-            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'dateTime'));
-            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'decimal'));
-            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'dropDown'));
-            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'integer'));
-            $this->assertEquals('startsWith', ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'phone'));
-            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'radio'));
-            $this->assertEquals('startsWith', ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'text'));
-            $this->assertEquals('contains',   ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'textArea'));
-            $this->assertEquals('contains',   ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'url'));
+            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'checkBoxCstm'));
+            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'currencyCstm'));
+            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'dateCstm'));
+            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'dateTimeCstm'));
+            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'decimalCstm'));
+            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'dropDownCstm'));
+            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'integerCstm'));
+            $this->assertEquals('startsWith', ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'phoneCstm'));
+            $this->assertEquals('equals',     ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'radioCstm'));
+            $this->assertEquals('startsWith', ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'textCstm'));
+            $this->assertEquals('contains',   ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'textAreaCstm'));
+            $this->assertEquals('contains',   ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'urlCstm'));
         }
     }
 ?>

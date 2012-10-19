@@ -47,18 +47,18 @@
             $this->assertEquals('CheckBox', ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'booleanStandard'));
             $this->assertEquals('Url',      ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'urlStandard'));
             //Test all custom fields
-            $this->assertEquals('CheckBox', ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'checkBox'));
-            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'currency'));
-            $this->assertEquals('Date',     ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'date'));
-            $this->assertEquals('DateTime', ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'dateTime'));
-            $this->assertEquals('Decimal',  ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'decimal'));
-            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'dropDown'));
-            $this->assertEquals('Integer',  ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'integer'));
-            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'phone'));
-            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'radio'));
-            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'text'));
-            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'textArea'));
-            $this->assertEquals('Url',      ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'url'));
+            $this->assertEquals('CheckBox', ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'checkBoxCstm'));
+            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'currencyCstm'));
+            $this->assertEquals('Date',     ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'dateCstm'));
+            $this->assertEquals('DateTime', ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'dateTimeCstm'));
+            $this->assertEquals('Decimal',  ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'decimalCstm'));
+            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'dropDownCstm'));
+            $this->assertEquals('Integer',  ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'integerCstm'));
+            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'phoneCstm'));
+            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'radioCstm'));
+            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'textCstm'));
+            $this->assertEquals(null,       ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'textAreaCstm'));
+            $this->assertEquals('Url',      ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($model, 'urlCstm'));
         }
     }
 ?>
