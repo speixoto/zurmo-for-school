@@ -3244,11 +3244,6 @@ div.hasHalfs{
         &:first-child{
             border-top:none;
         }
-        div{
-            //line-height: 150%;
-            //float:left;
-            //display:block;
-        }
         div.button-column{
             float:left;
             display:block;
@@ -3272,6 +3267,11 @@ div.hasHalfs{
             margin-top:2px;
             float:left;
         }
+    }
+    .email,
+    .phone{
+        font-size:11px;
+        margin-top:5px;
     }
 }
 
@@ -3525,13 +3525,14 @@ div.hasHalfs{
     }
     .latest-activity-toolbar,
     .filter-portlet-model-bar{
+        font-size: 11px;
         padding-left:8px;
         label{
             cursor:pointer;
             border:none;
             background:none;
             font-size:11px !important;
-            padding:4px;
+            padding:3px;
             margin:0 3px;
             color:@themeColor;
             &:hover{
@@ -3589,6 +3590,9 @@ div.hasHalfs{
     .activity-item{
         padding-left:40px;
         position: relative;
+        span{
+            line-height: 140%;
+        }
     }
     .items em{
         display:inline-block;
@@ -3627,6 +3631,12 @@ div.hasHalfs{
         content: "Q";
         .latest-activity-icon();
     }
+}
+
+.activity-date{
+    font-size:11px;
+    margin-bottom:3px;
+    display: block;
 }
 
 #activities-rollup-tooltip{

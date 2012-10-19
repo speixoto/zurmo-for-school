@@ -4380,6 +4380,11 @@ div.hasHalfs .twoThirds {
   margin-top: 2px;
   float: left;
 }
+.juiportlet-widget .email,
+.juiportlet-widget .phone {
+  font-size: 11px;
+  margin-top: 5px;
+}
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
 .juiportlet-widget.ContactsForAccountRelatedListView div.button-column {
   padding-top: 4px;
@@ -4734,6 +4739,7 @@ div.hasHalfs .twoThirds {
 .LatestActivitiesView .latest-activity-toolbar,
 .LatestActivitiesListView .filter-portlet-model-bar,
 .LatestActivitiesView .filter-portlet-model-bar {
+  font-size: 11px;
   padding-left: 8px;
 }
 .LatestActivitiesListView .latest-activity-toolbar label,
@@ -4744,7 +4750,7 @@ div.hasHalfs .twoThirds {
   border: none;
   background: none;
   font-size: 11px !important;
-  padding: 4px;
+  padding: 3px;
   margin: 0 3px;
   color: #262877;
 }
@@ -4843,6 +4849,10 @@ div.hasHalfs .twoThirds {
   padding-left: 40px;
   position: relative;
 }
+.LatestActivitiesListView .activity-item span,
+.LatestActivitiesView .activity-item span {
+  line-height: 140%;
+}
 .LatestActivitiesListView .items em,
 .LatestActivitiesView .items em {
   display: inline-block;
@@ -4923,6 +4933,11 @@ div.hasHalfs .twoThirds {
   font-size: 42px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
+}
+.activity-date {
+  font-size: 11px;
+  margin-bottom: 3px;
+  display: block;
 }
 #activities-rollup-tooltip {
   position: relative;
@@ -7365,9 +7380,8 @@ table.configuration-list tr td:last-child a:before {
   margin-bottom: 0;
 }
 #MyMissionsForPortletView .filter-portlet-model-bar {
-  padding-left: 8px;
   border-bottom: 1px solid #DFDFDF;
-  padding: 10px 15px;
+  padding: 10px 15px 10px 5px;
   background-color: #ededed;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
@@ -7389,7 +7403,7 @@ table.configuration-list tr td:last-child a:before {
   border: none;
   background: none;
   font-size: 11px !important;
-  padding: 4px;
+  padding: 3px;
   margin: 0 3px;
   color: #262877;
 }
