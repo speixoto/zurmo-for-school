@@ -5,24 +5,7 @@
 
 /*Imports*/
 @import 'mixins.less';
-@import 'widget-juiportlets.less';
-@import 'install.less';
-@import 'configuration.less';
-@import 'dashboard-portlets.less';
-@import 'file-upload.less';
-@import 'form.less';
-@import 'datepicker.less';
-@import 'token-input.less';
-@import 'notifications.less';
-@import 'designer.less';
-@import 'mozilla.less';
-@import 'qtip.less';
-@import 'gamification.less';
-@import 'welcome.less';
-@import 'tablet.less';
-@import 'thread-view.less';
-@import 'email.less';
-@import 'media-queries.less';
+
 
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
@@ -46,65 +29,6 @@
 @themeColor : #262877;
 @themeColor2 : #7BB730;
 
-/*=Functions*/
-.t-shadow(@style){
-    -webkit-text-shadow: @style;
-       -moz-text-shadow: @style;
-         -o-text-shadow: @style;
-        -ms-text-shadow: @style;
-            text-shadow: @style;
-}
-
-.b-shadow(@style){
-    -webkit-box-shadow: @style;
-       -moz-box-shadow: @style;
-         -o-box-shadow: @style;
-        -ms-box-shadow: @style;
-            box-shadow: @style;
-}
-
-.text-overflow(){
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    -webkit-text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.radius(@style){
-    -webkit-border-radius:@style;
-    -moz-border-radius:@style;
-    -ms-border-radius:@style;
-    -o-border-radius:@style;
-    border-radius:@style;
-}
-
-.portlet-gradient(){
-    .b-shadow(inset 0 0 0 2px #ffffff );
-    #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-}
-
-.box-sizing(){
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.animateAll(@time: 0.5s){
-    -webkit-transition: all @time ease-out;
-       -moz-transition: all @time ease-out;
-         -o-transition: all @time ease-out;
-        -ms-transition: all @time ease-out;
-            transition: all @time ease-out;
-}
-
-.debug(){
-    background-color:rgba(255, 0, 0, 0.5);
-}
-
-.hide(){
-    display:none;
-}
 
 .strong{
     font-weight: bold;
@@ -1415,7 +1339,7 @@ tr.even{
 
 .juiportlet-widget table.items thead tr th:first-child,
 .juiportlet-widget table.items tbody tr td:first-child{
-    padding-left:15px;
+    //padding-left:15px;
 }
 
 .pencil{
@@ -1437,6 +1361,7 @@ tr.even{
 
 .empty{
     display:block;
+    font-size: 11px;
 }
 
 td.empty{
@@ -1479,6 +1404,17 @@ td.empty{
     }
     textarea, select.multiple {
         height:auto;
+    }
+    textarea{
+        line-height: 135%;
+        text-indent: 0;
+        padding: 4px;
+    }
+    select.multiple {
+        padding: 4px 4px 4px 6px;
+        option{
+            margin-bottom: 2px;
+        }
     }
     select[disabled="disabled"],
     input[type="text"][disabled],
@@ -2001,6 +1937,7 @@ div.wide.form{
 }
 
 .juiportlet-widget-content .cgrid-view{
+    width: 100%;
     .b-shadow(none);
     .clearfix();
 }
@@ -2046,6 +1983,7 @@ div.wide.form{
     border-bottom: none;
     position: relative;
     #gradient > .vertical( #f5f5f5, #ebebeb );
+    font-size: 11px;
 }
 
 .search-form-tools{
@@ -2054,6 +1992,7 @@ div.wide.form{
     left:265px;
     line-height:25px;
     color:@themeColor;
+    font-size: 11px;
     input[type="submit"]{
         .zButton();
     }
@@ -2105,6 +2044,7 @@ div.wide.form{
         top:35px;
         padding:20px 20px 20px 20px;
         .flyout();
+        font-size: 11px;
         input, select{
             position: relative;
             z-index: 5000;
@@ -2664,9 +2604,9 @@ div.wide.form{
         vertical-align:top;
     }
     td, th{
-        padding:0 5px 0 10px !important;
+        padding:5px 5px 0 10px; //was !important
         font-weight:600;
-    	padding-top:15px !important;
+    	//padding-top:15px !important;
     	vertical-align: top !important;
     }
     p{
@@ -3152,15 +3092,21 @@ div.wide.form{
 .post-to-profile{
     float: right;
     margin-right:25px;
-    margin-top:6px;
+    margin-top:5px;
+    position: relative;
     span{
-        margin-left:10px;
-        margin-top: -3px;
+        float: right;
         position: relative;
-        right: 0;
+        top:0;
+        right:0;
+        margin-top: -1px !important;
     }
     label.hasCheckBox{
-        margin-top:-6px !important;
+        float: right !important;
+        position: relative;
+        top: -5px;
+        margin-left: 10px;
+        margin-right: 30px !important;
     }
 }
 
@@ -3298,11 +3244,6 @@ div.hasHalfs{
         &:first-child{
             border-top:none;
         }
-        div{
-            line-height: 150%;
-            //float:left;
-            //display:block;
-        }
         div.button-column{
             float:left;
             display:block;
@@ -3326,6 +3267,11 @@ div.hasHalfs{
             margin-top:2px;
             float:left;
         }
+    }
+    .email,
+    .phone{
+        font-size:11px;
+        margin-top:5px;
     }
 }
 
@@ -3413,8 +3359,7 @@ div.hasHalfs{
         list-style: none;
     }
     ul.endless-list-pager{
-        border: 1px solid #DFDFDF;
-        border-top:none;
+        border-top: 1px solid #DFDFDF;
         list-style:none;
         li{
             float:none;
@@ -3580,13 +3525,14 @@ div.hasHalfs{
     }
     .latest-activity-toolbar,
     .filter-portlet-model-bar{
+        font-size: 11px;
         padding-left:8px;
         label{
             cursor:pointer;
             border:none;
             background:none;
             font-size:11px !important;
-            padding:4px;
+            padding:3px;
             margin:0 3px;
             color:@themeColor;
             &:hover{
@@ -3644,6 +3590,9 @@ div.hasHalfs{
     .activity-item{
         padding-left:40px;
         position: relative;
+        span{
+            line-height: 140%;
+        }
     }
     .items em{
         display:inline-block;
@@ -3682,6 +3631,12 @@ div.hasHalfs{
         content: "Q";
         .latest-activity-icon();
     }
+}
+
+.activity-date{
+    font-size:11px;
+    margin-bottom:3px;
+    display: block;
 }
 
 #activities-rollup-tooltip{
@@ -4176,3 +4131,22 @@ div.hasHalfs{
         top:1px;
     } 
 }
+
+@import 'widget-juiportlets.less';
+@import 'install.less';
+@import 'configuration.less';
+@import 'dashboard-portlets.less';
+@import 'file-upload.less';
+@import 'form.less';
+@import 'datepicker.less';
+@import 'token-input.less';
+@import 'notifications.less';
+@import 'designer.less';
+@import 'mozilla.less';
+@import 'qtip.less';
+@import 'gamification.less';
+@import 'welcome.less';
+@import 'tablet.less';
+@import 'thread-view.less';
+@import 'email.less';
+@import 'media-queries.less';
