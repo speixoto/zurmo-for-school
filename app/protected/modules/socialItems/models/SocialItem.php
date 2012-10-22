@@ -73,6 +73,7 @@
                 ),
                 'rules' => array(
                     array('description',    'type',    'type' => 'string'),
+                    array('description',    'required'),
                     array('latestDateTime', 'required'),
                     array('latestDateTime', 'readOnly'),
                     array('latestDateTime', 'type', 'type' => 'datetime'),
