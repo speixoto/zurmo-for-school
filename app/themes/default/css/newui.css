@@ -11261,6 +11261,17 @@ a.user-link {
 .social-item textarea {
   width: 100%;
 }
+.social-item table {
+  border-bottom: none;
+}
+.social-item .form-toolbar {
+  text-align: right;
+  border: none;
+  padding-top: 0;
+}
+.social-item .form-toolbar a {
+  margin-right: 0;
+}
 #ArchivedEmailMatchingListView .items td {
   padding-right: 10px;
 }
