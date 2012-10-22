@@ -3375,7 +3375,7 @@ div.hasHalfs{
     border-top: 1px solid #DFDFDF;
     background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
     ul{
-        width:60%;
+        width:50%;
         margin:0 auto;
         .box-sizing();
         list-style: none;
@@ -3384,7 +3384,9 @@ div.hasHalfs{
     }
     ul.endless-list-pager{
         //border-top: 1px solid #DFDFDF;
+        width:100%;
         list-style:none;
+        border-left: none;
         li{
             float:none;
             width:100%;
@@ -3442,19 +3444,31 @@ div.hasHalfs{
     .last a:after/*, .hidden.last:after*/{
         content:"»"; //"8"
     }
+    
+    .hidden.next:after,
+    .hidden.previous:after{
+        color:#ccc;
+    }
 
     #list-view-endless-page:after{
          content:"6" !important; //"6"
     }
-    .first, .last{
+    .first.hidden{
         //display:none;
     }
     
     .next, .previous, .first, .last{
+        font-size:14px;
+        line-height: 1;
+        font-weight: bold;
         span{
             text-indent:-9999px;
             display: inline-block;
-            padding:4px 0 4px 0 !important;
+            //padding:4px 0 4px 0 !important;
+            padding:2px 0 4px 0 !important;
+        }
+        > span{
+            
         }
     }
     
