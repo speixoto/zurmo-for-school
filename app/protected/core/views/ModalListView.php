@@ -63,7 +63,6 @@
                     'prevPageLabel'    => '<span>previous</span>',
                     'nextPageLabel'    => '<span>next</span>',
                     'lastPageLabel'    => '<span>last</span>',
-                    'nextPageLabel'    => '<span>next</span>',
                     'paginationParams' => GetUtil::getData(),
                     'route'            => $this->getGridViewActionRoute($this->actionId, $this->moduleId),
                     'class'            => 'SimpleListLinkPager',
