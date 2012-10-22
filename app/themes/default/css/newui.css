@@ -459,7 +459,7 @@ section {
   font-weight: bold;
   display: block;
   text-align: center;
-  margin-top: -1px !important;
+  margin-top: 1px  !important;
   display: inline-block;
   background: transparent  !important;
   -webkit-border-radius: 0 !important;
@@ -3163,6 +3163,7 @@ div.wide.form a {
 }
 .double-column .panel table {
   width: 100% !important;
+  margin-top: 10px;
 }
 .double-column .panel a {
   color: #262877;
@@ -3179,6 +3180,9 @@ div.wide.form a {
 .double-column .col-1,
 .double-column .col-3 {
   width: 35% !important;
+}
+.double-column td + th {
+  border-left: 1px solid #ccc;
 }
 .wide.form .col-0 {
   width: 30%;

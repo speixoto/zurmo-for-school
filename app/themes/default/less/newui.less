@@ -336,7 +336,7 @@ footer, header, hgroup, menu, nav, section {
     font-weight:bold;
     display: block;
     text-align:center;
-    margin-top:-1px  !important;
+    margin-top:1px  !important;
     display:inline-block;
     background:transparent  !important;
     .radius(0) !important;
@@ -2273,6 +2273,7 @@ div.wide.form{
         width:100% !important;
         table{
             width:100% !important;
+            margin-top: 10px;
         }
         a{
             color:@themeColor;
@@ -2281,7 +2282,6 @@ div.wide.form{
     #right-side-edit-view-panel{
         margin-bottom:15px;
         position:relative !important;
-        //width:100% !important;
         float:left !important;
         .buffer{
            // padding-left:15px;
@@ -2292,6 +2292,9 @@ div.wide.form{
     }
     .col-1, .col-3{
         width:35% !important;
+    }
+    td + th{
+        border-left:1px solid #ccc;
     }
 }
 
