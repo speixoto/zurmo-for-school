@@ -10941,18 +10941,21 @@ a.close-ModalGameNotification.simple-select {
 .comment.unread {
   font-weight: bold;
 }
-.comment .delete-comment {
+.comment .delete-comment,
+.comment .edit-comment {
   color: #262877;
   font-size: 11px;
 }
-.comment .delete-comment a {
+.comment .delete-comment a,
+.comment .edit-comment a {
   color: #262877;
   filter: alpha(opacity=25);
   -khtml-opacity: 0.25;
   -moz-opacity: 0.25;
   opacity: 0.25;
 }
-.comment .delete-comment a:hover {
+.comment .delete-comment a:hover,
+.comment .edit-comment a:hover {
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
