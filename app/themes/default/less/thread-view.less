@@ -197,6 +197,7 @@
     }
     form{
         padding:0;
+        margin-bottom: 15px;
     }
     .panel{
         width:100%;
@@ -380,7 +381,10 @@ a.user-link{
 #comment-inline-edit-form{
     border-bottom: none;
     .file-upload-box{
-        padding: 0;
+        padding: 14px 0 0 0;
+    }
+    tr.template-download td{
+        padding-left:0 !important;  
     }
 }
 
@@ -390,18 +394,6 @@ a.user-link{
         > tbody > tr > td{
             padding: 0 !important;
         }
-    }
-}
-
-.delete-social-item{
-    margin-left:5px;
-    visibility: hidden;
-    a{
-        margin-left:4px;
-    }
-    &:before{
-        .symbly(18px);
-        content: "_";
     }
 }
 

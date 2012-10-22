@@ -4545,28 +4545,47 @@ div.hasHalfs .twoThirds {
 .pager {
   width: 100%;
   text-align: center;
-  zoom: 1;
-  /*doesnt work in IE*/
+  border-top: 1px solid #DFDFDF;
+  background: #ffffff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  /*
+    .next a, .previous a, .hidden.next, .hidden.previous{
+        //.symbly(16px);
+    }*/
+
+  /*
+    .hidden{
+        span{
+            text-indent:-9999px;
+            display:none;
+        }
+        color:#ddd;
+        background:#efefef;
+        .b-shadow(~"inset 0 0 8px 2px #ccc !important");
+        padding:4px 0 4px 0 !important;
+        pointer-events:none;
+    }*/
 
 }
-.pager:before {
-  content: "";
-  display: table;
-}
-.pager:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 .pager ul {
-  width: 100%;
+  width: 60%;
+  margin: 0 auto;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   list-style: none;
+  border-left: 1px solid #DFDFDF;
+  zoom: 1;
+}
+.pager ul:before {
+  content: "";
+  display: table;
+}
+.pager ul:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 .pager ul.endless-list-pager {
-  border-top: 1px solid #DFDFDF;
   list-style: none;
 }
 .pager ul.endless-list-pager li {
@@ -4583,19 +4602,21 @@ div.hasHalfs .twoThirds {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   float: left;
-  width: 50%;
+  width: 25%;
   padding: 0;
   border: none;
-  border-top: 1px solid #e7e7e7;
-}
-.pager li:first-child {
-  border-right: 1px solid #ccc;
+  border-right: 1px solid #DFDFDF;
+  text-align: center;
+  /*
+        &:first-child{
+            border-right:1px solid #ccc;
+        }*/
+
 }
 .pager li > a {
   font-weight: bold;
   display: block;
   padding: 4px 0 4px 0 !important;
-  background: #ffffff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 .pager li > a span {
   display: none;
@@ -4611,50 +4632,36 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
-.pager .next a,
-.pager .previous a,
-.pager .hidden.next,
-.pager .hidden.previous {
-  font-weight: normal;
-  font-size: 16px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-}
 .pager .next a:after,
 .pager .hidden.next:after {
-  content: "7";
+  content: "›";
 }
 .pager .previous a:after,
 .pager .hidden.previous:after {
-  content: "8";
+  content: "‹";
 }
-.pager .previous {
-  border-right: 1px solid #e7e7e7;
+.pager .first a:after {
+  content: "«";
+}
+.pager .last a:after {
+  content: "»";
 }
 .pager #list-view-endless-page:after {
   content: "6" !important;
 }
-.pager .first,
-.pager .last {
-  display: none;
-}
-.pager .hidden {
-  color: #ddd;
-  background: #efefef;
-  -webkit-box-shadow: inset 0 0 8px 2px #ccc !important;
-  -moz-box-shadow: inset 0 0 8px 2px #ccc !important;
-  -o-box-shadow: inset 0 0 8px 2px #ccc !important;
-  -ms-box-shadow: inset 0 0 8px 2px #ccc !important;
-  box-shadow: inset 0 0 8px 2px #ccc !important;
-  padding: 4px 0 4px 0 !important;
-  pointer-events: none;
-}
-.pager .hidden span {
+.pager .next span,
+.pager .previous span,
+.pager .first span,
+.pager .last span {
   text-indent: -9999px;
-  display: none;
+  display: inline-block;
 }
 .pager:empty {
   display: none;
 }
+/*
+
+*/
 /*=Meetings modal*/
 #days-meetings-list-view td {
   padding: 10px;
@@ -7633,6 +7640,7 @@ table.configuration-list tr td:last-child a:before {
   cursor: pointer;
   color: #262877;
   line-height: 16px;
+  margin-top: -2px;
 }
 .upload-actions .icon-delete span {
   display: none;
@@ -11149,6 +11157,7 @@ a.close-ModalGameNotification.simple-select {
 }
 #CommentInlineEditForModelView form {
   padding: 0;
+  margin-bottom: 15px;
 }
 #CommentInlineEditForModelView .panel {
   width: 100%;
@@ -11336,26 +11345,16 @@ a.user-link {
   border-bottom: none;
 }
 #comment-inline-edit-form .file-upload-box {
-  padding: 0;
+  padding: 14px 0 0 0;
+}
+#comment-inline-edit-form tr.template-download td {
+  padding-left: 0 !important;
 }
 .SocialItemsListView .items {
   width: 100%;
 }
 .SocialItemsListView .items > tbody > tr > td {
   padding: 0 !important;
-}
-.delete-social-item {
-  margin-left: 5px;
-  visibility: hidden;
-}
-.delete-social-item a {
-  margin-left: 4px;
-}
-.delete-social-item:before {
-  font-weight: normal;
-  font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  content: "_";
 }
 .social-item {
   border-bottom: 1px solid #fff;

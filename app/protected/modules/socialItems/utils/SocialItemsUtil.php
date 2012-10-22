@@ -69,7 +69,7 @@
             $content .= '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                     $model->latestDateTime, 'long', null) . '</strong>';
 
-            $content .= '<span class="delete-social-item">' . self::renderDeleteLinkContent($model) . '</span></span>';
+            $content .= ' · <span class="delete-comment">' . self::renderDeleteLinkContent($model) . '</span></span>';
             $content .= '</div>';
 
             $content .= self::renderCommentsContent($model);
