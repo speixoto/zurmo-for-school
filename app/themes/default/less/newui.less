@@ -375,6 +375,7 @@ footer, header, hgroup, menu, nav, section {
         }
         div{
             padding-right:40px;
+            .smaller();
         }
         .remove{
             position:absolute;
@@ -1243,7 +1244,7 @@ footer, header, hgroup, menu, nav, section {
     line-height: 19px;
     display:inline-block;
     margin-left:10px;
-    font-size: 11px;
+    .smaller();
     span{
         margin-left:70px;
     }
@@ -1360,7 +1361,7 @@ tr.even{
 
 .empty{
     display:block;
-    font-size: 11px;
+    .smaller();
 }
 
 td.empty{
@@ -1982,7 +1983,7 @@ div.wide.form{
     border-bottom: none;
     position: relative;
     #gradient > .vertical( #f5f5f5, #ebebeb );
-    font-size: 11px;
+    .smaller();
 }
 
 .search-form-tools{
@@ -1991,7 +1992,7 @@ div.wide.form{
     left:265px;
     line-height:25px;
     color:@themeColor;
-    font-size: 11px;
+    .smaller();
     input[type="submit"]{
         .zButton();
     }
@@ -2043,7 +2044,7 @@ div.wide.form{
         top:35px;
         padding:20px 20px 20px 20px;
         .flyout();
-        font-size: 11px;
+        .smaller();
         input, select{
             position: relative;
             z-index: 5000;
@@ -2801,7 +2802,7 @@ div.wide.form{
         a{
             text-indent:0;
             color: #666;
-            font-size: 11px;
+            .smaller();
             font-weight: normal;
             display: block;
             padding: 5px 10px 5px 10px;
@@ -2851,7 +2852,7 @@ div.wide.form{
     a{
         text-indent:0;
         color: #666;
-        font-size: 11px;
+        .smaller();
         font-weight: normal;
         display: block;
         padding: 5px 10px 5px 10px;
@@ -3157,7 +3158,7 @@ div.wide.form{
             a{
                 text-indent:0;
                 color: #666;
-                font-size: 11px;
+                .smaller();
                 font-weight: normal;
                 display: block;
                 padding: 5px 10px 5px 10px;
@@ -3260,10 +3261,10 @@ div.hasHalfs{
             height:50px;
             float:left;
             margin-left:0;
-            margin-top:-3px;
+            margin-top:-4px;
             width:auto;
             label{
-                margin:0 5px;
+                margin:0 5px 0 0;
             }
         }
         input[type="checkbox"]{
@@ -3304,6 +3305,7 @@ div.hasHalfs{
         }
     }
 }
+
 .edit-row-menu{
     float:right;
     margin:0 0 0 0;
@@ -3326,16 +3328,17 @@ div.hasHalfs{
                 .opacity(100);
             }
             &:before{
-                content: "▾ ";
+                content: "▾";
                 color:@themeColor;
-                //.symbly(26px);
                 position: relative;
-                top:-3px;
+                top:-2px;
+                right:2px;
+                font-size: 10px;
             }
             &:after{
                 content: "n";
                 color:@themeColor;
-                .symbly(26px);
+                .symbly(24px);
             }
         }
         a{
@@ -3348,7 +3351,8 @@ div.hasHalfs{
         margin-left:-97px;
         list-style: none;
         .headerDropDown();
-        top:16px;
+        top:20px;
+        .smaller();
     }
 }
 
@@ -3529,7 +3533,7 @@ div.hasHalfs{
     }
     .latest-activity-toolbar,
     .filter-portlet-model-bar{
-        font-size: 11px;
+        .smaller();
         padding-left:8px;
         label{
             cursor:pointer;
@@ -3748,7 +3752,7 @@ div.hasHalfs{
             border-top: 1px solid #fff;
             border-bottom: 1px solid #CCC;
             color: #666;
-            font-size: 11px;
+            .smaller();
             line-height:100%;
             font-weight: normal;
             display: block;
@@ -3871,7 +3875,7 @@ div.hasHalfs{
     .hasCheckBox{
         margin-top:0 !important;
         position:relative;
-        top:10px;
+        top:-4px;
     }
     tr th:first-child{
         padding:0 !important;

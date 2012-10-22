@@ -517,6 +517,7 @@ section {
 }
 #notifications-flyout .single-notification div {
   padding-right: 40px;
+  font-size: 11px;
 }
 #notifications-flyout .single-notification .remove {
   position: absolute;
@@ -3877,7 +3878,7 @@ div.wide.form a {
     a{
         text-indent:0;
         color: #666;
-        font-size: 11px;
+        .smaller();
         font-weight: normal;
         display: block;
         padding: 5px 10px 5px 10px;
@@ -4385,11 +4386,11 @@ div.hasHalfs .twoThirds {
   height: 50px;
   float: left;
   margin-left: 0;
-  margin-top: -3px;
+  margin-top: -4px;
   width: auto;
 }
 .juiportlet-widget td div.checkbox-column label {
-  margin: 0 5px;
+  margin: 0 5px 0 0;
 }
 .juiportlet-widget td input[type="checkbox"] {
   margin-right: 10px;
@@ -4452,16 +4453,18 @@ div.hasHalfs .twoThirds {
   opacity: 1;
 }
 .edit-row-menu > li > a:before {
-  content: "▾ ";
+  content: "▾";
   color: #262877;
   position: relative;
-  top: -3px;
+  top: -2px;
+  right: 2px;
+  font-size: 10px;
 }
 .edit-row-menu > li > a:after {
   content: "n";
   color: #262877;
   font-weight: normal;
-  font-size: 26px;
+  font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
 .edit-row-menu > li a {
@@ -4500,7 +4503,8 @@ div.hasHalfs .twoThirds {
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   padding-top: 3px;
   padding-bottom: 3px;
-  top: 16px;
+  top: 20px;
+  font-size: 11px;
 }
 .edit-row-menu ul li {
   line-height: 100%;
@@ -5228,7 +5232,7 @@ div.hasHalfs .twoThirds {
 .AppContent.MassEditView .hasCheckBox {
   margin-top: 0 !important;
   position: relative;
-  top: 10px;
+  top: -4px;
 }
 .AppContent.MassEditView tr th:first-child {
   padding: 0 !important;
@@ -6181,7 +6185,6 @@ a.remove:hover .icon:after {
   padding: 20px 15px;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #fff;
-  font-size: 11px;
 }
 .configuration-list li:last-child {
   border-bottom: none;
@@ -6353,7 +6356,7 @@ table.configuration-list tr td:last-child a:before {
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-left: 5px;
   position: relative;
-  top: 2px;
+  top: 1px;
   font-weight: normal !important;
 }
 /*Groups*/
@@ -6962,6 +6965,9 @@ table.configuration-list tr td:last-child a:before {
 }
 #UserConfigurationEditView #edit-form table {
   width: 100%;
+}
+#UsersSearchView .view-toolbar-container {
+  margin-top: 15px;
 }
 /*=User Security*/
 .UserGroupMembershipView .details-table,
@@ -7768,6 +7774,18 @@ table.configuration-list tr td:last-child a:before {
 .addfileinput-button:hover span {
   color: #7bb730;
 }
+.max-upload-size {
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: normal;
+  font-style: italic;
+  display: inline-block;
+  color: #999;
+  margin-top: 0;
+  position: relative;
+  top: 10px;
+  left: 10px;
+}
 .ImportWizardView .files {
   margin-top: 15px;
 }
@@ -7884,6 +7902,14 @@ div.wide.form .hint,
 div.wide.form .errorMessage {
   clear: left;
   padding-left: 2px;
+}
+.field-description {
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: normal;
+  font-style: italic;
+  display: inline-block;
+  color: #999;
 }
 .ui-datepicker {
   z-index: 10000;
@@ -9699,8 +9725,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-border-radius: 6px;
   -o-border-radius: 6px;
   border-radius: 6px;
+  font-size: 11px;
 }
 .ranking {
+  float: right;
+  margin-right: 5px;
   display: block;
   background: #262877;
   color: #fff;
@@ -9715,12 +9744,17 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   vertical-align: middle;
   text-align: center;
   font-weight: bold;
-  font-size: 10px;
+  font-size: 11px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  text-shadow: none !important;
 }
 .UserLeaderboardRankingForPortletView tr th:first-child,
 .UserGamificationStatisticsForPortletView tr th:first-child,
@@ -9825,7 +9859,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .game-badge .badge-grade,
 .badge .badge-grade {
-  font-size: 11;
+  font-size: 11px;
   position: absolute;
   top: -8px;
   right: -8px;
