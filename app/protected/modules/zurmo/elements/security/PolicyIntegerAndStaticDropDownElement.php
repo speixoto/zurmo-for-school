@@ -93,21 +93,17 @@
          * @return String The HTML code for the tooltip.
          */
         protected function resolveAndRenderPolicyDefaultStringContent() {
-            $delimiter = FormModelUtil::DELIMITER;
-            list($moduleName, $policyName) = explode($delimiter, $this->attribute);
-            $policyDefault = $moduleName::getPolicyDefault($this->getFormattedAttributeLabel());
+            $delimiter                      = FormModelUtil::DELIMITER;
+            list($moduleName, $policyName)  = explode($delimiter, $this->attribute);
+            $policyDefault                  = $moduleName::getPolicyDefault($this->getFormattedAttributeLabel());
             if (isset($policyDefault)) 
             {
-                $title    = Yii::t('Default', 'The default value for this policy is ') . $policyDefault;
-                $content  = '<span id="policy-default-tooltip-' . $policyName . '" class="tooltip" title="' . $title . '">';
+                $title    = Yii::t('Default', 'The default value for this policy is {policyDefault}', array('{policyDefault}' => $policyDefault));
+                $content  = '<span class="tooltip policy-default-tooltip" title="' . $title . '">';
                 $content .= '?</span>';
-                $qtip = new ZurmoTip();
-                $qtip->addQTip("#policy-default-tooltip-" . $policyName);
+                $qtip     = new ZurmoTip();
+                $qtip->addQTip(".policy-default-tooltip");
                 return $content;
-            }
-            else
-            {
-                return null;
             }
         }
 

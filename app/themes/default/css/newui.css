@@ -11253,3 +11253,8 @@ div.hasHalfs .twoThirds {
   position: relative;
   top: 1px;
 }
+span.policy-default-tooltip {
+  line-height: 15px !important;
+  margin-top: 0;
+  float: right;
+}
