@@ -4218,10 +4218,25 @@ div.wide.form a {
   list-style: none;
 }
 .BreadCrumbView #StickyListMenu > li > a > span {
-  top: 0px;
+  top: 2px;
   position: relative;
   display: block;
   padding: 0 5px;
+  font-size: 15px;
+  line-height: 12px;
+  -webkit-text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
+  -moz-text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
+  -o-text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
+  -ms-text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
+  text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
+}
+.BreadCrumbView #StickyListMenu > li > a:hover > span {
+  color: #7bb730;
+  -webkit-text-shadow: 0 1px 0px #ffffff;
+  -moz-text-shadow: 0 1px 0px #ffffff;
+  -o-text-shadow: 0 1px 0px #ffffff;
+  -ms-text-shadow: 0 1px 0px #ffffff;
+  text-shadow: 0 1px 0px #ffffff;
 }
 .BreadCrumbView #StickyListMenu ul {
   border: 1px solid #b6b6b6;
@@ -4243,7 +4258,8 @@ div.wide.form a {
   display: none;
   list-style: none;
   position: absolute;
-  margin-top: 0;
+  margin-top: 3px;
+  margin-left: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
   font-weight: normal !important;

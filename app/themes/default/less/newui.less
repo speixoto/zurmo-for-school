@@ -3138,18 +3138,26 @@ div.wide.form{
     #StickyListMenu{
         list-style: none;
         > li > a > span{
-            //.symbly(18px);
-            top:0px;
+            top:2px;
             position: relative;
             display: block;
             padding:0 5px;
+            font-size: 15px;
+            line-height: 12px;
+            .t-shadow(~"0 1px 0px #ffffff, 0 0 5px #bbb");
         }
+        > li > a:hover > span{
+            color:@themeColor2;
+            .t-shadow(~"0 1px 0px #ffffff");
+        }
+        
         ul{
             .flyout();
             display: none;
             list-style: none;
             position: absolute;
-            margin-top:0;
+            margin-top:3px;
+            margin-left:5px;
             padding-top:3px;
             padding-bottom:3px;
             font-weight:normal !important;
