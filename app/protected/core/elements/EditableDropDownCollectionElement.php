@@ -65,7 +65,6 @@
             $content  = $this->renderError();
             $content .= $this->renderMultipleAttributesUsingCollectionContent();
             $content .= $this->renderRemovalNoticeContent();
-            //$content .= '<br/>';
             $content .= '<div id="sortable-editable-dropdown-collection">';
             $content .= $cClipWidget->getController()->clips['EditableDropDownSortable'];
             $content .= '</div>';
