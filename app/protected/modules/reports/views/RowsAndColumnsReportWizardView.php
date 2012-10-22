@@ -46,6 +46,9 @@
         protected function renderConfigSaveAjax($formName)
         {
             assert('is_string($formName)');
+
+
+
             return     "console.log('we are at renderConfigSaveAjax');
                         console.log($('#" . $formName . "').find('.attachLoadingTarget').attr('id'));
                         linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
@@ -81,11 +84,7 @@
                         }
                         if(linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
                         {
-                            console.log('actually submit form since we are saving');
-                            //ajax submit and save
-                            //then get result which should be ID of report.
-                            //then make url
-                            //then redirect to DV.
+                            " . $this->getSaveAjaxString($formName) . "
                         }
                         else
                         {

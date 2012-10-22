@@ -94,9 +94,8 @@
             SavedReportToReportAdapter::resolveReportToSavedReport($report, $savedReport);
             if($savedReport->save())
             {
-                echo 'redirect to dv and run';
-                exit;
-                //todo: redirect, but before we do this make sure what we did here makes sense
+                echo CJSON::encode(array('id' => $savedReport->id));
+                Yii::app()->end(0, false);
             }
             else
             {
