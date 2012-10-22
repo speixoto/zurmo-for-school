@@ -4616,7 +4616,6 @@ div.hasHalfs .twoThirds {
 .pager li > a {
   font-weight: bold;
   display: block;
-  padding: 4px 0 4px 0 !important;
 }
 .pager li > a span {
   display: none;
@@ -4655,6 +4654,7 @@ div.hasHalfs .twoThirds {
 .pager .last span {
   text-indent: -9999px;
   display: inline-block;
+  padding: 4px 0 4px 0 !important;
 }
 .pager:empty {
   display: none;
@@ -5544,9 +5544,6 @@ div.hasHalfs .twoThirds {
   background-position: 100% bottom !important;
 }
 /*=tasks portlet on dashboard*/
-.TasksMyListView .checkbox-column .hasCheckBox {
-  margin-left: 0;
-}
 /*=RSS Widget*/
 .rssBody {
   line-height: 140%;
@@ -7522,6 +7519,121 @@ table.configuration-list tr td:last-child a:before {
 #MyMissionsForPortletView .actions-column {
   width: 200px;
 }
+div.form input,
+div.form textarea,
+div.form select {
+  margin: 0 0 0 0;
+}
+div.form fieldset {
+  border: 1px solid #DDD;
+  padding: 10px;
+  margin: 0 0 10px 0;
+  -moz-border-radius: 7px;
+}
+div.form .hint {
+  margin: 0;
+  padding: 0;
+  color: #999;
+}
+div.form .note {
+  font-style: italic;
+}
+div.form span.required {
+  color: red;
+}
+div.form div.error label,
+div.form label.error,
+div.form span.error {
+  color: #C00;
+}
+div.form div.error input,
+div.form div.error textarea,
+div.form div.error select,
+div.form td.error input,
+div.form td.error textarea,
+div.form td.error select,
+div.form input.error,
+div.form textarea.error,
+div.form select.error {
+  border-color: #CC0000;
+  -webkit-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
+  -o-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
+  -ms-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
+  box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
+}
+div.form .errorSummary {
+  padding: 7px 7px 12px 7px;
+  margin: 0 0 20px 0;
+  background: #FEE;
+  font-size: 11px;
+}
+#edit-form td {
+  position: relative;
+}
+div.form .errorMessage {
+  color: #CC0000;
+  font-size: 11px;
+  font-weight: normal;
+  width: auto;
+  float: left;
+  margin-top: 12px;
+  border: 1px solid #CC0000;
+  padding: 4px;
+  background: #FFBCB9;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
+  box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
+  position: relative;
+}
+div.form .errorMessage:before {
+  content: "";
+  font-size: 0;
+  width: 12px;
+  height: 9px;
+  display: block;
+  position: absolute;
+  left: 6px;
+  top: -8px;
+  background: url(../images/error-tip.png) left bottom no-repeat;
+}
+div.form .errorSummary p {
+  margin: 0;
+  padding: 5px;
+}
+div.form .errorSummary ul {
+  margin: 0;
+  padding: 0 0 0 20px;
+}
+div.wide.form label {
+  float: left;
+  margin-right: 10px;
+  position: relative;
+}
+div.wide.form .row {
+  clear: left;
+}
+div.wide.form .buttons,
+div.wide.form .hint,
+div.wide.form .errorMessage {
+  clear: left;
+  padding-left: 2px;
+}
+.field-description {
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: normal;
+  font-style: italic;
+  display: inline-block;
+  color: #999;
+}
 /*Upload Files Box (in selected account, in Note)*/
 .file-upload-box {
   -moz-box-sizing: border-box;
@@ -7610,6 +7722,7 @@ table.configuration-list tr td:last-child a:before {
 .files {
   font-size: 11px;
   margin-top: 5px;
+  float: left;
 }
 .files td {
   padding: 2px 0 !important;
@@ -7823,121 +7936,6 @@ table.configuration-list tr td:last-child a:before {
 .fileupload-buttonbar .btn,
 .fileupload-buttonbar .toggle {
   margin-bottom: 5px;
-}
-div.form input,
-div.form textarea,
-div.form select {
-  margin: 0 0 0 0;
-}
-div.form fieldset {
-  border: 1px solid #DDD;
-  padding: 10px;
-  margin: 0 0 10px 0;
-  -moz-border-radius: 7px;
-}
-div.form .hint {
-  margin: 0;
-  padding: 0;
-  color: #999;
-}
-div.form .note {
-  font-style: italic;
-}
-div.form span.required {
-  color: red;
-}
-div.form div.error label,
-div.form label.error,
-div.form span.error {
-  color: #C00;
-}
-div.form div.error input,
-div.form div.error textarea,
-div.form div.error select,
-div.form td.error input,
-div.form td.error textarea,
-div.form td.error select,
-div.form input.error,
-div.form textarea.error,
-div.form select.error {
-  border-color: #CC0000;
-  -webkit-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
-  -moz-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
-  -o-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
-  -ms-box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
-  box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
-}
-div.form .errorSummary {
-  padding: 7px 7px 12px 7px;
-  margin: 0 0 20px 0;
-  background: #FEE;
-  font-size: 11px;
-}
-#edit-form td {
-  position: relative;
-}
-div.form .errorMessage {
-  color: #CC0000;
-  font-size: 11px;
-  font-weight: normal;
-  width: auto;
-  float: left;
-  margin-top: 12px;
-  border: 1px solid #CC0000;
-  padding: 4px;
-  background: #FFBCB9;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
-  -moz-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
-  -o-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
-  -ms-box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
-  box-shadow: 0 0 2px 1px rgba(153, 153, 153, 0.3);
-  position: relative;
-}
-div.form .errorMessage:before {
-  content: "";
-  font-size: 0;
-  width: 12px;
-  height: 9px;
-  display: block;
-  position: absolute;
-  left: 6px;
-  top: -8px;
-  background: url(../images/error-tip.png) left bottom no-repeat;
-}
-div.form .errorSummary p {
-  margin: 0;
-  padding: 5px;
-}
-div.form .errorSummary ul {
-  margin: 0;
-  padding: 0 0 0 20px;
-}
-div.wide.form label {
-  float: left;
-  margin-right: 10px;
-  position: relative;
-}
-div.wide.form .row {
-  clear: left;
-}
-div.wide.form .buttons,
-div.wide.form .hint,
-div.wide.form .errorMessage {
-  clear: left;
-  padding-left: 2px;
-}
-.field-description {
-  margin-top: 5px;
-  font-size: 11px;
-  font-weight: normal;
-  font-style: italic;
-  display: inline-block;
-  color: #999;
 }
 .ui-datepicker {
   z-index: 10000;
