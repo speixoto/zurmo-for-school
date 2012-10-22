@@ -26,6 +26,8 @@
 
     class FiltersForReportWizardView extends ComponentForReportWizardView
     {
+        const VALIDATION_SCENARIO = 'ValidateForFilters';
+
         protected function renderFormContent()
         {
             return 'FiltersForReportWizardView form content';
@@ -33,17 +35,17 @@
 
         public static function getWizardStepTitle()
         {
-            return 'todo';
+            return Yii::t('Default', 'Select Filters');
         }
 
-        protected function renderPreviousPageLinkContent()
+        public static function getPreviousPageLinkId()
         {
-            return 'what button here';
+            return 'filterBysPreviousLink';
         }
 
-        protected function renderNextPageLinkContent()
+        public static function getNextPageLinkId()
         {
-            return 'todo: next button';
+            return 'filterBysNextLink';
         }
     }
 ?>

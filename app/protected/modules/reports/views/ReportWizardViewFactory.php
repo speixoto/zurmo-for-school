@@ -24,16 +24,36 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MatrixReportWizardView extends ReportWizardView
+    /**
+     * Factory for creating report wizard views of
+     * the appropriate type.
+     */
+    class ReportWizardViewFactory
     {
-        protected function renderContainingViews(ZurmoActiveForm $form)
+        public static function makeViewFromReport(Report $report)
         {
-
-        }
-
-        protected function registerClickFlowScript()
-        {
-
+            $type                      = $report->getType();
+            $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
+            if($type == Report::TYPE_ROWS_AND_COLUMNS)
+            {
+                $viewClassName = 'RowsAndColumnsReportWizardView';
+                $form          = $reportToWizardFormAdapter->makeRowsAndColumnsWizardForm();
+            }
+            elseif($type == Report::TYPE_SUMMATION)
+            {
+                $viewClassName = 'RowsAndColumnsReportWizardView';
+                $form          = $reportToWizardFormAdapter->makeSummationWizardForm();
+            }
+            elseif($type == Report::TYPE_MATRIX)
+            {
+                $viewClassName = 'RowsAndColumnsReportWizardView';
+                $form          = $reportToWizardFormAdapter->makeMatarixWizardForm();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return new $viewClassName($form);
         }
     }
 ?>

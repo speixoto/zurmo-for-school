@@ -146,5 +146,10 @@
         {
             return 'LeadsSearchForm';
         }
+
+        public static function isReportable()
+        {
+            return true;
+        }
     }
 ?>

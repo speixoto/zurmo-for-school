@@ -566,5 +566,13 @@
         public static function getDemoDataMakerClassName()
         {
         }
+
+        /**
+         * Override in modules that are reportable in the reporting module
+         */
+        public static function isReportable()
+        {
+            return false;
+        }
     }
 ?>

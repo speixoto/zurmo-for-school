@@ -26,6 +26,8 @@
 
     class DisplayAttributesForReportWizardView extends ComponentForReportWizardView
     {
+        const VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
+
         protected function renderFormContent()
         {
             return 'DisplayAttributesForReportWizardView form content';
@@ -33,17 +35,17 @@
 
         public static function getWizardStepTitle()
         {
-            return 'todo';
+            return Yii::t('Default', 'Select Columns');
         }
 
-        protected function renderPreviousPageLinkContent()
+        public static function getPreviousPageLinkId()
         {
-            return 'what button here';
+            return 'displayAttributesPreviousLink';
         }
 
-        protected function renderNextPageLinkContent()
+        public static function getNextPageLinkId()
         {
-            return 'todo: next button';
+            return 'displayAttributesNextLink';
         }
     }
 ?>

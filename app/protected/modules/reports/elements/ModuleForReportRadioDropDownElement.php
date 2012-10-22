@@ -24,53 +24,60 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModuleForReportWizardView extends ComponentForReportWizardView
+    /**
+     * Display radio buttons for selecting the module for a report.
+     * @see ModuleForReportWizardView
+     */
+    class ModuleForReportRadioDropDownElement extends Element
     {
-        const VALIDATION_SCENARIO = 'ValidateForModule';
-
-        protected function renderFormContent()
+        /**
+         * Renders the setting as a radio list.
+         * @return A string containing the element's content.
+         */
+        protected function renderControlEditable()
         {
-            $element                   = new ModuleForReportRadioDropDownElement($this->model, 'moduleClassName',
-                                                                                 $this->form);
-            $element->editableTemplate = '{label}{content}';
-
-            $content  = $this->form->errorSummary($this->model);
-            $content .= '<table>'     . "\n";
-            $content .= '<tbody>'     . "\n";
-            $content .= '<tr><td>'    . "\n";
-            $content .= $element->render();
-            $content .= '</td></tr>'  . "\n";
-            $content .= '</tbody>'    . "\n";
-            $content .= '</table>'    . "\n";
+            $content = $this->form->radioButtonList(
+                $this->model,
+                $this->attribute,
+                $this->getArray(),
+                $this->getEditableHtmlOptions()
+            );
             return $content;
         }
 
-        public static function getWizardStepTitle()
+        protected function renderControlNonEditable()
         {
-            return Yii::t('Default', 'Select Module');
+            throw new NotImplementedException();
         }
 
-        protected function renderPreviousPageLinkContent()
+        /**
+         * Override to ensure label is pointing to the right input id
+         * @return A string containing the element's label
+         */
+        protected function renderLabel()
         {
-            if($this->model->isNew())
+            if ($this->form === null)
             {
-                $label = Yii::t('Default', 'Cancel');
+                throw new NotImplementedException();
             }
-            else
-            {
-                $label = Yii::t('Default', 'Cancel Changes');
-            }
-            return ZurmoHtml::link($label, '#', array('id' => static::getPreviousPageLinkId()));
+            return ZurmoHtml::tag('span', array(), Yii::t('Default', 'Please select the module you would like to use:'));
         }
 
-        public static function getPreviousPageLinkId()
+        public function getEditableHtmlOptions()
         {
-            return 'moduleCancelLink';
+            $htmlOptions = array(
+                'name'           => $this->getEditableInputName(),
+                'id'             => $this->getEditableInputId(),
+                'ignoreIdPrefix' => true,
+                'separator'      => ''
+            );
+            $htmlOptions['template'] =  '<div class="radio-input">{input}{label}</div>';
+            return $htmlOptions;
         }
 
-        public static function getNextPageLinkId()
+        protected function getArray()
         {
-            return 'moduleNextLink';
+            return Report::getReportableModulesAndLabelsForCurrentUser();
         }
     }
 ?>

@@ -26,15 +26,30 @@
 
     abstract class ComponentForReportWizardView extends View
     {
+        protected $model;
+
+        protected $form;
+
+        protected $hideView;
+
         abstract protected function renderFormContent();
+
+        public function getTitle()
+        {
+            return Yii::t('Default', 'Report Wizard') . ' - ' . static::getWizardStepTitle();
+        }
 
         public static function getWizardStepTitle()
         {
             throw new NotImplementedException();
         }
 
-        public function __construct()
+        public function __construct(ReportWizardForm $model, ZurmoActiveForm $form, $hideView = false)
         {
+            assert('is_bool($hideView)');
+            $this->model    = $model;
+            $this->form     = $form;
+            $this->hideView = $hideView;
         }
 
         public function isUniqueToAPage()
@@ -44,17 +59,29 @@
 
         protected function renderContent()
         {
-            $content  = $this->renderFormContent();
-            $content .= $this->renderActionLinksContent();
-            $this->renderScripts();
+            $content              = $this->renderTitleContent();
+            $content             .= $this->renderFormContent();
+            $actionToolBarContent = $this->renderActionElementBar();
+            if ($actionToolBarContent != null)
+            {
+                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
+                $content .= $actionToolBarContent;
+                $content .= '</div></div>';
+            }
+            $this->registerScripts();
             return $content;
         }
 
         /**
          * Override if needed
          */
-        protected function renderScripts()
+        protected function registerScripts()
         {
+        }
+
+        protected function renderActionElementBar()
+        {
+            return $this->renderActionLinksContent();
         }
 
         /**
@@ -83,7 +110,7 @@
          */
         protected function renderPreviousPageLinkContent()
         {
-            return null;
+            return ZurmoHtml::link(Yii::t('Default', 'Previous'), '#', array('id' => static::getPreviousPageLinkId()));
         }
 
         /**
@@ -91,7 +118,35 @@
          */
         protected function renderNextPageLinkContent()
         {
-            return null;
+            $params = array();
+            $params['label']       = Yii::t('Default', 'Next');
+            $params['htmlOptions'] = array('id' => static::getNextPageLinkId(),
+                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $searchElement = new SaveButtonActionElement(null, null, null, $params);
+            return $searchElement->render();
+        }
+
+        public static function getPreviousPageLinkId()
+        {
+            throw new NotSupportedException();
+        }
+
+        public static function getNextPageLinkId()
+        {
+            throw new NotSupportedException();
+        }
+
+        protected function getViewStyle()
+        {
+            if($this->hideView)
+            {
+                return 'style=display:none;';
+            }
+        }
+
+        protected function renderTitleContent()
+        {
+            return ZurmoHtml::tag('h1',   array(), $this->getTitle());
         }
     }
 ?>

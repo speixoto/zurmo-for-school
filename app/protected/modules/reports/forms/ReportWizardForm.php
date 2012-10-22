@@ -24,16 +24,58 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MatrixReportWizardView extends ReportWizardView
+    /**
+     * Base class for all report wizard form models
+     */
+    abstract class ReportWizardForm extends CFormModel
     {
-        protected function renderContainingViews(ZurmoActiveForm $form)
-        {
+        public $moduleClassName;
 
+        public $name;
+
+        public $type;
+
+        protected $isNew = false;
+
+        /**
+         * Mimics the expected interface by the views when calling into
+         * a form or model.
+         */
+        public function getId()
+        {
+            return null;
         }
 
-        protected function registerClickFlowScript()
+        public function isNew()
         {
+            return $this->isNew;
+        }
 
+        public function setIsNew()
+        {
+            $this->isNew = true;
+        }
+
+        public function rules()
+        {
+            return array(
+                array('name', 			  'type',     'type' => 'string'),
+                array('name', 			  'length',   'max' => 64),
+                array('name', 			  'required', 'on' => GeneralDataForReportWizardView::VALIDATION_SCENARIO),
+                array('moduleClassName',  'type',     'type' => 'string'),
+                array('moduleClassName',  'length',   'max' => 64),
+                array('moduleClassName',  'required', 'on' => ModuleForReportWizardView::VALIDATION_SCENARIO),
+                array('type', 		      'type',     'type' => 'string'),
+                array('type', 			  'length',   'max' => 64),
+                array('type', 			  'required'),
+            );
+        }
+
+        public function attributeLabels()
+        {
+            return array(
+                'name'                       => Yii::t('Default', 'Name'),
+            );
         }
     }
 ?>

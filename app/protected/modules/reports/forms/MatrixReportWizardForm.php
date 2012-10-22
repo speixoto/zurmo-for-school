@@ -24,16 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MatrixReportWizardView extends ReportWizardView
+    class MatrixReportWizardForm extends ReportWizardForm
     {
-        protected function renderContainingViews(ZurmoActiveForm $form)
-        {
-
-        }
-
-        protected function registerClickFlowScript()
-        {
-
-        }
     }
 ?>

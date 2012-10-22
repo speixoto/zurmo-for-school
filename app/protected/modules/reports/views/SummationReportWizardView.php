@@ -26,12 +26,12 @@
 
     class SummationReportWizardView extends ReportWizardView
     {
-        protected function renderClickFlowScript()
+        protected function renderContainingViews(ZurmoActiveForm $form)
         {
 
         }
 
-        protected function renderContainingViews()
+        protected function registerClickFlowScript()
         {
 
         }

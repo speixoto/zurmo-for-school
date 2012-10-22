@@ -24,16 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MatrixReportWizardView extends ReportWizardView
+    /**
+     * View that renders missions module breadcrumb content
+     */
+    class ReportBreadCrumbView extends BreadCrumbView
     {
-        protected function renderContainingViews(ZurmoActiveForm $form)
+        protected function getHomeLinkLabel()
         {
-
-        }
-
-        protected function registerClickFlowScript()
-        {
-
+            return Yii::t('Default', 'Reports');
         }
     }
 ?>

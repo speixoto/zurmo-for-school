@@ -40,10 +40,5 @@
         {
             return 'what button here';
         }
-
-        protected function renderNextPageLinkContent()
-        {
-            return 'todo: next button';
-        }
     }
 ?>

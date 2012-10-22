@@ -24,14 +24,12 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConfigureModulesMenuView extends MetadataView
+    class ReportWizardTypeView extends MetadataView
     {
-        private $linkText;
-
         protected function renderContent()
         {
-            $content      = $this->renderTitleContent();
-            $categoryData = $this->getCategoryData();
+            $content  = $this->renderTitleContent();
+            $categoryData = $this->getReportTypeData();
             foreach ($categoryData as $category => $categoryItems)
             {
                 $content .= $this->renderMenu($categoryItems);
@@ -41,34 +39,24 @@
 
         public function getTitle()
         {
-            return Yii::t('Default', 'Administration');
+            return Yii::t('Default', 'Report Wizard -change label');
         }
 
-        protected function getCategoryData()
+        protected function getReportTypeData()
         {
             $categories = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                $moduleMenuItems = MenuUtil::getAccessibleConfigureMenuByCurrentUser(get_class($module));
-                if ($module->isEnabled() && count($moduleMenuItems) > 0)
-                {
-                    foreach ($moduleMenuItems as $menuItem)
-                    {
-                        if (!empty($menuItem['category']))
-                        {
-                            assert('isset($menuItem["titleLabel"])');
-                            assert('isset($menuItem["descriptionLabel"])');
-                            assert('isset($menuItem["route"])');
-                            $categories[$menuItem['category']][] = $menuItem;
-                        }
-                        else
-                        {
-                            throw new NotSupportedException();
-                        }
-                    }
-                }
-            }
+            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Rows and Columns Report'),
+                                                'descriptionLabel'    => Yii::t('Default', 'TODO Description Text'),
+                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
+                                            );
+            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Summation Report'),
+                                                'descriptionLabel'    => Yii::t('Default', 'TODO Description Text'),
+                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
+                                            );
+            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Matrix Report'),
+                                                'descriptionLabel'    => Yii::t('Default', 'TODO Description Text'),
+                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
+                                            );
             return $categories;
         }
 
@@ -95,14 +83,7 @@
 
         protected function getLinkText()
         {
-            if (isset($this->linkText))
-            {
-                return $this->linkText;
-            }
-            else
-            {
-                return Yii::t('Default', 'Configure');
-            }
+            return Yii::t('Default', 'Create');
         }
     }
 ?>

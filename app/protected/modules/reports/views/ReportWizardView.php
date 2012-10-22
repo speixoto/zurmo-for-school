@@ -26,12 +26,17 @@
 
     abstract class ReportWizardView extends View
     {
-        abstract protected function renderClickFlowScript();
+        protected $model;
 
-        abstract protected function renderContainingViews();
+        abstract protected function registerClickFlowScript();
 
-        public function __construct()
+        abstract protected function renderContainingViews(ZurmoActiveForm $form);
+
+        abstract protected function renderConfigSaveAjax($formName);
+
+        public function __construct(ReportWizardForm $model)
         {
+            $this->model = $model;
         }
 
         public function isUniqueToAPage()
@@ -39,10 +44,15 @@
             return true;
         }
 
+        public static function getFormId()
+        {
+            return 'edit-form';
+        }
+
         protected function renderContent()
         {
-            $content = $this->renderForm();
-            $this->renderScripts();
+            $content  = $this->renderForm();
+            $this->registerScripts();
             return $content;
         }
 
@@ -54,22 +64,56 @@
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',
-                                                                array_merge(
-                                                                    array('id' => 'edit-form'),
-                                                                    array('enableAjaxValidation' => false)
-                                                                )
-                                                            );
+                                                                array('id'                   => static::getFormId(),
+                                                                      'action'               => $this->getFormActionUrl(),
+                                                                      'enableAjaxValidation' => true,
+                                                                      'clientOptions'        => $this->getClientOptions())
+                                                                );
             $content .= $formStart;
-            $content .= $this->renderContainingViews();
+            $content .= static::renderValidationScenarioInputContent();
+            $content .= $this->renderContainingViews($form);
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= '</div></div>';
             return $content;
         }
 
-        protected function renderScripts()
+        protected function getClientOptions()
         {
-            $this->renderClickFlowScript();
+            return array(
+                        'validateOnSubmit'  => true,
+                        'validateOnChange'  => false,
+                        'beforeValidate'    => 'js:beforeValidateAction',
+                        'afterValidate'     => 'js:afterValidateAjaxAction',
+                        'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
+                    );
+        }
+
+        protected function getFormActionUrl()
+        {
+            return Yii::app()->createUrl('reports/default/save', array('type' => $this->model->type));
+        }
+
+        protected function registerScripts()
+        {
+            $this->registerClickFlowScript();
+        }
+
+        protected static function renderValidationScenarioInputContent()
+        {
+            $idInputHtmlOptions  = array('id' => static::getValidationScenarioInputId());
+            $hiddenInputName     = 'validationScenario';
+            return ZurmoHtml::hiddenField($hiddenInputName, static::getStartingValidationScenario(), $idInputHtmlOptions);
+        }
+
+        protected static function getStartingValidationScenario()
+        {
+            return ModuleForReportWizardView::VALIDATION_SCENARIO;
+        }
+
+        protected static function getValidationScenarioInputId()
+        {
+            return 'componentType';
         }
     }
 ?>

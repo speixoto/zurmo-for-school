@@ -24,16 +24,20 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MatrixReportWizardView extends ReportWizardView
+    class DataToReportUtil
     {
-        protected function renderContainingViews(ZurmoActiveForm $form)
+        public static function resolveReportByWizardPostData(Report $report, $postData, $wizardFormClassName)
         {
-
-        }
-
-        protected function registerClickFlowScript()
-        {
-
+            assert('is_array($postData)');
+            $data = ArrayUtil::getArrayValue($postData, $wizardFormClassName);
+            if(isset($data['name']))
+            {
+                $report->setName($data['name']);
+            }
+            if(isset($data['moduleClassName']))
+            {
+                $report->setModuleClassName($data['moduleClassName']);
+            }
         }
     }
 ?>

@@ -301,6 +301,7 @@
             'notes',
             'notifications',
             'opportunities',
+            'reports',
             'rssReader',
             'socialItems',
             'tasks',

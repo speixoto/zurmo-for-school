@@ -26,6 +26,8 @@
 
     class OrderBysForReportWizardView extends ComponentForReportWizardView
     {
+        const VALIDATION_SCENARIO = 'ValidateForOrderBys';
+
         protected function renderFormContent()
         {
             return 'OrderBysForReportWizardView form content';
@@ -33,17 +35,17 @@
 
         public static function getWizardStepTitle()
         {
-            return 'todo';
+            return Yii::t('Default', 'Select Ordering');
         }
 
-        protected function renderPreviousPageLinkContent()
+        public static function getPreviousPageLinkId()
         {
-            return 'what button here';
+            return 'orderBysPreviousLink';
         }
 
-        protected function renderNextPageLinkContent()
+        public static function getNextPageLinkId()
         {
-            return 'todo: next button';
+            return 'orderBysDataNextLink';
         }
     }
 ?>

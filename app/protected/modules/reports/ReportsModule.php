@@ -40,7 +40,7 @@
 
         public function getRootModelNames()
         {
-            return array('Report');
+            return array('SavedReport');
         }
 
         public static function getDefaultMetadata()
@@ -54,10 +54,18 @@
                         'right' => self::RIGHT_ACCESS_REPORTS,
                     ),
                 ),
+                'headerMenuItems' => array(
+                    array(
+                        'label' => 'Reports',
+                        'url'   => array('/reports/default'),
+                        'right' => self::RIGHT_ACCESS_REPORTS,
+                        'order' => 8,
+                    ),
+                ),
                 'shortcutsCreateMenuItems' => array(
                     array(
                         'label' => 'Report',
-                        'url'   => array('/reports/default/create'),
+                        'url'   => array('/reports/default/selectType'),
                         'right' => self::RIGHT_CREATE_REPORTS,
                     ),
                 ),

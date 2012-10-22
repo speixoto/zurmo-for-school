@@ -26,24 +26,40 @@
 
     class GeneralDataForReportWizardView extends ComponentForReportWizardView
     {
+        const VALIDATION_SCENARIO = 'ValidateForGeneralData';
+
         protected function renderFormContent()
         {
-            return 'GeneralDataForReportWizardView form content';
+
+            $element       = new TextElement($this->model, 'name', $this->form);
+            $content = $element->render();
+            return 'GeneralDataForReportWizardView form content' . $content;
         }
 
         public static function getWizardStepTitle()
         {
-            return 'todo';
-        }
-
-        protected function renderPreviousPageLinkContent()
-        {
-            return 'what button here';
+            return Yii::t('Default', 'Save Report');
         }
 
         protected function renderNextPageLinkContent()
         {
-            return 'todo: next button';
+            $params = array();
+            $params['label']       = Yii::t('Default', 'Save and Run');
+            $params['htmlOptions'] = array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $searchElement = new SaveButtonActionElement(null, null, null, $params);
+            return $searchElement->render();
         }
+
+        public static function getPreviousPageLinkId()
+        {
+            return 'generalDataPreviousLink';
+        }
+
+        public static function getNextPageLinkId()
+        {
+            return 'generalDataSaveAndRunLink';
+        }
+
+
     }
 ?>
