@@ -9152,10 +9152,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 /*Picklist Creation*/
 #picklist-values {
-  margin-top: 15px;
+  margin: 15px 0;
 }
 #picklist-values td {
   padding-left: 0;
+  padding-bottom: 0;
 }
 #picklist-values .errorMessage {
   margin-top: -5px;
