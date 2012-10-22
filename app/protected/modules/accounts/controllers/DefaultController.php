@@ -190,12 +190,12 @@
         public function actionMassDelete()
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'massDeletePageSize');
+                            'massDeleteProgressPageSize');
             $account = new Account(false);
+
             $activeAttributes = $this->resolveActiveAttributesFromMassDeletePost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
-                'Account',
                 $pageSize,
                 Yii::app()->user->userModel->id);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -217,17 +217,15 @@
             $view = new AccountsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
-            //print_r($account);
         }
 
         public function actionMassDeleteProgress()
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'massEditProgressPageSize');
+                            'massDeleteProgressPageSize');
             $account = new Account(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
-                'Account',
                 $pageSize,
                 Yii::app()->user->userModel->id
             );

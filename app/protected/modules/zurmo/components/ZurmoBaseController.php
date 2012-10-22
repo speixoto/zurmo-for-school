@@ -386,6 +386,7 @@
          */
         protected function processMassDelete(
             $pageSize,
+            $activeAttributes,
             $selectedRecordCount,
             $pageViewClassName,
             $listModel,
@@ -396,26 +397,8 @@
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $modelClassName = get_class($listModel);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            if (isset($_POST[$modelClassName]))
+            if (isset($_POST['selectedIds']))
             {
-                PostUtil::sanitizePostForSavingMassEdit($modelClassName);
-                //Generically test that the changes are valid before attempting to delete on each model.
-                $sanitizedOwnerPostData = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($_POST[$modelClassName], 'owner');
-                $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST[$modelClassName], 'owner');
-                $massEditPostrDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST['MassEdit'], 'owner');
-                $listModel->setAttributes($sanitizedPostDataWithoutOwner);
-                if ($listModel->validate(array_keys($massEditPostrDataWithoutOwner)))
-                {
-                    $passedOwnerValidation = true;
-                    if ($sanitizedOwnerPostData != null)
-                    {
-                        $listModel->setAttributes($sanitizedOwnerPostData);
-                        $passedOwnerValidation = $listModel->validate(array('owner'));
-                    }
-                    if ($passedOwnerValidation)
-                    {
-                        MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
-                        Yii::app()->gameHelper->triggerMassDeleteEvent(get_class($listModel));
                         $this->doMassDelete(
                             get_class($listModel),
                             $modelClassName,
@@ -462,8 +445,6 @@
                             Yii::app()->end(0, false);
                         }
                     }
-                }
-            }
             return $listModel;
         }
         protected function processMassDeleteProgress(
@@ -475,7 +456,6 @@
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $listModel = new $modelClassName(false);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            PostUtil::sanitizePostForSavingMassEdit($modelClassName);
             $this->doMassDelete(
                 get_class($listModel),
                 $modelClassName,
@@ -531,13 +511,6 @@
             {
                 if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($modelToDelete, Permission::DELETE))
                 {
-                    $sanitizedOwnerPostData = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($_POST[$postVariableName], 'owner');
-                    $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST[$postVariableName], 'owner');
-                    $modelToDelete->setAttributes($sanitizedPostDataWithoutOwner);
-                    if ($sanitizedOwnerPostData != null)
-                    {
-                        $modelToDelete->setAttributes($sanitizedOwnerPostData);
-                    }
                     $modelToDelete->delete(false);
                 }
                 else

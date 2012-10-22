@@ -76,6 +76,11 @@
         * Mass delete page size
         */
         protected $_massDeletePageSize;
+
+        /**
+         * When a mass delete must complete using a progress bar, this is how many are processed at once.
+         */
+        protected $_massDeleteProgressPageSize;
         /**
         * Default list page size for api calls.
         */
@@ -147,11 +152,10 @@
         /** This is set from the value in application common config file. It is used as the final fall back
         * if no other configuration settings are found.
         */
-        public function setMassDeletePageSize($value)
+        public function setMassDeleteProgressPageSize($value)
         {
-            $this->_massDeletePageSize = $value;
+            $this->_massDeleteProgressPageSize = $value;
         }
-
         /**
         * This is set from the value in the application common config file. It is used as the final fall back
         * if no other configuration settings are found.
