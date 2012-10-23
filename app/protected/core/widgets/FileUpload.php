@@ -291,8 +291,8 @@ EOD;
             {
                 return;
             }
-            $content = ' ' . Yii::t('Default', 'Max upload size: {maxSize}',
-                       array('{maxSize}' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($maxSize)));
+            $content = '<span class="max-upload-size">' . Yii::t('Default', 'Max upload size: {maxSize}',
+                       array('{maxSize}' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($maxSize))) . '</span>';
             return $content;
         }
     }

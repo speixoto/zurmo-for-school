@@ -132,14 +132,17 @@
                    $this->relatedModel->createdByUser == Yii::app()->user->userModel ||
                    ($this->relatedModel instanceof OwnedSecurableItem && $this->relatedModel->owner == Yii::app()->user->userModel))
                 {
-                    $deleteCommentLink = '<span class="delete-comment">' . $this->renderDeleteLinkContent($comment) . '</span>';
+                    $deleteCommentLink   = ' · <span class="delete-comment">' . $this->renderDeleteLinkContent($comment) . '</span>';
+                    $editCommentLink     = ' · <span class="edit-comment">' . $this->renderEditLinkContent($comment) . '</span>';
                 }
                 else
                 {
                     $deleteCommentLink = null;
+                    $editCommentLink   = null;
                 }
+                $editCommentLink   = null; //temporary until edit link is added
                 $stringContent .= '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                              $comment->createdDateTime, 'long', null) . '</strong></span>' . $deleteCommentLink;
+                                              $comment->createdDateTime, 'long', null) . '</strong></span>' . $editCommentLink . $deleteCommentLink;
 
                 $stringContent .= '</div>';
 
@@ -161,6 +164,15 @@
                          array('id'         => 'deleteCommentLink' . $comment->id,
                                 'class'     => 'deleteCommentLink' . $comment->id,
                                 'namespace' => 'delete'));
+            // End Not Coding Standard
+        }
+
+        /*TODO*/
+        protected function renderEditLinkContent(Comment $comment)
+        {
+            $url     =   '';
+            // Begin Not Coding Standard
+            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Edit'), $url);
             // End Not Coding Standard
         }
 

@@ -34,7 +34,6 @@
     font-weight: bold;
 }
 
-
 /*=For modern browsers */
 .clearfix{
     &:before{
@@ -337,7 +336,7 @@ footer, header, hgroup, menu, nav, section {
     font-weight:bold;
     display: block;
     text-align:center;
-    margin-top:-1px  !important;
+    margin-top:1px  !important;
     display:inline-block;
     background:transparent  !important;
     .radius(0) !important;
@@ -376,6 +375,7 @@ footer, header, hgroup, menu, nav, section {
         }
         div{
             padding-right:40px;
+            .smaller();
         }
         .remove{
             position:absolute;
@@ -1244,7 +1244,7 @@ footer, header, hgroup, menu, nav, section {
     line-height: 19px;
     display:inline-block;
     margin-left:10px;
-    font-size: 11px;
+    .smaller();
     span{
         margin-left:70px;
     }
@@ -1271,7 +1271,6 @@ table.items{
         border-right:none;
         border-left:none;
         vertical-align:middle;
-        //padding:2px;
         padding:10px 5px;
     }
     th{
@@ -1284,9 +1283,10 @@ table.items{
         white-space: nowrap;
     }
     tr:hover{
-        background-color:#D4E7BC;
-        color:@themeColor;
-        .animateAll(0.05s);
+        #gradient > .vertical(#efefef, #eeeeee);
+        td{
+            .t-shadow(0 1px 0 #fff);
+        }
         .pencil{
             visibility:visible;
             color:@themeColor;
@@ -1361,7 +1361,7 @@ tr.even{
 
 .empty{
     display:block;
-    font-size: 11px;
+    .smaller();
 }
 
 td.empty{
@@ -1983,7 +1983,7 @@ div.wide.form{
     border-bottom: none;
     position: relative;
     #gradient > .vertical( #f5f5f5, #ebebeb );
-    font-size: 11px;
+    .smaller();
 }
 
 .search-form-tools{
@@ -1992,7 +1992,7 @@ div.wide.form{
     left:265px;
     line-height:25px;
     color:@themeColor;
-    font-size: 11px;
+    .smaller();
     input[type="submit"]{
         .zButton();
     }
@@ -2044,7 +2044,7 @@ div.wide.form{
         top:35px;
         padding:20px 20px 20px 20px;
         .flyout();
-        font-size: 11px;
+        .smaller();
         input, select{
             position: relative;
             z-index: 5000;
@@ -2252,11 +2252,6 @@ div.wide.form{
     }
 }
 
-.flyout{
-    border:1px solid #b6b6b6;
-    #gradient > .vertical( #f5f5f5, #ebebeb );
-    .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-}
 
 /*=Edit + Add Account View*/
 .buffer{
@@ -2278,6 +2273,7 @@ div.wide.form{
         width:100% !important;
         table{
             width:100% !important;
+            margin-top: 10px;
         }
         a{
             color:@themeColor;
@@ -2286,7 +2282,6 @@ div.wide.form{
     #right-side-edit-view-panel{
         margin-bottom:15px;
         position:relative !important;
-        //width:100% !important;
         float:left !important;
         .buffer{
            // padding-left:15px;
@@ -2297,6 +2292,9 @@ div.wide.form{
     }
     .col-1, .col-3{
         width:35% !important;
+    }
+    td + th{
+        border-left:1px solid #ccc;
     }
 }
 
@@ -2365,6 +2363,10 @@ div.wide.form{
             margin-bottom:0 !important;
         }
     }
+}
+
+.more-panels-link{
+    font-size:11px;
 }
 
 .address-fields{
@@ -2627,14 +2629,20 @@ div.wide.form{
     }
     .map-link{
         display: inline-block;
-        margin-left:6px;
+        margin-left:4px;
+        position: relative;
+        padding-left: 16px;
     }
     .map-link:before{
         content:"K"; //L=
         .symbly(26px);
-        position: relative;
-        top:4px;
-        margin-right:3px;
+        line-height: 12px;
+        position: absolute;
+        left: 0;
+        top:2px;
+        //position: relative;
+        //top:4px;
+        //margin-right:3px;
     }
     .hasCheckBox{
         margin-top:0;
@@ -2797,7 +2805,7 @@ div.wide.form{
         a{
             text-indent:0;
             color: #666;
-            font-size: 11px;
+            .smaller();
             font-weight: normal;
             display: block;
             padding: 5px 10px 5px 10px;
@@ -2847,7 +2855,7 @@ div.wide.form{
     a{
         text-indent:0;
         color: #666;
-        font-size: 11px;
+        .smaller();
         font-weight: normal;
         display: block;
         padding: 5px 10px 5px 10px;
@@ -3095,18 +3103,18 @@ div.wide.form{
     margin-top:5px;
     position: relative;
     span{
-        float: right;
+        float: left;
         position: relative;
-        top:0;
-        right:0;
-        margin-top: -1px !important;
+        margin-right:5px;
+    }
+    .tooltip{
+        margin-top:-1px;
     }
     label.hasCheckBox{
-        float: right !important;
+        float: left !important;
         position: relative;
         top: -5px;
-        margin-left: 10px;
-        margin-right: 30px !important;
+        margin: 0;
     }
 }
 
@@ -3130,18 +3138,26 @@ div.wide.form{
     #StickyListMenu{
         list-style: none;
         > li > a > span{
-            //.symbly(18px);
-            top:0px;
+            top:2px;
             position: relative;
             display: block;
             padding:0 5px;
+            font-size: 15px;
+            line-height: 12px;
+            .t-shadow(~"0 1px 0px #ffffff, 0 0 5px #bbb");
         }
+        > li > a:hover > span{
+            color:@themeColor2;
+            .t-shadow(~"0 1px 0px #ffffff");
+        }
+        
         ul{
             .flyout();
             display: none;
             list-style: none;
             position: absolute;
-            margin-top:0;
+            margin-top:3px;
+            margin-left:5px;
             padding-top:3px;
             padding-bottom:3px;
             font-weight:normal !important;
@@ -3153,7 +3169,7 @@ div.wide.form{
             a{
                 text-indent:0;
                 color: #666;
-                font-size: 11px;
+                .smaller();
                 font-weight: normal;
                 display: block;
                 padding: 5px 10px 5px 10px;
@@ -3256,10 +3272,10 @@ div.hasHalfs{
             height:50px;
             float:left;
             margin-left:0;
-            margin-top:-3px;
+            margin-top:-4px;
             width:auto;
             label{
-                margin:0 5px;
+                margin:0 5px 0 0;
             }
         }
         input[type="checkbox"]{
@@ -3270,8 +3286,8 @@ div.hasHalfs{
     }
     .email,
     .phone{
-        font-size:11px;
-        margin-top:5px;
+        //font-size:11px;
+        ///margin-top:3px;
     }
 }
 
@@ -3300,6 +3316,7 @@ div.hasHalfs{
         }
     }
 }
+
 .edit-row-menu{
     float:right;
     margin:0 0 0 0;
@@ -3322,16 +3339,17 @@ div.hasHalfs{
                 .opacity(100);
             }
             &:before{
-                content: "▾ ";
+                content: "▾";
                 color:@themeColor;
-                //.symbly(26px);
                 position: relative;
-                top:-3px;
+                top:-2px;
+                right:2px;
+                font-size: 10px;
             }
             &:after{
                 content: "n";
                 color:@themeColor;
-                .symbly(26px);
+                .symbly(24px);
             }
         }
         a{
@@ -3344,23 +3362,31 @@ div.hasHalfs{
         margin-left:-97px;
         list-style: none;
         .headerDropDown();
-        top:16px;
+        top:20px;
+        .smaller();
     }
 }
 
 /*Upcoming Meeting Pager*/
+
 .pager{
     width:100%;
     text-align:center;
-    .clearfix();
+    border-top: 1px solid #DFDFDF;
+    background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
     ul{
-        width:100%;
+        width:50%;
+        margin:0 auto;
         .box-sizing();
         list-style: none;
+        border-left: 1px solid #DFDFDF;
+        .clearfix();
     }
     ul.endless-list-pager{
-        border-top: 1px solid #DFDFDF;
+        //border-top: 1px solid #DFDFDF;
+        width:100%;
         list-style:none;
+        border-left: none;
         li{
             float:none;
             width:100%;
@@ -3374,18 +3400,21 @@ div.hasHalfs{
     li{
         .box-sizing();
         float:left;
-        width:50%;
+        width:25%;
         padding:0;
         border:none;
-        border-top:1px solid #e7e7e7;
+        //border-top:1px solid #e7e7e7;
+        border-right: 1px solid #DFDFDF;
+        text-align: center;
+        /*
         &:first-child{
             border-right:1px solid #ccc;
-        }
+        }*/
         > a{
             font-weight:bold;
             display:block;
-            padding:4px 0 4px 0 !important;
-            background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+            
+            //background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
             span{
                 display:none;
             }
@@ -3398,24 +3427,52 @@ div.hasHalfs{
             }
         }
     }
+    /*
     .next a, .previous a, .hidden.next, .hidden.previous{
-        .symbly(16px);
-    }
+        //.symbly(16px);
+    }*/
+    
     .next a:after, .hidden.next:after{
-        content:"7";
+        content:"›"; //"7"
     }
     .previous a:after, .hidden.previous:after{
-        content:"8";
+        content:"‹"; //"8"
     }
-    .previous{
-        border-right:1px solid #e7e7e7;
+    .first a:after/*, .hidden.first:after*/{
+        content:"«"; //"7"
     }
+    .last a:after/*, .hidden.last:after*/{
+        content:"»"; //"8"
+    }
+    
+    .hidden.next:after,
+    .hidden.previous:after{
+        color:#ccc;
+    }
+
     #list-view-endless-page:after{
-         content:"6" !important;
+         content:"6" !important; //"6"
     }
-    .first, .last{
-        display:none;
+    .first.hidden{
+        //display:none;
     }
+    
+    .next, .previous, .first, .last{
+        font-size:14px;
+        line-height: 1;
+        font-weight: bold;
+        span{
+            text-indent:-9999px;
+            display: inline-block;
+            //padding:4px 0 4px 0 !important;
+            padding:2px 0 4px 0 !important;
+        }
+        > span{
+            
+        }
+    }
+    
+    /*
     .hidden{
         span{
             text-indent:-9999px;
@@ -3426,12 +3483,16 @@ div.hasHalfs{
         .b-shadow(~"inset 0 0 8px 2px #ccc !important");
         padding:4px 0 4px 0 !important;
         pointer-events:none;
-    }
-   /*doesnt work in IE*/
+    }*/
+   //doesnt work in IE
     &:empty{
         display:none;
     }
 }
+/*
+
+*/
+
 
 /*=Meetings modal*/
 #days-meetings-list-view{
@@ -3525,7 +3586,7 @@ div.hasHalfs{
     }
     .latest-activity-toolbar,
     .filter-portlet-model-bar{
-        font-size: 11px;
+        .smaller();
         padding-left:8px;
         label{
             cursor:pointer;
@@ -3572,6 +3633,10 @@ div.hasHalfs{
     td, th{
         padding:10px 0;
         border-bottom: 1px solid #DFDFDF;
+        div{
+            font-weight: 400 !important;
+            margin: 0;
+        }
     }
     tr{
         &:last-child{
@@ -3582,7 +3647,7 @@ div.hasHalfs{
             }
         }
     }
-    tr td:first-child{
+    td:first-child{
         border-top:none !important;
         padding-left:15px !important;
         padding-right:15px;
@@ -3740,7 +3805,7 @@ div.hasHalfs{
             border-top: 1px solid #fff;
             border-bottom: 1px solid #CCC;
             color: #666;
-            font-size: 11px;
+            .smaller();
             line-height:100%;
             font-weight: normal;
             display: block;
@@ -3863,7 +3928,7 @@ div.hasHalfs{
     .hasCheckBox{
         margin-top:0 !important;
         position:relative;
-        top:10px;
+        top:-4px;
     }
     tr th:first-child{
         padding:0 !important;
@@ -4067,7 +4132,7 @@ div.hasHalfs{
 .TasksMyListView{
     .checkbox-column{
         .hasCheckBox{
-            margin-left:0;
+            //margin-left:0;
         }
     }
 }
@@ -4136,8 +4201,8 @@ div.hasHalfs{
 @import 'install.less';
 @import 'configuration.less';
 @import 'dashboard-portlets.less';
-@import 'file-upload.less';
 @import 'form.less';
+@import 'file-upload.less';
 @import 'datepicker.less';
 @import 'token-input.less';
 @import 'notifications.less';
