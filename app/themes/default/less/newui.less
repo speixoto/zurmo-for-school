@@ -1770,6 +1770,7 @@ div.wide.form{
 }
 
 .list-view-items-summary-clone{
+    .smaller();
     float: right;
     margin:20px 0 0 0;
     color:#666;
@@ -3138,17 +3139,24 @@ div.wide.form{
     #StickyListMenu{
         list-style: none;
         > li > a > span{
-            top:2px;
-            position: relative;
+            top:0;
+            position: absolute;
             display: block;
-            padding:0 5px;
-            font-size: 15px;
+            margin-left: 10px;
+            width:13px;
+            height: 13px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 11px;
             line-height: 12px;
-            .t-shadow(~"0 1px 0px #ffffff, 0 0 5px #bbb");
+            color: #666;
+            border:1px solid #fff;
+            .b-shadow(inset 0 0 0 1px #eee);
+            .t-shadow(0 1px 0 #fff);
+            .radius(3px);
         }
         > li > a:hover > span{
             color:@themeColor2;
-            .t-shadow(~"0 1px 0px #ffffff");
         }
         
         ul{
@@ -3156,8 +3164,8 @@ div.wide.form{
             display: none;
             list-style: none;
             position: absolute;
-            margin-top:3px;
-            margin-left:5px;
+            margin-top:5px;
+            margin-left:11px;
             padding-top:3px;
             padding-bottom:3px;
             font-weight:normal !important;
@@ -3370,10 +3378,11 @@ div.hasHalfs{
 /*Upcoming Meeting Pager*/
 
 .pager{
+    .box-sizing();
     width:100%;
     text-align:center;
-    border-top: 1px solid #DFDFDF;
     background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+    .b-shadow(inset 0 1px 0 #DFDFDF );
     ul{
         width:50%;
         margin:0 auto;
@@ -3400,21 +3409,14 @@ div.hasHalfs{
     li{
         .box-sizing();
         float:left;
-        width:25%;
+        width:30%;
         padding:0;
         border:none;
-        //border-top:1px solid #e7e7e7;
         border-right: 1px solid #DFDFDF;
         text-align: center;
-        /*
-        &:first-child{
-            border-right:1px solid #ccc;
-        }*/
         > a{
             font-weight:bold;
             display:block;
-            
-            //background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
             span{
                 display:none;
             }
@@ -3427,10 +3429,9 @@ div.hasHalfs{
             }
         }
     }
-    /*
-    .next a, .previous a, .hidden.next, .hidden.previous{
-        //.symbly(16px);
-    }*/
+    .first, .last{
+        width: 20%;
+    }
     
     .next a:after, .hidden.next:after{
         content:"›"; //"7"
@@ -3453,8 +3454,16 @@ div.hasHalfs{
     #list-view-endless-page:after{
          content:"6" !important; //"6"
     }
-    .first.hidden{
+    .first.hidden,
+    .last.hidden{
         //display:none;
+        //background: red;
+        //visibility: hidden;
+        a:after{
+            color:#ccc;
+        }
+        pointer-events:none;
+         
     }
     
     .next, .previous, .first, .last{
@@ -3464,11 +3473,7 @@ div.hasHalfs{
         span{
             text-indent:-9999px;
             display: inline-block;
-            //padding:4px 0 4px 0 !important;
             padding:2px 0 4px 0 !important;
-        }
-        > span{
-            
         }
     }
     
@@ -3782,10 +3787,9 @@ div.hasHalfs{
         }
     }
     .pager{
-        ul{
-            border-top:none;
-            float:left;
-        }
+        border-left:1px solid #DFDFDF;
+        border-right:1px solid #DFDFDF;
+        .b-shadow(none);
     }
 }
 
