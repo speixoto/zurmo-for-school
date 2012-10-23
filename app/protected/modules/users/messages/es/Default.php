@@ -35,6 +35,8 @@
             => 'Acceso a ficha de usuarios',
         'Change Password'
             => 'Cambiar contraseña',
+        'Change Profile Picture'
+            => '??',
         'Change User Passwords'
             => 'Cambiar las contraseñas de Usuarios',
         'Confirm Password'
@@ -67,6 +69,8 @@
             => 'Largo mínimo de nombre de usuario',
         'My Profile'
             => 'Mi Perfil',
+        'No Profile Picture'
+            => '??',
         'Password Expires'
             => 'Vencimiento de la contraseña',
         'Password Expiry Days'
@@ -97,6 +101,10 @@
             => 'Zona horaria',
         'Turn off email notifications'
             => 'Desactivar notificaciones de email',
+        'Use Gravatar with custom email'
+            => '??',
+        'Use Gravatar with primary email ({primaryEmail})'
+            => '??',
         'User'
             => 'Usuario',
         'User configuration saved successfully.'
@@ -109,5 +117,9 @@
             => 'No se puede eliminar usuarios. Sin embargo, puede cambiar su estado a inactivo.',
         'Users Home'
             => 'Accueil Utilisateurs',
+        'You need to choose an email address.'
+            => '??',
+        'Your Gravatar is an image that follows you from site to site appearing beside your name when you do things like comment or post on a blog.'
+            => '??',
     );
 ?>

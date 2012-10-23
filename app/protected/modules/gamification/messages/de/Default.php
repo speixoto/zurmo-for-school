@@ -28,5 +28,60 @@
     // KEEP them indented correctly.
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
-    return array();
+    return array(
+		'Account Management'
+             => '??',
+		'Achievements'
+             => '??',
+		'Communication'
+             => '??',
+		'Congratulations!'
+             => '??',
+		'Continue'
+             => '??',
+		'Game on!'
+             => 'Game on!', // Same Word Translated
+		'I reached level {nextLevel}'
+             => '??',
+		'I received a new badge: {badgeContent}'
+             => '??',
+		'Leaderboard'
+             => '??',
+		'Leaderboard Ranking'
+             => '??',
+		'Level'
+             => '??',
+		'Monthly'
+             => '??',
+		'New Badge'
+             => '??',
+		'New Business'
+             => '??',
+		'No achievements earned.'
+             => '??',
+		'Overall'
+             => '??',
+		'Overall Statistics'
+             => '??',
+		'Points'
+             => '??',
+		'Rank'
+             => '??',
+		'Sales'
+             => '??',
+		'Skip'
+             => '??',
+		'Time Management'
+             => '??',
+		'Weekly'
+             => '??',
+		'You have reached level {nextLevel}'
+             => '??',
+		'{n} Zurmo early morning login|{n} Zurmo early morning logins'
+             => '??',
+		'{n} Zurmo login|{n} Zurmo logins'
+             => '??',
+		'{n} Zurmo nighttime login|{n} Zurmo nighttime logins'
+             => '??',
+    );
 ?>

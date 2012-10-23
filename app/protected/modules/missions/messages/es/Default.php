@@ -29,6 +29,57 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-
+		'A mission status has changed'
+            => '??',
+		'A mission you completed has been accepted'
+            => '??',
+		'A mission you completed has been rejected'
+            => '??',
+		'A mission you created has been completed'
+            => '??',
+		'A mission you created has been taken on by {takenByUserName}'
+            => '??',
+		'Accept'
+            => '??',
+		'Accepted'
+            => '??',
+		'Access Missions Tab'
+            => '??',
+		'At least one mission has unread content'
+            => '??',
+		'Available'
+            => '??',
+		'Awaiting Acceptance'
+            => '??',
+		'Complete'
+            => '??',
+		'Create Mission'
+            => '??',
+		'Create Missions'
+            => '??',
+		'Delete Missions'
+            => '??',
+		'Due'
+            => '??',
+		'Mission'
+            => '??',
+		'Mission Latest'
+            => '??', // Same Word Translated
+		'Missions'
+            => '??',
+		'My Missions'
+            => '??',
+		'Reject'
+            => '??',
+		'Rejected'
+            => '??',
+		'Reward'
+            => '??',
+		'Taken By'
+            => '??',
+		'This mission is already taken'
+            => '??',
+		'{n} Mission created|{n} Missions created'
+            => '??',
     );
 ?>

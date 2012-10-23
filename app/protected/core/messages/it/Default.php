@@ -55,6 +55,12 @@
             => 'e',
         'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"'
             => 'L\'applicazione non è in modalità di manutenzione. Si prega di modificare il file perInstance.php, e impostare "$ maintenanceMode = true;"',
+        'Apply'
+            => 'Applica',
+        'Are you sure you want to delete this {modelLabel}?'
+            => 'Siete sicuro di voler eliminare questo(a) {modelLabel}?',
+        'Are you sure you want to unlink this {modelLabel}?'
+            => 'Siete sicuro di voler dissociare questo(a) {modelLabel}?',
         'Basic Search'
             => 'Ricerca',
         'Basic Search Fields'
@@ -93,6 +99,8 @@
             => 'Clicca qui',
         'Close'
             => 'Chiude',
+        'Columns'
+            => 'Colonne',
         'Copying files.'
             => 'Copia file.',
         'Could not extract upgrade "from version" in the manifest file.'
@@ -161,6 +169,8 @@
             => 'Nome Completo',
         'Go to Details'
             => 'Dettagli',
+        'Hidden Columns'
+            => 'Nascondi colonne',
         'Hour'
             => 'Ora',
         'Info'
@@ -279,6 +289,8 @@
             => 'Rimuovi',
         'Removing upgrade files.'
             => 'Rimozione dei file di aggiornamento.',
+        'Reset'
+            => 'Reset', // Same Word Translated
         'Return to List'
             => 'Ritorna alla lista',
         'Row'
@@ -351,6 +363,8 @@
             => 'Digitare per trovare un tag.',
         'Unknown'
             => 'Ignoto ',
+        'Unlink'
+            => 'Dissociare',
         'Update'
             => 'Aggiorna',
         'updated successfully.'
@@ -369,6 +383,8 @@
             => 'Utente',
         'Users'
             => 'Utenti',
+        'Visible Columns'
+            => 'Visualizza colonne',
         'Yes'
             => 'Si',
         'Yesterday'
