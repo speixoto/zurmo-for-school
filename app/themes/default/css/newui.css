@@ -541,10 +541,11 @@ section {
 }
 #user-header-menu > li > a,
 #settings-header-menu > li > a {
-  padding: 0;
+  padding: 0 10px;
   line-height: 38px;
   display: block;
   overflow: visible;
+  background: pink;
 }
 #user-header-menu ul,
 #settings-header-menu ul {
