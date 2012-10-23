@@ -32,13 +32,15 @@
          */
         public function actionInlineCreateSave($redirectUrl = null)
         {
+            $socialItem = new SocialItem();
+            $socialItem->setScenario('createPost');
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'social-item-inline-edit-form')
             {
-                $this->actionInlineEditValidate(new SocialItem(), 'SocialItem');
+                $this->actionInlineEditValidate($socialItem, 'SocialItem');
             }
             $_POST['SocialItem']['explicitReadWriteModelPermissions']['type'] = ExplicitReadWriteModelPermissionsUtil::
                                                                                 MIXED_TYPE_EVERYONE_GROUP;
-            $this->attemptToSaveModelFromPost(new SocialItem(), $redirectUrl);
+            $this->attemptToSaveModelFromPost($socialItem, $redirectUrl);
         }
 
         public function actionPostGameNotificationToProfile($content)
