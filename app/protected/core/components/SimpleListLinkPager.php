@@ -44,11 +44,12 @@
             $buttons = array();
             list($beginPage, $endPage) = $this->getPageRange();
             $currentPage = $this->getCurrentPage(false); // currentPage is calculated in getPageRange()
-            $buttons[] = $this->createPageButton($this->firstPageLabel, 0, $this->firstPageCssClass, true, true);
+            $buttons[]   = $this->createPageButton('refresh', 0, 'refresh', true, true);
             if (($pageCount = $this->getPageCount()) <= 1)
             {
                 return $buttons;
             }
+            $buttons[]= $this->createPageButtonNoLinkIfHidden($this->firstPageLabel, 0, $this->firstPageCssClass, $currentPage <= 0, false);
             // prev page
             if (($page = $currentPage-1) < 0)
             {
