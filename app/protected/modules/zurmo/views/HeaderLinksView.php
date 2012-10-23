@@ -112,7 +112,7 @@
             $imageSourceUrl = Yii::app()->baseUrl . '/themes/default/images/loading.gif';
             // Begin Not Coding Standard
             $content  .= "<a id=\"notifications-flyout-link\" href=\"#\" class=\"notifications-link unread\">";
-            $content  .= "<span id='notifications-link' class='tooltip'>" . $count ."</span></a>";
+            $content  .= "<span id='notifications-link'>" . $count ."</span></a>";
             $content  .= ZurmoHtml::tag('div',
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
                                     ZurmoHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
