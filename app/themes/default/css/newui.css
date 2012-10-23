@@ -4567,7 +4567,7 @@ div.hasHalfs .twoThirds {
 
 }
 .pager ul {
-  width: 60%;
+  width: 50%;
   margin: 0 auto;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -4586,7 +4586,9 @@ div.hasHalfs .twoThirds {
   clear: both;
 }
 .pager ul.endless-list-pager {
+  width: 100%;
   list-style: none;
+  border-left: none;
 }
 .pager ul.endless-list-pager li {
   float: none;
@@ -4645,8 +4647,20 @@ div.hasHalfs .twoThirds {
 .pager .last a:after {
   content: "»";
 }
+.pager .hidden.next:after,
+.pager .hidden.previous:after {
+  color: #ccc;
+}
 .pager #list-view-endless-page:after {
   content: "6" !important;
+}
+.pager .next,
+.pager .previous,
+.pager .first,
+.pager .last {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: bold;
 }
 .pager .next span,
 .pager .previous span,
@@ -4654,7 +4668,7 @@ div.hasHalfs .twoThirds {
 .pager .last span {
   text-indent: -9999px;
   display: inline-block;
-  padding: 4px 0 4px 0 !important;
+  padding: 2px 0 4px 0 !important;
 }
 .pager:empty {
   display: none;
