@@ -402,16 +402,46 @@
             $superAccountId12 = self::getModelIdByModelNameAndName('Account', 'superAccount12');
             //Load Model MassDelete Views.
             //MassDelete view for single selected ids
-            $this->setGetArray(array('selectedIds' => '5,6,7,8', 'selectAll' => ''));  // Not Coding Standard
-            $this->setPostArray(array('selectedIds' => '5'));
+            $this->setGetArray(array('selectedIds' => '5,6,7,8', 'selectAll' => '', ));  // Not Coding Standard
+            $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDelete');
             $this->assertFalse(strpos($content, '<strong>4</strong>&#160;records selected for removal') === false);
 
             //MassDelete view for all result selected ids
             $this->setGetArray(array('selectAll' => '1'));
-            $this->setPostArray(array('selectedIds' => '5'));
+            $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDelete');
             $this->assertFalse(strpos($content, '<strong>12</strong>&#160;records selected for removal') === false);
+            //MassDelete for selected ids
+            $account2 = Account::getById($superAccountId2);
+            $account3 = Account::getById($superAccountId3);
+            $this->setGetArray(array(
+                'selectedIds' => $superAccountId2 . ',' . $superAccountId3, // Not Coding Standard
+                'selectAll' => '',
+                'Account_page' => 1));
+            $this->setPostArray(array('selectedIds' => '5'));
+            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/massDelete');
+
+            //Run Mass Update using progress save.
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            //save Modal MassEdit using progress load for page 2, 3 and 4.
+            $this->setGetArray(array('selectAll' => '1', 'Account_page' => 2));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDeleteProgress');
+            $this->assertFalse(strpos($content, '"value":100') === false);
+
+            //Set page size back to old value.
+            Yii::app()->pagination->setForCurrentUserByType('massDeleteProgressPageSize', $pageSize);
+            //save Model MassDelete for entire search result
+            $this->setGetArray(array(
+                'selectAll' => '1',
+                'Account_page' => 1));
+            $this->setPostArray(array('selectedIds' => '5'));
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            Yii::app()->pagination->setForCurrentUserByType('massDeleteProgressPageSize', 20);
+            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/massDelete');
+            Yii::app()->pagination->setForCurrentUserByType('massDeleteProgressPageSize', $pageSize);
         }
     }
 ?>

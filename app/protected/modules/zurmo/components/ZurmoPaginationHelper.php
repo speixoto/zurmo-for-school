@@ -73,11 +73,6 @@
         protected $_apiListPageSize;
 
         /**
-        * Mass delete page size
-        */
-        protected $_massDeletePageSize;
-
-        /**
          * When a mass delete must complete using a progress bar, this is how many are processed at once.
          */
         protected $_massDeleteProgressPageSize;
@@ -308,7 +303,7 @@
         {
             return array('listPageSize', 'subListPageSize', 'modalListPageSize', 'massEditProgressPageSize',
                          'autoCompleteListPageSize', 'importPageSize', 'dashboardListPageSize', 'apiListPageSize',
-                         'massDeletePageSize','unlimitedPageSize');
+                         'massDeleteProgressPageSize','unlimitedPageSize');
         }
     }
 ?>
