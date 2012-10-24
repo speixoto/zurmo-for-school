@@ -9312,7 +9312,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   height: 10px !important;
   line-height: 10px !important;
   display: inline-block;
-  position: absolute;
   background: #fff;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
