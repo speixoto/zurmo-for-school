@@ -5070,11 +5070,6 @@ div.hasHalfs .twoThirds {
   margin-bottom: 3px;
   display: block;
 }
-#activities-rollup-tooltip {
-  position: relative;
-  margin-top: -9px;
-  top: 2px;
-}
 .vertical-forward-pager {
   font-weight: bold;
   display: block;
