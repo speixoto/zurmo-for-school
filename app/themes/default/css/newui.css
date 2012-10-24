@@ -105,6 +105,7 @@
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
 }
 .zLink:hover,
 .z-link:hover {
@@ -391,22 +392,13 @@ section {
   display: none;
   position: absolute;
   top: 37px;
-  border: 1px solid #666;
-  background-color: #444444;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#333333), to(#444444));
-  background-image: -moz-linear-gradient(top, #333333, #444444);
-  background-image: -ms-linear-gradient(top, #333333, #444444);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #444444));
-  background-image: -webkit-linear-gradient(top, #333333, #444444);
-  background-image: -o-linear-gradient(top, #333333, #444444);
-  background-image: linear-gradient(top, #333333, #444444);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#444444', GradientType=0);
-  -webkit-box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
-  -moz-box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
-  -o-box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
-  -ms-box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
-  box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
+  border: 1px solid #444;
+  background: #252525;
+  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -421,9 +413,9 @@ section {
   border-bottom: none;
 }
 #HeaderLinksView ul ul a {
-  border-top: 1px solid #464646;
-  border-bottom: 1px solid #383838;
-  color: #ECECEC;
+  border-top: 1px solid #323232;
+  border-bottom: 1px solid #181818;
+  color: #EFEFEF;
   font-size: 11px;
   font-weight: normal;
   display: block;
@@ -431,7 +423,6 @@ section {
   margin: 0;
 }
 #HeaderLinksView ul ul a:hover {
-  border-top: 1px solid #80bf32;
   color: #fff !important;
   background-color: #527a20;
   background-repeat: repeat-x;
@@ -457,8 +448,8 @@ section {
   width: 18px;
   padding: 0 10px 1px 10px;
   background: url(../images/notifications-bubble.png) center top no-repeat;
-  border-left: 1px solid #666;
-  border-right: 1px solid #666;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #aaa;
   float: left;
   display: block;
 }
@@ -552,9 +543,23 @@ section {
 }
 #user-header-menu:hover > li > a,
 #settings-header-menu:hover > li > a {
-  border-left: 1px solid #666;
-  border-right: 1px solid #666;
-  background: #333;
+  color: #fff;
+  border-left: 1px solid #444;
+  border-right: 1px solid #444;
+  background-color: #252525;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#353535), to(#252525));
+  background-image: -moz-linear-gradient(top, #353535, #252525);
+  background-image: -ms-linear-gradient(top, #353535, #252525);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #353535), color-stop(100%, #252525));
+  background-image: -webkit-linear-gradient(top, #353535, #252525);
+  background-image: -o-linear-gradient(top, #353535, #252525);
+  background-image: linear-gradient(top, #353535, #252525);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#353535', endColorstr='#252525', GradientType=0);
+}
+#user-header-menu:hover > li > a:after,
+#settings-header-menu:hover > li > a:after {
+  color: #fff;
 }
 #user-header-menu > li > a,
 #settings-header-menu > li > a {
@@ -566,12 +571,23 @@ section {
   overflow: visible;
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
+  color: #ddd;
 }
 #user-header-menu > li > a:hover,
 #settings-header-menu > li > a:hover {
-  border-left: 1px solid #666;
-  border-right: 1px solid #666;
-  background: #333;
+  color: #fff;
+  border-left: 1px solid #444;
+  border-right: 1px solid #444;
+  background-color: #252525;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#353535), to(#252525));
+  background-image: -moz-linear-gradient(top, #353535, #252525);
+  background-image: -ms-linear-gradient(top, #353535, #252525);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #353535), color-stop(100%, #252525));
+  background-image: -webkit-linear-gradient(top, #353535, #252525);
+  background-image: -o-linear-gradient(top, #353535, #252525);
+  background-image: linear-gradient(top, #353535, #252525);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#353535', endColorstr='#252525', GradientType=0);
 }
 #user-header-menu ul,
 #settings-header-menu ul {
@@ -614,7 +630,7 @@ section {
 }
 #settings-header-menu > li > a:after {
   content: "n";
-  color: #ccc;
+  color: #ddd;
   font-weight: normal;
   font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -3028,6 +3044,7 @@ div.wide.form a {
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
   margin-left: 10px;
 }
 #clear-search-link:hover {
@@ -5388,6 +5405,7 @@ div.hasHalfs .twoThirds {
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
 }
 .lead-conversion-actions a:hover {
   color: #fff !important;
@@ -6191,6 +6209,10 @@ a.remove:hover .icon:after {
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 6px;
 }
+.back-to-app-menu-item a:hover span,
+.back-to-app-menu-item a:hover span:before {
+  color: #fff !important;
+}
 #ConfigurationPageView table {
   border: 1px solid #DFDFDF;
   border-collapse: collapse;
@@ -6627,7 +6649,7 @@ table.configuration-list tr td:last-child a:before {
   color: #545454;
   text-align: left;
   font-weight: bold !important;
-  height: 35px  !important;
+  height: auto  !important;
   line-height: 35px  !important;
   background: url(../images/table-items-header.png) left top repeat-x;
   padding: 0 0 0 10px !important;
@@ -6819,9 +6841,6 @@ table.configuration-list tr td:last-child a:before {
   background: url(../images/table-items-header.png) left top repeat-x;
   padding: 0 0 0 10px !important;
 }
-#JobsCollectionView .tooltip {
-  margin-top: 9px;
-}
 #JobsCollectionView a {
   background: #262877;
   padding: 1px 4px;
@@ -6830,7 +6849,9 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  color: #fff;
+  color: #fff !important;
+  font-size: 11px;
+  margin-right: 5px;
 }
 #JobsCollectionView a:hover {
   color: #fff !important;
@@ -6848,14 +6869,6 @@ table.configuration-list tr td:last-child a:before {
 #JobLogsModalListView td:first-child,
 #JobLogsModalListView th:first-child {
   padding-left: 15px;
-}
-#JobLogsModalListView .tooltip,
-#jobs-frequency .tooltip {
-  margin-top: -2px;
-}
-#JobLogsModalListView .job-label,
-#jobs-frequency .job-label {
-  margin-left: 25px;
 }
 .jobHasErrors {
   color: #cc0000;
@@ -7314,6 +7327,7 @@ table.configuration-list tr td:last-child a:before {
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
 }
 #ImportWizardMappingView #sample-column-header a:hover {
   color: #fff !important;
@@ -9324,7 +9338,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 8px;
   text-align: center;
   cursor: pointer;
-  vertical-align: middle;
+  vertical-align: super;
+  margin: 0 4px;
 }
 .qtip {
   border: 1px solid #b6b6b6;
@@ -11546,6 +11561,7 @@ a.user-link {
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
 }
 .email-matching-actions a:hover {
   color: #fff !important;
