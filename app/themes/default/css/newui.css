@@ -386,45 +386,63 @@ section {
   color: #fff !important;
 }
 #HeaderLinksView ul ul {
-  z-index: 9999;
+  z-index: 1;
   min-width: 110px;
   display: none;
   position: absolute;
-  left: 0;
-  top: 33px;
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
+  top: 37px;
+  border: 1px solid #666;
+  background-color: #444444;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  padding-top: 3px;
-  padding-bottom: 3px;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#333333), to(#444444));
+  background-image: -moz-linear-gradient(top, #333333, #444444);
+  background-image: -ms-linear-gradient(top, #333333, #444444);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #444444));
+  background-image: -webkit-linear-gradient(top, #333333, #444444);
+  background-image: -o-linear-gradient(top, #333333, #444444);
+  background-image: linear-gradient(top, #333333, #444444);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#444444', GradientType=0);
+  -webkit-box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
+  -moz-box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
+  -o-box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
+  -ms-box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
+  box-shadow: 0 0 9px 5px rgba(53, 53, 53, 0.25);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 #HeaderLinksView ul ul li {
   line-height: 100%;
 }
+#HeaderLinksView ul ul li:first-child a {
+  border-top: none;
+}
+#HeaderLinksView ul ul li:last-child a {
+  border-bottom: none;
+}
 #HeaderLinksView ul ul a {
-  color: #666;
+  border-top: 1px solid #464646;
+  border-bottom: 1px solid #383838;
+  color: #ECECEC;
   font-size: 11px;
   font-weight: normal;
   display: block;
-  padding: 5px 10px 5px 10px;
-  margin: 0 2px;
+  padding: 6px 10px 6px 10px;
+  margin: 0;
 }
 #HeaderLinksView ul ul a:hover {
+  border-top: 1px solid #80bf32;
   color: #fff !important;
-  background: #7cb730;
+  background-color: #527a20;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#7bb730), to(#527a20));
+  background-image: -moz-linear-gradient(top, #7bb730, #527a20);
+  background-image: -ms-linear-gradient(top, #7bb730, #527a20);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7bb730), color-stop(100%, #527a20));
+  background-image: -webkit-linear-gradient(top, #7bb730, #527a20);
+  background-image: -o-linear-gradient(top, #7bb730, #527a20);
+  background-image: linear-gradient(top, #7bb730, #527a20);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7bb730', endColorstr='#527a20', GradientType=0);
 }
 #HeaderLinksView + div {
   background: url(../images/header-bar-2.png) left top repeat-x;
@@ -437,38 +455,27 @@ section {
 .notifications-link {
   margin-top: 12px;
   width: 18px;
-  height: 16px;
-  padding: 0 10px 0 10px;
+  padding: 0 10px 1px 10px;
   background: url(../images/notifications-bubble.png) center top no-repeat;
-  border-left: 1px solid #fff;
-  border-right: 1px solid #fff;
+  border-left: 1px solid #666;
+  border-right: 1px solid #666;
   float: left;
-  display: inline-block;
-  background-color: none !important;
+  display: block;
 }
-.notifications-link.unread #notifications-link.tooltip {
+.notifications-link.unread #notifications-link {
   color: #ff0000 !important;
 }
-.notifications-link.all-read #notifications-link.tooltip {
+.notifications-link.all-read #notifications-link {
   color: #7bb730 !important;
 }
-#notifications-link.tooltip {
+#notifications-link {
   width: 18px;
-  height: 14px;
+  height: 15px;
   font-size: 10px;
   font-weight: bold;
-  display: block;
   text-align: center;
-  margin-top: 1px  !important;
+  margin-top: 0  !important;
   display: inline-block;
-  background: transparent  !important;
-  -webkit-border-radius: 0 !important;
-  -moz-border-radius: 0 !important;
-  -ms-border-radius: 0 !important;
-  -o-border-radius: 0 !important;
-  border-radius: 0 !important;
-  border: none  !important;
-  color: auto  !important;
   cursor: pointer;
   vertical-align: middle;
 }
@@ -537,24 +544,49 @@ section {
 #user-header-menu,
 #settings-header-menu {
   float: left;
-  margin: 0 10px;
+  margin: 0;
+}
+#user-header-menu:hover ul,
+#settings-header-menu:hover ul {
+  display: block;
+}
+#user-header-menu:hover > li > a,
+#settings-header-menu:hover > li > a {
+  border-left: 1px solid #666;
+  border-right: 1px solid #666;
+  background: #333;
 }
 #user-header-menu > li > a,
 #settings-header-menu > li > a {
+  position: relative;
+  z-index: 5;
   padding: 0 10px;
   line-height: 38px;
   display: block;
   overflow: visible;
-  background: pink;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+}
+#user-header-menu > li > a:hover,
+#settings-header-menu > li > a:hover {
+  border-left: 1px solid #666;
+  border-right: 1px solid #666;
+  background: #333;
 }
 #user-header-menu ul,
 #settings-header-menu ul {
   display: block;
   width: 110px;
 }
+#user-header-menu {
+  margin-right: -1px;
+}
 #user-header-menu ul {
   right: 0;
   left: auto;
+}
+#settings-header-menu {
+  margin-left: -1px;
 }
 #settings-header-menu > li {
   position: relative;
@@ -586,9 +618,13 @@ section {
   font-weight: normal;
   font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
 }
 #settings-header-menu ul {
-  margin-left: -97px;
+  right: 0;
+  display: none;
 }
 #GlobalSearchAndShortcutsCreateMenuView {
   height: 40px;
@@ -866,7 +902,7 @@ section {
   display: none;
   position: absolute;
   left: 0;
-  top: 33px;
+  top: 38px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -1379,7 +1415,7 @@ section {
   display: none;
   position: absolute;
   left: 0;
-  top: 33px;
+  top: 38px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -4517,7 +4553,7 @@ div.hasHalfs .twoThirds {
   display: none;
   position: absolute;
   left: 0;
-  top: 33px;
+  top: 38px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -4567,19 +4603,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: inset 0 1px 0 #dfdfdf;
   -ms-box-shadow: inset 0 1px 0 #dfdfdf;
   box-shadow: inset 0 1px 0 #dfdfdf;
-  /*
-    .hidden{
-        span{
-            text-indent:-9999px;
-            display:none;
-        }
-        color:#ddd;
-        background:#efefef;
-        .b-shadow(~"inset 0 0 8px 2px #ccc !important");
-        padding:4px 0 4px 0 !important;
-        pointer-events:none;
-    }*/
-
 }
 .pager ul {
   width: 50%;
@@ -4643,9 +4666,17 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
+.pager .refresh {
+  width: 0;
+  display: none;
+}
 .pager .first,
 .pager .last {
   width: 20%;
+}
+.pager .first a:after,
+.pager .hidden.first:after {
+  content: "«";
 }
 .pager .next a:after,
 .pager .hidden.next:after {
@@ -4655,26 +4686,12 @@ div.hasHalfs .twoThirds {
 .pager .hidden.previous:after {
   content: "‹";
 }
-.pager .first a:after {
-  content: "«";
-}
-.pager .last a:after {
+.pager .last a:after,
+.pager .hidden.last:after {
   content: "»";
-}
-.pager .hidden.next:after,
-.pager .hidden.previous:after {
-  color: #ccc;
 }
 .pager #list-view-endless-page:after {
   content: "6" !important;
-}
-.pager .first.hidden,
-.pager .last.hidden {
-  pointer-events: none;
-}
-.pager .first.hidden a:after,
-.pager .last.hidden a:after {
-  color: #ccc;
 }
 .pager .next,
 .pager .previous,
@@ -4691,6 +4708,12 @@ div.hasHalfs .twoThirds {
   text-indent: -9999px;
   display: inline-block;
   padding: 2px 0 4px 0 !important;
+}
+.pager .next.hidden:after,
+.pager .previous.hidden:after,
+.pager .first.hidden:after,
+.pager .last.hidden:after {
+  color: #ccc;
 }
 .pager:empty {
   display: none;
@@ -9289,7 +9312,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   height: 10px !important;
   line-height: 10px !important;
   display: inline-block;
-  position: absolute;
   background: #fff;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
