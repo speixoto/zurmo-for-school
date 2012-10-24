@@ -3470,11 +3470,14 @@ div.hasHalfs{
         li{
             float:none;
             width:100%;
-            border-right:none;
-            border-top:none;
+            border:none;
+        }
+        .next a:after, .hidden.next:after{
+            content:"6";
+            .symbly(18px);
         }
         .hidden{
-            display:none;
+            display: none;
         }
     }
     li{
@@ -3496,7 +3499,7 @@ div.hasHalfs{
             }
             &:active{
                 color:#656565;
-                .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
+                .b-shadow(~"inset 0 5px 10px 0px rgba(153, 153, 153, 0.45)");
             }
         }
     }
@@ -3517,13 +3520,13 @@ div.hasHalfs{
         content:"‹"; 
     }
     .last a:after, .hidden.last:after{
-        content:"»"; //"8"
+        content:"»"; 
     }
-    
+    /*
     #list-view-endless-page:after{
-         content:"6" !important; //"6"
+         content:"6" !important; 
     }
-    
+    */
     .next, .previous, .first, .last{
         font-size:14px;
         line-height: 1;
@@ -3543,10 +3546,6 @@ div.hasHalfs{
         display:none;
     }
 }
-/*
-
-*/
-
 
 /*=Meetings modal*/
 #days-meetings-list-view{
@@ -3758,7 +3757,7 @@ div.hasHalfs{
     display: block;
 }
 
-
+/*
 .vertical-forward-pager{
     font-weight:bold;
     display:block;
@@ -3780,6 +3779,7 @@ div.hasHalfs{
         display:none;
     }
 }
+*/
 
 
 .LatestActivtiesForPortletView{
