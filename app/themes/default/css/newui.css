@@ -10200,8 +10200,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .CreateOpportunity .badge-icon:before {
   content: "9";
 }
-.game-badge-MassEditOpportunity .badge-icon:before,
-.MassEditOpportunity .badge-icon:before {
+.game-badge-MassEditOpportunities .badge-icon:before,
+.MassEditOpportunities .badge-icon:before {
   content: "[";
 }
 .game-badge-SearchOpportunity .badge-icon:before,
