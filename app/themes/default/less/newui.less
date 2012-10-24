@@ -2125,7 +2125,14 @@ div.wide.form{
     .view-toolbar-container{
         margin-top:15px;
     }
+    .items{
+        border: none;
+        thead tr:first-child th{
+            border-top:none;
+        }
+    }
 }
+
 .select-list-attributes-view,
 .search-view-1{
     margin-top:15px;
@@ -3826,15 +3833,16 @@ div.hasHalfs{
 
 .ModalListView{
     .items{
+        border-top:1px solid #dfdfdf !important;
         tbody td:first-child,
         thead th:first-child{
             padding-left:20px;
         }
     }
     .pager{
-        border-left:1px solid #DFDFDF;
-        border-right:1px solid #DFDFDF;
-        .b-shadow(none);
+        //border-left:1px solid #DFDFDF;
+        //border-right:1px solid #DFDFDF;
+        //.b-shadow(none);
     }
 }
 

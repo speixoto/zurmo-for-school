@@ -2951,6 +2951,12 @@ div.wide.form a {
 #ModalView .view-toolbar-container {
   margin-top: 15px;
 }
+#ModalView .items {
+  border: none;
+}
+#ModalView .items thead tr:first-child th {
+  border-top: none;
+}
 .select-list-attributes-view,
 .search-view-1 {
   margin-top: 15px;
@@ -5141,18 +5147,12 @@ div.hasHalfs .twoThirds {
 #search-formmodal label {
   line-height: 25px;
 }
+.ModalListView .items {
+  border-top: 1px solid #dfdfdf !important;
+}
 .ModalListView .items tbody td:first-child,
 .ModalListView .items thead th:first-child {
   padding-left: 20px;
-}
-.ModalListView .pager {
-  border-left: 1px solid #DFDFDF;
-  border-right: 1px solid #DFDFDF;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
 }
 /*=Auto Complete*/
 .ui-autocomplete {
