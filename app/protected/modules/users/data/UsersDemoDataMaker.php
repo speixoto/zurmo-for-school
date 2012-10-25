@@ -41,14 +41,32 @@
             assert('$demoDataHelper->isSetRange("Group")');
             assert('$demoDataHelper->isSetRange("Role")');
 
+            $super               = User::getByUsername('super');
+            $email               = new Email();
+            $email->emailAddress = 'Super.User@test.zurmo.com';
+            $super->primaryEmail = $email;
+            $saved               = $super->save();
+            assert('$saved');
+            $userAvatarForm             = new UserAvatarForm($super);
+            $userAvatarForm->avatarType = User::AVATAR_TYPE_PRIMARY_EMAIL;
+            $saved                      = $userAvatarForm->save();
+            assert('$saved');
+
             $user = new User();
             $this->populateModel($user);
             $user->username           = 'admin';
             $user->title->value       = 'Sir';
             $user->firstName          = 'Jason';
             $user->lastName           = 'Blue';
+            $email                    = new Email();
+            $email->emailAddress      = 'Jason.Blue@test.zurmo.com';
+            $user->primaryEmail       = $email;
             $user->setPassword($user->username);
-            $saved = $user->save();
+            $saved                    = $user->save();
+            assert('$saved');
+            $userAvatarForm             = new UserAvatarForm($user);
+            $userAvatarForm->avatarType = User::AVATAR_TYPE_PRIMARY_EMAIL;
+            $saved                      = $userAvatarForm->save();
             assert('$saved');
 
             $userStartId = $user->id;
@@ -74,7 +92,14 @@
                 $user->title->value       = $title;
                 $user->firstName          = ucfirst($username);
                 $user->lastName           = 'Smith';
-                $saved = $user->save();
+                $email                    = new Email();
+                $email->emailAddress      = $user->firstName . '@test.zurmo.com';
+                $user->primaryEmail       = $email;
+                $saved                    = $user->save();
+                assert('$saved');
+                $userAvatarForm             = new UserAvatarForm($user);
+                $userAvatarForm->avatarType = User::AVATAR_TYPE_PRIMARY_EMAIL;
+                $saved                      = $userAvatarForm->save();
                 assert('$saved');
 
                 $roleIdRange = $demoDataHelper->getRangeByModelName('Role');

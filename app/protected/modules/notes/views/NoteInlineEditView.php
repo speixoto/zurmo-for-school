@@ -158,7 +158,7 @@
                     'complete' => "function(XMLHttpRequest, textStatus){
                         //find if there is a latest activities portlet
                         $('.LatestActivtiesForPortletView').each(function(){
-                            $(this).find('.pager').find('.first').find('a').click();
+                            $(this).find('.pager').find('.refresh').find('a').click();
                         });}"
                 ));
             // End Not Coding Standard

@@ -27,6 +27,9 @@
         margin-right:6px;
     }
 }
+.back-to-app-menu-item a:hover span, .back-to-app-menu-item a:hover span:before{
+    color: #fff !important;
+}
 
 #ConfigurationPageView{
         table{
@@ -194,6 +197,7 @@ table.configuration-list{
     table tr:first-child{
         th{
             padding-left:15px;
+            padding-bottom: 10px;
             font-weight:bold !important;
             color:@themeColor;
         }
@@ -267,7 +271,7 @@ table.configuration-list{
                 color:#545454;
                 text-align:left;
                 font-weight: bold !important;
-                height: 35px  !important;
+                height: auto  !important;
                 line-height: 35px  !important;
                 background: url(../images/table-items-header.png) left top repeat-x;
                 padding: 0 0 0 10px !important;
@@ -410,17 +414,12 @@ table.configuration-list{
         }
     }
     .tooltip{
-        margin-top:9px;
+        //margin-top:9px;
     }
     a{
-        background:@themeColor;
-        padding:1px 4px;
-        .radius(2px);
-        color:#fff;
-        &:hover{
-            color:#fff !important;
-            text-decoration:underline;
-        }
+        .zLink();
+        .smaller();
+        margin-right:5px;
     }
     table{
         border-top:1px solid #DFDFDF;
@@ -448,10 +447,10 @@ table.configuration-list{
 #JobLogsModalListView,
 #jobs-frequency{
     .tooltip{
-        margin-top:-2px;
+        //margin-top:-2px;
     }
     .job-label{
-        margin-left:25px;
+        //margin-left:25px;
     }
 }
 

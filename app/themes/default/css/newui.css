@@ -105,6 +105,7 @@
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
 }
 .zLink:hover,
 .z-link:hover {
@@ -386,45 +387,53 @@ section {
   color: #fff !important;
 }
 #HeaderLinksView ul ul {
-  z-index: 9999;
+  z-index: 1;
   min-width: 110px;
   display: none;
   position: absolute;
-  left: 0;
-  top: 33px;
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  padding-top: 3px;
-  padding-bottom: 3px;
+  top: 37px;
+  border: 1px solid #444;
+  background: #252525;
+  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 #HeaderLinksView ul ul li {
   line-height: 100%;
 }
+#HeaderLinksView ul ul li:first-child a {
+  border-top: none;
+}
+#HeaderLinksView ul ul li:last-child a {
+  border-bottom: none;
+}
 #HeaderLinksView ul ul a {
-  color: #666;
+  border-top: 1px solid #323232;
+  border-bottom: 1px solid #181818;
+  color: #EFEFEF;
   font-size: 11px;
   font-weight: normal;
   display: block;
-  padding: 5px 10px 5px 10px;
-  margin: 0 2px;
+  padding: 6px 10px 6px 10px;
+  margin: 0;
 }
 #HeaderLinksView ul ul a:hover {
   color: #fff !important;
-  background: #7cb730;
+  background-color: #527a20;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#7bb730), to(#527a20));
+  background-image: -moz-linear-gradient(top, #7bb730, #527a20);
+  background-image: -ms-linear-gradient(top, #7bb730, #527a20);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7bb730), color-stop(100%, #527a20));
+  background-image: -webkit-linear-gradient(top, #7bb730, #527a20);
+  background-image: -o-linear-gradient(top, #7bb730, #527a20);
+  background-image: linear-gradient(top, #7bb730, #527a20);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7bb730', endColorstr='#527a20', GradientType=0);
 }
 #HeaderLinksView + div {
   background: url(../images/header-bar-2.png) left top repeat-x;
@@ -437,38 +446,27 @@ section {
 .notifications-link {
   margin-top: 12px;
   width: 18px;
-  height: 16px;
-  padding: 0 10px 0 10px;
+  padding: 0 10px 1px 10px;
   background: url(../images/notifications-bubble.png) center top no-repeat;
-  border-left: 1px solid #fff;
-  border-right: 1px solid #fff;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #aaa;
   float: left;
-  display: inline-block;
-  background-color: none !important;
+  display: block;
 }
-.notifications-link.unread #notifications-link.tooltip {
+.notifications-link.unread #notifications-link {
   color: #ff0000 !important;
 }
-.notifications-link.all-read #notifications-link.tooltip {
+.notifications-link.all-read #notifications-link {
   color: #7bb730 !important;
 }
-#notifications-link.tooltip {
+#notifications-link {
   width: 18px;
-  height: 14px;
+  height: 15px;
   font-size: 10px;
   font-weight: bold;
-  display: block;
   text-align: center;
-  margin-top: 1px  !important;
+  margin-top: 0  !important;
   display: inline-block;
-  background: transparent  !important;
-  -webkit-border-radius: 0 !important;
-  -moz-border-radius: 0 !important;
-  -ms-border-radius: 0 !important;
-  -o-border-radius: 0 !important;
-  border-radius: 0 !important;
-  border: none  !important;
-  color: auto  !important;
   cursor: pointer;
   vertical-align: middle;
 }
@@ -537,23 +535,74 @@ section {
 #user-header-menu,
 #settings-header-menu {
   float: left;
-  margin: 0 10px;
+  margin: 0;
+}
+#user-header-menu:hover ul,
+#settings-header-menu:hover ul {
+  display: block;
+}
+#user-header-menu:hover > li > a,
+#settings-header-menu:hover > li > a {
+  color: #fff;
+  border-left: 1px solid #444;
+  border-right: 1px solid #444;
+  background-color: #252525;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#353535), to(#252525));
+  background-image: -moz-linear-gradient(top, #353535, #252525);
+  background-image: -ms-linear-gradient(top, #353535, #252525);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #353535), color-stop(100%, #252525));
+  background-image: -webkit-linear-gradient(top, #353535, #252525);
+  background-image: -o-linear-gradient(top, #353535, #252525);
+  background-image: linear-gradient(top, #353535, #252525);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#353535', endColorstr='#252525', GradientType=0);
+}
+#user-header-menu:hover > li > a:after,
+#settings-header-menu:hover > li > a:after {
+  color: #fff;
 }
 #user-header-menu > li > a,
 #settings-header-menu > li > a {
-  padding: 0;
+  position: relative;
+  z-index: 5;
+  padding: 0 10px;
   line-height: 38px;
   display: block;
   overflow: visible;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  color: #ddd;
+}
+#user-header-menu > li > a:hover,
+#settings-header-menu > li > a:hover {
+  color: #fff;
+  border-left: 1px solid #444;
+  border-right: 1px solid #444;
+  background-color: #252525;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#353535), to(#252525));
+  background-image: -moz-linear-gradient(top, #353535, #252525);
+  background-image: -ms-linear-gradient(top, #353535, #252525);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #353535), color-stop(100%, #252525));
+  background-image: -webkit-linear-gradient(top, #353535, #252525);
+  background-image: -o-linear-gradient(top, #353535, #252525);
+  background-image: linear-gradient(top, #353535, #252525);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#353535', endColorstr='#252525', GradientType=0);
 }
 #user-header-menu ul,
 #settings-header-menu ul {
   display: block;
   width: 110px;
 }
+#user-header-menu {
+  margin-right: -1px;
+}
 #user-header-menu ul {
   right: 0;
   left: auto;
+}
+#settings-header-menu {
+  margin-left: -1px;
 }
 #settings-header-menu > li {
   position: relative;
@@ -581,13 +630,17 @@ section {
 }
 #settings-header-menu > li > a:after {
   content: "n";
-  color: #ccc;
+  color: #ddd;
   font-weight: normal;
   font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
 }
 #settings-header-menu ul {
-  margin-left: -97px;
+  right: 0;
+  display: none;
 }
 #GlobalSearchAndShortcutsCreateMenuView {
   height: 40px;
@@ -865,7 +918,7 @@ section {
   display: none;
   position: absolute;
   left: 0;
-  top: 33px;
+  top: 38px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -1378,7 +1431,7 @@ section {
   display: none;
   position: absolute;
   left: 0;
-  top: 33px;
+  top: 38px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -2448,6 +2501,7 @@ div.wide.form a {
   display: none;
 }
 .list-view-items-summary-clone {
+  font-size: 11px;
   float: right;
   margin: 20px 0 0 0;
   color: #666;
@@ -2913,6 +2967,12 @@ div.wide.form a {
 #ModalView .view-toolbar-container {
   margin-top: 15px;
 }
+#ModalView .items {
+  border: none;
+}
+#ModalView .items thead tr:first-child th {
+  border-top: none;
+}
 .select-list-attributes-view,
 .search-view-1 {
   margin-top: 15px;
@@ -2984,6 +3044,7 @@ div.wide.form a {
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
   margin-left: 10px;
 }
 #clear-search-link:hover {
@@ -4218,25 +4279,36 @@ div.wide.form a {
   list-style: none;
 }
 .BreadCrumbView #StickyListMenu > li > a > span {
-  top: 2px;
-  position: relative;
+  top: 0;
+  position: absolute;
   display: block;
-  padding: 0 5px;
-  font-size: 15px;
+  margin-left: 10px;
+  width: 13px;
+  height: 13px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 11px;
   line-height: 12px;
-  -webkit-text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
-  -moz-text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
-  -o-text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
-  -ms-text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
-  text-shadow: 0 1px 0px #ffffff, 0 0 5px #bbb;
+  color: #666;
+  border: 1px solid #fff;
+  -webkit-box-shadow: inset 0 0 0 1px #eeeeee;
+  -moz-box-shadow: inset 0 0 0 1px #eeeeee;
+  -o-box-shadow: inset 0 0 0 1px #eeeeee;
+  -ms-box-shadow: inset 0 0 0 1px #eeeeee;
+  box-shadow: inset 0 0 0 1px #eeeeee;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
 }
 .BreadCrumbView #StickyListMenu > li > a:hover > span {
   color: #7bb730;
-  -webkit-text-shadow: 0 1px 0px #ffffff;
-  -moz-text-shadow: 0 1px 0px #ffffff;
-  -o-text-shadow: 0 1px 0px #ffffff;
-  -ms-text-shadow: 0 1px 0px #ffffff;
-  text-shadow: 0 1px 0px #ffffff;
 }
 .BreadCrumbView #StickyListMenu ul {
   border: 1px solid #b6b6b6;
@@ -4258,8 +4330,8 @@ div.wide.form a {
   display: none;
   list-style: none;
   position: absolute;
-  margin-top: 3px;
-  margin-left: 5px;
+  margin-top: 5px;
+  margin-left: 11px;
   padding-top: 3px;
   padding-bottom: 3px;
   font-weight: normal !important;
@@ -4504,7 +4576,7 @@ div.hasHalfs .twoThirds {
   display: none;
   position: absolute;
   left: 0;
-  top: 33px;
+  top: 38px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -4543,27 +4615,22 @@ div.hasHalfs .twoThirds {
 }
 /*Upcoming Meeting Pager*/
 .pager {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   width: 100%;
   text-align: center;
-  border-top: 1px solid #DFDFDF;
   background: #ffffff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  -webkit-box-shadow: inset 0 1px 0 #dfdfdf;
+  -moz-box-shadow: inset 0 1px 0 #dfdfdf;
+  -o-box-shadow: inset 0 1px 0 #dfdfdf;
+  -ms-box-shadow: inset 0 1px 0 #dfdfdf;
+  box-shadow: inset 0 1px 0 #dfdfdf;
   /*
-    .next a, .previous a, .hidden.next, .hidden.previous{
-        //.symbly(16px);
-    }*/
-
-  /*
-    .hidden{
-        span{
-            text-indent:-9999px;
-            display:none;
-        }
-        color:#ddd;
-        background:#efefef;
-        .b-shadow(~"inset 0 0 8px 2px #ccc !important");
-        padding:4px 0 4px 0 !important;
-        pointer-events:none;
-    }*/
+    #list-view-endless-page:after{
+         content:"6" !important; 
+    }
+    */
 
 }
 .pager ul {
@@ -4593,8 +4660,14 @@ div.hasHalfs .twoThirds {
 .pager ul.endless-list-pager li {
   float: none;
   width: 100%;
-  border-right: none;
-  border-top: none;
+  border: none;
+}
+.pager ul.endless-list-pager .next a:after,
+.pager ul.endless-list-pager .hidden.next:after {
+  content: "6";
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
 }
 .pager ul.endless-list-pager .hidden {
   display: none;
@@ -4604,16 +4677,11 @@ div.hasHalfs .twoThirds {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   float: left;
-  width: 25%;
+  width: 30%;
   padding: 0;
   border: none;
   border-right: 1px solid #DFDFDF;
   text-align: center;
-  /*
-        &:first-child{
-            border-right:1px solid #ccc;
-        }*/
-
 }
 .pager li > a {
   font-weight: bold;
@@ -4627,11 +4695,23 @@ div.hasHalfs .twoThirds {
 }
 .pager li > a:active {
   color: #656565;
-  -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
+  -webkit-box-shadow: inset 0 5px 10px 0px rgba(153, 153, 153, 0.45);
+  -moz-box-shadow: inset 0 5px 10px 0px rgba(153, 153, 153, 0.45);
+  -o-box-shadow: inset 0 5px 10px 0px rgba(153, 153, 153, 0.45);
+  -ms-box-shadow: inset 0 5px 10px 0px rgba(153, 153, 153, 0.45);
+  box-shadow: inset 0 5px 10px 0px rgba(153, 153, 153, 0.45);
+}
+.pager .refresh {
+  width: 0;
+  display: none;
+}
+.pager .first,
+.pager .last {
+  width: 20%;
+}
+.pager .first a:after,
+.pager .hidden.first:after {
+  content: "«";
 }
 .pager .next a:after,
 .pager .hidden.next:after {
@@ -4641,18 +4721,9 @@ div.hasHalfs .twoThirds {
 .pager .hidden.previous:after {
   content: "‹";
 }
-.pager .first a:after {
-  content: "«";
-}
-.pager .last a:after {
+.pager .last a:after,
+.pager .hidden.last:after {
   content: "»";
-}
-.pager .hidden.next:after,
-.pager .hidden.previous:after {
-  color: #ccc;
-}
-.pager #list-view-endless-page:after {
-  content: "6" !important;
 }
 .pager .next,
 .pager .previous,
@@ -4670,12 +4741,15 @@ div.hasHalfs .twoThirds {
   display: inline-block;
   padding: 2px 0 4px 0 !important;
 }
+.pager .next.hidden:after,
+.pager .previous.hidden:after,
+.pager .first.hidden:after,
+.pager .last.hidden:after {
+  color: #ccc;
+}
 .pager:empty {
   display: none;
 }
-/*
-
-*/
 /*=Meetings modal*/
 #days-meetings-list-view td {
   padding: 10px;
@@ -5002,38 +5076,29 @@ div.hasHalfs .twoThirds {
   margin-bottom: 3px;
   display: block;
 }
-#activities-rollup-tooltip {
-  position: relative;
-  margin-top: -9px;
-  top: 2px;
+/*
+.vertical-forward-pager{
+    font-weight:bold;
+    display:block;
+    text-align:center;
+    padding:4px 0 4px 0 !important;
+    background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+    &:hover{
+        color:@themeColor2 !important;
+    }
+    &:active{
+        color:#656565;
+        .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
+    }
+    &:after{
+        .symbly(20px);
+        content:"6" !important;
+    }
+    span{
+        display:none;
+    }
 }
-.vertical-forward-pager {
-  font-weight: bold;
-  display: block;
-  text-align: center;
-  padding: 4px 0 4px 0 !important;
-  background: #ffffff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
-}
-.vertical-forward-pager:hover {
-  color: #7bb730 !important;
-}
-.vertical-forward-pager:active {
-  color: #656565;
-  -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -moz-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-}
-.vertical-forward-pager:after {
-  font-weight: normal;
-  font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  content: "6" !important;
-}
-.vertical-forward-pager span {
-  display: none;
-}
+*/
 .LatestActivtiesForPortletView {
   position: relative;
 }
@@ -5096,13 +5161,12 @@ div.hasHalfs .twoThirds {
 #search-formmodal label {
   line-height: 25px;
 }
+.ModalListView .items {
+  border-top: 1px solid #dfdfdf !important;
+}
 .ModalListView .items tbody td:first-child,
 .ModalListView .items thead th:first-child {
   padding-left: 20px;
-}
-.ModalListView .pager ul {
-  border-top: none;
-  float: left;
 }
 /*=Auto Complete*/
 .ui-autocomplete {
@@ -5338,6 +5402,7 @@ div.hasHalfs .twoThirds {
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
 }
 .lead-conversion-actions a:hover {
   color: #fff !important;
@@ -6141,6 +6206,10 @@ a.remove:hover .icon:after {
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 6px;
 }
+.back-to-app-menu-item a:hover span,
+.back-to-app-menu-item a:hover span:before {
+  color: #fff !important;
+}
 #ConfigurationPageView table {
   border: 1px solid #DFDFDF;
   border-collapse: collapse;
@@ -6411,6 +6480,7 @@ table.configuration-list tr td:last-child a:before {
 }
 #ModulePermissionsEditAndDetailsView table tr:first-child th {
   padding-left: 15px;
+  padding-bottom: 10px;
   font-weight: bold !important;
   color: #262877;
 }
@@ -6576,7 +6646,7 @@ table.configuration-list tr td:last-child a:before {
   color: #545454;
   text-align: left;
   font-weight: bold !important;
-  height: 35px  !important;
+  height: auto  !important;
   line-height: 35px  !important;
   background: url(../images/table-items-header.png) left top repeat-x;
   padding: 0 0 0 10px !important;
@@ -6768,9 +6838,6 @@ table.configuration-list tr td:last-child a:before {
   background: url(../images/table-items-header.png) left top repeat-x;
   padding: 0 0 0 10px !important;
 }
-#JobsCollectionView .tooltip {
-  margin-top: 9px;
-}
 #JobsCollectionView a {
   background: #262877;
   padding: 1px 4px;
@@ -6779,7 +6846,9 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  color: #fff;
+  color: #fff !important;
+  font-size: 11px;
+  margin-right: 5px;
 }
 #JobsCollectionView a:hover {
   color: #fff !important;
@@ -6797,14 +6866,6 @@ table.configuration-list tr td:last-child a:before {
 #JobLogsModalListView td:first-child,
 #JobLogsModalListView th:first-child {
   padding-left: 15px;
-}
-#JobLogsModalListView .tooltip,
-#jobs-frequency .tooltip {
-  margin-top: -2px;
-}
-#JobLogsModalListView .job-label,
-#jobs-frequency .job-label {
-  margin-left: 25px;
 }
 .jobHasErrors {
   color: #cc0000;
@@ -7263,6 +7324,7 @@ table.configuration-list tr td:last-child a:before {
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
 }
 #ImportWizardMappingView #sample-column-header a:hover {
   color: #fff !important;
@@ -9261,7 +9323,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   height: 10px !important;
   line-height: 10px !important;
   display: inline-block;
-  position: absolute;
   background: #fff;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -9274,7 +9335,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 8px;
   text-align: center;
   cursor: pointer;
-  vertical-align: middle;
+  vertical-align: super;
+  margin: 0 4px;
 }
 .qtip {
   border: 1px solid #b6b6b6;
@@ -10140,8 +10202,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .CreateOpportunity .badge-icon:before {
   content: "9";
 }
-.game-badge-MassEditOpportunity .badge-icon:before,
-.MassEditOpportunity .badge-icon:before {
+.game-badge-MassEditOpportunities .badge-icon:before,
+.MassEditOpportunities .badge-icon:before {
   content: "[";
 }
 .game-badge-SearchOpportunity .badge-icon:before,
@@ -11496,6 +11558,7 @@ a.user-link {
   -o-border-radius: 2px;
   border-radius: 2px;
   color: #fff !important;
+  font-size: 11px;
 }
 .email-matching-actions a:hover {
   color: #fff !important;

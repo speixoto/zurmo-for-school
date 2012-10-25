@@ -67,8 +67,9 @@
                      "    options\n"                                                                                        .
                      "    -p                port Example: -p4044\n"                                                         .
                      "    -h                host Example: -hhttp://www.sitetotest/app/\n"                                   .
-                     "    -b                browser <*firefox|*iexplore> if not specified, will run all in browsers \n"     ;
-                     "                      Example: -b*firefox \n"                                                         ;
+                     "    -b                browser <*firefox|*iexplore> if not specified, will run all in browsers \n"     .
+                     "    -c                test server control url Example: -chttp://www.sitetotest/controlUrl.php\n"      .
+                     "                      Example: -b*firefox \n"                                                         .
                      "    -userExtensions   Example: -userExtensions pathToTheUserExtensionJS \n"                           .
                      "\n"                                                                                                   .
                      "  Examples:\n"                                                                                        .
@@ -172,22 +173,22 @@
                     if (!self::isInstallationTest($pathToSuite))
                     {
                         echo 'Restoring test db';
-                        self::remoteAction(TEST_BASE_CONTROL_URL, array('action' => 'restore'));
+                        self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'restore'));
                         echo "Restored test db";
                         if (!self::isInstallationTest($pathToSuite))
                         {
                             echo 'Set user default time zone.';
-                            self::remoteAction(TEST_BASE_CONTROL_URL, array('action' => 'setUserDefaultTimezone'));
+                            self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'setUserDefaultTimezone'));
                             echo "User default time zone set.";
                         }
                         echo 'Clear cache on remote server';
-                        self::remoteAction(TEST_BASE_URL, array('clearCache'         => '1',
+                        self::remoteAction(self::resolveHostFromParameterAndConstant(), array('clearCache'         => '1',
                                                                 'ignoreBrowserCheck' => '1'));
                     }
                     else
                     {
                         echo 'Uninstall zurmo';
-                        self::remoteAction(TEST_BASE_CONTROL_URL, array('action' => 'backupRemovePerInstance'));
+                        self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'backupRemovePerInstance'));
                     }
                     echo "Cache cleared";
 
@@ -215,10 +216,10 @@
                     echo $finalCommand . "\n";
                     exec($finalCommand);
                     echo 'Restoring test db';
-                    self::remoteAction(TEST_BASE_CONTROL_URL, array('action' => 'restore'));
+                    self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'restore'));
                     if (self::isInstallationTest($pathToSuite))
                     {
-                        self::remoteAction(TEST_BASE_CONTROL_URL, array('action' => 'restorePerInstance'));
+                        self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('action' => 'restorePerInstance'));
                     }
                 }
             }
@@ -321,6 +322,20 @@
                 }
             }
             return TEST_BASE_URL;
+        }
+
+        protected static function resolveServerControlUrlFromParameterAndConstant()
+        {
+            global $argv, $argc;
+
+            for ($i = 0; $i < ($argc); $i++)
+            {
+                if (substr($argv[$i], 0, 2) == '-c')
+                {
+                    return substr($argv[$i], 2);
+                }
+            }
+            return TEST_BASE_CONTROL_URL;
         }
 
         protected static function resolveUserExtensionsJsFromParameterAndConstant()

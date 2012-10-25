@@ -13,7 +13,8 @@ $(window).ready(function(){
             }
         }
     });
-
+    
+    /*
     $('.headerNav').live({
         click: function() {
             var attrId = $(this).attr('id');
@@ -37,6 +38,7 @@ $(window).ready(function(){
             }
         }
     });
+    */
 
 
     //Main nav hover
