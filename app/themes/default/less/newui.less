@@ -1352,39 +1352,46 @@ table.items{
     border: 1px solid #DFDFDF;
     border-collapse: collapse;
     border-spacing: 1px;
-    th, td{
-        border: 1px solid #DFDFDF;
-        border-right:none;
-        border-left:none;
-        vertical-align:middle;
-        padding:10px 5px;
+    > tbody,
+    > thead{
+        >tr > td{
+            border: 1px solid #DFDFDF;
+            border-right:none;
+            border-left:none;
+            vertical-align:middle;
+            padding:10px 5px;
+        }   
     }
-    th{
-        font-weight:bold !important;
-        height:35px;
-        line-height: 35px;
-        background: url(../images/table-items-header.png) left top repeat-x;
-        padding-top:0;
-        padding-bottom: 0;
-        white-space: nowrap;
+    > tbody,
+    > thead{
+        > tr > th{
+            font-weight:bold !important;
+            height:35px;
+            line-height: 35px;
+            background: url(../images/table-items-header.png) left top repeat-x;
+            padding-top:0;
+            padding-bottom: 0;
+            white-space: nowrap;
+        }  
     }
+    
     tr:hover{
         #gradient > .vertical(#efefef, #eeeeee);
         td{
-            .t-shadow(0 1px 0 #fff);
+            //.t-shadow(0 1px 0 #fff);
         }
         .pencil{
             visibility:visible;
             color:@themeColor;
         }
     }
-    thead{
+    > thead{
         #gradient > .vertical(#f9f9f9, #f4f4f4);
         tr:hover{
             #gradient > .vertical(#f9f9f9, #f4f4f4);
         }
     }
-    tbody{
+    > tbody{
         tr:last-child,
         tr:last-child td{
             border-bottom: none;

@@ -1800,15 +1800,16 @@ table.items {
   border-collapse: collapse;
   border-spacing: 1px;
 }
-table.items th,
-table.items td {
+table.items > tbody > tr > td,
+table.items > thead > tr > td {
   border: 1px solid #DFDFDF;
   border-right: none;
   border-left: none;
   vertical-align: middle;
   padding: 10px 5px;
 }
-table.items th {
+table.items > tbody > tr > th,
+table.items > thead > tr > th {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
@@ -1829,18 +1830,11 @@ table.items tr:hover {
   background-image: linear-gradient(top, #efefef, #eeeeee);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#eeeeee', GradientType=0);
 }
-table.items tr:hover td {
-  -webkit-text-shadow: 0 1px 0 #ffffff;
-  -moz-text-shadow: 0 1px 0 #ffffff;
-  -o-text-shadow: 0 1px 0 #ffffff;
-  -ms-text-shadow: 0 1px 0 #ffffff;
-  text-shadow: 0 1px 0 #ffffff;
-}
 table.items tr:hover .pencil {
   visibility: visible;
   color: #262877;
 }
-table.items thead {
+table.items > thead {
   background-color: #f4f4f4;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f4f4f4));
@@ -1852,7 +1846,7 @@ table.items thead {
   background-image: linear-gradient(top, #f9f9f9, #f4f4f4);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#f4f4f4', GradientType=0);
 }
-table.items thead tr:hover {
+table.items > thead tr:hover {
   background-color: #f4f4f4;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f4f4f4));
@@ -1864,12 +1858,12 @@ table.items thead tr:hover {
   background-image: linear-gradient(top, #f9f9f9, #f4f4f4);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#f4f4f4', GradientType=0);
 }
-table.items tbody tr:last-child,
-table.items tbody tr:last-child td {
+table.items > tbody tr:last-child,
+table.items > tbody tr:last-child td {
   border-bottom: none;
 }
-table.items tbody tr td:first-child:not(.checkbox-column),
-table.items tbody tr th:first-child:not(.checkbox-column) {
+table.items > tbody tr td:first-child:not(.checkbox-column),
+table.items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
 tr.odd {
@@ -11511,18 +11505,26 @@ a.user-link {
 .email-archive-item .wide.form > form table {
   padding-bottom: 15px !important;
 }
+.email-archive-item .overlay-label-field {
+  padding-bottom: 0;
+}
 .email-archive-item .matching-actions-and-content form {
   padding-bottom: 0;
 }
 .email-archive-item tr:hover {
   background: none !important;
 }
+.email-archive-item th {
+  height: auto !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+}
+.email-archive-item td {
+  padding-bottom: 15px;
+}
 .email-archive-item th,
 .email-archive-item td {
   background: none !important;
-  height: auto !important;
-  line-height: inherit !important;
-  padding: 0 !important;
   border: none !important;
 }
 .email-archive-item .email-matching-summary-content span {
@@ -11553,7 +11555,7 @@ a.user-link {
   margin-right: 0;
 }
 .email-matching-actions {
-  margin: 15px 0 5px 0;
+  margin: 15px 0 15px 0;
   display: block;
 }
 .email-matching-actions a {
@@ -11566,6 +11568,7 @@ a.user-link {
   border-radius: 2px;
   color: #fff !important;
   font-size: 11px;
+  text-decoration: none;
 }
 .email-matching-actions a:hover {
   color: #fff !important;
