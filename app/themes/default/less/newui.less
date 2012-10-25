@@ -285,7 +285,7 @@ footer, header, hgroup, menu, nav, section {
     display:none;
     position:absolute;
     left:0;
-    top:38px;
+    top:33px;
     .flyout();
     padding-top:3px;
     padding-bottom:3px;
@@ -347,8 +347,8 @@ footer, header, hgroup, menu, nav, section {
     width:18px;
     padding:0 10px 1px 10px;
     background: url(../images/notifications-bubble.png) center top no-repeat;
-    border-left: 1px solid #aaa;
-    border-right: 1px solid #aaa;
+    border-left: 1px solid #373972;
+    border-right: 1px solid #373972;
     float:left;
     display:block;
     &.unread{
@@ -431,18 +431,31 @@ footer, header, hgroup, menu, nav, section {
 #settings-header-menu{
     float:left;
     margin:0;
+    
     &:hover{
-        ul{
-            display: block;
-        }
         > li > a{
             color:#fff;
-            border-left:1px solid #444;
-            border-right:1px solid #444;
+            //border-left:1px solid #aaa;
+            //border-right:1px solid #aaa;
+            //#gradient > .vertical( #353535, #252525 );
+            background: rgba(255, 255, 255, 0.05);
+            &:after{
+                color:#fff;
+            }
+        }
+    }
+    &.nav-open{
+        > li > a{
+            color:#fff;
+            border-left:1px solid #444 !important;
+            border-right:1px solid #444 !important;
             #gradient > .vertical( #353535, #252525 );
             &:after{
                 color:#fff;
             }
+        }
+        ul{
+            display: block;
         }
     }
     > li{
@@ -458,9 +471,9 @@ footer, header, hgroup, menu, nav, section {
             color:#ddd;
             &:hover{
                 color:#fff;
-                border-left:1px solid #444;
-                border-right:1px solid #444;
-                #gradient > .vertical( #353535, #252525 );
+                border-left: 1px solid #373972;
+                border-right: 1px solid #373972;
+                //#gradient > .vertical( #353535, #252525 );
             }
         }
     }
@@ -475,6 +488,14 @@ footer, header, hgroup, menu, nav, section {
     ul{
         right:0;
         left:auto;
+    }
+    > li > a:after{
+        content:"▾";
+        color:#ddd;
+        position: relative;
+        top: 0;
+        left: 4px;
+        font-size: 10px;
     }
 }
 

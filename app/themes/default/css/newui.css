@@ -448,8 +448,8 @@ section {
   width: 18px;
   padding: 0 10px 1px 10px;
   background: url(../images/notifications-bubble.png) center top no-repeat;
-  border-left: 1px solid #aaa;
-  border-right: 1px solid #aaa;
+  border-left: 1px solid #373972;
+  border-right: 1px solid #373972;
   float: left;
   display: block;
 }
@@ -537,15 +537,20 @@ section {
   float: left;
   margin: 0;
 }
-#user-header-menu:hover ul,
-#settings-header-menu:hover ul {
-  display: block;
-}
 #user-header-menu:hover > li > a,
 #settings-header-menu:hover > li > a {
   color: #fff;
-  border-left: 1px solid #444;
-  border-right: 1px solid #444;
+  background: rgba(255, 255, 255, 0.05);
+}
+#user-header-menu:hover > li > a:after,
+#settings-header-menu:hover > li > a:after {
+  color: #fff;
+}
+#user-header-menu.nav-open > li > a,
+#settings-header-menu.nav-open > li > a {
+  color: #fff;
+  border-left: 1px solid #444 !important;
+  border-right: 1px solid #444 !important;
   background-color: #252525;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#353535), to(#252525));
@@ -557,9 +562,13 @@ section {
   background-image: linear-gradient(top, #353535, #252525);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#353535', endColorstr='#252525', GradientType=0);
 }
-#user-header-menu:hover > li > a:after,
-#settings-header-menu:hover > li > a:after {
+#user-header-menu.nav-open > li > a:after,
+#settings-header-menu.nav-open > li > a:after {
   color: #fff;
+}
+#user-header-menu.nav-open ul,
+#settings-header-menu.nav-open ul {
+  display: block;
 }
 #user-header-menu > li > a,
 #settings-header-menu > li > a {
@@ -576,18 +585,8 @@ section {
 #user-header-menu > li > a:hover,
 #settings-header-menu > li > a:hover {
   color: #fff;
-  border-left: 1px solid #444;
-  border-right: 1px solid #444;
-  background-color: #252525;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#353535), to(#252525));
-  background-image: -moz-linear-gradient(top, #353535, #252525);
-  background-image: -ms-linear-gradient(top, #353535, #252525);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #353535), color-stop(100%, #252525));
-  background-image: -webkit-linear-gradient(top, #353535, #252525);
-  background-image: -o-linear-gradient(top, #353535, #252525);
-  background-image: linear-gradient(top, #353535, #252525);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#353535', endColorstr='#252525', GradientType=0);
+  border-left: 1px solid #373972;
+  border-right: 1px solid #373972;
 }
 #user-header-menu ul,
 #settings-header-menu ul {
@@ -600,6 +599,14 @@ section {
 #user-header-menu ul {
   right: 0;
   left: auto;
+}
+#user-header-menu > li > a:after {
+  content: "▾";
+  color: #ddd;
+  position: relative;
+  top: 0;
+  left: 4px;
+  font-size: 10px;
 }
 #settings-header-menu {
   margin-left: -1px;
@@ -918,7 +925,7 @@ section {
   display: none;
   position: absolute;
   left: 0;
-  top: 38px;
+  top: 33px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -1431,7 +1438,7 @@ section {
   display: none;
   position: absolute;
   left: 0;
-  top: 38px;
+  top: 33px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -4576,7 +4583,7 @@ div.hasHalfs .twoThirds {
   display: none;
   position: absolute;
   left: 0;
-  top: 38px;
+  top: 33px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
