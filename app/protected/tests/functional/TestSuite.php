@@ -182,7 +182,7 @@
                             echo "User default time zone set.";
                         }
                         echo 'Clear cache on remote server';
-                        self::remoteAction(self::resolveServerControlUrlFromParameterAndConstant(), array('clearCache'         => '1',
+                        self::remoteAction(self::resolveHostFromParameterAndConstant(), array('clearCache'         => '1',
                                                                 'ignoreBrowserCheck' => '1'));
                     }
                     else
