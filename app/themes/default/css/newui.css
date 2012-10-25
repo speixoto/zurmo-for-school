@@ -11253,3 +11253,7 @@ div.hasHalfs .twoThirds {
   position: relative;
   top: 1px;
 }
+/*Added for warning message of mass delete*/
+.ui-state-warning{
+color: #ff0000 !important;
+}

@@ -55,5 +55,19 @@
                 </div>
             </div>';
         }
+
+        public static function renderWarningBoxByMessage($message)
+        {
+            assert('$message != null && is_string($message)');
+            return '
+            <div class="ui-widget">
+                <div class="ui-state-warning ui-corner-all">
+
+                    <p><span class="ui-icon ui-icon-info">&#160;</span>
+                    ' . $message .'
+                    </p>
+                </div>
+            </div>';
+        }
     }
 ?>

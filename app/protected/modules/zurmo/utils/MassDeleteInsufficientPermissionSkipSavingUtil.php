@@ -27,7 +27,7 @@
     /**
      * Helper class for mass edit. Allows temporary storage
      * of skipped record information during a mass edit action that
-     * failed because the current user does not have permission::WRITE
+     * failed because the current user does not have permission::DELETE
      * on the model.
      */
     class MassDeleteInsufficientPermissionSkipSavingUtil

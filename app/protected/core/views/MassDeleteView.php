@@ -76,6 +76,7 @@
             {
                 $content .= HtmlNotifyUtil::renderAlertBoxByMessage($this->alertMessage);
             }
+            $content .= $this->renderWarningBox();
             $content .= $this->renderHighlightBox();
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
@@ -95,10 +96,18 @@
             return '<h1>' . $this->title . '</h1>';
         }
 
+        protected function renderWarningBox()
+        {
+            $message = '<center><strong>Warning!</strong>&#160;' .
+                    Yii::t('Default', 'Mass Delete is not reversable.').'</center>';
+            return HtmlNotifyUtil::renderWarningBoxByMessage($message);
+        }
+
         protected function renderHighlightBox()
         {
             $message = '<center><strong>' . $this->selectedRecordCount . '</strong>&#160;' .
-                    LabelUtil::getUncapitalizedRecordLabelByCount($this->selectedRecordCount) . ' ' .
+                    LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName($this->selectedRecordCount , 
+                                                                                       $this->modelClassName) . ' ' .
                     Yii::t('Default', 'selected for removal.').'</center>';
             return HtmlNotifyUtil::renderHighlightBoxByMessage($message);
         }
