@@ -50,7 +50,7 @@
         'Occurred On'
             => 'Ereignete sich am',
         'Post this note to your profile to share with your colleagues'
-            => '??',
+            => 'Stift diese Note zu deinem Profil, um mit deinen Kollegen teilen',
         'The NotesModulePluralLabel form cannot be displayed.'
             => 'Die NotesModulePluralLabel Form kann nicht angezeigt werden',
         '{n} NotesModuleSingularLabel created|{n} NotesModulePluralLabel created'

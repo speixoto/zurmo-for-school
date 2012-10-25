@@ -216,7 +216,7 @@
         'Data'
             => 'Daten',
         'Database upgrade not completed. Please try again later.'
-            => '??',
+            => 'Datenbank-Upgrade nicht abgeschlossen. Bitte versuchen es später erneut.',
         'days'
             => 'Tage',
         'Dead'
@@ -492,7 +492,7 @@
         'Popup list page size'
             => 'Popup-Liste Seitengröße',
         'Post to Profile'
-            => '??',
+            => 'Teilen auf deinem Profil ',
         'Postal Code'
             => 'Postleitzahl',
         'Primary Address'
@@ -664,7 +664,7 @@
         'Update Custom Data'
             => 'Custom Data Aktualisieren',
         'Updated'
-            => '??',
+            => 'Aktualisiert',
         'Upload attachments to a record by clicking "More Options" when adding a note.'
             => '"Weitere Optionen" klicken beim Hinzufügen einer Notiz um eine Anhang zu hochladen.',
         'User Membership'

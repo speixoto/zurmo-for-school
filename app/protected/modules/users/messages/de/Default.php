@@ -36,7 +36,7 @@
         'Change Password'
             => 'Kennwort ändern',
         'Change Profile Picture'
-            => '??',
+            => 'Ändern Profil Bild',
         'Change User Passwords'
             => 'Ändern Kennwörter von Benutzern',
         'Confirm Password'
@@ -70,7 +70,7 @@
         'My Profile'
             => 'Mein Profil',
         'No Profile Picture'
-            => '??',
+            => 'Kein Profil Bild',
         'Password Expires'
             => 'Kennwort abläuft',
         'Password Expiry Days'
@@ -102,9 +102,9 @@
         'Turn off email notifications'
             => 'Deaktivieren Email-Benachrichtigungen',
         'Use Gravatar with custom email'
-            => '??',
+            => 'Verwenden Gravatar mit benutzerdefinierten E-Mail',
         'Use Gravatar with primary email ({primaryEmail})'
-            => '??',
+            => 'Verwenden Gravatar mit primären E-Mail ({primaryEmail})',
         'User'
             => 'Benutzer',
         'User configuration saved successfully.'
@@ -118,8 +118,8 @@
         'Users Home'
             => 'Startseite Benutzerkonto',
         'You need to choose an email address.'
-            => '??',
+            => 'Du müss eine E-Mail-Adresse wählen.',
         'Your Gravatar is an image that follows you from site to site appearing beside your name when you do things like comment or post on a blog.'
-            => '??',
+            => 'Deine Gravatar ist ein Bild, das dir folgt von Ort zu Ort und erscheint neben deinem Namen, wenn du Sachen wie Kommentar auf einem Blog schreibst.',
     );
 ?>

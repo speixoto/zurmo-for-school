@@ -232,7 +232,7 @@
         'URL'
             => 'URL', // Same Word Translated
         'Value cannot be blank.'
-            => '??',
+            => 'Wert darf nicht leer sein.',
         'You can only have at most 4 pick-lists selected.'
             => 'Sie können bis zu 4 Auswahllisten haben.',
         'You must first select a field type'

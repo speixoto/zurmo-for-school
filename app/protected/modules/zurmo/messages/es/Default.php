@@ -216,7 +216,7 @@
         'Data'
             => 'Datos',
         'Database upgrade not completed. Please try again later.'
-            => '??',
+            => 'La actualización de la base de datos no se ha completado. Por favor, inténtelo de nuevo más tarde.',
         'days'
             => 'Días',
         'Dead'
@@ -492,7 +492,7 @@
         'Popup list page size'
             => 'Número de elementos en la lista popup',
         'Post to Profile'
-            => '??',
+            => 'Publicar en el perfil ',
         'Postal Code'
             => 'Código postal',
         'Primary Address'
@@ -664,7 +664,7 @@
         'Update Custom Data'
             => 'Actualizar los datos personalizados',
         'Updated'
-            => '??',
+            => 'Actualizado',
         'Upload attachments to a record by clicking "More Options" when adding a note.'
             => 'Puedes subir archivos adjuntos a un registro haciendo clic en "Más opciones", al añadir una nota.',
         'User Membership'

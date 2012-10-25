@@ -56,11 +56,11 @@
         'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"'
             => 'Die Anwendung ist im Wartungsmodus. Bitte ändern die Datei perInstance.php und setzt "$maintenanceMode = true;"',
         'Apply'
-            => '??',
+            => 'Anwenden',
         'Are you sure you want to delete this {modelLabel}?'
-            => '??',
+            => 'Bist du sicher, dass du diese {modelLabel} löschen willst?',
         'Are you sure you want to unlink this {modelLabel}?'
-            => '??',
+            => 'Bist du sicher, dass du diese {modelLabel} unlink willst?',
         'Basic Search'
             => 'Einfache Suche',
         'Basic Search Fields'
@@ -170,7 +170,7 @@
         'Go to Details'
             => 'Zur Detailansicht',
         'Hidden Columns'
-            => '??',
+            => 'Ausgeblendete Spalten',
         'Hour'
             => 'Stunde',
         'Info'
@@ -364,7 +364,7 @@
         'Unknown'
             => 'unbekannt',
         'Unlink'
-            => '??',
+            => 'Unink', // Same Word Translated
         'Update'
             => 'Aktualisieren',
         'updated successfully.'
@@ -384,7 +384,7 @@
         'Users'
             => 'Benutzern',
         'Visible Columns'
-            => '??',
+            => 'Sichtbare Spalten',
         'Yes'
             => 'Ja',
         'Yesterday'
