@@ -56,7 +56,7 @@
                 {
                     // Normal attribute
                     $adapter = new $adapterClassName($this->model, $attributeName);
-                    $adapter->resolveData($data);
+                    $adapter->resolveData($data, true);
                 }
                 elseif ($this->model->isOwnedRelation($attributeName) &&
                     ($this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
@@ -74,7 +74,6 @@
                                 $exportAttributeName = $this->getDerivedAttributeNameFromTwoStrings(
                                     $this->model->getAttributeLabel($attributeName),
                                     $relatedDataAttribute);
-
                                 $data[$exportAttributeName] = $relatedDataValue;
                             }
                         }

@@ -26,13 +26,18 @@
 
     class CurrencyValueRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
-        public function resolveData(& $data)
+        public function resolveData(& $data, $isExport = false)
         {
             assert('$this->model->{$this->attribute} instanceof CurrencyValue');
             $currencyValue = $this->model->{$this->attribute};
             if ($currencyValue->id > 0)
             {
-                $data[$this->model->getAttributeLabel($this->attribute)] = $currencyValue->value . " " . $currencyValue->currency->code;
+                if ( $isExport ) {
+                    $data[$this->model->getAttributeLabel($this->attribute)] = $currencyValue->value;
+                    $data['Currency'] = $currencyValue->currency->code;
+                } else {
+                    $data[$this->model->getAttributeLabel($this->attribute)] = $currencyValue->value . " " . $currencyValue->currency->code;
+                }
             }
             else
             {
