@@ -5353,6 +5353,9 @@ div.hasHalfs .twoThirds {
   margin-bottom: 30px;
   margin-left: -8px;
 }
+.ui-state-warning {
+  color: #ff0000 !important;
+}
 /*=Lead Conversion*/
 #LeadConvertView .DetailsView > div {
   border: none !important;
@@ -7691,7 +7694,6 @@ div.form .errorSummary ul {
 }
 div.wide.form label {
   float: left;
-  margin-right: 10px;
   position: relative;
 }
 div.wide.form .row {
