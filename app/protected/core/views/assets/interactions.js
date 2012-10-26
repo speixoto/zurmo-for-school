@@ -17,7 +17,8 @@ $(window).ready(function(){
     $('.headerNav').live({
         click: function(){
             if ( $(this).hasClass('nav-open') ){
-                $(this).removeClass('nav-open');
+                $('.nav-open').removeClass('nav-open');
+                conole.log('removing');
             } else {
                 $('.nav-open').removeClass('nav-open');
                 $(this).addClass('nav-open');

@@ -341,16 +341,45 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
+#notifications{
+    float: left;
+    display:block;
+    height: 38px;
+    position: relative;
+    z-index: 1;
+    &.nav-open{
+        color:#fff;
+        border-left:1px solid #444 !important;
+        border-right:1px solid #444 !important;
+        .notifications-link{
+            background-color: transparent;
+            border:none;
+            #gradient > .vertical( #353535, #252525 );
+        }
+        #notifications-link{
+            border:none;
+        }
+        #notifications-flyout{
+            display: block !important;
+        }
+    }
+}
+
 
 .notifications-link{
-    margin-top:12px;
-    width:18px;
-    padding:0 10px 1px 10px;
-    background: url(../images/notifications-bubble.png) center top no-repeat;
-    border-left: 1px solid #373972;
-    border-right: 1px solid #373972;
-    float:left;
+    z-index: 10;
+    position: relative;
     display:block;
+    height: 100%;
+    &:hover{
+        color:#fff;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-left: 1px solid #373972;
+        border-right: 1px solid #373972;
+        #notifications-link{
+            border:none;
+        }
+    }
     &.unread{
         #notifications-link{
             color:#ff0000 !important;
@@ -364,15 +393,22 @@ footer, header, hgroup, menu, nav, section {
 }
 
 #notifications-link{
-    width:18px;
-    height:15px;
+    padding:2px 17px;
+    border-left: 1px solid #373972;
+    border-right: 1px solid #373972;
     font-size:10px;
     font-weight:bold;
     text-align:center;
-    margin-top:0  !important;
+    margin-top:12px  !important;
     display:inline-block;
     cursor:pointer;
     vertical-align:middle;
+    background: url(../images/notifications-bubble.png) center top no-repeat;
+    strong{
+        display: block;
+        position: relative;
+        top: -2px;
+    }
 }
 
 #user-toolbar{
@@ -380,18 +416,26 @@ footer, header, hgroup, menu, nav, section {
 }
 
 #notifications-flyout{
-    .flyout();
+    margin:-1px -1px 0 0;
     width:400px;
-    right:72px;
-    top:33px;
+    right:0;
     position:absolute;
-    z-index:99999;
     padding:5px 10px;
+    z-index:1;
+    min-width:110px;
+    display:none;
+    top:38px;    
+    border:1px solid #444;
+    background: #252525;
+    .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
+    .box-sizing();
+    
     .single-notification{
         line-height:125%;
         padding:9px 0;
-        border-top:1px solid #fff;
-        border-bottom:1px solid #ccc;
+        border-top:1px solid lighten(#252525, 5%);
+        border-bottom: 1px solid darken(#252525, 5%);
+        color:#EFEFEF;
         position:relative;
         &:first-child{
             border-top:none;
@@ -401,6 +445,9 @@ footer, header, hgroup, menu, nav, section {
         }
         h4{
             margin-bottom:2px;
+            color: @themeColor2;
+            color:#fff;
+            .t-shadow(none);
         }
         div{
             padding-right:40px;
@@ -411,12 +458,27 @@ footer, header, hgroup, menu, nav, section {
             top:5px;
             right:0;
             float:right;
+            margin-right: 0;
+            &:hover{
+                .icon:after{
+                    color: #fff !important;
+                }                
+            }
         }
     }
     .view-all-notifications{
         display:block;
-        border-top:1px solid #fff;
+         border-top:1px solid lighten(#252525, 5%);
+        color:#EFEFEF;
+        .smaller();
         padding:9px 0;
+    }
+    a{
+        color:#A7A7A7 !important;
+        text-decoration: underline;
+    }
+    a:hover{
+        color:#fff !important;
     }
     img{
         margin-left:182px;
@@ -429,15 +491,13 @@ footer, header, hgroup, menu, nav, section {
 
 #user-header-menu,
 #settings-header-menu{
+    position: relative;
+    z-index: 100;
     float:left;
     margin:0;
-    
     &:hover{
         > li > a{
             color:#fff;
-            //border-left:1px solid #aaa;
-            //border-right:1px solid #aaa;
-            //#gradient > .vertical( #353535, #252525 );
             background: rgba(255, 255, 255, 0.05);
             &:after{
                 color:#fff;
@@ -473,7 +533,6 @@ footer, header, hgroup, menu, nav, section {
                 color:#fff;
                 border-left: 1px solid #373972;
                 border-right: 1px solid #373972;
-                //#gradient > .vertical( #353535, #252525 );
             }
         }
     }

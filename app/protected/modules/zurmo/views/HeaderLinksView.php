@@ -98,7 +98,7 @@
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
                 'items'                   => $menuItems,
                 'htmlOptions' => array('id'     => $menuId,
-                                       'class'  => 'headerNav'),
+                                       'class'  => 'user-menu-item'),
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['headerMenu'];
@@ -111,39 +111,26 @@
             $count    = Notification::getCountByUser(Yii::app()->user->userModel);
             $imageSourceUrl = Yii::app()->baseUrl . '/themes/default/images/loading.gif';
             // Begin Not Coding Standard
+            $content  .= '<div id="notifications" class="user-menu-item">';
             $content  .= "<a id=\"notifications-flyout-link\" href=\"#\" class=\"notifications-link unread\">";
-            $content  .= "<span id='notifications-link'>" . $count ."</span></a>";
+            $content  .= "<span id='notifications-link'><strong>" . $count ."</strong></span></a>";
             $content  .= ZurmoHtml::tag('div',
                                     array('id' => 'notifications-flyout', 'style' => 'display:none;'),
                                     ZurmoHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
             Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
                 $('#notifications-link').live('click', function()
                 {
-                    if ($('#notifications-flyout').css('display') == 'none')
-                    {
-                        $('#notifications-flyout').show();
-                        $.ajax({
-                            url 	 : '" . $this->notificationsUrl . "',
-                            type     : 'GET',
-                            dataType : 'html',
-                            success  : function(html)
-                            {
-                                jQuery('#notifications-flyout').html(html);
-                                $(document).bind('click',function (e)
+                        if ( $('#notifications').hasClass('nav-open') === true ){
+                            $.ajax({
+                                url 	 : '" . $this->notificationsUrl . "',
+                                type     : 'GET',
+                                dataType : 'html',
+                                success  : function(html)
                                 {
-                                    var container = $('#notifications-flyout');
-                                    if (container.has(e.target).length === 0 && e.target.id != 'notifications-link')
-                                    {
-                                        container.hide();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    else
-                    {
-                        $('#notifications-flyout').hide();
-                    }
+                                    jQuery('#notifications-flyout').empty().html(html);
+                                }
+                            });
+                        }
                 });
             ", CClientScript::POS_HEAD);
             Yii::app()->clientScript->registerScript('deleteNotificationFromAjaxListViewScript', "
@@ -165,6 +152,7 @@
                     });
                 }
             ", CClientScript::POS_END);
+            $content  .= '</div>';
             // End Not Coding Standard
             return $content;
         }
