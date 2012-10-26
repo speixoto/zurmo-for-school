@@ -254,7 +254,7 @@
             $title                 = Yii::t('Default', 'Mass Delete') . ': ' . $title;
             $massDeleteViewClassName = $moduleName . 'MassDeleteView';
             $view  = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
-                                                      $selectedRecordCount, $title, $alertMessage);
+                                                      $selectedRecordCount, $title, $alertMessage, $moduleClassName);
             return $view;
         }
 
