@@ -40,6 +40,12 @@
          */
         private static $canHaveBean = false;
 
+        // On changing a member value the original value
+        // is saved (ie: on change it again the original
+        // value is not overwritten) so that on save the
+        // changes can be written to the audit log.
+        public $originalAttributeValues = array();
+
         /**
          * @see RedBeanModel::getHasBean()
          */
@@ -51,12 +57,6 @@
             }
             return parent::getCanHaveBean();
         }
-
-        // On changing a member value the original value
-        // is saved (ie: on change it again the original
-        // value is not overwritten) so that on save the
-        // changes can be written to the audit log.
-        public $originalAttributeValues = array();
 
         public function __set($attributeName, $value)
         {
