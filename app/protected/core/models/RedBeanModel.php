@@ -622,10 +622,7 @@
                     array_key_exists($relationName, $metadata[$modelClassName]["relations"]))
                 {
                     $relatedModelClassName = $metadata[$modelClassName]['relations'][$relationName][1];
-                    if(!$relatedModelClassName::getCanHaveBean())
-                    {
-                        $relatedModelClassName = get_parent_class($relatedModelClassName);
-                    }
+                    self::resolveModelClassNameForClassesWithoutBeans($relatedModelClassName);
                     $relatedModelTableName = self::getTableName($relatedModelClassName);
                     $columnName = '';
                     if (strtolower($relationName) != strtolower($relatedModelClassName))
@@ -889,10 +886,7 @@
         {
             assert('is_string($modelClassName)');
             assert('$modelClassName != ""');
-            if(!$modelClassName::getCanHaveBean())
-            {
-                $modelClassName = get_parent_class($modelClassName);
-            }
+            self::resolveModelClassNameForClassesWithoutBeans($modelClassName);
             assert('array_key_exists($modelClassName, $this->modelClassNameToBean)');
             return $this->modelClassNameToBean[$modelClassName];
         }
@@ -1229,13 +1223,9 @@
                         list($relationType, $relatedModelClassName, $owns, $relationPolyOneToManyName) =
                              $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
 
-
-
-                        $relatedTableName = self::getTableName($relatedModelClassName);
-                        if(!$relatedModelClassName::getCanHaveBean())
-                        {
-                            $relatedTableName = self::getTableName(get_parent_class($relatedModelClassName));
-                        }
+                        $tempRelatedModelClassName = $relatedModelClassName;
+                        self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
+                        $relatedTableName          = self::getTableName($tempRelatedModelClassName);
                         switch ($relationType)
                         {
                             case self::HAS_ONE_BELONGS_TO:
@@ -1915,13 +1905,11 @@
                         // never actually saved.
                         foreach ($this->unlinkedRelationNames as $key => $relationName)
                         {
-                            $bean                  = $this->attributeNameToBeanAndClassName                [$relationName][0];
-                            $relatedModelClassName = $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][1];
-                            $relatedTableName      = self::getTableName($relatedModelClassName);
-                            if(!$relatedModelClassName::getCanHaveBean())
-                            {
-                                $relatedTableName      = self::getTableName(get_parent_class($relatedModelClassName));
-                            }
+                            $bean                      = $this->attributeNameToBeanAndClassName                [$relationName][0];
+                            $relatedModelClassName     = $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][1];
+                            $tempRelatedModelClassName = $relatedModelClassName;
+                            self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
+                            $relatedTableName          = self::getTableName($tempRelatedModelClassName);
                             $linkName = strtolower($relationName);
                             if ($linkName == strtolower($relatedModelClassName))
                             {
@@ -3119,6 +3107,27 @@
         public static function getCanHaveBean()
         {
             return self::$canHaveBean;
+        }
+
+        /**
+         * Resolve and get model class name used for table retrieval factoring in when a class does
+         * not have a bean and must use a parent class
+         * @param string $modelClassName
+         */
+        protected static function resolveModelClassNameForClassesWithoutBeans(& $modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            if(!$modelClassName::getCanHaveBean())
+            {
+                $modelClassName = get_parent_class($modelClassName);
+                if(!$modelClassName::getCanHaveBean())
+                {
+                    //For the moment, only support a single class in a chain of classes not having a bean.
+                    //Expand this support as needed.
+                    throw new NotSupportedException();
+                }
+            }
+            return $modelClassName;
         }
     }
 ?>
