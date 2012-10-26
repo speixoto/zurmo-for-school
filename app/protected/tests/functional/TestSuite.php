@@ -409,10 +409,11 @@
                         $resultFile != 'Details.html')
                     {
                         $data[] = array(
-                            'fileName' => $resultFile,
+                            'fileName'     => $resultFile,
                             'modifiedDate' => date ("F d Y H:i:s.", filemtime(TEST_RESULTS_PATH . $resultFile)),
-                            'status'   => self::getResultFileStatusByFileName($resultFile),
-                            'browser'       => self::getResultFileBrowserByFileName($resultFile),
+                            'status'       => self::getResultFileStatusByFileName($resultFile),
+                            'browser'      => self::getResultFileBrowserByFileName($resultFile),
+                            'server'       =>self::getResultServerByFileName($resultFile),
                         );
                     }
                 }
@@ -472,6 +473,19 @@
             return 'Unknown';
         }
 
+        protected static function getResultServerByFileName($resultFile)
+        {
+            if (stristr($resultFile, 'dev2'))
+            {
+                return 'dev2';
+            }
+            elseif (stristr($resultFile, 'dev8'))
+            {
+                return 'dev8';
+            }
+            return 'Unknown';
+        }
+
         protected static function makeResultsDetailsFile($data)
         {
             $fileName = TEST_RESULTS_PATH . 'Details.html';
@@ -479,6 +493,7 @@
             $content .= '<table border="1" width="100%">'                               . "\n";
             $content .= '<tr>'                                                          . "\n";
             $content .= '<td>Status</td>'                                               . "\n";
+            $content .= '<td>Server</td>'                                              . "\n";
             $content .= '<td>Browser</td>'                                              . "\n";
             $content .= '<td>Date</td>'                                                 . "\n";
             $content .= '<td>File</td>'                                                 . "\n";
@@ -493,6 +508,7 @@
                 }
                 $content .= '<tr>'                                                      . "\n";
                 $content .= '<td ' . $statusColor . '>' . $info['status']   . '</td>'   . "\n";
+                $content .= '<td>' . $info['server']                       . '</td>'   . "\n";
                 $content .= '<td>' . $info['browser']                       . '</td>'   . "\n";
                 $content .= '<td>' . $info['modifiedDate']                  . '</td>'   . "\n";
                 $content .= '<td>' . $link                                  . '</td>'   . "\n";
@@ -529,6 +545,7 @@
             $content .= '<table border="1" width="100%">'                               . "\n";
             $content .= '<tr>'                                                          . "\n";
             $content .= '<td>Status</td>'                                               . "\n";
+            $content .= '<td>Server</td>'                                               . "\n";
             $content .= '<td>Browser</td>'                                              . "\n";
             $content .= '<td>Date</td>'                                                 . "\n";
             $content .= '<td>Test Passed</td>'                                          . "\n";
@@ -543,10 +560,10 @@
             {
                 if (count($allBrowsersStats) == 0 || !in_array($info['browser'], $allBrowsersStats))
                 {
-                    $allBrowsersStats[$info['browser']] = array();
-                    $allBrowsersStats[$info['browser']]['testsPassed'] = 0;
-                    $allBrowsersStats[$info['browser']]['testsFailed'] = 0;
-                    $allBrowsersStats[$info['browser']]['modifiedDate'] = 0;
+                    $allBrowsersStats[$info['server']][$info['browser']] = array();
+                    $allBrowsersStats[$info['server']][$info['browser']]['testsPassed'] = 0;
+                    $allBrowsersStats[$info['server']][$info['browser']]['testsFailed'] = 0;
+                    $allBrowsersStats[$info['server']][$info['browser']]['modifiedDate'] = 0;
                 }
             }
 
@@ -554,43 +571,47 @@
             {
                 if ($info['status']=='status_passed')
                 {
-                    $allBrowsersStats[$info['browser']]['testsPassed']++;
+                    $allBrowsersStats[$info['server']][$info['browser']]['testsPassed']++;
                 }
                 else
                 {
-                    $allBrowsersStats[$info['browser']]['testsFailed']++;
+                    $allBrowsersStats[$info['server']][$info['browser']]['testsFailed']++;
                 }
 
-                if (strtotime($allBrowsersStats[$info['browser']]['modifiedDate']) < strtotime($info['modifiedDate']))
+                if (strtotime($allBrowsersStats[$info['server']][$info['browser']]['modifiedDate']) < strtotime($info['modifiedDate']))
                 {
-                    $allBrowsersStats[$info['browser']]['modifiedDate'] = $info['modifiedDate'];
+                    $allBrowsersStats[$info['server']][$info['browser']]['modifiedDate'] = $info['modifiedDate'];
                 }
             }
 
-            foreach ($allBrowsersStats as $browser => $browserStats)
+            foreach ($allBrowsersStats as $server => $serverStats)
             {
-                if ($browserStats['testsFailed'] > 0 || $browserStats['testsPassed'] <= 0)
+                foreach ($serverStats as $browser => $browserStats)
                 {
-                    $status = 'status_failed';
-                }
-                else
-                {
-                    $status = 'status_passed';
-                }
-                $statusColor = 'bgcolor="red"';
-                if ($status == 'status_passed')
-                {
-                    $statusColor = 'bgcolor="green"';
-                }
+                    if ($browserStats['testsFailed'] > 0 || $browserStats['testsPassed'] <= 0)
+                    {
+                        $status = 'status_failed';
+                    }
+                    else
+                    {
+                        $status = 'status_passed';
+                    }
+                    $statusColor = 'bgcolor="red"';
+                    if ($status == 'status_passed')
+                    {
+                        $statusColor = 'bgcolor="green"';
+                    }
 
-                $content .= '<tr>'                                              . "\n";
-                $content .= '<td ' . $statusColor . '>' . $status   . '</td>'   . "\n";
-                $content .= '<td>' . $browser                       . '</td>'   . "\n";
-                $content .= '<td>' . $browserStats['modifiedDate']  . '</td>'   . "\n";
-                $content .= '<td>' . $browserStats['testsPassed']   . '</td>'   . "\n";
-                $content .= '<td>' . $browserStats['testsFailed']   . '</td>'   . "\n";
-                $content .= '<td>' . $link                          . '</td>'   . "\n";
-                $content .= '</tr>'                                             . "\n";
+                    $content .= '<tr>'                                              . "\n";
+                    $content .= '<td ' . $statusColor . '>' . $status   . '</td>'   . "\n";
+                    $content .= '<td>' . $server                        . '</td>'   . "\n";
+                    $content .= '<td>' . $browser                       . '</td>'   . "\n";
+                    $content .= '<td>' . $browserStats['modifiedDate']  . '</td>'   . "\n";
+                    $content .= '<td>' . $browserStats['testsPassed']   . '</td>'   . "\n";
+                    $content .= '<td>' . $browserStats['testsFailed']   . '</td>'   . "\n";
+                    $content .= '<td>' . $link                          . '</td>'   . "\n";
+                    $content .= '</tr>'                                             . "\n";
+                }
             }
                 $content .= '</table>'                                          . "\n";
                 $content .= '</html>'                                           . "\n";
