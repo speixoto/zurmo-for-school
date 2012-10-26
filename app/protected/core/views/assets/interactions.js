@@ -14,21 +14,22 @@ $(window).ready(function(){
         }
     });
     
-    $('.headerNav').live({
-        click: function(){
-            if ( $(this).hasClass('nav-open') ){
-                $('.nav-open').removeClass('nav-open');
-                conole.log('removing');
-            } else {
+    $('.user-menu-item').click(
+        function(){       
+            if ( $(this).hasClass('nav-open') === false ){
                 $('.nav-open').removeClass('nav-open');
                 $(this).addClass('nav-open');
+                console.log('adding');
+            } else {
+                $('.nav-open').removeClass('nav-open');
             }
         } 
-    });
+    );
+    /*
     $('body > div').click(function(){
         $('.nav-open').removeClass('nav-open');
     });
-
+    */
 
     //Main nav hover
      $('#MenuView a, #RecentlyViewedView a').hover(
