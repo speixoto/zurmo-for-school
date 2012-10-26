@@ -167,7 +167,8 @@
             $browsersToRun = self::resolveBrowserFromParameter();
             foreach ($browsersToRun as $browserId => $browserDisplayName)
             {
-                self::clearPreviousTestResultsByBrowser(self::getServerByServerControlUrl(self::resolveHostFromParameterAndConstant()), $browserDisplayName);
+                self::clearPreviousTestResultsByServerAndBrowser(self::getServerByServerControlUrl(self::resolveHostFromParameterAndConstant()),
+                                                                 $browserDisplayName);
                 foreach ($htmlTestSuiteFiles as $pathToSuite)
                 {
                     if (!self::isInstallationTest($pathToSuite))
@@ -435,7 +436,7 @@
             self::makeResultsSummaryFile($data);
         }
 
-        protected static function clearPreviousTestResultsByServerAndBrowserA($server, $browserDisplayName)
+        protected static function clearPreviousTestResultsByServerAndBrowser($server, $browserDisplayName)
         {
             if (is_dir(TEST_RESULTS_PATH))
             {
