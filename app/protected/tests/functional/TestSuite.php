@@ -167,7 +167,7 @@
             $browsersToRun = self::resolveBrowserFromParameter();
             foreach ($browsersToRun as $browserId => $browserDisplayName)
             {
-                self::clearPreviousTestResultsByBrowser($browserDisplayName);
+                self::clearPreviousTestResultsByBrowser(self::getServerByServerControlUrl(self::resolveHostFromParameterAndConstant()), $browserDisplayName);
                 foreach ($htmlTestSuiteFiles as $pathToSuite)
                 {
                     if (!self::isInstallationTest($pathToSuite))
@@ -386,6 +386,19 @@
             return self::getBrowsersData();
         }
 
+        protected static function getServerByServerControlUrl($url)
+        {
+            if (stristr($url, 'dev2.zurmo.com'))
+            {
+                return 'dev2.zurmo.com';
+            }
+            elseif (stristr($url, 'dev8.zurmo.com'))
+            {
+                return 'dev8.zurmo.com';
+            }
+            return 'Unknown';
+        }
+
         protected static function getBrowsersData()
         {
             return array(
@@ -422,7 +435,7 @@
             self::makeResultsSummaryFile($data);
         }
 
-        protected static function clearPreviousTestResultsByBrowser($browserDisplayName)
+        protected static function clearPreviousTestResultsByServerAndBrowserA($server, $browserDisplayName)
         {
             if (is_dir(TEST_RESULTS_PATH))
             {
@@ -431,7 +444,8 @@
                 {
                     if ($resultFile != '.' &&
                     $resultFile != '..' &&
-                    stristr($resultFile, strtolower($browserDisplayName)))
+                    stristr($resultFile, strtolower($browserDisplayName)) &&
+                    stristr($resultFile, strtolower($server)))
                     {
                         unlink(TEST_RESULTS_PATH . $resultFile);
                     }
@@ -475,13 +489,13 @@
 
         protected static function getResultServerByFileName($resultFile)
         {
-            if (stristr($resultFile, 'dev2'))
+            if (stristr($resultFile, 'dev2.zurmo.com'))
             {
-                return 'dev2';
+                return 'dev2.zurmo.com';
             }
-            elseif (stristr($resultFile, 'dev8'))
+            elseif (stristr($resultFile, 'dev8.zurmo.com'))
             {
-                return 'dev8';
+                return 'dev8.zurmo.com';
             }
             return 'Unknown';
         }
