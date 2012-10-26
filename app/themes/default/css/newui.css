@@ -1400,14 +1400,14 @@ section {
 .AppContent .single-column .juiportlet-widget,
 .AppContent .single-column .details-table {
   margin-right: 0 !important;
-}
-.AppContent .single-column .details-table {
   zoom: 1;
 }
+.AppContent .single-column .juiportlet-widget:before,
 .AppContent .single-column .details-table:before {
   content: "";
   display: table;
 }
+.AppContent .single-column .juiportlet-widget:after,
 .AppContent .single-column .details-table:after {
   content: "";
   display: table;
@@ -2100,7 +2100,7 @@ td.empty {
   font-size: 12px !important;
   color: #666;
   font-weight: 400 !important;
-  margin-bottom: 4px;
+  margin: 5px 0;
 }
 /*=Form Edit Account*/
 .modal-view-toolbar,
@@ -3289,7 +3289,6 @@ div.wide.form a {
 }
 .double-column .panel table {
   width: 100% !important;
-  margin-top: 10px;
 }
 .double-column .panel a {
   color: #262877;
@@ -3306,9 +3305,6 @@ div.wide.form a {
 .double-column .col-1,
 .double-column .col-3 {
   width: 35% !important;
-}
-.double-column td + th {
-  border-left: 1px solid #ccc;
 }
 .wide.form .col-0 {
   width: 30%;
@@ -3372,6 +3368,10 @@ div.wide.form a {
 }
 #edit-form table br {
   display: none;
+}
+#edit-form td,
+#edit-form th {
+  vertical-align: top;
 }
 #edit-form td table {
   width: 100%;
@@ -3619,19 +3619,17 @@ div.wide.form a {
   margin-bottom: 10px;
 }
 .details-table th {
-  vertical-align: top;
+  font-weight: 600;
+  color: #666;
 }
 .details-table td,
 .details-table th {
-  padding: 5px 5px 0 10px;
-  font-weight: 600;
-  vertical-align: top !important;
+  padding: 8px 5px 8px 15px;
+}
+.details-table td + th {
+  padding-left: 15px !important;
 }
 .details-table p {
-  /*color:#545454 !important
-        float:none;
-        clear:left;*/
-
   width: 100%;
 }
 .details-table p a {
@@ -3669,7 +3667,7 @@ div.wide.form a {
   float: none;
   clear: left;
   width: 100%;
-  font-size: 10px;
+  font-size: 11px;
   font-style: italic;
   text-align: center;
   margin-bottom: 10px;
@@ -3714,21 +3712,6 @@ div.wide.form a {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-}
-.TitleBarAndDetailsView,
-.ProgressView,
-#MetadataViewEditView,
-.TableOfContentsView,
-.DetailsView,
-.EditAndDetailsView {
-  /*p{
-        font-size:10px;
-        font-style:italic;
-        color:#999999;
-        text-align:center;
-        margin-bottom:10px;
-    }*/
-
 }
 .TitleBarAndDetailsView > div,
 .ProgressView > div,
@@ -3794,43 +3777,6 @@ div.wide.form a {
   box-shadow: inset 0 1px 0 0 #ffffff;
   border-bottom: 1px solid #ccc;
   overflow: hidden;
-}
-.TitleBarAndDetailsView th,
-.ProgressView th,
-#MetadataViewEditView th,
-.TableOfContentsView th,
-.DetailsView th,
-.EditAndDetailsView th {
-  color: #999;
-  text-align: right;
-}
-.TitleBarAndDetailsView td,
-.ProgressView td,
-#MetadataViewEditView td,
-.TableOfContentsView td,
-.DetailsView td,
-.EditAndDetailsView td,
-.TitleBarAndDetailsView td a,
-.ProgressView td a,
-#MetadataViewEditView td a,
-.TableOfContentsView td a,
-.DetailsView td a,
-.EditAndDetailsView td a {
-  color: #525252;
-}
-.TitleBarAndDetailsView th,
-.ProgressView th,
-#MetadataViewEditView th,
-.TableOfContentsView th,
-.DetailsView th,
-.EditAndDetailsView th,
-.TitleBarAndDetailsView td,
-.ProgressView td,
-#MetadataViewEditView td,
-.TableOfContentsView td,
-.DetailsView td,
-.EditAndDetailsView td {
-  font-weight: 600;
 }
 .TitleBarAndDetailsView input[type="checkbox"] + label,
 .ProgressView input[type="checkbox"] + label,
@@ -3979,49 +3925,6 @@ div.wide.form a {
 .AttributeDetailsView .toolbar-mbmenu {
   top: 8px;
 }
-/*
-.edit-row-menu{
-    .flyout();
-    list-style: none !important;
-    //margin-top:-8px;
-    padding-top:3px;
-    padding-bottom:3px;
-    //display:none;
-    font-weight:normal !important;
-    display: inline-block;
-    width:auto;
-    ul{
-        display: none;
-        list-style: none;
-        position: absolute;
-    }
-    > .parent > a{
-        text-align:center;
-        font-size:11px;
-        color: #666 !important;
-        padding:5px;
-        span{
-            content: "n";
-            .symbly(26px);
-        }
-    }
-    a{
-        text-indent:0;
-        color: #666;
-        .smaller();
-        font-weight: normal;
-        display: block;
-        padding: 5px 10px 5px 10px;
-        margin: 0 2px;
-        line-height: normal;
-        .t-shadow(none);
-        &:hover{
-            background:@themeColor2 !important;
-            color:#fff !important;
-        }
-    }
-}
-*/
 .DetailsAndRelationsView,
 #AccountDetailsAndRelationsView {
   zoom: 1;
@@ -4442,7 +4345,7 @@ div.overlay-label-field:after {
 .overlay-label-field label {
   position: absolute !important;
   left: 4px;
-  top: 6px;
+  top: 1px;
   color: #999;
   font-size: 14px;
   font-weight: normal;
@@ -6263,11 +6166,11 @@ a.remove:hover .icon:after {
 .warning {
   color: #FFCC00;
 }
-.back-to-app-menu-item span {
+.configuration-list li a::before .back-to-app-menu-item span {
   vertical-align: middle;
   color: #262877 !important;
 }
-.back-to-app-menu-item span:before {
+.configuration-list li a::before .back-to-app-menu-item span:before {
   content: "z";
   font-weight: normal;
   font-size: 21px;
@@ -6436,7 +6339,7 @@ a.remove:hover .icon:after {
   font-family: "ZurmoGamificationSymblyReguRg";
   margin-right: 5px;
   position: relative;
-  top: 0px;
+  top: -2px;
   font-weight: normal !important;
   vertical-align: middle;
 }
