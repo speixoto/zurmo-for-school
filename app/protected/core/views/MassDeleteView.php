@@ -27,7 +27,7 @@
     /**
      * The base View for a module's mass edit view.
      */
-    abstract class MassDeleteView extends EditView
+    class MassDeleteView extends EditView
     {
         /**
          * Array of booleans indicating
@@ -48,7 +48,7 @@
          * Constructs a detail view specifying the controller as
          * well as the model that will have its mass delete displayed.
          */
-        public function __construct($controllerId, $moduleId, RedBeanModel $model, $activeAttributes, $selectedRecordCount, $title, $alertMessage = null, $moduleClassName)
+        public function __construct($controllerId, $moduleId, RedBeanModel $model, $activeAttributes, $selectedRecordCount, $title, $alertMessage = null, $moduleClassName, $selectedIds)
         {
             assert('is_array($activeAttributes)');
             assert('is_string($title)');
@@ -62,6 +62,36 @@
             $this->title                  = $title;
             $this->alertMessage           = $alertMessage;
             $this->moduleClassName        = $moduleClassName;
+            $this->selectedIds            = $selectedIds;
+        }
+
+        protected function getSelectedIds()
+        {
+            return $this->selectedIds;
+        }
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'ListLink',
+                                  'label' => "eval:Yii::t('Default', 'Cancel')"),
+                            array('type' => 'SaveButton',
+                                  'label' => "eval:Yii::t('Default', 'Delete')",
+                                  'htmlOptions' => array(
+                                                         'params' => array(
+                                                            'selectedIds' => 'eval:$this->getSelectedIds()'),
+                                   ),
+                            ),
+                        ),
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'name',
+                    ),
+                ),
+            );
+            return $metadata;
         }
 
         protected function renderContent()

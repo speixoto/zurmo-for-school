@@ -252,9 +252,10 @@
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
             $title                 = Yii::t('Default', 'Mass Delete') . ': ' . $title;
-            $massDeleteViewClassName = $moduleName . 'MassDeleteView';
+            $massDeleteViewClassName = 'MassDeleteView';
+            $selectedIds = GetUtil::getData();
             $view  = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
-                                                      $selectedRecordCount, $title, $alertMessage, $moduleClassName);
+                                                      $selectedRecordCount, $title, $alertMessage, $moduleClassName, $selectedIds);
             return $view;
         }
 
