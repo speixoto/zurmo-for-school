@@ -63,7 +63,7 @@
          */
         public static function getCanHaveBean()
         {
-            if(get_called_class() == 'OwnedCustomField')
+            if(get_called_class() == 'OwnedMultipleValuesCustomField')
             {
                 return self::$canHaveBean;
             }

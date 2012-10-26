@@ -494,11 +494,18 @@
                 $onTableJoinIdName  = $modelAttributeToDataProviderAdapter->getColumnName();
                 $tableJoinIdName    = 'id';
             }
-            $relationTableAliasName          = $joinTablesAdapter->addLeftTableAndGetAliasName(
-                                               $modelAttributeToDataProviderAdapter->getRelationTableName(),
-                                               $onTableJoinIdName,
-                                               $onTableAliasName,
-                                               $tableJoinIdName);
+            if(!$modelAttributeToDataProviderAdapter->canRelationHaveTable())
+            {
+                $relationTableAliasName          = $onTableAliasName;
+            }
+            else
+            {
+                $relationTableAliasName          = $joinTablesAdapter->addLeftTableAndGetAliasName(
+                                                   $modelAttributeToDataProviderAdapter->getRelationTableName(),
+                                                   $onTableJoinIdName,
+                                                   $onTableAliasName,
+                                                   $tableJoinIdName);
+            }
             $relationAttributeTableAliasName = $relationTableAliasName;
             //the second left join check being performed is if you
             //are in a contact filtering on related account email as an example.
@@ -518,7 +525,7 @@
                 elseif (get_parent_class($modelAttributeToDataProviderAdapter->getRelationModelClassName()) ==
                         $modelAttributeToDataProviderAdapter->getRelatedAttributeModelClassName())
                 {
-                    $onTableJoinIdName = "{$relationAttributeTableName}_id";
+                    $onTableJoinIdName = $modelAttributeToDataProviderAdapter->getColumnName();
                 }
                 else
                 {
