@@ -55,7 +55,7 @@
             {
                 return parent::render();
             }
-            $postToProfileContent  = Yii::t('Default', 'Post to profile');
+            $postToProfileContent  = ZurmoHtml::tag('span', array(), Yii::t('Default', 'Post to Profile'));
             $postToProfileContent .= static::renderHelpSpan();
             $postToProfileContent .= ZurmoHtml::checkBox('postToProfile', false);
             $content               = parent::render();

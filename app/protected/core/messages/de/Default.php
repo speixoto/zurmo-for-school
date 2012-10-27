@@ -55,6 +55,12 @@
             => 'und',
         'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"'
             => 'Die Anwendung ist im Wartungsmodus. Bitte ändern die Datei perInstance.php und setzt "$maintenanceMode = true;"',
+        'Apply'
+            => 'Anwenden',
+        'Are you sure you want to delete this {modelLabel}?'
+            => 'Bist du sicher, dass du diese {modelLabel} löschen willst?',
+        'Are you sure you want to unlink this {modelLabel}?'
+            => 'Bist du sicher, dass du diese {modelLabel} unlink willst?',
         'Basic Search'
             => 'Einfache Suche',
         'Basic Search Fields'
@@ -93,6 +99,8 @@
             => 'Hier klicken',
         'Close'
             => 'Schließen',
+        'Columns'
+            => 'Spalten',
         'Copying files.'
             => 'Kopieren von Dateien.',
         'Could not extract upgrade "from version" in the manifest file.'
@@ -161,6 +169,8 @@
             => 'voller Name',
         'Go to Details'
             => 'Zur Detailansicht',
+        'Hidden Columns'
+            => 'Ausgeblendete Spalten',
         'Hour'
             => 'Stunde',
         'Info'
@@ -279,6 +289,8 @@
             => 'Entfernen',
         'Removing upgrade files.'
             => 'Aktualisierungsdateien werden entfernt.',
+        'Reset'
+            => 'Reset', // Same Word Translated
         'Return to List'
             => 'Zurück zur Liste',
         'Row'
@@ -351,6 +363,8 @@
             => 'Schreiben, um ein tab zu finden',
         'Unknown'
             => 'unbekannt',
+        'Unlink'
+            => 'Unink', // Same Word Translated
         'Update'
             => 'Aktualisieren',
         'updated successfully.'
@@ -369,6 +383,8 @@
             => 'Benutzer',
         'Users'
             => 'Benutzern',
+        'Visible Columns'
+            => 'Sichtbare Spalten',
         'Yes'
             => 'Ja',
         'Yesterday'

@@ -252,9 +252,12 @@
     }
 }
 
-#sortable-editable-dropdown-collection li {
-    height: auto;
-    font-size: 1em;
+#sortable-editable-dropdown-collection{
+    clear: left;
+    li {
+        height: auto;
+        font-size: 1em;
+    }
 }
 
 .ui-icon{
@@ -488,4 +491,29 @@
 	table{
 		border-top:none !important;
 	}
+}
+
+
+/*Picklist Creation*/
+#picklist-values{
+    margin: 15px 0;
+    td{
+        padding-left: 0;
+        padding-bottom: 0;
+    }
+    .errorMessage{
+        margin-top:-5px;
+    }
+}
+#DropDownAttributeForm_customFieldDataData_em_{
+    margin-bottom: 10px;
+}
+#customFieldDataData_ul{
+    li{
+        position: relative;
+    }
+}
+
+#customFieldDataData_AddInputButton{
+    .zButton();
 }

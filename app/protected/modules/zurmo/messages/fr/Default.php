@@ -187,6 +187,10 @@
             => 'Créer Rôle',
         'Create Roles'
             => 'Créer Rôles',
+        'Created'
+            => 'Conversations commencées',
+        'created by {ownerStringContent}'
+            => 'crée par {ownerStringContent}',
         'Criteria Selected <span class="icon-clear">Z</span>'
             => 'Critère(s) Choisi(s) <span class="icon-clear">Z</span>',
         'Currencies: Create'
@@ -211,6 +215,8 @@
             => 'Nb. d\'éléments par page dans les listes portlets',
         'Data'
             => 'Donées',
+        'Database upgrade not completed. Please try again later.'
+            => 'La mise à jour de la base de données n\'a pas terminée. Veuillez vérifier plus tard.',
         'days'
             => 'jours',
         'Dead'
@@ -485,6 +491,8 @@
             => 'Règles sauvegardées.',
         'Popup list page size'
             => 'Nb. d\'éléments de la liste pop-up',
+        'Post to Profile'
+            => 'Publier',
         'Postal Code'
             => 'Code Postal',
         'Primary Address'
@@ -655,6 +663,8 @@
             => 'Actualiser',
         'Update Custom Data'
             => 'Mettre à jour les données personnalisées',
+        'Updated'
+            => 'Actualisé',
         'Upload attachments to a record by clicking "More Options" when adding a note.'
             => 'Vous pouvez ajouter une pièce jointe a une Note en cliquant "Plus d\'options".',
         'User Membership'

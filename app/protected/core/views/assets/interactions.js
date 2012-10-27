@@ -13,31 +13,23 @@ $(window).ready(function(){
             }
         }
     });
-
-    $('.headerNav').live({
-        click: function() {
-            var attrId = $(this).attr('id');
-            if ($(this).find('ul').css('display') == 'none')
-            {
-                if ($(this).find('ul').length > 0){
-                    $(this).find('ul').show();
-                    $(document).one('click',function (e)
-                    {
-                        var container = $(this).find('ul').find('ul');
-                        if (container.has(e.target).length === 0 && $(e.target).closest('ul.headerNav').attr('id') != attrId)
-                        {
-                            container.hide();
-                        }
-                     });
-                }
+    
+    $('.user-menu-item').click(
+        function(){       
+            if ( $(this).hasClass('nav-open') === false ){
+                $('.nav-open').removeClass('nav-open');
+                $(this).addClass('nav-open');
+                console.log('adding');
+            } else {
+                $('.nav-open').removeClass('nav-open');
             }
-            else
-            {
-                 $(this).find('ul').hide();
-            }
-        }
+        } 
+    );
+    /*
+    $('body > div').click(function(){
+        $('.nav-open').removeClass('nav-open');
     });
-
+    */
 
     //Main nav hover
      $('#MenuView a, #RecentlyViewedView a').hover(

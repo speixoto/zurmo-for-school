@@ -93,7 +93,7 @@
 
 .comment-details{
     display:inline-block;
-    font-size: 11px;
+    .smaller();
     strong{
         color: #999;
         font-weight: normal !important;
@@ -120,32 +120,18 @@
         padding-left:50px;
         line-height: 140%;
     }
-    &:hover{
-        .delete-comment{
-            visibility:visible !important;
-            a{
-                color:@themeColor !important;
-            }
-        }
-        .delete-social-item{
-            visibility:visible !important;
-            a{
-                color:@themeColor !important;
-            }
-        }
-    }
     &.unread{
         font-weight:bold;
     }
-    .delete-comment{
-        visibility:hidden;
-        margin-left: 5px;
+    .delete-comment, .edit-comment{
+        color:@themeColor;
+        .smaller();
         a{
-            margin-left:4px;
-        }
-        &:before{
-            .symbly(18px);
-            content:"_";
+            color:@themeColor;
+            .opacity(25);
+            &:hover{
+                .opacity(100);
+            }
         }
     }
 }
@@ -211,6 +197,7 @@
     }
     form{
         padding:0;
+        margin-bottom: 15px;
     }
     .panel{
         width:100%;
@@ -338,7 +325,7 @@ a.user-link{
     }
     .show-create-comment{
         margin-left: 80px;
-        font-size: 11px;
+        .smaller();
         color:@themeColor;
         .opacity(50);
         &:hover{
@@ -394,7 +381,10 @@ a.user-link{
 #comment-inline-edit-form{
     border-bottom: none;
     .file-upload-box{
-        padding: 0;
+        padding: 14px 0 0 0;
+    }
+    tr.template-download td{
+        padding-left:0 !important;  
     }
 }
 
@@ -407,20 +397,7 @@ a.user-link{
     }
 }
 
-.delete-social-item{
-    margin-left:5px;
-    visibility: hidden;
-    a{
-        margin-left:4px;
-    }
-    &:before{
-        .symbly(18px);
-        content: "_";
-    }
-}
-
 .social-item{
-    //border-top:1px solid pink;
     border-bottom: 1px solid #fff;
     padding: 15px 0;
     .wide.form{
@@ -440,5 +417,16 @@ a.user-link{
     }
     textarea{
         width: 100%;
+    }
+    table{
+        border-bottom: none;
+    }
+    .form-toolbar{
+        text-align: right;
+        border:none;
+        padding-top: 0;
+        a{
+            margin-right: 0;
+        }
     }
 }

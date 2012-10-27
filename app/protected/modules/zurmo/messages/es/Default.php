@@ -187,6 +187,10 @@
             => 'Crear role',
         'Create Roles'
             => 'Crear roles',
+        'Created'
+            => 'Creado',
+        'created by {ownerStringContent}'
+            => 'creado por {ownerStringContent}',
         'Criteria Selected <span class="icon-clear">Z</span>'
             => 'Criterios Seleccionados <span class="icon-clear">Z</span>',
         'Currencies: Create'
@@ -211,6 +215,8 @@
             => 'Cantidad de elementos que figuran en el portlet',
         'Data'
             => 'Datos',
+        'Database upgrade not completed. Please try again later.'
+            => 'La actualización de la base de datos no se ha completado. Por favor, inténtelo de nuevo más tarde.',
         'days'
             => 'Días',
         'Dead'
@@ -485,6 +491,8 @@
             => 'Reglas guardado correctamente.',
         'Popup list page size'
             => 'Número de elementos en la lista popup',
+        'Post to Profile'
+            => 'Publicar en el perfil ',
         'Postal Code'
             => 'Código postal',
         'Primary Address'
@@ -655,6 +663,8 @@
             => 'Actualizar',
         'Update Custom Data'
             => 'Actualizar los datos personalizados',
+        'Updated'
+            => 'Actualizado',
         'Upload attachments to a record by clicking "More Options" when adding a note.'
             => 'Puedes subir archivos adjuntos a un registro haciendo clic en "Más opciones", al añadir una nota.',
         'User Membership'
