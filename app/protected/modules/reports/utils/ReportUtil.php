@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -24,39 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SavedReportToReportAdapter
+    class ReportUtil
     {
-        protected $report;
-
-        public function __construct(Report $report)
+        public static function renderNonEditableTypeStringContent($type)
         {
-            $this->report = $report;
-        }
-
-        public static function makeReportBySavedReport($savedReport)
-        {
-            $report = new Report();
-            if($savedReport->id > 0)
+            assert('is_string($type)');
+            $typesAndLabels = Report::getTypeDropDownArray();
+            if(isset($typesAndLabels[$type]))
             {
-                $report->setId((int)$savedReport->id);
+                return $typesAndLabels[$type];
             }
-            $report->setDescription($savedReport->description);
-            $report->setModuleClassName($savedReport->moduleClassName);
-            $report->setName($savedReport->name);
-            $report->setOwner($savedReport->owner);
-            $report->setType($savedReport->type);
-            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($savedReport);
-            $report->setExplicitReadWriteModelPermissions($explicitReadWriteModelPermissions);
-            return $report;
         }
 
-        public static function resolveReportToSavedReport($report, $savedReport)
+        public static function renderNonEditableModuleStringContent($moduleClassName)
         {
-            $savedReport->description     = $report->getDescription();
-            $savedReport->moduleClassName = $report->getModuleClassName();
-            $savedReport->name            = $report->getName();
-            $savedReport->owner           = $report->getOwner();
-            $savedReport->type            = $report->getType();
+            assert('is_string($moduleClassName)');
+            $modulesAndLabels = Report::getReportableModulesAndLabelsForCurrentUser();
+            if(isset($modulesAndLabels[$moduleClassName]))
+            {
+                return $modulesAndLabels[$moduleClassName];
+            }
         }
+
+
     }
 ?>

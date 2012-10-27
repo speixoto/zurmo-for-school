@@ -97,13 +97,21 @@
 
         protected function setCommonAttributes(ReportWizardForm $formModel)
         {
+            $formModel->id              = $this->report->getId();
+            $formModel->description     = $this->report->getDescription();
             $formModel->moduleClassName = $this->report->getModuleClassName();
+            if($this->report->getOwner()->id > 0)
+            {
+                $formModel->ownerId     = (int)$this->report->getOwner()->id;
+                $formModel->ownerName   = strval($this->report->getOwner());
+            }
             $formModel->name            = $this->report->getName();
             $formModel->type            = $this->report->getType();
             if($this->report->isNew())
             {
                 $formModel->setIsNew();
             }
+            $formModel->setExplicitReadWriteModelPermissions($this->report->getExplicitReadWriteModelPermissions());
         }
     }
 ?>

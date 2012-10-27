@@ -47,6 +47,9 @@
         {
             $metadata = array();
             $metadata['global'] = array(
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
                 'tabMenuItems' => array(
                     array(
                         'label' => 'Reports',

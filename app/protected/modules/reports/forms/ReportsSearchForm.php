@@ -24,39 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SavedReportToReportAdapter
+    class ReportsSearchForm extends DynamicSearchForm
     {
-        protected $report;
-
-        public function __construct(Report $report)
-        {
-            $this->report = $report;
-        }
-
-        public static function makeReportBySavedReport($savedReport)
-        {
-            $report = new Report();
-            if($savedReport->id > 0)
-            {
-                $report->setId((int)$savedReport->id);
-            }
-            $report->setDescription($savedReport->description);
-            $report->setModuleClassName($savedReport->moduleClassName);
-            $report->setName($savedReport->name);
-            $report->setOwner($savedReport->owner);
-            $report->setType($savedReport->type);
-            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($savedReport);
-            $report->setExplicitReadWriteModelPermissions($explicitReadWriteModelPermissions);
-            return $report;
-        }
-
-        public static function resolveReportToSavedReport($report, $savedReport)
-        {
-            $savedReport->description     = $report->getDescription();
-            $savedReport->moduleClassName = $report->getModuleClassName();
-            $savedReport->name            = $report->getName();
-            $savedReport->owner           = $report->getOwner();
-            $savedReport->type            = $report->getType();
-        }
     }
 ?>

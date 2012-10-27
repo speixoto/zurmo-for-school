@@ -91,7 +91,8 @@
 
         protected function getFormActionUrl()
         {
-            return Yii::app()->createUrl('reports/default/save', array('type' => $this->model->type));
+            return Yii::app()->createUrl('reports/default/save',
+                                         array('type' => $this->model->type, 'id' => $this->model->id));
         }
 
         protected function registerScripts()

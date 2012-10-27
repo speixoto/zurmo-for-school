@@ -51,12 +51,14 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
+                    'description',
                     'moduleClassName',
                     'name',
                     'serializedData',
                     'type'
                 ),
                 'rules' => array(
+                    array('description',         'type',   'type' => 'string'),
                     array('moduleClassName',     'required'),
                     array('moduleClassName',     'type',   'type' => 'string'),
                     array('moduleClassName',     'length', 'max'  => 64),
@@ -74,6 +76,16 @@
         }
 
         public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'ReportsModule';
+        }
+
+        public static function hasReadPermissionsOptimization()
         {
             return true;
         }

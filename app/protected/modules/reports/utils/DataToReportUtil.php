@@ -30,13 +30,26 @@
         {
             assert('is_array($postData)');
             $data = ArrayUtil::getArrayValue($postData, $wizardFormClassName);
-            if(isset($data['name']))
+            if(isset($data['description']))
             {
-                $report->setName($data['name']);
+                $report->setDescription($data['description']);
             }
             if(isset($data['moduleClassName']))
             {
                 $report->setModuleClassName($data['moduleClassName']);
+            }
+            if(isset($data['name']))
+            {
+                $report->setName($data['name']);
+            }
+            if(null != ArrayUtil::getArrayValue($data, 'ownerId'))
+            {
+                $owner = User::getById((int)$data['ownerId']);
+                $report->setOwner($owner);
+            }
+            else
+            {
+                $report->setOwner(new User());
             }
         }
     }

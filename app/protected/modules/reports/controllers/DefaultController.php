@@ -39,6 +39,51 @@
             );
         }
 
+        public function actionIndex()
+        {
+            $this->actionList();
+        }
+
+        public function actionList()
+        {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $savedReport                    = new SavedReport(false);
+            $searchForm                     = new ReportsSearchForm($savedReport);
+            $dataProvider = $this->resolveSearchDataProvider(
+                $searchForm,
+                $pageSize,
+                null,
+                'ReportsSearchView'
+            );
+            $title           = Yii::t('Default', 'Reports');
+            $breadcrumbLinks = array(
+                 $title,
+            );
+            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $mixedView = $this->makeListView(
+                    $searchForm,
+                    $dataProvider
+                );
+                $view = new UsersPageView($mixedView);
+            }
+            else
+            {
+                $mixedView = $this->makeActionBarSearchAndListView(
+                    $searchForm,
+                    $pageSize,
+                    Yii::t('Default', 'Reports'),
+                    $dataProvider,
+                    'SecuredActionBarForReportsSearchAndListView'
+                );
+                $view = new ReportsPageView(ZurmoDefaultViewUtil::
+                                            makeViewWithBreadcrumbsForCurrentUser(
+                                            $this, $mixedView, $breadcrumbLinks, 'ReportBreadCrumbView'));
+            }
+            echo $view->render();
+        }
+
         public function actionSelectType()
         {
             $breadcrumbLinks  = array(Yii::t('Default', 'Select Report Type'));
@@ -51,13 +96,32 @@
             echo $view->render();
         }
 
-        public function actionCreate($type)
+        public function actionCreate($type = null)
         {
+            if($type == null)
+            {
+                $this->actionSelectType();
+                Yii::app()->end(0, false);
+            }
             $breadcrumbLinks = array(Yii::t('Default', 'Create'));
             assert('is_string($type)');
             $report           = new Report();
             $report->setType($type);
-            $postData         = PostUtil::getData();
+            $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report);
+            $view             = new ReportsPageView(ZurmoDefaultViewUtil::
+                                                    makeViewWithBreadcrumbsForCurrentUser(
+                                                    $this,
+                                                    $reportWizardView,
+                                                    $breadcrumbLinks,
+                                                    'ReportBreadCrumbView'));
+            echo $view->render();
+        }
+
+        public function actionEdit($id)
+        {
+            $savedReport      = SavedReport::getById((int)$id);
+            $breadcrumbLinks  = array(strval($savedReport));
+            $report           = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report);
             $view             = new ReportsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
@@ -82,18 +146,25 @@
                 $report                    = new Report();
                 $report->setType($type);
             }
+
             DataToReportUtil::resolveReportByWizardPostData($report, $postData,
                                                             ReportToWizardFormAdapter::getFormClassNameByType($type));
             $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
             $model                     =  $reportToWizardFormAdapter->makeFormByType();
-
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
             {
                 $this->actionValidate($postData, $model);
             }
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 resolveByPostDataAndModelThenMake($postData[get_class($model)], $savedReport);
             SavedReportToReportAdapter::resolveReportToSavedReport($report, $savedReport);
             if($savedReport->save())
             {
+                if($explicitReadWriteModelPermissions != null)
+                {
+                    ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($savedReport,
+                                                           $explicitReadWriteModelPermissions);
+                }
                 echo CJSON::encode(array('id' => $savedReport->id));
                 Yii::app()->end(0, false);
             }

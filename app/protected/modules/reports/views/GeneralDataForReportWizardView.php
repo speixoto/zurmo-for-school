@@ -30,10 +30,30 @@
 
         protected function renderFormContent()
         {
+            $content           = '<div class="attributesContainer">';
+            $element           = new TextElement($this->model, 'name', $this->form);
+            $leftSideContent   = $element->render();
+            $element           = new TextAreaElement($this->model, 'description', $this->form, array('rows' => 2));
+            $leftSideContent  .= $element->render();
+            $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
+            $rightSideContent  = ZurmoHtml::tag('div', array(), $this->renderRightSideFormLayout());
+            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
+            $content          .= ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $rightSideContent);
+            $content          .= '</div>';
+            return $content;
+        }
 
-            $element       = new TextElement($this->model, 'name', $this->form);
-            $content = $element->render();
-            return 'GeneralDataForReportWizardView form content' . $content;
+        protected function renderRightSideFormLayout()
+        {
+            $content  = "<h3>".Yii::t('Default', 'Rights and Permissions') . '</h3><div id="owner-box">';
+            $element  = new OwnerNameIdElement($this->model, 'null', $this->form);
+            $element->editableTemplate = '{label}{content}{error}';
+            $content .= $element->render().'</div>';
+            $element  = new ExplicitReadWriteModelPermissionsElement($this->model,
+                                             'explicitReadWriteModelPermissions', $this->form);
+            $element->editableTemplate = '{label}{content}{error}';
+            $content .= $element->render();
+            return $content;
         }
 
         public static function getWizardStepTitle()

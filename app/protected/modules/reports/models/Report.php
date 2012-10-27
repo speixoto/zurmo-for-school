@@ -32,11 +32,30 @@
 
         const TYPE_MATRIX           = 'Matrix';
 
+        private $description;
+
+        private $explicitReadWriteModelPermissions;
+
+        /**
+         * Id of the saved report if it has already been saved
+         * @var integer
+         */
+        private $id;
+
         private $moduleClassName;
 
         private $name;
 
+        private $owner;
+
         private $type;
+
+        public static function getTypeDropDownArray()
+        {
+            return array(self::TYPE_ROWS_AND_COLUMNS  => Yii::t('Default', 'Rows and Columns'),
+                         self::TYPE_SUMMATION         => Yii::t('Default', 'Summation'),
+                         self::TYPE_MATRIX            => Yii::t('Default', 'Matrix'),);
+        }
 
         /**
          * Based on the current user, return the reportable modules and thier display labels.  Only include modules
@@ -68,6 +87,28 @@
             $this->moduleClassName = $moduleClassName;
         }
 
+        public function getDescription()
+        {
+            return $this->description;
+        }
+
+        public function setDescription($description)
+        {
+            assert('is_string($description)');
+            $this->description = $description;
+        }
+
+        public function getId()
+        {
+            return $this->id;
+        }
+
+        public function setId($id)
+        {
+            assert('is_int($id)');
+            $this->id = $id;
+        }
+
         public function getName()
         {
             return $this->name;
@@ -94,6 +135,34 @@
         {
             //todo:
             return true;
+        }
+
+        public function getOwner()
+        {
+            if($this->owner == null)
+            {
+                $this->owner = Yii::app()->user->userModel;
+            }
+            return $this->owner;
+        }
+
+        public function setOwner(User $owner)
+        {
+            $this->owner = $owner;
+        }
+
+        public function getExplicitReadWriteModelPermissions()
+        {
+            if($this->explicitReadWriteModelPermissions == null)
+            {
+                $this->explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            }
+            return $this->explicitReadWriteModelPermissions;
+        }
+
+        public function setExplicitReadWriteModelPermissions(ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+        {
+            $this->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
         }
     }
 ?>

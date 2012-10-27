@@ -29,13 +29,33 @@
      */
     abstract class ReportWizardForm extends CFormModel
     {
+        public $description;
+
+        /**
+         * Id of the SavedReport model if available.
+         * @var integer
+         */
+        public $id;
+
         public $moduleClassName;
 
         public $name;
 
         public $type;
 
+        public $ownerId;
+
+        public $ownerName;
+
         protected $isNew = false;
+
+        /**
+         * Object containing information on how to setup permissions for the new models that are created during the
+         * import process.
+         * @var object ExplicitReadWriteModelPermissions
+         * @see ExplicitReadWriteModelPermissions
+         */
+        protected $explicitReadWriteModelPermissions;
 
         /**
          * Mimics the expected interface by the views when calling into
@@ -43,7 +63,7 @@
          */
         public function getId()
         {
-            return null;
+            return $this->id;
         }
 
         public function isNew()
@@ -59,6 +79,7 @@
         public function rules()
         {
             return array(
+                array('description', 	  'type',     'type' => 'string'),
                 array('name', 			  'type',     'type' => 'string'),
                 array('name', 			  'length',   'max' => 64),
                 array('name', 			  'required', 'on' => GeneralDataForReportWizardView::VALIDATION_SCENARIO),
@@ -68,14 +89,29 @@
                 array('type', 		      'type',     'type' => 'string'),
                 array('type', 			  'length',   'max' => 64),
                 array('type', 			  'required'),
+                array('ownerId',   	      'type',     'type' => 'integer'),
+                array('ownerId',   		  'required', 'on' => GeneralDataForReportWizardView::VALIDATION_SCENARIO),
+                array('ownerName', 		  'required', 'on' => GeneralDataForReportWizardView::VALIDATION_SCENARIO),
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'name'                       => Yii::t('Default', 'Name'),
+                'name'           => Yii::t('Default', 'Name'),
+                'ownerId'        => Yii::t('Default', 'Owner Id'),
+                'ownerName'      => Yii::t('Default', 'Owner Name'),
             );
+        }
+
+        public function getExplicitReadWriteModelPermissions()
+        {
+            return $this->explicitReadWriteModelPermissions;
+        }
+
+        public function setExplicitReadWriteModelPermissions(ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+        {
+            $this->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
         }
     }
 ?>
