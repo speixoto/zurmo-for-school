@@ -337,6 +337,118 @@
     <td>Changing The Account ${randomSuffix}</td>
     <td></td>
 </tr>
+<!-- Creating contact for testing edit and unlink-->
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Create')])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Contact_firstName</td>
+	<td>Test </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Contact_lastName</td>
+	<td>Contact ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=Contact_state_id</td>
+	<td>label=Customer</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=save</td>
+	<td></td>
+</tr>
+<tr>
+    <td>waitForTextPresent</td>
+    <td>Test Contact ${randomSuffix}</td>
+    <td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='list-viewAccountDetailsAndRelationsViewRightBottomView_6']/table/tbody/tr/td[2]/div/ul/li/ul/li/a/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Contact_firstName</td>
+	<td>Changing Test </td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=save</td>
+	<td></td>
+</tr>
+<tr>
+    <td>waitForTextPresent</td>
+    <td>Changing Test Contact ${randomSuffix}</td>
+    <td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Unlink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure you want to unlink this contact?</td>
+	<td></td>
+</tr>
+<tr>
+    <td>waitForTextNotPresent</td>
+    <td>Changing Test Contact ${randomSuffix}</td>
+    <td></td>
+</tr>
+<!-- Creating contact for testing delete-->
+<tr>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Create')])[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Contact_firstName</td>
+	<td>Test </td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Contact_lastName</td>
+	<td>Contact ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=Contact_state_id</td>
+	<td>label=Customer</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=save</td>
+	<td></td>
+</tr>
+<tr>
+    <td>waitForTextPresent</td>
+    <td>Test Contact ${randomSuffix}</td>
+    <td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='list-viewAccountDetailsAndRelationsViewRightBottomView_6']/table/tbody/tr/td[2]/div/ul/li/ul/li[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure you want to delete this contact?</td>
+	<td></td>
+</tr>
+<tr>
+    <td>waitForTextNotPresent</td>
+    <td>Test Contact ${randomSuffix}</td>
+    <td></td>
+</tr>
 </tbody>
 </table>
 </body>
