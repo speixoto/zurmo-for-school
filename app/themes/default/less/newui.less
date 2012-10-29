@@ -1412,7 +1412,7 @@ table.items{
     .box-sizing();
     > tbody,
     > thead{
-        >tr > td{
+        > tr > td{
             border: 1px solid #DFDFDF;
             border-right:none;
             border-left:none;
@@ -1427,8 +1427,7 @@ table.items{
             height:35px;
             line-height: 35px;
             background: url(../images/table-items-header.png) left top repeat-x;
-            padding-top:0;
-            padding-bottom: 0;
+            padding:0 5px;
             white-space: nowrap;
         }  
     }
@@ -3555,11 +3554,6 @@ div.hasHalfs{
     .last a:after, .hidden.last:after{
         content:"»"; 
     }
-    /*
-    #list-view-endless-page:after{
-         content:"6" !important; 
-    }
-    */
     .next, .previous, .first, .last{
         font-size:14px;
         line-height: 1;
@@ -3583,6 +3577,10 @@ div.hasHalfs{
 .juiportlet-widget .endless-list-pager{
     border:none;
 }
+#list-view .pager{
+    .b-shadow(none);
+}
+
 
 /*=Meetings modal*/
 #days-meetings-list-view{
