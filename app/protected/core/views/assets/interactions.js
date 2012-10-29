@@ -19,7 +19,6 @@ $(window).ready(function(){
             if ( $(this).hasClass('nav-open') === false ){
                 $('.nav-open').removeClass('nav-open');
                 $(this).addClass('nav-open');
-                console.log('adding');
             } else {
                 $('.nav-open').removeClass('nav-open');
             }
