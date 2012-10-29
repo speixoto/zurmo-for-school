@@ -475,6 +475,11 @@ section {
 #notifications.nav-open #notifications-flyout {
   display: block !important;
 }
+#notifications.nav-open .z-spinner {
+  display: block;
+  margin: 0 auto;
+  float: none;
+}
 .notifications-link {
   z-index: 10;
   position: relative;
@@ -520,6 +525,7 @@ section {
 #notifications-flyout {
   margin: -1px -1px 0 0;
   width: 400px;
+  min-height: 35px;
   right: 0;
   position: absolute;
   padding: 5px 10px;
