@@ -1408,6 +1408,8 @@ table.items{
     border: 1px solid #DFDFDF;
     border-collapse: collapse;
     border-spacing: 1px;
+    margin: 0;
+    .box-sizing();
     > tbody,
     > thead{
         >tr > td{
@@ -3368,7 +3370,7 @@ div.hasHalfs{
     td{
         padding-left:0;// !important;
         &:first-child{
-            border-top:none;
+            //border-top:none;
         }
         div.button-column{
             float:left;
@@ -3493,10 +3495,11 @@ div.hasHalfs{
         border-left: 1px solid #DFDFDF;
         .clearfix();
     }
-    ul.endless-list-pager{
+    .endless-list-pager{
         width:100%;
         list-style:none;
-        border-left: none;
+        border: 1px solid #DFDFDF;
+        border-top: none;
         li{
             float:none;
             width:100%;
@@ -3575,6 +3578,10 @@ div.hasHalfs{
     &:empty{
         display:none;
     }
+}
+
+.juiportlet-widget .endless-list-pager{
+    border:none;
 }
 
 /*=Meetings modal*/

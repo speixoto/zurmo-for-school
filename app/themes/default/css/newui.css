@@ -1863,6 +1863,10 @@ table.items {
   border: 1px solid #DFDFDF;
   border-collapse: collapse;
   border-spacing: 1px;
+  margin: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 table.items > tbody > tr > td,
 table.items > thead > tr > td {
@@ -4441,9 +4445,6 @@ div.hasHalfs .twoThirds {
 .juiportlet-widget td {
   padding-left: 0;
 }
-.juiportlet-widget td:first-child {
-  border-top: none;
-}
 .juiportlet-widget td div.button-column {
   float: left;
   display: block;
@@ -4630,24 +4631,25 @@ div.hasHalfs .twoThirds {
   display: table;
   clear: both;
 }
-.pager ul.endless-list-pager {
+.pager .endless-list-pager {
   width: 100%;
   list-style: none;
-  border-left: none;
+  border: 1px solid #DFDFDF;
+  border-top: none;
 }
-.pager ul.endless-list-pager li {
+.pager .endless-list-pager li {
   float: none;
   width: 100%;
   border: none;
 }
-.pager ul.endless-list-pager .next a:after,
-.pager ul.endless-list-pager .hidden.next:after {
+.pager .endless-list-pager .next a:after,
+.pager .endless-list-pager .hidden.next:after {
   content: "6";
   font-weight: normal;
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
-.pager ul.endless-list-pager .hidden {
+.pager .endless-list-pager .hidden {
   display: none;
 }
 .pager li {
@@ -4727,6 +4729,9 @@ div.hasHalfs .twoThirds {
 }
 .pager:empty {
   display: none;
+}
+.juiportlet-widget .endless-list-pager {
+  border: none;
 }
 /*=Meetings modal*/
 #days-meetings-list-view td {
@@ -5841,18 +5846,6 @@ a.remove:hover .icon:after {
 }
 .juiportlet-widget-content .items {
   border: none !important;
-  /*td:first-child{
-        div{
-            font-size:11px;
-            margin-top:3px;
-            &:first-child{
-                font-size: 12px;
-                font-weight: bold;
-                margin-top: 0;
-            }
-        }    
-    }*/
-
 }
 .juiportlet-widget-content .items thead > tr th,
 .juiportlet-widget-content .items thead > tr td {
@@ -8075,7 +8068,10 @@ div.wide.form .errorMessage {
   text-shadow: #000000 0 1px 0;
 }
 .ui-datepicker .ui-datepicker-calendar {
-  width: 100.1%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
   border-color: #BBB;
   border-style: solid;
   border-width: 0 0 1px 1px;
@@ -11306,6 +11302,10 @@ a.user-link {
 #AllSocialItemsForPortletView tr:hover {
   background: none !important;
   color: inherit !important;
+}
+.SocialItemsListView td:first-child,
+#AllSocialItemsForPortletView td:first-child {
+  border-top: none;
 }
 .SocialItemsListView .CommentList,
 #AllSocialItemsForPortletView .CommentList {
