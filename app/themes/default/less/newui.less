@@ -2245,29 +2245,44 @@ div.wide.form{
         display: inline-block;
     }
 }
+
 .select-list-attributes-view{
     table{
         border-bottom: none;
+    }
+    td{
+        padding-left: 0 !important;
     }
     .attributesContainer:after{
         display: none !important;
     }
     .multiselect-holder{
-        width:750px;
-        padding-left:60px;
+        position: relative;
+        width:75%;
+        max-width: 675px;
     }
-    /*.multiselect-nav-updown{
-        height:auto;
-        margin-top:10px;
-        margin-right:75px;
+    .multiselect-right, .multiselect-left{
+        width:45%;
+        max-width: 300px;
+    }
+    .multiselect-right{
         float: right;
-        width:142px;
-        input{
-            float: left;
-            margin-right:10px;
-            margin-bottom: 0 !important;
-        }
-    }*/
+    }
+    .multiselect-nav{
+        display: none;
+    }
+    .multiselect-nav-updown{
+        display: block;
+        position: absolute;
+        right:-75px;
+        float:right;
+        padding:0 15px;
+        .box-sizing();
+        width:75px;
+        text-align:center;
+        height:75px;
+        margin-top:70px;
+    }
 }
 
 

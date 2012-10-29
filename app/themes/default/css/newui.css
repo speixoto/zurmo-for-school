@@ -3078,30 +3078,44 @@ div.wide.form a {
 .search-view-1 .view-toolbar-container {
   display: inline-block;
 }
-.select-list-attributes-view {
-  /*.multiselect-nav-updown{
-        height:auto;
-        margin-top:10px;
-        margin-right:75px;
-        float: right;
-        width:142px;
-        input{
-            float: left;
-            margin-right:10px;
-            margin-bottom: 0 !important;
-        }
-    }*/
-
-}
 .select-list-attributes-view table {
   border-bottom: none;
+}
+.select-list-attributes-view td {
+  padding-left: 0 !important;
 }
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
 }
 .select-list-attributes-view .multiselect-holder {
-  width: 750px;
-  padding-left: 60px;
+  position: relative;
+  width: 75%;
+  max-width: 675px;
+}
+.select-list-attributes-view .multiselect-right,
+.select-list-attributes-view .multiselect-left {
+  width: 45%;
+  max-width: 300px;
+}
+.select-list-attributes-view .multiselect-right {
+  float: right;
+}
+.select-list-attributes-view .multiselect-nav {
+  display: none;
+}
+.select-list-attributes-view .multiselect-nav-updown {
+  display: block;
+  position: absolute;
+  right: -75px;
+  float: right;
+  padding: 0 15px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 75px;
+  text-align: center;
+  height: 75px;
+  margin-top: 70px;
 }
 #clear-search-link {
   background: #262877;
@@ -6555,17 +6569,6 @@ table.configuration-list tr td:last-child a:before {
 .multiselect-right {
   float: left;
   width: 300px;
-}
-.multiselect-nav {
-  float: left;
-  padding: 0 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 75px;
-  text-align: center;
-  height: 75px;
-  margin-top: 60px;
 }
 /*TreeListView - usualy first page in each in admin*/
 #LanguagesCollectionView,
