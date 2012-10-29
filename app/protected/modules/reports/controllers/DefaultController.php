@@ -35,7 +35,12 @@
                         'moduleClassName' => 'ReportsModule',
                         'rightName' => ReportsModule::RIGHT_ACCESS_REPORTS,
                    ),
-               )
+                   array(
+                        self::getRightsFilterPath() . ' + selectType',
+                        'moduleClassName' => 'ReportsModule',
+                        'rightName' => ReportsModule::RIGHT_CREATE_REPORTS,
+                   )
+                )
             );
         }
 
@@ -120,6 +125,7 @@
         public function actionEdit($id)
         {
             $savedReport      = SavedReport::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             $breadcrumbLinks  = array(strval($savedReport));
             $report           = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report);
@@ -138,13 +144,24 @@
             if($id != null)
             {
                 $savedReport                = SavedReport::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
                 $report                     = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             }
-            else
+            elseif(RightsUtil::doesUserHaveAllowByRightName('ReportsModule',
+                                                            ReportsModule::RIGHT_CREATE_REPORTS,
+                                                            Yii::app()->user->userModel))
             {
+
                 $savedReport               = new SavedReport();
                 $report                    = new Report();
                 $report->setType($type);
+            }
+            else
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
             }
 
             DataToReportUtil::resolveReportByWizardPostData($report, $postData,
@@ -165,12 +182,38 @@
                     ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($savedReport,
                                                            $explicitReadWriteModelPermissions);
                 }
-                echo CJSON::encode(array('id' => $savedReport->id));
+
+                //i can do a safety check on perms, then do flash here, on the jscript we can go to list instead and this should come up...
+                //make sure you add to list of things to test.
+
+                $redirectToList = $this->resolveAfterSaveHasPermissionsProblem($savedReport,
+                                                                                    $postData[get_class($model)]['name']);
+                echo CJSON::encode(array('id'             => $savedReport->id,
+                                         'redirectToList' => $redirectToList));
                 Yii::app()->end(0, false);
             }
             else
             {
                 throw new FailedToSaveModelException();
+            }
+        }
+
+        protected function resolveAfterSaveHasPermissionsProblem(SavedReport $savedReport, $modelToStringValue)
+        {
+            assert('is_string($modelToStringValue)');
+            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($savedReport, Permission::READ))
+            {
+                return false;
+            }
+            else
+            {
+                $notificationContent = Yii::t(
+                    'Default',
+                    'You no longer have permissions to access {modelName}.',
+                    array('{modelName}' => $modelToStringValue)
+                );
+                Yii::app()->user->setFlash('notification', $notificationContent);
+                return true;
             }
         }
 

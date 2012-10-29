@@ -119,14 +119,22 @@
 
         protected function getSaveAjaxString($formName)
         {
-            $saveRedirectUrl = Yii::app()->createUrl('reports/default/details');
+            $saveRedirectToDetailsUrl = Yii::app()->createUrl('reports/default/details');
+            $saveRedirectToListUrl    = Yii::app()->createUrl('reports/default/list');
             return ZurmoHtml::ajax(array(
                                             'type'     => 'POST',
                                             'data'     => 'js:$("#' . $formName . '").serialize()',
                                             'url'      =>  $this->getFormActionUrl(),
                                             'dataType' => 'json',
                                             'success'  => 'js:function(data){
-                                                url = "' . $saveRedirectUrl . '" + "?id=" + data.id
+                                                if(data.redirectToList)
+                                                {
+                                                    url = "' . $saveRedirectToListUrl . '";
+                                                }
+                                                else
+                                                {
+                                                    url = "' . $saveRedirectToDetailsUrl . '" + "?id=" + data.id
+                                                }
                                                 window.location.href = url;
                                             }'
                                           ));
