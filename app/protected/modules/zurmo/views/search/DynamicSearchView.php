@@ -311,7 +311,7 @@
                             array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
                                   'class' => 'has-lang-label',
                                   'style' => $style2), $this->renderStructureInputContent($form));
-            $content  = ZurmoHtml::tag('span', array('id'    => 'show-dynamic-search-structure-wrapper-' . $this->getSearchFormId(),
+            $content  = ZurmoHtml::tag('div', array('id'    => 'show-dynamic-search-structure-wrapper-' . $this->getSearchFormId(),
                                                      'style' => $style3), $content);
             return $content;
         }

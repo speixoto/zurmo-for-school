@@ -166,7 +166,7 @@
 
         protected function renderAfterAddExtraRowContent($form)
         {
-            $content  = '<strong class="mp-divider"> · </strong>' . ZurmoHtml::link(Yii::t('Default', 'Save search'), '#', array('id' => 'save-as-advanced-search'));
+            $content  = '<strong class="mp-divider"> &middot; </strong>' . ZurmoHtml::link(Yii::t('Default', 'Save search'), '#', array('id' => 'save-as-advanced-search'));
             $content  = ZurmoHtml::tag('div', array('class' => 'search-save-container'), $content);
             $content .= '<div id="save-search-area" class="view-toolbar-container clearfix" style="display:none;">';
             $content .= $this->renderSaveInputAndSaveButtonContentForAdvancedSearch($form);

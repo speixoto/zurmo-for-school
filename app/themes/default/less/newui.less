@@ -1934,6 +1934,9 @@ div.wide.form{
 .list-view-items-summary-clone{
     .smaller();
     float: right;
+    position: absolute;
+    z-index: 100;
+    right: 15px;
     margin:20px 0 0 0;
     color:#666;
     .t-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
@@ -2109,8 +2112,22 @@ div.wide.form{
     margin:15px 0 0 0;
     display: block;
     position: relative;
-    .clearfix;
-    height:25px;
+    //.clearfix();
+    //height:25px;
+    float: left;
+    width: 100%;
+    z-index: 0;
+    table{
+        padding: 0;
+        margin: 0;
+        top:0;
+        left: 0;
+        border:none;
+    }
+    th{
+        display: none;
+        width: 0;
+    }
     .global-search-loopa{
         position: relative;
         top:0;
@@ -2147,7 +2164,16 @@ div.wide.form{
     position: relative;
     #gradient > .vertical( #f5f5f5, #ebebeb );
     .smaller();
+    float: left;
+    width: 100%;
+    .box-sizing();
+    .clearfix();
 }
+/*
+#search-form:after{content:" ";display:block;height:0;clear:both;visibility:hidden;font-size:0;}
+#search-form{height:1%;}
+*:first-child+html #search-form{min-height:1px;}
+*/
 
 .search-form-tools{
     position: absolute;
@@ -2233,6 +2259,8 @@ div.wide.form{
     z-index:100;
     min-width:400px;
     height:auto;
+    float: left;
+    width: 100%;
     label{
         padding-top:7px;
         padding-right:10px;
@@ -2367,6 +2395,12 @@ div.wide.form{
     display: inline-block;
     margin:15px 3px 10px 0;
 }
+
+.dynamic-search-row + .add-fields-container,
+.dynamic-search-row + .add-fields-container + .search-save-container{
+    margin:5px 3px 10px 0;
+}
+
 .add-fields-container{
     .z-spinner{
         display: block !important;
