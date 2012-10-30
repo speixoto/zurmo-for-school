@@ -115,8 +115,8 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($savedReport), 'ReportsModule'), $savedReport);
             $breadcrumbLinks         = array(strval($savedReport));
-            $detailsAndRelationsView = $this->makeReportDetailsAndRelationsView($savedReport, 'ReportsModule',
-                                                                                Yii::app()->request->getRequestUri(),
+            $breadCrumbView          = new ReportBreadCrumbView($this->getId(), $this->getModule()->getId(), $breadcrumbLinks);
+            $detailsAndRelationsView = $this->makeReportDetailsAndRelationsView($savedReport, Yii::app()->request->getRequestUri(),
                                                                                 $breadCrumbView);
             $view = new AccountsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
@@ -271,12 +271,12 @@
             Yii::app()->end(0, false);
         }
 
-        protected function makeReportDetailsAndRelationsView(SavedReport $savedReport, $redirectUrl, $breadCrumbView)
+        protected function makeReportDetailsAndRelationsView(SavedReport $savedReport, $redirectUrl,
+                                                             ReportBreadCrumbView $breadCrumbView)
         {
-            assert('$breadCrumbView instanceof BreadCrumbView');
-            $reportDetailsAndRelationsView = ReportDetailsAndResultsViewFactory::makeView($report, $savedReport, $controller->getId(),
-                                                                                          $controller->getModule()->getId(),
-                                                                                          $params, $redirectUrl);
+            $reportDetailsAndRelationsView = ReportDetailsAndResultsViewFactory::makeView($savedReport, $this->getId(),
+                                                                                          $this->getModule()->getId(),
+                                                                                          $redirectUrl);
             $gridView = new GridView(2, 1);
             $gridView->setView($breadCrumbView, 0, 0);
             $gridView->setView($reportDetailsAndRelationsView, 1, 0);

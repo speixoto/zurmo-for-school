@@ -26,13 +26,11 @@
 
     class ReportDetailsAndResultsViewFactory
     {
-        public static function makeView(Report $report, SavedReport $savedReport, $controllerId, $moduleId,
-                                        $params, $redirectUrl)
+        public static function makeView(SavedReport $savedReport, $controllerId, $moduleId, $redirectUrl)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_string($redirectUrl)');
-            assert('is_array($params)');
             $report = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $params = array(
                 'controllerId'     => $controllerId,
@@ -46,7 +44,7 @@
             }
             elseif($report->getType() == Report::TYPE_SUMMATION)
             {
-                $viewClassName = 'SummationReportDetailsAndSummationView';
+                $viewClassName = 'SummationReportDetailsAndResultsView';
             }
             elseif($report->getType() == Report::TYPE_MATRIX)
             {

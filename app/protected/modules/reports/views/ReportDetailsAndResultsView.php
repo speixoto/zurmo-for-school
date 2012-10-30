@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    abstract class ReportDetailsAndSummationView extends DetailsAndRelationsView
+    abstract class ReportDetailsAndResultsView extends DetailsAndRelationsView
     {
         /**
          * @var object SavedReport

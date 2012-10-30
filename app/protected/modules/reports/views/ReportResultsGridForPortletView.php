@@ -25,18 +25,20 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the available modules that can be reported on
+     * Base class used for wrapping a view of a report results grid
      */
-    class ModuleForReportStaticDropDownElement extends StaticDropDownFormElement
+    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
     {
-        protected function getDropDownArray()
+        public function getTitle()
         {
-            return Report::getReportableModulesAndLabelsForCurrentUser();
+            $title  = Yii::t('Default', 'ReportResultsGridTitleNeeded');
+            return $title;
         }
 
-        protected function getFormattedAttributeLabel()
+        public function renderContent()
         {
-            return Yii::app()->format->text(Yii::t('Default', 'Module'));
+            $content  = 'the content for report results grid for portlet content';
+            return $content;
         }
     }
 ?>

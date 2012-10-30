@@ -24,19 +24,12 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Element for displaying the available modules that can be reported on
-     */
-    class ModuleForReportStaticDropDownElement extends StaticDropDownFormElement
+    class ReportDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        protected function getDropDownArray()
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            return Report::getReportableModulesAndLabelsForCurrentUser();
-        }
-
-        protected function getFormattedAttributeLabel()
-        {
-            return Yii::app()->format->text(Yii::t('Default', 'Module'));
+            $htmlOptions['confirm'] = Yii::t('Default', 'Are you sure you want to delete this report?');
+            return $htmlOptions;
         }
     }
 ?>
