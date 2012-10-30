@@ -73,6 +73,10 @@
         protected $_apiListPageSize;
 
         /**
+         * When a mass delete must complete using a progress bar, this is how many are processed at once.
+         */
+        protected $_massDeleteProgressPageSize;
+        /**
         * Default list page size for api calls.
         */
         protected $_unlimitedPageSize;
@@ -140,6 +144,13 @@
             $this->_autoCompleteListPageSize = $value;
         }
 
+        /** This is set from the value in application common config file. It is used as the final fall back
+        * if no other configuration settings are found.
+        */
+        public function setMassDeleteProgressPageSize($value)
+        {
+            $this->_massDeleteProgressPageSize = $value;
+        }
         /**
         * This is set from the value in the application common config file. It is used as the final fall back
         * if no other configuration settings are found.
@@ -292,7 +303,7 @@
         {
             return array('listPageSize', 'subListPageSize', 'modalListPageSize', 'massEditProgressPageSize',
                          'autoCompleteListPageSize', 'importPageSize', 'dashboardListPageSize', 'apiListPageSize',
-                         'unlimitedPageSize');
+                         'massDeleteProgressPageSize','unlimitedPageSize');
         }
     }
 ?>
