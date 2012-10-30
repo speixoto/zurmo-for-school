@@ -96,9 +96,7 @@
                     }
                     if (!empty($cellsContent))
                     {
-                        $content .= '<tr>';
-                        $content .= $cellsContent;
-                        $content .= '</tr>';
+                        $this->resolveRowWrapperTag($content, $cellsContent);
                     }
                 }
                 $content .= $this->renderLastPanelRowsByPanelNumber($panelNumber);
@@ -112,6 +110,26 @@
             }
             $this->renderScripts();
             return $this->resolveFormLayoutContent($content);
+        }
+
+        /**
+         * If the cell content contains a <tr at the beginning, then assume we do not
+         * need to wrap or end with a tr
+         */
+        protected function resolveRowWrapperTag(& $content, $cellsContent)
+        {
+            assert('is_string($content) || $content == null');
+            assert('is_string($cellsContent)');
+            if(strpos($cellsContent, '<tr') === 0)
+            {
+                $content .= $cellsContent;
+            }
+            else
+            {
+                $content .= '<tr>';
+                $content .= $cellsContent;
+                $content .= '</tr>';
+            }
         }
 
         protected function renderPanelHeaderByPanelNumberAndPanel($panelNumber, $panel)
@@ -160,10 +178,10 @@
                 $content .= '<tr>';
                 $content .= '<td  colspan = "' . $this->maxCellsPerRow . '">';
                 $content .= ZurmoHtml::link($this->getMorePanelsLinkLabel(),
-                                        $this->uniqueId, array('id' => 'show-more-panels-link-' . $this->uniqueId . ''));
+                                        $this->uniqueId, array('class' => 'more-panels-link', 'id' => 'show-more-panels-link-' . $this->uniqueId . ''));
                 $content .= ZurmoHtml::link($this->getLessPanelsLinkLabel(),
                                         $this->uniqueId,
-                                        array('id' => 'show-less-panels-link-' . $this->uniqueId . '',
+                                        array('class' => 'more-panels-link', 'id' => 'show-less-panels-link-' . $this->uniqueId . '',
                                               'style' => 'display:none;'));
                 $content .= '</td>';
                 $content .= '</tr>';

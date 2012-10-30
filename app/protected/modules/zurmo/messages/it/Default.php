@@ -125,9 +125,9 @@
             => 'sono richiesti.',
         'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
             => 'Pronti? Attenti! Via! Vedete il Leaderboard per vedere como paragonate con i vostri colleghi.',
-        'Are you sure you want to remove this group?'
+        'Are you sure you want to delete this group?'
             => 'Siete sicuro di voler eliminare questo gruppo?',
-        'Are you sure you want to remove this role?'
+        'Are you sure you want to delete this role?'
             => 'Siete sicuro di voler eliminare questo ruolo?',
         'Attachment'
             => 'Allegato',
@@ -147,10 +147,6 @@
             => 'di {ownerStringContent}',
         'Cache has been successfully cleaned.'
             => 'Cache cancella con successo.',
-        'Cancel'
-            => 'Annulla',
-        'Cancel changes'
-            => 'Annulla le modifiche',
         'Changes to active currencies saved successfully.'
             => 'Valute attive modificati con successo.',
         'Changes to active languages saved successfully.'
@@ -191,6 +187,10 @@
             => 'Nuovo Ruolo',
         'Create Roles'
             => 'Crea Ruoli',
+        'Created'
+            => 'Creati',
+        'created by {ownerStringContent}'
+            => 'crea per {ownerStringContent}',
         'Criteria Selected <span class="icon-clear">Z</span>'
             => 'Criteri Selezionati <span class="icon-clear">Z</span>',
         'Currencies: Create'
@@ -215,6 +215,8 @@
             => 'Numero degli elementi nella lista portlet',
         'Data'
             => 'Dati',
+        'Database upgrade not completed. Please try again later.'
+            => 'Aggiornamento del database non completata. Si prega di riprovare più tardi.',
         'days'
             => 'giorni',
         'Dead'
@@ -489,6 +491,8 @@
             => 'Regole modificate con successo.',
         'Popup list page size'
             => 'Numero degli elementi nella lista popup',
+        'Post to Profile'
+            => 'Pubblica',
         'Postal Code'
             => 'CAP',
         'Primary Address'
@@ -659,6 +663,8 @@
             => 'Aggiorna',
         'Update Custom Data'
             => 'Aggiornamento dei dati personalizzati',
+        'Updated'
+            => 'Aggiornato',
         'Upload attachments to a record by clicking "More Options" when adding a note.'
             => 'Per aggiungere un allegato a un record, clicca "Altre opzioni" quando crea una Nota.',
         'User Membership'

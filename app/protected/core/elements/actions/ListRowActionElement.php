@@ -40,7 +40,7 @@
         protected function getAjaxLinkOptions()
         {
             return array('success'    => "js:function(){\$('#" . $this->getLinkId() . "').closest('.items').parent()
-                                                        .find('.pager').find('.first').find('a').click();}");
+                                                        .find('.pager').find('.refresh').find('a').click();}");
         }
 
         public function renderMenuItem()

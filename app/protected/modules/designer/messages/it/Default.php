@@ -231,6 +231,8 @@
             => 'Audit questo campo',
         'URL'
             => 'URL', // Same Word Translated
+        'Value cannot be blank.'
+            => 'Il valore non può essere vuoto.',
         'You can only have at most 4 pick-lists selected.'
             => 'Potete avere al massimo 4 picklists.',
         'You must first select a field type'
