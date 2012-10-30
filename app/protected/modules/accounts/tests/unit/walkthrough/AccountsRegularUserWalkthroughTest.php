@@ -632,7 +632,7 @@
             $this->setGetArray(array('selectedIds' => $selectedIds, 'selectAll' => ''));  // Not Coding Standard
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDelete');
-            $this->assertFalse(strpos($content, '<strong>3</strong>&#160;records selected for removal') === false);
+            $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Accounts selected for removal') === false);
 
             //Deleting 3 accounts 
             $this->setGetArray(array(
