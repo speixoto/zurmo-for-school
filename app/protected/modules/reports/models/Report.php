@@ -66,14 +66,28 @@
         {
             $moduleClassNamesAndLabels = array();
             $modules = Module::getModuleObjects();
+            foreach (self::getReportableModulesClassNamesCurrentUserHasAccessTo() as $moduleClassName)
+            {
+                $moduleClassNamesAndLabels[$moduleClassName] = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
+            }
+            return $moduleClassNamesAndLabels;
+        }
+
+        public static function getReportableModulesClassNamesCurrentUserHasAccessTo()
+        {
+            $moduleClassNames = array();
+            $modules = Module::getModuleObjects();
             foreach ($modules as $module)
             {
                 if($module::isReportable())
                 {
-                    $moduleClassNamesAndLabels[get_class($module)] = $module::getModuleLabelByTypeAndLanguage('Plural');
+                    if (RightsUtil::canUserAccessModule(get_class($module), Yii::app()->user->userModel))
+                    {
+                        $moduleClassNames[] = get_class($module);
+                    }
                 }
             }
-            return $moduleClassNamesAndLabels;
+            return $moduleClassNames;
         }
 
         public function getModuleClassName()

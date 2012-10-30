@@ -113,5 +113,10 @@
         {
             $this->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
         }
+
+        public function validateIsAttributeNameDatabaseReservedWord()
+        {
+
+        }
     }
 ?>
