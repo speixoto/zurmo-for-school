@@ -78,9 +78,10 @@
         protected function getPortletDetailsUrl()
         {
             return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
-                                                        array_merge($_GET, array( 'portletId' =>
-                                                                                    $this->params['portletId'],
-                                                            'uniqueLayoutId' => $this->uniqueLayoutId)));
+                                                        array_merge(GetUtil::getData(), array(
+                                                            'portletId'      => $this->params['portletId'],
+                                                            'uniqueLayoutId' => $this->uniqueLayoutId,
+                                                            'id'             => $this->params['relationModel']->getId())));
         }
 
         /**
@@ -113,6 +114,20 @@
         public static function getModuleClassName()
         {
             return 'ReportsModule';
+        }
+
+        protected function renderRefreshLink()
+        {
+            $containerId = get_class($this);
+            return ZurmoHtml::ajaxLink('refresh', $this->getPortletDetailsUrl(), array(
+                    'type'   => 'GET',
+                    'beforeSend' => 'function ( xhr ) {jQuery("#' . $containerId .
+                                    '").html("");makeLargeLoadingSpinner("' . $containerId . '");}',
+                    'update' => '#' . get_class($this)),
+                    array('id'		  => 'refreshPortletLink-' . get_class($this),
+                          'class'     => 'refreshPortletLink',
+                          'live'      => true,
+                          'namespace' => 'refresh'));
         }
     }
 ?>

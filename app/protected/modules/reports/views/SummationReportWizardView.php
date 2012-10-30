@@ -86,14 +86,14 @@
                         if(linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
-                                ReportWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
+                                ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
                             $('#OrderBysForReportWizardView').hide();
                             $('#ChartForReportWizardView').show();
                         }
                         if(linkId == '" . ChartForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
-                                ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
+                                ReportWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
                             $('#ChartForReportWizardView').hide();
                             $('#GeneralDataForReportWizardView').show();
                         }

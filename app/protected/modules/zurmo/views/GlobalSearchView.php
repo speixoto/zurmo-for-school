@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Base view for displaying a global search user interface..
+     * Base view for displaying a global search user interface.
      */
     class GlobalSearchView extends View
     {

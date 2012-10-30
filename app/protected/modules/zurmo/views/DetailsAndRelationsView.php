@@ -79,6 +79,7 @@
                 $renderRightSide = false;
                 $rightTopView    = null;
             }
+            $this->renderScripts();
             return $this->renderLeftAndRightGridViewContent($leftTopView, $leftBottomView, $rightTopView, $renderRightSide);
         }
 
@@ -128,6 +129,10 @@
         protected static function getModelRelationsSecuredPortletFrameViewClassName()
         {
             return 'ModelRelationsSecuredPortletFrameView';
+        }
+
+        protected function renderScripts()
+        {
         }
     }
 ?>

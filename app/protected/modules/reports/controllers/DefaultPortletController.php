@@ -24,22 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping a view of a report results grid
-     */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class ReportsDefaultPortletController extends ZurmoPortletController
     {
-        public function getTitle()
+        public function actionDetails($id)
         {
-            $title  = Yii::t('Default', 'ReportResultsGridTitleNeeded');
-            return $title;
-        }
-
-        public function renderContent()
-        {
-            $content   = $this->renderRefreshLink();
-            $content  .= 'the content for report results grid for portlet content' . mt_rand(1,1000);
-            return $content;
+            $savedReport             = SavedReport::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport, true);
+            $report                  = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $portlet                 = Portlet::getById(intval($_GET['portletId']));
+            $portlet->params = array(
+                    'controllerId' => 'default',
+                    'relationModuleId' => $this->getModule()->getId(),
+                    'relationModel'    => $report,
+                    'redirectUrl'      => Yii::app()->request->getRequestUri(),
+                    //add some signal to indicate to actually run dataProvider.
+            );
+            $portletView = $portlet->getView();
+            if (!RightsUtil::canUserAccessModule($portletView::getModuleClassName(), Yii::app()->user->userModel))
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $view            = new AjaxPageView($portletView);
+            echo $view->render();
         }
     }
 ?>

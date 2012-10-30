@@ -37,7 +37,8 @@
 
         public function renderContent()
         {
-            $content  = 'the content for report chart for portlet content';
+            $content   = $this->renderRefreshLink();
+            $content  .= 'the content for report chart for portlet content' . mt_rand(1,1000);
             return $content;
         }
     }
