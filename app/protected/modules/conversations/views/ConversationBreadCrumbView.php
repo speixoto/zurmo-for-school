@@ -24,36 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    // KEEP these in alphabetical order.
-    // KEEP them indented correctly.
-    // KEEP all the language files up-to-date with each other.
-    // DON'T MAKE A MESS!
-    return array(
-        'Access NotesModulePluralLabel'
-            => 'Acceso a NotesModulePluralLabel',
-        'Add a NotesModuleSingularLabel about'
-            => 'Añadir un NotesModuleSingularLabel sobre',
-        'Create NotesModulePluralLabel'
-            => 'Crear NotesModulePluralLabel',
-        'Create NotesModuleSingularLabel'
-            => 'Crear NotesModuleSingularLabel',
-        'Delete NotesModulePluralLabel'
-            => 'Eliminar NotesModulePluralLabel',
-        'Note'
-            => 'Nota',
-        'Notes'
-            => 'Notas',
-        'NotesModulePluralLabel'
-            => 'NotesModulePluralLabel', // Same Word Translated
-        'NotesModuleSingularLabel'
-            => 'NotesModuleSingularLabel', // Same Word Translated
-        'Occurred On'
-            => 'Ocurrió el',
-        'Post this note to your profile to share with your colleagues'
-            => 'Publique esta nota en su perfil para compartir con sus colegas',
-        'The NotesModulePluralLabel form cannot be displayed.'
-            => 'El formulario de NotesModulePluralLabel no se puede mostrar.',
-        '{n} NotesModuleSingularLabel created|{n} NotesModulePluralLabel created'
-            => '{n} NotesModuleSingularLabel ha sido creado|{n} NotesModulePluralLabel han sido creados',
-    );
+    /**
+     * View that renders conversations module breadcrumb content
+     */
+    class ConversationBreadCrumbView extends BreadCrumbView
+    {
+        protected function getHomeLinkLabel()
+        {
+            return Yii::t('Default', 'Conversations');
+        }
+    }
 ?>

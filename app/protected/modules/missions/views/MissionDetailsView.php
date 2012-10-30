@@ -61,15 +61,16 @@
 
         protected function renderMissionContent()
         {
+            $userUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $this->model->createdByUser->id));
             $content  = '<div class="comment model-details-summary">';
-            $content .= $this->model->createdByUser->getAvatarImage(100);
+            $content .= ZurmoHtml::link($this->model->createdByUser->getAvatarImage(100), $userUrl);
             $content .= '<span class="user-details">';
-            $content .= strval($this->model->createdByUser);
+            $content .= ZurmoHtml::link(strval($this->model->createdByUser), $userUrl, array('class' => 'user-link'));
             $content .= '</span>';
             $element  = new TextAreaElement($this->model, 'description');
             $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
             $content .= $element->render();
-            if ($this->model->reward != 0)
+            if ($this->model->reward != null)
             {
                 $element                      = new TextElement($this->model, 'reward');
                 $element->nonEditableTemplate = '<div class="comment-content">' .

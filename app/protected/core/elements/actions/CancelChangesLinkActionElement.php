@@ -24,16 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationLatestDateTimeListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Show label as cancel changes if edit view.
+     */
+    class CancelChangesLinkActionElement extends CancelLinkActionElement
     {
-        public function renderGridViewData()
+        protected function getDefaultLabel()
         {
-            return array(
-                'name'   => $this->attribute,
-                'header' => false,
-                'value'  => '"<span class=\'list-row-model-date\'>" . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($data->' . $this->attribute . ') . "</span>"',
-                'type'   => 'raw',
-            );
+            if (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return Yii::t('Default', 'Cancel Changes');
+            }
+            return Yii::t('Default', 'Cancel');
         }
     }
 ?>

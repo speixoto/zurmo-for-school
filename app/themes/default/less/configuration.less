@@ -17,7 +17,7 @@
         }
     }
 }
-
+.configuration-list li a::before
 .back-to-app-menu-item span{
     vertical-align:middle;
     color:@themeColor !important;
@@ -26,6 +26,9 @@
         .symbly(21px);
         margin-right:6px;
     }
+}
+.back-to-app-menu-item a:hover span, .back-to-app-menu-item a:hover span:before{
+    color: #fff !important;
 }
 
 #ConfigurationPageView{
@@ -97,7 +100,6 @@
         padding:20px 15px;
         border-top:1px solid #ccc;
         border-bottom:1px solid #fff;
-        font-size:11px;
         &:last-child{
             border-bottom:none;
             margin-bottom:none;
@@ -122,7 +124,7 @@
                 .symbly(20px);
                 margin-right:5px;
                 position:relative;
-                top:0px;
+                top:-2px;
                 font-weight: normal !important;
                 vertical-align: middle;
             }
@@ -164,7 +166,7 @@ table.configuration-list{
                 .symbly(18px);
                 margin-left:5px;
                 position:relative;
-                top:2px;
+                top:1px;
                 font-weight: normal !important;
             }
         }
@@ -195,6 +197,7 @@ table.configuration-list{
     table tr:first-child{
         th{
             padding-left:15px;
+            padding-bottom: 10px;
             font-weight:bold !important;
             color:@themeColor;
         }
@@ -242,15 +245,6 @@ table.configuration-list{
     width: 300px;
 }
 
-.multiselect-nav{
-    float:left;
-    padding:0 15px;
-    .box-sizing();
-    width:75px;
-    text-align:center;
-    height:75px;
-    margin-top:60px;
-}
 
 /*TreeListView - usualy first page in each in admin*/
 #LanguagesCollectionView,
@@ -268,7 +262,7 @@ table.configuration-list{
                 color:#545454;
                 text-align:left;
                 font-weight: bold !important;
-                height: 35px  !important;
+                height: auto  !important;
                 line-height: 35px  !important;
                 background: url(../images/table-items-header.png) left top repeat-x;
                 padding: 0 0 0 10px !important;
@@ -411,17 +405,12 @@ table.configuration-list{
         }
     }
     .tooltip{
-        margin-top:9px;
+        //margin-top:9px;
     }
     a{
-        background:@themeColor;
-        padding:1px 4px;
-        .radius(2px);
-        color:#fff;
-        &:hover{
-            color:#fff !important;
-            text-decoration:underline;
-        }
+        .zLink();
+        .smaller();
+        margin-right:5px;
     }
     table{
         border-top:1px solid #DFDFDF;
@@ -449,10 +438,10 @@ table.configuration-list{
 #JobLogsModalListView,
 #jobs-frequency{
     .tooltip{
-        margin-top:-2px;
+        //margin-top:-2px;
     }
     .job-label{
-        margin-left:25px;
+        //margin-left:25px;
     }
 }
 
@@ -573,27 +562,6 @@ table.configuration-list{
     }
 }
 
-.add-custom-field{
-    > div{
-        padding:15px 15px 15px 15px;
-        position:relative;
-    }
-    .dk_container{
-        width:85%;
-        margin-right:10px;
-    }
-    .configure-custom-field-button{
-        .zButton();
-        &:before{
-            content: "n";
-            .symbly(16px);
-            margin-right:5px;
-            position:relative;
-            top:0px;
-        }
-    }
-}
-
 /*Users*/
 #UsersListView{
     position:relative;
@@ -634,6 +602,12 @@ table.configuration-list{
         table{
             width:100%;
         }
+    }
+}
+
+#UsersSearchView{
+    .view-toolbar-container{
+        margin-top: 15px;
     }
 }
 
@@ -712,7 +686,6 @@ table.configuration-list{
         }
     }
     h3{
-        margin-top:10px;
         margin-bottom:15px;
     }
     #right-side-edit-view-panel {

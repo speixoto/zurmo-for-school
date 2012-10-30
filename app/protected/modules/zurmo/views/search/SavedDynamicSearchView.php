@@ -64,7 +64,7 @@
                 $this->renderSavedSearchDropDownOnChangeScript($idOrName, $this->model->loadSavedSearchUrl);
                 return $content;
             }
-            $content       = CHtml::dropDownList($idOrName,
+            $content       = ZurmoHtml::dropDownList($idOrName,
                                                  $this->model->savedSearchId,
                                                  self::resolveSavedSearchesToIdAndLabels($savedSearches),
                                                  $htmlOptions);
@@ -145,8 +145,6 @@
                                {
                                    $('#' + inputId + ' option[value=\'' + this.value + '\']').text(data.name);
                                    existingSearchFound = true;
-                                    //Reseting DropKick Information
-                                    resetDropKickDropDowns($('#' + inputId));
                                }
                             });
                             if (!existingSearchFound)
@@ -158,8 +156,6 @@
                                     .text(data.name))
                                 //$('#' + inputId).val(data.id); Do not select new saved search since it is not sticky at this point.
                                 $('#" . get_class($this->model) . "_savedSearchId').val(data.id);
-                                //Reseting DropKick Information
-                                resetDropKickDropDowns($('#' + inputId));
                             }
                         }
                         $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading');
@@ -215,10 +211,6 @@
                                        $('#' + inputId + ' option[value=\'' + this.value + '\']').remove();
                                    }
                                });
-                               $('#' + inputId).removeData('dropkick');
-                               $('#dk_container_' + inputId).remove();
-                               $('#' + inputId).dropkick();
-                               $('#' + inputId).dropkick('rebindToggle');
                                $('#removeSavedSearch').remove();
                                $('#" . $htmlOptions['id'] . "').val('');
                             },
@@ -243,10 +235,6 @@
         {
             return parent::getExtraRenderForClearSearchLinkScript() .
                     "$('#" . static::getSavedSearchListDropDown() . "').val();
-                     $('#" . static::getSavedSearchListDropDown() . "').removeData('dropkick');
-                     $('#dk_container_" . static::getSavedSearchListDropDown() . "').remove();
-                     $('#" . static::getSavedSearchListDropDown() . "').dropkick();
-                     $('#" . static::getSavedSearchListDropDown() . "').dropkick('rebindToggle');
                      $('#save-search-area').hide();
                      jQuery.yii.submitForm(this, '', {}); return false;
             ";

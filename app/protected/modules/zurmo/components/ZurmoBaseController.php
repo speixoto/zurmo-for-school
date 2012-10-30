@@ -221,11 +221,12 @@
             {
                 PostUtil::sanitizePostForSavingMassEdit($modelClassName);
                 //Generically test that the changes are valid before attempting to save on each model.
-                $sanitizedOwnerPostData = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($_POST[$modelClassName], 'owner');
-                $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST[$modelClassName], 'owner');
-                $massEditPostrDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST['MassEdit'], 'owner');
+                $sanitizedPostData = PostUtil::sanitizePostByDesignerTypeForSavingModel(new $modelClassName(false), $_POST[$modelClassName]);
+                $sanitizedOwnerPostData = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
+                $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($sanitizedPostData, 'owner');
+                $massEditPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST['MassEdit'], 'owner');
                 $listModel->setAttributes($sanitizedPostDataWithoutOwner);
-                if ($listModel->validate(array_keys($massEditPostrDataWithoutOwner)))
+                if ($listModel->validate(array_keys($massEditPostDataWithoutOwner)))
                 {
                     $passedOwnerValidation = true;
                     if ($sanitizedOwnerPostData != null)
@@ -361,8 +362,9 @@
             {
                 if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($modelToSave, Permission::WRITE))
                 {
-                    $sanitizedOwnerPostData = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($_POST[$postVariableName], 'owner');
-                    $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($_POST[$postVariableName], 'owner');
+                    $sanitizedPostData = PostUtil::sanitizePostByDesignerTypeForSavingModel($modelToSave, $_POST[$modelClassName]);
+                    $sanitizedOwnerPostData = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
+                    $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($sanitizedPostData, 'owner');
                     $modelToSave->setAttributes($sanitizedPostDataWithoutOwner);
                     if ($sanitizedOwnerPostData != null)
                     {

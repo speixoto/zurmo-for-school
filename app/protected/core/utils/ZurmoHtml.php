@@ -30,6 +30,16 @@
     class ZurmoHtml extends CHtml
     {
         /**
+         * Override CHtml::encode() to avoid double encode,
+         * because data are alredy encoded, when stored into database(using HtmlPurifier)
+         * @see CHtml::encode()
+         */
+        public static function encode($text)
+        {
+            return htmlspecialchars($text, ENT_QUOTES, Yii::app()->charset, false);
+        }
+
+        /**
          * Override to handle relation model error summary information.  This information needs to be parsed properly
          * otherwise it will show up as 'Array' for the error text.
          * @see CHtml::errorSummary()
@@ -519,6 +529,55 @@ EOD;
                 $cs->registerScript($id, $js);
             }
             return self::tag('span', array('id' => $baseID), implode($separator, $items));
+        }
+
+        /**
+         * Override to support proper styling
+         * @see CHtml::activeDropDownList();
+         */
+        public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
+        {
+            static::resolveNameID($model, $attribute, $htmlOptions);
+            $selection  = static::resolveValue($model, $attribute);
+            $options    = "\n" . static::listOptions($selection, $data, $htmlOptions);
+            static::clientChange('change', $htmlOptions);
+            if($model->hasErrors($attribute))
+            {
+                static::addErrorCss($htmlOptions);
+            }
+            if(isset($htmlOptions['multiple']))
+            {
+                if(substr($htmlOptions['name'],-2) !== '[]')
+                {
+                    $htmlOptions['name'] .= '[]';
+                }
+            }
+            $content  = static::tag('span', array('class' => 'select-arrow'), '');
+            $content .= static::tag('select', $htmlOptions, $options);
+            return static::tag('div', array('class' => 'hasDropDown'), $content);
+        }
+
+        /**
+         *
+         * Override to support proper styling
+         * @see CHtml::dropDownList();
+         */
+        public static function dropDownList($name, $select, $data, $htmlOptions = array())
+        {
+            $htmlOptions['name'] = $name;
+            if(!isset($htmlOptions['id']))
+            {
+                $htmlOptions['id'] = static::getIdByName($name);
+            }
+            else if($htmlOptions['id'] === false)
+            {
+                unset($htmlOptions['id']);
+            }
+            static::clientChange('change', $htmlOptions);
+            $options  = "\n" . static::listOptions($select, $data, $htmlOptions);
+            $content  = static::tag('span', array('class' => 'select-arrow'), '');
+            $content .= static::tag('select', $htmlOptions, $options);
+            return static::tag('div', array('class' => 'hasDropDown'), $content);
         }
     }
 ?>

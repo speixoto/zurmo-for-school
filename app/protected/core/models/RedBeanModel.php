@@ -2441,7 +2441,7 @@
             $labels = $this->untranslatedAbbreviatedAttributeLabels();
             if (isset($labels[$attributeName]))
             {
-                return CHtml::tag('span', array('title' => $this->generateAttributeLabel($attributeName)),
+                return ZurmoHtml::tag('span', array('title' => $this->generateAttributeLabel($attributeName)),
                                   Yii::t('Default', $labels[$attributeName],
                                   LabelUtil::getTranslationParamsForAllModules(), null, $language));
             }

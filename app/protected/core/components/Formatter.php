@@ -43,5 +43,23 @@
             }
             return ZurmoHtml::link(ZurmoHtml::encode($value), $url, $htmlOptions);
         }
+
+        /**
+         * Override CHtml::formatText() method, so we can use ZurmoHtml::encode() function
+         * @see CHtml::formatText()
+         */
+        public function formatText($value)
+        {
+            return ZurmoHtml::encode($value);
+        }
+
+        /**
+         * Override CHtml::formatText() method, so we can use ZurmoHtml::encode() function
+         * @see CHtml::formatNtext()
+         */
+        public function formatNtext($value)
+        {
+            return nl2br(ZurmoHtml::encode($value));
+        }
     }
 ?>
