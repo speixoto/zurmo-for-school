@@ -48,19 +48,24 @@
             $this->assertEquals(1, count($accounts));
             $contacts      = Contact::getAll();
             $this->assertEquals(1, count($contacts));
-            $superAccountId = self::getModelIdByModelNameAndName('Account', 'superAccount');
-            $contactId = self::getModelIdByModelNameAndName('Contact', 'superContact superContactson');
-            $redirecturl = 'accounts/default/details?id='.$superAccountId; //should be creareUrl.
-            //unlinking the contact
-            $this->setGetArray(array(
-                'id' => $contactId,
-                'relationModelClassName'       => 'Account',
-                'relationModelId'              => $superAccountId,
-                'relationModelRelationName'    => 'contacts'));
+            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
+            $this->setGetArray(array('id' => $superAccountId));
             $this->resetPostArray();
-            $content = $this->runControllerWithRedirectExceptionAndGetContent('contacts/default/unlink');
-            $this->assertFalse(strpos($content, 'superContact superContactson') === true);
-
+            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
+            $contactId = self::getModelIdByModelNameAndName ('Contact', 'superContact superContactson');
+            //unlinking the contact
+            $this->setGetArray(array(   'id' => $contactId,
+                                        'relationModelClassName'       => 'Account',
+                                        'relationModelId'              => $superAccountId,
+                                        'relationModelRelationName'    => 'contacts'));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/unlink', true);
+            $accounts      = Account::getAll();
+            $this->assertEquals(1, count($accounts));
+            $contacts      = Contact::getAll();
+            $contactId = $contacts[0]->id;
+            $contacts[0]->forget();
+            $contact = Contact::getById($contactId);
+            $this->assertTrue($contact->account->id < 0);
         }
     }
 ?>
