@@ -23,6 +23,10 @@ class AmChartMaker
      */
     private function addChartPropertiesByType()
     {
+        $this->addChartProperties('fontFamily', '"Arial"');
+        $this->addChartProperties('color', '"#545454"');
+        
+        
         if ($this->type === "Column2D")
         {
             $currencySymbol = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
@@ -124,6 +128,7 @@ class AmChartMaker
             $this->addChartProperties('outlineAlpha', 0.8);
             $this->addChartProperties('outlineThickness', 2);
             $this->addChartProperties('usePrefixes', true);
+            $this->addGraphProperties('colors', '["#262877", "#7BB730"]');
             $this->makeChart3d();
             $this->chartIsPie = true;
         }
