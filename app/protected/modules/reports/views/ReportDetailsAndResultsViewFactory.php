@@ -24,51 +24,39 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModuleForReportWizardView extends ComponentForReportWizardView
+    class ReportDetailsAndResultsViewFactory
     {
-        protected function renderFormContent()
+        public static function makeView(Report $report, SavedReport $savedReport, $controllerId, $moduleId,
+                                        $params, $redirectUrl)
         {
-            $element                   = new ModuleForReportRadioDropDownElement($this->model, 'moduleClassName',
-                                                                                 $this->form);
-            $element->editableTemplate = '{label}{content}';
-
-            $content  = $this->form->errorSummary($this->model);
-            $content .= '<table>'     . "\n";
-            $content .= '<tbody>'     . "\n";
-            $content .= '<tr><td>'    . "\n";
-            $content .= $element->render();
-            $content .= '</td></tr>'  . "\n";
-            $content .= '</tbody>'    . "\n";
-            $content .= '</table>'    . "\n";
-            return $content;
-        }
-
-        public static function getWizardStepTitle()
-        {
-            return Yii::t('Default', 'Select Module');
-        }
-
-        protected function renderPreviousPageLinkContent()
-        {
-            if($this->model->isNew())
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
+            assert('is_string($redirectUrl)');
+            assert('is_array($params)');
+            $report = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $params = array(
+                'controllerId'     => $controllerId,
+                'relationModuleId' => $moduleId,
+                'relationModel'    => $report,
+                'redirectUrl'      => $redirectUrl
+            );
+            if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
-                $label = Yii::t('Default', 'Cancel');
+                $viewClassName = 'RowsAndColumnsReportDetailsAndResultsView';
+            }
+            elseif($report->getType() == Report::TYPE_SUMMATION)
+            {
+                $viewClassName = 'SummationReportDetailsAndSummationView';
+            }
+            elseif($report->getType() == Report::TYPE_MATRIX)
+            {
+                $viewClassName = 'MatrixReportDetailsAndResultsView';
             }
             else
             {
-                $label = Yii::t('Default', 'Cancel Changes');
+                throw new NotSupportedException();
             }
-            return ZurmoHtml::link($label, '#', array('id' => static::getPreviousPageLinkId()));
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'moduleCancelLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'moduleNextLink';
+            return new $viewClassName($controllerId, $moduleId, $params, $savedReport);
         }
     }
 ?>

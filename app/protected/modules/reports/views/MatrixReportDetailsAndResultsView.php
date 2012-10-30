@@ -24,26 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FiltersForReportWizardView extends ComponentForReportWizardView
+    class MatrixReportDetailsAndResultsView extends ReportDetailsAndSummationView
     {
-        protected function renderFormContent()
+        public static function getDefaultMetadata()
         {
-            return 'FiltersForReportWizardView form content';
-        }
-
-        public static function getWizardStepTitle()
-        {
-            return Yii::t('Default', 'Select Filters');
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'filterBysPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'filterBysNextLink';
+            $metadata = array(
+                'global' => array(
+                    'leftTopView' => array(
+                        'viewClassName' => 'ReportDetailsView',
+                    ),
+                    'leftBottomView' => array(
+                        'showAsTabbed' => false,
+                        'columns' => array(
+                            array(
+                                'rows' => array(
+                                    array(
+                                        'type' => 'RuntimeFiltersForPortlet'
+                                    ),
+                                    array(
+                                        'type' => 'ReportResultsGridForPortlet'
+                                    ),
+                                )
+                            )
+                        )
+                    ),
+                )
+            );
+            return $metadata;
         }
     }
 ?>

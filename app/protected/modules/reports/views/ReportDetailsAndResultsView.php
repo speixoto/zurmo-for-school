@@ -24,51 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModuleForReportWizardView extends ComponentForReportWizardView
+    abstract class ReportDetailsAndSummationView extends DetailsAndRelationsView
     {
-        protected function renderFormContent()
-        {
-            $element                   = new ModuleForReportRadioDropDownElement($this->model, 'moduleClassName',
-                                                                                 $this->form);
-            $element->editableTemplate = '{label}{content}';
+        /**
+         * @var object SavedReport
+         */
+        protected $savedReport;
 
-            $content  = $this->form->errorSummary($this->model);
-            $content .= '<table>'     . "\n";
-            $content .= '<tbody>'     . "\n";
-            $content .= '<tr><td>'    . "\n";
-            $content .= $element->render();
-            $content .= '</td></tr>'  . "\n";
-            $content .= '</tbody>'    . "\n";
-            $content .= '</table>'    . "\n";
-            return $content;
+        public function __construct($controllerId, $moduleId, $params, SavedReport $savedReport)
+        {
+            parent::__construct($controllerId, $moduleId, $params);
+            $this->savedReport = $savedReport;
         }
 
-        public static function getWizardStepTitle()
+        public function isUniqueToAPage()
         {
-            return Yii::t('Default', 'Select Module');
+            return true;
         }
 
-        protected function renderPreviousPageLinkContent()
+        protected function makeLeftTopView($metadata)
         {
-            if($this->model->isNew())
-            {
-                $label = Yii::t('Default', 'Cancel');
-            }
-            else
-            {
-                $label = Yii::t('Default', 'Cancel Changes');
-            }
-            return ZurmoHtml::link($label, '#', array('id' => static::getPreviousPageLinkId()));
+            $detailsViewClassName = $metadata['global']['leftTopView']['viewClassName'];
+            return new $detailsViewClassName($this->params["controllerId"],
+                                             $this->params["relationModuleId"],
+                                             $this->savedReport);
         }
 
-        public static function getPreviousPageLinkId()
+        protected static function getModelRelationsSecuredPortletFrameViewClassName()
         {
-            return 'moduleCancelLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'moduleNextLink';
+            return 'ReportResultsSecuredPortletFrameView';
         }
     }
 ?>

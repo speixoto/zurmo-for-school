@@ -26,8 +26,6 @@
 
     class DisplayAttributesForReportWizardView extends ComponentForReportWizardView
     {
-        const VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
-
         protected function renderFormContent()
         {
             return 'DisplayAttributesForReportWizardView form content';

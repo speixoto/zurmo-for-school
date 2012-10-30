@@ -41,13 +41,13 @@
             }
             elseif($type == Report::TYPE_SUMMATION)
             {
-                $viewClassName = 'RowsAndColumnsReportWizardView';
+                $viewClassName = 'SummationReportWizardView';
                 $form          = $reportToWizardFormAdapter->makeSummationWizardForm();
             }
             elseif($type == Report::TYPE_MATRIX)
             {
-                $viewClassName = 'RowsAndColumnsReportWizardView';
-                $form          = $reportToWizardFormAdapter->makeMatarixWizardForm();
+                $viewClassName = 'MatrixReportWizardView';
+                $form          = $reportToWizardFormAdapter->makeMatrixWizardForm();
             }
             else
             {

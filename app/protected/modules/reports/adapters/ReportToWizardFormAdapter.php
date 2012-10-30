@@ -46,7 +46,7 @@
             }
             elseif($type == Report::TYPE_MATRIX)
             {
-                return 'MatarixReportWizardForm';
+                return 'MatrixReportWizardForm';
             }
             else
             {
@@ -66,7 +66,7 @@
             }
             elseif($this->report->getType() == Report::TYPE_MATRIX)
             {
-                return $this->makeMatarixWizardForm();
+                return $this->makeMatrixWizardForm();
             }
             else
             {
@@ -90,7 +90,7 @@
 
         public function makeMatrixWizardForm()
         {
-            $formModel       = new SummationReportWizardForm();
+            $formModel       = new MatrixReportWizardForm();
             $this->setCommonAttributes($formModel);
             return $formModel;
         }

@@ -36,14 +36,14 @@
             return 'todo';
         }
 
-        protected function renderPreviousPageLinkContent()
+        public static function getPreviousPageLinkId()
         {
-            return 'what button here';
+            return 'chartPreviousLink';
         }
 
-        protected function renderNextPageLinkContent()
+        public static function getNextPageLinkId()
         {
-            return 'todo: next button';
+            return 'chartNextLink';
         }
     }
 ?>

@@ -26,8 +26,6 @@
 
     class GeneralDataForReportWizardView extends ComponentForReportWizardView
     {
-        const VALIDATION_SCENARIO = 'ValidateForGeneralData';
-
         protected function renderFormContent()
         {
             $content           = '<div class="attributesContainer">';

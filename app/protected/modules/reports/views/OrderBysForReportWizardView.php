@@ -26,8 +26,6 @@
 
     class OrderBysForReportWizardView extends ComponentForReportWizardView
     {
-        const VALIDATION_SCENARIO = 'ValidateForOrderBys';
-
         protected function renderFormContent()
         {
             return 'OrderBysForReportWizardView form content';

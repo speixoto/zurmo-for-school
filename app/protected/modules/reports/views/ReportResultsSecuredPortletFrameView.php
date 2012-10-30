@@ -24,26 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FiltersForReportWizardView extends ComponentForReportWizardView
+    /**
+     *
+     * Enter description here ...
+     * @author Jason
+     *
+     */
+    class ReportResultsSecuredPortletFrameView extends ModelRelationsSecuredPortletFrameView
     {
-        protected function renderFormContent()
+        protected function getPortlets($uniqueLayoutId, $metadata)
         {
-            return 'FiltersForReportWizardView form content';
-        }
-
-        public static function getWizardStepTitle()
-        {
-            return Yii::t('Default', 'Select Filters');
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'filterBysPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'filterBysNextLink';
+            $portlets = parent::getPortlets($uniqueLayoutId, $metadata);
+            assert('$this->params["relationModel"] instanceof Report');
+            $resolvedPortlets = array();
+            foreach ($portlets as $column => $positionInfo)
+            {
+                foreach ($positionInfo as $position => $portlet)
+                {
+                    if($portlet->viewType == 'RuntimeFiltersForPortlet' &&
+                       !$this->params["relationModel"]->areRuntimeFiltersPresent())
+                    {
+                        //ignore portlet, since there are no runtime filters
+                    }
+                    else
+                    {
+                        $resolvedPortlets[$column][] = $portlet;
+                    }
+                }
+            }
+            return $resolvedPortlets;
         }
     }
 ?>

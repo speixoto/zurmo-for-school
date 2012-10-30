@@ -29,6 +29,20 @@
      */
     abstract class ReportWizardForm extends CFormModel
     {
+        const MODULE_VALIDATION_SCENARIO             = 'ValidateForModule';
+
+        const FILTERS_VALIDATION_SCENARIO            = 'ValidateForFilters';
+
+        const DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
+
+        const ORDER_BYS_VALIDATION_SCENARIO          = 'ValidateForOrderBys';
+
+        const GROUP_BYS_VALIDATION_SCENARIO          = 'ValidateForGroupBys';
+
+        const CHART_VALIDATION_SCENARIO              = 'ValidateForChart';
+
+        const GENERAL_DATA_VALIDATION_SCENARIO       = 'ValidateForGeneralData';
+
         public $description;
 
         /**
@@ -79,19 +93,24 @@
         public function rules()
         {
             return array(
-                array('description', 	  'type',     'type' => 'string'),
-                array('name', 			  'type',     'type' => 'string'),
-                array('name', 			  'length',   'max' => 64),
-                array('name', 			  'required', 'on' => GeneralDataForReportWizardView::VALIDATION_SCENARIO),
-                array('moduleClassName',  'type',     'type' => 'string'),
-                array('moduleClassName',  'length',   'max' => 64),
-                array('moduleClassName',  'required', 'on' => ModuleForReportWizardView::VALIDATION_SCENARIO),
-                array('type', 		      'type',     'type' => 'string'),
-                array('type', 			  'length',   'max' => 64),
-                array('type', 			  'required'),
-                array('ownerId',   	      'type',     'type' => 'integer'),
-                array('ownerId',   		  'required', 'on' => GeneralDataForReportWizardView::VALIDATION_SCENARIO),
-                array('ownerName', 		  'required', 'on' => GeneralDataForReportWizardView::VALIDATION_SCENARIO),
+                array('description', 	   'type',             'type' => 'string'),
+                array('name', 			   'type',        	   'type' => 'string'),
+                array('name', 			   'length',   		   'max' => 64),
+                array('name', 			   'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('moduleClassName',   'type',     		   'type' => 'string'),
+                array('moduleClassName',   'length',           'max' => 64),
+                array('moduleClassName',   'required', 		   'on' => self::MODULE_VALIDATION_SCENARIO),
+                array('type', 		       'type',     		   'type' => 'string'),
+                array('type', 			   'length',   		   'max' => 64),
+                array('type', 			   'required'),
+                array('ownerId',   	       'type',     		   'type' => 'integer'),
+                array('ownerId',   		   'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('ownerName', 		   'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('filters', 		   'validateFilters',  'on' => self::FILTERS_VALIDATION_SCENARIO),
+                array('displayAttributes', 'validateDisplayAttributes', 'on' => self::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
+                array('orderBys', 		   'validateOrderBys', 'on' => self::ORDER_BYS_VALIDATION_SCENARIO),
+                array('groupBys', 		   'validateGroupBys', 'on' => self::GROUP_BYS_VALIDATION_SCENARIO),
+                array('chart', 		       'validateChart',    'on' => self::CHART_VALIDATION_SCENARIO),
             );
         }
 
@@ -114,9 +133,29 @@
             $this->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
         }
 
-        public function validateIsAttributeNameDatabaseReservedWord()
+        public function validateFilters()
         {
+            //todo:
+        }
 
+        public function validateOrderBys()
+        {
+            //todo:
+        }
+
+        public function validateDisplayAttributes()
+        {
+            //todo:
+        }
+
+        public function validateGroupBys()
+        {
+            //todo:
+        }
+
+        public function validateChart()
+        {
+            //todo:
         }
     }
 ?>

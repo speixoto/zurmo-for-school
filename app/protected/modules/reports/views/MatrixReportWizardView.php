@@ -26,14 +26,120 @@
 
     class MatrixReportWizardView extends ReportWizardView
     {
-        protected function renderContainingViews(ZurmoActiveForm $form)
+            protected function renderContainingViews(ZurmoActiveForm $form)
         {
+            $moduleForReportWizardView            = new ModuleForReportWizardView ($this->model, $form);
+            $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);
+            $groupBysForReportWizardView          = new GroupBysForReportWizardView($this->model, $form, true);
+            $displayAttributesForReportWizardView = new DisplayAttributesForReportWizardView($this->model, $form, true);
+            $generalDataForReportWizardView       = new GeneralDataForReportWizardView($this->model, $form, true);
 
+            $gridView = new GridView(5,1);
+            $gridView->setView($moduleForReportWizardView, 0, 0);
+            $gridView->setView($filtersForReportWizardView, 1, 0);
+            $gridView->setView($groupBysForReportWizardView, 2, 0);
+            $gridView->setView($displayAttributesForReportWizardView, 3, 0);
+            $gridView->setView($generalDataForReportWizardView, 4, 0);
+            return $gridView->render();
+        }
+
+        protected function renderConfigSaveAjax($formName)
+        {
+            assert('is_string($formName)');
+            return     "console.log('we are at renderConfigSaveAjax');
+                        console.log($('#" . $formName . "').find('.attachLoadingTarget').attr('id'));
+                        linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
+                        if(linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
+                        {
+                            $('#" . static::getValidationScenarioInputId() . "').val('" .
+                                ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
+                            $('#ModuleForReportWizardView').hide();
+                            $('#FiltersForReportWizardView').show();
+
+                        }
+                        if(linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
+                        {
+                            $('#" . static::getValidationScenarioInputId() . "').val('" .
+                                ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
+                            $('#FiltersForReportWizardView').hide();
+                            $('#GroupBysForReportWizardView').show();
+
+                        }
+                        if(linkId == '" . GroupBysForReportWizardView::getNextPageLinkId() . "')
+                        {
+                            $('#" . static::getValidationScenarioInputId() . "').val('" .
+                                ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
+                            $('#GroupBysForReportWizardView').hide();
+                            $('#DisplayAttributesForReportWizardView').show();
+                        }
+                        if(linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
+                        {
+                            $('#" . static::getValidationScenarioInputId() . "').val('" .
+                                ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
+                            $('#DisplayAttributesForReportWizardView').hide();
+                            $('#GeneralDataForReportWizardView').show();
+                        }
+                        if(linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
+                        {
+                            " . $this->getSaveAjaxString($formName) . "
+                        }
+                        else
+                        {
+                            $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading');
+                            $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading-ajax-submit');
+                            $('#" . $formName . "').find('.attachLoadingTarget').removeClass('attachLoadingTarget');
+                        }
+                        ";
         }
 
         protected function registerClickFlowScript()
         {
-
+            Yii::app()->clientScript->registerScript('clickflow', "
+                $('#" . ModuleForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . ModuleForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                    {
+                        url = '" . Yii::app()->createUrl('reports/default/index') . "';
+                        window.location.href = url;
+                        return false;
+                    }
+                );
+                $('#" . FiltersForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . FiltersForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                    {
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::MODULE_VALIDATION_SCENARIO . "');
+                        $('#ModuleForReportWizardView').show();
+                        $('#FiltersForReportWizardView').hide();
+                        return false;
+                    }
+                );
+                $('#" . GroupBysForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . GroupBysForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                    {
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
+                        $('#FiltersForReportWizardView').show();
+                        $('#GroupBysForReportWizardView').hide();
+                        return false;
+                    }
+                );
+                $('#" . DisplayAttributesForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . DisplayAttributesForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                    {
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
+                        $('#GroupBysForReportWizardView').show();
+                        $('#DisplayAttributesForReportWizardView').hide();
+                        return false;
+                    }
+                );
+                $('#" . GeneralDataForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . GeneralDataForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                    {
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
+                        $('#DisplayAttributesForReportWizardView').show();
+                        $('#GeneralDataForReportWizardView').hide();
+                        return false;
+                    }
+                );
+            ");
         }
     }
 ?>

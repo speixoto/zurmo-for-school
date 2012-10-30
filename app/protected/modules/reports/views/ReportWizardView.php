@@ -109,7 +109,7 @@
 
         protected static function getStartingValidationScenario()
         {
-            return ModuleForReportWizardView::VALIDATION_SCENARIO;
+            return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
         }
 
         protected static function getValidationScenarioInputId()

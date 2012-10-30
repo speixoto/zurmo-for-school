@@ -52,6 +52,38 @@
         {
             $metadata = self::getMetadata();
             $leftBottomMetadataForPortlets['global'] = $metadata['global']['leftBottomView'];
+            $leftTopView    = $this->makeLeftTopView($metadata);
+            $leftBottomView = new ModelRelationsSecuredPortletFrameView($this->controllerId,
+                                                                        $this->moduleId,
+                                                                        $this->uniqueLayoutId . 'LeftBottomView',
+                                                                        $this->params,
+                                                                        $leftBottomMetadataForPortlets,
+                                                                        false,
+                                                                        false,
+                                                                        $metadata['global']['leftBottomView']['showAsTabbed']);
+            if (isset($metadata['global']['rightTopView']))
+            {
+                $renderRightSide                         = true;
+                $rightTopMetadataForPortlets['global']   = $metadata['global']['rightTopView'];
+                $viewClassName = static::getModelRelationsSecuredPortletFrameViewClassName();
+                $rightTopView  = new $viewClassName( $this->controllerId,
+                                                     $this->moduleId,
+                                                     $this->uniqueLayoutId . 'RightBottomView',
+                                                     $this->params,
+                                                     $rightTopMetadataForPortlets,
+                                                     false,
+                                                     false);
+            }
+            else
+            {
+                $renderRightSide = false;
+                $rightTopView    = null;
+            }
+            return $this->renderLeftAndRightGridViewContent($leftTopView, $leftBottomView, $rightTopView, $renderRightSide);
+        }
+
+        protected function makeLeftTopView($metadata)
+        {
             $detailsViewClassName                    = $metadata['global']['leftTopView']['viewClassName'];
             if (is_subclass_of($detailsViewClassName, 'EditAndDetailsView'))
             {
@@ -66,32 +98,7 @@
                                                             $this->params["relationModuleId"],
                                                             $this->params["relationModel"]);
             }
-            $leftBottomView = new ModelRelationsSecuredPortletFrameView($this->controllerId,
-                                                                        $this->moduleId,
-                                                                        $this->uniqueLayoutId . 'LeftBottomView',
-                                                                        $this->params,
-                                                                        $leftBottomMetadataForPortlets,
-                                                                        false,
-                                                                        false,
-                                                                        $metadata['global']['leftBottomView']['showAsTabbed']);
-            if (isset($metadata['global']['rightTopView']))
-            {
-                $renderRightSide                         = true;
-                $rightTopMetadataForPortlets['global']   = $metadata['global']['rightTopView'];
-                $rightTopView = new ModelRelationsSecuredPortletFrameView(  $this->controllerId,
-                                                                            $this->moduleId,
-                                                                            $this->uniqueLayoutId . 'RightBottomView',
-                                                                            $this->params,
-                                                                            $rightTopMetadataForPortlets,
-                                                                            false,
-                                                                            false);
-            }
-            else
-            {
-                $renderRightSide = false;
-                $rightTopView    = null;
-            }
-            return $this->renderLeftAndRightGridViewContent($leftTopView, $leftBottomView, $rightTopView, $renderRightSide);
+            return $leftTopView;
         }
 
         protected function renderLeftAndRightGridViewContent($leftTopView, $leftBottomView, $rightTopView, $renderRightSide)
@@ -116,6 +123,11 @@
                 $this->setCssClasses(array_merge($this->getCssClasses(), array('single-column')));
             }
             return $content;
+        }
+
+        protected static function getModelRelationsSecuredPortletFrameViewClassName()
+        {
+            return 'ModelRelationsSecuredPortletFrameView';
         }
     }
 ?>

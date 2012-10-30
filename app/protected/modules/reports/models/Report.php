@@ -178,5 +178,11 @@
         {
             $this->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
         }
+
+        public function areRuntimeFiltersPresent()
+        {
+            //todo:
+            return true;
+        }
     }
 ?>

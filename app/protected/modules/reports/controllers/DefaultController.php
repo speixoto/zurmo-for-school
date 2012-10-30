@@ -109,6 +109,20 @@
             echo $view->render();
         }
 
+        public function actionDetails($id)
+        {
+            $savedReport = static::getModelAndCatchNotFoundAndDisplayError('SavedReport', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($savedReport), 'ReportsModule'), $savedReport);
+            $breadcrumbLinks         = array(strval($savedReport));
+            $detailsAndRelationsView = $this->makeReportDetailsAndRelationsView($savedReport, 'ReportsModule',
+                                                                                Yii::app()->request->getRequestUri(),
+                                                                                $breadCrumbView);
+            $view = new AccountsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            echo $view->render();
+        }
+
         public function actionSelectType()
         {
             $breadcrumbLinks  = array(Yii::t('Default', 'Select Report Type'));
@@ -255,6 +269,18 @@
             }
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);
+        }
+
+        protected function makeReportDetailsAndRelationsView(SavedReport $savedReport, $redirectUrl, $breadCrumbView)
+        {
+            assert('$breadCrumbView instanceof BreadCrumbView');
+            $reportDetailsAndRelationsView = ReportDetailsAndResultsViewFactory::makeView($report, $savedReport, $controller->getId(),
+                                                                                          $controller->getModule()->getId(),
+                                                                                          $params, $redirectUrl);
+            $gridView = new GridView(2, 1);
+            $gridView->setView($breadCrumbView, 0, 0);
+            $gridView->setView($reportDetailsAndRelationsView, 1, 0);
+            return $gridView;
         }
     }
 ?>
