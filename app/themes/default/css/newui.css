@@ -1635,6 +1635,20 @@ section {
   position: relative;
   top: -2px;
 }
+#ListViewDeleteMassActionMenu .parent > a:before {
+  content: "_";
+  font-weight: normal;
+  font-size: 22px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
 .icon-memberships:before {
   content: "y";
   font-weight: normal;
