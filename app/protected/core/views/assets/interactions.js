@@ -1,7 +1,7 @@
 $(window).ready(function(){
 
     //main menu flyouts or mbmenu releacment
-    $('.nav:not(.headerNav) > .parent').live({
+    $('.nav:not(.user-menu-item) > .parent').live({
         mouseenter: function() {
             if ( $(this).find('ul').length > 0 ){
                 $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
@@ -19,7 +19,6 @@ $(window).ready(function(){
             if ( $(this).hasClass('nav-open') === false ){
                 $('.nav-open').removeClass('nav-open');
                 $(this).addClass('nav-open');
-                console.log('adding');
             } else {
                 $('.nav-open').removeClass('nav-open');
             }

@@ -109,18 +109,16 @@
             $label    = Yii::t('Default', 'Notifications');
             $content  = null;
             $count    = Notification::getCountByUser(Yii::app()->user->userModel);
-            $imageSourceUrl = Yii::app()->baseUrl . '/themes/default/images/loading.gif';
             // Begin Not Coding Standard
             $content  .= '<div id="notifications" class="user-menu-item">';
             $content  .= "<a id=\"notifications-flyout-link\" href=\"#\" class=\"notifications-link unread\">";
             $content  .= "<span id='notifications-link'><strong>" . $count ."</strong></span></a>";
-            $content  .= ZurmoHtml::tag('div',
-                                    array('id' => 'notifications-flyout', 'style' => 'display:none;'),
-                                    ZurmoHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
+            $content  .= ZurmoHtml::tag('div', array('id' => 'notifications-flyout'), '<span class="z-spinner"></span>', 'div');
             Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
                 $('#notifications-link').live('click', function()
                 {
                         if ( $('#notifications').hasClass('nav-open') === true ){
+                            attachLoadingSpinner('notifications-flyout', true);
                             $.ajax({
                                 url 	 : '" . $this->notificationsUrl . "',
                                 type     : 'GET',
@@ -131,11 +129,13 @@
                                 }
                             });
                         }
+                        return false;
                 });
             ", CClientScript::POS_HEAD);
             Yii::app()->clientScript->registerScript('deleteNotificationFromAjaxListViewScript', "
-                function deleteNotificationFromAjaxListView(element, modelId)
+                function deleteNotificationFromAjaxListView(element, modelId, event)
                 {
+                    event.stopPropagation();
                     $.ajax({
                         url : '" . Yii::app()->createUrl('notifications/default/deleteFromAjax') . "?id=' + modelId,
                         type : 'GET',
