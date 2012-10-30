@@ -178,8 +178,6 @@
                     {
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
-                        //Reseting DropKick Information
-                        resetDropKickDropDowns($(this));
                         $(this).closest('form').submit();
                         $('#" . $this->getClearingSearchInputId() . "').val('');
                         return false;
@@ -257,7 +255,6 @@
             $metadata       = self::getMetadata();
             $maxCellsPerRow = $this->getMaxCellsPerRow();
             $content        = $this->renderSummaryCloneContent();
-            $content       .= TableUtil::getColGroupContent($this->getColumnCount($metadata['global']));
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)
             {
@@ -368,6 +365,7 @@
             $content = null;
             foreach ($panel['rows'] as $row)
             {
+                $innerContent = null;
                 foreach ($row['cells'] as $cell)
                 {
                     if (!empty($cell['elements']))
@@ -380,12 +378,13 @@
                             }
                             $elementclassname = $elementInformation['type'] . 'Element';
                             $element = new $elementclassname($this->model, $elementInformation['attributeName'], $form, array_slice($elementInformation, 2));
-                            $content .= $element->render();
+                            $innerContent .= $element->render();
                         }
                     }
+                    $content .= ZurmoHtml::tag('tr', array(), $innerContent);
                 }
             }
-            return $content;
+            return ZurmoHtml::tag('table', array(), $content);
         }
 
         /**

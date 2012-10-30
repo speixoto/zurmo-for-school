@@ -11,6 +11,11 @@
 <thead>
 <tr><td rowspan="1" colspan="3">Advanced Search Account</td></tr>
 </thead><tbody>
+<tr> 
+    <td>setTimeout</td> 
+    <td>45000</td> 
+    <td></td> 
+</tr>
 <tr>
 	<td>setSpeed</td>
 	<td>1000</td>
@@ -120,9 +125,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>xpath=(//a[contains(text(),'Office Phone')])[2]</td>
-	<td></td>
+	<td>select</td>
+	<td>id=AccountsSearchForm_dynamicClauses_1_attributeIndexOrDerivedType</td>
+	<td>label=Office Phone</td>
 </tr>
 <tr>
 	<td>waitForText</td>
@@ -140,14 +145,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>css=#dk_container_AccountsSearchForm_dynamicClauses_2_attributeIndexOrDerivedType &gt; a.dk_toggle</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>xpath=(//a[contains(text(),'Any Email Address')])[3]</td>
-	<td></td>
+	<td>select</td>
+	<td>id=AccountsSearchForm_dynamicClauses_2_attributeIndexOrDerivedType</td>
+	<td>label=Any Email Address</td>
 </tr>
 <tr>
 	<td>waitForText</td>
@@ -165,14 +165,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>css=#dk_container_AccountsSearchForm_dynamicClauses_3_attributeIndexOrDerivedType &gt; a.dk_toggle</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>xpath=(//a[contains(text(),'Any Street')])[4]</td>
-	<td></td>
+	<td>select</td>
+	<td>id=AccountsSearchForm_dynamicClauses_3_attributeIndexOrDerivedType</td>
+	<td>label=Any Street</td>
 </tr>
 <tr>
 	<td>waitForText</td>
@@ -258,7 +253,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Load a saved search</td>
+	<td>id=savedSearchId</td>
 	<td></td>
 </tr>
 <tr>
@@ -267,12 +262,12 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Saved Search ${randomSuffix}</td>
-	<td></td>
+	<td>select</td>
+	<td>id=savedSearchId</td>
+	<td>Saved Search ${randomSuffix}</td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>4 Criteria Selected</td>
 	<td></td>
 </tr>
@@ -323,7 +318,7 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>The structure is invalid.</td>
 	<td></td>
 </tr>
@@ -385,13 +380,18 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=span.dk_label</td>
+	<td>id=savedSearchId</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Saved Search ${randomSuffix}</td>
+	<td>assertTextPresent</td>
+	<td>Saved Search ${randomSuffix}</td>
 	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=savedSearchId</td>
+	<td>Saved Search ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>

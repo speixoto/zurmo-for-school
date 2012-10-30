@@ -125,10 +125,10 @@
             => 'sont obligatoires.',
         'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
             => 'À vos marques! Prêt? Feu, partez!  Voyez comment vous concurrencez par rapport à vos collègues su le Leaderboard.',
-        'Are you sure you want to remove this group?'
-            => 'Êtes-vous sûr(e) de vouloir supprimer ce groupe?',
-        'Are you sure you want to remove this role?'
-            => 'Êtes-vous sûr(e) de vouloir supprimer ce rôle?',
+        'Are you sure you want to delete this group?'
+            => 'Voulez vous vraiment supprimer ce groupe?',
+        'Are you sure you want to delete this role?'
+            => 'Voulez vous vraiment supprimer ce rôle?',
         'Attachment'
             => 'Fichier',
         'Attachments'
@@ -147,10 +147,6 @@
             => 'par {ownerStringContent}',
         'Cache has been successfully cleaned.'
             => 'Nettoyage du cache réussi.',
-        'Cancel'
-            => 'Annuler',
-        'Cancel changes'
-            => 'Annuler',
         'Changes to active currencies saved successfully.'
             => 'Les changements de devises actives sont effectués.',
         'Changes to active languages saved successfully.'
@@ -191,6 +187,10 @@
             => 'Créer Rôle',
         'Create Roles'
             => 'Créer Rôles',
+        'Created'
+            => 'Conversations commencées',
+        'created by {ownerStringContent}'
+            => 'crée par {ownerStringContent}',
         'Criteria Selected <span class="icon-clear">Z</span>'
             => 'Critère(s) Choisi(s) <span class="icon-clear">Z</span>',
         'Currencies: Create'
@@ -215,6 +215,8 @@
             => 'Nb. d\'éléments par page dans les listes portlets',
         'Data'
             => 'Donées',
+        'Database upgrade not completed. Please try again later.'
+            => 'La mise à jour de la base de données n\'a pas terminée. Veuillez vérifier plus tard.',
         'days'
             => 'jours',
         'Dead'
@@ -489,6 +491,8 @@
             => 'Règles sauvegardées.',
         'Popup list page size'
             => 'Nb. d\'éléments de la liste pop-up',
+        'Post to Profile'
+            => 'Publier',
         'Postal Code'
             => 'Code Postal',
         'Primary Address'
@@ -659,6 +663,8 @@
             => 'Actualiser',
         'Update Custom Data'
             => 'Mettre à jour les données personnalisées',
+        'Updated'
+            => 'Actualisé',
         'Upload attachments to a record by clicking "More Options" when adding a note.'
             => 'Vous pouvez ajouter une pièce jointe a une Note en cliquant "Plus d\'options".',
         'User Membership'

@@ -55,6 +55,12 @@
             => 'et',
         'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"'
             => 'L\'application n\'est pas en mode maintenance. Dans le fichier perInstance.php file, voud devez modifer le paramètre pour que "$maintenanceMode = true;"',
+        'Apply'
+            => 'Appliquer',
+        'Are you sure you want to delete this {modelLabel}?'
+            => 'Voulez vous vraiment supprimer ce(tte) {modelLabel}?',
+        'Are you sure you want to unlink this {modelLabel}?'
+            => 'Voulez vous vraiment dissocier la relation avec ce(tte) {modelLabel}?',
         'Basic Search'
             => 'Recherche simple',
         'Basic Search Fields'
@@ -68,6 +74,8 @@
         'by'
             => 'par',
         'Cancel'
+            => 'Annuler',
+        'Cancel Changes'
             => 'Annuler',
         'Cell Settings'
             => 'Paramètres des cellules',
@@ -91,6 +99,8 @@
             => 'Cliquez ici',
         'Close'
             => 'Fermer',
+        'Columns'
+            => 'Colonnes',
         'Copying files.'
             => 'Copie de fichiers.',
         'Could not extract upgrade "from version" in the manifest file.'
@@ -159,6 +169,8 @@
             => 'Nom complet',
         'Go to Details'
             => 'Au détails',
+        'Hidden Columns'
+            => 'Colonnes Masquées',
         'Hour'
             => 'Heure',
         'Info'
@@ -202,7 +214,7 @@
         'Modified Date Time'
             => 'Dernière modification',
         'Module Name'
-            => 'Nom du Module',
+            => 'Etiquette de l\'onglet',
         'More Details'
             => 'Plus de détails',
         'More Options'
@@ -277,6 +289,8 @@
             => 'Supprimer',
         'Removing upgrade files.'
             => 'Suppression des fichiers de mise à jour.',
+        'Reset'
+            => 'Relance',
         'Return to List'
             => 'Retour à la liste',
         'Row'
@@ -349,6 +363,8 @@
             => 'Tapez pour retrouver un nuage de mots-clefs',
         'Unknown'
             => 'Inconnu',
+        'Unlink'
+            => 'Dissocier',
         'Update'
             => 'Actualiser',
         'updated successfully.'
@@ -367,6 +383,8 @@
             => 'Utilisateur',
         'Users'
             => 'Utilisateurs',
+        'Visible Columns'
+            => 'Colonnes affichées',
         'Yes'
             => 'Oui',
         'Yesterday'
