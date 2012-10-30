@@ -73,6 +73,7 @@
                 'existingFiles'        => $existingFilesInformation,
                 'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize(),
                 'showMaxSize'          => $this->getShowMaxSize(),
+                'id'				   => $this->getId(),
             ));
 
             $cClipWidget->endClip();
@@ -130,6 +131,11 @@
                 return true;
             }
             return $this->params['showMaxSize'];
+        }
+
+        protected function getId()
+        {
+            return get_class($this->model);
         }
     }
 ?>
