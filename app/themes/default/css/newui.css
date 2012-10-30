@@ -1635,6 +1635,20 @@ section {
   position: relative;
   top: -2px;
 }
+#ListViewDeleteMassActionMenu .parent > a:before {
+  content: "_";
+  font-weight: normal;
+  font-size: 22px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
 .icon-memberships:before {
   content: "y";
   font-weight: normal;
@@ -2577,6 +2591,9 @@ div.wide.form a {
 .list-view-items-summary-clone {
   font-size: 11px;
   float: right;
+  position: absolute;
+  z-index: 100;
+  right: 15px;
   margin: 20px 0 0 0;
   color: #666;
   -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -2852,17 +2869,20 @@ div.wide.form a {
   margin: 15px 0 0 0;
   display: block;
   position: relative;
-  zoom: 1;
-  height: 25px;
+  float: left;
+  width: 100%;
+  z-index: 0;
 }
-.search-view-0:before {
-  content: "";
-  display: table;
+.search-view-0 table {
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  border: none;
 }
-.search-view-0:after {
-  content: "";
-  display: table;
-  clear: both;
+.search-view-0 th {
+  display: none;
+  width: 0;
 }
 .search-view-0 .global-search-loopa {
   position: relative;
@@ -2914,7 +2934,27 @@ div.wide.form a {
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
   font-size: 11px;
+  float: left;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  zoom: 1;
 }
+#search-form:before {
+  content: "";
+  display: table;
+}
+#search-form:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/*
+#search-form:after{content:" ";display:block;height:0;clear:both;visibility:hidden;font-size:0;}
+#search-form{height:1%;}
+*:first-child+html #search-form{min-height:1px;}
+*/
 .search-form-tools {
   position: absolute;
   top: 16px;
@@ -3053,6 +3093,8 @@ div.wide.form a {
   z-index: 100;
   min-width: 400px;
   height: auto;
+  float: left;
+  width: 100%;
 }
 .select-list-attributes-view label,
 .search-view-1 label {
@@ -3206,6 +3248,10 @@ div.wide.form a {
   float: left;
   display: inline-block;
   margin: 15px 3px 10px 0;
+}
+.dynamic-search-row + .add-fields-container,
+.dynamic-search-row + .add-fields-container + .search-save-container {
+  margin: 5px 3px 10px 0;
 }
 .add-fields-container .z-spinner {
   display: block !important;
