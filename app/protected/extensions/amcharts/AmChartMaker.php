@@ -129,6 +129,10 @@ class AmChartMaker
             $this->addChartProperties('outlineThickness', 2);
             $this->addChartProperties('usePrefixes', true);
             $this->addGraphProperties('colors', '["#262877", "#7BB730"]');
+            //$this->addChartProperties('colors', '["#262877", "#7BB730"]'); //option 2*
+            //$this->addChartProperties('colors', '["#262877", "#3E44C3", "#585A8E", "#777AC1", "#151741", "#7BB730"]'); //option 3*
+            //$this->addChartProperties('colors', '["#262877", "#6625A7", "#BC9DDA", "#817149", "#A77425"]'); //option 1*
+            $this->addChartProperties('colors', '["#262877", "#121337", "#3E42C3", "#3E44C3", "#1E205D", "#7BB730"]'); //option 4*
             $this->makeChart3d();
             $this->chartIsPie = true;
         }
@@ -136,6 +140,7 @@ class AmChartMaker
         {
         }
     }
+    
     private function convertDataArrayToJavascriptArray()
     {
         return CJavaScript::encode($this->data);
