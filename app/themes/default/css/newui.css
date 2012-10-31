@@ -1442,9 +1442,9 @@ section {
 /*=Inner toolbar*/
 .view-toolbar-container {
   width: 100%;
-  display: inline-block;
   position: relative;
   font-size: 11px;
+  float: left;
 }
 .view-toolbar {
   border: 1px solid #b7b7b7;
@@ -11447,6 +11447,9 @@ a.user-link {
 #comment-inline-edit-form .panel > table,
 #social-item-inline-edit-form .panel > table {
   border: none;
+}
+#social-item-inline-edit-form .view-toolbar-container {
+  float: none;
 }
 #comment-inline-edit-form {
   border-bottom: none;
