@@ -29,8 +29,6 @@
      */
     class AccountsSuperUserUnlinkWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        protected static $asynchronusTreshold;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
