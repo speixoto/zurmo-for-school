@@ -38,6 +38,7 @@
             //Setup test data owned by the super user.
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
             $contact = ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
+            $contactWithNoAccount = ContactTestHelper::createContactByNameForOwner('noAccountContact', $super);
         }
 
         public function testUnlinkContactForAccount()
@@ -45,7 +46,7 @@
             $accounts      = Account::getAll();
             $this->assertEquals(1, count($accounts));
             $contacts      = Contact::getAll();
-            $this->assertEquals(1, count($contacts));
+            $this->assertEquals(2, count($contacts));
             $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
             $this->setGetArray(array('id' => $superAccountId));
             $this->resetPostArray();
@@ -64,6 +65,56 @@
             $contacts[0]->forget();
             $contact = Contact::getById($contactId);
             $this->assertTrue($contact->account->id < 0);
+        }
+
+        public function testActionUnlinkWithNoRelationModelClassName()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $accounts      = Account::getAll();
+            $this->assertEquals(1, count($accounts));
+            $contacts      = Contact::getAll();
+            $this->assertEquals(2, count($contacts));
+            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
+            $contactId = self::getModelIdByModelNameAndName ('Contact', 'noAccountContact noAccountContactson');
+            $this->setGetArray(array(   'id' => $contactId,
+                                        'relationModelClassName'       => null,
+                                        'relationModelId'              => $superAccountId,
+                                        'relationModelRelationName'    => 'contacts'));
+            $exceptionThrowed = false;
+            try
+            {
+                $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/unlink', true);
+            }
+            catch (NotSupportedException $e)
+            {
+                $exceptionThrowed = true;
+            }
+            $this->assertTrue($exceptionThrowed);
+        }
+
+        public function testActionUnlinkWithNoRelationModelRelationName()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $accounts      = Account::getAll();
+            $this->assertEquals(1, count($accounts));
+            $contacts      = Contact::getAll();
+            $this->assertEquals(2, count($contacts));
+            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
+            $contactId = self::getModelIdByModelNameAndName ('Contact', 'noAccountContact noAccountContactson');
+            $this->setGetArray(array(   'id' => $contactId,
+                                        'relationModelClassName'       => 'Account',
+                                        'relationModelId'              => $superAccountId,
+                                        'relationModelRelationName'    => 'contacts'));
+            $exceptionThrowed = false;
+            try
+            {
+                $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/unlink', true);
+            }
+            catch (NotSupportedException $e)
+            {
+                $exceptionThrowed = true;
+            }
+            $this->assertTrue($exceptionThrowed);
         }
     }
 ?>
