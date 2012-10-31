@@ -54,22 +54,30 @@
             $this->assertEquals(1, count($missions));
             $gamescore = GameScore::getAllByPersonIndexedByType($super);
             $this->assertEquals(1, count($gamescore));
+            //Changing Status to Taken
+            $mission = $missions[0];
+            $mission->status = Mission::STATUS_TAKEN;
+            $this->assertTrue($mission->save());
+            $missions = Mission::getAll();
+            $this->assertEquals(1, count($missions));
+            $gamescore = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $this->assertEquals(1, count($gamescore));
             //Changing Status to Completed
             $mission = $missions[0];
             $mission->status = Mission::STATUS_COMPLETED;
             $mission->save();
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
-            $gamescore = GameScore::getAllByPersonIndexedByType($super);
-            $this->assertEquals(1, count($gamescore));
+            $gamescore = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $this->assertEquals(2, count($gamescore));
             //Changing Status to Completed
             $mission = $missions[0];
             $mission->status = Mission::STATUS_ACCEPTED;
             $mission->save();
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
-            $gamescore = GameScore::getAllByPersonIndexedByType($super);
-            $this->assertEquals(1, count($gamescore));
+            $gamescore = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $this->assertEquals(3, count($gamescore));
 
         }
     }
