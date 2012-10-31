@@ -27,7 +27,7 @@
     /**
      * Unlink walkthrough tests.
      */
-    class AccountsSuperUserUnlinkWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class AccountsRegularUserUnlinkWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -36,22 +36,26 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             //Setup test data owned by the super user.
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            $contact = ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
-            $contactWithNoAccount = ContactTestHelper::createContactByNameForOwner('noAccountContact', $super);
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function testUnlinkContactForAccount()
         {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $confused = User::getByUsername('confused');
+            Yii::app()->user->userModel = $confused;
+            $this->assertTrue($confused->save());
+            $account = AccountTestHelper::createAccountByNameForOwner('confusedAccount', $confused);
+            $contact = ContactTestHelper::createContactWithAccountByNameForOwner('confusedContact', $confused, $account);
             $accounts      = Account::getAll();
             $this->assertEquals(1, count($accounts));
             $contacts      = Contact::getAll();
-            $this->assertEquals(2, count($contacts));
-            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
+            $this->assertEquals(1, count($contacts));
+            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'nobodyAccount');
             $this->setGetArray(array('id' => $superAccountId));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
-            $contactId = self::getModelIdByModelNameAndName ('Contact', 'superContact superContactson');
+            $contactId = self::getModelIdByModelNameAndName ('Contact', 'nobodyContact nobodyContactson');
             //unlinking the contact
             $this->setGetArray(array(   'id' => $contactId,
                                         'relationModelClassName'       => 'Account',
@@ -65,42 +69,6 @@
             $contacts[0]->forget();
             $contact = Contact::getById($contactId);
             $this->assertTrue($contact->account->id < 0);
-        }
-         /**
-         * @expectedException NotSupportedException
-         */
-        public function testActionUnlinkWithNoRelationModelClassName()
-        {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $accounts      = Account::getAll();
-            $this->assertEquals(1, count($accounts));
-            $contacts      = Contact::getAll();
-            $this->assertEquals(2, count($contacts));
-            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
-            $contactId = self::getModelIdByModelNameAndName ('Contact', 'noAccountContact noAccountContactson');
-            $this->setGetArray(array(   'id' => $contactId,
-                                        'relationModelClassName'       => null,
-                                        'relationModelId'              => $superAccountId,
-                                        'relationModelRelationName'    => 'contacts'));
-             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/unlink', true);
-        }
-         /**
-         * @expectedException NotSupportedException
-         */
-        public function testActionUnlinkWithNoHasManyAndManyManyRelation()
-        {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $accounts      = Account::getAll();
-            $this->assertEquals(1, count($accounts));
-            $contacts      = Contact::getAll();
-            $this->assertEquals(2, count($contacts));
-            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
-            $contactId = self::getModelIdByModelNameAndName ('Contact', 'noAccountContact noAccountContactson');
-            $this->setGetArray(array(   'id' => $contactId,
-                                        'relationModelClassName'       => 'Account',
-                                        'relationModelId'              => $superAccountId,
-                                        'relationModelRelationName'    => 'billingAddress'));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/unlink', true);
         }
     }
 ?>
