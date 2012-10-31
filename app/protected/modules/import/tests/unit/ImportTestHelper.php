@@ -39,7 +39,12 @@
                 $pathToFiles = Yii::getPathOfAlias('application.modules.import.tests.unit.files');
             }
             $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . $fileName;
-            ImportUploadedFileUtil::convertWindowsAndMacLinEndingsIntoUnixLineEndings($filePath);
+            // Use this for just those two files, because orginal files will be overwritten
+            // For these two files, we make backup
+            if ($fileName == 'importTestMacOsLineEndingsCopy.csv' || $fileName == 'importTestWindowsCopy.csv')
+            {
+                ImportUploadedFileUtil::convertWindowsAndMacLineEndingsIntoUnixLineEndings($filePath);
+            }
             $fileHandle  = fopen($filePath, 'r');
             if ($fileHandle !== false)
             {

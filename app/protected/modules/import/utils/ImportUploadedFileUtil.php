@@ -49,7 +49,7 @@
             return $uploadedFile;
         }
 
-        public static function convertWindowsAndMacLinEndingsIntoUnixLineEndings($uploadedFilePath)
+        public static function convertWindowsAndMacLineEndingsIntoUnixLineEndings($uploadedFilePath)
         {
             assert('is_file($uploadedFilePath)');
             $content = file_get_contents($uploadedFilePath);
