@@ -493,6 +493,7 @@
                 {
                     $uploadedFile = ImportUploadedFileUtil::getByNameCatchErrorAndEnsureFileIsACSV($filesVariableName);
                     assert('$uploadedFile instanceof CUploadedFile');
+                    ImportUploadedFileUtil::convertWindowsAndMacLinEndingsIntoUnixLineEndings($uploadedFile->getTempName());
                     $fileHandle  = fopen($uploadedFile->getTempName(), 'r');
                     if ($fileHandle !== false)
                     {

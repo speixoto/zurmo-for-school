@@ -39,6 +39,7 @@
                 $pathToFiles = Yii::getPathOfAlias('application.modules.import.tests.unit.files');
             }
             $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . $fileName;
+            ImportUploadedFileUtil::convertWindowsAndMacLinEndingsIntoUnixLineEndings($filePath);
             $fileHandle  = fopen($filePath, 'r');
             if ($fileHandle !== false)
             {
