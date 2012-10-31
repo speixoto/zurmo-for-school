@@ -267,6 +267,8 @@
                 'Secondary Email - Is Invalid'    => null,
                 'Secondary Email - Opt Out'       => null,
 
+                'Currency Value Currency'         => 'USD',
+
                 $testItem->getAttributeLabel('user')              => null,
                 $testItem->getAttributeLabel('owner')             => 'super',
                 $testItem->getAttributeLabel('createdByUser')     => 'super',
@@ -379,6 +381,8 @@
                 'Secondary Email - Email Address' => null,
                 'Secondary Email - Is Invalid'    => null,
                 'Secondary Email - Opt Out'       => null,
+
+                'Currency Value Currency'         => 'USD',
 
                 $testItem->getAttributeLabel('user')              => null,
                 $testItem->getAttributeLabel('owner')             => 'super',
