@@ -37,25 +37,30 @@
             Yii::app()->user->userModel = $super;
             //Setup test data owned by the super user.
             ReadPermissionsOptimizationUtil::rebuild();
+            $simpleUser = UserTestHelper::createBasicUser('simpleUser');
         }
 
         public function testUnlinkContactForAccount()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $confused = User::getByUsername('confused');
-            Yii::app()->user->userModel = $confused;
-            $this->assertTrue($confused->save());
-            $account = AccountTestHelper::createAccountByNameForOwner('confusedAccount', $confused);
-            $contact = ContactTestHelper::createContactWithAccountByNameForOwner('confusedContact', $confused, $account);
+            $simpleUser = User::getByUsername('simpleUser');
+            Yii::app()->user->userModel = $simpleUser;
+            $simpleUser->setRight('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+            $simpleUser->setRight('AccountsModule', AccountsModule::RIGHT_CREATE_ACCOUNTS);
+            $simpleUser->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
+            $simpleUser->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
+            $this->assertTrue($simpleUser->save());
+            $account = AccountTestHelper::createAccountByNameForOwner('simpleUserAccount', $simpleUser);
+            $contact = ContactTestHelper::createContactWithAccountByNameForOwner('simpleUserContact', $simpleUser, $account);
             $accounts      = Account::getAll();
             $this->assertEquals(1, count($accounts));
             $contacts      = Contact::getAll();
             $this->assertEquals(1, count($contacts));
-            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'nobodyAccount');
+            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'simpleUserAccount');
             $this->setGetArray(array('id' => $superAccountId));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
-            $contactId = self::getModelIdByModelNameAndName ('Contact', 'nobodyContact nobodyContactson');
+            $contactId = self::getModelIdByModelNameAndName ('Contact', 'simpleUserContact simpleUserContactson');
             //unlinking the contact
             $this->setGetArray(array(   'id' => $contactId,
                                         'relationModelClassName'       => 'Account',

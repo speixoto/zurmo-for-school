@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MissionGamificationRulesTest extends ZurmoBaseTest
+    class MissionGamificationRulesTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -34,16 +34,19 @@
             Yii::app()->user->userModel = $super;
         }
 
-        public function testScoreOnSaveModel()
+        public function testScoreOnSaveModelForMissionTaken()
         {
             $super = User::getByUsername('super');
-            $gamescore = GameScore::getAllByPersonIndexedByType($super);
+            $simpleUser = UserTestHelper::createBasicUser('simpleUser');
+            $gamescore = GameScore::getAllByPersonIndexedByType($simpleUser);
             $this->assertEquals(0, count($gamescore));
             $missions  = Mission::getAll();
             $this->assertEquals(0, count($missions));
             $mission = new Mission();
-            $mission->description = 'TestDescription';
-            $mission->reward      = 'My test reward';
+            $mission->owner       = $super;
+            $mission->takenByUser = $simpleUser;
+            $mission->description = 'Test description';
+            $mission->reward      = 'Test reward';
             $mission->status      = Mission::STATUS_AVAILABLE;
             $mission->save();
             //Confirm mission saved.
@@ -51,7 +54,23 @@
             $this->assertEquals(1, count($missions));
             $gamescore = GameScore::getAllByPersonIndexedByType($super);
             $this->assertEquals(1, count($gamescore));
-        }
+            //Changing Status to Completed
+            $mission = $missions[0];
+            $mission->status = Mission::STATUS_COMPLETED;
+            $mission->save();
+            $missions = Mission::getAll();
+            $this->assertEquals(1, count($missions));
+            $gamescore = GameScore::getAllByPersonIndexedByType($super);
+            $this->assertEquals(1, count($gamescore));
+            //Changing Status to Completed
+            $mission = $missions[0];
+            $mission->status = Mission::STATUS_ACCEPTED;
+            $mission->save();
+            $missions = Mission::getAll();
+            $this->assertEquals(1, count($missions));
+            $gamescore = GameScore::getAllByPersonIndexedByType($super);
+            $this->assertEquals(1, count($gamescore));
 
+        }
     }
 ?>
