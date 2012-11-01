@@ -225,7 +225,7 @@
             $modelClassName = get_class($securableItem);
             assert('$modelClassName != "OwnedSecurableItem"');
             $mungeTableName = self::getMungeTableName($modelClassName);
-            $securableItemId = $securableItem->id;
+            $securableItemId = $securableItem->getClassId('SecurableItem');
             R::exec("delete from $mungeTableName
                      where       securableitem_id = $securableItemId");
         }
