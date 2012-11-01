@@ -934,6 +934,9 @@ section {
   background-image: linear-gradient(top, #202264, #262877);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202264', endColorstr='#262877', GradientType=0);
 }
+.TitleBarView {
+  margin-bottom: 15px;
+}
 /*=Shortcuts nav*/
 .GridView {
   position: relative;
@@ -1226,6 +1229,7 @@ section {
   vertical-align: middle;
   height: 32px;
   display: block;
+  position: relative;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -1236,7 +1240,6 @@ section {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  position: relative;
 }
 #RecentlyViewedView li a:hover {
   color: #fff !important;
@@ -1244,6 +1247,17 @@ section {
 }
 #RecentlyViewedView li a:hover em {
   color: #262877 !important;
+}
+#RecentlyViewedView li a:hover span {
+  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  background-image: url(../images/main-nav-selected.png);
+  background-repeat: no-repeat;
+  background-position-x: 0;
+  background-position-y: 0;
 }
 #RecentlyViewedView li a span {
   position: absolute;
@@ -1432,9 +1446,6 @@ section {
 #HomePageView .AppContent#DashboardEditView {
   padding-right: 20px;
 }
-#HomeDashboardView {
-  margin-top: 15px;
-}
 #HomeDashboardView .parent > ul {
   min-width: 160px;
   margin-top: 0;
@@ -1450,7 +1461,8 @@ section {
 form .view-toolbar-container,
 .juiportlet-widget .view-toolbar-container,
 .ActionBarForSecurityTreeListView .view-toolbar-container,
-#ActionBarForDesignerModuleView .view-toolbar-container {
+#ActionBarForDesignerModuleView .view-toolbar-container,
+#LeaderboardView .view-toolbar-container {
   float: none;
 }
 .juiportlet-widget .view-toolbar-container {
@@ -4811,6 +4823,13 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: none;
   box-shadow: none;
 }
+#ModalView #list-view .pager {
+  -webkit-box-shadow: inset 0 1px 0 #dfdfdf;
+  -moz-box-shadow: inset 0 1px 0 #dfdfdf;
+  -o-box-shadow: inset 0 1px 0 #dfdfdf;
+  -ms-box-shadow: inset 0 1px 0 #dfdfdf;
+  box-shadow: inset 0 1px 0 #dfdfdf;
+}
 /*=Meetings modal*/
 #days-meetings-list-view td {
   padding: 10px;
@@ -7186,6 +7205,10 @@ table.configuration-list tr td:last-child a:before {
   -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #bababa;
 }
 .EmailTestingButton:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -9900,6 +9923,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   display: inline-block;
   float: left;
 }
+#LeaderboardView .ranking {
+  float: none;
+}
 .icon-leaderboard-weekly:before {
   content: "x";
   font-weight: normal;
@@ -10796,6 +10822,11 @@ a.close-ModalGameNotification.simple-select {
   float: right;
   margin: 15px 15px 15px 0;
 }
+.gravatar-container a {
+  display: block;
+  float: left;
+  position: relative;
+}
 .gravatar-container span {
   text-align: center;
   padding: 10px;
@@ -10803,10 +10834,8 @@ a.close-ModalGameNotification.simple-select {
   z-index: 1;
   display: none;
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.7);
-  width: auto;
   height: auto;
+  background: rgba(255, 255, 255, 0.7);
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;

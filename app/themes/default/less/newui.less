@@ -492,9 +492,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-
-
-
 #user-header-menu,
 #settings-header-menu{
     position: relative;
@@ -788,6 +785,10 @@ footer, header, hgroup, menu, nav, section {
     #gradient > .vertical( darken(@themeColor, 5%), @themeColor );
 }
 
+.TitleBarView{
+    margin-bottom: 15px;
+}
+
 /*=Shortcuts nav*/
 .GridView{
     position:relative;
@@ -981,6 +982,7 @@ footer, header, hgroup, menu, nav, section {
             vertical-align:middle;
             height:32px;
             display:block;
+            position: relative;
             .radius( 4px );
             .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
             &:hover{
@@ -989,8 +991,14 @@ footer, header, hgroup, menu, nav, section {
                 em{
                     color:@themeColor !important;
                 }
+                span{
+                    .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
+                    background-image: url(../images/main-nav-selected.png);
+                    background-repeat: no-repeat;
+                    background-position-x: 0;
+                    background-position-y: 0;
+                }
             }
-            position: relative;
             span{
                 position: absolute;
                 top:0;
@@ -1159,7 +1167,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 #HomeDashboardView{
-	margin-top:15px;
     .parent > ul{
         min-width: 160px;
         margin-top:0;
@@ -1178,7 +1185,8 @@ footer, header, hgroup, menu, nav, section {
 form,
 .juiportlet-widget,
 .ActionBarForSecurityTreeListView,
-#ActionBarForDesignerModuleView{
+#ActionBarForDesignerModuleView,
+#LeaderboardView{
     .view-toolbar-container{
         float: none;
     }
@@ -3655,10 +3663,13 @@ div.hasHalfs{
 .juiportlet-widget .endless-list-pager{
     border:none;
 }
+
 #list-view .pager{
     .b-shadow(none);
 }
-
+#ModalView #list-view .pager{
+    .b-shadow(inset 0 1px 0 #DFDFDF );
+}
 
 /*=Meetings modal*/
 #days-meetings-list-view{
