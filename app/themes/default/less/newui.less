@@ -982,6 +982,7 @@ footer, header, hgroup, menu, nav, section {
             vertical-align:middle;
             height:32px;
             display:block;
+            position: relative;
             .radius( 4px );
             .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
             &:hover{
@@ -990,8 +991,14 @@ footer, header, hgroup, menu, nav, section {
                 em{
                     color:@themeColor !important;
                 }
+                span{
+                    .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
+                    background-image: url(../images/main-nav-selected.png);
+                    background-repeat: no-repeat;
+                    background-position-x: 0;
+                    background-position-y: 0;
+                }
             }
-            position: relative;
             span{
                 position: absolute;
                 top:0;

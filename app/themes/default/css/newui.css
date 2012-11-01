@@ -1229,6 +1229,7 @@ section {
   vertical-align: middle;
   height: 32px;
   display: block;
+  position: relative;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -1239,7 +1240,6 @@ section {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  position: relative;
 }
 #RecentlyViewedView li a:hover {
   color: #fff !important;
@@ -1247,6 +1247,17 @@ section {
 }
 #RecentlyViewedView li a:hover em {
   color: #262877 !important;
+}
+#RecentlyViewedView li a:hover span {
+  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  background-image: url(../images/main-nav-selected.png);
+  background-repeat: no-repeat;
+  background-position-x: 0;
+  background-position-y: 0;
 }
 #RecentlyViewedView li a span {
   position: absolute;
