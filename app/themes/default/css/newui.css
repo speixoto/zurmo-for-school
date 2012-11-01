@@ -4823,6 +4823,13 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: none;
   box-shadow: none;
 }
+#ModalView #list-view .pager {
+  -webkit-box-shadow: inset 0 1px 0 #dfdfdf;
+  -moz-box-shadow: inset 0 1px 0 #dfdfdf;
+  -o-box-shadow: inset 0 1px 0 #dfdfdf;
+  -ms-box-shadow: inset 0 1px 0 #dfdfdf;
+  box-shadow: inset 0 1px 0 #dfdfdf;
+}
 /*=Meetings modal*/
 #days-meetings-list-view td {
   padding: 10px;
