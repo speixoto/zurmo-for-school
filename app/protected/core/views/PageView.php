@@ -72,7 +72,7 @@
                 $endTime = microtime(true);
                 $performanceMessage .= 'Page render time: ' . number_format(($endTime - $startTime), 3) . ' seconds.<br />';
             }
-            if (1)
+            if (YII_DEBUG)
             {
                 if (defined('XHTML_VALIDATION') && XHTML_VALIDATION)
                 {
