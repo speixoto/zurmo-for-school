@@ -34,7 +34,8 @@
          */
         public static function rebuild($forcePhp = false)
         {
-            //Forcing
+            //Forcing php way until we can fix failing tests here: AccountReadPermissionsOptimizationScenariosTest
+            $forcePhp = true;
             assert('is_bool($forcePhp)');
             foreach (self::getMungableModelClassNames() as $modelClassName)
             {

@@ -1190,15 +1190,15 @@
                                 in munge_table_name varchar(255)
                               )
             begin
-                SET @select_statement  = concat("select permission.securableitem_id, _user.id, permission.permitable_id
+                set @select_statement  = concat("select permission.securableitem_id, _user.id, permission.permitable_id
                                          from ", model_table_name, ", ownedsecurableitem, permission, _user
-                                         where
-                                         ", model_table_name , ".ownedsecurableitem_id = ownedsecurableitem.id AND
-                                         ownedsecurableitem.securableitem_id = permission.securableitem_id AND
+                                         where ", model_table_name , ".ownedsecurableitem_id = ownedsecurableitem.id and
+                                         ownedsecurableitem.securableitem_id = permission.securableitem_id and
                                          permission.permitable_id = _user.permitable_id");
-                SET @rebuild_users_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
-                PREPARE statement FROM @rebuild_users_temp_table;
-                EXECUTE statement;
+                set @rebuild_users_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_users_temp_table;
+                execute statement;
+                deallocate prepare statement;
                 begin
                     declare _securableitem_id, __user_id, _permitable_id int(11);
                     declare no_more_records tinyint default 0;
@@ -1228,15 +1228,16 @@
                                 in munge_table_name varchar(255)
                               )
             begin
-                SET @select_statement  = concat("select permission.securableitem_id, _group.id, permission.permitable_id
+                set @select_statement  = concat("select permission.securableitem_id, _group.id, permission.permitable_id
                                          from ", model_table_name ,", ownedsecurableitem, permission, _group
                                          where
                                          ", model_table_name, ".ownedsecurableitem_id = ownedsecurableitem.id AND
                                          ownedsecurableitem.securableitem_id = permission.securableitem_id AND
                                          permission.permitable_id = _group.permitable_id");
-                SET @rebuild_groups_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
-                PREPARE statement FROM @rebuild_groups_temp_table;
-                EXECUTE statement;
+                set @rebuild_groups_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_groups_temp_table;
+                execute statement;
+                deallocate prepare statement;
                 begin
                     declare _securableitem_id, __group_id, _permitable_id int(11);
                     declare no_more_records tinyint default 0;
@@ -1354,13 +1355,14 @@
                                 in munge_table_name varchar(255)
                               )
             begin
-                SET @select_statement  = concat("select role_id, ownedsecurableitem.securableitem_id
+                set @select_statement  = concat("select role_id, ownedsecurableitem.securableitem_id
                                          from ", model_table_name, ", _user, ownedsecurableitem
                                          where ", model_table_name, ".ownedsecurableitem_id = ownedsecurableitem.id AND
                                          _user.id = ownedsecurableitem.owner__user_id and _user.role_id is not null");
-                SET @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
-                PREPARE statement FROM @rebuild_roles_temp_table;
-                EXECUTE statement;
+                set @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_roles_temp_table;
+                execute statement;
+                deallocate prepare statement;
                    begin
                 declare _role_id, _securableitem_id int(11);
                 declare no_more_records tinyint default 0;
@@ -1387,33 +1389,34 @@
                                 in munge_table_name varchar(255)
                               )
             begin
-                SET @select_statement  = concat("select role_id, permission.securableitem_id
+                set @select_statement  = concat("select role_id, permission.securableitem_id
                                          from ", model_table_name, ", ownedsecurableitem, permission, _user
                                          where ", model_table_name, ".ownedsecurableitem_id = ownedsecurableitem.id AND
                                          ownedsecurableitem.securableitem_id = permission.securableitem_id AND
                                          permission.permitable_id = _user.permitable_id and
                                          ((permission.permissions & 1) = 1) and permission.type = 1");
-                SET @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
-                PREPARE statement FROM @rebuild_roles_temp_table;
-                EXECUTE statement;
+                set @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_roles_temp_table;
+                execute statement;
+                deallocate prepare statement;
                 begin
-                declare _role_id, _securableitem_id int(11);
-                declare no_more_records tinyint default 0;
-                declare role_and_securableitem_ids cursor for
-                    select * from rebuild_temp_table;
-                declare continue handler for not found
-                    set no_more_records = 1;
-                declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
-                    begin                           # RedBean hasn\'t created it yet.
-                    end;
-                open role_and_securableitem_ids;
-                fetch role_and_securableitem_ids into _role_id, _securableitem_id;
-                while no_more_records = 0 do
-                    call increment_parent_roles_counts(munge_table_name, _securableitem_id, _role_id);
+                    declare _role_id, _securableitem_id int(11);
+                    declare no_more_records tinyint default 0;
+                    declare role_and_securableitem_ids cursor for
+                        select * from rebuild_temp_table;
+                    declare continue handler for not found
+                        set no_more_records = 1;
+                    declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
+                        begin                           # RedBean hasn\'t created it yet.
+                        end;
+                    open role_and_securableitem_ids;
                     fetch role_and_securableitem_ids into _role_id, _securableitem_id;
-                end while;
-                close role_and_securableitem_ids;
-                drop temporary table if exists rebuild_temp_table;
+                    while no_more_records = 0 do
+                        call increment_parent_roles_counts(munge_table_name, _securableitem_id, _role_id);
+                        fetch role_and_securableitem_ids into _role_id, _securableitem_id;
+                    end while;
+                    close role_and_securableitem_ids;
+                    drop temporary table if exists rebuild_temp_table;
                 end;
             end;',
 
@@ -1422,7 +1425,7 @@
                                 in munge_table_name varchar(255)
                               )
             begin
-                SET @select_statement  =  concat("select role.role_id, permission.securableitem_id
+                set @select_statement  =  concat("select role.role_id, permission.securableitem_id
                                            from ", model_table_name, ", ownedsecurableitem, _user, _group, _group__user, permission, role
                                            where ", model_table_name, ".ownedsecurableitem_id = ownedsecurableitem.id and
                                            ownedsecurableitem.securableitem_id = permission.securableitem_id and
@@ -1432,28 +1435,29 @@
                                            _user.role_id = role.role_id                    and
                                            ((permission.permissions & 1) = 1)              and
                                            permission.type = 1");
-                SET @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
-                PREPARE statement FROM @rebuild_roles_temp_table;
-                EXECUTE statement;
+                set @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_roles_temp_table;
+                execute statement;
+                deallocate prepare statement;
                 begin
-                declare _role_id, _securableitem_id int(11);
-                declare no_more_records tinyint default 0;
-                declare role_and_securableitem_ids cursor for
-                    select * from rebuild_temp_table;
-                declare continue handler for not found
-                    set no_more_records = 1;
-                declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
-                    begin                           # RedBean hasn\'t created it yet.
-                    end;
-                open role_and_securableitem_ids;
-                fetch role_and_securableitem_ids into _role_id, _securableitem_id;
-                while no_more_records = 0 do
-                    call increment_count              (munge_table_name, _securableitem_id, _role_id, "R");
-                    call increment_parent_roles_counts(munge_table_name, _securableitem_id, _role_id);
+                    declare _role_id, _securableitem_id int(11);
+                    declare no_more_records tinyint default 0;
+                    declare role_and_securableitem_ids cursor for
+                        select * from rebuild_temp_table;
+                    declare continue handler for not found
+                        set no_more_records = 1;
+                    declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
+                        begin                           # RedBean hasn\'t created it yet.
+                        end;
+                    open role_and_securableitem_ids;
                     fetch role_and_securableitem_ids into _role_id, _securableitem_id;
-                end while;
-                close role_and_securableitem_ids;
-                drop temporary table if exists rebuild_temp_table;
+                    while no_more_records = 0 do
+                        call increment_count              (munge_table_name, _securableitem_id, _role_id, "R");
+                        call increment_parent_roles_counts(munge_table_name, _securableitem_id, _role_id);
+                        fetch role_and_securableitem_ids into _role_id, _securableitem_id;
+                    end while;
+                    close role_and_securableitem_ids;
+                    drop temporary table if exists rebuild_temp_table;
                 end;
             end;',
 

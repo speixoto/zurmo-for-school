@@ -1091,9 +1091,6 @@
                 $this->assertTrue($g1->save());
             }
 
-            /**
-             * @depends testParentRoleRemovedFromRole_Slide14
-             */
             public function testParentRoleSetOnRole_SlideNone()
             {
                 $u1  = User::getByUsername('u1.');
@@ -1208,7 +1205,7 @@
             }
 
             /**
-             * @depends testParentRoleSetOnRole_SlideNone
+             * @depends testParentRoleRemovedFromRole_Slide14
              */
             public function testGroupDeleted_Slide15()
             {
