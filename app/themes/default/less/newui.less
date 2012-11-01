@@ -1175,10 +1175,16 @@ footer, header, hgroup, menu, nav, section {
     float: left;
 }
 
-form, .juiportlet-widget{
+form, .juiportlet-widget, .ActionBarForSecurityTreeListView{
+    .view-toolbar-container{
+        //display: block;
+        float: none;
+    }
+}
+
+.juiportlet-widget{
     .view-toolbar-container{
         display: block;
-        float: none;
     }
 }
 
@@ -2304,7 +2310,7 @@ div.wide.form{
     .attributesContainer:after{
         display: none !important;
     }
-    .multiselect-holder{
+    /*.multiselect-holder{
         position: relative;
         width:75%;
         max-width: 675px;
@@ -2316,9 +2322,11 @@ div.wide.form{
     .multiselect-right{
         float: right;
     }
+    */
     .multiselect-nav{
         display: none;
     }
+    
     .multiselect-nav-updown{
         display: block;
         position: absolute;
@@ -3009,6 +3017,10 @@ div.wide.form{
         .zButton();
         font-size:11px;
         color: #666 !important;
+        border-top: 1px solid #e7e7e7;
+        border-left: 1px solid #d7d7d7;
+        border-right: 1px solid #d7d7d7;
+        border-bottom: 1px solid #bababa;
         &:after{
             content: "▾";
             margin-left:5px;

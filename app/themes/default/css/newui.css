@@ -1448,9 +1448,12 @@ section {
   float: left;
 }
 form .view-toolbar-container,
+.juiportlet-widget .view-toolbar-container,
+.ActionBarForSecurityTreeListView .view-toolbar-container {
+  float: none;
+}
 .juiportlet-widget .view-toolbar-container {
   display: block;
-  float: none;
 }
 .view-toolbar {
   border: 1px solid #b7b7b7;
@@ -3132,6 +3135,22 @@ div.wide.form a {
 .search-view-1 .view-toolbar-container {
   display: inline-block;
 }
+.select-list-attributes-view {
+  /*.multiselect-holder{
+        position: relative;
+        width:75%;
+        max-width: 675px;
+    }
+    .multiselect-right, .multiselect-left{
+        width:45%;
+        max-width: 300px;
+    }
+    .multiselect-right{
+        float: right;
+    }
+    */
+
+}
 .select-list-attributes-view table {
   border-bottom: none;
 }
@@ -3140,19 +3159,6 @@ div.wide.form a {
 }
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
-}
-.select-list-attributes-view .multiselect-holder {
-  position: relative;
-  width: 75%;
-  max-width: 675px;
-}
-.select-list-attributes-view .multiselect-right,
-.select-list-attributes-view .multiselect-left {
-  width: 45%;
-  max-width: 300px;
-}
-.select-list-attributes-view .multiselect-right {
-  float: right;
 }
 .select-list-attributes-view .multiselect-nav {
   display: none;
@@ -3929,6 +3935,10 @@ div.wide.form a {
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   font-size: 11px;
   color: #666 !important;
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #bababa;
 }
 .toolbar-mbmenu .options-menu > li > a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -6541,8 +6551,13 @@ table.configuration-list tr td:last-child a:before {
         font-weight: 400 !important;*/
 
 }
+#GroupUserMembershipEditView td {
+  padding-left: 0;
+}
 .multiselect-holder {
-  width: 675px;
+  position: relative;
+  width: 75%;
+  max-width: 675px;
   margin: 0 auto;
   zoom: 1;
 }
@@ -6623,10 +6638,23 @@ table.configuration-list tr td:last-child a:before {
 .multiselect-holder input[type="button"].loading .z-icon {
   display: none;
 }
-.multiselect-left,
-.multiselect-right {
+.multiselect-holder .select-arrow {
+  display: none !important;
+}
+.multiselect-right,
+.multiselect-left {
+  width: 45%;
+  max-width: 300px;
   float: left;
-  width: 300px;
+}
+.multiselect-right {
+  float: right;
+}
+.multiselect-nav {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -30px auto auto -23px;
 }
 /*TreeListView - usualy first page in each in admin*/
 #LanguagesCollectionView,
