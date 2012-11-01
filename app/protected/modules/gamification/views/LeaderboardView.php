@@ -87,8 +87,8 @@
                 $content .= '<tr>';
                 $content .= '<td><span class="ranking">' . $leaderboardData['rank'] . '</span></td>';
                 $content .= '<td class="user-label">' .
-                            ZurmoHtml::link($avatarImage . '<span>' . $leaderboardData['userLabel'], $userUrl) .
-                            '</span></td>';
+                            ZurmoHtml::link($avatarImage . '<span>' . $leaderboardData['userLabel'] . '</span>', $userUrl) .
+                            '</td>';
                 $content .= '<td><span class="points">' . $leaderboardData['points'] . '</span></td>';
                 $content .= '</tr>';
             }

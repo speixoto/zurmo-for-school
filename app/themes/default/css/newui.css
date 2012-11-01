@@ -934,6 +934,9 @@ section {
   background-image: linear-gradient(top, #202264, #262877);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202264', endColorstr='#262877', GradientType=0);
 }
+.TitleBarView {
+  margin-bottom: 15px;
+}
 /*=Shortcuts nav*/
 .GridView {
   position: relative;
@@ -1432,9 +1435,6 @@ section {
 #HomePageView .AppContent#DashboardEditView {
   padding-right: 20px;
 }
-#HomeDashboardView {
-  margin-top: 15px;
-}
 #HomeDashboardView .parent > ul {
   min-width: 160px;
   margin-top: 0;
@@ -1450,7 +1450,8 @@ section {
 form .view-toolbar-container,
 .juiportlet-widget .view-toolbar-container,
 .ActionBarForSecurityTreeListView .view-toolbar-container,
-#ActionBarForDesignerModuleView .view-toolbar-container {
+#ActionBarForDesignerModuleView .view-toolbar-container,
+#LeaderboardView .view-toolbar-container {
   float: none;
 }
 .juiportlet-widget .view-toolbar-container {
@@ -7186,6 +7187,10 @@ table.configuration-list tr td:last-child a:before {
   -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #bababa;
 }
 .EmailTestingButton:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -9900,6 +9905,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   display: inline-block;
   float: left;
 }
+#LeaderboardView .ranking {
+  float: none;
+}
 .icon-leaderboard-weekly:before {
   content: "x";
   font-weight: normal;
@@ -10796,6 +10804,11 @@ a.close-ModalGameNotification.simple-select {
   float: right;
   margin: 15px 15px 15px 0;
 }
+.gravatar-container a {
+  display: block;
+  float: left;
+  position: relative;
+}
 .gravatar-container span {
   text-align: center;
   padding: 10px;
@@ -10803,10 +10816,8 @@ a.close-ModalGameNotification.simple-select {
   z-index: 1;
   display: none;
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.7);
-  width: auto;
   height: auto;
+  background: rgba(255, 255, 255, 0.7);
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;

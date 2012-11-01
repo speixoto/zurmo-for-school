@@ -492,9 +492,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-
-
-
 #user-header-menu,
 #settings-header-menu{
     position: relative;
@@ -786,6 +783,10 @@ footer, header, hgroup, menu, nav, section {
     position:relative;
     z-index:9999;
     #gradient > .vertical( darken(@themeColor, 5%), @themeColor );
+}
+
+.TitleBarView{
+    margin-bottom: 15px;
 }
 
 /*=Shortcuts nav*/
@@ -1159,7 +1160,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 #HomeDashboardView{
-	margin-top:15px;
     .parent > ul{
         min-width: 160px;
         margin-top:0;
@@ -1178,7 +1178,8 @@ footer, header, hgroup, menu, nav, section {
 form,
 .juiportlet-widget,
 .ActionBarForSecurityTreeListView,
-#ActionBarForDesignerModuleView{
+#ActionBarForDesignerModuleView,
+#LeaderboardView{
     .view-toolbar-container{
         float: none;
     }

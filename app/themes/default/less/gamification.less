@@ -18,6 +18,9 @@
             float: left;
         }
     }
+    .ranking{
+        float: none;
+    }
 }
 
 .icon-leaderboard-weekly:before{
@@ -610,7 +613,11 @@ a.close-ModalGameNotification.simple-select{
 .gravatar-container{
     float: right;
     margin: 15px 15px 15px 0;
-    a{}
+    a{  
+        display: block;
+        float: left;
+        position: relative;
+    }
     img{}
     span{
         text-align: center;
@@ -619,10 +626,8 @@ a.close-ModalGameNotification.simple-select{
         z-index: 1;
         display: none;
         width:100%;
-        height: 100%;
+        height: auto;
         background: rgba(255, 255, 255, 0.7);
-        width:auto;
-        height:auto;
         .box-sizing();
     }
     &:hover{
