@@ -1442,9 +1442,15 @@ section {
 /*=Inner toolbar*/
 .view-toolbar-container {
   width: 100%;
+  display: inline-block;
   position: relative;
   font-size: 11px;
   float: left;
+}
+form .view-toolbar-container,
+.juiportlet-widget .view-toolbar-container {
+  display: block;
+  float: none;
 }
 .view-toolbar {
   border: 1px solid #b7b7b7;
@@ -10957,6 +10963,7 @@ a.close-ModalGameNotification.simple-select {
   clear: both;
   position: relative;
   top: 30px;
+  font-size: 11px;
 }
 .hide-welcome span {
   font-weight: normal;
