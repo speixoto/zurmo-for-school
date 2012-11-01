@@ -37,6 +37,7 @@
          */
         public static function getByNameCatchErrorAndEnsureFileIsACSV($filesVariableName)
         {
+
             assert('is_string($filesVariableName)');
             $uploadedFile = static::getByNameAndCatchError($filesVariableName);
             $extension = $uploadedFile->getExtensionName();
@@ -46,6 +47,16 @@
                 throw new FailedFileUploadException($message);
             }
             return $uploadedFile;
+        }
+
+        public static function convertWindowsAndMacLineEndingsIntoUnixLineEndings($uploadedFilePath)
+        {
+            assert('is_file($uploadedFilePath)');
+            $content = file_get_contents($uploadedFilePath);
+            $content = str_replace("\r\n", "\n", $content);
+            $content = str_replace("\r", "\n", $content);
+            file_put_contents($uploadedFilePath, $content);
+            return true;
         }
     }
 ?>

@@ -133,8 +133,9 @@
                 });
             ", CClientScript::POS_HEAD);
             Yii::app()->clientScript->registerScript('deleteNotificationFromAjaxListViewScript', "
-                function deleteNotificationFromAjaxListView(element, modelId)
+                function deleteNotificationFromAjaxListView(element, modelId, event)
                 {
+                    event.stopPropagation();
                     $.ajax({
                         url : '" . Yii::app()->createUrl('notifications/default/deleteFromAjax') . "?id=' + modelId,
                         type : 'GET',
