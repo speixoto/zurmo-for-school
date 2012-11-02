@@ -37,7 +37,7 @@
             {
                 $params['htmlOptions'] = array();
             }
-            $params['htmlOptions'] = array_merge(array('id'    => 'save',
+            $params['htmlOptions'] = array_merge(array('id'    => 'save' . ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++,
                                                        'name'  => 'save', //bad for validation.. not sure its needed..
                                                        'class' => 'attachLoading'), $params['htmlOptions']);
             parent::__construct($controllerId, $moduleId, $modelId, $params);
