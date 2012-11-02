@@ -3403,71 +3403,89 @@ div.wide.form a {
   display: table;
   clear: both;
 }
-#edit-form {
+#edit-form,
+#delete-form {
   zoom: 1;
   position: relative;
   padding-top: 15px;
 }
-#edit-form:before {
+#edit-form:before,
+#delete-form:before {
   content: "";
   display: table;
 }
-#edit-form:after {
+#edit-form:after,
+#delete-form:after {
   content: "";
   display: table;
   clear: both;
 }
-#edit-form .panel {
+#edit-form .panel,
+#delete-form .panel {
   float: left;
   width: 70%;
   display: block;
   zoom: 1;
 }
-#edit-form .panel:before {
+#edit-form .panel:before,
+#delete-form .panel:before {
   content: "";
   display: table;
 }
-#edit-form .panel:after {
+#edit-form .panel:after,
+#delete-form .panel:after {
   content: "";
   display: table;
   clear: both;
 }
-#edit-form .panel table {
+#edit-form .panel table,
+#delete-form .panel table {
   width: 100% !important;
 }
-#edit-form h3 {
+#edit-form h3,
+#delete-form h3 {
   margin-bottom: 8px;
 }
-#edit-form table {
+#edit-form table,
+#delete-form table {
   border-bottom: none;
 }
-#edit-form table br {
+#edit-form table br,
+#delete-form table br {
   display: none;
 }
 #edit-form td,
-#edit-form th {
+#delete-form td,
+#edit-form th,
+#delete-form th {
   vertical-align: top;
 }
-#edit-form td table {
+#edit-form td table,
+#delete-form td table {
   width: 100%;
 }
-#edit-form td {
+#edit-form td,
+#delete-form td {
   padding-bottom: 15px;
 }
-#edit-form .panelTitle {
+#edit-form .panelTitle,
+#delete-form .panelTitle {
   margin: 0 0 10px 0;
   padding: 0;
   font-size: 12px;
   display: block;
 }
-#edit-form .view-toolbar-container {
+#edit-form .view-toolbar-container,
+#delete-form .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
-#edit-form .hasCheckBox {
+#edit-form .hasCheckBox,
+#delete-form .hasCheckBox {
   margin: 8px 0 0 0;
   display: block;
 }
-#edit-form .hasCheckBox input[type="checkbox"] {
+#edit-form .hasCheckBox input[type="checkbox"],
+#delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
 }
 .more-panels-link {
@@ -5348,6 +5366,7 @@ div.hasHalfs .twoThirds {
   display: block;
   margin: 0 0 15px 0;
   color: #262877;
+  line-height: 150%;
 }
 .operation-description strong {
   font-weight: bold;
@@ -5434,7 +5453,7 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: 0 0 1px 1px #262877;
   box-shadow: 0 0 1px 1px #262877;
 }
-/*=Mass Edit view*/
+/*=Mass Edit + DELETE view*/
 .AppContent.MassEditView #edit-form table {
   width: 100%;
 }
@@ -5455,9 +5474,6 @@ div.hasHalfs .twoThirds {
   padding-left: 0;
   margin-bottom: 30px;
   margin-left: -8px;
-}
-.ui-state-warning {
-  color: #ff0000 !important;
 }
 /*=Lead Conversion*/
 #LeadConvertView .DetailsView > div {

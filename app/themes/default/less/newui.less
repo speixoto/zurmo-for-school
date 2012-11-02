@@ -2541,7 +2541,8 @@ div.wide.form{
     .clearfix();
 }
 
-#edit-form{
+#edit-form,
+#delete-form{
     .clearfix();
     position: relative;
     padding-top:15px;
@@ -4044,6 +4045,7 @@ div.hasHalfs{
     display: block;
     margin: 0 0 15px 0;
     color: @themeColor;
+    line-height: 150%;
     strong{
         font-weight:bold;
     }
@@ -4115,7 +4117,7 @@ div.hasHalfs{
 }
 
 
-/*=Mass Edit view*/
+/*=Mass Edit + DELETE view*/
 .AppContent.MassEditView{
     #edit-form table{
         width:100%;
@@ -4138,10 +4140,6 @@ div.hasHalfs{
         margin-bottom:30px;
         margin-left:-8px;
     }
-}
-
-.ui-state-warning{
-    color: #ff0000 !important;
 }
 
 /*=Lead Conversion*/
