@@ -90,7 +90,7 @@
             $string  .= 'processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, \"' .
                         $this->uniquePortletPageId . '\")}",'; // Not Coding Standard
             $string  .= '"error"    => "function(xhr, textStatus, errorThrown) {alert(\'' .
-                        Yii::t('Default', 'There was an error processing this request'). '\');}",';
+                        CJavaScript::quote(Yii::t('Default', 'There was an error processing this request')) . '\');}",';
             $string  .= '"data"     => array(\'modelId\' => $data->id)';
             $string  .= ')),'; // Not Coding Standard
             $string  .= '"id" => "modalLink' . $this->portletId . '_$data->id")';
