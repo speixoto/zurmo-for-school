@@ -73,7 +73,14 @@
             $content .= $this->renderViewToolBar();
             $content .= $clipWidget->renderEndWidget();
             $content .= '</div></div>';
+            $this->renderScripts();
             return $content;
+        }
+
+        protected function renderScripts()
+        {
+            //Utilized by the job modal. Needed when debug is turned on so the pagination works correctly
+            Yii::app()->clientScript->registerCoreScript('bbq');
         }
 
         public function getTitle()
