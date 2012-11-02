@@ -263,7 +263,6 @@ footer, header, hgroup, menu, nav, section {
 
 #HeaderLinksView li a{
     color:#fff;
-    font-size:12px;
     font-weight:bold;
 }
 
@@ -558,6 +557,7 @@ footer, header, hgroup, menu, nav, section {
         top: 0;
         left: 4px;
         font-size: 10px;
+        line-height: 1;
     }
 }
 
@@ -2171,7 +2171,7 @@ div.wide.form{
         color: #999;
         text-indent: 10px;
         line-height: 25px;
-        height: 25px;
+        height: 25px !important;
         border: 1px solid #d5d4d4;
         border-left: none;
         background: url(../images/search-bar-gradient.png) left top repeat-x;
@@ -2320,9 +2320,6 @@ div.wide.form{
     .attributesContainer:after{
         display: none !important;
     }
-    .multiselect-nav{
-        display: none;
-    }
     .multiselect-nav-updown{
         display: block;
         position: absolute;
@@ -2331,10 +2328,8 @@ div.wide.form{
         padding:0 15px;
         .box-sizing();
         width:75px;
-        text-align:center;
         height:75px;
-        margin-top:70px;
-        top:auto;
+        text-align:center;
         left: auto;
     }
 }

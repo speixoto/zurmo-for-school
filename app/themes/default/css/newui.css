@@ -380,7 +380,6 @@ section {
 }
 #HeaderLinksView li a {
   color: #fff;
-  font-size: 12px;
   font-weight: bold;
 }
 #HeaderLinksView li a:hover {
@@ -677,6 +676,7 @@ section {
   top: 0;
   left: 4px;
   font-size: 10px;
+  line-height: 1;
 }
 #settings-header-menu {
   margin-left: -1px;
@@ -2932,7 +2932,7 @@ div.wide.form a {
   color: #999;
   text-indent: 10px;
   line-height: 25px;
-  height: 25px;
+  height: 25px !important;
   border: 1px solid #d5d4d4;
   border-left: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
@@ -3157,9 +3157,6 @@ div.wide.form a {
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
 }
-.select-list-attributes-view .multiselect-nav {
-  display: none;
-}
 .select-list-attributes-view .multiselect-nav-updown {
   display: block;
   position: absolute;
@@ -3170,10 +3167,8 @@ div.wide.form a {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 75px;
-  text-align: center;
   height: 75px;
-  margin-top: 70px;
-  top: auto;
+  text-align: center;
   left: auto;
 }
 #clear-search-link {
