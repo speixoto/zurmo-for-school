@@ -389,9 +389,9 @@
 
         protected static function getServerByServerControlUrl($url)
         {
-            if (stristr($url, 'dev2.zurmo.com'))
+            if (stristr($url, 'dev9.zurmo.com'))
             {
-                return 'dev2.zurmo.com';
+                return 'dev9.zurmo.com';
             }
             elseif (stristr($url, 'dev8.zurmo.com'))
             {
@@ -490,9 +490,9 @@
 
         protected static function getResultServerByFileName($resultFile)
         {
-            if (stristr($resultFile, 'dev2.zurmo.com'))
+            if (stristr($resultFile, 'dev9.zurmo.com'))
             {
-                return 'dev2.zurmo.com';
+                return 'dev9.zurmo.com';
             }
             elseif (stristr($resultFile, 'dev8.zurmo.com'))
             {
@@ -685,8 +685,8 @@
 
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true );
             curl_setopt($ch, CURLOPT_MAXREDIRS, 10 );
             curl_exec($ch);

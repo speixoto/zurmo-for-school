@@ -17,7 +17,7 @@
         }
     }
 }
-
+.configuration-list li a::before
 .back-to-app-menu-item span{
     vertical-align:middle;
     color:@themeColor !important;
@@ -124,7 +124,7 @@
                 .symbly(20px);
                 margin-right:5px;
                 position:relative;
-                top:0px;
+                top:-2px;
                 font-weight: normal !important;
                 vertical-align: middle;
             }
@@ -218,9 +218,15 @@ table.configuration-list{
     //padding-right:0;
 }
 
+#GroupUserMembershipEditView td{
+    padding-left: 0;
+}
+
 .multiselect-holder{
-    width:675px;
-    margin:0 auto;
+    position: relative;
+    width:75%;
+    max-width: 675px;
+    margin: 0 auto;
     .clearfix();
     label{
         display:block !important;
@@ -238,21 +244,24 @@ table.configuration-list{
         .zButton();
         .symbly(22px);
     }
+    .select-arrow{
+        display: none !important;
+    }
 }
 
-.multiselect-left, .multiselect-right{
+.multiselect-right, .multiselect-left{
+    width:45%;
+    max-width: 300px;
     float:left;
-    width: 300px;
 }
-
+.multiselect-right{
+    float: right;
+}
 .multiselect-nav{
-    float:left;
-    padding:0 15px;
-    .box-sizing();
-    width:75px;
-    text-align:center;
-    height:75px;
-    margin-top:60px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin: -30px auto auto -23px;
 }
 
 /*TreeListView - usualy first page in each in admin*/
@@ -660,7 +669,12 @@ table.configuration-list{
 }
 
 .EmailTestingButton{
-    .zButton;
+    .zButton();
+    border-top: 1px solid #e7e7e7;
+    border-left: 1px solid #d7d7d7;
+    border-right: 1px solid #d7d7d7;
+    border-bottom: 1px solid #bababa;
+
 }
 
 #TestEmailMessageView{

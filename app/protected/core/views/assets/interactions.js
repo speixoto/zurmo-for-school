@@ -1,7 +1,7 @@
 $(window).ready(function(){
 
     //main menu flyouts or mbmenu releacment
-    $('.nav:not(.headerNav) > .parent').live({
+    $('.nav:not(.user-menu-item) > .parent').live({
         mouseenter: function() {
             if ( $(this).find('ul').length > 0 ){
                 $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
@@ -14,20 +14,21 @@ $(window).ready(function(){
         }
     });
     
-    $('.headerNav').live({
-        click: function(){
-            if ( $(this).hasClass('nav-open') ){
-                $(this).removeClass('nav-open');
-            } else {
+    $('.user-menu-item').click(
+        function(){       
+            if ( $(this).hasClass('nav-open') === false ){
                 $('.nav-open').removeClass('nav-open');
                 $(this).addClass('nav-open');
+            } else {
+                $('.nav-open').removeClass('nav-open');
             }
         } 
-    });
+    );
+    /*
     $('body > div').click(function(){
         $('.nav-open').removeClass('nav-open');
     });
-
+    */
 
     //Main nav hover
      $('#MenuView a, #RecentlyViewedView a').hover(

@@ -341,7 +341,7 @@
                                                   array(Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']),
                                                   array($filePath_1, $filePath_2, $filePath_3)
             );
-            sleep(20);
+            sleep(40);
             $messages = $imap->getMessages();
             $this->assertEquals(1, count($messages));
             $this->assertEquals("Test Email", $messages[0]->subject);
