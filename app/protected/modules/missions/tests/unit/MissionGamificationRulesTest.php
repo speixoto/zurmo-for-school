@@ -39,16 +39,16 @@
             $super = User::getByUsername('super');
             // asserting simpleUser score before taken/completed/accepted of mission 
             $simpleUser = UserTestHelper::createBasicUser('simpleUser');
-            $gamescore = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $gamescore  = GameScore::getAllByPersonIndexedByType($simpleUser);
             $this->assertEquals(0, count($gamescore));
             $scoreTypeMissionTaken = MissionGamificationRules::SCORE_TYPE_TAKE_MISSION;
-            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionTaken, $simpleUser);
+            $gameScore             = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionTaken, $simpleUser);
             $this->assertEquals(0, count($gamescore));
             $scoreTypeMissionComplete = MissionGamificationRules::SCORE_TYPE_COMPLETE_MISSION;
-            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionComplete, $simpleUser);
+            $gameScore                = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionComplete, $simpleUser);
             $this->assertEquals(0, count($gamescore));
             $scoreTypeMissionAccepted = MissionGamificationRules::SCORE_TYPE_ACCEPTED_MISSION;
-            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionAccepted, $simpleUser);
+            $gameScore                = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionAccepted, $simpleUser);
             $this->assertEquals(0, count($gamescore));
 
             $missions  = Mission::getAll();
@@ -72,7 +72,7 @@
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
             $scoreTypeMissionTaken = MissionGamificationRules::SCORE_TYPE_TAKE_MISSION;
-            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionTaken, $simpleUser);
+            $gameScore             = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionTaken, $simpleUser);
             $this->assertEquals(1, count($gamescore));
             $gamescoreOfUser = GameScore::getAllByPersonIndexedByType($simpleUser);
             $this->assertEquals(1, count($gamescoreOfUser));
@@ -83,7 +83,7 @@
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
             $scoreTypeMissionComplete = MissionGamificationRules::SCORE_TYPE_COMPLETE_MISSION;
-            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionComplete, $simpleUser);
+            $gameScore                = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionComplete, $simpleUser);
             $this->assertEquals(1, count($gamescore));
             $gamescoreOfUser = GameScore::getAllByPersonIndexedByType($simpleUser);
             $this->assertEquals(2, count($gamescoreOfUser));
@@ -94,7 +94,7 @@
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
             $scoreTypeMissionAccepted = MissionGamificationRules::SCORE_TYPE_ACCEPTED_MISSION;
-            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionAccepted, $simpleUser);
+            $gameScore                = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionAccepted, $simpleUser);
             $this->assertEquals(1, count($gamescore));
             $gamescoreOfUser = GameScore::getAllByPersonIndexedByType($simpleUser);
             $this->assertEquals(3, count($gamescoreOfUser));
