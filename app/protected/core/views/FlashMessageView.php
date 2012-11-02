@@ -24,33 +24,43 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SaveButtonActionElement extends SubmitButtonActionElement
+    class FlashMessageView extends View
     {
-        public function getActionType()
+        protected $controller;
+
+        public function __construct(CController $controller)
         {
-            return 'Edit';
+            $this->controller = $controller;
         }
 
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected function renderContent()
         {
-            if (!isset($params['htmlOptions']))
+            $content = '<div id = "FlashMessageBar"></div>';
+            if (Yii::app()->user->hasFlash('notification'))
             {
-                $params['htmlOptions'] = array();
+                $script = "
+                $('#FlashMessageBar').jnotifyAddMessage(
+                {
+                    text: '". ZurmoHtml::encode(Yii::app()->user->getFlash('notification')) ."',
+                    permanent: true,
+                    showIcon: true,
+                }
+                );
+                ";
+                Yii::app()->clientScript->registerScript('FlashMessage', $script);
             }
-            $params['htmlOptions'] = array_merge(array('id'     => 'save' . ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++,
-                                                       'name'   => 'save', //bad for validation.. not sure its needed..
-                                                       'class'  => 'attachLoading',
-                                                       'params' => array('save' => 'save')), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            $this->controller->beginClip("FlashMessage");
+            $this->controller->widget('application.core.widgets.JNotify', array(
+                'statusBarId' => 'FlashMessageBar',
+            ));
+            $this->controller->endClip();
+            $content .= $this->controller->clips['FlashMessage'];
+            return $content;
         }
 
-        protected function getDefaultLabel()
+        public function isUniqueToAPage()
         {
-            return Yii::t('Default', 'Save');
-        }
-
-        protected function getDefaultRoute()
-        {
+            return true;
         }
     }
 ?>

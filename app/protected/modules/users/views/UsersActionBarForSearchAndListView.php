@@ -24,33 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SaveButtonActionElement extends SubmitButtonActionElement
+    class UsersActionBarForSearchAndListView extends SecuredActionBarForSearchAndListView
     {
-        public function getActionType()
+        public static function getDefaultMetadata()
         {
-            return 'Edit';
-        }
-
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
-        {
-            if (!isset($params['htmlOptions']))
-            {
-                $params['htmlOptions'] = array();
-            }
-            $params['htmlOptions'] = array_merge(array('id'     => 'save' . ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++,
-                                                       'name'   => 'save', //bad for validation.. not sure its needed..
-                                                       'class'  => 'attachLoading',
-                                                       'params' => array('save' => 'save')), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Save');
-        }
-
-        protected function getDefaultRoute()
-        {
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'CreateLink',
+                                'htmlOptions' => array('class' => 'icon-create'),
+                            ),
+                            array('type'  => 'MassEditLink',
+                                  'htmlOptions' => array('class' => 'icon-edit'),
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName'),
+                            array('type'  => 'ExportLink',
+                                  'htmlOptions' => array('class' => 'icon-export'),
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName'),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

@@ -68,13 +68,37 @@ $(document).ready(function()
 {
     $('#{$this->statusBarId}').jnotifyInizialize(
     {
-        oneAtTime: 'false'
+        oneAtTime: false,
+        appendType: 'append'
     }
     );
 }
 );
 END;
             return $content;
+        }
+
+        /**
+         * Add a message to an existing initialized jnotify div.  Registers the addMessage script.
+         * @param string $statusBarId
+         * @param string $text
+         * @param string $scriptId
+         */
+        public static function addMessage($statusBarId, $text, $scriptId)
+        {
+            assert('is_string($statusBarId)');
+            assert('is_string($text)');
+            assert('is_string($scriptId)');
+            $script = "
+            $('#" . $statusBarId . "').jnotifyAddMessage(
+            {
+                text: '" . CJavaScript::quote($text) . "',
+                permanent: false,
+                showIcon: true,
+            }
+            );
+            ";
+            Yii::app()->clientScript->registerScript($scriptId, $script);
         }
     }
 ?>

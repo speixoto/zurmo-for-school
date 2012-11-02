@@ -409,8 +409,7 @@
 
         protected function getMassEditAlertMessage($postVariableName)
         {
-
-            if (!isset($_POST[$postVariableName]))
+            if (!isset($_POST[$postVariableName]) && isset($_POST['save']))
             {
                 return Yii::t('Default', 'You must select at least one field to modify.');
             }
