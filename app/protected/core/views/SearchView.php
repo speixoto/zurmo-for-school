@@ -252,9 +252,10 @@
          */
         protected function renderFormLayout(ZurmoActiveForm $form)
         {
-            $metadata       = self::getMetadata();
-            $maxCellsPerRow = $this->getMaxCellsPerRow();
-            $content        = $this->renderSummaryCloneContent();
+            $metadata        = self::getMetadata();
+            $maxCellsPerRow  = $this->getMaxCellsPerRow();
+            $content         = "";
+            $content        .= $this->renderSummaryCloneContent();
             assert('count($metadata["global"]["panels"]) == 2');
             foreach ($metadata['global']['panels'] as $key => $panel)
             {
@@ -280,6 +281,7 @@
             }
             $content .= $this->renderListAttributesSelectionContent($form);
             $content .= $this->renderFormBottomPanel();
+            
             return $content;
         }
 

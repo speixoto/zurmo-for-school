@@ -39,7 +39,34 @@
                 'Tradeshow',
                 'Word of Mouth',
             );
-            static::makeCustomFieldDataByValuesAndDefault('LeadSources', $values);
+            $labels = array();
+            /**
+            $labels = array('de' => array(
+                                    'Self-Generated',
+                                    'Inbound Call',
+                                    'Tradeshow',
+                                    'Word of Mouth',
+                              ),
+                              'es' => array(
+                                    'Self-Generated',
+                                    'Inbound Call',
+                                    'Tradeshow',
+                                    'Word of Mouth',
+                              ),
+                              'fr' => array(
+                                    'Self-Generated',
+                                    'Inbound Call',
+                                    'Tradeshow',
+                                    'Word of Mouth',
+                              ),
+                              'it' => array(
+                                    'Self-Generated',
+                                    'Inbound Call',
+                                    'Tradeshow',
+                                    'Word of Mouth',
+                              ),);
+            **/
+            static::makeCustomFieldDataByValuesAndDefault('LeadSources', $values, null, $labels);
         }
     }
 ?>
