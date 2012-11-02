@@ -380,7 +380,6 @@ section {
 }
 #HeaderLinksView li a {
   color: #fff;
-  font-size: 12px;
   font-weight: bold;
 }
 #HeaderLinksView li a:hover {
@@ -677,6 +676,7 @@ section {
   top: 0;
   left: 4px;
   font-size: 10px;
+  line-height: 1;
 }
 #settings-header-menu {
   margin-left: -1px;
