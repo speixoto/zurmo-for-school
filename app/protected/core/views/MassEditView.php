@@ -74,7 +74,7 @@
             $content .= $formStart;
             if (!empty($this->alertMessage))
             {
-                $content .= HtmlNotifyUtil::renderAlertBoxByMessage($this->alertMessage);
+                JNotify::addMessage('FlashMessageBar', $this->alertMessage, 'MassEditAlertMessage');
             }
             $content .= $this->renderOperationDescriptionContent();
             $content .= $this->renderFormLayout($form);
