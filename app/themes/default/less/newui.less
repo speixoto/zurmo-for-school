@@ -3996,23 +3996,41 @@ div.hasHalfs{
 
 /*=Flash Message View*/
 #FlashMessageView{
-    position: relative;
-    margin-left:192px;
-    top:20px;
+    position: fixed;
+    //margin-left:192px;
+    top:100px;
+    width: 25%;
+    right: 3%;
+    
+    z-index: 9999;
     .jnotify-item{
+        position: relative;
         margin:0 20px 20px 0;
         padding:10px;
         border-radius:5px !important;
         border:1px solid #FFCC00;
         background:#FFFCB5;
-        font-size:12px;
-        font-weight:600;
-        color:#333333;
+        font-weight: bold;
+        .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.5) );
+        p, ul{
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+        ul{
+            padding-left:18px;
+        }
+        li{
+            margin-bottom: 3px;
+        }
+    }
+    .ui-state-highlight{
+        border:1px solid #cc0000;
+        background:#ffb5b5;
     }
     .ui-icon-circle-close{
         position: absolute;
         top:-17px;
-        right:6px;
+        right:-15px;
         background: transparent url(../images/widget-close-btn.png) left top no-repeat;
         padding: 0 !important;
         margin:0 !important;
@@ -4022,8 +4040,17 @@ div.hasHalfs{
     }
 }
 
-/*Dropdowns*/
+.operation-description{
+    display: block;
+    margin: 0 0 15px 0;
+    color: @themeColor;
+    strong{
+        font-weight:bold;
+    }
+}
 
+
+/*Dropdowns*/
 .hasDropDown{
     width: 100%;
     margin: 0;

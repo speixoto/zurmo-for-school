@@ -5298,30 +5298,59 @@ div.hasHalfs .twoThirds {
 }
 /*=Flash Message View*/
 #FlashMessageView {
-  position: relative;
-  margin-left: 192px;
-  top: 20px;
+  position: fixed;
+  top: 100px;
+  width: 25%;
+  right: 3%;
+  z-index: 9999;
 }
 #FlashMessageView .jnotify-item {
+  position: relative;
   margin: 0 20px 20px 0;
   padding: 10px;
   border-radius: 5px !important;
   border: 1px solid #FFCC00;
   background: #FFFCB5;
-  font-size: 12px;
-  font-weight: 600;
-  color: #333333;
+  font-weight: bold;
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+}
+#FlashMessageView .jnotify-item p,
+#FlashMessageView .jnotify-item ul {
+  margin-bottom: 5px;
+  line-height: 1;
+}
+#FlashMessageView .jnotify-item ul {
+  padding-left: 18px;
+}
+#FlashMessageView .jnotify-item li {
+  margin-bottom: 3px;
+}
+#FlashMessageView .ui-state-highlight {
+  border: 1px solid #cc0000;
+  background: #ffb5b5;
 }
 #FlashMessageView .ui-icon-circle-close {
   position: absolute;
   top: -17px;
-  right: 6px;
+  right: -15px;
   background: transparent url(../images/widget-close-btn.png) left top no-repeat;
   padding: 0 !important;
   margin: 0 !important;
   width: 30px !important;
   height: 31px !important;
   cursor: pointer;
+}
+.operation-description {
+  display: block;
+  margin: 0 0 15px 0;
+  color: #262877;
+}
+.operation-description strong {
+  font-weight: bold;
 }
 /*Dropdowns*/
 .hasDropDown {

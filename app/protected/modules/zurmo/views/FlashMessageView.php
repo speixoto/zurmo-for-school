@@ -35,7 +35,7 @@
 
         protected function renderContent()
         {
-            $content = '<div id = "FlashMessageBar"></div>';
+            $content = '<div id="FlashMessageBar"></div>';
             if (Yii::app()->user->hasFlash('notification'))
             {
                 $script = "
