@@ -76,7 +76,7 @@
             {
                 $content .= HtmlNotifyUtil::renderAlertBoxByMessage($this->alertMessage);
             }
-            $content .= $this->renderHighlightBox();
+            $content .= $this->renderOperationDescriptionContent();
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderAfterFormLayout($form);
             $actionElementContent = $this->renderActionElementBar(true);
@@ -92,12 +92,12 @@
             return $content;
         }
 
-        protected function renderHighlightBox()
+        protected function renderOperationDescriptionContent()
         {
             $message = '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
                     LabelUtil::getUncapitalizedRecordLabelByCount($this->selectedRecordCount) . ' ' .
                     Yii::t('Default', 'selected for updating.');
-            return HtmlNotifyUtil::renderHighlightBoxByMessage($message);
+            return ZurmoHtml::tag('span', array('class' => 'operation-description'), $message);
         }
 
         /**
