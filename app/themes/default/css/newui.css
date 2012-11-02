@@ -3157,9 +3157,6 @@ div.wide.form a {
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
 }
-.select-list-attributes-view .multiselect-nav {
-  display: none;
-}
 .select-list-attributes-view .multiselect-nav-updown {
   display: block;
   position: absolute;
@@ -3170,10 +3167,8 @@ div.wide.form a {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 75px;
-  text-align: center;
   height: 75px;
-  margin-top: 70px;
-  top: auto;
+  text-align: center;
   left: auto;
 }
 #clear-search-link {
