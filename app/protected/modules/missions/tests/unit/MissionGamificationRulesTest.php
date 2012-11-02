@@ -60,24 +60,33 @@
             $this->assertTrue($mission->save());
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
-            $gamescore = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $scoreType = MissionGamificationRules::SCORE_TYPE_TAKE_MISSION;
+            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, $simpleUser);
             $this->assertEquals(1, count($gamescore));
+            $gamescoreOfUser = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $this->assertEquals(1, count($gamescoreOfUser));
             //Changing Status to Completed
             $mission = $missions[0];
             $mission->status = Mission::STATUS_COMPLETED;
             $mission->save();
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
-            $gamescore = GameScore::getAllByPersonIndexedByType($simpleUser);
-            $this->assertEquals(2, count($gamescore));
+            $scoreType = MissionGamificationRules::SCORE_TYPE_COMPLETE_MISSION;
+            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, $simpleUser);
+            $this->assertEquals(1, count($gamescore));
+            $gamescoreOfUser = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $this->assertEquals(2, count($gamescoreOfUser));
             //Changing Status to Completed
             $mission = $missions[0];
             $mission->status = Mission::STATUS_ACCEPTED;
             $mission->save();
             $missions = Mission::getAll();
             $this->assertEquals(1, count($missions));
-            $gamescore = GameScore::getAllByPersonIndexedByType($simpleUser);
-            $this->assertEquals(3, count($gamescore));
+            $scoreType = MissionGamificationRules::SCORE_TYPE_ACCEPTED_MISSION;
+            $gameScore = GameScore::resolveToGetByTypeAndPerson($scoreType, $simpleUser);
+            $this->assertEquals(1, count($gamescore));
+            $gamescoreOfUser = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $this->assertEquals(3, count($gamescoreOfUser));
 
         }
     }
