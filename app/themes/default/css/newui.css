@@ -380,7 +380,6 @@ section {
 }
 #HeaderLinksView li a {
   color: #fff;
-  font-size: 12px;
   font-weight: bold;
 }
 #HeaderLinksView li a:hover {
@@ -677,6 +676,7 @@ section {
   top: 0;
   left: 4px;
   font-size: 10px;
+  line-height: 1;
 }
 #settings-header-menu {
   margin-left: -1px;
@@ -933,6 +933,9 @@ section {
   background-image: -o-linear-gradient(top, #202264, #262877);
   background-image: linear-gradient(top, #202264, #262877);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202264', endColorstr='#262877', GradientType=0);
+}
+.TitleBarView {
+  margin-bottom: 15px;
 }
 /*=Shortcuts nav*/
 .GridView {
@@ -1226,6 +1229,7 @@ section {
   vertical-align: middle;
   height: 32px;
   display: block;
+  position: relative;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -1236,7 +1240,6 @@ section {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  position: relative;
 }
 #RecentlyViewedView li a:hover {
   color: #fff !important;
@@ -1244,6 +1247,17 @@ section {
 }
 #RecentlyViewedView li a:hover em {
   color: #262877 !important;
+}
+#RecentlyViewedView li a:hover span {
+  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  background-image: url(../images/main-nav-selected.png);
+  background-repeat: no-repeat;
+  background-position-x: 0;
+  background-position-y: 0;
 }
 #RecentlyViewedView li a span {
   position: absolute;
@@ -1432,9 +1446,6 @@ section {
 #HomePageView .AppContent#DashboardEditView {
   padding-right: 20px;
 }
-#HomeDashboardView {
-  margin-top: 15px;
-}
 #HomeDashboardView .parent > ul {
   min-width: 160px;
   margin-top: 0;
@@ -1445,6 +1456,17 @@ section {
   display: inline-block;
   position: relative;
   font-size: 11px;
+  float: left;
+}
+form .view-toolbar-container,
+.juiportlet-widget .view-toolbar-container,
+.ActionBarForSecurityTreeListView .view-toolbar-container,
+#ActionBarForDesignerModuleView .view-toolbar-container,
+#LeaderboardView .view-toolbar-container {
+  float: none;
+}
+.juiportlet-widget .view-toolbar-container {
+  display: block;
 }
 .view-toolbar {
   border: 1px solid #b7b7b7;
@@ -2910,7 +2932,7 @@ div.wide.form a {
   color: #999;
   text-indent: 10px;
   line-height: 25px;
-  height: 25px;
+  height: 25px !important;
   border: 1px solid #d5d4d4;
   border-left: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
@@ -3135,22 +3157,6 @@ div.wide.form a {
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
 }
-.select-list-attributes-view .multiselect-holder {
-  position: relative;
-  width: 75%;
-  max-width: 675px;
-}
-.select-list-attributes-view .multiselect-right,
-.select-list-attributes-view .multiselect-left {
-  width: 45%;
-  max-width: 300px;
-}
-.select-list-attributes-view .multiselect-right {
-  float: right;
-}
-.select-list-attributes-view .multiselect-nav {
-  display: none;
-}
 .select-list-attributes-view .multiselect-nav-updown {
   display: block;
   position: absolute;
@@ -3161,9 +3167,9 @@ div.wide.form a {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 75px;
-  text-align: center;
   height: 75px;
-  margin-top: 70px;
+  text-align: center;
+  left: auto;
 }
 #clear-search-link {
   background: #262877;
@@ -3397,71 +3403,89 @@ div.wide.form a {
   display: table;
   clear: both;
 }
-#edit-form {
+#edit-form,
+#delete-form {
   zoom: 1;
   position: relative;
   padding-top: 15px;
 }
-#edit-form:before {
+#edit-form:before,
+#delete-form:before {
   content: "";
   display: table;
 }
-#edit-form:after {
+#edit-form:after,
+#delete-form:after {
   content: "";
   display: table;
   clear: both;
 }
-#edit-form .panel {
+#edit-form .panel,
+#delete-form .panel {
   float: left;
   width: 70%;
   display: block;
   zoom: 1;
 }
-#edit-form .panel:before {
+#edit-form .panel:before,
+#delete-form .panel:before {
   content: "";
   display: table;
 }
-#edit-form .panel:after {
+#edit-form .panel:after,
+#delete-form .panel:after {
   content: "";
   display: table;
   clear: both;
 }
-#edit-form .panel table {
+#edit-form .panel table,
+#delete-form .panel table {
   width: 100% !important;
 }
-#edit-form h3 {
+#edit-form h3,
+#delete-form h3 {
   margin-bottom: 8px;
 }
-#edit-form table {
+#edit-form table,
+#delete-form table {
   border-bottom: none;
 }
-#edit-form table br {
+#edit-form table br,
+#delete-form table br {
   display: none;
 }
 #edit-form td,
-#edit-form th {
+#delete-form td,
+#edit-form th,
+#delete-form th {
   vertical-align: top;
 }
-#edit-form td table {
+#edit-form td table,
+#delete-form td table {
   width: 100%;
 }
-#edit-form td {
+#edit-form td,
+#delete-form td {
   padding-bottom: 15px;
 }
-#edit-form .panelTitle {
+#edit-form .panelTitle,
+#delete-form .panelTitle {
   margin: 0 0 10px 0;
   padding: 0;
   font-size: 12px;
   display: block;
 }
-#edit-form .view-toolbar-container {
+#edit-form .view-toolbar-container,
+#delete-form .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
-#edit-form .hasCheckBox {
+#edit-form .hasCheckBox,
+#delete-form .hasCheckBox {
   margin: 8px 0 0 0;
   display: block;
 }
-#edit-form .hasCheckBox input[type="checkbox"] {
+#edit-form .hasCheckBox input[type="checkbox"],
+#delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
 }
 .more-panels-link {
@@ -3685,15 +3709,24 @@ div.wide.form a {
   margin-right: 20px;
 }
 .details-table table {
-  margin-bottom: 10px;
-}
-.details-table th {
-  font-weight: 600;
-  color: #666;
+  margin: 10px 0;
 }
 .details-table td,
 .details-table th {
-  padding: 8px 5px 8px 15px;
+  font-weight: bold;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 5px 5px 5px 5px;
+}
+.details-table th {
+  vertical-align: top;
+  color: #999;
+  padding-left: 15px;
+  text-align: right;
+}
+.details-table td {
+  vertical-align: top;
 }
 .details-table td + th {
   padding-left: 15px !important;
@@ -3923,6 +3956,10 @@ div.wide.form a {
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   font-size: 11px;
   color: #666 !important;
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #bababa;
 }
 .toolbar-mbmenu .options-menu > li > a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -4799,6 +4836,13 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: none;
   box-shadow: none;
 }
+#ModalView #list-view .pager {
+  -webkit-box-shadow: inset 0 1px 0 #dfdfdf;
+  -moz-box-shadow: inset 0 1px 0 #dfdfdf;
+  -o-box-shadow: inset 0 1px 0 #dfdfdf;
+  -ms-box-shadow: inset 0 1px 0 #dfdfdf;
+  box-shadow: inset 0 1px 0 #dfdfdf;
+}
 /*=Meetings modal*/
 #days-meetings-list-view td {
   padding: 10px;
@@ -5272,30 +5316,60 @@ div.hasHalfs .twoThirds {
 }
 /*=Flash Message View*/
 #FlashMessageView {
-  position: relative;
-  margin-left: 192px;
-  top: 20px;
+  position: fixed;
+  top: 100px;
+  width: 25%;
+  right: 3%;
+  z-index: 9999;
 }
 #FlashMessageView .jnotify-item {
+  position: relative;
   margin: 0 20px 20px 0;
   padding: 10px;
   border-radius: 5px !important;
   border: 1px solid #FFCC00;
   background: #FFFCB5;
-  font-size: 12px;
-  font-weight: 600;
-  color: #333333;
+  font-weight: bold;
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+}
+#FlashMessageView .jnotify-item p,
+#FlashMessageView .jnotify-item ul {
+  margin-bottom: 5px;
+  line-height: 1;
+}
+#FlashMessageView .jnotify-item ul {
+  padding-left: 18px;
+}
+#FlashMessageView .jnotify-item li {
+  margin-bottom: 3px;
+}
+#FlashMessageView .ui-state-highlight {
+  border: 1px solid #cc0000;
+  background: #ffb5b5;
 }
 #FlashMessageView .ui-icon-circle-close {
   position: absolute;
   top: -17px;
-  right: 6px;
+  right: -15px;
   background: transparent url(../images/widget-close-btn.png) left top no-repeat;
   padding: 0 !important;
   margin: 0 !important;
   width: 30px !important;
   height: 31px !important;
   cursor: pointer;
+}
+.operation-description {
+  display: block;
+  margin: 0 0 15px 0;
+  color: #262877;
+  line-height: 150%;
+}
+.operation-description strong {
+  font-weight: bold;
 }
 /*Dropdowns*/
 .hasDropDown {
@@ -5379,7 +5453,7 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: 0 0 1px 1px #262877;
   box-shadow: 0 0 1px 1px #262877;
 }
-/*=Mass Edit view*/
+/*=Mass Edit + DELETE view*/
 .AppContent.MassEditView #edit-form table {
   width: 100%;
 }
@@ -5400,9 +5474,6 @@ div.hasHalfs .twoThirds {
   padding-left: 0;
   margin-bottom: 30px;
   margin-left: -8px;
-}
-.ui-state-warning {
-  color: #ff0000 !important;
 }
 /*=Lead Conversion*/
 #LeadConvertView .DetailsView > div {
@@ -6535,8 +6606,13 @@ table.configuration-list tr td:last-child a:before {
         font-weight: 400 !important;*/
 
 }
+#GroupUserMembershipEditView td {
+  padding-left: 0;
+}
 .multiselect-holder {
-  width: 675px;
+  position: relative;
+  width: 75%;
+  max-width: 675px;
   margin: 0 auto;
   zoom: 1;
 }
@@ -6617,10 +6693,23 @@ table.configuration-list tr td:last-child a:before {
 .multiselect-holder input[type="button"].loading .z-icon {
   display: none;
 }
-.multiselect-left,
-.multiselect-right {
+.multiselect-holder .select-arrow {
+  display: none !important;
+}
+.multiselect-right,
+.multiselect-left {
+  width: 45%;
+  max-width: 300px;
   float: left;
-  width: 300px;
+}
+.multiselect-right {
+  float: right;
+}
+.multiselect-nav {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -30px auto auto -23px;
 }
 /*TreeListView - usualy first page in each in admin*/
 #LanguagesCollectionView,
@@ -7156,6 +7245,10 @@ table.configuration-list tr td:last-child a:before {
   -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #bababa;
 }
 .EmailTestingButton:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -9870,6 +9963,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   display: inline-block;
   float: left;
 }
+#LeaderboardView .ranking {
+  float: none;
+}
 .icon-leaderboard-weekly:before {
   content: "x";
   font-weight: normal;
@@ -10766,6 +10862,11 @@ a.close-ModalGameNotification.simple-select {
   float: right;
   margin: 15px 15px 15px 0;
 }
+.gravatar-container a {
+  display: block;
+  float: left;
+  position: relative;
+}
 .gravatar-container span {
   text-align: center;
   padding: 10px;
@@ -10773,10 +10874,8 @@ a.close-ModalGameNotification.simple-select {
   z-index: 1;
   display: none;
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.7);
-  width: auto;
   height: auto;
+  background: rgba(255, 255, 255, 0.7);
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -10957,6 +11056,7 @@ a.close-ModalGameNotification.simple-select {
   clear: both;
   position: relative;
   top: 30px;
+  font-size: 11px;
 }
 .hide-welcome span {
   font-weight: normal;
@@ -11447,6 +11547,9 @@ a.user-link {
 #comment-inline-edit-form .panel > table,
 #social-item-inline-edit-form .panel > table {
   border: none;
+}
+#social-item-inline-edit-form .view-toolbar-container {
+  float: none;
 }
 #comment-inline-edit-form {
   border-bottom: none;

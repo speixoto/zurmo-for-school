@@ -411,7 +411,7 @@
         {
             if (!isset($_POST[$postVariableName]) && isset($_POST['save']))
             {
-                    return Yii::t('Default', 'You must select at least one field to modify.');
+                return Yii::t('Default', 'You must select at least one field to modify.');
             }
         }
 

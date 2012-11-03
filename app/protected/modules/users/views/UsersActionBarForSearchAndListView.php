@@ -24,39 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class for handling file upload for imports.
-     */
-    class ImportUploadedFileUtil extends UploadedFileUtil
+    class UsersActionBarForSearchAndListView extends SecuredActionBarForSearchAndListView
     {
-        /**
-         * Check the $_FILES array by the $filesVariableName and make sure the file is a CSV and that the file
-         * is uploaded ok.
-         * @param string $filesVariableName
-         * @return CUploadedFile if successful, otherwise throw an exception.
-         */
-        public static function getByNameCatchErrorAndEnsureFileIsACSV($filesVariableName)
+        public static function getDefaultMetadata()
         {
-
-            assert('is_string($filesVariableName)');
-            $uploadedFile = static::getByNameAndCatchError($filesVariableName);
-            $extension = $uploadedFile->getExtensionName();
-            if (strtolower($extension) != 'csv')
-            {
-                $message = Yii::t('Default', 'The file that was uploaded was not a csv.');
-                throw new FailedFileUploadException($message);
-            }
-            return $uploadedFile;
-        }
-
-        public static function convertWindowsAndMacLineEndingsIntoUnixLineEndings($uploadedFilePath)
-        {
-            assert('is_file($uploadedFilePath)');
-            $content = file_get_contents($uploadedFilePath);
-            $content = str_replace("\r\n", "\n", $content);
-            $content = str_replace("\r", "\n", $content);
-            file_put_contents($uploadedFilePath, $content);
-            return true;
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'CreateLink',
+                                'htmlOptions' => array('class' => 'icon-create'),
+                            ),
+                            array('type'  => 'MassEditLink',
+                                  'htmlOptions' => array('class' => 'icon-edit'),
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName'),
+                            array('type'  => 'ExportLink',
+                                  'htmlOptions' => array('class' => 'icon-export'),
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName'),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

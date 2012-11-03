@@ -24,38 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class for handling file upload for imports.
-     */
-    class ImportUploadedFileUtil extends UploadedFileUtil
+    class FlashMessageView extends View
     {
-        /**
-         * Check the $_FILES array by the $filesVariableName and make sure the file is a CSV and that the file
-         * is uploaded ok.
-         * @param string $filesVariableName
-         * @return CUploadedFile if successful, otherwise throw an exception.
-         */
-        public static function getByNameCatchErrorAndEnsureFileIsACSV($filesVariableName)
-        {
+        protected $controller;
 
-            assert('is_string($filesVariableName)');
-            $uploadedFile = static::getByNameAndCatchError($filesVariableName);
-            $extension = $uploadedFile->getExtensionName();
-            if (strtolower($extension) != 'csv')
-            {
-                $message = Yii::t('Default', 'The file that was uploaded was not a csv.');
-                throw new FailedFileUploadException($message);
-            }
-            return $uploadedFile;
+        public function __construct(CController $controller)
+        {
+            $this->controller = $controller;
         }
 
-        public static function convertWindowsAndMacLineEndingsIntoUnixLineEndings($uploadedFilePath)
+        protected function renderContent()
         {
-            assert('is_file($uploadedFilePath)');
-            $content = file_get_contents($uploadedFilePath);
-            $content = str_replace("\r\n", "\n", $content);
-            $content = str_replace("\r", "\n", $content);
-            file_put_contents($uploadedFilePath, $content);
+            $content = '<div id = "FlashMessageBar"></div>';
+            if (Yii::app()->user->hasFlash('notification'))
+            {
+                $script = "
+                $('#FlashMessageBar').jnotifyAddMessage(
+                {
+                    text: '". ZurmoHtml::encode(Yii::app()->user->getFlash('notification')) ."',
+                    permanent: true,
+                    showIcon: true,
+                }
+                );
+                ";
+                Yii::app()->clientScript->registerScript('FlashMessage', $script);
+            }
+            $this->controller->beginClip("FlashMessage");
+            $this->controller->widget('application.core.widgets.JNotify', array(
+                'statusBarId' => 'FlashMessageBar',
+            ));
+            $this->controller->endClip();
+            $content .= $this->controller->clips['FlashMessage'];
+            return $content;
+        }
+
+        public function isUniqueToAPage()
+        {
             return true;
         }
     }
