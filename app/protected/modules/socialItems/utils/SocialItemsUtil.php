@@ -175,7 +175,7 @@
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
 
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
-                                                      $urlParameters, $uniquePageId);
+                                                      $urlParameters, $uniquePageId, $model->id);
             $content      .= ZurmoHtml::tag('div', array('style' => 'display:none;'), $inlineView->render());
             return ZurmoHtml::tag('div', array('id' => $uniquePageId), $content);
         }
