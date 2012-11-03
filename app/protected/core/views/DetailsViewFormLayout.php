@@ -77,7 +77,7 @@
             {
                 $content .= $this->renderDivTagByPanelNumber($panelNumber);
                 $content .= $this->renderPanelHeaderByPanelNumberAndPanel($panelNumber, $panel);
-                $content .= '<table>';
+                $content .= $this->resolveStartingTableTagAndColumnQuantityClass($panel);
                 $content .= TableUtil::getColGroupContent(static::getMaximumColumnCountForAllPanels($this->metadata), $this->labelsHaveOwnCells);
                 $content .= '<tbody>';
 
@@ -110,6 +110,16 @@
             }
             $this->renderScripts();
             return $this->resolveFormLayoutContent($content);
+        }
+
+        protected function resolveStartingTableTagAndColumnQuantityClass($panel)
+        {
+            assert('is_array($panel)');
+            if(static::getMaximumColumnCountForSpecificPanels($panel) == 2)
+            {
+                return '<table class="double-column">';
+            }
+            return '<table>';
         }
 
         /**
