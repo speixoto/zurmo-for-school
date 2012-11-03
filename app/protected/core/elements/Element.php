@@ -311,7 +311,7 @@
          * @see self::resolveInputPrefix();
          * @return string representing the content of the input id prefix.
          */
-        protected function getInputIdPrefix()
+        private function getInputForIdPrefix()
         {
             if (isset($this->params['inputIdPrefix']) && $this->params['inputIdPrefix'])
             {
@@ -323,7 +323,7 @@
 
         protected function resolveInputIdPrefix()
         {
-            $inputIdPrefix = $this->getInputIdPrefix();
+            $inputIdPrefix = $this->getInputForIdPrefix();
             if ($inputIdPrefix == null)
             {
                 $inputIdPrefix = $this->resolveInputPrefix();
