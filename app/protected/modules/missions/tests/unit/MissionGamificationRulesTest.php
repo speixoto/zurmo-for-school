@@ -34,10 +34,10 @@
             Yii::app()->user->userModel = $super;
         }
 
-        public function testScoreOnSaveModelForMissionTaken()
+        public function testScoreOnSaveModelForMissionMovingThroughStatusChanges()
         {
             $super = User::getByUsername('super');
-            // asserting simpleUser score before taken/completed/accepted of mission 
+            // asserting simpleUser score before taken/completed/accepted of mission
             $simpleUser = UserTestHelper::createBasicUser('simpleUser');
             $gamescore  = GameScore::getAllByPersonIndexedByType($simpleUser);
             $this->assertEquals(0, count($gamescore));
@@ -91,12 +91,12 @@
             $mission = $missions[0];
             $mission->status = Mission::STATUS_ACCEPTED;
             $mission->save();
-            $missions = Mission::getAll();
+            $missions                 = Mission::getAll();
             $this->assertEquals(1, count($missions));
             $scoreTypeMissionAccepted = MissionGamificationRules::SCORE_TYPE_ACCEPTED_MISSION;
             $gameScore                = GameScore::resolveToGetByTypeAndPerson($scoreTypeMissionAccepted, $simpleUser);
             $this->assertEquals(1, count($gamescore));
-            $gamescoreOfUser = GameScore::getAllByPersonIndexedByType($simpleUser);
+            $gamescoreOfUser          = GameScore::getAllByPersonIndexedByType($simpleUser);
             $this->assertEquals(3, count($gamescoreOfUser));
 
         }
