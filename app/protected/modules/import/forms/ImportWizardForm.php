@@ -205,5 +205,19 @@
                                                array('{message}' => $e->getMessage())));
             }
         }
+        public function validateRowColumnDelimiter() {
+            if (empty($this->rowColumnDelimiter))
+            {
+                return false;
+            }
+            return true;
+        }
+        public function validateRowColumnEnclosure() {
+            if (empty($this->rowColumnEnclosure))
+            {
+                return false;
+            }
+            return true;
+        }
     }
 ?>
