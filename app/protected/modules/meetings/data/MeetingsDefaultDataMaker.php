@@ -35,26 +35,7 @@
                         'Meeting',
                         'Call',
             );
-            $labels = array();
-            /**
-            $labels = array('de' => array(
-                                    'Meeting',
-                                    'Call',
-                              ),
-                              'es' => array(
-                                    'Meeting',
-                                    'Call',
-                              ),
-                              'fr' => array(
-                                    'Meeting',
-                                    'Call',
-                              ),
-                              'it' => array(
-                                    'Meeting',
-                                    'Call',
-                              ),);
-            **/
-            static::makeCustomFieldDataByValuesAndDefault('MeetingCategories', $values, $values[0], $labels);
+            static::makeCustomFieldDataByValuesAndDefault('MeetingCategories', $values, $values[0]);
         }
     }
 ?>

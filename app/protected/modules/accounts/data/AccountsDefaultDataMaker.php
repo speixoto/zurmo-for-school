@@ -42,84 +42,14 @@
                 'Retail',
                 'Technology',
             );
-            $labels = array();
-            /**
-            $labels = array('de' => array(
-                                    'Automotive',
-                                    'Banking',
-                                    'Business Services',
-                                    'Energy',
-                                    'Financial Services',
-                                    'Insurance',
-                                    'Manufacturing',
-                                    'Retail',
-                                    'Technology',
-                              ),
-                              'es' => array(
-                                    'Automotive',
-                                    'Banking',
-                                    'Business Services',
-                                    'Energy',
-                                    'Financial Services',
-                                    'Insurance',
-                                    'Manufacturing',
-                                    'Retail',
-                                    'Technology',
-                              ),
-                              'fr' => array(
-                                    'Automotive',
-                                    'Banking',
-                                    'Business Services',
-                                    'Energy',
-                                    'Financial Services',
-                                    'Insurance',
-                                    'Manufacturing',
-                                    'Retail',
-                                    'Technology',
-                              ),
-                              'it' => array(
-                                    'Automotive',
-                                    'Banking',
-                                    'Business Services',
-                                    'Energy',
-                                    'Financial Services',
-                                    'Insurance',
-                                    'Manufacturing',
-                                    'Retail',
-                                    'Technology',
-                              ),);
-            **/
-            static::makeCustomFieldDataByValuesAndDefault('Industries', $values, null, $labels);
+            static::makeCustomFieldDataByValuesAndDefault('Industries', $values);
 
             $values = array(
                 'Prospect',
                 'Customer',
                 'Vendor',
             );
-            $labels = array();
-            /**
-            $labels = array('de' => array(
-                                    'Prospect',
-                                    'Customer',
-                                    'Vendor',
-                              ),
-                              'es' => array(
-                                    'Prospect',
-                                    'Customer',
-                                    'Vendor',
-                              ),
-                              'fr' => array(
-                                    'Prospect',
-                                    'Customer',
-                                    'Vendor',
-                              ),
-                              'it' => array(
-                                    'Prospect',
-                                    'Customer',
-                                    'Vendor',
-                              ),);
-            **/
-            static::makeCustomFieldDataByValuesAndDefault('AccountTypes', $values, null, $labels);
+            static::makeCustomFieldDataByValuesAndDefault('AccountTypes', $values);
         }
     }
 ?>

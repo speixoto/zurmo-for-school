@@ -32,14 +32,7 @@
         public function make()
         {
             $values = array('Mr.', 'Mrs.', 'Ms.', 'Dr.');
-            $labels = array();
-            /**
-            $labels = array(  'de' => array('Mr.', 'Mrs.', 'Ms.', 'Dr.'),
-                              'es' => array('Mr.', 'Mrs.', 'Ms.', 'Dr.'),
-                              'fr' => array('Mr.', 'Mrs.', 'Ms.', 'Dr.'),
-                              'it' => array('Mr.', 'Mrs.', 'Ms.', 'Dr.'),);
-            **/
-            static::makeCustomFieldDataByValuesAndDefault('Titles', $values, null, $labels);
+            static::makeCustomFieldDataByValuesAndDefault('Titles', $values);
             Currency::getAll(); //build base currency.
         }
     }

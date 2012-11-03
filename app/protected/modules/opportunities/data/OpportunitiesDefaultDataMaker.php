@@ -40,41 +40,7 @@
                         'Closed Lost',
             );
             $labels = array();
-            /**
-            $labels = array(  'de' => array(
-                                        'Prospecting',
-                                        'Qualification',
-                                        'Negotiating',
-                                        'Verbal',
-                                        'Closed Won',
-                                        'Closed Lost',
-                              ),
-                              'es' => array(
-                                        'Prospecting',
-                                        'Qualification',
-                                        'Negotiating',
-                                        'Verbal',
-                                        'Closed Won',
-                                        'Closed Lost',
-                              ),
-                              'fr' => array(
-                                        'Prospecting',
-                                        'Qualification',
-                                        'Negotiating',
-                                        'Verbal',
-                                        'Closed Won',
-                                        'Closed Lost',
-                              ),
-                              'it' => array(
-                                        'Prospecting',
-                                        'Qualification',
-                                        'Negotiating',
-                                        'Verbal',
-                                        'Closed Won',
-                                        'Closed Lost',
-                              ),);
-            **/
-            static::makeCustomFieldDataByValuesAndDefault('SalesStages', $values, $values[0], $labels);
+            static::makeCustomFieldDataByValuesAndDefault('SalesStages', $values, $values[0]);
         }
     }
 ?>
