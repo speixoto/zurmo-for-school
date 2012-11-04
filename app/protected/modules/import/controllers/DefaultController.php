@@ -479,11 +479,11 @@
             $import           = Import::getById((int)$id);
             $importWizardForm = ImportWizardUtil::makeFormByImport($import);
             $importWizardForm->setAttributes($_POST['ImportWizardForm']);
-            if (!$importWizardForm->validateRowColumnDelimiter())
+            if (!$importWizardForm->validateRowColumnDelimeterIsNotEmpty())
             {
                 $fileUploadData = array('error' => Yii::t('Default', 'Error: Invalid delimiter'));
             }
-            elseif (!$importWizardForm->validateRowColumnEnclosure())
+            elseif (!$importWizardForm->validateRowColumnEnclosureIsNotEmpty())
             {
                 $fileUploadData = array('error' => Yii::t('Default', 'Error: Invalid qualifier'));
             }

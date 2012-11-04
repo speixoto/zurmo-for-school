@@ -205,14 +205,24 @@
                                                array('{message}' => $e->getMessage())));
             }
         }
-        public function validateRowColumnDelimiter() {
+        /**
+         * Validation used when a file is uploaded on the import section. 
+         * It validates that a column delimeter value was introduced on the form.
+         * @return bool If the value is not empty, returns true, otherwise returns false.
+         */
+        public function validateRowColumnDelimeterIsNotEmpty() {
             if (empty($this->rowColumnDelimiter))
             {
                 return false;
             }
             return true;
         }
-        public function validateRowColumnEnclosure() {
+        /**
+         * Validation used when a file is uploaded on the import section. 
+         * It validates that a column enclosure value was introduced on the form.
+         * @return bool If the value is not empty, returns true, otherwise returns false.
+         */
+        public function validateRowColumnEnclosureIsNotEmpty() {
             if (empty($this->rowColumnEnclosure))
             {
                 return false;
