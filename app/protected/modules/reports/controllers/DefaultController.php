@@ -282,5 +282,13 @@
             $gridView->setView($reportDetailsAndRelationsView, 1, 0);
             return $gridView;
         }
+
+        public function actionDelete($id)
+        {
+            $report = SavedReport::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($report);
+            $report->delete();
+            $this->redirect(array($this->getId() . '/index'));
+        }
     }
 ?>
