@@ -53,7 +53,6 @@
                 $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
                 $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Profile Picture') . ": " . strval($this->model));
                 $content    .= ZurmoHtml::ajaxLink($span . $avatarImage, $url, $modalTitle);
-
             }
             else
             {

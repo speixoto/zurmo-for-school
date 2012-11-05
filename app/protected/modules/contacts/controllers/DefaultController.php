@@ -202,6 +202,7 @@
                 $dataProvider
             );
         }
+
         /**
          * Action for displaying a mass delete form and also action when that form is first submitted.
          * When the form is submitted, in the event that the quantity of models to delete is greater

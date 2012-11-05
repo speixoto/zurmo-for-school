@@ -29,57 +29,57 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-		'A mission status has changed'
+        'A mission status has changed'
             => 'Eine Mission Status war geändert',
-		'A mission you completed has been accepted'
+        'A mission you completed has been accepted'
             => 'Eine Mission, die du abgeschlosst wurde akzeptiert',
-		'A mission you completed has been rejected'
+        'A mission you completed has been rejected'
             => 'Eine Mission, die du abgeschlosst wurde abgelehnt',
-		'A mission you created has been completed'
+        'A mission you created has been completed'
             => 'Eine Mission, die du erstelltst wurde abgeschlossen',
-		'A mission you created has been taken on by {takenByUserName}'
+        'A mission you created has been taken on by {takenByUserName}'
             => 'Eine Mission, die du erstellst wurde von {takenByUserName} entnommen',
-		'Accept'
+        'Accept'
             => 'Akzeptieren',
-		'Accepted'
+        'Accepted'
             => 'Akzeptiert',
-		'Access Missions Tab'
+        'Access Missions Tab'
             => 'Zugang Missions Tab',
-		'At least one mission has unread content'
+        'At least one mission has unread content'
             => 'Mindestens ein Mission hat ungelesenen Nachrichten',
-		'Available'
+        'Available'
             => 'Verfügbar',
-		'Awaiting Acceptance'
+        'Awaiting Acceptance'
             => 'Wartet Akzeptanz',
-		'Complete'
+        'Complete'
             => 'Komplett',
-		'Create Mission'
+        'Create Mission'
             => 'Mission erstellen',
-		'Create Missions'
+        'Create Missions'
             => 'Missionen erstellen',
-		'Delete Missions'
+        'Delete Missions'
             => 'Missionen löschen',
-		'Due'
+        'Due'
             => 'Fällig',
-		'Mission'
+        'Mission'
             => 'Mission', // Same Word Translated
-		'Mission Latest'
+        'Mission Latest'
             => 'Mission Latest', // Same Word Translated
-		'Missions'
+        'Missions'
             => 'Missionen',
-		'My Missions'
+        'My Missions'
             => 'Meine Missionen',
-		'Reject'
+        'Reject'
             => 'Ablehnen',
-		'Rejected'
+        'Rejected'
             => 'Abgelehnt',
-		'Reward'
+        'Reward'
             => 'Belohne',
-		'Taken By'
+        'Taken By'
             => 'Aufgenommen von',
-		'This mission is already taken'
+        'This mission is already taken'
             => 'Diese Mission ist bereits vergeben',
-		'{n} Mission created|{n} Missions created'
+        '{n} Mission created|{n} Missions created'
             => '{n} Mission erstellt|{n} Missionen erstellt',
     );
 ?>

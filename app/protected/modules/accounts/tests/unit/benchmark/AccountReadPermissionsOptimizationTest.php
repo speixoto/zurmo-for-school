@@ -47,7 +47,7 @@
             $contact->addPermissions(User::getByUsername('betty'),         Permission::READ);
             $contact->addPermissions(Group::getByName   ('Support Staff'), Permission::READ);
             $saved = $contact->save();
-            assert('$saved');
+            assert('$saved'); // Not Coding Standard
 
             ReadPermissionsOptimizationUtil::rebuild();
             assert('self::getAccountMungeRowCount() == 0'); // Not Coding Standard

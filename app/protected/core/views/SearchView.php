@@ -281,7 +281,7 @@
             }
             $content .= $this->renderListAttributesSelectionContent($form);
             $content .= $this->renderFormBottomPanel();
-            
+
             return $content;
         }
 

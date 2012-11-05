@@ -551,19 +551,19 @@ EOD;
          * Override to support proper styling
          * @see CHtml::activeDropDownList();
          */
-        public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
+        public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
         {
             static::resolveNameID($model, $attribute, $htmlOptions);
             $selection  = static::resolveValue($model, $attribute);
             $options    = "\n" . static::listOptions($selection, $data, $htmlOptions);
             static::clientChange('change', $htmlOptions);
-            if($model->hasErrors($attribute))
+            if ($model->hasErrors($attribute))
             {
                 static::addErrorCss($htmlOptions);
             }
-            if(isset($htmlOptions['multiple']))
+            if (isset($htmlOptions['multiple']))
             {
-                if(substr($htmlOptions['name'],-2) !== '[]')
+                if (substr($htmlOptions['name'], -2) !== '[]')
                 {
                     $htmlOptions['name'] .= '[]';
                 }
@@ -581,11 +581,11 @@ EOD;
         public static function dropDownList($name, $select, $data, $htmlOptions = array())
         {
             $htmlOptions['name'] = $name;
-            if(!isset($htmlOptions['id']))
+            if (!isset($htmlOptions['id']))
             {
                 $htmlOptions['id'] = static::getIdByName($name);
             }
-            else if($htmlOptions['id'] === false)
+            elseif ($htmlOptions['id'] === false)
             {
                 unset($htmlOptions['id']);
             }

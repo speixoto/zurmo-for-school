@@ -69,6 +69,7 @@
         {
             return $this->selectedIds;
         }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -77,8 +78,7 @@
                         'elements' => array(
                             array('type' => 'ListLink',
                                   'label' => "eval:Yii::t('Default', 'Cancel')"),
-                            array('type' => 'SaveButton',
-                                  'label' => "eval:Yii::t('Default', 'Delete')",
+                            array('type' => 'DeleteButton',
                                   'htmlOptions' => array(
                                                          'params' => array(
                                                             'selectedIds' => 'eval:$this->getSelectedIds()'),
@@ -130,9 +130,9 @@
 
         protected function renderOperationDescriptionContent()
         {
-            $message  = ZurmoHtml::tag('strong', array(), Yii::t('Default', 'Mass Delete is not reversable.')) . '<br />' . 
-                        '<strong>' . $this->selectedRecordCount . '</strong>' . ' ' . 
-                        Yii::t('Default', $this->moduleClassName.'SingularLabel|'.$this->moduleClassName.'PluralLabel',
+            $message  = ZurmoHtml::tag('strong', array(), Yii::t('Default', 'Mass Delete is not reversable.')) . '<br />' .
+                        '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
+                        Yii::t('Default', $this->moduleClassName . 'SingularLabel|' . $this->moduleClassName . 'PluralLabel',
                         array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
                         ' ' . Yii::t('Default', 'selected for removal.');
             return ZurmoHtml::tag('span', array('class' => 'operation-description'), $message);

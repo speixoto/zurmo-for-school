@@ -178,7 +178,6 @@
             $this->assertNotEquals('7788', $opportunity11->description);
             $this->assertNotEquals('7788', $opportunity12->description);
 
-
             //save Model MassEdit for entire search result
             $this->setGetArray(array(
                 'selectAll' => '1',

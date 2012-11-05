@@ -274,6 +274,7 @@
             GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
                            static::getPointTypeAndValueDataByCategory($category));
         }
+
         /**
          * @param string $modelClassName
          */

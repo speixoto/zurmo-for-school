@@ -24,15 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * 'MassDelete' takes the user to a form
-     * This is also known as bulk delete or mass delete.
-     */
-    class MassDeleteActionSecurity extends ActionSecurity
+    class DeleteButtonActionElement extends SubmitButtonActionElement
     {
-        protected function getRightToCheck()
+        public function getActionType()
         {
-            return array('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
+            return 'Delete';
+        }
+
+        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        {
+            if (!isset($params['htmlOptions']))
+            {
+                $params['htmlOptions'] = array();
+            }
+            $params['htmlOptions'] = array_merge(array('id'     => 'delete' . ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++,
+                                                       'name'   => 'delete', //bad for validation.. not sure its needed..
+                                                       'class'  => 'attachLoading',
+                                                       'params' => array('delete' => 'delete')), $params['htmlOptions']);
+            parent::__construct($controllerId, $moduleId, $modelId, $params);
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Yii::t('Default', 'Delete');
+        }
+
+        protected function getDefaultRoute()
+        {
         }
     }
 ?>

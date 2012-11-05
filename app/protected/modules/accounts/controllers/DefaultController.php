@@ -196,7 +196,7 @@
          * If there is no need for a progress view, then a flash message will be added and the user will
          * be redirected to the list view for the model.  A flash message will appear providing information
          * on the delete records.
-         * @see Controler->makeMassDeleteProgressView
+         * @see Controller->makeMassDeleteProgressView
          * @see Controller->processMassDelete
          * @see
          */
@@ -231,6 +231,7 @@
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
         }
+
         /**
          * Action called in the event that the mass delete quantity is larger than the pageSize.
          * This action is called after the pageSize quantity has been delted and continues to be
@@ -255,6 +256,7 @@
                 $dataProvider
             );
         }
+
         public function actionModalList()
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(

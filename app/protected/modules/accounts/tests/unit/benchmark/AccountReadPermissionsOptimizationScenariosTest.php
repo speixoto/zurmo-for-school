@@ -186,7 +186,7 @@
                 $contact->addPermissions($u2, Permission::READ);
                 $contact->addPermissions($g2, Permission::READ);
                 $saved = $contact->save();
-                assert('$saved');
+                assert('$saved');       // Not Coding Standard
 
                 ReadPermissionsOptimizationUtil::rebuild();
                 assert('self::getAccountMungeRowCount() == 0'); // Not Coding Standard

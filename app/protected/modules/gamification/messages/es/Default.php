@@ -29,59 +29,59 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-		'Account Management'
+        'Account Management'
              => 'Gestión de la cuenta',
-		'Achievements'
+        'Achievements'
              => 'Logros alcanzados',
-		'Communication'
+        'Communication'
              => 'Comunicación',
-		'Congratulations!'
+        'Congratulations!'
              => 'Felicitaciones!',
-		'Continue'
+        'Continue'
              => 'Continuar',
-		'Game on!'
+        'Game on!'
              => 'Game on!', // Same Word Translated
-		'I reached level {nextLevel}'
+        'I reached level {nextLevel}'
              => 'Llegué al nivel {nextLevel}',
-		'I received a new badge: {badgeContent}'
+        'I received a new badge: {badgeContent}'
              => 'He recibido una nueva insignia: {badgeContent}',
-		'Leaderboard'
+        'Leaderboard'
              => 'Tabla de Posiciones',
-		'Leaderboard Ranking'
+        'Leaderboard Ranking'
              => 'Clasificación de tabla de posiciones',
-		'Level'
+        'Level'
              => 'Nivel',
-		'Monthly'
+        'Monthly'
              => 'Mensual',
-		'New Badge'
+        'New Badge'
              => 'Nueva Insignia ',
-		'New Business'
+        'New Business'
              => 'Negocio Nuevo',
-		'No achievements earned.'
+        'No achievements earned.'
              => 'No hay logros obtenidos.',
-		'Overall'
+        'Overall'
              => 'Total',
-		'Overall Statistics'
+        'Overall Statistics'
              => 'Estadísticas Totales',
-		'Points'
+        'Points'
              => 'Puntos',
-		'Rank'
+        'Rank'
              => 'Posición',
-		'Sales'
+        'Sales'
              => 'Venta',
-		'Skip'
+        'Skip'
              => 'Omitir',
-		'Time Management'
+        'Time Management'
              => 'Gestión del Tiempo?',
-		'Weekly'
+        'Weekly'
              => 'Semanal',
-		'You have reached level {nextLevel}'
+        'You have reached level {nextLevel}'
              => 'Has alcanzado el nivel  {nextLevel}',
-		'{n} Zurmo early morning login|{n} Zurmo early morning logins'
+        '{n} Zurmo early morning login|{n} Zurmo early morning logins'
              => '{n} Inicio Zurmo a la mañana temprano|{n} Inicios Zurmo a la mañana temprano',
-		'{n} Zurmo login|{n} Zurmo logins'
+        '{n} Zurmo login|{n} Zurmo logins'
              => '{n} Zurmo inicio |{n} Zurmo inicios de sesión',
-		'{n} Zurmo nighttime login|{n} Zurmo nighttime logins'
+        '{n} Zurmo nighttime login|{n} Zurmo nighttime logins'
              => '{n} Inicio Zurmo a la noche|{n} Inicios Zurmo a la noche',
     );
 ?>

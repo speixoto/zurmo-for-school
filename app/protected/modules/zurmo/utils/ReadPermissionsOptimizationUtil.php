@@ -48,7 +48,7 @@
                     //models that extend activity are special and can only be done with the PHP process.  They cannot
                     //be done using the stored procedure because it does not support the extra joins needed to determine
                     //which securable items to look at.
-                    if(is_subclass_of($modelClassName, 'Activity'))
+                    if (is_subclass_of($modelClassName, 'Activity'))
                     {
                         self::rebuildViaSlowWay($modelClassName);
                     }
@@ -56,13 +56,13 @@
                     {
                         $modelTableName = RedBeanModel::getTableName($modelClassName);
                         $mungeTableName = self::getMungeTableName($modelClassName);
-                        if(!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
+                        if (!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                         {
                             throw new NotImplementedException($message, $code, $previous);
                         }
-                        if(is_subclass_of($modelClassName, 'Person'))
+                        if (is_subclass_of($modelClassName, 'Person'))
                         {
-                            if($modelClassName != 'Contact')
+                            if ($modelClassName != 'Contact')
                             {
                                 throw new NotSupportedException();
                             }

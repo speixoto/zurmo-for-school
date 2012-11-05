@@ -29,57 +29,57 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-		'A mission status has changed'
+        'A mission status has changed'
             => 'Il stato di una missione ha cambiato',
-		'A mission you completed has been accepted'
+        'A mission you completed has been accepted'
             => 'Una missione che avete completato era accettato',
-		'A mission you completed has been rejected'
+        'A mission you completed has been rejected'
             => 'Una missione che avete completato era respinta',
-		'A mission you created has been completed'
+        'A mission you created has been completed'
             => 'Una missione che avete creato era completata',
-		'A mission you created has been taken on by {takenByUserName}'
+        'A mission you created has been taken on by {takenByUserName}'
             => 'Una missione che avete creato era preso da {takenByUserName}',
-		'Accept'
+        'Accept'
             => 'Accetta',
-		'Accepted'
+        'Accepted'
             => 'Accettata',
-		'Access Missions Tab'
+        'Access Missions Tab'
             => 'Accesso Missioni',
-		'At least one mission has unread content'
+        'At least one mission has unread content'
             => 'Almeno una missione ha un contenuto non letto',
-		'Available'
+        'Available'
             => 'Disponibile',
-		'Awaiting Acceptance'
+        'Awaiting Acceptance'
             => 'In attesa di accettazione',
-		'Complete'
+        'Complete'
             => 'Completata',
-		'Create Mission'
+        'Create Mission'
             => 'Nuova missione',
-		'Create Missions'
+        'Create Missions'
             => 'Crea Missioni',
-		'Delete Missions'
+        'Delete Missions'
             => 'Elimina Missioni',
-		'Due'
+        'Due'
             => 'Data scadenza',
-		'Mission'
+        'Mission'
             => 'Missione',
-		'Mission Latest'
+        'Mission Latest'
             => 'Mission Latest', // Same Word Translated
-		'Missions'
+        'Missions'
             => 'Missioni',
-		'My Missions'
+        'My Missions'
             => 'Le mie Missioni',
-		'Reject'
+        'Reject'
             => 'Respinge',
-		'Rejected'
+        'Rejected'
             => 'Respinta',
-		'Reward'
+        'Reward'
             => 'Ricompensa',
-		'Taken By'
+        'Taken By'
             => 'Preso da',
-		'This mission is already taken'
+        'This mission is already taken'
             => 'Questa missione è già stato preso',
-		'{n} Mission created|{n} Missions created'
+        '{n} Mission created|{n} Missions created'
             => '{n} Missione creata|{n} Missioni create',
     );
 ?>

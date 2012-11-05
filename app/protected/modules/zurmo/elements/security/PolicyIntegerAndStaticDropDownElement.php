@@ -92,11 +92,12 @@
          * If no default value is set, the function returns null.
          * @return String The HTML code for the tooltip.
          */
-        protected function resolveAndRenderPolicyDefaultStringContent() {
+        protected function resolveAndRenderPolicyDefaultStringContent()
+        {
             $delimiter                      = FormModelUtil::DELIMITER;
             list($moduleName, $policyName)  = explode($delimiter, $this->attribute);
             $policyDefault                  = $moduleName::getPolicyDefault($this->getFormattedAttributeLabel());
-            if ($policyDefault != null) 
+            if ($policyDefault != null)
             {
                 $title    = Yii::t('Default', 'The default value for this policy is {policyDefault}', array('{policyDefault}' => $policyDefault));
                 $content  = '<span class="tooltip policy-default-tooltip" title="' . $title . '">';
