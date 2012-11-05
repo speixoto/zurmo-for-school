@@ -96,7 +96,9 @@
 
 }
 .zLink,
-.z-link {
+.z-link,
+#ImportWizardMappingView #sample-column-header a,
+.remove-extra-column-link {
   background: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
@@ -108,7 +110,9 @@
   font-size: 11px;
 }
 .zLink:hover,
-.z-link:hover {
+.z-link:hover,
+#ImportWizardMappingView #sample-column-header a:hover,
+.remove-extra-column-link:hover {
   color: #fff !important;
   text-decoration: underline;
 }
@@ -2158,7 +2162,6 @@ td.empty {
   font-size: 12px !important;
   color: #666;
   font-weight: 400 !important;
-  margin: 5px 0;
 }
 /*=Form Edit Account*/
 .modal-view-toolbar,
@@ -7468,22 +7471,15 @@ table.configuration-list tr td:last-child a:before {
 #ImportWizardMappingView .mapping-rules label {
   line-height: 26px;
 }
-#ImportWizardMappingView #sample-column-header a {
-  background: #262877;
-  padding: 1px 4px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  color: #fff !important;
-  font-size: 11px;
-}
-#ImportWizardMappingView #sample-column-header a:hover {
-  color: #fff !important;
-  text-decoration: underline;
+.remove-extra-column-link {
+  display: inline-block;
+  margin-top: 5px;
 }
 /*=Step 5, process details*/
+#import-preloader .z-spinner {
+  display: block;
+  margin: -1px 10px 0 0;
+}
 #ImportWizardDataAnalysisCompleteView > div {
   margin: 0;
   border: none;
@@ -7496,6 +7492,9 @@ table.configuration-list tr td:last-child a:before {
 }
 #ImportWizardDataAnalysisCompleteView > div #edit-form:after {
   display: none;
+}
+#ImportWizardDataAnalysisCompleteView .attributesContainer {
+  padding-bottom: 0;
 }
 #ImportWizardImportRulesView span {
   text-align: left;
@@ -7510,6 +7509,10 @@ table.configuration-list tr td:last-child a:before {
 }
 .process-container-view {
   padding: 15px 15px 0 15px;
+}
+#ImportSequentialProcessContainerView > div {
+  float: left;
+  width: 100%;
 }
 #ImportSequentialProcessContainerView #edit-form {
   padding: 0 0 15px 0 !important;
@@ -7575,6 +7578,12 @@ table.configuration-list tr td:last-child a:before {
   font-size: 12px !important;
   color: #666;
   font-weight: 400 !important;
+}
+.import-summary {
+  margin: 0 0 15px 15px;
+}
+.import-summary li {
+  margin-bottom: 3px;
 }
 .ui-progressbar {
   background: url(../images/ajax-loader.gif) left top no-repeat;
@@ -7950,7 +7959,7 @@ div.wide.form .errorMessage {
 .files {
   font-size: 11px;
   margin-top: 5px;
-  float: left;
+  float: left !important;
 }
 .files td {
   padding: 2px 0 !important;
