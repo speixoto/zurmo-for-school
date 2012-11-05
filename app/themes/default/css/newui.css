@@ -5398,6 +5398,10 @@ div.hasHalfs .twoThirds {
 .operation-description strong {
   font-weight: bold;
 }
+.operation-description em {
+  color: #cc0000;
+  font-style: normal;
+}
 /*Dropdowns*/
 .hasDropDown {
   width: 100%;
