@@ -48,7 +48,7 @@
         'All'
             => 'Tous',
         'All Results'
-            => 'Tout exporter',
+            => 'Tous les résultats',
         'Altering configuration files.'
             => 'Modification des fichiers de configuration.',
         'and'
