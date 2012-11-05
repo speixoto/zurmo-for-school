@@ -78,8 +78,7 @@
                         'elements' => array(
                             array('type' => 'ListLink',
                                   'label' => "eval:Yii::t('Default', 'Cancel')"),
-                            array('type' => 'SaveButton',
-                                  'label' => "eval:Yii::t('Default', 'Delete')",
+                            array('type' => 'DeleteButton',
                                   'htmlOptions' => array(
                                                          'params' => array(
                                                             'selectedIds' => 'eval:$this->getSelectedIds()'),
