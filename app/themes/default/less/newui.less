@@ -6,7 +6,6 @@
 /*Imports*/
 @import 'mixins.less';
 
-
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
     src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -2833,6 +2832,14 @@ div.wide.form{
     table{
         margin:10px 0;
     }
+    .double-column{
+        .col-0, .col-2{
+            width: 22% !important;
+        }
+        .col-1, .col-3{
+            width: 28% !important;
+        }
+    }
     td, th{
         font-weight: bold;
         .box-sizing();
@@ -2850,13 +2857,10 @@ div.wide.form{
     td{
         vertical-align:top;
     }
-    
-    
     td + th{
         //border-left: 1px solid  #dfdfdf;
         padding-left:15px !important;
     }
-    
     p{
         width:100%;
         a{
@@ -3174,8 +3178,13 @@ div.wide.form{
     }
 }
 
+#NoteInlineEditForPortletView .wide.form{
+    ++.unstyle-panel;
+}
+
 #inline-edit-form{
-    padding-top: 15px;
+    ++.unstyle-panel;
+    padding: 15px 15px 15px 0;
     table + table{
         float:left;
         .box-sizing();
@@ -3207,7 +3216,11 @@ div.wide.form{
             margin-top:6px;
         }
     }
+    table{
+        border-bottom: none;
+    }
     .view-toolbar-container{
+        display: inline-block;
         a{
             float:right;
             clear: both;

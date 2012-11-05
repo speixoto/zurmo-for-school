@@ -112,6 +112,19 @@
   color: #fff !important;
   text-decoration: underline;
 }
+.unstyle-panel,
+#NoteInlineEditForPortletView .wide.form,
+#inline-edit-form {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -3711,6 +3724,14 @@ div.wide.form a {
 .details-table table {
   margin: 10px 0;
 }
+.details-table .double-column .col-0,
+.details-table .double-column .col-2 {
+  width: 22% !important;
+}
+.details-table .double-column .col-1,
+.details-table .double-column .col-3 {
+  width: 28% !important;
+}
 .details-table td,
 .details-table th {
   font-weight: bold;
@@ -4199,7 +4220,7 @@ div.wide.form a {
   border-top: none;
 }
 #inline-edit-form {
-  padding-top: 15px;
+  padding: 15px 15px 15px 0;
 }
 #inline-edit-form table + table {
   float: left;
@@ -4231,6 +4252,12 @@ div.wide.form a {
   margin-left: -90px;
   text-align: right;
   margin-top: 6px;
+}
+#inline-edit-form table {
+  border-bottom: none;
+}
+#inline-edit-form .view-toolbar-container {
+  display: inline-block;
 }
 #inline-edit-form .view-toolbar-container a {
   float: right;
