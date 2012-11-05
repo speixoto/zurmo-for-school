@@ -25,8 +25,14 @@ class AmChartMaker
     {
         $this->addChartProperties('fontFamily', '"Arial"');
         $this->addChartProperties('color', '"#545454"');
-        
-        
+        $colorTheme = array(
+                        1 => '["#262877", "#6625A7", "#BC9DDA", "#817149", "#A77425"]',
+                        2 => '["#262877", "#7BB730"]',
+                        3 => '["#262877", "#3E44C3", "#585A8E", "#777AC1", "#151741", "#7BB730"]',
+                        4 => '["#262877", "#121337", "#3E42C3", "#3E44C3", "#1E205D", "#7BB730"]',
+            );
+        $this->addChartProperties('colors', $colorTheme[4]);
+
         if ($this->type === "Column2D")
         {
             $currencySymbol = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
@@ -128,11 +134,6 @@ class AmChartMaker
             $this->addChartProperties('outlineAlpha', 0.8);
             $this->addChartProperties('outlineThickness', 2);
             $this->addChartProperties('usePrefixes', true);
-            $this->addGraphProperties('colors', '["#262877", "#7BB730"]');
-            //$this->addChartProperties('colors', '["#262877", "#7BB730"]'); //option 2*
-            //$this->addChartProperties('colors', '["#262877", "#3E44C3", "#585A8E", "#777AC1", "#151741", "#7BB730"]'); //option 3*
-            //$this->addChartProperties('colors', '["#262877", "#6625A7", "#BC9DDA", "#817149", "#A77425"]'); //option 1*
-            $this->addChartProperties('colors', '["#262877", "#121337", "#3E42C3", "#3E44C3", "#1E205D", "#7BB730"]'); //option 4*
             $this->makeChart3d();
             $this->chartIsPie = true;
         }
@@ -140,7 +141,7 @@ class AmChartMaker
         {
         }
     }
-    
+
     private function convertDataArrayToJavascriptArray()
     {
         return CJavaScript::encode($this->data);
