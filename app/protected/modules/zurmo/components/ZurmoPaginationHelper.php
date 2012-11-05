@@ -80,7 +80,6 @@
         /**
         * Default list page size for api calls.
         */
-
         protected $_unlimitedPageSize;
 
         /**
