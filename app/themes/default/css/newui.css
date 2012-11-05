@@ -5374,7 +5374,7 @@ div.hasHalfs .twoThirds {
 #FlashMessageView .jnotify-item li {
   margin-bottom: 3px;
 }
-#FlashMessageView .ui-state-highlight {
+#FlashMessageView .ui-state-error {
   border: 1px solid #cc0000;
   background: #ffb5b5;
 }
