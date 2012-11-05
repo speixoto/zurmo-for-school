@@ -625,9 +625,10 @@
             //Load MassDelete view for the 3 accounts.            
             $accounts = Account::getAll();
             $this->assertEquals(8, count($accounts));
-            $account1 = AccountTestHelper::createAccountByNameForOwner('canUpdate', $confused);
-            $account2 = AccountTestHelper::createAccountByNameForOwner('canUpdate2', $confused);
-            $account3 = AccountTestHelper::createAccountByNameForOwner('cannotUpdate', $billy);
+            $account1 = AccountTestHelper::createAccountByNameForOwner('canDelete1', $confused);
+            $account2 = AccountTestHelper::createAccountByNameForOwner('canDelete2', $confused);
+            $account3 = AccountTestHelper::createAccountByNameForOwner('canDelete3', $billy);
+
             $selectedIds = $account1->id . ',' . $account2->id . ',' . $account3->id ;    // Not Coding Standard
             $this->setGetArray(array('selectedIds' => $selectedIds, 'selectAll' => ''));  // Not Coding Standard
             $this->resetPostArray();
