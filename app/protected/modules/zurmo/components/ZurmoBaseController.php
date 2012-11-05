@@ -409,7 +409,8 @@
                             $_GET[$modelClassName . '_page'],
                             $pageSize
                         );
-                        /**cancel diminish of save scoring*/
+
+                        // Cancel diminish of save scoring
                         if ($selectedRecordCount > $pageSize)
                         {
                             $view = new $pageViewClassName(ZurmoDefaultViewUtil::
@@ -449,6 +450,7 @@
                     }
             return $listModel;
         }
+
         protected function processMassDeleteProgress(
             $modelClassName,
             $pageSize,

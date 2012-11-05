@@ -84,10 +84,9 @@
             $horizontalGridView->setView($aVerticalGridView, 0, 0);
 
             $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent'))); //the app itself to the right
-            
+
             $horizontalGridView->setView($containedView, 0, 1);
             $horizontalGridView->setView(static::makeFlashMessageView($controller),   0, 2); //TODO needs to move into $cotainedView
-            
 
             $verticalGridView   = new GridView(5, 1);
             $verticalGridView->setView(static::makeHeaderView($controller),                 0, 0);

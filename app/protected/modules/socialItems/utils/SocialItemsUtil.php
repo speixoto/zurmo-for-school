@@ -49,7 +49,7 @@
             $userLink = ZurmoHtml::link(strval($model->owner), $userUrl, array('class' => 'user-link'));
             $content .= '<div class="comment-content"><p>';
 
-            if($model->toUser->id > 0 && $renderToUserString)
+            if ($model->toUser->id > 0 && $renderToUserString)
             {
                 $toUserUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $model->toUser->id));
                 $toUserLink = ZurmoHtml::link(strval($model->toUser), $toUserUrl, array('class' => 'user-link'));

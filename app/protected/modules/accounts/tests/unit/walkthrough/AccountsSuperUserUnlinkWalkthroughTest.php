@@ -66,6 +66,7 @@
             $contact = Contact::getById($contactId);
             $this->assertTrue($contact->account->id < 0);
         }
+
          /**
          * @expectedException NotSupportedException
          */
@@ -84,6 +85,7 @@
                                         'relationModelRelationName'    => 'contacts'));
              $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/unlink', true);
         }
+
          /**
          * @expectedException NotSupportedException
          */

@@ -231,6 +231,7 @@
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
         }
+
         /**
          * Action called in the event that the mass delete quantity is larger than the pageSize.
          * This action is called after the pageSize quantity has been delted and continues to be
@@ -255,6 +256,7 @@
                 $dataProvider
             );
         }
+
         public function actionModalList()
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(

@@ -592,6 +592,7 @@
             $content = $this->runControllerWithExitExceptionAndGetContent('leads/default/convert');
             $this->assertFalse(strpos($content, 'Conversion is set to require an account.  Currently you do not have access to the accounts module.') === false);
         }
+
         public function testRegularUserMassDelete()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -599,7 +600,7 @@
             $nobody = User::getByUsername('nobody');
             $this->assertEquals(Right::DENY, $confused->getEffectiveRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE));
             $confused->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
-            //Load MassDelete view for the 3 leads.            
+            //Load MassDelete view for the 3 leads.
             $leads = Contact::getAll();
             $this->assertEquals(8, count($leads));
             $lead1 = LeadTestHelper::createLeadbyNameForOwner('leadDelete1', $confused);
@@ -611,14 +612,14 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDelete');
             $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Leads selected for removal') === false);
 
-            //Deleting 3 leads 
+            //Deleting 3 leads
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Contact_page' => 1));
             $this->setPostArray(array('selectedIds' => $lead3->id));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('leads/default/massDelete');
-            //Deleting all contacts 
+            //Deleting all contacts
             $this->setGetArray(array(
                 'selectAll' => '1',
                 'Contact_page' => 1));

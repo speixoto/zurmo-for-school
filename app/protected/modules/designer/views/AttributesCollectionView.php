@@ -103,7 +103,7 @@
         {
             assert('is_string($attributeName)');
             $attributeAdapter = new RedBeanModelAttributeToDataProviderAdapter($this->modelClassName, $attributeName);
-            if($attributeAdapter->getAttributeModelClassName() != $this->modelClassName)
+            if ($attributeAdapter->getAttributeModelClassName() != $this->modelClassName)
             {
                 return true;
             }

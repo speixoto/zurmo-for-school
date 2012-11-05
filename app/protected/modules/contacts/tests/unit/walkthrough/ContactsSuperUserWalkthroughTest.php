@@ -472,6 +472,7 @@
 
             //todo: test save with account.
         }
+
         public function testMassDeleteActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');

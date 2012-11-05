@@ -210,7 +210,6 @@
             $this->assertEquals('4455', $account11->officePhone);
             $this->assertEquals('4455', $account12->officePhone);
 
-
             //Run Mass Update using progress save.
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massEditProgressPageSize');
             $this->assertEquals(5, $pageSize);
@@ -383,8 +382,9 @@
             );
             $this->assertEquals($compareData, $data);
         }
+
        /**
-         * @deletes all accounts. This should always be last function 
+         * @deletes all accounts. This should always be last function
          */
         public function testMassDeleteActions()
         {

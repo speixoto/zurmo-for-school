@@ -39,7 +39,7 @@
             assert('is_array($labels) || $labels == null');
             $fieldData = CustomFieldData::getByName($name);
             $fieldData->serializedData   = serialize($values);
-            if(!empty($labels))
+            if (!empty($labels))
             {
                 $fieldData->serializedLabels = serialize($labels);
             }

@@ -611,8 +611,9 @@
             $this->assertEquals ($super->getFullName(), $account2->owner->getFullName());
             $this->assertEquals ($billy->getFullName(), $account3->owner->getFullName());
         }
+
          /**
-         * @deletes all accounts. This should always be last function 
+         * @deletes all accounts. This should always be last function
          */
 
         public function testRegularUserMassDelete()
@@ -622,7 +623,7 @@
             $billy = User::getByUsername('billy');
             $this->assertEquals(Right::DENY, $confused->getEffectiveRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE));
             $confused->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
-            //Load MassDelete view for the 3 accounts.            
+            //Load MassDelete view for the 3 accounts.
             $accounts = Account::getAll();
             $this->assertEquals(8, count($accounts));
             $account1 = AccountTestHelper::createAccountByNameForOwner('canDelete1', $confused);
@@ -635,14 +636,14 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDelete');
             $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Accounts selected for removal') === false);
 
-            //Deleting 3 accounts 
+            //Deleting 3 accounts
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Account_page' => 1));
             $this->setPostArray(array('selectedIds' => $account3->id));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/massDelete');
-            //Deleting all accounts 
+            //Deleting all accounts
             $this->setGetArray(array(
                 'selectAll' => '1',
                 'Account_page' => 1));

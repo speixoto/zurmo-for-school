@@ -121,6 +121,7 @@
             $content .= '</div>';
             return $content;
         }
+
         protected function renderFormLinks()
         {
             $listButton = ZurmoHtml::link(Yii::t('Default', 'Return to List'), Yii::app()->createUrl($this->moduleId));

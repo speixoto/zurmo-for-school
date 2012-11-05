@@ -98,7 +98,6 @@
             $this->assertEquals(1, count($gamescore));
             $gamescoreOfUser          = GameScore::getAllByPersonIndexedByType($simpleUser);
             $this->assertEquals(3, count($gamescoreOfUser));
-
         }
     }
 ?>

@@ -37,7 +37,6 @@
          */
         public static function getByNameCatchErrorAndEnsureFileIsACSV($filesVariableName)
         {
-
             assert('is_string($filesVariableName)');
             $uploadedFile = static::getByNameAndCatchError($filesVariableName);
             $extension = $uploadedFile->getExtensionName();

@@ -118,6 +118,7 @@
         {
             $this->scoringModelsOnDeleteIsMuted = false;
         }
+
         /**
          * Override as needed to customize various aspects of gamification.  A few examples of things you can do here:
          * GeneralGameLevelRules::setLastLevel(100);

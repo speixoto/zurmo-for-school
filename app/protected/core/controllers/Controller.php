@@ -211,6 +211,7 @@
                 return array();
             }
         }
+
         /**
         for mass delete
         */
@@ -225,6 +226,7 @@
                 return array();
             }
         }
+
         protected function makeMassEditView(
             $model,
             $activeAttributes,
@@ -367,6 +369,7 @@
                 return $dataProvider->getData();
             }
         }
+
         /** for mass delete */
         protected function getModelsToDelete($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
         {

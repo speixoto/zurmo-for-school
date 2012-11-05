@@ -156,7 +156,7 @@
             if (!$model->$relationAttributeName->contains($relationModel))
             {
                 $model->$relationAttributeName->add($relationModel);
-                if(!$model->save())
+                if (!$model->save())
                 {
                     $this->processSelectFromRelatedListSaveFails($model);
                 }
@@ -182,6 +182,7 @@
             echo CJSON::encode(array('message' => ZurmoHtml::errorSummary(array($model), $header)));
             Yii::app()->end(0, false);
         }
+
         protected function processSelectFromRelatedListSaveAlreadyConnected(RedBeanModel $model)
         {
             echo CJSON::encode(array('message' => Yii::t('Default', '{modelString} is already connected.',
