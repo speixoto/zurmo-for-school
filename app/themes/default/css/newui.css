@@ -3389,6 +3389,9 @@ div.wide.form a {
   position: relative !important;
   float: left !important;
 }
+.double-column #right-side-edit-view-panel .buffer {
+  padding-left: 5px;
+}
 .double-column .col-0,
 .double-column .col-2 {
   width: 15% !important;
@@ -4512,7 +4515,7 @@ div.overlay-label-field:after {
 .overlay-label-field label {
   position: absolute !important;
   left: 4px;
-  top: 5px;
+  top: 6px;
   color: #999;
   font-size: 14px;
   font-weight: normal;
