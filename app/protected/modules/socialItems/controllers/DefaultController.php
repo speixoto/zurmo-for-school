@@ -108,7 +108,7 @@
                                             ZurmoHtml::link(Yii::t('Default', 'Add comment'), '#',
                                                             array('class' => 'show-create-comment')));
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
-                                                                    $urlParameters, $uniquePageId);
+                                                                    $urlParameters, $uniquePageId, $socialItem->id);
             $view          = new AjaxPageView($inlineView);
             echo $content . ZurmoHtml::tag('div', array('style' => 'display:none;'), $view->render());
         }

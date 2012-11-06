@@ -65,7 +65,7 @@
             $buttons[]= $this->createPageButtonNoLinkIfHidden($this->nextPageLabel, $page, $this->nextPageCssClass, $currentPage >= $pageCount-1, false);
 
             // last page
-            $buttons[]=$this->createPageButtonNoLinkIfHidden($this->lastPageLabel, $pageCount-1, $this->lastPageCssClass, $currentPage >= $pageCount-1, false);
+            $buttons[] = $this->createPageButtonNoLinkIfHidden($this->lastPageLabel, $pageCount - 1, $this->lastPageCssClass, $currentPage >= $pageCount - 1, false);
 
             return $buttons;
         }

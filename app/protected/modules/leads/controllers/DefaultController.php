@@ -210,6 +210,7 @@
                 $dataProvider
             );
         }
+
         /**
          * Action for displaying a mass delete form and also action when that form is first submitted.
          * When the form is submitted, in the event that the quantity of models to delete is greater
@@ -257,6 +258,7 @@
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
         }
+
         /**
          * Action called in the event that the mass delete quantity is larger than the pageSize.
          * This action is called after the pageSize quantity has been delted and continues to be

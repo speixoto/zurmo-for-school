@@ -96,7 +96,7 @@
             $content .= '<span class="user-details">';
             $content .= ZurmoHtml::link(strval($this->model->createdByUser), $userUrl, array('class' => 'user-link'));
             $content .= '</span>';
-            
+
             if ($this->model->description == null)
             {
                 $element  = new TextElement($this->model, 'subject');
@@ -107,7 +107,7 @@
             }
             $element->nonEditableTemplate = '<div class="comment-content">{content}</div>';
             $content .= $element->render();
-                
+
             $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $this->model->createdDateTime, 'long', null) . '</strong></span>';
             $content .= $date;

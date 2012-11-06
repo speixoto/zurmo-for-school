@@ -194,7 +194,7 @@ $(function () {
     $('.fileupload-content').removeClass('ui-widget-content ui-corner-bottom');
     $('#fileUpload{$id}').bind('fileuploaddestroy', function (e, data) {
             {$this->afterDeleteAction}
-            
+
     });
     $('#fileUpload{$id}').bind('fileuploadalways', function (e, data) {
         if (data == undefined || data.result == undefined ||
@@ -227,7 +227,7 @@ EOD;
             $html .= '<div class="fileupload-buttonbar">';
             $html .= '<div class="addfileinput-button"><span>Y</span>' . $addLabel;
             $html .= ZurmoHtml::fileField($this->inputName, null, $htmlOptions);
-            $html .= '</div>' . self::renderMaxSizeContent($this->maxSize, $this->showMaxSize);            
+            $html .= '</div>' . self::renderMaxSizeContent($this->maxSize, $this->showMaxSize);
             $html .= '</div><div class="fileupload-content"><table class="files"><tbody></tbody></table></div></div>';
             $html .= $this->makeUploadRowScriptContent();
             $html .= $this->makeDownloadRowScriptContent();
@@ -275,7 +275,7 @@ $scriptContent = <<<EOD
                     <button class="cancel">{$cancelLabel}</button>
                 </span>
             {{/if}}
-               
+
         </td>
     </tr>
 </script>

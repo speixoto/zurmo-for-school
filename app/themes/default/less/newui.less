@@ -262,7 +262,6 @@ footer, header, hgroup, menu, nav, section {
 
 #HeaderLinksView li a{
     color:#fff;
-    font-size:12px;
     font-weight:bold;
 }
 
@@ -491,9 +490,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-
-
-
 #user-header-menu,
 #settings-header-menu{
     position: relative;
@@ -560,6 +556,7 @@ footer, header, hgroup, menu, nav, section {
         top: 0;
         left: 4px;
         font-size: 10px;
+        line-height: 1;
     }
 }
 
@@ -787,6 +784,10 @@ footer, header, hgroup, menu, nav, section {
     #gradient > .vertical( darken(@themeColor, 5%), @themeColor );
 }
 
+.TitleBarView{
+    margin-bottom: 15px;
+}
+
 /*=Shortcuts nav*/
 .GridView{
     position:relative;
@@ -980,6 +981,7 @@ footer, header, hgroup, menu, nav, section {
             vertical-align:middle;
             height:32px;
             display:block;
+            position: relative;
             .radius( 4px );
             .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
             &:hover{
@@ -988,8 +990,14 @@ footer, header, hgroup, menu, nav, section {
                 em{
                     color:@themeColor !important;
                 }
+                span{
+                    .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
+                    background-image: url(../images/main-nav-selected.png);
+                    background-repeat: no-repeat;
+                    background-position-x: 0;
+                    background-position-y: 0;
+                }
             }
-            position: relative;
             span{
                 position: absolute;
                 top:0;
@@ -1158,7 +1166,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 #HomeDashboardView{
-	margin-top:15px;
     .parent > ul{
         min-width: 160px;
         margin-top:0;
@@ -1171,6 +1178,23 @@ footer, header, hgroup, menu, nav, section {
     display:inline-block;
     position:relative;
     font-size:11px;
+    float: left;
+}
+
+form,
+.juiportlet-widget,
+.ActionBarForSecurityTreeListView,
+#ActionBarForDesignerModuleView,
+#LeaderboardView{
+    .view-toolbar-container{
+        float: none;
+    }
+}
+
+.juiportlet-widget{
+    .view-toolbar-container{
+        display: block;
+    }
 }
 
 .view-toolbar{
@@ -1285,6 +1309,12 @@ footer, header, hgroup, menu, nav, section {
 #list-view-massAction:before{
     content: "2";
     .view-toolbar-icons();
+    top:-2px;
+}
+
+#ListViewDeleteMassActionMenu .parent > a:before{
+    content: "_";
+    .view-toolbar-icons(22px);
     top:-2px;
 }
 
@@ -1604,7 +1634,10 @@ td.empty{
     font-size:12px !important;
     color:#666;
     font-weight:400 !important;
-    margin:5px 0;
+    //margin:5px 0;
+}
+.panel label{
+    //margin-top:5px;
 }
 
 /*=Form Edit Account*/
@@ -1927,6 +1960,9 @@ div.wide.form{
 .list-view-items-summary-clone{
     .smaller();
     float: right;
+    position: absolute;
+    z-index: 100;
+    right: 15px;
     margin:20px 0 0 0;
     color:#666;
     .t-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
@@ -2102,8 +2138,22 @@ div.wide.form{
     margin:15px 0 0 0;
     display: block;
     position: relative;
-    .clearfix;
-    height:25px;
+    //.clearfix();
+    //height:25px;
+    float: left;
+    width: 100%;
+    z-index: 0;
+    table{
+        padding: 0;
+        margin: 0;
+        top:0;
+        left: 0;
+        border:none;
+    }
+    th{
+        display: none;
+        width: 0;
+    }
     .global-search-loopa{
         position: relative;
         top:0;
@@ -2123,7 +2173,7 @@ div.wide.form{
         color: #999;
         text-indent: 10px;
         line-height: 25px;
-        height: 25px;
+        height: 25px !important;
         border: 1px solid #d5d4d4;
         border-left: none;
         background: url(../images/search-bar-gradient.png) left top repeat-x;
@@ -2140,7 +2190,16 @@ div.wide.form{
     position: relative;
     #gradient > .vertical( #f5f5f5, #ebebeb );
     .smaller();
+    float: left;
+    width: 100%;
+    .box-sizing();
+    .clearfix();
 }
+/*
+#search-form:after{content:" ";display:block;height:0;clear:both;visibility:hidden;font-size:0;}
+#search-form{height:1%;}
+*:first-child+html #search-form{min-height:1px;}
+*/
 
 .search-form-tools{
     position: absolute;
@@ -2226,6 +2285,8 @@ div.wide.form{
     z-index:100;
     min-width:400px;
     height:auto;
+    float: left;
+    width: 100%;
     label{
         padding-top:7px;
         padding-right:10px;
@@ -2261,21 +2322,6 @@ div.wide.form{
     .attributesContainer:after{
         display: none !important;
     }
-    .multiselect-holder{
-        position: relative;
-        width:75%;
-        max-width: 675px;
-    }
-    .multiselect-right, .multiselect-left{
-        width:45%;
-        max-width: 300px;
-    }
-    .multiselect-right{
-        float: right;
-    }
-    .multiselect-nav{
-        display: none;
-    }
     .multiselect-nav-updown{
         display: block;
         position: absolute;
@@ -2284,9 +2330,9 @@ div.wide.form{
         padding:0 15px;
         .box-sizing();
         width:75px;
-        text-align:center;
         height:75px;
-        margin-top:70px;
+        text-align:center;
+        left: auto;
     }
 }
 
@@ -2360,6 +2406,12 @@ div.wide.form{
     display: inline-block;
     margin:15px 3px 10px 0;
 }
+
+.dynamic-search-row + .add-fields-container,
+.dynamic-search-row + .add-fields-container + .search-save-container{
+    margin:5px 3px 10px 0;
+}
+
 .add-fields-container{
     .z-spinner{
         display: block !important;
@@ -2462,7 +2514,7 @@ div.wide.form{
         position:relative !important;
         float:left !important;
         .buffer{
-           // padding-left:15px;
+            padding-left:5px;
         }
     }
     .col-0, .col-2{
@@ -2492,7 +2544,8 @@ div.wide.form{
 }
 
 #modal-edit-form,
-#edit-form{
+#edit-form,
+#delete-form{
     .clearfix();
     position: relative;
     padding-top:15px;
@@ -2515,15 +2568,12 @@ div.wide.form{
             display:none;
         }
     }
-    
     td, th{
         vertical-align: top;
     }
-    
     td table{
         width:100%;
     }
-    
     td{
         padding-bottom: 15px;
     }
@@ -2548,7 +2598,6 @@ div.wide.form{
 #modal-edit-form .panel{
     width: 100%;
 }
-
 
 .more-panels-link{
     font-size:11px;
@@ -2785,25 +2834,37 @@ div.wide.form{
     position:relative;
     margin-right:20px;
     table{
-        margin-bottom:10px;
+        margin:10px 0;
     }
-    th{
-        //vertical-align:top;
-        font-weight:600;
-        color:#666;
-        //#gradient > .horizontal(#ffffff, #f5f5f5);
+    .double-column{
+        .col-0, .col-2{
+            width: 22% !important;
+        }
+        .col-1, .col-3{
+            width: 28% !important;
+        }
     }
     td, th{
-        padding:8px 5px 8px 15px; //was !important
+        font-weight: bold;
+        .box-sizing();
+        padding:5px 5px 5px 5px; //was !important
         //border-top: 1px solid  #fff;
-        //border-bottom: 1px solid  #dfdfdf;
+        //.b-shadow(inset 0 -1px 0 0 #fff);
+        //border-bottom: 1px solid  #efefef;
     }
-    
+    th{
+        vertical-align:top;
+        color:#999;
+        padding-left:15px;
+        text-align: right;
+    }
+    td{
+        vertical-align:top;
+    }
     td + th{
         //border-left: 1px solid  #dfdfdf;
         padding-left:15px !important;
     }
-    
     p{
         width:100%;
         a{
@@ -2965,6 +3026,10 @@ div.wide.form{
         .zButton();
         font-size:11px;
         color: #666 !important;
+        border-top: 1px solid #e7e7e7;
+        border-left: 1px solid #d7d7d7;
+        border-right: 1px solid #d7d7d7;
+        border-bottom: 1px solid #bababa;
         &:after{
             content: "▾";
             margin-left:5px;
@@ -3117,8 +3182,13 @@ div.wide.form{
     }
 }
 
+#NoteInlineEditForPortletView .wide.form{
+    ++.unstyle-panel;
+}
+
 #inline-edit-form{
-    padding-top: 15px;
+    ++.unstyle-panel;
+    padding: 15px 15px 15px 0;
     table + table{
         float:left;
         .box-sizing();
@@ -3150,7 +3220,11 @@ div.wide.form{
             margin-top:6px;
         }
     }
+    table{
+        border-bottom: none;
+    }
     .view-toolbar-container{
+        display: inline-block;
         a{
             float:right;
             clear: both;
@@ -3332,7 +3406,7 @@ div.overlay-label-field{
 .overlay-label-field label {
     position: absolute !important;
     left: 4px;
-    top: 1px;
+    top: 6px;
     color: #999;
     font-size: 14px;
     font-weight: normal;
@@ -3602,10 +3676,13 @@ div.hasHalfs{
 .juiportlet-widget .endless-list-pager{
     border:none;
 }
+
 #list-view .pager{
     .b-shadow(none);
 }
-
+#ModalView #list-view .pager{
+    .b-shadow(inset 0 1px 0 #DFDFDF );
+}
 
 /*=Meetings modal*/
 #days-meetings-list-view{
@@ -3937,23 +4014,41 @@ div.hasHalfs{
 
 /*=Flash Message View*/
 #FlashMessageView{
-    position: relative;
-    margin-left:192px;
-    top:20px;
+    position: fixed;
+    //margin-left:192px;
+    top:100px;
+    width: 25%;
+    right: 3%;
+    
+    z-index: 9999;
     .jnotify-item{
+        position: relative;
         margin:0 20px 20px 0;
         padding:10px;
         border-radius:5px !important;
         border:1px solid #FFCC00;
         background:#FFFCB5;
-        font-size:12px;
-        font-weight:600;
-        color:#333333;
+        font-weight: bold;
+        .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.5) );
+        p, ul{
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+        ul{
+            padding-left:18px;
+        }
+        li{
+            margin-bottom: 3px;
+        }
+    }
+    .ui-state-error{
+        border:1px solid #cc0000;
+        background:#ffb5b5;
     }
     .ui-icon-circle-close{
         position: absolute;
         top:-17px;
-        right:6px;
+        right:-15px;
         background: transparent url(../images/widget-close-btn.png) left top no-repeat;
         padding: 0 !important;
         margin:0 !important;
@@ -3963,8 +4058,22 @@ div.hasHalfs{
     }
 }
 
-/*Dropdowns*/
+.operation-description{
+    display: block;
+    margin: 0 0 15px 0;
+    color: @themeColor;
+    line-height: 150%;
+    strong{
+        font-weight:bold;
+    }
+    em{
+        color: #cc0000;
+        font-style: normal;
+    }
+}
 
+
+/*Dropdowns*/
 .hasDropDown{
     width: 100%;
     margin: 0;
@@ -4014,7 +4123,6 @@ div.hasHalfs{
         outline: none !important;
         cursor: pointer;
         position: relative;
-        //z-index: 1;
         // for IE z-index: 5;
         // for IE padding-right: 5px;
         &:focus, &:hover{
@@ -4029,7 +4137,7 @@ div.hasHalfs{
 }
 
 
-/*=Mass Edit view*/
+/*=Mass Edit + DELETE view*/
 .AppContent.MassEditView{
     #edit-form table{
         width:100%;
@@ -4052,10 +4160,6 @@ div.hasHalfs{
         margin-bottom:30px;
         margin-left:-8px;
     }
-}
-
-.ui-state-warning{
-    color: #ff0000 !important;
 }
 
 /*=Lead Conversion*/

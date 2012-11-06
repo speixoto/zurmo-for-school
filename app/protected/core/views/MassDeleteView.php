@@ -69,6 +69,7 @@
         {
             return $this->selectedIds;
         }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -77,8 +78,7 @@
                         'elements' => array(
                             array('type' => 'ListLink',
                                   'label' => "eval:Yii::t('Default', 'Cancel')"),
-                            array('type' => 'SaveButton',
-                                  'label' => "eval:Yii::t('Default', 'Delete')",
+                            array('type' => 'DeleteButton',
                                   'htmlOptions' => array(
                                                          'params' => array(
                                                             'selectedIds' => 'eval:$this->getSelectedIds()'),
@@ -109,8 +109,7 @@
             {
                 $content .= HtmlNotifyUtil::renderAlertBoxByMessage($this->alertMessage);
             }
-            $content .= $this->renderWarningBox();
-            $content .= $this->renderHighlightBox();
+            $content .= $this->renderOperationDescriptionContent();
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {
@@ -129,19 +128,15 @@
             return '<h1>' . $this->title . '</h1>';
         }
 
-        protected function renderWarningBox()
+        protected function renderOperationDescriptionContent()
         {
-            $message = '<center><strong>Warning!</strong>&#160;' .
-                    Yii::t('Default', 'Mass Delete is not reversable.').'</center>';
-            return HtmlNotifyUtil::renderWarningBoxByMessage($message);
-        }
-
-        protected function renderHighlightBox()
-        {
-            $message = '<center><strong>' . $this->selectedRecordCount . '</strong>&#160;' .
-                    Yii::t('Default', $this->moduleClassName.'SingularLabel|'.$this->moduleClassName.'PluralLabel', array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) . ' ' .
-                    Yii::t('Default', 'selected for removal.').'</center>';
-            return HtmlNotifyUtil::renderHighlightBoxByMessage($message);
+            $highlight = ZurmoHtml::tag('em', array(), Yii::t('Default', 'Mass Delete is not reversable.'));
+            $message  = ZurmoHtml::tag('strong', array(), $highlight) . 
+                        '<br />' . '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
+                        Yii::t('Default', $this->moduleClassName . 'SingularLabel|' . $this->moduleClassName . 'PluralLabel',
+                        array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
+                        ' ' . Yii::t('Default', 'selected for removal.');
+            return ZurmoHtml::tag('span', array('class' => 'operation-description'), $message);
         }
 
         public static function getDesignerRulesType()

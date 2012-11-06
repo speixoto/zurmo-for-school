@@ -13,16 +13,16 @@ $(window).ready(function(){
             }
         }
     });
-    
+
     $('.user-menu-item').click(
-        function(){       
+        function(){
             if ( $(this).hasClass('nav-open') === false ){
                 $('.nav-open').removeClass('nav-open');
                 $(this).addClass('nav-open');
             } else {
                 $('.nav-open').removeClass('nav-open');
             }
-        } 
+        }
     );
     /*
     $('body > div').click(function(){
@@ -201,14 +201,20 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId)
     return true;
 }
 
-function makeSmallLoadingSpinner(id){
+function makeSmallLoadingSpinner(id, color){
+    var color;
+    if ( color === 'dark' ){
+        color = '#999';
+    } else {
+        color = '#fff';
+    }
     $( '.z-spinner', '#' + id ).spin({
         lines : 11, // The number of lines to draw
         length : 4, // The length of each line
         width : 2, // The line thickness
         radius : 4, // The radius of the inner circle
         rotate : 0, // The rotation offset
-        color : '#fff', // #rgb or #rrggbb
+        color : color, // #rgb or #rrggbb
         speed : 1.5, // Rounds per second
         trail : 35, // Afterglow percentage
         shadow : false, // Whether to render a shadow
@@ -264,9 +270,26 @@ function makeGlobalSearchSpinner(id, state){
 }
 
 
-
-
-
+//Graceful handling of ajax processing. If there is a server generated error,
+//it can be displayed in an alert or dialog box
+function processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, updateId)
+{
+    try
+    {
+        jsonData = jQuery.parseJSON(dataOrHtml);
+        $('#FlashMessageBar').jnotifyAddMessage(
+            {
+                 text: jsonData.message,
+                 permanent: false,
+                 showIcon: true,
+             }
+        );
+    }
+    catch (e)
+    {
+        $('#' + updateId).html(dataOrHtml);
+    }
+}
 
 
 

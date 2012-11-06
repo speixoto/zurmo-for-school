@@ -56,6 +56,5 @@
             $innerDiv  = ZurmoHtml::tag('div', array('class' => 'ui-state-warning ui-corner-all'), $innerContent );
             return ZurmoHtml::tag('div', array('class' => 'ui-widget'), $innerDiv );
         }
-
     }
 ?>

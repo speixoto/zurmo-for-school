@@ -104,7 +104,7 @@
                     }
                     else
                     {
-                        $items[$order]['{' . $language . 'Label}'] = null;
+                        $items[$order]['{' . $language . 'Label}'] = Yii::t('Default', $name, array(), null, $language);
                     }
                 }
             }

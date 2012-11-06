@@ -75,10 +75,9 @@
         protected function getCompleteMessage()
         {
             $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
-                            $this->totalRecordCount, $this->skipCount);
-            $content =  $successfulCount . "&#160;" .
-            LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount)
-            . "&#160;" . Yii::t('Default', 'delted successfully.');
+                               $this->totalRecordCount, $this->skipCount);
+            $content = 	       $successfulCount . ' ' . LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount)
+            				   . ' ' . Yii::t('Default', 'successfully deleted') . '.';
             if ($this->skipCount > 0)
             {
                 $content .= '<br/>' .
@@ -121,6 +120,7 @@
             $content .= '</div>';
             return $content;
         }
+
         protected function renderFormLinks()
         {
             $listButton = ZurmoHtml::link(Yii::t('Default', 'Return to List'), Yii::app()->createUrl($this->moduleId));
