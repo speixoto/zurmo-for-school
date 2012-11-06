@@ -483,6 +483,8 @@
             => 'Permetto',
         'Please provide data.'
             => 'Prego di provare i dati.',
+        'Please resolve the following issues for {modelString}:'
+            => 'Si prega di risolvere i seguenti problemi per {modelString}:',
         'Please use FireFox, Chrome, or Internet Explorer.'
             => 'Prego di usare FireFox, Chrome, o Internet Explorer.',
         'Policies'
@@ -623,6 +625,8 @@
             => 'Il servizio di corsi delle valute non è disponibile. Il tasso non fu aggiornato.',
         'The currency was not removed because it is in use.'
             => 'La valuta non fu eliminata perché é in uso.',
+        'The default value is {policyDefault}'
+            => 'Il valore default è {policyDefault}',
         'The ID specified was invalid.'
             => 'ID non è valido.',
         'The Import Wizard helps get your data into the system easily, find it under the config icon (that\'s the cog in the top right).'
@@ -707,6 +711,8 @@
             => 'Suo versione di Yii è currentVersion e dovrebbe essere acceptableVersion.',
         'ZurmoCRM'
             => 'ZurmoCRM', // Same Word Translated
+        '{modelString} is already connected to this record.'
+            => '{modelString} è già associato a questo record.',
         '{url} (installed with Yii)'
             => '{url} (installato con Yii)',
         '{url} (version {version} is installed)'

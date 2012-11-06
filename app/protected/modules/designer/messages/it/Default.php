@@ -225,8 +225,6 @@
             => 'Il modulo {moduleClassName} non esiste.',
         'There are no fields in this module to be used in a formula.'
             => 'Non esiste campi per utilizzare nella formula.',
-        'There was an error processing your request.'
-            => 'C\'era un errore durante l\'elaborazione della vostra richiesta.',
         'Track Audit Log'
             => 'Audit questo campo',
         'URL'
