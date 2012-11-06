@@ -165,10 +165,6 @@
             $this->assertEquals(null, $row['ppp2_p_id']);
 
 
-
-            //3x.checkin, but watch out not to checkin any old stuff
-
-
             //1. add back the usage of 4th/5th param for SPECIFIC.
             //2. modify P, PP, and PPP so we can get this test class to pass
             //3. add reversal linkName/type info from the HAS_ONE sides and then test those retrievals and removals. since with
