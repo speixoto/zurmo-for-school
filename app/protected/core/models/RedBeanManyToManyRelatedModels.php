@@ -84,9 +84,7 @@
                 R::associate($this->bean, $bean);
                 if (!RedBeanDatabase::isFrozen())
                 {
-                    $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
-                    sort($types);
-                    $tableName = implode("_", $types);
+                    $this->getTableName();
                     foreach ($types as $type)
                     {
                         $columnName = "{$type}_id";
@@ -101,6 +99,14 @@
             }
             $this->deferredUnrelateBeans = array();
             return true;
+        }
+
+        public function getTableName()
+        {
+            $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
+            sort($types);
+            $tableName = implode("_", $types);
+            return $tableName;
         }
     }
 ?>
