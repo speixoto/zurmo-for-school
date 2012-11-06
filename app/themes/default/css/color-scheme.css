@@ -11,3 +11,15 @@
 .themeBackgroundColor2 {
   background-color: #7bb730;
 }
+.themeColor-important {
+  color: #262877 !important;
+}
+.themeColor2-important {
+  color: #7bb730 !important;
+}
+.themeBackgroundColor-important {
+  background-color: #262877 !important;
+}
+.themeBackgroundColor2-important {
+  background-color: #7bb730 !important;
+}

@@ -22,12 +22,15 @@ a:hover,
 table.items tr:hover .pencil,
 .ui-dialog .ui-dialog-title,
 div.wide.form a,
+.ZeroModelsYetView a:hover,
 .search-form-tools,
+.search-form-tools input[type="submit"]:hover,
 #more-search-linkmodal,
 #more-search-link,
 #select-list-attributes-link,
 .double-column .panel a,
 .details-table a,
+.toolbar-mbmenu .options-menu > li > a:hover,
 #inline-edit-form > table td > a,
 #inline-edit-form .permissions-box > label,
 .edit-row-menu > li > a :before,
@@ -38,28 +41,44 @@ div.wide.form a,
 .LatestActivitiesView .filter-portlet-model-bar label,
 .operation-description,
 .AppContent.MassEditView .ui-state-highlight p,
+#progressBar-links a:hover,
 a.remove :hover .icon:after,
 .juiportlet-widget-head a.edit :hover .icon:after,
+#InstallPageView .AppContainer a:hover,
+#InstallPageView #install-form input[type="submit"]:hover,
 #ConfigurationPageView table tr:hover,
 #ConfigurationPageView table tr:hover .pencil,
+.configuration-list li a:hover,
+table.configuration-list tr td:last-child a:hover,
 #ModulePermissionsEditAndDetailsView table tr:first-child th,
+.multiselect-holder input[type="button"]:hover,
+.EmailTestingButton:hover,
 .panelTitle,
 #MyMissionsForPortletView .filter-portlet-model-bar label,
+.file-upload-box .ui-icon-plusthick:hover,
 .upload-actions .icon-delete,
+.ui-datepicker .ui-datepicker-current:hover,
+.ui-datepicker .ui-datepicker-close:hover,
 .ui-datepicker .calendar-events-1 span,
 .ui-datepicker .calendar-events-2 span,
 .ui-datepicker .calendar-events-3 span,
 .ui-datepicker .calendar-events-4 span,
 .ui-datepicker .calendar-events-5 span,
 .ui-datepicker .calendar-events-6 span,
+.add-custom-field .configure-custom-field-button:hover,
+.designer-toolbar input[type="submit"]:hover,
 .panelToPlace,
 .rowToPlace,
 .element-to-place,
+.AttributeEditView form div table #customFieldDataData_AddInputButton:hover,
+#customFieldDataData_AddInputButton:hover,
 .qtip,
 .ui-tooltip-default .ui-tooltip-titlebar,
 .game-badge .badge-icon,
 .badge .badge-icon,
 .percentComplete,
+.ModalGameNotification a:hover,
+#WelcomeView .dashboard-link:hover,
 .comment .delete-comment,
 .comment .edit-comment,
 .comment .delete-comment a,
@@ -73,13 +92,12 @@ a.user-link,
 }
 .themeColor2,
 #notifications-flyout .single-notification h4,
-.view-toolbar-link :hover,
-.view-toolbar-link .active,
-.view-toolbar > a :hover,
-.view-toolbar .parent > a :hover,
-.view-toolbar > a .active,
-.view-toolbar .parent > a .active,
-.portlet-toolbar .icon-create:before,
+.view-toolbar-link:hover,
+.view-toolbar-link:active,
+.view-toolbar > a:hover,
+.view-toolbar .parent > a:hover,
+.view-toolbar > a:active,
+.view-toolbar .parent > a:active,
 .portlet-toolbar .icon-delete:before,
 .portlet-toolbar .icon-edit:before,
 .ZeroModelsYetView a :before,
@@ -132,25 +150,31 @@ a.user-link,
   background-color: #262877;
 }
 .themeBackgroundColor2,
-a:hover,
-a:hover,
+.headerDropDown a:hover,
 #ShortcutsMenu ul a:hover,
-#MenuView a > span :first-child,
 #MenuView li.active > a > span,
-#RecentlyViewedView li a span :first-child,
-a:hover,
-a:hover,
+#MenuView a:hover > span,
+#MenuView li.active > a > span,
+#RecentlyViewedView li a span:first-child,
 .view-toolbar .parent > ul a:hover,
-a:hover,
-a:hover,
 .edit-row-menu ul a:hover,
 #HomeDashboardPortletSelectionView ul span,
 li.token-input-selected-token,
-.points,
-.game-badge .badge-grade,
-.badge .badge-grade,
 .hide-welcome span {
   background-color: #7bb730;
+}
+.themeColor-important {
+  color: #262877 !important;
+}
+.themeColor2-important,
+.portlet-toolbar .icon-create:before {
+  color: #7bb730 !important;
+}
+.themeBackgroundColor-important {
+  background-color: #262877 !important;
+}
+.themeBackgroundColor2-important {
+  background-color: #7bb730 !important;
 }
 .flyout,
 #ModalView .search-view-1,
@@ -176,7 +200,26 @@ li.token-input-selected-token,
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
 }
 .zButton,
-.z-button {
+.z-button,
+.ZeroModelsYetView a,
+.search-form-tools input[type="submit"],
+.toolbar-mbmenu .options-menu > li > a,
+#progressBar-links a,
+#InstallPageView .AppContainer a,
+#InstallPageView #install-form input[type="submit"],
+.configuration-list li a,
+table.configuration-list tr td:last-child a,
+.multiselect-holder input[type="button"],
+.EmailTestingButton,
+.file-upload-box .ui-icon-plusthick,
+.ui-datepicker .ui-datepicker-current,
+.ui-datepicker .ui-datepicker-close,
+.add-custom-field .configure-custom-field-button,
+.designer-toolbar input[type="submit"],
+.AttributeEditView form div table #customFieldDataData_AddInputButton,
+#customFieldDataData_AddInputButton,
+.ModalGameNotification a,
+#WelcomeView .dashboard-link {
   cursor: pointer;
   padding: 0 15px 0 15px;
   line-height: 23px;
@@ -207,11 +250,49 @@ li.token-input-selected-token,
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .zButton:not(.attacheLoading),
-.z-button:not(.attachLoading) {
+.z-button:not(.attachLoading),
+.ZeroModelsYetView a:not(.attachLoading),
+.search-form-tools input[type="submit"]:not(.attachLoading),
+.toolbar-mbmenu .options-menu > li > a:not(.attachLoading),
+#progressBar-links a:not(.attachLoading),
+#InstallPageView .AppContainer a:not(.attachLoading),
+#InstallPageView #install-form input[type="submit"]:not(.attachLoading),
+.configuration-list li a:not(.attachLoading),
+table.configuration-list tr td:last-child a:not(.attachLoading),
+.multiselect-holder input[type="button"]:not(.attachLoading),
+.EmailTestingButton:not(.attachLoading),
+.file-upload-box .ui-icon-plusthick:not(.attachLoading),
+.ui-datepicker .ui-datepicker-current:not(.attachLoading),
+.ui-datepicker .ui-datepicker-close:not(.attachLoading),
+.add-custom-field .configure-custom-field-button:not(.attachLoading),
+.designer-toolbar input[type="submit"]:not(.attachLoading),
+.AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading),
+#customFieldDataData_AddInputButton:not(.attachLoading),
+.ModalGameNotification a:not(.attachLoading),
+#WelcomeView .dashboard-link:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .zButton:hover,
-.z-button:hover {
+.z-button:hover,
+.ZeroModelsYetView a:hover,
+.search-form-tools input[type="submit"]:hover,
+.toolbar-mbmenu .options-menu > li > a:hover,
+#progressBar-links a:hover,
+#InstallPageView .AppContainer a:hover,
+#InstallPageView #install-form input[type="submit"]:hover,
+.configuration-list li a:hover,
+table.configuration-list tr td:last-child a:hover,
+.multiselect-holder input[type="button"]:hover,
+.EmailTestingButton:hover,
+.file-upload-box .ui-icon-plusthick:hover,
+.ui-datepicker .ui-datepicker-current:hover,
+.ui-datepicker .ui-datepicker-close:hover,
+.add-custom-field .configure-custom-field-button:hover,
+.designer-toolbar input[type="submit"]:hover,
+.AttributeEditView form div table #customFieldDataData_AddInputButton:hover,
+#customFieldDataData_AddInputButton:hover,
+.ModalGameNotification a:hover,
+#WelcomeView .dashboard-link:hover {
   -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
   -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
   -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
@@ -219,16 +300,73 @@ li.token-input-selected-token,
   text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
 }
 .zButton:active,
-.z-button:active {
+.z-button:active,
+.ZeroModelsYetView a:active,
+.search-form-tools input[type="submit"]:active,
+.toolbar-mbmenu .options-menu > li > a:active,
+#progressBar-links a:active,
+#InstallPageView .AppContainer a:active,
+#InstallPageView #install-form input[type="submit"]:active,
+.configuration-list li a:active,
+table.configuration-list tr td:last-child a:active,
+.multiselect-holder input[type="button"]:active,
+.EmailTestingButton:active,
+.file-upload-box .ui-icon-plusthick:active,
+.ui-datepicker .ui-datepicker-current:active,
+.ui-datepicker .ui-datepicker-close:active,
+.add-custom-field .configure-custom-field-button:active,
+.designer-toolbar input[type="submit"]:active,
+.AttributeEditView form div table #customFieldDataData_AddInputButton:active,
+#customFieldDataData_AddInputButton:active,
+.ModalGameNotification a:active,
+#WelcomeView .dashboard-link:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .zButton.loading .z-spinner,
-.z-button.loading .z-spinner {
+.z-button.loading .z-spinner,
+.ZeroModelsYetView a.loading .z-spinner,
+.search-form-tools input[type="submit"].loading .z-spinner,
+.toolbar-mbmenu .options-menu > li > a.loading .z-spinner,
+#progressBar-links a.loading .z-spinner,
+#InstallPageView .AppContainer a.loading .z-spinner,
+#InstallPageView #install-form input[type="submit"].loading .z-spinner,
+.configuration-list li a.loading .z-spinner,
+table.configuration-list tr td:last-child a.loading .z-spinner,
+.multiselect-holder input[type="button"].loading .z-spinner,
+.EmailTestingButton.loading .z-spinner,
+.file-upload-box .ui-icon-plusthick.loading .z-spinner,
+.ui-datepicker .ui-datepicker-current.loading .z-spinner,
+.ui-datepicker .ui-datepicker-close.loading .z-spinner,
+.add-custom-field .configure-custom-field-button.loading .z-spinner,
+.designer-toolbar input[type="submit"].loading .z-spinner,
+.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-spinner,
+#customFieldDataData_AddInputButton.loading .z-spinner,
+.ModalGameNotification a.loading .z-spinner,
+#WelcomeView .dashboard-link.loading .z-spinner {
   display: inline-block;
 }
 .zButton.loading .z-icon,
-.z-button.loading .z-icon {
+.z-button.loading .z-icon,
+.ZeroModelsYetView a.loading .z-icon,
+.search-form-tools input[type="submit"].loading .z-icon,
+.toolbar-mbmenu .options-menu > li > a.loading .z-icon,
+#progressBar-links a.loading .z-icon,
+#InstallPageView .AppContainer a.loading .z-icon,
+#InstallPageView #install-form input[type="submit"].loading .z-icon,
+.configuration-list li a.loading .z-icon,
+table.configuration-list tr td:last-child a.loading .z-icon,
+.multiselect-holder input[type="button"].loading .z-icon,
+.EmailTestingButton.loading .z-icon,
+.file-upload-box .ui-icon-plusthick.loading .z-icon,
+.ui-datepicker .ui-datepicker-current.loading .z-icon,
+.ui-datepicker .ui-datepicker-close.loading .z-icon,
+.add-custom-field .configure-custom-field-button.loading .z-icon,
+.designer-toolbar input[type="submit"].loading .z-icon,
+.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-icon,
+#customFieldDataData_AddInputButton.loading .z-icon,
+.ModalGameNotification a.loading .z-icon,
+#WelcomeView .dashboard-link.loading .z-icon {
   display: none;
 }
 .z-spinner {
@@ -462,7 +600,7 @@ section {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   /*
             input[type="submit"]{
-                .zButton();
+                ++.z-button;
             }
             */
 
@@ -602,6 +740,58 @@ section {
   -o-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -ms-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
+}
+.headerDropDown,
+#ShortcutsMenu ul,
+.view-toolbar .parent > ul,
+.edit-row-menu ul {
+  border: 1px solid #b6b6b6;
+  background-color: #ebebeb;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
+  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  z-index: 9999;
+  min-width: 110px;
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 33px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.headerDropDown li,
+#ShortcutsMenu ul li,
+.view-toolbar .parent > ul li,
+.edit-row-menu ul li {
+  line-height: 100%;
+}
+.headerDropDown a,
+#ShortcutsMenu ul a,
+.view-toolbar .parent > ul a,
+.edit-row-menu ul a {
+  color: #666;
+  font-size: 11px;
+  font-weight: normal;
+  display: block;
+  padding: 5px 10px 5px 10px;
+  margin: 0 2px;
+}
+.headerDropDown a:hover,
+#ShortcutsMenu ul a:hover,
+.view-toolbar .parent > ul a:hover,
+.edit-row-menu ul a:hover {
+  color: #fff !important;
 }
 #notifications {
   float: left;
@@ -1153,44 +1343,6 @@ section {
   list-style: none !important;
   margin-top: -8px;
   margin-left: 0px;
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 33px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-}
-#ShortcutsMenu ul li {
-  line-height: 100%;
-}
-#ShortcutsMenu ul a {
-  color: #666;
-  font-size: 11px;
-  font-weight: normal;
-  display: block;
-  padding: 5px 10px 5px 10px;
-  margin: 0 2px;
-}
-#ShortcutsMenu ul a:hover {
-  color: #fff !important;
 }
 /*=Left Sidebar*/
 .AppNavigation {
@@ -1295,14 +1447,6 @@ section {
   /*Conversation button*/
 
 }
-#MenuView a > span:first-child {
-  width: 160px;
-  height: 33px;
-  filter: alpha(opacity=0);
-  -khtml-opacity: 0;
-  -moz-opacity: 0;
-  opacity: 0;
-}
 #MenuView a > span > span {
   position: relative;
   top: -2px;
@@ -1375,9 +1519,8 @@ section {
   -webkit-text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  line-height: 32px;
+  line-height: 33px;
   vertical-align: middle;
-  height: 32px;
   display: block;
   position: relative;
   -webkit-border-radius: 4px;
@@ -1390,24 +1533,6 @@ section {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-}
-#RecentlyViewedView li a:hover {
-  color: #fff !important;
-  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-}
-#RecentlyViewedView li a:hover em {
-  color: #262877 !important;
-}
-#RecentlyViewedView li a:hover span {
-  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  background-image: url(../images/main-nav-selected.png);
-  background-repeat: no-repeat;
-  background-position-x: 0;
-  background-position-y: 0;
 }
 #RecentlyViewedView li a span {
   position: absolute;
@@ -1440,6 +1565,24 @@ section {
   opacity: 0;
   z-index: 0;
   text-indent: 0;
+}
+#RecentlyViewedView li a:hover {
+  color: #fff !important;
+  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+}
+#RecentlyViewedView li a:hover em {
+  color: #262877 !important;
+}
+#RecentlyViewedView li a:hover span {
+  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  background-image: url(../images/main-nav-selected.png);
+  background-repeat: no-repeat;
+  background-position-x: 0;
+  background-position-y: 0;
 }
 #RecentlyViewedView li em {
   z-index: 9999;
@@ -1674,45 +1817,7 @@ form .view-toolbar-container,
 }
 .view-toolbar .parent > ul {
   margin-top: 0;
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 33px;
-  padding-top: 3px;
-  padding-bottom: 3px;
   left: auto;
-}
-.view-toolbar .parent > ul li {
-  line-height: 100%;
-}
-.view-toolbar .parent > ul a {
-  color: #666;
-  font-size: 11px;
-  font-weight: normal;
-  display: block;
-  padding: 5px 10px 5px 10px;
-  margin: 0 2px;
-}
-.view-toolbar .parent > ul a:hover {
-  color: #fff !important;
 }
 .view-toolbar > a:first-child {
   border-left: none;
@@ -2835,34 +2940,6 @@ div.wide.form label.hasCheckBox {
   margin: 45px 0 0 30px;
 }
 .ZeroModelsYetView a {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   margin-left: 30px;
   margin-top: 15px;
   float: left;
@@ -3099,36 +3176,6 @@ div.wide.form label.hasCheckBox {
   left: 265px;
   line-height: 25px;
   font-size: 11px;
-}
-.search-form-tools input[type="submit"] {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 #more-search-linkmodal,
 #more-search-link {
@@ -4008,34 +4055,6 @@ div.wide.form label.hasCheckBox {
 .toolbar-mbmenu .options-menu > li > a {
   text-align: center;
   width: 60px;
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   font-size: 11px;
   color: #666 !important;
   border-top: 1px solid #e7e7e7;
@@ -4673,50 +4692,11 @@ div.hasHalfs .twoThirds {
   text-shadow: none !important;
 }
 .edit-row-menu ul {
-  display: block;
   width: 110px;
   margin-left: -97px;
   list-style: none;
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 33px;
-  padding-top: 3px;
-  padding-bottom: 3px;
   top: 20px;
   font-size: 11px;
-}
-.edit-row-menu ul li {
-  line-height: 100%;
-}
-.edit-row-menu ul a {
-  color: #666;
-  font-size: 11px;
-  font-weight: normal;
-  display: block;
-  padding: 5px 10px 5px 10px;
-  margin: 0 2px;
-}
-.edit-row-menu ul a:hover {
-  color: #fff !important;
 }
 /*Upcoming Meeting Pager*/
 .pager {
@@ -5543,36 +5523,6 @@ div.hasHalfs .twoThirds {
 #progressBar-links {
   margin-top: 15px;
 }
-#progressBar-links a {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-}
 /*=About*/
 #AboutView {
   position: relative;
@@ -6076,34 +6026,6 @@ a.remove .icon:after {
 }
 #InstallPageView .AppContainer a {
   margin: auto 10px;
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 #InstallPageView #save {
   color: #fff !important;
@@ -6157,36 +6079,6 @@ a.remove .icon:after {
 }
 #InstallPageView table td {
   padding: 8px 2px;
-}
-#InstallPageView #install-form input[type="submit"] {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 #InstallPageView #install-form table {
   padding-bottom: 15px;
@@ -6347,34 +6239,6 @@ a.remove .icon:after {
   display: inline-block;
 }
 .configuration-list li a {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: right;
   position: absolute;
   right: 15px;
@@ -6412,34 +6276,6 @@ table.configuration-list tbody > tr > td {
   position: relative !important;
 }
 table.configuration-list tr td:last-child a {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: right;
 }
 table.configuration-list tr td:last-child a:before {
@@ -6527,34 +6363,6 @@ table.configuration-list tr td:last-child a:before {
 .multiselect-holder input[type="button"] {
   display: block !important;
   margin-bottom: 15px !important;
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -7079,34 +6887,6 @@ table.configuration-list tr td:last-child a:before {
   width: 100% !important;
 }
 .EmailTestingButton {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   border-top: 1px solid #e7e7e7;
   border-left: 1px solid #d7d7d7;
   border-right: 1px solid #d7d7d7;
@@ -7671,34 +7451,6 @@ div.wide.form .errorMessage {
   width: 100%;
 }
 .file-upload-box .ui-icon-plusthick {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   padding: 0 5px;
 }
 .file-upload-box .ui-icon-plusthick:after {
@@ -8079,65 +7831,9 @@ div.wide.form .errorMessage {
   clear: both;
 }
 .ui-datepicker .ui-datepicker-current {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: left;
 }
 .ui-datepicker .ui-datepicker-close {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: right;
 }
 .ui-datepicker .ui-timepicker-div {
@@ -8413,34 +8109,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .add-custom-field .configure-custom-field-button {
   position: relative;
   top: 1px;
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 .add-custom-field .configure-custom-field-button:before {
   content: "n";
@@ -8483,34 +8151,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   margin: 15px 0 0 0;
 }
 .designer-toolbar input[type="submit"] {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   margin-bottom: 15px;
 }
 .designer-toolbar h3 {
@@ -8972,34 +8612,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding-left: 0 !important;
 }
 .AttributeEditView form div table #customFieldDataData_AddInputButton {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   margin: 15px 0 0 0;
   float: left;
   clear: both;
@@ -9037,36 +8649,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 #customFieldDataData_ul li {
   position: relative;
-}
-#customFieldDataData_AddInputButton {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
 /*Target only Mozilla/Gecko Browsers*/
 @-moz-document url-prefix() {
@@ -10386,36 +9968,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
-.ModalGameNotification a {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-}
 .ModalGameNotification a:focus {
   outline: none;
 }
@@ -10574,34 +10126,6 @@ a.close-ModalGameNotification.simple-select {
   text-decoration: underline !important;
 }
 #WelcomeView .dashboard-link {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-size: 10px;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-decoration: none !important;
   color: #656565 !important;
   margin-top: 15px;

@@ -193,7 +193,7 @@ footer, header, hgroup, menu, nav, section {
             }
             /*
             input[type="submit"]{
-                .zButton();
+                ++.z-button;
             }
             */
             .errorMessage{
@@ -274,7 +274,7 @@ footer, header, hgroup, menu, nav, section {
     .b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
 }
 
-.headerDropDown(){
+.headerDropDown{
     border:1px solid #b6b6b6;
     #gradient > .vertical( #f5f5f5, #ebebeb );
     .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
@@ -303,6 +303,9 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
+
+
+
 .headerDropDownSpecial(){
     z-index:1;
     min-width:110px;
@@ -315,12 +318,12 @@ footer, header, hgroup, menu, nav, section {
     .box-sizing();
     li{
         line-height: 100%;
-        &:first-child a{
-            border-top:none;
-        }
-        &:last-child a{
-            border-bottom: none;
-        }
+    }
+    li:first-child a{
+        border-top:none;
+    }
+    li:last-child a{
+        border-bottom:none;
     }
     a{
         border-top:1px solid lighten(#252525, 5%);
@@ -823,7 +826,7 @@ footer, header, hgroup, menu, nav, section {
         list-style:none !important;
         margin-top:-8px;
         margin-left:0px;
-        .headerDropDown();
+        ++.headerDropDown;
     }
 }
 
@@ -901,13 +904,13 @@ footer, header, hgroup, menu, nav, section {
         position: absolute;
         top:0;
         left:0;
-        &:first-child{
-            ++.themeBackgroundColor2;
-            width:160px;
-            height:33px;
-            .opacity(0);
-        }
         /*Conversation button*/
+        > span:first-child{
+            //++.themeBackgroundColor2;
+            //width:160px;
+            //height:33px;
+            //.opacity(0);
+        }
         > span{
             position: relative;
             top:-2px;
@@ -944,6 +947,7 @@ footer, header, hgroup, menu, nav, section {
     background-repeat: no-repeat;
     background-position-x: 0;
     background-position-y: 0;
+    ++.themeBackgroundColor2;
      > span{
     	++.themeColor;
     }
@@ -977,27 +981,13 @@ footer, header, hgroup, menu, nav, section {
         a{
             width:160px;
             .text-overflow;
-            line-height: 32px;
+            line-height: 33px;
             vertical-align:middle;
-            height:32px;
+            //height:33px;
             display:block;
             position: relative;
             .radius( 4px );
             .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
-            &:hover{
-                color:#fff !important;
-                text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-                em{
-                    color:@themeColor !important;
-                }
-                span{
-                    .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
-                    background-image: url(../images/main-nav-selected.png);
-                    background-repeat: no-repeat;
-                    background-position-x: 0;
-                    background-position-y: 0;
-                }
-            }
             span{
                 position: absolute;
                 top:0;
@@ -1007,18 +997,32 @@ footer, header, hgroup, menu, nav, section {
                 z-index: 0;
                 text-indent:35px;
                 .text-overflow();
-                &:first-child{
-                    position: absolute;
-                    top:0;
-                    left:0;
-                    ++.themeBackgroundColor2;
-                    width:160px;
-                    height:33px;
-                    .radius( 4px );
-                    .opacity(0);
-                    z-index: 0;
-                    text-indent:0;
-                }
+            }
+            span:first-child{
+                position: absolute;
+                top:0;
+                left:0;
+                ++.themeBackgroundColor2;
+                width:160px;
+                height:33px;
+                .radius( 4px );
+                .opacity(0);
+                z-index: 0;
+                text-indent:0;
+            }
+        }
+        a:hover{
+            color:#fff !important;
+            text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+            em{
+                color:@themeColor !important;
+            }
+            span{
+                .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
+                background-image: url(../images/main-nav-selected.png);
+                background-repeat: no-repeat;
+                background-position-x: 0;
+                background-position-y: 0;
             }
         }
         em{
@@ -1224,13 +1228,13 @@ form,
     line-height:30px;
     display:inline-block;
     border-left:1px solid #bababa;
-    &:hover, &.active{
-        ++.themeColor2;
-    }
-    &:active{
-        color:#656565;
-        box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-    }
+}
+.view-toolbar-link:hover, .view-toolbar-link:active{
+    ++.themeColor2;
+}
+.view-toolbar-link:active{
+    color:#656565;
+    box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
 
 .view-toolbar{
@@ -1255,7 +1259,7 @@ form,
     }
     .parent > ul{
         margin-top:0;
-        .headerDropDown();
+        ++.headerDropDown;
         left:auto;
     }
     > a:first-child{
@@ -1747,7 +1751,7 @@ td.empty{
         top:-1px;
         color:#fff;
         margin-left:0;
-        ++.themeColor2;
+        ++.themeColor2-important;
     }
     .icon-delete:before{
     	content: "_";
@@ -2043,7 +2047,7 @@ div.wide.form{
         margin:45px 0 0 30px;
     }
     a{
-        .zButton();
+        ++.z-button;
         margin-left:30px;
         margin-top:15px;
         float:left;
@@ -2209,7 +2213,7 @@ div.wide.form{
     ++.themeColor;
     .smaller();
     input[type="submit"]{
-        .zButton();
+        ++.z-button;
     }
 }
 
@@ -2987,10 +2991,7 @@ div.wide.form{
         margin-top:0;
     }
     //for address fields
-    td > label{
-        &:first-child{
-        }
-    }
+    td > label:first-child{}
     //for 2 columns
     td + th{
         padding-left:30px;
@@ -3023,7 +3024,7 @@ div.wide.form{
     .options-menu > li > a{
         text-align:center;
         width: 60px;
-        .zButton();
+        ++.z-button;
         font-size:11px;
         color: #666 !important;
         border-top: 1px solid #e7e7e7;
@@ -3467,9 +3468,6 @@ div.hasHalfs{
 .juiportlet-widget{
     td{
         padding-left:0;// !important;
-        &:first-child{
-            //border-top:none;
-        }
         div.button-column{
             float:left;
             display:block;
@@ -3513,9 +3511,9 @@ div.hasHalfs{
     .items{
         td{
             border-top:none !important;
-            &:first-child{
-                padding-left: 15px;
-            }
+        }
+        td:first-child{
+            padding-left: 15px;
         }
         tr{
             &:hover{
@@ -3567,11 +3565,10 @@ div.hasHalfs{
         }
     }
     ul{
-        display:block;
         width:110px;
         margin-left:-97px;
         list-style: none;
-        .headerDropDown();
+        ++.headerDropDown;
         top:20px;
         .smaller();
     }
@@ -3751,12 +3748,10 @@ div.hasHalfs{
         padding:10px 15px;
         #gradient > .vertical(#f6f6f6, #ededed);
         .b-shadow(inset 0 1px 0 0 #ffffff);
-        > div{
-            &:first-child{
-                border-right:2px solid @themeColor;
-                padding-right:10px;
-                margin-right:10px;
-            }
+        > div:first-child{
+            border-right:2px solid @themeColor;
+            padding-right:10px;
+            margin-right:10px;
         }
         #LatestActivitiesConfigurationForm_ownedByFilter_area{
             display:inline-block;
@@ -4003,12 +3998,12 @@ div.hasHalfs{
                 cursor:pointer !important;
             }
         }
-        &:first-child a{
-            border-top:none;
-        }
-        &:last-child a{
-            border-bottom:none;
-        }
+    }
+    li:first-child a{
+        border-top:none;
+    }
+    li:last-child a{
+        border-bottom:none;
     }
 }
 
@@ -4217,7 +4212,7 @@ div.hasHalfs{
 #progressBar-links{
     margin-top:15px;
     a{
-        .zButton();
+        ++.z-button;
     }
 }
 
