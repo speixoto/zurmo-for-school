@@ -3038,9 +3038,6 @@ div.wide.form a {
 #ModalView #clear-search-linkmodal {
   margin-left: 10px;
 }
-#ModalView .view-toolbar-container {
-  margin-top: 15px;
-}
 #ModalView .items {
   border: none;
 }
@@ -3351,72 +3348,93 @@ div.wide.form a {
   display: table;
   clear: both;
 }
+#modal-edit-form,
 #edit-form {
   zoom: 1;
   position: relative;
   padding-top: 15px;
 }
+#modal-edit-form:before,
 #edit-form:before {
   content: "";
   display: table;
 }
+#modal-edit-form:after,
 #edit-form:after {
   content: "";
   display: table;
   clear: both;
 }
+#modal-edit-form .panel,
 #edit-form .panel {
   float: left;
   width: 70%;
   display: block;
   zoom: 1;
 }
+#modal-edit-form .panel:before,
 #edit-form .panel:before {
   content: "";
   display: table;
 }
+#modal-edit-form .panel:after,
 #edit-form .panel:after {
   content: "";
   display: table;
   clear: both;
 }
+#modal-edit-form .panel table,
 #edit-form .panel table {
   width: 100% !important;
 }
+#modal-edit-form h3,
 #edit-form h3 {
   margin-bottom: 8px;
 }
+#modal-edit-form table,
 #edit-form table {
   border-bottom: none;
 }
+#modal-edit-form table br,
 #edit-form table br {
   display: none;
 }
+#modal-edit-form td,
 #edit-form td,
+#modal-edit-form th,
 #edit-form th {
   vertical-align: top;
 }
+#modal-edit-form td table,
 #edit-form td table {
   width: 100%;
 }
+#modal-edit-form td,
 #edit-form td {
   padding-bottom: 15px;
 }
+#modal-edit-form .panelTitle,
 #edit-form .panelTitle {
   margin: 0 0 10px 0;
   padding: 0;
   font-size: 12px;
   display: block;
 }
+#modal-edit-form .view-toolbar-container,
 #edit-form .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
+#modal-edit-form .hasCheckBox,
 #edit-form .hasCheckBox {
   margin: 8px 0 0 0;
   display: block;
 }
+#modal-edit-form .hasCheckBox input[type="checkbox"],
 #edit-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
+}
+#modal-edit-form .panel {
+  width: 100%;
 }
 .more-panels-link {
   font-size: 11px;
@@ -5314,7 +5332,6 @@ div.hasHalfs .twoThirds {
   outline: none !important;
   cursor: pointer;
   position: relative;
-  z-index: 1;
 }
 .hasDropDown select:focus,
 .hasDropDown select:hover {

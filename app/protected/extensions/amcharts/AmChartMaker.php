@@ -25,6 +25,11 @@ class AmChartMaker
     {
         $this->addChartProperties('fontFamily', '"Arial"');
         $this->addChartProperties('color', '"#545454"');
+        $this->addChartProperties('lineColor', '"#545454"');
+        $this->addValueAxisProperties('axisColor', '"#545454"');
+        $this->addValueAxisProperties('gridColor', '"#545454"');
+
+
         $colorTheme = array(
                         1 => '["#262877", "#6625A7", "#BC9DDA", "#817149", "#A77425"]',
                         2 => '["#262877", "#7BB730"]',
@@ -33,6 +38,7 @@ class AmChartMaker
                                "#797bc3", "#161744", "#00261c", "#044c29", "#167f39", "#45bf55", "#96ed89", "#007828",
                                "#075220", "#1d9e48", "#375d3b", "#183128", "#012426", "#027353", "#1c2640", "#263357",
                                "#384c80", "#4e6ab2", "#5979cd"]',
+                        5 => '["#262877", "#5979cd"]',
             );
         $this->addChartProperties('colors', $colorTheme[4]);
 
@@ -44,38 +50,31 @@ class AmChartMaker
              * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amchart
              */
             $this->addChartProperties('usePrefixes', true);
-            $this->addChartProperties('autoMargins', 'false');
-            $this->addChartProperties('marginRight', 50);
-            $this->addChartProperties('marginLeft', 100);
-            $this->addChartProperties('marginBottom', 50);
-            $this->addChartProperties('marginTop', 50);
             $this->addChartProperties('plotAreaBorderColor', "'#000000'");
-            $this->addChartProperties('plotAreaBorderAlpha', 1);
+            $this->addChartProperties('plotAreaBorderAlpha', 0);
             /**
              * Columns or bar properties
              * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amgraph
              */
-            $this->addGraphProperties('fillAlphas', 0.8);
-            $this->addGraphProperties('cornerRadiusTop', 8);
+            $this->addGraphProperties('fillAlphas', 1);
+            $this->addGraphProperties('cornerRadiusTop', 0);
+            $this->addGraphProperties('cornerRadiusBottom', 0);
             $this->addGraphProperties('lineAlpha', 0);
-            $this->addGraphProperties('lineAlpha', 0);
+            $this->addGraphProperties('fillColors',  $colorTheme[5]);
             /**
              * categoryAxis properties
              * More info on http://www.amcharts.com/docs/v.2/javascript_reference/axisbase
              */
             $this->addCategoryAxisProperties('title', "'$this->xAxisName'");
             $this->addCategoryAxisProperties('inside', 0);
-            $this->addCategoryAxisProperties('axisAlpha', 0);
-            $this->addCategoryAxisProperties('gridAlpha', 0);
-            $this->addCategoryAxisProperties('fillColors', '["#000000", "#FF6600"]');
+            $this->addCategoryAxisProperties('fillColors', $colorTheme[5]);
             /**
              * valueAxis properties
              * More info on http://www.amcharts.com/docs/v.2/javascript_reference/axisbase
              */
             $this->addValueAxisProperties('title', "'$this->yAxisName'");
             $this->addValueAxisProperties('minimum', 0);
-            $this->addValueAxisProperties('axisAlpha', 0);
-            $this->addValueAxisProperties('dashLength', 4);
+            $this->addValueAxisProperties('dashLength', 2);
             $this->addValueAxisProperties('usePrefixes', 1);
             $this->addValueAxisProperties('unitPosition', '"left"');
             $this->addValueAxisProperties('unit', "'$currencySymbol'");
@@ -87,9 +86,9 @@ class AmChartMaker
              * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amgraph
              */
             $this->addGraphProperties('balloonText', "'[[category]]:[[value]]'");
-            $this->addGraphProperties('lineAlpha', 8);
-            $this->addGraphProperties('fillColors', "'#bf1c25'");
+            $this->addGraphProperties('lineAlpha', 0.5);
             $this->addGraphProperties('fillAlphas', 1);
+            $this->addGraphProperties('fillColors',  $colorTheme[5]);
             //Make the graph3d - to chage defs go to method
             $this->makeChart3d();
         }
@@ -105,11 +104,12 @@ class AmChartMaker
              * Columns or bar properties
              * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amgraph
              */
+            $this->addGraphProperties('plotAreaBorderAlpha', 0);
             $this->addGraphProperties('lineAlpha', 0);
-            $this->addGraphProperties('fillAlphas', 0.5);
-            $this->addGraphProperties('fillColors', '["#000000", "#FF6600"]');
+            $this->addGraphProperties('fillAlphas', 1);
+            $this->addGraphProperties('fillColors',  $colorTheme[5]);
             $this->addGraphProperties('gradientOrientation', '"vertical"'); //Possible values are "vertical" and "horizontal".
-            $this->addGraphProperties('labelPosition', '"inside"'); //Possible values are: "bottom", "top", "right", "left", "inside", "middle".
+            $this->addGraphProperties('labelPosition', '"right"'); //Possible values are: "bottom", "top", "right", "left", "inside", "middle".
             $this->addGraphProperties('labelText', '"[[category]]: [[value]]"'); //You can use tags like [[value]], [[description]], [[percents]], [[open]], [[category]]
             $this->addGraphProperties('balloonText', '"[[category]]: [[value]]"');
         }
@@ -238,6 +238,7 @@ class AmChartMaker
             foreach ($this->serial as $key => $serial)
             {
                 $javascript .= "var graph{$key} = new AmCharts.AmGraph();
+                    window.g1 = graph{$key};
                     graph{$key}.valueField = '". $serial['valueField'] ."';
                     graph{$key}.type = '" . $serial['type'] .  "';";
                 if(count($serial['options']) === 0)

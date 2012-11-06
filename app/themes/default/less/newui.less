@@ -6,7 +6,6 @@
 /*Imports*/
 @import 'mixins.less';
 
-
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
     src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -2211,7 +2210,7 @@ div.wide.form{
         margin-left:10px;
     }
     .view-toolbar-container{
-        margin-top:15px;
+        //margin-top:15px;
     }
     .items{
         border: none;
@@ -2492,6 +2491,7 @@ div.wide.form{
     .clearfix();
 }
 
+#modal-edit-form,
 #edit-form{
     .clearfix();
     position: relative;
@@ -2527,7 +2527,6 @@ div.wide.form{
     td{
         padding-bottom: 15px;
     }
-    
     .panelTitle{
         margin:0 0 10px 0;
         padding:0;
@@ -2545,6 +2544,11 @@ div.wide.form{
         }
     }
 }
+
+#modal-edit-form .panel{
+    width: 100%;
+}
+
 
 .more-panels-link{
     font-size:11px;
@@ -4010,7 +4014,7 @@ div.hasHalfs{
         outline: none !important;
         cursor: pointer;
         position: relative;
-        z-index: 1;
+        //z-index: 1;
         // for IE z-index: 5;
         // for IE padding-right: 5px;
         &:focus, &:hover{
