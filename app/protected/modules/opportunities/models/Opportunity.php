@@ -104,10 +104,13 @@
                 ),
                 'relations' => array(
                     'account'       => array(RedBeanModel::HAS_ONE,   'Account'),
-                    'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
+                    'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'amount'),
                     'contacts'      => array(RedBeanModel::MANY_MANY, 'Contact'),
-                    'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
+                    'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'stage'),
+                    'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
                 ),
                 'rules' => array(
                     array('amount',        'required'),

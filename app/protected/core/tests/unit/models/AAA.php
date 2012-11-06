@@ -38,8 +38,10 @@
                 'relations' => array(
                     'bbb'                => array(RedBeanModel::HAS_ONE,            'BBB'),
                     'hhh'                => array(RedBeanModel::HAS_ONE,            'HHH'),
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
+                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
+                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
+                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
+                                                  RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
                 ),
                 'rules' => array(
                     array('aaaMember',  'type', 'type' => 'string'),

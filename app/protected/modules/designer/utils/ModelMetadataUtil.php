@@ -104,7 +104,9 @@
                 $metadata[$modelClassName]['relations'][$relationName] = array(
                                                                             RedBeanModel::HAS_ONE,
                                                                             $relationModelClassName,
-                                                                            RedBeanModel::OWNED);
+                                                                            RedBeanModel::OWNED,
+                                                                            RedBeanModel::LINK_TYPE_SPECIFIC,
+                                                                            $relationName);
             }
             static::resolveAddOrRemoveNoAuditInformation($isAudited, $metadata[$modelClassName], $relationName);
             $metadata[$modelClassName]['elements'][$relationName] = $elementType;
@@ -162,6 +164,12 @@
                 {
                     $metadata[$modelClassName]['relations'][$relationName][2] = RedBeanModel::OWNED;
                 }
+                else
+                {
+                    $metadata[$modelClassName]['relations'][$relationName][2] = RedBeanModel::NOT_OWNED;
+                }
+                $metadata[$modelClassName]['relations'][$relationName][3] = RedBeanModel::LINK_TYPE_SPECIFIC;
+                $metadata[$modelClassName]['relations'][$relationName][4] = $relationName;
             }
             $metadata[$modelClassName]['elements'][$relationName] = $elementType;
             self::resolveAttributeLabelsMetadata($attributeLabels, $metadata, $modelClassName, $relationName);

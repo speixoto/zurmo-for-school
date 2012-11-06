@@ -71,7 +71,8 @@
                     'note'      => array(RedBeanModel::HAS_ONE,  'Note'),
                     'files'     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED,
                                          RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'toUser'    => array(RedBeanModel::HAS_ONE,  'User'),
+                    'toUser'    => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'toUser'),
                 ),
                 'rules' => array(
                     array('description',    'type',     'type' => 'string'),

@@ -47,7 +47,8 @@
                     'name',
                 ),
                 'relations' => array(
-                    'castUpHasOne' => array(RedBeanModel::HAS_ONE, 'G'),
+                    'castUpHasOne' => array(RedBeanModel::HAS_ONE, 'G', RedBeanModel::NOT_OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'castUpHasOne'),
                 ),
                 'rules' => array(
                     array('name', 'type',   'type' => 'string'),

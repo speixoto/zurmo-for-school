@@ -636,12 +636,24 @@
                 {
                     $relatedModelClassName = $metadata[$modelClassName]['relations'][$relationName][1];
                     $relatedModelTableName = self::getTableName($relatedModelClassName);
+                    $linkType              = null;
+                    $relationLinkName      = null;
+                    self::resolveLinkTypeAndRelationLinkName($metadata[$modelClassName]['relations'][$relationName],
+                                                             $linkType,
+                                                             $relationLinkName);
+                   $linkName               = self::makeCasedLinkName($metadata[$modelClassName]['relations'][$relationName][0],
+                                                                     $linkType, $relationLinkName);
+                   $columnName             = $relatedModelTableName . '_id';
+                   $columnName             = ZurmoRedBeanLinkManager::resolveColumnPrefix($linkName) . $columnName;
+
+/**
                     $columnName = '';
                     if (strtolower($relationName) != strtolower($relatedModelClassName))
                     {
                         $columnName = strtolower($relationName) . '_';
                     }
                     $columnName .= $relatedModelTableName . '_id';
+                    **/
                     return $columnName;
                 }
             }
@@ -667,6 +679,37 @@
          */
         protected function onModified()
         {
+        }
+
+        protected static function makeCasedLinkName($relationType, $linkType, $relationLinkName)
+        {
+            assert('is_int($relationType)');
+            assert('is_int($linkType)');
+            assert('is_string($relationLinkName) || $relationLinkName == null');
+            if ($relationType == self::HAS_ONE && $linkType == self::LINK_TYPE_SPECIFIC)
+            {
+                return strtolower($relationLinkName);
+            }
+        }
+
+        protected static function resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, & $linkType,
+                                                                     & $relationLinkName)
+        {
+            if (count($relationTypeModelClassNameAndOwns) == 4 &&
+                $relationTypeModelClassNameAndOwns[3] != self::LINK_TYPE_ASSUMPTIVE)
+            {
+                throw new NotSupportedException();
+            }
+            if (count($relationTypeModelClassNameAndOwns) == 5)
+            {
+                $linkType          = $relationTypeModelClassNameAndOwns[3];
+                $relationLinkName  = $relationTypeModelClassNameAndOwns[4];
+            }
+            else
+            {
+                $linkType          = self::LINK_TYPE_ASSUMPTIVE;
+                $relationLinkName  = null;
+            }
         }
 
         /**
@@ -720,21 +763,10 @@
                         {
                             $owns = false;
                         }
-                        if (count($relationTypeModelClassNameAndOwns) == 4 &&
-                            $relationTypeModelClassNameAndOwns[3] != self::LINK_TYPE_ASSUMPTIVE)
-                        {
-                            throw new NotSupportedException();
-                        }
-                        if (count($relationTypeModelClassNameAndOwns) == 5)
-                        {
-                            $linkType          = $relationTypeModelClassNameAndOwns[3];
-                            $relationLinkName  = $relationTypeModelClassNameAndOwns[4];
-                        }
-                        else
-                        {
-                            $linkType          = self::LINK_TYPE_ASSUMPTIVE;
-                            $relationLinkName  = null;
-                        }
+                        $linkType          = null;
+                        $relationLinkName  = null;
+                        self::resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, $linkType,
+                                                                 $relationLinkName);
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                         $this->attributeNameToBeanAndClassName[$relationName] = array($bean, $modelClassName);
@@ -1251,17 +1283,12 @@
                                 break;
                             case self::HAS_ONE:
                             case self::HAS_MANY_BELONGS_TO:
-                                if ($relationType == self::HAS_ONE && $linkType == self::LINK_TYPE_SPECIFIC)
-                                {
-                                    $linkName = strtolower($relationLinkName);
-                                }
-                                else
-                                {
-                                    $linkName = null;
-                                }
+                                $linkName = self::makeCasedLinkName($relationType, $linkType, $relationLinkName);
                                 if ($bean->id > 0 && !in_array($attributeName, $this->unlinkedRelationNames))
                                 {
+
                                     $linkFieldName = ZurmoRedBeanLinkManager::getLinkField($relatedTableName, $linkName);
+
                                     if ((int)$bean->$linkFieldName > 0)
                                     {
                                         $beanIdentifier = $relatedTableName .(int)$bean->$linkFieldName;
@@ -2002,19 +2029,7 @@
                                     if (!RedBeanDatabase::isFrozen())
                                     {
                                         $tableName  = self::getTableName($this->getAttributeModelClassName($relationName));
-                                        //based on how we do relationships, getForeignKeyName no longer has enough information to correctly make the key.
-                                        //$columnName = self::getForeignKeyName(get_class($this), $relationName);
-
-//todo: move into something. possibly refactor getForeignKeyName
-                    $relatedModelTableName = self::getTableName($relatedModelClassName);
-                    $columnName = '';
-                    if ($linkName != null)
-                    {
-                        $columnName = strtolower($linkName) . '_';
-                    }
-                    $columnName .= $relatedModelTableName . '_id';
-//end todo: move into something. possibly refactor getForeignKeyName
-
+                                        $columnName = self::getForeignKeyName(get_class($this), $relationName);
                                         RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                                     }
                                 }

@@ -40,9 +40,8 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-
             $this->assertEquals(3, count($menu));
-            $this->assertEquals(6, count($menu['items']));
+            $this->assertEquals(7, count($menu['items']));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
             $this->assertEquals(0, count($menu));
@@ -102,7 +101,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(9, count($menu));
+            $this->assertEquals(10, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
             $this->assertEquals(3, count($menu));
@@ -171,6 +170,11 @@
                             'label' => 'Opportunity',
                             'url'   => array('/opportunities/default/create'),
                             'right' => OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES,
+                        ),
+                        array(
+                            'label' => 'Report',
+                            'url'   => array('/reports/default/selectType'),
+                            'right' => ReportsModule::RIGHT_CREATE_REPORTS,
                         ),
                 ),
             );

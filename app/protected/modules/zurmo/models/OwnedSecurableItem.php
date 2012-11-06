@@ -165,7 +165,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'owner' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'owner' => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
+                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
                     array('owner', 'required'),

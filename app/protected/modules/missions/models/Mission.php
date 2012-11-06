@@ -95,7 +95,8 @@
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'takenByUser'              => array(RedBeanModel::HAS_ONE,   'User'),
+                    'takenByUser'              => array(RedBeanModel::HAS_ONE,   'User', RedBeanModel::NOT_OWNED,
+                                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'takenByUser'),
                 ),
                 'rules' => array(
                     array('description',              'required'),

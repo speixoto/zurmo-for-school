@@ -39,8 +39,10 @@
                     array('eeeMember2', 'type', 'type' => 'string'),
                 ),
                 'relations' => array(
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
+                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
+                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
                 ),
                 'customFields' => array(
                     'industry'           => 'Industries',

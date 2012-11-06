@@ -250,5 +250,15 @@
             }
             return $this->getRelationModel()->getRelationModelClassName($this->relatedAttribute);
         }
+
+        public function getManyToManyTableName()
+        {
+            if($this->getRelationType() != RedBeanModel::MANY_MANY)
+            {
+                throw new NotSupportedException();
+            }
+            $attributeName = $this->getAttribute();
+            return $this->getModel()->{$attributeName}->getTableName();
+        }
     }
 ?>

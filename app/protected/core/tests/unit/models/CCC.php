@@ -42,8 +42,10 @@
                     'bbb'                => array(RedBeanModel::HAS_MANY,            'BBB'),
                     'iii'                => array(RedBeanModel::HAS_MANY,            'III'),
                     'eee'                => array(RedBeanModel::HAS_ONE,             'EEE'),
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
+                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
+                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries')
                 ),
                 'rules' => array(
                     array('cccMember',  'type', 'type' => 'string'),

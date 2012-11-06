@@ -165,38 +165,25 @@
             $this->assertEquals(null, $row['ppp2link_p_id']);
         }
 
-            //4. fix module/zurmo tests
-            //in save of redbeanmodel we have to refactor something that used ggetForeignKeyName
-            //5. add search tests, because for search queries it should now deal with this properly. and add column prefix etc.
-
-
-
-            //i didnt modify getForeignKeyName($modelClassName, $relationName) but it is a bit unclear how i should since dropdowns
-            //are also controlled here so not sure exactly. some side effects will need to be dealt with just not sure
-            // called from ZurmoRedBeanLinkManager::getKeys from RedBeanModels construct, not sure where though...
-            //we havent really solved the OTHER side, defining the poly, not that we usually would but we should resolve that gracefully
-            //new problem. if you want to show a HAS_ONE connects to a HAS_MANY, for example accounts/contacts you cant really connect
-            //becuase of this extra prefix now... you need to fix this.
-            //when we can fix this, we have ot make sure no other HAS_MANY is not using the specific model name otherwise
-            //this will break a lot of stuff because we dont usually call has_many relationships the same name as the model
-            //so we need to think about this for an upgrade script.. we should probably do this before 1.0
-            //we have an upgrade problem to deal with. need to note this somewhere for eckdosu? we can fix locally now for anything
-            //MultipleValuesCustomField HAS_MANY values (CustomFieldValue) I dont think we want to alter this do we?
-            //ask ivica should we implement this prior to 1.0? or is this minor and after 1.0 is ok? i guess maybe before but then we have
-            //to port these chagnes... not revisions?
-            //can make an epic for this.
-            //add story for refactoring modeldataproviderutil into epic
-            //since we munged up how belongs to works, now ks_i_id so we also need to factor this into upgrade scriptbut is this right?
-            //because shouldn't because it is the same id not do that? i dont know how it used to be.
-            //test that search queries formulate correctly for HAS_MANY, MANY_MANY with double connections to same module.
-            //document the models used? well definetlpp document this class...
-
+        public function testSomething()
+        {
+            //change this method name. test assumptive where the relation name != the model class name to make sure
+            //it still works ok'
+            //also test search then too to make sure the queries are generated correctly for this specific scenario..
+        }
 
         public function testMultipleManyManysToTheSameModel()
         {
         //many to many is clearlpp broken with double relationships
         //red bean models has a construction using ZurmoRedBeanLinkManager::getKeys so we should fix might matter here....
         //test that search queries formulate correctly for HAS_MANY, MANY_MANY with double connections to same module.
+        // called from ZurmoRedBeanLinkManager::getKeys from RedBeanModels construct, not sure where though...
+
+            //change here: buildJoinForManyToManyRelatedAttributeAndGetWhereClauseData
+            //and change RedBeanManyToManyRelatedModels call to include linkType and relationLinkName
+            //also in that class change save to do the proper table name. can probably make a static function
+            //that actually formulates table name passing in certain information then you can use this also
+            //via modelDataProviderUtil?  Maybe static is not noeeded
         }
 
         public function testMultipleBelongsToTheSameModel()
@@ -212,6 +199,14 @@
         public function testAreRelationsValidWithOnlyOneAssumptiveLinkAgainstASingleModel()
         {
             $this->fail();
+            //need some test when debug on to make sure you dont have more than one assumptive link to the same model
+        }
+
+        public function testMoveThisSomewhereElse()
+        {
+            //we havent really solved the OTHER side, defining the poly, not that we usually would but we should resolve that gracefully
+            //since we munged up how belongs to works, now ks_i_id so we also need to factor this into upgrade scriptbut is this right?
+            //because shouldn't because it is the same id not do that? i dont know how it used to be.
         }
     }
 ?>

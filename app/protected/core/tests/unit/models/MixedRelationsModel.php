@@ -68,8 +68,10 @@
                     array('dateTime2', 'type', 'type' => 'datetime'),
                 ),
                 'relations' => array(
-                    'primaryA'     => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::OWNED),
-                    'secondaryA'   => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::OWNED),
+                    'primaryA'     => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryA'),
+                    'secondaryA'   => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryA'),
                     'manyMany'     => array(RedBeanModel::MANY_MANY, 'DateDateTime', RedBeanModel::OWNED),
                 ),
             );
