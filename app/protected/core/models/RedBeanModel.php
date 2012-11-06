@@ -1251,13 +1251,9 @@
                                 break;
                             case self::HAS_ONE:
                             case self::HAS_MANY_BELONGS_TO:
-                                if ($relationType == self::HAS_ONE)
+                                if ($relationType == self::HAS_ONE && $linkType == self::LINK_TYPE_SPECIFIC)
                                 {
-                                    $linkName = strtolower($attributeName);
-                                    if ($linkName == strtolower($relatedModelClassName))
-                                    {
-                                        $linkName = null;
-                                    }
+                                    $linkName = strtolower($relationLinkName);
                                 }
                                 else
                                 {
@@ -1932,6 +1928,11 @@
                             {
                                 $linkName = null;
                             }
+                            elseif ($this->getRelationType($relationName) == self::HAS_ONE &&
+                                    $this->getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            {
+                                $linkName = strtolower($this->getRelationLinkName($relationName));
+                            }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
                             unset($this->unlinkedRelationNames[$key]);
                         }
@@ -1973,6 +1974,11 @@
                                 {
                                     $linkName = null;
                                 }
+                                elseif ($relationType == self::HAS_ONE &&
+                                        $this->getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                                {
+                                    $linkName = strtolower($this->getRelationLinkName($relationName));
+                                }
                                 elseif ($relationType == RedBeanModel::HAS_MANY_BELONGS_TO ||
                                         $relationType == RedBeanModel::HAS_ONE_BELONGS_TO)
                                 {
@@ -1996,7 +2002,19 @@
                                     if (!RedBeanDatabase::isFrozen())
                                     {
                                         $tableName  = self::getTableName($this->getAttributeModelClassName($relationName));
-                                        $columnName = self::getForeignKeyName(get_class($this), $relationName);
+                                        //based on how we do relationships, getForeignKeyName no longer has enough information to correctly make the key.
+                                        //$columnName = self::getForeignKeyName(get_class($this), $relationName);
+
+//todo: move into something. possibly refactor getForeignKeyName
+                    $relatedModelTableName = self::getTableName($relatedModelClassName);
+                    $columnName = '';
+                    if ($linkName != null)
+                    {
+                        $columnName = strtolower($linkName) . '_';
+                    }
+                    $columnName .= $relatedModelTableName . '_id';
+//end todo: move into something. possibly refactor getForeignKeyName
+
                                         RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                                     }
                                 }

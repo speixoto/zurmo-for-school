@@ -113,7 +113,7 @@
                         else
                         {
                             $relatedIds                  = ZurmoRedBeanLinkManager::getKeys($this->bean, $tableName,
-                                                                                            $this->resolveLinkName());
+                                                                                            $this->resolveLinkNameForCasing());
                             $this->relatedBeansAndModels = array_values(R::batch($tableName, $relatedIds));
                         }
                     }
@@ -161,13 +161,13 @@
                 }
                 else
                 {
-                    ZurmoRedBeanLinkManager::link($bean, $this->bean, $this->resolveLinkName());
+                    ZurmoRedBeanLinkManager::link($bean, $this->bean, $this->resolveLinkNameForCasing());
                     if (!RedBeanDatabase::isFrozen())
                     {
                         $tableName        = RedBeanModel::getTableName($this->modelClassName);
                         $columnName       = RedBeanModel::getTableName($this->relatedModelClassName) . '_id';
                         $columnName       = ZurmoRedBeanLinkManager::
-                                            resolveColumnPrefix($this->resolveLinkName()) . $columnName;
+                                            resolveColumnPrefix($this->resolveLinkNameForCasing()) . $columnName;
                         RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                     }
                 }
@@ -179,7 +179,7 @@
             {
                 if (!$this->owns)
                 {
-                    ZurmoRedBeanLinkManager::breakLink($bean, $tableName, $this->resolveLinkName());
+                    ZurmoRedBeanLinkManager::breakLink($bean, $tableName, $this->resolveLinkNameForCasing());
                     R::store($bean);
                 }
                 else
@@ -191,16 +191,12 @@
             return true;
         }
 
-        protected function resolveLinkName()
+        protected function resolveLinkNameForCasing()
         {
-            return null; //todo: fix once we resolve
-            $linkName = null;
-            //
-            if(strtolower($this->relationName) != strtolower($this->modelClassName))
+            if($this->linkName != null)
             {
-                $linkName = strtolower($this->relationName);
+                return strtolower($this->linkName);
             }
-            return $linkName;
         }
 
         /**

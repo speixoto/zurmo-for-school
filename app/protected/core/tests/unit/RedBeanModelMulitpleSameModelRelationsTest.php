@@ -56,8 +56,8 @@
             $row = R::getRow('select * from p');
             $this->assertTrue(isset($row['id']) && $row['id'] = $p->id);
             $this->assertTrue(isset($row['pp_id']) && $row['pp_id'] = $pp1->id);
-            $this->assertTrue(isset($row['pp_id']) && $row['pp1_pp_id'] = $pp2->id);
-            $this->assertTrue(isset($row['pp_id']) && $row['pp2_pp_id'] = $pp3->id);
+            $this->assertTrue(isset($row['pp1link_pp_id']) && $row['pp1link_pp_id'] = $pp2->id);
+            $this->assertTrue(isset($row['pp2link_pp_id']) && $row['pp2link_pp_id'] = $pp3->id);
             $this->assertCount(5, $row);
 
             $row = R::getRow('select * from pp');
@@ -90,32 +90,32 @@
             $row = R::getRow('select * from p where id =' . $p->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $p->id);
             $this->assertEquals(null, $row['pp_id']);
-            $this->assertEquals(null, $row['pp1_pp_id']);
-            $this->assertEquals(null, $row['pp2_pp_id']);
+            $this->assertEquals(null, $row['pp1link_pp_id']);
+            $this->assertEquals(null, $row['pp2link_pp_id']);
             $this->assertCount(5, $row);
 
             $row = R::getRow('select * from ppp where id =' . $ppp1->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp1->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp1');
             $this->assertTrue(isset($row['p_id']) && $row['p_id'] = $p->id);
-            $this->assertEquals(null, $row['ppp1_p_id']);
-            $this->assertEquals(null, $row['ppp2_p_id']);
+            $this->assertEquals(null, $row['ppp1link_p_id']);
+            $this->assertEquals(null, $row['ppp2link_p_id']);
             $this->assertCount(5, $row);
 
             $row = R::getRow('select * from ppp where id =' . $ppp2->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp2->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp2');
             $this->assertEquals(null, $row['p_id']);
-            $this->assertTrue(isset($row['ppp1_p_id']) && $row['ppp1_p_id'] = $p->id);
-            $this->assertEquals(null, $row['ppp2_p_id']);
+            $this->assertTrue(isset($row['ppp1link_p_id']) && $row['ppp1link_p_id'] = $p->id);
+            $this->assertEquals(null, $row['ppp2link_p_id']);
             $this->assertCount(5, $row);
 
             $row = R::getRow('select * from ppp where id =' . $ppp3->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp3->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp3');
             $this->assertEquals(null, $row['p_id']);
-            $this->assertEquals(null, $row['ppp1_p_id']);
-            $this->assertTrue(isset($row['ppp2_p_id']) && $row['ppp2_p_id'] = $p->id);
+            $this->assertEquals(null, $row['ppp1link_p_id']);
+            $this->assertTrue(isset($row['ppp2link_p_id']) && $row['ppp2link_p_id'] = $p->id);
             $this->assertCount(5, $row);
 
             $pId    = $p->id;
@@ -147,36 +147,33 @@
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp1->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp1');
             $this->assertEquals(null, $row['p_id']);
-            $this->assertEquals(null, $row['ppp1_p_id']);
-            $this->assertEquals(null, $row['ppp2_p_id']);
+            $this->assertEquals(null, $row['ppp1link_p_id']);
+            $this->assertEquals(null, $row['ppp2link_p_id']);
 
             $row = R::getRow('select * from ppp where id =' . $ppp2->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp2->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp2');
             $this->assertEquals(null, $row['p_id']);
-            $this->assertEquals(null, $row['ppp1_p_id']);
-            $this->assertEquals(null, $row['ppp2_p_id']);
+            $this->assertEquals(null, $row['ppp1link_p_id']);
+            $this->assertEquals(null, $row['ppp2link_p_id']);
 
             $row = R::getRow('select * from ppp where id =' . $ppp3->id);
             $this->assertTrue(isset($row['id']) && $row['id'] = $ppp3->id);
             $this->assertTrue(isset($row['name']) && $row['name'] = 'ppp3');
             $this->assertEquals(null, $row['p_id']);
-            $this->assertEquals(null, $row['ppp1_p_id']);
-            $this->assertEquals(null, $row['ppp2_p_id']);
+            $this->assertEquals(null, $row['ppp1link_p_id']);
+            $this->assertEquals(null, $row['ppp2link_p_id']);
+        }
 
-
-            //1. add back the usage of 4th/5th param for SPECIFIC.
-            //2. modify P, PP, and PPP so we can get this test class to pass
-            //3. add reversal linkName/type info from the HAS_ONE sides and then test those retrievals and removals. since with
-                 //multiple relationships we want to catch anything
-            //4. run all framework tests, they should pass.
+            //4. fix module/zurmo tests
+            //in save of redbeanmodel we have to refactor something that used ggetForeignKeyName
             //5. add search tests, because for search queries it should now deal with this properly. and add column prefix etc.
-            //6. test other modules/zurmo tests that seem approproiate
 
 
 
-
-
+            //i didnt modify getForeignKeyName($modelClassName, $relationName) but it is a bit unclear how i should since dropdowns
+            //are also controlled here so not sure exactly. some side effects will need to be dealt with just not sure
+            // called from ZurmoRedBeanLinkManager::getKeys from RedBeanModels construct, not sure where though...
             //we havent really solved the OTHER side, defining the poly, not that we usually would but we should resolve that gracefully
             //new problem. if you want to show a HAS_ONE connects to a HAS_MANY, for example accounts/contacts you cant really connect
             //becuase of this extra prefix now... you need to fix this.
@@ -193,7 +190,7 @@
             //because shouldn't because it is the same id not do that? i dont know how it used to be.
             //test that search queries formulate correctly for HAS_MANY, MANY_MANY with double connections to same module.
             //document the models used? well definetlpp document this class...
-        }
+
 
         public function testMultipleManyManysToTheSameModel()
         {
@@ -210,6 +207,11 @@
           //more strict. look around 681 in redbeanmodel, not sure if we can do something about this
         //belongs to, i am not sure this will work. because belongs to on self can be trickpp as is. see if we can get this working.
         //test that search queries formulate correctly for HAS_MANY, MANY_MANY with double connections to same module.
+        }
+
+        public function testAreRelationsValidWithOnlyOneAssumptiveLinkAgainstASingleModel()
+        {
+            $this->fail();
         }
     }
 ?>

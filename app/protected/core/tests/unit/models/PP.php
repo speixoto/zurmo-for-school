@@ -56,6 +56,13 @@
                     array('name',          'type',     'type' => 'string'),
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                 ),
+                'relations' => array(
+                    'p'                 => array(RedBeanModel::HAS_MANY,           'PP'),
+                    'p1'                => array(RedBeanModel::HAS_MANY,           'PP', RedBeanModel::NOT_OWNED,
+                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
+                    'p2'                => array(RedBeanModel::HAS_MANY,           'PP', RedBeanModel::NOT_OWNED,
+                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'pp2Link'),
+                ),
             );
             return $metadata;
         }

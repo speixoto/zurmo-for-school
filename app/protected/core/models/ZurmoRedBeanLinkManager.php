@@ -80,10 +80,10 @@
         }
 
         public static function resolveColumnPrefix($linkName)
-        {//todo: fix once we resolve
+        {
             if($linkName != null)
             {
-                //return $linkName .= '_';
+                return $linkName .= '_';
             }
         }
     }

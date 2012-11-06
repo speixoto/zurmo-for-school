@@ -57,12 +57,16 @@
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                 ),
                 'relations' => array(
-                    'pp'                => array(RedBeanModel::HAS_ONE,             'PP'),
-                    'pp1'                => array(RedBeanModel::HAS_ONE,            'PP'),
-                    'pp2'                => array(RedBeanModel::HAS_ONE,            'PP'),
-                    'ppp'                => array(RedBeanModel::HAS_MANY,           'PPP'),
-                    'ppp1'                => array(RedBeanModel::HAS_MANY,          'PPP'),
-                    'ppp2'                => array(RedBeanModel::HAS_MANY,          'PPP'),
+                    'pp'                  => array(RedBeanModel::HAS_ONE,            'PP'),
+                    'pp1'                 => array(RedBeanModel::HAS_ONE,            'PP',  RedBeanModel::NOT_OWNED,
+                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
+                    'pp2'                 => array(RedBeanModel::HAS_ONE,            'PP',  RedBeanModel::NOT_OWNED,
+                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'pp2Link'),
+                    'ppp'                 => array(RedBeanModel::HAS_MANY,           'PPP'),
+                    'ppp1'                => array(RedBeanModel::HAS_MANY,           'PPP', RedBeanModel::NOT_OWNED,
+                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'ppp1Link'),
+                    'ppp2'                => array(RedBeanModel::HAS_MANY,           'PPP', RedBeanModel::NOT_OWNED,
+                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'ppp2Link'),
                 ),
             );
             return $metadata;
