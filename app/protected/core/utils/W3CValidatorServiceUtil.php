@@ -72,23 +72,53 @@
             $nodes = $doc->xpath('//m:markupvalidationresponse/m:validity');
             $validity = $nodes[0];
             $nodes = $doc->xpath('//m:markupvalidationresponse/m:errors/m:errorcount');
-            $errorcount = strval($nodes[0]);
-            $nodes = $doc->xpath('//m:markupvalidationresponse/m:errors/m:errorlist/m:error');
+            $errorCount = strval($nodes[0]);
+            $errorNodes = $doc->xpath('//m:markupvalidationresponse/m:errors/m:errorlist/m:error');
 
-            if (!$validity || count($nodes) > 0)
+            $warningNodes = $doc->xpath('//m:markupvalidationresponse/m:warnings/m:warningcount');
+            $warningCount = strval($nodes[0]);
+            $warningNodes = $doc->xpath('//m:markupvalidationresponse/m:warnings/m:warninglist/m:warning');
+
+            if (!$validity || count($errorNodes) > 0 || count($warningNodes) > 0)
             {
                 $xhtmlValidationErrors[] = 'THIS IS NOT A VALID XHTML FILE';
-                $xhtmlValidationErrors[] = 'There are ' . $errorcount . ' errors';
-                foreach ($nodes as $node)
+
+                if (count($errorNodes))
                 {
-                    $nodes = $node->xpath('m:line');
-                    $line = strval($nodes[0]);
-                    $nodes = $node->xpath('m:col');
-                    $col = strval($nodes[0]);
-                    $nodes = $node->xpath('m:message');
-                    $message = strval($nodes[0]);
-                    $errorMessage = 'line: ' . $line . ', column: ' . $col . ' message: ' . $message ;
-                    $xhtmlValidationErrors[] = "$errorMessage";
+                    $xhtmlValidationErrors[] = 'There are ' . count($errorNodes) . ' error(s)';
+                    foreach ($errorNodes as $node)
+                    {
+                        $errorNodes = $node->xpath('m:line');
+                        $line = strval($errorNodes[0]);
+                        $errorNodes = $node->xpath('m:col');
+                        $col = strval($errorNodes[0]);
+                        $errorNodes = $node->xpath('m:message');
+                        $message = strval($errorNodes[0]);
+                        $errorMessage = 'line: ' . $line . ', column: ' . $col . ' message: ' . $message ;
+                        $xhtmlValidationErrors[] = "$errorMessage";
+                    }
+                }
+
+                if (count($warningNodes))
+                {
+                    $xhtmlValidationErrors[] = 'There are ' . count($warningNodes) . ' warning(s)';
+                    foreach ($warningNodes as $node)
+                    {
+                        $warningNodes = $node->xpath('m:line');
+                        if (isset($warningNodes[0]))
+                        {
+                            $line = strval($warningNodes[0]);
+                        }
+                        $warningNodes = $node->xpath('m:col');
+                        if (isset($warningNodes[0]))
+                        {
+                            $col = strval($warningNodes[0]);
+                        }
+                        $warningNodes = $node->xpath('m:message');
+                        $message = strval($warningNodes[0]);
+                        $errorMessage = 'line: ' . $line . ', column: ' . $col . ' message: ' . $message ;
+                        $xhtmlValidationErrors[] = "$errorMessage";
+                    }
                 }
             }
             return $xhtmlValidationErrors;
