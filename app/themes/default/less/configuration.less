@@ -76,10 +76,10 @@
         }
         table tr:hover{
             background-color:#D4E7BC;
-            color:@themeColor;
+            ++.themeColor;
             .pencil{
                 visibility:visible;
-                color:@themeColor;
+                ++.themeColor;
             }
         }
         table thead{
@@ -199,7 +199,7 @@ table.configuration-list{
             padding-left:15px;
             padding-bottom: 10px;
             font-weight:bold !important;
-            color:@themeColor;
+            ++.themeColor;
         }
     }
     td{
@@ -427,7 +427,6 @@ table.configuration-list{
     }
     a{
         .zLink();
-        .smaller();
         margin-right:5px;
     }
     table{

@@ -124,10 +124,10 @@
         font-weight:bold;
     }
     .delete-comment, .edit-comment{
-        color:@themeColor;
+        ++.themeColor;
         .smaller();
         a{
-            color:@themeColor;
+            ++.themeColor;
             .opacity(25);
             &:hover{
                 .opacity(100);
@@ -231,7 +231,7 @@
 
 .unread{
 	td, td a{
-		color:@themeColor;
+		++.themeColor;
 		font-weight:bold;
 	}
 	
@@ -281,7 +281,7 @@
 }
 
 a.user-link{
-    color: @themeColor;
+    ++.themeColor;
     font-weight: bold;
 }
 
@@ -329,7 +329,7 @@ a.user-link{
     .show-create-comment{
         margin-left: 80px;
         .smaller();
-        color:@themeColor;
+        ++.themeColor;
         .opacity(50);
         &:hover{
             .opacity(100);

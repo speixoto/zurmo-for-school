@@ -3,7 +3,161 @@
   padding: 0;
 }
 /*Imports*/
-.flyout {
+/*Blue Theme*/
+.themeColor,
+.zButton:hover,
+.z-button:hover,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a:hover,
+#MenuView li.active > a > span > span,
+#MenuView a:hover > span > span,
+#MenuView li.active > a > span > span,
+.xhtml-validation-info,
+.performance-info,
+table.items tr:hover .pencil,
+.ui-dialog .ui-dialog-title,
+div.wide.form a,
+.search-form-tools,
+#more-search-linkmodal,
+#more-search-link,
+#select-list-attributes-link,
+.double-column .panel a,
+.details-table a,
+#inline-edit-form > table td > a,
+#inline-edit-form .permissions-box > label,
+.edit-row-menu > li > a :before,
+.edit-row-menu > li > a :after,
+.LatestActivitiesListView .latest-activity-toolbar label,
+.LatestActivitiesView .latest-activity-toolbar label,
+.LatestActivitiesListView .filter-portlet-model-bar label,
+.LatestActivitiesView .filter-portlet-model-bar label,
+.operation-description,
+.AppContent.MassEditView .ui-state-highlight p,
+a.remove :hover .icon:after,
+.juiportlet-widget-head a.edit :hover .icon:after,
+#ConfigurationPageView table tr:hover,
+#ConfigurationPageView table tr:hover .pencil,
+#ModulePermissionsEditAndDetailsView table tr:first-child th,
+.panelTitle,
+#MyMissionsForPortletView .filter-portlet-model-bar label,
+.upload-actions .icon-delete,
+.ui-datepicker .calendar-events-1 span,
+.ui-datepicker .calendar-events-2 span,
+.ui-datepicker .calendar-events-3 span,
+.ui-datepicker .calendar-events-4 span,
+.ui-datepicker .calendar-events-5 span,
+.ui-datepicker .calendar-events-6 span,
+.panelToPlace,
+.rowToPlace,
+.element-to-place,
+.qtip,
+.ui-tooltip-default .ui-tooltip-titlebar,
+.game-badge .badge-icon,
+.badge .badge-icon,
+.percentComplete,
+.comment .delete-comment,
+.comment .edit-comment,
+.comment .delete-comment a,
+.comment .edit-comment a,
+.unread td,
+.unread td a,
+a.user-link,
+.SocialItemsListView .show-create-comment,
+#AllSocialItemsForPortletView .show-create-comment {
+  color: #262877;
+}
+.themeColor2,
+#notifications-flyout .single-notification h4,
+.view-toolbar-link :hover,
+.view-toolbar-link .active,
+.view-toolbar > a :hover,
+.view-toolbar .parent > a :hover,
+.view-toolbar > a .active,
+.view-toolbar .parent > a .active,
+.portlet-toolbar .icon-create:before,
+.portlet-toolbar .icon-delete:before,
+.portlet-toolbar .icon-edit:before,
+.ZeroModelsYetView a :before,
+#NoteInlineEditView form input[type="submit"] :before,
+.BreadCrumbView #StickyListMenu > li > a:hover > span,
+.addfileinput-button :hover span,
+.AttributeEditView .ui-icon-info:after {
+  color: #7bb730;
+}
+.themeBackgroundColor,
+.zLink,
+.z-link,
+#clear-search-link .zLink,
+#clear-search-link .z-link,
+#clear-search-link,
+.LatestActivitiesListView .latest-activity-toolbar label :hover,
+.LatestActivitiesView .latest-activity-toolbar label :hover,
+.LatestActivitiesListView .filter-portlet-model-bar label :hover,
+.LatestActivitiesView .filter-portlet-model-bar label :hover,
+.LatestActivitiesListView .latest-activity-toolbar .ui-state-active,
+.LatestActivitiesView .latest-activity-toolbar .ui-state-active,
+.LatestActivitiesListView .filter-portlet-model-bar .ui-state-active,
+.LatestActivitiesView .filter-portlet-model-bar .ui-state-active,
+.lead-conversion-actions a .zLink,
+.lead-conversion-actions a .z-link,
+.lead-conversion-actions a,
+#InstallAccessFailurePageView a,
+#ErrorPageView a,
+#JobsCollectionView a .zLink,
+#JobsCollectionView a .z-link,
+#JobsCollectionView a,
+#ImportWizardMappingView #sample-column-header a,
+#clear-search-link #ImportWizardMappingView #sample-column-header a,
+.lead-conversion-actions a #ImportWizardMappingView #sample-column-header a,
+#JobsCollectionView a #ImportWizardMappingView #sample-column-header a,
+.remove-extra-column-link,
+#clear-search-link .remove-extra-column-link,
+.lead-conversion-actions a .remove-extra-column-link,
+#JobsCollectionView a .remove-extra-column-link,
+#MyMissionsForPortletView .filter-portlet-model-bar label:hover,
+#MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+.upload-actions button.start,
+.upload-actions button.cancel,
+.ranking,
+.email-matching-actions a .zLink,
+.email-matching-actions a .z-link,
+.email-matching-actions a #ImportWizardMappingView #sample-column-header a,
+.email-matching-actions a .remove-extra-column-link,
+.email-matching-actions a {
+  background-color: #262877;
+}
+.themeBackgroundColor2,
+a:hover,
+a:hover,
+#ShortcutsMenu ul a:hover,
+#MenuView a > span :first-child,
+#MenuView li.active > a > span,
+#RecentlyViewedView li a span :first-child,
+a:hover,
+a:hover,
+.view-toolbar .parent > ul a:hover,
+a:hover,
+a:hover,
+.edit-row-menu ul a:hover,
+#HomeDashboardPortletSelectionView ul span,
+li.token-input-selected-token,
+.points,
+.game-badge .badge-grade,
+.badge .badge-grade,
+.hide-welcome span {
+  background-color: #7bb730;
+}
+.flyout,
+#ModalView .search-view-1,
+.ui-multiselect-menu,
+.toolbar-mbmenu .options-menu ul,
+.BreadCrumbView #StickyListMenu ul,
+.ui-autocomplete {
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -52,13 +206,12 @@
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
-.zButton:not(.attachLoading),
+.zButton:not(.attacheLoading),
 .z-button:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .zButton:hover,
 .z-button:hover {
-  color: #7bb730 !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
   -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
   -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
@@ -99,7 +252,6 @@
 .z-link,
 #ImportWizardMappingView #sample-column-header a,
 .remove-extra-column-link {
-  background: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -137,7 +289,6 @@
   font-style: normal;
 }
 /*=Variables*/
-/*blue theme*/
 .strong {
   font-weight: bold;
 }
@@ -192,7 +343,6 @@ h3,
 h4,
 h5,
 h6 {
-  color: #262877;
   -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -213,14 +363,8 @@ a:active img,
 a:visited img {
   border: none;
 }
-a:link:focus,
-a:hover:focus,
-a:active:focus,
-a:visited:focus {
+a:focus {
   outline: none;
-}
-a:hover {
-  color: #262877 !important;
 }
 /*=HTML5*/
 article,
@@ -576,7 +720,6 @@ section {
 }
 #notifications-flyout .single-notification h4 {
   margin-bottom: 2px;
-  color: #7bb730;
   color: #fff;
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
@@ -1010,12 +1153,6 @@ section {
   list-style: none !important;
   margin-top: -8px;
   margin-left: 0px;
-  z-index: 9999;
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 33px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -1032,6 +1169,12 @@ section {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  z-index: 9999;
+  min-width: 110px;
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 33px;
   padding-top: 3px;
   padding-bottom: 3px;
 }
@@ -1048,7 +1191,6 @@ section {
 }
 #ShortcutsMenu ul a:hover {
   color: #fff !important;
-  background: #7cb730;
 }
 /*=Left Sidebar*/
 .AppNavigation {
@@ -1154,7 +1296,6 @@ section {
 
 }
 #MenuView a > span:first-child {
-  background-color: #7bb730;
   width: 160px;
   height: 33px;
   filter: alpha(opacity=0);
@@ -1196,16 +1337,8 @@ section {
   background-position-x: 0;
   background-position-y: 0;
 }
-#MenuView li.active > a > span > span,
-#MenuView a:hover > span > span {
-  color: #262877;
-}
 #MenuView li.active > a > span {
-  background-color: #7bb730;
   color: #fff;
-}
-#MenuView li.active > a > span > span {
-  color: #262877;
 }
 /*=Recently Viewed*/
 #RecentlyViewedView {
@@ -1294,7 +1427,6 @@ section {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #7bb730;
   width: 160px;
   height: 33px;
   -webkit-border-radius: 4px;
@@ -1504,6 +1636,7 @@ form .view-toolbar-container,
 #ActionBarSearchAndListView .view-toolbar {
   margin-top: 0;
 }
+.view-toolbar-link,
 .view-toolbar > a,
 .view-toolbar .parent > a {
   color: #656565;
@@ -1512,22 +1645,21 @@ form .view-toolbar-container,
   padding: 0 10px;
   line-height: 30px;
   display: inline-block;
+  border-left: 1px solid #bababa;
+}
+.view-toolbar-link:active,
+.view-toolbar > a:active,
+.view-toolbar .parent > a:active {
+  color: #656565;
+  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.view-toolbar > a,
+.view-toolbar .parent > a {
   position: relative;
   border-left: 1px solid #bababa;
   text-indent: 0 !important;
   padding-left: 40px;
   vertical-align: middle;
-}
-.view-toolbar > a:hover,
-.view-toolbar .parent > a:hover,
-.view-toolbar > a.active,
-.view-toolbar .parent > a.active {
-  color: #7bb730 !important;
-}
-.view-toolbar > a:active,
-.view-toolbar .parent > a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
 .view-toolbar .parent > a:after {
   content: "▾";
@@ -1542,12 +1674,6 @@ form .view-toolbar-container,
 }
 .view-toolbar .parent > ul {
   margin-top: 0;
-  z-index: 9999;
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 33px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -1564,6 +1690,12 @@ form .view-toolbar-container,
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  z-index: 9999;
+  min-width: 110px;
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 33px;
   padding-top: 3px;
   padding-bottom: 3px;
   left: auto;
@@ -1581,7 +1713,6 @@ form .view-toolbar-container,
 }
 .view-toolbar .parent > ul a:hover {
   color: #fff !important;
-  background: #7cb730;
 }
 .view-toolbar > a:first-child {
   border-left: none;
@@ -1894,7 +2025,6 @@ form .view-toolbar-container,
   margin-top: -38px;
   margin-right: 50px;
   font-style: italic;
-  color: #262877;
 }
 #credit-link {
   background: url(../images/Zurmo.png) left top no-repeat;
@@ -1958,7 +2088,6 @@ table.items tr:hover {
 }
 table.items tr:hover .pencil {
   visibility: visible;
-  color: #262877;
 }
 table.items > thead {
   background-color: #f4f4f4;
@@ -2379,7 +2508,6 @@ td.empty {
   top: -1px;
   color: #fff;
   margin-left: 0;
-  color: #7bb730;
 }
 .portlet-toolbar .icon-delete:before {
   content: "_";
@@ -2396,7 +2524,6 @@ td.empty {
   top: -1px;
   color: #fff;
   margin-left: 0;
-  color: #7bb730;
 }
 .portlet-toolbar .icon-edit:before {
   content: "!";
@@ -2413,7 +2540,6 @@ td.empty {
   top: -1px;
   color: #fff;
   margin-left: 0;
-  color: #7bb730;
 }
 a.simple-select {
   color: #262877 !important;
@@ -2484,7 +2610,6 @@ a.simple-select:before {
   margin: 0 !important;
   font-size: 15px;
   font-weight: bold;
-  color: #262877;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -2598,9 +2723,6 @@ label.hasCheckBox + label {
 }
 div.wide.form label.hasCheckBox {
   margin-top: 0 !important;
-}
-div.wide.form a {
-  color: #262877;
 }
 .ui-multiselect-checkboxes label {
   padding-left: 25px;
@@ -2745,27 +2867,6 @@ div.wide.form a {
   margin-top: 15px;
   float: left;
 }
-.ZeroModelsYetView a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.ZeroModelsYetView a:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.ZeroModelsYetView a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.ZeroModelsYetView a.loading .z-spinner {
-  display: inline-block;
-}
-.ZeroModelsYetView a.loading .z-icon {
-  display: none;
-}
 .ZeroModelsYetView a:before {
   content: "Y";
   font-weight: normal;
@@ -2775,7 +2876,6 @@ div.wide.form a {
   top: 2px;
   left: -5px;
   margin-right: 3px;
-  color: #7bb730;
 }
 .ZeroModelsYetView .large-icon {
   width: 25%;
@@ -2998,7 +3098,6 @@ div.wide.form a {
   top: 16px;
   left: 265px;
   line-height: 25px;
-  color: #262877;
   font-size: 11px;
 }
 .search-form-tools input[type="submit"] {
@@ -3031,31 +3130,9 @@ div.wide.form a {
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
-.search-form-tools input[type="submit"]:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.search-form-tools input[type="submit"]:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.search-form-tools input[type="submit"]:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.search-form-tools input[type="submit"].loading .z-spinner {
-  display: inline-block;
-}
-.search-form-tools input[type="submit"].loading .z-icon {
-  display: none;
-}
 #more-search-linkmodal,
 #more-search-link {
   margin-left: 0;
-  color: #262877;
 }
 #more-search-linkmodal:after,
 #more-search-link:after {
@@ -3064,7 +3141,6 @@ div.wide.form a {
 }
 #select-list-attributes-link {
   margin-left: 25px;
-  color: #262877;
 }
 #select-list-attributes-link:after {
   content: "▾";
@@ -3090,22 +3166,6 @@ div.wide.form a {
   left: 250px;
   top: 35px;
   padding: 20px 20px 20px 20px;
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   font-size: 11px;
 }
 #ModalView .search-view-1 input,
@@ -3188,7 +3248,7 @@ div.wide.form a {
   left: auto;
 }
 #clear-search-link {
-  background: #262877;
+  background-color: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -3198,10 +3258,6 @@ div.wide.form a {
   color: #fff !important;
   font-size: 11px;
   margin-left: 10px;
-}
-#clear-search-link:hover {
-  color: #fff !important;
-  text-decoration: underline;
 }
 #clear-search-link .icon-clear {
   font-weight: normal;
@@ -3321,22 +3377,6 @@ div.wide.form a {
 }
 .ui-multiselect-menu {
   padding: 10px !important;
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   overflow: hidden;
   min-width: 150px;
 }
@@ -3380,9 +3420,6 @@ div.wide.form a {
 }
 .double-column .panel table {
   width: 100% !important;
-}
-.double-column .panel a {
-  color: #262877;
 }
 .double-column #right-side-edit-view-panel {
   margin-bottom: 15px;
@@ -3789,9 +3826,6 @@ div.wide.form a {
   padding-top: 0;
   padding-left: 10px;
 }
-.details-table a {
-  color: #262877;
-}
 .details-table .map-link {
   display: inline-block;
   margin-left: 4px;
@@ -4009,48 +4043,11 @@ div.wide.form a {
   border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #bababa;
 }
-.toolbar-mbmenu .options-menu > li > a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.toolbar-mbmenu .options-menu > li > a:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.toolbar-mbmenu .options-menu > li > a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.toolbar-mbmenu .options-menu > li > a.loading .z-spinner {
-  display: inline-block;
-}
-.toolbar-mbmenu .options-menu > li > a.loading .z-icon {
-  display: none;
-}
 .toolbar-mbmenu .options-menu > li > a:after {
   content: "▾";
   margin-left: 5px;
 }
 .toolbar-mbmenu .options-menu ul {
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   margin-top: -8px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -4240,7 +4237,6 @@ div.wide.form a {
   vertical-align: middle;
   position: relative;
   top: -1px;
-  color: #7bb730;
   margin-left: 2px;
 }
 #NoteInlineEditView .form-toolbar {
@@ -4257,9 +4253,6 @@ div.wide.form a {
 }
 #inline-edit-form .panel td {
   padding-bottom: 15px;
-}
-#inline-edit-form > table td > a {
-  color: #262877;
 }
 #inline-edit-form > table td > a:after {
   content: "▾";
@@ -4313,7 +4306,6 @@ div.wide.form a {
 }
 #inline-edit-form .permissions-box > label {
   margin-bottom: 12px !important;
-  color: #262877;
   font-size: 13px;
   font-weight: bold !important;
 }
@@ -4445,26 +4437,7 @@ div.wide.form a {
   background-image: linear-gradient(top, #e8e8e8, #f5f5f5);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8e8e8', endColorstr='#f5f5f5', GradientType=0);
 }
-.BreadCrumbView #StickyListMenu > li > a:hover > span {
-  color: #7bb730;
-}
 .BreadCrumbView #StickyListMenu ul {
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   display: none;
   list-style: none;
   position: absolute;
@@ -4681,7 +4654,6 @@ div.hasHalfs .twoThirds {
 }
 .edit-row-menu > li > a:before {
   content: "▾";
-  color: #262877;
   position: relative;
   top: -2px;
   right: 2px;
@@ -4689,7 +4661,6 @@ div.hasHalfs .twoThirds {
 }
 .edit-row-menu > li > a:after {
   content: "n";
-  color: #262877;
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -4706,12 +4677,6 @@ div.hasHalfs .twoThirds {
   width: 110px;
   margin-left: -97px;
   list-style: none;
-  z-index: 9999;
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 33px;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -4728,6 +4693,12 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  z-index: 9999;
+  min-width: 110px;
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 33px;
   padding-top: 3px;
   padding-bottom: 3px;
   top: 20px;
@@ -4746,7 +4717,6 @@ div.hasHalfs .twoThirds {
 }
 .edit-row-menu ul a:hover {
   color: #fff !important;
-  background: #7cb730;
 }
 /*Upcoming Meeting Pager*/
 .pager {
@@ -5029,13 +4999,11 @@ div.hasHalfs .twoThirds {
   font-size: 11px !important;
   padding: 3px;
   margin: 0 3px;
-  color: #262877;
 }
 .LatestActivitiesListView .latest-activity-toolbar label:hover,
 .LatestActivitiesView .latest-activity-toolbar label:hover,
 .LatestActivitiesListView .filter-portlet-model-bar label:hover,
 .LatestActivitiesView .filter-portlet-model-bar label:hover {
-  background: #262877;
   color: #FFF;
   -webkit-border-radius: 3px !important;
   -moz-border-radius: 3px !important;
@@ -5059,7 +5027,6 @@ div.hasHalfs .twoThirds {
 .LatestActivitiesView .latest-activity-toolbar .ui-state-active,
 .LatestActivitiesListView .filter-portlet-model-bar .ui-state-active,
 .LatestActivitiesView .filter-portlet-model-bar .ui-state-active {
-  background: #262877;
   color: #FFF;
   -webkit-border-radius: 3px !important;
   -moz-border-radius: 3px !important;
@@ -5319,22 +5286,6 @@ div.hasHalfs .twoThirds {
 .ui-autocomplete {
   margin-top: 2px;
   width: 335px;
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   padding-top: 2px;
   padding-bottom: 2px;
   text-align: left;
@@ -5419,7 +5370,6 @@ div.hasHalfs .twoThirds {
 .operation-description {
   display: block;
   margin: 0 0 15px 0;
-  color: #262877;
   line-height: 150%;
 }
 .operation-description strong {
@@ -5524,7 +5474,6 @@ div.hasHalfs .twoThirds {
 }
 .AppContent.MassEditView .ui-state-highlight p {
   text-align: left;
-  color: #262877;
   font-size: 13px;
   font-style: normal;
   font-weight: bold;
@@ -5574,7 +5523,7 @@ div.hasHalfs .twoThirds {
   padding: 10px;
 }
 .lead-conversion-actions a {
-  background: #262877;
+  background-color: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -5583,10 +5532,6 @@ div.hasHalfs .twoThirds {
   border-radius: 2px;
   color: #fff !important;
   font-size: 11px;
-}
-.lead-conversion-actions a:hover {
-  color: #fff !important;
-  text-decoration: underline;
 }
 /*=Progress*/
 .AppContent.ProgressView {
@@ -5627,27 +5572,6 @@ div.hasHalfs .twoThirds {
   -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-}
-#progressBar-links a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-#progressBar-links a:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-#progressBar-links a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-#progressBar-links a.loading .z-spinner {
-  display: inline-block;
-}
-#progressBar-links a.loading .z-icon {
-  display: none;
 }
 /*=About*/
 #AboutView {
@@ -5981,9 +5905,6 @@ a.remove .icon:after {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
 }
-a.remove:hover .icon:after {
-  color: #262877;
-}
 .juiportlet-widget-head a.edit {
   float: right;
   display: inline;
@@ -6003,9 +5924,6 @@ a.remove:hover .icon:after {
   display: block;
   float: right;
   color: #A7A7A7;
-}
-.juiportlet-widget-head a.edit:hover .icon:after {
-  color: #262877;
 }
 .juiportlet-widget-head a.collapse {
   float: left;
@@ -6127,7 +6045,6 @@ a.remove:hover .icon:after {
 }
 #InstallAccessFailurePageView a,
 #ErrorPageView a {
-  background: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -6187,27 +6104,6 @@ a.remove:hover .icon:after {
   -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-}
-#InstallPageView .AppContainer a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-#InstallPageView .AppContainer a:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-#InstallPageView .AppContainer a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-#InstallPageView .AppContainer a.loading .z-spinner {
-  display: inline-block;
-}
-#InstallPageView .AppContainer a.loading .z-icon {
-  display: none;
 }
 #InstallPageView #save {
   color: #fff !important;
@@ -6291,27 +6187,6 @@ a.remove:hover .icon:after {
   -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-}
-#InstallPageView #install-form input[type="submit"]:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-#InstallPageView #install-form input[type="submit"]:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-#InstallPageView #install-form input[type="submit"]:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-#InstallPageView #install-form input[type="submit"].loading .z-spinner {
-  display: inline-block;
-}
-#InstallPageView #install-form input[type="submit"].loading .z-icon {
-  display: none;
 }
 #InstallPageView #install-form table {
   padding-bottom: 15px;
@@ -6417,11 +6292,9 @@ a.remove:hover .icon:after {
 }
 #ConfigurationPageView table tr:hover {
   background-color: #D4E7BC;
-  color: #262877;
 }
 #ConfigurationPageView table tr:hover .pencil {
   visibility: visible;
-  color: #262877;
 }
 #ConfigurationPageView table thead {
   background-color: #f4f4f4;
@@ -6508,27 +6381,6 @@ a.remove:hover .icon:after {
   top: 14px;
   vertical-align: middle;
 }
-.configuration-list li a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.configuration-list li a:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.configuration-list li a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.configuration-list li a.loading .z-spinner {
-  display: inline-block;
-}
-.configuration-list li a.loading .z-icon {
-  display: none;
-}
 .configuration-list li a:before {
   content: "n";
   font-weight: normal;
@@ -6590,27 +6442,6 @@ table.configuration-list tr td:last-child a {
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: right;
 }
-table.configuration-list tr td:last-child a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-table.configuration-list tr td:last-child a:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-table.configuration-list tr td:last-child a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-table.configuration-list tr td:last-child a.loading .z-spinner {
-  display: inline-block;
-}
-table.configuration-list tr td:last-child a.loading .z-icon {
-  display: none;
-}
 table.configuration-list tr td:last-child a:before {
   content: "n";
   font-weight: normal;
@@ -6650,7 +6481,6 @@ table.configuration-list tr td:last-child a:before {
   padding-left: 15px;
   padding-bottom: 10px;
   font-weight: bold !important;
-  color: #262877;
 }
 #ModulePermissionsEditAndDetailsView td {
   text-align: left;
@@ -6728,27 +6558,6 @@ table.configuration-list tr td:last-child a:before {
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
-}
-.multiselect-holder input[type="button"]:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.multiselect-holder input[type="button"]:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.multiselect-holder input[type="button"]:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.multiselect-holder input[type="button"].loading .z-spinner {
-  display: inline-block;
-}
-.multiselect-holder input[type="button"].loading .z-icon {
-  display: none;
 }
 .multiselect-holder .select-arrow {
   display: none !important;
@@ -7014,7 +6823,7 @@ table.configuration-list tr td:last-child a:before {
   padding: 0 0 0 10px !important;
 }
 #JobsCollectionView a {
-  background: #262877;
+  background-color: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -7024,10 +6833,6 @@ table.configuration-list tr td:last-child a:before {
   color: #fff !important;
   font-size: 11px;
   margin-right: 5px;
-}
-#JobsCollectionView a:hover {
-  color: #fff !important;
-  text-decoration: underline;
 }
 #JobsCollectionView table {
   border-top: 1px solid #DFDFDF;
@@ -7307,27 +7112,6 @@ table.configuration-list tr td:last-child a:before {
   border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #bababa;
 }
-.EmailTestingButton:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.EmailTestingButton:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.EmailTestingButton:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.EmailTestingButton.loading .z-spinner {
-  display: inline-block;
-}
-.EmailTestingButton.loading .z-icon {
-  display: none;
-}
 #TestEmailMessageView {
   padding: 15px;
 }
@@ -7389,27 +7173,6 @@ table.configuration-list tr td:last-child a:before {
   -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-}
-.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.AppContent.ImportWizardView #addExtraColumnButton:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.AppContent.ImportWizardView #addExtraColumnButton:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.AppContent.ImportWizardView #addExtraColumnButton.loading .z-spinner {
-  display: inline-block;
-}
-.AppContent.ImportWizardView #addExtraColumnButton.loading .z-icon {
-  display: none;
 }
 .AppContent.ImportWizardView .required-fields {
   font-size: 12px;
@@ -7653,7 +7416,6 @@ table.configuration-list tr td:last-child a:before {
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
-  background: #7bb730;
   border: none;
   margin-right: 6px;
   outline: none !important;
@@ -7692,7 +7454,6 @@ table.configuration-list tr td:last-child a:before {
 .panelTitle {
   font-size: 13px;
   font-weight: bold;
-  color: #262877;
   margin: 10px 0;
 }
 /*Edit+Add Dashboard*/
@@ -7728,15 +7489,13 @@ table.configuration-list tr td:last-child a:before {
   border: none;
   background: none;
   font-size: 11px !important;
-  padding: 3px;
+  padding: 3px !important;
   margin: 0 3px;
-  color: #262877;
 }
 #MyMissionsForPortletView .filter-portlet-model-bar label span {
   font-size: 11px;
 }
 #MyMissionsForPortletView .filter-portlet-model-bar label:hover {
-  background: #262877;
   color: #FFF;
   -webkit-border-radius: 3px !important;
   -moz-border-radius: 3px !important;
@@ -7751,7 +7510,6 @@ table.configuration-list tr td:last-child a:before {
   display: none;
 }
 #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active {
-  background: #262877;
   color: #FFF;
   -webkit-border-radius: 3px !important;
   -moz-border-radius: 3px !important;
@@ -7943,27 +7701,6 @@ div.wide.form .errorMessage {
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   padding: 0 5px;
 }
-.file-upload-box .ui-icon-plusthick:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.file-upload-box .ui-icon-plusthick:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.file-upload-box .ui-icon-plusthick:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.file-upload-box .ui-icon-plusthick.loading .z-spinner {
-  display: inline-block;
-}
-.file-upload-box .ui-icon-plusthick.loading .z-icon {
-  display: none;
-}
 .file-upload-box .ui-icon-plusthick:after {
   content: "Y";
   font-weight: normal;
@@ -8011,7 +7748,6 @@ div.wide.form .errorMessage {
   background: none;
   border: none;
   cursor: pointer;
-  color: #262877;
   line-height: 16px;
   margin-top: -2px;
 }
@@ -8037,7 +7773,6 @@ div.wide.form .errorMessage {
 .upload-actions button.cancel {
   cursor: pointer;
   border: none;
-  background: #262877;
   font-size: 10px !important;
   padding: 2px;
   line-height: 1;
@@ -8136,27 +7871,6 @@ div.wide.form .errorMessage {
   position: relative;
   top: 2px;
 }
-.addfileinput-button span:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.addfileinput-button span:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.addfileinput-button span:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.addfileinput-button span.loading .z-spinner {
-  display: inline-block;
-}
-.addfileinput-button span.loading .z-icon {
-  display: none;
-}
 .addfileinput-button input {
   position: absolute;
   top: 0;
@@ -8171,9 +7885,6 @@ div.wide.form .errorMessage {
   cursor: pointer;
   height: 30px;
   width: auto;
-}
-.addfileinput-button:hover span {
-  color: #7bb730;
 }
 .max-upload-size {
   margin-top: 5px;
@@ -8398,27 +8109,6 @@ div.wide.form .errorMessage {
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: left;
 }
-.ui-datepicker .ui-datepicker-current:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-current:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.ui-datepicker .ui-datepicker-current:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.ui-datepicker .ui-datepicker-current.loading .z-spinner {
-  display: inline-block;
-}
-.ui-datepicker .ui-datepicker-current.loading .z-icon {
-  display: none;
-}
 .ui-datepicker .ui-datepicker-close {
   cursor: pointer;
   padding: 0 15px 0 15px;
@@ -8449,27 +8139,6 @@ div.wide.form .errorMessage {
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   float: right;
-}
-.ui-datepicker .ui-datepicker-close:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-close:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.ui-datepicker .ui-datepicker-close:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.ui-datepicker .ui-datepicker-close.loading .z-spinner {
-  display: inline-block;
-}
-.ui-datepicker .ui-datepicker-close.loading .z-icon {
-  display: none;
 }
 .ui-datepicker .ui-timepicker-div {
   padding: 5px;
@@ -8523,7 +8192,6 @@ div.wide.form .errorMessage {
   font-size: 46px;
   letter-spacing: -6px;
   vertical-align: middle;
-  color: #262877;
   text-align: left;
   vertical-align: top;
 }
@@ -8664,7 +8332,6 @@ li.token-input-token p {
   font-weight: normal;
 }
 li.token-input-selected-token {
-  background-color: #7bb730;
   color: #fff !important;
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -8775,27 +8442,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
-.add-custom-field .configure-custom-field-button:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.add-custom-field .configure-custom-field-button:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.add-custom-field .configure-custom-field-button:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.add-custom-field .configure-custom-field-button.loading .z-spinner {
-  display: inline-block;
-}
-.add-custom-field .configure-custom-field-button.loading .z-icon {
-  display: none;
-}
 .add-custom-field .configure-custom-field-button:before {
   content: "n";
   font-weight: normal;
@@ -8867,27 +8513,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   margin-bottom: 15px;
 }
-.designer-toolbar input[type="submit"]:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.designer-toolbar input[type="submit"]:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.designer-toolbar input[type="submit"]:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.designer-toolbar input[type="submit"].loading .z-spinner {
-  display: inline-block;
-}
-.designer-toolbar input[type="submit"].loading .z-icon {
-  display: none;
-}
 .designer-toolbar h3 {
   margin: 0 0 5px 0;
   padding-left: 0;
@@ -8926,7 +8551,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
-  color: #262877;
 }
 .panelToPlace.ui-state-disabled,
 .rowToPlace.ui-state-disabled,
@@ -9308,7 +8932,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   margin-right: 3px;
   position: relative;
   top: 1px;
-  color: #7bb730;
 }
 .AttributeEditView .sortable {
   list-style: none;
@@ -9381,27 +9004,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   float: left;
   clear: both;
 }
-.AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.AttributeEditView form div table #customFieldDataData_AddInputButton:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.AttributeEditView form div table #customFieldDataData_AddInputButton:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-spinner {
-  display: inline-block;
-}
-.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-icon {
-  display: none;
-}
 #DropDownDependencyMappingData table {
   border-top: none;
   padding: top:none;
@@ -9466,27 +9068,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
-#customFieldDataData_AddInputButton:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-#customFieldDataData_AddInputButton:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-#customFieldDataData_AddInputButton:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-#customFieldDataData_AddInputButton.loading .z-spinner {
-  display: inline-block;
-}
-#customFieldDataData_AddInputButton.loading .z-icon {
-  display: none;
-}
 /*Target only Mozilla/Gecko Browsers*/
 @-moz-document url-prefix() {
   body {
@@ -9542,7 +9123,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  color: #262877;
 }
 /*!
 * qTip2 - Pretty powerful tooltips
@@ -9636,7 +9216,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 /*! Default tooltip style */
 .ui-tooltip-default .ui-tooltip-titlebar {
   font-weight: bold;
-  color: #262877;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -10074,7 +9653,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .points {
   display: block;
   float: left;
-  background: #7bb730;
   color: #fff;
   -webkit-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
   -moz-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
@@ -10094,7 +9672,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   float: right;
   margin-right: 5px;
   display: block;
-  background: #262877;
   color: #fff;
   -webkit-box-shadow: 0 0 8px 0 #666;
   -moz-box-shadow: 0 0 8px 0 #666;
@@ -10194,7 +9771,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-family: "ZurmoGamificationSymblyReguRg";
   display: block;
   text-align: center;
-  color: #262877;
   -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
   -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
   -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -10227,7 +9803,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   top: -8px;
   right: -8px;
   display: block;
-  background: #7bb730;
   color: #fff;
   -webkit-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
   -moz-box-shadow: 0 0 8px 0 #666, inset 0 0 0 1px #fff;
@@ -10468,15 +10043,17 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-indent: 3px;
   font-weight: bold;
   line-height: 16px;
-  margin-top: -3px;
+  position: relative;
+  top: -4px;
+  left: 3px;
 }
 .percentComplete {
+  position: relative;
   line-height: 16px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   height: 100%;
-  color: #262877;
   padding: 2px 0;
   display: inline-block;
   background-color: #f5f5f5;
@@ -10839,27 +10416,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
 }
-.ModalGameNotification a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.ModalGameNotification a:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-.ModalGameNotification a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.ModalGameNotification a.loading .z-spinner {
-  display: inline-block;
-}
-.ModalGameNotification a.loading .z-icon {
-  display: none;
-}
 .ModalGameNotification a:focus {
   outline: none;
 }
@@ -11052,27 +10608,6 @@ a.close-ModalGameNotification.simple-select {
   font-size: 14px !important;
   line-height: 28px;
 }
-#WelcomeView .dashboard-link:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-#WelcomeView .dashboard-link:hover {
-  color: #7bb730 !important;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -moz-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -o-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  -ms-text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-  text-shadow: rgba(255, 255, 255, 0.5) 0px 1px !important;
-}
-#WelcomeView .dashboard-link:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-#WelcomeView .dashboard-link.loading .z-spinner {
-  display: inline-block;
-}
-#WelcomeView .dashboard-link.loading .z-icon {
-  display: none;
-}
 #welcome-content {
   margin-top: 30px;
   padding-bottom: 30px;
@@ -11134,7 +10669,6 @@ a.close-ModalGameNotification.simple-select {
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
-  background: #7bb730;
   border: none;
   margin-right: 6px;
   outline: none !important;
@@ -11342,12 +10876,10 @@ a.close-ModalGameNotification.simple-select {
 }
 .comment .delete-comment,
 .comment .edit-comment {
-  color: #262877;
   font-size: 11px;
 }
 .comment .delete-comment a,
 .comment .edit-comment a {
-  color: #262877;
   filter: alpha(opacity=25);
   -khtml-opacity: 0.25;
   -moz-opacity: 0.25;
@@ -11456,7 +10988,6 @@ a.close-ModalGameNotification.simple-select {
 }
 .unread td,
 .unread td a {
-  color: #262877;
   font-weight: bold;
 }
 #MissionDetailsView .details-table {
@@ -11496,7 +11027,6 @@ a.close-ModalGameNotification.simple-select {
   margin-left: 15px;
 }
 a.user-link {
-  color: #262877;
   font-weight: bold;
 }
 .mission-status {
@@ -11539,7 +11069,6 @@ a.user-link {
 #AllSocialItemsForPortletView .show-create-comment {
   margin-left: 80px;
   font-size: 11px;
-  color: #262877;
   filter: alpha(opacity=50);
   -khtml-opacity: 0.5;
   -moz-opacity: 0.5;
@@ -11757,7 +11286,7 @@ a.user-link {
   display: block;
 }
 .email-matching-actions a {
-  background: #262877;
+  background-color: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -11767,10 +11296,6 @@ a.user-link {
   color: #fff !important;
   font-size: 11px;
   text-decoration: none;
-}
-.email-matching-actions a:hover {
-  color: #fff !important;
-  text-decoration: underline;
 }
 .email-matching-show-more,
 .email-matching-show-less {
