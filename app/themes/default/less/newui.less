@@ -2543,6 +2543,7 @@ div.wide.form{
     .clearfix();
 }
 
+#modal-edit-form,
 #edit-form,
 #delete-form{
     .clearfix();
@@ -2567,19 +2568,15 @@ div.wide.form{
             display:none;
         }
     }
-    
     td, th{
         vertical-align: top;
     }
-    
     td table{
         width:100%;
     }
-    
     td{
         padding-bottom: 15px;
     }
-    
     .panelTitle{
         margin:0 0 10px 0;
         padding:0;
@@ -2596,6 +2593,10 @@ div.wide.form{
             margin-bottom:0 !important;
         }
     }
+}
+
+#modal-edit-form .panel{
+    width: 100%;
 }
 
 .more-panels-link{
@@ -3405,7 +3406,7 @@ div.overlay-label-field{
 .overlay-label-field label {
     position: absolute !important;
     left: 4px;
-    top: 1px;
+    top: 5px;
     color: #999;
     font-size: 14px;
     font-weight: normal;
@@ -4122,7 +4123,6 @@ div.hasHalfs{
         outline: none !important;
         cursor: pointer;
         position: relative;
-        z-index: 1;
         // for IE z-index: 5;
         // for IE padding-right: 5px;
         &:focus, &:hover{

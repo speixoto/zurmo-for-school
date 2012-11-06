@@ -274,12 +274,13 @@
          */
         protected function renderDynamicClausesValidationHelperContent($form)
         {
-            $htmlOptions = array('id'   => get_class($this->model) . '_dynamicClauses',
-                                 'name' => 'dynamicClausesValidationHelper',
-                                 'value' => 'notUsed');
+            $htmlOptionsForInput = array('id'   => get_class($this->model) . '_dynamicClauses',
+                                         'name' => 'dynamicClausesValidationHelper',
+                                         'value' => 'notUsed');
+            $htmlOptionsForError = array('id'   => get_class($this->model) . '_dynamicClauses');
             $content  = '<div style="display:none;">';
-            $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptions);
-            $content .= $form->error($this->model, 'dynamicClauses', $htmlOptions);
+            $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptionsForInput);
+            $content .= $form->error($this->model, 'dynamicClauses', $htmlOptionsForError);
             $content .= '</div>';
             return $content;
         }

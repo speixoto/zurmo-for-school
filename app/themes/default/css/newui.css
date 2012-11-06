@@ -3419,23 +3419,27 @@ div.wide.form a {
   display: table;
   clear: both;
 }
+#modal-edit-form,
 #edit-form,
 #delete-form {
   zoom: 1;
   position: relative;
   padding-top: 15px;
 }
+#modal-edit-form:before,
 #edit-form:before,
 #delete-form:before {
   content: "";
   display: table;
 }
+#modal-edit-form:after,
 #edit-form:after,
 #delete-form:after {
   content: "";
   display: table;
   clear: both;
 }
+#modal-edit-form .panel,
 #edit-form .panel,
 #delete-form .panel {
   float: left;
@@ -3443,47 +3447,58 @@ div.wide.form a {
   display: block;
   zoom: 1;
 }
+#modal-edit-form .panel:before,
 #edit-form .panel:before,
 #delete-form .panel:before {
   content: "";
   display: table;
 }
+#modal-edit-form .panel:after,
 #edit-form .panel:after,
 #delete-form .panel:after {
   content: "";
   display: table;
   clear: both;
 }
+#modal-edit-form .panel table,
 #edit-form .panel table,
 #delete-form .panel table {
   width: 100% !important;
 }
+#modal-edit-form h3,
 #edit-form h3,
 #delete-form h3 {
   margin-bottom: 8px;
 }
+#modal-edit-form table,
 #edit-form table,
 #delete-form table {
   border-bottom: none;
 }
+#modal-edit-form table br,
 #edit-form table br,
 #delete-form table br {
   display: none;
 }
+#modal-edit-form td,
 #edit-form td,
 #delete-form td,
+#modal-edit-form th,
 #edit-form th,
 #delete-form th {
   vertical-align: top;
 }
+#modal-edit-form td table,
 #edit-form td table,
 #delete-form td table {
   width: 100%;
 }
+#modal-edit-form td,
 #edit-form td,
 #delete-form td {
   padding-bottom: 15px;
 }
+#modal-edit-form .panelTitle,
 #edit-form .panelTitle,
 #delete-form .panelTitle {
   margin: 0 0 10px 0;
@@ -3491,18 +3506,24 @@ div.wide.form a {
   font-size: 12px;
   display: block;
 }
+#modal-edit-form .view-toolbar-container,
 #edit-form .view-toolbar-container,
 #delete-form .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
+#modal-edit-form .hasCheckBox,
 #edit-form .hasCheckBox,
 #delete-form .hasCheckBox {
   margin: 8px 0 0 0;
   display: block;
 }
+#modal-edit-form .hasCheckBox input[type="checkbox"],
 #edit-form .hasCheckBox input[type="checkbox"],
 #delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
+}
+#modal-edit-form .panel {
+  width: 100%;
 }
 .more-panels-link {
   font-size: 11px;
@@ -4491,7 +4512,7 @@ div.overlay-label-field:after {
 .overlay-label-field label {
   position: absolute !important;
   left: 4px;
-  top: 1px;
+  top: 5px;
   color: #999;
   font-size: 14px;
   font-weight: normal;
@@ -5468,7 +5489,6 @@ div.hasHalfs .twoThirds {
   outline: none !important;
   cursor: pointer;
   position: relative;
-  z-index: 1;
 }
 .hasDropDown select:focus,
 .hasDropDown select:hover {
