@@ -413,16 +413,16 @@
                         // Cancel diminish of save scoring
                         if ($selectedRecordCount > $pageSize)
                         {
-                            $view = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,
-                                $this->makeMassDeleteProgressView(
-                                    $listModel,
-                                    1,
-                                    $selectedRecordCount,
-                                    1,
-                                    $pageSize,
-                                    $title,
-                                    null)
+                            $view = new $pageViewClassName( ZurmoDefaultViewUtil::
+                                                            makeStandardViewForCurrentUser($this,
+                                                            $this->makeMassDeleteProgressView(
+                                                            $listModel,
+                                                            1,
+                                                            $selectedRecordCount,
+                                                            1,
+                                                            $pageSize,
+                                                            $title,
+                                                            null)
                             ));
                             echo $view->render();
                             Yii::app()->end(0, false);
