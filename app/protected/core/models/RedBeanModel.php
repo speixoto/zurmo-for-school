@@ -191,6 +191,32 @@
         const NOT_OWNED = false;
 
         /**
+         * Utilize an assumptive link when a model (X) has a relationship to another model (Y) and this is the only
+         * relationship between the 2 models.  In this scenario it 'assumes' the link_name is simple.  If X HAS_MANY Y
+         * then on the Y model, the column name will be just x_id.  There is no need for any link information to prefix
+         * the column name.  It 'assumes' it is not needed.
+         * @var integer
+         */
+        const LINK_TYPE_ASSUMPTIVE   = 0;
+
+        /**
+         * Utilize a specific link when a model (X) has 2 relationships to model (Y). Now the link information is needed.
+         * If you specific LINK_TYPE_SPECIFIC, then the 5th parameter in the relation array must also be defined. If you
+         * have X HAS_MANY Y link name = y1 and X HAS_MANY Y link name = y2, then on the y model you will have
+         * the following two columns y1_x_id and y2_x_id.
+         * @var integer
+         */
+        const LINK_TYPE_SPECIFIC     = 1;
+
+        /**
+         * Utilize for a polymorphic relationship.  Similar to LINK_TYPE_SPECIFIC, you must define the 5th parameter
+         * of the relation array.  An example is if Y has a parent relationship, but the parent model can be more than
+         * one type of model.
+         * @var integer
+         */
+        const LINK_TYPE_POLYMORPHIC  = 2;
+
+        /**
          * Returns the static model of the specified AR class.
          * The model returned is a static instance of the AR class.
          * It is provided for invoking class-level methods (something similar to static class methods.)
@@ -671,7 +697,7 @@
                 {
                     foreach ($metadata[$modelClassName]['relations'] as $relationName => $relationTypeModelClassNameAndOwns)
                     {
-                        assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3, 4))');
+                        assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3, 4, 5))');
 
                         $relationType           = $relationTypeModelClassNameAndOwns[0];
                         $relationModelClassName = $relationTypeModelClassNameAndOwns[1];
@@ -694,17 +720,20 @@
                         {
                             $owns = false;
                         }
-                        if (count($relationTypeModelClassNameAndOwns) == 4 && $relationType != self::HAS_MANY)
+                        if (count($relationTypeModelClassNameAndOwns) == 4 &&
+                            $relationTypeModelClassNameAndOwns[3] != self::LINK_TYPE_ASSUMPTIVE)
                         {
                             throw new NotSupportedException();
                         }
-                        if (count($relationTypeModelClassNameAndOwns) == 4)
+                        if (count($relationTypeModelClassNameAndOwns) == 5)
                         {
-                            $relationPolyOneToManyName = $relationTypeModelClassNameAndOwns[3];
+                            $linkType          = $relationTypeModelClassNameAndOwns[3];
+                            $relationLinkName  = $relationTypeModelClassNameAndOwns[4];
                         }
                         else
                         {
-                            $relationPolyOneToManyName = null;
+                            $linkType          = self::LINK_TYPE_ASSUMPTIVE;
+                            $relationLinkName  = null;
                         }
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
@@ -712,7 +741,8 @@
                         $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName] = array($relationType,
                                                                                                 $relationModelClassName,
                                                                                                 $owns,
-                                                                                                $relationPolyOneToManyName);
+                                                                                                $linkType,
+                                                                                                $relationLinkName);
                         if (!in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, self::MANY_MANY)))
                         {
                             $this->attributeNamesNotBelongsToOrManyMany[] = $relationName;
@@ -1196,7 +1226,7 @@
                 {
                     if (!array_key_exists($attributeName, $this->relationNameToRelatedModel))
                     {
-                        list($relationType, $relatedModelClassName, $owns, $relationPolyOneToManyName) =
+                        list($relationType, $relatedModelClassName, $owns, $linkType, $relationLinkName) =
                              $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
                         $relatedTableName = self::getTableName($relatedModelClassName);
                         switch ($relationType)
@@ -1267,7 +1297,8 @@
                                                                       $relatedModelClassName,
                                                                       $attributeModelClassName,
                                                                       $owns,
-                                                                      $relationPolyOneToManyName);
+                                                                      $linkType,
+                                                                      $relationLinkName);
                                 break;
 
                             case self::MANY_MANY:
@@ -1350,14 +1381,9 @@
                 }
                 else
                 {
-                    list($relationType, $relatedModelClassName, $owns, $relationPolyOneToManyName) =
+                    list($relationType, $relatedModelClassName, $owns, $linkType, $relationLinkName) =
                         $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
                     $relatedTableName = self::getTableName($relatedModelClassName);
-                    $linkName = strtolower($attributeName);
-                    if ($linkName == strtolower($relatedModelClassName))
-                    {
-                        $linkName = null;
-                    }
                     switch ($relationType)
                     {
                         case self::HAS_MANY:
@@ -1579,6 +1605,26 @@
         {
             assert("\$this->isRelation('$relationName')");
             return $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][1];
+        }
+
+        /**
+         * Returns the link type for a
+         * relation name defined by the extending class's getMetadata() method.
+         */
+        public function getRelationLinkType($relationName)
+        {
+            assert("\$this->isRelation('$relationName')");
+            return $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][3];
+        }
+
+       /**
+         * Returns the link name for a
+         * relation name defined by the extending class's getMetadata() method.
+         */
+        public function getRelationLinkName($relationName)
+        {
+            assert("\$this->isRelation('$relationName')");
+            return $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][4];
         }
 
         /**
@@ -2235,7 +2281,7 @@
         {
             foreach ($this->relationNameToRelationTypeModelClassNameAndOwns as $relationName => $relationTypeModelClassNameAndOwns)
             {
-                assert('count($relationTypeModelClassNameAndOwns) == 3 || count($relationTypeModelClassNameAndOwns) == 4');
+                assert('count($relationTypeModelClassNameAndOwns) > 2 && count($relationTypeModelClassNameAndOwns) < 6');
                 $relationType = $relationTypeModelClassNameAndOwns[0];
                 $owns         = $relationTypeModelClassNameAndOwns[2];
                 if ($owns)
@@ -2306,7 +2352,7 @@
             {
                 foreach ($metadata[$modelClassName]['relations'] as $relationName => $relationTypeModelClassNameAndOwns)
                 {
-                    assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3, 4))');
+                    assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3, 4, 5))');
                     $relationType           = $relationTypeModelClassNameAndOwns[0];
                     if ($relationType == self::MANY_MANY)
                     {

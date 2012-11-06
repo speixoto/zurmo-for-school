@@ -24,8 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class TestPolyOneToManyOneSide extends RedBeanModel
+    class P extends RedBeanModel
     {
+        public static function getByName($name)
+        {
+            assert('is_string($name)');
+            assert('$name != ""');
+            $bean = R::findOne('p', "name = '$name'");
+            assert('$bean === false || $bean instanceof RedBean_OODBBean');
+            if ($bean === false)
+            {
+                throw new NotFoundErception();
+            }
+            return self::makeModel($bean);
+        }
+
         public static function canSaveMetadata()
         {
             return true;
@@ -36,16 +49,20 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'name',
-                ),
-                'relations' => array(
-                    'polys'           => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySide',
-                                               RedBeanModel::NOT_OWNED, RedBeanModel::LINK_TYPE_POLYMORPHIC, 'polyTest'),
-                    'ownedPolys'      => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySideOwned',
-                                               RedBeanModel::OWNED, RedBeanModel::LINK_TYPE_POLYMORPHIC, 'polyOwnedTest'),
+                    'name'
                 ),
                 'rules' => array(
-                    array('name',                'type',     'type' => 'string'),
+                    array('name',          'required'),
+                    array('name',          'type',    'type' => 'string'),
+                    array('name',          'length',  'min'  => 3, 'max' => 64),
+                ),
+                'relations' => array(
+                    'pp'                => array(RedBeanModel::HAS_ONE,             'PP'),
+                    'pp1'                => array(RedBeanModel::HAS_ONE,            'PP'),
+                    'pp2'                => array(RedBeanModel::HAS_ONE,            'PP'),
+                    'ppp'                => array(RedBeanModel::HAS_MANY,           'PPP'),
+                    'ppp1'                => array(RedBeanModel::HAS_MANY,          'PPP'),
+                    'ppp2'                => array(RedBeanModel::HAS_MANY,          'PPP'),
                 ),
             );
             return $metadata;
