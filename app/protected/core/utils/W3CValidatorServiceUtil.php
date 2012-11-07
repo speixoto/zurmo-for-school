@@ -71,21 +71,26 @@
             $doc->registerXPathNamespace('m', 'http://www.w3.org/2005/10/markup-validator');
             $nodes = $doc->xpath('//m:markupvalidationresponse/m:validity');
             $validity = $nodes[0];
-            $nodes = $doc->xpath('//m:markupvalidationresponse/m:errors/m:errorcount');
-            $errorCount = strval($nodes[0]);
+
+            $errorNodes = $doc->xpath('//m:markupvalidationresponse/m:errors/m:errorcount');
+            $errorCount = strval($errorNodes[0]);
             $errorNodes = $doc->xpath('//m:markupvalidationresponse/m:errors/m:errorlist/m:error');
 
             $warningNodes = $doc->xpath('//m:markupvalidationresponse/m:warnings/m:warningcount');
-            $warningCount = strval($nodes[0]);
+
+            // We don't want to count and show warning about encoding type, which happen when we
+            // upload file directly to w3w or use API
+            // This warning will appear on all pages, and we can just ignore it.
+            $warningCount = strval($warningNodes[0]) - 1;
             $warningNodes = $doc->xpath('//m:markupvalidationresponse/m:warnings/m:warninglist/m:warning');
 
-            if (!$validity || count($errorNodes) > 0 || count($warningNodes) > 0)
+            if (!$validity || $errorCount > 0 || $warningCount > 0)
             {
                 $xhtmlValidationErrors[] = 'THIS IS NOT A VALID XHTML FILE';
 
-                if (count($errorNodes))
+                if ($errorCount)
                 {
-                    $xhtmlValidationErrors[] = 'There are ' . count($errorNodes) . ' error(s)';
+                    $xhtmlValidationErrors[] = 'There are ' . $errorCount . ' error(s)';
                     foreach ($errorNodes as $node)
                     {
                         $errorNodes = $node->xpath('m:line');
@@ -99,25 +104,35 @@
                     }
                 }
 
-                if (count($warningNodes))
+                if ($warningCount)
                 {
-                    $xhtmlValidationErrors[] = 'There are ' . count($warningNodes) . ' warning(s)';
+                    $xhtmlValidationErrors[] = 'There are ' . $warningCount . ' warning(s)';
                     foreach ($warningNodes as $node)
                     {
+                        $errorMessage = "";
                         $warningNodes = $node->xpath('m:line');
                         if (isset($warningNodes[0]))
                         {
                             $line = strval($warningNodes[0]);
+                            $errorMessage .= 'line: ' . $line . ', ';
                         }
                         $warningNodes = $node->xpath('m:col');
                         if (isset($warningNodes[0]))
                         {
                             $col = strval($warningNodes[0]);
+                            $errorMessage .= ' column: ' . $col . ', ';
                         }
                         $warningNodes = $node->xpath('m:message');
                         $message = strval($warningNodes[0]);
-                        $errorMessage = 'line: ' . $line . ', column: ' . $col . ' message: ' . $message ;
-                        $xhtmlValidationErrors[] = "$errorMessage";
+
+                        if ($message == 'Using Direct Input mode: UTF-8 character encoding assumed')
+                        {
+                            // This is just message, because we didn't validated code by url
+                            // So just ignore this message.
+                            continue;
+                        }
+                        $errorMessage .=  'message: ' . $message ;
+                        $xhtmlValidationErrors[] = $errorMessage;
                     }
                 }
             }
