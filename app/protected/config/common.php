@@ -163,7 +163,7 @@
                 'routes' => array(
                     array(
                         'class'  => 'CFileLogRoute',
-                        'levels' => 'error, warning, info, trace',
+                        'levels' => 'error, warning',
                     ),
                 ),
             ),
