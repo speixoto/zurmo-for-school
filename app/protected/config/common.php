@@ -163,7 +163,7 @@
                 'routes' => array(
                     array(
                         'class'  => 'CFileLogRoute',
-                        'levels' => 'error, warning',
+                        'levels' => 'error, warning, info, trace',
                     ),
                 ),
             ),
@@ -328,6 +328,7 @@
             ),
         ),
         'preload' => array(
+            'log',
             'browser',
             'sanitizer'
         ),
