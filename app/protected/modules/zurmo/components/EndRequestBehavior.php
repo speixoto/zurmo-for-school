@@ -39,7 +39,8 @@
                 $owner->attachEventHandler('onEndRequest', array($this, 'handleGamification'));
             }
             $owner->attachEventHandler('onEndRequest', array($this, 'handleSaveGlobalStateCheck'));
-            $owner->attachEventHandler('onEndRequest', array($this, 'handleEndLogRouteEvents'));
+            // Uncomment next line after fix issues with API
+            //$owner->attachEventHandler('onEndRequest', array($this, 'handleEndLogRouteEvents'));
             $owner->attachEventHandler('onEndRequest', array($this, 'handleEndRequest'));
         }
 
@@ -80,7 +81,7 @@
 
         public function handleEndRequest($event)
         {
-             exit;
+            exit;
         }
 
         /**

@@ -329,7 +329,6 @@
             ),
         ),
         'preload' => array(
-            'log',
             'browser',
             'sanitizer'
         ),
