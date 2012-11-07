@@ -3546,19 +3546,19 @@ div.hasHalfs{
             &:hover{
                 .opacity(100);
             }
-            &:before{
-                content: "▾";
-                ++.themeColor;
-                position: relative;
-                top:-2px;
-                right:2px;
-                font-size: 10px;
-            }
-            &:after{
-                content: "n";
-                ++.themeColor;
-                .symbly(24px);
-            }
+        }
+        > a:before{
+            content: "▾";
+            //++.themeColor;
+            position: relative;
+            top:-2px;
+            right:2px;
+            font-size: 10px;
+        }
+        > a:after{
+            content: "n";
+            //++.themeColor;
+            .symbly(24px);
         }
         a{
             .t-shadow(none) !important;
@@ -3781,12 +3781,12 @@ div.hasHalfs{
             padding:3px;
             margin:0 3px;
             ++.themeColor;
-            &:hover{
-                ++.themeBackgroundColor;
-                color:#FFF;
-                .radius(3px) !important;
-                border:none;
-            }
+        }
+        label:hover{
+            ++.themeBackgroundColor;
+            color:#FFF;
+            .radius(3px) !important;
+            border:none;
         }
         input[type="radio"], input[type="checkbox"]{
             visibility:hidden;
