@@ -6065,11 +6065,15 @@ a.remove:hover .icon:after {
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   content: 'e';
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView h3,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
+.juiportlet-widget.ContactsForOpportunityRelatedListView h3,
 .juiportlet-widget.ContactsForAccountRelatedListView h3 {
   text-indent: 30px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
+.juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   font-weight: normal;
   font-size: 32px;
@@ -6080,12 +6084,16 @@ a.remove:hover .icon:after {
   position: absolute;
   top: 6px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView td:first-child div,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView td:first-child div,
+.juiportlet-widget.ContactsForOpportunityRelatedListView td:first-child div,
 .juiportlet-widget.ContactsForAccountRelatedListView td:first-child div {
   font-size: 11px;
   margin-top: 3px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView td:first-child div:first-child,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView td:first-child div:first-child,
+.juiportlet-widget.ContactsForOpportunityRelatedListView td:first-child div:first-child,
 .juiportlet-widget.ContactsForAccountRelatedListView td:first-child div:first-child {
   font-size: 12px;
   font-weight: bold;
