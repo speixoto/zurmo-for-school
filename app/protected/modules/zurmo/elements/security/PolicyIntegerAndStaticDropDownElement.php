@@ -99,7 +99,7 @@
             $policyDefault                  = $moduleName::getPolicyDefault($this->getFormattedAttributeLabel());
             if ($policyDefault != null)
             {
-                $title    = Yii::t('Default', 'The default value for this policy is {policyDefault}', array('{policyDefault}' => $policyDefault));
+                $title    = Yii::t('Default', 'The default value is {policyDefault}', array('{policyDefault}' => $policyDefault));
                 $content  = '<span class="tooltip policy-default-tooltip" title="' . $title . '">';
                 $content .= '?</span>';
                 $qtip     = new ZurmoTip();

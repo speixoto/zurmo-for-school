@@ -128,7 +128,7 @@
                     'success' => 'function(data){designer.updateFlashBarAfterSaveLayout(data, "' . $notificationBarId . '")}', // Not Coding Standard
                     'error' => 'function(data){ ' . // Not Coding Standard
                         'var data = {' . // Not Coding Standard
-                        '   "message" : "' . Yii::t('Default', 'There was an error processing your request.'). '",
+                        '   "message" : "' . Yii::t('Default', 'There was an error processing your request'). '",
                             "type"    : "error"
                         };
                         designer.updateFlashBarAfterSaveLayout(data, "' . $notificationBarId . '")

@@ -813,12 +813,26 @@ table.configuration-list{
 	}
 	#sample-column-header{
 		a{
-			.zLink();
+			++.z-link;
 		}
 	}
 }
 
+.remove-extra-column-link{
+    display: inline-block;
+    margin-top:5px;
+    ++.z-link;
+}
+
 /*=Step 5, process details*/
+
+#import-preloader{
+    .z-spinner{
+        display: block;
+        margin:-1px 10px 0 0;
+    }
+}
+
 #ImportWizardDataAnalysisCompleteView{
     > div{
         margin:0;
@@ -830,6 +844,9 @@ table.configuration-list{
                 display:none;
             }
         }
+    }
+    .attributesContainer{
+        padding-bottom: 0;
     }
 }
 
@@ -853,6 +870,10 @@ table.configuration-list{
 
 #ImportSequentialProcessContainerView{
     //padding-right:0;
+    > div{
+        float: left;
+        width: 100%;
+    }
     #edit-form{
         padding:0 0 15px 0 !important;
         border:0 !important;
@@ -906,6 +927,14 @@ table.configuration-list{
         font-weight: 400 !important;
     }
 }
+
+.import-summary{
+    margin:0 0 15px 15px;
+    li{
+        margin-bottom: 3px;
+    }
+}
+
 
 .ui-progressbar{
      background: url(../images/ajax-loader.gif) left top no-repeat;

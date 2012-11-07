@@ -433,10 +433,9 @@
                             $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
                                 $selectedRecordCount, $skipCount);
                             MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
-                            $notificationContent = Yii::t('Default', 'Successfully Deleted') . ' ' .
-                                                    $successfulCount . ' ' .
+                            $notificationContent =  $successfulCount . ' ' .
                                                     LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
-                                                    '.';
+                                                    ' ' . Yii::t('Default', 'successfully deleted') . '.';
                             if ($skipCount > 0)
                             {
                                 $notificationContent .= ' ' .
