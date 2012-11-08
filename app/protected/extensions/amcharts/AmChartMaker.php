@@ -24,48 +24,40 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-//TODO: Error using false and some string in adding atributes
     class AmChartMaker
     {
-        public  $type                = null;
+        public  $type                   = null;
 
-        public  $data                = null;
+        public  $data                   = null;
 
-        public  $height              = 300;
+        public  $height                 = 300;
 
-        public  $valueField          = 'value';
+        public  $valueField             = 'value';
 
-        public  $categoryField       = 'displayLabel';
+        public  $categoryField          = 'displayLabel';
 
-        public  $chartIs3d           = false;
+        public  $chartIs3d              = false;
 
-        public  $chartIsPie          = false;
+        public  $chartIsPie             = false;
 
-        public  $xAxisName           = null;
+        public  $xAxisName              = null;
 
-        public  $yAxisName           = null;
+        public  $yAxisName              = null;
 
-        private $serial              = array();
-        private $chartProperties     = array();
+        private $serial                 = array();
+        private $chartProperties        = array();
 
-        private $graphProperties     = array();
+        private $graphProperties        = array();
 
-        private $valueAxisProperties = array();
+        private $valueAxisProperties    = array();
 
         private $categoryAxisProperties = array();
 
         /**
-         * Returns the type of chart to be used in AmChar
+         * Returns the type of chart to be used in AmChart
          */
         private function addChartPropertiesByType()
         {
-            $this->addChartProperties('fontFamily', '"Arial"');
-            $this->addChartProperties('color', '"#545454"');
-            $this->addChartProperties('lineColor', '"#545454"');
-            $this->addValueAxisProperties('axisColor', '"#545454"');
-            $this->addValueAxisProperties('gridColor', '"#545454"');
-
-
             $colorTheme = array(
                             1 => '["#262877", "#6625A7", "#BC9DDA", "#817149", "#A77425"]',
                             2 => '["#262877", "#7BB730"]',
@@ -76,108 +68,88 @@
                                    "#384c80", "#4e6ab2", "#5979cd"]',
                             5 => '["#262877", "#5979cd"]',
                 );
+            $this->addChartProperties('fontFamily',                 '"Arial"');
+            $this->addChartProperties('color',                      '"#545454"');
+            $this->addChartProperties('lineColor',                  '"#545454"');
+            $this->addValueAxisProperties('axisColor',              '"#545454"');
+            $this->addValueAxisProperties('gridColor',              '"#545454"');
             $this->addChartProperties('colors', $colorTheme[4]);
-
             if ($this->type === "Column2D")
             {
                 $currencySymbol = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
-                /**
-                 * Chart properties
-                 * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amchart
-                 */
-                $this->addChartProperties('usePrefixes', true);
-                $this->addChartProperties('plotAreaBorderColor', "'#000000'");
-                $this->addChartProperties('plotAreaBorderAlpha', 0);
-                /**
-                 * Columns or bar properties
-                 * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amgraph
-                 */
-                $this->addGraphProperties('fillAlphas', 1);
-                $this->addGraphProperties('cornerRadiusTop', 0);
-                $this->addGraphProperties('cornerRadiusBottom', 0);
-                $this->addGraphProperties('lineAlpha', 0);
-                $this->addGraphProperties('fillColors',  $colorTheme[5]);
-                /**
-                 * categoryAxis properties
-                 * More info on http://www.amcharts.com/docs/v.2/javascript_reference/axisbase
-                 */
-                $this->addCategoryAxisProperties('title', "'$this->xAxisName'");
-                $this->addCategoryAxisProperties('inside', 0);
-                $this->addCategoryAxisProperties('fillColors', $colorTheme[5]);
-                /**
-                 * valueAxis properties
-                 * More info on http://www.amcharts.com/docs/v.2/javascript_reference/axisbase
-                 */
-                $this->addValueAxisProperties('title', "'$this->yAxisName'");
-                $this->addValueAxisProperties('minimum', 0);
-                $this->addValueAxisProperties('dashLength', 2);
-                $this->addValueAxisProperties('usePrefixes', 1);
-                $this->addValueAxisProperties('unitPosition', '"left"');
-                $this->addValueAxisProperties('unit', "'$currencySymbol'");
+                //Chart
+                $this->addChartProperties('usePrefixes',            true);
+                $this->addChartProperties('plotAreaBorderColor',    "'#000000'");
+                $this->addChartProperties('plotAreaBorderAlpha',    0);
+                //Graph
+                $this->addGraphProperties('fillAlphas',             1);
+                $this->addGraphProperties('cornerRadiusTop',        0);
+                $this->addGraphProperties('cornerRadiusBottom',     0);
+                $this->addGraphProperties('lineAlpha',              0);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                //Axis
+                $this->addCategoryAxisProperties('title',           "'{$this->xAxisName}'");
+                $this->addCategoryAxisProperties('inside',          0);
+                $this->addCategoryAxisProperties('fillColors',      $colorTheme[5]);
+                //ValueAxis
+                $this->addValueAxisProperties('title',              "'$this->yAxisName'");
+                $this->addValueAxisProperties('minimum',            0);
+                $this->addValueAxisProperties('dashLength',         2);
+                $this->addValueAxisProperties('usePrefixes',        1);
+                $this->addValueAxisProperties('unitPosition',       "'left'");
+                $this->addValueAxisProperties('unit',               "'{$currencySymbol}'");
             }
             elseif ($this->type === "Column3D")
             {
-                /**
-                 * Columns or bar properties
-                 * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amgraph
-                 */
-                $this->addGraphProperties('balloonText', "'[[category]]:[[value]]'");
-                $this->addGraphProperties('lineAlpha', 0.5);
-                $this->addGraphProperties('fillAlphas', 1);
-                $this->addGraphProperties('fillColors',  $colorTheme[5]);
-                //Make the graph3d - to chage defs go to method
+                $this->addGraphProperties('balloonText',            "'[[category]]:[[value]]'");
+                $this->addGraphProperties('lineAlpha',              0.5);
+                $this->addGraphProperties('fillAlphas',             1);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
                 $this->makeChart3d();
             }
             elseif ($this->type === "Bar2D")
             {
-                /**
-                 * Chart properties
-                 * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amchart
-                 */
-                $this->addChartProperties('rotate', true);
-                $this->addChartProperties('usePrefixes', true);
-                /**
-                 * Columns or bar properties
-                 * More info on http://www.amcharts.com/docs/v.2/javascript_reference/amgraph
-                 */
-                $this->addGraphProperties('plotAreaBorderAlpha', 0);
-                $this->addGraphProperties('lineAlpha', 0);
-                $this->addGraphProperties('fillAlphas', 1);
-                $this->addGraphProperties('fillColors',  $colorTheme[5]);
-                $this->addGraphProperties('gradientOrientation', '"vertical"'); //Possible values are "vertical" and "horizontal".
-                $this->addGraphProperties('labelPosition', '"right"'); //Possible values are: "bottom", "top", "right", "left", "inside", "middle".
-                $this->addGraphProperties('labelText', '"[[category]]: [[value]]"'); //You can use tags like [[value]], [[description]], [[percents]], [[open]], [[category]]
-                $this->addGraphProperties('balloonText', '"[[category]]: [[value]]"');
+                $this->addChartProperties('rotate',                 true);
+                $this->addChartProperties('usePrefixes',            true);
+                $this->addGraphProperties('plotAreaBorderAlpha',    0);
+                $this->addGraphProperties('lineAlpha',              0);
+                $this->addGraphProperties('fillAlphas',             1);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                $this->addGraphProperties('gradientOrientation',    "'vertical'");
+                $this->addGraphProperties('labelPosition',          "'right'");
+                $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
+                $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
             }
             elseif ($this->type === "Donut2D")
             {
-                $this->addChartProperties('sequencedAnimation', true);
-                $this->addChartProperties('startEffect', "'elastic'");
-                $this->addChartProperties('innerRadius', "'30%'");
-                $this->addChartProperties('startDuration', 2);
-                $this->addChartProperties('labelRadius', 15);
-                $this->addChartProperties('usePrefixes', true);
+                $this->addChartProperties('sequencedAnimation',     true);
+                $this->addChartProperties('startEffect',            "'elastic'");
+                $this->addChartProperties('innerRadius',            "'30%'");
+                $this->addChartProperties('startDuration',          2);
+                $this->addChartProperties('labelRadius',            15);
+                $this->addChartProperties('usePrefixes',            true);
                 $this->chartIsPie = true;
             }
             elseif ($this->type === "Pie2D")
             {
-                $this->addChartProperties('outlineColor', "'#FFFFFF'");
-                $this->addChartProperties('outlineAlpha', 0.8);
-                $this->addChartProperties('outlineThickness', 2);
-                $this->addChartProperties('usePrefixes', true);
+                $this->addChartProperties('outlineColor',           "'#FFFFFF'");
+                $this->addChartProperties('outlineAlpha',           0.8);
+                $this->addChartProperties('outlineThickness',       2);
+                $this->addChartProperties('usePrefixes',            true);
                 $this->chartIsPie = true;
             }
             elseif ($this->type === "Pie3D")
             {
-                $this->addChartProperties('outlineColor', "'#FFFFFF'");
-                $this->addChartProperties('outlineAlpha', 0.8);
-                $this->addChartProperties('outlineThickness', 2);
-                $this->addChartProperties('usePrefixes', true);
+                $this->addChartProperties('outlineColor',           "'#FFFFFF'");
+                $this->addChartProperties('outlineAlpha',           0.8);
+                $this->addChartProperties('outlineThickness',       2);
+                $this->addChartProperties('usePrefixes',            true);
                 $this->makeChart3d();
                 $this->chartIsPie = true;
             }
             else
             {
+                //Default graph
             }
         }
 
@@ -188,8 +160,8 @@
 
         public function makeChart3d()
         {
-            $this->addChartProperties('depth3D', 15);
-            $this->addChartProperties('angle', 30);
+            $this->addChartProperties('depth3D',                    15);
+            $this->addChartProperties('angle',                      30);
             $this->chartIs3d = true;
         }
 
@@ -201,64 +173,68 @@
         public function addSerialGraph($valueField, $type, $options = array())
         {
             array_push($this->serial, array(
-                                    'valueField'    =>  $valueField,
-                                    'type'          =>  $type,
-                                    'options'       =>  $options,
-                                 )
-            );
+                                        'valueField'    =>  $valueField,
+                                        'type'          =>  $type,
+                                        'options'       =>  $options));
         }
 
         /**
          *  Add properties to chart
+         *  Info on http://www.amcharts.com/docs/v.2/javascript_reference/amchart
          */
         public function addChartProperties($tag, $value)
         {
-            $this->chartProperties[$tag] = $value;
+            $this->chartProperties[$tag]        = $value;
         }
 
         /**
          * Add properties to valueAxis
+         * Info on info on http://www.amcharts.com/docs/v.2/javascript_reference/axisbase
          */
         public function addValueAxisProperties($tag, $value)
         {
-            $this->valueAxisProperties[$tag] = $value;
+            $this->valueAxisProperties[$tag]    = $value;
         }
 
         /**
          * Add properties to categoryAxis
+         * Info on http://www.amcharts.com/docs/v.2/javascript_reference/axisbase
          */
         public function addCategoryAxisProperties($tag, $value)
         {
             $this->categoryAxisProperties[$tag] = $value;
         }
+
         /**
          * Add properties to Serial Graph - column or bar properties
+         * Info on http://www.amcharts.com/docs/v.2/javascript_reference/amgraph
          */
         public function addGraphProperties($tag, $value)
         {
-           $this->graphProperties[$tag] = $value;
+           $this->graphProperties[$tag]         = $value;
         }
+
         public function javascriptChart()
         {
             //Init AmCharts
             $this->addChartPropertiesByType();
-            $javascript = "var chartData = ". $this->convertDataArrayToJavascriptArray() . ";";
+            $javascript  = "var chartData = ". $this->convertDataArrayToJavascriptArray() . ";";
             $javascript .=" $(document).ready(function () {     ";
             //Make chart Pie or Serial
             if ($this->chartIsPie)
             {
                 $javascript .="
-                   var chart = new AmCharts.AmPieChart();
+                   var chart          = new AmCharts.AmPieChart();
                    chart.dataProvider = chartData;
-                   chart.titleField = '{$this->categoryField}';
-                   chart.valueField = '". $this->valueField . "';";
+                   chart.titleField   = '{$this->categoryField}';
+                   chart.valueField   = '". $this->valueField . "';";
             }
             else
             {
                 //Init the AmSerialGraph
                 $javascript .="
-                        var chart = new AmCharts.AmSerialChart();
-                        chart.dataProvider = chartData;
+                        var chart           = new AmCharts.AmSerialChart();
+                        chart.dataProvider  = chartData;
                         chart.categoryField = '{$this->categoryField}';
                 ";
             }
@@ -273,11 +249,11 @@
                 //Add serial as graph
                 foreach ($this->serial as $key => $serial)
                 {
-                    $javascript .= "var graph{$key} = new AmCharts.AmGraph();
-                        window.g1 = graph{$key};
-                        graph{$key}.valueField = '". $serial['valueField'] ."';
-                        graph{$key}.type = '" . $serial['type'] .  "';";
-                    if(count($serial['options']) === 0)
+                    $javascript  .= "var graph{$key}        = new AmCharts.AmGraph();
+                                     window.g1              = graph{$key};
+                                     graph{$key}.valueField = '". $serial['valueField'] ."';
+                                     graph{$key}.type       = '" . $serial['type'] .  "';";
+                    if(count($serial['options']) == 0)
                     {
                         //Add graph properties from GraphType
                         foreach($this->graphProperties as $graphTag => $graphOption)
@@ -307,7 +283,7 @@
                 {
                     $javascript .= "valueAxis." . $tag . " = " . $option . ";";
                 }
-                $javascript .=   "chart.addValueAxis(valueAxis);";
+                $javascript .= "chart.addValueAxis(valueAxis);";
             }
             //Write chart
             $javascript .= "chart.write('chartContainer{$this->id}');
