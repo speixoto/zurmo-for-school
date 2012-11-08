@@ -282,6 +282,7 @@ function processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, updateId)
                  text: jsonData.message,
                  permanent: false,
                  showIcon: true,
+                 type: jsonData.messageType
              }
         );
     }

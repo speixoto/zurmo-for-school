@@ -84,17 +84,19 @@ END;
          * @param string $text
          * @param string $scriptId
          */
-        public static function addMessage($statusBarId, $text, $scriptId)
+        public static function addMessage($statusBarId, $text, $scriptId, $type = 'message')
         {
             assert('is_string($statusBarId)');
             assert('is_string($text)');
             assert('is_string($scriptId)');
+            assert('$type == "message" || $type == "error"');
             $script = "
             $('#" . $statusBarId . "').jnotifyAddMessage(
             {
                 text: '" . CJavaScript::quote($text) . "',
                 permanent: false,
                 showIcon: true,
+                type: '" . $type . "'
             }
             );
             ";

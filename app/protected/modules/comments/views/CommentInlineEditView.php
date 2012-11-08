@@ -95,12 +95,7 @@
             }
             elseif ($element instanceOf FilesElement)
             {
-                // Begin Not Coding Standard
-                $element->editableTemplate = '<td colspan="{colspan}">' .
-                                             '<div class="file-upload-box">{content}{error}</div>' .
-                                             '<a href="#" class="show-file-upload-box" onclick="jQuery(this).hide().prev().show().find(\'input[type=file]\').click(); return false;">Add Files</a>' .
-                                             '</td>';
-                // End Not Coding Standard
+                $element->editableTemplate = FilesElement::getEditableTemplateForInlineEdit();
             }
             else
             {
