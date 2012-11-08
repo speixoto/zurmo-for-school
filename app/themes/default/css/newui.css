@@ -1456,6 +1456,10 @@ section {
 .AppContent .single-column #inline-edit-form .panel {
   width: 100%;
 }
+.DynamicSearchView {
+  position: relative;
+  z-index: 9999;
+}
 /*=dashboard*/
 #HomePageView .AppContent {
   padding-right: 0;
