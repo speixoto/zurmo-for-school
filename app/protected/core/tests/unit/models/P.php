@@ -67,6 +67,9 @@
                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'ppp1Link'),
                     'ppp2'                => array(RedBeanModel::HAS_MANY,           'PPP', RedBeanModel::NOT_OWNED,
                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'ppp2Link'),
+                    'ppManyAssumptive'    => array(RedBeanModel::MANY_MANY,          'PP'),
+                    'ppManySpecific'      => array(RedBeanModel::MANY_MANY,          'PP', RedBeanModel::NOT_OWNED,
+                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'ppManySpecificLink'),
                 ),
             );
             return $metadata;

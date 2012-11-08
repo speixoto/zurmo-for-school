@@ -35,20 +35,28 @@
     {
         protected $inside = false;
 
+        protected $linkName;
+
         /**
          * Constructs a new RedBeanModels which is a collection of classes extending model.
          * The models are created lazily.
          * Models are only constructed with beans by the model. Beans are
          * never used by the application directly.
          */
-        public function __construct(RedBean_OODBBean $bean, $modelClassName)
+        public function __construct(RedBean_OODBBean $bean, $modelClassName, $linkType, $linkName = null)
         {
             assert('is_string($modelClassName)');
             assert('$modelClassName != ""');
-            $this->modelClassName = $modelClassName;
-            $tableName  = RedBeanModel::getTableName($modelClassName);
-            $this->bean = $bean;
-            $this->relatedBeansAndModels = array_values(R::related($this->bean, $tableName));
+            assert('is_int($linkType)');
+            assert('is_string($linkName) || $linkName == null');
+            assert('($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE && $linkName == null) ||
+                    ($linkType == RedBeanModel::LINK_TYPE_SPECIFIC && $linkName != null)');
+            $this->modelClassName        = $modelClassName;
+            $tableName                   = RedBeanModel::getTableName($modelClassName);
+            $this->bean                  = $bean;
+            $this->linkName              = $linkName;
+            $this->relatedBeansAndModels = array_values(R::related($this->bean, $tableName, null, array(),
+                                                        $this->getTableName(R::dispense($tableName))));
         }
 
         public function getModelClassName()
@@ -81,11 +89,11 @@
         {
             foreach ($this->deferredRelateBeans as $bean)
             {
-                R::associate($this->bean, $bean);
+                $tableName = $this->getTableName($bean);
+                R::associate($this->bean, $bean, null, $tableName);
                 if (!RedBeanDatabase::isFrozen())
                 {
-                    $this->getTableName();
-                    foreach ($types as $type)
+                    foreach (array($this->bean->getMeta("type"), $bean->getMeta("type")) as $type)
                     {
                         $columnName = "{$type}_id";
                         RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
@@ -95,17 +103,26 @@
             $this->deferredRelateBeans = array();
             foreach ($this->deferredUnrelateBeans as $bean)
             {
-                R::unassociate($this->bean, $bean);
+                $tableName = $this->getTableName($bean);
+                R::unassociate($this->bean, $bean, false, $tableName);
             }
             $this->deferredUnrelateBeans = array();
             return true;
         }
 
-        public function getTableName()
+        public function getTableName(RedBean_OODBBean $bean = null)
         {
+            if($bean == null)
+            {
+                $bean = R::dispense(RedBeanModel::getTableName($this->modelClassName));
+            }
             $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
             sort($types);
             $tableName = implode("_", $types);
+            if($this->linkName != null)
+            {
+                $tableName = strtolower($this->linkName) . '_' . $tableName;
+            }
             return $tableName;
         }
     }

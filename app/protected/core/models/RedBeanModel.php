@@ -1325,7 +1325,9 @@
                                 break;
 
                             case self::MANY_MANY:
-                                $this->relationNameToRelatedModel[$attributeName] = new RedBeanManyToManyRelatedModels($bean, $relatedModelClassName);
+                                $this->relationNameToRelatedModel[$attributeName] =
+                                new RedBeanManyToManyRelatedModels($bean, $relatedModelClassName,
+                                                                   $linkType, $relationLinkName);
                                 break;
 
                             default:
@@ -1997,7 +1999,8 @@
                                 $bean                  = $this->attributeNameToBeanAndClassName                [$relationName][0];
                                 $relatedModelClassName = $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
-                                if (strtolower($linkName) == strtolower($relatedModelClassName))
+                                if (strtolower($linkName) == strtolower($relatedModelClassName) ||
+                                    $this->getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
                                 {
                                     $linkName = null;
                                 }

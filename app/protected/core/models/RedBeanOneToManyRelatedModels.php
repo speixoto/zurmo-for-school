@@ -149,8 +149,8 @@
                     {
                         R::store($this->bean);
                     }
-                    $polyIdFieldName   = strtolower($this->linkName) . '_id';
-                    $polyTypeFieldName = strtolower($this->linkName) . '_type';
+                    $polyIdFieldName          = strtolower($this->linkName) . '_id';
+                    $polyTypeFieldName        = strtolower($this->linkName) . '_type';
                     $bean->$polyTypeFieldName = $this->bean->getMeta('type');
                     $bean->$polyIdFieldName   = $this->bean->id;
                     if (!RedBeanDatabase::isFrozen())
@@ -161,6 +161,7 @@
                 }
                 else
                 {
+
                     ZurmoRedBeanLinkManager::link($bean, $this->bean, $this->resolveLinkNameForCasing());
                     if (!RedBeanDatabase::isFrozen())
                     {

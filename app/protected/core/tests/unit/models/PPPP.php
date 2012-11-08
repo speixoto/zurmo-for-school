@@ -24,49 +24,55 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class RedBeanModelsTest extends BaseTest
+    class PPPP extends RedBeanModel
     {
-        const USERS = 5;
-
-        private $usernames;
-
-        public function setUp()
+        public static function getByName($name)
         {
-            if (!isset($this->usernames))
+            assert('is_string($name)');
+            assert('$name != ""');
+            $bean = R::findOne('pppp', "name = '$name'");
+            assert('$bean === false || $bean instanceof RedBean_OODBBean');
+            if ($bean === false)
             {
-                $this->usernames = TestHelpers::makeUniqueRandomUsernames(RedBeanModelsTest::USERS);
+                throw new NotFoundErception();
             }
-            foreach ($this->usernames as $username)
-            {
-                $user = new User();
-                $user->username           = $username;
-                $user->title->value       = 'Mr.';
-                $user->firstName          = $username;
-                $user->lastName           = $username;
-                $user->setPassword(strtolower($username));
-                $this->assertTrue($user->save());
-            }
+            return self::makeModel($bean);
         }
 
-        public function tearDown()
+        public static function canSaveMetadata()
         {
-            foreach ($this->usernames as $username)
-            {
-                $user = User::getByUsername($username);
-                $user->delete();
-            }
+            return true;
         }
 
-        public function testCreateAndIterateLazyModels()
+        public static function getDefaultMetadata()
         {
-            $users = new RedBeanModels('User');
-            $this->assertEquals(count($this->usernames), $users->count());
-            foreach ($users as $user)
-            {
-                $this->assertTrue(in_array($user->username, $this->usernames));
-                $this->assertEquals($user->username, $user->firstName);
-                $this->assertEquals($user->username, $user->lastName);
-            }
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name'
+                ),
+                'rules' => array(
+                    array('name',          'required'),
+                    array('name',          'type',    'type' => 'string'),
+                    array('name',          'length',  'min'  => 3, 'max' => 64),
+                ),
+                'relations' => array(
+                    'ppAssumptive'        => array(RedBeanModel::HAS_ONE, 'PP'),
+                    'pp1'                 => array(RedBeanModel::HAS_ONE, 'PP',  RedBeanModel::NOT_OWNED,
+                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'TestModule';
         }
     }
 ?>
