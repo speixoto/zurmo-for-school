@@ -132,6 +132,9 @@
             return $this->params['showMaxSize'];
         }
 
+        /**
+         * @return string content
+         */
         public static function getEditableTemplateForInlineEdit()
         {
             // Begin Not Coding Standard
