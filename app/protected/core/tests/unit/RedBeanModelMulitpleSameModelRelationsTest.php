@@ -361,12 +361,9 @@
 
         public function testMultipleBelongsToTheSameModel()
         {
-            //we should be able to kill belongs to once everything is working.
-            //  HAS_ONE_BELONGS_TO  //HAS_MANY_BELONGS_TO
-            //currently based on what i wrote in redbeanmodel, we don't really support multiple same module relations in fact it is even
-            //more strict. look around 681 in redbeanmodel, not sure if we can do something about this
-            //belongs to, i am not sure this will work. because belongs to on self can be trickpp as is. see if we can get this working.
-            //test that search queries formulate correctly for HAS_MANY, MANY_MANY with double connections to same module.
+            //HAS_MANY_BELONGS_TO
+            //Todo: later - either remove it or add specific link support. Not sure it is needed anymore since we can
+            //define the link type.
         }
 
         public function testAreRelationsValidWithOnlyOneAssumptiveLinkAgainstASingleModel()
@@ -381,6 +378,13 @@
             //RedBeanModel::LINK_TYPE_POLYMORPHIC;
             //Currently there is no way to query from the other side of a polymorphic relationship.  Currently that
             //use case is limited or non-existent.  Add as needed.
+        }
+
+        public function testHasOneBelongsToSupportsSpecificLinks()
+        {
+            //Todo later:
+            //We don't have any real usage of HAS_ONE_BELONGS_TO yet.  So until we need to support specific links
+            //this is on hold.
         }
     }
 ?>
