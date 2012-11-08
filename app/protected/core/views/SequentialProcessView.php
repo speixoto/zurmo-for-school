@@ -79,10 +79,10 @@
         protected function renderContent()
         {
             $content  = '<div class="process-container-view">' . "\n";
-            $content .= '<h3><span id="import-preloader"><span class="z-spinner"></span></span>' . $this->message . '</h3>';
+            $content .= '<h3><span id="sequential-process-spinner"><span class="z-spinner"></span></span>' . $this->message . '</h3>';
             $content .= "<span id='" . $this->getProgressBarId() . "-msg'></span>";
             $content .= '</div>';
-            $content .= '<script type="text/javascript">makeSmallLoadingSpinner("import-preloader", "dark")</script>';
+            $content .= '<script type="text/javascript">makeSmallLoadingSpinner("sequential-process-spinner", "dark")</script>';
             $this->registerAjaxScript();
             return $content;
         }

@@ -1456,6 +1456,10 @@ section {
 .AppContent .single-column #inline-edit-form .panel {
   width: 100%;
 }
+.DynamicSearchView {
+  position: relative;
+  z-index: 9999;
+}
 /*=dashboard*/
 #HomePageView .AppContent {
   padding-right: 0;
@@ -6062,11 +6066,15 @@ a.remove:hover .icon:after {
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   content: 'e';
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView h3,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
+.juiportlet-widget.ContactsForOpportunityRelatedListView h3,
 .juiportlet-widget.ContactsForAccountRelatedListView h3 {
   text-indent: 30px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
+.juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   font-weight: normal;
   font-size: 32px;
@@ -6077,12 +6085,16 @@ a.remove:hover .icon:after {
   position: absolute;
   top: 6px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView td:first-child div,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView td:first-child div,
+.juiportlet-widget.ContactsForOpportunityRelatedListView td:first-child div,
 .juiportlet-widget.ContactsForAccountRelatedListView td:first-child div {
   font-size: 11px;
   margin-top: 3px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView td:first-child div:first-child,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView td:first-child div:first-child,
+.juiportlet-widget.ContactsForOpportunityRelatedListView td:first-child div:first-child,
 .juiportlet-widget.ContactsForAccountRelatedListView td:first-child div:first-child {
   font-size: 12px;
   font-weight: bold;
@@ -7496,7 +7508,7 @@ table.configuration-list tr td:last-child a:before {
   margin-top: 5px;
 }
 /*=Step 5, process details*/
-#import-preloader .z-spinner {
+#sequential-process-spinner .z-spinner {
   display: block;
   margin: -1px 10px 0 0;
 }
@@ -7821,10 +7833,18 @@ div.form select.error {
   box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
 }
 div.form .errorSummary {
-  padding: 7px 7px 12px 7px;
-  margin: 0 0 20px 0;
-  background: #FEE;
-  font-size: 11px;
+  position: relative;
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 5px !important;
+  border: 1px solid #cc0000;
+  background: #ffb5b5;
+  font-weight: bold;
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
 }
 #edit-form td {
   position: relative;
@@ -7863,8 +7883,7 @@ div.form .errorMessage:before {
   background: url(../images/error-tip.png) left bottom no-repeat;
 }
 div.form .errorSummary p {
-  margin: 0;
-  padding: 5px;
+  margin: 0 0 5px 0;
 }
 div.form .errorSummary ul {
   margin: 0;

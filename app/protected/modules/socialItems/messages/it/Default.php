@@ -24,43 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FlashMessageView extends View
-    {
-        protected $controller;
-
-        public function __construct(CController $controller)
-        {
-            $this->controller = $controller;
-        }
-
-        protected function renderContent()
-        {
-            $content = '<div id = "FlashMessageBar"></div>';
-            if (Yii::app()->user->hasFlash('notification'))
-            {
-                $script = "
-                $('#FlashMessageBar').jnotifyAddMessage(
-                {
-                    text: '". ZurmoHtml::encode(Yii::app()->user->getFlash('notification')) ."',
-                    permanent: false,
-                    showIcon: true,
-                }
-                );
-                ";
-                Yii::app()->clientScript->registerScript('FlashMessage', $script);
-            }
-            $this->controller->beginClip("FlashMessage");
-            $this->controller->widget('application.core.widgets.JNotify', array(
-                'statusBarId' => 'FlashMessageBar',
-            ));
-            $this->controller->endClip();
-            $content .= $this->controller->clips['FlashMessage'];
-            return $content;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
-    }
+    // KEEP these in alphabetical order.
+    // KEEP them indented correctly.
+    // KEEP all the language files up-to-date with each other.
+    // DON'T MAKE A MESS!
+    return array(
+    );
 ?>
