@@ -5,7 +5,6 @@
 
 /*Imports*/
 @import 'color-scheme.less';
-@import 'mixins.less';
 
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
@@ -267,10 +266,11 @@ footer, header, hgroup, menu, nav, section {
 }
 
 #HeaderLinksView ul ul{
-    .headerDropDownSpecial();
+    ++.headerDropDownSpecial;
 }
+
 #HeaderLinksView + div{
-    background: url(../images/header-bar-2.png) left top repeat-x;
+    //background: url(../images/header-bar-2.png) left top repeat-x;
     .b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
 }
 
@@ -306,7 +306,7 @@ footer, header, hgroup, menu, nav, section {
 
 
 
-.headerDropDownSpecial(){
+.headerDropDownSpecial{
     z-index:1;
     min-width:110px;
     display:none;
@@ -334,10 +334,11 @@ footer, header, hgroup, menu, nav, section {
         display:block;
         padding:6px 10px 6px 10px;
         margin:0;
-        &:hover{
-            color:#fff !important;
-            #gradient > .vertical( @themeColor2, darken(@themeColor2, 15%) );
-        }
+    }
+    a:hover{
+        color:#fff !important;
+        ++.headerDropDownSpecialHover;
+        //#gradient > .vertical( @themeColor2, darken(@themeColor2, 15%) );
     }
 }
 
@@ -784,7 +785,6 @@ footer, header, hgroup, menu, nav, section {
 #HeaderView{
     position:relative;
     z-index:9999;
-    #gradient > .vertical( darken(@themeColor, 5%), @themeColor );
 }
 
 .TitleBarView{
@@ -1015,7 +1015,7 @@ footer, header, hgroup, menu, nav, section {
             color:#fff !important;
             text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
             em{
-                color:@themeColor !important;
+                ++.themeColor-important;
             }
             span{
                 .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
@@ -1566,9 +1566,6 @@ td.empty{
     input[type="checkbox"]{
         margin:0 0 10px 0 !important;
         .b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
-        &:focus{
-            .b-shadow(0 0 1px 1px @themeColor);
-        }
     }
     input[type="text"],
     input[type="password"],
@@ -1591,9 +1588,6 @@ td.empty{
         .b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
         width:100%;
         .box-sizing();
-        &:focus{
-            .b-shadow(0 0 1px 1px @themeColor);
-        }
     }
     textarea, select.multiple {
         height:auto;
@@ -1677,13 +1671,13 @@ td.empty{
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         }
-        &:hover{
-            color:@themeColor2 !important;
-        }
         &:active{
             color:#656565;
             .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
         }
+    }
+    a:hover{
+        ++.themeColor2-important;
     }
 }
 
@@ -1692,7 +1686,6 @@ td.empty{
     color:#FFF !important;
     .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
-    #gradient > .vertical(#97c43d, #6fa82d );
     cursor:pointer;
     &:hover{
         color:#656565 !important;
@@ -1741,13 +1734,13 @@ td.empty{
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         }
-        &:hover{
-            color:@themeColor2 !important;
-        }
         &:active{
             color:#656565;
             .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
         }
+    }
+    .icon-create:hover, a:hover {
+         ++.themeColor2-important;
     }
     .icon-create:before{
     	content: "Y";
@@ -1776,7 +1769,7 @@ td.empty{
 }
 
 a.simple-select{
-    color:@themeColor !important;
+    ++.themeColor2-important;
     background:none !important;
     background-image:none !important;
     .b-shadow( ~"none  !important" );
@@ -2396,9 +2389,9 @@ div.wide.form{
         display: block;
         .symbly(24px);
         color:#a7a7a7 !important;
-        &:hover{
-            color:@themeColor !important;
-        }
+    }
+    .remove-extra-dynamic-search-row-link:hover{
+        ++.themeColor-important;
     }
     .dynamic-search-row-number-label{
         float: left;
@@ -2877,7 +2870,7 @@ div.wide.form{
     p{
         width:100%;
         a{
-            color:@themeColor !important;
+            ++.themeColor-important;
         }
     }
     .panelTitle{
@@ -2917,7 +2910,7 @@ div.wide.form{
     text-align:center;
     margin-bottom:10px;
     a{
-        color:@themeColor !important;
+        ++.themeColo2-important;
     }
 }
 
@@ -3058,10 +3051,10 @@ div.wide.form{
             margin: 0 2px;
             line-height: normal;
             .t-shadow(none);
-            &:hover{
-                background:@themeColor2 !important;
-                color:#fff !important;
-            }
+        }
+        a:hover{
+            ++.themeBackgroundColor2-important;
+            color:#fff !important;
         }
     }
 }
@@ -3167,9 +3160,6 @@ div.wide.form{
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
             display:inline-block;
             .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
-            &:hover{
-                color:@themeColor2 !important;
-            }
             &:active{
                 color:#656565;
                 .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
@@ -3182,6 +3172,10 @@ div.wide.form{
                 margin-left:2px;
             }
         }
+        input[type="submit"]:hover{
+            ++.themeColor2-important;
+        }
+
     }
     .form-toolbar{
         border-top:none;
@@ -3392,10 +3386,10 @@ div.wide.form{
                 margin: 0 2px;
                 line-height: normal;
                 .t-shadow(none);
-                &:hover{
-                    background:@themeColor2 !important;
-                    color:#fff !important;
-                }
+            }
+            a:hover{
+                color:#fff !important;
+                ++.themeBackgroundColor2-important;
             }
         }
     }
@@ -3627,13 +3621,13 @@ div.hasHalfs{
             span{
                 display:none;
             }
-            &:hover{
-                color:@themeColor2 !important;
-            }
             &:active{
                 color:#656565;
                 .b-shadow(~"inset 0 5px 10px 0px rgba(153, 153, 153, 0.45)");
             }
+        }
+        > a:hover{
+            ++.themeColor2-important;
         }
     }
     .refresh{
@@ -3709,7 +3703,7 @@ div.hasHalfs{
             font-size:11px;
             padding-left:10px;
             a{
-                color:@themeColor !important;
+                ++.themeColor-important;
                 outline: none;
             }
         }
@@ -3754,7 +3748,6 @@ div.hasHalfs{
         #gradient > .vertical(#f6f6f6, #ededed);
         .b-shadow(inset 0 1px 0 0 #ffffff);
         > div:first-child{
-            border-right:2px solid @themeColor;
             padding-right:10px;
             margin-right:10px;
         }
@@ -3765,13 +3758,13 @@ div.hasHalfs{
             display:inline-block;
         }
         #filter-latest-activities-link{
-            color:@themeColor !important;
+            ++.themeColor-important;
             margin-left:20px;
             text-decoration: underline;
-             .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
-             &:hover{
-                 color:@themeColor2  !important;
-             }
+            .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
+        }
+        #filter-latest-activities-link:hover{
+            ++.themeColor2-important;
         }
     }
     .latest-activity-toolbar,
@@ -3893,32 +3886,6 @@ div.hasHalfs{
     margin-bottom:3px;
     display: block;
 }
-
-/*
-.vertical-forward-pager{
-    font-weight:bold;
-    display:block;
-    text-align:center;
-    padding:4px 0 4px 0 !important;
-    background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
-    &:hover{
-        color:@themeColor2 !important;
-    }
-    &:active{
-        color:#656565;
-        .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
-    }
-    &:after{
-        .symbly(20px);
-        content:"6" !important;
-    }
-    span{
-        display:none;
-    }
-}
-*/
-
-
 .LatestActivtiesForPortletView{
 	position:relative;
 	.toolbar-mbmenu{
@@ -3997,11 +3964,11 @@ div.hasHalfs{
             display: block;
             padding: 6px 10px 6px 10px;
             margin: 0 2px;
-            &:hover, &#ui-active-menuitem, &.ui-state-hover{
-                background:@themeColor2 !important;
-                color:#fff !important;
-                cursor:pointer !important;
-            }
+        }
+        a:hover, a#ui-active-menuitem, a.ui-state-hover{
+            ++.themeBackgroundColor2-important;
+            color:#fff !important;
+            cursor:pointer !important;
         }
     }
     li:first-child a{
@@ -4019,7 +3986,6 @@ div.hasHalfs{
     top:100px;
     width: 25%;
     right: 3%;
-    
     z-index: 9999;
     .jnotify-item{
         position: relative;
@@ -4127,12 +4093,10 @@ div.hasHalfs{
         // for IE padding-right: 5px;
         &:focus, &:hover{
             outline: none;
-            .b-shadow(0 0 1px 1px @themeColor);
         }
     }
     &:hover select{
         outline: none;
-        .b-shadow(0 0 1px 1px @themeColor);
     }
 }
 
@@ -4288,7 +4252,7 @@ div.hasHalfs{
         line-height: 21px;
         font-weight:normal;
         a{
-            color:@themeColor !important;
+            ++.themeColor-important;
             text-decoration:underline !important;
         }
     }

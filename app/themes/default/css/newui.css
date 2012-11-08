@@ -3,177 +3,6 @@
   padding: 0;
 }
 /*Imports*/
-/*Blue Theme*/
-.themeColor,
-.zButton:hover,
-.z-button:hover,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-a:hover,
-#MenuView li.active > a > span > span,
-#MenuView a:hover > span > span,
-#MenuView li.active > a > span > span,
-.xhtml-validation-info,
-.performance-info,
-table.items tr:hover .pencil,
-.ui-dialog .ui-dialog-title,
-div.wide.form a,
-.ZeroModelsYetView a:hover,
-.search-form-tools,
-.search-form-tools input[type="submit"]:hover,
-#more-search-linkmodal,
-#more-search-link,
-#select-list-attributes-link,
-.double-column .panel a,
-.details-table a,
-.toolbar-mbmenu .options-menu > li > a:hover,
-#inline-edit-form > table td > a,
-#inline-edit-form .permissions-box > label,
-.LatestActivitiesListView .latest-activity-toolbar label,
-.LatestActivitiesView .latest-activity-toolbar label,
-.LatestActivitiesListView .filter-portlet-model-bar label,
-.LatestActivitiesView .filter-portlet-model-bar label,
-.operation-description,
-.AppContent.MassEditView .ui-state-highlight p,
-#progressBar-links a:hover,
-a.remove :hover .icon:after,
-.juiportlet-widget-head a.edit :hover .icon:after,
-#InstallPageView .AppContainer a:hover,
-#InstallPageView #install-form input[type="submit"]:hover,
-#ConfigurationPageView table tr:hover,
-#ConfigurationPageView table tr:hover .pencil,
-.configuration-list li a:hover,
-table.configuration-list tr td:last-child a:hover,
-#ModulePermissionsEditAndDetailsView table tr:first-child th,
-.multiselect-holder input[type="button"]:hover,
-.EmailTestingButton:hover,
-.panelTitle,
-#MyMissionsForPortletView .filter-portlet-model-bar label,
-.file-upload-box .ui-icon-plusthick:hover,
-.upload-actions .icon-delete,
-.ui-datepicker .ui-datepicker-current:hover,
-.ui-datepicker .ui-datepicker-close:hover,
-.ui-datepicker .calendar-events-1 span,
-.ui-datepicker .calendar-events-2 span,
-.ui-datepicker .calendar-events-3 span,
-.ui-datepicker .calendar-events-4 span,
-.ui-datepicker .calendar-events-5 span,
-.ui-datepicker .calendar-events-6 span,
-.add-custom-field .configure-custom-field-button:hover,
-.designer-toolbar input[type="submit"]:hover,
-.panelToPlace,
-.rowToPlace,
-.element-to-place,
-.AttributeEditView form div table #customFieldDataData_AddInputButton:hover,
-#customFieldDataData_AddInputButton:hover,
-.qtip,
-.ui-tooltip-default .ui-tooltip-titlebar,
-.game-badge .badge-icon,
-.badge .badge-icon,
-.percentComplete,
-.ModalGameNotification a:hover,
-#WelcomeView .dashboard-link:hover,
-.comment .delete-comment,
-.comment .edit-comment,
-.comment .delete-comment a,
-.comment .edit-comment a,
-.unread td,
-.unread td a,
-a.user-link,
-.SocialItemsListView .show-create-comment,
-#AllSocialItemsForPortletView .show-create-comment {
-  color: #262877;
-}
-.themeColor2,
-#notifications-flyout .single-notification h4,
-.view-toolbar-link:hover,
-.view-toolbar-link:active,
-.view-toolbar > a:hover,
-.view-toolbar .parent > a:hover,
-.view-toolbar > a:active,
-.view-toolbar .parent > a:active,
-.portlet-toolbar .icon-delete:before,
-.portlet-toolbar .icon-edit:before,
-.ZeroModelsYetView a :before,
-#NoteInlineEditView form input[type="submit"] :before,
-.BreadCrumbView #StickyListMenu > li > a:hover > span,
-.addfileinput-button :hover span,
-.AttributeEditView .ui-icon-info:after {
-  color: #7bb730;
-}
-.themeBackgroundColor,
-.zLink,
-.z-link,
-#clear-search-link .zLink,
-#clear-search-link .z-link,
-#clear-search-link,
-.LatestActivitiesListView .latest-activity-toolbar label:hover,
-.LatestActivitiesView .latest-activity-toolbar label:hover,
-.LatestActivitiesListView .filter-portlet-model-bar label:hover,
-.LatestActivitiesView .filter-portlet-model-bar label:hover,
-.LatestActivitiesListView .latest-activity-toolbar .ui-state-active,
-.LatestActivitiesView .latest-activity-toolbar .ui-state-active,
-.LatestActivitiesListView .filter-portlet-model-bar .ui-state-active,
-.LatestActivitiesView .filter-portlet-model-bar .ui-state-active,
-.lead-conversion-actions a .zLink,
-.lead-conversion-actions a .z-link,
-.lead-conversion-actions a,
-#InstallAccessFailurePageView a,
-#ErrorPageView a,
-#JobsCollectionView a .zLink,
-#JobsCollectionView a .z-link,
-#JobsCollectionView a,
-#ImportWizardMappingView #sample-column-header a,
-#clear-search-link #ImportWizardMappingView #sample-column-header a,
-.lead-conversion-actions a #ImportWizardMappingView #sample-column-header a,
-#JobsCollectionView a #ImportWizardMappingView #sample-column-header a,
-.remove-extra-column-link,
-#clear-search-link .remove-extra-column-link,
-.lead-conversion-actions a .remove-extra-column-link,
-#JobsCollectionView a .remove-extra-column-link,
-#MyMissionsForPortletView .filter-portlet-model-bar label:hover,
-#MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
-.upload-actions button.start,
-.upload-actions button.cancel,
-.ranking,
-.email-matching-actions a .zLink,
-.email-matching-actions a .z-link,
-.email-matching-actions a #ImportWizardMappingView #sample-column-header a,
-.email-matching-actions a .remove-extra-column-link,
-.email-matching-actions a {
-  background-color: #262877;
-}
-.themeBackgroundColor2,
-.headerDropDown a:hover,
-#ShortcutsMenu ul a:hover,
-#MenuView li.active > a > span,
-#MenuView a:hover > span,
-#MenuView li.active > a > span,
-#RecentlyViewedView li a span:first-child,
-.view-toolbar .parent > ul a:hover,
-.edit-row-menu ul a:hover,
-#HomeDashboardPortletSelectionView ul span,
-li.token-input-selected-token,
-.hide-welcome span {
-  background-color: #7bb730;
-}
-.themeColor-important {
-  color: #262877 !important;
-}
-.themeColor2-important,
-.portlet-toolbar .icon-create:before {
-  color: #7bb730 !important;
-}
-.themeBackgroundColor-important {
-  background-color: #262877 !important;
-}
-.themeBackgroundColor2-important {
-  background-color: #7bb730 !important;
-}
 .flyout,
 #ModalView .search-view-1,
 .ui-multiselect-menu,
@@ -376,14 +205,6 @@ table.configuration-list tr td:last-child a.loading .z-icon,
 .z-spinner.loading {
   display: block !important;
 }
-.z-icon:before {
-  /*empty*/
-
-}
-.z-label {
-  /*empty*/
-
-}
 .zLink,
 .z-link,
 #ImportWizardMappingView #sample-column-header a,
@@ -417,7 +238,288 @@ table.configuration-list tr td:last-child a.loading .z-icon,
   padding: 0;
   margin: 0;
 }
-@font-face {
+/*START COLOR SCHEME/THEME*/
+#HeaderLinksView + div {
+  background-color: #4f4646;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#594f4f), to(#4f4646));
+  background-image: -moz-linear-gradient(top, #594f4f, #4f4646);
+  background-image: -ms-linear-gradient(top, #594f4f, #4f4646);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #594f4f), color-stop(100%, #4f4646));
+  background-image: -webkit-linear-gradient(top, #594f4f, #4f4646);
+  background-image: -o-linear-gradient(top, #594f4f, #4f4646);
+  background-image: linear-gradient(top, #594f4f, #4f4646);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#594f4f', endColorstr='#4f4646', GradientType=0);
+}
+.green-button,
+.attachLoading {
+  background-color: #368985;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#45ada8), to(#368985));
+  background-image: -moz-linear-gradient(top, #45ada8, #368985);
+  background-image: -ms-linear-gradient(top, #45ada8, #368985);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #45ada8), color-stop(100%, #368985));
+  background-image: -webkit-linear-gradient(top, #45ada8, #368985);
+  background-image: -o-linear-gradient(top, #45ada8, #368985);
+  background-image: linear-gradient(top, #45ada8, #368985);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#45ada8', endColorstr='#368985', GradientType=0);
+}
+.themeColor,
+.zButton:hover,
+.z-button:hover,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a:hover,
+#MenuView li.active > a > span > span,
+#MenuView a:hover > span > span,
+#MenuView li.active > a > span > span,
+.xhtml-validation-info,
+.performance-info,
+table.items tr:hover .pencil,
+.ui-dialog .ui-dialog-title,
+div.wide.form a,
+.ZeroModelsYetView a:hover,
+.search-form-tools,
+.search-form-tools input[type="submit"]:hover,
+#more-search-linkmodal,
+#more-search-link,
+#select-list-attributes-link,
+.double-column .panel a,
+.details-table a,
+.toolbar-mbmenu .options-menu > li > a:hover,
+#inline-edit-form > table td > a,
+#inline-edit-form .permissions-box > label,
+.LatestActivitiesListView .latest-activity-toolbar label,
+.LatestActivitiesView .latest-activity-toolbar label,
+.LatestActivitiesListView .filter-portlet-model-bar label,
+.LatestActivitiesView .filter-portlet-model-bar label,
+.operation-description,
+.AppContent.MassEditView .ui-state-highlight p,
+#progressBar-links a:hover,
+a.remove :hover .icon:after,
+.juiportlet-widget-head a.edit :hover .icon:after,
+#InstallPageView .AppContainer a:hover,
+#InstallPageView #install-form input[type="submit"]:hover,
+#ConfigurationPageView table tr:hover,
+#ConfigurationPageView table tr:hover .pencil,
+.configuration-list li a:hover,
+table.configuration-list tr td:last-child a:hover,
+#ModulePermissionsEditAndDetailsView table tr:first-child th,
+.multiselect-holder input[type="button"]:hover,
+.EmailTestingButton:hover,
+.panelTitle,
+#MyMissionsForPortletView .filter-portlet-model-bar label,
+.file-upload-box .ui-icon-plusthick:hover,
+.upload-actions .icon-delete,
+.ui-datepicker .ui-datepicker-current:hover,
+.ui-datepicker .ui-datepicker-close:hover,
+.ui-datepicker .calendar-events-1 span,
+.ui-datepicker .calendar-events-2 span,
+.ui-datepicker .calendar-events-3 span,
+.ui-datepicker .calendar-events-4 span,
+.ui-datepicker .calendar-events-5 span,
+.ui-datepicker .calendar-events-6 span,
+.add-custom-field .configure-custom-field-button:hover,
+.designer-toolbar input[type="submit"]:hover,
+.panelToPlace,
+.rowToPlace,
+.element-to-place,
+.AttributeEditView form div table #customFieldDataData_AddInputButton:hover,
+#customFieldDataData_AddInputButton:hover,
+.qtip,
+.ui-tooltip-default .ui-tooltip-titlebar,
+.game-badge .badge-icon,
+.badge .badge-icon,
+.percentComplete,
+.ModalGameNotification a:hover,
+#WelcomeView .dashboard-link:hover,
+.comment .delete-comment,
+.comment .edit-comment,
+.comment .delete-comment a,
+.comment .edit-comment a,
+.unread td,
+.unread td a,
+a.user-link,
+.SocialItemsListView .show-create-comment,
+#AllSocialItemsForPortletView .show-create-comment {
+  color: #547980;
+}
+.themeColor2,
+#notifications-flyout .single-notification h4,
+.view-toolbar-link:hover,
+.view-toolbar-link:active,
+.view-toolbar > a:hover,
+.view-toolbar .parent > a:hover,
+.view-toolbar > a:active,
+.view-toolbar .parent > a:active,
+.portlet-toolbar .icon-delete:before,
+.portlet-toolbar .icon-edit:before,
+.ZeroModelsYetView a :before,
+#NoteInlineEditView form input[type="submit"] :before,
+.BreadCrumbView #StickyListMenu > li > a:hover > span,
+.addfileinput-button :hover span,
+.AttributeEditView .ui-icon-info:after {
+  color: #b88f30;
+}
+.themeBackgroundColor,
+.zLink,
+.z-link,
+#clear-search-link .zLink,
+#clear-search-link .z-link,
+#clear-search-link,
+.LatestActivitiesListView .latest-activity-toolbar label:hover,
+.LatestActivitiesView .latest-activity-toolbar label:hover,
+.LatestActivitiesListView .filter-portlet-model-bar label:hover,
+.LatestActivitiesView .filter-portlet-model-bar label:hover,
+.LatestActivitiesListView .latest-activity-toolbar .ui-state-active,
+.LatestActivitiesView .latest-activity-toolbar .ui-state-active,
+.LatestActivitiesListView .filter-portlet-model-bar .ui-state-active,
+.LatestActivitiesView .filter-portlet-model-bar .ui-state-active,
+.lead-conversion-actions a .zLink,
+.lead-conversion-actions a .z-link,
+.lead-conversion-actions a,
+#InstallAccessFailurePageView a,
+#ErrorPageView a,
+#JobsCollectionView a .zLink,
+#JobsCollectionView a .z-link,
+#JobsCollectionView a,
+#ImportWizardMappingView #sample-column-header a,
+#clear-search-link #ImportWizardMappingView #sample-column-header a,
+.lead-conversion-actions a #ImportWizardMappingView #sample-column-header a,
+#JobsCollectionView a #ImportWizardMappingView #sample-column-header a,
+.remove-extra-column-link,
+#clear-search-link .remove-extra-column-link,
+.lead-conversion-actions a .remove-extra-column-link,
+#JobsCollectionView a .remove-extra-column-link,
+#MyMissionsForPortletView .filter-portlet-model-bar label:hover,
+#MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+.upload-actions button.start,
+.upload-actions button.cancel,
+.ui-tooltip-default .ui-tooltip-icon,
+.ranking,
+.email-matching-actions a .zLink,
+.email-matching-actions a .z-link,
+.email-matching-actions a #ImportWizardMappingView #sample-column-header a,
+.email-matching-actions a .remove-extra-column-link,
+.email-matching-actions a {
+  background-color: #547980;
+}
+.themeBackgroundColor2,
+.headerDropDown a:hover,
+#ShortcutsMenu ul a:hover,
+#MenuView li.active > a > span,
+#MenuView a:hover > span,
+#MenuView li.active > a > span,
+#RecentlyViewedView li a span:first-child,
+.view-toolbar .parent > ul a:hover,
+.edit-row-menu ul a:hover,
+#HomeDashboardPortletSelectionView ul span,
+li.token-input-selected-token,
+.hide-welcome span {
+  background-color: #b88f30;
+}
+.themeColor-important,
+#RecentlyViewedView li a:hover em,
+.dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+.details-table p a,
+#days-meetings-list-view h3 span a,
+.LatestActivitiesListView .latest-activity-toolbar #filter-latest-activities-link,
+.LatestActivitiesView .latest-activity-toolbar #filter-latest-activities-link,
+#AboutView p a,
+#AboutView ul a,
+.configuration-list li a::before .back-to-app-menu-item span,
+.breadcrumbs a,
+.sortable-panel,
+.cell-element,
+.sortable-row-list,
+#WelcomeView a {
+  color: #547980 !important;
+}
+.themeColor2-important,
+.modal-view-toolbar a:hover,
+.form-toolbar a:hover,
+.portlet-toolbar .icon-create:hover,
+.portlet-toolbar a:hover,
+.portlet-toolbar .icon-create:before,
+a.simple-select,
+#NoteInlineEditView form input[type="submit"]:hover,
+.pager li > a:hover,
+.LatestActivitiesListView .latest-activity-toolbar #filter-latest-activities-link:hover,
+.LatestActivitiesView .latest-activity-toolbar #filter-latest-activities-link:hover,
+#currency-collection-form .portlet-toolbar .modal-view-toolbar a:hover,
+#currency-collection-form .portlet-toolbar .form-toolbar a:hover,
+#currency-collection-form .portlet-toolbar a:hover,
+.badge-message h3 {
+  color: #b88f30 !important;
+}
+.themeBackgroundColor-important {
+  background-color: #547980 !important;
+}
+.themeBackgroundColor2-important,
+.toolbar-mbmenu .options-menu ul a:hover,
+.BreadCrumbView #StickyListMenu ul a:hover,
+.ui-autocomplete li a:hover,
+.ui-autocomplete li a#ui-active-menuitem,
+.ui-autocomplete li a.ui-state-hover {
+  background-color: #b88f30 !important;
+}
+.themeColor-focus,
+.form input[type="checkbox"]:focus,
+.form input[type="text"]:focus,
+.form input[type="password"]:focus,
+.form select.multiple:focus,
+.form textarea:focus,
+.hasDropDown select:focus,
+.hasDropDown select:hover,
+.hasDropDown:hover select,
+ul.token-input-list:focus,
+#layout-container .ui-state-active,
+#layout-container .ui-widget-content .ui-state-active,
+#layout-container .ui-widget-header .ui-state-active {
+  -webkit-box-shadow: 0 0 1px 1px #547980;
+  -moz-box-shadow: 0 0 1px 1px #547980;
+  -o-box-shadow: 0 0 1px 1px #547980;
+  -ms-box-shadow: 0 0 1px 1px #547980;
+  box-shadow: 0 0 1px 1px #547980;
+}
+.headerDropDownSpecialHover,
+.headerDropDownSpecial a:hover,
+#HeaderLinksView ul ul a:hover {
+  background-color: #7b6020;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#b88f30), to(#7b6020));
+  background-image: -moz-linear-gradient(top, #b88f30, #7b6020);
+  background-image: -ms-linear-gradient(top, #b88f30, #7b6020);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b88f30), color-stop(100%, #7b6020));
+  background-image: -webkit-linear-gradient(top, #b88f30, #7b6020);
+  background-image: -o-linear-gradient(top, #b88f30, #7b6020);
+  background-image: linear-gradient(top, #b88f30, #7b6020);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b88f30', endColorstr='#7b6020', GradientType=0);
+}
+#HeaderView {
+  background-color: #547980;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#4a6a71), to(#547980));
+  background-image: -moz-linear-gradient(top, #4a6a71, #547980);
+  background-image: -ms-linear-gradient(top, #4a6a71, #547980);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4a6a71), color-stop(100%, #547980));
+  background-image: -webkit-linear-gradient(top, #4a6a71, #547980);
+  background-image: -o-linear-gradient(top, #4a6a71, #547980);
+  background-image: linear-gradient(top, #4a6a71, #547980);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4a6a71', endColorstr='#547980', GradientType=0);
+}
+.ui-datepicker td.ui-datepicker-today {
+  background: #e5edee !important;
+}
+.LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+.LatestActivitiesView .latest-activity-toolbar > div:first-child {
+  border-right: 2px solid #547980;
+}
+/*END COLOR SCHEME/THEME*/@font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
   src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
@@ -682,57 +784,7 @@ section {
 #HeaderLinksView li a:hover {
   color: #fff !important;
 }
-#HeaderLinksView ul ul {
-  z-index: 1;
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  top: 37px;
-  border: 1px solid #444;
-  background: #252525;
-  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#HeaderLinksView ul ul li {
-  line-height: 100%;
-}
-#HeaderLinksView ul ul li:first-child a {
-  border-top: none;
-}
-#HeaderLinksView ul ul li:last-child a {
-  border-bottom: none;
-}
-#HeaderLinksView ul ul a {
-  border-top: 1px solid #323232;
-  border-bottom: 1px solid #181818;
-  color: #EFEFEF;
-  font-size: 11px;
-  font-weight: normal;
-  display: block;
-  padding: 6px 10px 6px 10px;
-  margin: 0;
-}
-#HeaderLinksView ul ul a:hover {
-  color: #fff !important;
-  background-color: #527a20;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#7bb730), to(#527a20));
-  background-image: -moz-linear-gradient(top, #7bb730, #527a20);
-  background-image: -ms-linear-gradient(top, #7bb730, #527a20);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7bb730), color-stop(100%, #527a20));
-  background-image: -webkit-linear-gradient(top, #7bb730, #527a20);
-  background-image: -o-linear-gradient(top, #7bb730, #527a20);
-  background-image: linear-gradient(top, #7bb730, #527a20);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7bb730', endColorstr='#527a20', GradientType=0);
-}
 #HeaderLinksView + div {
-  background: url(../images/header-bar-2.png) left top repeat-x;
   -webkit-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -moz-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -o-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
@@ -789,6 +841,51 @@ section {
 #ShortcutsMenu ul a:hover,
 .view-toolbar .parent > ul a:hover,
 .edit-row-menu ul a:hover {
+  color: #fff !important;
+}
+.headerDropDownSpecial,
+#HeaderLinksView ul ul {
+  z-index: 1;
+  min-width: 110px;
+  display: none;
+  position: absolute;
+  top: 37px;
+  border: 1px solid #444;
+  background: #252525;
+  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.headerDropDownSpecial li,
+#HeaderLinksView ul ul li {
+  line-height: 100%;
+}
+.headerDropDownSpecial li:first-child a,
+#HeaderLinksView ul ul li:first-child a {
+  border-top: none;
+}
+.headerDropDownSpecial li:last-child a,
+#HeaderLinksView ul ul li:last-child a {
+  border-bottom: none;
+}
+.headerDropDownSpecial a,
+#HeaderLinksView ul ul a {
+  border-top: 1px solid #323232;
+  border-bottom: 1px solid #181818;
+  color: #EFEFEF;
+  font-size: 11px;
+  font-weight: normal;
+  display: block;
+  padding: 6px 10px 6px 10px;
+  margin: 0;
+}
+.headerDropDownSpecial a:hover,
+#HeaderLinksView ul ul a:hover {
   color: #fff !important;
 }
 #notifications {
@@ -1271,16 +1368,6 @@ section {
 #HeaderView {
   position: relative;
   z-index: 9999;
-  background-color: #262877;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#202264), to(#262877));
-  background-image: -moz-linear-gradient(top, #202264, #262877);
-  background-image: -ms-linear-gradient(top, #202264, #262877);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #202264), color-stop(100%, #262877));
-  background-image: -webkit-linear-gradient(top, #202264, #262877);
-  background-image: -o-linear-gradient(top, #202264, #262877);
-  background-image: linear-gradient(top, #202264, #262877);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202264', endColorstr='#262877', GradientType=0);
 }
 .TitleBarView {
   margin-bottom: 15px;
@@ -1567,9 +1654,6 @@ section {
 #RecentlyViewedView li a:hover {
   color: #fff !important;
   text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-}
-#RecentlyViewedView li a:hover em {
-  color: #262877 !important;
 }
 #RecentlyViewedView li a:hover span {
   -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
@@ -2288,13 +2372,6 @@ td.empty {
   -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
 }
-.form input[type="checkbox"]:focus {
-  -webkit-box-shadow: 0 0 1px 1px #262877;
-  -moz-box-shadow: 0 0 1px 1px #262877;
-  -o-box-shadow: 0 0 1px 1px #262877;
-  -ms-box-shadow: 0 0 1px 1px #262877;
-  box-shadow: 0 0 1px 1px #262877;
-}
 .form input[type="text"],
 .form input[type="password"],
 .form select.multiple,
@@ -2328,16 +2405,6 @@ td.empty {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-}
-.form input[type="text"]:focus,
-.form input[type="password"]:focus,
-.form select.multiple:focus,
-.form textarea:focus {
-  -webkit-box-shadow: 0 0 1px 1px #262877;
-  -moz-box-shadow: 0 0 1px 1px #262877;
-  -o-box-shadow: 0 0 1px 1px #262877;
-  -ms-box-shadow: 0 0 1px 1px #262877;
-  box-shadow: 0 0 1px 1px #262877;
 }
 .form textarea,
 .form select.multiple {
@@ -2450,10 +2517,6 @@ td.empty {
 .form-toolbar a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-.modal-view-toolbar a:hover,
-.form-toolbar a:hover {
-  color: #7bb730 !important;
-}
 .modal-view-toolbar a:active,
 .form-toolbar a:active {
   color: #656565;
@@ -2476,16 +2539,6 @@ td.empty {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  background-color: #6fa82d;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
-  background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
-  background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
-  background-image: -webkit-linear-gradient(top, #97c43d, #6fa82d);
-  background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
-  background-image: linear-gradient(top, #97c43d, #6fa82d);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
   cursor: pointer;
 }
 .green-button:hover,
@@ -2587,10 +2640,6 @@ td.empty {
 .portlet-toolbar a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-.portlet-toolbar .icon-create:hover,
-.portlet-toolbar a:hover {
-  color: #7bb730 !important;
-}
 .portlet-toolbar .icon-create:active,
 .portlet-toolbar a:active {
   color: #656565;
@@ -2649,7 +2698,6 @@ td.empty {
   margin-left: 0;
 }
 a.simple-select {
-  color: #262877 !important;
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -3297,7 +3345,6 @@ div.wide.form label.hasCheckBox {
   left: auto;
 }
 #clear-search-link {
-  background-color: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -3306,6 +3353,7 @@ div.wide.form label.hasCheckBox {
   border-radius: 2px;
   color: #fff !important;
   font-size: 11px;
+  background-color: #547980;
   margin-left: 10px;
 }
 #clear-search-link .icon-clear {
@@ -3355,9 +3403,6 @@ div.wide.form label.hasCheckBox {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   color: #a7a7a7 !important;
-}
-.dynamic-search-row .remove-extra-dynamic-search-row-link:hover {
-  color: #262877 !important;
 }
 .dynamic-search-row .dynamic-search-row-number-label {
   float: left;
@@ -3868,9 +3913,6 @@ div.wide.form label.hasCheckBox {
 .details-table p {
   width: 100%;
 }
-.details-table p a {
-  color: #262877 !important;
-}
 .details-table .panelTitle {
   padding-top: 0;
   padding-left: 10px;
@@ -3904,9 +3946,6 @@ div.wide.form label.hasCheckBox {
   font-style: italic;
   text-align: center;
   margin-bottom: 10px;
-}
-.after-form-details-content a {
-  color: #262877 !important;
 }
 .mapcanvas {
   width: 600px;
@@ -4091,7 +4130,6 @@ div.wide.form label.hasCheckBox {
   text-shadow: none;
 }
 .toolbar-mbmenu .options-menu ul a:hover {
-  background: #7bb730 !important;
   color: #fff !important;
 }
 .AttributeDetailsView .toolbar-mbmenu {
@@ -4233,9 +4271,6 @@ div.wide.form label.hasCheckBox {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-}
-#NoteInlineEditView form input[type="submit"]:hover {
-  color: #7bb730 !important;
 }
 #NoteInlineEditView form input[type="submit"]:active {
   color: #656565;
@@ -4488,7 +4523,6 @@ div.wide.form label.hasCheckBox {
   text-shadow: none;
 }
 .BreadCrumbView #StickyListMenu ul a:hover {
-  background: #7bb730 !important;
   color: #fff !important;
 }
 /*=Temp Addreess Fields*/
@@ -4772,9 +4806,6 @@ div.hasHalfs .twoThirds {
 .pager li > a span {
   display: none;
 }
-.pager li > a:hover {
-  color: #7bb730 !important;
-}
 .pager li > a:active {
   color: #656565;
   -webkit-box-shadow: inset 0 5px 10px 0px rgba(153, 153, 153, 0.45);
@@ -4871,7 +4902,6 @@ div.hasHalfs .twoThirds {
   padding-left: 10px;
 }
 #days-meetings-list-view h3 span a {
-  color: #262877 !important;
   outline: none;
 }
 /*=Meeting/Task Single View*/
@@ -4937,7 +4967,6 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
 .LatestActivitiesView .latest-activity-toolbar > div:first-child {
-  border-right: 2px solid #262877;
   padding-right: 10px;
   margin-right: 10px;
 }
@@ -4951,7 +4980,6 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .latest-activity-toolbar #filter-latest-activities-link,
 .LatestActivitiesView .latest-activity-toolbar #filter-latest-activities-link {
-  color: #262877 !important;
   margin-left: 20px;
   text-decoration: underline;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
@@ -4959,10 +4987,6 @@ div.hasHalfs .twoThirds {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-}
-.LatestActivitiesListView .latest-activity-toolbar #filter-latest-activities-link:hover,
-.LatestActivitiesView .latest-activity-toolbar #filter-latest-activities-link:hover {
-  color: #7bb730 !important;
 }
 .LatestActivitiesListView .latest-activity-toolbar,
 .LatestActivitiesView .latest-activity-toolbar,
@@ -5172,29 +5196,6 @@ div.hasHalfs .twoThirds {
   margin-bottom: 3px;
   display: block;
 }
-/*
-.vertical-forward-pager{
-    font-weight:bold;
-    display:block;
-    text-align:center;
-    padding:4px 0 4px 0 !important;
-    background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
-    &:hover{
-        color:@themeColor2 !important;
-    }
-    &:active{
-        color:#656565;
-        .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
-    }
-    &:after{
-        .symbly(20px);
-        content:"6" !important;
-    }
-    span{
-        display:none;
-    }
-}
-*/
 .LatestActivtiesForPortletView {
   position: relative;
 }
@@ -5291,7 +5292,6 @@ div.hasHalfs .twoThirds {
 .ui-autocomplete li a:hover,
 .ui-autocomplete li a#ui-active-menuitem,
 .ui-autocomplete li a.ui-state-hover {
-  background: #7bb730 !important;
   color: #fff !important;
   cursor: pointer !important;
 }
@@ -5428,19 +5428,9 @@ div.hasHalfs .twoThirds {
 .hasDropDown select:focus,
 .hasDropDown select:hover {
   outline: none;
-  -webkit-box-shadow: 0 0 1px 1px #262877;
-  -moz-box-shadow: 0 0 1px 1px #262877;
-  -o-box-shadow: 0 0 1px 1px #262877;
-  -ms-box-shadow: 0 0 1px 1px #262877;
-  box-shadow: 0 0 1px 1px #262877;
 }
 .hasDropDown:hover select {
   outline: none;
-  -webkit-box-shadow: 0 0 1px 1px #262877;
-  -moz-box-shadow: 0 0 1px 1px #262877;
-  -o-box-shadow: 0 0 1px 1px #262877;
-  -ms-box-shadow: 0 0 1px 1px #262877;
-  box-shadow: 0 0 1px 1px #262877;
 }
 /*=Mass Edit + DELETE view*/
 .AppContent.MassEditView #edit-form table {
@@ -5505,7 +5495,6 @@ div.hasHalfs .twoThirds {
   padding: 10px;
 }
 .lead-conversion-actions a {
-  background-color: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -5514,6 +5503,7 @@ div.hasHalfs .twoThirds {
   border-radius: 2px;
   color: #fff !important;
   font-size: 11px;
+  background-color: #547980;
 }
 /*=Progress*/
 .AppContent.ProgressView {
@@ -5625,7 +5615,6 @@ div.hasHalfs .twoThirds {
 }
 #AboutView p a,
 #AboutView ul a {
-  color: #262877 !important;
   text-decoration: underline !important;
 }
 #AboutView ul {
@@ -6142,7 +6131,6 @@ a.remove .icon:after {
 }
 .configuration-list li a::before .back-to-app-menu-item span {
   vertical-align: middle;
-  color: #262877 !important;
 }
 .configuration-list li a::before .back-to-app-menu-item span:before {
   content: "z";
@@ -6641,7 +6629,6 @@ table.configuration-list tr td:last-child a:before {
   padding: 0 0 0 10px !important;
 }
 #JobsCollectionView a {
-  background-color: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -6650,6 +6637,7 @@ table.configuration-list tr td:last-child a:before {
   border-radius: 2px;
   color: #fff !important;
   font-size: 11px;
+  background-color: #547980;
   margin-right: 5px;
 }
 #JobsCollectionView table {
@@ -6739,9 +6727,6 @@ table.configuration-list tr td:last-child a:before {
 #currency-collection-form .portlet-toolbar a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-#currency-collection-form .portlet-toolbar a:hover {
-  color: #7bb730 !important;
-}
 #currency-collection-form .portlet-toolbar a:active {
   color: #656565;
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -6777,9 +6762,6 @@ table.configuration-list tr td:last-child a:before {
 .breadcrumbs {
   padding: 0 0 15px 0;
   font-size: 11px;
-}
-.breadcrumbs a {
-  color: #262877 !important;
 }
 /*designer*/
 .ModuleEditView #edit-form label {
@@ -7824,7 +7806,6 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
   background-image: none !important;
-  background: #b5b6e7 !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   border-top: 1px solid #BBB;
@@ -7964,13 +7945,6 @@ ul.token-input-list {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-}
-ul.token-input-list:focus {
-  -webkit-box-shadow: 0 0 1px 1px #262877;
-  -moz-box-shadow: 0 0 1px 1px #262877;
-  -o-box-shadow: 0 0 1px 1px #262877;
-  -ms-box-shadow: 0 0 1px 1px #262877;
-  box-shadow: 0 0 1px 1px #262877;
 }
 ul.token-input-list input[type="text"] {
   border: none;
@@ -8249,7 +8223,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding: 10px 10px 10px 10px;
   width: 100% !important;
   min-height: 60px !important;
-  color: #262877 !important;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -8272,7 +8245,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding: 0px;
   width: 100%;
   height: 100%;
-  color: #262877 !important;
   border: 1px solid #ccc;
   background-color: #ededed;
   background-repeat: repeat-x;
@@ -8332,9 +8304,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   min-height: 60px;
   margin-bottom: 5px;
   padding: 5px;
-}
-.sortable-row-list {
-  color: #262877 !important;
 }
 .layout-single-column {
   margin: 15px 0 15px 0;
@@ -8555,11 +8524,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 #layout-container .ui-widget-header .ui-state-active {
   z-index: 9999;
   color: #212121;
-  -webkit-box-shadow: 0 0 1px 1px #262877;
-  -moz-box-shadow: 0 0 1px 1px #262877;
-  -o-box-shadow: 0 0 1px 1px #262877;
-  -ms-box-shadow: 0 0 1px 1px #262877;
-  box-shadow: 0 0 1px 1px #262877;
 }
 /*Editing fields, DESIGNER >> FIELDS >> EDIT FIELD*/
 .AttributeEditView .ui-state-highlight p {
@@ -8832,7 +8796,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .ui-tooltip-default .ui-tooltip-icon {
   border-color: #fff;
-  background: #7bb730;
   color: #fff;
 }
 .ui-tooltip-default .ui-tooltip-titlebar .ui-state-hover {
@@ -9502,7 +9465,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   width: 100%;
 }
 .badge-message h3 {
-  color: #7bb730 !important;
   margin-top: 3px;
 }
 .game-badge-CreateContact .badge-icon:before,
@@ -10132,7 +10094,6 @@ a.close-ModalGameNotification.simple-select {
   margin: 30px -5px 0 0 !important;
 }
 #WelcomeView a {
-  color: #262877 !important;
   text-decoration: underline !important;
 }
 #WelcomeView .dashboard-link {
@@ -10820,7 +10781,6 @@ a.user-link {
   display: block;
 }
 .email-matching-actions a {
-  background-color: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -10829,6 +10789,7 @@ a.user-link {
   border-radius: 2px;
   color: #fff !important;
   font-size: 11px;
+  background-color: #547980;
   text-decoration: none;
 }
 .email-matching-show-more,

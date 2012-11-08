@@ -1,6 +1,76 @@
-/*Blue Theme*/
-@themeColor : #262877;
-@themeColor2 : #7BB730;
+@import 'mixins.less';
+
+/*START COLOR SCHEME/THEME*/
+
+//Amit Blue Theme
+//@themeColor : #262877;
+//@themeColor2 : #7BB730;
+
+//Blue Theme
+//@themeColor        : #282A76;
+//@themeColor2       : #7CB830;
+//@themeColorBtn     : #97c43d;
+//@themeColorBtn2    : #6fa82d;
+//@themeColorHeader  : #464646;
+//@themeColorHeader2 : #333535;
+
+
+
+
+
+//Brown Theme
+@themeColor        : #547980;
+@themeColor2       : #B88F30;
+@themeColorBtn     : #45ADA8;
+@themeColorBtn2    : darken(@themeColorBtn, 10%);
+@themeColorHeader  : #594F4F;
+@themeColorHeader2 : #4F4646;
+
+
+
+//Cherry Theme
+//@themeColor : #6C8092;
+//@themeColor2 : #933140;
+
+//Green Theme
+//@themeColor : #2B434F;
+//@themeColor2 : #638270;
+
+//Turqoise Theme
+//@themeColor : #447799;
+//@themeColor2 : #44BBCC;
+
+//Violet Theme
+//@themeColor : #4A3970;
+//@themeColor2 : #91A1DC;
+
+//Honey Theme
+//@themeColor : #46201C;
+//@themeColor2 : #ABBC42;
+
+
+
+
+#HeaderLinksView + div{
+    #gradient > .vertical( @themeColorHeader, @themeColorHeader2 );
+}
+
+.green-button, .attachLoading{
+    #gradient > .vertical( @themeColorBtn, @themeColorBtn2 );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .themeColor{ color: @themeColor; }
 .themeColor2{ color: @themeColor2; }
@@ -8,9 +78,59 @@
 .themeBackgroundColor{ background-color: @themeColor; }
 .themeBackgroundColor2{ background-color: @themeColor2; }
 
-
 .themeColor-important{ color: @themeColor !important; }
 .themeColor2-important{ color: @themeColor2 !important; }
 
 .themeBackgroundColor-important{ background-color: @themeColor !important; }
 .themeBackgroundColor2-important{ background-color: @themeColor2 !important; }
+
+.themeColor-focus{ .b-shadow(0 0 1px 1px @themeColor); }
+
+.headerDropDownSpecialHover{
+    #gradient > .vertical( @themeColor2, darken(@themeColor2, 15%) );
+}
+#HeaderView{
+    #gradient > .vertical( darken(@themeColor, 5%), @themeColor );
+}
+
+.ui-datepicker{
+    td.ui-datepicker-today{
+        background:lighten(@themeColor, 50%) !important;
+    }
+}
+.LatestActivitiesListView,
+.LatestActivitiesView{
+    .latest-activity-toolbar{
+        > div:first-child{
+            border-right:2px solid @themeColor;
+        }
+    }
+}
+.form{
+    input[type="checkbox"]:focus,
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    select.multiple:focus,
+    textarea:focus{
+        ++.themeColor-focus;
+    }
+}
+.hasDropDown{
+    select:focus, select:hover{
+         ++.themeColor-focus;
+    }
+}
+.hasDropDown:hover select{
+	++.themeColor-focus;
+}
+ul.token-input-list:focus{
+    ++.themeColor-focus;
+}
+#layout-container{
+    .ui-state-active,
+    .ui-widget-content .ui-state-active,
+    .ui-widget-header .ui-state-active{
+        ++.themeColor-focus;
+    }
+}
+/*END COLOR SCHEME/THEME*/

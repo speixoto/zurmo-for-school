@@ -135,7 +135,7 @@
     padding: 10px 10px 10px 10px;
     width: 100% !important;
     min-height: 60px !important;
-    color:@themeColor !important;
+    ++.themeColor-important;
     .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px );
 }
 
@@ -154,7 +154,7 @@
     padding: 0px;
     width: 100%;
     height: 100%;
-    color:@themeColor !important;
+    ++.themeColor-important;
     border:1px solid #ccc;
     #gradient > .vertical(#f6f6f6, #ededed);
     .b-shadow(inset 0 1px 0 0 #ffffff);
@@ -215,7 +215,7 @@
 }
 
 .sortable-row-list{
-    color:@themeColor !important;
+    ++.themeColor-important;
 }
 
 .layout-single-column {
@@ -401,7 +401,6 @@
     .ui-widget-header .ui-state-active{
         z-index:9999;
         color:#212121;
-         .b-shadow(0 0 1px 1px @themeColor);
     }
 }
 
