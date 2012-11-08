@@ -1161,6 +1161,10 @@ footer, header, hgroup, menu, nav, section {
 		}
 	}
 }
+.DynamicSearchView{
+    position: relative;
+    z-index: 9999;
+}
 
 /*=dashboard*/
 #HomePageView .AppContent{
@@ -1516,7 +1520,7 @@ tr.even{
     padding-right:0 !important;
     padding-left: 0 !important;
     .hasCheckBox{
-        margin-top:-4px;
+        margin:-4px auto 0 auto;
     }
 }
 
@@ -1902,7 +1906,8 @@ label.hasCheckBox{
     width:16px;
     height:20px;
     padding:0;
-    margin:0 0 0 15px;
+    margin:0;
+    //margin:0 0 0 15px;
     &.c_on {
         background: url(../images/checkbox.png) left -21px no-repeat;
     }
@@ -1916,10 +1921,10 @@ label.hasCheckBox{
     &.disabled{
         .opacity(50);
     }
-     & + label{
-         margin-left:8px;
-         margin-top:6px;
-     }
+    & + label{
+        margin-left:8px;
+        margin-top:6px;
+    }
 }
 
 div.wide.form{
