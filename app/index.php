@@ -35,6 +35,7 @@
     {
         $debug          = INSTANCE_ROOT . '/protected/config/debugDIST.php';
     }
+
     // Runtime path is used per instance.
     $runtimePath    = INSTANCE_ROOT . '/protected/runtime';
     // The config is used per instance.
