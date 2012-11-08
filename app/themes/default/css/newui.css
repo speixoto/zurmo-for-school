@@ -7511,7 +7511,7 @@ table.configuration-list tr td:last-child a:before {
   margin-top: 5px;
 }
 /*=Step 5, process details*/
-#import-preloader .z-spinner {
+#sequential-process-spinner .z-spinner {
   display: block;
   margin: -1px 10px 0 0;
 }
