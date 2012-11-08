@@ -1456,6 +1456,10 @@ section {
 .AppContent .single-column #inline-edit-form .panel {
   width: 100%;
 }
+.DynamicSearchView {
+  position: relative;
+  z-index: 9999;
+}
 /*=dashboard*/
 #HomePageView .AppContent {
   padding-right: 0;
@@ -3115,9 +3119,6 @@ div.wide.form a {
 }
 #ModalView #clear-search-linkmodal {
   margin-left: 10px;
-}
-#ModalView .view-toolbar-container {
-  margin-top: 15px;
 }
 #ModalView .items {
   border: none;
@@ -7507,7 +7508,7 @@ table.configuration-list tr td:last-child a:before {
   margin-top: 5px;
 }
 /*=Step 5, process details*/
-#import-preloader .z-spinner {
+#sequential-process-spinner .z-spinner {
   display: block;
   margin: -1px 10px 0 0;
 }
@@ -7832,10 +7833,18 @@ div.form select.error {
   box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
 }
 div.form .errorSummary {
-  padding: 7px 7px 12px 7px;
-  margin: 0 0 20px 0;
-  background: #FEE;
-  font-size: 11px;
+  position: relative;
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 5px !important;
+  border: 1px solid #cc0000;
+  background: #ffb5b5;
+  font-weight: bold;
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
 }
 #edit-form td {
   position: relative;
@@ -7874,8 +7883,7 @@ div.form .errorMessage:before {
   background: url(../images/error-tip.png) left bottom no-repeat;
 }
 div.form .errorSummary p {
-  margin: 0;
-  padding: 5px;
+  margin: 0 0 5px 0;
 }
 div.form .errorSummary ul {
   margin: 0;
