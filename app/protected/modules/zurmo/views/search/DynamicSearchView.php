@@ -274,7 +274,7 @@
          */
         protected function renderDynamicClausesValidationHelperContent($form)
         {
-            $htmlOptionsForInput = array('id'   => get_class($this->model) . '_dynamicClauses',
+            $htmlOptionsForInput = array('id'   => get_class($this->model) . '_dynamicClausesNotUsed',
                                          'name' => 'dynamicClausesValidationHelper',
                                          'value' => 'notUsed');
             $htmlOptionsForError = array('id'   => get_class($this->model) . '_dynamicClauses');
