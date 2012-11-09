@@ -188,7 +188,7 @@
         'Create Roles'
             => 'Créer Rôles',
         'Created'
-            => 'Conversations commencées',
+            => 'Crée',
         'created by {ownerStringContent}'
             => 'crée par {ownerStringContent}',
         'Criteria Selected <span class="icon-clear">Z</span>'
