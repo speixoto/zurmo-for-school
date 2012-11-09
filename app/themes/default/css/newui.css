@@ -11491,19 +11491,23 @@ a.close-ModalGameNotification.simple-select {
   color: #262877;
   font-weight: bold;
 }
+#ConversationDetailsView .details-table,
 #MissionDetailsView .details-table {
   zoom: 1;
   margin-right: 0 !important;
 }
+#ConversationDetailsView .details-table:before,
 #MissionDetailsView .details-table:before {
   content: "";
   display: table;
 }
+#ConversationDetailsView .details-table:after,
 #MissionDetailsView .details-table:after {
   content: "";
   display: table;
   clear: both;
 }
+#ConversationDetailsView .panel > table,
 #MissionDetailsView .panel > table {
   border-bottom: none;
 }
