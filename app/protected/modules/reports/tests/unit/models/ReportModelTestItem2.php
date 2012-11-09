@@ -38,6 +38,7 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'name',
+                    'phone',
                 ),
                 'relations' => array(
                     'hasMany2'          => array(RedBeanModel::HAS_MANY,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
@@ -47,6 +48,8 @@
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),
                     array('name',  'length', 'max' => 32),
+                    array('phone',     'type',    'type' => 'string'),
+                    array('phone',     'length',  'min'  => 1, 'max' => 14),
                 ),
             );
             return $metadata;

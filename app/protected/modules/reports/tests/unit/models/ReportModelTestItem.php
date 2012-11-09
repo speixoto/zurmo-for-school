@@ -65,6 +65,8 @@
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
                     'hasOne'              => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
+                    'hasOneAgain'         => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOneAgain'),
                     'hasMany'             => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem3'),
                     'hasOneAlso'          => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem4', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOneAlso'),

@@ -32,10 +32,13 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'name',
+                    'somethingOn3'
                 ),
                 'rules' => array(
-                    array('name',  'type',   'type' => 'string'),
-                    array('name',  'length', 'max' => 32),
+                    array('name',  		   'type',   'type' => 'string'),
+                    array('name',  		   'length', 'max' => 32),
+                    array('somethingOn3',  'type',   'type' => 'string'),
+                    array('somethingOn3',  'length', 'max' => 32),
                 ),
             );
             return $metadata;
