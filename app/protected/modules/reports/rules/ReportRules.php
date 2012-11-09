@@ -24,42 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportModelTestItem2 extends OwnedSecurableItem
+    /**
+     * Base class of report rules that assist with reporting data.  Extend this class to make
+     * a set of ReportRules that is for a specific module or a combiniation of modules and/or models.
+     */
+    abstract class ReportRules
     {
-        public static function getByName($name)
-        {
-            assert('is_string($name) && $name != ""');
-            return self::getSubset(null, null, null, "name = '$name'");
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'name',
-                ),
-                'relations' => array(
-                    'hasMany2'          => array(RedBeanModel::HAS_MANY,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
-                    'hasMany3'          => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem3'),
-                ),
-                'rules' => array(
-                    array('name',  'type',   'type' => 'string'),
-                    array('name',  'length', 'max' => 32),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'ReportsModule';
-        }
+        //Rules are module based
+        //Needs savable metadata
+        //Rules says a relation is a relationAsAttribute
+        //Rules say state uses X element for filter. or displayColumn for example
+        //Rules say DD is relAsAtt
+        //Rules also define nonReportableRelations
+        //Rules also define nonReportableAttributes
+        //are there some derivedAttributes that are in fact availble on filter or other places beside just display
+        //coolumns, if so need to think that through.
+        //I am not sure users like owner, ccreated, modified should allow goin in should it be compressed to make it easier?
     }
 ?>

@@ -24,25 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportModelTestItem2 extends OwnedSecurableItem
+    class ReportModelTestItem6 extends OwnedSecurableItem
     {
-        public static function getByName($name)
-        {
-            assert('is_string($name) && $name != ""');
-            return self::getSubset(null, null, null, "name = '$name'");
-        }
-
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'name',
-                ),
-                'relations' => array(
-                    'hasMany2'          => array(RedBeanModel::HAS_MANY,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
-                    'hasMany3'          => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem3'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),
