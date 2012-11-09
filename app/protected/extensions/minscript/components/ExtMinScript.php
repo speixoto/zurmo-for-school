@@ -152,7 +152,10 @@ class ExtMinScript extends CApplicationComponent {
     $noFilemtime = 0;
     $filemtimes = array();
     $params = array();
-    $groupMap = $this -> getGroupMap();
+    // Because we are using tokens for some css paths(so we can minify theme files),
+    // we can't rely on group file from css, but on one dynamicaly generated
+    //$groupMap = $this -> getGroupMap();
+    $groupMap = require_once($this -> _minifyDir . '/groupsConfig.php');
     if (isset($groupMap[$group])) {
       $params['g'] = $group;
       //Files
