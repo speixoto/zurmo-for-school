@@ -188,7 +188,7 @@
         'Create Roles'
             => 'Crea Ruoli',
         'Created'
-            => 'Creati',
+            => 'Creato',
         'created by {ownerStringContent}'
             => 'crea per {ownerStringContent}',
         'Criteria Selected <span class="icon-clear">Z</span>'
