@@ -380,8 +380,6 @@ footer, header, hgroup, menu, nav, section {
     &:hover{
         color:#fff;
         background-color: rgba(255, 255, 255, 0.05);
-        border-left: 1px solid #373972;
-        border-right: 1px solid #373972;
         #notifications-link{
             border:none;
         }
@@ -400,8 +398,6 @@ footer, header, hgroup, menu, nav, section {
 
 #notifications-link{
     padding:2px 17px;
-    border-left: 1px solid #373972;
-    border-right: 1px solid #373972;
     font-size:10px;
     font-weight:bold;
     text-align:center;
@@ -536,8 +532,6 @@ footer, header, hgroup, menu, nav, section {
             color:#ddd;
             &:hover{
                 color:#fff;
-                border-left: 1px solid #373972;
-                border-right: 1px solid #373972;
             }
         }
     }
@@ -1193,7 +1187,8 @@ form,
 .juiportlet-widget,
 .ActionBarForSecurityTreeListView,
 #ActionBarForDesignerModuleView,
-#LeaderboardView{
+#LeaderboardView,
+#UsersPageView{
     .view-toolbar-container{
         float: none;
     }
@@ -1662,37 +1657,34 @@ td.empty{
         border-bottom:1px solid #bababa;
     }
     a{
-        color:#656565 !important;
+        //color:#656565 !important;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
         &.attachLoading.z-button{
-            color: #fff !important;
+            color: #fff;
         }
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         }
         &:active{
-            color:#656565;
-            .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
+            //color:#656565;
+            //.b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
         }
     }
     a:hover{
-        ++.themeColor2-important;
+       // ++.themeColor2-important;
     }
 }
 
 .green-button,
 .attachLoading{
-    color:#FFF !important;
+    color:#FFF;
     .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
     cursor:pointer;
-    &:hover{
-        color:#656565 !important;
-    }
     &:active{
-        color:#FFF !important;
-        .b-shadow(~"inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
+        //color:#FFF !important;
+        //.b-shadow(~"inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
     }
 }
 
@@ -3547,17 +3539,17 @@ div.hasHalfs{
             }
         }
         > a:before{
+            content: "n";
+            //++.themeColor;
+            .symbly(24px);
+        }
+        > a:after{
             content: "▾";
             //++.themeColor;
             position: relative;
             top:-2px;
-            right:2px;
+            left:2px;
             font-size: 10px;
-        }
-        > a:after{
-            content: "n";
-            //++.themeColor;
-            .symbly(24px);
         }
         a{
             .t-shadow(none) !important;
