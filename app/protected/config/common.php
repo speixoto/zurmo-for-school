@@ -330,7 +330,8 @@
         ),
         'preload' => array(
             'browser',
-            'sanitizer'
+            'sanitizer',
+            'log'
         ),
     );
     return $common_config;
