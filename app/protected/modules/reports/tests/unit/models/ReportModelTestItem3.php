@@ -51,7 +51,7 @@
 
         public static function getModuleClassName()
         {
-            return 'ReportsModule';
+            return 'ReportsTestModule';
         }
     }
 ?>

@@ -35,20 +35,16 @@
             $metadata = array(
                 'ReportModelTestItem' => array(
                     'relationsReportedAsAttributes' =>
-                        array('reportedAsAttribute'),
-                    'nonReportableRelations' =>
-                        array('nonReportable')
+                        array('reportedAsAttribute',
+                              'likeContactState'),
+                    'nonReportable' =>
+                        array('nonReportable',
+                              'nonReportable2'),
+                    'derivedAttributeTypes' =>
+                        array('FullName')
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
-        //Rules says a relation is a relationAsAttribute
-        //Rules say state uses X element for filter. or displayColumn for example
-        //Rules say DD is relAsAtt
-        //Rules also define nonReportableRelations
-        //Rules also define nonReportableAttributes
-        //are there some derivedAttributes that are in fact availble on filter or other places beside just display
-        //coolumns, if so need to think that through.
-        //I am not sure users like owner, ccreated, modified should allow goin in should it be compressed to make it easier?
     }
 ?>

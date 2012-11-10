@@ -3147,5 +3147,10 @@
             assert('is_array($values)');
             return ArrayUtil::stringify($values);
         }
+
+        public static function getLastClassInBeanHeirarchy()
+        {
+            return static::$lastClassInBeanHeirarchy;
+        }
     }
 ?>

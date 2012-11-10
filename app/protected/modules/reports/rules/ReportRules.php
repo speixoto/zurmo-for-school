@@ -88,6 +88,7 @@
 
         public function relationIsReportedAsAttribute(RedBeanModel $model, $relation)
         {
+            assert('is_string($relation)');
             $modelClassName = $model->getAttributeModelClassName($relation);
             $metadata       = static::getMetadata();
             if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
@@ -107,24 +108,41 @@
             return false;
         }
 
-        public function relationIsReportable(RedBeanModel $model, $relation)
+        public function attributeIsReportable(RedBeanModel $model, $attribute)
         {
-            $modelClassName = $model->getAttributeModelClassName($relation);
+            assert('is_string($attribute)');
+            $modelClassName = $model->getAttributeModelClassName($attribute);
             $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['nonReportableRelations']) &&
-            in_array($relation, $metadata[$modelClassName]['nonReportableRelations']))
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['nonReportable']) &&
+            in_array($attribute, $metadata[$modelClassName]['nonReportable']))
             {
                 return false;
             }
             return true;
         }
 
+        public function getDerivedAttributeTypesData(RedBeanModel $model)
+        {
+            $derivedAttributeTypesData = array();
+            $metadata = static::getMetadata();
+            foreach (array_reverse(RuntimeUtil::getClassHierarchy(
+                                   get_class($model), $model::getLastClassInBeanHeirarchy())) as $modelClassName)
+            {
+                if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['derivedAttributeTypes']))
+                {
+                    foreach($metadata[$modelClassName]['derivedAttributeTypes'] as $derivedAttributeType)
+                    {
+
+                        $elementClassName = $derivedAttributeType . 'Element';
+                        $derivedAttributeTypesData[$derivedAttributeType] = array('label' => $elementClassName::getDisplayName());
+                    }
+                }
+            }
+            return $derivedAttributeTypesData;
+        }
 
         //Rules say state uses X element for filter. or displayColumn for example
-        //Rules say DD is relAsAtt
-        //Rules also define nonReportableAttributes
         //are there some derivedAttributes that are in fact availble on filter or other places beside just display
         //coolumns, if so need to think that through.
-        //I am not sure users like owner, ccreated, modified should allow goin in should it be compressed to make it easier?
     }
 ?>

@@ -30,7 +30,7 @@
         {
             $metadata = array(
                 'SecurableItem' => array(
-                    'nonReportableRelations' =>
+                    'nonReportable' =>
                         array('permissions')
                     ),
             );

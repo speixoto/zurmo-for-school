@@ -30,6 +30,14 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            $attributeName = 'calculated';
+            $attributeForm = new CalculatedNumberAttributeForm();
+            $attributeForm->attributeName    = $attributeName;
+            $attributeForm->attributeLabels  = array('en' => 'Test Calculated');
+            $attributeForm->formula          = 'integer + float';
+            $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new ReportModelTestItem());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
         public function setup()
@@ -45,8 +53,8 @@
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations          = $adapter->getAllRelationNamesAndLabels();
-            $this->assertEquals(18, count($relations));
+            $relations          = $adapter->getAllRelationsData();
+            $this->assertEquals(19, count($relations));
         }
 
         /**
@@ -54,8 +62,9 @@
          */
         public function testGetAllReportableRelations()
         {
-            //ReportModelTestItem has hasOne, hasMany, and hasOneAlso.  In addition it has a relationsViaParent
-            //to ReportModelTestItem5.  Excludes any customField relations and relationsReportedOnAsAttributes
+            //ReportModelTestItem has hasOne, hasMany, and hasOneAlso.  In addition it has a
+            //derivedRelationsViaCastedUpModel to ReportModelTestItem5.
+            //Excludes any customField relations and relationsReportedOnAsAttributes
             //Also excludes any non-reportable relations
             //Get relations through adapter and confirm everything matches up as expected
             $model              = new ReportModelTestItem();
@@ -63,7 +72,7 @@
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations = $adapter->getSelectableRelations();
+            $relations = $adapter->getSelectableRelationsData();
             $this->assertEquals(11, count($relations));
             $compareData        = array('label' => 'Has One');
             $this->assertEquals($compareData, $relations['hasOne']);
@@ -102,7 +111,7 @@
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations = $adapter->getSelectableRelations();
+            $relations = $adapter->getSelectableRelationsData();
             $this->assertEquals(5, count($relations));
             $compareData        = array('label' => 'Has Many 2');
             $this->assertEquals($compareData, $relations['hasMany2']);
@@ -117,7 +126,7 @@
 
             $precedingModel     = new ReportModelTestItem();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations = $adapter->getSelectableRelations($precedingModel, 'hasOne');
+            $relations = $adapter->getSelectableRelationsData($precedingModel, 'hasOne');
             $this->assertEquals(4, count($relations));
             $compareData        = array('label' => 'Has Many 3');
             $this->assertEquals($compareData, $relations['hasMany3']);
@@ -139,14 +148,14 @@
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesIncludingDerived();
-            $this->assertEquals(24, count($attributes));
+            $attributes = $adapter->getAttributesIncludingDerivedAttributesData();
+            $this->assertEquals(26, count($attributes));
             $compareData        = array('label' => 'Id');
             $this->assertEquals($compareData, $attributes['id']);
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
             $compareData        = array('label' => 'Modified Date Time');
-            $this->assertEquals($compareData, $attributes['modified Date Time']);
+            $this->assertEquals($compareData, $attributes['modifiedDateTime']);
             $compareData        = array('label' => 'First Name');
             $this->assertEquals($compareData, $attributes['firstName']);
             $compareData        = array('label' => 'Last Name');
@@ -175,6 +184,8 @@
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Multi Drop Down');
             $this->assertEquals($compareData, $attributes['multiDropDown']);
+            $compareData        = array('label' => 'Tag Cloud');
+            $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Reported As Attribute');
             $this->assertEquals($compareData, $attributes['reportedAsAttribute']);
             //Currency is treated as a relation reported as an attribute just like drop downs
@@ -185,7 +196,7 @@
             $compareData        = array('label' => 'A name for a state');
             $this->assertEquals($compareData, $attributes['likeContactState']);
             //Includes derived attributes as well
-            $compareData        = array('label' => 'Calculated');
+            $compareData        = array('label' => 'Test Calculated');
             $this->assertEquals($compareData, $attributes['calculated']);
             $compareData        = array('label' => 'Full Name');
             $this->assertEquals($compareData, $attributes['FullName']);
@@ -205,27 +216,54 @@
          * as selectable in reporting.
          *
          * In this example ReportModelTestItem5 connects to ReportModelTestItem and ReportModelTestItem2
-         * via MANY_MANY through Item.
+         * via MANY_MANY through Item using the reportItems relation
          * Known as viaRelations: model5ViaItem on ReportModelItem and model5ViaItem on ReportModelItem2
          */
-        public function testGetReportableFacadeRelations()
+        public function testGetInferredRelationsData()
         {
             $model              = new ReportModelTestItem5();
-            $rules              = new ReportTest5Rules();
+            $rules              = new ReportTestRules();
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations = $adapter->getFacadeRelations();
+            $relations = $adapter->getInferredRelationsData();
             $this->assertEquals(2, count($relations));
-            $compareData        = array('label' => 'Facade To Model');
-            $this->assertEquals($compareData, $relations['facadeToModel']);
-            $compareData        = array('label' => 'Facade To Model 2');
-            $this->assertEquals($compareData, $relations['facadeToModel2']);
-            $this->fail(); //dont call this facadeRelations. think of something else
+            $compareData        = array('label' => 'Report Model Test Item');
+            $this->assertEquals($compareData, $relations['inferedToModel']);
+            $compareData        = array('label' => 'Report Model Test Item 5');
+            $this->assertEquals($compareData, $relations['inferedToModel2']);
+
+            //Call getSelectableRelationsData() on model5. Should yield all 3 relations
+            $this->fail(); //todo:
+
         }
 
         /**
          * @depends testGetAvailableAttributesDataAndLabels
+         */
+        public function testGetInferredRelationsDataWithPrecedingModel()
+        {
+            //Test calling on model 5 with a preceding model that is NOT part of reportItems
+            $this->fail();
+            //Test calling on model 5 with a preceding model that is one of the reportItem models
+            //put these tests below in new test methods so we keep this class clean
+            $this->fail();
+        }
+
+        /**
+         * @depends testGetInferredRelationsDataWithPrecedingModel
+         */
+        public function testGetDerivedRelationsViaCastedUpModelDataWithPrecedingModel()
+        {
+            //test with preceding model that is not the via relation
+            $this->fail();
+            //test with preceding model that is the via relation
+            $this->fail();
+        }
+
+
+        /**
+         * @depends testGetDerivedRelationsViaCastedUpModelDataWithPrecedingModel
          */
         public function testGetAvailableAttributesForRowsAndColumnsFilters()
         {
@@ -528,7 +566,7 @@
         }
 
         /**
-         * @testGetAvailableAttributesForSummationDisplayAttributes
+         * @depends testGetAvailableAttributesForSummationDisplayAttributes
          */
         public function testGroupingOnDifferentModelAndMakingSureCorrectDisplayAttributesAreAvailable()
         {

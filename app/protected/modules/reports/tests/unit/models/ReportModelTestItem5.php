@@ -40,6 +40,10 @@
                     array('name',  'type',   'type' => 'string'),
                     array('name',  'length', 'max' => 32),
                 ),
+                'reportItemsModelClassNames' => array(
+                    'ReportModelTestItem',
+                    'ReportModelTestItem2',
+                ),
             );
             return $metadata;
         }
@@ -51,7 +55,7 @@
 
         public static function getModuleClassName()
         {
-            return 'ReportsModule';
+            return 'ReportsTestModule';
         }
     }
 ?>

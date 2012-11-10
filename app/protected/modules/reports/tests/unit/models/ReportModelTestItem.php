@@ -30,7 +30,7 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'fullName' => 'Name',
+                    'likeContactState' => 'A name for a state'
                 )
             );
         }
@@ -76,11 +76,12 @@
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
                     'secondaryEmail'      => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
-                    'nonReportable'       => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem5'),
+                    'nonReportable2'      => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem5'),
                     'reportedAsAttribute' => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem6'),
+                    'likeContactState'    => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem7'),
 
                 ),
-                'relationsViaParent' => array(
+                'derivedRelationsViaCastedUpModel' => array(
                     'model5ViaItem' => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem5', 'reportItems')
                 ),
                 'rules' => array(
@@ -136,7 +137,7 @@
 
         public static function getModuleClassName()
         {
-            return 'ReportsModule';
+            return 'ReportsTestModule';
         }
     }
 ?>
