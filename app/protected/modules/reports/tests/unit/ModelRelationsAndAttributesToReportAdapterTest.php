@@ -32,6 +32,12 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public function setup()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
         public function testGetAllRelations()
         {
             $model              = new ReportModelTestItem();
@@ -39,8 +45,8 @@
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations          = $adapter->getAllRelations();
-            $this->assertEquals(16, count($relations));
+            $relations          = $adapter->getAllRelationNamesAndLabels();
+            $this->assertEquals(18, count($relations));
         }
 
         /**
@@ -57,7 +63,7 @@
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations = $adapter->getRelations();
+            $relations = $adapter->getSelectableRelations();
             $this->assertEquals(11, count($relations));
             $compareData        = array('label' => 'Has One');
             $this->assertEquals($compareData, $relations['hasOne']);
@@ -96,11 +102,11 @@
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations = $adapter->getRelations();
+            $relations = $adapter->getSelectableRelations();
             $this->assertEquals(5, count($relations));
-            $compareData        = array('label' => 'Has Many2');
+            $compareData        = array('label' => 'Has Many 2');
             $this->assertEquals($compareData, $relations['hasMany2']);
-            $compareData        = array('label' => 'Has Many3');
+            $compareData        = array('label' => 'Has Many 3');
             $this->assertEquals($compareData, $relations['hasMany3']);
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $relations['owner']);
@@ -109,11 +115,11 @@
             $compareData        = array('label' => 'Modified By User');
             $this->assertEquals($compareData, $relations['modifiedByUser']);
 
-            $comingFromModel    = new ReportModelTestItem();
+            $precedingModel     = new ReportModelTestItem();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $relations = $adapter->getRelations($comingFromModel);
-            $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'Has Many3');
+            $relations = $adapter->getSelectableRelations($precedingModel, 'hasOne');
+            $this->assertEquals(4, count($relations));
+            $compareData        = array('label' => 'Has Many 3');
             $this->assertEquals($compareData, $relations['hasMany3']);
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $relations['owner']);
@@ -991,6 +997,15 @@
             $this->assertEquals($compareData, $attributes['currencyValue__Summation']);
             $compareData        = array('label' => 'Currency Value -(AVG)');
             $this->assertEquals($compareData, $attributes['currencyValue__Average']);
+        }
+
+        /**
+         * @depends testGetAvailableAttributesForMatrixDisplayAttributes
+         */
+        public function testRelationLinksToPrecedingRelation()
+        {
+            $this->fail();
+            //need to test rest of if statements, if preceding is specific, specific but not the same.
         }
     }
 ?>

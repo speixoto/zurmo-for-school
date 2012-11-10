@@ -2865,7 +2865,6 @@
          */
         public function generateAttributeLabel($attributeName)
         {
-            assert("\$this->isAttribute('$attributeName')");
             return ucfirst(preg_replace('/([A-Z0-9])/', ' \1', $attributeName));
         }
 

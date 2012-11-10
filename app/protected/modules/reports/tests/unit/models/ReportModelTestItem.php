@@ -80,6 +80,9 @@
                     'reportedAsAttribute' => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem6'),
 
                 ),
+                'relationsViaParent' => array(
+                    'model5ViaItem' => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem5', 'reportItems')
+                ),
                 'rules' => array(
                     array('firstName', 'type',   'type' => 'string'),
                     array('firstName', 'length', 'min'  => 1, 'max' => 32),
