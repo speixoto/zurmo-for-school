@@ -37,7 +37,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink'),
                             array('type'  => 'SaveButton', 'label' => Yii::t('Default', 'Send')),
                         ),
                     ),
@@ -101,11 +100,14 @@
         protected function resolveActiveFormAjaxValidationOptions()
         {
             return array('enableAjaxValidation' => true,
-                         'clientOptions' => array(
-                            'validateOnSubmit'  => true,
-                            'validateOnChange'  => false,
-                            'beforeValidate'    => 'js:beforeValidateAction',
-                            'afterValidate'     => 'js:afterValidateAjaxAction'));
+                'clientOptions' => array(
+                    'beforeValidate'    => 'js:beforeValidateAction',
+                    'afterValidate'     => 'js:afterValidateAction',
+                    'validateOnSubmit'  => true,
+                    'validateOnChange'  => false,
+                    'inputContainer'    => 'td',
+                )
+            );
         }
 
     }

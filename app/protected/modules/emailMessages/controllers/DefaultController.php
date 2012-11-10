@@ -350,9 +350,8 @@
             }
         }
 
-        public function actionComposeEmail()
+        public function actionComposeEmail($redirectUrl = null)
         {
-            Yii::app()->getClientScript()->setToAjaxMode();
             try
             {
                 EmailAccount::getByUserAndName(Yii::app()->user->userModel);
@@ -373,11 +372,7 @@
                     $emailMessage = EmailMessageHelper::sendEmailFromPost(Yii::app()->user->userModel);
                     if ($emailMessage->validate())
                     {
-                        $emailMessage->save();
-                        Yii::app()->user->setFlash('notification',
-                            Yii::t('Default', 'Your message has been sent to outbox.')
-                        );
-                        $this->redirect(Yii::app()->createUrl('/home/default'));
+                        $this->attemptToSaveModelFromPost($emailMessage, $redirectUrl);
                         //TODO: Emails are not connected to contacts/leads if more than one recipient
                     } else {
                         $errorData = array();
@@ -388,22 +383,23 @@
                         echo CJSON::encode($errorData);
                         Yii::app()->end(0, false);
                     }
+                } else {
+                    $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
+                        'Edit',
+                        $this->getId(),
+                        $this->getModule()->getId(),
+                        $emailMessage);
+                    $view = new ModalView($this, $composeEmailEditAndDetailsView);
+                    Yii::app()->getClientScript()->setToAjaxMode();
+                    echo $view->render();
                 }
-                $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
-                    'Edit',
-                    $this->getId(),
-                    $this->getModule()->getId(),
-                    $emailMessage);
-                $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                         makeStandardViewForCurrentUser($this, $composeEmailEditAndDetailsView));
-                $view = new ModalView($this, $composeEmailEditAndDetailsView);
             }
             catch (NotFoundException $e)
             {
                 $view = new ModalView($this, new NoEmailAccountYetView());
-
+                Yii::app()->getClientScript()->setToAjaxMode();
+                echo $view->render();
             }
-            echo $view->render();
         }
 
         /**
