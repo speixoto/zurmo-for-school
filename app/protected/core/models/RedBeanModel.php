@@ -781,6 +781,16 @@
                         }
                     }
                 }
+
+
+                if (isset($metadata[$modelClassName]['derivedRelationsViaCastedUpModel']))
+                {
+                    foreach ($metadata[$modelClassName]['derivedRelationsViaCastedUpModel'] as $relationName => $relationTypeModelClassNameAndOwns)
+                    {
+                        //todo: map and cache 'derivedRelationsViaCastedUpModel'
+                    }
+                }
+
                 // Add model validators. Parent validators are already applied.
                 if (isset($metadata[$modelClassName]['rules']))
                 {

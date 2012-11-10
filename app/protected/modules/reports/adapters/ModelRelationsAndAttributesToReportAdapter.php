@@ -139,10 +139,9 @@
             {
                 return false;
             }
-            if($precedingModel->isDerivedRelationsViaCastedUpModelRelation($precedingRelation) &&
-            $precedingModel->getDerivedRelationViaCastedUpModelOpposingRelationName($precedingRelation) == $relation)
+            if($precedingModel->isADerivedRelationViaCastedUpModel($precedingRelation) &&
+               $precedingModel->getDerivedRelationViaCastedUpModelOpposingRelationName($precedingRelation) == $relation)
             {
-                throw new NotSupportedException($message, $code, $previous); //because we need to renamegetDerivedRelationViaCastedUpModelOpposingRelationName
                 return true;
             }
             return false;
