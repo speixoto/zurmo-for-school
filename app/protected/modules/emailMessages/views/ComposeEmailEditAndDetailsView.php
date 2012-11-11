@@ -99,16 +99,36 @@
 
         protected function resolveActiveFormAjaxValidationOptions()
         {
-            return array('enableAjaxValidation' => true,
+            $afterValidateAjax = $this->renderConfigSaveAjax(
+                static::getFormId(),
+                $this->moduleId,
+                $this->controllerId,
+                'composeEmail');
+            return array(
+                'enableAjaxValidation' => true,
                 'clientOptions' => array(
                     'beforeValidate'    => 'js:beforeValidateAction',
-                    'afterValidate'     => 'js:afterValidateAction',
+                    'afterValidate'     => 'js:afterValidateAjaxAction',
                     'validateOnSubmit'  => true,
                     'validateOnChange'  => false,
                     'inputContainer'    => 'td',
+                    'afterValidateAjax' => $afterValidateAjax,
                 )
             );
         }
 
+        protected function renderConfigSaveAjax($formName, $moduleId, $controllerId, $actionSave)
+        {
+            return ZurmoHtml::ajax(array(
+                    'type' => 'POST',
+                    'data' => 'js:$("#' . $formName . '").serialize()',
+                    'url'  => Yii::app()->createUrl($moduleId . '/' . $controllerId . '/' . $actionSave, GetUtil::getData()),
+                    'complete' => "function(XMLHttpRequest, textStatus){\$('#modalContainer').dialog('close');
+                        //find if there is a latest activities portlet
+                        $('.LatestActivtiesForPortletView').each(function(){
+                            $(this).find('.pager').find('.refresh').find('a').click();
+                        });}"
+                ));
+        }
     }
 ?>

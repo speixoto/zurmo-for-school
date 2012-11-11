@@ -86,7 +86,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'useCustomSettings', 'type' => 'OutboundSettingsCheckBox'),
+                                                array('attributeName' => 'useCustomOutboundSettings', 'type' => 'OutboundSettingsCheckBox'),
                                             ),
                                         ),
                                     )

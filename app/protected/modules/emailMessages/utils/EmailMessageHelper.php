@@ -123,9 +123,9 @@
          * @param User $userToSendMessagesFrom
          * @return boolean
          */
-        public static function sendEmailFromPost(User $userToSendMessagesFrom)
+        public static function resolveEmailMessageFromPostData(EmailMessage $emailMessage, User $userToSendMessagesFrom)
         {
-            $emailMessage       = new EmailMessage();
+            //pass post data
             $postVariableName   = get_class($emailMessage);
             Yii::app()->emailHelper->loadOutboundSettingsFromUserEmailAccount($userToSendMessagesFrom);
             $toRecipients = explode(",", $_POST[$postVariableName]['recipients']['to']);

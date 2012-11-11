@@ -44,7 +44,7 @@
             $this->assertEquals($super, $emailAccount->user);
             $this->assertEquals($super->getFullName(), $emailAccount->fromName);
             $this->assertEquals($super->primaryEmail->emailAddress, $emailAccount->fromAddress);
-            $this->assertEquals(0, $emailAccount->useCustomSettings);
+            $this->assertEquals(0, $emailAccount->useCustomOutboundSettings);
             $this->assertEquals('smtp', $emailAccount->outboundType);
             $emailAccountId = $emailAccount->id;
             unset($emailAccount);
@@ -66,7 +66,7 @@
             $this->assertEquals($super, $emailAccount->user);
             $this->assertEquals($super->getFullName(), $emailAccount->fromName);
             $this->assertEquals($super->primaryEmail->emailAddress, $emailAccount->fromAddress);
-            $this->assertEquals(0, $emailAccount->useCustomSettings);
+            $this->assertEquals(0, $emailAccount->useCustomOutboundSettings);
             $this->assertEquals('smtp', $emailAccount->outboundType);
             unset($emailAccount);            
         }

@@ -53,14 +53,17 @@
             }
             else
             {
-                throw new NotSupportedException(Yii::t('Default', 'For now Zurmo still does not support multiple Email Accounts'));
+                //For now Zurmo does not support multiple email accounts
+                throw new NotSupportedException();
             }
             assert('is_string($name)');
-            $bean = R::findOne(EmailAccount::getTableName('EmailAccount'), "_user_id = ? AND name = ?", array($user->id, $name));
+            $bean = R::findOne(EmailAccount::getTableName('EmailAccount'),
+                               "_user_id = ? AND name = ?", array($user->id, $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
-                throw new NotFoundException(Yii::t('Default', 'Email Account not found for current user and name.'));
+                //Email Account not found for current user and name
+                throw new NotFoundException();
             }
             else
             {
@@ -81,13 +84,12 @@
                 $emailAccount->user              = $user;
                 $emailAccount->name              = self::DEFAULT_NAME;
                 $emailAccount->fromName          = $user->getFullName();
-                //TODO: What should we do if no primaryEmail is set to user?
-                $emailAccount->fromAddress       = $user->primaryEmail->emailAddress;
-                $emailAccount->useCustomSettings = false;
+                if($user->primaryEmail->id > 0 && $user->primaryEmail->emailAddress != null)
+                {
+                    $emailAccount->fromAddress       = $user->primaryEmail->emailAddress;
+                }
+                $emailAccount->useCustomOutboundSettings = false;
                 $emailAccount->outboundType      = 'smtp';
-                $saved                           = $emailAccount->save();
-                $emailAccount->validate();
-                assert('$saved');
             }
             return $emailAccount;
         }
@@ -102,7 +104,7 @@
                     'fromName',
                     'replyToName',
                     'replyToAddress',
-                    'useCustomSettings',
+                    'useCustomOutboundSettings',
                     'outboundType',
                     'outboundHost',
                     'outboundPort',
@@ -116,35 +118,33 @@
                     'user'     => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules'     => array(
-                                  array('fromName',             'required'),
-                                  //TODO: Should we mark fromAddress as required? If so, how to deal with blanck primaryEmail?
-                                  //array('fromAddress',          'required'),
-                                  array('name',                 'type',      'type' => 'string'),
-                                  array('fromName',             'type',      'type' => 'string'),
-                                  array('replyToName',          'type',      'type' => 'string'),
-                                  array('replyToAddress',       'type',      'type' => 'string'),
-                                  array('outboundHost',         'type',      'type' => 'string'),
-                                  array('outboundUsername',     'type',      'type' => 'string'),
-                                  array('outboundPassword',     'type',      'type' => 'string'),
-                                  array('outboundSecurity',     'type',      'type' => 'string'),
-                                  array('outboundType',         'type',      'type' => 'string'),
-                                  array('outboundPort',         'type',      'type' => 'integer'),
-                                  array('useCustomSettings',    'type',      'type' => 'boolean'),
-                                  array('fromName',             'length',    'min'  => 0, 'max' => 64),
-                                  array('replyToName',          'length',    'min'  => 0, 'max' => 64),
-                                  array('outboundType',         'length',    'min'  => 0, 'max' => 4),
-                                  array('outboundHost',         'length',    'min'  => 0, 'max' => 64),
-                                  array('outboundUsername',     'length',    'min'  => 0, 'max' => 64),
-                                  array('outboundPassword',     'length',    'min'  => 0, 'max' => 64),
-                                  array('outboundSecurity',     'length',    'min'  => 0, 'max' => 3),
-                                  array('fromAddress',          'email'),
-                                  array('aTestToAddress',       'email'),
-//                                  array('replyToAddress',       'email'), TODO: Gettin errors with this on in the updateShcema
-                                  array('useCustomSettings',    'customOutboundSettings',
-                                                                'nonEmptyFields' => array('outboundHost',
-                                                                                          'outboundPort',
-                                                                                          'outboundUsername',
-                                                                                          'outboundPassword'))
+                                  array('fromName',             	 'required'),
+                                  array('fromAddress',          	 'required'),
+                                  array('name',                 	 'type',      'type' => 'string'),
+                                  array('fromName',             	 'type',      'type' => 'string'),
+                                  array('replyToName',          	 'type',      'type' => 'string'),
+                                  array('outboundHost',         	 'type',      'type' => 'string'),
+                                  array('outboundUsername',     	 'type',      'type' => 'string'),
+                                  array('outboundPassword',     	 'type',      'type' => 'string'),
+                                  array('outboundSecurity',     	 'type',      'type' => 'string'),
+                                  array('outboundType',         	 'type',      'type' => 'string'),
+                                  array('outboundPort',         	 'type',      'type' => 'integer'),
+                                  array('useCustomOutboundSettings', 'type',      'type' => 'boolean'),
+                                  array('fromName',             	 'length',    'max' => 64),
+                                  array('replyToName',          	 'length',    'max' => 64),
+                                  array('outboundType',         	 'length',    'max' => 4),
+                                  array('outboundHost',         	 'length',    'max' => 64),
+                                  array('outboundUsername',     	 'length',    'max' => 64),
+                                  array('outboundPassword',     	 'length',    'max' => 64),
+                                  array('outboundSecurity',     	 'length',    'max' => 3),
+                                  array('fromAddress',          	 'email'),
+                                  array('aTestToAddress',       	 'email'),
+                                  array('replyToAddress',       	 'email'),
+                                  array('useCustomOutboundSettings', 'customOutboundSettings',
+                                                                     'requiredAttributes' => array(  'outboundHost',
+                                                                                                      'outboundPort',
+                                                                                                      'outboundUsername',
+                                                                                                      'outboundPassword'))
                 )
             );
             return $metadata;
@@ -160,11 +160,11 @@
             if ($this->$attribute)
             {
                 $haveError = false;
-                foreach ($params['nonEmptyFields'] as $field)
+                foreach ($params['requiredAttributes'] as $attribute)
                 {
-                    if ($this->$field == null)
+                    if ($this->$attribute == null)
                     {
-                        $this->addError($field, Yii::t('Default', 'This field is required'));
+                        $this->addError($attribute, Yii::t('Default', 'This field is required'));
                         $haveError = true;
                     }
                 }

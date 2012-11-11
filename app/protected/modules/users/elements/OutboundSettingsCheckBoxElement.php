@@ -42,9 +42,6 @@
             $sendTestEmail = new SendATestEmailToElement($this->model, 'aTestToAddress', $this->form);
             $sendTestEmail->editableTemplate = '{label}{content}{error}';
             $content       = ZurmoHtml::tag('div', array('class' => 'beforeToolTip'), $checkBox);
-            $content      .= self::renderTooltipContent();
-            //For now we only support SMTP type so this is not used
-            //$content .= $this->renderEditableTextField($this->model, $this->form, 'outboundType');
             $settings      = $this->renderEditableTextField($this->model, $this->form, 'outboundHost');
             $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundPort');
             $settings     .= $this->renderEditableTextField($this->model, $this->form, 'outboundUsername');
@@ -78,9 +75,9 @@
             return $label . $textField . $error;
         }
 
-        protected static function renderTooltipContent()
+        protected static function renderToolTipContent()
         {
-            $title       = Yii::t('Default', 'If unchecked, will use system outbound email settings.');
+            $title       = Yii::t('Default', 'If unchecked, will use system SMTP settings.');
             $content     = '<span id="custom-outbound-settings-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= '?</span>';
             $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
@@ -95,7 +92,9 @@
             {
                 return $this->getFormattedAttributeLabel();
             }
-            return ZurmoHtml::label($label, $this->getEditableInputId());
+            $content  = ZurmoHtml::label($label, $this->getEditableInputId());
+            $content .= self::renderToolTipContent();
+            return $content;
         }
 
         protected function renderScripts()
