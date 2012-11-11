@@ -24,17 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ContactsActionBarForListView extends SecuredActionBarForSearchAndListView
+    class EmailAddressInformationListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function getDefaultMetadata()
+        public function renderGridViewData()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata['global']['toolbar']['elements'][] =
-                array('type'  => 'ComposeEmailLink',
-                                 'htmlOptions' => array('class' => 'icon-edit'),
-                                 'listViewGridId' => 'eval:$this->listViewGridId',
-                                 'pageVarName' => 'eval:$this->pageVarName');
-            return $metadata;
+            return array(
+                'name'  => $this->attribute,
+                'value' => 'EmailMessageUtil::renderEmailAddressAsMailToOrModalLinkStringContent($data, $data->' . $this->attribute . '->emailAddress)',
+                'type'  => 'raw',
+                'htmlOptions' => array( 'class' => 'email')
+            );
         }
     }
 ?>

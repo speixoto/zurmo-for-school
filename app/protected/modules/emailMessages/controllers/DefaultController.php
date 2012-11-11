@@ -350,42 +350,28 @@
             }
         }
 
-        public function actionComposeEmail($toRecipients = null)
+        public function actionComposeEmail($toAddress = null, $relatedId = null, $relatedModelClassName = null)
         {
-            //todo: call toRecipients something else since it is from the get which is like a default... vs. from post is a final
             $this->resolveToDisplayNoUserEmailAccountYetView();
             $postData     = PostUtil::getData();
             $getData      = GetUtil::getData();
             $emailMessage = new EmailMessage();
-            if (isset($postData['EmailMessage']))
+            if (isset($postData[get_class($emailMessage)]))
             {
-                EmailMessageHelper::resolveEmailMessageFromPostData($emailMessage, Yii::app()->user->userModel);
+                EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessage, Yii::app()->user->userModel);
                 $this->actionValidateComposeEmail($postData, $emailMessage);
                 $this->attemptToSaveModelFromPost($emailMessage, null, false);
-                //TODO: Emails are not connected to contacts/leads if more than one recipient
             }
             else
             {
-            //todo: refactor into something else.
-            $emailSignature     = Yii::app()->user->userModel->emailSignatures[0]->htmlContent;
-            if ($emailSignature != '')
-            {
-                $emailMessage->content->htmlContent = '<p>' . $emailSignature . '</p>';
-            }
-            if (isset($toRecipients))
-            {
-                $toRecipients = explode(",", $toRecipients);
-                EmailMessageHelper::attachRecipientsToMessage($toRecipients, $emailMessage, EmailMessageRecipient::TYPE_TO);
-            }
-            //end todo: refactor
-
-
-                $composeEmailEditAndDetailsView = new ComposeEmailEditAndDetailsView(
-                    'Edit',
+                EmailMessageUtil::resolveSignatureToEmailMessage($emailMessage, Yii::app()->user->userModel);
+                EmailMessageUtil::resolvePersonOrAccountToEmailMessage($emailMessage, Yii::app()->user->userModel,
+                                                                         $toAddress, $relatedId, $relatedModelClassName);
+                $composeEmailModalEditView = new ComposeEmailModalEditView(
                     $this->getId(),
                     $this->getModule()->getId(),
                     $emailMessage);
-                $view = new ModalView($this, $composeEmailEditAndDetailsView);
+                $view = new ModalView($this, $composeEmailModalEditView);
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
             }
@@ -410,10 +396,13 @@
         {
             if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
             {
+                $emailMessage->setAttributes($postData[get_class($emailMessage)]);
                 if ($emailMessage->validate())
                 {
                     Yii::app()->end(false);
-                } else {
+                }
+                else
+                {
                     $errorData = array();
                     foreach ($emailMessage->getErrors() as $attribute => $errors)
                     {

@@ -211,7 +211,7 @@
             $filePdf = ZurmoTestHelper::createFileModel('testPDF.pdf', 'FileModel');
             $filesIds[] = $filePdf->id;
             $emailMessage = new EmailMessage();
-            EmailMessageHelper::attachFilesToMessage($filesIds, $emailMessage);
+            EmailMessageUtil::attachFilesToMessage($filesIds, $emailMessage);
             $this->assertEquals('4', count($emailMessage->files));
         }
 
@@ -224,7 +224,7 @@
             Yii::app()->user->userModel = $billy;
             $emailMessage = new EmailMessage();
             //Attach non personOrAccount recipient
-            EmailMessageHelper::attachRecipientsToMessage(array('a@zurmo.com', 'b@zurmo.com', 'c@zurmo.com'), $emailMessage, EmailMessageRecipient::TYPE_TO);
+            EmailMessageUtil::attachRecipientsToMessage(array('a@zurmo.com', 'b@zurmo.com', 'c@zurmo.com'), $emailMessage, EmailMessageRecipient::TYPE_TO);
             $this->assertEquals('3', count($emailMessage->recipients));
             $this->assertLessThan(0, $emailMessage->recipients[0]->personOrAccount->id);
             $this->assertLessThan(0, $emailMessage->recipients[1]->personOrAccount->id);
@@ -234,12 +234,12 @@
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[2]->type);
             //Attach personOrAccount recipient
             $sally = User::getByUsername('sally');
-            EmailMessageHelper::attachRecipientsToMessage(array('sally@example.com'), $emailMessage, EmailMessageRecipient::TYPE_BCC);
+            EmailMessageUtil::attachRecipientsToMessage(array('sally@example.com'), $emailMessage, EmailMessageRecipient::TYPE_BCC);
             $this->assertEquals('4', count($emailMessage->recipients));
             $this->assertEquals($emailMessage->recipients[3]->personOrAccount->id, $sally->id);
             $this->assertEquals(EmailMessageRecipient::TYPE_BCC, $emailMessage->recipients[3]->type);
             //Attach an empty email
-            EmailMessageHelper::attachRecipientsToMessage(array(''), $emailMessage, EmailMessageRecipient::TYPE_CC);
+            EmailMessageUtil::attachRecipientsToMessage(array(''), $emailMessage, EmailMessageRecipient::TYPE_CC);
             $this->assertEquals('4', count($emailMessage->recipients));
         }
     }
