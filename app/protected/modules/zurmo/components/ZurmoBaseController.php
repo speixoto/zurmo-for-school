@@ -409,19 +409,20 @@
                             $_GET[$modelClassName . '_page'],
                             $pageSize
                         );
-                        /**cancel diminish of save scoring*/
+
+                        // Cancel diminish of save scoring
                         if ($selectedRecordCount > $pageSize)
                         {
-                            $view = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,
-                                $this->makeMassDeleteProgressView(
-                                    $listModel,
-                                    1,
-                                    $selectedRecordCount,
-                                    1,
-                                    $pageSize,
-                                    $title,
-                                    null)
+                            $view = new $pageViewClassName( ZurmoDefaultViewUtil::
+                                                            makeStandardViewForCurrentUser($this,
+                                                            $this->makeMassDeleteProgressView(
+                                                            $listModel,
+                                                            1,
+                                                            $selectedRecordCount,
+                                                            1,
+                                                            $pageSize,
+                                                            $title,
+                                                            null)
                             ));
                             echo $view->render();
                             Yii::app()->end(0, false);
@@ -432,10 +433,9 @@
                             $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
                                 $selectedRecordCount, $skipCount);
                             MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
-                            $notificationContent = Yii::t('Default', 'Successfully Deleted') . ' ' .
-                                                    $successfulCount . ' ' .
+                            $notificationContent =  $successfulCount . ' ' .
                                                     LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
-                                                    '.';
+                                                    ' ' . Yii::t('Default', 'successfully deleted') . '.';
                             if ($skipCount > 0)
                             {
                                 $notificationContent .= ' ' .
@@ -449,6 +449,7 @@
                     }
             return $listModel;
         }
+
         protected function processMassDeleteProgress(
             $modelClassName,
             $pageSize,

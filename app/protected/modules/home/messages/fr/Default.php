@@ -85,7 +85,7 @@
             => 'Conseil du jour',
         'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .
         'collect badges, and compete against co-workers while getting your job done.'
-            => 'L\'utilisation d\'un CRM ne doit pas être une corvée. Avez Zurmo, vous pouvez ' .
+            => 'L\'utilisation d\'un CRM ne doit pas être une corvée. Avec Zurmo, vous pouvez ' .
                'gagner des points, remporter des badges, et concourir contre vos collègues, tout en complétant votre travail.',
         'View a tutorial'
             => 'Visualiser un tutoriel',

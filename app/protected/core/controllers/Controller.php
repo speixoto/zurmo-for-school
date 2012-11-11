@@ -211,6 +211,7 @@
                 return array();
             }
         }
+
         /**
         for mass delete
         */
@@ -225,6 +226,7 @@
                 return array();
             }
         }
+
         protected function makeMassEditView(
             $model,
             $activeAttributes,
@@ -248,14 +250,13 @@
             $selectedRecordCount,
             $title)
         {
-            $alertMessage          = $this->getMassDeleteAlertMessage(get_class($model));
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
             $title                 = Yii::t('Default', 'Mass Delete') . ': ' . $title;
             $massDeleteViewClassName = 'MassDeleteView';
             $selectedIds = GetUtil::getData();
             $view  = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
-                                                      $selectedRecordCount, $title, $alertMessage, $moduleClassName, $selectedIds);
+                                                      $selectedRecordCount, $title, null, $moduleClassName, $selectedIds);
             return $view;
         }
 
@@ -367,6 +368,7 @@
                 return $dataProvider->getData();
             }
         }
+
         /** for mass delete */
         protected function getModelsToDelete($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
         {
@@ -411,15 +413,7 @@
         {
             if (!isset($_POST[$postVariableName]) && isset($_POST['save']))
             {
-                    return Yii::t('Default', 'You must select at least one field to modify.');
-            }
-        }
-
-        protected function getMassDeleteAlertMessage($postVariableName)
-        {
-            if (!isset($_POST[$postVariableName]) && isset($_POST['save']))
-            {
-                    return Yii::t('Default', 'You must select at least one field to delete.');//to do: change the message
+                return Yii::t('Default', 'You must select at least one field to modify.');
             }
         }
     }

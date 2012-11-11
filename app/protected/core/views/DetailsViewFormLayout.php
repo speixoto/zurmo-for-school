@@ -77,7 +77,7 @@
             {
                 $content .= $this->renderDivTagByPanelNumber($panelNumber);
                 $content .= $this->renderPanelHeaderByPanelNumberAndPanel($panelNumber, $panel);
-                $content .= '<table>';
+                $content .= $this->resolveStartingTableTagAndColumnQuantityClass($panel);
                 $content .= TableUtil::getColGroupContent(static::getMaximumColumnCountForAllPanels($this->metadata), $this->labelsHaveOwnCells);
                 $content .= '<tbody>';
 
@@ -112,6 +112,16 @@
             return $this->resolveFormLayoutContent($content);
         }
 
+        protected function resolveStartingTableTagAndColumnQuantityClass($panel)
+        {
+            assert('is_array($panel)');
+            if (static::getMaximumColumnCountForSpecificPanels($panel) == 2)
+            {
+                return '<table class="double-column">';
+            }
+            return '<table>';
+        }
+
         /**
          * If the cell content contains a <tr at the beginning, then assume we do not
          * need to wrap or end with a tr
@@ -120,7 +130,7 @@
         {
             assert('is_string($content) || $content == null');
             assert('is_string($cellsContent)');
-            if(strpos($cellsContent, '<tr') === 0)
+            if (strpos($cellsContent, '<tr') === 0)
             {
                 $content .= $cellsContent;
             }

@@ -96,7 +96,9 @@
 
 }
 .zLink,
-.z-link {
+.z-link,
+#ImportWizardMappingView #sample-column-header a,
+.remove-extra-column-link {
   background: #262877;
   padding: 1px 4px;
   -webkit-border-radius: 2px;
@@ -108,9 +110,24 @@
   font-size: 11px;
 }
 .zLink:hover,
-.z-link:hover {
+.z-link:hover,
+#ImportWizardMappingView #sample-column-header a:hover,
+.remove-extra-column-link:hover {
   color: #fff !important;
   text-decoration: underline;
+}
+.unstyle-panel,
+#NoteInlineEditForPortletView .wide.form,
+#inline-edit-form {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
 }
 @font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
@@ -380,7 +397,6 @@ section {
 }
 #HeaderLinksView li a {
   color: #fff;
-  font-size: 12px;
   font-weight: bold;
 }
 #HeaderLinksView li a:hover {
@@ -677,6 +693,7 @@ section {
   top: 0;
   left: 4px;
   font-size: 10px;
+  line-height: 1;
 }
 #settings-header-menu {
   margin-left: -1px;
@@ -933,6 +950,9 @@ section {
   background-image: -o-linear-gradient(top, #202264, #262877);
   background-image: linear-gradient(top, #202264, #262877);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202264', endColorstr='#262877', GradientType=0);
+}
+.TitleBarView {
+  margin-bottom: 15px;
 }
 /*=Shortcuts nav*/
 .GridView {
@@ -1226,6 +1246,7 @@ section {
   vertical-align: middle;
   height: 32px;
   display: block;
+  position: relative;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -1236,7 +1257,6 @@ section {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  position: relative;
 }
 #RecentlyViewedView li a:hover {
   color: #fff !important;
@@ -1244,6 +1264,17 @@ section {
 }
 #RecentlyViewedView li a:hover em {
   color: #262877 !important;
+}
+#RecentlyViewedView li a:hover span {
+  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
+  background-image: url(../images/main-nav-selected.png);
+  background-repeat: no-repeat;
+  background-position-x: 0;
+  background-position-y: 0;
 }
 #RecentlyViewedView li a span {
   position: absolute;
@@ -1425,15 +1456,16 @@ section {
 .AppContent .single-column #inline-edit-form .panel {
   width: 100%;
 }
+.DynamicSearchView {
+  position: relative;
+  z-index: 9999;
+}
 /*=dashboard*/
 #HomePageView .AppContent {
   padding-right: 0;
 }
 #HomePageView .AppContent#DashboardEditView {
   padding-right: 20px;
-}
-#HomeDashboardView {
-  margin-top: 15px;
 }
 #HomeDashboardView .parent > ul {
   min-width: 160px;
@@ -1445,6 +1477,17 @@ section {
   display: inline-block;
   position: relative;
   font-size: 11px;
+  float: left;
+}
+form .view-toolbar-container,
+.juiportlet-widget .view-toolbar-container,
+.ActionBarForSecurityTreeListView .view-toolbar-container,
+#ActionBarForDesignerModuleView .view-toolbar-container,
+#LeaderboardView .view-toolbar-container {
+  float: none;
+}
+.juiportlet-widget .view-toolbar-container {
+  display: block;
 }
 .view-toolbar {
   border: 1px solid #b7b7b7;
@@ -2123,7 +2166,6 @@ td.empty {
   font-size: 12px !important;
   color: #666;
   font-weight: 400 !important;
-  margin: 5px 0;
 }
 /*=Form Edit Account*/
 .modal-view-toolbar,
@@ -2910,7 +2952,7 @@ div.wide.form a {
   color: #999;
   text-indent: 10px;
   line-height: 25px;
-  height: 25px;
+  height: 25px !important;
   border: 1px solid #d5d4d4;
   border-left: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
@@ -3078,9 +3120,6 @@ div.wide.form a {
 #ModalView #clear-search-linkmodal {
   margin-left: 10px;
 }
-#ModalView .view-toolbar-container {
-  margin-top: 15px;
-}
 #ModalView .items {
   border: none;
 }
@@ -3135,22 +3174,6 @@ div.wide.form a {
 .select-list-attributes-view .attributesContainer:after {
   display: none !important;
 }
-.select-list-attributes-view .multiselect-holder {
-  position: relative;
-  width: 75%;
-  max-width: 675px;
-}
-.select-list-attributes-view .multiselect-right,
-.select-list-attributes-view .multiselect-left {
-  width: 45%;
-  max-width: 300px;
-}
-.select-list-attributes-view .multiselect-right {
-  float: right;
-}
-.select-list-attributes-view .multiselect-nav {
-  display: none;
-}
 .select-list-attributes-view .multiselect-nav-updown {
   display: block;
   position: absolute;
@@ -3161,9 +3184,9 @@ div.wide.form a {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 75px;
-  text-align: center;
   height: 75px;
-  margin-top: 70px;
+  text-align: center;
+  left: auto;
 }
 #clear-search-link {
   background: #262877;
@@ -3367,6 +3390,9 @@ div.wide.form a {
   position: relative !important;
   float: left !important;
 }
+.double-column #right-side-edit-view-panel .buffer {
+  padding-left: 5px;
+}
 .double-column .col-0,
 .double-column .col-2 {
   width: 15% !important;
@@ -3397,72 +3423,111 @@ div.wide.form a {
   display: table;
   clear: both;
 }
-#edit-form {
+#modal-edit-form,
+#edit-form,
+#delete-form {
   zoom: 1;
   position: relative;
   padding-top: 15px;
 }
-#edit-form:before {
+#modal-edit-form:before,
+#edit-form:before,
+#delete-form:before {
   content: "";
   display: table;
 }
-#edit-form:after {
+#modal-edit-form:after,
+#edit-form:after,
+#delete-form:after {
   content: "";
   display: table;
   clear: both;
 }
-#edit-form .panel {
+#modal-edit-form .panel,
+#edit-form .panel,
+#delete-form .panel {
   float: left;
   width: 70%;
   display: block;
   zoom: 1;
 }
-#edit-form .panel:before {
+#modal-edit-form .panel:before,
+#edit-form .panel:before,
+#delete-form .panel:before {
   content: "";
   display: table;
 }
-#edit-form .panel:after {
+#modal-edit-form .panel:after,
+#edit-form .panel:after,
+#delete-form .panel:after {
   content: "";
   display: table;
   clear: both;
 }
-#edit-form .panel table {
+#modal-edit-form .panel table,
+#edit-form .panel table,
+#delete-form .panel table {
   width: 100% !important;
 }
-#edit-form h3 {
+#modal-edit-form h3,
+#edit-form h3,
+#delete-form h3 {
   margin-bottom: 8px;
 }
-#edit-form table {
+#modal-edit-form table,
+#edit-form table,
+#delete-form table {
   border-bottom: none;
 }
-#edit-form table br {
+#modal-edit-form table br,
+#edit-form table br,
+#delete-form table br {
   display: none;
 }
+#modal-edit-form td,
 #edit-form td,
-#edit-form th {
+#delete-form td,
+#modal-edit-form th,
+#edit-form th,
+#delete-form th {
   vertical-align: top;
 }
-#edit-form td table {
+#modal-edit-form td table,
+#edit-form td table,
+#delete-form td table {
   width: 100%;
 }
-#edit-form td {
+#modal-edit-form td,
+#edit-form td,
+#delete-form td {
   padding-bottom: 15px;
 }
-#edit-form .panelTitle {
+#modal-edit-form .panelTitle,
+#edit-form .panelTitle,
+#delete-form .panelTitle {
   margin: 0 0 10px 0;
   padding: 0;
   font-size: 12px;
   display: block;
 }
-#edit-form .view-toolbar-container {
+#modal-edit-form .view-toolbar-container,
+#edit-form .view-toolbar-container,
+#delete-form .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
-#edit-form .hasCheckBox {
+#modal-edit-form .hasCheckBox,
+#edit-form .hasCheckBox,
+#delete-form .hasCheckBox {
   margin: 8px 0 0 0;
   display: block;
 }
-#edit-form .hasCheckBox input[type="checkbox"] {
+#modal-edit-form .hasCheckBox input[type="checkbox"],
+#edit-form .hasCheckBox input[type="checkbox"],
+#delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
+}
+#modal-edit-form .panel {
+  width: 100%;
 }
 .more-panels-link {
   font-size: 11px;
@@ -3685,15 +3750,32 @@ div.wide.form a {
   margin-right: 20px;
 }
 .details-table table {
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
-.details-table th {
-  font-weight: 600;
-  color: #666;
+.details-table .double-column .col-0,
+.details-table .double-column .col-2 {
+  width: 22% !important;
+}
+.details-table .double-column .col-1,
+.details-table .double-column .col-3 {
+  width: 28% !important;
 }
 .details-table td,
 .details-table th {
-  padding: 8px 5px 8px 15px;
+  font-weight: bold;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 5px 5px 5px 5px;
+}
+.details-table th {
+  vertical-align: top;
+  color: #999;
+  padding-left: 15px;
+  text-align: right;
+}
+.details-table td {
+  vertical-align: top;
 }
 .details-table td + th {
   padding-left: 15px !important;
@@ -3923,6 +4005,10 @@ div.wide.form a {
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   font-size: 11px;
   color: #666 !important;
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #bababa;
 }
 .toolbar-mbmenu .options-menu > li > a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -4162,7 +4248,7 @@ div.wide.form a {
   border-top: none;
 }
 #inline-edit-form {
-  padding-top: 15px;
+  padding: 15px 15px 15px 0;
 }
 #inline-edit-form table + table {
   float: left;
@@ -4194,6 +4280,12 @@ div.wide.form a {
   margin-left: -90px;
   text-align: right;
   margin-top: 6px;
+}
+#inline-edit-form table {
+  border-bottom: none;
+}
+#inline-edit-form .view-toolbar-container {
+  display: inline-block;
 }
 #inline-edit-form .view-toolbar-container a {
   float: right;
@@ -4424,7 +4516,7 @@ div.overlay-label-field:after {
 .overlay-label-field label {
   position: absolute !important;
   left: 4px;
-  top: 1px;
+  top: 6px;
   color: #999;
   font-size: 14px;
   font-weight: normal;
@@ -4798,6 +4890,13 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+}
+#ModalView #list-view .pager {
+  -webkit-box-shadow: inset 0 1px 0 #dfdfdf;
+  -moz-box-shadow: inset 0 1px 0 #dfdfdf;
+  -o-box-shadow: inset 0 1px 0 #dfdfdf;
+  -ms-box-shadow: inset 0 1px 0 #dfdfdf;
+  box-shadow: inset 0 1px 0 #dfdfdf;
 }
 /*=Meetings modal*/
 #days-meetings-list-view td {
@@ -5272,30 +5371,64 @@ div.hasHalfs .twoThirds {
 }
 /*=Flash Message View*/
 #FlashMessageView {
-  position: relative;
-  margin-left: 192px;
-  top: 20px;
+  position: fixed;
+  top: 100px;
+  width: 25%;
+  right: 3%;
+  z-index: 9999;
 }
 #FlashMessageView .jnotify-item {
+  position: relative;
   margin: 0 20px 20px 0;
   padding: 10px;
   border-radius: 5px !important;
   border: 1px solid #FFCC00;
   background: #FFFCB5;
-  font-size: 12px;
-  font-weight: 600;
-  color: #333333;
+  font-weight: bold;
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+}
+#FlashMessageView .jnotify-item p,
+#FlashMessageView .jnotify-item ul {
+  margin-bottom: 5px;
+  line-height: 1;
+}
+#FlashMessageView .jnotify-item ul {
+  padding-left: 18px;
+}
+#FlashMessageView .jnotify-item li {
+  margin-bottom: 3px;
+}
+#FlashMessageView .ui-state-error {
+  border: 1px solid #cc0000;
+  background: #ffb5b5;
 }
 #FlashMessageView .ui-icon-circle-close {
   position: absolute;
   top: -17px;
-  right: 6px;
+  right: -15px;
   background: transparent url(../images/widget-close-btn.png) left top no-repeat;
   padding: 0 !important;
   margin: 0 !important;
   width: 30px !important;
   height: 31px !important;
   cursor: pointer;
+}
+.operation-description {
+  display: block;
+  margin: 0 0 15px 0;
+  color: #262877;
+  line-height: 150%;
+}
+.operation-description strong {
+  font-weight: bold;
+}
+.operation-description em {
+  color: #cc0000;
+  font-style: normal;
 }
 /*Dropdowns*/
 .hasDropDown {
@@ -5360,7 +5493,6 @@ div.hasHalfs .twoThirds {
   outline: none !important;
   cursor: pointer;
   position: relative;
-  z-index: 1;
 }
 .hasDropDown select:focus,
 .hasDropDown select:hover {
@@ -5379,7 +5511,7 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: 0 0 1px 1px #262877;
   box-shadow: 0 0 1px 1px #262877;
 }
-/*=Mass Edit view*/
+/*=Mass Edit + DELETE view*/
 .AppContent.MassEditView #edit-form table {
   width: 100%;
 }
@@ -5400,9 +5532,6 @@ div.hasHalfs .twoThirds {
   padding-left: 0;
   margin-bottom: 30px;
   margin-left: -8px;
-}
-.ui-state-warning {
-  color: #ff0000 !important;
 }
 /*=Lead Conversion*/
 #LeadConvertView .DetailsView > div {
@@ -5937,11 +6066,15 @@ a.remove:hover .icon:after {
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   content: 'e';
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView h3,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
+.juiportlet-widget.ContactsForOpportunityRelatedListView h3,
 .juiportlet-widget.ContactsForAccountRelatedListView h3 {
   text-indent: 30px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
+.juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   font-weight: normal;
   font-size: 32px;
@@ -5952,12 +6085,16 @@ a.remove:hover .icon:after {
   position: absolute;
   top: 6px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView td:first-child div,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView td:first-child div,
+.juiportlet-widget.ContactsForOpportunityRelatedListView td:first-child div,
 .juiportlet-widget.ContactsForAccountRelatedListView td:first-child div {
   font-size: 11px;
   margin-top: 3px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView td:first-child div:first-child,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView td:first-child div:first-child,
+.juiportlet-widget.ContactsForOpportunityRelatedListView td:first-child div:first-child,
 .juiportlet-widget.ContactsForAccountRelatedListView td:first-child div:first-child {
   font-size: 12px;
   font-weight: bold;
@@ -6535,8 +6672,13 @@ table.configuration-list tr td:last-child a:before {
         font-weight: 400 !important;*/
 
 }
+#GroupUserMembershipEditView td {
+  padding-left: 0;
+}
 .multiselect-holder {
-  width: 675px;
+  position: relative;
+  width: 75%;
+  max-width: 675px;
   margin: 0 auto;
   zoom: 1;
 }
@@ -6617,10 +6759,23 @@ table.configuration-list tr td:last-child a:before {
 .multiselect-holder input[type="button"].loading .z-icon {
   display: none;
 }
-.multiselect-left,
-.multiselect-right {
+.multiselect-holder .select-arrow {
+  display: none !important;
+}
+.multiselect-right,
+.multiselect-left {
+  width: 45%;
+  max-width: 300px;
   float: left;
-  width: 300px;
+}
+.multiselect-right {
+  float: right;
+}
+.multiselect-nav {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -30px auto auto -23px;
 }
 /*TreeListView - usualy first page in each in admin*/
 #LanguagesCollectionView,
@@ -7156,6 +7311,10 @@ table.configuration-list tr td:last-child a:before {
   -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  border-top: 1px solid #e7e7e7;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #bababa;
 }
 .EmailTestingButton:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -7344,22 +7503,15 @@ table.configuration-list tr td:last-child a:before {
 #ImportWizardMappingView .mapping-rules label {
   line-height: 26px;
 }
-#ImportWizardMappingView #sample-column-header a {
-  background: #262877;
-  padding: 1px 4px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  color: #fff !important;
-  font-size: 11px;
-}
-#ImportWizardMappingView #sample-column-header a:hover {
-  color: #fff !important;
-  text-decoration: underline;
+.remove-extra-column-link {
+  display: inline-block;
+  margin-top: 5px;
 }
 /*=Step 5, process details*/
+#sequential-process-spinner .z-spinner {
+  display: block;
+  margin: -1px 10px 0 0;
+}
 #ImportWizardDataAnalysisCompleteView > div {
   margin: 0;
   border: none;
@@ -7372,6 +7524,9 @@ table.configuration-list tr td:last-child a:before {
 }
 #ImportWizardDataAnalysisCompleteView > div #edit-form:after {
   display: none;
+}
+#ImportWizardDataAnalysisCompleteView .attributesContainer {
+  padding-bottom: 0;
 }
 #ImportWizardImportRulesView span {
   text-align: left;
@@ -7386,6 +7541,10 @@ table.configuration-list tr td:last-child a:before {
 }
 .process-container-view {
   padding: 15px 15px 0 15px;
+}
+#ImportSequentialProcessContainerView > div {
+  float: left;
+  width: 100%;
 }
 #ImportSequentialProcessContainerView #edit-form {
   padding: 0 0 15px 0 !important;
@@ -7451,6 +7610,12 @@ table.configuration-list tr td:last-child a:before {
   font-size: 12px !important;
   color: #666;
   font-weight: 400 !important;
+}
+.import-summary {
+  margin: 0 0 15px 15px;
+}
+.import-summary li {
+  margin-bottom: 3px;
 }
 .ui-progressbar {
   background: url(../images/ajax-loader.gif) left top no-repeat;
@@ -7668,10 +7833,18 @@ div.form select.error {
   box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
 }
 div.form .errorSummary {
-  padding: 7px 7px 12px 7px;
-  margin: 0 0 20px 0;
-  background: #FEE;
-  font-size: 11px;
+  position: relative;
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 5px !important;
+  border: 1px solid #cc0000;
+  background: #ffb5b5;
+  font-weight: bold;
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
 }
 #edit-form td {
   position: relative;
@@ -7710,8 +7883,7 @@ div.form .errorMessage:before {
   background: url(../images/error-tip.png) left bottom no-repeat;
 }
 div.form .errorSummary p {
-  margin: 0;
-  padding: 5px;
+  margin: 0 0 5px 0;
 }
 div.form .errorSummary ul {
   margin: 0;
@@ -7826,7 +7998,7 @@ div.wide.form .errorMessage {
 .files {
   font-size: 11px;
   margin-top: 5px;
-  float: left;
+  float: left !important;
 }
 .files td {
   padding: 2px 0 !important;
@@ -9337,8 +9509,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     font-smooth: always !important;
   }
   .form input[type="text"],
-  .form input[type="password"],
-  .form textarea {
+  .form input[type="password"] {
     height: 26px;
   }
   input[type="submit"],
@@ -9869,6 +10040,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   line-height: 24px;
   display: inline-block;
   float: left;
+}
+#LeaderboardView .ranking {
+  float: none;
 }
 .icon-leaderboard-weekly:before {
   content: "x";
@@ -10766,6 +10940,11 @@ a.close-ModalGameNotification.simple-select {
   float: right;
   margin: 15px 15px 15px 0;
 }
+.gravatar-container a {
+  display: block;
+  float: left;
+  position: relative;
+}
 .gravatar-container span {
   text-align: center;
   padding: 10px;
@@ -10773,10 +10952,8 @@ a.close-ModalGameNotification.simple-select {
   z-index: 1;
   display: none;
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.7);
-  width: auto;
   height: auto;
+  background: rgba(255, 255, 255, 0.7);
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -10957,6 +11134,7 @@ a.close-ModalGameNotification.simple-select {
   clear: both;
   position: relative;
   top: 30px;
+  font-size: 11px;
 }
 .hide-welcome span {
   font-weight: normal;
@@ -11447,6 +11625,9 @@ a.user-link {
 #comment-inline-edit-form .panel > table,
 #social-item-inline-edit-form .panel > table {
   border: none;
+}
+#social-item-inline-edit-form .view-toolbar-container {
+  float: none;
 }
 #comment-inline-edit-form {
   border-bottom: none;

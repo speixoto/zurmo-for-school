@@ -427,7 +427,7 @@
                             'modifiedDate' => date ("F d Y H:i:s.", filemtime(TEST_RESULTS_PATH . $resultFile)),
                             'status'       => self::getResultFileStatusByFileName($resultFile),
                             'browser'      => self::getResultFileBrowserByFileName($resultFile),
-                            'server'       =>self::getResultServerByFileName($resultFile),
+                            'server'       => self::getResultServerByFileName($resultFile),
                         );
                     }
                 }

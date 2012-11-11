@@ -49,7 +49,7 @@
             $userLink = ZurmoHtml::link(strval($model->owner), $userUrl, array('class' => 'user-link'));
             $content .= '<div class="comment-content"><p>';
 
-            if($model->toUser->id > 0 && $renderToUserString)
+            if ($model->toUser->id > 0 && $renderToUserString)
             {
                 $toUserUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $model->toUser->id));
                 $toUserLink = ZurmoHtml::link(strval($model->toUser), $toUserUrl, array('class' => 'user-link'));
@@ -175,7 +175,7 @@
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
 
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
-                                                      $urlParameters, $uniquePageId);
+                                                      $urlParameters, $uniquePageId, $model->id);
             $content      .= ZurmoHtml::tag('div', array('style' => 'display:none;'), $inlineView->render());
             return ZurmoHtml::tag('div', array('id' => $uniquePageId), $content);
         }
