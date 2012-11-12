@@ -88,7 +88,7 @@
         {
             if($user->emailSignatures->count() > 0 && $user->emailSignatures[0]->htmlContent != null)
             {
-                $emailMessage->content->htmlContent = '<p>' . $user->emailSignatures[0]->htmlContent . '</p>';
+                $emailMessage->content->htmlContent = '<p> &nbsp; </p><hr/><p>' . $user->emailSignatures[0]->htmlContent . '</p>';
             }
         }
 
