@@ -70,7 +70,7 @@
         public function run()
         {
             self::$jobOwnerUserModel = Yii::app()->user->userModel;
-            if(Yii::app()->imap->connect()== true)
+            if(Yii::app()->imap->connect())
             {
                 $lastImapCheckTime     = EmailMessagesModule::getLastImapDropboxCheckTime();
                 if (isset($lastImapCheckTime) && $lastImapCheckTime != '')
@@ -109,7 +109,7 @@
             }
             else
             {
-                $messageContent = Yii::t('Default', 'Failed to connect to Mailbox');
+                $messageContent     = Yii::t('Default', 'Failed to connect to Mailbox');
                 $this->errorMessage = $messageContent;
                 return false;
             }
