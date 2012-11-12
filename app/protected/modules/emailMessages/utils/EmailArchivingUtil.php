@@ -186,6 +186,62 @@
             return $emailSender;
         }
 
+        public static function getPersonsAndAccountsByEmailAddressForUser($emailAddress, User $user)
+        {
+            assert('is_string($emailAddress)');
+            $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', $user);
+            $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    $user);
+            $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', $user);
+            $userCanAccessUsers    = RightsUtil::canUserAccessModule('UsersModule',    $user);
+            return self::getPersonsAndAccountsByEmailAddress($emailAddress,
+                                                                 $userCanAccessContacts,
+                                                                 $userCanAccessLeads,
+                                                                 $userCanAccessAccounts,
+                                                                 $userCanAccessUsers);
+        }
+
+            /**
+         * Get all
+         * @param string $emailAddress
+         * @param boolean $userCanAccessContacts
+         * @param boolean $userCanAccessLeads
+         * @param boolean $userCanAccessAccounts
+         * @param boolean $userCanAccessUsers
+         * @return Contact || Account || User || NULL || array of objects
+         */
+        public static function getPersonsAndAccountsByEmailAddress($emailAddress,
+                                                                   $userCanAccessContacts  = false,
+                                                                   $userCanAccessLeads     = false,
+                                                                   $userCanAccessAccounts  = false,
+                                                                   $userCanAccessUsers     = false)
+        {
+            assert('is_string($emailAddress)');
+            assert('is_bool($userCanAccessContacts)');
+            assert('is_bool($userCanAccessLeads)');
+            assert('is_bool($userCanAccessAccounts)');
+            assert('is_bool($userCanAccessUsers)');
+            $personsAndAccounts    = array();
+            if ($userCanAccessContacts || $userCanAccessLeads)
+            {
+                $stateMetadataAdapterClassName =
+                    LeadsStateMetadataAdapter::
+                    resolveStateMetadataAdapterClassNameByAccess($userCanAccessContacts, $userCanAccessLeads);
+                $personsAndAccounts = ContactSearch::
+                                      getContactsByAnyEmailAddress($emailAddress, 1, $stateMetadataAdapterClassName);
+            }
+            if ($userCanAccessAccounts)
+            {
+                $personsAndAccounts = array_merge($personsAndAccounts,
+                                                  AccountSearch::getAccountsByAnyEmailAddress($emailAddress, 1));
+            }
+            if ($userCanAccessUsers)
+            {
+                $personsAndAccounts = array_merge($personsAndAccounts,
+                                                  UserSearch::getUsersByEmailAddress($emailAddress));
+            }
+            return $personsAndAccounts;
+        }
+
         /**
          * Get Contact or Account or User, based on email address
          * @param string $emailAddress
@@ -196,29 +252,27 @@
          * @return Contact || Account || User || NULL
          */
         public static function resolvePersonOrAccountByEmailAddress($emailAddress,
-                                                                    $userCanAccessContacts = false,
-                                                                    $userCanAccessLeads = false,
-                                                                    $userCanAccessAccounts = false,
-                                                                    $userCanAccessUsers = false)
+                                                                      $userCanAccessContacts = false,
+                                                                      $userCanAccessLeads = false,
+                                                                      $userCanAccessAccounts = false,
+                                                                      $userCanAccessUsers = false)
         {
-            $personOrAccount = null;
-            $contactsOrLeads = array();
-
+            assert('is_string($emailAddress)');
+            assert('is_bool($userCanAccessContacts)');
+            assert('is_bool($userCanAccessLeads)');
+            assert('is_bool($userCanAccessAccounts)');
+            assert('is_bool($userCanAccessUsers)');
+            $personOrAccount   = null;
+            $contactsOrLeads   = array();
             if ($userCanAccessContacts || $userCanAccessLeads)
             {
-                $stateMetadataAdapterClassName = null;
-                if ($userCanAccessContacts && !$userCanAccessLeads)
-                {
-                    $stateMetadataAdapterClassName = 'ContactsStateMetadataAdapter';
-                }
-                elseif (!$userCanAccessContacts && $userCanAccessLeads)
-                {
-                    $stateMetadataAdapterClassName = 'LeadsStateMetadataAdapter';
-                }
-                $contactsOrLeads = ContactSearch::getContactsByAnyEmailAddress($emailAddress, 1, $stateMetadataAdapterClassName);
+                $stateMetadataAdapterClassName =
+                    LeadsStateMetadataAdapter::
+                    resolveStateMetadataAdapterClassNameByAccess($userCanAccessContacts, $userCanAccessLeads);
+                $contactsOrLeads = ContactSearch::getContactsByAnyEmailAddress($emailAddress, true, $stateMetadataAdapterClassName);
             }
 
-            if (count($contactsOrLeads))
+            if(!empty($contactsOrLeads))
             {
                 $personOrAccount = $contactsOrLeads[0];
             }
@@ -228,7 +282,7 @@
                 // Check if email belongs to account
                 if ($userCanAccessAccounts)
                 {
-                    $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress, 1);
+                    $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress, true);
                 }
 
                 if (count($accounts))

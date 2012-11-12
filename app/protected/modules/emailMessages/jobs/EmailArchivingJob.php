@@ -178,8 +178,7 @@
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts,
-                    $userCanAccessUsers
-            );
+                    $userCanAccessUsers);
             $sender->personOrAccount = $personOrAccount;
             return $sender;
         }
@@ -206,8 +205,7 @@
                     $userCanAccessContacts,
                     $userCanAccessLeads,
                     $userCanAccessAccounts,
-                    $userCanAccessUsers
-            );
+                    $userCanAccessUsers);
             $recipient->personOrAccount = $personOrAccount;
             return $recipient;
         }

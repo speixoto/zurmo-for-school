@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ComposeEmailModalEditView extends EditView
+    class CreateEmailMessageModalEditView extends EditView
     {
         protected function renderTitleContent()
         {
@@ -103,7 +103,7 @@
                 static::getFormId(),
                 $this->moduleId,
                 $this->controllerId,
-                'composeEmail');
+                'createEmailMessage');
             return array(
                 'enableAjaxValidation' => true,
                 'clientOptions' => array(

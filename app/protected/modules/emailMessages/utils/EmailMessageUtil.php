@@ -60,17 +60,40 @@
 
         public static function attachRecipientsToMessage(Array $recipients, EmailMessage $emailMessage, $type)
         {
+            $existingPersonsOrAccounts = array();
+            if($emailMessage->recipients->count() >0)
+            {
+                foreach($emailMessage->recipients as $recipient)
+                {
+                    if($recipient->personOrAccount != null && $recipient->personOrAccount->id > 0)
+                    {
+                        $existingPersonsOrAccounts[] = $recipient->personOrAccount->getClassId('Item');
+                    }
+                }
+            }
             foreach ($recipients as $recipient)
             {
-                $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress($recipient, true, true, true, true);
                 if ($recipient != null)
                 {
-                    $messageRecipient                   = new EmailMessageRecipient();
-                    $messageRecipient->toName           = strval($personOrAccount);
-                    $messageRecipient->toAddress        = $recipient;
-                    $messageRecipient->type             = $type;
-                    $messageRecipient->personOrAccount  = $personOrAccount;
-                    $emailMessage->recipients->add($messageRecipient);
+                    $personsOrAccounts = EmailArchivingUtil::
+                                         getPersonsAndAccountsByEmailAddressForUser($recipient, Yii::app()->user->userModel);
+                    if(empty($personsOrAccounts))
+                    {
+                        $personsOrAccounts[] = null;
+                    }
+                    foreach($personsOrAccounts as $personOrAccount)
+                    {
+                        if(!in_array($personOrAccount->getClassId('Item'), $existingPersonsOrAccounts))
+                        {
+                            $messageRecipient                   = new EmailMessageRecipient();
+                            $messageRecipient->toName           = strval($personOrAccount);
+                            $messageRecipient->toAddress        = $recipient;
+                            $messageRecipient->type             = $type;
+                            $messageRecipient->personOrAccount  = $personOrAccount;
+                            $emailMessage->recipients->add($messageRecipient);
+                            $existingPersonsOrAccounts[] = $personOrAccount->getClassId('Item');
+                        }
+                    }
                 }
             }
         }
@@ -130,7 +153,7 @@
             }
             if($showLink && !($model instanceof Account))
             {
-                $url               = Yii::app()->createUrl('/emailMessages/default/composeEmail',
+                $url               = Yii::app()->createUrl('/emailMessages/default/createEmailMessage',
                                                            array('toAddress'			 => $emailAddress,
                                                                  'relatedId'             => $model->id,
                                                                  'relatedModelClassName' => get_class($model)));

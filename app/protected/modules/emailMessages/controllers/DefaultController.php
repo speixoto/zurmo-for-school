@@ -42,11 +42,11 @@
                     'rightName'       => EmailMessagesModule::RIGHT_ACCESS_CONFIGURATION,
                ),
                array(
-                    self::getRightsFilterPath() . ' + composeEmail',
+                    self::getRightsFilterPath() . ' + createEmailMessage',
                     'moduleClassName' => $moduleClassName,
                     'rightName' => $moduleClassName::getCreateRight(),
                 ),
-                array(self::USER_EMAIL_CONFIGURATION_FILTER_PATH . ' + composeEmail',
+                array(self::USER_EMAIL_CONFIGURATION_FILTER_PATH . ' + createEmailMessage',
                      'controller' => $this,
                 )
             );
@@ -361,28 +361,39 @@
             }
         }
 
-        public function actionComposeEmail($toAddress = null, $relatedId = null, $relatedModelClassName = null)
+        public function actionCreateEmailMessage($toAddress = null, $relatedId = null, $relatedModelClassName = null)
         {
-            $postData     = PostUtil::getData();
-            $getData      = GetUtil::getData();
-            $emailMessage = new EmailMessage();
-            if (isset($postData[get_class($emailMessage)]))
+            $postData         = PostUtil::getData();
+            $getData          = GetUtil::getData();
+            $emailMessage     = new EmailMessage();
+            $postVariableName = get_class($emailMessage);
+            if (isset($postData[$postVariableName]))
             {
+                if($relatedId != null && $relatedModelClassName != null && $toAddress != null)
+                {
+                    $personOrAccount                    = $relatedModelClassName::getById((int)$relatedId);
+                    $messageRecipient                   = new EmailMessageRecipient();
+                    $messageRecipient->toName           = strval($personOrAccount);
+                    $messageRecipient->toAddress        = $toAddress;
+                    $messageRecipient->type             = EmailMessageRecipient::TYPE_TO;
+                    $messageRecipient->personOrAccount  = $personOrAccount;
+                    $emailMessage->recipients->add($messageRecipient);
+                }
                 EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessage, Yii::app()->user->userModel);
-                unset($_POST[get_class($emailMessage)]['recipients']);
-                $this->actionValidateComposeEmail($postData, $emailMessage);
+                unset($_POST[ $postVariableName]['recipients']);
+                $this->actionValidateCreateEmailMessage($postData, $emailMessage);
                 $this->attemptToSaveModelFromPost($emailMessage, null, false);
             }
             else
             {
                 EmailMessageUtil::resolveSignatureToEmailMessage($emailMessage, Yii::app()->user->userModel);
                 EmailMessageUtil::resolvePersonOrAccountToEmailMessage($emailMessage, Yii::app()->user->userModel,
-                                                                         $toAddress, $relatedId, $relatedModelClassName);
-                $composeEmailModalEditView = new ComposeEmailModalEditView(
+                                                                       $toAddress, $relatedId, $relatedModelClassName);
+                $createEmailMessageModalEditView = new CreateEmailMessageModalEditView(
                     $this->getId(),
                     $this->getModule()->getId(),
                     $emailMessage);
-                $view = new ModalView($this, $composeEmailModalEditView);
+                $view = new ModalView($this, $createEmailMessageModalEditView);
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
             }
@@ -410,7 +421,7 @@
             parent::actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
         }
 
-        protected function actionValidateComposeEmail($postData, EmailMessage $emailMessage)
+        protected function actionValidateCreateEmailMessage($postData, EmailMessage $emailMessage)
         {
             if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
             {
