@@ -109,7 +109,7 @@
             }
             else
             {
-                $messageContent     = Yii::t('Default', 'Failed to connect to Mailbox');
+                $messageContent     = Yii::t('Default', 'Failed to connect to mailbox');
                 $this->errorMessage = $messageContent;
                 return false;
             }
