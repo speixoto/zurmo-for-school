@@ -186,6 +186,13 @@
             return $emailSender;
         }
 
+        /**
+         * Given an email address and user, get the objects that match the email address filtered by the rights security
+         * for the provided user.
+         * @param string $emailAddress
+         * @param User $user
+         * @return array of objects which are either persons and/or accounts
+         */
         public static function getPersonsAndAccountsByEmailAddressForUser($emailAddress, User $user)
         {
             assert('is_string($emailAddress)');

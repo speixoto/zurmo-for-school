@@ -25,8 +25,8 @@
      ********************************************************************************/
 
     /**
-     * Class for showing in the user interface when there is no global email configuration yet.  This needs to be
-     * configured first before a user's email configuration can be setup.
+     * View  for showing in the user interface when there the global email configuration is not yet set up.
+     * This needs to be configured first before a user's email configuration can be setup.
      */
     class NoGlobalEmailConfigurationYetView extends View
     {
@@ -50,10 +50,7 @@
         {
             return Yii::t('Default', 'Configure');
         }
-        /**
-            $content    = Yii::t('Default', 'You need to create an Email Account before you can start sending emails.' .
-                                        ' Please click {link} to create one.', array('{link}' => $link));
-                                        **/
+
         protected function getMessageContent()
         {
             return Yii::t('Default', '<h2>Not so fast</h2></i><div class="large-icon"></div>' .

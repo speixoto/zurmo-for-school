@@ -32,7 +32,7 @@
     {
         protected function renderControlNonEditable()
         {
-            assert('$this->model instanceof Item');
+            assert('$this->model instanceof Item || $this->model->getModel() instanceof Item');
             $content = '<ul class="attachments">';
             $content .= '<li><strong>' . Yii::t('Default', 'Attachments'). '</strong></li>';
             foreach ($this->model->files as $fileModel)
@@ -49,7 +49,7 @@
 
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof Item');
+            assert('$this->model instanceof Item || $this->model->getModel() instanceof Item');
             $existingFilesInformation = array();
             foreach ($this->model->files as $existingFile)
             {

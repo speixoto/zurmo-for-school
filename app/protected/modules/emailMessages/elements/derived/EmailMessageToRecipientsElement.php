@@ -25,112 +25,40 @@
      ********************************************************************************/
 
     /**
-     * Display email message to recipients.
+     * Display email message content.
      */
     class EmailMessageToRecipientsElement extends Element implements DerivedElementInterface
     {
         protected function renderControlNonEditable()
         {
             assert('$this->model instanceof EmailMessage');
-            $toContent  = Yii::app()->format->html('To: ' . EmailMessageMashableActivityRules::
-                            getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_TO));
-            $content    = CHtml::tag('div', array(), $toContent);
-            $ccContent  = Yii::app()->format->html('Cc: ' . EmailMessageMashableActivityRules::
-                            getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_CC));
-            $content   .= CHtml::tag('div', array(), $ccContent);
-            $bccContent = Yii::app()->format->html('Bcc: ' . EmailMessageMashableActivityRules::
-                            getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_BCC));
-            $content   .= CHtml::tag('div', array(), $bccContent);
-            return $content;
+            return Yii::app()->format->html(EmailMessageMashableActivityRules::
+                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_TO));
         }
 
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof EmailMessage');
-            $toContent  = $this->renderTokenInput('to');
-            $toContent .= ZurmoHtml::link('Cc/Bcc', '#', array('onclick' => "js:$('#cc-bcc-fields').toggle();"));
-            $ccContent  = $this->renderTokenInput('cc');
-            $bccContent = $this->renderTokenInput('bcc');
-            return $toContent . CHtml::tag('div',
-                                           array('id' => 'cc-bcc-fields',
-                                                 'style'   => 'display: none;'
-                                               ),
-                                           $ccContent . $bccContent);
+            throw new NotImplementedException();
         }
 
-        protected function renderTokenInput($prefix)
+        protected function renderError()
         {
-            $inputId   = $this->getEditableInputId($this->attribute, $prefix);
-            $inputName = $this->getEditableInputName($this->attribute, $prefix);
-            $content   = $this->form->labelEx($this->model,
-                                            $this->attribute,
-                                            array('for' => $inputId,
-                                                  'label' => ucfirst($prefix)));
-
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ModelElement");
-            $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                'name'        => $inputName,
-                'id'          => $inputId,
-                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingPeopleRelationsIdsAndLabels($prefix)),
-                'sourceUrl'   => Yii::app()->createUrl('emailMessages/default/autoCompleteForMultiSelectAutoComplete'),
-                'htmlOptions' => array(
-                    'disabled' => $this->getDisabledValue(),
-                    ),
-                'hintText' => Yii::t('Default', 'Type name or email'),
-                'onAdd'    => $this->getOnAddContent(),
-                'onDelete' => $this->getOnDeleteContent(),
-            ));
-            $cClipWidget->endClip();
-            $content  .= $cClipWidget->getController()->clips['ModelElement'];
-            return $content;
+            throw new NotImplementedException();
         }
 
         protected function renderLabel()
         {
-            if ($this->form === null)
-            {
-                return $this->getDisplayName();
-            }
-            else
-            {
-                return $this->form->labelEx($this->model,
-                                            $this->attribute,
-                                            array('for' => $this->getEditableInputId(),
-                                                  'label' => $this->getDisplayName()));
-            }
+            return Yii::t('Default', 'To');
         }
 
         public static function getDisplayName()
         {
-            return Yii::t('Default', 'Recipients');
+            return Yii::t('Default', 'To Recipients');
         }
 
         public static function getModelAttributeNames()
         {
             return array();
-        }
-
-        protected function getOnAddContent()
-        {
-        }
-
-        protected function getOnDeleteContent()
-        {
-        }
-
-        protected function getExistingPeopleRelationsIdsAndLabels($prefix)
-        {
-            $existingPeople = array();
-            foreach ($this->model->recipients as $recipient)
-            {
-                if($recipient->type == constant('EmailMessageRecipient::TYPE_' . strtoupper($prefix)))
-                {
-                    $existingPeople[] = array('id'   => $recipient->toAddress,
-                                              'name' => $recipient->toName . ' (' . $recipient->toAddress . ')');
-                }
-            }
-            return $existingPeople;
         }
     }
 ?>

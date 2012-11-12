@@ -31,10 +31,6 @@
     {
         const DEFAULT_NAME    = 'Default';
 
-        const OUTBOUND_TYPE_SYSTEM = 1;
-
-        const OUTBOUND_TYPE_CUSTOM = 2;
-
         public function __toString()
         {
             if (trim($this->name) == '')
@@ -49,6 +45,10 @@
             return 'EmailMessagesModule';
         }
 
+        /**
+         * @param User $user
+         * @param mixed $name null or String representing the email account name
+         */
         public static function getByUserAndName(User $user, $name = null)
         {
             if ($name == null)
@@ -66,7 +66,6 @@
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
-                //Email Account not found for current user and name
                 throw new NotFoundException();
             }
             else
@@ -76,6 +75,13 @@
             return $emailAccount;
         }
 
+        /**
+         * Attempt to get the email account for a given user. If it does not exist, make a default EmailAccount
+         * and return it.
+         * @param User $user
+         * @param mixed $name null or String representing the email account name
+         * @return EmailAccount
+         */
         public static function resolveAndGetByUserAndName(User $user, $name = null)
         {
             try
@@ -143,7 +149,7 @@
                                   array('outboundSecurity',     	 'length',    'max' => 3),
                                   array('fromAddress',          	 'email'),
                                   array('replyToAddress',       	 'email'),
-                                  array('useCustomOutboundSettings', 'customOutboundSettings',
+                                  array('useCustomOutboundSettings', 'validateCustomOutboundSettings',
                                                                      'requiredAttributes' => array(   'outboundHost',
                                                                                                       'outboundPort',
                                                                                                       'outboundUsername',
@@ -158,7 +164,12 @@
             return true;
         }
 
-        public function customOutboundSettings($attribute,$params)
+        /**
+         * When the useCustomOutboundSettings is checked, then other attributes become required
+         * @param string $attribute
+         * @param array $params
+         */
+        public function validateCustomOutboundSettings($attribute,$params)
         {
             if ($this->$attribute)
             {

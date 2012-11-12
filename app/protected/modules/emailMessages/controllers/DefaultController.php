@@ -366,7 +366,9 @@
             $postData         = PostUtil::getData();
             $getData          = GetUtil::getData();
             $emailMessage     = new EmailMessage();
-            $postVariableName = get_class($emailMessage);
+            $emailMessageForm = new CreateEmailMessageForm($emailMessage);
+            $emailMessageForm->setScenario('createNonDraft');
+            $postVariableName = get_class($emailMessageForm);
             if (isset($postData[$postVariableName]))
             {
                 if($relatedId != null && $relatedModelClassName != null && $toAddress != null)
@@ -379,10 +381,9 @@
                     $messageRecipient->personOrAccount  = $personOrAccount;
                     $emailMessage->recipients->add($messageRecipient);
                 }
-                EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessage, Yii::app()->user->userModel);
-                unset($_POST[ $postVariableName]['recipients']);
-                $this->actionValidateCreateEmailMessage($postData, $emailMessage);
-                $this->attemptToSaveModelFromPost($emailMessage, null, false);
+                EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessageForm, Yii::app()->user->userModel);
+                $this->actionValidateCreateEmailMessage($postData, $emailMessageForm);
+                $this->attemptToSaveModelFromPost($emailMessageForm, null, false);
             }
             else
             {
@@ -392,7 +393,7 @@
                 $createEmailMessageModalEditView = new CreateEmailMessageModalEditView(
                     $this->getId(),
                     $this->getModule()->getId(),
-                    $emailMessage);
+                    $emailMessageForm);
                 $view = new ModalView($this, $createEmailMessageModalEditView);
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
@@ -406,7 +407,8 @@
          */
         protected function actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams = null)
         {
-            assert('$model instanceof EmailMessage');
+            assert('$model instanceof CreateEmailMessageForm');
+            $emailMessage          = $model->getModel();
             $relatedId             = ArrayUtil::getArrayValue(GetUtil::getData(), 'relatedId');
             $relatedModelClassName = ArrayUtil::getArrayValue(GetUtil::getData(), 'relatedModelClassName');
             if ($relatedId != null &&
@@ -415,27 +417,27 @@
             {
                 $relatedModel                      = $relatedModelClassName::getById((int)$relatedId);
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($relatedModel);
-                ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($model,
+                ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
                                                        $explicitReadWriteModelPermissions);
             }
             parent::actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
         }
 
-        protected function actionValidateCreateEmailMessage($postData, EmailMessage $emailMessage)
+        protected function actionValidateCreateEmailMessage($postData, CreateEmailMessageForm $emailMessageForm)
         {
             if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
             {
-                $emailMessage->setAttributes($postData[get_class($emailMessage)]);
-                if ($emailMessage->validate())
+                $emailMessageForm->setAttributes($postData[get_class($emailMessageForm)]);
+                if ($emailMessageForm->validate())
                 {
                     Yii::app()->end(false);
                 }
                 else
                 {
                     $errorData = array();
-                    foreach ($emailMessage->getErrors() as $attribute => $errors)
+                    foreach ($emailMessageForm->getErrors() as $attribute => $errors)
                     {
-                            $errorData[ZurmoHtml::activeId($emailMessage, $attribute)] = $errors;
+                            $errorData[ZurmoHtml::activeId($emailMessageForm, $attribute)] = $errors;
                     }
                     echo CJSON::encode($errorData);
                 }

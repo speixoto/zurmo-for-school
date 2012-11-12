@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Element to edit and display email signature content for a user.
+     * Element to edit and display an email signature content for a user.
      */
     class EmailSignatureElement extends Element
     {

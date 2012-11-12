@@ -25,8 +25,8 @@
      ********************************************************************************/
 
     /**
-     * Filter used by user controller to ascertain whether the global email settings has been configured or not.
-     * If not, then the user is instructed to contact the administrator for them to set this up.
+     * Filter used by user controller to ascertain whether the user's email settings has been configured or not.
+     * If not, then the user is instructed to set this up first before they can send email from the system.
      */
     class UserEmailConfigurationCheckControllerFilter extends CFilter
     {
@@ -40,8 +40,8 @@
             }
             catch (NotFoundException $e)
             {
-                $messageView                  = new NoUserEmailConfigurationYetView();
-                $view = new ModalView($this->controller, $messageView);
+                $messageView = new NoUserEmailConfigurationYetView();
+                $view        = new ModalView($this->controller, $messageView);
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
                 return false;

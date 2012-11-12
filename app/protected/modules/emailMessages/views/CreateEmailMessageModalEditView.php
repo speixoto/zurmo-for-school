@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View to show a create email interface that appears in a modal window.
+     */
     class CreateEmailMessageModalEditView extends EditView
     {
         /**
@@ -47,8 +50,7 @@
                         ),
                     ),
                     'derivedAttributeTypes' => array(
-                        'EmailMessageToRecipients',
-                        'EmailMessageCcRecipients',
+                        'EmailMessageAllRecipientTypes',
                         'Files',
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -63,7 +65,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'recipients', 'type' => 'EmailMessageToRecipients'),
+                                                array('attributeName' => 'recipientsData',
+                                                      'type'          => 'EmailMessageAllRecipientTypes'),
                                             ),
                                         ),
                                     )

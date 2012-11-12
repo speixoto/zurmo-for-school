@@ -25,37 +25,40 @@
      ********************************************************************************/
 
     /**
-     * View for showing in the user interface when the user does not have a valid email configuration.  This needs to be
-     * configured first before a user can send email from the application.
+     * Display email message content.
      */
-    class NoUserEmailConfigurationYetView extends View
+    class EmailMessageBccRecipientsElement extends Element implements DerivedElementInterface
     {
-        protected function renderContent()
+        protected function renderControlNonEditable()
         {
-            $params  = array('label' => $this->getCreateLinkDisplayLabel());
-            $url     = Yii::app()->createUrl('/users/default/emailConfiguration',
-                                             array('id' => Yii::app()->user->userModel->id));
-            $content = '<div class="' . $this->getIconName() . '">';
-            $content .= $this->getMessageContent();
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), $this->getCreateLinkDisplayLabel()), $url);
-            $content .= '</div>';
-            return $content;
+            assert('$this->model instanceof EmailMessage');
+            return Yii::app()->format->html(EmailMessageMashableActivityRules::
+                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_BCC));
         }
 
-        protected function getIconName()
+        protected function renderControlEditable()
         {
-            return 'EmailMessage';
+            throw new NotImplementedException();
         }
 
-        protected function getCreateLinkDisplayLabel()
+        protected function renderError()
         {
-            return Yii::t('Default', 'Configure');
+            throw new NotImplementedException();
         }
 
-        protected function getMessageContent()
+        protected function renderLabel()
         {
-            return Yii::t('Default', '<h2>First things first</h2></i>' .
-                                     '<div class="large-icon"></div><p>Set up your email before you can send emails.</p>');
+            return Yii::t('Default', 'Bcc');
+        }
+
+        public static function getDisplayName()
+        {
+            return Yii::t('Default', 'Bcc Recipients');
+        }
+
+        public static function getModelAttributeNames()
+        {
+            return array();
         }
     }
 ?>

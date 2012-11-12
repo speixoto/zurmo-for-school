@@ -24,42 +24,64 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for working with Email Messages.
+     *
+     */
     class EmailMessageUtil
     {
         /**
-         * Send Email from $_POST data
+         * Given post data and an email message, populate the sender and account on the email message if possible.
+         * Also add message recipients and any attachments.
+         * @param array $postData
+         * @param EmailMessage $emailMessage
          * @param User $userToSendMessagesFrom
          * @return boolean
          */
-        public static function resolveEmailMessageFromPostData(Array & $postData, EmailMessage $emailMessage, User $userToSendMessagesFrom)
+        public static function resolveEmailMessageFromPostData(Array & $postData,
+                                                               CreateEmailMessageForm $emailMessageForm,
+                                                               User $userToSendMessagesFrom)
         {
-            $postVariableName   = get_class($emailMessage);
+            $postVariableName   = get_class($emailMessageForm);
             Yii::app()->emailHelper->loadOutboundSettingsFromUserEmailAccount($userToSendMessagesFrom);
-            $toRecipients = explode(",", $postData[$postVariableName]['recipients']['to']);
-            static::attachRecipientsToMessage($toRecipients, $emailMessage, EmailMessageRecipient::TYPE_TO);
-            $ccRecipients = explode(",", $postData[$postVariableName]['recipients']['cc']);
-            static::attachRecipientsToMessage($ccRecipients, $emailMessage, EmailMessageRecipient::TYPE_CC);
-            $bccRecipients = explode(",", $postData[$postVariableName]['recipients']['bcc']);
-            static::attachRecipientsToMessage($bccRecipients, $emailMessage, EmailMessageRecipient::TYPE_BCC);
-            unset($postData[$postVariableName]['recipients']);
+            $toRecipients = explode(",", $postData[$postVariableName]['recipientsData']['to']);
+            static::attachRecipientsToMessage($toRecipients,
+                                              $emailMessageForm->getModel(),
+                                              EmailMessageRecipient::TYPE_TO);
+            $ccRecipients = explode(",", $postData[$postVariableName]['recipientsData']['cc']);
+            static::attachRecipientsToMessage($ccRecipients,
+                                              $emailMessageForm->getModel(),
+                                              EmailMessageRecipient::TYPE_CC);
+            $bccRecipients = explode(",", $postData[$postVariableName]['recipientsData']['bcc']);
+            static::attachRecipientsToMessage($bccRecipients,
+                                              $emailMessageForm->getModel(),
+                                              EmailMessageRecipient::TYPE_BCC);
             if (isset($postData['filesIds']))
             {
-                static::attachFilesToMessage($postData['filesIds'], $emailMessage);
+                static::attachFilesToMessage($postData['filesIds'], $emailMessageForm->getModel());
             }
             $emailAccount              = EmailAccount::getByUserAndName($userToSendMessagesFrom);
             $sender                    = new EmailMessageSender();
             $sender->fromName          = Yii::app()->emailHelper->fromName;
             $sender->fromAddress       = Yii::app()->emailHelper->fromAddress;
             $sender->personOrAccount   = $userToSendMessagesFrom;
-            $emailMessage->sender      = $sender;
-            $emailMessage->account     = $emailAccount;
+            $emailMessageForm->sender  = $sender;
+            $emailMessageForm->account = $emailAccount;
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-            $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
-            return $emailMessage;
+            $emailMessageForm->folder  = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
+            return $emailMessageForm;
         }
 
+        /**
+         * Adds recipient emails as recipients to the email message.  If the recipient email already matches
+         * an person or account on the email message it will ignore it.
+         * @param Array $recipients
+         * @param EmailMessage $emailMessage
+         * @param integer $type
+         */
         public static function attachRecipientsToMessage(Array $recipients, EmailMessage $emailMessage, $type)
         {
+            assert('is_int($type)');
             $existingPersonsOrAccounts = array();
             if($emailMessage->recipients->count() >0)
             {
@@ -98,6 +120,10 @@
             }
         }
 
+        /**
+         * @param array $filesIds
+         * @param EmailMessage $emailMessage
+         */
         public static function attachFilesToMessage(Array $filesIds, $emailMessage)
         {
             foreach ($filesIds as $fileId)
@@ -107,6 +133,11 @@
             }
         }
 
+        /**
+         * Append the email signature, if a user has one, to the htmlContent of the email message.
+         * @param EmailMessage $emailMessage
+         * @param User $user
+         */
         public static function resolveSignatureToEmailMessage(EmailMessage $emailMessage, User $user)
         {
             if($user->emailSignatures->count() > 0 && $user->emailSignatures[0]->htmlContent != null)
@@ -115,12 +146,19 @@
             }
         }
 
+        /**
+         * @param EmailMessage $emailMessage
+         * @param User $user
+         * @param string $toAddress
+         * @param mixed $relatedId
+         * @param string $relatedModelClassName
+         */
         public static function resolvePersonOrAccountToEmailMessage(EmailMessage $emailMessage, User $user,
                                                                     $toAddress = null, $relatedId = null,
                                                                     $relatedModelClassName = null)
         {
             assert('is_string($toAddress) || $toAddress == null');
-            assert('is_string($relatedId) || $relatedId == null');
+            assert('is_int($relatedId) || is_string($relatedId) ||$relatedId == null');
             assert('$relatedModelClassName == "Account" || $relatedModelClassName == "Contact" ||
                     $relatedModelClassName == "User" ||$relatedModelClassName == null');
             if ($toAddress != null && $relatedId != null && $relatedModelClassName != null)
@@ -135,6 +173,12 @@
             }
         }
 
+        /**
+         * Based on security, render an email address as a clickable link to a modal window or just a mailto: link
+         * that will open the user's configured email client.
+         * @param EmailMessage $emailAddress
+         * @param RedBeanModel $model
+         */
         public static function renderEmailAddressAsMailToOrModalLinkStringContent($emailAddress, RedBeanModel $model)
         {
             assert('is_string($emailAddress)');

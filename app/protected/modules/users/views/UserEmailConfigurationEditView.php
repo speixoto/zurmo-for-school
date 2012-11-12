@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Edit and details view for a user's email configuration view.
+     * Edit view for a user's email configuration.
      */
     class UserEmailConfigurationEditView extends EditView
     {

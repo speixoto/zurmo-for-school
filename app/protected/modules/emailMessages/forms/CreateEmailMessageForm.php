@@ -25,37 +25,44 @@
      ********************************************************************************/
 
     /**
-     * View for showing in the user interface when the user does not have a valid email configuration.  This needs to be
-     * configured first before a user can send email from the application.
+     * Use this form when creating a new email message
      */
-    class NoUserEmailConfigurationYetView extends View
+    class CreateEmailMessageForm extends ModelForm
     {
-        protected function renderContent()
+        public $recipientsData;
+
+        public function __construct(EmailMessage $model)
         {
-            $params  = array('label' => $this->getCreateLinkDisplayLabel());
-            $url     = Yii::app()->createUrl('/users/default/emailConfiguration',
-                                             array('id' => Yii::app()->user->userModel->id));
-            $content = '<div class="' . $this->getIconName() . '">';
-            $content .= $this->getMessageContent();
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), $this->getCreateLinkDisplayLabel()), $url);
-            $content .= '</div>';
-            return $content;
+            $this->model = $model;
         }
 
-        protected function getIconName()
+        public function rules()
         {
-            return 'EmailMessage';
+            return array(
+                array('recipientsData', 'validateMinimumToRecipients', 'on' => 'createNonDraft')
+            );
         }
 
-        protected function getCreateLinkDisplayLabel()
+        public function attributeLabels()
         {
-            return Yii::t('Default', 'Configure');
+            return array_merge($this->model->attributeLabels(), array(
+                'recipientsData'            => Yii::t('Default', 'Recipients'),
+            ));
         }
 
-        protected function getMessageContent()
+        /**
+         * When the scenario is createNonDraft, it means you have to have at least one recipient
+         * @param string $attribute
+         * @param array $params
+         */
+        public function validateMinimumToRecipients($attribute, $params)
         {
-            return Yii::t('Default', '<h2>First things first</h2></i>' .
-                                     '<div class="large-icon"></div><p>Set up your email before you can send emails.</p>');
+            if(isset($this->recipientsData['to']) && $this->recipientsData['to'] != null)
+            {
+                return;
+            }
+            $this->addError($attribute . '_to', Yii::t('Default', 'To address cannot be blank'));
         }
+
     }
 ?>
