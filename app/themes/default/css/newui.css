@@ -1456,9 +1456,26 @@ section {
 .AppContent .single-column #inline-edit-form .panel {
   width: 100%;
 }
-.DynamicSearchView {
+#ActionBarSearchAndListView > div {
   position: relative;
-  z-index: 9999;
+}
+#ActionBarSearchAndListView > div:nth-child(1) {
+  z-index: 10;
+}
+#ActionBarSearchAndListView > div:nth-child(2) {
+  z-index: 9;
+}
+#ActionBarSearchAndListView > div:nth-child(3) {
+  z-index: 8;
+}
+#ActionBarSearchAndListView > div:nth-child(4) {
+  z-index: 7;
+}
+#ActionBarSearchAndListView > div:nth-child(5) {
+  z-index: 6;
+}
+#ActionBarSearchAndListView > div:nth-child(6) {
+  z-index: 5;
 }
 /*=dashboard*/
 #HomePageView .AppContent {
@@ -11474,19 +11491,23 @@ a.close-ModalGameNotification.simple-select {
   color: #262877;
   font-weight: bold;
 }
+#ConversationDetailsView .details-table,
 #MissionDetailsView .details-table {
   zoom: 1;
   margin-right: 0 !important;
 }
+#ConversationDetailsView .details-table:before,
 #MissionDetailsView .details-table:before {
   content: "";
   display: table;
 }
+#ConversationDetailsView .details-table:after,
 #MissionDetailsView .details-table:after {
   content: "";
   display: table;
   clear: both;
 }
+#ConversationDetailsView .panel > table,
 #MissionDetailsView .panel > table {
   border-bottom: none;
 }
