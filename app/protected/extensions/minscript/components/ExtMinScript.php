@@ -152,14 +152,13 @@ class ExtMinScript extends CApplicationComponent {
     $noFilemtime = 0;
     $filemtimes = array();
     $params = array();
-    // Because we are using tokens for some css paths(so we can minify theme files),
-    // we can't rely on group file from css, but on one dynamicaly generated
-    //$groupMap = $this -> getGroupMap();
-    $groupMap = require_once($this -> _minifyDir . '/groupsConfig.php');
+    $groupMap = $this -> getGroupMap();
     if (isset($groupMap[$group])) {
       $params['g'] = $group;
       //Files
       foreach ($groupMap[$group] as $path) {
+        // Replace THEME_NAME with real theme
+        $path = str_replace('THEME_NAME', Yii::app()->theme->name, $path);
         $filemtime = @filemtime($path);
         if ($filemtime !== false) {
           $filemtimes[] = $filemtime;
