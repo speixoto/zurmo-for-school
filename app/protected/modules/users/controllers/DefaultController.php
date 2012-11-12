@@ -26,6 +26,8 @@
 
     class UsersDefaultController extends ZurmoModuleController
     {
+        const EMAIL_CONFIGURATION_FILTER_PATH =
+              'application.modules.emailMessages.controllers.filters.EmailConfigurationCheckControllerFilter';
         /**
          * Override to exclude modalSearchList and autoComplete
          * since these are available to all users regardless
@@ -53,6 +55,10 @@
                 ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massEdit, massEditProgressSave',
                 'moduleClassName' => 'ZurmoModule',
                 'rightName' => ZurmoModule::RIGHT_BULK_WRITE,
+            );
+            $filters[] = array(
+                        self::EMAIL_CONFIGURATION_FILTER_PATH . ' + emailConfiguration',
+                         'controller' => $this,
             );
             return $filters;
         }

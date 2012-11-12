@@ -29,15 +29,26 @@
      */
     class EmailMessagesDefaultController extends ZurmoBaseController
     {
+        const USER_EMAIL_CONFIGURATION_FILTER_PATH =
+              'application.modules.emailMessages.controllers.filters.UserEmailConfigurationCheckControllerFilter';
+
         public function filters()
         {
             $moduleClassName = get_class($this->getModule());
             return array(
                 array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + configurationEdit',
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + configurationEdit, configurationEditOutbound, configurationEditArchiving',
                     'moduleClassName' => $moduleClassName,
                     'rightName'       => EmailMessagesModule::RIGHT_ACCESS_CONFIGURATION,
                ),
+               array(
+                    self::getRightsFilterPath() . ' + composeEmail',
+                    'moduleClassName' => $moduleClassName,
+                    'rightName' => $moduleClassName::getCreateRight(),
+                ),
+                array(self::USER_EMAIL_CONFIGURATION_FILTER_PATH . ' + composeEmail',
+                     'controller' => $this,
+                )
             );
         }
 
@@ -352,7 +363,6 @@
 
         public function actionComposeEmail($toAddress = null, $relatedId = null, $relatedModelClassName = null)
         {
-            $this->resolveToDisplayNoUserEmailAccountYetView();
             $postData     = PostUtil::getData();
             $getData      = GetUtil::getData();
             $emailMessage = new EmailMessage();
@@ -374,21 +384,6 @@
                 $view = new ModalView($this, $composeEmailModalEditView);
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
-            }
-        }
-
-        protected function resolveToDisplayNoUserEmailAccountYetView()
-        {
-            try
-            {
-                EmailAccount::getByUserAndName(Yii::app()->user->userModel);
-            }
-            catch (NotFoundException $e)
-            {
-                $view = new ModalView($this, new NoEmailAccountYetView());
-                Yii::app()->getClientScript()->setToAjaxMode();
-                echo $view->render();
-                Yii::app()->end(false);
             }
         }
 
