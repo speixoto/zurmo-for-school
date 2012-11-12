@@ -164,6 +164,11 @@
                         'class'  => 'CFileLogRoute',
                         'levels' => 'error, warning',
                     ),
+                    array(
+                        'class'=>'application.extensions.sentrylog.RSentryLog',
+                        'dsn'=> 'https://50c57f07a70240c1ae20cc7957a5c867:8aa046360d2845baa1f4fc8ed12ba616@app.getsentry.com/3492',
+                        'levels'=>'error, warning',
+                    ),
                 ),
             ),
             'mappingHelper' => array(
