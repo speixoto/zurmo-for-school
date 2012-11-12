@@ -369,6 +369,7 @@
             if (isset($postData[get_class($emailMessage)]))
             {
                 EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessage, Yii::app()->user->userModel);
+                unset($_POST[get_class($emailMessage)]['recipients']);
                 $this->actionValidateComposeEmail($postData, $emailMessage);
                 $this->attemptToSaveModelFromPost($emailMessage, null, false);
             }
@@ -385,6 +386,28 @@
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
             }
+        }
+
+        /**
+         * Override to process the security on the email message to match a related model if present.
+         * (non-PHPdoc)
+         * @see ZurmoBaseController::actionAfterSuccessfulModelSave()
+         */
+        protected function actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams = null)
+        {
+            assert('$model instanceof EmailMessage');
+            $relatedId             = ArrayUtil::getArrayValue(GetUtil::getData(), 'relatedId');
+            $relatedModelClassName = ArrayUtil::getArrayValue(GetUtil::getData(), 'relatedModelClassName');
+            if ($relatedId != null &&
+                $relatedModelClassName != null &&
+                is_subclass_of($relatedModelClassName, 'OwnedSecurableItem'))
+            {
+                $relatedModel                      = $relatedModelClassName::getById((int)$relatedId);
+                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($relatedModel);
+                ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($model,
+                                                       $explicitReadWriteModelPermissions);
+            }
+            parent::actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
         }
 
         protected function actionValidateComposeEmail($postData, EmailMessage $emailMessage)
