@@ -200,7 +200,7 @@
                                                                  $userCanAccessUsers);
         }
 
-            /**
+        /**
          * Get all
          * @param string $emailAddress
          * @param boolean $userCanAccessContacts

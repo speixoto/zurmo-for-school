@@ -26,6 +26,12 @@
 
     class CreateEmailMessageModalEditView extends EditView
     {
+        /**
+         * Since this edit view shows in a modal, we do not want the wrapper div to display as it is unneeded.
+         * @var boolean
+         */
+        protected $wrapContentInWrapperDiv = false;
+
         protected function renderTitleContent()
         {
             return null;
@@ -95,6 +101,24 @@
                 ),
             );
             return $metadata;
+        }
+
+        /**
+         * Override to change the editableTemplate to place the label above the input.
+         * @see DetailsView::resolveElementDuringFormLayoutRender()
+         */
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
+            $element->editableTemplate = '<td>{content}{error}</td>';
+        }
+
+        /**
+         * (non-PHPdoc)
+         * @see DetailsView::doesLabelHaveOwnCell()
+         */
+        protected function doesLabelHaveOwnCell()
+        {
+            return false;
         }
 
         protected function resolveActiveFormAjaxValidationOptions()

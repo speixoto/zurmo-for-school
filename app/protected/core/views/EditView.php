@@ -37,14 +37,19 @@
         protected $viewContainsFileUploadElement = false;
 
         /**
+         * When rendering the content, should it be wrapped in a div that has the class 'wrapper' or not.
+         * @var boolean
+         */
+        protected $wrapContentInWrapperDiv = true;
+
+        /**
          * Override of parent function. Makes use of the ZurmoActiveForm
          * widget to provide an editable form.
          * @return A string containing the element's content.
          */
         protected function renderContent()
         {
-            $content  = '<div class="wrapper">';
-            $content .= $this->renderTitleContent();
+            $content = $this->renderTitleContent();
             $maxCellsPresentInAnyRow = $this->resolveMaxCellsPresentInAnyRow($this->getFormLayoutMetadata());
             if ($maxCellsPresentInAnyRow > 1)
             {
@@ -79,8 +84,11 @@
             }
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-
-            $content .= '</div></div>';
+            $content .= '</div>';
+            if($this->wrapContentInWrapperDiv)
+            {
+                return ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
+            }
             return $content;
         }
 
