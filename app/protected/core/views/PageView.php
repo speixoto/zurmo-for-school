@@ -311,7 +311,7 @@
          */
         protected function renderXHtmlBodyStart()
         {
-            return '<body>';
+            return '<body class="blue">';
         }
 
         /**

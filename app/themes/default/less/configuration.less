@@ -17,10 +17,9 @@
         }
     }
 }
-.configuration-list li a::before
+.configuration-list li a::before,
 .back-to-app-menu-item span{
     vertical-align:middle;
-    ++.themeColor-important;
     &:before{
         content:"z";
         .symbly(21px);
@@ -199,7 +198,6 @@ table.configuration-list{
             padding-left:15px;
             padding-bottom: 10px;
             font-weight:bold !important;
-            ++.themeColor;
         }
     }
     td{
@@ -530,9 +528,7 @@ table.configuration-list{
 .breadcrumbs{
     padding:0 0 15px 0;
     font-size:11px;
-    a{
-        ++.themeColor-important;
-    }
+   
 }
 
 /*designer*/
