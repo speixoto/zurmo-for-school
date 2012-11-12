@@ -100,7 +100,7 @@
         protected function renderScripts()
         {
             $checkBoxId = $this->getEditableInputId();
-            Yii::app()->clientScript->registerScript('userMailConfigurationOutbound', "
+            Yii::app()->clientScript->registerScript('userEmailConfigurationOutbound', "
                     $('#{$checkBoxId}').change(function(){
                         $('.outbound-settings').toggle();
                     });

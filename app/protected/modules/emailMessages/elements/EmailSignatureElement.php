@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Element to edit and display email message signature content.
+     * Element to edit and display email signature content for a user.
      */
-    class EmailMessageSignatureElement extends Element
+    class EmailSignatureElement extends Element
     {
         protected function renderControlNonEditable()
         {
@@ -36,29 +36,25 @@
 
         protected function renderControlEditable()
         {
-            $emailMessageSignature   = $this->model;
-            $attribute               = 'htmlContent';
+            assert('$this->model instanceof EmailSignature || $this->model instanceof ModelForm');
             $id                      = $this->getEditableInputId  ();
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['rows']     = 3;
-            $htmlOptions['cols']     = 10;
-            $content  = $this->form->textArea($emailMessageSignature, $attribute, $htmlOptions);
+            $cClipWidget   = new CClipWidget();
+            $cClipWidget->beginClip("Redactor");
+            $cClipWidget->widget('application.core.widgets.Redactor', array(
+                                        'htmlOptions' => $htmlOptions,
+                                        'content'     => $this->model->{$this->attribute},
+                                        'buttons'     => "['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
+                                                           'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+                                                           'fontcolor', 'backcolor', '|',
+                                                           'alignleft', 'aligncenter', 'alignright', 'justify', '|',
+                                                           'horizontalrule']",
+            ));
+            $cClipWidget->endClip();
+            $content  = $cClipWidget->getController()->clips['Redactor'];
             return $content;
-        }
-
-        protected function renderLabel()
-        {
-            $label = Yii::t('Default', 'Email Signature');
-            if ($this->form === null)
-            {
-                return $label;
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 ?>

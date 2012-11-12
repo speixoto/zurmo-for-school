@@ -31,6 +31,10 @@
     {
         const DEFAULT_NAME    = 'Default';
 
+        const OUTBOUND_TYPE_SYSTEM = 1;
+
+        const OUTBOUND_TYPE_CUSTOM = 2;
+
         public function __toString()
         {
             if (trim($this->name) == '')
@@ -89,7 +93,8 @@
                     $emailAccount->fromAddress       = $user->primaryEmail->emailAddress;
                 }
                 $emailAccount->useCustomOutboundSettings = false;
-                $emailAccount->outboundType      = 'smtp';
+                $emailAccount->outboundPort              = '25';
+                $emailAccount->outboundType              = EmailHelper::OUTBOUND_TYPE_SMTP;
             }
             return $emailAccount;
         }
@@ -111,7 +116,6 @@
                     'outboundUsername',
                     'outboundPassword',
                     'outboundSecurity',
-                    'aTestToAddress'
                 ),
                 'relations' => array(
                     'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage'),
@@ -138,10 +142,9 @@
                                   array('outboundPassword',     	 'length',    'max' => 64),
                                   array('outboundSecurity',     	 'length',    'max' => 3),
                                   array('fromAddress',          	 'email'),
-                                  array('aTestToAddress',       	 'email'),
                                   array('replyToAddress',       	 'email'),
                                   array('useCustomOutboundSettings', 'customOutboundSettings',
-                                                                     'requiredAttributes' => array(  'outboundHost',
+                                                                     'requiredAttributes' => array(   'outboundHost',
                                                                                                       'outboundPort',
                                                                                                       'outboundUsername',
                                                                                                       'outboundPassword'))

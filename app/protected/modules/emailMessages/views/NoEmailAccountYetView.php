@@ -31,7 +31,7 @@
     {
         protected function renderContent()
         {
-            $url        = Yii::app()->createUrl('/users/default/mailConfiguration', array('id' => Yii::app()->user->userModel->id));
+            $url        = Yii::app()->createUrl('/users/default/emailConfiguration', array('id' => Yii::app()->user->userModel->id));
             $link       = ZurmoHtml::link(Yii::t('Default', 'here'), $url);
             $content    = Yii::t('Default', 'You need to create an Email Account before you can start sending emails.' .
                                         ' Please click {link} to create one.', array('{link}' => $link));

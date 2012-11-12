@@ -117,6 +117,11 @@
             );
         }
 
+        public static function getNotificationBarId()
+        {
+            return 'FlashMessageBar';
+        }
+
         protected function renderConfigSaveAjax($formName, $moduleId, $controllerId, $actionSave)
         {
             return ZurmoHtml::ajax(array(

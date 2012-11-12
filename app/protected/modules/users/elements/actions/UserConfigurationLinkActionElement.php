@@ -43,7 +43,7 @@
                                    array('label'   => Yii::t('Default', 'General'),
                                        'url'     => $this->route . '/configurationEdit?id=' . $this->modelId),
                                    array('label'   => Yii::t('Default', 'Email'),
-                                       'url'     => $this->route . '/mailConfiguration?id=' . $this->modelId),
+                                       'url'     => $this->route . '/emailConfiguration?id=' . $this->modelId),
                                    array('label'   => Yii::t('Default', 'Security'),
                                        'url'     => $this->route . '/securityDetails?id=' . $this->modelId)));
             $cClipWidget = new CClipWidget();

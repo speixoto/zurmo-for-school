@@ -120,7 +120,7 @@
         {
             $configurationForm = EmailSmtpConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
-            if (isset($_POST[$postVariableName]) || (isset($_POST['EmailAccount'])))
+            if (isset($_POST[$postVariableName]) || (isset($_POST['UserEmailConfigurationForm'])))
             {
                 if (isset($_POST[$postVariableName]))
                 {
@@ -128,12 +128,12 @@
                 }
                 else
                 {
-                    $configurationForm->host            = $_POST['EmailAccount']['outboundHost'];
-                    $configurationForm->port            = $_POST['EmailAccount']['outboundPort'];
-                    $configurationForm->username        = $_POST['EmailAccount']['outboundUsername'];
-                    $configurationForm->password        = $_POST['EmailAccount']['outboundPassword'];
-                    $configurationForm->security        = $_POST['EmailAccount']['outboundSecurity'];
-                    $configurationForm->aTestToAddress  = $_POST['EmailAccount']['aTestToAddress'];
+                    $configurationForm->host            = $_POST['UserEmailConfigurationForm']['outboundHost'];
+                    $configurationForm->port            = $_POST['UserEmailConfigurationForm']['outboundPort'];
+                    $configurationForm->username        = $_POST['UserEmailConfigurationForm']['outboundUsername'];
+                    $configurationForm->password        = $_POST['UserEmailConfigurationForm']['outboundPassword'];
+                    $configurationForm->security        = $_POST['UserEmailConfigurationForm']['outboundSecurity'];
+                    $configurationForm->aTestToAddress  = $_POST['UserEmailConfigurationForm']['aTestToAddress'];
                 }
                 if ($configurationForm->aTestToAddress != null)
                 {

@@ -29,11 +29,12 @@
      */
     class EmailHelper extends CApplicationComponent
     {
+        const OUTBOUND_TYPE_SMTP = 'smtp';
         /**
          * Currently supports smtp.
          * @var string
          */
-        public $outboundType = 'smtp';
+        public $outboundType = self::OUTBOUND_TYPE_SMTP;
 
         /**
          * Outbound mail server host name. Example mail.someplace.com

@@ -24,19 +24,52 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserActionBarAndMailConfigurationEditView extends GridView
+    /**
+     * Use this form when creating or modifying a user's email account information
+     */
+    class UserEmailConfigurationForm extends ModelForm
     {
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            User $user,
-            EmailAccount $emailAccount
-            )
+        public $aTestToAddress;
+
+        public $emailSignatureHtmlContent;
+
+        public function __construct(EmailAccount $model)
         {
-            parent::__construct(2, 1);
-            $this->setView(new ActionBarForUserEditAndDetailsView ($controllerId, $moduleId, $user, 'UserConfigurationEditLink'), 0, 0);
-            $title = strval($user) . ': ' . Yii::t('Default', 'Email Configuration');
-            $this->setView(new UserMailConfigurationEditView($controllerId, $moduleId, $emailAccount, $title), 1, 0);
+            $this->model = $model;
+        }
+
+        public function rules()
+        {
+            return array(
+                array('aTestToAddress',                    'email'),
+                array('emailSignatureHtmlContent', 'type', 'type' => 'string'),
+            );
+        }
+
+        public function attributeLabels()
+        {
+            return array_merge($this->model->attributeLabels(), array(
+                'aTestToAddress'            => Yii::t('Default', 'Send a test email to'),
+                'emailSignatureHtmlContent' => Yii::t('Default', 'Email Signature')
+            ));
+        }
+
+        /**
+         * Save the emailSignatureHtmlContent
+         */
+        public function save($runValidation = true, array $attributeNames = null)
+        {
+            if(parent::save())
+            {
+                $emailSignature              = $this->model->user->getEmailSignature();
+                $emailSignature->htmlContent = $this->emailSignatureHtmlContent;
+                $this->model->user->save();
+            }
+            else
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>
