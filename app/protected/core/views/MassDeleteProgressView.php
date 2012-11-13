@@ -76,8 +76,8 @@
         {
             $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
                                $this->totalRecordCount, $this->skipCount);
-            $content = 	       $successfulCount . ' ' . LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount)
-            				   . ' ' . Yii::t('Default', 'successfully deleted') . '.';
+            $content =         $successfulCount . ' ' . LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount)
+                               . ' ' . Yii::t('Default', 'successfully deleted') . '.';
             if ($this->skipCount > 0)
             {
                 $content .= '<br/>' .

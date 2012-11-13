@@ -139,7 +139,9 @@
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
                 $pageSize,
-                Yii::app()->user->userModel->id);
+                Yii::app()->user->userModel->id,
+                null,
+                'AccountsSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $account = $this->processMassEdit(
                 $pageSize,
@@ -176,7 +178,9 @@
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
                 $pageSize,
-                Yii::app()->user->userModel->id
+                Yii::app()->user->userModel->id,
+                null,
+                'AccountsSearchView'
             );
             $this->processMassEditProgressSave(
                 'Account',
@@ -196,7 +200,7 @@
          * If there is no need for a progress view, then a flash message will be added and the user will
          * be redirected to the list view for the model.  A flash message will appear providing information
          * on the delete records.
-         * @see Controler->makeMassDeleteProgressView
+         * @see Controller->makeMassDeleteProgressView
          * @see Controller->processMassDelete
          * @see
          */
@@ -210,7 +214,9 @@
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
                 $pageSize,
-                Yii::app()->user->userModel->id);
+                Yii::app()->user->userModel->id,
+                null,
+                'AccountsSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $account = $this->processMassDelete(
                 $pageSize,
@@ -247,7 +253,9 @@
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 new AccountsSearchForm($account),
                 $pageSize,
-                Yii::app()->user->userModel->id
+                Yii::app()->user->userModel->id,
+                null,
+                'AccountsSearchView'
             );
             $this->processMassDeleteProgress(
                 'Account',
@@ -282,7 +290,7 @@
 
         public function actionExport()
         {
-            $this->export();
+            $this->export('AccountsSearchView');
         }
     }
 ?>
