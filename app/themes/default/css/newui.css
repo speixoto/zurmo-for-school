@@ -5839,6 +5839,9 @@ div.hasHalfs .twoThirds {
 #MixedModelsSearchView h1 {
   margin-bottom: 15px;
 }
+#MixedModelsSearchView .search-view-0 {
+  float: none;
+}
 #MixedModelsMultipleListsView {
   margin-top: 15px;
 }

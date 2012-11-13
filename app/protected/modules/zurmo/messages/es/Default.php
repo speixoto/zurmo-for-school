@@ -241,6 +241,8 @@
             => 'Herramientas para Desarrolladores',
         'Dr.'
             => 'Dr.', // Same Word Translated
+        'Due On'
+            => 'Fecha de vencimiento',
         'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
             => 'Haga clic en el icono de configuración en la parte superior derecha de cada portlet para editar gráficos en el salpicadero.',
         'Email Address'
