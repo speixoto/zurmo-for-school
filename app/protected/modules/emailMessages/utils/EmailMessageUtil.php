@@ -105,16 +105,18 @@
                     }
                     foreach($personsOrAccounts as $personOrAccount)
                     {
-                        if(!in_array($personOrAccount->getClassId('Item'), $existingPersonsOrAccounts))
-                        {
-                            $messageRecipient                   = new EmailMessageRecipient();
-                            $messageRecipient->toName           = strval($personOrAccount);
-                            $messageRecipient->toAddress        = $recipient;
-                            $messageRecipient->type             = $type;
-                            $messageRecipient->personOrAccount  = $personOrAccount;
-                            $emailMessage->recipients->add($messageRecipient);
-                            $existingPersonsOrAccounts[] = $personOrAccount->getClassId('Item');
-                        }
+                            if($personOrAccount == null || !in_array($personOrAccount->getClassId('Item'), $existingPersonsOrAccounts))
+                            {
+                                $messageRecipient                   = new EmailMessageRecipient();
+                                $messageRecipient->toAddress        = $recipient;
+                                $messageRecipient->type             = $type;
+                                if ($personOrAccount != null) {
+                                    $messageRecipient->toName           = strval($personOrAccount);
+                                    $messageRecipient->personOrAccount  = $personOrAccount;
+                                    $existingPersonsOrAccounts[] = $personOrAccount->getClassId('Item');
+                                }
+                                $emailMessage->recipients->add($messageRecipient);
+                            }
                     }
                 }
             }
