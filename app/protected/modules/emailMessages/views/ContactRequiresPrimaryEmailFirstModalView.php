@@ -25,9 +25,10 @@
      ********************************************************************************/
 
     /**
-     * View to show a create email interface that appears in a modal window.
+     * View to show an input to add a primary email to a contact.  This is used when a user tries to compose email
+     * to a contact that does not yet have a primary email address
      */
-    class CreateEmailMessageModalEditView extends EditView
+    class ContactRequiresPrimaryEmailFirstModalView extends EditView
     {
         /**
          * Since this edit view shows in a modal, we do not want the wrapper div to display as it is unneeded.
@@ -46,54 +47,18 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'SaveButton', 'label' => Yii::t('Default', 'Send')),
+                            array('type'  => 'SaveButton'),
                         ),
-                    ),
-                    'derivedAttributeTypes' => array(
-                        'EmailMessageAllRecipientTypes',
-                        'Files',
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'sentDateTime',
-                        'sender'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
                             'rows' => array(
-                                array('cells' =>
+                               array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'recipientsData',
-                                                      'type'          => 'EmailMessageAllRecipientTypes'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'subject', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'content', 'type' => 'EmailMessageContent'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'Files'),
+                                                array('attributeName' => 'emailAddress', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -106,22 +71,13 @@
             return $metadata;
         }
 
-        /**
-         * Override to change the editableTemplate to place the label above the input.
-         * @see DetailsView::resolveElementDuringFormLayoutRender()
-         */
-        protected function resolveElementDuringFormLayoutRender(& $element)
+        protected function renderOperationDescriptionContent()
         {
-            $element->editableTemplate = '<td>{content}{error}</td>';
-        }
-
-        /**
-         * (non-PHPdoc)
-         * @see DetailsView::doesLabelHaveOwnCell()
-         */
-        protected function doesLabelHaveOwnCell()
-        {
-            return false;
+            $highlight = ZurmoHtml::tag('em', array(),
+                         Yii::t('Default', 'There is no primary email associated with {contactName}. Please add one to continue.',
+                                 array('{contactName}' => strval($this->model))));
+            $message  = ZurmoHtml::tag('strong', array(), $highlight);
+            return ZurmoHtml::tag('span', array('class' => 'operation-description'), $message);
         }
 
         protected function resolveActiveFormAjaxValidationOptions()
@@ -130,7 +86,7 @@
                 static::getFormId(),
                 $this->moduleId,
                 $this->controllerId,
-                'createEmailMessage');
+                'populateContactEmailBeforeCreating');
             return array(
                 'enableAjaxValidation' => true,
                 'clientOptions' => array(
@@ -147,14 +103,10 @@
         protected function renderConfigSaveAjax($formName, $moduleId, $controllerId, $actionSave)
         {
             return ZurmoHtml::ajax(array(
-                    'type' => 'POST',
-                    'data' => 'js:$("#' . $formName . '").serialize()',
-                    'url'  => Yii::app()->createUrl($moduleId . '/' . $controllerId . '/' . $actionSave, GetUtil::getData()),
-                    'complete' => "function(XMLHttpRequest, textStatus){\$('#modalContainer').dialog('close');
-                        //find if there is a latest activities portlet
-                        $('.LatestActivtiesForPortletView').each(function(){
-                            $(this).find('.pager').find('.refresh').find('a').click();
-                        });}"
+                    'type'   => 'POST',
+                    'data'   => 'js:$("#' . $formName . '").serialize()',
+                    'url'    => Yii::app()->createUrl($moduleId . '/' . $controllerId . '/' . $actionSave, GetUtil::getData()),
+                    'update' => '#modalContainer',
                 ));
         }
     }

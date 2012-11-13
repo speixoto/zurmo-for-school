@@ -361,10 +361,68 @@
             }
         }
 
+        public function actionPopulateContactEmailBeforeCreating($id)
+        {
+            $postData = PostUtil::getData();
+            $contact  = Contact::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($contact);
+            $contactPrimaryEmailForm       = new ContactPrimaryEmailForm();
+            $contactPrimaryEmailForm->name = strval($contact);
+            $this->actionValidatePopulateContactEmailBeforeCreating($postData, $contactPrimaryEmailForm);
+            if(isset($postData[get_class($contactPrimaryEmailForm)]))
+            {
+                //Process saving the email address and redirecting to create email view
+                $contactPrimaryEmailForm->setAttributes($postData[get_class($contactPrimaryEmailForm)]);
+                $email                 = new Email;
+                $email->emailAddress   = $contactPrimaryEmailForm->emailAddress;
+                $contact->primaryEmail = $email;
+                $saved = $contact->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException($message, $code, $previous);
+                }
+                $this->redirect(array($this->getId() . '/createEmailMessage',
+                                      'relatedId'             => $contact->id,
+                                      'relatedModelClassName' => 'Contact',
+                                      'toAddress'             => $contact->primaryEmail->emailAddress));
+                Yii::app()->end(false);
+            }
+            $contactEditView = new ContactRequiresPrimaryEmailFirstModalView(
+                $this->getId(),
+                $this->getModule()->getId(),
+                $contactPrimaryEmailForm);
+            $view = new ModalView($this, $contactEditView);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            echo $view->render();
+        }
+
+        protected function actionValidatePopulateContactEmailBeforeCreating($postData, ContactPrimaryEmailForm $contactForm)
+        {
+            if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
+            {
+                $contactForm->setAttributes($postData[get_class($contactForm)]);
+                if ($contactForm->validate())
+                {
+                    Yii::app()->end(false);
+                }
+                else
+                {
+                    $errorData = array();
+                    foreach ($contactForm->getErrors() as $attribute => $errors)
+                    {
+                            $errorData[ZurmoHtml::activeId($contactForm, $attribute)] = $errors;
+                    }
+                    echo CJSON::encode($errorData);
+                }
+                Yii::app()->end(false);
+            }
+        }
+
         public function actionCreateEmailMessage($toAddress = null, $relatedId = null, $relatedModelClassName = null)
         {
             $postData         = PostUtil::getData();
             $getData          = GetUtil::getData();
+            $personOrAccount  = self::resolvePersonOrAccountFromGet($relatedId, $relatedModelClassName);
             $emailMessage     = new EmailMessage();
             $emailMessageForm = new CreateEmailMessageForm($emailMessage);
             $emailMessageForm->setScenario('createNonDraft');
@@ -373,7 +431,6 @@
             {
                 if($relatedId != null && $relatedModelClassName != null && $toAddress != null)
                 {
-                    $personOrAccount                    = $relatedModelClassName::getById((int)$relatedId);
                     $messageRecipient                   = new EmailMessageRecipient();
                     $messageRecipient->toName           = strval($personOrAccount);
                     $messageRecipient->toAddress        = $toAddress;
@@ -398,6 +455,25 @@
                 Yii::app()->getClientScript()->setToAjaxMode();
                 echo $view->render();
             }
+        }
+
+        protected function resolvePersonOrAccountFromGet($relatedId = null, $relatedModelClassName = null)
+        {
+            $personOrAccount = null;
+            if($relatedId != null && $relatedModelClassName != null)
+            {
+                $personOrAccount = $relatedModelClassName::getById((int)$relatedId);
+                //Only attempt to populate email if the user has write permissions
+                if($relatedModelClassName == 'Contact' &&
+                   $personOrAccount->primaryEmail->emailAddress == null &&
+                   ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($personOrAccount, Permission::WRITE))
+                {
+                    $this->redirect(array($this->getId() . '/populateContactEmailBeforeCreating',
+                                          'id' => $personOrAccount->id));
+                    Yii::app()->end(false);
+                }
+            }
+            return $personOrAccount;
         }
 
         /**

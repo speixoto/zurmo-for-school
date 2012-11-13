@@ -70,6 +70,7 @@
                                                                 )
                                                             );
             $content .= $formStart;
+            $content .= $this->renderOperationDescriptionContent();
             $content .= '<div class="attributesContainer">';
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderRightSideContent($form);
@@ -90,6 +91,13 @@
                 return ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
             }
             return $content;
+        }
+
+        /**
+         * Override as needed
+         */
+        protected function renderOperationDescriptionContent()
+        {
         }
 
         protected function renderRightSideContent($form = null)
