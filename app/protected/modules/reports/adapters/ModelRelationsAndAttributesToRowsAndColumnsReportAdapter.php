@@ -24,34 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportModelTestItem7 extends OwnedSecurableItem
+    class ModelRelationsAndAttributesToRowsAndColumnsReportAdapter extends ModelRelationsAndAttributesToReportAdapter
     {
-        public static function getDefaultMetadata()
+        public function getAttributesForFilters()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'name',
-                ),
-                'relations' => array(
-                    'model5' => array(RedBeanModel::HAS_MANY, 'ReportModelTestItem5'),
-                ),
-                'rules' => array(
-                    array('name',  'type',   'type' => 'string'),
-                    array('name',  'length', 'max' => 32),
-                ),
-            );
-            return $metadata;
+            $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            return $attributes;
         }
 
-        public static function isTypeDeletable()
+        public function getAttributesForDisplayAttributes()
         {
-            return true;
+            $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes = array_merge($attributes, $this->getDerivedAttributesData());
+            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            return $attributes;
         }
 
-        public static function getModuleClassName()
+        public function getAttributesForOrderBys()
         {
-            return 'ReportsTestModule';
+            $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            return $attributes;
         }
     }
 ?>

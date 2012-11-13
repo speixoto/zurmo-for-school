@@ -91,15 +91,16 @@
         // the extended User data. In this way in inheritance hierarchy from
         // model is normalized over several tables, one for each extending
         // class.
-        private $modelClassNameToBean                            = array();
-        private $attributeNameToBeanAndClassName                 = array();
-        private $attributeNamesNotBelongsToOrManyMany            = array();
-        private $relationNameToRelationTypeModelClassNameAndOwns = array();
-        private $relationNameToRelatedModel                      = array();
-        private $unlinkedRelationNames                           = array();
-        private $validators                                      = array();
-        private $attributeNameToErrors                           = array();
-        private $scenarioName                                    = '';
+        private $modelClassNameToBean                                        = array();
+        private $attributeNameToBeanAndClassName                             = array();
+        private $attributeNamesNotBelongsToOrManyMany                        = array();
+        private $derivedRelationNameToTypeModelClassNameAndOppposingRelation = array();
+        private $relationNameToRelationTypeModelClassNameAndOwns             = array();
+        private $relationNameToRelatedModel                                  = array();
+        private $unlinkedRelationNames                                       = array();
+        private $validators                                                  = array();
+        private $attributeNameToErrors                                       = array();
+        private $scenarioName                                                = '';
         // An object is automatcally savable if it is new or contains
         // modified members or related objects.
         // If it is newly created and has never had any data put into it
@@ -522,6 +523,7 @@
                 $this->modelClassNameToBean,
                 $this->attributeNameToBeanAndClassName,
                 $this->attributeNamesNotBelongsToOrManyMany,
+                $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation,
                 $this->relationNameToRelationTypeModelClassNameAndOwns,
                 $this->validators,
             ));
@@ -533,17 +535,18 @@
             {
                 $data = unserialize($data);
                 assert('is_array($data)');
-                if (count($data) != 6)
+                if (count($data) != 7)
                 {
                     return null;
                 }
 
-                $this->pseudoId                                        = $data[0];
-                $this->modelClassNameToBean                            = $data[1];
-                $this->attributeNameToBeanAndClassName                 = $data[2];
-                $this->attributeNamesNotBelongsToOrManyMany            = $data[3];
-                $this->relationNameToRelationTypeModelClassNameAndOwns = $data[4];
-                $this->validators                                      = $data[5];
+                $this->pseudoId                                                    = $data[0];
+                $this->modelClassNameToBean                                        = $data[1];
+                $this->attributeNameToBeanAndClassName                             = $data[2];
+                $this->attributeNamesNotBelongsToOrManyMany                        = $data[3];
+                $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation = $data[4];
+                $this->relationNameToRelationTypeModelClassNameAndOwns             = $data[5];
+                $this->validators                                                  = $data[6];
 
                 $this->relationNameToRelatedModel = array();
                 $this->unlinkedRelationNames      = array();
@@ -645,15 +648,6 @@
                                                                      $linkType, $relationLinkName);
                    $columnName             = $relatedModelTableName . '_id';
                    $columnName             = ZurmoRedBeanLinkManager::resolveColumnPrefix($linkName) . $columnName;
-
-/**
-                    $columnName = '';
-                    if (strtolower($relationName) != strtolower($relatedModelClassName))
-                    {
-                        $columnName = strtolower($relationName) . '_';
-                    }
-                    $columnName .= $relatedModelTableName . '_id';
-                    **/
                     return $columnName;
                 }
             }
@@ -781,13 +775,13 @@
                         }
                     }
                 }
-
-
                 if (isset($metadata[$modelClassName]['derivedRelationsViaCastedUpModel']))
                 {
-                    foreach ($metadata[$modelClassName]['derivedRelationsViaCastedUpModel'] as $relationName => $relationTypeModelClassNameAndOwns)
+                    foreach ($metadata[$modelClassName]['derivedRelationsViaCastedUpModel'] as $relationName =>
+                             $relationTypeModelClassNameAndOpposingRelation)
                     {
-                        //todo: map and cache 'derivedRelationsViaCastedUpModel'
+                        $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName] =
+                                $relationTypeModelClassNameAndOpposingRelation;
                     }
                 }
 
@@ -1660,6 +1654,39 @@
         {
             assert("\$this->isRelation('$relationName')");
             return $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][4];
+        }
+
+        /**
+         * Returns the opposing relation name of a derived relation
+         * defined by the extending class's getMetadata() method.
+         */
+        public function isADerivedRelationViaCastedUpModel($relationName)
+        {
+            if(isset($this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName]))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Returns the opposing relation name of a derived relation
+         * defined by the extending class's getMetadata() method.
+         */
+        public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
+        {
+            assert("\$this->isADerivedRelationViaCastedUpModel('$relationName')");
+            return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][2];
+        }
+
+        /**
+         * Returns the relation model class name of a derived relation
+         * defined by the extending class's getMetadata() method.
+         */
+        public function getDerivedRelationModelClassName($relationName)
+        {
+            assert("\$this->isADerivedRelationViaCastedUpModel('$relationName')");
+            return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][1];
         }
 
         /**

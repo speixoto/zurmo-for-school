@@ -24,15 +24,20 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base class for managing adapting model relations and attributes into a report
+     */
     class ModelRelationsAndAttributesToReportAdapter
     {
         const DYNAMIC_ATTRIBUTE_USER = 'User';
 
-        private $model;
+        const DYNAMIC_RELATION_INFERRED = 'Inferred';
 
-        private $rules;
+        protected $model;
 
-        private $report;
+        protected $rules;
+
+        protected $report;
 
         public function __construct(RedBeanModel $model, ReportRules $rules, Report $report)
         {
@@ -79,13 +84,22 @@
                     $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
                 }
             }
-            array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData());
+            $attributes = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData($precedingModel, $precedingRelation));
             return array_merge($attributes, $this->getInferredRelationsData($precedingModel, $precedingRelation));
         }
 
         public function getAttributesIncludingDerivedAttributesData()
         {
             $attributes = array('id' => array('label' => 'Id'));
+            $attributes = array_merge($attributes, $this->getAttributesNotIncludingDerivedAttributesData());
+            $attributes = array_merge($attributes, $this->getDerivedAttributesData());
+            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            return $attributes;
+        }
+
+        protected function getAttributesNotIncludingDerivedAttributesData()
+        {
+            $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
                 if ((($this->model->isRelation($attribute) &&
@@ -96,8 +110,6 @@
                     $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
                 }
             }
-            $attributes = array_merge($attributes, $this->getDerivedAttributesData());
-            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
             return $attributes;
         }
 
@@ -118,13 +130,29 @@
                     {
                         if(!$this->inferredRelationLinksToPrecedingRelation($modelClassName, $attribute, $precedingModel, $precedingRelation))
                         {
-                            $attributes[$attribute] = array('label' =>
-                                                            $modelClassName::getModelLabelByTypeAndLanguage('Plural'));
+                            $attributes[$modelClassName  . FormModelUtil::DELIMITER . self::DYNAMIC_RELATION_INFERRED] =
+                                array('label' => $modelClassName::getModelLabelByTypeAndLanguage('Plural'));
                         }
                     }
                 }
             }
             return $attributes;
+        }
+
+        protected function derivedRelationLinksToPrecedingRelation($relationModelClassName, $opposingRelation, RedBeanModel $precedingModel = null,
+                                                                    $precedingRelation = null)
+        {
+            assert('is_string($relationModelClassName)');
+            assert('is_string($opposingRelation)');
+            if($precedingModel == null || $precedingRelation == null)
+            {
+                return false;
+            }
+            if($relationModelClassName == get_class($precedingModel) && $opposingRelation == $precedingRelation)
+            {
+                return true;
+            }
+            return false;
         }
 
         protected function inferredRelationLinksToPrecedingRelation($inferredModelClassName, $relation, RedBeanModel $precedingModel = null,
@@ -154,6 +182,12 @@
             {
                 return false;
             }
+            //Check if the relation is a derived relation in which case return false because it is handled by
+            //@see self::inferredRelationLinksToPrecedingRelation
+            if(!$precedingModel->isAttribute($precedingRelation))
+            {
+                return false;
+            }
             if($precedingModel->getRelationModelClassName($precedingRelation) !=
                $this->model->getRelationmodelClassName($relation))
             {
@@ -174,17 +208,29 @@
             return false;
         }
 
-        protected function getDerivedRelationsViaCastedUpModelData()
+        protected function getDerivedRelationsViaCastedUpModelData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
+            if(($precedingModel != null && $precedingRelation == null) ||
+               ($precedingModel == null && $precedingRelation != null))
+            {
+                throw new NotSupportedException();
+            }
             $attributes = array();
             $metadata   = $this->model->getMetadata();
             foreach ($metadata as $modelClassName => $modelClassMetadata)
             {
                 if (isset($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"]))
                 {
-                    foreach($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $notUsed)
+                    foreach($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $derivedRelationData)
                     {
-                        $attributes[$relation] = array('label' => $this->model->getAttributeLabel($relation));
+                        if(!$this->derivedRelationLinksToPrecedingRelation(
+                            $this->model->getDerivedRelationModelClassName($relation),
+                            $this->model->getDerivedRelationViaCastedUpModelOpposingRelationName($relation),
+                            $precedingModel,
+                            $precedingRelation))
+                        {
+                            $attributes[$relation] = array('label' => $this->model->getAttributeLabel($relation));
+                        }
                     }
                 }
             }
@@ -224,11 +270,43 @@
             $metadata   = $this->model->getMetadata();
             foreach ($metadata as $modelClassName => $modelClassMetadata)
             {
-                if (isset($metadata[$modelClassName][$relation . 'modelClassNames']))
+                if (isset($metadata[$modelClassName][$relation . 'ModelClassNames']))
                 {
-                    return $metadata[$modelClassName][$relation . 'modelClassNames'];
+                    return $metadata[$modelClassName][$relation . 'ModelClassNames'];
                 }
             }
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getAttributesForFilters()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getAttributesForDisplayAttributes()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getAttributesForOrderBys()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getAttributesForGroupBys()
+        {
+            throw new NotImplementedException();
         }
     }
 ?>
