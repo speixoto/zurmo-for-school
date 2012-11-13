@@ -25,33 +25,47 @@
      ********************************************************************************/
 
     /**
-     * Wrapper view for displaying an contact's latest activities feed.
+     * Element used to display link to a modal window for creating an email.
      */
-    class ContactLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class CreateEmailMessageFromRelatedListLinkActionElement extends RelatedListLinkActionElement
     {
-            public static function getDefaultMetadata()
+        public function render()
         {
-            $metadata = parent::getDefaultMetadata();
-            return array_merge($metadata, array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'                    => 'CreateEmailMessageFromRelatedListLink',
-                                  'modelClassName'          => 'EmailMessage',
-                                  'routeParameters'         =>
-                                    array(  'relatedModelClassName'  => 'Contact',
-                                            'relatedId'        =>
-                                                'eval:$this->params["relationModel"]->id',
-                                            'toAddress'        =>
-                                                'eval:$this->params["relationModel"]->primaryEmail->emailAddress')
-                        ),
-                    ),
-                ),
-            )));
+            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
         }
-        public function getLatestActivitiesViewClassName()
+
+        public function renderMenuItem()
         {
-            return 'LatestActivitiesForContactListView';
+            return array('label'           => $this->getLabel(),
+                         'url'             => $this->getDefaultRoute(),
+                         'linkOptions'     => $this->getHtmlOptions(),
+                         'ajaxLinkOptions' => $this->getAjaxLinkOptions()
+            );
+        }
+
+        protected function getAjaxLinkOptions()
+        {
+            $title = Yii::t('Default', 'Email');
+            return ModalView::getAjaxOptionsForModalLink(
+                                     Yii::t('Default', 'Compose Email'), 'modalContainer', 'auto', 800);
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Yii::t('Default', 'Email');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl('/emailMessages/default/createEmailMessage', $this->getRouteParameters());
+        }
+
+        public function getActionType()
+        {
+            return 'Create';
         }
     }
 ?>
