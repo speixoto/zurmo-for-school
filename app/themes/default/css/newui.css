@@ -51,7 +51,6 @@ table.configuration-list tr td:last-child a,
   padding: 0 15px 0 15px;
   line-height: 23px;
   margin: 0;
-  font-size: 10px;
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
@@ -59,7 +58,7 @@ table.configuration-list tr td:last-child a,
   border-left: 1px solid rgba(215, 215, 215, 0.75);
   border-right: 1px solid rgba(215, 215, 215, 0.75);
   border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
+  color: #FFF;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -300,7 +299,10 @@ body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
 body.blue .ZeroModelsYetView a:before,
 body.blue #StickyListMenu > li > a:hover > span,
-body.blue .addfileinput-button:hover span {
+body.blue .addfileinput-button:hover span .pager a:hover:before,
+body.blue .pager a:hover:after,
+body.blue .ui-datepicker-header a:hover:before,
+body.blue .ui-datepicker-header a:hover:after {
   color: #7cb830;
 }
 body.blue .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -327,7 +329,8 @@ body.blue #ErrorPageView a,
 body.blue .ui-tooltip-default .ui-tooltip-icon,
 body.blue .zLink,
 body.blue .z-link,
-body.blue .lead-conversion-actions a {
+body.blue .lead-conversion-actions a,
+body.blue #clear-search-link {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -433,6 +436,7 @@ body.blue #RecentlyViewedView a:hover em {
 }
 body.blue .green-button,
 body.blue .attachLoading {
+  color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
@@ -620,7 +624,10 @@ body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
 body.brown .ZeroModelsYetView a:before,
 body.brown #StickyListMenu > li > a:hover > span,
-body.brown .addfileinput-button:hover span {
+body.brown .addfileinput-button:hover span .pager a:hover:before,
+body.brown .pager a:hover:after,
+body.brown .ui-datepicker-header a:hover:before,
+body.brown .ui-datepicker-header a:hover:after {
   color: #b88f30;
 }
 body.brown .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -647,7 +654,8 @@ body.brown #ErrorPageView a,
 body.brown .ui-tooltip-default .ui-tooltip-icon,
 body.brown .zLink,
 body.brown .z-link,
-body.brown .lead-conversion-actions a {
+body.brown .lead-conversion-actions a,
+body.brown #clear-search-link {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -753,6 +761,7 @@ body.brown #RecentlyViewedView a:hover em {
 }
 body.brown .green-button,
 body.brown .attachLoading {
+  color: #fff;
   background-color: #368985;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#45ada8), to(#368985));
@@ -940,7 +949,10 @@ body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
 body.lime .ZeroModelsYetView a:before,
 body.lime #StickyListMenu > li > a:hover > span,
-body.lime .addfileinput-button:hover span {
+body.lime .addfileinput-button:hover span .pager a:hover:before,
+body.lime .pager a:hover:after,
+body.lime .ui-datepicker-header a:hover:before,
+body.lime .ui-datepicker-header a:hover:after {
   color: #bcc98e;
 }
 body.lime .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -967,7 +979,8 @@ body.lime #ErrorPageView a,
 body.lime .ui-tooltip-default .ui-tooltip-icon,
 body.lime .zLink,
 body.lime .z-link,
-body.lime .lead-conversion-actions a {
+body.lime .lead-conversion-actions a,
+body.lime #clear-search-link {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -1073,6 +1086,7 @@ body.lime #RecentlyViewedView a:hover em {
 }
 body.lime .green-button,
 body.lime .attachLoading {
+  color: #fff;
   background-color: #9db05a;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#bcc98e), to(#9db05a));
@@ -1260,7 +1274,10 @@ body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
 body.cherry .ZeroModelsYetView a:before,
 body.cherry #StickyListMenu > li > a:hover > span,
-body.cherry .addfileinput-button:hover span {
+body.cherry .addfileinput-button:hover span .pager a:hover:before,
+body.cherry .pager a:hover:after,
+body.cherry .ui-datepicker-header a:hover:before,
+body.cherry .ui-datepicker-header a:hover:after {
   color: #933140;
 }
 body.cherry .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -1287,7 +1304,8 @@ body.cherry #ErrorPageView a,
 body.cherry .ui-tooltip-default .ui-tooltip-icon,
 body.cherry .zLink,
 body.cherry .z-link,
-body.cherry .lead-conversion-actions a {
+body.cherry .lead-conversion-actions a,
+body.cherry #clear-search-link {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -1393,6 +1411,7 @@ body.cherry #RecentlyViewedView a:hover em {
 }
 body.cherry .green-button,
 body.cherry .attachLoading {
+  color: #fff;
   background-color: #6d242f;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#933140), to(#6d242f));
@@ -1580,7 +1599,10 @@ body.turqoise .portlet-toolbar .icon-delete:before,
 body.turqoise .portlet-toolbar .icon-edit:before,
 body.turqoise .ZeroModelsYetView a:before,
 body.turqoise #StickyListMenu > li > a:hover > span,
-body.turqoise .addfileinput-button:hover span {
+body.turqoise .addfileinput-button:hover span .pager a:hover:before,
+body.turqoise .pager a:hover:after,
+body.turqoise .ui-datepicker-header a:hover:before,
+body.turqoise .ui-datepicker-header a:hover:after {
   color: #44bbcc;
 }
 body.turqoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -1607,7 +1629,8 @@ body.turqoise #ErrorPageView a,
 body.turqoise .ui-tooltip-default .ui-tooltip-icon,
 body.turqoise .zLink,
 body.turqoise .z-link,
-body.turqoise .lead-conversion-actions a {
+body.turqoise .lead-conversion-actions a,
+body.turqoise #clear-search-link {
   background-color: #447799;
 }
 body.turqoise .latest-activity-toolbar label:hover,
@@ -1713,6 +1736,7 @@ body.turqoise #RecentlyViewedView a:hover em {
 }
 body.turqoise .green-button,
 body.turqoise .attachLoading {
+  color: #fff;
   background-color: #2f9eae;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#44bbcc), to(#2f9eae));
@@ -1900,7 +1924,10 @@ body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
 body.violet .ZeroModelsYetView a:before,
 body.violet #StickyListMenu > li > a:hover > span,
-body.violet .addfileinput-button:hover span {
+body.violet .addfileinput-button:hover span .pager a:hover:before,
+body.violet .pager a:hover:after,
+body.violet .ui-datepicker-header a:hover:before,
+body.violet .ui-datepicker-header a:hover:after {
   color: #91a1dc;
 }
 body.violet .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -1927,7 +1954,8 @@ body.violet #ErrorPageView a,
 body.violet .ui-tooltip-default .ui-tooltip-icon,
 body.violet .zLink,
 body.violet .z-link,
-body.violet .lead-conversion-actions a {
+body.violet .lead-conversion-actions a,
+body.violet #clear-search-link {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -2033,6 +2061,7 @@ body.violet #RecentlyViewedView a:hover em {
 }
 body.violet .green-button,
 body.violet .attachLoading {
+  color: #fff;
   background-color: #6a80d0;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#91a1dc), to(#6a80d0));
@@ -2217,7 +2246,10 @@ body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
 body.honey .ZeroModelsYetView a:before,
 body.honey #StickyListMenu > li > a:hover > span,
-body.honey .addfileinput-button:hover span {
+body.honey .addfileinput-button:hover span .pager a:hover:before,
+body.honey .pager a:hover:after,
+body.honey .ui-datepicker-header a:hover:before,
+body.honey .ui-datepicker-header a:hover:after {
   color: #abbc42;
 }
 body.honey .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -2244,7 +2276,8 @@ body.honey #ErrorPageView a,
 body.honey .ui-tooltip-default .ui-tooltip-icon,
 body.honey .zLink,
 body.honey .z-link,
-body.honey .lead-conversion-actions a {
+body.honey .lead-conversion-actions a,
+body.honey #clear-search-link {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -2350,6 +2383,7 @@ body.honey #RecentlyViewedView a:hover em {
 }
 body.honey .green-button,
 body.honey .attachLoading {
+  color: #fff;
   background-color: #6c7c16;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#abbc42), to(#6c7c16));
@@ -3702,6 +3736,27 @@ section {
 .DynamicSearchView {
   position: relative;
   z-index: 9999;
+}
+#ActionBarSearchAndListView > div {
+  position: relative;
+}
+#ActionBarSearchAndListView > div:nth-child(1) {
+  z-index: 10;
+}
+#ActionBarSearchAndListView > div:nth-child(2) {
+  z-index: 9;
+}
+#ActionBarSearchAndListView > div:nth-child(3) {
+  z-index: 8;
+}
+#ActionBarSearchAndListView > div:nth-child(4) {
+  z-index: 7;
+}
+#ActionBarSearchAndListView > div:nth-child(5) {
+  z-index: 6;
+}
+#ActionBarSearchAndListView > div:nth-child(6) {
+  z-index: 5;
 }
 /*=dashboard*/
 #HomePageView .AppContent {
@@ -5110,6 +5165,7 @@ div.wide.form label.hasCheckBox {
 }
 #mixed-models-form-search {
   margin-left: 15px;
+  color: #fff;
 }
 #ModalView .list-view-items-summary-clone {
   margin: 10px 10px 0 0;
@@ -5137,9 +5193,6 @@ div.wide.form label.hasCheckBox {
 }
 #ModalView #clear-search-linkmodal {
   margin-left: 10px;
-}
-#ModalView .view-toolbar-container {
-  margin-top: 15px;
 }
 #ModalView .items {
   border: none;
@@ -5244,12 +5297,12 @@ div.wide.form label.hasCheckBox {
 }
 .dynamic-search-row > div > span:first-child + div {
   margin-right: 0 !important;
-  width: 46%;
+  width: 45%;
   float: left;
 }
 .dynamic-search-row > div .criteria-value-container {
   margin-right: 30px !important;
-  width: 46%;
+  width: 45%;
   float: right;
 }
 .dynamic-search-row > div .has-model-select {
@@ -7118,7 +7171,7 @@ div.hasHalfs .twoThirds {
 }
 .ModalListView .items tbody td:first-child,
 .ModalListView .items thead th:first-child {
-  padding-left: 20px;
+  padding-left: 10px;
 }
 /*=Auto Complete*/
 .ui-autocomplete {
@@ -7540,11 +7593,26 @@ div.hasHalfs .twoThirds {
 #MixedModelsSearchView h1 {
   margin-bottom: 15px;
 }
+#MixedModelsSearchView .search-view-0 {
+  float: none;
+}
 #MixedModelsMultipleListsView {
   margin-top: 15px;
 }
 #MixedModelsMultipleListsView h1 {
   margin-bottom: 15px;
+}
+#MixedModelsSearchAndListView th:first-child {
+  padding-left: 10px;
+}
+#MixedModelsSearchAndListView .pager {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+  border: 1px solid #DFDFDF;
+  border-top: none;
 }
 .TitleBarView.Account h1:before {
   content: "P";
@@ -8764,7 +8832,6 @@ table.configuration-list tr td:last-child a:before {
   padding: 0 15px 0 15px;
   line-height: 23px;
   margin: 0;
-  font-size: 10px;
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
@@ -8772,7 +8839,7 @@ table.configuration-list tr td:last-child a:before {
   border-left: 1px solid rgba(215, 215, 215, 0.75);
   border-right: 1px solid rgba(215, 215, 215, 0.75);
   border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
+  color: #FFF;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -8877,7 +8944,7 @@ table.configuration-list tr td:last-child a:before {
   margin-top: 5px;
 }
 /*=Step 5, process details*/
-#import-preloader .z-spinner {
+#sequential-process-spinner .z-spinner {
   display: block;
   margin: -1px 10px 0 0;
 }
@@ -9197,10 +9264,18 @@ div.form select.error {
   box-shadow: 0 0 1px 1px rgba(205, 0, 0, 0.5);
 }
 div.form .errorSummary {
-  padding: 7px 7px 12px 7px;
-  margin: 0 0 20px 0;
-  background: #FEE;
-  font-size: 11px;
+  position: relative;
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 5px !important;
+  border: 1px solid #cc0000;
+  background: #ffb5b5;
+  font-weight: bold;
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
 }
 #edit-form td {
   position: relative;
@@ -9239,8 +9314,7 @@ div.form .errorMessage:before {
   background: url(../images/error-tip.png) left bottom no-repeat;
 }
 div.form .errorSummary p {
-  margin: 0;
-  padding: 5px;
+  margin: 0 0 5px 0;
 }
 div.form .errorSummary ul {
   margin: 0;
@@ -9420,7 +9494,6 @@ div.wide.form .errorMessage {
   padding: 0 15px 0 15px;
   line-height: 23px;
   margin: 0;
-  font-size: 10px;
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
@@ -9428,7 +9501,7 @@ div.wide.form .errorMessage {
   border-left: 1px solid rgba(215, 215, 215, 0.75);
   border-right: 1px solid rgba(215, 215, 215, 0.75);
   border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #656565;
+  color: #FFF;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -10473,8 +10546,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
     font-smooth: always !important;
   }
   .form input[type="text"],
-  .form input[type="password"],
-  .form textarea {
+  .form input[type="password"] {
     height: 26px;
   }
   input[type="submit"],
@@ -12328,19 +12400,23 @@ a.close-ModalGameNotification.simple-select {
 .unread td a {
   font-weight: bold;
 }
+#ConversationDetailsView .details-table,
 #MissionDetailsView .details-table {
   zoom: 1;
   margin-right: 0 !important;
 }
+#ConversationDetailsView .details-table:before,
 #MissionDetailsView .details-table:before {
   content: "";
   display: table;
 }
+#ConversationDetailsView .details-table:after,
 #MissionDetailsView .details-table:after {
   content: "";
   display: table;
   clear: both;
 }
+#ConversationDetailsView .panel > table,
 #MissionDetailsView .panel > table {
   border-bottom: none;
 }

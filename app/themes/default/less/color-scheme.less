@@ -19,9 +19,11 @@
         color: @themeColor;
         .t-shadow(  0 1px 0 rgba( 255, 255, 255, 0.8 ) );
     }
+    
     a:link, a:active, a:visited{
         color:@textColor;
     }
+    
     a:hover,
     .xhtml-validation-info,
     .performance-info,
@@ -72,6 +74,10 @@
     .ZeroModelsYetView a:before,
     #StickyListMenu  > li > a:hover > span,
     .addfileinput-button:hover span
+    .pager a:hover:before,
+    .pager a:hover:after,
+    .ui-datepicker-header a:hover:before,
+    .ui-datepicker-header a:hover:after
     {
         color: @themeColor2;
     }
@@ -106,7 +112,8 @@
     .ui-tooltip-default .ui-tooltip-icon,
     .zLink,
     .z-link,
-    .lead-conversion-actions a
+    .lead-conversion-actions a,
+    #clear-search-link
     {
         background-color: @themeColor;
     }
@@ -175,7 +182,9 @@
         color:@themeColor !important;
         .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
     }
-    .green-button, .attachLoading{
+    .green-button,
+    .attachLoading{
+        color:#fff;
         #gradient > .vertical( @themeColorBtn, @themeColorBtn2 );
     }
     .zButton:hover, .z-button:hover{
