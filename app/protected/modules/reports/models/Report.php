@@ -50,6 +50,8 @@
 
         private $type;
 
+        private $groupBys = array();
+
         public static function getTypeDropDownArray()
         {
             return array(self::TYPE_ROWS_AND_COLUMNS  => Yii::t('Default', 'Rows and Columns'),
@@ -163,6 +165,16 @@
         public function setOwner(User $owner)
         {
             $this->owner = $owner;
+        }
+
+        public function getGroupBys()
+        {
+            return $this->groupBys;
+        }
+
+        public function addGroupBy(ReportGroupBy $groupBy)
+        {
+            $this->groupBys[] = $groupBy;
         }
 
         public function getExplicitReadWriteModelPermissions()

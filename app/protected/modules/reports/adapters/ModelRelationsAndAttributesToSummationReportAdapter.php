@@ -26,6 +26,16 @@
 
     class ModelRelationsAndAttributesToSummationReportAdapter extends ModelRelationsAndAttributesToReportAdapter
     {
+        const DISPLAY_CALCULATION_COUNT      = 'Count';
+
+        const DISPLAY_CALCULATION_SUMMMATION = 'Summation';
+
+        const DISPLAY_CALCULATION_AVERAGE    = 'Average';
+
+        const DISPLAY_CALCULATION_MINIMUM    = 'Minimum';
+
+        const DISPLAY_CALCULATION_MAXIMUM    = 'Maximum';
+
         public function getAttributesForFilters()
         {
             $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
@@ -35,10 +45,89 @@
 
         public function getAttributesForDisplayAttributes()
         {
-            $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
-            $attributes = array_merge($attributes, $this->getDerivedAttributesData());
-            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $existingGroupBys = $this->report->getGroupBys();
+            if(empty($existingGroupBys))
+            {
+                return array();
+            }
+            $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));
+            foreach($existingGroupBys as $groupBy)
+            {
+                //need to make sure the groupBy attribute is in fact on this model for this relation
+
+                //is the groupBy attribute on the modelClassName that corresponds to $this->model?
+                    //if not then ignore
+
+                    //what if the attribute is on this model class name but it is not the relation.
+                    //From Y array('hasOneX' => 'xxx');  //we are on a X, but our relationship to Y, there are 2 of them
+                    //
+
+                //todo:
+                if($groupBy->getResolvedAttributeModelClassName() == get_class($this->model))
+                {
+                    $resolvedAttribute = $groupBy->getResolvedAttribute();
+                    $attributes[$resolvedAttribute] = array('label' => $this->model->getAttributeLabel($resolvedAttribute));
+                }
+            }
+            foreach ($this->model->getAttributes() as $attribute => $notUsed)
+            {
+                $attributeType = ModelAttributeToMixedTypeUtil::getTypeByModelUsingValidator($this->model, $attribute);
+                if ($attributeType == 'Decimal' || $attributeType == 'Integer')
+                {
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_SUMMMATION);
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_AVERAGE);
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
+                }
+                elseif($attributeType == 'Date' || $attributeType == 'DateTime')
+                {
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
+                }
+                elseif($this->model->isRelation($attribute) &&
+                       $this->model->getRelationModelClassName($attribute) == 'CurrencyValue')
+                {
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_SUMMMATION);
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_AVERAGE);
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
+                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
+                }
+            }
             return $attributes;
+        }
+
+        protected function resolveDisplayCalculationAttributeData(& $attributes, $attribute, $type)
+        {
+            assert('is_array($attributes)');
+            assert('is_string($attribute)');
+            assert('is_string($type)');
+            $attributes[$attribute . FormModelUtil::DELIMITER . $type] =
+                        array('label' => $this->resolveDisplayCalculationLabel($attribute, $type));
+        }
+
+        protected function resolveDisplayCalculationLabel($attribute, $type)
+        {
+            assert('is_string($type)');
+            return $this->model->getAttributeLabel($attribute) .
+                   ' -(' . static::getTranslatedDisplayCalculationShortLabel($type) . ')';
+        }
+
+        protected static function getTranslatedDisplayCalculationShortLabel($type)
+        {
+            assert('is_string($type)');
+            $labels = static::translatedDisplayCalculationShortLabels();
+            return $labels[$type];
+        }
+
+        protected static function translatedDisplayCalculationShortLabels()
+        {
+            return array(
+                self::DISPLAY_CALCULATION_COUNT       => Yii::t('Default', 'Count'),
+                self::DISPLAY_CALCULATION_SUMMMATION  => Yii::t('Default', 'Sum'),
+                self::DISPLAY_CALCULATION_AVERAGE     => Yii::t('Default', 'Avg'),
+                self::DISPLAY_CALCULATION_MINIMUM     => Yii::t('Default', 'Min'),
+                self::DISPLAY_CALCULATION_MAXIMUM     => Yii::t('Default', 'Max'),
+            );
         }
 
         public function getAttributesForOrderBys()
@@ -50,7 +139,7 @@
 
         public function getAttributesForGroupBys()
         {
-            throw new NotImplementedException();
+
         }
     }
 ?>

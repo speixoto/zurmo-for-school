@@ -596,15 +596,12 @@
 
             //Select dropDown as the groupBy attribute
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute('dropDown');
+            $groupBy->setAttributeAndRelationData('dropDown');
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
             $attributes         = $adapter->getAttributesForDisplayAttributes();
-            echo "<pre>";
-            print_r($attributes);
-            echo "</pre>";
             $this->assertEquals(22, count($attributes));
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
@@ -612,57 +609,57 @@
             $compareData        = array('label' => 'Count');
             $this->assertEquals($compareData, $attributes['Count']);
 
-            $compareData        = array('label' => 'Created Date Time -(MIN)');
+            $compareData        = array('label' => 'Created Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Minimum']);
-            $compareData        = array('label' => 'Created Date Time -(MAX)');
+            $compareData        = array('label' => 'Created Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Maximum']);
-            $compareData        = array('label' => 'Modified Date Time (MIN)');
+            $compareData        = array('label' => 'Modified Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Minimum']);
-            $compareData        = array('label' => 'Modified Date Time -(MAX)');
+            $compareData        = array('label' => 'Modified Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Maximum']);
 
-            $compareData        = array('label' => 'Date (MIN)');
+            $compareData        = array('label' => 'Date -(Min)');
             $this->assertEquals($compareData, $attributes['date__Minimum']);
-            $compareData        = array('label' => 'Date -(MAX)');
+            $compareData        = array('label' => 'Date -(Max)');
             $this->assertEquals($compareData, $attributes['date__Maximum']);
-            $compareData        = array('label' => 'Date (MIN)');
+            $compareData        = array('label' => 'Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['dateTime__Minimum']);
-            $compareData        = array('label' => 'Date -(MAX)');
+            $compareData        = array('label' => 'Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['dateTime__Maximum']);
 
-            $compareData        = array('label' => 'Float -(MIX)');
+            $compareData        = array('label' => 'Float -(Min)');
             $this->assertEquals($compareData, $attributes['float__Minimum']);
-            $compareData        = array('label' => 'Float -(MAX)');
+            $compareData        = array('label' => 'Float -(Max)');
             $this->assertEquals($compareData, $attributes['float__Maximum']);
-            $compareData        = array('label' => 'Float -(SUM)');
+            $compareData        = array('label' => 'Float -(Sum)');
             $this->assertEquals($compareData, $attributes['float__Summation']);
-            $compareData        = array('label' => 'Float -(AVG)');
+            $compareData        = array('label' => 'Float -(Avg)');
             $this->assertEquals($compareData, $attributes['float__Average']);
 
-            $compareData        = array('label' => 'Integer -(MIX)');
+            $compareData        = array('label' => 'Integer -(Min)');
             $this->assertEquals($compareData, $attributes['integer__Minimum']);
-            $compareData        = array('label' => 'Integer -(MAX)');
+            $compareData        = array('label' => 'Integer -(Max)');
             $this->assertEquals($compareData, $attributes['integer__Maximum']);
-            $compareData        = array('label' => 'Integer -(SUM)');
+            $compareData        = array('label' => 'Integer -(Sum)');
             $this->assertEquals($compareData, $attributes['integer__Summation']);
-            $compareData        = array('label' => 'Integer -(AVG)');
+            $compareData        = array('label' => 'Integer -(Avg)');
             $this->assertEquals($compareData, $attributes['integer__Average']);
 
-            $compareData        = array('label' => 'Currency Value -(MIX)');
+            $compareData        = array('label' => 'Currency Value -(Min)');
             $this->assertEquals($compareData, $attributes['currencyValue__Minimum']);
-            $compareData        = array('label' => 'Currency Value -(MAX)');
+            $compareData        = array('label' => 'Currency Value -(Max)');
             $this->assertEquals($compareData, $attributes['currencyValue__Maximum']);
-            $compareData        = array('label' => 'Currency Value -(SUM)');
+            $compareData        = array('label' => 'Currency Value -(Sum)');
             $this->assertEquals($compareData, $attributes['currencyValue__Summation']);
-            $compareData        = array('label' => 'Currency Value -(AVG)');
+            $compareData        = array('label' => 'Currency Value -(Avg)');
             $this->assertEquals($compareData, $attributes['currencyValue__Average']);
 
 
             //Add a second groupBy attribute radioDropDown on the same model
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute('dropDown');
+            $groupBy->setAttributeAndRelationData('dropDown');
             $groupBy2           = new ReportGroupBy('ReportModelTestItem');
-            $groupBy2->setAttribute('radioDropDown');
+            $groupBy2->setAttributeAndRelationData('radioDropDown');
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
@@ -684,7 +681,7 @@
             //Grouping on ReportModelTestItem, but we are looking at attributes in ReportModelTestItem2
             //so the name attribute should not show up as being available.
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute('phone');
+            $groupBy->setAttributeAndRelationData('phone');
             $model              = new ReportModelTestItem2();
             $rules              = new ReportTestRules();
             $report             = new Report();
@@ -695,33 +692,35 @@
             $this->assertEquals(5, count($attributes));
             $compareData        = array('label' => 'Count');
             $this->assertEquals($compareData, $attributes['Count']);
-            $compareData        = array('label' => 'Created Date Time -(MIN)');
+            $compareData        = array('label' => 'Created Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Minimum']);
-            $compareData        = array('label' => 'Created Date Time -(MAX)');
+            $compareData        = array('label' => 'Created Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Maximum']);
-            $compareData        = array('label' => 'Modified Date Time (MIN)');
+            $compareData        = array('label' => 'Modified Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Minimum']);
-            $compareData        = array('label' => 'Modified Date Time -(MAX)');
+            $compareData        = array('label' => 'Modified Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Maximum']);
 
             //Now test where there is a second group by and it is the name attribute on ReportModelTestItem2
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute(array('hasOne' => 'name'));
+            $groupBy->setAttributeAndRelationData(array('hasOne' => 'name'));
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
+            $this->fail();//look we are passing preceding info but it is being ignored. //acc -> con -> acc -> acc parent could break
+            //but maybe we dont care now. note somewhere in the adapter getAttributesForDisplayAttributes functions
             $attributes = $adapter->getAttributesForDisplayAttributes(new ReportModelTestItem(), 'hasOne');
             $this->assertEquals(6, count($attributes));
             $compareData        = array('label' => 'Name');
             $this->assertEquals($compareData, $attributes['name']);
             $compareData        = array('label' => 'Count');
             $this->assertEquals($compareData, $attributes['Count']);
-            $compareData        = array('label' => 'Created Date Time -(MIN)');
+            $compareData        = array('label' => 'Created Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Minimum']);
-            $compareData        = array('label' => 'Created Date Time -(MAX)');
+            $compareData        = array('label' => 'Created Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Maximum']);
-            $compareData        = array('label' => 'Modified Date Time (MIN)');
+            $compareData        = array('label' => 'Modified Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Minimum']);
-            $compareData        = array('label' => 'Modified Date Time -(MAX)');
+            $compareData        = array('label' => 'Modified Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Maximum']);
 
             //Now test where there is a second group by and it is the name attribute on ReportModelTestItem2 but we
@@ -734,7 +733,7 @@
             //Test where the group by is 2 levels above
             $model              = new ReportModelTestItem3();
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute(array('hasOne' => array('hasMany3' => 'somethingOn3')));
+            $groupBy->setAttributeAndRelationData(array('hasOne' => array('hasMany3' => 'somethingOn3')));
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
             $attributes = $adapter->getAttributesForDisplayAttributes(new ReportModelTestItem2(), 'hasMany3');
@@ -743,14 +742,17 @@
             $this->assertEquals($compareData, $attributes['somethingOn3']);
             $compareData        = array('label' => 'Count');
             $this->assertEquals($compareData, $attributes['Count']);
-            $compareData        = array('label' => 'Created Date Time -(MIN)');
+            $compareData        = array('label' => 'Created Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Minimum']);
-            $compareData        = array('label' => 'Created Date Time -(MAX)');
+            $compareData        = array('label' => 'Created Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Maximum']);
-            $compareData        = array('label' => 'Modified Date Time (MIN)');
+            $compareData        = array('label' => 'Modified Date Time (Min)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Minimum']);
-            $compareData        = array('label' => 'Modified Date Time -(MAX)');
+            $compareData        = array('label' => 'Modified Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Maximum']);
+
+            $this->fail()//acc -> acc parent. example. or another where there are dual links for the same model.
+            //we might have tested this but just make sure by this point you do
         }
 
         /**
@@ -770,7 +772,7 @@
 
             //A group by is selected on the base model ReportModelTestItem
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute('dropDown');
+            $groupBy->setAttributeAndRelationData('dropDown');
             $model              = new ReportModelTestItem();
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
@@ -781,7 +783,7 @@
 
             //Now test when a group by is also selected on the related ReportModelTestItem2
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute(array('hasOne' => 'phone'));
+            $groupBy->setAttributeAndRelationData(array('hasOne' => 'phone'));
             $model              = new ReportModelTestItem2();
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
@@ -792,7 +794,7 @@
 
             //Now test a third group by on the base model ReportModelTestItem
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute('radioDropDown');
+            $groupBy->setAttributeAndRelationData('radioDropDown');
             $model              = new ReportModelTestItem();
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
@@ -1092,7 +1094,7 @@
 
             //Select dropDown as the groupBy attribute
             $groupBy            = new ReportGroupBy('ReportModelTestItem');
-            $groupBy->setAttribute('dropDown');
+            $groupBy->setAttributeAndRelationData('dropDown');
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
@@ -1102,49 +1104,49 @@
             $compareData        = array('label' => 'Count');
             $this->assertEquals($compareData, $attributes['Count']);
 
-            $compareData        = array('label' => 'Created Date Time -(MIN)');
+            $compareData        = array('label' => 'Created Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Minimum']);
-            $compareData        = array('label' => 'Created Date Time -(MAX)');
+            $compareData        = array('label' => 'Created Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Maximum']);
-            $compareData        = array('label' => 'Modified Date Time (MIN)');
+            $compareData        = array('label' => 'Modified Date Time (Min)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Minimum']);
-            $compareData        = array('label' => 'Modified Date Time -(MAX)');
+            $compareData        = array('label' => 'Modified Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Maximum']);
 
-            $compareData        = array('label' => 'Date (MIN)');
+            $compareData        = array('label' => 'Date (Min)');
             $this->assertEquals($compareData, $attributes['date__Minimum']);
-            $compareData        = array('label' => 'Date -(MAX)');
+            $compareData        = array('label' => 'Date -(Max)');
             $this->assertEquals($compareData, $attributes['date__Maximum']);
-            $compareData        = array('label' => 'Date (MIN)');
+            $compareData        = array('label' => 'Date (Min)');
             $this->assertEquals($compareData, $attributes['dateTime__Minimum']);
-            $compareData        = array('label' => 'Date -(MAX)');
+            $compareData        = array('label' => 'Date -(Max)');
             $this->assertEquals($compareData, $attributes['dateTime__Maximum']);
 
-            $compareData        = array('label' => 'Float -(MIX)');
+            $compareData        = array('label' => 'Float -(Min)');
             $this->assertEquals($compareData, $attributes['float__Minimum']);
-            $compareData        = array('label' => 'Float -(MAX)');
+            $compareData        = array('label' => 'Float -(Max)');
             $this->assertEquals($compareData, $attributes['float__Maximum']);
-            $compareData        = array('label' => 'Float -(SUM)');
+            $compareData        = array('label' => 'Float -(Sum)');
             $this->assertEquals($compareData, $attributes['float__Summation']);
-            $compareData        = array('label' => 'Float -(AVG)');
+            $compareData        = array('label' => 'Float -(Avg)');
             $this->assertEquals($compareData, $attributes['float__Average']);
 
-            $compareData        = array('label' => 'Integer -(MIX)');
+            $compareData        = array('label' => 'Integer -(Min)');
             $this->assertEquals($compareData, $attributes['integer__Minimum']);
-            $compareData        = array('label' => 'Integer -(MAX)');
+            $compareData        = array('label' => 'Integer -(Max)');
             $this->assertEquals($compareData, $attributes['integer__Maximum']);
-            $compareData        = array('label' => 'Integer -(SUM)');
+            $compareData        = array('label' => 'Integer -(Sum)');
             $this->assertEquals($compareData, $attributes['integer__Summation']);
-            $compareData        = array('label' => 'Integer -(AVG)');
+            $compareData        = array('label' => 'Integer -(Avg)');
             $this->assertEquals($compareData, $attributes['integer__Average']);
 
-            $compareData        = array('label' => 'Currency Value -(MIX)');
+            $compareData        = array('label' => 'Currency Value -(Min)');
             $this->assertEquals($compareData, $attributes['currencyValue__Minimum']);
-            $compareData        = array('label' => 'Currency Value -(MAX)');
+            $compareData        = array('label' => 'Currency Value -(Max)');
             $this->assertEquals($compareData, $attributes['currencyValue__Maximum']);
-            $compareData        = array('label' => 'Currency Value -(SUM)');
+            $compareData        = array('label' => 'Currency Value -(Sum)');
             $this->assertEquals($compareData, $attributes['currencyValue__Summation']);
-            $compareData        = array('label' => 'Currency Value -(AVG)');
+            $compareData        = array('label' => 'Currency Value -(Avg)');
             $this->assertEquals($compareData, $attributes['currencyValue__Average']);
         }
 

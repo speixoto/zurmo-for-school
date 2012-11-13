@@ -90,7 +90,7 @@
 
         public function getAttributesIncludingDerivedAttributesData()
         {
-            $attributes = array('id' => array('label' => 'Id'));
+            $attributes = array('id' => array('label' => Yii::t('Default', 'Id')));
             $attributes = array_merge($attributes, $this->getAttributesNotIncludingDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
