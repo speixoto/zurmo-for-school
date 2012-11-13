@@ -54,11 +54,11 @@ table.configuration-list tr td:last-child a,
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #FFF;
+  border-top: 1px solid rgba(130, 130, 130, 0.85);
+  border-left: 1px solid rgba(115, 115, 115, 0.85);
+  border-right: 1px solid rgba(115, 115, 115, 0.85);
+  border-bottom: 1px solid rgba(100, 100, 100, 0.85);
+  color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -98,18 +98,6 @@ table.configuration-list tr td:last-child a:not(.attachLoading),
 #WelcomeView .dashboard-link:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-/*
-.zButton:hover, .z-button:hover{
-    //color:@themeColor2 !important;
-    ++.themeColor2-important;
-    .t-shadow( rgba(255, 255, 255, 0.5) 0px 1px) !important;
-}
-
-.zButton:active, .z-button:active{
-    color:#656565;
-    box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-}
-*/
 .zButton.loading .z-spinner,
 .z-button.loading .z-spinner,
 .ZeroModelsYetView a.loading .z-spinner,
@@ -289,7 +277,11 @@ body.blue a.user-link,
 body.blue .SocialItemsListView .show-create-comment,
 body.blue #AllSocialItemsForPortletView .show-create-comment,
 body.blue a.remove:hover .icon:after,
-body.blue .juiportlet-widget-head a.edit:hover .icon:after {
+body.blue .juiportlet-widget-head a.edit:hover .icon:after,
+body.blue .latest-activity-toolbar a,
+body.blue a.more-panels-link,
+body.blue a.simple-select,
+body.blue .after-form-details-content a {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -302,7 +294,10 @@ body.blue #StickyListMenu > li > a:hover > span,
 body.blue .addfileinput-button:hover span .pager a:hover:before,
 body.blue .pager a:hover:after,
 body.blue .ui-datepicker-header a:hover:before,
-body.blue .ui-datepicker-header a:hover:after {
+body.blue .ui-datepicker-header a:hover:after,
+body.blue input[type="button"]:hover,
+body.blue input[type="button"]:hover:before,
+body.blue input[type="button"]:hover:after {
   color: #7cb830;
 }
 body.blue .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -317,7 +312,6 @@ body.blue #WelcomeView a {
 body.blue .portlet-toolbar .icon-create:hover,
 body.blue .portlet-toolbar a:hover,
 body.blue .portlet-toolbar .icon-create:before,
-body.blue .after-form-details-content a,
 body.blue #filter-latest-activities-link:hover,
 body.blue .badge-message h3 {
   color: #7cb830 !important;
@@ -491,6 +485,27 @@ body.blue .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+body.blue .form-toolbar a:not(.attachLoading):hover,
+body.blue .form-toolbar a:not(.z-button):hover {
+  color: #7cb830 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#ededed', GradientType=0) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
 body.blue .notifications-link:hover {
   border-left: 1px solid #1b1c50;
   border-right: 1px solid #1b1c50;
@@ -614,7 +629,11 @@ body.brown a.user-link,
 body.brown .SocialItemsListView .show-create-comment,
 body.brown #AllSocialItemsForPortletView .show-create-comment,
 body.brown a.remove:hover .icon:after,
-body.brown .juiportlet-widget-head a.edit:hover .icon:after {
+body.brown .juiportlet-widget-head a.edit:hover .icon:after,
+body.brown .latest-activity-toolbar a,
+body.brown a.more-panels-link,
+body.brown a.simple-select,
+body.brown .after-form-details-content a {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -627,7 +646,10 @@ body.brown #StickyListMenu > li > a:hover > span,
 body.brown .addfileinput-button:hover span .pager a:hover:before,
 body.brown .pager a:hover:after,
 body.brown .ui-datepicker-header a:hover:before,
-body.brown .ui-datepicker-header a:hover:after {
+body.brown .ui-datepicker-header a:hover:after,
+body.brown input[type="button"]:hover,
+body.brown input[type="button"]:hover:before,
+body.brown input[type="button"]:hover:after {
   color: #b88f30;
 }
 body.brown .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -642,7 +664,6 @@ body.brown #WelcomeView a {
 body.brown .portlet-toolbar .icon-create:hover,
 body.brown .portlet-toolbar a:hover,
 body.brown .portlet-toolbar .icon-create:before,
-body.brown .after-form-details-content a,
 body.brown #filter-latest-activities-link:hover,
 body.brown .badge-message h3 {
   color: #b88f30 !important;
@@ -816,6 +837,27 @@ body.brown .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+body.brown .form-toolbar a:not(.attachLoading):hover,
+body.brown .form-toolbar a:not(.z-button):hover {
+  color: #b88f30 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#ededed', GradientType=0) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
 body.brown .notifications-link:hover {
   border-left: 1px solid #405c61;
   border-right: 1px solid #405c61;
@@ -939,7 +981,11 @@ body.lime a.user-link,
 body.lime .SocialItemsListView .show-create-comment,
 body.lime #AllSocialItemsForPortletView .show-create-comment,
 body.lime a.remove:hover .icon:after,
-body.lime .juiportlet-widget-head a.edit:hover .icon:after {
+body.lime .juiportlet-widget-head a.edit:hover .icon:after,
+body.lime .latest-activity-toolbar a,
+body.lime a.more-panels-link,
+body.lime a.simple-select,
+body.lime .after-form-details-content a {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -952,7 +998,10 @@ body.lime #StickyListMenu > li > a:hover > span,
 body.lime .addfileinput-button:hover span .pager a:hover:before,
 body.lime .pager a:hover:after,
 body.lime .ui-datepicker-header a:hover:before,
-body.lime .ui-datepicker-header a:hover:after {
+body.lime .ui-datepicker-header a:hover:after,
+body.lime input[type="button"]:hover,
+body.lime input[type="button"]:hover:before,
+body.lime input[type="button"]:hover:after {
   color: #bcc98e;
 }
 body.lime .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -967,7 +1016,6 @@ body.lime #WelcomeView a {
 body.lime .portlet-toolbar .icon-create:hover,
 body.lime .portlet-toolbar a:hover,
 body.lime .portlet-toolbar .icon-create:before,
-body.lime .after-form-details-content a,
 body.lime #filter-latest-activities-link:hover,
 body.lime .badge-message h3 {
   color: #bcc98e !important;
@@ -1141,6 +1189,27 @@ body.lime .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+body.lime .form-toolbar a:not(.attachLoading):hover,
+body.lime .form-toolbar a:not(.z-button):hover {
+  color: #bcc98e !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#ededed', GradientType=0) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
 body.lime .notifications-link:hover {
   border-left: 1px solid #19272e;
   border-right: 1px solid #19272e;
@@ -1264,7 +1333,11 @@ body.cherry a.user-link,
 body.cherry .SocialItemsListView .show-create-comment,
 body.cherry #AllSocialItemsForPortletView .show-create-comment,
 body.cherry a.remove:hover .icon:after,
-body.cherry .juiportlet-widget-head a.edit:hover .icon:after {
+body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
+body.cherry .latest-activity-toolbar a,
+body.cherry a.more-panels-link,
+body.cherry a.simple-select,
+body.cherry .after-form-details-content a {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -1277,7 +1350,10 @@ body.cherry #StickyListMenu > li > a:hover > span,
 body.cherry .addfileinput-button:hover span .pager a:hover:before,
 body.cherry .pager a:hover:after,
 body.cherry .ui-datepicker-header a:hover:before,
-body.cherry .ui-datepicker-header a:hover:after {
+body.cherry .ui-datepicker-header a:hover:after,
+body.cherry input[type="button"]:hover,
+body.cherry input[type="button"]:hover:before,
+body.cherry input[type="button"]:hover:after {
   color: #933140;
 }
 body.cherry .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -1292,7 +1368,6 @@ body.cherry #WelcomeView a {
 body.cherry .portlet-toolbar .icon-create:hover,
 body.cherry .portlet-toolbar a:hover,
 body.cherry .portlet-toolbar .icon-create:before,
-body.cherry .after-form-details-content a,
 body.cherry #filter-latest-activities-link:hover,
 body.cherry .badge-message h3 {
   color: #933140 !important;
@@ -1466,6 +1541,27 @@ body.cherry .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+body.cherry .form-toolbar a:not(.attachLoading):hover,
+body.cherry .form-toolbar a:not(.z-button):hover {
+  color: #933140 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#ededed', GradientType=0) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
 body.cherry .notifications-link:hover {
   border-left: 1px solid #566675;
   border-right: 1px solid #566675;
@@ -1589,7 +1685,11 @@ body.turqoise a.user-link,
 body.turqoise .SocialItemsListView .show-create-comment,
 body.turqoise #AllSocialItemsForPortletView .show-create-comment,
 body.turqoise a.remove:hover .icon:after,
-body.turqoise .juiportlet-widget-head a.edit:hover .icon:after {
+body.turqoise .juiportlet-widget-head a.edit:hover .icon:after,
+body.turqoise .latest-activity-toolbar a,
+body.turqoise a.more-panels-link,
+body.turqoise a.simple-select,
+body.turqoise .after-form-details-content a {
   color: #447799;
 }
 body.turqoise #notifications-flyout .single-notification h4,
@@ -1602,7 +1702,10 @@ body.turqoise #StickyListMenu > li > a:hover > span,
 body.turqoise .addfileinput-button:hover span .pager a:hover:before,
 body.turqoise .pager a:hover:after,
 body.turqoise .ui-datepicker-header a:hover:before,
-body.turqoise .ui-datepicker-header a:hover:after {
+body.turqoise .ui-datepicker-header a:hover:after,
+body.turqoise input[type="button"]:hover,
+body.turqoise input[type="button"]:hover:before,
+body.turqoise input[type="button"]:hover:after {
   color: #44bbcc;
 }
 body.turqoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -1617,7 +1720,6 @@ body.turqoise #WelcomeView a {
 body.turqoise .portlet-toolbar .icon-create:hover,
 body.turqoise .portlet-toolbar a:hover,
 body.turqoise .portlet-toolbar .icon-create:before,
-body.turqoise .after-form-details-content a,
 body.turqoise #filter-latest-activities-link:hover,
 body.turqoise .badge-message h3 {
   color: #44bbcc !important;
@@ -1791,6 +1893,27 @@ body.turqoise .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.turqoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+body.turqoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+body.turqoise .form-toolbar a:not(.attachLoading):hover,
+body.turqoise .form-toolbar a:not(.z-button):hover {
+  color: #44bbcc !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#ededed', GradientType=0) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
 body.turqoise .notifications-link:hover {
   border-left: 1px solid #345c76;
   border-right: 1px solid #345c76;
@@ -1914,7 +2037,11 @@ body.violet a.user-link,
 body.violet .SocialItemsListView .show-create-comment,
 body.violet #AllSocialItemsForPortletView .show-create-comment,
 body.violet a.remove:hover .icon:after,
-body.violet .juiportlet-widget-head a.edit:hover .icon:after {
+body.violet .juiportlet-widget-head a.edit:hover .icon:after,
+body.violet .latest-activity-toolbar a,
+body.violet a.more-panels-link,
+body.violet a.simple-select,
+body.violet .after-form-details-content a {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -1927,7 +2054,10 @@ body.violet #StickyListMenu > li > a:hover > span,
 body.violet .addfileinput-button:hover span .pager a:hover:before,
 body.violet .pager a:hover:after,
 body.violet .ui-datepicker-header a:hover:before,
-body.violet .ui-datepicker-header a:hover:after {
+body.violet .ui-datepicker-header a:hover:after,
+body.violet input[type="button"]:hover,
+body.violet input[type="button"]:hover:before,
+body.violet input[type="button"]:hover:after {
   color: #91a1dc;
 }
 body.violet .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -1942,7 +2072,6 @@ body.violet #WelcomeView a {
 body.violet .portlet-toolbar .icon-create:hover,
 body.violet .portlet-toolbar a:hover,
 body.violet .portlet-toolbar .icon-create:before,
-body.violet .after-form-details-content a,
 body.violet #filter-latest-activities-link:hover,
 body.violet .badge-message h3 {
   color: #91a1dc !important;
@@ -2116,6 +2245,27 @@ body.violet .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+body.violet .form-toolbar a:not(.attachLoading):hover,
+body.violet .form-toolbar a:not(.z-button):hover {
+  color: #91a1dc !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#ededed', GradientType=0) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
 body.violet .notifications-link:hover {
   border-left: 1px solid #34284e;
   border-right: 1px solid #34284e;
@@ -2236,7 +2386,11 @@ body.honey a.user-link,
 body.honey .SocialItemsListView .show-create-comment,
 body.honey #AllSocialItemsForPortletView .show-create-comment,
 body.honey a.remove:hover .icon:after,
-body.honey .juiportlet-widget-head a.edit:hover .icon:after {
+body.honey .juiportlet-widget-head a.edit:hover .icon:after,
+body.honey .latest-activity-toolbar a,
+body.honey a.more-panels-link,
+body.honey a.simple-select,
+body.honey .after-form-details-content a {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -2249,7 +2403,10 @@ body.honey #StickyListMenu > li > a:hover > span,
 body.honey .addfileinput-button:hover span .pager a:hover:before,
 body.honey .pager a:hover:after,
 body.honey .ui-datepicker-header a:hover:before,
-body.honey .ui-datepicker-header a:hover:after {
+body.honey .ui-datepicker-header a:hover:after,
+body.honey input[type="button"]:hover,
+body.honey input[type="button"]:hover:before,
+body.honey input[type="button"]:hover:after {
   color: #abbc42;
 }
 body.honey .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -2264,7 +2421,6 @@ body.honey #WelcomeView a {
 body.honey .portlet-toolbar .icon-create:hover,
 body.honey .portlet-toolbar a:hover,
 body.honey .portlet-toolbar .icon-create:before,
-body.honey .after-form-details-content a,
 body.honey #filter-latest-activities-link:hover,
 body.honey .badge-message h3 {
   color: #abbc42 !important;
@@ -2437,6 +2593,27 @@ body.honey .z-button:active {
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+}
+body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+body.honey .form-toolbar a:not(.attachLoading):hover,
+body.honey .form-toolbar a:not(.z-button):hover {
+  color: #abbc42 !important;
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
+  background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
+  background-image: -webkit-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: -o-linear-gradient(top, #fefefe, #ededed) !important;
+  background-image: linear-gradient(top, #fefefe, #ededed) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#ededed', GradientType=0) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
 body.honey .notifications-link:hover {
   border-left: 1px solid #220f0d;
@@ -4198,6 +4375,8 @@ table.items > thead > tr > td {
   border-left: none;
   vertical-align: middle;
   padding: 10px 5px;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 table.items > tbody > tr > th,
 table.items > thead > tr > th {
@@ -4271,10 +4450,8 @@ tr.even {
   transition: all 0.05s ease-out;
 }
 .checkbox-column {
-  width: 40px;
+  width: 30px;
   text-align: center;
-  padding-right: 0 !important;
-  padding-left: 0 !important;
 }
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
@@ -5609,6 +5786,7 @@ div.wide.form label.hasCheckBox {
   display: block;
   line-height: 100%;
   padding-top: 0;
+  margin-bottom: 5px;
 }
 #right-side-edit-view-panel #owner-box {
   margin-bottom: 15px;
@@ -5821,6 +5999,8 @@ div.wide.form label.hasCheckBox {
 .details-table td {
   vertical-align: top;
   color: #545454;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 .details-table td + th {
   padding-left: 15px !important;
@@ -6579,7 +6759,7 @@ div.hasHalfs .twoThirds {
 }
 .edit-row-menu {
   float: right;
-  margin: 0 0 0 0;
+  margin: 0 5px 0 0;
   list-style: none;
 }
 .edit-row-menu > li {
@@ -6594,10 +6774,10 @@ div.hasHalfs .twoThirds {
   padding: 0;
   display: block;
   overflow: visible;
-  filter: alpha(opacity=25);
-  -khtml-opacity: 0.25;
-  -moz-opacity: 0.25;
-  opacity: 0.25;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
   white-space: nowrap;
 }
 .edit-row-menu > li > a span {
@@ -7840,11 +8020,13 @@ a.remove .icon:after {
   position: absolute;
   top: 6px;
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before {
-  content: '9';
+  content: "9";
 }
+.juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
-  content: 'e';
+  content: "e";
 }
 .juiportlet-widget.OpportunitiesForContactRelatedListView h3,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
@@ -8835,11 +9017,11 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #FFF;
+  border-top: 1px solid rgba(130, 130, 130, 0.85);
+  border-left: 1px solid rgba(115, 115, 115, 0.85);
+  border-right: 1px solid rgba(115, 115, 115, 0.85);
+  border-bottom: 1px solid rgba(100, 100, 100, 0.85);
+  color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -9497,11 +9679,11 @@ div.wide.form .errorMessage {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(230, 230, 230, 0.75);
-  border-left: 1px solid rgba(215, 215, 215, 0.75);
-  border-right: 1px solid rgba(215, 215, 215, 0.75);
-  border-bottom: 1px solid rgba(200, 200, 200, 0.75);
-  color: #FFF;
+  border-top: 1px solid rgba(130, 130, 130, 0.85);
+  border-left: 1px solid rgba(115, 115, 115, 0.85);
+  border-right: 1px solid rgba(115, 115, 115, 0.85);
+  border-bottom: 1px solid rgba(100, 100, 100, 0.85);
+  color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -12290,10 +12472,10 @@ a.close-ModalGameNotification.simple-select {
 }
 .comment .delete-comment a,
 .comment .edit-comment a {
-  filter: alpha(opacity=25);
-  -khtml-opacity: 0.25;
-  -moz-opacity: 0.25;
-  opacity: 0.25;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
 }
 .comment .delete-comment a:hover,
 .comment .edit-comment a:hover {
@@ -12442,6 +12624,7 @@ a.close-ModalGameNotification.simple-select {
 }
 a.user-link {
   font-weight: bold;
+  color: #545454 !important;
 }
 .mission-status {
   margin: 0 5px;
@@ -12724,7 +12907,6 @@ a.user-link {
 }
 .icon-down-arrow {
   font-weight: normal;
-  color: #545454 !important;
 }
 .icon-down-arrow:before {
   position: relative;
@@ -12738,7 +12920,6 @@ a.user-link {
 }
 .icon-up-arrow {
   font-weight: normal;
-  color: #545454 !important;
 }
 .icon-up-arrow:before {
   position: relative;

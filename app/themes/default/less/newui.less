@@ -1456,6 +1456,8 @@ table.items{
             border-left:none;
             vertical-align:middle;
             padding:10px 5px;
+            word-wrap: break-word;
+            word-break: break-all;
         }   
     }
     > tbody,
@@ -1510,10 +1512,10 @@ tr.even{
 }
 
 .checkbox-column{
-    width:40px;
+    width:30px;
     text-align:center;
-    padding-right:0 !important;
-    padding-left: 0 !important;
+    //padding-right:0 !important;
+    //padding-left: 0 !important;
     .hasCheckBox{
         margin:-4px auto 0 auto;
     }
@@ -1657,7 +1659,6 @@ td.empty{
         border-bottom:1px solid #bababa;
     }
     a{
-        //color:#656565 !important;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
         &.attachLoading.z-button{
@@ -1666,13 +1667,6 @@ td.empty{
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         }
-        &:active{
-            //color:#656565;
-            //.b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
-        }
-    }
-    a:hover{
-       // ++.themeColor2-important;
     }
 }
 
@@ -1761,7 +1755,6 @@ td.empty{
 }
 
 a.simple-select{
-    ++.themeColor2-important;
     background:none !important;
     background-image:none !important;
     .b-shadow( ~"none  !important" );
@@ -2628,6 +2621,7 @@ div.wide.form{
         display: block;
         line-height: 100%;
         padding-top:0;
+        margin-bottom: 5px;
     }
     #owner-box{
         margin-bottom:15px;
@@ -2848,6 +2842,8 @@ div.wide.form{
     td{
         vertical-align:top;
         color:#545454;
+        word-wrap: break-word;
+        word-break: break-all;
     }
     td + th{
         //border-left: 1px solid  #dfdfdf;
@@ -3511,7 +3507,7 @@ div.hasHalfs{
 
 .edit-row-menu{
     float:right;
-    margin:0 0 0 0;
+    margin:0 5px 0 0;
     list-style: none;
     > li{
         position: relative;
@@ -3520,7 +3516,7 @@ div.hasHalfs{
             padding:0;
             display:block;
             overflow: visible;
-            .opacity(25);
+            .opacity(50);
             white-space: nowrap;
             span{
                 display:inline-block;
