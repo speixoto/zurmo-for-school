@@ -1,0 +1,344 @@
+@import 'mixins.less';
+
+/*START COLOR SCHEME/THEME*/
+.AppColors(){
+    @textColor         : #545454;
+
+    .textColor{ color: @textColor; }
+    .themeColor{ color: @themeColor; }
+    .themeColor2{ color: @themeColor2; }
+    .themeBackgroundColor{ background-color: @themeColor; }
+    .themeBackgroundColor2{ background-color: @themeColor2; }
+    .themeColor-important{ color: @themeColor !important; }
+    .themeColor2-important{ color: @themeColor2 !important; }
+    .themeBackgroundColor-important{ background-color: @themeColor !important; }
+    .themeBackgroundColor2-important{ background-color: @themeColor2 !important; }
+    .themeColor-focus{ .b-shadow(0 0 1px 1px @themeColor); }
+
+    h1, h2, h3, h4, h5, h6{
+        color: @themeColor;
+        .t-shadow(  0 1px 0 rgba( 255, 255, 255, 0.8 ) );
+    }
+    
+    a:link, a:active, a:visited{
+        color:@textColor;
+    }
+    
+    a:hover,
+    .xhtml-validation-info,
+    .performance-info,
+    tr:hover .pencil,
+    .ui-dialog .ui-dialog-title
+    div.wide.form a,
+    #select-list-attributes-link,
+    #more-search-linkmodal,
+    #more-search-link,
+    .search-form-tools,
+    #inline-edit-form > table td > a
+    .latest-activity-toolbar .filter-portlet-model-bar label,
+    .AppContent.MassEditView .ui-state-highlight p,
+    #ModulePermissionsEditAndDetailsView table tr:first-child th,
+    .calendar-events-1 span,
+    .calendar-events-2 span,
+    .calendar-events-3 span,
+    .calendar-events-4 span,
+    .calendar-events-5 span,
+    .calendar-events-6 span,
+    .sortable-panel,
+    .cell-element,
+    .upload-actions .icon-delete,
+    .badge-icon,
+    .percentComplete,
+    .qtip,
+    .ui-tooltip-default .ui-tooltip-titlebar,
+    .comment .delete-comment,
+    .comment .edit-comment,
+    .comment .delete-comment a,
+    .comment .edit-comment a,
+    .unread td,
+    .unread td a,
+    a.user-link,
+    .SocialItemsListView .show-create-comment,
+    #AllSocialItemsForPortletView .show-create-comment,
+    a.remove:hover .icon:after,
+    .juiportlet-widget-head a.edit:hover .icon:after,
+    .latest-activity-toolbar a,
+    a.more-panels-link,
+    a.simple-select,
+    .after-form-details-content a
+    {
+        color: @themeColor;
+    }
+
+    #notifications-flyout .single-notification h4,
+    .view-toolbar a:hover,
+    .view-toolbar a:active,
+    .portlet-toolbar .icon-delete:before,
+    .portlet-toolbar .icon-edit:before,
+    .ZeroModelsYetView a:before,
+    #StickyListMenu  > li > a:hover > span,
+    .addfileinput-button:hover span
+    .pager a:hover:before,
+    .pager a:hover:after,
+    .ui-datepicker-header a:hover:before,
+    .ui-datepicker-header a:hover:after,
+    input[type="button"]:hover,
+    input[type="button"]:hover:before,
+    input[type="button"]:hover:after
+    {
+        color: @themeColor2;
+    }
+
+    .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+    #AboutView p a, 
+    #AboutView ul a,
+    .configuration-list li a::before,
+    .back-to-app-menu-item span,
+    .breadcrumbs a,
+     #WelcomeView a
+    {
+         color: @themeColor !important;
+    }
+
+    .portlet-toolbar .icon-create:hover,
+    .portlet-toolbar a:hover,
+    .portlet-toolbar .icon-create:before,
+    #filter-latest-activities-link:hover,
+    .badge-message h3
+    {
+         color: @themeColor2 !important;
+    }
+
+    .upload-actions button.start,
+    .upload-actions button.cancel,
+    #InstallAccessFailurePageView a,
+    #ErrorPageView a,
+    .ui-tooltip-default .ui-tooltip-icon,
+    .zLink,
+    .z-link,
+    .lead-conversion-actions a,
+    #clear-search-link
+    {
+        background-color: @themeColor;
+    }
+
+    .latest-activity-toolbar label:hover,
+    .filter-portlet-model-bar label:hover,
+    .latest-activity-toolbar .ui-state-active,
+    .filter-portlet-model-bar .ui-state-active
+    {
+        background-color: @themeColor !important;
+    }
+    
+    #HomeDashboardPortletSelectionView li span,
+    #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+    #MyMissionsForPortletView .filter-portlet-model-bar  .ui-state-active,
+    .points,
+    .ranking,
+    .badge-grade,
+    li.token-input-selected-token,
+    .hide-welcome span
+    {
+        background-color: @themeColor2;   
+    }
+
+    .ui-autocomplete a:hover, 
+    .ui-autocomplete a#ui-active-menuitem, 
+    .ui-autocomplete a.ui-state-hover,
+    #StickyListMenu ul a:hover,
+    .toolbar-mbmenu .options-menu ul a:hover,
+    #ShortcutsMenu ul a:hover,
+    .view-toolbar .parent > ul a:hover,
+    .edit-row-menu ul a:hover 
+    {
+        background-color: @themeColor2 !important;
+        color:#fff !important;
+    }
+
+    #HeaderView{
+        #gradient > .vertical( darken(@headerBarColor, 5%), @headerBarColor );
+    }
+    #HeaderLinksView + div{
+        #gradient > .vertical( @themeColorHeader, @themeColorHeader2 );
+    }
+    #HeaderLinksView ul  ul a:hover{
+        color:#fff !important;
+        #gradient > .vertical( @themeColor2, darken(@themeColor2, 15%) );
+    }
+    #user-header-menu > li > a:hover,
+    #settings-header-menu > li > a:hover{
+        border-left: 1px solid @borderColor;
+        border-right: 1px solid @borderColor;
+    }
+    #MenuView a > span{
+        .t-shadow(rgba(255, 255, 255, 0.8) 0px 1px);
+    }
+    #MenuView li.active > a > span,
+    #MenuView a:hover > span{
+        background-color: @themeColor2;
+        .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
+    }
+    #RecentlyViewedView a > span:first-child{
+        background-color: @themeColor2;
+        .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
+    }
+    #RecentlyViewedView a:hover em{
+        color:@themeColor !important;
+        .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
+    }
+    .green-button,
+    .attachLoading{
+        color:#fff;
+        #gradient > .vertical( @themeColorBtn, @themeColorBtn2 );
+    }
+    .zButton:hover, .z-button:hover{
+        color: darken(@themeColorBtn, 40%) !important;
+        #gradient > .vertical( @themeColorBtn, darken(@themeColorBtn2, 10%) );
+        .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 15%) ) !important;
+    }
+    .zButton:active, .z-button:active{
+        color: darken(@themeColorBtn, 40%) !important;
+        #gradient > .vertical( @themeColorBtn2, @themeColorBtn );
+        .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 15%) ) !important;
+        .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
+    }
+    .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+    .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+    .form-toolbar a:not(.attachLoading):hover,
+    .form-toolbar a:not(.z-button):hover{
+        color: @themeColor2 !important;
+        #gradient > .vertical( #fefefe, #ededed ) !important;
+        .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+    }
+    .notifications-link:hover{
+        border-left: 1px solid @borderColor;
+        border-right: 1px solid @borderColor;
+    }
+    #notifications-link{
+        border-left: 1px solid @borderColor;
+        border-right: 1px solid @borderColor;
+    }
+    .ui-datepicker td.ui-datepicker-today{
+        background:lighten(@themeColor, 50%) !important;
+    }
+    .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+    .LatestActivitiesView .latest-activity-toolbar > div:first-child{
+        border-right:2px solid @themeColor;
+    }
+    .form input[type="checkbox"]:focus,
+    .form input[type="text"]:focus,
+    .form input[type="password"]:focus,
+    .form select.multiple:focus,
+    .form textarea:focus,
+    .hasDropDown select:focus, .hasDropDown select:hover,
+    .hasDropDown:hover select,
+    ul.token-input-list:focus,
+    #layout-container .ui-state-active,
+    #layout-container .ui-widget-content .ui-state-active,
+    #layout-container .ui-widget-header .ui-state-active{
+        .b-shadow(0 0 1px 1px @themeColor);
+    }
+}
+
+    //general for now
+    
+
+body.blue{
+    background: url(../patterns/paper/paper.png) left top repeat;
+    //Blue Theme
+    @themeColor        : #282A76;
+    @themeColor2       : #7CB830;
+    @themeColorBtn     : #97c43d;
+    @themeColorBtn2    : darken(@themeColorBtn, 10%);
+    @themeColorHeader  : #464646;
+    @themeColorHeader2 : #333535;
+    @borderColor       : darken(@themeColor, 10%);
+    @headerBarColor    : @themeColor;
+    .AppColors();
+}
+
+body.brown{
+    background: url(../patterns/light_toast/light_toast.png) left top repeat;
+    //Brown Theme
+    @themeColor        : #547980;
+    @themeColor2       : #B88F30;
+    @themeColorBtn     : #45ADA8;
+    @themeColorBtn2    : darken(@themeColorBtn, 10%);
+    @themeColorHeader  : #594F4F;
+    @themeColorHeader2 : #4F4646;
+    @borderColor       : darken(@themeColor, 10%);
+    @headerBarColor    : @themeColor;
+    .AppColors();
+}
+
+body.lime{
+    background: url(../patterns/light_noise_diagonal/light_noise_diagonal.png) left top repeat;
+    //Green Theme
+    @themeColor        : #2B434F;
+    @themeColor2       : #BCC98E;
+    @themeColorBtn     : #BCC98E;
+    @themeColorBtn2    : darken(@themeColorBtn, 15%);
+    @themeColorHeader  : #464646;
+    @themeColorHeader2 : #333535;
+    @borderColor       : darken(@themeColor, 10%);
+    @headerBarColor    : #638270;
+    .AppColors();
+}
+
+body.cherry{
+    background: url(../patterns/frenchstucco/frenchstucco.png) left top repeat;
+    //Cherry Theme
+    @themeColor        : #6C8092;
+    @themeColor2       : #933140;
+    @themeColorBtn     : @themeColor2;
+    @themeColorBtn2    : darken(@themeColorBtn, 10%);
+    @themeColorHeader  : #464646;
+    @themeColorHeader2 : #333535;
+    @borderColor       : darken(@themeColor, 10%);
+    @headerBarColor    : @themeColor;
+    .AppColors();
+}
+
+body.turqoise{
+    background: url(../patterns/exclusive_paper/exclusive_paper.png) left top repeat;
+    //Turqoise Theme
+    @themeColor        : #447799;
+    @themeColor2       : #44BBCC;
+    @themeColorBtn     : @themeColor2;
+    @themeColorBtn2    : darken(@themeColorBtn, 10%);
+    @themeColorHeader  : #464646;
+    @themeColorHeader2 : #333535;
+    @borderColor       : darken(@themeColor, 10%);
+    @headerBarColor    : @themeColor;
+    .AppColors();
+}
+
+body.violet{
+    background: url(../patterns/diagonal_noise/diagonal_noise.png) left top repeat;
+    //Violet Theme
+    @themeColor        : #4A3970;
+    @themeColor2       : #91A1DC;
+    @themeColorBtn     : @themeColor2;
+    @themeColorBtn2    : darken(@themeColorBtn, 10%);
+    @themeColorHeader  : #464646;
+    @themeColorHeader2 : #333535;
+    @borderColor       : darken(@themeColor, 10%);
+    @headerBarColor    : @themeColor;
+    .AppColors();
+}
+
+body.honey{
+    //Honey Theme
+    @themeColor        : #46201C;
+    @themeColor2       : #ABBC42;
+    @themeColorBtn     : @themeColor2; 
+    @themeColorBtn2    : #6C7C16;//darken(@themeColorBtn, 4%);
+    @themeColorHeader  : #46201C;
+    @themeColorHeader2 : lighten(@themeColorHeader, 5%);
+    @borderColor       : darken(@themeColor, 10%);
+    @headerBarColor    : #A15C31;
+    .AppColors();
+}
+
+
+/*END COLOR SCHEME/THEME*/

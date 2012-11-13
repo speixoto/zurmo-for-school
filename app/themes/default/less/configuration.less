@@ -17,10 +17,9 @@
         }
     }
 }
-.configuration-list li a::before
+.configuration-list li a::before,
 .back-to-app-menu-item span{
     vertical-align:middle;
-    color:@themeColor !important;
     &:before{
         content:"z";
         .symbly(21px);
@@ -76,10 +75,10 @@
         }
         table tr:hover{
             background-color:#D4E7BC;
-            color:@themeColor;
+            ++.themeColor;
             .pencil{
                 visibility:visible;
-                color:@themeColor;
+                ++.themeColor;
             }
         }
         table thead{
@@ -113,7 +112,7 @@
             display:inline-block;
         }
         a{
-            .zButton();
+            ++.z-button;
             float:right;
             position: absolute;
             right:15px;
@@ -142,7 +141,7 @@ table.configuration-list{
         position:relative !important;
     }
     tr td:last-child a{
-        .zButton();
+        ++.z-button;
         float:right;
         &:before{
             content: "n";
@@ -199,7 +198,6 @@ table.configuration-list{
             padding-left:15px;
             padding-bottom: 10px;
             font-weight:bold !important;
-            color:@themeColor;
         }
     }
     td{
@@ -241,7 +239,7 @@ table.configuration-list{
     input[type="button"]{
         display:block !important;
         margin-bottom:15px !important;
-        .zButton();
+        ++.z-button;
         .symbly(22px);
     }
     .select-arrow{
@@ -427,7 +425,6 @@ table.configuration-list{
     }
     a{
         .zLink();
-        .smaller();
         margin-right:5px;
     }
     table{
@@ -531,9 +528,7 @@ table.configuration-list{
 .breadcrumbs{
     padding:0 0 15px 0;
     font-size:11px;
-    a{
-        color: @themeColor !important;
-    }
+   
 }
 
 /*designer*/
@@ -601,7 +596,7 @@ table.configuration-list{
         }
     }
     #edit-form{
-        padding-right:30px;
+        //padding-right:30px;
     }
 }
 #UserCreateView{
@@ -669,7 +664,7 @@ table.configuration-list{
 }
 
 .EmailTestingButton{
-    .zButton();
+    ++.z-button;
     border-top: 1px solid #e7e7e7;
     border-left: 1px solid #d7d7d7;
     border-right: 1px solid #d7d7d7;
