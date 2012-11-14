@@ -3,6 +3,21 @@
   padding: 0;
 }
 /*Imports*/
+.cf:before,
+.cf:after,
+.recipient:before,
+.recipient:after {
+  content: "";
+  display: table;
+}
+.cf:after,
+.recipient:after {
+  clear: both;
+}
+.cf,
+.recipient {
+  zoom: 1;
+}
 .flyout,
 #ModalView .search-view-1,
 .ui-multiselect-menu,
@@ -28,25 +43,46 @@
 }
 .zButton,
 .z-button,
+a.zButton,
+a.z-button,
 .ZeroModelsYetView a,
+a.ZeroModelsYetView a,
 .search-form-tools input[type="submit"],
+a.search-form-tools input[type="submit"],
 .toolbar-mbmenu .options-menu > li > a,
+a.toolbar-mbmenu .options-menu > li > a,
 #progressBar-links a,
+a#progressBar-links a,
 #InstallPageView .AppContainer a,
+a#InstallPageView .AppContainer a,
 #InstallPageView #install-form input[type="submit"],
+a#InstallPageView #install-form input[type="submit"],
 .configuration-list li a,
+a.configuration-list li a,
 table.configuration-list tr td:last-child a,
+atable.configuration-list tr td:last-child a,
 .multiselect-holder input[type="button"],
+a.multiselect-holder input[type="button"],
 .EmailTestingButton,
+a.EmailTestingButton,
 .file-upload-box .ui-icon-plusthick,
+a.file-upload-box .ui-icon-plusthick,
 .ui-datepicker .ui-datepicker-current,
+a.ui-datepicker .ui-datepicker-current,
 .ui-datepicker .ui-datepicker-close,
+a.ui-datepicker .ui-datepicker-close,
 .add-custom-field .configure-custom-field-button,
+a.add-custom-field .configure-custom-field-button,
 .designer-toolbar input[type="submit"],
+a.designer-toolbar input[type="submit"],
 .AttributeEditView form div table #customFieldDataData_AddInputButton,
+a.AttributeEditView form div table #customFieldDataData_AddInputButton,
 #customFieldDataData_AddInputButton,
+a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
-#WelcomeView .dashboard-link {
+a.ModalGameNotification a,
+#WelcomeView .dashboard-link,
+a#WelcomeView .dashboard-link {
   cursor: pointer;
   padding: 0 15px 0 15px;
   line-height: 23px;
@@ -54,10 +90,10 @@ table.configuration-list tr td:last-child a,
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(130, 130, 130, 0.85);
-  border-left: 1px solid rgba(115, 115, 115, 0.85);
-  border-right: 1px solid rgba(115, 115, 115, 0.85);
-  border-bottom: 1px solid rgba(100, 100, 100, 0.85);
+  border-top: 1px solid rgba(200, 200, 200, 0.6);
+  border-left: 1px solid rgba(185, 185, 185, 0.6);
+  border-right: 1px solid rgba(185, 185, 185, 0.6);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.6);
   color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -69,11 +105,11 @@ table.configuration-list tr td:last-child a,
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading),
@@ -187,8 +223,10 @@ table.configuration-list tr td:last-child a.loading .z-icon,
   margin: 0;
 }
 /*START COLOR SCHEME/THEME*/
-body.blue {
-  background: url(../patterns/paper/paper.png) left top repeat;
+a:link,
+a:active,
+a:visited {
+  color: #545454;
 }
 body.blue .textColor {
   color: #545454;
@@ -237,11 +275,6 @@ body.blue h6 {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-body.blue a:link,
-body.blue a:active,
-body.blue a:visited {
-  color: #545454;
-}
 body.blue a:hover,
 body.blue .xhtml-validation-info,
 body.blue .performance-info,
@@ -281,7 +314,9 @@ body.blue .juiportlet-widget-head a.edit:hover .icon:after,
 body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
 body.blue a.simple-select,
-body.blue .after-form-details-content a {
+body.blue .after-form-details-content a,
+body.blue .ui-dialog-title,
+body.blue .show-file-upload-box {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -297,13 +332,14 @@ body.blue .ui-datepicker-header a:hover:before,
 body.blue .ui-datepicker-header a:hover:after,
 body.blue input[type="button"]:hover,
 body.blue input[type="button"]:hover:before,
-body.blue input[type="button"]:hover:after {
+body.blue input[type="button"]:hover:after,
+body.blue .configuration-list li a:hover:before,
+body.blue .addfileinput-button:hover span {
   color: #7cb830;
 }
 body.blue .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.blue #AboutView p a,
 body.blue #AboutView ul a,
-body.blue .configuration-list li a::before,
 body.blue .back-to-app-menu-item span,
 body.blue .breadcrumbs a,
 body.blue #WelcomeView a {
@@ -488,7 +524,8 @@ body.blue .z-button:active {
 body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.blue .form-toolbar a:not(.attachLoading):hover,
-body.blue .form-toolbar a:not(.z-button):hover {
+body.blue .form-toolbar a:not(.z-button):hover,
+body.blue .configuration-list li a:hover {
   color: #7cb830 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -589,11 +626,6 @@ body.brown h6 {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-body.brown a:link,
-body.brown a:active,
-body.brown a:visited {
-  color: #545454;
-}
 body.brown a:hover,
 body.brown .xhtml-validation-info,
 body.brown .performance-info,
@@ -633,7 +665,9 @@ body.brown .juiportlet-widget-head a.edit:hover .icon:after,
 body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
 body.brown a.simple-select,
-body.brown .after-form-details-content a {
+body.brown .after-form-details-content a,
+body.brown .ui-dialog-title,
+body.brown .show-file-upload-box {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -649,13 +683,14 @@ body.brown .ui-datepicker-header a:hover:before,
 body.brown .ui-datepicker-header a:hover:after,
 body.brown input[type="button"]:hover,
 body.brown input[type="button"]:hover:before,
-body.brown input[type="button"]:hover:after {
+body.brown input[type="button"]:hover:after,
+body.brown .configuration-list li a:hover:before,
+body.brown .addfileinput-button:hover span {
   color: #b88f30;
 }
 body.brown .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.brown #AboutView p a,
 body.brown #AboutView ul a,
-body.brown .configuration-list li a::before,
 body.brown .back-to-app-menu-item span,
 body.brown .breadcrumbs a,
 body.brown #WelcomeView a {
@@ -840,7 +875,8 @@ body.brown .z-button:active {
 body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.brown .form-toolbar a:not(.attachLoading):hover,
-body.brown .form-toolbar a:not(.z-button):hover {
+body.brown .form-toolbar a:not(.z-button):hover,
+body.brown .configuration-list li a:hover {
   color: #b88f30 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -941,11 +977,6 @@ body.lime h6 {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-body.lime a:link,
-body.lime a:active,
-body.lime a:visited {
-  color: #545454;
-}
 body.lime a:hover,
 body.lime .xhtml-validation-info,
 body.lime .performance-info,
@@ -985,7 +1016,9 @@ body.lime .juiportlet-widget-head a.edit:hover .icon:after,
 body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
 body.lime a.simple-select,
-body.lime .after-form-details-content a {
+body.lime .after-form-details-content a,
+body.lime .ui-dialog-title,
+body.lime .show-file-upload-box {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -1001,13 +1034,14 @@ body.lime .ui-datepicker-header a:hover:before,
 body.lime .ui-datepicker-header a:hover:after,
 body.lime input[type="button"]:hover,
 body.lime input[type="button"]:hover:before,
-body.lime input[type="button"]:hover:after {
+body.lime input[type="button"]:hover:after,
+body.lime .configuration-list li a:hover:before,
+body.lime .addfileinput-button:hover span {
   color: #bcc98e;
 }
 body.lime .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.lime #AboutView p a,
 body.lime #AboutView ul a,
-body.lime .configuration-list li a::before,
 body.lime .back-to-app-menu-item span,
 body.lime .breadcrumbs a,
 body.lime #WelcomeView a {
@@ -1192,7 +1226,8 @@ body.lime .z-button:active {
 body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.lime .form-toolbar a:not(.attachLoading):hover,
-body.lime .form-toolbar a:not(.z-button):hover {
+body.lime .form-toolbar a:not(.z-button):hover,
+body.lime .configuration-list li a:hover {
   color: #bcc98e !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1293,11 +1328,6 @@ body.cherry h6 {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-body.cherry a:link,
-body.cherry a:active,
-body.cherry a:visited {
-  color: #545454;
-}
 body.cherry a:hover,
 body.cherry .xhtml-validation-info,
 body.cherry .performance-info,
@@ -1337,7 +1367,9 @@ body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
 body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
 body.cherry a.simple-select,
-body.cherry .after-form-details-content a {
+body.cherry .after-form-details-content a,
+body.cherry .ui-dialog-title,
+body.cherry .show-file-upload-box {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -1353,13 +1385,14 @@ body.cherry .ui-datepicker-header a:hover:before,
 body.cherry .ui-datepicker-header a:hover:after,
 body.cherry input[type="button"]:hover,
 body.cherry input[type="button"]:hover:before,
-body.cherry input[type="button"]:hover:after {
+body.cherry input[type="button"]:hover:after,
+body.cherry .configuration-list li a:hover:before,
+body.cherry .addfileinput-button:hover span {
   color: #933140;
 }
 body.cherry .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.cherry #AboutView p a,
 body.cherry #AboutView ul a,
-body.cherry .configuration-list li a::before,
 body.cherry .back-to-app-menu-item span,
 body.cherry .breadcrumbs a,
 body.cherry #WelcomeView a {
@@ -1544,7 +1577,8 @@ body.cherry .z-button:active {
 body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.cherry .form-toolbar a:not(.attachLoading):hover,
-body.cherry .form-toolbar a:not(.z-button):hover {
+body.cherry .form-toolbar a:not(.z-button):hover,
+body.cherry .configuration-list li a:hover {
   color: #933140 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1645,11 +1679,6 @@ body.turqoise h6 {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-body.turqoise a:link,
-body.turqoise a:active,
-body.turqoise a:visited {
-  color: #545454;
-}
 body.turqoise a:hover,
 body.turqoise .xhtml-validation-info,
 body.turqoise .performance-info,
@@ -1689,7 +1718,9 @@ body.turqoise .juiportlet-widget-head a.edit:hover .icon:after,
 body.turqoise .latest-activity-toolbar a,
 body.turqoise a.more-panels-link,
 body.turqoise a.simple-select,
-body.turqoise .after-form-details-content a {
+body.turqoise .after-form-details-content a,
+body.turqoise .ui-dialog-title,
+body.turqoise .show-file-upload-box {
   color: #447799;
 }
 body.turqoise #notifications-flyout .single-notification h4,
@@ -1705,13 +1736,14 @@ body.turqoise .ui-datepicker-header a:hover:before,
 body.turqoise .ui-datepicker-header a:hover:after,
 body.turqoise input[type="button"]:hover,
 body.turqoise input[type="button"]:hover:before,
-body.turqoise input[type="button"]:hover:after {
+body.turqoise input[type="button"]:hover:after,
+body.turqoise .configuration-list li a:hover:before,
+body.turqoise .addfileinput-button:hover span {
   color: #44bbcc;
 }
 body.turqoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.turqoise #AboutView p a,
 body.turqoise #AboutView ul a,
-body.turqoise .configuration-list li a::before,
 body.turqoise .back-to-app-menu-item span,
 body.turqoise .breadcrumbs a,
 body.turqoise #WelcomeView a {
@@ -1896,7 +1928,8 @@ body.turqoise .z-button:active {
 body.turqoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.turqoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.turqoise .form-toolbar a:not(.attachLoading):hover,
-body.turqoise .form-toolbar a:not(.z-button):hover {
+body.turqoise .form-toolbar a:not(.z-button):hover,
+body.turqoise .configuration-list li a:hover {
   color: #44bbcc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1997,11 +2030,6 @@ body.violet h6 {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-body.violet a:link,
-body.violet a:active,
-body.violet a:visited {
-  color: #545454;
-}
 body.violet a:hover,
 body.violet .xhtml-validation-info,
 body.violet .performance-info,
@@ -2041,7 +2069,9 @@ body.violet .juiportlet-widget-head a.edit:hover .icon:after,
 body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
 body.violet a.simple-select,
-body.violet .after-form-details-content a {
+body.violet .after-form-details-content a,
+body.violet .ui-dialog-title,
+body.violet .show-file-upload-box {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -2057,13 +2087,14 @@ body.violet .ui-datepicker-header a:hover:before,
 body.violet .ui-datepicker-header a:hover:after,
 body.violet input[type="button"]:hover,
 body.violet input[type="button"]:hover:before,
-body.violet input[type="button"]:hover:after {
+body.violet input[type="button"]:hover:after,
+body.violet .configuration-list li a:hover:before,
+body.violet .addfileinput-button:hover span {
   color: #91a1dc;
 }
 body.violet .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.violet #AboutView p a,
 body.violet #AboutView ul a,
-body.violet .configuration-list li a::before,
 body.violet .back-to-app-menu-item span,
 body.violet .breadcrumbs a,
 body.violet #WelcomeView a {
@@ -2248,7 +2279,8 @@ body.violet .z-button:active {
 body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.violet .form-toolbar a:not(.attachLoading):hover,
-body.violet .form-toolbar a:not(.z-button):hover {
+body.violet .form-toolbar a:not(.z-button):hover,
+body.violet .configuration-list li a:hover {
   color: #91a1dc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -2299,6 +2331,9 @@ body.violet #layout-container .ui-widget-header .ui-state-active {
   -ms-box-shadow: 0 0 1px 1px #4a3970;
   box-shadow: 0 0 1px 1px #4a3970;
 }
+body.honey {
+  background: url(../patterns/paper/paper.png) left top repeat;
+}
 body.honey .textColor {
   color: #545454;
 }
@@ -2346,11 +2381,6 @@ body.honey h6 {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-body.honey a:link,
-body.honey a:active,
-body.honey a:visited {
-  color: #545454;
-}
 body.honey a:hover,
 body.honey .xhtml-validation-info,
 body.honey .performance-info,
@@ -2390,7 +2420,9 @@ body.honey .juiportlet-widget-head a.edit:hover .icon:after,
 body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
 body.honey a.simple-select,
-body.honey .after-form-details-content a {
+body.honey .after-form-details-content a,
+body.honey .ui-dialog-title,
+body.honey .show-file-upload-box {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -2406,13 +2438,14 @@ body.honey .ui-datepicker-header a:hover:before,
 body.honey .ui-datepicker-header a:hover:after,
 body.honey input[type="button"]:hover,
 body.honey input[type="button"]:hover:before,
-body.honey input[type="button"]:hover:after {
+body.honey input[type="button"]:hover:after,
+body.honey .configuration-list li a:hover:before,
+body.honey .addfileinput-button:hover span {
   color: #abbc42;
 }
 body.honey .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.honey #AboutView p a,
 body.honey #AboutView ul a,
-body.honey .configuration-list li a::before,
 body.honey .back-to-app-menu-item span,
 body.honey .breadcrumbs a,
 body.honey #WelcomeView a {
@@ -2597,7 +2630,8 @@ body.honey .z-button:active {
 body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.honey .form-toolbar a:not(.attachLoading):hover,
-body.honey .form-toolbar a:not(.z-button):hover {
+body.honey .form-toolbar a:not(.z-button):hover,
+body.honey .configuration-list li a:hover {
   color: #abbc42 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -8233,11 +8267,9 @@ a.remove .icon:after {
 .warning {
   color: #FFCC00;
 }
-.configuration-list li a::before,
 .back-to-app-menu-item span {
   vertical-align: middle;
 }
-.configuration-list li a::before:before,
 .back-to-app-menu-item span:before {
   content: "z";
   font-weight: normal;
@@ -8354,6 +8386,7 @@ a.remove .icon:after {
   font-weight: normal;
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
+  color: #666;
   margin-right: 5px;
   position: relative;
   top: -2px;
@@ -8938,6 +8971,16 @@ table.configuration-list tr td:last-child a:before {
 #UserConfigurationEditView #edit-form table {
   width: 100%;
 }
+#UsersSearchView .search-view-1 table {
+  border-bottom: none;
+}
+#UsersSearchView .search-view-1 th {
+  width: 15%;
+}
+#UsersSearchView .search-view-1 td {
+  width: 85%;
+  padding-bottom: 15px;
+}
 #UsersSearchView .view-toolbar-container {
   margin-top: 15px;
 }
@@ -9017,10 +9060,10 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(130, 130, 130, 0.85);
-  border-left: 1px solid rgba(115, 115, 115, 0.85);
-  border-right: 1px solid rgba(115, 115, 115, 0.85);
-  border-bottom: 1px solid rgba(100, 100, 100, 0.85);
+  border-top: 1px solid rgba(200, 200, 200, 0.6);
+  border-left: 1px solid rgba(185, 185, 185, 0.6);
+  border-right: 1px solid rgba(185, 185, 185, 0.6);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.6);
   color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -9032,11 +9075,11 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
 .AppContent.ImportWizardView .required-fields {
   font-size: 12px;
@@ -9554,6 +9597,7 @@ div.wide.form .errorMessage {
   position: relative;
   bottom: -18px;
   z-index: 5;
+  font-weight: normal;
   font-size: 11px;
 }
 .fileupload-content {
@@ -9679,10 +9723,10 @@ div.wide.form .errorMessage {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(130, 130, 130, 0.85);
-  border-left: 1px solid rgba(115, 115, 115, 0.85);
-  border-right: 1px solid rgba(115, 115, 115, 0.85);
-  border-bottom: 1px solid rgba(100, 100, 100, 0.85);
+  border-top: 1px solid rgba(200, 200, 200, 0.6);
+  border-left: 1px solid rgba(185, 185, 185, 0.6);
+  border-right: 1px solid rgba(185, 185, 185, 0.6);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.6);
   color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -9694,11 +9738,11 @@ div.wide.form .errorMessage {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -o-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
-  text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1) !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -webkit-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
@@ -9712,6 +9756,7 @@ div.wide.form .errorMessage {
   margin-right: 5px;
   position: relative;
   top: 2px;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .addfileinput-button input {
   position: absolute;
@@ -12949,6 +12994,31 @@ a.user-link {
   -o-box-shadow: inset 0 0 0 2px #ffffff;
   -ms-box-shadow: inset 0 0 0 2px #ffffff;
   box-shadow: inset 0 0 0 2px #ffffff;
+}
+/*Email Compose*/
+#CreateEmailMessageModalEditView .panel {
+  width: 100%;
+}
+#CreateEmailMessageModalEditView td {
+  padding-left: 0;
+}
+#CreateEmailMessageModalEditView .more-panels-link {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  float: left;
+}
+.recipient > label {
+  float: left;
+  width: 3%;
+  margin-top: 5px;
+}
+.recipient > div {
+  float: right;
+  width: 96%;
+}
+#cc-bcc-fields .recipient {
+  margin-top: 15px;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {
