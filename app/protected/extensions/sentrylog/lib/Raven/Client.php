@@ -196,6 +196,8 @@ class Raven_Client
         $headers = array();
         if (function_exists('getallheaders')) {
             $headers = getallheaders();
+            // Don't log cookie information, for security reasons
+            $headers['Cookie'] = 'Unset';
         }
 
         $data = array_merge($data, array(
@@ -208,7 +210,7 @@ class Raven_Client
                 'url' => $this->get_current_url(),
                 'query_string' => $this->_server_variable('QUERY_STRNG'),
                 'data' => $_POST,
-                'cookies' => $_COOKIE,
+                'cookies' => array(), // Don't log cookie information, for security reasons
                 'headers' => $headers,
                 'env' => $_SERVER,
             )

@@ -166,8 +166,9 @@
                     ),
                     array(
                         'class'=>'application.extensions.sentrylog.RSentryLog',
-                        'dsn'=> 'https://50c57f07a70240c1ae20cc7957a5c867:8aa046360d2845baa1f4fc8ed12ba616@app.getsentry.com/3492',
-                        'levels'=>'error, warning',
+                        //'dsn'=> 'https://50c57f07a70240c1ae20cc7957a5c867:8aa046360d2845baa1f4fc8ed12ba616@app.getsentry.com/3492',
+                        'dsn' => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
+                        'levels'=>'error',
                     ),
                 ),
             ),
