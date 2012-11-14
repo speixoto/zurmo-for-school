@@ -38,7 +38,7 @@
         {
             $menuItems = array('label' => $this->getLabel(),
                                'url'   => null,
-                               'itemOptions' => array('class' => 'icon-user-config'),
+                               'itemOptions' => array('class' => 'icon-user-config_', 'id' => 'UserViewAccountConfiguration'),
                                'items' => array(
                                    array('label'   => Yii::t('Default', 'General'),
                                        'url'     => $this->route . '/configurationEdit?id=' . $this->modelId),

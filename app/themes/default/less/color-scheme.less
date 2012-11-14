@@ -189,20 +189,28 @@
         color:@themeColor !important;
         .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
     }
+
+
+    @themeColorBtnDefault     : #97c43d;
+    @themeColorBtn2Default    : darken(@themeColorBtnDefault, 10%);
+
     .green-button,
     .attachLoading{
         color:#fff;
-        #gradient > .vertical( @themeColorBtn, @themeColorBtn2 );
+        #gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default );
+        //#gradient > .vertical( @themeColorBtn, @themeColorBtn2 );
+        .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
     }
-    .zButton:hover, .z-button:hover{
-        color: darken(@themeColorBtn, 40%) !important;
-        #gradient > .vertical( @themeColorBtn, darken(@themeColorBtn2, 10%) );
-        .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 15%) ) !important;
+    .zButton:hover, .z-button:hover,
+    .zButton:active, .z-button:active{
+        color: darken(@themeColorBtnDefault, 40%) !important;
+        #gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) );
+        .t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
+        //color: darken(@themeColorBtn, 40%) !important;
+        //#gradient > .vertical( @themeColorBtn, darken(@themeColorBtn2, 10%) );
+        //.t-shadow( 0px 1px 0 lighten(@themeColorBtn, 15%) ) !important;
     }
     .zButton:active, .z-button:active{
-        color: darken(@themeColorBtn, 40%) !important;
-        #gradient > .vertical( @themeColorBtn2, @themeColorBtn );
-        .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 15%) ) !important;
         .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
     }
     .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,

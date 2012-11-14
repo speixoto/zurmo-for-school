@@ -105,11 +105,6 @@ a#WelcomeView .dashboard-link {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading),
@@ -477,9 +472,16 @@ body.blue .attachLoading {
   background-image: -o-linear-gradient(top, #97c43d, #799e30);
   background-image: linear-gradient(top, #97c43d, #799e30);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#799e30', GradientType=0);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.blue .zButton:hover,
-body.blue .z-button:hover {
+body.blue .z-button:hover,
+body.blue .zButton:active,
+body.blue .z-button:active {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
@@ -499,22 +501,6 @@ body.blue .z-button:hover {
 }
 body.blue .zButton:active,
 body.blue .z-button:active {
-  color: #1f290c !important;
-  background-color: #97c43d;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#799e30), to(#97c43d));
-  background-image: -moz-linear-gradient(top, #799e30, #97c43d);
-  background-image: -ms-linear-gradient(top, #799e30, #97c43d);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #799e30), color-stop(100%, #97c43d));
-  background-image: -webkit-linear-gradient(top, #799e30, #97c43d);
-  background-image: -o-linear-gradient(top, #799e30, #97c43d);
-  background-image: linear-gradient(top, #799e30, #97c43d);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#799e30', endColorstr='#97c43d', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
-  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
-  -o-text-shadow: 0px 1px 0 #b6d678 !important;
-  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
-  text-shadow: 0px 1px 0 #b6d678 !important;
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -818,54 +804,45 @@ body.brown #RecentlyViewedView a:hover em {
 body.brown .green-button,
 body.brown .attachLoading {
   color: #fff;
-  background-color: #368985;
+  background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#45ada8), to(#368985));
-  background-image: -moz-linear-gradient(top, #45ada8, #368985);
-  background-image: -ms-linear-gradient(top, #45ada8, #368985);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #45ada8), color-stop(100%, #368985));
-  background-image: -webkit-linear-gradient(top, #45ada8, #368985);
-  background-image: -o-linear-gradient(top, #45ada8, #368985);
-  background-image: linear-gradient(top, #45ada8, #368985);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#45ada8', endColorstr='#368985', GradientType=0);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#799e30', GradientType=0);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.brown .zButton:hover,
-body.brown .z-button:hover {
-  color: #0b1b1a !important;
-  background-color: #286461;
+body.brown .z-button:hover,
+body.brown .zButton:active,
+body.brown .z-button:active {
+  color: #1f290c !important;
+  background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#45ada8), to(#286461));
-  background-image: -moz-linear-gradient(top, #45ada8, #286461);
-  background-image: -ms-linear-gradient(top, #45ada8, #286461);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #45ada8), color-stop(100%, #286461));
-  background-image: -webkit-linear-gradient(top, #45ada8, #286461);
-  background-image: -o-linear-gradient(top, #45ada8, #286461);
-  background-image: linear-gradient(top, #45ada8, #286461);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#45ada8', endColorstr='#286461', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #76c8c4 !important;
-  -moz-text-shadow: 0px 1px 0 #76c8c4 !important;
-  -o-text-shadow: 0px 1px 0 #76c8c4 !important;
-  -ms-text-shadow: 0px 1px 0 #76c8c4 !important;
-  text-shadow: 0px 1px 0 #76c8c4 !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#5b7724', GradientType=0);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
 }
 body.brown .zButton:active,
 body.brown .z-button:active {
-  color: #0b1b1a !important;
-  background-color: #45ada8;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#368985), to(#45ada8));
-  background-image: -moz-linear-gradient(top, #368985, #45ada8);
-  background-image: -ms-linear-gradient(top, #368985, #45ada8);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #368985), color-stop(100%, #45ada8));
-  background-image: -webkit-linear-gradient(top, #368985, #45ada8);
-  background-image: -o-linear-gradient(top, #368985, #45ada8);
-  background-image: linear-gradient(top, #368985, #45ada8);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#368985', endColorstr='#45ada8', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #76c8c4 !important;
-  -moz-text-shadow: 0px 1px 0 #76c8c4 !important;
-  -o-text-shadow: 0px 1px 0 #76c8c4 !important;
-  -ms-text-shadow: 0px 1px 0 #76c8c4 !important;
-  text-shadow: 0px 1px 0 #76c8c4 !important;
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1169,54 +1146,45 @@ body.lime #RecentlyViewedView a:hover em {
 body.lime .green-button,
 body.lime .attachLoading {
   color: #fff;
-  background-color: #9db05a;
+  background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#bcc98e), to(#9db05a));
-  background-image: -moz-linear-gradient(top, #bcc98e, #9db05a);
-  background-image: -ms-linear-gradient(top, #bcc98e, #9db05a);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bcc98e), color-stop(100%, #9db05a));
-  background-image: -webkit-linear-gradient(top, #bcc98e, #9db05a);
-  background-image: -o-linear-gradient(top, #bcc98e, #9db05a);
-  background-image: linear-gradient(top, #bcc98e, #9db05a);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bcc98e', endColorstr='#9db05a', GradientType=0);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#799e30', GradientType=0);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.lime .zButton:hover,
-body.lime .z-button:hover {
-  color: #535e2d !important;
-  background-color: #819246;
+body.lime .z-button:hover,
+body.lime .zButton:active,
+body.lime .z-button:active {
+  color: #1f290c !important;
+  background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#bcc98e), to(#819246));
-  background-image: -moz-linear-gradient(top, #bcc98e, #819246);
-  background-image: -ms-linear-gradient(top, #bcc98e, #819246);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bcc98e), color-stop(100%, #819246));
-  background-image: -webkit-linear-gradient(top, #bcc98e, #819246);
-  background-image: -o-linear-gradient(top, #bcc98e, #819246);
-  background-image: linear-gradient(top, #bcc98e, #819246);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bcc98e', endColorstr='#819246', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -moz-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -o-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -ms-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  text-shadow: 0px 1px 0 #dbe2c2 !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#5b7724', GradientType=0);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
 }
 body.lime .zButton:active,
 body.lime .z-button:active {
-  color: #535e2d !important;
-  background-color: #bcc98e;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#9db05a), to(#bcc98e));
-  background-image: -moz-linear-gradient(top, #9db05a, #bcc98e);
-  background-image: -ms-linear-gradient(top, #9db05a, #bcc98e);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9db05a), color-stop(100%, #bcc98e));
-  background-image: -webkit-linear-gradient(top, #9db05a, #bcc98e);
-  background-image: -o-linear-gradient(top, #9db05a, #bcc98e);
-  background-image: linear-gradient(top, #9db05a, #bcc98e);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9db05a', endColorstr='#bcc98e', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -moz-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -o-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -ms-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  text-shadow: 0px 1px 0 #dbe2c2 !important;
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1520,54 +1488,45 @@ body.cherry #RecentlyViewedView a:hover em {
 body.cherry .green-button,
 body.cherry .attachLoading {
   color: #fff;
-  background-color: #6d242f;
+  background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#933140), to(#6d242f));
-  background-image: -moz-linear-gradient(top, #933140, #6d242f);
-  background-image: -ms-linear-gradient(top, #933140, #6d242f);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #933140), color-stop(100%, #6d242f));
-  background-image: -webkit-linear-gradient(top, #933140, #6d242f);
-  background-image: -o-linear-gradient(top, #933140, #6d242f);
-  background-image: linear-gradient(top, #933140, #6d242f);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#933140', endColorstr='#6d242f', GradientType=0);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#799e30', GradientType=0);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.cherry .zButton:hover,
-body.cherry .z-button:hover {
-  color: #000000 !important;
-  background-color: #46181f;
+body.cherry .z-button:hover,
+body.cherry .zButton:active,
+body.cherry .z-button:active {
+  color: #1f290c !important;
+  background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#933140), to(#46181f));
-  background-image: -moz-linear-gradient(top, #933140, #46181f);
-  background-image: -ms-linear-gradient(top, #933140, #46181f);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #933140), color-stop(100%, #46181f));
-  background-image: -webkit-linear-gradient(top, #933140, #46181f);
-  background-image: -o-linear-gradient(top, #933140, #46181f);
-  background-image: linear-gradient(top, #933140, #46181f);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#933140', endColorstr='#46181f', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #c44d5f !important;
-  -moz-text-shadow: 0px 1px 0 #c44d5f !important;
-  -o-text-shadow: 0px 1px 0 #c44d5f !important;
-  -ms-text-shadow: 0px 1px 0 #c44d5f !important;
-  text-shadow: 0px 1px 0 #c44d5f !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#5b7724', GradientType=0);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
 }
 body.cherry .zButton:active,
 body.cherry .z-button:active {
-  color: #000000 !important;
-  background-color: #933140;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#6d242f), to(#933140));
-  background-image: -moz-linear-gradient(top, #6d242f, #933140);
-  background-image: -ms-linear-gradient(top, #6d242f, #933140);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6d242f), color-stop(100%, #933140));
-  background-image: -webkit-linear-gradient(top, #6d242f, #933140);
-  background-image: -o-linear-gradient(top, #6d242f, #933140);
-  background-image: linear-gradient(top, #6d242f, #933140);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6d242f', endColorstr='#933140', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #c44d5f !important;
-  -moz-text-shadow: 0px 1px 0 #c44d5f !important;
-  -o-text-shadow: 0px 1px 0 #c44d5f !important;
-  -ms-text-shadow: 0px 1px 0 #c44d5f !important;
-  text-shadow: 0px 1px 0 #c44d5f !important;
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1871,54 +1830,45 @@ body.turquoise #RecentlyViewedView a:hover em {
 body.turquoise .green-button,
 body.turquoise .attachLoading {
   color: #fff;
-  background-color: #2f9eae;
+  background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#44bbcc), to(#2f9eae));
-  background-image: -moz-linear-gradient(top, #44bbcc, #2f9eae);
-  background-image: -ms-linear-gradient(top, #44bbcc, #2f9eae);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44bbcc), color-stop(100%, #2f9eae));
-  background-image: -webkit-linear-gradient(top, #44bbcc, #2f9eae);
-  background-image: -o-linear-gradient(top, #44bbcc, #2f9eae);
-  background-image: linear-gradient(top, #44bbcc, #2f9eae);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#44bbcc', endColorstr='#2f9eae', GradientType=0);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#799e30', GradientType=0);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.turquoise .zButton:hover,
-body.turquoise .z-button:hover {
-  color: #0f3135 !important;
-  background-color: #247986;
+body.turquoise .z-button:hover,
+body.turquoise .zButton:active,
+body.turquoise .z-button:active {
+  color: #1f290c !important;
+  background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#44bbcc), to(#247986));
-  background-image: -moz-linear-gradient(top, #44bbcc, #247986);
-  background-image: -ms-linear-gradient(top, #44bbcc, #247986);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44bbcc), color-stop(100%, #247986));
-  background-image: -webkit-linear-gradient(top, #44bbcc, #247986);
-  background-image: -o-linear-gradient(top, #44bbcc, #247986);
-  background-image: linear-gradient(top, #44bbcc, #247986);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#44bbcc', endColorstr='#247986', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #80d1dc !important;
-  -moz-text-shadow: 0px 1px 0 #80d1dc !important;
-  -o-text-shadow: 0px 1px 0 #80d1dc !important;
-  -ms-text-shadow: 0px 1px 0 #80d1dc !important;
-  text-shadow: 0px 1px 0 #80d1dc !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#5b7724', GradientType=0);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
 }
 body.turquoise .zButton:active,
 body.turquoise .z-button:active {
-  color: #0f3135 !important;
-  background-color: #44bbcc;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#2f9eae), to(#44bbcc));
-  background-image: -moz-linear-gradient(top, #2f9eae, #44bbcc);
-  background-image: -ms-linear-gradient(top, #2f9eae, #44bbcc);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2f9eae), color-stop(100%, #44bbcc));
-  background-image: -webkit-linear-gradient(top, #2f9eae, #44bbcc);
-  background-image: -o-linear-gradient(top, #2f9eae, #44bbcc);
-  background-image: linear-gradient(top, #2f9eae, #44bbcc);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2f9eae', endColorstr='#44bbcc', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #80d1dc !important;
-  -moz-text-shadow: 0px 1px 0 #80d1dc !important;
-  -o-text-shadow: 0px 1px 0 #80d1dc !important;
-  -ms-text-shadow: 0px 1px 0 #80d1dc !important;
-  text-shadow: 0px 1px 0 #80d1dc !important;
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -2222,54 +2172,45 @@ body.violet #RecentlyViewedView a:hover em {
 body.violet .green-button,
 body.violet .attachLoading {
   color: #fff;
-  background-color: #6a80d0;
+  background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#91a1dc), to(#6a80d0));
-  background-image: -moz-linear-gradient(top, #91a1dc, #6a80d0);
-  background-image: -ms-linear-gradient(top, #91a1dc, #6a80d0);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #91a1dc), color-stop(100%, #6a80d0));
-  background-image: -webkit-linear-gradient(top, #91a1dc, #6a80d0);
-  background-image: -o-linear-gradient(top, #91a1dc, #6a80d0);
-  background-image: linear-gradient(top, #91a1dc, #6a80d0);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#91a1dc', endColorstr='#6a80d0', GradientType=0);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#799e30', GradientType=0);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.violet .zButton:hover,
-body.violet .z-button:hover {
-  color: #27397a !important;
-  background-color: #445fc3;
+body.violet .z-button:hover,
+body.violet .zButton:active,
+body.violet .z-button:active {
+  color: #1f290c !important;
+  background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#91a1dc), to(#445fc3));
-  background-image: -moz-linear-gradient(top, #91a1dc, #445fc3);
-  background-image: -ms-linear-gradient(top, #91a1dc, #445fc3);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #91a1dc), color-stop(100%, #445fc3));
-  background-image: -webkit-linear-gradient(top, #91a1dc, #445fc3);
-  background-image: -o-linear-gradient(top, #91a1dc, #445fc3);
-  background-image: linear-gradient(top, #91a1dc, #445fc3);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#91a1dc', endColorstr='#445fc3', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #cbd3ee !important;
-  -moz-text-shadow: 0px 1px 0 #cbd3ee !important;
-  -o-text-shadow: 0px 1px 0 #cbd3ee !important;
-  -ms-text-shadow: 0px 1px 0 #cbd3ee !important;
-  text-shadow: 0px 1px 0 #cbd3ee !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#5b7724', GradientType=0);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
 }
 body.violet .zButton:active,
 body.violet .z-button:active {
-  color: #27397a !important;
-  background-color: #91a1dc;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#6a80d0), to(#91a1dc));
-  background-image: -moz-linear-gradient(top, #6a80d0, #91a1dc);
-  background-image: -ms-linear-gradient(top, #6a80d0, #91a1dc);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6a80d0), color-stop(100%, #91a1dc));
-  background-image: -webkit-linear-gradient(top, #6a80d0, #91a1dc);
-  background-image: -o-linear-gradient(top, #6a80d0, #91a1dc);
-  background-image: linear-gradient(top, #6a80d0, #91a1dc);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6a80d0', endColorstr='#91a1dc', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #cbd3ee !important;
-  -moz-text-shadow: 0px 1px 0 #cbd3ee !important;
-  -o-text-shadow: 0px 1px 0 #cbd3ee !important;
-  -ms-text-shadow: 0px 1px 0 #cbd3ee !important;
-  text-shadow: 0px 1px 0 #cbd3ee !important;
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -2573,54 +2514,45 @@ body.honey #RecentlyViewedView a:hover em {
 body.honey .green-button,
 body.honey .attachLoading {
   color: #fff;
-  background-color: #6c7c16;
+  background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#abbc42), to(#6c7c16));
-  background-image: -moz-linear-gradient(top, #abbc42, #6c7c16);
-  background-image: -ms-linear-gradient(top, #abbc42, #6c7c16);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #abbc42), color-stop(100%, #6c7c16));
-  background-image: -webkit-linear-gradient(top, #abbc42, #6c7c16);
-  background-image: -o-linear-gradient(top, #abbc42, #6c7c16);
-  background-image: linear-gradient(top, #abbc42, #6c7c16);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#abbc42', endColorstr='#6c7c16', GradientType=0);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#799e30', GradientType=0);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.honey .zButton:hover,
-body.honey .z-button:hover {
-  color: #22250d !important;
-  background-color: #46510e;
+body.honey .z-button:hover,
+body.honey .zButton:active,
+body.honey .z-button:active {
+  color: #1f290c !important;
+  background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#abbc42), to(#46510e));
-  background-image: -moz-linear-gradient(top, #abbc42, #46510e);
-  background-image: -ms-linear-gradient(top, #abbc42, #46510e);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #abbc42), color-stop(100%, #46510e));
-  background-image: -webkit-linear-gradient(top, #abbc42, #46510e);
-  background-image: -o-linear-gradient(top, #abbc42, #46510e);
-  background-image: linear-gradient(top, #abbc42, #46510e);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#abbc42', endColorstr='#46510e', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #c4d07a !important;
-  -moz-text-shadow: 0px 1px 0 #c4d07a !important;
-  -o-text-shadow: 0px 1px 0 #c4d07a !important;
-  -ms-text-shadow: 0px 1px 0 #c4d07a !important;
-  text-shadow: 0px 1px 0 #c4d07a !important;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#5b7724', GradientType=0);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
 }
 body.honey .zButton:active,
 body.honey .z-button:active {
-  color: #22250d !important;
-  background-color: #abbc42;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#6c7c16), to(#abbc42));
-  background-image: -moz-linear-gradient(top, #6c7c16, #abbc42);
-  background-image: -ms-linear-gradient(top, #6c7c16, #abbc42);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #6c7c16), color-stop(100%, #abbc42));
-  background-image: -webkit-linear-gradient(top, #6c7c16, #abbc42);
-  background-image: -o-linear-gradient(top, #6c7c16, #abbc42);
-  background-image: linear-gradient(top, #6c7c16, #abbc42);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6c7c16', endColorstr='#abbc42', GradientType=0);
-  -webkit-text-shadow: 0px 1px 0 #c4d07a !important;
-  -moz-text-shadow: 0px 1px 0 #c4d07a !important;
-  -o-text-shadow: 0px 1px 0 #c4d07a !important;
-  -ms-text-shadow: 0px 1px 0 #c4d07a !important;
-  text-shadow: 0px 1px 0 #c4d07a !important;
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -4656,11 +4588,6 @@ td.empty {
 .modal-view-toolbar a,
 .form-toolbar a {
   display: inline-block;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
 .modal-view-toolbar a.attachLoading.z-button,
 .form-toolbar a.attachLoading.z-button {
@@ -8852,11 +8779,6 @@ table.configuration-list tr td:last-child a:before {
 }
 #currency-collection-form .portlet-toolbar a {
   display: inline-block;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
-  text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
 #currency-collection-form .portlet-toolbar a.attachLoading.z-button {
   color: #fff;
@@ -8984,6 +8906,21 @@ table.configuration-list tr td:last-child a:before {
 #UsersSearchView .view-toolbar-container {
   margin-top: 15px;
 }
+/*User Profile*/
+#UserViewAccountConfiguration > a:before {
+  content: "n";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
 /*=User Security*/
 .UserGroupMembershipView .details-table,
 #PoliciesEditAndDetailsView .details-table,
@@ -9075,11 +9012,6 @@ table.configuration-list tr td:last-child a:before {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
 .AppContent.ImportWizardView .required-fields {
   font-size: 12px;
@@ -9738,11 +9670,6 @@ div.wide.form .errorMessage {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
-  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -webkit-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
@@ -9933,7 +9860,6 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui-datepicker-calendar td {
   min-width: 30px;
   height: 30px;
-  border: 1px solid green;
   border-color: #BBB;
   border-style: solid;
   border-width: 1px 1px 0 0;
@@ -9949,6 +9875,10 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
   background-image: none !important;
+}
+.ui-datepicker .ui-datepicker-calendar td:hover {
+  background-image: none;
+  background: #f5f5f5 url(../images/datepicker-sprite-ie.png) left bottom repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   border-top: 1px solid #BBB;
@@ -13004,9 +12934,14 @@ a.user-link {
 }
 #CreateEmailMessageModalEditView .more-panels-link {
   display: block;
-  margin-top: 5px;
+  margin: 0 0 0 4%;
   font-size: 11px;
   float: left;
+  position: relative;
+  top: 6px;
+}
+#CreateEmailMessageModalEditView div.overlay-label-field {
+  padding-bottom: 0;
 }
 .recipient > label {
   float: left;
