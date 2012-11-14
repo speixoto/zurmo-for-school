@@ -241,6 +241,8 @@
             => 'Entwicklertools',
         'Dr.'
             => 'Dr.', // Same Word Translated
+        'Due On'
+            => 'Fällig am',
         'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
             => 'Durch Klicken auf die Config-Icon in der rechten oberen Ecke jedes Portlet ermöglicht es, Diagramme auf dem Dashboard zu bearbeiten.',
         'Email Address'
