@@ -1629,49 +1629,49 @@ body.cherry #layout-container .ui-widget-header .ui-state-active {
   -ms-box-shadow: 0 0 1px 1px #6c8092;
   box-shadow: 0 0 1px 1px #6c8092;
 }
-body.turqoise {
+body.turquoise {
   background: url(../patterns/exclusive_paper/exclusive_paper.png) left top repeat;
 }
-body.turqoise .textColor {
+body.turquoise .textColor {
   color: #545454;
 }
-body.turqoise .themeColor {
+body.turquoise .themeColor {
   color: #447799;
 }
-body.turqoise .themeColor2 {
+body.turquoise .themeColor2 {
   color: #44bbcc;
 }
-body.turqoise .themeBackgroundColor {
+body.turquoise .themeBackgroundColor {
   background-color: #447799;
 }
-body.turqoise .themeBackgroundColor2 {
+body.turquoise .themeBackgroundColor2 {
   background-color: #44bbcc;
 }
-body.turqoise .themeColor-important {
+body.turquoise .themeColor-important {
   color: #447799 !important;
 }
-body.turqoise .themeColor2-important {
+body.turquoise .themeColor2-important {
   color: #44bbcc !important;
 }
-body.turqoise .themeBackgroundColor-important {
+body.turquoise .themeBackgroundColor-important {
   background-color: #447799 !important;
 }
-body.turqoise .themeBackgroundColor2-important {
+body.turquoise .themeBackgroundColor2-important {
   background-color: #44bbcc !important;
 }
-body.turqoise .themeColor-focus {
+body.turquoise .themeColor-focus {
   -webkit-box-shadow: 0 0 1px 1px #447799;
   -moz-box-shadow: 0 0 1px 1px #447799;
   -o-box-shadow: 0 0 1px 1px #447799;
   -ms-box-shadow: 0 0 1px 1px #447799;
   box-shadow: 0 0 1px 1px #447799;
 }
-body.turqoise h1,
-body.turqoise h2,
-body.turqoise h3,
-body.turqoise h4,
-body.turqoise h5,
-body.turqoise h6 {
+body.turquoise h1,
+body.turquoise h2,
+body.turquoise h3,
+body.turquoise h4,
+body.turquoise h5,
+body.turquoise h6 {
   color: #447799;
   -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -1679,122 +1679,122 @@ body.turqoise h6 {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-body.turqoise a:hover,
-body.turqoise .xhtml-validation-info,
-body.turqoise .performance-info,
-body.turqoise tr:hover .pencil,
-body.turqoise .ui-dialog .ui-dialog-title div.wide.form a,
-body.turqoise #select-list-attributes-link,
-body.turqoise #more-search-linkmodal,
-body.turqoise #more-search-link,
-body.turqoise .search-form-tools,
-body.turqoise #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
-body.turqoise .AppContent.MassEditView .ui-state-highlight p,
-body.turqoise #ModulePermissionsEditAndDetailsView table tr:first-child th,
-body.turqoise .calendar-events-1 span,
-body.turqoise .calendar-events-2 span,
-body.turqoise .calendar-events-3 span,
-body.turqoise .calendar-events-4 span,
-body.turqoise .calendar-events-5 span,
-body.turqoise .calendar-events-6 span,
-body.turqoise .sortable-panel,
-body.turqoise .cell-element,
-body.turqoise .upload-actions .icon-delete,
-body.turqoise .badge-icon,
-body.turqoise .percentComplete,
-body.turqoise .qtip,
-body.turqoise .ui-tooltip-default .ui-tooltip-titlebar,
-body.turqoise .comment .delete-comment,
-body.turqoise .comment .edit-comment,
-body.turqoise .comment .delete-comment a,
-body.turqoise .comment .edit-comment a,
-body.turqoise .unread td,
-body.turqoise .unread td a,
-body.turqoise a.user-link,
-body.turqoise .SocialItemsListView .show-create-comment,
-body.turqoise #AllSocialItemsForPortletView .show-create-comment,
-body.turqoise a.remove:hover .icon:after,
-body.turqoise .juiportlet-widget-head a.edit:hover .icon:after,
-body.turqoise .latest-activity-toolbar a,
-body.turqoise a.more-panels-link,
-body.turqoise a.simple-select,
-body.turqoise .after-form-details-content a,
-body.turqoise .ui-dialog-title,
-body.turqoise .show-file-upload-box {
+body.turquoise a:hover,
+body.turquoise .xhtml-validation-info,
+body.turquoise .performance-info,
+body.turquoise tr:hover .pencil,
+body.turquoise .ui-dialog .ui-dialog-title div.wide.form a,
+body.turquoise #select-list-attributes-link,
+body.turquoise #more-search-linkmodal,
+body.turquoise #more-search-link,
+body.turquoise .search-form-tools,
+body.turquoise #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
+body.turquoise .AppContent.MassEditView .ui-state-highlight p,
+body.turquoise #ModulePermissionsEditAndDetailsView table tr:first-child th,
+body.turquoise .calendar-events-1 span,
+body.turquoise .calendar-events-2 span,
+body.turquoise .calendar-events-3 span,
+body.turquoise .calendar-events-4 span,
+body.turquoise .calendar-events-5 span,
+body.turquoise .calendar-events-6 span,
+body.turquoise .sortable-panel,
+body.turquoise .cell-element,
+body.turquoise .upload-actions .icon-delete,
+body.turquoise .badge-icon,
+body.turquoise .percentComplete,
+body.turquoise .qtip,
+body.turquoise .ui-tooltip-default .ui-tooltip-titlebar,
+body.turquoise .comment .delete-comment,
+body.turquoise .comment .edit-comment,
+body.turquoise .comment .delete-comment a,
+body.turquoise .comment .edit-comment a,
+body.turquoise .unread td,
+body.turquoise .unread td a,
+body.turquoise a.user-link,
+body.turquoise .SocialItemsListView .show-create-comment,
+body.turquoise #AllSocialItemsForPortletView .show-create-comment,
+body.turquoise a.remove:hover .icon:after,
+body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
+body.turquoise .latest-activity-toolbar a,
+body.turquoise a.more-panels-link,
+body.turquoise a.simple-select,
+body.turquoise .after-form-details-content a,
+body.turquoise .ui-dialog-title,
+body.turquoise .show-file-upload-box {
   color: #447799;
 }
-body.turqoise #notifications-flyout .single-notification h4,
-body.turqoise .view-toolbar a:hover,
-body.turqoise .view-toolbar a:active,
-body.turqoise .portlet-toolbar .icon-delete:before,
-body.turqoise .portlet-toolbar .icon-edit:before,
-body.turqoise .ZeroModelsYetView a:before,
-body.turqoise #StickyListMenu > li > a:hover > span,
-body.turqoise .addfileinput-button:hover span .pager a:hover:before,
-body.turqoise .pager a:hover:after,
-body.turqoise .ui-datepicker-header a:hover:before,
-body.turqoise .ui-datepicker-header a:hover:after,
-body.turqoise input[type="button"]:hover,
-body.turqoise input[type="button"]:hover:before,
-body.turqoise input[type="button"]:hover:after,
-body.turqoise .configuration-list li a:hover:before,
-body.turqoise .addfileinput-button:hover span {
+body.turquoise #notifications-flyout .single-notification h4,
+body.turquoise .view-toolbar a:hover,
+body.turquoise .view-toolbar a:active,
+body.turquoise .portlet-toolbar .icon-delete:before,
+body.turquoise .portlet-toolbar .icon-edit:before,
+body.turquoise .ZeroModelsYetView a:before,
+body.turquoise #StickyListMenu > li > a:hover > span,
+body.turquoise .addfileinput-button:hover span .pager a:hover:before,
+body.turquoise .pager a:hover:after,
+body.turquoise .ui-datepicker-header a:hover:before,
+body.turquoise .ui-datepicker-header a:hover:after,
+body.turquoise input[type="button"]:hover,
+body.turquoise input[type="button"]:hover:before,
+body.turquoise input[type="button"]:hover:after,
+body.turquoise .configuration-list li a:hover:before,
+body.turquoise .addfileinput-button:hover span {
   color: #44bbcc;
 }
-body.turqoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
-body.turqoise #AboutView p a,
-body.turqoise #AboutView ul a,
-body.turqoise .back-to-app-menu-item span,
-body.turqoise .breadcrumbs a,
-body.turqoise #WelcomeView a {
+body.turquoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
+body.turquoise #AboutView p a,
+body.turquoise #AboutView ul a,
+body.turquoise .back-to-app-menu-item span,
+body.turquoise .breadcrumbs a,
+body.turquoise #WelcomeView a {
   color: #447799 !important;
 }
-body.turqoise .portlet-toolbar .icon-create:hover,
-body.turqoise .portlet-toolbar a:hover,
-body.turqoise .portlet-toolbar .icon-create:before,
-body.turqoise #filter-latest-activities-link:hover,
-body.turqoise .badge-message h3 {
+body.turquoise .portlet-toolbar .icon-create:hover,
+body.turquoise .portlet-toolbar a:hover,
+body.turquoise .portlet-toolbar .icon-create:before,
+body.turquoise #filter-latest-activities-link:hover,
+body.turquoise .badge-message h3 {
   color: #44bbcc !important;
 }
-body.turqoise .upload-actions button.start,
-body.turqoise .upload-actions button.cancel,
-body.turqoise #InstallAccessFailurePageView a,
-body.turqoise #ErrorPageView a,
-body.turqoise .ui-tooltip-default .ui-tooltip-icon,
-body.turqoise .zLink,
-body.turqoise .z-link,
-body.turqoise .lead-conversion-actions a,
-body.turqoise #clear-search-link {
+body.turquoise .upload-actions button.start,
+body.turquoise .upload-actions button.cancel,
+body.turquoise #InstallAccessFailurePageView a,
+body.turquoise #ErrorPageView a,
+body.turquoise .ui-tooltip-default .ui-tooltip-icon,
+body.turquoise .zLink,
+body.turquoise .z-link,
+body.turquoise .lead-conversion-actions a,
+body.turquoise #clear-search-link {
   background-color: #447799;
 }
-body.turqoise .latest-activity-toolbar label:hover,
-body.turqoise .filter-portlet-model-bar label:hover,
-body.turqoise .latest-activity-toolbar .ui-state-active,
-body.turqoise .filter-portlet-model-bar .ui-state-active {
+body.turquoise .latest-activity-toolbar label:hover,
+body.turquoise .filter-portlet-model-bar label:hover,
+body.turquoise .latest-activity-toolbar .ui-state-active,
+body.turquoise .filter-portlet-model-bar .ui-state-active {
   background-color: #447799 !important;
 }
-body.turqoise #HomeDashboardPortletSelectionView li span,
-body.turqoise #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
-body.turqoise #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
-body.turqoise .points,
-body.turqoise .ranking,
-body.turqoise .badge-grade,
-body.turqoise li.token-input-selected-token,
-body.turqoise .hide-welcome span {
+body.turquoise #HomeDashboardPortletSelectionView li span,
+body.turquoise #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
+body.turquoise #MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active,
+body.turquoise .points,
+body.turquoise .ranking,
+body.turquoise .badge-grade,
+body.turquoise li.token-input-selected-token,
+body.turquoise .hide-welcome span {
   background-color: #44bbcc;
 }
-body.turqoise .ui-autocomplete a:hover,
-body.turqoise .ui-autocomplete a#ui-active-menuitem,
-body.turqoise .ui-autocomplete a.ui-state-hover,
-body.turqoise #StickyListMenu ul a:hover,
-body.turqoise .toolbar-mbmenu .options-menu ul a:hover,
-body.turqoise #ShortcutsMenu ul a:hover,
-body.turqoise .view-toolbar .parent > ul a:hover,
-body.turqoise .edit-row-menu ul a:hover {
+body.turquoise .ui-autocomplete a:hover,
+body.turquoise .ui-autocomplete a#ui-active-menuitem,
+body.turquoise .ui-autocomplete a.ui-state-hover,
+body.turquoise #StickyListMenu ul a:hover,
+body.turquoise .toolbar-mbmenu .options-menu ul a:hover,
+body.turquoise #ShortcutsMenu ul a:hover,
+body.turquoise .view-toolbar .parent > ul a:hover,
+body.turquoise .edit-row-menu ul a:hover {
   background-color: #44bbcc !important;
   color: #fff !important;
 }
-body.turqoise #HeaderView {
+body.turquoise #HeaderView {
   background-color: #447799;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#3c6987), to(#447799));
@@ -1806,7 +1806,7 @@ body.turqoise #HeaderView {
   background-image: linear-gradient(top, #3c6987, #447799);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3c6987', endColorstr='#447799', GradientType=0);
 }
-body.turqoise #HeaderLinksView + div {
+body.turquoise #HeaderLinksView + div {
   background-color: #333535;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#464646), to(#333535));
@@ -1818,7 +1818,7 @@ body.turqoise #HeaderLinksView + div {
   background-image: linear-gradient(top, #464646, #333535);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#464646', endColorstr='#333535', GradientType=0);
 }
-body.turqoise #HeaderLinksView ul ul a:hover {
+body.turquoise #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background-color: #2a8c9a;
   background-repeat: repeat-x;
@@ -1831,20 +1831,20 @@ body.turqoise #HeaderLinksView ul ul a:hover {
   background-image: linear-gradient(top, #44bbcc, #2a8c9a);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#44bbcc', endColorstr='#2a8c9a', GradientType=0);
 }
-body.turqoise #user-header-menu > li > a:hover,
-body.turqoise #settings-header-menu > li > a:hover {
+body.turquoise #user-header-menu > li > a:hover,
+body.turquoise #settings-header-menu > li > a:hover {
   border-left: 1px solid #345c76;
   border-right: 1px solid #345c76;
 }
-body.turqoise #MenuView a > span {
+body.turquoise #MenuView a > span {
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-body.turqoise #MenuView li.active > a > span,
-body.turqoise #MenuView a:hover > span {
+body.turquoise #MenuView li.active > a > span,
+body.turquoise #MenuView a:hover > span {
   background-color: #44bbcc;
   -webkit-text-shadow: 0px 1px 0 #6ccad7;
   -moz-text-shadow: 0px 1px 0 #6ccad7;
@@ -1852,7 +1852,7 @@ body.turqoise #MenuView a:hover > span {
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
 }
-body.turqoise #RecentlyViewedView a > span:first-child {
+body.turquoise #RecentlyViewedView a > span:first-child {
   background-color: #44bbcc;
   -webkit-text-shadow: 0px 1px 0 #6ccad7;
   -moz-text-shadow: 0px 1px 0 #6ccad7;
@@ -1860,7 +1860,7 @@ body.turqoise #RecentlyViewedView a > span:first-child {
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
 }
-body.turqoise #RecentlyViewedView a:hover em {
+body.turquoise #RecentlyViewedView a:hover em {
   color: #447799 !important;
   -webkit-text-shadow: 0px 1px 0 #6ccad7;
   -moz-text-shadow: 0px 1px 0 #6ccad7;
@@ -1868,8 +1868,8 @@ body.turqoise #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
 }
-body.turqoise .green-button,
-body.turqoise .attachLoading {
+body.turquoise .green-button,
+body.turquoise .attachLoading {
   color: #fff;
   background-color: #2f9eae;
   background-repeat: repeat-x;
@@ -1882,8 +1882,8 @@ body.turqoise .attachLoading {
   background-image: linear-gradient(top, #44bbcc, #2f9eae);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#44bbcc', endColorstr='#2f9eae', GradientType=0);
 }
-body.turqoise .zButton:hover,
-body.turqoise .z-button:hover {
+body.turquoise .zButton:hover,
+body.turquoise .z-button:hover {
   color: #0f3135 !important;
   background-color: #247986;
   background-repeat: repeat-x;
@@ -1901,8 +1901,8 @@ body.turqoise .z-button:hover {
   -ms-text-shadow: 0px 1px 0 #80d1dc !important;
   text-shadow: 0px 1px 0 #80d1dc !important;
 }
-body.turqoise .zButton:active,
-body.turqoise .z-button:active {
+body.turquoise .zButton:active,
+body.turquoise .z-button:active {
   color: #0f3135 !important;
   background-color: #44bbcc;
   background-repeat: repeat-x;
@@ -1925,11 +1925,11 @@ body.turqoise .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-body.turqoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-body.turqoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-body.turqoise .form-toolbar a:not(.attachLoading):hover,
-body.turqoise .form-toolbar a:not(.z-button):hover,
-body.turqoise .configuration-list li a:hover {
+body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
+body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
+body.turquoise .form-toolbar a:not(.attachLoading):hover,
+body.turquoise .form-toolbar a:not(.z-button):hover,
+body.turquoise .configuration-list li a:hover {
   color: #44bbcc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1947,33 +1947,33 @@ body.turqoise .configuration-list li a:hover {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.turqoise .notifications-link:hover {
+body.turquoise .notifications-link:hover {
   border-left: 1px solid #345c76;
   border-right: 1px solid #345c76;
 }
-body.turqoise #notifications-link {
+body.turquoise #notifications-link {
   border-left: 1px solid #345c76;
   border-right: 1px solid #345c76;
 }
-body.turqoise .ui-datepicker td.ui-datepicker-today {
+body.turquoise .ui-datepicker td.ui-datepicker-today {
   background: #e7eff5 !important;
 }
-body.turqoise .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
-body.turqoise .LatestActivitiesView .latest-activity-toolbar > div:first-child {
+body.turquoise .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
+body.turquoise .LatestActivitiesView .latest-activity-toolbar > div:first-child {
   border-right: 2px solid #447799;
 }
-body.turqoise .form input[type="checkbox"]:focus,
-body.turqoise .form input[type="text"]:focus,
-body.turqoise .form input[type="password"]:focus,
-body.turqoise .form select.multiple:focus,
-body.turqoise .form textarea:focus,
-body.turqoise .hasDropDown select:focus,
-body.turqoise .hasDropDown select:hover,
-body.turqoise .hasDropDown:hover select,
-body.turqoise ul.token-input-list:focus,
-body.turqoise #layout-container .ui-state-active,
-body.turqoise #layout-container .ui-widget-content .ui-state-active,
-body.turqoise #layout-container .ui-widget-header .ui-state-active {
+body.turquoise .form input[type="checkbox"]:focus,
+body.turquoise .form input[type="text"]:focus,
+body.turquoise .form input[type="password"]:focus,
+body.turquoise .form select.multiple:focus,
+body.turquoise .form textarea:focus,
+body.turquoise .hasDropDown select:focus,
+body.turquoise .hasDropDown select:hover,
+body.turquoise .hasDropDown:hover select,
+body.turquoise ul.token-input-list:focus,
+body.turquoise #layout-container .ui-state-active,
+body.turquoise #layout-container .ui-widget-content .ui-state-active,
+body.turquoise #layout-container .ui-widget-header .ui-state-active {
   -webkit-box-shadow: 0 0 1px 1px #447799;
   -moz-box-shadow: 0 0 1px 1px #447799;
   -o-box-shadow: 0 0 1px 1px #447799;
