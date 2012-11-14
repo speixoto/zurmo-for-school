@@ -66,7 +66,8 @@
     a.more-panels-link,
     a.simple-select,
     .after-form-details-content a,
-    .ui-dialog-title
+    .ui-dialog-title,
+    .show-file-upload-box
     {
         color: @themeColor;
     }
@@ -86,7 +87,8 @@
     input[type="button"]:hover,
     input[type="button"]:hover:before,
     input[type="button"]:hover:after,
-    .configuration-list li a:hover:before
+    .configuration-list li a:hover:before,
+    .addfileinput-button:hover span
     {
         color: @themeColor2;
     }
@@ -105,7 +107,7 @@
     .portlet-toolbar a:hover,
     .portlet-toolbar .icon-create:before,
     #filter-latest-activities-link:hover,
-    .badge-message h3,
+    .badge-message h3
     {
          color: @themeColor2 !important;
     }
@@ -246,7 +248,6 @@
     
 
 body.blue{
-    background: url(../patterns/paper/paper.png) left top repeat;
     //Blue Theme
     @themeColor        : #282A76;
     @themeColor2       : #7CB830;
@@ -330,6 +331,7 @@ body.violet{
 }
 
 body.honey{
+    background: url(../patterns/paper/paper.png) left top repeat;
     //Honey Theme
     @themeColor        : #46201C;
     @themeColor2       : #ABBC42;
