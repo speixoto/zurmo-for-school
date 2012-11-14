@@ -52,27 +52,12 @@
             $contact->addPermissions($billy, Permission::READ);
             $contact->addPermissions($billy, Permission::WRITE);
             $contact->save();
+            $molly = ContactTestHelper::createContactByNameForOwner('molly', User::getByUsername('bobby'));
+            $molly->primaryEmail = new Email();
+            $molly->primaryEmail->emailAddress = 'molly@zurmoland.com';
+            $molly->secondaryEmail->emailAddress = 'toMakeSureNoFreeze@works.zur';
+            $contact->save();
             ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact, $billy);
-
-            if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
-            {
-                Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
-                Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
-                Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
-                Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
-                Yii::app()->emailHelper->sendEmailThroughTransport = true;
-                Yii::app()->emailHelper->setOutboundSettings();
-                Yii::app()->emailHelper->init();
-
-                Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
-                Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
-                Yii::app()->imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
-                Yii::app()->imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
-                Yii::app()->imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
-                Yii::app()->imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
-                Yii::app()->imap->setInboundSettings();
-                Yii::app()->imap->init();
-            }
         }
 
         public function testResolveEmailMessageFromPostData()
@@ -121,11 +106,6 @@
             //The message should go to the default outbox folder
             $this->assertEquals(EmailFolder::getDefaultOutboxName(), $emailMessageForm->folder->name);
             $this->assertEquals(EmailFolder::TYPE_OUTBOX, $emailMessageForm->folder->type);
-            unset($emailMessage);
-            unset($recipients);
-            unset($postData);
-            unset($emailMessage);
-            unset($emailMessageForm);
 
             //Test with null in cc/bcc
             $emailMessage     = new EmailMessage();
@@ -141,11 +121,6 @@
             $this->assertEquals('1', count($emailMessageForm->getModel()->recipients));
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessageForm->getModel()->recipients[0]->type);
             $this->assertEquals('a@zurmo.com', $emailMessageForm->getModel()->recipients[0]->toAddress);
-            unset($emailMessage);
-            unset($recipients);
-            unset($postData);
-            unset($emailMessage);
-            unset($emailMessageForm);
 
             //Test with with contacts in recipients
             $emailMessage     = new EmailMessage();
@@ -163,11 +138,6 @@
             $this->assertEquals('sally@zurmoland.com', $emailMessageForm->getModel()->recipients[0]->toAddress);
             $contacts = Contact::getByName('sally sallyson');
             $this->assertEquals($emailMessageForm->getModel()->recipients[0]->personOrAccount->getClassId('Item'), $contacts[0]->getClassId('Item'));
-            unset($emailMessage);
-            unset($recipients);
-            unset($postData);
-            unset($emailMessage);
-            unset($emailMessageForm);
 
             //Test with attachments
             $email = new Email();
@@ -224,15 +194,21 @@
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[1]->type);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessage->recipients[2]->type);
             //Attach personOrAccount recipient
-            $sally = Contact::getByName('Sally');
-            EmailMessageUtil::attachRecipientsToMessage(array('sally@zurmoland.com'), $emailMessage, EmailMessageRecipient::TYPE_BCC);
-            $this->assertEquals('4', count($emailMessage->recipients));
-            //TODO: Check what is happening with the contact creation
-            //$this->assertEquals($emailMessage->recipients[3]->personOrAccount->id, $sally->id);
+
+            EmailMessageUtil::attachRecipientsToMessage(array('sally@zurmoland.com', 'molly@zurmoland.com'), $emailMessage, EmailMessageRecipient::TYPE_BCC);
+            $this->assertEquals('5', count($emailMessage->recipients));
+            $contacts = Contact::getByName('sally sallyson');
+            $this->assertEquals($emailMessage->recipients[3]->personOrAccount->id, $contacts[0]->id);
             $this->assertEquals(EmailMessageRecipient::TYPE_BCC, $emailMessage->recipients[3]->type);
+            //User billy dont have permision to molly contact
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $contacts = Contact::getByName('molly mollyson');
+            $this->assertNotEquals($emailMessage->recipients[4]->personOrAccount->id, $contacts[0]->id);
+            $this->assertEquals   ($emailMessage->recipients[4]->toAddress, $contacts[0]->primaryEmail->emailAddress);
+            $this->assertEquals   (EmailMessageRecipient::TYPE_BCC, $emailMessage->recipients[4]->type);
             //Attach an empty email
             EmailMessageUtil::attachRecipientsToMessage(array(''), $emailMessage, EmailMessageRecipient::TYPE_CC);
-            $this->assertEquals('4', count($emailMessage->recipients));
+            $this->assertEquals('5', count($emailMessage->recipients));
         }
 
         public function testRenderEmailAddressAsMailToOrModalLinkStringContent()
