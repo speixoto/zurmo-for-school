@@ -112,7 +112,14 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            $element->editableTemplate = '<td>{content}{error}</td>';
+            if($element->getAttribute() == 'subject')
+            {
+                $element->editableTemplate = '<td><div class="overlay-label-field">{label}{content}{error}</div></td>';
+            }
+            else
+            {
+                $element->editableTemplate = '<td>{content}{error}</td>';
+            }
         }
 
         /**
