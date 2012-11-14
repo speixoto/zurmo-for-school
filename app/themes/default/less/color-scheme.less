@@ -1,9 +1,13 @@
 @import 'mixins.less';
 
 /*START COLOR SCHEME/THEME*/
-.AppColors(){
     @textColor         : #545454;
+    a:link, a:active, a:visited{
+        color:@textColor;
+    }
 
+.AppColors(){
+    
     .textColor{ color: @textColor; }
     .themeColor{ color: @themeColor; }
     .themeColor2{ color: @themeColor2; }
@@ -18,10 +22,6 @@
     h1, h2, h3, h4, h5, h6{
         color: @themeColor;
         .t-shadow(  0 1px 0 rgba( 255, 255, 255, 0.8 ) );
-    }
-    
-    a:link, a:active, a:visited{
-        color:@textColor;
     }
     
     a:hover,
@@ -65,7 +65,8 @@
     .latest-activity-toolbar a,
     a.more-panels-link,
     a.simple-select,
-    .after-form-details-content a
+    .after-form-details-content a,
+    .ui-dialog-title
     {
         color: @themeColor;
     }
@@ -84,7 +85,8 @@
     .ui-datepicker-header a:hover:after,
     input[type="button"]:hover,
     input[type="button"]:hover:before,
-    input[type="button"]:hover:after
+    input[type="button"]:hover:after,
+    .configuration-list li a:hover:before
     {
         color: @themeColor2;
     }
@@ -92,7 +94,6 @@
     .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
     #AboutView p a, 
     #AboutView ul a,
-    .configuration-list li a::before,
     .back-to-app-menu-item span,
     .breadcrumbs a,
      #WelcomeView a
@@ -104,7 +105,7 @@
     .portlet-toolbar a:hover,
     .portlet-toolbar .icon-create:before,
     #filter-latest-activities-link:hover,
-    .badge-message h3
+    .badge-message h3,
     {
          color: @themeColor2 !important;
     }
@@ -205,7 +206,8 @@
     .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
     .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
     .form-toolbar a:not(.attachLoading):hover,
-    .form-toolbar a:not(.z-button):hover{
+    .form-toolbar a:not(.z-button):hover,
+    .configuration-list li a:hover{
         color: @themeColor2 !important;
         #gradient > .vertical( #fefefe, #ededed ) !important;
         .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;

@@ -37,15 +37,18 @@
         protected function renderControlEditable()
         {
             assert('$this->model instanceof CreateEmailMessageForm');
-            $toContent  = $this->renderTokenInput('to');
-            $toContent .= ZurmoHtml::link('Cc/Bcc', '#', array('onclick' => "js:$('#cc-bcc-fields').toggle();"));
-            $ccContent  = $this->renderTokenInput('cc');
-            $bccContent = $this->renderTokenInput('bcc');
+            $toContent  = CHtml::tag('div', array('class' => 'recipient'), $this->renderTokenInput('to'));
+            $ccContent  = CHtml::tag('div', array('class' => 'recipient'), $this->renderTokenInput('cc'));
+            $bccContent = CHtml::tag('div', array('class' => 'recipient'), $this->renderTokenInput('bcc'));
+            $showCCBCCLink = ZurmoHtml::link('Cc/Bcc', '#',
+                                              array('onclick' => "js:$('#cc-bcc-fields').toggle(); return false;",
+                                                    'id' => 'cc-bcc-fields-link',
+                                                    'class' => 'more-panels-link'));
             return $toContent . CHtml::tag('div',
                                            array('id' => 'cc-bcc-fields',
                                                  'style'   => 'display: none;'
                                                ),
-                                           $ccContent . $bccContent);
+                                           $ccContent . $bccContent) . $showCCBCCLink;
         }
 
         protected function renderTokenInput($prefix)
@@ -56,7 +59,7 @@
                                             $this->attribute,
                                             array('for' => $inputId,
                                                   'label' => ucfirst($prefix)));
-
+            $content  .= '<div>';
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
@@ -73,6 +76,7 @@
             ));
             $cClipWidget->endClip();
             $content  .= $cClipWidget->getController()->clips['ModelElement'];
+            $content  .= '</div>';
             return $content;
         }
 
