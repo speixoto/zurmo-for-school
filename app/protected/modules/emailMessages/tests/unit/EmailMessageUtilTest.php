@@ -29,20 +29,18 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-
             SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = User::getByUsername('super');
+            ReadPermissionsOptimizationUtil::rebuild();
 
             SecurityTestHelper::createUsers();
-            SecurityTestHelper::createGroups();
-            SecurityTestHelper::createAccounts();
-            SecurityTestHelper::createRoles();
 
             $billy = User::getByUsername('billy');
             EmailMessageTestHelper::createEmailAccount($billy);
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_CREATE_CONTACTS);
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_DELETE_CONTACTS);
+            assert($billy->save());
 
             $everyone = Group::getByName('Everyone');
             $saved = $everyone->save();
@@ -50,11 +48,11 @@
             $contact = ContactTestHelper::createContactByNameForOwner('sally', Yii::app()->user->userModel);
             $contact->primaryEmail = new Email();
             $contact->primaryEmail->emailAddress = 'sally@zurmoland.com';
+            $contact->secondaryEmail->emailAddress = 'toMakeSureNoFreeze@works.com';
             $contact->addPermissions($billy, Permission::READ);
             $contact->addPermissions($billy, Permission::WRITE);
             $contact->save();
-
-            ReadPermissionsOptimizationUtil::rebuild();
+            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact, $billy);
 
             if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
             {
@@ -158,14 +156,13 @@
                                                                           'bcc' => null),
                                                     'subject' => 'Test Email From Post',
                                                     'content' => array('htmlContent' => 'This is a test email')
-                ));
+            ));
             $emailMessageForm = EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessageForm, $billy);
             $this->assertEquals('1', count($emailMessageForm->getModel()->recipients));
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $emailMessageForm->getModel()->recipients[0]->type);
             $this->assertEquals('sally@zurmoland.com', $emailMessageForm->getModel()->recipients[0]->toAddress);
             $contacts = Contact::getByName('sally sallyson');
-            //TODO: check why this is not working
-            //$this->assertEquals($emailMessageForm->getModel()->recipients[0]->personOrAccount->getClassId('Item'), $contacts[0]->getClassId('Item'));
+            $this->assertEquals($emailMessageForm->getModel()->recipients[0]->personOrAccount->getClassId('Item'), $contacts[0]->getClassId('Item'));
             unset($emailMessage);
             unset($recipients);
             unset($postData);
