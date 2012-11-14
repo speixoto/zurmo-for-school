@@ -97,7 +97,7 @@
             => 'Suma',
         'An error has occurred. Please click'
             => 'Ha ocurrido un error. Por favor, haga clic',
-        'An error occured during login.  try again.'
+        'An error occured during login. Please try again.'
             => 'Error de login. Por favor, inténtalo de nuevo.',
         'Any City'
             => 'Ciudad',
