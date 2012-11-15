@@ -706,8 +706,6 @@
             $groupBy->setAttributeAndRelationData(array('hasOne' => 'name'));
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
-            $this->fail();//look we are passing preceding info but it is being ignored. //acc -> con -> acc -> acc parent could break
-            //but maybe we dont care now. note somewhere in the adapter getAttributesForDisplayAttributes functions
             $attributes = $adapter->getAttributesForDisplayAttributes(new ReportModelTestItem(), 'hasOne');
             $this->assertEquals(6, count($attributes));
             $compareData        = array('label' => 'Name');
@@ -738,7 +736,7 @@
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
             $attributes = $adapter->getAttributesForDisplayAttributes(new ReportModelTestItem2(), 'hasMany3');
             $this->assertEquals(6, count($attributes));
-            $compareData        = array('label' => 'somethingOn3');
+            $compareData        = array('label' => 'Something On 3');
             $this->assertEquals($compareData, $attributes['somethingOn3']);
             $compareData        = array('label' => 'Count');
             $this->assertEquals($compareData, $attributes['Count']);
@@ -746,13 +744,10 @@
             $this->assertEquals($compareData, $attributes['createdDateTime__Minimum']);
             $compareData        = array('label' => 'Created Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Maximum']);
-            $compareData        = array('label' => 'Modified Date Time (Min)');
+            $compareData        = array('label' => 'Modified Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Minimum']);
             $compareData        = array('label' => 'Modified Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Maximum']);
-
-            $this->fail()//acc -> acc parent. example. or another where there are dual links for the same model.
-            //we might have tested this but just make sure by this point you do
         }
 
         /**
@@ -766,8 +761,8 @@
             $rules              = new ReportTestRules();
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForSummationOrderBys();
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
+            $attributes         = $adapter->getAttributesForOrderBys();
             $this->assertEquals(0, count($attributes));
 
             //A group by is selected on the base model ReportModelTestItem
@@ -775,8 +770,8 @@
             $groupBy->setAttributeAndRelationData('dropDown');
             $model              = new ReportModelTestItem();
             $report->addGroupBy($groupBy);
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForSummationOrderBys();
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
+            $attributes         = $adapter->getAttributesForOrderBys();
             $this->assertEquals(1, count($attributes));
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
@@ -786,8 +781,8 @@
             $groupBy->setAttributeAndRelationData(array('hasOne' => 'phone'));
             $model              = new ReportModelTestItem2();
             $report->addGroupBy($groupBy);
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForSummationOrderBys(new ReportModelTestItem(), 'hasOne');
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
+            $attributes = $adapter->getAttributesForOrderBys(new ReportModelTestItem(), 'hasOne');
             $this->assertEquals(1, count($attributes));
             $compareData        = array('label' => 'Phone');
             $this->assertEquals($compareData, $attributes['phone']);
@@ -797,8 +792,8 @@
             $groupBy->setAttributeAndRelationData('radioDropDown');
             $model              = new ReportModelTestItem();
             $report->addGroupBy($groupBy);
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForSummationOrderBys();
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
+            $attributes         = $adapter->getAttributesForOrderBys();
             $this->assertEquals(2, count($attributes));
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
@@ -815,53 +810,53 @@
             $rules              = new ReportTestRules();
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForSummationGroupBys();
-            $this->assertEquals(35, count($attributes));
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
+            $attributes         = $adapter->getAttributesForGroupBys();
+            $this->assertEquals(39, count($attributes));
 
             //Date/DateTime columns first...
-            $compareData        = array('label' => 'Date - Year');
+            $compareData        = array('label' => 'Date -(Year)');
             $this->assertEquals($compareData, $attributes['date__Year']);
-            $compareData        = array('label' => 'Date - Quarter');
+            $compareData        = array('label' => 'Date -(Quarter)');
             $this->assertEquals($compareData, $attributes['date__Quarter']);
-            $compareData        = array('label' => 'Date - Month');
+            $compareData        = array('label' => 'Date -(Month)');
             $this->assertEquals($compareData, $attributes['date__Month']);
-            $compareData        = array('label' => 'Date - Week');
+            $compareData        = array('label' => 'Date -(Week)');
             $this->assertEquals($compareData, $attributes['date__Week']);
-            $compareData        = array('label' => 'Date - Day');
+            $compareData        = array('label' => 'Date -(Day)');
             $this->assertEquals($compareData, $attributes['date__Day']);
 
-            $compareData        = array('label' => 'Date Time - Year');
+            $compareData        = array('label' => 'Date Time -(Year)');
             $this->assertEquals($compareData, $attributes['dateTime__Year']);
-            $compareData        = array('label' => 'Date Time - Quarter');
+            $compareData        = array('label' => 'Date Time -(Quarter)');
             $this->assertEquals($compareData, $attributes['dateTime__Quarter']);
-            $compareData        = array('label' => 'Date Time - Month');
+            $compareData        = array('label' => 'Date Time -(Month)');
             $this->assertEquals($compareData, $attributes['dateTime__Month']);
-            $compareData        = array('label' => 'Date Time - Week');
+            $compareData        = array('label' => 'Date Time -(Week)');
             $this->assertEquals($compareData, $attributes['dateTime__Week']);
-            $compareData        = array('label' => 'Date Time - Day');
+            $compareData        = array('label' => 'Date Time -(Day)');
             $this->assertEquals($compareData, $attributes['dateTime__Day']);
 
-            $compareData        = array('label' => 'Created Date Time - Year');
+            $compareData        = array('label' => 'Created Date Time -(Year)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Year']);
-            $compareData        = array('label' => 'Created Date Time - Quarter');
+            $compareData        = array('label' => 'Created Date Time -(Quarter)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Quarter']);
-            $compareData        = array('label' => 'Created Date Time - Month');
+            $compareData        = array('label' => 'Created Date Time -(Month)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Month']);
-            $compareData        = array('label' => 'Created Date Time - Week');
+            $compareData        = array('label' => 'Created Date Time -(Week)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Week']);
-            $compareData        = array('label' => 'Created Date Time - Day');
+            $compareData        = array('label' => 'Created Date Time -(Day)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Day']);
 
-            $compareData        = array('label' => 'Modified Date Time - Year');
+            $compareData        = array('label' => 'Modified Date Time -(Year)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Year']);
-            $compareData        = array('label' => 'Modified Date Time - Quarter');
+            $compareData        = array('label' => 'Modified Date Time -(Quarter)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Quarter']);
-            $compareData        = array('label' => 'Modified Date Time - Month');
+            $compareData        = array('label' => 'Modified Date Time -(Month)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Month']);
-            $compareData        = array('label' => 'Modified Date Time - Week');
+            $compareData        = array('label' => 'Modified Date Time -(Week)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Week']);
-            $compareData        = array('label' => 'Modified Date Time - Day');
+            $compareData        = array('label' => 'Modified Date Time -(Day)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Day']);
 
             //and then the rest of the attributes... (exclude text area)
@@ -887,6 +882,8 @@
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Multi Drop Down');
             $this->assertEquals($compareData, $attributes['multiDropDown']);
+            $compareData        = array('label' => 'Tag Cloud');
+            $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Reported As Attribute');
             $this->assertEquals($compareData, $attributes['reportedAsAttribute']);
             $compareData        = array('label' => 'Currency Value');
@@ -894,8 +891,8 @@
             $compareData        = array('label' => 'A name for a state');
             $this->assertEquals($compareData, $attributes['likeContactState']);
             //Add Id field
-            $compareData        = array('label' => 'Idr');
-            $this->assertEquals($compareData, $attributes['Id']);
+            $compareData        = array('label' => 'Id');
+            $this->assertEquals($compareData, $attributes['id']);
             //Add Dynamically Derived Attributes
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $attributes['owner__User']);
@@ -915,12 +912,12 @@
             $rules              = new ReportTestRules();
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForMatrixDisplayColumns();
-            $this->assertEquals(23, count($attributes));
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report);
+            $attributes = $adapter->getForDrillDownAttributes();
+            $this->assertEquals(25, count($attributes));
 
             //Includes derived attributes as well
-            $compareData        = array('label' => 'Calculated');
+            $compareData        = array('label' => 'Test Calculated');
             $this->assertEquals($compareData, $attributes['calculated']);
             $compareData        = array('label' => 'Full Name');
             $this->assertEquals($compareData, $attributes['FullName']);
@@ -935,14 +932,14 @@
             $rules              = new ReportTestRules();
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForMatrixFilters();
-            $this->assertEquals(21, count($attributes));
+            $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report);
+            $attributes         = $adapter->getAttributesForFilters();
+            $this->assertEquals(23, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
             $compareData        = array('label' => 'Modified Date Time');
-            $this->assertEquals($compareData, $attributes['modified Date Time']);
+            $this->assertEquals($compareData, $attributes['modifiedDateTime']);
             $compareData        = array('label' => 'First Name');
             $this->assertEquals($compareData, $attributes['firstName']);
             $compareData        = array('label' => 'Last Name');
@@ -971,6 +968,8 @@
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Multi Drop Down');
             $this->assertEquals($compareData, $attributes['multiDropDown']);
+            $compareData        = array('label' => 'Tag Cloud');
+            $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Reported As Attribute');
             $this->assertEquals($compareData, $attributes['reportedAsAttribute']);
             //Currency is treated as a relation reported as an attribute just like drop downs
@@ -998,72 +997,89 @@
             $rules              = new ReportTestRules();
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForMatrixGroupBys();
-            $this->assertEquals(35, count($attributes));
+            $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report);
+            $attributes         = $adapter->getAttributesForGroupBys();
+            $this->assertEquals(39, count($attributes));
 
             //Date/DateTime columns first...
-            $compareData        = array('label' => 'Date - Year');
+            $compareData        = array('label' => 'Date -(Year)');
             $this->assertEquals($compareData, $attributes['date__Year']);
-            $compareData        = array('label' => 'Date - Quarter');
+            $compareData        = array('label' => 'Date -(Quarter)');
             $this->assertEquals($compareData, $attributes['date__Quarter']);
-            $compareData        = array('label' => 'Date - Month');
+            $compareData        = array('label' => 'Date -(Month)');
             $this->assertEquals($compareData, $attributes['date__Month']);
-            $compareData        = array('label' => 'Date - Week');
+            $compareData        = array('label' => 'Date -(Week)');
             $this->assertEquals($compareData, $attributes['date__Week']);
-            $compareData        = array('label' => 'Date - Day');
+            $compareData        = array('label' => 'Date -(Day)');
             $this->assertEquals($compareData, $attributes['date__Day']);
 
-            $compareData        = array('label' => 'Date Time - Year');
+            $compareData        = array('label' => 'Date Time -(Year)');
             $this->assertEquals($compareData, $attributes['dateTime__Year']);
-            $compareData        = array('label' => 'Date Time - Quarter');
+            $compareData        = array('label' => 'Date Time -(Quarter)');
             $this->assertEquals($compareData, $attributes['dateTime__Quarter']);
-            $compareData        = array('label' => 'Date Time - Month');
+            $compareData        = array('label' => 'Date Time -(Month)');
             $this->assertEquals($compareData, $attributes['dateTime__Month']);
-            $compareData        = array('label' => 'Date Time - Week');
+            $compareData        = array('label' => 'Date Time -(Week)');
             $this->assertEquals($compareData, $attributes['dateTime__Week']);
-            $compareData        = array('label' => 'Date Time - Day');
+            $compareData        = array('label' => 'Date Time -(Day)');
             $this->assertEquals($compareData, $attributes['dateTime__Day']);
 
-            $compareData        = array('label' => 'Created Date Time - Year');
+            $compareData        = array('label' => 'Created Date Time -(Year)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Year']);
-            $compareData        = array('label' => 'Created Date Time - Quarter');
+            $compareData        = array('label' => 'Created Date Time -(Quarter)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Quarter']);
-            $compareData        = array('label' => 'Created Date Time - Month');
+            $compareData        = array('label' => 'Created Date Time -(Month)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Month']);
-            $compareData        = array('label' => 'Created Date Time - Week');
+            $compareData        = array('label' => 'Created Date Time -(Week)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Week']);
-            $compareData        = array('label' => 'Created Date Time - Day');
+            $compareData        = array('label' => 'Created Date Time -(Day)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Day']);
 
-            $compareData        = array('label' => 'Modified Date Time - Year');
+            $compareData        = array('label' => 'Modified Date Time -(Year)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Year']);
-            $compareData        = array('label' => 'Modified Date Time - Quarter');
+            $compareData        = array('label' => 'Modified Date Time -(Quarter)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Quarter']);
-            $compareData        = array('label' => 'Modified Date Time - Month');
+            $compareData        = array('label' => 'Modified Date Time -(Month)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Month']);
-            $compareData        = array('label' => 'Modified Date Time - Week');
+            $compareData        = array('label' => 'Modified Date Time -(Week)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Week']);
-            $compareData        = array('label' => 'Modified Date Time - Day');
+            $compareData        = array('label' => 'Modified Date Time -(Day)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Day']);
 
-            //and then the rest of the attributes...
+            //and then the rest of the attributes... (exclude text area)
+            $compareData        = array('label' => 'First Name');
+            $this->assertEquals($compareData, $attributes['firstName']);
+            $compareData        = array('label' => 'Last Name');
+            $this->assertEquals($compareData, $attributes['lastName']);
+            $compareData        = array('label' => 'Boolean');
+            $this->assertEquals($compareData, $attributes['boolean']);
             $compareData        = array('label' => 'Float');
             $this->assertEquals($compareData, $attributes['float']);
             $compareData        = array('label' => 'Integer');
             $this->assertEquals($compareData, $attributes['integer']);
+            $compareData        = array('label' => 'Phone');
+            $this->assertEquals($compareData, $attributes['phone']);
+            $compareData        = array('label' => 'String');
+            $this->assertEquals($compareData, $attributes['string']);
+            $compareData        = array('label' => 'Url');
+            $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Multi Drop Down');
             $this->assertEquals($compareData, $attributes['multiDropDown']);
+            $compareData        = array('label' => 'Tag Cloud');
+            $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Reported As Attribute');
             $this->assertEquals($compareData, $attributes['reportedAsAttribute']);
             $compareData        = array('label' => 'Currency Value');
             $this->assertEquals($compareData, $attributes['currencyValue']);
             $compareData        = array('label' => 'A name for a state');
             $this->assertEquals($compareData, $attributes['likeContactState']);
+            //Add Id field
+            $compareData        = array('label' => 'Id');
+            $this->assertEquals($compareData, $attributes['id']);
             //Add Dynamically Derived Attributes
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $attributes['owner__User']);
@@ -1071,11 +1087,6 @@
             $this->assertEquals($compareData, $attributes['createdByUser__User']);
             $compareData        = array('label' => 'Modified By User');
             $this->assertEquals($compareData, $attributes['modifiedByUser__User']);
-
-            //think about this:
-            //also for numbers... would need banding. on float, integer, currencyValue
-            $this->fail(); //until we add code for banding. I think it would be where it gets displayed like Date can
-            //have a between i think similar thing.
         }
 
         /**
@@ -1088,8 +1099,8 @@
             $rules              = new ReportTestRules();
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes = $adapter->getAttributesForMatrixDisplayAttributes();
+            $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report);
+            $attributes         = $adapter->getAttributesForDisplayAttributes();
             $this->assertEquals(0, count($attributes));
 
             //Select dropDown as the groupBy attribute
@@ -1098,8 +1109,8 @@
             $report             = new Report();
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
-            $attributes         = $adapter->getAttributesForMatrixDisplayAttributes();
+            $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report);
+            $attributes         = $adapter->getAttributesForDisplayAttributes();
             $this->assertEquals(21, count($attributes));
             $compareData        = array('label' => 'Count');
             $this->assertEquals($compareData, $attributes['Count']);
@@ -1108,18 +1119,18 @@
             $this->assertEquals($compareData, $attributes['createdDateTime__Minimum']);
             $compareData        = array('label' => 'Created Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['createdDateTime__Maximum']);
-            $compareData        = array('label' => 'Modified Date Time (Min)');
+            $compareData        = array('label' => 'Modified Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Minimum']);
             $compareData        = array('label' => 'Modified Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Maximum']);
 
-            $compareData        = array('label' => 'Date (Min)');
+            $compareData        = array('label' => 'Date -(Min)');
             $this->assertEquals($compareData, $attributes['date__Minimum']);
             $compareData        = array('label' => 'Date -(Max)');
             $this->assertEquals($compareData, $attributes['date__Maximum']);
-            $compareData        = array('label' => 'Date (Min)');
+            $compareData        = array('label' => 'Date Time -(Min)');
             $this->assertEquals($compareData, $attributes['dateTime__Minimum']);
-            $compareData        = array('label' => 'Date -(Max)');
+            $compareData        = array('label' => 'Date Time -(Max)');
             $this->assertEquals($compareData, $attributes['dateTime__Maximum']);
 
             $compareData        = array('label' => 'Float -(Min)');
@@ -1148,15 +1159,6 @@
             $this->assertEquals($compareData, $attributes['currencyValue__Summation']);
             $compareData        = array('label' => 'Currency Value -(Avg)');
             $this->assertEquals($compareData, $attributes['currencyValue__Average']);
-        }
-
-        /**
-         * @depends testGetAvailableAttributesForMatrixDisplayAttributes
-         */
-        public function testRelationLinksToPrecedingRelation()
-        {
-            $this->fail();
-            //need to test rest of if statements, if preceding is specific, specific but not the same.
         }
     }
 ?>

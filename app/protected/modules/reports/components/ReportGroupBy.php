@@ -56,18 +56,114 @@
             }
         }
 
+        public function hasRelatedData()
+        {
+            if($this->attribute != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public function getResolvedAttribute()
         {
             if($this->attribute != null)
             {
                 return $this->attribute;
             }
-            //todo: resolve
+            return self::resolveAttributeFromData($this->attributeAndRelationData);
         }
 
         public function getResolvedAttributeModelClassName()
         {
+            if($this->attribute != null)
+            {
+                return $this->modelClassName;
+            }
+            return self::resolveAttributeModelClassNameFromData($this->attributeAndRelationData, $this->modelClassName);
+        }
 
+        public function getPenultimateModelClassName()
+        {
+            if($this->attribute != null)
+            {
+                throw new NotSupportedException();
+            }
+            return self::resolvePenultimateModelClassNameFromData($this->attributeAndRelationData, $this->modelClassName);
+        }
+
+        public function getPenultimateRelation()
+        {
+            if($this->attribute != null)
+            {
+                throw new NotSupportedException();
+            }
+            return self::resolvePenultimateRelationFromData($this->attributeAndRelationData);
+        }
+
+
+        protected static function resolveAttributeFromData($attributeAndRelationData)
+        {
+            foreach($attributeAndRelationData as $relationOrAtribute => $relationDataOrAttribute)
+            {
+                if(is_array($relationDataOrAttribute))
+                {
+                    return self::resolveAttributeFromData($relationDataOrAttribute);
+                }
+                else
+                {
+                    return $relationDataOrAttribute;
+                }
+            }
+        }
+
+        protected static function resolveAttributeModelClassNameFromData($attributeAndRelationData, $modelClassName)
+        {
+            foreach($attributeAndRelationData as $relationOrAtribute => $relationDataOrAttribute)
+            {
+                $model = new $modelClassName();
+                if(is_array($relationDataOrAttribute))
+                {
+                    return self::resolveAttributeModelClassNameFromData($relationDataOrAttribute,
+                                    $model->getRelationModelClassName($relationOrAtribute));
+                }
+                else
+                {
+                    return $model->getRelationModelClassName($relationOrAtribute);
+                }
+            }
+        }
+
+        protected static function resolvePenultimateModelClassNameFromData($attributeAndRelationData, $modelClassName)
+        {
+            foreach($attributeAndRelationData as $relationOrAtribute => $relationDataOrAttribute)
+            {
+                if(is_array($relationDataOrAttribute))
+                {
+                    $model = new $modelClassName();
+                    return self::resolvePenultimateModelClassNameFromData($relationDataOrAttribute,
+                                    $model->getRelationModelClassName($relationOrAtribute));
+                }
+                else
+                {
+                    return $modelClassName;
+                }
+            }
+        }
+
+        protected static function resolvePenultimateRelationFromData($attributeAndRelationData)
+        {
+            foreach($attributeAndRelationData as $relationOrAtribute => $relationDataOrAttribute)
+            {
+                if(is_array($relationDataOrAttribute))
+                {
+                    return self::resolvePenultimateRelationFromData($relationDataOrAttribute);
+                }
+                else
+                {
+                    return $relationOrAtribute;
+                }
+            }
         }
     }
 ?>
