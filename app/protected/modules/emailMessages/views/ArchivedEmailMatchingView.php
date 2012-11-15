@@ -145,7 +145,7 @@
                                                                     $this->saveActionId,
                                                                     $this->urlParameters), 0, 0);
             $row = 1;
-            $content = $this->renderEmailMessageContentAndResolveLink();
+           // $content = $this->renderEmailMessageContentAndResolveLink();
             if ($this->userCanCreateContact)
             {
                 $this->setView(new ContactInlineCreateForArchivedEmailCreateView(
@@ -181,11 +181,15 @@
                                      array('class' => 'lead-create-link'));
             $createLeadContent     = Yii::t('Default', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
-
-            $content .= '<div class="matching-actions-and-content" style="display:none;"><div class="email-matching-actions">';
-            $content .= $this->renderContactSelectTitleDivContent($selectContent, $createLeadLink,    $createContactLink);
+            $rules    = new EmailMessageMashableActivityRules();
+            $content = $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
+            $content .= ZurmoHtml::tag('span', array(), strval($this->emailMessage));
+            //$content .= '<div class="matching-actions-and-content" style="display:none;"><div class="email-matching-actions">';
+            $content .= '<div class="matching-actions-and-content"><div class="email-matching-actions">';
+            $content .= $this->renderContactSelectTitleDivContent($selectLink,    $createLeadLink,    $createContactLink);
             $content .= $this->renderLeadCreateTitleDivContent($selectLink,       $createLeadContent, $createContactLink);
             $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent);
+            $content .= $this->renderDeleteLink();
             $content .= '</div>';
             $content .= parent::renderContent() . '</div>';
             return '<div id="wrapper-' . $this->uniqueId . '" class="email-archive-item">' . $content .  '</div>';
@@ -362,6 +366,14 @@
                 $content .= ' ' . $createLeadLink;
             }
             $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createContactContent;
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected function renderDeleteLink()
+        {
+            $content  = '<div id="delete-' . $this->uniqueId . '">';
+            $content .= Yii::t('Default', 'or') . ZurmoHtml::link(Yii::t('Default', 'Delete'));
             $content .= '</div>';
             return $content;
         }

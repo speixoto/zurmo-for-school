@@ -162,5 +162,10 @@
         {
             return false;
         }
+
+        protected function getViewStyle()
+        {
+            return " style=' display:none;'";
+        }
     }
 ?>
