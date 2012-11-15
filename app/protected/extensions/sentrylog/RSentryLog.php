@@ -75,7 +75,7 @@ class RSentryLog extends CLogRoute
 
       $format = explode("\n", $log[0]);
       $title = strip_tags($format[0]);
-      $this->_client->captureMessage($title, array(), $level, true);
+      $sentryEventId = $this->_client->getIdent($this->_client->captureMessage($title, array(), $level, true));
     }
   }
 }
