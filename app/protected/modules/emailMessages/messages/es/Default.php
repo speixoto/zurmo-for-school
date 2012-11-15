@@ -89,6 +89,8 @@
             => 'Cada minuto.',
         'Extra Mail Settings'
             => 'Configuración avanzada',
+        'Failed to connect to mailbox'
+            => '??',
         'Folder'
             => 'Carpeta',
         'From'
