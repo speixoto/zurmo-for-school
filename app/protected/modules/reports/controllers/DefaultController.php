@@ -174,32 +174,11 @@
 
         public function actionSave($type, $id = null)
         {
-            $postData                       = PostUtil::getData();
-            if($id != null)
-            {
-                $savedReport                = SavedReport::getById(intval($id));
-                ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
-                $report                     = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
-            }
-            elseif(RightsUtil::doesUserHaveAllowByRightName('ReportsModule',
-                                                            ReportsModule::RIGHT_CREATE_REPORTS,
-                                                            Yii::app()->user->userModel))
-            {
+            $postData                  = PostUtil::getData();
+            $savedReport               = null;
+            $report                    = null;
+            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
 
-                $savedReport               = new SavedReport();
-                $report                    = new Report();
-                $report->setType($type);
-            }
-            else
-            {
-                $messageView = new AccessFailureView();
-                $view        = new AccessFailurePageView($messageView);
-                echo $view->render();
-                Yii::app()->end(0, false);
-            }
-
-            DataToReportUtil::resolveReportByWizardPostData($report, $postData,
-                                                            ReportToWizardFormAdapter::getFormClassNameByType($type));
             $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
             $model                     =  $reportToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
@@ -230,6 +209,52 @@
             {
                 throw new FailedToSaveModelException();
             }
+        }
+
+        protected function resolveCanCurrentUserAccessReports()
+        {
+            if(!RightsUtil::doesUserHaveAllowByRightName('ReportsModule',
+                                                            ReportsModule::RIGHT_CREATE_REPORTS,
+                                                            Yii::app()->user->userModel))
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            return true;
+        }
+
+        protected function resolveSavedReportAndReportByPostData(Array $postData, & $savedReport, & $report, $type, $id = null)
+        {
+            if($id == null)
+            {
+                $this->resolveCanCurrentUserAccessReports();
+                $savedReport               = new SavedReport();
+                $report                    = new Report();
+                $report->setType($type);
+            }
+            else
+            {
+                $savedReport                = SavedReport::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
+                $report                     = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            }
+            DataToReportUtil::resolveReportByWizardPostData($report, $postData,
+                                                            ReportToWizardFormAdapter::getFormClassNameByType($type));
+        }
+
+        public function actionRelationsAndAttributesTree($type, $treeType, $id = null)
+        {
+            $postData    = PostUtil::getData();
+            $savedReport = null;
+            $report      = null;
+            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
+            $view        = ReportRelationsAndAttributesTreeViewFactory::makeViewFromReport($report, $treeType);
+            $content     = $view->render();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
         }
 
         protected function resolveAfterSaveHasPermissionsProblem(SavedReport $savedReport, $modelToStringValue)

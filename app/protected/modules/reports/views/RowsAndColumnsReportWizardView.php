@@ -46,6 +46,10 @@
         protected function renderConfigSaveAjax($formName)
         {
             assert('is_string($formName)');
+            $url =     Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
+            array_merge($_GET, array('treeType' => FiltersForReportWizardView::getTreeId())));
+
+
             return     "console.log('we are at renderConfigSaveAjax');
                         console.log($('#" . $formName . "').find('.attachLoadingTarget').attr('id'));
                         linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
@@ -54,6 +58,19 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
+                            $.ajax({
+                                url : '" . $url . "',
+                                type : 'POST',
+                                data : $('#" . $formName . "').serialize(),
+                                success : function(data)
+                                {
+                                    $('#" . FiltersForReportWizardView::getTreeDivId() . "').replaceWith(data);
+                                },
+                                error : function()
+                                {
+                                    //todo: error call
+                                }
+                            });
                             $('#FiltersForReportWizardView').show();
 
                         }

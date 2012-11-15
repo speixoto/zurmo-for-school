@@ -24,44 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FiltersForReportWizardView extends ComponentForReportWizardView
+    /**
+     * Extended tree view to allow additional options.
+     */
+    class ZurmoTreeView extends CTreeView
     {
-        protected function renderFormContent()
-        {
-            $content = $this->renderAttributesAndRelationsTree();
-            return $content;
-        }
-
-        protected function renderAttributesAndRelationsTree()
-        {
-            $content  = ZurmoHtml::tag('div', array('id' => self::getTreeDivId()), '');
-            $content .= ZurmoHtml::tag('div', array(), 'the right side content');
-            return $content;
-        }
-
-        public static function getWizardStepTitle()
-        {
-            return Yii::t('Default', 'Select Filters');
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'filterBysPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'filterBysNextLink';
-        }
-
-        public static function getTreeId()
-        {
-            return ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
-        }
-
-        public static function getTreeDivId()
-        {
-            return self::getTreeId() . 'TreeArea';
-        }
     }
 ?>

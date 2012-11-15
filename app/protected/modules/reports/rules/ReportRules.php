@@ -32,6 +32,13 @@
     {
         protected $modelClassName;
 
+        public static function makeByModuleClassName($moduleClassName)
+        {
+            assert('is_string($moduleClassName)');
+            $rulesClassName = $moduleClassName::getPluralCamelCasedName() . 'ReportRules';
+            return new $rulesClassName();
+        }
+
         /**
          * Returns metadata for use in the rules.  Will attempt to retrieve from cache if
          * available, otherwill retrieve from database and cache.

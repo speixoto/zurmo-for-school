@@ -53,6 +53,7 @@
         {
             $content  = $this->renderForm();
             $this->registerScripts();
+            $this->registerCss();
             return $content;
         }
 
@@ -98,6 +99,12 @@
         protected function registerScripts()
         {
             $this->registerClickFlowScript();
+        }
+
+        protected function registerCss()
+        {
+            Yii::app()->getClientScript()->registerCssFile(Yii::app()->getClientScript()->getCoreScriptUrl() .
+                                                           '/treeview/jquery.treeview.css');
         }
 
         protected static function renderValidationScenarioInputContent()
