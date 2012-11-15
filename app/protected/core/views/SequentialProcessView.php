@@ -82,7 +82,6 @@
             $content .= '<h3><span id="sequential-process-spinner"><span class="z-spinner"></span></span>' . $this->message . '</h3>';
             $content .= "<span id='" . $this->getProgressBarId() . "-msg'></span>";
             $content .= '</div>';
-            $content .= '<script type="text/javascript">makeSmallLoadingSpinner("sequential-process-spinner", "dark")</script>';
             $this->registerAjaxScript();
             return $content;
         }
@@ -108,7 +107,8 @@
                     'update' => '#' . $this->containerViewId,
             ));
             $script .= '$(\'#' . $this->getProgressBarId() . '\').progressbar({value: ' . $this->getProgressValue() . '});';
-           Yii::app()->clientScript->registerScript('sequentialProcess', $script);
+            $script .= 'makeSmallLoadingSpinner("sequential-process-spinner", "dark");';
+            Yii::app()->clientScript->registerScript('sequentialProcess', $script);
         }
 
         protected function getProgressValue()
