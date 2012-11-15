@@ -39,6 +39,11 @@
 
         protected $report;
 
+        public function getModel()
+        {
+            return $this->model;
+        }
+
         public function __construct(RedBeanModel $model, ReportRules $rules, Report $report)
         {
             $this->model  = $model;
@@ -188,8 +193,7 @@
             {
                 return false;
             }
-            if($precedingModel->getRelationModelClassName($precedingRelation) !=
-               $this->model->getRelationmodelClassName($relation))
+            if(get_class($precedingModel) != $this->model->getRelationmodelClassName($relation))
             {
                 return false;
             }

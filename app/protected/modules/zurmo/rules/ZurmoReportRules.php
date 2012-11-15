@@ -24,28 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DrillDownDisplayAttributesForReportWizardView extends ComponentForReportWizardView
+    /**
+     * Report rules to be used with the Zurmo module which includes currency, currency value, address, email as well
+     * as others.
+     */
+    class ZurmoReportRules extends SecuredReportRules
     {
-        protected function renderFormContent()
+        public static function getDefaultMetadata()
         {
-            $content  = $this->renderAttributesAndRelationsTreeContent();
-            $content .= ZurmoHtml::tag('div', array(), 'the right side content');
-            return $content;
-        }
-
-        public static function getTreeId()
-        {
-            return ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
-        }
-
-        public static function getWizardStepTitle()
-        {
-            return 'todo';
-        }
-
-        protected function renderPreviousPageLinkContent()
-        {
-            return 'what button here';
+            $metadata = array(
+                'CurrencyValue' => array(
+                    'nonReportable' =>
+                        array(  'currency'),
+                ),
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

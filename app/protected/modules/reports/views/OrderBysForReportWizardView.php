@@ -28,7 +28,14 @@
     {
         protected function renderFormContent()
         {
-            return 'OrderBysForReportWizardView form content';
+            $content  = $this->renderAttributesAndRelationsTreeContent();
+            $content .= ZurmoHtml::tag('div', array(), 'the right side content');
+            return $content;
+        }
+
+        public static function getTreeId()
+        {
+            return ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS;
         }
 
         public static function getWizardStepTitle()

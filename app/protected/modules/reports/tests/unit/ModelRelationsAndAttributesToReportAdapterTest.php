@@ -60,6 +60,20 @@
         /**
          * @depends testGetAllRelations
          */
+        public function testPassingPrecedingRelationThatHasAssumptiveLinkIsProperlyHandled()
+        {
+            $model              = new ReportModelTestItem3();
+            $rules              = new ReportTestRules();
+            $report             = new Report();
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report);
+            $relations = $adapter->getSelectableRelationsData(new ReportModelTestItem(), 'hasMany');
+            $this->assertFalse(isset($relations['hasMany1']));
+        }
+
+        /**
+         * @depends testPassingPrecedingRelationThatHasAssumptiveLinkIsProperlyHandled
+         */
         public function testGetAllReportableRelations()
         {
             //ReportModelTestItem has hasOne, hasMany, and hasOneAlso.  In addition it has a

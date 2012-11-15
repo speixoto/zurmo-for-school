@@ -57,6 +57,16 @@
             return true;
         }
 
+        public static function getTreeId()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static function getTreeDivId()
+        {
+            return static::getTreeId() . 'TreeArea';
+        }
+
         protected function renderContent()
         {
             $content              = $this->renderTitleContent();
@@ -147,6 +157,12 @@
         protected function renderTitleContent()
         {
             return ZurmoHtml::tag('h1',   array(), $this->getTitle());
+        }
+
+        protected function renderAttributesAndRelationsTreeContent()
+        {
+            $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId()), '');
+            return $content;
         }
     }
 ?>

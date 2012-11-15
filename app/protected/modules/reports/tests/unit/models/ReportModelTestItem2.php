@@ -41,7 +41,7 @@
                     'phone',
                 ),
                 'relations' => array(
-                    'hasMany2'          => array(RedBeanModel::HAS_MANY,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
+                    'hasMany2'          => array(RedBeanModel::HAS_MANY,   'ReportModelTestItem', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
                     'hasMany3'          => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem3'),
                 ),

@@ -32,32 +32,7 @@
         public static function makeViewFromReport(Report $report, $treeType)
         {
             assert('is_string($treeType)');
-            $type                      = $report->getType();
-            $moduleClassName           = $report->getModuleClassName();
-            if($moduleClassName == null)
-            {
-                throw new NotSupportedException();
-            }
-            $modelClassName            = $moduleClassName::getPrimaryModelName();
-            $rules                     = ReportRules::makeByModuleClassName($moduleClassName);
-            $model                     = new $modelClassName(false);
-            if($type == Report::TYPE_ROWS_AND_COLUMNS)
-            {
-                $adapter       = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report);
-            }
-            elseif($type == Report::TYPE_SUMMATION)
-            {
-                $adapter       = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report);
-            }
-            elseif($type == Report::TYPE_MATRIX)
-            {
-                $adapter       = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($adapter, $treeType);
+            $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
             return new ReportRelationsAndAttributesTreeView($reportToTreeAdapter);
         }
     }

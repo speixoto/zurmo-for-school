@@ -58,6 +58,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
                             $('#FiltersForReportWizardView').show();
 
                         }
@@ -66,6 +67,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
                             $('#FiltersForReportWizardView').hide();
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView') . "
                             $('#GroupBysForReportWizardView').show();
 
                         }
@@ -74,6 +76,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#GroupBysForReportWizardView').hide();
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
                             $('#DisplayAttributesForReportWizardView').show();
                         }
                         if(linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
@@ -81,6 +84,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                             $('#DisplayAttributesForReportWizardView').hide();
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
                             $('#OrderBysForReportWizardView').show();
                         }
                         if(linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')

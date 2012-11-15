@@ -146,5 +146,31 @@
                                             }'
                                           ));
         }
+
+        protected static function renderTreeViewAjaxScriptContent($formName, $componentViewClassName)
+        {
+            assert('is_string($formName)');
+            assert('is_string($componentViewClassName)');
+            $url    =  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
+                       array_merge($_GET, array('treeType' => $componentViewClassName::getTreeId())));
+            $script = "
+                $('#" . FiltersForReportWizardView::getTreeDivId() . "').addClass('loading');
+                makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
+                $.ajax({
+                    url : '" . $url . "',
+                    type : 'POST',
+                    data : $('#" . $formName . "').serialize(),
+                    success : function(data)
+                    {
+                        $('#" . $componentViewClassName::getTreeDivId() . "').html(data);
+                    },
+                    error : function()
+                    {
+                        //todo: error call
+                    }
+                });
+            ";
+            return $script;
+        }
     }
 ?>

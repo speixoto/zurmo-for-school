@@ -24,28 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DrillDownDisplayAttributesForReportWizardView extends ComponentForReportWizardView
+    /**
+     * Report rules to be used with the Users module.
+     */
+    class UsersReportRules extends SecuredReportRules
     {
-        protected function renderFormContent()
+        public static function getDefaultMetadata()
         {
-            $content  = $this->renderAttributesAndRelationsTreeContent();
-            $content .= ZurmoHtml::tag('div', array(), 'the right side content');
-            return $content;
-        }
-
-        public static function getTreeId()
-        {
-            return ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
-        }
-
-        public static function getWizardStepTitle()
-        {
-            return 'todo';
-        }
-
-        protected function renderPreviousPageLinkContent()
-        {
-            return 'what button here';
+            $metadata = array(
+                'Item' => array(
+                    'nonReportable' =>
+                        array(  'createdByUser',
+                                'modifiedByUser'),
+                ),
+                'Permitable' => array(
+                    'nonReportable' =>
+                        array(  'policies',
+                                'rights'),
+                ),
+                'User' => array(
+                    'nonReportable' =>
+                        array('currency', 'emailBoxes', 'groups', 'manager', 'role'),
+                ),
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

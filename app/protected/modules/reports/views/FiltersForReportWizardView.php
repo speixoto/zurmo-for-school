@@ -28,15 +28,14 @@
     {
         protected function renderFormContent()
         {
-            $content = $this->renderAttributesAndRelationsTree();
+            $content  = $this->renderAttributesAndRelationsTreeContent();
+            $content .= ZurmoHtml::tag('div', array(), 'the right side content');
             return $content;
         }
 
-        protected function renderAttributesAndRelationsTree()
+        public static function getTreeId()
         {
-            $content  = ZurmoHtml::tag('div', array('id' => self::getTreeDivId()), '');
-            $content .= ZurmoHtml::tag('div', array(), 'the right side content');
-            return $content;
+            return ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
         }
 
         public static function getWizardStepTitle()
@@ -54,14 +53,6 @@
             return 'filterBysNextLink';
         }
 
-        public static function getTreeId()
-        {
-            return ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
-        }
 
-        public static function getTreeDivId()
-        {
-            return self::getTreeId() . 'TreeArea';
-        }
     }
 ?>

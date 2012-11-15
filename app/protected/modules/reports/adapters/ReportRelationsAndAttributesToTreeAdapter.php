@@ -26,20 +26,32 @@
 
     class ReportRelationsAndAttributesToTreeAdapter
     {
+        protected $report;
+
         protected $treeType;
 
-        public function __construct(ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter, $treeType)
+        public function __construct(Report $report, $treeType)
         {
             assert('is_string($treeType)');
-            $this->modelToReportAdapter = $modelToReportAdapter;
-            $this->treeType             = $treeType;
+            $this->report   = $report;
+            $this->treeType = $treeType;
+        }
+
+        public function getTreeType()
+        {
+            return $this->treeType;
         }
 
         public function getData()
         {
-            $data                = array();
-            $data[0]             = array('text' => 'Top Node');
-            $childrenNodeData    = $this->getChildrenNodeData();
+            $moduleClassName                = $this->report->getModuleClassName();
+            $previousModelClassNamesInChain = array();
+            $data                           = array();
+            $data[0]                        = array('text' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'));
+            $childrenNodeData               = $this->getChildrenNodeData(
+                                                $previousModelClassNamesInChain,
+                                                $this->makeModelRelationsAndAttributesToReportAdapter(
+                                                    $moduleClassName, $moduleClassName::getPrimaryModelName()));
             if(!empty($childrenNodeData))
             {
                 $data[0]['children'] = $childrenNodeData;
@@ -47,20 +59,46 @@
             return $data;
         }
 
-        protected function getChildrenNodeData(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        protected function getChildrenNodeData(Array $previousModelClassNamesInChain,
+                                               ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
+                                               RedBeanModel $precedingModel = null,
+                                               $precedingRelation = null, & $count = 0)
         {
+            if(!in_array(get_class($modelToReportAdapter->getModel()), $previousModelClassNamesInChain) &&
+               !$modelToReportAdapter->getModel() instanceof OwnedModel)
+            {
+                $previousModelClassNamesInChain[] = get_class($modelToReportAdapter->getModel());
+            }
             $childrenNodeData        = array();
-            $selectableRelationsData = $this->modelToReportAdapter->
+            $selectableRelationsData = $modelToReportAdapter->
                                        getSelectableRelationsData($precedingModel, $precedingRelation);
-
             foreach($selectableRelationsData as $relation => $relationData)
             {
-                $relationNode       = array('text'=> $relationData['label']);
-                //todo: get children
-                $childrenNodeData[] = $relationNode;
-            }
 
-            $attributesData = $this->getAttributesData($precedingModel, $precedingRelation);
+                $relationModelClassName       = $modelToReportAdapter->getModel()->getRelationModelClassName($relation);
+                $relationModuleClassName      = $relationModelClassName::getModuleClassName();
+                if($relationModuleClassName == null)
+                {
+                    throw new NotSupportedException();
+                }
+                if(!in_array($relationModelClassName, $previousModelClassNamesInChain) ||
+                   $relationModelClassName == end($previousModelClassNamesInChain))
+                {
+                    $relationNode                 = array('text'=> $relationData['label'], 'expanded' => false);
+                    $relationModelToReportAdapter = $this->makeModelRelationsAndAttributesToReportAdapter(
+                                                                           $relationModuleClassName, $relationModelClassName);
+                    $relationChildrenNodeData     = $this->getChildrenNodeData($previousModelClassNamesInChain,
+                                                                           $relationModelToReportAdapter,
+                                                                           $modelToReportAdapter->getModel(), $relation, $count);
+                    if(!empty($relationChildrenNodeData))
+                    {
+                        $relationNode['children'] = $relationChildrenNodeData;
+                    }
+                    $childrenNodeData[]           = $relationNode;
+                }
+
+            }
+            $attributesData = $this->getAttributesData($modelToReportAdapter, $precedingModel, $precedingRelation);
             foreach($attributesData as $relation => $attributeData)
             {
                 $attributeNode      = array('text'        => $attributeData['label'],
@@ -70,32 +108,57 @@
             return $childrenNodeData;
         }
 
-        protected function getAttributesData(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        protected function getAttributesData(ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
+                                             RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             if($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS)
             {
-                return $this->modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES)
             {
-                return $this->modelToReportAdapter->getAttributesForDisplayAttributes($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForDisplayAttributes($precedingModel, $precedingRelation);
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS)
             {
-                return $this->modelToReportAdapter->getAttributesForOrderBys($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForOrderBys($precedingModel, $precedingRelation);
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS)
             {
-                return $this->modelToReportAdapter->getAttributesForGroupBys($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForGroupBys($precedingModel, $precedingRelation);
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
-                return $this->modelToReportAdapter->getForDrillDownAttributes($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getForDrillDownAttributes($precedingModel, $precedingRelation);
             }
             else
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function makeModelRelationsAndAttributesToReportAdapter($moduleClassName, $modelClassName)
+        {
+            assert('is_string($moduleClassName)');
+            $rules                     = ReportRules::makeByModuleClassName($moduleClassName);
+            $model                     = new $modelClassName(false);
+            if($this->report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            {
+                $adapter       = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $this->report);
+            }
+            elseif($this->report->getType() == Report::TYPE_SUMMATION)
+            {
+                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $this->report);
+            }
+            elseif($this->report->getType() == Report::TYPE_MATRIX)
+            {
+                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $this->report);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $adapter;
         }
 /**
         protected function getSomething()

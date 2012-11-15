@@ -54,7 +54,7 @@
             $cClipWidget  = new CClipWidget();
             $cClipWidget->beginClip("ZurmoTreeView");
             $cClipWidget->widget('application.core.widgets.ZurmoTreeView', array(
-            'id'          => 'unit-treeview', //todo: replace with unique id by treeType in adapter
+            'id'          => $this->getTreeId(),
             'data'        => $this->reportToTreeAdapter->getData(),
             'htmlOptions' => array(
                 'class'   => 'treeview-red' //todo: use different theme class.
@@ -81,8 +81,12 @@
                 }});
             ';
             Yii::app()->getClientScript()->registerScript('reportTreeViewScript', $script);
-            //Yii::app()->clientScript->registerCoreScript('jquery.ui');
             return $content;
+        }
+
+        protected function getTreeId()
+        {
+            return $this->reportToTreeAdapter->getTreeType() . 'TreeView';
         }
     }
 ?>

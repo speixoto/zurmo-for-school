@@ -40,6 +40,9 @@
                     array('somethingOn3',  'type',   'type' => 'string'),
                     array('somethingOn3',  'length', 'max' => 32),
                 ),
+                'relations' => array(
+                    'hasMany1' => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem'),
+                )
             );
             return $metadata;
         }
