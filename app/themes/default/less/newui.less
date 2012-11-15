@@ -914,7 +914,6 @@ footer, header, hgroup, menu, nav, section {
 /*#MenuView .parent >*/
 #MenuView li.active > a > span,
 #MenuView a:hover > span{
-    .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
     background-image: url(../images/main-nav-selected.png);
     background-repeat: no-repeat;
     background-position-x: 0;
@@ -924,14 +923,8 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-
-
 #MenuView li.active > a > span{
-    //++.themeBackgroundColor2;
     color:#fff;
-    > span{
-    	//++.themeColor;
-    }
 }
 
 /*=Recently Viewed*/
@@ -984,7 +977,7 @@ footer, header, hgroup, menu, nav, section {
         }
         a:hover{
             span{
-                .t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
+                //.t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
                 background-image: url(../images/main-nav-selected.png);
                 background-repeat: no-repeat;
                 background-position-x: 0;
@@ -2003,7 +1996,8 @@ div.wide.form{
         display:block;
     }
 }
-
+#NoUserEmailConfigurationYetView,
+#NoGlobalEmailConfigurationYetView,
 .ZeroModelsYetView{
     h2{
         font-family:"Times New Roman", Times, serif;
@@ -2038,7 +2032,7 @@ div.wide.form{
             content: "Y";
             .symbly(24px);
             position: relative;
-            top: 2px;
+            top: 1px;
             left:-5px;
             margin-right:3px;
             //++.themeColor2;
@@ -2081,7 +2075,13 @@ div.wide.form{
         .symbly(230px);
         line-height: 80%;
     }
+    .EmailMessage .large-icon:after{
+        content:"g";
+        .symbly(250px);
+        line-height: 60%;
+    }
 }
+
 
 .ZurmoSearchView{
     padding:0;
