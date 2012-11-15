@@ -114,7 +114,10 @@
         {
             if($element->getAttribute() == 'subject')
             {
-                $element->editableTemplate = '<td><div class="overlay-label-field">{label}{content}{error}</div></td>';
+                $label = ZurmoHtml::tag('label',
+                                        array('for' => get_class($this->model) . '_subject'),
+                                        $this->model->getAttributeLabel('subject'));
+                $element->editableTemplate = '<td><div class="overlay-label-field">' . $label . '{content}{error}</div></td>';
             }
             else
             {

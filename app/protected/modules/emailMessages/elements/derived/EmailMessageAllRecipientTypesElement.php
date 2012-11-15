@@ -41,7 +41,7 @@
             $ccContent  = CHtml::tag('div', array('class' => 'recipient'), $this->renderTokenInput('cc'));
             $bccContent = CHtml::tag('div', array('class' => 'recipient'), $this->renderTokenInput('bcc'));
             $showCCBCCLink = ZurmoHtml::link('Cc/Bcc', '#',
-                                              array('onclick' => "js:$('#cc-bcc-fields').toggle(); return false;",
+                                              array('onclick' => "js:$('#cc-bcc-fields').show(); $('#cc-bcc-fields-link').hide(); return false;",
                                                     'id' => 'cc-bcc-fields-link',
                                                     'class' => 'more-panels-link'));
             return $toContent . CHtml::tag('div',
