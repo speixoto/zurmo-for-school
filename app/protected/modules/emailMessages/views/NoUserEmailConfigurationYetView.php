@@ -37,7 +37,7 @@
                                              array('id' => Yii::app()->user->userModel->id));
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), $this->getCreateLinkDisplayLabel()), $url);
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), $this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button'));
             $content .= '</div>';
             return $content;
         }

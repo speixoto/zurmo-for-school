@@ -6,16 +6,20 @@
 .cf:before,
 .cf:after,
 .recipient:before,
-.recipient:after {
+.recipient:after,
+#NoUserEmailConfigurationYetView:before,
+#NoUserEmailConfigurationYetView:after {
   content: "";
   display: table;
 }
 .cf:after,
-.recipient:after {
+.recipient:after,
+#NoUserEmailConfigurationYetView:after {
   clear: both;
 }
 .cf,
-.recipient {
+.recipient,
+#NoUserEmailConfigurationYetView {
   zoom: 1;
 }
 .flyout,
@@ -45,7 +49,11 @@
 .z-button,
 a.zButton,
 a.z-button,
+#NoUserEmailConfigurationYetView a,
+#NoGlobalEmailConfigurationYetView a,
 .ZeroModelsYetView a,
+a#NoUserEmailConfigurationYetView a,
+a#NoGlobalEmailConfigurationYetView a,
 a.ZeroModelsYetView a,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
@@ -90,10 +98,10 @@ a#WelcomeView .dashboard-link {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(200, 200, 200, 0.6);
-  border-left: 1px solid rgba(185, 185, 185, 0.6);
-  border-right: 1px solid rgba(185, 185, 185, 0.6);
-  border-bottom: 1px solid rgba(170, 170, 170, 0.6);
+  border-top: 1px solid rgba(200, 200, 200, 0.4);
+  border-left: 1px solid rgba(185, 185, 185, 0.4);
+  border-right: 1px solid rgba(185, 185, 185, 0.4);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.4);
   color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -108,6 +116,8 @@ a#WelcomeView .dashboard-link {
 }
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading),
+#NoUserEmailConfigurationYetView a:not(.attachLoading),
+#NoGlobalEmailConfigurationYetView a:not(.attachLoading),
 .ZeroModelsYetView a:not(.attachLoading),
 .search-form-tools input[type="submit"]:not(.attachLoading),
 .toolbar-mbmenu .options-menu > li > a:not(.attachLoading),
@@ -131,6 +141,8 @@ table.configuration-list tr td:last-child a:not(.attachLoading),
 }
 .zButton.loading .z-spinner,
 .z-button.loading .z-spinner,
+#NoUserEmailConfigurationYetView a.loading .z-spinner,
+#NoGlobalEmailConfigurationYetView a.loading .z-spinner,
 .ZeroModelsYetView a.loading .z-spinner,
 .search-form-tools input[type="submit"].loading .z-spinner,
 .toolbar-mbmenu .options-menu > li > a.loading .z-spinner,
@@ -154,6 +166,8 @@ table.configuration-list tr td:last-child a.loading .z-spinner,
 }
 .zButton.loading .z-icon,
 .z-button.loading .z-icon,
+#NoUserEmailConfigurationYetView a.loading .z-icon,
+#NoGlobalEmailConfigurationYetView a.loading .z-icon,
 .ZeroModelsYetView a.loading .z-icon,
 .search-form-tools input[type="submit"].loading .z-icon,
 .toolbar-mbmenu .options-menu > li > a.loading .z-icon,
@@ -222,6 +236,7 @@ a:link,
 a:active,
 a:visited {
   color: #545454;
+  cursor: pointer;
 }
 body.blue .textColor {
   color: #545454;
@@ -437,11 +452,11 @@ body.blue #MenuView a > span {
 body.blue #MenuView li.active > a > span,
 body.blue #MenuView a:hover > span {
   background-color: #7cb830;
-  -webkit-text-shadow: 0px 1px 0 #acd064;
-  -moz-text-shadow: 0px 1px 0 #acd064;
-  -o-text-shadow: 0px 1px 0 #acd064;
-  -ms-text-shadow: 0px 1px 0 #acd064;
-  text-shadow: 0px 1px 0 #acd064;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.blue #RecentlyViewedView a > span:first-child {
   background-color: #7cb830;
@@ -450,6 +465,13 @@ body.blue #RecentlyViewedView a > span:first-child {
   -o-text-shadow: 0px 1px 0 #acd064;
   -ms-text-shadow: 0px 1px 0 #acd064;
   text-shadow: 0px 1px 0 #acd064;
+}
+body.blue #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.blue #RecentlyViewedView a:hover em {
   color: #282a76 !important;
@@ -507,6 +529,10 @@ body.blue .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.blue .zButton:not(.attachLoading):hover,
+body.blue .z-button:not(.attachLoading):hover,
+body.blue .zButton:not(.attachLoading):active,
+body.blue .z-button:not(.attachLoading):active,
 body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.blue .form-toolbar a:not(.attachLoading):hover,
@@ -779,11 +805,11 @@ body.brown #MenuView a > span {
 body.brown #MenuView li.active > a > span,
 body.brown #MenuView a:hover > span {
   background-color: #b88f30;
-  -webkit-text-shadow: 0px 1px 0 #64c1bd;
-  -moz-text-shadow: 0px 1px 0 #64c1bd;
-  -o-text-shadow: 0px 1px 0 #64c1bd;
-  -ms-text-shadow: 0px 1px 0 #64c1bd;
-  text-shadow: 0px 1px 0 #64c1bd;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.brown #RecentlyViewedView a > span:first-child {
   background-color: #b88f30;
@@ -792,6 +818,13 @@ body.brown #RecentlyViewedView a > span:first-child {
   -o-text-shadow: 0px 1px 0 #64c1bd;
   -ms-text-shadow: 0px 1px 0 #64c1bd;
   text-shadow: 0px 1px 0 #64c1bd;
+}
+body.brown #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.brown #RecentlyViewedView a:hover em {
   color: #547980 !important;
@@ -849,6 +882,10 @@ body.brown .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.brown .zButton:not(.attachLoading):hover,
+body.brown .z-button:not(.attachLoading):hover,
+body.brown .zButton:not(.attachLoading):active,
+body.brown .z-button:not(.attachLoading):active,
 body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.brown .form-toolbar a:not(.attachLoading):hover,
@@ -1121,11 +1158,11 @@ body.lime #MenuView a > span {
 body.lime #MenuView li.active > a > span,
 body.lime #MenuView a:hover > span {
   background-color: #bcc98e;
-  -webkit-text-shadow: 0px 1px 0 #d0d9b1;
-  -moz-text-shadow: 0px 1px 0 #d0d9b1;
-  -o-text-shadow: 0px 1px 0 #d0d9b1;
-  -ms-text-shadow: 0px 1px 0 #d0d9b1;
-  text-shadow: 0px 1px 0 #d0d9b1;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.lime #RecentlyViewedView a > span:first-child {
   background-color: #bcc98e;
@@ -1134,6 +1171,13 @@ body.lime #RecentlyViewedView a > span:first-child {
   -o-text-shadow: 0px 1px 0 #d0d9b1;
   -ms-text-shadow: 0px 1px 0 #d0d9b1;
   text-shadow: 0px 1px 0 #d0d9b1;
+}
+body.lime #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.lime #RecentlyViewedView a:hover em {
   color: #2b434f !important;
@@ -1191,6 +1235,10 @@ body.lime .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.lime .zButton:not(.attachLoading):hover,
+body.lime .z-button:not(.attachLoading):hover,
+body.lime .zButton:not(.attachLoading):active,
+body.lime .z-button:not(.attachLoading):active,
 body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.lime .form-toolbar a:not(.attachLoading):hover,
@@ -1463,11 +1511,11 @@ body.cherry #MenuView a > span {
 body.cherry #MenuView li.active > a > span,
 body.cherry #MenuView a:hover > span {
   background-color: #933140;
-  -webkit-text-shadow: 0px 1px 0 #b93e51;
-  -moz-text-shadow: 0px 1px 0 #b93e51;
-  -o-text-shadow: 0px 1px 0 #b93e51;
-  -ms-text-shadow: 0px 1px 0 #b93e51;
-  text-shadow: 0px 1px 0 #b93e51;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.cherry #RecentlyViewedView a > span:first-child {
   background-color: #933140;
@@ -1476,6 +1524,13 @@ body.cherry #RecentlyViewedView a > span:first-child {
   -o-text-shadow: 0px 1px 0 #b93e51;
   -ms-text-shadow: 0px 1px 0 #b93e51;
   text-shadow: 0px 1px 0 #b93e51;
+}
+body.cherry #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.cherry #RecentlyViewedView a:hover em {
   color: #6c8092 !important;
@@ -1533,6 +1588,10 @@ body.cherry .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.cherry .zButton:not(.attachLoading):hover,
+body.cherry .z-button:not(.attachLoading):hover,
+body.cherry .zButton:not(.attachLoading):active,
+body.cherry .z-button:not(.attachLoading):active,
 body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.cherry .form-toolbar a:not(.attachLoading):hover,
@@ -1805,11 +1864,11 @@ body.turquoise #MenuView a > span {
 body.turquoise #MenuView li.active > a > span,
 body.turquoise #MenuView a:hover > span {
   background-color: #44bbcc;
-  -webkit-text-shadow: 0px 1px 0 #6ccad7;
-  -moz-text-shadow: 0px 1px 0 #6ccad7;
-  -o-text-shadow: 0px 1px 0 #6ccad7;
-  -ms-text-shadow: 0px 1px 0 #6ccad7;
-  text-shadow: 0px 1px 0 #6ccad7;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.turquoise #RecentlyViewedView a > span:first-child {
   background-color: #44bbcc;
@@ -1818,6 +1877,13 @@ body.turquoise #RecentlyViewedView a > span:first-child {
   -o-text-shadow: 0px 1px 0 #6ccad7;
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
+}
+body.turquoise #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.turquoise #RecentlyViewedView a:hover em {
   color: #447799 !important;
@@ -1875,6 +1941,10 @@ body.turquoise .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.turquoise .zButton:not(.attachLoading):hover,
+body.turquoise .z-button:not(.attachLoading):hover,
+body.turquoise .zButton:not(.attachLoading):active,
+body.turquoise .z-button:not(.attachLoading):active,
 body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.turquoise .form-toolbar a:not(.attachLoading):hover,
@@ -2147,11 +2217,11 @@ body.violet #MenuView a > span {
 body.violet #MenuView li.active > a > span,
 body.violet #MenuView a:hover > span {
   background-color: #91a1dc;
-  -webkit-text-shadow: 0px 1px 0 #b8c2e8;
-  -moz-text-shadow: 0px 1px 0 #b8c2e8;
-  -o-text-shadow: 0px 1px 0 #b8c2e8;
-  -ms-text-shadow: 0px 1px 0 #b8c2e8;
-  text-shadow: 0px 1px 0 #b8c2e8;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.violet #RecentlyViewedView a > span:first-child {
   background-color: #91a1dc;
@@ -2160,6 +2230,13 @@ body.violet #RecentlyViewedView a > span:first-child {
   -o-text-shadow: 0px 1px 0 #b8c2e8;
   -ms-text-shadow: 0px 1px 0 #b8c2e8;
   text-shadow: 0px 1px 0 #b8c2e8;
+}
+body.violet #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.violet #RecentlyViewedView a:hover em {
   color: #4a3970 !important;
@@ -2217,6 +2294,10 @@ body.violet .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.violet .zButton:not(.attachLoading):hover,
+body.violet .z-button:not(.attachLoading):hover,
+body.violet .zButton:not(.attachLoading):active,
+body.violet .z-button:not(.attachLoading):active,
 body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.violet .form-toolbar a:not(.attachLoading):hover,
@@ -2489,11 +2570,11 @@ body.honey #MenuView a > span {
 body.honey #MenuView li.active > a > span,
 body.honey #MenuView a:hover > span {
   background-color: #abbc42;
-  -webkit-text-shadow: 0px 1px 0 #bcca67;
-  -moz-text-shadow: 0px 1px 0 #bcca67;
-  -o-text-shadow: 0px 1px 0 #bcca67;
-  -ms-text-shadow: 0px 1px 0 #bcca67;
-  text-shadow: 0px 1px 0 #bcca67;
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.honey #RecentlyViewedView a > span:first-child {
   background-color: #abbc42;
@@ -2502,6 +2583,13 @@ body.honey #RecentlyViewedView a > span:first-child {
   -o-text-shadow: 0px 1px 0 #bcca67;
   -ms-text-shadow: 0px 1px 0 #bcca67;
   text-shadow: 0px 1px 0 #bcca67;
+}
+body.honey #RecentlyViewedView a:hover > span {
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
 body.honey #RecentlyViewedView a:hover em {
   color: #46201c !important;
@@ -2559,6 +2647,10 @@ body.honey .z-button:active {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+body.honey .zButton:not(.attachLoading):hover,
+body.honey .z-button:not(.attachLoading):hover,
+body.honey .zButton:not(.attachLoading):active,
+body.honey .z-button:not(.attachLoading):active,
 body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
 body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
 body.honey .form-toolbar a:not(.attachLoading):hover,
@@ -3619,11 +3711,6 @@ section {
 /*#MenuView .parent >*/
 #MenuView li.active > a > span,
 #MenuView a:hover > span {
-  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   background-image: url(../images/main-nav-selected.png);
   background-repeat: no-repeat;
   background-position-x: 0;
@@ -3719,11 +3806,6 @@ section {
   text-indent: 0;
 }
 #RecentlyViewedView li a:hover span {
-  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
   background-image: url(../images/main-nav-selected.png);
   background-repeat: no-repeat;
   background-position-x: 0;
@@ -5023,6 +5105,8 @@ div.wide.form label.hasCheckBox {
 .cgrid-view.loading .list-preloader {
   display: block;
 }
+#NoUserEmailConfigurationYetView h2,
+#NoGlobalEmailConfigurationYetView h2,
 .ZeroModelsYetView h2 {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
@@ -5031,6 +5115,8 @@ div.wide.form label.hasCheckBox {
   font-weight: normal;
   padding: 15px 50px 15px 30px;
 }
+#NoUserEmailConfigurationYetView i,
+#NoGlobalEmailConfigurationYetView i,
 .ZeroModelsYetView i {
   font-size: 13px;
   color: #555;
@@ -5038,6 +5124,8 @@ div.wide.form label.hasCheckBox {
   display: block;
   margin-left: 30px;
 }
+#NoUserEmailConfigurationYetView p,
+#NoGlobalEmailConfigurationYetView p,
 .ZeroModelsYetView p {
   font-size: 16px;
   line-height: 24px;
@@ -5047,21 +5135,27 @@ div.wide.form label.hasCheckBox {
   width: 70%;
   margin: 45px 0 0 30px;
 }
+#NoUserEmailConfigurationYetView a,
+#NoGlobalEmailConfigurationYetView a,
 .ZeroModelsYetView a {
   margin-left: 30px;
   margin-top: 15px;
   float: left;
 }
+#NoUserEmailConfigurationYetView a:before,
+#NoGlobalEmailConfigurationYetView a:before,
 .ZeroModelsYetView a:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   position: relative;
-  top: 2px;
+  top: 1px;
   left: -5px;
   margin-right: 3px;
 }
+#NoUserEmailConfigurationYetView .large-icon,
+#NoGlobalEmailConfigurationYetView .large-icon,
 .ZeroModelsYetView .large-icon {
   width: 25%;
   text-align: center;
@@ -5069,6 +5163,8 @@ div.wide.form label.hasCheckBox {
   border-right: 1px solid #ccc;
   float: left;
 }
+#NoUserEmailConfigurationYetView .Contact .large-icon:after,
+#NoGlobalEmailConfigurationYetView .Contact .large-icon:after,
 .ZeroModelsYetView .Contact .large-icon:after {
   content: "y";
   font-weight: normal;
@@ -5076,6 +5172,8 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 50%;
 }
+#NoUserEmailConfigurationYetView .Account .large-icon:after,
+#NoGlobalEmailConfigurationYetView .Account .large-icon:after,
 .ZeroModelsYetView .Account .large-icon:after {
   content: "P";
   font-weight: normal;
@@ -5083,6 +5181,8 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
+#NoUserEmailConfigurationYetView .Lead .large-icon:after,
+#NoGlobalEmailConfigurationYetView .Lead .large-icon:after,
 .ZeroModelsYetView .Lead .large-icon:after {
   content: ".";
   font-weight: normal;
@@ -5090,6 +5190,8 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
+#NoUserEmailConfigurationYetView .Opportunity .large-icon:after,
+#NoGlobalEmailConfigurationYetView .Opportunity .large-icon:after,
 .ZeroModelsYetView .Opportunity .large-icon:after {
   content: "9";
   font-weight: normal;
@@ -5097,6 +5199,8 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
+#NoUserEmailConfigurationYetView .Conversation .large-icon:after,
+#NoGlobalEmailConfigurationYetView .Conversation .large-icon:after,
 .ZeroModelsYetView .Conversation .large-icon:after {
   content: "b";
   font-weight: normal;
@@ -5104,12 +5208,23 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 90%;
 }
+#NoUserEmailConfigurationYetView .Mission .large-icon:after,
+#NoGlobalEmailConfigurationYetView .Mission .large-icon:after,
 .ZeroModelsYetView .Mission .large-icon:after {
   content: "Q";
   font-weight: normal;
   font-size: 230px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
+}
+#NoUserEmailConfigurationYetView .EmailMessage .large-icon:after,
+#NoGlobalEmailConfigurationYetView .EmailMessage .large-icon:after,
+.ZeroModelsYetView .EmailMessage .large-icon:after {
+  content: "g";
+  font-weight: normal;
+  font-size: 250px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60%;
 }
 .ZurmoSearchView {
   padding: 0;
@@ -8997,10 +9112,10 @@ table.configuration-list tr td:last-child a:before {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(200, 200, 200, 0.6);
-  border-left: 1px solid rgba(185, 185, 185, 0.6);
-  border-right: 1px solid rgba(185, 185, 185, 0.6);
-  border-bottom: 1px solid rgba(170, 170, 170, 0.6);
+  border-top: 1px solid rgba(200, 200, 200, 0.4);
+  border-left: 1px solid rgba(185, 185, 185, 0.4);
+  border-right: 1px solid rgba(185, 185, 185, 0.4);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.4);
   color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -9655,10 +9770,10 @@ div.wide.form .errorMessage {
   font-weight: bold;
   text-indent: 0;
   display: inline-block;
-  border-top: 1px solid rgba(200, 200, 200, 0.6);
-  border-left: 1px solid rgba(185, 185, 185, 0.6);
-  border-right: 1px solid rgba(185, 185, 185, 0.6);
-  border-bottom: 1px solid rgba(170, 170, 170, 0.6);
+  border-top: 1px solid rgba(200, 200, 200, 0.4);
+  border-left: 1px solid rgba(185, 185, 185, 0.4);
+  border-right: 1px solid rgba(185, 185, 185, 0.4);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.4);
   color: #666;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -12954,6 +13069,10 @@ a.user-link {
 }
 #cc-bcc-fields .recipient {
   margin-top: 15px;
+}
+/*email modal*/
+#NoUserEmailConfigurationYetView {
+  padding-bottom: 30px;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {
