@@ -631,7 +631,8 @@
                                                   $memcacheHost = null, $memcachePort = null, $minifyScripts = true,
                                                   $language,
                                                   $perInstanceFilename = 'perInstance.php', $debugFilename = 'debug.php',
-                                                  $hostInfo, $scriptUrl)
+                                                  $hostInfo, $scriptUrl,
+                                                  $submitCrashReportsToZurmoSentry = true)
         {
             assert('is_dir($instanceRoot)');
             assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
@@ -665,7 +666,12 @@
             $contents = preg_replace('/\$forceNoFreeze\s*=\s*true;/',
                                      '$forceNoFreeze = false;',
                                      $contents);
-
+            if (!$submitCrashReportsToZurmoSentry)
+            {
+                $contents = preg_replace('/\$submitCrashReportsToZurmoSentry\s*=\s*true;/',
+                                         '$submitCrashReportsToZurmoSentry = false;',
+                                         $contents);
+            }
             $setIncludePathServiceHelper = new SetIncludePathServiceHelper();
             if ($minifyScripts && $setIncludePathServiceHelper->runCheckAndGetIfSuccessful())
             {
@@ -871,7 +877,8 @@
                                             $perInstanceFilename,
                                             $debugFilename,
                                             $form->hostInfo,
-                                            $form->scriptUrl);
+                                            $form->scriptUrl,
+                                            $form->submitCrashReportsToZurmoSentry);
             $messageStreamer->add(Yii::t('Default', 'Setting up default data.'));
             DefaultDataUtil::load($messageLogger);
             Yii::app()->custom->runAfterInstallationDefaultDataLoad($messageLogger);

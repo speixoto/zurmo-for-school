@@ -87,6 +87,9 @@
     // Works only in debug mode (when $debugOn = true).
     $xhtmlValidation = false;
 
+    // Should Crash reports be automatically submitted to Zurmo Sentry
+    $submitCrashReportsToZurmoSentry = true;
+
     // Set information related to function tests
     // 1. $seleniumServerPath is path to selenium server(selenium jar file)
     // 2. $testBaseUrl is url of website to be tested via selenium server. It can be local or remote
@@ -122,6 +125,7 @@
     define('DB_CACHING_ON',          $dbLevelCaching);
     define('MINIFY_SCRIPTS',         $minifyScripts);
     define('XHTML_VALIDATION',       $xhtmlValidation);
+    define('SUBMIT_CRASH_REPORTS_TO_ZURMO_SENTRY', $submitCrashReportsToZurmoSentry);
 
     assert_options(ASSERT_ACTIVE,   $debugOn); // Don't even think about disabling asserts!
     assert_options(ASSERT_WARNING,  $debugOn);

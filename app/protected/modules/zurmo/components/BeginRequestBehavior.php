@@ -35,6 +35,7 @@
         {
             if (Yii::app()->apiRequest->isApiRequest())
             {
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleZurmoSentryLogs'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
                 $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
@@ -57,6 +58,7 @@
             }
             else
             {
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleZurmoSentryLogs'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
@@ -85,6 +87,23 @@
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
                 }
+            }
+        }
+
+        public function handleZurmoSentryLogs()
+        {
+            if (!YII_DEBUG && defined('SUBMIT_CRASH_REPORTS_TO_ZURMO_SENTRY') && SUBMIT_CRASH_REPORTS_TO_ZURMO_SENTRY)
+            {
+                Yii::import('application.extensions.sentrylog.RSentryLog');
+                $rSentryLog = Yii::createComponent(
+                    array('class' => 'RSentryLog', 'dsn' => Yii::app()->params['zurmoSentryDsn']));
+                //Have to invoke component init(), because it is not caled automatically
+                $rSentryLog->init();
+                $component = Yii::app()->getComponent('log');
+                $allRoutes = $component->getRoutes();
+                $allRoutes[] = $rSentryLog;
+                $component->setRoutes($allRoutes);
+                Yii::app()->setComponent('log', $component);
             }
         }
 

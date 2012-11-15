@@ -124,6 +124,7 @@ class Raven_Client
     public function captureMessage($message, $params=array(), $level=self::INFO,
                             $stack=false)
     {
+        $level = self::ERROR;
         // Gracefully handle messages which contain formatting characters, but were not
         // intended to be used with formatting.
         if (!empty($params)) {
