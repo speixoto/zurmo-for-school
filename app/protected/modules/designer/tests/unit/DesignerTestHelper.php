@@ -26,26 +26,24 @@
 
     class DesignerTestHelper
     {
-        public static function setCheckBoxAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createCheckBoxAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
             $attributeForm = new CheckBoxAttributeForm();
             $attributeForm->attributeName    = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Checkbox',
-                'en' => 'Test Checkbox',
-                'es' => 'Test Checkbox',
-                'fr' => 'Test Checkbox',
-                'it' => 'Test Checkbox',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited        = true;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValue     = 1; //means checked.
             }
-
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $validate = $attributeForm->validate();
             if ($validate == false)
@@ -64,19 +62,18 @@
             }
         }
 
-        public static function setCurrencyAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createCurrencyAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new CurrencyValueAttributeForm();
             $attributeForm->attributeName    = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Currency',
-                'en' => 'Test Currency',
-                'es' => 'Test Currency',
-                'fr' => 'Test Currency',
-                'it' => 'Test Currency',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited     = true;
             $attributeForm->isRequired    = false;
@@ -98,23 +95,21 @@
             }
         }
 
-        public static function setDateAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createDateAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new DateAttributeForm();
             $attributeForm->attributeName = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Date',
-                'en' => 'Test Date',
-                'es' => 'Test Date',
-                'fr' => 'Test Date',
-                'it' => 'Test Date',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited     = true;
             $attributeForm->isRequired    = false;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValueCalculationType  = DateTimeCalculatorUtil::YESTERDAY;
@@ -137,23 +132,21 @@
             }
         }
 
-        public static function setDateTimeAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createDateTimeAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new DateTimeAttributeForm();
             $attributeForm->attributeName = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test DateTime',
-                'en' => 'Test DateTime',
-                'es' => 'Test DateTime',
-                'fr' => 'Test DateTime',
-                'it' => 'Test DateTime',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited                    = true;
             $attributeForm->isRequired                   = false;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValueCalculationType  = DateTimeCalculatorUtil::NOW;
@@ -181,25 +174,23 @@
         }
 
 
-        public static function setDecimalAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createDecimalAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new DecimalAttributeForm();
             $attributeForm->attributeName   = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Decimal',
-                'en' => 'Test Decimal',
-                'es' => 'Test Decimal',
-                'fr' => 'Test Decimal',
-                'it' => 'Test Decimal',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited       = true;
             $attributeForm->isRequired      = false;
             $attributeForm->maxLength       = 11;
             $attributeForm->precisionLength = 5;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValue    = 34.213;
@@ -223,11 +214,10 @@
         }
 
 
-        public static function setDropDownAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createDropDownAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $values = array(
                 '747',
                 'A380',
@@ -240,15 +230,14 @@
             $airplanesFieldData = CustomFieldData::getByName('Airplanes');
             $airplanesFieldData->serializedData = serialize($values);
             $airplanesFieldData->save();
-
             $attributeForm = new DropDownAttributeForm();
             $attributeForm->attributeName       = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test DropDownAirplane',
-                'en' => 'Test DropDownAirplane',
-                'es' => 'Test DropDownAirplane',
-                'fr' => 'Test DropDownAirplane',
-                'it' => 'Test DropDownAirplane',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited             = true;
             $attributeForm->isRequired            = false;
@@ -275,26 +264,24 @@
         }
 
 
-        public static function setIntegerAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createIntegerAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new IntegerAttributeForm();
             $attributeForm->attributeName = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Integer',
-                'en' => 'Test Integer',
-                'es' => 'Test Integer',
-                'fr' => 'Test Integer',
-                'it' => 'Test Integer',
+                 'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited     = true;
             $attributeForm->isRequired    = false;
             $attributeForm->maxLength     = 11;
             $attributeForm->minValue      = -500;
             $attributeForm->maxValue      = 500;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValue  = 458;
@@ -318,11 +305,10 @@
             }
         }
 
-        public static function setMultiSelectDropDownAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createMultiSelectDropDownAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $values = array(
                 'Reading',
                 'Writing',
@@ -336,22 +322,20 @@
             $hobbiesFieldData = CustomFieldData::getByName('Hobbies');
             $hobbiesFieldData->serializedData = serialize($values);
             $hobbiesFieldData->save();
-
             $attributeForm = new MultiSelectDropDownAttributeForm();
             $attributeForm->attributeName    = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test MultiSelectDDHobbies',
-                'en' => 'Test MultiSelectDDHobbies',
-                'es' => 'Test MultiSelectDDHobbies',
-                'fr' => 'Test MultiSelectDDHobbies',
-                'it' => 'Test MultiSelectDDHobbies',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited             = true;
             $attributeForm->isRequired            = false;
             $attributeForm->customFieldDataData   = $values;
             $attributeForm->customFieldDataName   = 'Hobbies';
             $attributeForm->customFieldDataLabels = $labels;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValueOrder = 1;
@@ -361,7 +345,6 @@
                 $attributeForm->defaultValue      = null;
                 $attributeForm->defaultValueOrder = null;
             }
-
             $validate = $attributeForm->validate();
             if ($validate == false)
             {
@@ -380,7 +363,7 @@
             }
         }
 
-        public static function setTagCloudAttribute($attributeName, $withDefaultData, $modelClassName)
+        public static function createTagCloudAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
@@ -395,22 +378,20 @@
             );
             $languageFieldData = CustomFieldData::getByName('Languages');
             $languageFieldData->save();
-
             $attributeForm                   = new TagCloudAttributeForm();
             $attributeForm->attributeName    = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test TagCloudLanguages',
-                'en' => 'Test TagCloudLanguages',
-                'es' => 'Test TagCloudLanguages',
-                'fr' => 'Test TagCloudLanguages',
-                'it' => 'Test TagCloudLanguages',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited             = true;
             $attributeForm->isRequired            = false;
             $attributeForm->customFieldDataData   = $values;
             $attributeForm->customFieldDataName   = 'Languages';
             $attributeForm->customFieldDataLabels = $labels;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValueOrder = 1;
@@ -419,7 +400,6 @@
             {
                 $attributeForm->defaultValueOrder = null;
             }
-
             $validate = $attributeForm->validate();
             if ($validate == false)
             {
@@ -438,19 +418,18 @@
             }
         }
 
-       public static function setPhoneAttribute($attributeName, $withDefaultData, $modelClassName)
+       public static function createPhoneAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new PhoneAttributeForm();
             $attributeForm->attributeName = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Phone',
-                'en' => 'Test Phone',
-                'es' => 'Test Phone',
-                'fr' => 'Test Phone',
-                'it' => 'Test Phone',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited     = true;
             $attributeForm->isRequired    = false;
@@ -478,11 +457,10 @@
             }
         }
 
-       public static function setRadioDropDownAttribute($attributeName, $withDefaultData, $modelClassName)
+       public static function createRadioDropDownAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $values = array(
                 'Wing',
                 'Nose',
@@ -495,11 +473,11 @@
             $attributeForm = new RadioDropDownAttributeForm();
             $attributeForm->attributeName       = 'testAirPlaneParts';
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test RadioDDAirplane',
-                'en' => 'Test RadioDDAirplane',
-                'es' => 'Test RadioDDAirplane',
-                'fr' => 'Test RadioDDAirplane',
-                'it' => 'Test RadioDDAirplane',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited           = true;
             $attributeForm->isRequired          = false;
@@ -525,24 +503,22 @@
         }
 
 
-       public static function setTextAttribute($attributeName, $withDefaultData, $modelClassName)
+       public static function createTextAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new TextAttributeForm();
             $attributeForm->attributeName = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Text',
-                'en' => 'Test Text',
-                'es' => 'Test Text',
-                'fr' => 'Test Text',
-                'it' => 'Test Text',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited     = true;
             $attributeForm->isRequired    = false;
             $attributeForm->maxLength     = 50;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValue  = 'Kangaroo';
@@ -565,23 +541,21 @@
             }
         }
 
-       public static function setTextAreaAttribute($attributeName, $withDefaultData, $modelClassName)
+       public static function createTextAreaAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new TextAreaAttributeForm();
             $attributeForm->attributeName = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Text Area',
-                'en' => 'Test Text Area',
-                'es' => 'Test Text Area',
-                'fr' => 'Test Text Area',
-                'it' => 'Test Text Area',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited     = true;
             $attributeForm->isRequired    = false;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValue  = 'Kangaroo Pouch';
@@ -604,24 +578,22 @@
             }
         }
 
-       public static function setUrlAttribute($attributeName, $withDefaultData, $modelClassName)
+       public static function createUrlAttribute($attributeName, $withDefaultData, $modelClassName)
         {
             assert('isset($attributeName) && $attributeName != null');
             assert('isset($withDefaultData) && is_bool($withDefaultData)');
-
             $attributeForm = new UrlAttributeForm();
             $attributeForm->attributeName = $attributeName;
             $attributeForm->attributeLabels  = array(
-                'de' => 'Test Url',
-                'en' => 'Test Url',
-                'es' => 'Test Url',
-                'fr' => 'Test Url',
-                'it' => 'Test Url',
+                'de' => 'Test' . $attributeName . 'de',
+                'en' => 'Test' . $attributeName . 'en',
+                'es' => 'Test' . $attributeName . 'es',
+                'fr' => 'Test' . $attributeName . 'fr',
+                'it' => 'Test' . $attributeName . 'it',
             );
             $attributeForm->isAudited     = true;
             $attributeForm->isRequired    = false;
             $attributeForm->maxLength     = 50;
-
             if ($withDefaultData)
             {
                 $attributeForm->defaultValue  = 'http://www.outback.com';
