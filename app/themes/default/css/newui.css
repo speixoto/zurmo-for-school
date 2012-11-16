@@ -5779,11 +5779,6 @@ div.wide.form label.hasCheckBox {
 #delete-form table {
   border-bottom: none;
 }
-#modal-edit-form table br,
-#edit-form table br,
-#delete-form table br {
-  display: none;
-}
 #modal-edit-form td,
 #edit-form td,
 #delete-form td,
@@ -13073,6 +13068,18 @@ a.user-link {
 /*email modal*/
 #NoUserEmailConfigurationYetView {
   padding-bottom: 30px;
+}
+/*User email configuration*/
+.outbound-settings {
+  clear: left;
+  position: relative;
+  top: 5px;
+}
+.outbound-settings div {
+  margin-bottom: 10px;
+}
+.outbound-settings label {
+  margin-bottom: 5px;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {

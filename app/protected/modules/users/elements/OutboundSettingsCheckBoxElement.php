@@ -72,14 +72,13 @@
                 $textField = $form->passwordField($model, $attribute, $htmlOptions);
             }
             $error       = $form->error    ($model, $attribute);
-            return $label . $textField . $error;
+            return '<div>' . $label . $textField . $error . '</div>';
         }
 
         protected static function renderToolTipContent()
         {
             $title       = Yii::t('Default', 'If unchecked, will use system SMTP settings.');
-            $content     = '<span id="custom-outbound-settings-tooltip" class="tooltip"  title="' . $title . '">';
-            $content    .= '?</span>';
+            $content     = '<span id="custom-outbound-settings-tooltip" class="tooltip"  title="' . $title . '">?</span>';
             $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
             $qtip->addQTip("#custom-outbound-settings-tooltip");
             return $content;
