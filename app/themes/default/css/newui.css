@@ -88,9 +88,7 @@ a.AttributeEditView form div table #customFieldDataData_AddInputButton,
 #customFieldDataData_AddInputButton,
 a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
-a.ModalGameNotification a,
-#WelcomeView .dashboard-link,
-a#WelcomeView .dashboard-link {
+a.ModalGameNotification a {
   cursor: pointer;
   padding: 0 15px 0 15px;
   line-height: 23px;
@@ -135,8 +133,7 @@ table.configuration-list tr td:last-child a:not(.attachLoading),
 .designer-toolbar input[type="submit"]:not(.attachLoading),
 .AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading),
 #customFieldDataData_AddInputButton:not(.attachLoading),
-.ModalGameNotification a:not(.attachLoading),
-#WelcomeView .dashboard-link:not(.attachLoading) {
+.ModalGameNotification a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .zButton.loading .z-spinner,
@@ -160,8 +157,7 @@ table.configuration-list tr td:last-child a.loading .z-spinner,
 .designer-toolbar input[type="submit"].loading .z-spinner,
 .AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-spinner,
 #customFieldDataData_AddInputButton.loading .z-spinner,
-.ModalGameNotification a.loading .z-spinner,
-#WelcomeView .dashboard-link.loading .z-spinner {
+.ModalGameNotification a.loading .z-spinner {
   display: inline-block;
 }
 .zButton.loading .z-icon,
@@ -185,8 +181,7 @@ table.configuration-list tr td:last-child a.loading .z-icon,
 .designer-toolbar input[type="submit"].loading .z-icon,
 .AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-icon,
 #customFieldDataData_AddInputButton.loading .z-icon,
-.ModalGameNotification a.loading .z-icon,
-#WelcomeView .dashboard-link.loading .z-icon {
+.ModalGameNotification a.loading .z-icon {
   display: none;
 }
 .z-spinner {
@@ -351,8 +346,7 @@ body.blue .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.blue #AboutView p a,
 body.blue #AboutView ul a,
 body.blue .back-to-app-menu-item span,
-body.blue .breadcrumbs a,
-body.blue #WelcomeView a {
+body.blue .breadcrumbs a {
   color: #282a76 !important;
 }
 body.blue .portlet-toolbar .icon-create:hover,
@@ -704,8 +698,7 @@ body.brown .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.brown #AboutView p a,
 body.brown #AboutView ul a,
 body.brown .back-to-app-menu-item span,
-body.brown .breadcrumbs a,
-body.brown #WelcomeView a {
+body.brown .breadcrumbs a {
   color: #547980 !important;
 }
 body.brown .portlet-toolbar .icon-create:hover,
@@ -1057,8 +1050,7 @@ body.lime .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.lime #AboutView p a,
 body.lime #AboutView ul a,
 body.lime .back-to-app-menu-item span,
-body.lime .breadcrumbs a,
-body.lime #WelcomeView a {
+body.lime .breadcrumbs a {
   color: #2b434f !important;
 }
 body.lime .portlet-toolbar .icon-create:hover,
@@ -1410,8 +1402,7 @@ body.cherry .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.cherry #AboutView p a,
 body.cherry #AboutView ul a,
 body.cherry .back-to-app-menu-item span,
-body.cherry .breadcrumbs a,
-body.cherry #WelcomeView a {
+body.cherry .breadcrumbs a {
   color: #6c8092 !important;
 }
 body.cherry .portlet-toolbar .icon-create:hover,
@@ -1763,8 +1754,7 @@ body.turquoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.turquoise #AboutView p a,
 body.turquoise #AboutView ul a,
 body.turquoise .back-to-app-menu-item span,
-body.turquoise .breadcrumbs a,
-body.turquoise #WelcomeView a {
+body.turquoise .breadcrumbs a {
   color: #447799 !important;
 }
 body.turquoise .portlet-toolbar .icon-create:hover,
@@ -2116,8 +2106,7 @@ body.violet .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.violet #AboutView p a,
 body.violet #AboutView ul a,
 body.violet .back-to-app-menu-item span,
-body.violet .breadcrumbs a,
-body.violet #WelcomeView a {
+body.violet .breadcrumbs a {
   color: #4a3970 !important;
 }
 body.violet .portlet-toolbar .icon-create:hover,
@@ -2469,8 +2458,7 @@ body.honey .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.honey #AboutView p a,
 body.honey #AboutView ul a,
 body.honey .back-to-app-menu-item span,
-body.honey .breadcrumbs a,
-body.honey #WelcomeView a {
+body.honey .breadcrumbs a {
   color: #46201c !important;
 }
 body.honey .portlet-toolbar .icon-create:hover,
@@ -12280,7 +12268,7 @@ a.close-ModalGameNotification.simple-select {
 }
 #WelcomeView .dashboard-link {
   text-decoration: none !important;
-  color: #656565 !important;
+  color: #656565;
   margin-top: 15px;
   font-size: 14px !important;
   line-height: 28px;
@@ -12375,10 +12363,43 @@ a.close-ModalGameNotification.simple-select {
 }
 #welcome-gallery {
   width: 350px;
-  height: 250px;
+  height: 300px;
   margin-right: 15px;
   float: left;
+  -webkit-border-radius: 8px 0 0 8px;
+  -moz-border-radius: 8px 0 0 8px;
+  -ms-border-radius: 8px 0 0 8px;
+  -o-border-radius: 8px 0 0 8px;
+  border-radius: 8px 0 0 8px;
+}
+#welcome-gallery span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: transparent !important;
+  background-image: -o-linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, #ffffff 100%);
+  background-image: -moz-linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, #ffffff 100%);
+  background-image: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, #ffffff 100%);
+  background-image: -ms-linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, #ffffff 100%);
+  background-image: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%, #ffffff 100%);
+}
+.welcome-img-1 {
   background: url(../images/welcome-gallery-1.png) left top no-repeat;
+}
+.welcome-img-2 {
+  background: url(../images/welcome-gallery-2.png) left top no-repeat;
+}
+.welcome-img-3 {
+  background: url(../images/welcome-gallery-3.png) left top no-repeat;
+}
+.welcome-img-4 {
+  background: url(../images/welcome-gallery-4.png) left top no-repeat;
+}
+.welcome-img-5 {
+  background: url(../images/welcome-gallery-5.png) left top no-repeat;
+}
+.welcome-img-6 {
+  background: url(../images/welcome-gallery-6.png) left top no-repeat;
 }
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
   #LoginView,
