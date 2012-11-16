@@ -118,6 +118,11 @@
                     'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'type'),
                 ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
+                ),
                 'rules' => array(
                     array('annualRevenue', 'type',    'type' => 'float'),
                     array('description',   'type',    'type' => 'string'),

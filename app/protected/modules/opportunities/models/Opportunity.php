@@ -112,6 +112,11 @@
                     'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
                                              RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
                 ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
+                ),
                 'rules' => array(
                     array('amount',        'required'),
                     array('closeDate',     'required'),

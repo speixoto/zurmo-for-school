@@ -1174,5 +1174,10 @@
             $compareData        = array('label' => 'Currency Value -(Avg)');
             $this->assertEquals($compareData, $attributes['currencyValue__Average']);
         }
+
+        public function testResolveAndGetRelationModelClassName()
+        {
+            $this->fail();
+        }
     }
 ?>

@@ -25,32 +25,17 @@
      ********************************************************************************/
 
     /**
-     * Report rules to be used with the Users module.
+     * Report rules to be used with the Activities module
      */
-    class UsersReportRules extends PermitableReportRules
+    abstract class ActivitiesReportRules extends SecuredReportRules
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
-                'Item' => array(
+                'Activity' => array(
                     'nonReportable' =>
-                        array(  'createdByUser',
-                                'modifiedByUser'),
-                ),
-                'User' => array(
-                    'nonReportable' =>
-                        array(  'currency',
-                                'emailBoxes',
-                                'hash',
-                                'groups',
-                                'language',
-                                'manager',
-                                'role',
-                                'serializedAvatarData',
-                                'timeZone'),
-                    'derivedAttributeTypes' =>
-                        array('FullName')
-                ),
+                        array('activityItems'),
+                )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }

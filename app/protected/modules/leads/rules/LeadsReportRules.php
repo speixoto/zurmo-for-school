@@ -25,33 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Report rules to be used with the Users module.
+     * Report rules to be used with the Leads module.
      */
-    class UsersReportRules extends PermitableReportRules
+    class LeadsReportRules extends ContactsReportRules
     {
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'Item' => array(
-                    'nonReportable' =>
-                        array(  'createdByUser',
-                                'modifiedByUser'),
-                ),
-                'User' => array(
-                    'nonReportable' =>
-                        array(  'currency',
-                                'emailBoxes',
-                                'hash',
-                                'groups',
-                                'language',
-                                'manager',
-                                'role',
-                                'serializedAvatarData',
-                                'timeZone'),
-                    'derivedAttributeTypes' =>
-                        array('FullName')
-                ),
-            );
+            $metadata = array();
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }

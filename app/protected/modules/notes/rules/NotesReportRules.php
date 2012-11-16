@@ -25,32 +25,17 @@
      ********************************************************************************/
 
     /**
-     * Report rules to be used with the Users module.
+     * Report rules to be used with the Notes module.
      */
-    class UsersReportRules extends PermitableReportRules
+    class NotesReportRules extends ActivitiesReportRules
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
-                'Item' => array(
+                'Note' => array(
                     'nonReportable' =>
-                        array(  'createdByUser',
-                                'modifiedByUser'),
-                ),
-                'User' => array(
-                    'nonReportable' =>
-                        array(  'currency',
-                                'emailBoxes',
-                                'hash',
-                                'groups',
-                                'language',
-                                'manager',
-                                'role',
-                                'serializedAvatarData',
-                                'timeZone'),
-                    'derivedAttributeTypes' =>
-                        array('FullName')
-                ),
+                        array('files', 'socialItems'),
+                )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }

@@ -51,6 +51,34 @@
             $this->report = $report;
         }
 
+        /**
+         * @return model class name.  Resolves for inferred and derived relations
+         */
+        public function getRelationModelClassName($relation)
+        {
+            assert('is_string($relation)');
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $relationAndInferredData         = explode($delimiter, $relation);
+            $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
+            if(count($relationAndInferredData) == 2)
+            {
+                list($modelClassName, $notUsed) = $relationAndInferredData;
+                return $modelClassName;
+            }
+            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            {
+                return $this->model->getDerivedRelationModelClassName($relation);
+            }
+            elseif(count($relationAndInferredData) == 1)
+            {
+                return $this->model->getRelationModelClassName($relation);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         public function getAllRelationsData()
         {
             $attributes = array();
@@ -89,8 +117,10 @@
                     $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
                 }
             }
-            $attributes = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData($precedingModel, $precedingRelation));
-            return array_merge($attributes, $this->getInferredRelationsData($precedingModel, $precedingRelation));
+            $attributes       = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData($precedingModel, $precedingRelation));
+            $attributes       = array_merge($attributes, $this->getInferredRelationsData($precedingModel, $precedingRelation));
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
         }
 
         public function getAttributesIncludingDerivedAttributesData()

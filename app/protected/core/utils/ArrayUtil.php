@@ -99,7 +99,7 @@
          * @param Array $array
          * @param Mixed $subKey (integer or string)
          * @param string $sortFunctionName
-         * @return sorted array
+         * @return sorted array or empty array if nothing to sort
          */
         public static function subValueSort($array, $subKey, $sortFunctionName)
         {
@@ -115,10 +115,11 @@
                 $finalArray = array();
                 foreach ($newArray as $newKey => $unused)
                 {
-                    $finalArray[] = $array[$newKey];
+                    $finalArray[$newKey] = $array[$newKey];
                 }
                 return $finalArray;
             }
+            return array();
         }
     }
 ?>

@@ -24,33 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Report rules to be used with the Users module.
-     */
-    class UsersReportRules extends PermitableReportRules
+    abstract class PermitableReportRules extends ReportRules
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
-                'Item' => array(
+                'Permitable' => array(
                     'nonReportable' =>
-                        array(  'createdByUser',
-                                'modifiedByUser'),
-                ),
-                'User' => array(
-                    'nonReportable' =>
-                        array(  'currency',
-                                'emailBoxes',
-                                'hash',
-                                'groups',
-                                'language',
-                                'manager',
-                                'role',
-                                'serializedAvatarData',
-                                'timeZone'),
-                    'derivedAttributeTypes' =>
-                        array('FullName')
-                ),
+                        array('policies', 'rights'),
+                    ),
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }

@@ -28,24 +28,27 @@
     {
         public function getAttributesForFilters()
         {
-            $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
-            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            return $attributes;
+            $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
         }
 
         public function getAttributesForDisplayAttributes()
         {
-            $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
-            $attributes = array_merge($attributes, $this->getDerivedAttributesData());
-            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            return $attributes;
+            $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes       = array_merge($attributes, $this->getDerivedAttributesData());
+            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
         }
 
         public function getAttributesForOrderBys()
         {
-            $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
-            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            return $attributes;
+            $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
         }
     }
 ?>

@@ -84,9 +84,10 @@
 
         public function getAttributesForFilters()
         {
-            $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
-            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            return $attributes;
+            $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
         }
 
         public function getAttributesForDisplayAttributes(RedBeanModel $precedingModel = null, $precedingRelation = null)
@@ -128,7 +129,8 @@
                     $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
                 }
             }
-            return $attributes;
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
         }
 
         protected function resolveGroupByAttributesForDisplayAttributes(RedBeanModel $precedingModel = null,
@@ -206,8 +208,9 @@
                     $attributes[$attribute] = $data;
                 }
             }
-            $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            return $attributes;
+            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
         }
 
         protected function resolveGroupByCalculationAttributeData(& $attributes, $attribute, $type)

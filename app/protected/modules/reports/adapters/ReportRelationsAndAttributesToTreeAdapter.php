@@ -74,8 +74,7 @@
                                        getSelectableRelationsData($precedingModel, $precedingRelation);
             foreach($selectableRelationsData as $relation => $relationData)
             {
-
-                $relationModelClassName       = $modelToReportAdapter->getModel()->getRelationModelClassName($relation);
+                $relationModelClassName       = $modelToReportAdapter->getRelationModelClassName($relation);
                 $relationModuleClassName      = $relationModelClassName::getModuleClassName();
                 if($relationModuleClassName == null)
                 {
