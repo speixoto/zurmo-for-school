@@ -42,33 +42,47 @@
             return $this->treeType;
         }
 
-        public function getData()
+        public function getData($nodeId)
         {
-            $moduleClassName                = $this->report->getModuleClassName();
-            $previousModelClassNamesInChain = array();
-            $data                           = array();
-            $data[0]                        = array('text' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'));
-            $childrenNodeData               = $this->getChildrenNodeData(
-                                                $previousModelClassNamesInChain,
-                                                $this->makeModelRelationsAndAttributesToReportAdapter(
-                                                    $moduleClassName, $moduleClassName::getPrimaryModelName()));
-            if(!empty($childrenNodeData))
+            assert('is_string($nodeId)');
+            $moduleClassName          = $this->report->getModuleClassName();
+            $modelToReportAdapter     = $this->makeModelRelationsAndAttributesToReportAdapter(
+                                        $moduleClassName, $moduleClassName::getPrimaryModelName());
+            $nodeIdPrefix             = self::resolveNodeIdPrefixByNodeId($nodeId);
+            $precedingModel           = null;
+            $precedingRelation        = null;
+            if($nodeId != 'source')
+            {
+                self::resolvePrecedingModelRelationAndAdapterByNodeId($nodeId, $modelToReportAdapter, $precedingModel,
+                                                                      $precedingRelation);
+            }
+            else
+            {
+                $nodeIdPrefix = null;
+            }
+            if($nodeIdPrefix == null)
+            {
+                $data                       = array();
+                $data[0]                    = array('expanded' => true,
+                                                    'text'      => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'));
+            }
+            $childrenNodeData               = $this->getChildrenNodeData($modelToReportAdapter, $precedingModel,
+                                                                         $precedingRelation, $nodeIdPrefix);
+            if(!empty($childrenNodeData) && $nodeIdPrefix == null)
             {
                 $data[0]['children'] = $childrenNodeData;
+            }
+            else
+            {
+                $data                = $childrenNodeData;
             }
             return $data;
         }
 
-        protected function getChildrenNodeData(Array $previousModelClassNamesInChain,
-                                               ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
+        protected function getChildrenNodeData(ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
                                                RedBeanModel $precedingModel = null,
-                                               $precedingRelation = null, $depth = 0)
+                                               $precedingRelation = null, $nodeIdPrefix = null)
         {
-            if(!in_array(get_class($modelToReportAdapter->getModel()), $previousModelClassNamesInChain) &&
-               !$modelToReportAdapter->getModel() instanceof OwnedModel)
-            {
-                $previousModelClassNamesInChain[] = get_class($modelToReportAdapter->getModel());
-            }
             $childrenNodeData        = array();
             $selectableRelationsData = $modelToReportAdapter->
                                        getSelectableRelationsData($precedingModel, $precedingRelation);
@@ -80,25 +94,11 @@
                 {
                     throw new NotSupportedException();
                 }
-                if(!in_array($relationModelClassName, $previousModelClassNamesInChain) ||
-                   $relationModelClassName == end($previousModelClassNamesInChain))
-                {
-                    $relationNode                 = array('text'=> $relationData['label'], 'expanded' => false);
-                    if($depth == 0)
-                    {
-                    $relationModelToReportAdapter = $this->makeModelRelationsAndAttributesToReportAdapter(
-                                                                           $relationModuleClassName, $relationModelClassName);
-                    $relationChildrenNodeData     = $this->getChildrenNodeData($previousModelClassNamesInChain,
-                                                                           $relationModelToReportAdapter,
-                                                                           $modelToReportAdapter->getModel(), $relation, 1);
-                    if(!empty($relationChildrenNodeData))
-                    {
-                        $relationNode['children'] = $relationChildrenNodeData;
-                    }
-                    }
-                    $childrenNodeData[]           = $relationNode;
-                }
-
+                $relationNode                 = array('id'		    => self::makeNodeId($relation, $nodeIdPrefix),
+                                                      'text'        => $relationData['label'],
+                                                      'expanded'    => false,
+                                                      'hasChildren' => true);
+                $childrenNodeData[]           = $relationNode;
             }
             $attributesData = $this->getAttributesData($modelToReportAdapter, $precedingModel, $precedingRelation);
             foreach($attributesData as $relation => $attributeData)
@@ -162,30 +162,57 @@
             }
             return $adapter;
         }
-/**
-        protected function getSomething()
+
+        protected function makeNodeId($relation, $nodeIdPrefix = null)
         {
-            $dataTree = array(
-                        array(
-                                'text'=>'Grampa',
-                        'id'=>'grandpa-id',
-                                'children'=>array(
-                        array(
-                                                'text'=>'Father',
-                                'id'=>'father-id',
-                                                'children'=>array(
-                                                        array('text'=>'me', 'id'=>'me-id', 'htmlOptions' => array('class' => 'attribute-to-place')),
-                                                        array('text'=>'big sis', 'id'=>'sis-id'),
-                                                        array('text'=>'little brother', 'id'=>'bro-id'),
-                                                )
-                                        ),
-
-                                )
-                        )
-
-                );
+            assert('is_string($relation)');
+            assert('$nodeIdPrefix == null || is_string($nodeIdPrefix)');
+            $content = null;
+            if($nodeIdPrefix != null)
+            {
+                $content .= $nodeIdPrefix;
+            }
+            $content .= $relation;
+            return $content;
         }
-        **/
+
+
+        protected function resolveNodeIdPrefixByNodeId($nodeId)
+        {
+            assert('is_string($nodeId)');
+            if($nodeId == 'source ')
+            {
+                return null;
+            }
+            $relations = explode(FormModelUtil::RELATION_DELIMITER, $nodeId);
+            return implode(FormModelUtil::RELATION_DELIMITER, $relations) . FormModelUtil::RELATION_DELIMITER;
+        }
+
+        protected function resolvePrecedingModelRelationAndAdapterByNodeId(
+                                $nodeId, & $modelToReportAdapter, & $precedingModel, & $precedingRelation)
+        {
+            if($nodeId == 'source ')
+            {
+                return;
+            }
+            $relations    = explode(FormModelUtil::RELATION_DELIMITER, $nodeId);
+            $lastRelation = end($relations);
+            foreach($relations as $relation)
+            {
+                $relationModelClassName = $modelToReportAdapter->getRelationModelClassName($relation);
+                $precedingRelation      = $relation;
+                if($relation != $lastRelation)
+                {
+                    $precedingModel    = new $relationModelClassName(false);
+                }
+                elseif(count($relations) == 1)
+                {
+                    $precedingModel    = $modelToReportAdapter->getModel();
+                }
+                $modelToReportAdapter  = $this->makeModelRelationsAndAttributesToReportAdapter(
+                                         $relationModelClassName::getModuleClassName(), $relationModelClassName);
+            }
+        }
     }
 
 ?>

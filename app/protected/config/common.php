@@ -55,6 +55,18 @@
             ),
             'clientScript' => array(
                 'class' => 'ClientScript',
+                'packages' => array(
+                    'treeview' => array(
+                        'basePath' => 'application.core.widgets.assets',
+                        'js' => array(
+                            '/treeView/jquery.treeview.async.js'),
+                        'depends'  => array('baseTreeView')),
+                    'baseTreeView' => array(
+                        'js' => array(
+                            'jquery.treeview.js',
+                            'jquery.treeview.edit.js'),
+                        'depends'  => array('jquery', 'cookie')),
+                ),
             ),
             'currencyHelper' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoCurrencyHelper',

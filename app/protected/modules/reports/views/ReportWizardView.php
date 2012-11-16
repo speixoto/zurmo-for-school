@@ -98,6 +98,7 @@
 
         protected function registerScripts()
         {
+            Yii::app()->getClientScript()->registerCoreScript('treeview');
             $this->registerClickFlowScript();
         }
 

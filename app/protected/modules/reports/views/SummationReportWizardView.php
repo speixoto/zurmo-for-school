@@ -50,9 +50,7 @@
         protected function renderConfigSaveAjax($formName)
         {
             assert('is_string($formName)');
-            return     "console.log('we are at renderConfigSaveAjax');
-                        console.log($('#" . $formName . "').find('.attachLoadingTarget').attr('id'));
-                        linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
+            return     "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
                         if(linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .

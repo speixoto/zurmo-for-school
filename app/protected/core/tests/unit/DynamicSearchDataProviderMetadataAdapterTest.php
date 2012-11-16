@@ -106,7 +106,7 @@
                         'relatedData'                 => true,
                         'cccMember'                   => 'cccMemberValue',
                     ),
-                    'attributeIndexOrDerivedType' => 'ccc' . DynamicSearchUtil::RELATION_DELIMITER . 'cccMember',
+                    'attributeIndexOrDerivedType' => 'ccc' . FormModelUtil::RELATION_DELIMITER . 'cccMember',
                     'structurePosition'           => '2',
                 ),
                 4 => array(
@@ -118,7 +118,7 @@
 
                         ),
                     ),
-                    'attributeIndexOrDerivedType' => 'ccc' . DynamicSearchUtil::RELATION_DELIMITER . 'bbb' . DynamicSearchUtil::RELATION_DELIMITER . 'bbbMember',
+                    'attributeIndexOrDerivedType' => 'ccc' . FormModelUtil::RELATION_DELIMITER . 'bbb' . FormModelUtil::RELATION_DELIMITER . 'bbbMember',
                     'structurePosition'           => '3',
                 ),
             );

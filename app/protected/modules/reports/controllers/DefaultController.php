@@ -244,13 +244,19 @@
                                                             ReportToWizardFormAdapter::getFormClassNameByType($type));
         }
 
-        public function actionRelationsAndAttributesTree($type, $treeType, $id = null)
+        public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
         {
             $postData    = PostUtil::getData();
             $savedReport = null;
             $report      = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
-            $view        = ReportRelationsAndAttributesTreeViewFactory::makeViewFromReport($report, $treeType);
+            if($nodeId != null)
+            {
+                $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
+                echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
+                Yii::app()->end(0, false);
+            }
+            $view        = new ReportRelationsAndAttributesTreeView($treeType, 'edit-form');
             $content     = $view->render();
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);

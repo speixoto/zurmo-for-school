@@ -36,11 +36,16 @@
 
         const TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES = 'DrillDownDisplayAttributes';
 
-        protected $reportToTreeAdapter;
+        protected $treeType;
 
-        public function __construct(ReportRelationsAndAttributesToTreeAdapter $reportToTreeAdapter)
+        protected $formName;
+
+        public function __construct($treeType, $formName)
         {
-            $this->reportToTreeAdapter    = $reportToTreeAdapter;
+            assert('is_string($treeType)');
+            assert('is_string($formName)');
+            $this->treeType = $treeType;
+            $this->formName = $formName;
         }
 
         public function isUniqueToAPage()
@@ -55,8 +60,8 @@
             $cClipWidget->beginClip("ZurmoTreeView");
             $cClipWidget->widget('application.core.widgets.ZurmoTreeView', array(
             'id'          => $this->getTreeId(),
-           // 'data'        => $this->reportToTreeAdapter->getData(),
-            'url' => 'http:://www.google.com',
+            'url'         => $this->getDataUrl(),
+            'options' => array('formName' => $this->formName),
             'htmlOptions' => array(
                 'class'   => 'treeview-red' //todo: use different theme class.
             )));
@@ -85,9 +90,15 @@
             return $content;
         }
 
+        protected function getDataUrl()
+        {
+            return  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
+                        array_merge($_GET, array('treeType' => $this->treeType)));
+        }
+
         protected function getTreeId()
         {
-            return $this->reportToTreeAdapter->getTreeType() . 'TreeView';
+            return $this->treeType . 'TreeView';
         }
     }
 ?>
