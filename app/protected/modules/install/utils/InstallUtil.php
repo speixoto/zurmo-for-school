@@ -632,7 +632,7 @@
                                                   $language,
                                                   $perInstanceFilename = 'perInstance.php', $debugFilename = 'debug.php',
                                                   $hostInfo, $scriptUrl,
-                                                  $submitCrashReportsToZurmoSentry = true)
+                                                  $submitCrashToSentry = true)
         {
             assert('is_dir($instanceRoot)');
             assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
@@ -666,10 +666,10 @@
             $contents = preg_replace('/\$forceNoFreeze\s*=\s*true;/',
                                      '$forceNoFreeze = false;',
                                      $contents);
-            if (!$submitCrashReportsToZurmoSentry)
+            if (!$submitCrashToSentry)
             {
-                $contents = preg_replace('/\$submitCrashReportsToZurmoSentry\s*=\s*true;/',
-                                         '$submitCrashReportsToZurmoSentry = false;',
+                $contents = preg_replace('/\$submitCrashToSentry\s*=\s*true;/',
+                                         '$submitCrashToSentry = false;',
                                          $contents);
             }
             $setIncludePathServiceHelper = new SetIncludePathServiceHelper();
@@ -878,7 +878,7 @@
                                             $debugFilename,
                                             $form->hostInfo,
                                             $form->scriptUrl,
-                                            $form->submitCrashReportsToZurmoSentry);
+                                            $form->submitCrashToSentry);
             $messageStreamer->add(Yii::t('Default', 'Setting up default data.'));
             DefaultDataUtil::load($messageLogger);
             Yii::app()->custom->runAfterInstallationDefaultDataLoad($messageLogger);

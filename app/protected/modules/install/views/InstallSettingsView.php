@@ -273,8 +273,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'submitCrashReportsToZurmoSentry', 'type' => 'CheckBox',
-                                                      'description' => Yii::t('Default', 'Should CRM crash reports be submitted to Zurmo Sentry automatically.')),
+                                                array('attributeName' => 'submitCrashToSentry', 'type' => 'CheckBox',
+                                                      'description' => Yii::t('Default', 'Should CRM crash reports be submitted to Sentry automatically.')),
                                             ),
                                         ),
                                     )

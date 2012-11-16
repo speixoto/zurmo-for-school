@@ -61,7 +61,7 @@
 
         public $scriptUrl = '';
 
-        public $submitCrashReportsToZurmoSentry = true;
+        public $submitCrashToSentry = true;
 
         public function rules()
         {
@@ -86,7 +86,7 @@
                 array('installDemoData',       'boolean'),
                 array('hostInfo',              'type', 'type' => 'string'),
                 array('scriptUrl',             'type', 'type' => 'string'),
-                array('submitCrashReportsToZurmoSentry',       'boolean'),
+                array('submitCrashToSentry',   'boolean'),
             );
         }
 
