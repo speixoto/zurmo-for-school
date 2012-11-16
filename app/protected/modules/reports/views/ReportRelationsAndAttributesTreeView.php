@@ -55,7 +55,8 @@
             $cClipWidget->beginClip("ZurmoTreeView");
             $cClipWidget->widget('application.core.widgets.ZurmoTreeView', array(
             'id'          => $this->getTreeId(),
-            'data'        => $this->reportToTreeAdapter->getData(),
+           // 'data'        => $this->reportToTreeAdapter->getData(),
+            'url' => 'http:://www.google.com',
             'htmlOptions' => array(
                 'class'   => 'treeview-red' //todo: use different theme class.
             )));

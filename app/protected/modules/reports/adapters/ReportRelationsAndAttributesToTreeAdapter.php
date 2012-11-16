@@ -62,7 +62,7 @@
         protected function getChildrenNodeData(Array $previousModelClassNamesInChain,
                                                ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
                                                RedBeanModel $precedingModel = null,
-                                               $precedingRelation = null, & $count = 0)
+                                               $precedingRelation = null, $depth = 0)
         {
             if(!in_array(get_class($modelToReportAdapter->getModel()), $previousModelClassNamesInChain) &&
                !$modelToReportAdapter->getModel() instanceof OwnedModel)
@@ -84,14 +84,17 @@
                    $relationModelClassName == end($previousModelClassNamesInChain))
                 {
                     $relationNode                 = array('text'=> $relationData['label'], 'expanded' => false);
+                    if($depth == 0)
+                    {
                     $relationModelToReportAdapter = $this->makeModelRelationsAndAttributesToReportAdapter(
                                                                            $relationModuleClassName, $relationModelClassName);
                     $relationChildrenNodeData     = $this->getChildrenNodeData($previousModelClassNamesInChain,
                                                                            $relationModelToReportAdapter,
-                                                                           $modelToReportAdapter->getModel(), $relation, $count);
+                                                                           $modelToReportAdapter->getModel(), $relation, 1);
                     if(!empty($relationChildrenNodeData))
                     {
                         $relationNode['children'] = $relationChildrenNodeData;
+                    }
                     }
                     $childrenNodeData[]           = $relationNode;
                 }
