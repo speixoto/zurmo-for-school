@@ -54,7 +54,7 @@
         protected function getMessageContent()
         {
             return Yii::t('Default', '<h2>Not so fast</h2></i><div class="large-icon"></div>' .
-                                     '<p>First the administrator must configure the outbound email settings.</p>');
+                                     '<p>The administrator must first configure the system outbound email settings.</p>');
         }
     }
 ?>
