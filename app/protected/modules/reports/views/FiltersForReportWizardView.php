@@ -24,16 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FiltersForReportWizardView extends ComponentForReportWizardView
+    class FiltersForReportWizardView extends ComponentWithTreeForReportWizardView
     {
-        protected function renderFormContent()
-        {
-            $content  = $this->renderAttributesAndRelationsTreeContent();
-            $content .= ZurmoHtml::tag('div', array(), 'the right side content');
-            return $content;
-        }
-
-        public static function getTreeId()
+        public static function getTreeType()
         {
             return ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
         }

@@ -358,6 +358,7 @@
 
         public static function resolveInputIdPrefixIntoString($inputIdPrefix)
         {
+            assert('is_string($inputIdPrefix) || is_array($inputIdPrefix)');
             if (is_array($inputIdPrefix))
             {
                 if (count($inputIdPrefix) > 1)
@@ -384,6 +385,32 @@
                 throw notSupportedException();
             }
             return $inputIdPrefix;
+        }
+
+        public static function resolveInputNamePrefixIntoString($inputNamePrefix)
+        {
+            assert('is_string($inputNamePrefix) || is_array($inputNamePrefix)');
+            if (is_array($inputNamePrefix))
+            {
+                if (count($inputNamePrefix) > 1)
+                {
+                    $inputPrefixContent = null;
+                    foreach ($inputNamePrefix as $value)
+                    {
+                        if ($inputPrefixContent != null)
+                        {
+                            $inputPrefixContent .= '_';
+                        }
+                        $inputPrefixContent .= $value;
+                    }
+                    return $inputPrefixContent;
+                }
+            }
+            elseif (!is_string($inputNamePrefix))
+            {
+                throw notSupportedException();
+            }
+            return $inputNamePrefix;
         }
     }
 ?>

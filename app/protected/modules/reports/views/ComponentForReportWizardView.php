@@ -57,16 +57,6 @@
             return true;
         }
 
-        public static function getTreeId()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static function getTreeDivId()
-        {
-            return static::getTreeId() . 'TreeArea';
-        }
-
         protected function renderContent()
         {
             $content              = $this->renderTitleContent();

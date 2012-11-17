@@ -27,6 +27,9 @@
 function load(settings, root, child, container) {
     function createNode(parent) {
         var current = $("<li/>").attr("id", this.id || "").html("<span>" + this.text + "</span>").appendTo(parent);
+        if (this.wrapperClass) {
+            current.addClass(this.wrapperClass);
+        }
         if (this.classes) {
             current.children("span").addClass(this.classes);
         }

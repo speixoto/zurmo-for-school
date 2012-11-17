@@ -263,6 +263,28 @@
             echo $content;
         }
 
+        public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber, $id = null)
+        {
+            $postData    = PostUtil::getData();
+            $savedReport = null;
+            $report      = null;
+            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
+
+            $formModelClassName    = ReportToWizardFormAdapter::getFormClassNameByType($type);
+            $nodeIdWithoutTreeType = ReportRelationsAndAttributesToTreeAdapter::
+                                     removeTreeTypeFromNodeId($nodeId, $treeType);
+            $inputPrefixData       = ReportRelationsAndAttributesToTreeAdapter::
+                                     resolveInputPrefixData($nodeIdWithoutTreeType, $formModelClassName,
+                                                            $treeType, (int)$rowNumber);
+            $attribute             = ReportRelationsAndAttributesToTreeAdapter::
+                                     resolveAttributeByNodeId($nodeIdWithoutTreeType);
+            $view                  = new AttributeRowForReportComponentView((int)$rowNumber, $inputPrefixData, $attribute);
+            $content               = $view->render();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
         protected function resolveAfterSaveHasPermissionsProblem(SavedReport $savedReport, $modelToStringValue)
         {
             assert('is_string($modelToStringValue)');

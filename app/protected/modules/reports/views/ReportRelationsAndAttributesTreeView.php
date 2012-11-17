@@ -67,24 +67,25 @@
             )));
             $cClipWidget->endClip();
             $content .= $cClipWidget->getController()->clips['ZurmoTreeView'];
-
-            //todo: move into JS file
+            //todo: move into JS file, right now this is getting called 4 or 5 times one for each tree?
             $script = '
-                $( ".attribute-to-place" ).draggable({
-                helper: "clone",
-                revert: "invalid",
-                snap: ".droppable-cell-container",
-                snapMode: "inner",
-                cursor: "pointer",
-                start: function(event,ui)
-                {
-                    //$(ui.helper).attr("id", $(this).attr("id"));
-                    //$(ui.helper).css("height", "20px");
-                    //$(ui.helper).css("width", "260px");
-                },
-                stop: function(event, ui){
-                    document.body.style.cursor = "auto";
-                }});
+                $(".attribute-to-place").live("mousemove",function(){
+                    $(this).draggable({
+                    helper: "clone",
+                    revert: "invalid",
+                    snap: ".droppable-attribute-container",
+                    snapMode: "inner",
+                    cursor: "pointer",
+                    start: function(event,ui)
+                    {
+                        $(ui.helper).attr("id", $(this).attr("id"));
+                        //$(ui.helper).css("height", "20px");
+                        //$(ui.helper).css("width", "260px");
+                    },
+                    stop: function(event, ui){
+                        document.body.style.cursor = "auto";
+                    }});
+                });
             ';
             Yii::app()->getClientScript()->registerScript('reportTreeViewScript', $script);
             return $content;

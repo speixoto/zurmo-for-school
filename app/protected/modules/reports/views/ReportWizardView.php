@@ -153,7 +153,7 @@
             assert('is_string($formName)');
             assert('is_string($componentViewClassName)');
             $url    =  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
-                       array_merge($_GET, array('treeType' => $componentViewClassName::getTreeId())));
+                       array_merge($_GET, array('treeType' => $componentViewClassName::getTreeType())));
             $script = "
                 $('#" . FiltersForReportWizardView::getTreeDivId() . "').addClass('loading');
                 makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
