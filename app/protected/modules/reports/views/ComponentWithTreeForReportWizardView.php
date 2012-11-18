@@ -46,10 +46,16 @@
             $idInputHtmlOptions   = array('id' => $this->getRowCounterInputId());
             $hiddenInputName      = static::getTreeType() . 'RowCounter';
             $content             .= ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
-            $rightSideContent     = ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
+
+            $content             .= ZurmoHtml::tag('div', array(), $this->renderRightSideContent());
+            return $content;
+        }
+
+        protected function renderRightSideContent()
+        {
+            $content     = ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
                                                                            static::getTreeType()), 'todo: drop here');
-            $rightSideContent    .= ZurmoHtml::tag('div', array('class' => 'attribute-rows'), 'some message');
-            $content             .= ZurmoHtml::tag('div', array(), $rightSideContent);
+            $content    .= ZurmoHtml::tag('div', array('class' => 'attribute-rows'), 'some message');
             return $content;
         }
 
@@ -62,34 +68,23 @@
         {
             parent::registerScripts();
             $script = '
-                $( ".droppable-attributes-container").droppable({
-                    accept: ".attribute-to-place",
-                    hoverClass: "ui-state-active",
-                    cursor: "pointer",
-                    drop: function( event, ui ) {
-                        //todo: hide drop overlay
-                    }
-                });
                 $(".droppable-attributes-container.' . static::getTreeType() . '").live("drop",function(event, ui){
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
+                $(".remove-report-attribute-row-link").live("click", function()
+                    {
+                        $(this).parent().remove();
+                        ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
+                    }
+                );
             ';
             Yii::app()->getClientScript()->registerScript(static::getTreeType() . 'ReportComponentForTreeScript', $script);
-            Yii::app()->clientScript->registerScript('ReportAttributeRowRemoveLink', "
-            $('.remove-report-attribute-row-link').live('click', function()
-                {
-                    console.log('here we are removing');
-                    formId = $(this).closest('form').attr('id');
-                    $(this).parent().remove();
-                    //rebuildDynamicSearchRowNumbersAndStructureInput(formId);
-                }
-            );");
         }
 
         protected function getAddAttributeUrl()
         {
             return  Yii::app()->createUrl('reports/default/addAttributeFromTree',
-                        array_merge($_GET, array('treeType' => static::getTreeType())));
+                        array_merge($_GET, array('treeType'                   => static::getTreeType())));
         }
 
         protected function getAjaxForDroppedAttribute()
@@ -107,10 +102,14 @@
                     'success' => 'js:function(data){
                     $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
                     $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").append(data);
-                    //rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->form->getId() . '"); - this has to do with structure/label
+                    ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     //attachLoadingSpinner("' . $this->form->getId() . '", false); - remove spinner
                 }'
             ));
+        }
+
+        protected function getReportAttributeRowAddOrRemoveExtraScript()
+        {
         }
     }
 ?>

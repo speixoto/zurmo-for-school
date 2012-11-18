@@ -263,7 +263,7 @@
             echo $content;
         }
 
-        public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber, $id = null)
+        public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber, $trackableStructurePosition = false, $id = null)
         {
             $postData    = PostUtil::getData();
             $savedReport = null;
@@ -278,7 +278,10 @@
                                                             $treeType, (int)$rowNumber);
             $attribute             = ReportRelationsAndAttributesToTreeAdapter::
                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
-            $view                  = new AttributeRowForReportComponentView((int)$rowNumber, $inputPrefixData, $attribute);
+            $view                  = new AttributeRowForReportComponentView((int)$rowNumber,
+                                                                            $inputPrefixData,
+                                                                            $attribute,
+                                                                            (bool)$trackableStructurePosition);
             $content               = $view->render();
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);

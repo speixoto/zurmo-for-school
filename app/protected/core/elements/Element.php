@@ -356,16 +356,16 @@
             return static::resolveInputIdPrefixIntoString($this->resolveInputPrefix());
         }
 
-        public static function resolveInputIdPrefixIntoString($inputIdPrefix)
+        public static function resolveInputNamePrefixIntoString($inputNamePrefix)
         {
-            assert('is_string($inputIdPrefix) || is_array($inputIdPrefix)');
-            if (is_array($inputIdPrefix))
+            assert('is_string($inputNamePrefix) || is_array($inputNamePrefix)');
+            if (is_array($inputNamePrefix))
             {
-                if (count($inputIdPrefix) > 1)
+                if (count($inputNamePrefix) > 1)
                 {
                     $inputPrefixContent = null;
                     $firstPrefixPlaced  = false;
-                    foreach ($inputIdPrefix as $value)
+                    foreach ($inputNamePrefix as $value)
                     {
                         if (!$firstPrefixPlaced)
                         {
@@ -380,22 +380,22 @@
                     return $inputPrefixContent;
                 }
             }
-            elseif (!is_string($inputIdPrefix))
+            elseif (!is_string($inputNamePrefix))
             {
                 throw notSupportedException();
             }
-            return $inputIdPrefix;
+            return $inputNamePrefix;
         }
 
-        public static function resolveInputNamePrefixIntoString($inputNamePrefix)
+        public static function resolveInputIdPrefixIntoString($inputIdPrefix)
         {
-            assert('is_string($inputNamePrefix) || is_array($inputNamePrefix)');
-            if (is_array($inputNamePrefix))
+            assert('is_string($inputIdPrefix) || is_array($inputIdPrefix)');
+            if (is_array($inputIdPrefix))
             {
-                if (count($inputNamePrefix) > 1)
+                if (count($inputIdPrefix) > 1)
                 {
                     $inputPrefixContent = null;
-                    foreach ($inputNamePrefix as $value)
+                    foreach ($inputIdPrefix as $value)
                     {
                         if ($inputPrefixContent != null)
                         {
@@ -406,11 +406,11 @@
                     return $inputPrefixContent;
                 }
             }
-            elseif (!is_string($inputNamePrefix))
+            elseif (!is_string($inputIdPrefix))
             {
                 throw notSupportedException();
             }
-            return $inputNamePrefix;
+            return $inputIdPrefix;
         }
     }
 ?>

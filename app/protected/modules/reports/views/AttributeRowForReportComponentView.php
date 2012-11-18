@@ -32,14 +32,18 @@
 
         protected $attribute;
 
-        public function __construct($rowNumber, $inputPrefixData, $attribute)
+        protected $hasTrackableStructurePosition;
+
+        public function __construct($rowNumber, $inputPrefixData, $attribute, $hasTrackableStructurePosition)
         {
             assert('is_int($rowNumber)');
             assert('is_array($inputPrefixData)');
             assert('is_string($attribute)');
+            assert('is_bool($hasTrackableStructurePosition)');
             $this->rowNumber                          = $rowNumber;
             $this->inputPrefixData                    = $inputPrefixData;
             $this->attribute                          = $attribute;
+            $this->hasTrackableStructurePosition      = $hasTrackableStructurePosition;
         }
 
         public function render()
@@ -49,24 +53,38 @@
 
         protected function renderContent()
         {
-            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
-                                            array_merge($this->inputPrefixData, array('structurePosition')));
-            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
-                                            array_merge($this->inputPrefixData, array('structurePosition')));
-            $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
-
             $content  = '<div>';
-            $content .= ZurmoHtml::tag('span', array('class' => 'report-attribute-row-number-label'),
-                                                     ($this->rowNumber + 1) . '.');
+            if($this->hasTrackableStructurePosition)
+            {
+                $content .= $this->renderReportAttributeRowNumberLabel();
+                $content .= $this->renderHiddenStructurePositionInput();
+            }
             $content .= $this->renderAttributeContent();
-            $content .= ZurmoHtml::hiddenField($hiddenInputName, ($this->rowNumber + 1), $idInputHtmlOptions);
             $content .= '</div>';
             $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-report-attribute-row-link'));
             return ZurmoHtml::tag('div', array('class' => 'report-attribute-row'), $content);
         }
 
+        protected function renderReportAttributeRowNumberLabel()
+        {
+            return ZurmoHtml::tag('span', array('class' => 'report-attribute-row-number-label'),
+                                          ($this->rowNumber + 1) . '.');
+        }
+
+        protected function renderHiddenStructurePositionInput()
+        {
+            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
+                                            array_merge($this->inputPrefixData, array('structurePosition')));
+            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
+                                            array_merge($this->inputPrefixData, array('structurePosition')));
+            $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
+            return ZurmoHtml::hiddenField($hiddenInputName, ($this->rowNumber + 1), $idInputHtmlOptions);
+        }
+
         protected function renderAttributeContent()
         {
+            //todo: [[0][attributeIndexOrDerivedType]
+            //then you can make [0]['myAttribute'] and its content determined by the element
             $content = 'input attribute: ' . $this->attribute . "<BR>";
             return $content;
         }

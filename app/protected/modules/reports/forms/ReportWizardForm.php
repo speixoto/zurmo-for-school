@@ -61,6 +61,10 @@
 
         public $ownerName;
 
+        public $filtersStructure;
+
+        public $filters;
+
         protected $isNew = false;
 
         /**

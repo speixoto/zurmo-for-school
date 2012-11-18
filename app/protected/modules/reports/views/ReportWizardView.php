@@ -99,6 +99,9 @@
         protected function registerScripts()
         {
             Yii::app()->getClientScript()->registerCoreScript('treeview');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
             $this->registerClickFlowScript();
         }
 

@@ -26,6 +26,13 @@
 
     class FiltersForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+        protected function renderRightSideContent()
+        {
+            $content  = parent::renderRightSideContent();
+            $content .= $this->renderStructureContent();
+            return $content;
+        }
+
         public static function getTreeType()
         {
             return ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
@@ -46,6 +53,74 @@
             return 'filterBysNextLink';
         }
 
+        protected function getAddAttributeUrl()
+        {
+            return  Yii::app()->createUrl('reports/default/addAttributeFromTree',
+                        array_merge($_GET, array('treeType'                   => static::getTreeType(),
+                                                 'trackableStructurePosition' => true)));
+        }
 
+        protected function registerScripts()
+        {
+            parent::registerScripts();
+            Yii::app()->clientScript->registerScript('showStructurePanels' . $this->form->getId(), "
+                $('#show-filters-structure-div-link').click( function()
+                    {
+                        $('#show-filters-structure-div').show();
+                        $('#show-filters-structure-div-link').hide();
+                        return false;
+                    }
+                );");
+        }
+
+        protected function renderStructureContent()
+        {
+            $style1 = '';
+            $style2 = 'display:none;';
+            if (count($this->model->filters) > 0)
+            {
+                $style3 = '';
+            }
+            else
+            {
+                $style3 = 'display:none;';
+            }
+            $content  = ZurmoHtml::link(Yii::t('Default', 'Modify Structure'), '#',
+                            array('id'    => 'show-filters-structure-div-link',
+                                  'style' => $style1));
+            $content .= ZurmoHtml::tag('div',
+                            array('id'    => 'show-filters-structure-div',
+                                  'class' => 'has-lang-label',
+                                  'style' => $style2), $this->renderStructureInputContent());
+            $content  = ZurmoHtml::tag('div', array('id'    => 'show-filters-structure-wrapper',
+                                                     'style' => $style3), $content);
+            return $content;
+        }
+
+        protected function renderStructureInputContent()
+        {
+            $idInputHtmlOptions  = array('id'    => $this->getStructureInputId(),
+                                         'name'  => $this->getStructureInputName(),
+                                         'class' => 'filters-structure-input');
+            $content             = $this->form->textField($this->model, 'filtersStructure', $idInputHtmlOptions);
+            $content            .= ZurmoHtml::tag('span', array(), Yii::t('Default', 'Search Operator'));
+            $content            .= $this->form->error($this->model, 'filtersStructure');
+            return $content;
+        }
+
+        protected function getStructureInputId()
+        {
+            return get_class($this->model) . '_filtersStructure';
+        }
+
+        protected function getStructureInputName()
+        {
+            return get_class($this->model) . '[filtersStructure]';
+        }
+
+        protected function getReportAttributeRowAddOrRemoveExtraScript()
+        {
+            return 'rebuildReportFiltersAttributeRowNumbersAndStructureInput("' . get_class($this) . '");';
+        }
     }
 ?>

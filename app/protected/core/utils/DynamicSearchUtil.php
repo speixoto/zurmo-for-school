@@ -205,7 +205,7 @@
                     {
                         $model           = SearchUtil::resolveModelToUseByModelAndAttributeName($model, $attribute);
                         $inputPrefix[]   = $attribute;
-                        $relatedDataName = Element::resolveInputIdPrefixIntoString($inputPrefix) . '[relatedData]';
+                        $relatedDataName = Element::resolveInputNamePrefixIntoString($inputPrefix) . '[relatedData]';
                         $content        .= ZurmoHtml::hiddenField($relatedDataName, true);
                     }
                     $processCount++;
