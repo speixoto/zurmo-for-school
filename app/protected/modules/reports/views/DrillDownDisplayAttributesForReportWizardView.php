@@ -40,5 +40,10 @@
         {
             return 'what button here';
         }
+
+        protected function isListContentSortable()
+        {
+            return true;
+        }
     }
 ?>

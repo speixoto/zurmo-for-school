@@ -39,24 +39,69 @@
         protected function renderFormContent()
         {
             $content              = $this->renderAttributesAndRelationsTreeContent();
-            $rowCount             = 0;
-
-            //todo: render existing rows...
-
-            $idInputHtmlOptions   = array('id' => $this->getRowCounterInputId());
-            $hiddenInputName      = static::getTreeType() . 'RowCounter';
-            $content             .= ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
-
             $content             .= ZurmoHtml::tag('div', array(), $this->renderRightSideContent());
             return $content;
         }
 
         protected function renderRightSideContent()
         {
-            $content     = ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
+            $rowCount             = 0;
+
+            $items                = $this->getItems($rowCount);
+            if($this->isListContentSortable())
+            {
+                $itemsContent         = $this->getSortableListContent($items);
+            }
+            else
+            {
+                $itemsContent         = $this->getNonSortableListContent($items);
+            }
+            $idInputHtmlOptions   = array('id' => $this->getRowCounterInputId());
+            $hiddenInputName      = static::getTreeType() . 'RowCounter';
+            $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
+            $content             .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
                                                                            static::getTreeType()), 'todo: drop here');
-            $content    .= ZurmoHtml::tag('div', array('class' => 'attribute-rows'), 'some message');
+            $content             .= ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
             return $content;
+        }
+
+        protected function getItems(& $rowCount)
+        {
+            assert('is_int($rowCount)');
+            //todo: render existing rows...
+            $items       = array();
+            return $items;
+        }
+
+        protected function getNonSortableListContent(Array $items)
+        {
+            $content = null;
+            foreach($items as $item)
+            {
+                $content .= ZurmoHtml::tag('ul', array(), $item['content']);
+            }
+            return ZurmoHtml::tag('ul', array(), $content);
+        }
+
+        protected function getSortableListContent(Array $items)
+        {
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip(static::getTreeType() . 'ReportComponentSortable');
+            $cClipWidget->widget('application.core.widgets.JuiSortable', array(
+                'items' => $items,
+                'itemTemplate' => '<li>{content}</li>',
+                'htmlOptions' =>
+                array(
+                    'id'    => static::getTreeType() . 'attributeRowsUl',
+                    'class' => 'sortable',
+                ),
+                'options' => array(
+                    'placeholder' => 'ui-state-highlight',
+                ),
+                'showEmptyList' => false
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips[static::getTreeType() . 'ReportComponentSortable'];
         }
 
         protected function getRowCounterInputId()
@@ -84,7 +129,7 @@
         protected function getAddAttributeUrl()
         {
             return  Yii::app()->createUrl('reports/default/addAttributeFromTree',
-                        array_merge($_GET, array('treeType'                   => static::getTreeType())));
+                        array_merge($_GET, array('treeType' => static::getTreeType())));
         }
 
         protected function getAjaxForDroppedAttribute()
@@ -101,7 +146,7 @@
                     }',
                     'success' => 'js:function(data){
                     $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
-                    $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").append(data);
+                    $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     //attachLoadingSpinner("' . $this->form->getId() . '", false); - remove spinner
                 }'
@@ -110,6 +155,11 @@
 
         protected function getReportAttributeRowAddOrRemoveExtraScript()
         {
+        }
+
+        protected function isListContentSortable()
+        {
+            return false;
         }
     }
 ?>

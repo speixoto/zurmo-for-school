@@ -62,7 +62,8 @@
             $content .= $this->renderAttributeContent();
             $content .= '</div>';
             $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-report-attribute-row-link'));
-            return ZurmoHtml::tag('div', array('class' => 'report-attribute-row'), $content);
+            $content  =  ZurmoHtml::tag('div', array('class' => 'report-attribute-row'), $content);
+            return ZurmoHtml::tag('li', array(), $content);
         }
 
         protected function renderReportAttributeRowNumberLabel()

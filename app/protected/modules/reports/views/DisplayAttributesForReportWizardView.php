@@ -45,5 +45,10 @@
         {
             return 'displayAttributesNextLink';
         }
+
+        protected function isListContentSortable()
+        {
+            return true;
+        }
     }
 ?>
