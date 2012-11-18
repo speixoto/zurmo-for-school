@@ -47,10 +47,21 @@
             $this->assertEquals(0, $emailAccount->useCustomOutboundSettings);
             $this->assertEquals('smtp', $emailAccount->outboundType);
             $emailAccountId = $emailAccount->id;
-            unset($emailAccount);
+            $emailAccount = EmailAccount::resolveAndGetByUserAndName($super);
+            $this->assertNotEquals($emailAccountId, $emailAccount->id);
+            $emailAccount->save();
+            $this->assertEquals($emailAccount->getError('fromAddress'), 'From Address cannot be blank.');
+            $emailAccount->fromAddress = 'super@zurmo.org';
+            $emailAccount->save();
+            $emailAccountId = $emailAccount->id;
             $emailAccount = EmailAccount::resolveAndGetByUserAndName($super);
             $this->assertEquals($emailAccountId, $emailAccount->id);
-
+            $this->assertEquals('Default', $emailAccount->name);
+            $this->assertEquals($super, $emailAccount->user);
+            $this->assertEquals($super->getFullName(), $emailAccount->fromName);
+            $this->assertEquals('super@zurmo.org', $emailAccount->fromAddress);
+            $this->assertEquals(0, $emailAccount->useCustomOutboundSettings);
+            $this->assertEquals('smtp', $emailAccount->outboundType);
         }
 
 
@@ -65,11 +76,9 @@
             $this->assertEquals('Default', $emailAccount->name);
             $this->assertEquals($super, $emailAccount->user);
             $this->assertEquals($super->getFullName(), $emailAccount->fromName);
-            $this->assertEquals($super->primaryEmail->emailAddress, $emailAccount->fromAddress);
+            $this->assertEquals('super@zurmo.org', $emailAccount->fromAddress);
             $this->assertEquals(0, $emailAccount->useCustomOutboundSettings);
             $this->assertEquals('smtp', $emailAccount->outboundType);
-            unset($emailAccount);            
         }
-
     }
 ?>
