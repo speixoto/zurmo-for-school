@@ -44,6 +44,13 @@
             $this->assertEquals('Subject cannot be blank.',      $emailMessageForm->getModel()->getError('subject'));
             $this->assertEquals('Folder cannot be blank.',       $emailMessageForm->getModel()->getError('folder'));
             $this->assertEquals('Sender cannot be blank.',       $emailMessageForm->getModel()->getError('sender'));
+            $messageRecipient            = new EmailMessageRecipient();
+            $messageRecipient->toAddress = 'example@zurmo.org';
+            $messageRecipient->type      = EmailMessageRecipient::TYPE_TO;
+            $emailMessage->recipients->add($messageRecipient);
+            $emailMessageForm = new CreateEmailMessageForm($emailMessage);
+            $emailMessageForm->setScenario('createNonDraft');
+            $this->assertNull($emailMessageForm->getError('recipientsData_to'));
         }
     }
 ?>

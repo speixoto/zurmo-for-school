@@ -42,9 +42,6 @@
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_DELETE_CONTACTS);
             assert($billy->save());
 
-            $everyone = Group::getByName('Everyone');
-            $saved = $everyone->save();
-
             $contact = ContactTestHelper::createContactByNameForOwner('sally', Yii::app()->user->userModel);
             $contact->primaryEmail = new Email();
             $contact->primaryEmail->emailAddress = 'sally@zurmoland.com';
