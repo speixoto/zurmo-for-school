@@ -2900,6 +2900,15 @@ section {
 .background-3 {
   background: #ffffff url(../images/landscape-3.png) left bottom repeat-x;
 }
+.background-4 {
+  background: #ffffff url(../images/landscape-4.png) left bottom repeat-x;
+}
+.background-5 {
+  background: #ffffff url(../images/landscape-5.png) left bottom repeat-x;
+}
+.background-6 {
+  background: #ffffff url(../images/landscape-6.png) left bottom repeat-x;
+}
 /*=MastHead*/
 #HeaderLinksView {
   height: 38px;
