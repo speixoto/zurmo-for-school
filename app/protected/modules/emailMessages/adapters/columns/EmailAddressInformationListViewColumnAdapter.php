@@ -24,21 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserConfigurationEditLinkActionElement extends LinkActionElement
+    class EmailAddressInformationListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public function getActionType()
+        public function renderGridViewData()
         {
-            return 'Edit';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Configuration');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/configurationEdit/', array('id' => $this->modelId));
+            return array(
+                'name'  => $this->attribute,
+                'value' => 'EmailMessageUtil::renderEmailAddressAsMailToOrModalLinkStringContent($data->' . $this->attribute . '->emailAddress, $data)',
+                'type'  => 'raw',
+                'htmlOptions' => array( 'class' => 'email')
+            );
         }
     }
 ?>
