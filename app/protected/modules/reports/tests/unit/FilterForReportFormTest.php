@@ -275,6 +275,31 @@
         }
 
         //do owner too..
-        //stub out rest
+        //stub out rest include dropdown, contactsTate etc (does it sub with ID or no?) hmm
+
+        public function testValidateDropDownAttribute()
+        {
+                //['value'] = 'Automotive'   this is ok
+        }
+
+        public function testValidateLikeContactStateAttribute()
+        {
+            //seems dumb to have a sub 'id' since we only have value. but then it stays consistent? but we aren't using normal models
+            //['value'][id'] - hmm. or do we just set the state id directly as the 'value'?
+        }
+
+        public function testValidateCurrencyValueAttribute()
+        {
+            //['value']['first']
+            //['value']['second']
+            //['value']['currency']['id']    //how do we know what to do with this? fortunetely it could come in as anything so who cares string/int
+            //well now we know not to do 0,1 as value sub arrays, but using first/second is smart
+        }
+
+        public function testValidateDynamicallyDerivedOwnerAttribute()
+        {
+            //['value']['id'] = 'would be id of owner'. should we do it like this?
+        }
+        //test runTime as part of tests above
     }
 ?>

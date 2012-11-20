@@ -39,5 +39,18 @@
                 array('value',     'safe')
             ));
         }
+
+        //could use a validate method on value.
+        //then what?
+        //if NOT array
+            //do this
+                //like import get that attribute's validator
+                    //except stuff like contactState, dropdown those are always strings. ok not so hard switch case
+                    //is there a Util already to get validator? i think there is that we used in import.
+        //if array
+            //do this
+                //loop
+                    //each do this
+                        //do what we are doing for individual basically
     }
 ?>
