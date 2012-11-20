@@ -50,7 +50,15 @@
 
         private $type;
 
-        private $groupBys = array();
+        private $filters                    = array();
+
+        private $orderBys                   = array();
+
+        private $displayAttributes          = array();
+
+        private $drillDownDisplayAttributes = array();
+
+        private $groupBys                   = array();
 
         public static function getTypeDropDownArray()
         {
@@ -172,7 +180,7 @@
             return $this->groupBys;
         }
 
-        public function addGroupBy(ReportGroupBy $groupBy)
+        public function addGroupBy(GroupByForReportForm $groupBy)
         {
             $this->groupBys[] = $groupBy;
         }

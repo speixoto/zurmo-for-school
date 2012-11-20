@@ -270,15 +270,53 @@
             $report      = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
 
-            $formModelClassName    = ReportToWizardFormAdapter::getFormClassNameByType($type);
-            $nodeIdWithoutTreeType = ReportRelationsAndAttributesToTreeAdapter::
-                                     removeTreeTypeFromNodeId($nodeId, $treeType);
-            $inputPrefixData       = ReportRelationsAndAttributesToTreeAdapter::
-                                     resolveInputPrefixData($nodeIdWithoutTreeType, $formModelClassName,
+
+            //when TextElement looks at $model->attribute. how is that going to work out?
+            //i dont think the $model is in fact the ReportWizardForm...
+           // $someModel = new ReportAttributeForm('we can pass name of attributeOrDerived so we know in the get to hijack'); //what about when the attribute is owner__User???  could have something extend ModelForm pass the actual model
+            //but then again the FormModel has 'operator', 'runTime' (if applicable), and 'values' corresponding to the name of the attribute
+            //in the case of value1 and value2, the value would be an array of data, 'also have labelValue'...yep.
+
+            //different scenarios depending on filter, groupby, etc.
+
+            //remember values is variable based on text/integer for example. also date, but also the inbetween array thing makes it a bit confusing.
+            //well if it is an array and values are populated. i guess if operator calls for both to be populated. then just do same check on both
+            //since both are the same TYPE of field.
+
+            //how does dateBetween currently validate??
+
+            //we need some tests here probably first before we piece this together.
+
+$moduleClassName = 'AccountsModule';
+$modelClassName  = 'Account';
+            //todo:, remember this is not the base, this is the final
+            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
+                    make($moduleClassName, $modelClassName, $report->getType());
+
+
+            //operator is always going to have a certain rule
+            //value hmm. the rule really depends on oh man. how does the date thing work?
+$label = 'this is tmep';
+            $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report); // i dont think this is needed once we use short forms?
+            $formModelClassName        = ReportToWizardFormAdapter::getFormClassNameByType($type);
+            $nodeIdWithoutTreeType     = ReportRelationsAndAttributesToTreeAdapter::
+                                         removeTreeTypeFromNodeId($nodeId, $treeType);
+            $inputPrefixData           = ReportRelationsAndAttributesToTreeAdapter::
+                                         resolveInputPrefixData($nodeIdWithoutTreeType, $formModelClassName,
                                                             $treeType, (int)$rowNumber);
-            $attribute             = ReportRelationsAndAttributesToTreeAdapter::
-                                     resolveAttributeByNodeId($nodeIdWithoutTreeType);
-            $view                  = new AttributeRowForReportComponentView((int)$rowNumber,
+            $attribute                 = ReportRelationsAndAttributesToTreeAdapter::
+                                         resolveAttributeByNodeId($nodeIdWithoutTreeType);
+
+
+            $elementAdapter            = new ReportAttributeToElementContentAdapter($modelToReportAdapter,
+                                                                                    $inputPrefixData,
+                                                                                    $reportToWizardFormAdapter->makeFormByType(),// i dont think so...
+                                                                                    new NoRequiredsActiveForm(),
+                                                                                    $attribute,
+                                                                                    $label); //todo:
+
+            $view                      = new AttributeRowForReportComponentView($elementAdapter,
+                                                                            (int)$rowNumber,
                                                                             $inputPrefixData,
                                                                             $attribute,
                                                                             (bool)$trackableStructurePosition);

@@ -26,14 +26,15 @@
 
     class ModelRelationsAndAttributesToSummationReportAdapter extends ModelRelationsAndAttributesToSummableReportAdapter
     {
-        public function getAttributesForOrderBys(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        public function getAttributesForOrderBys($existingGroupBys = array(),
+                                                 RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
+            assert('is_array($existingGroupBys)');
             if(($precedingModel != null && $precedingRelation == null) ||
                ($precedingModel == null && $precedingRelation != null))
             {
                 throw new NotSupportedException();
             }
-            $existingGroupBys = $this->report->getGroupBys();
             if(empty($existingGroupBys))
             {
                 return array();

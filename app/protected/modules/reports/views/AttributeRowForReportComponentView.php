@@ -26,6 +26,8 @@
 
     class AttributeRowForReportComponentView extends View
     {
+        protected $elementAdapter;
+
         protected $rowNumber;
 
         protected $inputPrefixData;
@@ -34,12 +36,14 @@
 
         protected $hasTrackableStructurePosition;
 
-        public function __construct($rowNumber, $inputPrefixData, $attribute, $hasTrackableStructurePosition)
+        public function __construct($elementAdapter, $rowNumber, $inputPrefixData, $attribute, $hasTrackableStructurePosition)
         {
+            assert('$elementAdapter instanceof ReportAttributeToElementContentAdapter');
             assert('is_int($rowNumber)');
             assert('is_array($inputPrefixData)');
             assert('is_string($attribute)');
             assert('is_bool($hasTrackableStructurePosition)');
+            $this->elementAdapter                     = $elementAdapter;
             $this->rowNumber                          = $rowNumber;
             $this->inputPrefixData                    = $inputPrefixData;
             $this->attribute                          = $attribute;
@@ -84,9 +88,7 @@
 
         protected function renderAttributeContent()
         {
-            //todo: [[0][attributeIndexOrDerivedType]
-            //then you can make [0]['myAttribute'] and its content determined by the element
-            $content = 'input attribute: ' . $this->attribute . "<BR>";
+            $content = $this->elementAdapter->getContent();
             return $content;
         }
     }

@@ -1670,13 +1670,13 @@
         }
 
         /**
-         * Returns the opposing relation name of a derived relation
+         * Returns the relation type of a derived relation
          * defined by the extending class's getMetadata() method.
          */
-        public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
+        public function getDerivedRelationType($relationName)
         {
             assert("\$this->isADerivedRelationViaCastedUpModel('$relationName')");
-            return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][2];
+            return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][0];
         }
 
         /**
@@ -1687,6 +1687,16 @@
         {
             assert("\$this->isADerivedRelationViaCastedUpModel('$relationName')");
             return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][1];
+        }
+
+        /**
+         * Returns the opposing relation name of a derived relation
+         * defined by the extending class's getMetadata() method.
+         */
+        public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
+        {
+            assert("\$this->isADerivedRelationViaCastedUpModel('$relationName')");
+            return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][2];
         }
 
         /**

@@ -37,18 +37,96 @@
 
         protected $rules;
 
-        protected $report;
+        protected $reportType;
 
         public function getModel()
         {
             return $this->model;
         }
 
-        public function __construct(RedBeanModel $model, ReportRules $rules, Report $report)
+        public static function make($moduleClassName, $modelClassName, $reportType)
         {
-            $this->model  = $model;
-            $this->rules  = $rules;
-            $this->report = $report;
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($reportType)');
+            $rules                     = ReportRules::makeByModuleClassName($moduleClassName);
+            $model                     = new $modelClassName(false);
+            if($reportType == Report::TYPE_ROWS_AND_COLUMNS)
+            {
+                $adapter       = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $reportType);
+            }
+            elseif($reportType == Report::TYPE_SUMMATION)
+            {
+                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $reportType);
+            }
+            elseif($reportType == Report::TYPE_MATRIX)
+            {
+                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $reportType);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $adapter;
+        }
+
+        public function __construct(RedBeanModel $model, ReportRules $rules, $reportType)
+        {
+            assert('is_string($reportType)');
+            $this->model      = $model;
+            $this->rules      = $rules;
+            $this->reportType = $reportType;
+        }
+
+        /**
+         *
+         * Enter description here ...
+         * @param string $attribute
+         */
+        public function getAttributeLabel($attribute)
+        {
+            assert('is_string($attribute)');
+            $attributesData   = $this->getAttributesIncludingDerivedAttributesData();
+            if(!isset($attributesData[$attribute]))
+            {
+                throw new NotSupportedException();
+            }
+            return $attributesData[$attribute]['label'];
+        }
+
+        /**
+         *
+         * Enter description here ...
+         * @param string $attribute
+         */
+        public function getRelationLabel($relation)
+        {
+            assert('is_string($relation)');
+            $relationsData    = $this->getSelectableRelationsData();
+            if(!isset($relationsData[$attribute]))
+            {
+                throw new NotSupportedException();
+            }
+            return $relationsData[$attribute]['label'];
+        }
+
+        /**
+         * Returns true/false if a string passed in is considered a relation from a reporting perspective. In this case
+         * a dropDown is not considered a relation because it is reported on as a regular attribute.
+         * @param string $relationOrAttribute
+         */
+        public function isRelation($relationOrAttribute)
+        {
+            assert('is_string($relationOrAttribute)');
+            $relations = $this->getSelectableRelationsData();
+            if(isset($relations[$relationOrAttribute]))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /**
@@ -57,12 +135,13 @@
         public function getRelationModelClassName($relation)
         {
             assert('is_string($relation)');
+            assert('$this->isRelation($relation)');
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
-            if(count($relationAndInferredData) == 2)
+            if(count($relationAndInferredData) == 3)
             {
-                list($modelClassName, $notUsed) = $relationAndInferredData;
+                list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredData;
                 return $modelClassName;
             }
             elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
@@ -132,6 +211,39 @@
             return $attributes;
         }
 
+        public function isRelationASingularRelation($relation)
+        {
+            assert('is_string($relation)');
+            assert('$this->isRelation($relation)');
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $relationAndInferredData         = explode($delimiter, $relation);
+            $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
+            if(count($relationAndInferredData) == 3)
+            {
+                list($modelClassName, $relation, $notUsed) = $relationAndInferredData;
+                $type = $this->model->getRelationType($relation);
+            }
+            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            {
+                $type = $this->model->getDerivedRelationType($relation);
+            }
+            elseif(count($relationAndInferredData) == 1)
+            {
+                $type = $this->model->getRelationType($relation);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            if( $type == RedBeanModel::HAS_ONE ||
+                $type == RedBeanModel::HAS_ONE_BELONGS_TO ||
+                $type == RedBeanModel::HAS_MANY_BELONGS_TO)
+            {
+                return true;
+            }
+            return false;
+        }
+
         protected function getAttributesNotIncludingDerivedAttributesData()
         {
             $attributes = array();
@@ -165,7 +277,8 @@
                     {
                         if(!$this->inferredRelationLinksToPrecedingRelation($modelClassName, $attribute, $precedingModel, $precedingRelation))
                         {
-                            $attributes[$modelClassName  . FormModelUtil::DELIMITER . self::DYNAMIC_RELATION_INFERRED] =
+                            $attributes[$modelClassName  . FormModelUtil::DELIMITER .
+                                        $attribute . FormModelUtil::DELIMITER . self::DYNAMIC_RELATION_INFERRED] =
                                 array('label' => $modelClassName::getModelLabelByTypeAndLanguage('Plural'));
                         }
                     }
@@ -341,6 +454,27 @@
         public function getAttributesForGroupBys()
         {
             throw new NotImplementedException();
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getOperatorElement(ReportComponentForm $model, ZurmoActiveForm $form, $attribute)
+        {
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getAttributeElement(ReportComponentForm $model, ZurmoActiveForm $form, $attribute)
+        {
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getRunTimeElement(ReportComponentForm $model, ZurmoActiveForm $form, $attribute)
+        {
         }
     }
 ?>

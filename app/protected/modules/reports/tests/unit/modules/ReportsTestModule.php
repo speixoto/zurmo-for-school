@@ -24,27 +24,39 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Report rules to be used with the ReportModelTestItems.  Rules are module based and should store the rules
-     * for all the module's models.
-     */
-    class ReportTestRules extends SecuredReportRules
+    class ReportsTestModule extends Module
     {
+        public function getDependencies()
+        {
+            return array(
+            );
+        }
+
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'ReportModelTestItem' => array(
-                    'relationsReportedAsAttributes' =>
-                        array('reportedAsAttribute',
-                              'likeContactState'),
-                    'nonReportable' =>
-                        array('nonReportable',
-                              'nonReportable2'),
-                    'derivedAttributeTypes' =>
-                        array('FullName')
-                )
+            $metadata = array();
+            $metadata['global'] = array(
+                'tabMenuItems' => array(
+                ),
+                'designerMenuItems' => array(
+                ),
+                'a' => 1,
+                'b' => 2,
+                'c' => 3,
+                //globalSearchAttributeNames is used by A model.
+                'globalSearchAttributeNames' => array('a', 'name')
             );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            return $metadata;
+        }
+
+        public static function getPrimaryModelName()
+        {
+            return 'ReportModelTestItem';
+        }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'ReportModelTestItem';
         }
     }
 ?>

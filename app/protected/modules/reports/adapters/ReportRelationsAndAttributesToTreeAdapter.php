@@ -132,11 +132,13 @@
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES)
             {
-                return $modelToReportAdapter->getAttributesForDisplayAttributes($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForDisplayAttributes($this->report->getGroupBys(),
+                                                                                $precedingModel, $precedingRelation);
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS)
             {
-                return $modelToReportAdapter->getAttributesForOrderBys($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForOrderBys($this->report->getGroupBys(),
+                                                                       $precedingModel, $precedingRelation);
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS)
             {
@@ -155,25 +157,8 @@
         protected function makeModelRelationsAndAttributesToReportAdapter($moduleClassName, $modelClassName)
         {
             assert('is_string($moduleClassName)');
-            $rules                     = ReportRules::makeByModuleClassName($moduleClassName);
-            $model                     = new $modelClassName(false);
-            if($this->report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
-            {
-                $adapter       = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $this->report);
-            }
-            elseif($this->report->getType() == Report::TYPE_SUMMATION)
-            {
-                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $this->report);
-            }
-            elseif($this->report->getType() == Report::TYPE_MATRIX)
-            {
-                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $this->report);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $adapter;
+            assert('is_string($modelClassName)');
+            return ModelRelationsAndAttributesToReportAdapter::make($moduleClassName, $modelClassName, $this->reportType);
         }
 
         protected function makeNodeId($relation, $nodeIdPrefix = null)
@@ -204,7 +189,7 @@
         protected function resolvePrecedingModelRelationAndAdapterByNodeId(
                                 $nodeId, & $modelToReportAdapter, & $precedingModel, & $precedingRelation)
         {
-            if($nodeId == 'source ')
+            if($nodeId == 'source')
             {
                 return;
             }
@@ -257,12 +242,6 @@
             $inputPrefixData[] = $formModelClassName;
             $inputPrefixData[] = $treeType;
             $inputPrefixData[] = $rowNumber;
-            $inputPrefixParts  = explode(FormModelUtil::RELATION_DELIMITER, $nodeIdWithoutTreeType);
-            array_pop($inputPrefixParts);
-            foreach($inputPrefixParts as $part)
-            {
-                $inputPrefixData[] = $part;
-            }
             return $inputPrefixData;
         }
 
@@ -273,8 +252,7 @@
         public static function resolveAttributeByNodeId($nodeIdWithoutTreeType)
         {
             assert('is_string($nodeIdWithoutTreeType)');
-            $inputPrefixParts  = explode(FormModelUtil::RELATION_DELIMITER, $nodeIdWithoutTreeType);
-            return array_pop($inputPrefixParts);
+            return $nodeIdWithoutTreeType;
         }
     }
 ?>

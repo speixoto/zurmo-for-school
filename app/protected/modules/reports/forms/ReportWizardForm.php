@@ -140,6 +140,30 @@
         public function validateFilters()
         {
             //todo:
+            foreach($this->filters as $filter)
+            {
+                $filter->operator;
+                $filter->runTime;
+                $filter->valueData;
+                $filter->validate();
+                $form = FilterToReportAttributeFormAdapter::make($filter);
+                //could have a different form for each different type .. ugh.. so we have a operatorType, attributeType, and formType?
+                //i dont like that so much.
+                //nEEED TESTS FIRST!
+
+               //if values is array... then foreach
+               //but still what do we validate either one or both on?
+               //we have a model. we have an attribute.
+               //well either date, integer, text, textArea, url, email, phone,  most are translatable s
+               //look here. we did something interesting with rules...DefaultModelAttributeMappingRuleForm
+
+                $form->validate();
+                //if validate fails...
+                //get all errors and add them here? NO. you would get get
+                //i did an error summary probably for this complexity reason. i could add filters error and have it just be
+                //part of the summary
+                //for rules, we can utilize validator info oon attribute of model?
+            }
         }
 
         public function validateOrderBys()
