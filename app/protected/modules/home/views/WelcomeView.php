@@ -64,12 +64,14 @@
 
         protected function renderContent()
         {
-            $rand     = rand(1, 6);
+            $rand     = mt_rand(1, 6);
+            $theme    = 'themes/' . Yii::app()->theme->name;
+            $imgUrl   = Yii::app()->baseUrl . '/' . $theme . '/images/welcome-gallery-' . $rand . '.png';
             $content  = '<div class="clearfix">';
             $content .= '<h1>' . Yii::t('Default', 'Welcome to Zurmo'). '</h1>';
             $content .= static::renderSocialLinksContent();
             $content .= '<div id="welcome-content">';
-            $content .= '<div id="instructions"><div id="welcome-gallery" class="welcome-img-' . $rand . '"><span></span></div>';
+            $content .= '<div id="instructions"><div id="welcome-gallery"><img src="' . $imgUrl . '" title="" /><span></span></div>';
             $content .= '<p>';
             $content .= Yii::t('Default', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .
                                'collect badges, and compete against co-workers while getting your job done.');

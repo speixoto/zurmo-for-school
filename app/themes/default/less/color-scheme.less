@@ -204,12 +204,15 @@
         #gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default );
         .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
     }
+    
+    .dashboard-link:hover,
     .zButton:hover, .z-button:hover,
     .zButton:active, .z-button:active{
         color: darken(@themeColorBtnDefault, 40%) !important;
         #gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) );
         .t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
     }
+    
     .zButton:active, .z-button:active{
         .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
     }
@@ -225,22 +228,44 @@
         #gradient > .vertical( #fefefe, #ededed ) !important;
         .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
     }
+    
+    .dashboard-link{
+        color:#fff !important;
+        #gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default ) !important;
+        .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
+    }
+    
+    .dashboard-link:not(.attachLoading):hover{
+        color: darken(@themeColorBtnDefault, 40%) !important;
+        #gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) ) !important;
+        .t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
+    }
+    
+    .dashboard-link:active{
+        .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF") !important;
+    }
+    
+    
 
     .notifications-link:hover{
         border-left: 1px solid @borderColor;
         border-right: 1px solid @borderColor;
     }
+    
     #notifications-link{
         border-left: 1px solid @borderColor;
         border-right: 1px solid @borderColor;
     }
+    
     .ui-datepicker td.ui-datepicker-today{
         background:lighten(@themeColor, 50%) !important;
     }
+    
     .LatestActivitiesListView .latest-activity-toolbar > div:first-child,
     .LatestActivitiesView .latest-activity-toolbar > div:first-child{
         border-right:2px solid @themeColor;
     }
+    
     .form input[type="checkbox"]:focus,
     .form input[type="text"]:focus,
     .form input[type="password"]:focus,
