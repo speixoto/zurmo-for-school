@@ -29,5 +29,19 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        'Access Social Items'
+            => '??',
+        'Post'
+            => '??',
+        'Social Item'
+            => '??',
+        'Social Items'
+            => '??',
+        'What\'s going on?'
+            => '??',
+        '{n} Post created|{n} Posts created'
+            => '??',
+        '{postedFromUser} to {postedToUser}'
+            => '??',
     );
 ?>
