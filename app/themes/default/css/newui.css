@@ -3097,14 +3097,10 @@ section {
   line-height: 150%;
 }
 /*=Login*/
-#LoginPageView > .GridView {
-  background: url(../images/header-bar-1.png) left top repeat-x;
-  padding-top: 38px;
-}
 #LoginView {
   min-width: 900px;
   height: 100%;
-  margin: 0 3% 0 3%;
+  margin: 2.5% 3% 0 3%;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -3112,11 +3108,11 @@ section {
   box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   /*999*/
 
-  -webkit-border-radius: 0 0 5px 5px;
-  -moz-border-radius: 0 0 5px 5px;
-  -ms-border-radius: 0 0 5px 5px;
-  -o-border-radius: 0 0 5px 5px;
-  border-radius: 0 0 5px 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
   padding: 0;
 }
 #LoginView .remember-me label {
