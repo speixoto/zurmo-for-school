@@ -311,7 +311,7 @@
          */
         protected function renderXHtmlBodyStart()
         {
-            return '<body class="' . Yii::app()->themeManager->getActiveThemeColor()
+            return '<body class="' . Yii::app()->themeManager->getActiveThemeColor() . ' '
                                    . Yii::app()->themeManager->getActiveBackgroundTexture() . '">';
         }
 
