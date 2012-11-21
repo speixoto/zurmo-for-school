@@ -223,7 +223,8 @@
                 'autoStart' => false,
             ),
             'themeManager' => array(
-                'basePath' => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes',
+                'basePath'  => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes',
+                'class'     => 'application.core.components.ThemeManager',
             ),
             'timeZoneHelper' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoTimeZoneHelper',

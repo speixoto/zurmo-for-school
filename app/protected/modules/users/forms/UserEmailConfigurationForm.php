@@ -25,13 +25,51 @@
      ********************************************************************************/
 
     /**
-     * Model for storing email attachments.
+     * Use this form when creating or modifying a user's email account information
      */
-    class EmailFileModel extends FileModel
+    class UserEmailConfigurationForm extends ModelForm
     {
-        public static function getModuleClassName()
+        public $aTestToAddress;
+
+        public $emailSignatureHtmlContent;
+
+        public function __construct(EmailAccount $model)
         {
-            return 'EmailMessagesModule';
+            $this->model = $model;
+        }
+
+        public function rules()
+        {
+            return array(
+                array('aTestToAddress',                    'email'),
+                array('emailSignatureHtmlContent', 'type', 'type' => 'string'),
+            );
+        }
+
+        public function attributeLabels()
+        {
+            return array_merge($this->model->attributeLabels(), array(
+                'aTestToAddress'            => Yii::t('Default', 'Send a test email to'),
+                'emailSignatureHtmlContent' => Yii::t('Default', 'Email Signature')
+            ));
+        }
+
+        /**
+         * Save the emailSignatureHtmlContent
+         */
+        public function save($runValidation = true, array $attributeNames = null)
+        {
+            if(parent::save())
+            {
+                $emailSignature              = $this->model->user->getEmailSignature();
+                $emailSignature->htmlContent = $this->emailSignatureHtmlContent;
+                $this->model->user->save();
+            }
+            else
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

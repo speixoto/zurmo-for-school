@@ -24,21 +24,41 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserConfigurationEditLinkActionElement extends LinkActionElement
+    /**
+     * Display email message content.
+     */
+    class EmailMessageBccRecipientsElement extends Element implements DerivedElementInterface
     {
-        public function getActionType()
+        protected function renderControlNonEditable()
         {
-            return 'Edit';
+            assert('$this->model instanceof EmailMessage');
+            return Yii::app()->format->html(EmailMessageMashableActivityRules::
+                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_BCC));
         }
 
-        protected function getDefaultLabel()
+        protected function renderControlEditable()
         {
-            return Yii::t('Default', 'Configuration');
+            throw new NotImplementedException();
         }
 
-        protected function getDefaultRoute()
+        protected function renderError()
         {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/configurationEdit/', array('id' => $this->modelId));
+            throw new NotImplementedException();
+        }
+
+        protected function renderLabel()
+        {
+            return Yii::t('Default', 'Bcc');
+        }
+
+        public static function getDisplayName()
+        {
+            return Yii::t('Default', 'Bcc Recipients');
+        }
+
+        public static function getModelAttributeNames()
+        {
+            return array();
         }
     }
 ?>

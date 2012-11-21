@@ -628,6 +628,8 @@
                                          RedBeanModel::LINK_TYPE_SPECIFIC, 'manager'),
                     'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
                     'emailBoxes' => array(RedBeanModel::HAS_MANY,            'EmailBox'),
+                    'emailAccounts'    => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
+                    'emailSignatures'  => array(RedBeanModel::HAS_MANY,            'EmailSignature',         RedBeanModel::OWNED),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',
@@ -670,6 +672,27 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        /**
+         * Currently user only supports a single email signature even though the architecture is setup to handle
+         * more than one.
+         * @return EmailSignature object
+         */
+        public function getEmailSignature()
+        {
+            if ($this->emailSignatures->count() == 0)
+            {
+                $emailSignature       = new EmailSignature();
+                $emailSignature->user = Yii::app()->user->userModel;
+                $this->emailSignatures->add($emailSignature);
+                $this->save();
+            }
+            else
+            {
+                $emailSignature = $this->emailSignatures[0];
+            }
+            return $emailSignature;
         }
     }
 ?>

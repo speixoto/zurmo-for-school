@@ -79,6 +79,8 @@
 
         /**
          * Renders the noneditable email address content.
+         * If the model is a person, and the user accessing this element has right to access the email module,
+         * then the email address will be clickable.  When clicked it will open a modal create email window.
          * Takes the model attribute value and converts it into
          * at most 3 items. Email Address display, Opt Out checkbox,
          * and Invalid Email checkbox.
@@ -88,12 +90,12 @@
         {
             $addressModel    = $this->model->{$this->attribute};
             $emailAddress    = $addressModel->emailAddress;
-            $optOut    = $addressModel->optOut;
-            $isInvalid    = $addressModel->isInvalid;
+            $optOut          = $addressModel->optOut;
+            $isInvalid       = $addressModel->isInvalid;
             $content = null;
             if (!empty($emailAddress))
             {
-                $content  .= Yii::app()->format->email($emailAddress);
+                $content .= EmailMessageUtil::renderEmailAddressAsMailToOrModalLinkStringContent($emailAddress, $this->model);
                 if ($optOut || $isInvalid)
                 {
                     $content  .= '&#160;&#40;';
