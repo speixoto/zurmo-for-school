@@ -24,16 +24,41 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailAddressInformationListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Display email message content.
+     */
+    class EmailMessageBccRecipientsElement extends Element implements DerivedElementInterface
     {
-        public function renderGridViewData()
+        protected function renderControlNonEditable()
         {
-            return array(
-                'name'  => $this->attribute,
-                'value' => 'Yii::app()->format->email($data->' . $this->attribute . '->emailAddress)',
-                'type'  => 'raw',
-                'htmlOptions' => array( 'class' => 'email')
-            );
+            assert('$this->model instanceof EmailMessage');
+            return Yii::app()->format->html(EmailMessageMashableActivityRules::
+                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_BCC));
+        }
+
+        protected function renderControlEditable()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function renderError()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function renderLabel()
+        {
+            return Yii::t('Default', 'Bcc');
+        }
+
+        public static function getDisplayName()
+        {
+            return Yii::t('Default', 'Bcc Recipients');
+        }
+
+        public static function getModelAttributeNames()
+        {
+            return array();
         }
     }
 ?>

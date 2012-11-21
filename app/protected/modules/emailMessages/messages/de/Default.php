@@ -89,6 +89,8 @@
             => 'Jede Minute.',
         'Extra Mail Settings'
             => 'Erweiterte Einstellungen',
+        'Failed to connect to mailbox'
+            => '??',
         'Folder'
             => 'Ordner',
         'From'
