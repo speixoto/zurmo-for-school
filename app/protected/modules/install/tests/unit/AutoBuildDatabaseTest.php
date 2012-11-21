@@ -153,6 +153,22 @@
             $metadata['Account']['members'][] = 'newField';
             $rules = array('newField', 'type', 'type' => 'string');
             $metadata['Account']['rules'][] = $rules;
+            // adding Boolean Field
+            $metadata['Account']['members'][] = 'dateField';
+            $rules = array('dateField', 'type', 'type' => 'date');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'booleanField';
+            $rules = array('booleanField', 'boolean');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'integerField';
+            $rules = array('integerField', 'type', 'type' => 'integer');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'dateTimeField';
+            $rules = array('dateTimeField', 'type', 'type' => 'datetime');
+            $metadata['Account']['rules'][] = $rules;
 
             //print_r($accountMetadata);
             Account::setMetadata($metadata);
@@ -173,6 +189,10 @@
             $tableName = RedBeanModel::getTableName('Account');
             $columns   = R::$writer->getColumns($tableName);
             $this->assertEquals('text', $columns['newfield']);
+            $this->assertEquals('date', $columns['datefield']);
+            $this->assertEquals('tinyint(1)', $columns['booleanfield']);
+            $this->assertEquals('int(11) unsigned', $columns['integerfield']);
+            $this->assertEquals('datetime', $columns['datetimefield']);
         }
 
         /**
