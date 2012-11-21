@@ -221,5 +221,17 @@
             }
             return $content;
         }
+
+        public static function createTextContent(EmailMessage $emailMessage){
+           if($emailMessage->content->htmlContent != '' && $emailMessage->content->textContent == '')
+           {
+               $purifier = new CHtmlPurifier;
+               $purifier->options = array('HTML.Allowed'=> 'p,br');
+               $textContent = $purifier->purify($emailMessage->content->htmlContent);
+               $textContent = preg_replace('#<br\s*?/?>#i', "\n", $textContent);
+               $textContent = preg_replace('#</?p\s*?/?>#i', "\n", $textContent);
+               $emailMessage->content->textContent = $textContent;
+           }
+        }
     }
 ?>
