@@ -233,6 +233,24 @@ a:visited {
   color: #545454;
   cursor: pointer;
 }
+body.light-toast {
+  background: url(../patterns/light-toast/light-toast.png) left top repeat;
+}
+body.light-noise-diagonal {
+  background: url(../patterns/light-noise-diagonal/light-noise-diagonal.png) left top repeat;
+}
+body.french-stucco {
+  background: url(../patterns/french-stucco/french-stucco.png) left top repeat;
+}
+body.exclusive-paper {
+  background: url(../patterns/exclusive-paper/exclusive-paper.png) left top repeat;
+}
+body.diagonal-noise {
+  background: url(../patterns/diagonal-noise/diagonal-noise.png) left top repeat;
+}
+body.paper {
+  background: url(../patterns/paper/paper.png) left top repeat;
+}
 body.blue .textColor {
   color: #545454;
 }
@@ -625,9 +643,6 @@ body.blue #layout-container .ui-widget-header .ui-state-active {
   -o-box-shadow: 0 0 1px 1px #282a76;
   -ms-box-shadow: 0 0 1px 1px #282a76;
   box-shadow: 0 0 1px 1px #282a76;
-}
-body.brown {
-  background: url(../patterns/light_toast/light_toast.png) left top repeat;
 }
 body.brown .textColor {
   color: #545454;
@@ -1022,9 +1037,6 @@ body.brown #layout-container .ui-widget-header .ui-state-active {
   -ms-box-shadow: 0 0 1px 1px #547980;
   box-shadow: 0 0 1px 1px #547980;
 }
-body.lime {
-  background: url(../patterns/light_noise_diagonal/light_noise_diagonal.png) left top repeat;
-}
 body.lime .textColor {
   color: #545454;
 }
@@ -1417,9 +1429,6 @@ body.lime #layout-container .ui-widget-header .ui-state-active {
   -o-box-shadow: 0 0 1px 1px #2b434f;
   -ms-box-shadow: 0 0 1px 1px #2b434f;
   box-shadow: 0 0 1px 1px #2b434f;
-}
-body.cherry {
-  background: url(../patterns/frenchstucco/frenchstucco.png) left top repeat;
 }
 body.cherry .textColor {
   color: #545454;
@@ -1814,9 +1823,6 @@ body.cherry #layout-container .ui-widget-header .ui-state-active {
   -ms-box-shadow: 0 0 1px 1px #6c8092;
   box-shadow: 0 0 1px 1px #6c8092;
 }
-body.turquoise {
-  background: url(../patterns/exclusive_paper/exclusive_paper.png) left top repeat;
-}
 body.turquoise .textColor {
   color: #545454;
 }
@@ -2210,9 +2216,6 @@ body.turquoise #layout-container .ui-widget-header .ui-state-active {
   -ms-box-shadow: 0 0 1px 1px #447799;
   box-shadow: 0 0 1px 1px #447799;
 }
-body.violet {
-  background: url(../patterns/diagonal_noise/diagonal_noise.png) left top repeat;
-}
 body.violet .textColor {
   color: #545454;
 }
@@ -2605,9 +2608,6 @@ body.violet #layout-container .ui-widget-header .ui-state-active {
   -o-box-shadow: 0 0 1px 1px #4a3970;
   -ms-box-shadow: 0 0 1px 1px #4a3970;
   box-shadow: 0 0 1px 1px #4a3970;
-}
-body.honey {
-  background: url(../patterns/paper/paper.png) left top repeat;
 }
 body.honey .textColor {
   color: #545454;
@@ -4301,7 +4301,7 @@ section {
   display: block;
 }
 #float-bar .view-toolbar-container {
-  position: fixed;
+  position: fixed !important;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
@@ -4321,9 +4321,10 @@ section {
   left: 50%;
   bottom: 0;
   float: left;
+  width: auto;
 }
 #float-bar .view-toolbar-container.dock {
-  position: relative;
+  position: relative !important;
   font-size: 11px;
   bottom: 0;
   left: 0;
@@ -4344,6 +4345,8 @@ section {
   width: auto;
   display: inline-block;
   font-size: 11px;
+  width: 100%;
+  position: relative;
 }
 form .view-toolbar-container,
 .juiportlet-widget .view-toolbar-container,
