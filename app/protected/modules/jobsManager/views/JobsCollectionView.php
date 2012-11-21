@@ -55,6 +55,10 @@
 
         protected function renderContent()
         {
+            if ($this->messageBoxContent != null)
+            {
+                JNotify::addMessage('FlashMessageBar', $this->messageBoxContent, 'JobsCollectionMessage');
+            }
             $content = '<div>';
             $content .= $this->renderTitleContent();
             $content .= '<div class="wide form">';
@@ -64,11 +68,6 @@
                                                                 array('id' => 'jobs-collection-form')
                                                             );
             $content .= $formStart;
-
-            if ($this->messageBoxContent != null)
-            {
-                $content .= $this->messageBoxContent;
-            }
             $content .= $this->renderFormLayout($form);
             $content .= $this->renderViewToolBar();
             $content .= $clipWidget->renderEndWidget();
