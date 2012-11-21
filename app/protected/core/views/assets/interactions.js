@@ -116,7 +116,7 @@ $(window).ready(function(){
    1000 );
 
     /*Docking the save/cancel button in create view*/
-    $(window).scroll( dockFloatingBar() );
+    $(window).scroll( dockFloatingBar );
     dockFloatingBar();
     
     
