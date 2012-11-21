@@ -58,9 +58,9 @@
         protected function getEditableHtmlOptions()
         {
             $htmlOptions             = array();
-            $htmlOptions['template'] =  '<div class="radio-input">{input}<span class="{value} theme-color-1">' .
-                                        '</span><span class="{value} theme-color-2"></span>' .
-                                        '<span class="{value} theme-color-3"></span>{label}</div>';
+            $htmlOptions['template'] =  '<div class="radio-input color-swatch {value}">{input}<span class="theme-color-1">' .
+                                        '</span><span class="theme-color-2"></span>' .
+                                        '<span class="theme-color-3"></span>{label}</div>';
             return $htmlOptions;
         }
 

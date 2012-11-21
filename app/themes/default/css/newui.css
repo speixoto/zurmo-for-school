@@ -233,24 +233,6 @@ a:visited {
   color: #545454;
   cursor: pointer;
 }
-body.light-toast {
-  background: url(../patterns/light-toast/light-toast.png) left top repeat;
-}
-body.light-noise-diagonal {
-  background: url(../patterns/light-noise-diagonal/light-noise-diagonal.png) left top repeat;
-}
-body.french-stucco {
-  background: url(../patterns/french-stucco/french-stucco.png) left top repeat;
-}
-body.exclusive-paper {
-  background: url(../patterns/exclusive-paper/exclusive-paper.png) left top repeat;
-}
-body.diagonal-noise {
-  background: url(../patterns/diagonal-noise/diagonal-noise.png) left top repeat;
-}
-body.paper {
-  background: url(../patterns/paper/paper.png) left top repeat;
-}
 body.blue .textColor {
   color: #545454;
 }
@@ -643,6 +625,15 @@ body.blue #layout-container .ui-widget-header .ui-state-active {
   -o-box-shadow: 0 0 1px 1px #282a76;
   -ms-box-shadow: 0 0 1px 1px #282a76;
   box-shadow: 0 0 1px 1px #282a76;
+}
+.color-swatch.blue .theme-color-1 {
+  background: #282a76;
+}
+.color-swatch.blue .theme-color-2 {
+  background: #7cb830;
+}
+.color-swatch.blue .theme-color-3 {
+  background: #464646;
 }
 body.brown .textColor {
   color: #545454;
@@ -1037,6 +1028,15 @@ body.brown #layout-container .ui-widget-header .ui-state-active {
   -ms-box-shadow: 0 0 1px 1px #547980;
   box-shadow: 0 0 1px 1px #547980;
 }
+.color-swatch.brown .theme-color-1 {
+  background: #547980;
+}
+.color-swatch.brown .theme-color-2 {
+  background: #b88f30;
+}
+.color-swatch.brown .theme-color-3 {
+  background: #594f4f;
+}
 body.lime .textColor {
   color: #545454;
 }
@@ -1429,6 +1429,15 @@ body.lime #layout-container .ui-widget-header .ui-state-active {
   -o-box-shadow: 0 0 1px 1px #2b434f;
   -ms-box-shadow: 0 0 1px 1px #2b434f;
   box-shadow: 0 0 1px 1px #2b434f;
+}
+.color-swatch.lime .theme-color-1 {
+  background: #638270;
+}
+.color-swatch.lime .theme-color-2 {
+  background: #bcc98e;
+}
+.color-swatch.lime .theme-color-3 {
+  background: #464646;
 }
 body.cherry .textColor {
   color: #545454;
@@ -1823,6 +1832,15 @@ body.cherry #layout-container .ui-widget-header .ui-state-active {
   -ms-box-shadow: 0 0 1px 1px #6c8092;
   box-shadow: 0 0 1px 1px #6c8092;
 }
+.color-swatch.cherry .theme-color-1 {
+  background: #6c8092;
+}
+.color-swatch.cherry .theme-color-2 {
+  background: #933140;
+}
+.color-swatch.cherry .theme-color-3 {
+  background: #464646;
+}
 body.turquoise .textColor {
   color: #545454;
 }
@@ -2215,6 +2233,15 @@ body.turquoise #layout-container .ui-widget-header .ui-state-active {
   -o-box-shadow: 0 0 1px 1px #447799;
   -ms-box-shadow: 0 0 1px 1px #447799;
   box-shadow: 0 0 1px 1px #447799;
+}
+.color-swatch.turquoise .theme-color-1 {
+  background: #447799;
+}
+.color-swatch.turquoise .theme-color-2 {
+  background: #44bbcc;
+}
+.color-swatch.turquoise .theme-color-3 {
+  background: #464646;
 }
 body.violet .textColor {
   color: #545454;
@@ -2609,6 +2636,15 @@ body.violet #layout-container .ui-widget-header .ui-state-active {
   -ms-box-shadow: 0 0 1px 1px #4a3970;
   box-shadow: 0 0 1px 1px #4a3970;
 }
+.color-swatch.violet .theme-color-1 {
+  background: #4a3970;
+}
+.color-swatch.violet .theme-color-2 {
+  background: #91a1dc;
+}
+.color-swatch.violet .theme-color-3 {
+  background: #464646;
+}
 body.honey .textColor {
   color: #545454;
 }
@@ -3001,6 +3037,39 @@ body.honey #layout-container .ui-widget-header .ui-state-active {
   -o-box-shadow: 0 0 1px 1px #46201c;
   -ms-box-shadow: 0 0 1px 1px #46201c;
   box-shadow: 0 0 1px 1px #46201c;
+}
+.color-swatch.honey .theme-color-1 {
+  background: #a15c31;
+}
+.color-swatch.honey .theme-color-2 {
+  background: #abbc42;
+}
+.color-swatch.honey .theme-color-3 {
+  background: #582823;
+}
+body.light-noise-diagonal,
+.texture-swatch.light-noise-diagonal .background-texture-1 {
+  background: url(../patterns/light-noise-diagonal/light-noise-diagonal.png) left top repeat;
+}
+body.french-stucco,
+.texture-swatch.french-stucco .background-texture-1 {
+  background: url(../patterns/french-stucco/french-stucco.png) left top repeat;
+}
+body.exclusive-paper,
+.texture-swatch.exclusive-paper .background-texture-1 {
+  background: url(../patterns/exclusive-paper/exclusive-paper.png) left top repeat;
+}
+body.diagonal-noise,
+.texture-swatch.iagonal-noise .background-texture-1 {
+  background: url(../patterns/diagonal-noise/diagonal-noise.png) left top repeat;
+}
+body.paper,
+.texture-swatch.paper .background-texture-1 {
+  background: url(../patterns/paper/paper.png) left top repeat;
+}
+body.light-toast,
+.texture-swatch.light-toast .background-texture-1 {
+  background: url(../patterns/light-toast/light-toast.png) left top repeat;
 }
 /*END COLOR SCHEME/THEME*/@font-face {
   font-family: 'ZurmoGamificationSymblyReguRg';
@@ -9675,6 +9744,31 @@ table.configuration-list tr td:last-child a:before {
 }
 #ImportErrorsListView {
   margin-bottom: 15px;
+}
+/*Theme Chooser*/
+.color-swatch,
+.texture-swatch {
+  margin-bottom: 10px;
+}
+.color-swatch span,
+.texture-swatch span {
+  display: inline-block;
+  width: 32px;
+  height: 16px;
+}
+.color-swatch label,
+.texture-swatch label {
+  float: none !important;
+  top: -3px;
+}
+.color-swatch input,
+.texture-swatch input {
+  margin-right: 12px !important;
+  margin-top: 2px;
+}
+.texture-swatch span {
+  width: 96px;
+  background: #DDDEDE;
 }
 /*Add Portlet*/
 #HomeDashboardPortletSelectionView ul {
