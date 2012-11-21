@@ -183,7 +183,11 @@
          */
         public static function renderEmailAddressAsMailToOrModalLinkStringContent($emailAddress, RedBeanModel $model)
         {
-            assert('is_string($emailAddress)');
+            assert('is_string($emailAddress) || $emailAddress == null');
+            if($emailAddress == null)
+            {
+                return;
+            }
             $userCanAccess   = RightsUtil::canUserAccessModule('EmailMessagesModule', Yii::app()->user->userModel);
             $userCanCreate   = RightsUtil::doesUserHaveAllowByRightName(
                                'EmailMessagesModule',
@@ -213,7 +217,7 @@
             }
             else
             {
-                $content  = Yii::app()->format->email($emailAddress);
+                $content           = Yii::app()->format->email($emailAddress);
             }
             return $content;
         }

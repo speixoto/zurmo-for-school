@@ -225,7 +225,8 @@
             //Only if the model is not Account and User as right he can see the email modal link
             $contact = new Contact();
             $content = EmailMessageUtil::renderEmailAddressAsMailToOrModalLinkStringContent($emailAddress, $contact);
-            $this->assertEquals('<a href="#" id="yt0">a@zurmo.com</a>', $content);
+            $this->assertEquals('<a href="#" id="' .
+                                ZurmoHtml::ID_PREFIX . (ZurmoHtml::$count - 1) . '">a@zurmo.com</a>', $content);
         }
     }
 ?>

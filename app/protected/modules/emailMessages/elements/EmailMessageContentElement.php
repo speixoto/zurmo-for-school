@@ -57,11 +57,6 @@
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $emailMessageContent->$attribute,
-                                        'buttons'     => "['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
-                                                           'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-                                                           'fontcolor', 'backcolor', '|',
-                                                           'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                                                           'horizontalrule']",
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Redactor'];

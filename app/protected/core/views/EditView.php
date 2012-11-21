@@ -79,9 +79,9 @@
             $actionToolBarContent = $this->renderActionElementBar(true);
             if ($actionToolBarContent != null)
             {
-                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
+                $content .= '<div id="float-bar"><div class="view-toolbar-container clearfix dock"><div class="form-toolbar">';
                 $content .= $actionToolBarContent;
-                $content .= '</div></div>';
+                $content .= '</div></div></div>';
             }
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;

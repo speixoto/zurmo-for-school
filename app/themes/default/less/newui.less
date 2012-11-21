@@ -116,7 +116,7 @@ footer, header, hgroup, menu, nav, section {
 #LoginView{
     min-width:900px;
     height:100%;
-    margin:2.5% 3% 0 3%;
+    margin:30px;
     .b-shadow(  0 0 12px 5px rgba(153, 153, 153, 0.3) ); /*999*/
     .radius(5px);
     padding:0;
@@ -1164,12 +1164,38 @@ footer, header, hgroup, menu, nav, section {
 }
 
 /*=Inner toolbar*/
+#float-bar{
+    height: 40px;
+    display: block;
+    .view-toolbar-container{
+        position:fixed !important;
+        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5)");
+        #gradient > .vertical-three-colors( #f5f5f5, #f5f5f5, 80%, #ffffff );
+        padding-bottom:15px;
+        margin-left: -20px;
+        left: 50%;
+        bottom: 0;
+        float: left;
+        width: auto;
+        &.dock{
+            background:none;
+            position:relative !important;
+            font-size:11px;
+            bottom:0;
+            left:0;
+            width: 100%;
+            .unstyle-panel();
+            border-top:1px solid #CCC;
+        }
+    }
+}
 .view-toolbar-container{
-    width:100%;
+    z-index:222222;
+    width:auto;
     display:inline-block;
-    position:relative;
     font-size:11px;
-    float: left;
+    width: 100%;
+    position: relative;
 }
 
 form,
@@ -1666,10 +1692,6 @@ td.empty{
     .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
     cursor:pointer;
-    &:active{
-        //color:#FFF !important;
-        //.b-shadow(~"inset 0 1px 5px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
-    }
 }
 
 .action-take{
