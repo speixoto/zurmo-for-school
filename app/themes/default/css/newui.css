@@ -4300,12 +4300,8 @@ section {
   height: 40px;
   display: block;
 }
-.view-toolbar-container {
-  z-index: 222222;
-  width: auto;
-  display: inline-block;
-  font-size: 11px;
-  float: left;
+#float-bar .view-toolbar-container {
+  position: fixed;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
@@ -4323,10 +4319,10 @@ section {
   padding-bottom: 15px;
   margin-left: -20px;
   left: 50%;
-  position: fixed;
   bottom: 0;
+  float: left;
 }
-.view-toolbar-container.dock {
+#float-bar .view-toolbar-container.dock {
   position: relative;
   font-size: 11px;
   bottom: 0;
@@ -4341,6 +4337,13 @@ section {
   box-shadow: none;
   padding: 0;
   margin: 0;
+  border-top: 1px solid #CCC;
+}
+.view-toolbar-container {
+  z-index: 222222;
+  width: auto;
+  display: inline-block;
+  font-size: 11px;
 }
 form .view-toolbar-container,
 .juiportlet-widget .view-toolbar-container,
