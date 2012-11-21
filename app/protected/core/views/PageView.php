@@ -311,7 +311,8 @@
          */
         protected function renderXHtmlBodyStart()
         {
-            return '<body class="blue">';
+            return '<body class="' . Yii::app()->themeManager->getActiveThemeColor()
+                                   . Yii::app()->themeManager->getActiveBackgroundTexture() . '">';
         }
 
         /**
