@@ -79,7 +79,7 @@
             $actionToolBarContent = $this->renderActionElementBar(true);
             if ($actionToolBarContent != null)
             {
-                $content .= '<div id="float-bar"><div class="view-toolbar-container clearfix"><div class="form-toolbar">';
+                $content .= '<div id="float-bar"><div class="view-toolbar-container clearfix dock"><div class="form-toolbar">';
                 $content .= $actionToolBarContent;
                 $content .= '</div></div></div>';
             }
