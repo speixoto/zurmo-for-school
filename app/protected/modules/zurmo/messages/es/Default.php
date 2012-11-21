@@ -163,6 +163,8 @@
             => 'Cerrar',
         'Code'
             => 'Código',
+        'Comment'
+            => 'Comentar',
         'Configuration'
             => 'Configuración',
         'Configure'
@@ -241,6 +243,8 @@
             => 'Herramientas para Desarrolladores',
         'Dr.'
             => 'Dr.', // Same Word Translated
+        'Due On'
+            => 'Fecha de vencimiento',
         'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
             => 'Haga clic en el icono de configuración en la parte superior derecha de cada portlet para editar gráficos en el salpicadero.',
         'Email Address'
@@ -483,6 +487,8 @@
             => 'Permitable', // Same Word Translated
         'Please provide data.'
             => 'Por favor, facilite los datos.',
+        'Please resolve the following issues for {modelString}:'
+            => 'Por favor, resolver los siguientes problemas para {modelString}',
         'Please use FireFox, Chrome, or Internet Explorer.'
             => 'Por favor, use Firefox, Chrome, o Internet Explorer.',
         'Policies'
@@ -611,6 +617,8 @@
             => 'Número de elementos de la sublista',
         'Successfully updated'
             => 'Actualizado correctamente',
+        'Summary'
+            => 'Sumario',
         'Super Administrators'
             => 'Superadministradores',
         'Tag Cloud fields allow you to tag records with values so that you can easily find them later.'
@@ -623,6 +631,8 @@
             => 'El servicio web para los tipos de cambio no estaba disponible. El tipo de cambio no puede ser actualizado automáticamente.',
         'The currency was not removed because it is in use.'
             => 'La moneda no se ha eliminado porque está en uso.',
+        'The default value is {policyDefault}'
+            => 'El valor predeterminado es {policyDefault}?',
         'The ID specified was invalid.'
             => ' ID no válido.',
         'The Import Wizard helps get your data into the system easily, find it under the config icon (that\'s the cog in the top right).'
@@ -707,6 +717,8 @@
             => 'Su versión de Yii es currentVersion y debe ser acceptableVersion',
         'ZurmoCRM'
             => 'ZurmoCRM', // Same Word Translated
+        '{modelString} is already connected to this record.'
+            => '{modelString} ya está conectado a este registro.',
         '{url} (installed with Yii)'
             => '{url} (instalado con Yii)',
         '{url} (version {version} is installed)'

@@ -30,7 +30,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            UserTestHelper::createBasicUser('billy');
+            $billy = UserTestHelper::createBasicUser('billy');
             $jane = UserTestHelper::createBasicUser('jane');
             UserTestHelper::createBasicUser('sally');
             UserTestHelper::createBasicUser('jason');
@@ -205,8 +205,8 @@
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $jane;
             $emailMessage->subject = 'My Email with an Attachment';
-            $emailFileModel        = ZurmoTestHelper::createFileModel('testNote.txt', 'EmailFileModel');
-            $emailMessage->files->add($emailFileModel);
+            $fileModel        = ZurmoTestHelper::createFileModel('testNote.txt', 'FileModel');
+            $emailMessage->files->add($fileModel);
 
             //Attempt to save without setting required information
             $saved        = $emailMessage->save();
@@ -252,7 +252,7 @@
             $emailMessage = EmailMessage::getById($id);
             $this->assertEquals('My Email with an Attachment', $emailMessage->subject);
             $this->assertEquals(1, $emailMessage->files->count());
-            $this->assertEquals($emailFileModel, $emailMessage->files->offsetGet(0));
+            $this->assertEquals($fileModel, $emailMessage->files->offsetGet(0));
         }
 
         /**
@@ -362,11 +362,12 @@
             $billy                      = User::getByUsername('billy');
             Yii::app()->user->userModel = $billy;
             $emailMessage               = EmailMessageTestHelper::createDraftSystemEmail('billy test email', $billy);
+            ReadPermissionsOptimizationUtil::rebuild();
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(2, Yii::app()->emailHelper->getSentCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             Yii::app()->emailHelper->send($emailMessage);
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(2, Yii::app()->emailHelper->getSentCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
         }
     }
 ?>

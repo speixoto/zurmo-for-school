@@ -105,10 +105,10 @@
             $socialItem    = SocialItem::getById((int)$id);
             $uniquePageId  = SocialItemsUtil::makeUniquePageIdByModel($socialItem);
             $content       = ZurmoHtml::tag('span', array(),
-                                            ZurmoHtml::link(Yii::t('Default', 'Add comment'), '#',
+                                            ZurmoHtml::link(Yii::t('Default', 'Comment'), '#',
                                                             array('class' => 'show-create-comment')));
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
-                                                                    $urlParameters, $uniquePageId);
+                                                                    $urlParameters, $uniquePageId, $socialItem->id);
             $view          = new AjaxPageView($inlineView);
             echo $content . ZurmoHtml::tag('div', array('style' => 'display:none;'), $view->render());
         }

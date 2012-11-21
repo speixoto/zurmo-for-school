@@ -18,7 +18,7 @@
 </tr>
 <tr>
   <td>open</td>
-  <td>/zurmomd/app/index.php/accounts/default</td>
+  <td>index.php/accounts/default</td>
   <td></td>
 </tr>
 <tr>
@@ -29,7 +29,7 @@
 <!-- Loading mass delete demo data -->
 <tr>
   <td>open</td>
-  <td>/zurmomd/app/index.php/zurmo/demo/loadMassDeleteDemoData</td>
+  <td>index.php/zurmo/demo/loadMassDeleteDemoData</td>
   <td></td>
 </tr>
 <tr>
@@ -39,7 +39,7 @@
 </tr>
 <tr>
   <td>open</td>
-  <td>/zurmomd/app/index.php/accounts/default</td>
+  <td>index.php/accounts/default</td>
   <td></td>
 </tr>
 <tr>
@@ -95,12 +95,12 @@
 </tr>
 <tr>
   <td>clickAndWait</td>
-  <td>id=save</td>
+  <td>name=delete</td>
   <td></td>
 </tr>
 <tr>
   <td>assertTextPresent</td>
-  <td>Successfully Deleted</td>
+  <td>successfully deleted</td>
   <td></td>
 </tr>
 <!-- selecting all for mass delete-->
@@ -131,12 +131,12 @@
 </tr>
 <tr>
   <td>clickAndWait</td>
-  <td>id=save</td>
+  <td>name=delete</td>
   <td></td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
-  <td>records delted successfully</td>
+  <td>records successfully deleted</td>
   <td></td>
 </tr>
 <tr>
@@ -145,8 +145,8 @@
 	<td></td>
 </tr>
 <tr>
-  <td>verifyElementPresent</td>
-  <td>tr[@class='even']</td>
+  <td>verifyTextPresent</td>
+  <td>No results found.</td>
   <td></td>
 </tr>
 <tr>

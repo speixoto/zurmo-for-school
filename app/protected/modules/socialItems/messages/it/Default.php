@@ -24,16 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailAddressInformationListViewColumnAdapter extends TextListViewColumnAdapter
-    {
-        public function renderGridViewData()
-        {
-            return array(
-                'name'  => $this->attribute,
-                'value' => 'Yii::app()->format->email($data->' . $this->attribute . '->emailAddress)',
-                'type'  => 'raw',
-                'htmlOptions' => array( 'class' => 'email')
-            );
-        }
-    }
+    // KEEP these in alphabetical order.
+    // KEEP them indented correctly.
+    // KEEP all the language files up-to-date with each other.
+    // DON'T MAKE A MESS!
+    return array(
+        'Access Social Items'
+            => 'Acceso agli elementi sociali',
+        'Post'
+            => 'Pubblica',
+        'Social Item'
+            => 'Elemento Sociale',
+        'Social Items'
+            => 'Elementi Sociali',
+        'What\'s going on?'
+            => 'Cosa sta succedendo?',
+        '{n} Post created|{n} Posts created'
+            => '{n} Post creato|{n} Post creati',
+        '{postedFromUser} to {postedToUser}'
+            => '{postedFromUser} a {postedToUser}',
+    );
 ?>

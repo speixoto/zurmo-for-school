@@ -517,7 +517,7 @@
             $nobody = User::getByUsername('nobody');
             $this->assertEquals(Right::DENY, $confused->getEffectiveRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE));
             $confused->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
-            //Load MassDelete view for the 3 contacts.            
+            //Load MassDelete view for the 3 contacts.
             $contacts = Contact::getAll();
             $this->assertEquals(5, count($contacts));
             $contact1 = ContactTestHelper::createContactByNameForOwner('contactDelete1', $confused);
@@ -529,14 +529,14 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massDelete');
             $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Contacts selected for removal') === false);
 
-            //Deleting 3 contacts 
+            //Deleting 3 contacts
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Contact_page' => 1));
             $this->setPostArray(array('selectedIds' => $contact3->id));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('contacts/default/massDelete');
-            //Deleting all contacts 
+            //Deleting all contacts
             $this->setGetArray(array(
                 'selectAll' => '1',
                 'Contact_page' => 1));

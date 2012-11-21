@@ -129,6 +129,8 @@
             => 'Ausgangswert',
         'Delete'
             => 'Löschen',
+        'Deleting'
+            => 'Löschen im Gange',
         'Detail View Only'
             => 'Nur Detailansicht',
         'Details'
@@ -197,6 +199,10 @@
             => 'Loading', // Same Word Translated
         'Loading UpgraderComponent.'
             => 'UpgraderComponent Lädt.',
+        'Mass Delete'
+            => 'Massen Delete',
+        'Mass Delete is not reversable.'
+            => 'Massen Löschen ist nicht umkehrbar.',
         'Mass Update'
             => 'Massenaktualisierung',
         'Max upload size: {maxSize}'
@@ -313,6 +319,8 @@
             => 'Wählen',
         'Selected'
             => 'Ausgewählt',
+        'selected for removal.'
+            => 'ausgewählt zur Entfernung.',
         'selected for updating.'
             => 'Ausgewählt zur Aktualisierung',
         'Serialized Data'
@@ -325,6 +333,8 @@
             => 'Anfang',
         'Start typing to search'
             => 'Geben Sie hier Ihren Suchbegriff ein',
+        'successfully deleted'
+            => 'erfolgreich gelöscht',
         'Tab'
             => 'Tab', // Same Word Translated
         'The file did not exist'
@@ -333,6 +343,8 @@
             => 'Die Struktur ist nicht gültig. {error}',
         'There was an error during the extraction process of {zipFilePath}'
             => 'Es gab einen Fehler bei der Extraktion von {zipFilePath}',
+        'There was an error processing your request'
+            => 'Es gab einen Fehler bei der Verarbeitung Ihrer Anfrage',
         'There was an error uploading the file.'
             => 'Es gab einen Fehler beim Upload der Datei.',
         'There was an error with the web service.'

@@ -163,6 +163,8 @@
             => 'Fermer',
         'Code'
             => 'Code', // Same Word Translated
+        'Comment'
+            => 'Commenter',
         'Configuration'
             => 'Configuration', // Same Word Translated
         'Configure'
@@ -188,7 +190,7 @@
         'Create Roles'
             => 'Créer Rôles',
         'Created'
-            => 'Conversations commencées',
+            => 'Crée',
         'created by {ownerStringContent}'
             => 'crée par {ownerStringContent}',
         'Criteria Selected <span class="icon-clear">Z</span>'
@@ -241,6 +243,8 @@
             => 'Outils de Développement',
         'Dr.'
             => 'Dr.', // Same Word Translated
+        'Due On'
+            => 'Échéance',
         'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
             => 'Modifiez les graphiques du tableau de bord en cliquant sur l\'icône de configuration dans le coin supérieur droit de chaque portlet.',
         'Email Address'
@@ -483,6 +487,8 @@
             => 'Permis',
         'Please provide data.'
             => 'Veuillez fournir les données.',
+        'Please resolve the following issues for {modelString}:'
+            => 'Veuillez résoudre les problèmes suivants pour for {modelString}:',
         'Please use FireFox, Chrome, or Internet Explorer.'
             => 'Veuillez utiliser FireFox, Chrome, ou Internet Explorer.',
         'Policies'
@@ -611,6 +617,8 @@
             => 'Nb. d\'éléments de la sous-liste',
         'Successfully updated'
             => 'Mise à jour réussie',
+        'Summary'
+            => 'Sommaire',
         'Super Administrators'
             => 'Super Administrateur',
         'Tag Cloud fields allow you to tag records with values so that you can easily find them later.'
@@ -623,6 +631,8 @@
             => 'Le service de taux de change n\'est pas disponible.  Le taux n\'a pas pu être mis à jour automatiquement.',
         'The currency was not removed because it is in use.'
             => 'Impossible de supprimer la devise car elle est actuellement utilisée.',
+        'The default value is {policyDefault}'
+            => 'La valeur par défaut est {policyDefault}',
         'The ID specified was invalid.'
             => 'ID invalide.',
         'The Import Wizard helps get your data into the system easily, find it under the config icon (that\'s the cog in the top right).'
@@ -707,6 +717,8 @@
             => 'Votre version de Yii est currentVersion et doit être acceptableVersion.',
         'ZurmoCRM'
             => 'ZurmoCRM', // Same Word Translated
+        '{modelString} is already connected to this record.'
+            => '{modelString} est déjà associé avec cette entrée.',
         '{url} (installed with Yii)'
             => '{url} (installé avec Yii)',
         '{url} (version {version} is installed)'

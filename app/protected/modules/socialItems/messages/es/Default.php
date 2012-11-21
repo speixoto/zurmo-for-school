@@ -24,21 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SecurityDetailsLinkActionElement extends LinkActionElement
-    {
-        public function getActionType()
-        {
-            return 'Details';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Security');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/securityDetails/', array('id' => $this->modelId));
-        }
-    }
+    // KEEP these in alphabetical order.
+    // KEEP them indented correctly.
+    // KEEP all the language files up-to-date with each other.
+    // DON'T MAKE A MESS!
+    return array(
+        'Access Social Items'
+            => '??',
+        'Post'
+            => '??',
+        'Social Item'
+            => '??',
+        'Social Items'
+            => '??',
+        'What\'s going on?'
+            => '??',
+        '{n} Post created|{n} Posts created'
+            => '??',
+        '{postedFromUser} to {postedToUser}'
+            => '??',
+    );
 ?>

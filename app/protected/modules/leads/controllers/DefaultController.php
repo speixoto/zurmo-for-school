@@ -163,7 +163,8 @@
                 new LeadsSearchForm($contact),
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'LeadsStateMetadataAdapter');
+                'LeadsStateMetadataAdapter',
+                'LeadsSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassEdit(
                 $pageSize,
@@ -198,11 +199,11 @@
                             'massEditProgressPageSize');
             $contact = new Contact(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new LeadsSearchForm($contact),
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                'LeadsStateMetadataAdapter'
-            );
+                            new LeadsSearchForm($contact),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            'LeadsStateMetadataAdapter',
+                            'LeadsSearchView');
             $this->processMassEditProgressSave(
                 'Contact',
                 $pageSize,
@@ -210,6 +211,7 @@
                 $dataProvider
             );
         }
+
         /**
          * Action for displaying a mass delete form and also action when that form is first submitted.
          * When the form is submitted, in the event that the quantity of models to delete is greater
@@ -232,11 +234,11 @@
 
             $activeAttributes = $this->resolveActiveAttributesFromMassDeletePost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new LeadsSearchForm($contact),
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                'LeadsStateMetadataAdapter'
-            );
+                            new LeadsSearchForm($contact),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            'LeadsStateMetadataAdapter',
+                            'LeadsSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassDelete(
                 $pageSize,
@@ -257,6 +259,7 @@
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
         }
+
         /**
          * Action called in the event that the mass delete quantity is larger than the pageSize.
          * This action is called after the pageSize quantity has been delted and continues to be
@@ -270,11 +273,11 @@
                             'massDeleteProgressPageSize');
             $contact = new Contact(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new LeadsSearchForm($contact),
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                'LeadsStateMetadataAdapter'
-            );
+                            new LeadsSearchForm($contact),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            'LeadsStateMetadataAdapter',
+                            'LeadsSearchView');
             $this->processMassDeleteProgress(
                 'Contact',
                 $pageSize,
@@ -418,7 +421,7 @@
 
         public function actionExport()
         {
-            $this->export();
+            $this->export('LeadsSearchView');
         }
     }
 ?>

@@ -441,7 +441,7 @@
             $nobody = User::getByUsername('nobody');
             $this->assertEquals(Right::DENY, $confused->getEffectiveRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE));
             $confused->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
-            //Load MassDelete view for the 3 opportunities.            
+            //Load MassDelete view for the 3 opportunities.
             $opportunities = Opportunity::getAll();
             $this->assertEquals(9, count($opportunities));
             $opportunity1 = OpportunityTestHelper::createOpportunityByNameForOwner('oppotunityDelete1', $confused);
@@ -453,14 +453,14 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/massDelete');
             $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Opportunities selected for removal') === false);
 
-            //Deleting 3 opportunities 
+            //Deleting 3 opportunities
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Opportunity_page' => 1));
             $this->setPostArray(array('selectedIds' => $opportunity3->id));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('opportunities/default/massDelete');
-            //Deleting all contacts 
+            //Deleting all contacts
             $this->setGetArray(array(
                 'selectAll' => '1',
                 'Opportunity_page' => 1));

@@ -85,7 +85,7 @@
                     'attributeName'        => 'toUser',
                     'relatedAttributeName' => 'id',
                     'operatorType'         => 'isNull',
-                    'value'				   => null,
+                    'value'                => null,
                 ),
                 3 => array(
                     'attributeName'        => 'toUser',

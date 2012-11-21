@@ -13,16 +13,16 @@ $(window).ready(function(){
             }
         }
     });
-    
+
     $('.user-menu-item').click(
-        function(){       
+        function(){
             if ( $(this).hasClass('nav-open') === false ){
                 $('.nav-open').removeClass('nav-open');
                 $(this).addClass('nav-open');
             } else {
                 $('.nav-open').removeClass('nav-open');
             }
-        } 
+        }
     );
     /*
     $('body > div').click(function(){
@@ -94,18 +94,7 @@ $(window).ready(function(){
             $('label', $(this)).fadeIn(250);
         }
     });
-
-    /*New Dropdowns
-
-    $('.hasDropDown').hover(
-        function(){
-            $('span', this).addClass('over-dd');
-        },
-        function(){
-            $('span', this).removeClass('over-dd');
-        }
-    );
-    */
+    
     $('.hasDropDown').live({
         mouseenter: function(){
             $('span', this).addClass('over-dd');
@@ -126,7 +115,12 @@ $(window).ready(function(){
        },
    1000 );
 
-
+    /*Docking the save/cancel button in create view*/
+    $(window).scroll( dockFloatingBar );
+    dockFloatingBar();
+    
+    
+    /*Spinner*/
    $( '.loading', '#stickyListLoadingArea' ).spin({
         lines : 9, // The number of lines to draw
         length : 3, // The length of each line
@@ -145,6 +139,21 @@ $(window).ready(function(){
     });
 
 });
+
+/*
+ * this function takes care of the save/cancel buttons' position in long forms, ie. edit account.
+ */
+
+function dockFloatingBar(){
+    var windowTop, diff;
+    windowTop = $(window).scrollTop();
+    diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
+    if( windowTop > diff ) {
+        $('#float-bar .view-toolbar-container').addClass('dock');
+    } else {
+        $('#float-bar .view-toolbar-container').removeClass('dock');
+    }
+}
 
 /*
  * Checkboxes
@@ -201,14 +210,20 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId)
     return true;
 }
 
-function makeSmallLoadingSpinner(id){
+function makeSmallLoadingSpinner(id, color){
+    var color;
+    if ( color === 'dark' ){
+        color = '#999';
+    } else {
+        color = '#fff';
+    }
     $( '.z-spinner', '#' + id ).spin({
         lines : 11, // The number of lines to draw
         length : 4, // The length of each line
         width : 2, // The line thickness
         radius : 4, // The radius of the inner circle
         rotate : 0, // The rotation offset
-        color : '#fff', // #rgb or #rrggbb
+        color : color, // #rgb or #rrggbb
         speed : 1.5, // Rounds per second
         trail : 35, // Afterglow percentage
         shadow : false, // Whether to render a shadow
@@ -264,9 +279,27 @@ function makeGlobalSearchSpinner(id, state){
 }
 
 
-
-
-
+//Graceful handling of ajax processing. If there is a server generated error,
+//it can be displayed in an alert or dialog box
+function processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, updateId)
+{
+    try
+    {
+        jsonData = jQuery.parseJSON(dataOrHtml);
+        $('#FlashMessageBar').jnotifyAddMessage(
+            {
+                 text: jsonData.message,
+                 permanent: false,
+                 showIcon: true,
+                 type: jsonData.messageType
+             }
+        );
+    }
+    catch (e)
+    {
+        $('#' + updateId).html(dataOrHtml);
+    }
+}
 
 
 

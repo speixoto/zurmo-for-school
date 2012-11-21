@@ -26,6 +26,8 @@
 
     class UsersDefaultController extends ZurmoModuleController
     {
+        const EMAIL_CONFIGURATION_FILTER_PATH =
+              'application.modules.emailMessages.controllers.filters.EmailConfigurationCheckControllerFilter';
         /**
          * Override to exclude modalSearchList and autoComplete
          * since these are available to all users regardless
@@ -39,7 +41,7 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, ' .
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, emailConfiguration, securityDetails, ' .
                         'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
@@ -53,6 +55,10 @@
                 ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massEdit, massEditProgressSave',
                 'moduleClassName' => 'ZurmoModule',
                 'rightName' => ZurmoModule::RIGHT_BULK_WRITE,
+            );
+            $filters[] = array(
+                        self::EMAIL_CONFIGURATION_FILTER_PATH . ' + emailConfiguration',
+                         'controller' => $this,
             );
             return $filters;
         }
@@ -87,7 +93,8 @@
                     $searchForm,
                     $pageSize,
                     UsersModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    $dataProvider
+                    $dataProvider,
+                    'UsersActionBarForSearchAndListView'
                 );
                 $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'UserBreadCrumbView'));
@@ -319,9 +326,11 @@
             $user = new User(false);
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new UsersSearchForm($user),
-                $pageSize,
-                Yii::app()->user->userModel->id);
+                            new UsersSearchForm($user),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            null,
+                            'UsersSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $user = $this->processMassEdit(
                 $pageSize,
@@ -356,10 +365,11 @@
                             'massEditProgressPageSize');
             $user = new User(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new UsersSearchForm($user),
-                $pageSize,
-                Yii::app()->user->userModel->id
-            );
+                            new UsersSearchForm($user),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            null,
+                           'UsersSearchView');
             $this->processMassEditProgressSave(
                 'User',
                 $pageSize,
@@ -462,6 +472,41 @@
             echo $view->render();
         }
 
+        public function actionEmailConfiguration($id)
+        {
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
+            $user  = User::getById(intval($id));
+            $title = Yii::t('Default', 'Email Configuration');
+            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);
+            $userEmailConfigurationForm = new UserEmailConfigurationForm($emailAccount);
+            $userEmailConfigurationForm->emailSignatureHtmlContent = $user->getEmailSignature()->htmlContent;
+            $postVariableName           = get_class($userEmailConfigurationForm);
+
+            if (isset($_POST[$postVariableName]))
+            {
+                $userEmailConfigurationForm->setAttributes($_POST[$postVariableName]);
+                if ($userEmailConfigurationForm->validate())
+                {
+                    $userEmailConfigurationForm->save();
+                    Yii::app()->user->setFlash('notification',
+                        Yii::t('Default', 'User email configuration saved successfully.')
+                    );
+                    $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
+                }
+            }
+            $titleBarAndEditView = new UserActionBarAndEmailConfigurationEditView(
+                                    $this->getId(),
+                                    $this->getModule()->getId(),
+                                    $user,
+                                    $userEmailConfigurationForm
+            );
+            $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
+            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
+                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            echo $view->render();
+        }
+
         protected static function getSearchFormClassName()
         {
             return 'UsersSearchForm';
@@ -469,7 +514,7 @@
 
         public function actionExport()
         {
-            $this->export();
+            $this->export('UsersSearchView');
         }
 
         /**

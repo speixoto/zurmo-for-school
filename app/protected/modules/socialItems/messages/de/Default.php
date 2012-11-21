@@ -24,14 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Model for storing email attachments.
-     */
-    class EmailFileModel extends FileModel
-    {
-        public static function getModuleClassName()
-        {
-            return 'EmailMessagesModule';
-        }
-    }
+    // KEEP these in alphabetical order.
+    // KEEP them indented correctly.
+    // KEEP all the language files up-to-date with each other.
+    // DON'T MAKE A MESS!
+    return array(
+        'Access Social Items'
+            => '??',
+        'Post'
+            => '??',
+        'Social Item'
+            => '??',
+        'Social Items'
+            => '??',
+        'What\'s going on?'
+            => '??',
+        '{n} Post created|{n} Posts created'
+            => '??',
+        '{postedFromUser} to {postedToUser}'
+            => '??',
+    );
 ?>

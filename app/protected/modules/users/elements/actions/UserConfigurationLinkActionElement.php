@@ -24,11 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserConfigurationEditLinkActionElement extends LinkActionElement
+    /**
+     * Class to render link user configuration
+     */
+    class UserConfigurationLinkActionElement extends LinkActionElement
     {
         public function getActionType()
         {
             return 'Edit';
+        }
+
+        public function render()
+        {
+            $menuItems = array('label' => $this->getLabel(),
+                               'url'   => null,
+                               'itemOptions' => array('class' => 'icon-user-config_', 'id' => 'UserViewAccountConfiguration'),
+                               'items' => array(
+                                   array('label'   => Yii::t('Default', 'General'),
+                                       'url'     => $this->route . '/configurationEdit?id=' . $this->modelId),
+                                   array('label'   => Yii::t('Default', 'Email'),
+                                       'url'     => $this->route . '/emailConfiguration?id=' . $this->modelId),
+                                   array('label'   => Yii::t('Default', 'Security'),
+                                       'url'     => $this->route . '/securityDetails?id=' . $this->modelId)));
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ActionMenu");
+            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                'items'       => array($menuItems),
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['ActionMenu'];
         }
 
         protected function getDefaultLabel()
@@ -38,7 +62,7 @@
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/configurationEdit/', array('id' => $this->modelId));
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/');
         }
     }
 ?>

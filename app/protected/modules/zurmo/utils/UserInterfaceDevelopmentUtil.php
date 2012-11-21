@@ -84,6 +84,7 @@
                 }
             }
         }
+
         public static function makeMassDeleteData()
         {
             $account        = new Account();

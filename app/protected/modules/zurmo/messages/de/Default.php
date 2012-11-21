@@ -163,6 +163,8 @@
             => 'schließen',
         'Code'
             => 'Code', // Same Word Translated
+        'Comment'
+            => 'Kommentar',
         'Configuration'
             => 'Konfiguration',
         'Configure'
@@ -241,6 +243,8 @@
             => 'Entwicklertools',
         'Dr.'
             => 'Dr.', // Same Word Translated
+        'Due On'
+            => 'Fällig am',
         'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
             => 'Durch Klicken auf die Config-Icon in der rechten oberen Ecke jedes Portlet ermöglicht es, Diagramme auf dem Dashboard zu bearbeiten.',
         'Email Address'
@@ -483,6 +487,8 @@
             => 'Erlaubt',
         'Please provide data.'
             => 'Bitte geben Sie die Daten.',
+        'Please resolve the following issues for {modelString}:'
+            => 'Bitte behebe die folgenden Probleme für {modelString}:',
         'Please use FireFox, Chrome, or Internet Explorer.'
             => 'Bitte benutzen Sie FireFox, Chrome oder Internet Explorer.',
         'Policies'
@@ -611,6 +617,8 @@
             => 'Unterliste Seitengröße',
         'Successfully updated'
             => 'Erfolgreich aktualisiert',
+        'Summary'
+            => 'Zusammenfassung',
         'Super Administrators'
             => 'Super Administratoren',
         'Tag Cloud fields allow you to tag records with values so that you can easily find them later.'
@@ -623,6 +631,8 @@
             => 'Der Wechselkurs Web-Service war nicht verfügbar. Der Wechselkurs konnte nicht automatisch aktualisiert werden',
         'The currency was not removed because it is in use.'
             => 'Die Währung wurde nicht gelöscht, weil es in Gebrauch ist.',
+        'The default value is {policyDefault}'
+            => 'Der Standardwert ist {policyDefault}',
         'The ID specified was invalid.'
             => 'ID ist ungültig.',
         'The Import Wizard helps get your data into the system easily, find it under the config icon (that\'s the cog in the top right).'
@@ -707,6 +717,8 @@
             => 'Ihre Yii-Version ist currentVersion und sollte acceptableVersion',
         'ZurmoCRM'
             => 'ZurmoCRM', // Same Word Translated
+        '{modelString} is already connected to this record.'
+            => '{modelString} ist bereits auf diesen Datensatz verbunden.',
         '{url} (installed with Yii)'
             => '{url} (installed with Yii)', // Same Word Translated
         '{url} (version {version} is installed)'

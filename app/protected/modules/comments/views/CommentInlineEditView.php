@@ -43,7 +43,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'SaveButton', 'label' => 'eval:Yii::t("Default", "Add Comment")'),
+                            array('type' => 'SaveButton', 'label' => 'eval:Yii::t("Default", "Comment")'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(
@@ -95,10 +95,7 @@
             }
             elseif ($element instanceOf FilesElement)
             {
-                $element->editableTemplate = '<td colspan="{colspan}">' .
-                                             '<div class="file-upload-box">{content}{error}</div>' .
-                                             '<a href="#" class="show-file-upload-box" onclick="jQuery(this).hide().prev().show().find(\'input[type=file]\').click(); return false;">Add Files</a>' .
-                                             '</td>';
+                $element->editableTemplate = FilesElement::getEditableTemplateForInlineEdit();
             }
             else
             {

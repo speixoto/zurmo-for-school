@@ -94,7 +94,6 @@
                 'groupMap' => array(
                     'css' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/newui.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/jquery-multiselect.css',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css'
                     ),
 
@@ -165,6 +164,13 @@
                         'class'  => 'CFileLogRoute',
                         'levels' => 'error, warning',
                     ),
+                        /*
+                    array(
+                        'class'=>'application.extensions.sentrylog.RSentryLog',
+                        'dsn' => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
+                        'levels'=>'error',
+                    ),
+                    */
                 ),
             ),
             'mappingHelper' => array(
@@ -197,7 +203,8 @@
                 'autoStart' => false,
             ),
             'themeManager' => array(
-                'basePath' => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes',
+                'basePath'  => INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes',
+                'class'     => 'application.core.components.ThemeManager',
             ),
             'timeZoneHelper' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoTimeZoneHelper',
@@ -326,10 +333,12 @@
                 'fr' => 'French',
                 'de' => 'German',
             ),
+            'sentryDsn'    => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
         ),
         'preload' => array(
             'browser',
-            'sanitizer'
+            'sanitizer',
+            'log'
         ),
     );
     return $common_config;
