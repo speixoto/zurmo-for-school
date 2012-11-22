@@ -38,7 +38,7 @@
 
         public function __construct($elementAdapter, $rowNumber, $inputPrefixData, $attribute, $hasTrackableStructurePosition)
         {
-            assert('$elementAdapter instanceof ReportAttributeToElementContentAdapter');
+            assert('$elementAdapter instanceof ReportAttributeToElementAdapter');
             assert('is_int($rowNumber)');
             assert('is_array($inputPrefixData)');
             assert('is_string($attribute)');

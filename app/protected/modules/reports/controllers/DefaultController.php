@@ -308,7 +308,7 @@ $label = 'this is tmep';
                                          resolveAttributeByNodeId($nodeIdWithoutTreeType);
 
 
-            $elementAdapter            = new ReportAttributeToElementContentAdapter($modelToReportAdapter,
+            $elementAdapter            = new ReportAttributeToElementAdapter($modelToReportAdapter,
                                                                                     $inputPrefixData,
                                                                                     $reportToWizardFormAdapter->makeFormByType(),// i dont think so...
                                                                                     new NoRequiredsActiveForm(),
