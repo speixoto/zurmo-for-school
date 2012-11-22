@@ -206,7 +206,7 @@
             $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
                                                          'value'     => array('Value cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $filter->operator                    = 'equals';
+            $filter->operator                    = 'Equals';
             $filter->value                       = 'Jason';
             $validated = $filter->validate();
             $this->assertTrue($validated);
@@ -227,33 +227,48 @@
                                                          'value'     => array('Value cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
-            //value is expected to be an array. will fail
-            $filter->operator                    = 'equals';
+            //value is expected to be an integer
+            $filter->operator                    = 'Equals';
             $filter->value                       = 'Zurmo';
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('value'     => array('Value is improper type.'));
+            $compareErrors                       = array('value'     => array('Value must be integer.'));
             $this->assertEquals($compareErrors, $errors);
 
-            //also check value as 456 but not array. should still fail.
+            //also check value as 456. should pass
             $filter->value                       = 456;
             $validated                           = $filter->validate();
-            $this->assertFalse($validated);
-            $errors                              = $filter->getErrors();
-            $compareErrors                       = array('value'     => array('Value is improper type.'));
-            $this->assertEquals($compareErrors, $errors);
+            $this->assertTrue($validated);
 
-            //now check as array,but with strings
-            $filter->value                       = array('first' => 'test', 'second' => 'test2');
+            //now check for between, but with strings
+            $filter->operator                    = 'Between';
+            $filter->value                       = 'test';
+            $filter->secondValue                 = 'test2';
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('value'     => array('Value is improper type.'));
+            $compareErrors                       = array('value'        => array('Value must be integer.'),
+                                                         'secondValue'  => array('Second Value must be integer.'));
             $this->assertEquals($compareErrors, $errors);
 
-            $filter->value                       = array('first' => 456, 'second' => 789);
-            //now check as array , but with integers - should pass
+            //Now check with integers. but missing the second value
+            $filter->value                       = 345;
+            $filter->secondValue                 = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('secondValue'     => array('Second Value must be integer.'));
+
+            //now check for between with both filled in with integers
+            $filter->value                       = 345;
+            $filter->secondValue                 = 456;
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //now check when integers are strings, but should resolve as integerse
+            $filter->value                       = '345';
+            $filter->secondValue                 = '456';
             $validated                           = $filter->validate();
             $this->assertTrue($validated);
         }
@@ -263,7 +278,54 @@
          */
         public function testValidateDateAttribute()
         {
-            //todo:
+            $filter                              = new FilterForReportForm('ReportModelTestItem',
+                                                                            Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'date';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+                                                         'value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //value is expected to be a date
+            $filter->operator                    = 'Equals';
+            $filter->value                       = 'Zurmo';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value must be date.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //also check value as 2011-05-05. should pass
+            $filter->value                       = '2011-05-05';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //now check for between, but with strings
+            $filter->operator                    = 'Between';
+            $filter->value                       = 'test';
+            $filter->secondValue                 = 'test2';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'        => array('Value must be date.'),
+                                                         'secondValue'  => array('Second Value must be date.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Now check with integers. but missing the second value
+            $filter->value                       = '2011-05-05';
+            $filter->secondValue                 = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('secondValue'     => array('Second Value must be date.'));
+
+            //now check for between with both filled in with integers
+            $filter->value                       = '2011-05-05';
+            $filter->secondValue                 = '2011-06-05';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
         /**
@@ -271,36 +333,357 @@
          */
         public function testValidateDateTimeAttribute()
         {
-            //todo:
+            $filter                              = new FilterForReportForm('ReportModelTestItem',
+                                                                            Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'dateTime';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+                                                         'value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //value is expected to be a date
+            $filter->operator                    = 'Equals';
+            $filter->value                       = 'Zurmo';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value must be date.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //also check value as 2011-05-05. should pass
+            $filter->value                       = '2011-05-05';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //now check for between, but with strings
+            $filter->operator                    = 'Between';
+            $filter->value                       = 'test';
+            $filter->secondValue                 = 'test2';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'        => array('Value must be date.'),
+                                                         'secondValue'  => array('Second Value must be date.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Now check with integers. but missing the second value
+            $filter->value                       = '2011-05-05';
+            $filter->secondValue                 = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('secondValue'     => array('Second Value must be date.'));
+
+            //now check for between with both filled in with integers
+            $filter->value                       = '2011-05-05';
+            $filter->secondValue                 = '2011-06-05';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
-        //do owner too..
-        //stub out rest include dropdown, contactsTate etc (does it sub with ID or no?) hmm
+        /**
+         * @depends testValidateDateTimeAttribute
+         */
+        public function testValidateBooleanAsDropDownAttribute()
+        {
+            $filter                              = new FilterForReportForm('ReportModelTestItem',
+                                                                            Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'boolean';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+                                                         'value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+            $filter->operator                    = 'Equals';
 
+            //value is expected to be either 0 or 1
+            $filter->operator                    = 'Equals';
+            $filter->value                       = 'Zurmo';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value must be either 1 or 0.'));
+            $this->assertEquals($compareErrors, $errors);
+
+
+            $filter->value                       = '1';
+            $validated = $filter->validate();
+            $this->assertTrue($validated);
+            $filter->value                       = '0';
+            $validated = $filter->validate();
+            $this->assertTrue($validated);
+        }
+
+        /**
+         * @depends testValidateBooleanAsDropDownAttribute
+         */
         public function testValidateDropDownAttribute()
         {
-                //['value'] = 'Automotive'   this is ok
+            //Test equals (non-array) and it is null
+            $filter                              = new FilterForReportForm('ReportModelTestItem',
+                                                                            Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'dropDown';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+                                                         'value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+            $filter->operator                    = 'Equals';
+
+            //Test equals (non-array) and it is empty
+            $filter->value                       = '';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test equals (non-array) and it is properly populated
+            $filter->value                       = 'someValue';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test oneOf (array) and it is null
+            $filter->operator                    = 'OneOf';
+            $filter->value                       = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is empty array
+            $filter->value                       = array();
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is properly populated
+            $filter->value                       = array('aFirstValue', 'aSecondValue');
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
+
+
+        /**
+         * Same as testing reportedAsAttribute
+         * @depends testValidateDropDownAttribute
+         */
         public function testValidateLikeContactStateAttribute()
         {
-            //seems dumb to have a sub 'id' since we only have value. but then it stays consistent? but we aren't using normal models
-            //['value'][id'] - hmm. or do we just set the state id directly as the 'value'?
+            //Test equals (non-array) and it is null
+            $filter                              = new FilterForReportForm('ReportModelTestItem',
+                                                                            Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'likeContactState';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+                                                         'value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+            $filter->operator                    = 'Equals';
+
+            //Test equals (non-array) and it is empty
+            $filter->value                       = '';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test equals (non-array) and it is properly populated
+            $filter->value                       = 'someValue';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test oneOf (array) and it is null
+            $filter->operator                    = 'OneOf';
+            $filter->value                       = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is empty array
+            $filter->value                       = array();
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is properly populated
+            $filter->value                       = array('aFirstValue', 'aSecondValue');
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
+        /**
+         * Will just assume that 'currencyId' passed is always ok and we are not trying to validate.
+         * @depends testValidateDropDownAttribute
+         */
         public function testValidateCurrencyValueAttribute()
         {
-            //['value']['first']
-            //['value']['second']
-            //['value']['currency']['id']    //how do we know what to do with this? fortunetely it could come in as anything so who cares string/int
-            //well now we know not to do 0,1 as value sub arrays, but using first/second is smart
+            $filter                              = new FilterForReportForm('ReportModelTestItem',
+                                                                            Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'currencyValue';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+                                                         'value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //value is expected to be an currency
+            $filter->operator                    = 'Equals';
+            $filter->value                       = 'Zurmo';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value must be float.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //also check value as 456. should pass
+            $filter->value                       = 456;
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //now check for between, but with strings
+            $filter->operator                    = 'Between';
+            $filter->value                       = 'test';
+            $filter->secondValue                 = 'test2';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'        => array('Value must be float.'),
+                                                         'secondValue'  => array('Second Value must be float.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Now check with currency. but missing the second value
+            $filter->value                       = 345;
+            $filter->secondValue                 = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('secondValue'     => array('Second Value must be float.'));
+
+            //now check for between with both filled in with currency
+            $filter->value                       = 345.54;
+            $filter->secondValue                 = 456;
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //now check when currency as currency. Should pass fine.
+            $filter->value                       = '3450.87';
+            $filter->secondValue                 = '456';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //now check when passing in a currencyIdForValue
+            $filter->currencyIdForValue          = 4;
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testValidateCurrencyValueAttribute
+         */
         public function testValidateDynamicallyDerivedOwnerAttribute()
         {
-            //['value']['id'] = 'would be id of owner'. should we do it like this?
-            //!!! look at accountSelectForm. is there aalready a user form? hmm. look at import maybe we need to make this unique sigh.
+            $filter                              = new FilterForReportForm('ReportModelTestItem',
+                                                                            Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'owner__User';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+                                                         'value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+            $filter->operator                    = 'Equals';
+            $filter->value                       = '5';
+            $filter->stringifiedModelForValue    = 'Jason';
+            $validated = $filter->validate();
+            $this->assertTrue($validated);
         }
-        //test runTime as part of tests above
+
+        /**
+         * @depends testValidateDynamicallyDerivedOwnerAttribute
+         */
+        public function testValidateMultiSelectDropDownAttribute()
+        {
+            //todo:
+            $this->fail();
+        }
+
+        /**
+         * @depends testValidateMultiSelectDropDownAttribute
+         */
+        public function testValidateTagCloudAttribute()
+        {
+            //todo:
+            $this->fail();
+        }
+
+        /**
+         * @depends testValidateTagCloudAttribute
+         */
+        public function testValidateRadioDropDownAttribute()
+        {
+            //todo:
+            $this->fail();
+        }
+
+        /**
+         * @depends testValidateRadioDropDownAttribute
+         */
+        public function testValidateTextAreaAttribute()
+        {
+            //todo:
+            $this->fail();
+        }
+
+        /**
+         * @depends testValidateTextAreaAttribute
+         */
+        public function testValidateUrlAttribute()
+        {
+            //todo:
+            $this->fail();
+        }
+
+        /**
+         * @depends testValidateUrlAttribute
+         */
+        public function testValidatePhoneAttribute()
+        {
+            //todo:
+            $this->fail();
+        }
+
+        /**
+         * @depends testValidatePhoneAttribute
+         */
+        public function testValidateFloatAttribute()
+        {
+            //todo:
+            $this->fail();
+        }
+
+        /**
+         * @depends testValidatePhoneAttribute
+         */
+        public function testValidateAvailableAtRunTime()
+        {
+            //todo: (boolean)
+            $this->fail();
+        }
     }
 ?>

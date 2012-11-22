@@ -26,31 +26,113 @@
 
     class FilterForReportForm extends ComponentForReportForm
     {
+        public $availableAtRunTime;
+
+        public $currencyIdForValue;
+
         public $operator;
 
-        public $value; //move up? maybe not
+        public $value;
+
+        public $secondValue;
+
+        public $stringifiedModelForValue;
 
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('operator',  'required'),
-                array('operator',  'type', 'type' => 'string'),
-                array('value',     'required'),
-                array('value',     'safe')
+                array('operator',                    'required'),
+                array('operator',                    'type', 'type' => 'string'),
+                array('value',  	                 'required'),
+                array('value',  	 				 'safe'),
+                array('value',  	 				 'validateValue'),
+                array('secondValue', 				 'safe'),
+                array('secondValue',                 'validateSecondValue'),
+                array('currencyIdForValue',  	     'safe'),
+                array('stringifiedModelForValue',  	 'safe'),
+                array('availableAtRunTime',          'boolean')
+
             ));
         }
 
-        //could use a validate method on value.
-        //then what?
-        //if NOT array
-            //do this
-                //like import get that attribute's validator
-                    //except stuff like contactState, dropdown those are always strings. ok not so hard switch case
-                    //is there a Util already to get validator? i think there is that we used in import.
-        //if array
-            //do this
-                //loop
-                    //each do this
-                        //do what we are doing for individual basically
+        public function validateValue()
+        {
+            $passedValidation = true;
+            $rules            = array();
+            if(!is_array($this->value))
+            {
+                $this->resolveAndValidateValueData($rules, $passedValidation, 'value');
+            }
+            else
+            {
+                //Assume array has only string values
+                foreach($this->value as $subValue)
+                {
+                    if(!is_string($subValue))
+                    {
+                        $this->addError('value', 'Value must be a string.');
+                        $passedValidation = false;
+                    }
+                }
+            }
+            return $passedValidation;
+        }
+
+        public function validateSecondValue()
+        {
+            $passedValidation = true;
+            $rules            = array();
+            if(!is_array($this->secondValue))
+            {
+                if($this->operator == 'Between')
+                {
+                    $rules[] = array('secondValue', 'required');
+                }
+                $this->resolveAndValidateValueData($rules, $passedValidation, 'secondValue');
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $passedValidation;
+        }
+
+        private function createValueValidatorsByRules(Array $rules)
+        {
+            $validators=new CList;
+            foreach($rules as $rule)
+            {
+                if(isset($rule[0],$rule[1]))
+                {
+                    $validators->add(CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2)));
+                }
+                else
+                {
+                    throw new CException(Yii::t('yii','{class} has an invalid validation rule. The rule must specify ' .
+                                                      'attributes to be validated and the validator name.' ,
+                        array('{class}'=>get_class($this))));
+                }
+            }
+            return $validators;
+        }
+
+        private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName)
+        {
+                $modelClassName       = $this->getResolvedAttributeModelClassName();
+                $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
+                                        make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
+                $rules                = array_merge($rules,
+                                        $modelToReportAdapter->getFilterRulesByAttribute(
+                                        $this->getResolvedAttribute(), $ruleAttributeName));
+                $validators           = $this->createValueValidatorsByRules($rules);
+                foreach($validators as $validator)
+                {
+                    $validated = $validator->validate($this);
+                    if(!$validated)
+                    {
+                        $passedValidation = false;
+                    }
+                }
+        }
     }
 ?>

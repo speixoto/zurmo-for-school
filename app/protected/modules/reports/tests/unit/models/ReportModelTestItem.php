@@ -77,8 +77,8 @@
                     'secondaryEmail'      => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
                     'nonReportable2'      => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem5'),
-                    'reportedAsAttribute' => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem6'),
-                    'likeContactState'    => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem7'),
+                    'reportedAsAttribute' => array(RedBeanModel::HAS_ONE, 'ReportModelTestItem6', RedBeanModel::NOT_OWNED),
+                    'likeContactState'    => array(RedBeanModel::HAS_ONE, 'ReportModelTestItem7', RedBeanModel::NOT_OWNED),
 
                 ),
                 'derivedRelationsViaCastedUpModel' => array(

@@ -1254,5 +1254,11 @@
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
             $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem__reportItems__Inferred'));
         }
+
+        public function testGetFilterRulesByAttribute()
+        {
+            //todo:
+            $this->fail();
+        }
     }
 ?>

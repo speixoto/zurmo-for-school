@@ -287,6 +287,32 @@
             return $attributes;
         }
 
+        public function getFilterRulesByAttribute($attribute, $ruleAttributeName)
+        {
+            $rules                        = array();
+            $dynamicallyDerivedAttributes =  $this->getDynamicallyDerivedAttributesData();
+            if($this->model->isAttribute($attribute) && $this->model->{$attribute} instanceof CurrencyValue)
+            {
+                $rules[]    = array($ruleAttributeName, 'type', 'type' => 'float');
+            }
+            elseif(in_array($attribute, $dynamicallyDerivedAttributes))
+            {
+                $rules[]    = array($ruleAttributeName, 'type' => 'string');
+            }
+            elseif($this->model->isAttribute($attribute))
+            {
+                $rules      = ModelAttributeRulesToDefaultValueMappingRuleUtil::
+                              getApplicableRulesByModelClassNameAndAttributeName(
+                              get_class($this->model),
+                              $attribute,
+                              $ruleAttributeName,
+                              false,
+                              true);
+            }
+            return $rules;
+        }
+
+
         protected function derivedRelationLinksToPrecedingRelation($relationModelClassName, $opposingRelation, RedBeanModel $precedingModel = null,
                                                                     $precedingRelation = null)
         {
@@ -468,6 +494,7 @@
          */
         public function getAttributeElement(ReportComponentForm $model, ZurmoActiveForm $form, $attribute)
         {
+            //make sure you check NameIdElement (instanceof) to override the id/name pairings.
         }
 
         /**

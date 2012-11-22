@@ -32,7 +32,8 @@
     {
         public static function getApplicableRulesByModelClassNameAndAttributeName($modelClassName, $attributeName,
                                                                                   $ruleAttributeName,
-                                                                                  $requiredRuleIsApplicable = false)
+                                                                                  $requiredRuleIsApplicable = false,
+                                                                                  $treatDateTimeAsDate = false)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
@@ -62,6 +63,10 @@
                             case 'type':
                                 if ($rule['type'] == 'date' || $rule['type'] == 'datetime')
                                 {
+                                    if($treatDateTimeAsDate)
+                                    {
+                                        $rule['type'] = 'date';
+                                    }
                                     $rule[1] = 'TypeValidator';
                                 }
                                 $rule[0] = $ruleAttributeName;
