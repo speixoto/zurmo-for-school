@@ -90,7 +90,7 @@
 
         public function setBackgroundTextureValue(User $user, $value)
         {
-            assert('is_string($value)');
+            assert('is_string($value) || $value == null');
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'backgroundTexture', $value);
         }
 
