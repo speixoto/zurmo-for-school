@@ -433,7 +433,7 @@
             );
             $attributeForm->isAudited     = true;
             $attributeForm->isRequired    = false;
-            $attributeForm->maxLength     = 50;
+            $attributeForm->maxLength     = 20;
 
             if ($withDefaultData)
             {
