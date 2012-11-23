@@ -37,9 +37,14 @@
          */
         protected $nameAttributeName;
 
+        public function setNameAttributeName($nameAttributeName)
+        {
+            assert('is_string($nameAttributeName)');
+            $this->nameAttributeName = $nameAttributeName;
+        }
+
         protected function renderControlEditable()
         {
-            assert('$this->attribute == "null"');
             return $this->renderEditableContent();
         }
 
@@ -118,5 +123,15 @@
         protected function getResolvedModel()
         {
             return $this->model;
+        }
+
+        /**
+         * SourceModelId is not important for using the NameIdElement
+         * (non-PHPdoc)
+         * @see ModelElement::resolveSourceModelIdForModalTransferInformation()
+         */
+        protected function resolveSourceModelIdForModalTransferInformation()
+        {
+            return array();
         }
     }

@@ -108,6 +108,11 @@
                                                                                      $this->form, $params);
 
                 //todo: make sure you check NameIdElement (instanceof) to override the id/name pairings.
+                if($valueElement instanceof NameIdElement)
+                {
+                    $valueElement->setIdAttributeId('value');
+                    $valueElement->setNameAttributeName('stringifiedModelForValue');
+                }
 
                 $valueElement->editableTemplate = '{content}{error}';
                 $valueContent                   = $valueElement->render();

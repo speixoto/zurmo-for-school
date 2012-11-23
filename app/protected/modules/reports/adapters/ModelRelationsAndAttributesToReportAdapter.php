@@ -424,7 +424,8 @@
         protected function isDerivedAttribute($attribute)
         {
             assert('is_string($attribute)');
-            if(in_array($attribute, $this->getDerivedAttributesData()))
+            $derivedAttributes = $this->getDerivedAttributesData();
+            if(isset($derivedAttributes[$attribute]))
             {
                 return true;
             }
@@ -449,7 +450,8 @@
         protected function isDynamicallyDerivedAttribute($attribute)
         {
             assert('is_string($attribute)');
-            if(in_array($attribute, $this->getDynamicallyDerivedAttributesData()))
+            $dynamicallyDerivedAttributes = $this->getDynamicallyDerivedAttributesData();
+            if(isset($dynamicallyDerivedAttributes[$attribute]))
             {
                 return true;
             }
@@ -505,18 +507,18 @@
         public function getFilterValueElementType($attribute)
         {
             assert('is_string($attribute)');
-            if($this->isDynamicallyDerivedAttribute($attribute))
+            if($this->isDerivedAttribute($attribute))
             {
                 return null;
             }
-            if($this->isDerivedAttribute($attribute))
+            if($this->isDynamicallyDerivedAttribute($attribute))
             {
                 $parts = explode(FormModelUtil::DELIMITER, $attribute);
-                if($parts[0] != 'User')
+                if($parts[1] != 'User')
                 {
-                    throw NotSupportedException();
+                    throw new NotSupportedException();
                 }
-                return 'User';
+                return 'UserNameId';
             }
             return ModeAttributeToReportFilterValueElementTypeUtil::getType($this->model, $attribute);
         }

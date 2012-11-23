@@ -83,6 +83,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
         }
+
         public function testGetFilterContentForRowsAndColumns()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -91,35 +92,6 @@
             $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
             $model                = new FilterForReportForm($modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
-
-
-
-
-
-            //Test a dropDown attribute with the operator set to multiple
-            $model->attributeIndexOrDerivedType = 'dropDown';
-            $model->operator                    = 'oneOf';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value][]"')            === false);
-            $this->assertTrue(strpos($content,  '"some[prefix][secondValue]"')        === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertFalse(strpos($content, 'multiple="multiple"') === false);
-            //Test a dropDown attribute with the operator set to null;
-            $model->operator                    = null;
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content,  '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content,  '"some[prefix][value]"')              === false);
-            $this->assertTrue (strpos($content,  '"some[prefix][secondValue]"')        === false);
-            $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
-
-
-
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -167,6 +139,28 @@
             $this->assertFalse(strpos($content, '"some[prefix][valueType]"')          === false);
             $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
 
+            //Test a dropDown attribute with the operator set to multiple
+            $model->attributeIndexOrDerivedType = 'dropDown';
+            $model->operator                    = 'oneOf';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value][]"')            === false);
+            $this->assertTrue(strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, 'multiple="multiple"') === false);
+            //Test a dropDown attribute with the operator set to null;
+            $model->operator                    = null;
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][value]"')              === false);
+            $this->assertTrue (strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
+
             //Test a float attribute
             $model->attributeIndexOrDerivedType = 'float';
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
@@ -189,6 +183,28 @@
             $this->assertFalse(strpos($content, '"some[prefix][secondValue]"')        === false);
             $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
 
+            //Test a multiDropDown attribute with the operator set to multiple
+            $model->attributeIndexOrDerivedType = 'multiDropDown';
+            $model->operator                    = 'oneOf';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value][]"')            === false);
+            $this->assertTrue(strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, 'multiple="multiple"') === false);
+            //Test a multiDropDown attribute with the operator set to null;
+            $model->operator                    = null;
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][value]"')              === false);
+            $this->assertTrue (strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
+
             //Test a phone attribute
             $model->attributeIndexOrDerivedType = 'phone';
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
@@ -198,6 +214,28 @@
             $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
             $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
             $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+
+            //Test a radioDropDown attribute with the operator set to multiple
+            $model->attributeIndexOrDerivedType = 'radioDropDown';
+            $model->operator                    = 'oneOf';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value][]"')            === false);
+            $this->assertTrue(strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, 'multiple="multiple"') === false);
+            //Test a radioDropDown attribute with the operator set to null;
+            $model->operator                    = null;
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][value]"')              === false);
+            $this->assertTrue (strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
 
             //Test a string attribute
             $model->attributeIndexOrDerivedType = 'string';
@@ -229,29 +267,47 @@
             $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
             $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
 
+            //Test a dynamically derived User
+            $model->attributeIndexOrDerivedType = 'owner__User';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertTrue (strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, '"some[prefix][stringifiedModelForValue]"') === false);
 
-            //we could test each attribute type.this will instantiate and test through the various elements
-            //but we still have to test like between vs. not between.  Also existing data populating vs no data.
+            //Test a tagCloud attribute with the operator set to multiple
+            $model->attributeIndexOrDerivedType = 'tagCloud';
+            $model->operator                    = 'oneOf';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value][]"')            === false);
+            $this->assertTrue(strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, 'multiple="multiple"') === false);
+            //Test a tagCloud attribute with the operator set to null;
+            $model->operator                    = null;
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][value]"')              === false);
+            $this->assertTrue (strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
 
-            //yes we should do them all testing here.
-            //test relationship scenarios? hasOne___name
-            //didnt properly do typing for likeContactState, so make sure we do
+            //likeContactState,
+                //#1 - identify that this can potentially have a state.
+                //in the reportRules we can identify it as having a state, even identify which element to use?
+                //#2 - but we still dont know if we are approaching this via leads or contacts module.
 
-            /**
-
-                'relations' => array(
-                    'dropDown'            => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDown'),
-                    'radioDropDown'       => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'radioDropDown'),
-                    'multiDropDown'       => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'multiDropDown'),
-                    'tagCloud'            => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
-                    'likeContactState'    => array(RedBeanModel::HAS_ONE, 'ReportModelTestItem7', RedBeanModel::NOT_OWNED),
-
-                ),
-**/
+            //ulitmately it is about resolving to either ContactStateStaticDropDownElement or LeadStateStaticDropDownElement
+            //if you are in accounts and relate to contacts, how do we know this is contactsModule and not LeadsModule
+            //from activities we only know the model , we would have to do a forker.
         }
 
         /**
@@ -296,6 +352,7 @@
         public function testGetContentForSummation()
         {
             //todo:
+            //we really shouldn't have to test filters again since nothing is really any different.
             //$this->fail();
         }
 
