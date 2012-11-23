@@ -228,6 +228,23 @@
             $this->assertEquals('<a href="#" id="' .
                                 ZurmoHtml::ID_PREFIX . (ZurmoHtml::$count - 1) . '">a@zurmo.com</a>', $content);
         }
+
+        public function testCreateTextContent()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $emailMessage = new EmailMessage();
+            $emailContent = new EmailMessageContent();
+            $emailContent->htmlContent = "<br> <b>Message</b>: <br/> <p>I'm here to test a html email content</p><p><hr><font color='#1f497d'>Billy Jean</font><br></p>";
+            $emailMessage->content = $emailContent;
+            EmailMessageUtil::createTextContent($emailMessage);
+            $this->assertNotContains("<br>", $emailMessage->content->textContent);
+            $this->assertNotContains("<br/>", $emailMessage->content->textContent);
+            $this->assertNotContains("<p>", $emailMessage->content->textContent);
+            $this->assertNotContains("</p>", $emailMessage->content->textContent);
+            $this->assertNotContains("</font>", $emailMessage->content->textContent);
+            $this->assertNotContains("<hr>", $emailMessage->content->textContent);
+            $this->assertNotContains("<font color='#1f497d'>", $emailMessage->content->textContent);
+        }
     }
 ?>
 
