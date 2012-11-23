@@ -23,19 +23,14 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-    /**
-    * Override because StaticDropDown defines the input name
-    * as a sub-array value. This is to be consistent with expected
-    * model attributes that utilize a dropdown. StaticDropDownFormElement
-    * makes the input name pattern follow more closely to a standard attribute.
-    */
-    class StaticDropDownFormElement extends StaticDropDownElement
+
+    class BooleanForReportStaticDropDownElement extends BooleanStaticDropDownElement
     {
-        /**
-        * The dropdowns used by this element are not related models. The value
-        * should not be in a sub-array. That is why this override exists.
-        * @return string
-        */
+        public function getIdForSelectInput()
+        {
+            return $this->getEditableInputId($this->attribute);
+        }
+
         protected function getNameForSelectInput()
         {
             return $this->getEditableInputName($this->attribute);

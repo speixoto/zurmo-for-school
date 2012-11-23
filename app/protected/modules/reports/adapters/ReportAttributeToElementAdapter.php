@@ -26,8 +26,6 @@
 
     class ReportAttributeToElementAdapter
     {
-        protected $modelToReportAdapter;
-
         protected $inputPrefixData;
 
         protected $model;
@@ -38,18 +36,15 @@
 
         protected $treeType;
 
-        public function __construct($modelToReportAdapter, Array $inputPrefixData, $model, $form, $treeType)
+        public function __construct(Array $inputPrefixData, $model, $form, $treeType)
         {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('count($inputPrefixData) > 1');
             assert('$model instanceof ComponentForReportForm');
             assert('$form instanceof ZurmoActiveForm');
-            assert('is_string($attribute)');
             assert('is_string($treeType)');
-            $this->modelToReportAdapter = $modelToReportAdapter;
             $this->inputPrefixData      = $inputPrefixData;
             $this->model                = $model;
             $this->form                 = $form;
-            //$this->attribute            = $attribute;
             $this->treeType             = $treeType;
         }
 
@@ -95,9 +90,9 @@
         protected function getContentForFilter()
         {
             $params                                 = array('inputPrefix' => $this->inputPrefixData);
-            if($this->model->hasOperator())
+            if($this->model->hasAvailableOperatorsType())
             {
-                $operatorElement                    = new OperatorStaticDropDownElement($this->model, null, $this->form, $params);
+                $operatorElement                    = new OperatorStaticDropDownElement($this->model, 'operator', $this->form, $params);
                 $operatorElement->editableTemplate  = '{content}{error}';
                 $operatorContent                    = $operatorElement->render();
             }
@@ -105,38 +100,38 @@
             {
                 $operatorContent                    = null;
             }
-            $attributeElementType                   = $this->modelToReportAdapter->getAttributeFilterElementType($this->attribute);
-            if($attributeElementType != null)
+            $valueElementType                       = $this->model->getValueElementType();
+            if($valueElementType != null)
             {
-                $attributeElementClassName           = $attributeElementType . 'Element';
-                $attributeElement                    = new $attributeElementClassName($this->model, null,
-                                                                                      $this->form, $params);
+                $valueElementClassName              = $valueElementType . 'Element';
+                $valueElement                       = new $valueElementClassName($this->model, 'value',
+                                                                                     $this->form, $params);
 
                 //todo: make sure you check NameIdElement (instanceof) to override the id/name pairings.
 
-                $attributeElement->editableTemplate = '{content}{error}';
-                $attributeContent                   = $attributeElement->render();
+                $valueElement->editableTemplate = '{content}{error}';
+                $valueContent                   = $valueElement->render();
             }
             else
             {
                 throw new NotSupportedException();
             }
-            $runTimeElement                         = new SomeRunTimeElement($this->model, null,
+            $runTimeElement                         = new CheckBoxElement($this->model, 'availableAtRunTime',
                                                                 $this->form, $params);
             $runTimeElement->editableTemplate       = '{content}{error}';
             $runTimeContent                         = $runTimeElement->render();
             $content                                = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->form->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($operatorContent,               $content);
-            self::resolveDivWrapperForContent($attributeContent,              $content);
-            self::resolveDivWrapperForContent($runTimeContent,                $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
+            self::resolveDivWrapperForContent($operatorContent,                $content);
+            self::resolveDivWrapperForContent($valueContent,                   $content);
+            self::resolveDivWrapperForContent($runTimeContent,                 $content);
             return $content;
         }
 
         protected function getContentForGroupBy()
         {
 
-            if($this->modelToReportAdapter->reportType == Report::TYPE_MATRIX)
+            if($this->model->getReportType() == Report::TYPE_MATRIX)
             {
                 $params                               = array('inputPrefix' => $this->inputPrefixData);
                 $groupByAxisElement                   = new Something($this->model, $this->form, $this->attribute);
@@ -148,8 +143,8 @@
                 $groupByAxisElement                   = null;
             }
             $content                                  = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->form->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($groupByAxisElement,            $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
+            self::resolveDivWrapperForContent($groupByAxisElement,             $content);
             return $content;
         }
 
@@ -160,8 +155,8 @@
             $directionElement->editableTemplate = '{content}{error}';
             $directionElement                   = $attributeElement->render();
             $content                            = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->form->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($directionElement,              $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
+            self::resolveDivWrapperForContent($directionElement,               $content);
             return $content;
         }
 
@@ -172,8 +167,8 @@
             $displayLabelElement->editableTemplate = '{content}{error}';
             $displayLabelElement                   = $displayLabelElement->render();
             $content                               = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->form->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($displayLabelElement,           $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
+            self::resolveDivWrapperForContent($displayLabelElement,            $content);
             return $content;
         }
 

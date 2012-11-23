@@ -25,53 +25,59 @@
      ********************************************************************************/
 
     /**
-     * Adds specific input id/name/value handling for SearchForm usage
+     * Adds specific input id/name/value handling for Report filter usage
      */
-    class MixedDateTypesForSearchElement extends MixedDateTypesElement
+    class MixedDateTypesForReportElement extends MixedDateTypesElement
     {
+        public function __construct($model, $attribute, $form = null, array $params = array())
+        {
+            assert('$model instanceof FilterForReportForm');
+            parent::__construct($model, $attribute, $form, $params);
+        }
+
         protected function getValueTypeEditableInputId()
         {
-            return $this->getEditableInputId($this->attribute,   'type');
+            return $this->getEditableInputId('valueType');
         }
 
         protected function getValueFirstDateEditableInputId()
         {
-            return $this->getEditableInputId($this->attribute,   'firstDate');
+            return $this->getEditableInputId('value');
         }
 
         protected function getValueSecondDateEditableInputId()
         {
-            return $this->getEditableInputId($this->attribute,   'secondDate');
+            return $this->getEditableInputId('secondValue');
         }
 
         protected function getValueTypeEditableInputName()
         {
-            return $this->getEditableInputName($this->attribute,   'type');
+            return $this->getEditableInputName('valueType');
         }
 
         protected function getValueFirstDateEditableInputName()
         {
-            return $this->getEditableInputName($this->attribute,   'firstDate');
+            return $this->getEditableInputName('value');
         }
 
         protected function getValueSecondDateEditableInputName()
         {
-            return $this->getEditableInputName($this->attribute,   'secondDate');
+            return $this->getEditableInputName('secondValue');
         }
 
         protected function getValueFirstDate()
         {
-            return ArrayUtil::getArrayValue($this->model->{$this->attribute}, 'firstDate');
+            return ArrayUtil::getArrayValue($this->model, 'value');
         }
 
         protected function getValueSecondDate()
         {
-            return ArrayUtil::getArrayValue($this->model->{$this->attribute}, 'secondDate');
+            return ArrayUtil::getArrayValue($this->model, 'secondValue');
         }
 
         protected function getValueType()
         {
-            return ArrayUtil::getArrayValue($this->model->{$this->attribute}, 'type');
+            return ArrayUtil::getArrayValue($this->model, 'valueType');
         }
     }
 ?>

@@ -26,42 +26,232 @@
 
     class ReportAttributeToElementAdapterTest extends ZurmoBaseTest
     {
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+
+            SecurityTestHelper::createSuperAdmin();
+            //Need to instantiate a controller so the clipWidget can work properly in elements that utilize it.
+            $controller                  = Yii::app()->createController('reports/default');
+            list($controller, $actionId) = $controller;
+            Yii::app()->setController($controller);
+
+            $values = array(
+                'Test1',
+                'Test2',
+                'Test3',
+                'Sample',
+                'Demo',
+            );
+            $customFieldData = CustomFieldData::getByName('ReportTestDropDown');
+            $customFieldData->serializedData = serialize($values);
+            $saved = $customFieldData->save();
+            assert($saved);    // Not Coding Standard
+
+            $values = array(
+                'Multi 1',
+                'Multi 2',
+                'Multi 3',
+            );
+            $customFieldData = CustomFieldData::getByName('ReportTestMultiDropDown');
+            $customFieldData->serializedData = serialize($values);
+            $saved = $customFieldData->save();
+            assert($saved);    // Not Coding Standard
+
+            $values = array(
+                'Radio 1',
+                'Radio 2',
+                'Radio 3',
+            );
+            $customFieldData = CustomFieldData::getByName('ReportTestRadioDropDown');
+            $customFieldData->serializedData = serialize($values);
+            $saved = $customFieldData->save();
+            assert($saved);    // Not Coding Standard
+
+            $values = array(
+                'Cloud 1',
+                'Cloud 2',
+                'Cloud 3',
+            );
+            $customFieldData = CustomFieldData::getByName('ReportTestTagCloud');
+            $customFieldData->serializedData = serialize($values);
+            $saved = $customFieldData->save();
+            assert($saved);    // Not Coding Standard
+        }
+
+        public function setup()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
         public function testGetFilterContentForRowsAndColumns()
         {
-            $inputPrefixData      = array('something');
+            $inputPrefixData      = array('some', 'prefix');
             $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
-            $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
-            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::make($moduleClassName,
-                                                                                     $modelClassName,
-                                                                                     $reportType);
             $model                = new FilterForReportForm($modelClassName, $reportType);
-
             $form                 = new ZurmoActiveForm();
+
+
+
+
+
+            //Test a dropDown attribute with the operator set to multiple
+            $model->attributeIndexOrDerivedType = 'dropDown';
+            $model->operator                    = 'oneOf';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value][]"')            === false);
+            $this->assertTrue(strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, 'multiple="multiple"') === false);
+            //Test a dropDown attribute with the operator set to null;
+            $model->operator                    = null;
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][value]"')              === false);
+            $this->assertTrue (strpos($content,  '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
+
+
+
+
+            //Test a boolean attribute which does not have an operator
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertTrue(strpos($content,  '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+
+            //Test a currencyValue attribute
+            $model->attributeIndexOrDerivedType = 'currencyValue';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, '"some[prefix][currencyIdForValue]"') === false);
+
+            //Test a date attribute which does not have an operator but has a valueType
+            $model->attributeIndexOrDerivedType = 'date';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertTrue(strpos($content,  '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][valueType]"')          === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+
+            //Test a dateTime
+            $model->attributeIndexOrDerivedType = 'dateTime';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertTrue(strpos($content,  '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][valueType]"')          === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+
+            //Test a float attribute
+            $model->attributeIndexOrDerivedType = 'float';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+
+            //Test a integer attribute
+            $model->attributeIndexOrDerivedType = 'integer';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][secondValue]"')        === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+
+            //Test a phone attribute
+            $model->attributeIndexOrDerivedType = 'phone';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
 
             //Test a string attribute
             $model->attributeIndexOrDerivedType = 'string';
-            $adapter                            = new ReportAttributeToElementAdapter($modelToReportAdapter,
-                                                      $inputPrefixData, $model, $form, $treeType);
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
             $content                            = $adapter->getContent();
             $this->assertNotNull($content);
-            $this->assertFalse(strpos($link, 'operator') === false);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
 
-            //Test a boolean attribute which does not have an attribute
-            $model->attributeIndexOrDerivedType = 'boolean';
-            $adapter                            = new ReportAttributeToElementAdapter($modelToReportAdapter,
-                                                      $inputPrefixData, $model, $form, $treeType);
+            //Test a textArea attribute
+            $model->attributeIndexOrDerivedType = 'textArea';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
             $content                            = $adapter->getContent();
             $this->assertNotNull($content);
-            $this->assertTrue(strpos($link, 'operator') === false);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+
+            //Test a url attribute
+            $model->attributeIndexOrDerivedType = 'url';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+
 
             //we could test each attribute type.this will instantiate and test through the various elements
             //but we still have to test like between vs. not between.  Also existing data populating vs no data.
 
             //yes we should do them all testing here.
             //test relationship scenarios? hasOne___name
+            //didnt properly do typing for likeContactState, so make sure we do
 
+            /**
+
+                'relations' => array(
+                    'dropDown'            => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDown'),
+                    'radioDropDown'       => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'radioDropDown'),
+                    'multiDropDown'       => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'multiDropDown'),
+                    'tagCloud'            => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
+                    'likeContactState'    => array(RedBeanModel::HAS_ONE, 'ReportModelTestItem7', RedBeanModel::NOT_OWNED),
+
+                ),
+**/
         }
 
         /**

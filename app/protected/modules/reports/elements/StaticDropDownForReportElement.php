@@ -23,22 +23,43 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
+
     /**
-    * Override because StaticDropDown defines the input name
-    * as a sub-array value. This is to be consistent with expected
-    * model attributes that utilize a dropdown. StaticDropDownFormElement
-    * makes the input name pattern follow more closely to a standard attribute.
     */
-    class StaticDropDownFormElement extends StaticDropDownElement
+    class StaticDropDownForReportElement extends StaticDropDownElement
     {
-        /**
-        * The dropdowns used by this element are not related models. The value
-        * should not be in a sub-array. That is why this override exists.
-        * @return string
-        */
+        public function __construct($model, $attribute, $form = null, array $params = array())
+        {
+            assert('$model instanceof FilterForReportForm');
+            parent::__construct($model, $attribute, $form, $params);
+        }
+
+        //oneOf then use multipel
+
+        public function getIdForSelectInput()
+        {
+            return $this->getEditableInputId($this->attribute);
+        }
+
         protected function getNameForSelectInput()
         {
             return $this->getEditableInputName($this->attribute);
+        }
+
+        public function getDropDownArray()
+        {
+            return $this->model->getCustomFieldDataAndLabels();
+        }
+
+        protected function getEditableHtmlOptions()
+        {
+            $htmlOptions                 = parent::getEditableHtmlOptions();
+            if($this->model->operator == 'oneOf')
+            {
+                $htmlOptions['multiple'] = true;
+                $htmlOptions['class']    = 'multiple';
+            }
+            return $htmlOptions;
         }
     }
 ?>

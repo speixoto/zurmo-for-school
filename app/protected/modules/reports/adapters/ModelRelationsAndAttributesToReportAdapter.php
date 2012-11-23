@@ -421,6 +421,16 @@
             return array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
         }
 
+        protected function isDerivedAttribute($attribute)
+        {
+            assert('is_string($attribute)');
+            if(in_array($attribute, $this->getDerivedAttributesData()))
+            {
+                return true;
+            }
+            return false;
+        }
+
         protected function getDynamicallyDerivedAttributesData()
         {
             $attributes = array();
@@ -434,6 +444,16 @@
                 }
             }
             return $attributes;
+        }
+
+        protected function isDynamicallyDerivedAttribute($attribute)
+        {
+            assert('is_string($attribute)');
+            if(in_array($attribute, $this->getDynamicallyDerivedAttributesData()))
+            {
+                return true;
+            }
+            return false;
         }
 
         protected function getInferredRelationModelClassNamesForRelation($relation)
@@ -482,15 +502,37 @@
             throw new NotImplementedException();
         }
 
-        public function hasOperator($attribute)
+        public function getFilterValueElementType($attribute)
         {
             assert('is_string($attribute)');
-            //make sure this is not a relation? (can solve with switch statement / unsupported)
+            if($this->isDynamicallyDerivedAttribute($attribute))
+            {
+                return null;
+            }
+            if($this->isDerivedAttribute($attribute))
+            {
+                $parts = explode(FormModelUtil::DELIMITER, $attribute);
+                if($parts[0] != 'User')
+                {
+                    throw NotSupportedException();
+                }
+                return 'User';
+            }
+            return ModeAttributeToReportFilterValueElementTypeUtil::getType($this->model, $attribute);
         }
 
-        public function getAttributeFilterElementType($attribute)
+        public function getAvailableOperatorsType($attribute)
         {
             assert('is_string($attribute)');
+            if($this->isDynamicallyDerivedAttribute($attribute))
+            {
+                return null;
+            }
+            if($this->isDerivedAttribute($attribute))
+            {
+                throw new NotSupportedException($message, $code, $previous);
+            }
+            return ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($this->model, $attribute);
         }
     }
 ?>

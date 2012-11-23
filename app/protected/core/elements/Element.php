@@ -355,7 +355,7 @@
 
         protected function resolveInputNamePrefix()
         {
-            return static::resolveInputIdPrefixIntoString($this->resolveInputPrefix());
+            return static::resolveInputNamePrefixIntoString($this->resolveInputPrefix());
         }
 
         public static function resolveInputNamePrefixIntoString($inputNamePrefix)

@@ -38,6 +38,8 @@
 
         public $stringifiedModelForValue;
 
+        public $valueType;
+
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -50,8 +52,9 @@
                 array('secondValue',                 'validateSecondValue'),
                 array('currencyIdForValue',  	     'safe'),
                 array('stringifiedModelForValue',  	 'safe'),
-                array('availableAtRunTime',          'boolean')
-
+                array('availableAtRunTime',          'boolean'),
+                array('valueType',                   'type', 'type' => 'string'),
+                array('valueType',                   'required', 'on' => 'something'),
             ));
         }
 
@@ -78,13 +81,17 @@
             return $passedValidation;
         }
 
+        /**
+         * When the operator type is Between the secondValue is required. Also if the valueType, which is used by
+         * date/datetime attributes is set to Between than the secondValue is required.
+         */
         public function validateSecondValue()
         {
             $passedValidation = true;
             $rules            = array();
             if(!is_array($this->secondValue))
             {
-                if($this->operator == 'Between')
+                if($this->operator == 'Between' || $this->valueType == 'Between')
                 {
                     $rules[] = array('secondValue', 'required');
                 }
@@ -135,33 +142,91 @@
                 }
         }
 
-        public function hasOperator()
+        public function hasAvailableOperatorsType()
         {
-            if($this->getOperatorType() != null)
+            if($this->getAvailableOperatorsType() != null)
             {
                 return true;
             }
             return false;
         }
 
-        protected function getOperatorType()
+        protected function getAvailableOperatorsType()
         {
             if($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
-
-            //call $modelToReportAdapter to get operatorType...
-                //make sure this is not a relation? (can solve with switch statement / unsupported)
+            $modelClassName       = $this->getResolvedAttributeModelClassName();
+            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
+                                    make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
+            return $modelToReportAdapter->getAvailableOperatorsType($this->getResolvedAttribute());
         }
 
-        public function getOperatorData()
+        public function getOperatorValuesAndLabels()
         {
             if($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
-            $this->getOperatorType()
+            $type = $this->getAvailableOperatorsType();
+            $data = array();
+            $data['equals']       = Yii::t('Default', 'Equals');
+            $data['doesNotequal'] = Yii::t('Default', 'Does Not Equals');
+            $data['isNull']       = Yii::t('Default', 'Is Null');
+            $data['isNotNull']    = Yii::t('Default', 'Is Not Null');
+            if($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)
+            {
+                $data['startsWith']            = Yii::t('Default', 'Starts With');
+                $data['endsWith']              = Yii::t('Default', 'Starts With');
+                $data['contains']              = Yii::t('Default', 'Contains');
+            }
+            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER)
+            {
+                $data['greaterThanOrEqualTo']  = Yii::t('Default', 'Greater Than Or Equal To');
+                $data['lessThanOrEqualTo']     = Yii::t('Default', 'Less Than Or Equal To');
+                $data['greaterThan']           = Yii::t('Default', 'Greater Than');
+                $data['lessThan']              = Yii::t('Default', 'Less Than');
+                $data['between']               = Yii::t('Default', 'Between');
+            }
+            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
+            {
+                $data['oneOf']                 = Yii::t('Default', 'One Of');
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $data;
+        }
+
+        public function getValueElementType()
+        {
+            if($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+            $modelClassName       = $this->getResolvedAttributeModelClassName();
+            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
+                                    make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
+            return $modelToReportAdapter->getFilterValueElementType($this->getResolvedAttribute());
+        }
+
+        public function getCustomFieldDataAndLabels()
+        {
+            $modelClassName       = $this->getResolvedAttributeModelClassName();
+            $attribute            = $this->getResolvedAttribute();
+            $model                = new $modelClassName();
+            if($model->isAttribute($attribute))
+            {
+                $dataAndLabels    = CustomFieldDataUtil::
+                                    getDataIndexedByDataAndTranslatedLabelsByLanguage($model->{$attribute}->data, Yii::app()->language);
+                return $dataAndLabels;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

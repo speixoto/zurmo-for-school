@@ -121,10 +121,10 @@
                     'tagCloud'            => 'TagCloud',
                 ),
                 'customFields' => array(
-                    'dropDown'        => 'ImportTestDropDown',
-                    'radioDropDown'   => 'ImportTestRadioDropDown',
-                    'multiDropDown'   => 'ImportTestMultiDropDown',
-                    'tagCloud'        => 'ImportTestTagCloud',
+                    'dropDown'        => 'ReportTestDropDown',
+                    'radioDropDown'   => 'ReportTestRadioDropDown',
+                    'multiDropDown'   => 'ReportTestMultiDropDown',
+                    'tagCloud'        => 'ReportTestTagCloud',
                 ),
             );
             return $metadata;

@@ -685,5 +685,7 @@
             //todo: (boolean)
             $this->fail();
         }
+
+        //todo: email type.
     }
 ?>
