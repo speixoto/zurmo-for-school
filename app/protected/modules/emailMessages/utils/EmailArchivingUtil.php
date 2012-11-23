@@ -276,7 +276,7 @@
                 $stateMetadataAdapterClassName =
                     LeadsStateMetadataAdapter::
                     resolveStateMetadataAdapterClassNameByAccess($userCanAccessContacts, $userCanAccessLeads);
-                $contactsOrLeads = ContactSearch::getContactsByAnyEmailAddress($emailAddress, true, $stateMetadataAdapterClassName);
+                $contactsOrLeads = ContactSearch::getContactsByAnyEmailAddress($emailAddress, null, $stateMetadataAdapterClassName);
             }
 
             if(!empty($contactsOrLeads))
@@ -289,7 +289,7 @@
                 // Check if email belongs to account
                 if ($userCanAccessAccounts)
                 {
-                    $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress, true);
+                    $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress);
                 }
 
                 if (count($accounts))

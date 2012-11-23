@@ -258,8 +258,8 @@
             {
                 foreach ($emailMessage->files as $file)
                 {
-                    $attachment = $mailer->attachDynamicContent($file->fileContent->content, $file->name, $file->type);
-                    $emailMessage->attach($attachment);
+                    $mailer->attachDynamicContent($file->fileContent->content, $file->name, $file->type);
+                    //$emailMessage->attach($attachment);
                 }
             }
         }

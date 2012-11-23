@@ -34,11 +34,9 @@
 
         public $content;
 
-        public $buttons = "['html', '|', 'formatting', '|', 'bold', 'italic', 'deleted', '|',
-                           'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-                           'image', 'video', 'file', 'table', 'link', '|',
-                           'fontcolor', 'backcolor', '|',
-                           'alignleft', 'aligncenter', 'alignright', 'justify', '|',
+        public $buttons = "['html', 'html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
+                           'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
+                           'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
                            'horizontalrule']";
 
         public $source = "false";
