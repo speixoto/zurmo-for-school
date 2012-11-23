@@ -3,6 +3,158 @@
   padding: 0;
 }
 /*Imports*/
+.border-box,
+.modal-view-toolbar a,
+.modal-view-toolbar input[type="submit"],
+.modal-view-toolbar input[type="button"],
+.form-toolbar a,
+.form-toolbar input[type="submit"],
+.form-toolbar input[type="button"],
+.zButton,
+.z-button,
+a.zButton,
+a.z-button,
+.z-label,
+#NoUserEmailConfigurationYetView a,
+#NoGlobalEmailConfigurationYetView a,
+.ZeroModelsYetView a,
+a#NoUserEmailConfigurationYetView a,
+a#NoGlobalEmailConfigurationYetView a,
+a.ZeroModelsYetView a,
+.search-form-tools input[type="submit"],
+a.search-form-tools input[type="submit"],
+#progressBar-links a,
+a#progressBar-links a,
+#InstallPageView .AppContainer a,
+a#InstallPageView .AppContainer a,
+#InstallPageView #install-form input[type="submit"],
+a#InstallPageView #install-form input[type="submit"],
+.configuration-list li a,
+a.configuration-list li a,
+table.configuration-list tr td:last-child a,
+atable.configuration-list tr td:last-child a,
+.multiselect-holder input[type="button"],
+a.multiselect-holder input[type="button"],
+.EmailTestingButton,
+a.EmailTestingButton,
+.AppContent.ImportWizardView #addExtraColumnButton .modal-view-toolbar a,
+.AppContent.ImportWizardView #addExtraColumnButton .modal-view-toolbar input[type="submit"],
+.AppContent.ImportWizardView #addExtraColumnButton .modal-view-toolbar input[type="button"],
+.AppContent.ImportWizardView #addExtraColumnButton .form-toolbar a,
+.AppContent.ImportWizardView #addExtraColumnButton .form-toolbar input[type="submit"],
+.AppContent.ImportWizardView #addExtraColumnButton .form-toolbar input[type="button"],
+.AppContent.ImportWizardView #addExtraColumnButton .zButton,
+.AppContent.ImportWizardView #addExtraColumnButton .z-button,
+.AppContent.ImportWizardView #addExtraColumnButton a.zButton,
+.AppContent.ImportWizardView #addExtraColumnButton a.z-button,
+.AppContent.ImportWizardView #addExtraColumnButton #NoUserEmailConfigurationYetView a,
+.AppContent.ImportWizardView #addExtraColumnButton #NoGlobalEmailConfigurationYetView a,
+.AppContent.ImportWizardView #addExtraColumnButton .ZeroModelsYetView a,
+.AppContent.ImportWizardView #addExtraColumnButton a#NoUserEmailConfigurationYetView a,
+.AppContent.ImportWizardView #addExtraColumnButton a#NoGlobalEmailConfigurationYetView a,
+.AppContent.ImportWizardView #addExtraColumnButton a.ZeroModelsYetView a,
+.AppContent.ImportWizardView #addExtraColumnButton .search-form-tools input[type="submit"],
+.AppContent.ImportWizardView #addExtraColumnButton a.search-form-tools input[type="submit"],
+.AppContent.ImportWizardView #addExtraColumnButton #progressBar-links a,
+.AppContent.ImportWizardView #addExtraColumnButton a#progressBar-links a,
+.AppContent.ImportWizardView #addExtraColumnButton #InstallPageView .AppContainer a,
+.AppContent.ImportWizardView #addExtraColumnButton a#InstallPageView .AppContainer a,
+.AppContent.ImportWizardView #addExtraColumnButton #InstallPageView #install-form input[type="submit"],
+.AppContent.ImportWizardView #addExtraColumnButton a#InstallPageView #install-form input[type="submit"],
+.AppContent.ImportWizardView #addExtraColumnButton .configuration-list li a,
+.AppContent.ImportWizardView #addExtraColumnButton a.configuration-list li a,
+.AppContent.ImportWizardView #addExtraColumnButton table.configuration-list tr td:last-child a,
+.AppContent.ImportWizardView #addExtraColumnButton atable.configuration-list tr td:last-child a,
+.AppContent.ImportWizardView #addExtraColumnButton .multiselect-holder input[type="button"],
+.AppContent.ImportWizardView #addExtraColumnButton a.multiselect-holder input[type="button"],
+.AppContent.ImportWizardView #addExtraColumnButton .EmailTestingButton,
+.AppContent.ImportWizardView #addExtraColumnButton a.EmailTestingButton,
+.AppContent.ImportWizardView #addExtraColumnButton,
+.file-upload-box .ui-icon-plusthick,
+a.file-upload-box .ui-icon-plusthick,
+.AppContent.ImportWizardView #addExtraColumnButton .file-upload-box .ui-icon-plusthick,
+.AppContent.ImportWizardView #addExtraColumnButton a.file-upload-box .ui-icon-plusthick,
+.addfileinput-button span .modal-view-toolbar a,
+.addfileinput-button span .modal-view-toolbar input[type="submit"],
+.addfileinput-button span .modal-view-toolbar input[type="button"],
+.addfileinput-button span .form-toolbar a,
+.addfileinput-button span .form-toolbar input[type="submit"],
+.addfileinput-button span .form-toolbar input[type="button"],
+.addfileinput-button span .zButton,
+.addfileinput-button span .z-button,
+.addfileinput-button span a.zButton,
+.addfileinput-button span a.z-button,
+.addfileinput-button span #NoUserEmailConfigurationYetView a,
+.addfileinput-button span #NoGlobalEmailConfigurationYetView a,
+.addfileinput-button span .ZeroModelsYetView a,
+.addfileinput-button span a#NoUserEmailConfigurationYetView a,
+.addfileinput-button span a#NoGlobalEmailConfigurationYetView a,
+.addfileinput-button span a.ZeroModelsYetView a,
+.addfileinput-button span .search-form-tools input[type="submit"],
+.addfileinput-button span a.search-form-tools input[type="submit"],
+.addfileinput-button span #progressBar-links a,
+.addfileinput-button span a#progressBar-links a,
+.addfileinput-button span #InstallPageView .AppContainer a,
+.addfileinput-button span a#InstallPageView .AppContainer a,
+.addfileinput-button span #InstallPageView #install-form input[type="submit"],
+.addfileinput-button span a#InstallPageView #install-form input[type="submit"],
+.addfileinput-button span .configuration-list li a,
+.addfileinput-button span a.configuration-list li a,
+.addfileinput-button span table.configuration-list tr td:last-child a,
+.addfileinput-button span atable.configuration-list tr td:last-child a,
+.addfileinput-button span .multiselect-holder input[type="button"],
+.addfileinput-button span a.multiselect-holder input[type="button"],
+.addfileinput-button span .EmailTestingButton,
+.addfileinput-button span a.EmailTestingButton,
+.addfileinput-button span .file-upload-box .ui-icon-plusthick,
+.addfileinput-button span a.file-upload-box .ui-icon-plusthick,
+.addfileinput-button span,
+.ui-datepicker .ui-datepicker-current,
+a.ui-datepicker .ui-datepicker-current,
+.AppContent.ImportWizardView #addExtraColumnButton .ui-datepicker .ui-datepicker-current,
+.AppContent.ImportWizardView #addExtraColumnButton a.ui-datepicker .ui-datepicker-current,
+.addfileinput-button span .ui-datepicker .ui-datepicker-current,
+.addfileinput-button span a.ui-datepicker .ui-datepicker-current,
+.ui-datepicker .ui-datepicker-close,
+a.ui-datepicker .ui-datepicker-close,
+.AppContent.ImportWizardView #addExtraColumnButton .ui-datepicker .ui-datepicker-close,
+.AppContent.ImportWizardView #addExtraColumnButton a.ui-datepicker .ui-datepicker-close,
+.addfileinput-button span .ui-datepicker .ui-datepicker-close,
+.addfileinput-button span a.ui-datepicker .ui-datepicker-close,
+.add-custom-field .configure-custom-field-button,
+a.add-custom-field .configure-custom-field-button,
+.AppContent.ImportWizardView #addExtraColumnButton .add-custom-field .configure-custom-field-button,
+.AppContent.ImportWizardView #addExtraColumnButton a.add-custom-field .configure-custom-field-button,
+.addfileinput-button span .add-custom-field .configure-custom-field-button,
+.addfileinput-button span a.add-custom-field .configure-custom-field-button,
+.designer-toolbar input[type="submit"],
+a.designer-toolbar input[type="submit"],
+.AppContent.ImportWizardView #addExtraColumnButton .designer-toolbar input[type="submit"],
+.AppContent.ImportWizardView #addExtraColumnButton a.designer-toolbar input[type="submit"],
+.addfileinput-button span .designer-toolbar input[type="submit"],
+.addfileinput-button span a.designer-toolbar input[type="submit"],
+.AttributeEditView form div table #customFieldDataData_AddInputButton,
+a.AttributeEditView form div table #customFieldDataData_AddInputButton,
+.AppContent.ImportWizardView #addExtraColumnButton .AttributeEditView form div table #customFieldDataData_AddInputButton,
+.AppContent.ImportWizardView #addExtraColumnButton a.AttributeEditView form div table #customFieldDataData_AddInputButton,
+.addfileinput-button span .AttributeEditView form div table #customFieldDataData_AddInputButton,
+.addfileinput-button span a.AttributeEditView form div table #customFieldDataData_AddInputButton,
+#customFieldDataData_AddInputButton,
+a#customFieldDataData_AddInputButton,
+.AppContent.ImportWizardView #addExtraColumnButton #customFieldDataData_AddInputButton,
+.AppContent.ImportWizardView #addExtraColumnButton a#customFieldDataData_AddInputButton,
+.addfileinput-button span #customFieldDataData_AddInputButton,
+.addfileinput-button span a#customFieldDataData_AddInputButton,
+.ModalGameNotification a,
+a.ModalGameNotification a,
+.AppContent.ImportWizardView #addExtraColumnButton .ModalGameNotification a,
+.AppContent.ImportWizardView #addExtraColumnButton a.ModalGameNotification a,
+.addfileinput-button span .ModalGameNotification a,
+.addfileinput-button span a.ModalGameNotification a {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 .cf:before,
 .cf:after,
 .recipient:before,
@@ -45,6 +197,12 @@
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
 }
+.modal-view-toolbar a,
+.modal-view-toolbar input[type="submit"],
+.modal-view-toolbar input[type="button"],
+.form-toolbar a,
+.form-toolbar input[type="submit"],
+.form-toolbar input[type="button"],
 .zButton,
 .z-button,
 a.zButton,
@@ -57,8 +215,6 @@ a#NoGlobalEmailConfigurationYetView a,
 a.ZeroModelsYetView a,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
-.toolbar-mbmenu .options-menu > li > a,
-a.toolbar-mbmenu .options-menu > li > a,
 #progressBar-links a,
 a#progressBar-links a,
 #InstallPageView .AppContainer a,
@@ -89,52 +245,259 @@ a.AttributeEditView form div table #customFieldDataData_AddInputButton,
 a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
 a.ModalGameNotification a {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
   border-top: 1px solid rgba(200, 200, 200, 0.4);
   border-left: 1px solid rgba(185, 185, 185, 0.4);
   border-right: 1px solid rgba(185, 185, 185, 0.4);
   border-bottom: 1px solid rgba(170, 170, 170, 0.4);
   color: #666;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  margin: 0 10px;
+  text-indent: 0;
+  zoom: 1;
+  display: inline-block;
 }
-.zButton:not(.attacheLoading),
-.z-button:not(.attachLoading),
-#NoUserEmailConfigurationYetView a:not(.attachLoading),
-#NoGlobalEmailConfigurationYetView a:not(.attachLoading),
-.ZeroModelsYetView a:not(.attachLoading),
-.search-form-tools input[type="submit"]:not(.attachLoading),
-.toolbar-mbmenu .options-menu > li > a:not(.attachLoading),
-#progressBar-links a:not(.attachLoading),
-#InstallPageView .AppContainer a:not(.attachLoading),
-#InstallPageView #install-form input[type="submit"]:not(.attachLoading),
-.configuration-list li a:not(.attachLoading),
-table.configuration-list tr td:last-child a:not(.attachLoading),
-.multiselect-holder input[type="button"]:not(.attachLoading),
-.EmailTestingButton:not(.attachLoading),
-.file-upload-box .ui-icon-plusthick:not(.attachLoading),
-.ui-datepicker .ui-datepicker-current:not(.attachLoading),
-.ui-datepicker .ui-datepicker-close:not(.attachLoading),
-.add-custom-field .configure-custom-field-button:not(.attachLoading),
-.designer-toolbar input[type="submit"]:not(.attachLoading),
-.AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading),
-#customFieldDataData_AddInputButton:not(.attachLoading),
-.ModalGameNotification a:not(.attachLoading) {
+.modal-view-toolbar a:before,
+.modal-view-toolbar input[type="submit"]:before,
+.modal-view-toolbar input[type="button"]:before,
+.form-toolbar a:before,
+.form-toolbar input[type="submit"]:before,
+.form-toolbar input[type="button"]:before,
+.zButton:before,
+.z-button:before,
+a.zButton:before,
+a.z-button:before,
+#NoUserEmailConfigurationYetView a:before,
+#NoGlobalEmailConfigurationYetView a:before,
+.ZeroModelsYetView a:before,
+a#NoUserEmailConfigurationYetView a:before,
+a#NoGlobalEmailConfigurationYetView a:before,
+a.ZeroModelsYetView a:before,
+.search-form-tools input[type="submit"]:before,
+a.search-form-tools input[type="submit"]:before,
+#progressBar-links a:before,
+a#progressBar-links a:before,
+#InstallPageView .AppContainer a:before,
+a#InstallPageView .AppContainer a:before,
+#InstallPageView #install-form input[type="submit"]:before,
+a#InstallPageView #install-form input[type="submit"]:before,
+.configuration-list li a:before,
+a.configuration-list li a:before,
+table.configuration-list tr td:last-child a:before,
+atable.configuration-list tr td:last-child a:before,
+.multiselect-holder input[type="button"]:before,
+a.multiselect-holder input[type="button"]:before,
+.EmailTestingButton:before,
+a.EmailTestingButton:before,
+.file-upload-box .ui-icon-plusthick:before,
+a.file-upload-box .ui-icon-plusthick:before,
+.ui-datepicker .ui-datepicker-current:before,
+a.ui-datepicker .ui-datepicker-current:before,
+.ui-datepicker .ui-datepicker-close:before,
+a.ui-datepicker .ui-datepicker-close:before,
+.add-custom-field .configure-custom-field-button:before,
+a.add-custom-field .configure-custom-field-button:before,
+.designer-toolbar input[type="submit"]:before,
+a.designer-toolbar input[type="submit"]:before,
+.AttributeEditView form div table #customFieldDataData_AddInputButton:before,
+a.AttributeEditView form div table #customFieldDataData_AddInputButton:before,
+#customFieldDataData_AddInputButton:before,
+a#customFieldDataData_AddInputButton:before,
+.ModalGameNotification a:before,
+a.ModalGameNotification a:before {
+  content: "";
+  display: table;
+}
+.modal-view-toolbar a:after,
+.modal-view-toolbar input[type="submit"]:after,
+.modal-view-toolbar input[type="button"]:after,
+.form-toolbar a:after,
+.form-toolbar input[type="submit"]:after,
+.form-toolbar input[type="button"]:after,
+.zButton:after,
+.z-button:after,
+a.zButton:after,
+a.z-button:after,
+#NoUserEmailConfigurationYetView a:after,
+#NoGlobalEmailConfigurationYetView a:after,
+.ZeroModelsYetView a:after,
+a#NoUserEmailConfigurationYetView a:after,
+a#NoGlobalEmailConfigurationYetView a:after,
+a.ZeroModelsYetView a:after,
+.search-form-tools input[type="submit"]:after,
+a.search-form-tools input[type="submit"]:after,
+#progressBar-links a:after,
+a#progressBar-links a:after,
+#InstallPageView .AppContainer a:after,
+a#InstallPageView .AppContainer a:after,
+#InstallPageView #install-form input[type="submit"]:after,
+a#InstallPageView #install-form input[type="submit"]:after,
+.configuration-list li a:after,
+a.configuration-list li a:after,
+table.configuration-list tr td:last-child a:after,
+atable.configuration-list tr td:last-child a:after,
+.multiselect-holder input[type="button"]:after,
+a.multiselect-holder input[type="button"]:after,
+.EmailTestingButton:after,
+a.EmailTestingButton:after,
+.file-upload-box .ui-icon-plusthick:after,
+a.file-upload-box .ui-icon-plusthick:after,
+.ui-datepicker .ui-datepicker-current:after,
+a.ui-datepicker .ui-datepicker-current:after,
+.ui-datepicker .ui-datepicker-close:after,
+a.ui-datepicker .ui-datepicker-close:after,
+.add-custom-field .configure-custom-field-button:after,
+a.add-custom-field .configure-custom-field-button:after,
+.designer-toolbar input[type="submit"]:after,
+a.designer-toolbar input[type="submit"]:after,
+.AttributeEditView form div table #customFieldDataData_AddInputButton:after,
+a.AttributeEditView form div table #customFieldDataData_AddInputButton:after,
+#customFieldDataData_AddInputButton:after,
+a#customFieldDataData_AddInputButton:after,
+.ModalGameNotification a:after,
+a.ModalGameNotification a:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.modal-view-toolbar a.attachLoading.z-button,
+.modal-view-toolbar input[type="submit"].attachLoading.z-button,
+.modal-view-toolbar input[type="button"].attachLoading.z-button,
+.form-toolbar a.attachLoading.z-button,
+.form-toolbar input[type="submit"].attachLoading.z-button,
+.form-toolbar input[type="button"].attachLoading.z-button,
+.zButton.attachLoading.z-button,
+.z-button.attachLoading.z-button,
+a.zButton.attachLoading.z-button,
+a.z-button.attachLoading.z-button,
+#NoUserEmailConfigurationYetView a.attachLoading.z-button,
+#NoGlobalEmailConfigurationYetView a.attachLoading.z-button,
+.ZeroModelsYetView a.attachLoading.z-button,
+a#NoUserEmailConfigurationYetView a.attachLoading.z-button,
+a#NoGlobalEmailConfigurationYetView a.attachLoading.z-button,
+a.ZeroModelsYetView a.attachLoading.z-button,
+.search-form-tools input[type="submit"].attachLoading.z-button,
+a.search-form-tools input[type="submit"].attachLoading.z-button,
+#progressBar-links a.attachLoading.z-button,
+a#progressBar-links a.attachLoading.z-button,
+#InstallPageView .AppContainer a.attachLoading.z-button,
+a#InstallPageView .AppContainer a.attachLoading.z-button,
+#InstallPageView #install-form input[type="submit"].attachLoading.z-button,
+a#InstallPageView #install-form input[type="submit"].attachLoading.z-button,
+.configuration-list li a.attachLoading.z-button,
+a.configuration-list li a.attachLoading.z-button,
+table.configuration-list tr td:last-child a.attachLoading.z-button,
+atable.configuration-list tr td:last-child a.attachLoading.z-button,
+.multiselect-holder input[type="button"].attachLoading.z-button,
+a.multiselect-holder input[type="button"].attachLoading.z-button,
+.EmailTestingButton.attachLoading.z-button,
+a.EmailTestingButton.attachLoading.z-button,
+.file-upload-box .ui-icon-plusthick.attachLoading.z-button,
+a.file-upload-box .ui-icon-plusthick.attachLoading.z-button,
+.ui-datepicker .ui-datepicker-current.attachLoading.z-button,
+a.ui-datepicker .ui-datepicker-current.attachLoading.z-button,
+.ui-datepicker .ui-datepicker-close.attachLoading.z-button,
+a.ui-datepicker .ui-datepicker-close.attachLoading.z-button,
+.add-custom-field .configure-custom-field-button.attachLoading.z-button,
+a.add-custom-field .configure-custom-field-button.attachLoading.z-button,
+.designer-toolbar input[type="submit"].attachLoading.z-button,
+a.designer-toolbar input[type="submit"].attachLoading.z-button,
+.AttributeEditView form div table #customFieldDataData_AddInputButton.attachLoading.z-button,
+a.AttributeEditView form div table #customFieldDataData_AddInputButton.attachLoading.z-button,
+#customFieldDataData_AddInputButton.attachLoading.z-button,
+a#customFieldDataData_AddInputButton.attachLoading.z-button,
+.ModalGameNotification a.attachLoading.z-button,
+a.ModalGameNotification a.attachLoading.z-button {
+  color: #fff;
+}
+.modal-view-toolbar a:not(.attachLoading) span,
+.modal-view-toolbar input[type="submit"]:not(.attachLoading) span,
+.modal-view-toolbar input[type="button"]:not(.attachLoading) span,
+.form-toolbar a:not(.attachLoading) span,
+.form-toolbar input[type="submit"]:not(.attachLoading) span,
+.form-toolbar input[type="button"]:not(.attachLoading) span,
+.zButton:not(.attachLoading) span,
+.z-button:not(.attachLoading) span,
+a.zButton:not(.attachLoading) span,
+a.z-button:not(.attachLoading) span,
+#NoUserEmailConfigurationYetView a:not(.attachLoading) span,
+#NoGlobalEmailConfigurationYetView a:not(.attachLoading) span,
+.ZeroModelsYetView a:not(.attachLoading) span,
+a#NoUserEmailConfigurationYetView a:not(.attachLoading) span,
+a#NoGlobalEmailConfigurationYetView a:not(.attachLoading) span,
+a.ZeroModelsYetView a:not(.attachLoading) span,
+.search-form-tools input[type="submit"]:not(.attachLoading) span,
+a.search-form-tools input[type="submit"]:not(.attachLoading) span,
+#progressBar-links a:not(.attachLoading) span,
+a#progressBar-links a:not(.attachLoading) span,
+#InstallPageView .AppContainer a:not(.attachLoading) span,
+a#InstallPageView .AppContainer a:not(.attachLoading) span,
+#InstallPageView #install-form input[type="submit"]:not(.attachLoading) span,
+a#InstallPageView #install-form input[type="submit"]:not(.attachLoading) span,
+.configuration-list li a:not(.attachLoading) span,
+a.configuration-list li a:not(.attachLoading) span,
+table.configuration-list tr td:last-child a:not(.attachLoading) span,
+atable.configuration-list tr td:last-child a:not(.attachLoading) span,
+.multiselect-holder input[type="button"]:not(.attachLoading) span,
+a.multiselect-holder input[type="button"]:not(.attachLoading) span,
+.EmailTestingButton:not(.attachLoading) span,
+a.EmailTestingButton:not(.attachLoading) span,
+.file-upload-box .ui-icon-plusthick:not(.attachLoading) span,
+a.file-upload-box .ui-icon-plusthick:not(.attachLoading) span,
+.ui-datepicker .ui-datepicker-current:not(.attachLoading) span,
+a.ui-datepicker .ui-datepicker-current:not(.attachLoading) span,
+.ui-datepicker .ui-datepicker-close:not(.attachLoading) span,
+a.ui-datepicker .ui-datepicker-close:not(.attachLoading) span,
+.add-custom-field .configure-custom-field-button:not(.attachLoading) span,
+a.add-custom-field .configure-custom-field-button:not(.attachLoading) span,
+.designer-toolbar input[type="submit"]:not(.attachLoading) span,
+a.designer-toolbar input[type="submit"]:not(.attachLoading) span,
+.AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading) span,
+a.AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading) span,
+#customFieldDataData_AddInputButton:not(.attachLoading) span,
+a#customFieldDataData_AddInputButton:not(.attachLoading) span,
+.ModalGameNotification a:not(.attachLoading) span,
+a.ModalGameNotification a:not(.attachLoading) span {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+/*
+.zButton:not(.attacheLoading),
+.z-button:not(.attachLoading){
+     background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+*/
+.green-button,
+.attachLoading {
+  color: #FFF;
+  cursor: pointer;
+}
+.z-label {
+  float: left;
+  font-weight: bold;
+  padding: 0 25px;
+  line-height: 25px;
+  display: inline-block;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
 }
 .zButton.loading .z-spinner,
 .z-button.loading .z-spinner,
@@ -142,7 +505,6 @@ table.configuration-list tr td:last-child a:not(.attachLoading),
 #NoGlobalEmailConfigurationYetView a.loading .z-spinner,
 .ZeroModelsYetView a.loading .z-spinner,
 .search-form-tools input[type="submit"].loading .z-spinner,
-.toolbar-mbmenu .options-menu > li > a.loading .z-spinner,
 #progressBar-links a.loading .z-spinner,
 #InstallPageView .AppContainer a.loading .z-spinner,
 #InstallPageView #install-form input[type="submit"].loading .z-spinner,
@@ -159,6 +521,8 @@ table.configuration-list tr td:last-child a.loading .z-spinner,
 #customFieldDataData_AddInputButton.loading .z-spinner,
 .ModalGameNotification a.loading .z-spinner {
   display: inline-block;
+  position: absolute;
+  margin: 2px 0 0 6px;
 }
 .zButton.loading .z-icon,
 .z-button.loading .z-icon,
@@ -166,7 +530,6 @@ table.configuration-list tr td:last-child a.loading .z-spinner,
 #NoGlobalEmailConfigurationYetView a.loading .z-icon,
 .ZeroModelsYetView a.loading .z-icon,
 .search-form-tools input[type="submit"].loading .z-icon,
-.toolbar-mbmenu .options-menu > li > a.loading .z-icon,
 #progressBar-links a.loading .z-icon,
 #InstallPageView .AppContainer a.loading .z-icon,
 #InstallPageView #install-form input[type="submit"].loading .z-icon,
@@ -225,6 +588,7 @@ table.configuration-list tr td:last-child a.loading .z-icon,
   box-shadow: none;
   padding: 0;
   margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 /*START COLOR SCHEME/THEME*/
 a:link,
@@ -475,8 +839,8 @@ body.blue #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #acd064;
   text-shadow: 0px 1px 0 #acd064;
 }
-body.blue .green-button,
-body.blue .attachLoading {
+body.blue .green-button .z-label,
+body.blue .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
@@ -494,11 +858,11 @@ body.blue .attachLoading {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.blue .dashboard-link:hover,
-body.blue .zButton:hover,
-body.blue .z-button:hover,
-body.blue .zButton:active,
-body.blue .z-button:active {
+body.blue .dashboard-link:hover .z-label,
+body.blue .zButton:hover .z-label,
+body.blue .z-button:hover .z-label,
+body.blue .zButton:active .z-label,
+body.blue .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
@@ -516,23 +880,23 @@ body.blue .z-button:active {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.blue .zButton:active,
-body.blue .z-button:active {
+body.blue .zButton:active .z-label,
+body.blue .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-body.blue .zButton:not(.attachLoading):hover,
-body.blue .z-button:not(.attachLoading):hover,
-body.blue .zButton:not(.attachLoading):active,
-body.blue .z-button:not(.attachLoading):active,
-body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-body.blue .form-toolbar a:not(.attachLoading):hover,
-body.blue .form-toolbar a:not(.z-button):hover,
-body.blue .configuration-list li a:hover {
+body.blue .zButton:not(.attachLoading):hover .z-label,
+body.blue .z-button:not(.attachLoading):hover .z-label,
+body.blue .zButton:not(.attachLoading):active .z-label,
+body.blue .z-button:not(.attachLoading):active .z-label,
+body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.blue .form-toolbar a:not(.attachLoading):hover .z-label,
+body.blue .form-toolbar a:not(.z-button):hover .z-label,
+body.blue .configuration-list li a:hover .z-label {
   color: #7cb830 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -568,7 +932,7 @@ body.blue .dashboard-link {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.blue .dashboard-link:not(.attachLoading):hover {
+body.blue .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
@@ -586,7 +950,7 @@ body.blue .dashboard-link:not(.attachLoading):hover {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.blue .dashboard-link:active {
+body.blue .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -877,8 +1241,8 @@ body.brown #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #64c1bd;
   text-shadow: 0px 1px 0 #64c1bd;
 }
-body.brown .green-button,
-body.brown .attachLoading {
+body.brown .green-button .z-label,
+body.brown .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
@@ -896,11 +1260,11 @@ body.brown .attachLoading {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.brown .dashboard-link:hover,
-body.brown .zButton:hover,
-body.brown .z-button:hover,
-body.brown .zButton:active,
-body.brown .z-button:active {
+body.brown .dashboard-link:hover .z-label,
+body.brown .zButton:hover .z-label,
+body.brown .z-button:hover .z-label,
+body.brown .zButton:active .z-label,
+body.brown .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
@@ -918,23 +1282,23 @@ body.brown .z-button:active {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.brown .zButton:active,
-body.brown .z-button:active {
+body.brown .zButton:active .z-label,
+body.brown .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-body.brown .zButton:not(.attachLoading):hover,
-body.brown .z-button:not(.attachLoading):hover,
-body.brown .zButton:not(.attachLoading):active,
-body.brown .z-button:not(.attachLoading):active,
-body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-body.brown .form-toolbar a:not(.attachLoading):hover,
-body.brown .form-toolbar a:not(.z-button):hover,
-body.brown .configuration-list li a:hover {
+body.brown .zButton:not(.attachLoading):hover .z-label,
+body.brown .z-button:not(.attachLoading):hover .z-label,
+body.brown .zButton:not(.attachLoading):active .z-label,
+body.brown .z-button:not(.attachLoading):active .z-label,
+body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.brown .form-toolbar a:not(.attachLoading):hover .z-label,
+body.brown .form-toolbar a:not(.z-button):hover .z-label,
+body.brown .configuration-list li a:hover .z-label {
   color: #b88f30 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -970,7 +1334,7 @@ body.brown .dashboard-link {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.brown .dashboard-link:not(.attachLoading):hover {
+body.brown .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
@@ -988,7 +1352,7 @@ body.brown .dashboard-link:not(.attachLoading):hover {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.brown .dashboard-link:active {
+body.brown .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -1279,8 +1643,8 @@ body.lime #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #d0d9b1;
   text-shadow: 0px 1px 0 #d0d9b1;
 }
-body.lime .green-button,
-body.lime .attachLoading {
+body.lime .green-button .z-label,
+body.lime .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
@@ -1298,11 +1662,11 @@ body.lime .attachLoading {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.lime .dashboard-link:hover,
-body.lime .zButton:hover,
-body.lime .z-button:hover,
-body.lime .zButton:active,
-body.lime .z-button:active {
+body.lime .dashboard-link:hover .z-label,
+body.lime .zButton:hover .z-label,
+body.lime .z-button:hover .z-label,
+body.lime .zButton:active .z-label,
+body.lime .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
@@ -1320,23 +1684,23 @@ body.lime .z-button:active {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.lime .zButton:active,
-body.lime .z-button:active {
+body.lime .zButton:active .z-label,
+body.lime .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-body.lime .zButton:not(.attachLoading):hover,
-body.lime .z-button:not(.attachLoading):hover,
-body.lime .zButton:not(.attachLoading):active,
-body.lime .z-button:not(.attachLoading):active,
-body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-body.lime .form-toolbar a:not(.attachLoading):hover,
-body.lime .form-toolbar a:not(.z-button):hover,
-body.lime .configuration-list li a:hover {
+body.lime .zButton:not(.attachLoading):hover .z-label,
+body.lime .z-button:not(.attachLoading):hover .z-label,
+body.lime .zButton:not(.attachLoading):active .z-label,
+body.lime .z-button:not(.attachLoading):active .z-label,
+body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.lime .form-toolbar a:not(.attachLoading):hover .z-label,
+body.lime .form-toolbar a:not(.z-button):hover .z-label,
+body.lime .configuration-list li a:hover .z-label {
   color: #bcc98e !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1372,7 +1736,7 @@ body.lime .dashboard-link {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.lime .dashboard-link:not(.attachLoading):hover {
+body.lime .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
@@ -1390,7 +1754,7 @@ body.lime .dashboard-link:not(.attachLoading):hover {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.lime .dashboard-link:active {
+body.lime .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -1681,8 +2045,8 @@ body.cherry #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b93e51;
   text-shadow: 0px 1px 0 #b93e51;
 }
-body.cherry .green-button,
-body.cherry .attachLoading {
+body.cherry .green-button .z-label,
+body.cherry .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
@@ -1700,11 +2064,11 @@ body.cherry .attachLoading {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.cherry .dashboard-link:hover,
-body.cherry .zButton:hover,
-body.cherry .z-button:hover,
-body.cherry .zButton:active,
-body.cherry .z-button:active {
+body.cherry .dashboard-link:hover .z-label,
+body.cherry .zButton:hover .z-label,
+body.cherry .z-button:hover .z-label,
+body.cherry .zButton:active .z-label,
+body.cherry .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
@@ -1722,23 +2086,23 @@ body.cherry .z-button:active {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.cherry .zButton:active,
-body.cherry .z-button:active {
+body.cherry .zButton:active .z-label,
+body.cherry .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-body.cherry .zButton:not(.attachLoading):hover,
-body.cherry .z-button:not(.attachLoading):hover,
-body.cherry .zButton:not(.attachLoading):active,
-body.cherry .z-button:not(.attachLoading):active,
-body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-body.cherry .form-toolbar a:not(.attachLoading):hover,
-body.cherry .form-toolbar a:not(.z-button):hover,
-body.cherry .configuration-list li a:hover {
+body.cherry .zButton:not(.attachLoading):hover .z-label,
+body.cherry .z-button:not(.attachLoading):hover .z-label,
+body.cherry .zButton:not(.attachLoading):active .z-label,
+body.cherry .z-button:not(.attachLoading):active .z-label,
+body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.cherry .form-toolbar a:not(.attachLoading):hover .z-label,
+body.cherry .form-toolbar a:not(.z-button):hover .z-label,
+body.cherry .configuration-list li a:hover .z-label {
   color: #933140 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1774,7 +2138,7 @@ body.cherry .dashboard-link {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.cherry .dashboard-link:not(.attachLoading):hover {
+body.cherry .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
@@ -1792,7 +2156,7 @@ body.cherry .dashboard-link:not(.attachLoading):hover {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.cherry .dashboard-link:active {
+body.cherry .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -2083,8 +2447,8 @@ body.turquoise #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
 }
-body.turquoise .green-button,
-body.turquoise .attachLoading {
+body.turquoise .green-button .z-label,
+body.turquoise .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
@@ -2102,11 +2466,11 @@ body.turquoise .attachLoading {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.turquoise .dashboard-link:hover,
-body.turquoise .zButton:hover,
-body.turquoise .z-button:hover,
-body.turquoise .zButton:active,
-body.turquoise .z-button:active {
+body.turquoise .dashboard-link:hover .z-label,
+body.turquoise .zButton:hover .z-label,
+body.turquoise .z-button:hover .z-label,
+body.turquoise .zButton:active .z-label,
+body.turquoise .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
@@ -2124,23 +2488,23 @@ body.turquoise .z-button:active {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.turquoise .zButton:active,
-body.turquoise .z-button:active {
+body.turquoise .zButton:active .z-label,
+body.turquoise .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-body.turquoise .zButton:not(.attachLoading):hover,
-body.turquoise .z-button:not(.attachLoading):hover,
-body.turquoise .zButton:not(.attachLoading):active,
-body.turquoise .z-button:not(.attachLoading):active,
-body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-body.turquoise .form-toolbar a:not(.attachLoading):hover,
-body.turquoise .form-toolbar a:not(.z-button):hover,
-body.turquoise .configuration-list li a:hover {
+body.turquoise .zButton:not(.attachLoading):hover .z-label,
+body.turquoise .z-button:not(.attachLoading):hover .z-label,
+body.turquoise .zButton:not(.attachLoading):active .z-label,
+body.turquoise .z-button:not(.attachLoading):active .z-label,
+body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.turquoise .form-toolbar a:not(.attachLoading):hover .z-label,
+body.turquoise .form-toolbar a:not(.z-button):hover .z-label,
+body.turquoise .configuration-list li a:hover .z-label {
   color: #44bbcc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -2176,7 +2540,7 @@ body.turquoise .dashboard-link {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.turquoise .dashboard-link:not(.attachLoading):hover {
+body.turquoise .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
@@ -2194,7 +2558,7 @@ body.turquoise .dashboard-link:not(.attachLoading):hover {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.turquoise .dashboard-link:active {
+body.turquoise .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -2485,8 +2849,8 @@ body.violet #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b8c2e8;
   text-shadow: 0px 1px 0 #b8c2e8;
 }
-body.violet .green-button,
-body.violet .attachLoading {
+body.violet .green-button .z-label,
+body.violet .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
@@ -2504,11 +2868,11 @@ body.violet .attachLoading {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.violet .dashboard-link:hover,
-body.violet .zButton:hover,
-body.violet .z-button:hover,
-body.violet .zButton:active,
-body.violet .z-button:active {
+body.violet .dashboard-link:hover .z-label,
+body.violet .zButton:hover .z-label,
+body.violet .z-button:hover .z-label,
+body.violet .zButton:active .z-label,
+body.violet .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
@@ -2526,23 +2890,23 @@ body.violet .z-button:active {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.violet .zButton:active,
-body.violet .z-button:active {
+body.violet .zButton:active .z-label,
+body.violet .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-body.violet .zButton:not(.attachLoading):hover,
-body.violet .z-button:not(.attachLoading):hover,
-body.violet .zButton:not(.attachLoading):active,
-body.violet .z-button:not(.attachLoading):active,
-body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-body.violet .form-toolbar a:not(.attachLoading):hover,
-body.violet .form-toolbar a:not(.z-button):hover,
-body.violet .configuration-list li a:hover {
+body.violet .zButton:not(.attachLoading):hover .z-label,
+body.violet .z-button:not(.attachLoading):hover .z-label,
+body.violet .zButton:not(.attachLoading):active .z-label,
+body.violet .z-button:not(.attachLoading):active .z-label,
+body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.violet .form-toolbar a:not(.attachLoading):hover .z-label,
+body.violet .form-toolbar a:not(.z-button):hover .z-label,
+body.violet .configuration-list li a:hover .z-label {
   color: #91a1dc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -2578,7 +2942,7 @@ body.violet .dashboard-link {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.violet .dashboard-link:not(.attachLoading):hover {
+body.violet .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
@@ -2596,7 +2960,7 @@ body.violet .dashboard-link:not(.attachLoading):hover {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.violet .dashboard-link:active {
+body.violet .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -2887,8 +3251,8 @@ body.honey #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #bcca67;
   text-shadow: 0px 1px 0 #bcca67;
 }
-body.honey .green-button,
-body.honey .attachLoading {
+body.honey .green-button .z-label,
+body.honey .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
@@ -2906,11 +3270,11 @@ body.honey .attachLoading {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.honey .dashboard-link:hover,
-body.honey .zButton:hover,
-body.honey .z-button:hover,
-body.honey .zButton:active,
-body.honey .z-button:active {
+body.honey .dashboard-link:hover .z-label,
+body.honey .zButton:hover .z-label,
+body.honey .z-button:hover .z-label,
+body.honey .zButton:active .z-label,
+body.honey .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
@@ -2928,23 +3292,23 @@ body.honey .z-button:active {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.honey .zButton:active,
-body.honey .z-button:active {
+body.honey .zButton:active .z-label,
+body.honey .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
-body.honey .zButton:not(.attachLoading):hover,
-body.honey .z-button:not(.attachLoading):hover,
-body.honey .zButton:not(.attachLoading):active,
-body.honey .z-button:not(.attachLoading):active,
-body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-body.honey .form-toolbar a:not(.attachLoading):hover,
-body.honey .form-toolbar a:not(.z-button):hover,
-body.honey .configuration-list li a:hover {
+body.honey .zButton:not(.attachLoading):hover .z-label,
+body.honey .z-button:not(.attachLoading):hover .z-label,
+body.honey .zButton:not(.attachLoading):active .z-label,
+body.honey .z-button:not(.attachLoading):active .z-label,
+body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.honey .form-toolbar a:not(.attachLoading):hover .z-label,
+body.honey .form-toolbar a:not(.z-button):hover .z-label,
+body.honey .configuration-list li a:hover .z-label {
   color: #abbc42 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -2980,7 +3344,7 @@ body.honey .dashboard-link {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.honey .dashboard-link:not(.attachLoading):hover {
+body.honey .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
@@ -2998,7 +3362,7 @@ body.honey .dashboard-link:not(.attachLoading):hover {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.honey .dashboard-link:active {
+body.honey .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -4408,6 +4772,7 @@ section {
   box-shadow: none;
   padding: 0;
   margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border-top: 1px solid #CCC;
 }
 .view-toolbar-container {
@@ -4470,6 +4835,7 @@ form .view-toolbar-container,
   border-left: 1px solid #bababa;
   text-indent: 0 !important;
   padding-left: 40px;
+  line-height: 30px;
   vertical-align: middle;
 }
 .view-toolbar .parent > a:after {
@@ -5056,59 +5422,6 @@ td.empty {
   text-align: center;
   border-top: 1px solid #fff;
 }
-.modal-view-toolbar a,
-.form-toolbar a,
-.modal-view-toolbar input[type="submit"],
-.form-toolbar input[type="submit"],
-.modal-view-toolbar input[type="button"],
-.form-toolbar input[type="button"] {
-  padding: 0 30px;
-  line-height: 23px;
-  margin: 0 10px;
-  font-size: 12px;
-  font-weight: bold;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
-}
-.modal-view-toolbar a,
-.form-toolbar a {
-  display: inline-block;
-}
-.modal-view-toolbar a.attachLoading.z-button,
-.form-toolbar a.attachLoading.z-button {
-  color: #fff;
-}
-.modal-view-toolbar a:not(.attachLoading),
-.form-toolbar a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-.green-button,
-.attachLoading {
-  color: #FFF;
-  -webkit-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -moz-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -o-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -ms-text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  text-shadow: rgba(156, 156, 156, 0.8) 0px 1px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  cursor: pointer;
-}
 .action-take {
   background-color: #ffad43;
   background-repeat: repeat-x;
@@ -5159,15 +5472,15 @@ td.empty {
 }
 .portlet-toolbar {
   position: absolute;
-  top: -34px;
+  top: -35px;
   right: 8px;
 }
 .portlet-toolbar .icon-create,
 .portlet-toolbar a {
-  padding: 0 15px 0 15px;
-  line-height: 23px;
+  font-size: 11px;
+  padding: 0 10px 0 10px;
+  line-height: 25px;
   margin: 0;
-  font-size: 10px;
   font-weight: bold;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -6654,7 +6967,7 @@ div.wide.form label.hasCheckBox {
 }
 .toolbar-mbmenu {
   position: absolute;
-  top: 8px;
+  top: 7px;
   right: 10px;
   margin: 0;
   float: right;
@@ -6675,21 +6988,48 @@ div.wide.form label.hasCheckBox {
   list-style: none;
 }
 .toolbar-mbmenu .options-menu > li > a {
+  padding-left: 10px;
   text-align: center;
   width: 60px;
-  font-size: 11px;
   color: #666 !important;
   border-top: 1px solid #e7e7e7;
   border-left: 1px solid #d7d7d7;
   border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #bababa;
+  line-height: 1;
+  font-size: 11px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.toolbar-mbmenu .options-menu > li > a span {
+  line-height: 26px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 11px;
 }
 .toolbar-mbmenu .options-menu > li > a:after {
   content: "▾";
   margin-left: 5px;
 }
 .toolbar-mbmenu .options-menu ul {
-  margin-top: -8px;
+  margin-top: -5px;
   padding-top: 3px;
   padding-bottom: 3px;
   display: none;
@@ -7245,7 +7585,7 @@ div.hasHalfs .twoThirds {
 }
 .edit-row-menu {
   float: right;
-  margin: 0 5px 0 0;
+  margin: 0 10px 0 0;
   list-style: none;
 }
 .edit-row-menu > li {
@@ -9279,38 +9619,6 @@ table.configuration-list tr td:last-child a:before {
   text-align: center;
   border-top: 1px solid #fff;
 }
-#currency-collection-form .portlet-toolbar a,
-#currency-collection-form .portlet-toolbar input[type="submit"],
-#currency-collection-form .portlet-toolbar input[type="button"] {
-  padding: 0 30px;
-  line-height: 23px;
-  margin: 0 10px;
-  font-size: 12px;
-  font-weight: bold;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  border-top: 1px solid #e7e7e7;
-  border-left: 1px solid #d7d7d7;
-  border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #bababa;
-}
-#currency-collection-form .portlet-toolbar a {
-  display: inline-block;
-}
-#currency-collection-form .portlet-toolbar a.attachLoading.z-button {
-  color: #fff;
-}
-#currency-collection-form .portlet-toolbar a:not(.attachLoading) {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
 #currency-collection-form .portlet-toolbar a:before {
   content: "";
 }
@@ -9515,28 +9823,51 @@ table.configuration-list tr td:last-child a:before {
   float: none !important;
 }
 .AppContent.ImportWizardView #addExtraColumnButton {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   border-top: 1px solid rgba(200, 200, 200, 0.4);
   border-left: 1px solid rgba(185, 185, 185, 0.4);
   border-right: 1px solid rgba(185, 185, 185, 0.4);
   border-bottom: 1px solid rgba(170, 170, 170, 0.4);
   color: #666;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  margin: 0 10px;
+  text-indent: 0;
+  zoom: 1;
+  display: inline-block;
+}
+.AppContent.ImportWizardView #addExtraColumnButton:before {
+  content: "";
+  display: table;
+}
+.AppContent.ImportWizardView #addExtraColumnButton:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.AppContent.ImportWizardView #addExtraColumnButton.attachLoading.z-button {
+  color: #fff;
+}
+.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading) span {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .AppContent.ImportWizardView .required-fields {
   font-size: 12px;
@@ -10203,28 +10534,35 @@ div.wide.form .errorMessage {
   padding: 2px 0;
 }
 .addfileinput-button span {
-  cursor: pointer;
-  padding: 0 15px 0 15px;
-  line-height: 23px;
-  margin: 0;
-  font-weight: bold;
-  text-indent: 0;
-  display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   border-top: 1px solid rgba(200, 200, 200, 0.4);
   border-left: 1px solid rgba(185, 185, 185, 0.4);
   border-right: 1px solid rgba(185, 185, 185, 0.4);
   border-bottom: 1px solid rgba(170, 170, 170, 0.4);
   color: #666;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0 10px;
+  text-indent: 0;
+  zoom: 1;
+  display: inline-block;
   -webkit-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
@@ -10238,6 +10576,21 @@ div.wide.form .errorMessage {
   margin-right: 5px;
   position: relative;
   top: 2px;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.addfileinput-button span:before {
+  content: "";
+  display: table;
+}
+.addfileinput-button span:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.addfileinput-button span.attachLoading.z-button {
+  color: #fff;
+}
+.addfileinput-button span:not(.attachLoading) span {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .addfileinput-button input {
@@ -12727,7 +13080,9 @@ a.close-ModalGameNotification.simple-select {
   text-decoration: none !important;
   margin-top: 30px;
   font-size: 14px !important;
-  line-height: 32px;
+}
+#WelcomeView .dashboard-link .z-label {
+  line-height: 36px !important;
 }
 #welcome-content {
   margin-top: 30px;
@@ -13081,6 +13436,20 @@ a.close-ModalGameNotification.simple-select {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+#ModelDetailsSummaryView .wide.form,
+#CommentInlineEditForModelView .wide.form,
+#CommentsForRelatedModelView .wide.form {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
 #CommentInlineEditForModelView {
   margin-top: 15px;
   padding-left: 120px;
@@ -13261,6 +13630,7 @@ a.user-link {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #comment-inline-edit-form td:first-child,
 #social-item-inline-edit-form td:first-child {

@@ -2,8 +2,7 @@
 /*ALl input fields*/
 .form input[type="text"],
 .form input[type="password"],
-.form select.multiple,
-.form textarea {
+.form select.multiple {
   height: 26px;
 }
 input[type="submit"],

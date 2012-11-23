@@ -1190,8 +1190,8 @@ footer, header, hgroup, menu, nav, section {
         }
     }
 }
-
 .view-toolbar-container{
+   
     width:auto;
     display:inline-block;
     font-size:11px;
@@ -1260,6 +1260,7 @@ form,
         border-left: 1px solid #bababa;
         text-indent:0 !important;
         padding-left:40px;
+        line-height: 30px;
         vertical-align:middle;
     }
     .parent > a:after{
@@ -1662,39 +1663,8 @@ td.empty{
     padding-top:13px;
     text-align:center;
     border-top:1px solid #fff;
-    a, input[type="submit"], input[type="button"]{
-        padding:0 30px;
-        line-height:23px;
-        margin:0 10px;
-        font-size:12px;
-        font-weight:bold;
-        .radius( 4px );
-        .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
-        border-top:1px solid #e7e7e7;
-        border-left: 1px solid #d7d7d7;
-        border-right:1px solid #d7d7d7;
-        border-bottom:1px solid #bababa;
-    }
-    a{
-        display:inline-block;
-        //.t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
-        &.attachLoading.z-button{
-            color: #fff;
-        }
-        &:not(.attachLoading){
-            background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-        }
-    }
 }
-
-.green-button,
-.attachLoading{
-    color:#FFF;
-    .t-shadow( rgba(156, 156, 156, 0.8) 0px 1px);
-    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
-    cursor:pointer;
-}
-
+    
 .action-take{
     #gradient > .vertical(#ffa660, #ffad43 ); //yellow
 }
@@ -1713,13 +1683,13 @@ td.empty{
 
 .portlet-toolbar{
     position: absolute;
-    top:-34px;
+    top:-35px;
     right:8px;
     .icon-create, a {
-        padding:0 15px 0 15px;
-        line-height:23px;
+        .smaller();
+        padding:0 10px 0 10px;
+        line-height:25px;
         margin:0;
-        font-size:10px;
         font-weight:bold;
         .radius( 4px );
         .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
@@ -2341,9 +2311,6 @@ div.wide.form{
     }
 }
 
-
-
-
 #clear-search-link{
     .z-link();
     margin-left:10px;
@@ -2351,6 +2318,7 @@ div.wide.form{
         .symbly(16px);
     }
 }
+
 .mp-divider{
     padding:0 2px;    
 }
@@ -3005,7 +2973,7 @@ div.wide.form{
 
 .toolbar-mbmenu{
     position:absolute;
-    top:8px;
+    top:7px;
     right:10px;
     margin:0;
     float:right;
@@ -3021,15 +2989,25 @@ div.wide.form{
         list-style: none;
     }
     .options-menu > li > a{
+        padding-left: 10px;
         text-align:center;
         width: 60px;
-        ++.z-button;
-        font-size:11px;
         color: #666 !important;
         border-top: 1px solid #e7e7e7;
         border-left: 1px solid #d7d7d7;
         border-right: 1px solid #d7d7d7;
         border-bottom: 1px solid #bababa;
+        line-height: 1;
+        .smaller();
+        .radius(4px);
+        .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
+        .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+        span{
+            line-height: 26px;
+            .radius(4px);
+            .smaller();
+        }
         &:after{
             content: "▾";
             margin-left:5px;
@@ -3037,7 +3015,7 @@ div.wide.form{
     }
     .options-menu ul{
         ++.flyout;
-        margin-top:-8px;
+        margin-top:-5px;
         padding-top:3px;
         padding-bottom:3px;
         display:none;
@@ -3527,7 +3505,7 @@ div.hasHalfs{
 
 .edit-row-menu{
     float:right;
-    margin:0 5px 0 0;
+    margin:0 10px 0 0;
     list-style: none;
     > li{
         position: relative;

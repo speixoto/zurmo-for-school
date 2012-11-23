@@ -197,32 +197,34 @@
     @themeColorBtnDefault     : #97c43d;
     @themeColorBtn2Default    : darken(@themeColorBtnDefault, 10%);
 
-    .green-button,
-    .attachLoading{
+    .green-button .z-label,
+    .attachLoading .z-label{
         color:#fff;
         #gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default );
         .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
     }
     
-    .dashboard-link:hover,
-    .zButton:hover, .z-button:hover,
-    .zButton:active, .z-button:active{
+    .dashboard-link:hover .z-label,
+    .zButton:hover .z-label, .z-button:hover .z-label,
+    .zButton:active .z-label, .z-button:active .z-label{
         color: darken(@themeColorBtnDefault, 40%) !important;
         #gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) );
         .t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
     }
     
-    .zButton:active, .z-button:active{
+    .zButton:active .z-label, .z-button:active .z-label{
         .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
     }
 
-    .zButton:not(.attachLoading):hover, .z-button:not(.attachLoading):hover,
-    .zButton:not(.attachLoading):active, .z-button:not(.attachLoading):active,
-    .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover,
-    .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover,
-    .form-toolbar a:not(.attachLoading):hover,
-    .form-toolbar a:not(.z-button):hover,
-    .configuration-list li a:hover{
+    .zButton:not(.attachLoading):hover .z-label,
+    .z-button:not(.attachLoading):hover .z-label,
+    .zButton:not(.attachLoading):active .z-label,
+    .z-button:not(.attachLoading):active .z-label,
+    .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
+    .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+    .form-toolbar a:not(.attachLoading):hover .z-label,
+    .form-toolbar a:not(.z-button):hover .z-label,
+    .configuration-list li a:hover .z-label{
         color: @themeColor2 !important;
         #gradient > .vertical( #fefefe, #ededed ) !important;
         .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
@@ -234,13 +236,13 @@
         .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
     }
     
-    .dashboard-link:not(.attachLoading):hover{
+    .dashboard-link:not(.attachLoading):hover  .z-label{
         color: darken(@themeColorBtnDefault, 40%) !important;
         #gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) ) !important;
         .t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
     }
     
-    .dashboard-link:active{
+    .dashboard-link:active  .z-label{
         .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF") !important;
     }
     
