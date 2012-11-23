@@ -24,24 +24,95 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModelRelationsAndAttributesToReportAdapterTest extends ZurmoBaseTest
+    class ReportAttributeToElementAdapterTest extends ZurmoBaseTest
     {
-        public function testGetContentForRowsAndColumns()
+        public function testGetFilterContentForRowsAndColumns()
+        {
+            $inputPrefixData      = array('something');
+            $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
+            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::make($moduleClassName,
+                                                                                     $modelClassName,
+                                                                                     $reportType);
+            $model                = new FilterForReportForm($modelClassName, $reportType);
+
+            $form                 = new ZurmoActiveForm();
+
+            //Test a string attribute
+            $model->attributeIndexOrDerivedType = 'string';
+            $adapter                            = new ReportAttributeToElementAdapter($modelToReportAdapter,
+                                                      $inputPrefixData, $model, $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($link, 'operator') === false);
+
+            //Test a boolean attribute which does not have an attribute
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($modelToReportAdapter,
+                                                      $inputPrefixData, $model, $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertTrue(strpos($link, 'operator') === false);
+
+            //we could test each attribute type.this will instantiate and test through the various elements
+            //but we still have to test like between vs. not between.  Also existing data populating vs no data.
+
+            //yes we should do them all testing here.
+            //test relationship scenarios? hasOne___name
+
+        }
+
+        /**
+         * @depends testGetFilterContentForRowsAndColumns
+         */
+        public function testGetGroupByContentForRowsAndColumns()
+        {
+            //todo: think about group by axis check check no axis here.
+            $this->fail();
+        }
+
+        /**
+         * @depends testGetGroupByContentForRowsAndColumns
+         */
+        public function testGetOrderByContentForRowsAndColumns()
         {
             //todo:
             $this->fail();
         }
 
-        public function testGetContentForSummation()
+        /**
+         * @depends testGetOrderByContentForRowsAndColumns
+         */
+        public function testGetDisplayAttributeContentForRowsAndColumns()
         {
             //todo:
             $this->fail();
+        }
+
+        /**
+         * @depends testGetDisplayAttributeContentForRowsAndColumns
+         */
+        public function testGetDrillDownDisplayAttributeContentForRowsAndColumns()
+        {
+            //todo:
+            $this->fail();
+        }
+
+        //etc. etc.
+
+
+        public function testGetContentForSummation()
+        {
+            //todo:
+            //$this->fail();
         }
 
         public function testGetContentForMatrix()
         {
             //todo:
-            $this->fail();
+           //$this->fail();
         }
     }
 ?>

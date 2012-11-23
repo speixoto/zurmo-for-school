@@ -34,103 +34,51 @@
 
         protected $form;
 
-        protected $attribute;
+        //protected $attribute;
 
-        protected $label;
+        protected $treeType;
 
-        public function __construct($modelToReportAdapter, Array $inputPrefixData, $model, $form, $attribute, $label)
+        public function __construct($modelToReportAdapter, Array $inputPrefixData, $model, $form, $treeType)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('$model instanceof ReportWizardForm');
+            assert('$model instanceof ComponentForReportForm');
             assert('$form instanceof ZurmoActiveForm');
             assert('is_string($attribute)');
-            assert('is_string($label)');
+            assert('is_string($treeType)');
             $this->modelToReportAdapter = $modelToReportAdapter;
             $this->inputPrefixData      = $inputPrefixData;
             $this->model                = $model;
             $this->form                 = $form;
-            $this->attribute            = $attribute;
-            $this->label                = $label;
+            //$this->attribute            = $attribute;
+            $this->treeType             = $treeType;
         }
-/**
+
         public function getContent()
         {
             if($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS)
             {
-                return $modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
+                return $this->getContentForFilter();
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES)
             {
-                return $modelToReportAdapter->getAttributesForDisplayAttributes($precedingModel, $precedingRelation);
+                return $this->getContentForDisplayAttribute();
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS)
             {
-                return $modelToReportAdapter->getAttributesForOrderBys($precedingModel, $precedingRelation);
+                return $this->getContentForOrderBy();
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS)
             {
-                return $modelToReportAdapter->getAttributesForGroupBys($precedingModel, $precedingRelation);
+                return $this->getContentForGroupBy();
             }
             elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
-                return $modelToReportAdapter->getForDrillDownAttributes($precedingModel, $precedingRelation);
+                return $this->getContentForDrillDownDisplayAttribute();
             }
             else
             {
                 throw new NotSupportedException();
             }
-        }
-**/
-        public function getContent()
-        {
-            $params                    = array('inputPrefix' => $this->inputPrefixData);
-            //$labelElement              = new Something($this->model, 'operator');
-            $operatorElement           = $this->modelToReportAdapter->getOperatorElement($this->model, $this->form, $attribute);
-            if($operatorElement != null)
-            {
-                $operatorElement->editableTemplate  = '{content}{error}';
-                $operatorContent       = $operatorElement->render();
-            }
-            else
-            {
-                $operatorContent       = null;
-            }
-            $attributeElement = $this->modelToReportAdapter->getAttributeElement($this->model, $this->form, $attribute);
-            if($attributeElement != null)
-            {
-                $attributeElement->editableTemplate = '{content}{error}';
-                $attributeContent      = $attributeElement->render();
-            }
-            else
-            {
-                $attributeContent      = null;
-            }
-            $runTimeElement   = $this->modelToReportAdapter->getRunTimeElement($this->model, $this->form, $attribute);
-            if($runTimeElement != null)
-            {
-                $runTimeElement->editableTemplate = '{content}{error}';
-                $runTimeContent        = $runTimeElement->render();
-            }
-            else
-            {
-                $runTimeContent        = null;
-            }
-            $content                   = $this->renderAttributeIndexOrDerivedType();
-            $content                   = ZurmoHtml::tag('div', array(), $content  . $this->label);
-            //into some sort of label
-            if($operatorContent != null)
-            {
-                $content              .= ZurmoHtml::tag('div', array(), $operatorContent);
-            }
-            if($attributeContent != null)
-            {
-                $content              .= ZurmoHtml::tag('div', array(), $attributeContent);
-            }
-            if($runTimeContent != null)
-            {
-                $content              .= ZurmoHtml::tag('div', array(), $runTimeContent);
-            }
-            return $content;
         }
 
         protected function renderAttributeIndexOrDerivedType()
@@ -140,29 +88,106 @@
             $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
                                             array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
             $idInputHtmlOptions  = array('id' => $hiddenInputId);
-            return ZurmoHtml::hiddenField($hiddenInputName, $this->attribute, $idInputHtmlOptions);
+            return ZurmoHtml::hiddenField($hiddenInputName, $this->model->getAttributeIndexOrDerivedType(),
+                                          $idInputHtmlOptions);
         }
 
-        /**
+        protected function getContentForFilter()
+        {
+            $params                                 = array('inputPrefix' => $this->inputPrefixData);
+            if($this->model->hasOperator())
+            {
+                $operatorElement                    = new OperatorStaticDropDownElement($this->model, null, $this->form, $params);
+                $operatorElement->editableTemplate  = '{content}{error}';
+                $operatorContent                    = $operatorElement->render();
+            }
+            else
+            {
+                $operatorContent                    = null;
+            }
+            $attributeElementType                   = $this->modelToReportAdapter->getAttributeFilterElementType($this->attribute);
+            if($attributeElementType != null)
+            {
+                $attributeElementClassName           = $attributeElementType . 'Element';
+                $attributeElement                    = new $attributeElementClassName($this->model, null,
+                                                                                      $this->form, $params);
+
+                //todo: make sure you check NameIdElement (instanceof) to override the id/name pairings.
+
+                $attributeElement->editableTemplate = '{content}{error}';
+                $attributeContent                   = $attributeElement->render();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            $runTimeElement                         = new SomeRunTimeElement($this->model, null,
+                                                                $this->form, $params);
+            $runTimeElement->editableTemplate       = '{content}{error}';
+            $runTimeContent                         = $runTimeElement->render();
+            $content                                = $this->renderAttributeIndexOrDerivedType();
+            self::resolveDivWrapperForContent($this->form->getDisplayLabel(), $content);
+            self::resolveDivWrapperForContent($operatorContent,               $content);
+            self::resolveDivWrapperForContent($attributeContent,              $content);
+            self::resolveDivWrapperForContent($runTimeContent,                $content);
+            return $content;
+        }
+
         protected function getContentForGroupBy()
         {
 
+            if($this->modelToReportAdapter->reportType == Report::TYPE_MATRIX)
+            {
+                $params                               = array('inputPrefix' => $this->inputPrefixData);
+                $groupByAxisElement                   = new Something($this->model, $this->form, $this->attribute);
+                $groupByAxisElement->editableTemplate = '{content}{error}';
+                $groupByAxisElement                   = $attributeElement->render();
+            }
+            else
+            {
+                $groupByAxisElement                   = null;
+            }
+            $content                                  = $this->renderAttributeIndexOrDerivedType();
+            self::resolveDivWrapperForContent($this->form->getDisplayLabel(), $content);
+            self::resolveDivWrapperForContent($groupByAxisElement,            $content);
+            return $content;
         }
 
         protected function getContentForOrderBy()
         {
-
+            $params                             = array('inputPrefix' => $this->inputPrefixData);
+            $directionElement                   = new Something($this->model, $this->form, $this->attribute);
+            $directionElement->editableTemplate = '{content}{error}';
+            $directionElement                   = $attributeElement->render();
+            $content                            = $this->renderAttributeIndexOrDerivedType();
+            self::resolveDivWrapperForContent($this->form->getDisplayLabel(), $content);
+            self::resolveDivWrapperForContent($directionElement,              $content);
+            return $content;
         }
 
         protected function getContentForDisplayAttribute()
         {
-
+            $params                                = array('inputPrefix' => $this->inputPrefixData);
+            $displayLabelElement                   = new Something($this->model, $this->form, $this->attribute);
+            $displayLabelElement->editableTemplate = '{content}{error}';
+            $displayLabelElement                   = $displayLabelElement->render();
+            $content                               = $this->renderAttributeIndexOrDerivedType();
+            self::resolveDivWrapperForContent($this->form->getDisplayLabel(), $content);
+            self::resolveDivWrapperForContent($displayLabelElement,           $content);
+            return $content;
         }
 
         protected function getContentForDrillDownAttribute()
         {
-
+            return $this->getContentForDrillDownAttribute();
         }
-        **/
+
+        protected static function resolveDivWrapperForContent($innerContent, & $content)
+        {
+            if($innerContent != null)
+            {
+                $content .= ZurmoHtml::tag('div', array(), $innerContent);
+            }
+        }
     }
 ?>

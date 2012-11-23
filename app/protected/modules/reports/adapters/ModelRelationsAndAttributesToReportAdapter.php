@@ -29,9 +29,9 @@
      */
     class ModelRelationsAndAttributesToReportAdapter
     {
-        const DYNAMIC_ATTRIBUTE_USER = 'User';
+        const DYNAMIC_ATTRIBUTE_USER     = 'User';
 
-        const DYNAMIC_RELATION_INFERRED = 'Inferred';
+        const DYNAMIC_RELATION_INFERRED  = 'Inferred';
 
         protected $model;
 
@@ -482,26 +482,15 @@
             throw new NotImplementedException();
         }
 
-        /**
-         * Override and implement in children classes
-         */
-        public function getOperatorElement(ReportComponentForm $model, ZurmoActiveForm $form, $attribute)
+        public function hasOperator($attribute)
         {
+            assert('is_string($attribute)');
+            //make sure this is not a relation? (can solve with switch statement / unsupported)
         }
 
-        /**
-         * Override and implement in children classes
-         */
-        public function getAttributeElement(ReportComponentForm $model, ZurmoActiveForm $form, $attribute)
+        public function getAttributeFilterElementType($attribute)
         {
-            //make sure you check NameIdElement (instanceof) to override the id/name pairings.
-        }
-
-        /**
-         * Override and implement in children classes
-         */
-        public function getRunTimeElement(ReportComponentForm $model, ZurmoActiveForm $form, $attribute)
-        {
+            assert('is_string($attribute)');
         }
     }
 ?>

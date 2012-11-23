@@ -1260,5 +1260,13 @@
             //todo:
             $this->fail();
         }
+
+        public function testGetOperatorType()
+        {
+            //also test getAttributeFilterType
+            $this->fail();
+            //where do we test the instantiation of each element? via walktrhough? or unit?
+            //maybe we do in fact test it here: ReportAttributeToElementAdapterTest
+        }
     }
 ?>

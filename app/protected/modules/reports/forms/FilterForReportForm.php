@@ -134,5 +134,34 @@
                     }
                 }
         }
+
+        public function hasOperator()
+        {
+            if($this->getOperatorType() != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected function getOperatorType()
+        {
+            if($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+
+            //call $modelToReportAdapter to get operatorType...
+                //make sure this is not a relation? (can solve with switch statement / unsupported)
+        }
+
+        public function getOperatorData()
+        {
+            if($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+            $this->getOperatorType()
+        }
     }
 ?>

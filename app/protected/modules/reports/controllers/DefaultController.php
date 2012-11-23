@@ -313,7 +313,7 @@ $label = 'this is tmep';
                                                                                     $reportToWizardFormAdapter->makeFormByType(),// i dont think so...
                                                                                     new NoRequiredsActiveForm(),
                                                                                     $attribute,
-                                                                                    $label); //todo:
+                                                                                    $treeType);
 
             $view                      = new AttributeRowForReportComponentView($elementAdapter,
                                                                             (int)$rowNumber,
