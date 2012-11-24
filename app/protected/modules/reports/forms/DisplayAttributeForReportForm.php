@@ -33,7 +33,6 @@
             return array_merge(parent::rules(), array(
                 array('label', 'required'),
                 array('label', 'type', 'type' => 'string'),
-                array('label', 'validateOrder'),
             ));
         }
 

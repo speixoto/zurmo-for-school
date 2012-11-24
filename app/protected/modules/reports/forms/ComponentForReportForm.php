@@ -78,6 +78,11 @@
             return $this->modelClassName;
         }
 
+        public function getReportType()
+        {
+            return $this->reportType;
+        }
+
         public function getAttributeIndexOrDerivedType()
         {
             return $this->_attributeIndexOrDerivedType;
@@ -126,7 +131,7 @@
             {
                 return $this->modelClassName;
             }
-            return $this->resolveAttributeModelClassNameFromData($this->attributeAndRelationData, $this->modelClassName);
+            return $this->resolveAttributeModelClassNameFromData($this->attributeAndRelationData, $this->moduleClassName, $this->modelClassName);
         }
 
         public function getPenultimateModelClassName()
@@ -222,21 +227,24 @@
                 if($modelToReportAdapter->isRelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
+                    $modelClassName    = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                 }
             }
             return $moduleClassName;
         }
 
-        protected function resolveAttributeModelClassNameFromData(Array $attributeAndRelationData, $modelClassName)
+        protected function resolveAttributeModelClassNameFromData(Array $attributeAndRelationData, $moduleClassName,
+                                                                  $modelClassName)
         {
             assert(count($attributeAndRelationData) > 0);
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                        make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
+                                        make($moduleClassName, $modelClassName, $this->reportType);
                 if($modelToReportAdapter->isRelation($relationOrAttribute))
                 {
-                    $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
+                    $moduleClassName   = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
+                    $modelClassName    = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                 }
             }
             return $modelClassName;

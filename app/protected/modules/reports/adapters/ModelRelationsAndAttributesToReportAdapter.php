@@ -109,12 +109,20 @@
         public function getAttributeLabel($attribute)
         {
             assert('is_string($attribute)');
-            $attributesData   = $this->getAttributesIncludingDerivedAttributesData();
-            if(!isset($attributesData[$attribute]))
+            if($this->isDynamicallyDerivedAttribute($attribute))
             {
-                throw new NotSupportedException();
+                $resolvedAttribute = $attribute;
             }
-            return $attributesData[$attribute]['label'];
+            else
+            {
+                $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            }
+            $attributesData    = $this->getAttributesIncludingDerivedAttributesData();
+            if(!isset($attributesData[$resolvedAttribute]))
+            {
+                throw new NotSupportedException('Label not found for: ' . $resolvedAttribute);
+            }
+            return $attributesData[$resolvedAttribute]['label'];
         }
 
         /**
@@ -215,6 +223,7 @@
             }
             elseif(count($relationAndInferredOrViaData) == 2)
             {
+                list($relation, $notUsed) = $relationAndInferredOrViaData;
                 return $this->model->getRelationModelClassName($relation);
             }
             elseif(count($relationAndInferredOrViaData) == 1 && isset($derivedRelations[$relation]))
@@ -236,15 +245,15 @@
          */
         private function resolveRealAttributeName($attribute)
         {
-            assert('is_string($relation)');
+            assert('is_string($attribute)');
             $delimiter                       = FormModelUtil::DELIMITER;
             $attributeAndInferredOrViaData   = explode($delimiter, $attribute);
-            if(count($relationAndInferredOrViaData) == 4)
+            if(count($attributeAndInferredOrViaData) == 4)
             {
                 list($notUsed, $attribute, $notUsed2, $notUsed3) = $attributeAndInferredOrViaData;
                 return $attribute;
             }
-            elseif(count($relationAndInferredOrViaData) == 2)
+            elseif(count($attributeAndInferredOrViaData) == 2)
             {
                 list($attribute, $notUsed) = $attributeAndInferredOrViaData;
                 return $attribute;
@@ -363,6 +372,7 @@
             }
             elseif(count($relationAndInferredOrViaData) == 2)
             {
+                list($relation, $notUsed) = $relationAndInferredOrViaData;
                 $type = $this->model->getRelationType($relation);
             }
             elseif(count($relationAndInferredOrViaData) == 1 && isset($derivedRelations[$relation]))

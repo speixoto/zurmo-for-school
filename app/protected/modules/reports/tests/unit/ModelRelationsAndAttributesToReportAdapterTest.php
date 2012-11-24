@@ -770,7 +770,7 @@
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Maximum']);
 
             //Now test where there is a second group by and it is the name attribute on ReportModelTestItem2
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'hasOne___name';
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());

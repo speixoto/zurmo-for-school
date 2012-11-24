@@ -142,10 +142,10 @@
             elseif($this->model->getReportType() == Report::TYPE_MATRIX)
             {
                 $params                               = array('inputPrefix' => $this->inputPrefixData);
-                $groupByAxisElement                   = new GroupByAxisStaticDropDownElement($this->model,
-                                                                                             $this->form, 'axis');
+                $groupByAxisElement                   = new GroupByAxisStaticDropDownElement($this->model, 'axis',
+                                                                                             $this->form, $params);
                 $groupByAxisElement->editableTemplate = '{content}{error}';
-                $groupByAxisElement                   = $attributeElement->render();
+                $groupByAxisElement                   = $groupByAxisElement->render();
             }
             else
             {
@@ -164,9 +164,10 @@
                 throw new NotSupportedException();
             }
             $params                             = array('inputPrefix' => $this->inputPrefixData);
-            $directionElement                   = new OrderByStaticDropDownElement($this->model, $this->form, 'order');
+            $directionElement                   = new OrderByStaticDropDownElement($this->model, 'order', $this->form,
+                                                                                   $params);
             $directionElement->editableTemplate = '{content}{error}';
-            $directionElement                   = $attributeElement->render();
+            $directionElement                   = $directionElement->render();
             $content                            = $this->renderAttributeIndexOrDerivedType();
             self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
             self::resolveDivWrapperForContent($directionElement,               $content);
@@ -176,7 +177,7 @@
         protected function getContentForDisplayAttribute()
         {
             $params                                = array('inputPrefix' => $this->inputPrefixData);
-            $displayLabelElement                   = new TextElement($this->model, $this->form, 'label');
+            $displayLabelElement                   = new TextElement($this->model, 'label', $this->form, $params);
             $displayLabelElement->editableTemplate = '{content}{error}';
             $displayLabelElement                   = $displayLabelElement->render();
             $content                               = $this->renderAttributeIndexOrDerivedType();
@@ -185,7 +186,7 @@
             return $content;
         }
 
-        protected function getContentForDrillDownAttribute()
+        protected function getContentForDrillDownDisplayAttribute()
         {
             if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS ||
                $this->model->getReportType() == Report::TYPE_MATRIX)
