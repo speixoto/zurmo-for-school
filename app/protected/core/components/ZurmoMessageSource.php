@@ -34,7 +34,7 @@
     {
         const CACHE_KEY_PREFIX='ZurmoMessageSource';
 
-        protected function installSchema() {
+        public static function installSchema() {
             if (RedBeanDatabase::isFrozen())
             {
                 RedBeanDatabase::unfreeze();
