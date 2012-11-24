@@ -135,11 +135,15 @@
 
         protected function getContentForGroupBy()
         {
-
-            if($this->model->getReportType() == Report::TYPE_MATRIX)
+            if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS)
+            {
+                throw new NotSupportedException();
+            }
+            elseif($this->model->getReportType() == Report::TYPE_MATRIX)
             {
                 $params                               = array('inputPrefix' => $this->inputPrefixData);
-                $groupByAxisElement                   = new Something($this->model, $this->form, $this->attribute);
+                $groupByAxisElement                   = new GroupByAxisStaticDropDownElement($this->model,
+                                                                                             $this->form, 'axis');
                 $groupByAxisElement->editableTemplate = '{content}{error}';
                 $groupByAxisElement                   = $attributeElement->render();
             }
@@ -155,8 +159,12 @@
 
         protected function getContentForOrderBy()
         {
+            if($this->model->getReportType() == Report::TYPE_MATRIX)
+            {
+                throw new NotSupportedException();
+            }
             $params                             = array('inputPrefix' => $this->inputPrefixData);
-            $directionElement                   = new Something($this->model, $this->form, $this->attribute);
+            $directionElement                   = new OrderByStaticDropDownElement($this->model, $this->form, 'order');
             $directionElement->editableTemplate = '{content}{error}';
             $directionElement                   = $attributeElement->render();
             $content                            = $this->renderAttributeIndexOrDerivedType();
@@ -168,7 +176,7 @@
         protected function getContentForDisplayAttribute()
         {
             $params                                = array('inputPrefix' => $this->inputPrefixData);
-            $displayLabelElement                   = new Something($this->model, $this->form, $this->attribute);
+            $displayLabelElement                   = new TextElement($this->model, $this->form, 'label');
             $displayLabelElement->editableTemplate = '{content}{error}';
             $displayLabelElement                   = $displayLabelElement->render();
             $content                               = $this->renderAttributeIndexOrDerivedType();
@@ -179,7 +187,12 @@
 
         protected function getContentForDrillDownAttribute()
         {
-            return $this->getContentForDrillDownAttribute();
+            if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS ||
+               $this->model->getReportType() == Report::TYPE_MATRIX)
+            {
+                throw new NotSupportedException();
+            }
+            return $this->getContentForDisplayAttribute();
         }
 
         protected static function resolveDivWrapperForContent($innerContent, & $content)

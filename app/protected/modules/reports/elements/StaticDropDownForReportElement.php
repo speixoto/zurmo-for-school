@@ -34,8 +34,6 @@
             parent::__construct($model, $attribute, $form, $params);
         }
 
-        //oneOf then use multipel
-
         public function getIdForSelectInput()
         {
             return $this->getEditableInputId($this->attribute);

@@ -40,7 +40,7 @@
 
         public function testSetAndGetFilter()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'string';
             $filter->operator                    = 'equals';
@@ -50,7 +50,7 @@
             $this->assertEquals('string', $filter->getResolvedAttribute());
             $this->assertEquals('String', $filter->getDisplayLabel());
 
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasOne___name';
             $filter->operator                    = 'equals';
@@ -63,7 +63,7 @@
             $this->assertEquals('ReportModelTestItem2 >> Name', $filter->getDisplayLabel());
 
             //2 levels deeps
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasOne___hasMany3___name';
             $filter->operator                    = 'equals';
@@ -81,7 +81,7 @@
          */
         public function testInferredRelationSetAndGet()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem5',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem5',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'ReportModelTestItem__reportItems__Inferred___phone';
             $filter->operator                    = 'equals';
@@ -102,7 +102,7 @@
          */
         public function testDerivedRelationSetAndGet()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'model5ViaItem___name';
             $filter->operator                    = 'equals';
@@ -121,7 +121,7 @@
         public function testRelationReportedAsAttributeSetAndGet()
         {
             //test dropDown
-            $filter                              = new FilterForReportForm('ReportModelTestItem2',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___dropDown';
             $filter->operator                    = 'equals';
@@ -134,7 +134,7 @@
             $this->assertEquals('ReportModelTestItems >> Drop Down', $filter->getDisplayLabel());
 
             //test currencyValue
-            $filter                              = new FilterForReportForm('ReportModelTestItem2',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___currencyValue';
             $filter->operator                    = 'equals';
@@ -147,7 +147,7 @@
             $this->assertEquals('ReportModelTestItems >> Currency Value', $filter->getDisplayLabel());
 
             //test reportedAsAttribute
-            $filter                              = new FilterForReportForm('ReportModelTestItem2',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___reportedAsAttribute';
             $filter->operator                    = 'equals';
@@ -160,7 +160,7 @@
             $this->assertEquals('ReportModelTestItems >> Reported As Attribute', $filter->getDisplayLabel());
 
             //test the likeContactState
-            $filter                              = new FilterForReportForm('ReportModelTestItem2',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
             $filter->operator                    = 'equals';
@@ -179,7 +179,7 @@
         public function testDynamicallyDerivedAttributeSetAndGet()
         {
             //test the likeContactState
-            $filter                              = new FilterForReportForm('ReportModelTestItem2',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___owner__User';
             $filter->operator                    = 'equals';
@@ -197,7 +197,7 @@
          */
         public function testValidateTextAttribute()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'string';
             $validated = $filter->validate();
@@ -217,7 +217,7 @@
          */
         public function testValidateIntegerAttribute()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'integer';
             $validated = $filter->validate();
@@ -278,7 +278,7 @@
          */
         public function testValidateDateAttribute()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'date';
             $validated = $filter->validate();
@@ -333,7 +333,7 @@
          */
         public function testValidateDateTimeAttribute()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'dateTime';
             $validated = $filter->validate();
@@ -388,7 +388,7 @@
          */
         public function testValidateBooleanAsDropDownAttribute()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'boolean';
             $validated = $filter->validate();
@@ -423,7 +423,7 @@
         public function testValidateDropDownAttribute()
         {
             //Test equals (non-array) and it is null
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'dropDown';
             $validated = $filter->validate();
@@ -479,7 +479,7 @@
         public function testValidateLikeContactStateAttribute()
         {
             //Test equals (non-array) and it is null
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'likeContactState';
             $validated = $filter->validate();
@@ -532,7 +532,7 @@
          */
         public function testValidateCurrencyValueAttribute()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'currencyValue';
             $validated = $filter->validate();
@@ -598,7 +598,7 @@
          */
         public function testValidateDynamicallyDerivedOwnerAttribute()
         {
-            $filter                              = new FilterForReportForm('ReportModelTestItem',
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                             Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'owner__User';
             $validated = $filter->validate();

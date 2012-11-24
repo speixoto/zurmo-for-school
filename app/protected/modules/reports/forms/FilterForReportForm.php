@@ -206,9 +206,10 @@
             {
                 throw new NotSupportedException();
             }
+            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
             $modelClassName       = $this->getResolvedAttributeModelClassName();
             $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                    make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
+                                    make($moduleClassName, $modelClassName, $this->reportType);
             return $modelToReportAdapter->getFilterValueElementType($this->getResolvedAttribute());
         }
 

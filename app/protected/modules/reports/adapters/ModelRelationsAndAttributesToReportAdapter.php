@@ -29,15 +29,21 @@
      */
     class ModelRelationsAndAttributesToReportAdapter
     {
-        const DYNAMIC_ATTRIBUTE_USER     = 'User';
+        const DYNAMIC_ATTRIBUTE_USER         = 'User';
 
-        const DYNAMIC_RELATION_INFERRED  = 'Inferred';
+        const DYNAMIC_RELATION_INFERRED      = 'Inferred';
+
+        const RELATION_VIA_MODULE            = 'Via';
+
+        const RELATION_VIA_MODULE_DELIMITER  = '_';
 
         protected $model;
 
         protected $rules;
 
         protected $reportType;
+
+        protected $moduleClassName;
 
         public function getModel()
         {
@@ -53,15 +59,18 @@
             $model                     = new $modelClassName(false);
             if($reportType == Report::TYPE_ROWS_AND_COLUMNS)
             {
-                $adapter       = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $reportType);
+                $adapter       = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules,
+                                                                                         $reportType, $moduleClassName);
             }
             elseif($reportType == Report::TYPE_SUMMATION)
             {
-                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $reportType);
+                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules,
+                                                                                         $reportType, $moduleClassName);
             }
             elseif($reportType == Report::TYPE_MATRIX)
             {
-                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $reportType);
+                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules,
+                                                                                         $reportType, $moduleClassName);
             }
             else
             {
@@ -70,12 +79,26 @@
             return $adapter;
         }
 
-        public function __construct(RedBeanModel $model, ReportRules $rules, $reportType)
+        /**
+         * @param RedBeanModel $model
+         * @param ReportRules $rules
+         * @param string $reportType
+         * @param string $moduleClassName - optional for when there is a stateAdapter involved.  In the case of LeadsModule
+         * it still uses the Contact model but is important to know that the originating module is Leads.  If moduleClassName
+         * is not specified, then it will default to the model's moduleClassName
+         */
+        public function __construct(RedBeanModel $model, ReportRules $rules, $reportType, $moduleClassName = null)
         {
             assert('is_string($reportType)');
+            assert('is_string($moduleClassName) || $moduleClassName == null');
             $this->model      = $model;
             $this->rules      = $rules;
             $this->reportType = $reportType;
+            if($moduleClassName == null)
+            {
+                $moduleClassName   = $model::getModuleClassName();
+            }
+            $this->moduleClassName = $moduleClassName;
         }
 
         /**
@@ -130,31 +153,105 @@
         }
 
         /**
+         * @return module class name.  Resolves for inferred and derived relations
+         */
+        public function getRelationModuleClassName($relation)
+        {
+            assert('is_string($relation)');
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $relationAndInferredOrViaData    = explode($delimiter, $relation);
+            $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
+            if(count($relationAndInferredOrViaData) == 4)
+            {
+                list($notUsed, $notUsed2, $notUsed3, $viaModule) = $relationAndInferredOrViaData;
+                list($notUsed, $moduleClassName)                 = explode(self::RELATION_VIA_MODULE_DELIMITER, $viaModule);
+                return $moduleClassName;
+            }
+            if(count($relationAndInferredOrViaData) == 3)
+            {
+                list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredOrViaData;
+                return $modelClassName::getModuleClassName();
+            }
+            elseif(count($relationAndInferredOrViaData) == 2)
+            {
+                list($notUsed, $viaModule)       = $relationAndInferredOrViaData;
+                list($notUsed, $moduleClassName) = explode(self::RELATION_VIA_MODULE_DELIMITER, $viaModule);
+                return $moduleClassName;
+            }
+            elseif(count($relationAndInferredOrViaData) == 1 && isset($derivedRelations[$relation]))
+            {
+                $modelClassName = $this->model->getDerivedRelationModelClassName($relation);
+                return $modelClassName::getModuleClassName();
+            }
+            elseif(count($relationAndInferredOrViaData) == 1)
+            {
+                $modelClassName = $this->model->getRelationModelClassName($relation);
+                return $modelClassName::getModuleClassName();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /**
          * @return model class name.  Resolves for inferred and derived relations
          */
         public function getRelationModelClassName($relation)
         {
             assert('is_string($relation)');
-            assert('$this->isRelation($relation)');
             $delimiter                       = FormModelUtil::DELIMITER;
-            $relationAndInferredData         = explode($delimiter, $relation);
+            $relationAndInferredOrViaData    = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
-            if(count($relationAndInferredData) == 3)
+            if(count($relationAndInferredOrViaData) == 4)
             {
-                list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredData;
+                list($modelClassName, $notUsed, $notUsed2, $notUsed3) = $relationAndInferredOrViaData;
                 return $modelClassName;
             }
-            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            if(count($relationAndInferredOrViaData) == 3)
+            {
+                list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredOrViaData;
+                return $modelClassName;
+            }
+            elseif(count($relationAndInferredOrViaData) == 2)
+            {
+                return $this->model->getRelationModelClassName($relation);
+            }
+            elseif(count($relationAndInferredOrViaData) == 1 && isset($derivedRelations[$relation]))
             {
                 return $this->model->getDerivedRelationModelClassName($relation);
             }
-            elseif(count($relationAndInferredData) == 1)
+            elseif(count($relationAndInferredOrViaData) == 1)
             {
                 return $this->model->getRelationModelClassName($relation);
             }
             else
             {
                 throw new NotSupportedException();
+            }
+        }
+
+        /**
+         * @return real model attribute name.  Parses for Inferred, Inferred__Via, and Via.
+         */
+        private function resolveRealAttributeName($attribute)
+        {
+            assert('is_string($relation)');
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $attributeAndInferredOrViaData   = explode($delimiter, $attribute);
+            if(count($relationAndInferredOrViaData) == 4)
+            {
+                list($notUsed, $attribute, $notUsed2, $notUsed3) = $attributeAndInferredOrViaData;
+                return $attribute;
+            }
+            elseif(count($relationAndInferredOrViaData) == 2)
+            {
+                list($attribute, $notUsed) = $attributeAndInferredOrViaData;
+                return $attribute;
+            }
+            else
+            {
+                return $attribute;
             }
         }
 
@@ -193,13 +290,50 @@
                     !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation)
                     )
                 {
-                    $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
+                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
                 }
             }
             $attributes       = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData($precedingModel, $precedingRelation));
             $attributes       = array_merge($attributes, $this->getInferredRelationsData($precedingModel, $precedingRelation));
             $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
             return $sortedAttributes;
+        }
+
+        private function resolveRelationToSelectableRelationData(& $attributes, $attribute)
+        {
+            assert('is_array($attributes)');
+            assert('is_string($attribute)');
+            $metadata                = $this->model->getMetadata();
+            $attributeModelClassName = $this->model->getAttributeModelClassName($attribute);
+            if(isset($metadata[$attributeModelClassName]['relationsModuleConnections']) &&
+               isset($metadata[$attributeModelClassName]['relationsModuleConnections'][$attribute]))
+            {
+                foreach($metadata[$attributeModelClassName]['relationsModuleConnections'][$attribute] as $moduleClassName)
+                {
+                    $attributeNameToUse     = self::resolveAttributeNameToUseForRelationWithModuleConnection(
+                                              $attribute, $moduleClassName);
+                    $typeToUse              = 'Plural';
+                    if($this->isRelationASingularRelation($attribute))
+                    {
+                        $typeToUse = 'Singular';
+                    }
+                    $attributes[$attributeNameToUse] = array('label' =>
+                                                       $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse));
+                }
+            }
+            else
+            {
+                $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
+            }
+        }
+
+        protected static function resolveAttributeNameToUseForRelationWithModuleConnection($attribute, $moduleClassName)
+        {
+            assert('is_string($attribute)');
+            assert('is_string($moduleClassName)');
+            return $attribute . FormModelUtil::DELIMITER . self::RELATION_VIA_MODULE .
+                   self::RELATION_VIA_MODULE_DELIMITER . $moduleClassName;
+
         }
 
         public function getAttributesIncludingDerivedAttributesData()
@@ -214,20 +348,28 @@
         public function isRelationASingularRelation($relation)
         {
             assert('is_string($relation)');
-            assert('$this->isRelation($relation)');
             $delimiter                       = FormModelUtil::DELIMITER;
-            $relationAndInferredData         = explode($delimiter, $relation);
+            $relationAndInferredOrViaData    = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
-            if(count($relationAndInferredData) == 3)
+            if(count($relationAndInferredOrViaData) == 4)
             {
-                list($modelClassName, $relation, $notUsed) = $relationAndInferredData;
+                list($modelClassName, $relation, $notUsed, $notUsed) = $relationAndInferredOrViaData;
                 $type = $this->model->getRelationType($relation);
             }
-            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            elseif(count($relationAndInferredOrViaData) == 3)
+            {
+                list($modelClassName, $relation, $notUsed) = $relationAndInferredOrViaData;
+                $type = $this->model->getRelationType($relation);
+            }
+            elseif(count($relationAndInferredOrViaData) == 2)
+            {
+                $type = $this->model->getRelationType($relation);
+            }
+            elseif(count($relationAndInferredOrViaData) == 1 && isset($derivedRelations[$relation]))
             {
                 $type = $this->model->getDerivedRelationType($relation);
             }
-            elseif(count($relationAndInferredData) == 1)
+            elseif(count($relationAndInferredOrViaData) == 1)
             {
                 $type = $this->model->getRelationType($relation);
             }
@@ -273,13 +415,34 @@
                 $inferredRelationModelClassNames = $this->getInferredRelationModelClassNamesForRelation($attribute);
                 if ($this->model->isRelation($attribute) && $inferredRelationModelClassNames != null)
                 {
+                    $inferredModuleConnections = $this->rules->getInferredModuleConnections($this->model, $attribute);
                     foreach($inferredRelationModelClassNames as $modelClassName)
                     {
                         if(!$this->inferredRelationLinksToPrecedingRelation($modelClassName, $attribute, $precedingModel, $precedingRelation))
                         {
-                            $attributes[$modelClassName  . FormModelUtil::DELIMITER .
+                            if(isset($inferredModuleConnections[$modelClassName]))
+                            {
+                                foreach($inferredModuleConnections[$modelClassName] as $moduleClassName)
+                                {
+                                    $typeToUse              = 'Plural';
+                                    if($this->isRelationASingularRelation($attribute))
+                                    {
+                                        $typeToUse = 'Singular';
+                                    }
+                                    $attributes[$modelClassName  . FormModelUtil::DELIMITER .
+                                            $attribute . FormModelUtil::DELIMITER . self::DYNAMIC_RELATION_INFERRED
+                                            . FormModelUtil::DELIMITER . self::RELATION_VIA_MODULE .
+                                            self::RELATION_VIA_MODULE_DELIMITER . $moduleClassName] =
+                                    array('label' => $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse));
+                                }
+                            }
+                            else
+                            {
+                                $attributes[$modelClassName  . FormModelUtil::DELIMITER .
                                         $attribute . FormModelUtil::DELIMITER . self::DYNAMIC_RELATION_INFERRED] =
                                 array('label' => $modelClassName::getModelLabelByTypeAndLanguage('Plural'));
+                            }
+
                         }
                     }
                 }
@@ -520,7 +683,13 @@
                 }
                 return 'UserNameId';
             }
-            return ModeAttributeToReportFilterValueElementTypeUtil::getType($this->model, $attribute);
+            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            if(null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementTypes($this->model,
+                                                                                                  $resolvedAttribute))
+            {
+                return $filterValueElementTypeFromRule;
+            }
+            return ModeAttributeToReportFilterValueElementTypeUtil::getType($this->model, $resolvedAttribute);
         }
 
         public function getAvailableOperatorsType($attribute)
@@ -534,7 +703,13 @@
             {
                 throw new NotSupportedException($message, $code, $previous);
             }
-            return ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($this->model, $attribute);
+            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
+                                                                                                  $resolvedAttribute))
+            {
+                return $availableOperatorsTypeFromRule;
+            }
+            return ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($this->model, $resolvedAttribute);
         }
     }
 ?>

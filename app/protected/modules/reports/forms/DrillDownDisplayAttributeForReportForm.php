@@ -24,38 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GroupByForReportForm extends ComponentForReportForm
+    class DrillDownDisplayAttributeForReportForm extends DisplayAttributeForReportForm
     {
-        public $axis = 'x';
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                array('axis', 'required'),
-                array('axis', 'type', 'type' => 'string'),
-                array('axis', 'validateAxis'),
-            ));
-        }
-
-        public function validateAxis()
-        {
-            if($this->axis != 'x' && $this->axis != 'y')
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public function getAxisValuesAndLabels()
-        {
-            if($this->attributeIndexOrDerivedType == null)
-            {
-                throw new NotSupportedException();
-            }
-            $data = array();
-            $data['x']       = Yii::t('Default', 'X-Axis');
-            $data['y']       = Yii::t('Default', 'Y-Axis');
-            return $data;
-        }
     }
 ?>

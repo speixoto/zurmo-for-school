@@ -24,38 +24,43 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GroupByForReportForm extends ComponentForReportForm
+    /**
+     * Used to demonstrate attributes like likeContactState that contain different states depending on what module
+     * is utilizing the model. ReportModelTestItem has likeContactState.
+     */
+    class ReportsAlternateStateTestModule extends Module
     {
-        public $axis = 'x';
-
-        public function rules()
+        public function getDependencies()
         {
-            return array_merge(parent::rules(), array(
-                array('axis', 'required'),
-                array('axis', 'type', 'type' => 'string'),
-                array('axis', 'validateAxis'),
-            ));
+            return array(
+            );
         }
 
-        public function validateAxis()
+        public static function getDefaultMetadata()
         {
-            if($this->axis != 'x' && $this->axis != 'y')
-            {
-                return false;
-            }
-            return true;
+            $metadata = array();
+            $metadata['global'] = array(
+                'tabMenuItems' => array(
+                ),
+                'designerMenuItems' => array(
+                ),
+                'a' => 1,
+                'b' => 2,
+                'c' => 3,
+                //globalSearchAttributeNames is used by A model.
+                'globalSearchAttributeNames' => array('a', 'name')
+            );
+            return $metadata;
         }
 
-        public function getAxisValuesAndLabels()
+        public static function getPrimaryModelName()
         {
-            if($this->attributeIndexOrDerivedType == null)
-            {
-                throw new NotSupportedException();
-            }
-            $data = array();
-            $data['x']       = Yii::t('Default', 'X-Axis');
-            $data['y']       = Yii::t('Default', 'Y-Axis');
-            return $data;
+            return 'ReportModelTestItem';
+        }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'ReportModelTestItem';
         }
     }
 ?>

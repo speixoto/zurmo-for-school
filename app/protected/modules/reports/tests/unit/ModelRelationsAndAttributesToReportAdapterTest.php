@@ -247,18 +247,22 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getInferredRelationsData();
-            $this->assertEquals(2, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
+            $this->assertEquals(3, count($relations));
+            $compareData        = array('label' => 'Reports Test');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule']);
+            $compareData        = array('label' => 'Reports Alternate State Test');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
 
             //Getting all selectable relations. Should yield all 3 relations
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
-            $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
+            $this->assertEquals(7, count($relations));
+            $compareData        = array('label' => 'Reports Test');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule']);
+            $compareData        = array('label' => 'Reports Alternate State Test');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
             $compareData        = array('label' => 'Report Items');
@@ -274,6 +278,37 @@
 
         /**
          * @depends testGetInferredRelationsData
+         * Used to test when a relation is to a model that has state information.  An example is a model related to contacts
+         * Module connection information can be used to clarify if a relation is to the baseModule and another alternative module.
+         * Opportunities -> contacts for example only connects to ContactsModule so the RelationsModuleConnections information
+         * would not be populated.  However if you had a Ticket module that connected -> contacts and you wanted to have
+         * tickets connected to leads, then you would populate relationsModuleConnections information.
+         */
+        public function testGetRelationsWithModuleConnections()
+        {
+            $model              = new ReportModelTestItem8();
+            $rules              = new ReportsTestReportRules();
+            $report             = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
+            $relations = $adapter->getSelectableRelationsData();
+            $this->assertEquals(5, count($relations));
+            $compareData        = array('label' => 'Reports Test');
+            $this->assertEquals($compareData, $relations['reportModelTestItems__Via_ReportsTestModule']);
+            $compareData        = array('label' => 'Reports Alternate State Test');
+            $this->assertEquals($compareData, $relations['reportModelTestItems__Via_ReportsAlternateStateTestModule']);
+            //Add Dynamically Derived Attributes
+            $compareData        = array('label' => 'Owner');
+            $this->assertEquals($compareData, $relations['owner']);
+            $compareData        = array('label' => 'Created By User');
+            $this->assertEquals($compareData, $relations['createdByUser']);
+            $compareData        = array('label' => 'Modified By User');
+            $this->assertEquals($compareData, $relations['modifiedByUser']);
+        }
+
+        /**
+         * @depends testGetRelationsWithModuleConnections
          */
         public function testGetInferredRelationsDataWithPrecedingModel()
         {
@@ -286,9 +321,11 @@
             //Test calling on model 5 with a preceding model that is NOT part of reportItems
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'model5');
-            $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
+            $this->assertEquals(7, count($relations));
+            $compareData        = array('label' => 'Reports Test');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule']);
+            $compareData        = array('label' => 'Reports Alternate State Test');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
             $compareData        = array('label' => 'Report Items');
@@ -625,7 +662,7 @@
             //Select dropDown as the groupBy attribute
             $report             = new Report();
             $report->setType(Report::TYPE_SUMMATION);
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'dropDown';
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
@@ -687,9 +724,9 @@
             //Add a second groupBy attribute radioDropDown on the same model
             $report             = new Report();
             $report->setType(Report::TYPE_SUMMATION);
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'dropDown';
-            $groupBy2           = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy2           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy2->attributeIndexOrDerivedType = 'radioDropDown';
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
@@ -712,7 +749,7 @@
             //so the name attribute should not show up as being available.
             $report             = new Report();
             $report->setType(Report::TYPE_SUMMATION);
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'phone';
             $model              = new ReportModelTestItem2();
             $rules              = new ReportsTestReportRules();
@@ -761,7 +798,7 @@
 
             //Test where the group by is 2 levels above
             $model              = new ReportModelTestItem3();
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'hasOne___hasMany3___somethingOn3';
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
@@ -798,7 +835,7 @@
             $this->assertEquals(0, count($attributes));
 
             //A group by is selected on the base model ReportModelTestItem
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'dropDown';
             $model              = new ReportModelTestItem();
             $report->addGroupBy($groupBy);
@@ -809,7 +846,7 @@
             $this->assertEquals($compareData, $attributes['dropDown']);
 
             //Now test when a group by is also selected on the related ReportModelTestItem2
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'hasOne___phone';
             $model              = new ReportModelTestItem2();
             $report->addGroupBy($groupBy);
@@ -820,7 +857,7 @@
             $this->assertEquals($compareData, $attributes['phone']);
 
             //Now test a third group by on the base model ReportModelTestItem
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'radioDropDown';
             $model              = new ReportModelTestItem();
             $report->addGroupBy($groupBy);
@@ -1141,7 +1178,7 @@
             $this->assertEquals(0, count($attributes));
 
             //Select dropDown as the groupBy attribute
-            $groupBy            = new GroupByForReportForm('ReportModelTestItem', $report->getType());
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'dropDown';
             $report             = new Report();
             $report->setType(Report::TYPE_MATRIX);
@@ -1202,11 +1239,6 @@
         /**
          * @depends testGetAvailableAttributesForMatrixDisplayAttributes
          */
-        public function testResolveAndGetRelationModelClassName()
-        {
-            $this->fail();
-        }
-
         public function testIsRelation()
         {
             $model              = new ReportModelTestItem();
@@ -1225,16 +1257,21 @@
             $this->assertTrue($adapter->isRelation('primaryEmail'));
             $this->assertFalse($adapter->isRelation('dropDown'));
 
-
             $model              = new ReportModelTestItem5();
             $rules              = new ReportsTestReportRules();
             $report             = new Report();
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
-            $this->assertTrue($adapter->isRelation('ReportModelTestItem__reportItems__Inferred'));
+            $this->assertFalse($adapter->isRelation('ReportModelTestItem__reportItems__Inferred'));
+            $this->assertTrue ($adapter->isRelation('ReportModelTestItem2__reportItems__Inferred'));
+            $this->assertTrue ($adapter->isRelation('ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule'));
+            $this->assertTrue ($adapter->isRelation('ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule'));
         }
 
+        /**
+         * @depends testIsRelation
+         */
         public function testIsRelationASingularRelation()
         {
             $model              = new ReportModelTestItem();
@@ -1252,15 +1289,71 @@
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
-            $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem__reportItems__Inferred'));
+            $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem2__reportItems__Inferred'));
+            $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule'));
+            $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule'));
         }
 
+        /**
+         * @depends testIsRelationASingularRelation
+         */
+        public function testGetFilterValueElementTypeForNonStatefulAttributes()
+        {
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules();
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
+            $this->assertEquals('BooleanForReportStaticDropDown', $adapter->getFilterValueElementType('boolean'));
+            $this->assertEquals('MixedCurrencyValueTypes',        $adapter->getFilterValueElementType('currencyValue'));
+            $this->assertEquals('MixedDateTypesForReport',        $adapter->getFilterValueElementType('date'));
+            $this->assertEquals('MixedDateTypesForReport',        $adapter->getFilterValueElementType('dateTime'));
+            $this->assertEquals('StaticDropDownForReport',        $adapter->getFilterValueElementType('dropDown'));
+            $this->assertEquals('MixedNumberTypes',               $adapter->getFilterValueElementType('float'));
+            $this->assertEquals('MixedNumberTypes',               $adapter->getFilterValueElementType('integer'));
+            $this->assertEquals('StaticDropDownForReport',        $adapter->getFilterValueElementType('multiDropDown'));
+            $this->assertEquals('Text',                           $adapter->getFilterValueElementType('phone'));
+            $this->assertEquals('StaticDropDownForReport',        $adapter->getFilterValueElementType('radioDropDown'));
+            $this->assertEquals('Text',                           $adapter->getFilterValueElementType('string'));
+            $this->assertEquals('StaticDropDownForReport',        $adapter->getFilterValueElementType('tagCloud'));
+            $this->assertEquals('Text',                           $adapter->getFilterValueElementType('textArea'));
+            $this->assertEquals('Text',                           $adapter->getFilterValueElementType('url'));
+        }
+
+        /**
+         * @depends testGetFilterValueElementTypeForNonStatefulAttributes
+         */
+        public function testGetFilterValueElementTypeForAStatefulAttribute()
+        {
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules();
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
+            $this->assertEquals('ContactStateStaticDropDownForReport', $adapter->getFilterValueElementType('likeContactState'));
+
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsAlternateStateTestReportRules();
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
+            $this->assertEquals('LeadStateStaticDropDownForReport', $adapter->getFilterValueElementType('likeContactState'));
+        }
+
+        /**
+         * @depends testGetFilterValueElementTypeForAStatefulAttribute
+         */
+        public function testResolveAndGetRelationModelClassName()
+        {
+            $this->fail();
+        }
+
+        /**
+         * @depends testResolveAndGetRelationModelClassName
+         */
         public function testGetFilterRulesByAttribute()
         {
             //todo:
             $this->fail();
         }
 
+        /**
+         * @depends testGetFilterRulesByAttribute
+         */
         public function testGetOperatorType()
         {
             //also test getAttributeFilterType

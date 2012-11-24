@@ -148,8 +148,43 @@
             return $derivedAttributeTypesData;
         }
 
-        //Rules say state uses X element for filter. or displayColumn for example
-        //are there some derivedAttributes that are in fact availble on filter or other places beside just display
-        //coolumns, if so need to think that through.
+        public function getAvailableOperatorsTypes(RedBeanModel $model, $attribute)
+        {
+            assert('is_string($attribute)');
+            $modelClassName = $model->getAttributeModelClassName($attribute);
+            $metadata = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['availableOperatorsTypes']) &&
+               isset($attribute, $metadata[$modelClassName]['availableOperatorsTypes'][$attribute]))
+            {
+                return $metadata[$modelClassName]['availableOperatorsTypes'][$attribute];
+            }
+            return null;
+        }
+
+        public function getFilterValueElementTypes(RedBeanModel $model, $attribute)
+        {
+            assert('is_string($attribute)');
+            $modelClassName = $model->getAttributeModelClassName($attribute);
+            $metadata = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['filterValueElementTypes']) &&
+               isset($attribute, $metadata[$modelClassName]['filterValueElementTypes'][$attribute]))
+            {
+                return $metadata[$modelClassName]['filterValueElementTypes'][$attribute];
+            }
+            return null;
+        }
+
+        public function getInferredModuleConnections(RedBeanModel $model, $attribute)
+        {
+            assert('is_string($attribute)');
+            $modelClassName = $model->getAttributeModelClassName($attribute);
+            $metadata = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['inferredModuleConnections']) &&
+               isset($attribute, $metadata[$modelClassName]['inferredModuleConnections'][$attribute]))
+            {
+                return $metadata[$modelClassName]['inferredModuleConnections'][$attribute];
+            }
+            return null;
+        }
     }
 ?>

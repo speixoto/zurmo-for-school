@@ -28,6 +28,8 @@
     {
         const     DISPLAY_LABEL_RELATION_DIVIDER = '>>';
 
+        protected $moduleClassName;
+
         protected $modelClassName;
 
         protected $attributeAndRelationData;
@@ -61,12 +63,14 @@
             return array();
         }
 
-        public function __construct($modelClassName, $reportType)
+        public function __construct($moduleClassName, $modelClassName, $reportType)
         {
+            assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
             assert(is_string($reportType));
-            $this->modelClassName = $modelClassName;
-            $this->reportType     = $reportType;
+            $this->moduleClassName = $moduleClassName;
+            $this->modelClassName  = $modelClassName;
+            $this->reportType      = $reportType;
         }
 
         public function getModelClassName()
@@ -104,6 +108,16 @@
                 return $this->attribute;
             }
             return $this->resolveAttributeFromData($this->attributeAndRelationData);
+        }
+
+        public function getResolvedAttributeModuleClassName()
+        {
+            if($this->attribute != null)
+            {
+                return $this->moduleClassName;
+            }
+            return $this->resolveAttributeModuleClassNameFromData($this->attributeAndRelationData,
+                                                                  $this->moduleClassName, $this->modelClassName);
         }
 
         public function getResolvedAttributeModelClassName()
@@ -195,6 +209,22 @@
         {
             assert(count($attributeAndRelationData) > 0);
             return end($attributeAndRelationData);
+        }
+
+        protected function resolveAttributeModuleClassNameFromData(Array $attributeAndRelationData, $moduleClassName,
+                                                                   $modelClassName)
+        {
+            assert(count($attributeAndRelationData) > 0);
+            foreach($attributeAndRelationData as $relationOrAttribute)
+            {
+                $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
+                                        make($moduleClassName, $modelClassName, $this->reportType);
+                if($modelToReportAdapter->isRelation($relationOrAttribute))
+                {
+                    $moduleClassName   = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
+                }
+            }
+            return $moduleClassName;
         }
 
         protected function resolveAttributeModelClassNameFromData(Array $attributeAndRelationData, $modelClassName)

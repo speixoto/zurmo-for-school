@@ -24,37 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GroupByForReportForm extends ComponentForReportForm
+    class OrderByForReportForm extends ComponentForReportForm
     {
-        public $axis = 'x';
+        public $order = 'asc';
 
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('axis', 'required'),
-                array('axis', 'type', 'type' => 'string'),
-                array('axis', 'validateAxis'),
+                array('order', 'required'),
+                array('order', 'type', 'type' => 'string'),
+                array('order', 'validateOrder'),
             ));
         }
 
-        public function validateAxis()
+        public function validateOrder()
         {
-            if($this->axis != 'x' && $this->axis != 'y')
+            if($this->order != 'asc' && $this->order != 'desc')
             {
                 return false;
             }
             return true;
         }
 
-        public function getAxisValuesAndLabels()
+        public function getOrderValuesAndLabels()
         {
             if($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
             $data = array();
-            $data['x']       = Yii::t('Default', 'X-Axis');
-            $data['y']       = Yii::t('Default', 'Y-Axis');
+            $data['asc']       = Yii::t('Default', 'Ascending');
+            $data['desc']       = Yii::t('Default', 'Descending');
             return $data;
         }
     }

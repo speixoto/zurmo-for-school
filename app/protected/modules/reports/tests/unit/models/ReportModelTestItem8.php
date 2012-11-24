@@ -24,38 +24,36 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GroupByForReportForm extends ComponentForReportForm
+    class ReportModelTestItem8 extends OwnedSecurableItem
     {
-        public $axis = 'x';
-
-        public function rules()
+        public static function getDefaultMetadata()
         {
-            return array_merge(parent::rules(), array(
-                array('axis', 'required'),
-                array('axis', 'type', 'type' => 'string'),
-                array('axis', 'validateAxis'),
-            ));
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'relations' => array(
+                    'reportModelTestItems' => array(RedBeanModel::HAS_MANY, 'ReportModelTestItem'),
+                ),
+                'relationsModuleConnections' =>
+                    array('reportModelTestItems' => array('ReportsTestModule', 'ReportsAlternateStateTestModule')),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+            );
+            return $metadata;
         }
 
-        public function validateAxis()
+        public static function isTypeDeletable()
         {
-            if($this->axis != 'x' && $this->axis != 'y')
-            {
-                return false;
-            }
             return true;
         }
 
-        public function getAxisValuesAndLabels()
+        public static function getModuleClassName()
         {
-            if($this->attributeIndexOrDerivedType == null)
-            {
-                throw new NotSupportedException();
-            }
-            $data = array();
-            $data['x']       = Yii::t('Default', 'X-Axis');
-            $data['y']       = Yii::t('Default', 'Y-Axis');
-            return $data;
+            return 'ReportsTestModule';
         }
     }
 ?>

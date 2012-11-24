@@ -41,7 +41,17 @@
                         array('nonReportable',
                               'nonReportable2'),
                     'derivedAttributeTypes' =>
-                        array('FullName')
+                        array('FullName'),
+                    'availableOperatorsTypes' =>
+                        array('likeContactState' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'filterValueElementTypes' =>
+                        array('likeContactState' => 'ContactStateStaticDropDownForReport'),
+                ),
+                'ReportModelTestItem5' => array(
+                    'inferredModuleConnections' =>
+                        array('reportItems' =>
+                            array('ReportModelTestItem' =>
+                                array('ReportsTestModule', 'ReportsAlternateStateTestModule'))),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);

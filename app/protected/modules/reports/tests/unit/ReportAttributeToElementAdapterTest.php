@@ -31,6 +31,7 @@
             parent::setUpBeforeClass();
 
             SecurityTestHelper::createSuperAdmin();
+            ContactsModule::loadStartingData();
             //Need to instantiate a controller so the clipWidget can work properly in elements that utilize it.
             $controller                  = Yii::app()->createController('reports/default');
             list($controller, $actionId) = $controller;
@@ -88,9 +89,10 @@
         {
             $inputPrefixData      = array('some', 'prefix');
             $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
+            $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
-            $model                = new FilterForReportForm($modelClassName, $reportType);
+            $model                = new FilterForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
             //Test a boolean attribute which does not have an operator
@@ -300,22 +302,110 @@
             $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
             $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
 
-            //likeContactState,
-                //#1 - identify that this can potentially have a state.
-                //in the reportRules we can identify it as having a state, even identify which element to use?
-                //#2 - but we still dont know if we are approaching this via leads or contacts module.
+            //Test a likeContactState directly on base model where model's module's model is the same model
+            $model                              = new FilterForReportForm($moduleClassName, $modelClassName, $reportType);
+            $model->attributeIndexOrDerivedType = 'likeContactState';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, 'Qualified')   === false);
+            $this->assertTrue(strpos($content,  'In Progress') === false);
 
-            //ulitmately it is about resolving to either ContactStateStaticDropDownElement or LeadStateStaticDropDownElement
-            //if you are in accounts and relate to contacts, how do we know this is contactsModule and not LeadsModule
-            //from activities we only know the model , we would have to do a forker.
+            //Test a likeContactState directly on base model where model's module's is the alternative module
+            $model                              = new FilterForReportForm('ReportsAlternateStateTestModule',
+                                                                          $modelClassName, $reportType);
+            $model->attributeIndexOrDerivedType = 'likeContactState';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertTrue(strpos($content,  'Qualified')    === false);
+            $this->assertFalse(strpos($content, 'In Progress')  === false);
+
+            //Test a likeContactState on a related model, where the relation is against the base module
+            $model                              = new FilterForReportForm($moduleClassName,
+                                                                          'ReportModelTestItem2', $reportType);
+            $model->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, 'Qualified')   === false);
+            $this->assertTrue (strpos($content, 'In Progress') === false);
+
+            //Test a likeContactState on a related model, where the relation is against the alternative module
+            $model                              = new FilterForReportForm($moduleClassName,
+                                                                          'ReportModelTestItem2', $reportType);
+            $model->attributeIndexOrDerivedType = 'hasMany2___likeContactState__Via_ReportsAlternateStateTestModule';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertTrue (strpos($content, 'Qualified')   === false);
+            $this->assertFalse(strpos($content, 'In Progress') === false);
+
+
+            //Test a likeContactState on an inferred related model, where the relation is against the base module
+            $model                              = new FilterForReportForm($moduleClassName,
+                                                                          'ReportModelTestItem5', $reportType);
+            $model->attributeIndexOrDerivedType = 'ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertFalse(strpos($content, 'Qualified')   === false);
+            $this->assertTrue (strpos($content, 'In Progress') === false);
+
+            //Test a likeContactState on an inferred related model, where the relation is against the alternative module
+            $model                              = new FilterForReportForm($moduleClassName,
+                                                                          'ReportModelTestItem5', $reportType);
+            $model->attributeIndexOrDerivedType = 'ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
+            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertTrue (strpos($content, 'Qualified')   === false);
+            $this->assertFalse(strpos($content, 'In Progress') === false);
         }
 
         /**
          * @depends testGetFilterContentForRowsAndColumns
+         * @expectedException NotSupportedException
          */
         public function testGetGroupByContentForRowsAndColumns()
         {
-            //todo: think about group by axis check check no axis here.
+            $inputPrefixData      = array('some', 'prefix');
+            $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS;
+            $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
+            $form                 = new ZurmoActiveForm();
+
+            //Test any attribute
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
             $this->fail();
         }
 
@@ -324,8 +414,23 @@
          */
         public function testGetOrderByContentForRowsAndColumns()
         {
-            //todo:
-            $this->fail();
+            $inputPrefixData      = array('some', 'prefix');
+            $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS;
+            $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
+            $form                 = new ZurmoActiveForm();
+
+            //Test any attribute
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            echo $content;
+            exit;
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][order]"')  === false);
         }
 
         /**
@@ -333,27 +438,141 @@
          */
         public function testGetDisplayAttributeContentForRowsAndColumns()
         {
-            //todo:
-            $this->fail();
+            $inputPrefixData      = array('some', 'prefix');
+            $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES;
+            $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
+            $form                 = new ZurmoActiveForm();
+
+            //Test any attribute
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            echo $content;
+            exit;
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][label]"')  === false);
         }
 
         /**
          * @depends testGetDisplayAttributeContentForRowsAndColumns
+         * @expectedException NotSupportedException
          */
         public function testGetDrillDownDisplayAttributeContentForRowsAndColumns()
         {
-            //todo:
+            $inputPrefixData      = array('some', 'prefix');
+            $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+            $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
+            $form                 = new ZurmoActiveForm();
+
+            //Test a boolean attribute which does not have an operator
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
             $this->fail();
         }
 
-        //etc. etc.
-
-
-        public function testGetContentForSummation()
+       /**
+         * @depends testGetDrillDownDisplayAttributeContentForRowsAndColumns
+         */
+        public function testGetGroupByContentForSummation()
         {
-            //todo:
-            //we really shouldn't have to test filters again since nothing is really any different.
-            //$this->fail();
+            $inputPrefixData      = array('some', 'prefix');
+            $reportType           = Report::TYPE_SUMMATION;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS;
+            $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
+            $form                 = new ZurmoActiveForm();
+
+            //Test a boolean attribute
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            echo $content;
+            exit;
+            $this->assertNotNull($content);
+            $this->assertTrue(strpos($content,  '"some[prefix][axis]"') === false);
+        }
+
+        /**
+         * @depends testGetGroupByContentForSummation
+         */
+        public function testGetOrderByContentForSummation()
+        {
+            $inputPrefixData      = array('some', 'prefix');
+            $reportType           = Report::TYPE_SUMMATION;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS;
+            $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
+            $form                 = new ZurmoActiveForm();
+
+            //Test any attribute
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            echo $content;
+            exit;
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][order]"')  === false);
+        }
+
+        /**
+         * @depends testGetOrderByContentForSummation
+         */
+        public function testGetDisplayAttributeContentForSummation()
+        {
+            $inputPrefixData      = array('some', 'prefix');
+            $reportType           = Report::TYPE_SUMMATION;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES;
+            $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
+            $form                 = new ZurmoActiveForm();
+
+            //Test any attribute
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            echo $content;
+            exit;
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][label]"')  === false);
+        }
+
+       /**
+         * @depends testGetDisplayAttributeContentForSummation
+         */
+        public function testGetDrillDownDisplayAttributeContentForSummation()
+        {
+            $inputPrefixData      = array('some', 'prefix');
+            $reportType           = Report::TYPE_SUMMATION;
+            $moduleClassName      = 'ReportsTestModule';
+            $modelClassName       = 'ReportModelTestItem';
+            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+            $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
+            $form                 = new ZurmoActiveForm();
+
+            //Test a boolean attribute which does not have an operator
+            $model->attributeIndexOrDerivedType = 'boolean';
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                                                      $form, $treeType);
+            $content                            = $adapter->getContent();
+            echo $content;
+            exit;
+            $this->assertNotNull($content);
+            $this->assertFalse(strpos($content,  '"some[prefix][label]"')  === false);
         }
 
         public function testGetContentForMatrix()

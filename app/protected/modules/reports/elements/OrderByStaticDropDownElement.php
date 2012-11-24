@@ -1,3 +1,4 @@
+
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
@@ -24,38 +25,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class GroupByForReportForm extends ComponentForReportForm
+    /**
+     * Class used by reporting to show available ordering either ascending or descending
+     */
+    class OrderByStaticDropDownElement extends StaticDropDownElement
     {
-        public $axis = 'x';
-
-        public function rules()
+        protected function getDropDownArray()
         {
-            return array_merge(parent::rules(), array(
-                array('axis', 'required'),
-                array('axis', 'type', 'type' => 'string'),
-                array('axis', 'validateAxis'),
-            ));
+            return $this->model->getOrderValuesAndLabels();
         }
 
-        public function validateAxis()
+        public function getIdForSelectInput()
         {
-            if($this->axis != 'x' && $this->axis != 'y')
-            {
-                return false;
-            }
-            return true;
+            return $this->getEditableInputId($this->attribute);
         }
 
-        public function getAxisValuesAndLabels()
+        protected function getNameForSelectInput()
         {
-            if($this->attributeIndexOrDerivedType == null)
-            {
-                throw new NotSupportedException();
-            }
-            $data = array();
-            $data['x']       = Yii::t('Default', 'X-Axis');
-            $data['y']       = Yii::t('Default', 'Y-Axis');
-            return $data;
+            return $this->getEditableInputName($this->attribute);
         }
     }
 ?>
