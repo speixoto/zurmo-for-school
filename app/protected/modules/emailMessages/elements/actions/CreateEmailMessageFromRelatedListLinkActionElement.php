@@ -64,7 +64,22 @@
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl('/emailMessages/default/createEmailMessage', $this->getRouteParameters());
+
+            return Yii::app()->createUrl('/emailMessages/default/createEmailMessage', $this->resolveRouteParamters());
+        }
+
+        /**
+         * This method is required because when coming from a related list view, the $param array does not have the
+         * model id information for the contact or account.
+         */
+        protected function resolveRouteParamters()
+        {
+            $routeParameters = $this->getRouteParameters();
+            if(!isset($routeParameters['relatedId']))
+            {
+                $routeParameters['relatedId'] = $this->modelId;
+            }
+            return $routeParameters;
         }
 
         public function getActionType()
