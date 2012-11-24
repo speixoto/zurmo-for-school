@@ -38,21 +38,27 @@
             if (RedBeanDatabase::isFrozen())
             {
                 RedBeanDatabase::unfreeze();
-                $bean = R::dispense('messagesource');
-                $bean->category = 'Default';
-                $bean->setMeta('hint', array('source' => 'blob'));
-                $bean->source = 'x';
-                R::store($bean);
-                R::wipe('messagesource');
+
+                $source_bean = R::dispense('messagesource');
+                $source_bean->category = 'Default';
+                $source_bean->setMeta('hint', array('source' => 'blob'));
+                $source_bean->source = 'x';
+                R::store($source_bean);
                 R::exec('ALTER TABLE `messagesource`
                         ADD  UNIQUE INDEX `source_category_Index`
                         (`category`,`source`(767));');
 
-                $bean = R::dispense('messagetranslation');
-                $bean->language = 'x';
-                $bean->translation = 'x';
-                $bean->setMeta('hint', array('translation' => 'blob'));
-                R::store($bean);
+                $translation_bean = R::dispense('messagetranslation');
+                $translation_bean->language = 'x';
+                $translation_bean->translation = 'x';
+                $translation_bean->setMeta('hint', array('translation' => 'blob'));
+                $translation_bean->messagesource = $source_bean;
+                R::store($translation_bean);
+                R::exec('ALTER TABLE `messagetranslation`
+                        ADD  UNIQUE INDEX `source_language_translation_Index`
+                        (`messagesource_id`,`language`,`translation`(767));');
+
+                R::wipe('messagesource');
                 R::wipe('messagetranslation');
             }
         }
