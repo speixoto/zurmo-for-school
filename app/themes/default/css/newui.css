@@ -4370,6 +4370,7 @@ section {
   display: block;
 }
 #float-bar .view-toolbar-container {
+  z-index: 222222;
   position: fixed !important;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
@@ -4410,7 +4411,6 @@ section {
   border-top: 1px solid #CCC;
 }
 .view-toolbar-container {
-  z-index: 222222;
   width: auto;
   display: inline-block;
   font-size: 11px;
