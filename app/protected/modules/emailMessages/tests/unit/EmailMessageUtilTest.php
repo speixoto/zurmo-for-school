@@ -232,31 +232,29 @@
         public function testCreateTextContent()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $emailMessage = new EmailMessage();
             $emailContent = new EmailMessageContent();
             $emailContent->htmlContent = "<br>A test message.";
-            $emailMessage->content = $emailContent;
-            EmailMessageUtil::createTextContent($emailMessage);
-            $this->assertEquals("\nA test message.", $emailMessage->content->textContent);
-            $emailMessage->content->htmlContent = "<p>A new test message.</p>";
-            EmailMessageUtil::createTextContent($emailMessage);
-            $this->assertEquals("\nA test message.", $emailMessage->content->textContent);
-            $emailMessage->content->htmlContent = "<p>A test message.</p>";
-            $emailMessage->content->textContent = '';
-            EmailMessageUtil::createTextContent($emailMessage);
-            $this->assertEquals("\nA test message.\n", $emailMessage->content->textContent);
-            $emailMessage->content->htmlContent = "<u>A test</u> <b>message</b>.";
-            $emailMessage->content->textContent = '';
-            EmailMessageUtil::createTextContent($emailMessage);
-            $this->assertEquals("A test message.", $emailMessage->content->textContent);
-            $emailMessage->content->htmlContent = "<u><p>A test</p></u> <b>message</b>.";
-            $emailMessage->content->textContent = '';
-            EmailMessageUtil::createTextContent($emailMessage);
-            $this->assertEquals("\nA test\n message.", $emailMessage->content->textContent);
-            $emailMessage->content->htmlContent = "<br /><p>A test</p> <p>message</p>.";
-            $emailMessage->content->textContent = '';
-            EmailMessageUtil::createTextContent($emailMessage);
-            $this->assertEquals("\n\nA test\n \nmessage\n.", $emailMessage->content->textContent);
+            EmailMessageUtil::createTextContent($emailContent);
+            $this->assertEquals("\nA test message.", $emailContent->textContent);
+            $emailContent->htmlContent = "<p>A new test message.</p>";
+            EmailMessageUtil::createTextContent($emailContent);
+            $this->assertEquals("\nA test message.", $emailContent->textContent);
+            $emailContent->htmlContent = "<p>A test message.</p>";
+            $emailContent->textContent = '';
+            EmailMessageUtil::createTextContent($emailContent);
+            $this->assertEquals("\nA test message.\n", $emailContent->textContent);
+            $emailContent->htmlContent = "<u>A test</u> <b>message</b>.";
+            $emailContent->textContent = '';
+            EmailMessageUtil::createTextContent($emailContent);
+            $this->assertEquals("A test message.", $emailContent->textContent);
+            $emailContent->htmlContent = "<u><p>A test</p></u> <b>message</b>.";
+            $emailContent->textContent = '';
+            EmailMessageUtil::createTextContent($emailContent);
+            $this->assertEquals("\nA test\n message.", $emailContent->textContent);
+            $emailContent->htmlContent = "<br /><p>A test</p> <p>message</p>.";
+            $emailContent->textContent = '';
+            EmailMessageUtil::createTextContent($emailContent);
+            $this->assertEquals("\n\nA test\n \nmessage\n.", $emailContent->textContent);
         }
     }
 ?>
