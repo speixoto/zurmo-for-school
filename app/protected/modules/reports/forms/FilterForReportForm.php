@@ -40,6 +40,22 @@
 
         public $valueType;
 
+        private $_availableOperatorsType;
+
+        /**
+         * Reset availabelOperatorsType cache whenever a new attribute is set
+         * (non-PHPdoc)
+         * @see ComponentForReportForm::__set()
+         */
+        public function __set($name, $value)
+        {
+            parent::__set($name, $value);
+            if ($name == 'attributeIndexOrDerivedType')
+            {
+                $this->_availableOperatorsType = null;
+            }
+        }
+
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -157,11 +173,17 @@
             {
                 throw new NotSupportedException();
             }
-            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
-            $modelClassName       = $this->getResolvedAttributeModelClassName();
-            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                    make($moduleClassName, $modelClassName, $this->reportType);
-            return $modelToReportAdapter->getAvailableOperatorsType($this->getResolvedAttribute());
+            if($this->_availableOperatorsType != null)
+            {
+                return $this->_availableOperatorsType;
+            }
+            $moduleClassName               = $this->getResolvedAttributeModuleClassName();
+            $modelClassName                = $this->getResolvedAttributeModelClassName();
+            $modelToReportAdapter          = ModelRelationsAndAttributesToReportAdapter::
+                                             make($moduleClassName, $modelClassName, $this->reportType);
+            $availableOperatorsType        = $modelToReportAdapter->getAvailableOperatorsType($this->getResolvedAttribute());
+            $this->_availableOperatorsType = $availableOperatorsType;
+            return $availableOperatorsType;
         }
 
         public function getOperatorValuesAndLabels()

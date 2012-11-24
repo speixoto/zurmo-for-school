@@ -24,55 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportRelationsAndAttributesToTreeAdapterTest extends ZurmoBaseTest
+    class DisplayAttributeForReportFormTest extends ZurmoBaseTest
     {
-
-        public function testGetDataWhereNodeIdIsSource()
+        public static function setUpBeforeClass()
         {
-            //getData($nodeId)
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public function testGetDataForEachTreeType()
+        public function setup()
         {
-            //getData($nodeId)
-            //test completely getAttributesData using different treeTypes
-            //make sure calculated derived attribute doesnt show up as a filter since you can't filter on it
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testGetDataForVariousReportTypes()
+        public function testSetAndGetGroupBy()
         {
-            //getData($nodeId)
-            //Main objective is to test completely makeModelRelationsAndAttributesToReportAdapter($moduleClassName, $modelClassName)
-        }
-
-        public function testGetDataWhereNodeIdIsNotSourceButAChildRelation()
-        {
-            //getData($nodeId)
-        }
-
-        public function testGetDataWhereNodeIdIsTwoRelationsDeep()
-        {
-            //getData($nodeId)
-        }
-
-        public function testRemoveTreeTypeFromNodeId()
-        {
-            //removeTreeTypeFromNodeId($nodeId, $treeType)
-        }
-
-        public function testResolveInputPrefixData()
-        {
-        //resolveInputPrefixData($nodeIdWithoutTreeType, $formModelClassName, $treeType, $rowNumber)
-
-            //test both when there is one part and more than one part
-        }
-
-        public function testResolveAttributeByNodeId()
-        {
-
-            //resolveAttributeByNodeId($nodeIdWithoutTreeType)
-
-            //test both when there is one part and more than one part
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                  Report::TYPE_SUMMATION);
+            $this->assertNull($displayAttribute->label);
+            $displayAttribute->attributeIndexOrDerivedType = 'string';
+            $this->assertEquals('String',    $displayAttribute->label);
+            $displayAttribute->label                       = 'someLabel';
+            $this->assertEquals('string',    $displayAttribute->attributeAndRelationData);
+            $this->assertEquals('string',    $displayAttribute->attributeIndexOrDerivedType);
+            $this->assertEquals('string',    $displayAttribute->getResolvedAttribute());
+            $this->assertEquals('String',    $displayAttribute->getDisplayLabel());
+            $this->assertEquals('someLabel', $displayAttribute->label);
         }
     }
 ?>

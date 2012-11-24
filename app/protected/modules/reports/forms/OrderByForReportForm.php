@@ -39,8 +39,13 @@
 
         public function validateOrder()
         {
+            if($this->order == null)
+            {
+                return false;
+            }
             if($this->order != 'asc' && $this->order != 'desc')
             {
+                $this->addError('order', Yii::t('Default', 'Order must be asc or desc.'));
                 return false;
             }
             return true;

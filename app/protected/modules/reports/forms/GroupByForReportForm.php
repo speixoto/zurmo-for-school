@@ -39,8 +39,13 @@
 
         public function validateAxis()
         {
+            if($this->axis == null)
+            {
+                return false;
+            }
             if($this->axis != 'x' && $this->axis != 'y')
             {
+                $this->addError('axis', Yii::t('Default', 'Axis must be x or y.'));
                 return false;
             }
             return true;
