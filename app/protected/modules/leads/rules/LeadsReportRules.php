@@ -32,6 +32,8 @@
         public static function getDefaultMetadata()
         {
             $metadata = array();
+            $metadata['Contact']['filterValueElementTypes']
+                                                   ['state'] = 'LeadStateStaticDropDownForReport';
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }

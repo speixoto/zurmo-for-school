@@ -83,18 +83,34 @@
         {
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem5',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
-            $filter->attributeIndexOrDerivedType = 'ReportModelTestItem__reportItems__Inferred___phone';
+            $filter->attributeIndexOrDerivedType = 'ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule___phone';
             $filter->operator                    = 'equals';
             $filter->value                       = '1234567890';
-            $this->assertEquals(array('ReportModelTestItem__reportItems__Inferred', 'phone'),
+            $this->assertEquals(array('ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule', 'phone'),
                                                                     $filter->getAttributeAndRelationData());
-            $this->assertEquals('ReportModelTestItem__reportItems__Inferred___phone',
+            $this->assertEquals('ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule___phone',
                                                                     $filter->attributeIndexOrDerivedType);
             $this->assertEquals('ReportModelTestItem5',             $filter->getPenultimateModelClassName());
-            $this->assertEquals('ReportModelTestItem__reportItems__Inferred',
+            $this->assertEquals('ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule',
                                                                     $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',              $filter->getResolvedAttributeModelClassName());
             $this->assertEquals('ReportModelTestItems >> Phone',    $filter->getDisplayLabel());
+
+            //Test alternate state
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem5',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule___phone';
+            $filter->operator                    = 'equals';
+            $filter->value                       = '1234567890';
+            $this->assertEquals(array('ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule', 'phone'),
+                                                                    $filter->getAttributeAndRelationData());
+            $this->assertEquals('ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule___phone',
+                                                                    $filter->attributeIndexOrDerivedType);
+            $this->assertEquals('ReportModelTestItem5',             $filter->getPenultimateModelClassName());
+            $this->assertEquals('ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule',
+                                                                    $filter->getPenultimateRelation());
+            $this->assertEquals('ReportModelTestItem',              $filter->getResolvedAttributeModelClassName());
+            $this->assertEquals('Reports Alternate State Test >> Phone',    $filter->getDisplayLabel());
         }
 
         /**
@@ -194,6 +210,28 @@
 
         /**
          * @depends testDynamicallyDerivedAttributeSetAndGet
+         */
+        public function testStateAttributesWithModuleConnetionsDisplayLabels()
+        {
+            //test the likeContactState using base module
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem8',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'reportModelTestItems__Via_ReportsTestModule___likeContactState';
+            $filter->operator                    = 'equals';
+            $filter->value                       = 'Jason';
+            $this->assertEquals('ReportModelTestItems >> A name for a state', $filter->getDisplayLabel());
+
+            //test the likeContactState using alternate module
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem8',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'reportModelTestItems__Via_ReportsAlternateStateTestModule___likeContactState';
+            $filter->operator                    = 'equals';
+            $filter->value                       = 'Jason';
+            $this->assertEquals('Reports Alternate State Test >> A name for a state', $filter->getDisplayLabel());
+        }
+
+        /**
+         * @depends testStateAttributesWithModuleConnetionsDisplayLabels
          */
         public function testValidateTextAttribute()
         {

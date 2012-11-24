@@ -155,10 +155,11 @@
         public function getDisplayLabel()
         {
             $modelClassName       = $this->modelClassName;
+            $moduleClassName      = $this->moduleClassName;
             if($this->attribute != null)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                        make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
+                                        make($moduleClassName, $modelClassName, $this->reportType);
                 return $modelToReportAdapter->getAttributeLabel($this->attribute);
             }
             else
@@ -171,18 +172,24 @@
                         $content .= ' ' . self::DISPLAY_LABEL_RELATION_DIVIDER . ' ';
                     }
                     $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                            make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
+                                            make($moduleClassName, $modelClassName, $this->reportType);
                     if($modelToReportAdapter->isRelation($relationOrAttribute))
                     {
                         $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
+                        $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
                         $relationsData    = $modelToReportAdapter->getSelectableRelationsData();
+                        $typeToUse = 'Plural';
                         if($modelToReportAdapter->isRelationASingularRelation($relationOrAttribute))
                         {
-                            $content         .= $modelClassName::getModelLabelByTypeAndLanguage('Singular');
+                            $typeToUse = 'Singular';
+                        }
+                        if($moduleClassName != $modelClassName::getModuleClassName())
+                        {
+                            $content         .= $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse);
                         }
                         else
                         {
-                            $content         .= $modelClassName::getModelLabelByTypeAndLanguage('Plural');
+                            $content         .= $modelClassName::getModelLabelByTypeAndLanguage($typeToUse);
                         }
                     }
                     else

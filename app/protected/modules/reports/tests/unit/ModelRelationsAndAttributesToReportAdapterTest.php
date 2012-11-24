@@ -1337,29 +1337,84 @@
         /**
          * @depends testGetFilterValueElementTypeForAStatefulAttribute
          */
-        public function testResolveAndGetRelationModelClassName()
+        public function testGetFilterValueElementType()
         {
-            $this->fail();
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules();
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
+            $this->assertEquals('BooleanForReportStaticDropDown', $adapter->getFilterValueElementType('boolean'));
+            $this->assertEquals('MixedCurrencyValueTypes',        $adapter->getFilterValueElementType('currencyValue'));
+            $this->assertEquals('MixedDateTypesForReport',        $adapter->getFilterValueElementType('date'));
+            $this->assertEquals('MixedDateTypesForReport',        $adapter->getFilterValueElementType('dateTime'));
+            $this->assertEquals('StaticDropDownForReport',        $adapter->getFilterValueElementType('dropDown'));
+            $this->assertEquals('MixedNumberTypes',               $adapter->getFilterValueElementType('float'));
+            $this->assertEquals('MixedNumberTypes',               $adapter->getFilterValueElementType('integer'));
+            $this->assertEquals('StaticDropDownForReport',        $adapter->getFilterValueElementType('multiDropDown'));
+            $this->assertEquals('UserNameId',                     $adapter->getFilterValueElementType('owner__User'));
+            $this->assertEquals('Text',                           $adapter->getFilterValueElementType('phone'));
+            $this->assertEquals('StaticDropDownForReport',        $adapter->getFilterValueElementType('radioDropDown'));
+            $this->assertEquals('Text',                           $adapter->getFilterValueElementType('string'));
+            $this->assertEquals('StaticDropDownForReport',        $adapter->getFilterValueElementType('tagCloud'));
+            $this->assertEquals('Text',                           $adapter->getFilterValueElementType('textArea'));
+            $this->assertEquals('Text',                           $adapter->getFilterValueElementType('url'));
+
+            $this->assertEquals('ContactStateStaticDropDownForReport', $adapter->getFilterValueElementType('likeContactState'));
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsAlternateStateTestReportRules();
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
+            $this->assertEquals('LeadStateStaticDropDownForReport', $adapter->getFilterValueElementType('likeContactState'));
+
         }
 
         /**
-         * @depends testResolveAndGetRelationModelClassName
+         * @depends testGetFilterValueElementType
          */
-        public function testGetFilterRulesByAttribute()
+        public function testGetAvailableOperatorsType()
         {
-            //todo:
-            $this->fail();
-        }
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules();
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                $adapter->getAvailableOperatorsType('string'));
 
-        /**
-         * @depends testGetFilterRulesByAttribute
-         */
-        public function testGetOperatorType()
-        {
-            //also test getAttributeFilterType
-            $this->fail();
-            //where do we test the instantiation of each element? via walktrhough? or unit?
-            //maybe we do in fact test it here: ReportAttributeToElementAdapterTest
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules();
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
+            $this->assertNull($adapter->getAvailableOperatorsType('boolean'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
+                                $adapter->getAvailableOperatorsType('currencyValue'));
+            $this->assertNull($adapter->getAvailableOperatorsType('date'));
+            $this->assertNull($adapter->getAvailableOperatorsType('dateTime'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                                $adapter->getAvailableOperatorsType('dropDown'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
+                                $adapter->getAvailableOperatorsType('float'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
+                                $adapter->getAvailableOperatorsType('integer'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                                $adapter->getAvailableOperatorsType('multiDropDown'));
+            $this->assertNull($adapter->getAvailableOperatorsType('owner__User'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                $adapter->getAvailableOperatorsType('phone'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+            $adapter->getAvailableOperatorsType('radioDropDown'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                $adapter->getAvailableOperatorsType('string'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                                $adapter->getAvailableOperatorsType('tagCloud'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                $adapter->getAvailableOperatorsType('textArea'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                $adapter->getAvailableOperatorsType('url'));
+
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                                $adapter->getAvailableOperatorsType('likeContactState'));
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsAlternateStateTestReportRules();
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                                $adapter->getAvailableOperatorsType('likeContactState'));
+
         }
     }
 ?>

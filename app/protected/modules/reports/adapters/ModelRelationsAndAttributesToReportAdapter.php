@@ -241,30 +241,83 @@
         }
 
         /**
-         * @return real model attribute name.  Parses for Inferred, Inferred__Via, and Via.
+         * Override and implement in children classes
          */
-        private function resolveRealAttributeName($attribute)
+        public function getAttributesForFilters()
         {
-            assert('is_string($attribute)');
-            $delimiter                       = FormModelUtil::DELIMITER;
-            $attributeAndInferredOrViaData   = explode($delimiter, $attribute);
-            if(count($attributeAndInferredOrViaData) == 4)
-            {
-                list($notUsed, $attribute, $notUsed2, $notUsed3) = $attributeAndInferredOrViaData;
-                return $attribute;
-            }
-            elseif(count($attributeAndInferredOrViaData) == 2)
-            {
-                list($attribute, $notUsed) = $attributeAndInferredOrViaData;
-                return $attribute;
-            }
-            else
-            {
-                return $attribute;
-            }
+            throw new NotImplementedException();
         }
 
-        public function getAllRelationsData()
+        /**
+         * Override and implement in children classes
+         */
+        public function getAttributesForDisplayAttributes()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getAttributesForOrderBys()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Override and implement in children classes
+         */
+        public function getAttributesForGroupBys()
+        {
+            throw new NotImplementedException();
+        }
+
+        public function getAvailableOperatorsType($attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->isDynamicallyDerivedAttribute($attribute))
+            {
+                return null;
+            }
+            if($this->isDerivedAttribute($attribute))
+            {
+                throw new NotSupportedException($message, $code, $previous);
+            }
+            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
+                                                                                                  $resolvedAttribute))
+            {
+                return $availableOperatorsTypeFromRule;
+            }
+            return ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($this->model, $resolvedAttribute);
+        }
+
+        public function getFilterValueElementType($attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->isDerivedAttribute($attribute))
+            {
+                return null;
+            }
+            if($this->isDynamicallyDerivedAttribute($attribute))
+            {
+                $parts = explode(FormModelUtil::DELIMITER, $attribute);
+                if($parts[1] != 'User')
+                {
+                    throw new NotSupportedException();
+                }
+                return 'UserNameId';
+            }
+            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            if(null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementTypes($this->model,
+                                                                                                  $resolvedAttribute))
+            {
+                return $filterValueElementTypeFromRule;
+            }
+            return ModeAttributeToReportFilterValueElementTypeUtil::getType($this->model, $resolvedAttribute);
+        }
+
+            public function getAllRelationsData()
         {
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
@@ -308,42 +361,6 @@
             return $sortedAttributes;
         }
 
-        private function resolveRelationToSelectableRelationData(& $attributes, $attribute)
-        {
-            assert('is_array($attributes)');
-            assert('is_string($attribute)');
-            $metadata                = $this->model->getMetadata();
-            $attributeModelClassName = $this->model->getAttributeModelClassName($attribute);
-            if(isset($metadata[$attributeModelClassName]['relationsModuleConnections']) &&
-               isset($metadata[$attributeModelClassName]['relationsModuleConnections'][$attribute]))
-            {
-                foreach($metadata[$attributeModelClassName]['relationsModuleConnections'][$attribute] as $moduleClassName)
-                {
-                    $attributeNameToUse     = self::resolveAttributeNameToUseForRelationWithModuleConnection(
-                                              $attribute, $moduleClassName);
-                    $typeToUse              = 'Plural';
-                    if($this->isRelationASingularRelation($attribute))
-                    {
-                        $typeToUse = 'Singular';
-                    }
-                    $attributes[$attributeNameToUse] = array('label' =>
-                                                       $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse));
-                }
-            }
-            else
-            {
-                $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
-            }
-        }
-
-        protected static function resolveAttributeNameToUseForRelationWithModuleConnection($attribute, $moduleClassName)
-        {
-            assert('is_string($attribute)');
-            assert('is_string($moduleClassName)');
-            return $attribute . FormModelUtil::DELIMITER . self::RELATION_VIA_MODULE .
-                   self::RELATION_VIA_MODULE_DELIMITER . $moduleClassName;
-
-        }
 
         public function getAttributesIncludingDerivedAttributesData()
         {
@@ -394,22 +411,6 @@
                 return true;
             }
             return false;
-        }
-
-        protected function getAttributesNotIncludingDerivedAttributesData()
-        {
-            $attributes = array();
-            foreach ($this->model->getAttributes() as $attribute => $notUsed)
-            {
-                if ((($this->model->isRelation($attribute) &&
-                    $this->rules->relationIsReportedAsAttribute($this->model, $attribute)) ||
-                    !$this->model->isRelation($attribute) &&
-                    $this->rules->attributeIsReportable($this->model, $attribute)))
-                {
-                    $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
-                }
-            }
-            return $attributes;
         }
 
         public function getInferredRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
@@ -485,6 +486,30 @@
             return $rules;
         }
 
+        protected static function resolveAttributeNameToUseForRelationWithModuleConnection($attribute, $moduleClassName)
+        {
+            assert('is_string($attribute)');
+            assert('is_string($moduleClassName)');
+            return $attribute . FormModelUtil::DELIMITER . self::RELATION_VIA_MODULE .
+                   self::RELATION_VIA_MODULE_DELIMITER . $moduleClassName;
+
+        }
+
+        protected function getAttributesNotIncludingDerivedAttributesData()
+        {
+            $attributes = array();
+            foreach ($this->model->getAttributes() as $attribute => $notUsed)
+            {
+                if ((($this->model->isRelation($attribute) &&
+                    $this->rules->relationIsReportedAsAttribute($this->model, $attribute)) ||
+                    !$this->model->isRelation($attribute) &&
+                    $this->rules->attributeIsReportable($this->model, $attribute)))
+                {
+                    $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
+                }
+            }
+            return $attributes;
+        }
 
         protected function derivedRelationLinksToPrecedingRelation($relationModelClassName, $opposingRelation, RedBeanModel $precedingModel = null,
                                                                     $precedingRelation = null)
@@ -645,81 +670,56 @@
             }
         }
 
-        /**
-         * Override and implement in children classes
-         */
-        public function getAttributesForFilters()
+        private function resolveRelationToSelectableRelationData(& $attributes, $attribute)
         {
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Override and implement in children classes
-         */
-        public function getAttributesForDisplayAttributes()
-        {
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Override and implement in children classes
-         */
-        public function getAttributesForOrderBys()
-        {
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Override and implement in children classes
-         */
-        public function getAttributesForGroupBys()
-        {
-            throw new NotImplementedException();
-        }
-
-        public function getFilterValueElementType($attribute)
-        {
+            assert('is_array($attributes)');
             assert('is_string($attribute)');
-            if($this->isDerivedAttribute($attribute))
+            $metadata                = $this->model->getMetadata();
+            $attributeModelClassName = $this->model->getAttributeModelClassName($attribute);
+            if(isset($metadata[$attributeModelClassName]['relationsModuleConnections']) &&
+               isset($metadata[$attributeModelClassName]['relationsModuleConnections'][$attribute]))
             {
-                return null;
-            }
-            if($this->isDynamicallyDerivedAttribute($attribute))
-            {
-                $parts = explode(FormModelUtil::DELIMITER, $attribute);
-                if($parts[1] != 'User')
+                foreach($metadata[$attributeModelClassName]['relationsModuleConnections'][$attribute] as $moduleClassName)
                 {
-                    throw new NotSupportedException();
+                    $attributeNameToUse     = self::resolveAttributeNameToUseForRelationWithModuleConnection(
+                                              $attribute, $moduleClassName);
+                    $typeToUse              = 'Plural';
+                    if($this->isRelationASingularRelation($attribute))
+                    {
+                        $typeToUse = 'Singular';
+                    }
+                    $attributes[$attributeNameToUse] = array('label' =>
+                                                       $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse));
                 }
-                return 'UserNameId';
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
-            if(null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementTypes($this->model,
-                                                                                                  $resolvedAttribute))
+            else
             {
-                return $filterValueElementTypeFromRule;
+                $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
             }
-            return ModeAttributeToReportFilterValueElementTypeUtil::getType($this->model, $resolvedAttribute);
         }
 
-        public function getAvailableOperatorsType($attribute)
+        /**
+         * @return real model attribute name.  Parses for Inferred, Inferred__Via, and Via.
+         */
+        private function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
-            if($this->isDynamicallyDerivedAttribute($attribute))
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $attributeAndInferredOrViaData   = explode($delimiter, $attribute);
+            if(count($attributeAndInferredOrViaData) == 4)
             {
-                return null;
+                list($notUsed, $attribute, $notUsed2, $notUsed3) = $attributeAndInferredOrViaData;
+                return $attribute;
             }
-            if($this->isDerivedAttribute($attribute))
+            elseif(count($attributeAndInferredOrViaData) == 2)
             {
-                throw new NotSupportedException($message, $code, $previous);
+                list($attribute, $notUsed) = $attributeAndInferredOrViaData;
+                return $attribute;
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
-            if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
-                                                                                                  $resolvedAttribute))
+            else
             {
-                return $availableOperatorsTypeFromRule;
+                return $attribute;
             }
-            return ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($this->model, $resolvedAttribute);
         }
     }
 ?>

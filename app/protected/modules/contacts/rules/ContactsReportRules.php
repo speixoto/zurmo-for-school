@@ -36,7 +36,11 @@
                     'relationsReportedAsAttributes' =>
                         array('state'),
                     'derivedAttributeTypes' =>
-                        array('FullName')
+                        array('FullName'),
+                    'availableOperatorsTypes' =>
+                        array('state' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'filterValueElementTypes' =>
+                        array('state' => 'ContactStateStaticDropDownForReport'),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
