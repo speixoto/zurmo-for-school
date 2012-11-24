@@ -27,8 +27,8 @@
     /**
      * Represents a message source that stores translated messages in database.
      *
-     * The ZurmoMessageSource::installSchema() method must be called to create the
-     * tables with required indexes
+     * The ZurmoMessageSource::installSchema() method must be called to create
+     * the tables with required indexes
      */
     class ZurmoMessageSource extends CDbMessageSource
     {
@@ -44,7 +44,9 @@
                 $bean->source = 'x';
                 R::store($bean);
                 R::wipe('messagesource');
-                R::exec('ALTER TABLE `messagesource`  ADD  UNIQUE INDEX `source_category_Index` (`category`,`source`(767));');
+                R::exec('ALTER TABLE `messagesource`
+                        ADD  UNIQUE INDEX `source_category_Index`
+                        (`category`,`source`(767));');
 
                 $bean = R::dispense('messagetranslation');
                 $bean->language = 'x';
@@ -58,8 +60,12 @@
         protected function loadMessagesFromDb($category,$language)
         {
             $sql = <<<EOD
-SELECT ms.source, mt.translation FROM messagesource as ms, messagetranslation as mt
-WHERE mt.messagesource_id = ms.id AND ms.category = :category AND mt.language = :language
+SELECT ms.source, mt.translation
+FROM messagesource as ms, messagetranslation as mt
+WHERE
+    mt.messagesource_id = ms.id
+    AND ms.category = :category
+    AND mt.language = :language
 EOD;
             $rows = R::getAll($sql,
                               array(
