@@ -60,19 +60,19 @@
             {
                 static::attachFilesToMessage($postData['filesIds'], $emailMessageForm->getModel());
             }
-            $emailAccount                       = EmailAccount::getByUserAndName($userToSendMessagesFrom);
-            $sender                             = new EmailMessageSender();
-            $sender->fromName                   = Yii::app()->emailHelper->fromName;
-            $sender->fromAddress                = Yii::app()->emailHelper->fromAddress;
-            $sender->personOrAccount            = $userToSendMessagesFrom;
-            $emailMessageForm->sender           = $sender;
-            $emailMessageForm->account          = $emailAccount;
-            $emailMessageContent                = new EmailMessageContent;
-            $emailMessageContent->htmlContent   = $postData[$postVariableName]['content']['htmlContent'];
-            EmailMessageUtil::createTextContent($emailMessageContent);
-            $emailMessageForm->content          = $emailMessageContent;
-            $box                                = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-            $emailMessageForm->folder           = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
+            $emailAccount                           = EmailAccount::getByUserAndName($userToSendMessagesFrom);
+            $sender                                 = new EmailMessageSender();
+            $sender->fromName                       = Yii::app()->emailHelper->fromName;
+            $sender->fromAddress                    = Yii::app()->emailHelper->fromAddress;
+            $sender->personOrAccount                = $userToSendMessagesFrom;
+            $emailMessageForm->sender               = $sender;
+            $emailMessageForm->account              = $emailAccount;
+            $emailMessageForm->content->textContent = EmailMessageUtil::resolveTextContent(
+                        ArrayUtil::getArrayValue($postData[$postVariableName]['content'], 'htmlContent'),
+                        null
+                    );
+            $box                                    = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $emailMessageForm->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
             return $emailMessageForm;
         }
 
@@ -226,16 +226,17 @@
             return $content;
         }
 
-        public static function createTextContent(EmailMessageContent $emailMessageContent){
-           if($emailMessageContent->htmlContent != '' && $emailMessageContent->textContent == '')
+        public static function resolveTextContent($htmlContent, $textContent){
+           if($htmlContent != null && $textContent == null)
            {
                $purifier = new CHtmlPurifier;
                $purifier->options = array('HTML.Allowed'=> 'p,br');
-               $textContent = $purifier->purify($emailMessageContent->htmlContent);
-               $textContent = preg_replace('#<br\s*?/?>#i', "\n", $textContent);
-               $textContent = preg_replace('#</?p\s*?/?>#i', "\n", $textContent);
-               $emailMessageContent->textContent = $textContent;
+               $textContent = $purifier->purify($htmlContent);
+               $textContent = preg_replace('#<br\s*?/?>#i', "\n"  , $textContent);
+               $textContent = preg_replace('#<p\s*?/?>#i',  "\n\n", $textContent);
+               $textContent = preg_replace('#</p\s*?/?>#i', ""    , $textContent);
            }
+           return $textContent;
         }
     }
 ?>
