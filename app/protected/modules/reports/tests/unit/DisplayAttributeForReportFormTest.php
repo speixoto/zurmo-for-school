@@ -51,6 +51,32 @@
             $this->assertEquals('string',    $displayAttribute->getResolvedAttribute());
             $this->assertEquals('String',    $displayAttribute->getDisplayLabel());
             $this->assertEquals('someLabel', $displayAttribute->label);
+            $validated = $displayAttribute->validate();
+            $this->assertTrue($validated);
+
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                  Report::TYPE_SUMMATION);
+            $displayAttribute->label             = null;
+            $validated                           = $displayAttribute->validate();
+            $this->assertFalse($validated);
+            $errors                              = $displayAttribute->getErrors();
+            $compareErrors                       = array('label'     => array('Label cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $displayAttribute->label             = '';
+            $validated                           = $displayAttribute->validate();
+            $this->assertFalse($validated);
+            $errors                              = $displayAttribute->getErrors();
+            $compareErrors                       = array('label'     => array('Label cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $displayAttribute->label             = 'test';
+            $displayAttribute->setAttributes(array('label' => ''));
+            $validated                           = $displayAttribute->validate();
+            $this->assertFalse($validated);
+            $errors                              = $displayAttribute->getErrors();
+            $compareErrors                       = array('label'     => array('Label cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
         }
     }
 ?>

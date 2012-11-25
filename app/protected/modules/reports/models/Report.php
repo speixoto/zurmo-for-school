@@ -175,6 +175,21 @@
             $this->owner = $owner;
         }
 
+        public function getFilters()
+        {
+            return $this->filters;
+        }
+
+        public function addFilter(FilterForReportForm $filter)
+        {
+            $this->filters[] = $filter;
+        }
+
+        public function removeAllFilters()
+        {
+            $this->filters   = array();
+        }
+
         public function getGroupBys()
         {
             return $this->groupBys;
@@ -183,6 +198,56 @@
         public function addGroupBy(GroupByForReportForm $groupBy)
         {
             $this->groupBys[] = $groupBy;
+        }
+
+        public function removeAllGroupBys()
+        {
+            $this->groupBys   = array();
+        }
+
+        public function getOrderBys()
+        {
+            return $this->groupBys;
+        }
+
+        public function addOrderBy(OrderByForReportForm $orderBy)
+        {
+            $this->orderBys[] = $orderBy;
+        }
+
+        public function removeAllOrderBys()
+        {
+            $this->orderBys   = array();
+        }
+
+        public function getDisplayAttributes()
+        {
+            return $this->displayAttributes;
+        }
+
+        public function addDisplayAttribute(DisplayAttributeForReportForm $displayAttribute)
+        {
+            $this->displayAttributes[] = $displayAttribute;
+        }
+
+        public function removeAllDisplayAttributes()
+        {
+            $this->displayAttributes   = array();
+        }
+
+        public function getDrillDownDisplayAttributes()
+        {
+            return $this->drillDownDisplayAttributes;
+        }
+
+        public function addDrillDownDisplayAttribute(DrillDownDisplayAttributeForReportForm $drillDownDisplayAttribute)
+        {
+            $this->drillDownDisplayAttributes[] = $drillDownDisplayAttribute;
+        }
+
+        public function removeAllDrillDownDisplayAttributes()
+        {
+            $this->drillDownDisplayAttributes   = array();
         }
 
         public function getExplicitReadWriteModelPermissions()

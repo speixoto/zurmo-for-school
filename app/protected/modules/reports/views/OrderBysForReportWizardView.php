@@ -28,7 +28,7 @@
     {
         public static function getTreeType()
         {
-            return ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS;
+            return ComponentForReportForm::TYPE_ORDER_BYS;
         }
 
         public static function getWizardStepTitle()

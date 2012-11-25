@@ -35,6 +35,8 @@
 
         const DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
 
+        const DRILLDOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
+
         const ORDER_BYS_VALIDATION_SCENARIO          = 'ValidateForOrderBys';
 
         const GROUP_BYS_VALIDATION_SCENARIO          = 'ValidateForGroupBys';
@@ -63,7 +65,15 @@
 
         public $filtersStructure;
 
-        public $filters;
+        public $filters                    = array();
+
+        public $groupBys                   = array();
+
+        public $orderBys                   = array();
+
+        public $displayAttributes          = array();
+
+        public $drillDownDisplayAttributes = array();
 
         protected $isNew = false;
 
@@ -97,24 +107,28 @@
         public function rules()
         {
             return array(
-                array('description', 	   'type',             'type' => 'string'),
-                array('name', 			   'type',        	   'type' => 'string'),
-                array('name', 			   'length',   		   'max' => 64),
-                array('name', 			   'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('moduleClassName',   'type',     		   'type' => 'string'),
-                array('moduleClassName',   'length',           'max' => 64),
-                array('moduleClassName',   'required', 		   'on' => self::MODULE_VALIDATION_SCENARIO),
-                array('type', 		       'type',     		   'type' => 'string'),
-                array('type', 			   'length',   		   'max' => 64),
-                array('type', 			   'required'),
-                array('ownerId',   	       'type',     		   'type' => 'integer'),
-                array('ownerId',   		   'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('ownerName', 		   'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('filters', 		   'validateFilters',  'on' => self::FILTERS_VALIDATION_SCENARIO),
-                array('displayAttributes', 'validateDisplayAttributes', 'on' => self::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
-                array('orderBys', 		   'validateOrderBys', 'on' => self::ORDER_BYS_VALIDATION_SCENARIO),
-                array('groupBys', 		   'validateGroupBys', 'on' => self::GROUP_BYS_VALIDATION_SCENARIO),
-                array('chart', 		       'validateChart',    'on' => self::CHART_VALIDATION_SCENARIO),
+                array('description', 	     'type',               'type' => 'string'),
+                array('name', 			     'type',        	   'type' => 'string'),
+                array('name', 			     'length',   		   'max' => 64),
+                array('name', 			     'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('moduleClassName',     'type',     		   'type' => 'string'),
+                array('moduleClassName',     'length',             'max' => 64),
+                array('moduleClassName',     'required', 		   'on' => self::MODULE_VALIDATION_SCENARIO),
+                array('type', 		         'type',     		   'type' => 'string'),
+                array('type', 			     'length',   		   'max' => 64),
+                array('type', 			     'required'),
+                array('ownerId',   	         'type',     		   'type' => 'integer'),
+                array('ownerId',   		     'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('ownerName', 		     'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('filters', 		     'validateFilters',
+                                             'on' => self::FILTERS_VALIDATION_SCENARIO),
+                array('displayAttributes',   'validateDisplayAttributes',
+                                             'on' => self::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
+                array('drillDownAttributes', 'validateDrillDownDisplayAttributes',
+                                             'on' => self::DRILLDOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
+                array('orderBys', 		     'validateOrderBys',   'on' => self::ORDER_BYS_VALIDATION_SCENARIO),
+                array('groupBys', 		     'validateGroupBys',   'on' => self::GROUP_BYS_VALIDATION_SCENARIO),
+                array('chart', 		         'validateChart',      'on' => self::CHART_VALIDATION_SCENARIO),
             );
         }
 
@@ -139,51 +153,61 @@
 
         public function validateFilters()
         {
-            //todo:
-            foreach($this->filters as $filter)
-            {
-                $filter->operator;
-                $filter->runTime;
-                $filter->valueData;
-                $filter->validate();
-                $form = FilterToReportAttributeFormAdapter::make($filter);
-                //could have a different form for each different type .. ugh.. so we have a operatorType, attributeType, and formType?
-                //i dont like that so much.
-                //nEEED TESTS FIRST!
-
-               //if values is array... then foreach
-               //but still what do we validate either one or both on?
-               //we have a model. we have an attribute.
-               //well either date, integer, text, textArea, url, email, phone,  most are translatable s
-               //look here. we did something interesting with rules...DefaultModelAttributeMappingRuleForm
-
-                $form->validate();
-                //if validate fails...
-                //get all errors and add them here? NO. you would get get
-                //i did an error summary probably for this complexity reason. i could add filters error and have it just be
-                //part of the summary
-                //for rules, we can utilize validator info oon attribute of model?
-            }
+            return $this->validateComponent(ComponentForReportForm::TYPE_FILTERS, 'filters');
         }
 
         public function validateOrderBys()
         {
-            //todo:
+            return $this->validateComponent(ComponentForReportForm::TYPE_ORDER_BYS, 'orderBys');
         }
 
         public function validateDisplayAttributes()
         {
-            //todo:
+            return $this->validateComponent(ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES, 'displayAttributes');
+        }
+
+        public function validateDrillDownDisplayAttributes()
+        {
+            return $this->validateComponent(ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES, 'drillDownDisplayAttributes');
         }
 
         public function validateGroupBys()
         {
-            //todo:
+            return $this->validateComponent(ComponentForReportForm::TYPE_GROUP_BYS, 'groupBys');
         }
 
         public function validateChart()
         {
             //todo:
+        }
+
+        protected function validateComponent($componentType, $componentName)
+        {
+            assert('is_string($componentType)');
+            assert('is_string($componentName)');
+            $passedValidation = true;
+            $count            = 0;
+            foreach($this->{$componentName} as $model)
+            {
+                if(!$model->validate())
+                {
+                    foreach($model->getErrors() as $attribute => $error)
+                    {
+                        $attributePrefix = static::resolveErrorAttributePrefix($componentType, $count);
+                        $this->addError( $attributePrefix . $attribute, $error);
+                    }
+                    $passedValidation = false;
+                }
+                $count ++;
+            }
+            return $passedValidation;
+        }
+
+        protected static function resolveErrorAttributePrefix($treeType, $count)
+        {
+            assert('is_string($treeType)');
+            assert('is_int($count)');
+            return $treeType . '_' . $count . '_';
         }
     }
 ?>

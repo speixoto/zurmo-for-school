@@ -35,7 +35,7 @@
 
         public static function getTreeType()
         {
-            return ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
+            return ComponentForReportForm::TYPE_FILTERS;
         }
 
         public static function getWizardStepTitle()

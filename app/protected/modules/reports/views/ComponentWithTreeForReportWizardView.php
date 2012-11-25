@@ -118,7 +118,7 @@
                 });
                 $(".remove-report-attribute-row-link").live("click", function()
                     {
-                        $(this).parent().remove();
+                        $(this).parent().parent().remove(); //removes the <li>
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     }
                 );

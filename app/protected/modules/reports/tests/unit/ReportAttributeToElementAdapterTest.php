@@ -91,7 +91,7 @@
             $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS;
+            $treeType             = ComponentForReportForm::TYPE_FILTERS;
             $model                = new FilterForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -414,7 +414,7 @@
             $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS;
+            $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -435,7 +435,7 @@
             $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS;
+            $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -457,7 +457,7 @@
             $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES;
+            $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -480,7 +480,7 @@
             $reportType           = Report::TYPE_ROWS_AND_COLUMNS;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+            $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -501,7 +501,7 @@
             $reportType           = Report::TYPE_SUMMATION;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS;
+            $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -523,7 +523,7 @@
             $reportType           = Report::TYPE_SUMMATION;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS;
+            $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -545,7 +545,7 @@
             $reportType           = Report::TYPE_SUMMATION;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES;
+            $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -567,7 +567,7 @@
             $reportType           = Report::TYPE_SUMMATION;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+            $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -589,7 +589,7 @@
             $reportType           = Report::TYPE_MATRIX;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS;
+            $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -612,7 +612,7 @@
             $reportType           = Report::TYPE_MATRIX;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS;
+            $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -633,7 +633,7 @@
             $reportType           = Report::TYPE_MATRIX;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES;
+            $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 
@@ -656,7 +656,7 @@
             $reportType           = Report::TYPE_MATRIX;
             $moduleClassName      = 'ReportsTestModule';
             $modelClassName       = 'ReportModelTestItem';
-            $treeType             = ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+            $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
             $form                 = new ZurmoActiveForm();
 

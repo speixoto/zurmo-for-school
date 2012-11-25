@@ -195,7 +195,7 @@
             $type = $this->getAvailableOperatorsType();
             $data = array();
             $data['equals']       = Yii::t('Default', 'Equals');
-            $data['doesNotequal'] = Yii::t('Default', 'Does Not Equals');
+            $data['doesNotEqual'] = Yii::t('Default', 'Does Not Equals');
             $data['isNull']       = Yii::t('Default', 'Is Null');
             $data['isNotNull']    = Yii::t('Default', 'Is Not Null');
             if($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)

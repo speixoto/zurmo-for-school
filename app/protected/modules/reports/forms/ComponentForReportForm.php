@@ -26,7 +26,17 @@
 
     abstract class ComponentForReportForm extends ConfigurableMetadataModel
     {
-        const     DISPLAY_LABEL_RELATION_DIVIDER = '>>';
+        const DISPLAY_LABEL_RELATION_DIVIDER     = '>>';
+
+        const TYPE_FILTERS                       = 'Filters';
+
+        const TYPE_DISPLAY_ATTRIBUTES            = 'DisplayAttributes';
+
+        const TYPE_ORDER_BYS                     = 'OrderBys';
+
+        const TYPE_GROUP_BYS                     = 'GroupBys';
+
+        const TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES = 'DrillDownDisplayAttributes';
 
         protected $moduleClassName;
 
@@ -55,7 +65,7 @@
 
         public function rules()
         {
-            return array();
+            return array(array('attributeIndexOrDerivedType', 'safe'));
         }
 
         public function attributeLabels()

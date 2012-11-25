@@ -50,23 +50,23 @@
 
         public function getContent()
         {
-            if($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS)
+            if($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
                 return $this->getContentForFilter();
             }
-            elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES)
+            elseif($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {
                 return $this->getContentForDisplayAttribute();
             }
-            elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS)
+            elseif($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
                 return $this->getContentForOrderBy();
             }
-            elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS)
+            elseif($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
                 return $this->getContentForGroupBy();
             }
-            elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
+            elseif($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
                 return $this->getContentForDrillDownDisplayAttribute();
             }
@@ -123,7 +123,7 @@
             }
             $runTimeElement                         = new CheckBoxElement($this->model, 'availableAtRunTime',
                                                                 $this->form, $params);
-            $runTimeElement->editableTemplate       = '{content}{error}';
+            $runTimeElement->editableTemplate       = '{label}{content}{error}';
             $runTimeContent                         = $runTimeElement->render();
             $content                                = $this->renderAttributeIndexOrDerivedType();
             self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);

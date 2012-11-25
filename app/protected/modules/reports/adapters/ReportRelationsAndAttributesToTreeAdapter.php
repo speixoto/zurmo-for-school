@@ -126,25 +126,25 @@
         protected function getAttributesData(ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
                                              RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
-            if($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_FILTERS)
+            if($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
                 return $modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DISPLAY_ATTRIBUTES)
+            elseif($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {
                 return $modelToReportAdapter->getAttributesForDisplayAttributes($this->report->getGroupBys(),
                                                                                 $precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_ORDER_BYS)
+            elseif($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
                 return $modelToReportAdapter->getAttributesForOrderBys($this->report->getGroupBys(),
                                                                        $precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_GROUP_BYS)
+            elseif($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
                 return $modelToReportAdapter->getAttributesForGroupBys($precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
+            elseif($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
                 return $modelToReportAdapter->getForDrillDownAttributes($precedingModel, $precedingRelation);
             }
@@ -158,7 +158,8 @@
         {
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
-            return ModelRelationsAndAttributesToReportAdapter::make($moduleClassName, $modelClassName, $this->reportType);
+            return ModelRelationsAndAttributesToReportAdapter::make($moduleClassName, $modelClassName,
+                                                                    $this->report->getType());
         }
 
         protected function makeNodeId($relation, $nodeIdPrefix = null)

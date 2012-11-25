@@ -265,62 +265,33 @@
 
         public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber, $trackableStructurePosition = false, $id = null)
         {
-            $postData    = PostUtil::getData();
-            $savedReport = null;
-            $report      = null;
+            $postData                           = PostUtil::getData();
+            $savedReport                        = null;
+            $report                             = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
-
-
-            //when TextElement looks at $model->attribute. how is that going to work out?
-            //i dont think the $model is in fact the ReportWizardForm...
-           // $someModel = new ReportAttributeForm('we can pass name of attributeOrDerived so we know in the get to hijack'); //what about when the attribute is owner__User???  could have something extend ModelForm pass the actual model
-            //but then again the FormModel has 'operator', 'runTime' (if applicable), and 'values' corresponding to the name of the attribute
-            //in the case of value1 and value2, the value would be an array of data, 'also have labelValue'...yep.
-
-            //different scenarios depending on filter, groupby, etc.
-
-            //remember values is variable based on text/integer for example. also date, but also the inbetween array thing makes it a bit confusing.
-            //well if it is an array and values are populated. i guess if operator calls for both to be populated. then just do same check on both
-            //since both are the same TYPE of field.
-
-            //how does dateBetween currently validate??
-
-            //we need some tests here probably first before we piece this together.
-
-$moduleClassName = 'AccountsModule';
-$modelClassName  = 'Account';
-            //todo:, remember this is not the base, this is the final
-            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                    make($moduleClassName, $modelClassName, $report->getType());
-
-
-            //operator is always going to have a certain rule
-            //value hmm. the rule really depends on oh man. how does the date thing work?
-$label = 'this is tmep';
-            $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report); // i dont think this is needed once we use short forms?
-            $formModelClassName        = ReportToWizardFormAdapter::getFormClassNameByType($type);
-            $nodeIdWithoutTreeType     = ReportRelationsAndAttributesToTreeAdapter::
-                                         removeTreeTypeFromNodeId($nodeId, $treeType);
-            $inputPrefixData           = ReportRelationsAndAttributesToTreeAdapter::
-                                         resolveInputPrefixData($nodeIdWithoutTreeType, $formModelClassName,
-                                                            $treeType, (int)$rowNumber);
-            $attribute                 = ReportRelationsAndAttributesToTreeAdapter::
-                                         resolveAttributeByNodeId($nodeIdWithoutTreeType);
-
-
-            $elementAdapter            = new ReportAttributeToElementAdapter($modelToReportAdapter,
-                                                                                    $inputPrefixData,
-                                                                                    $reportToWizardFormAdapter->makeFormByType(),// i dont think so...
-                                                                                    new NoRequiredsActiveForm(),
-                                                                                    $attribute,
-                                                                                    $treeType);
-
-            $view                      = new AttributeRowForReportComponentView($elementAdapter,
-                                                                            (int)$rowNumber,
-                                                                            $inputPrefixData,
-                                                                            $attribute,
-                                                                            (bool)$trackableStructurePosition);
+            $nodeIdWithoutTreeType              = ReportRelationsAndAttributesToTreeAdapter::
+                                                     removeTreeTypeFromNodeId($nodeId, $treeType);
+            $moduleClassName                    = $report->getModuleClassName();
+            $modelClassName                     = $moduleClassName::getPrimaryModelName();
+            $form                               = new ZurmoActiveForm();
+            $form->enableAjaxValidation         = true; //ensures error validation populates correctly
+            $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
+            $model                              = ComponentForReportFormFactory::makeByTreeType($moduleClassName,
+                                                      $modelClassName, $report->getType(), $treeType);
+            $attribute                          = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
+            $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
+            $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveInputPrefixData($nodeIdWithoutTreeType, $wizardFormClassName,
+                                                      $treeType, (int)$rowNumber);
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                      $form, $treeType);
+            $view                               = new AttributeRowForReportComponentView($adapter,
+                                                      (int)$rowNumber, $inputPrefixData, $attribute,
+                                                      (bool)$trackableStructurePosition);
             $content               = $view->render();
+            $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;

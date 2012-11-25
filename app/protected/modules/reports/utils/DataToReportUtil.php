@@ -51,6 +51,110 @@
             {
                 $report->setOwner(new User());
             }
+            self::resolveFilters                    ($data, $report);
+            self::resolveOrderBys                   ($data, $report);
+            self::resolveDisplayAttributes          ($data, $report);
+            self::resolveDrillDownDisplayAttributes ($data, $report);
+            self::resolveGroupBys                   ($data, $report);
+        }
+
+        protected static function resolveFilters($data, Report $report)
+        {
+            $moduleClassName = $report->getModuleClassName();
+            if(count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
+            {
+                foreach($filtersData as $filterData)
+                {
+                    $filter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                      $report->getType());
+                    $filter->setAttributes($filterData);
+                    $report->addFilter($filter);
+                }
+            }
+            else
+            {
+                $report->removeAllFilters();
+            }
+        }
+
+        protected static function resolveOrderBys($data, Report $report)
+        {
+            $moduleClassName = $report->getModuleClassName();
+            if(count($orderBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_ORDER_BYS)) > 0)
+            {
+                foreach($orderBysData as $orderByData)
+                {
+                    $orderBy = new OrderByForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                        $report->getType());
+                    $orderBy->setAttributes($orderByData);
+                    $report->addOrderBy($orderBy);
+                }
+            }
+            else
+            {
+                $report->removeAllOrderBys();
+            }
+        }
+
+        protected static function resolveDisplayAttributes($data, Report $report)
+        {
+            $moduleClassName = $report->getModuleClassName();
+            if(count($displayAttributesData =
+                     ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)) > 0)
+            {
+                foreach($displayAttributesData as $displayAttributeData)
+                {
+                    $displayAttribute = new DisplayAttributeForReportForm($moduleClassName,
+                                                                          $moduleClassName::getPrimaryModelName(),
+                                                                          $report->getType());
+                    $displayAttribute->setAttributes($displayAttributeData);
+                    $report->addDisplayAttribute($displayAttribute);
+                }
+            }
+            else
+            {
+                $report->removeAllDisplayAttributes();
+            }
+        }
+
+        protected static function resolveDrillDownDisplayAttributes($data, Report $report)
+        {
+            $moduleClassName = $report->getModuleClassName();
+            if(count($drillDownDisplayAttributesData =
+                     ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)) > 0)
+            {
+                foreach($drillDownDisplayAttributesData as $drillDownDisplayAttributeData)
+                {
+                    $drillDownDisplayAttribute = new DrillDownDisplayAttributeForReportForm($moduleClassName,
+                                                                          $moduleClassName::getPrimaryModelName(),
+                                                                          $report->getType());
+                    $drillDownDisplayAttribute->setAttributes($drillDownDisplayAttributeData);
+                    $report->addDrillDownDisplayAttribute($drillDownDisplayAttribute);
+                }
+            }
+            else
+            {
+                $report->removeAllDrillDownDisplayAttributes();
+            }
+        }
+
+        protected static function resolveGroupBys($data, Report $report)
+        {
+            $moduleClassName = $report->getModuleClassName();
+            if(count($groupBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_GROUP_BYS)) > 0)
+            {
+                foreach($groupBysData as $groupByData)
+                {
+                    $groupBy = new GroupByForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                        $report->getType());
+                    $groupBy->setAttributes($groupByData);
+                    $report->addGroupBy($groupBy);
+                }
+            }
+            else
+            {
+                $report->removeAllGroupBys();
+            }
         }
     }
 ?>

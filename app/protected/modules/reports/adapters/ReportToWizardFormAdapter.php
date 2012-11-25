@@ -112,6 +112,11 @@
                 $formModel->setIsNew();
             }
             $formModel->setExplicitReadWriteModelPermissions($this->report->getExplicitReadWriteModelPermissions());
+            $formModel->filters                       = $this->report->getFilters();
+            $formModel->orderBys                      = $this->report->getOrderBys();
+            $formModel->groupBys                      = $this->report->getGroupBys();
+            $formModel->displayAttributes             = $this->report->getDisplayAttributes();
+            $formModel->drillDownDisplayAttributes    = $this->report->getDrillDownDisplayAttributes();
         }
     }
 ?>

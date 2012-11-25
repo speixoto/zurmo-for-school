@@ -28,7 +28,7 @@
     {
         public static function getTreeType()
         {
-            return ReportRelationsAndAttributesTreeView::TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+            return ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
         }
 
         public static function getWizardStepTitle()
