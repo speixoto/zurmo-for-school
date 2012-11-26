@@ -186,7 +186,7 @@
             $content = $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
             $content .= ZurmoHtml::tag('span', array(), strval($this->emailMessage));
             $content .= '<div class="matching-actions-and-content"><div class="email-matching-actions">';
-            $content .= $this->renderContactSelectTitleDivContent($selectLink,    $createLeadLink,    $createContactLink, $deleteLink);
+            $content .= $this->renderContactSelectTitleDivContent($selectLink, $selectContent,    $createLeadLink,    $createContactLink, $deleteLink);
             $content .= $this->renderLeadCreateTitleDivContent($selectLink,       $createLeadContent, $createContactLink, $deleteLink);
             $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent, $deleteLink);
             $content .= '</div>';
@@ -314,13 +314,13 @@
             }
         }
 
-        protected function renderContactSelectTitleDivContent($selectContent, $createLeadLink, $createContactLink, $deleteLink)
+        protected function renderContactSelectTitleDivContent($selectLink, $selectContent, $createLeadLink, $createContactLink, $deleteLink)
         {
             assert('is_string($selectContent)');
             assert('is_string($createLeadLink)');
             assert('is_string($createContactLink)');
             $content  = '<div id="contact-select-title-' . $this->uniqueId . '" class="contact-select-title">';
-            $content .= $selectContent .  ' ' . Yii::t('Default', 'or') . ' ';
+            $content .= $selectLink .  ' ' . Yii::t('Default', 'or') . ' ';
             if ($this->userCanCreateContact && $this->userCanCreateLead)
             {
                 $content .= $createLeadLink . ' ' . Yii::t('Default', 'or') . ' ' . $createContactLink;

@@ -149,6 +149,7 @@
                 $('#anyContactCancel').click( function()
                     {
                         $('.AnyContactSelectForEmailMatchingView').hide();
+                        $('.contact-select-title').show();
                         return false;
                     }
                 );
