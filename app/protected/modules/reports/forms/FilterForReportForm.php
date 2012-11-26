@@ -30,7 +30,7 @@
 
         public $currencyIdForValue;
 
-        public $operator;
+        private $_operator;
 
         public $value;
 
@@ -56,12 +56,25 @@
             }
         }
 
+        public function setOperator($value)
+        {
+            if(!in_array($value, OperatorRules::availableTypes()))
+            {
+                throw new NotSupportedException();
+            }
+            $this->_operator = $value;
+        }
+
+        public function getOperator()
+        {
+            return $this->_operator;
+        }
+
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('operator',  	 				 'validateOperator'),
                 array('operator',                    'type', 'type' => 'string'),
-                array('value',  	                 'required'),
+                array('operator',  	 				 'validateOperator'),
                 array('value',  	 				 'safe'),
                 array('value',  	 				 'validateValue'),
                 array('secondValue', 				 'safe'),
@@ -79,11 +92,21 @@
             if($this->getAvailableOperatorsType() != null && $this->operator == null)
             {
                 $this->addError('operator', Yii::t('yii', 'Operator cannot be blank.'));
+                return  false;
             }
         }
 
         public function validateValue()
         {
+            if((in_array($this->operator, self::getOperatorsWhereValueIsRequired()) ||
+               in_array($this->valueType, self::getValueTypesWhereValueIsRequired()) ||
+               ($this->getValueElementType() == 'BooleanForReportStaticDropDown' ||
+               $this->getValueElementType()  == 'UserNameId' ||
+               $this->getValueElementType()  == 'MixedDateTypesForReport')) &&
+               $this->value == null)
+            {
+                $this->addError('value', Yii::t('yii', 'Value cannot be blank.'));
+            }
             $passedValidation = true;
             $rules            = array();
             if(!is_array($this->value))
@@ -97,7 +120,7 @@
                 {
                     if(!is_string($subValue))
                     {
-                        $this->addError('value', 'Value must be a string.');
+                        $this->addError('value', Yii::t('Default', 'Value must be a string.'));
                         $passedValidation = false;
                     }
                 }
@@ -115,7 +138,8 @@
             $rules            = array();
             if(!is_array($this->secondValue))
             {
-                if($this->operator == 'between' || $this->valueType == 'Between')
+                if(in_array($this->operator, self::getOperatorsWhereSecondValueIsRequired()) ||
+                   in_array($this->valueType, self::getValueTypesWhereSecondValueIsRequired()))
                 {
                     $rules[] = array('secondValue', 'required');
                 }
@@ -133,6 +157,7 @@
             if($this->getValueElementType() == 'MixedDateTypesForReport' && $this->valueType == null)
             {
                 $this->addError('valueType', Yii::t('yii', 'Type cannot be blank.'));
+                return false;
             }
         }
 
@@ -210,27 +235,40 @@
             }
             $type = $this->getAvailableOperatorsType();
             $data = array();
-            $data['equals']                    = Yii::t('Default', 'Equals');
-            $data['doesNotEqual']              = Yii::t('Default', 'Does Not Equals');
-            $data['isNull']                    = Yii::t('Default', 'Is Null');
-            $data['isNotNull']                 = Yii::t('Default', 'Is Not Null');
+            $data[OperatorRules::TYPE_EQUALS] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
+            $data[OperatorRules::TYPE_DOES_NOT_EQUAL] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_EQUAL);
+            $data[OperatorRules::TYPE_IS_NULL] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NULL);
+            $data[OperatorRules::TYPE_IS_NOT_NULL] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_NULL);
             if($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)
             {
-                $data['startsWith']            = Yii::t('Default', 'Starts With');
-                $data['endsWith']              = Yii::t('Default', 'Starts With');
-                $data['contains']              = Yii::t('Default', 'Contains');
+                $data[OperatorRules::TYPE_STARTS_WITH] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_STARTS_WITH);
+                $data[OperatorRules::TYPE_ENDS_WITH] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ENDS_WITH);
+                $data[OperatorRules::TYPE_CONTAINS] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_CONTAINS);
             }
             elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER)
             {
-                $data['greaterThanOrEqualTo']  = Yii::t('Default', 'Greater Than Or Equal To');
-                $data['lessThanOrEqualTo']     = Yii::t('Default', 'Less Than Or Equal To');
-                $data['greaterThan']           = Yii::t('Default', 'Greater Than');
-                $data['lessThan']              = Yii::t('Default', 'Less Than');
-                $data['between']               = Yii::t('Default', 'Between');
+                $data[OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO);
+                $data[OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO);
+                $data[OperatorRules::TYPE_GREATER_THAN] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN);
+                $data[OperatorRules::TYPE_LESS_THAN] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_LESS_THAN);
+                $data[OperatorRules::TYPE_BETWEEN] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BETWEEN);
             }
             elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
             {
-                $data['oneOf']                 = Yii::t('Default', 'One Of');
+                $data[OperatorRules::TYPE_ONE_OF] =
+                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ONE_OF);
             }
             else
             {
@@ -267,6 +305,39 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected static function getValueTypesWhereValueIsRequired()
+        {
+            return array(MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE,
+                         MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER,
+                         MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON,
+                         MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN);
+        }
+
+        protected static function getValueTypesWhereSecondValueIsRequired()
+        {
+            return array(MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN);
+        }
+
+        protected static function getOperatorsWhereValueIsRequired()
+        {
+            return array(OperatorRules::TYPE_EQUALS,
+                         OperatorRules::TYPE_DOES_NOT_EQUAL,
+                         OperatorRules::TYPE_STARTS_WITH,
+                         OperatorRules::TYPE_ENDS_WITH,
+                         OperatorRules::TYPE_CONTAINS,
+                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
+                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
+                         OperatorRules::TYPE_GREATER_THAN,
+                         OperatorRules::TYPE_LESS_THAN,
+                         OperatorRules::TYPE_ONE_OF,
+                         OperatorRules::TYPE_BETWEEN);
+        }
+
+        protected static function getOperatorsWhereSecondValueIsRequired()
+        {
+            return array(OperatorRules::TYPE_BETWEEN);
         }
     }
 ?>

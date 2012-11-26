@@ -43,7 +43,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'string';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Zurmo';
             $this->assertEquals('string', $filter->attributeAndRelationData);
             $this->assertEquals('string', $filter->attributeIndexOrDerivedType);
@@ -53,7 +53,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasOne___name';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals(array('hasOne', 'name'), $filter->getAttributeAndRelationData());
             $this->assertEquals('hasOne___name',         $filter->attributeIndexOrDerivedType);
@@ -66,7 +66,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasOne___hasMany3___name';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals(array('hasOne', 'hasMany3', 'name'), $filter->getAttributeAndRelationData());
             $this->assertEquals('hasOne___hasMany3___name',          $filter->attributeIndexOrDerivedType);
@@ -84,7 +84,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem5',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule___phone';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = '1234567890';
             $this->assertEquals(array('ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule', 'phone'),
                                                                     $filter->getAttributeAndRelationData());
@@ -100,7 +100,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem5',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule___phone';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = '1234567890';
             $this->assertEquals(array('ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule', 'phone'),
                                                                     $filter->getAttributeAndRelationData());
@@ -121,7 +121,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'model5ViaItem___name';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = '1234567890';
             $this->assertEquals(array('model5ViaItem', 'name'),     $filter->getAttributeAndRelationData());
             $this->assertEquals('model5ViaItem___name',             $filter->attributeIndexOrDerivedType);
@@ -140,7 +140,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___dropDown';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals(array('hasMany2', 'dropDown'), $filter->getAttributeAndRelationData());
             $this->assertEquals('hasMany2___dropDown',         $filter->attributeIndexOrDerivedType);
@@ -153,7 +153,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___currencyValue';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals(array('hasMany2', 'currencyValue'), $filter->getAttributeAndRelationData());
             $this->assertEquals('hasMany2___currencyValue',         $filter->attributeIndexOrDerivedType);
@@ -166,7 +166,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___reportedAsAttribute';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals(array('hasMany2', 'reportedAsAttribute'), $filter->getAttributeAndRelationData());
             $this->assertEquals('hasMany2___reportedAsAttribute',         $filter->attributeIndexOrDerivedType);
@@ -179,7 +179,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals(array('hasMany2', 'likeContactState'),        $filter->getAttributeAndRelationData());
             $this->assertEquals('hasMany2___likeContactState',                $filter->attributeIndexOrDerivedType);
@@ -198,7 +198,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'hasMany2___owner__User';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals(array('hasMany2', 'owner__User'),      $filter->getAttributeAndRelationData());
             $this->assertEquals('hasMany2___owner__User',              $filter->attributeIndexOrDerivedType);
@@ -217,7 +217,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem8',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'reportModelTestItems__Via_ReportsTestModule___likeContactState';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals('ReportModelTestItems >> A name for a state', $filter->getDisplayLabel());
 
@@ -225,7 +225,7 @@
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem8',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'reportModelTestItems__Via_ReportsAlternateStateTestModule___likeContactState';
-            $filter->operator                    = 'equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Jason';
             $this->assertEquals('Reports Alternate State Test >> A name for a state', $filter->getDisplayLabel());
         }
@@ -240,12 +240,24 @@
             $filter->attributeIndexOrDerivedType = 'string';
             $validated = $filter->validate();
             $this->assertFalse($validated);
-            $errors = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $errors    = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $filter->operator                    = 'Equals';
+
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
             $filter->value                       = 'Jason';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test when not null is set as attribute, now the value is not required
+            $filter->operator                    = OperatorRules::TYPE_IS_NOT_NULL;
+            $filter->value                       = null;
             $validated = $filter->validate();
             $this->assertTrue($validated);
         }
@@ -261,12 +273,11 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
             //value is expected to be an integer
-            $filter->operator                    = 'Equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Zurmo';
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
@@ -280,7 +291,7 @@
             $this->assertTrue($validated);
 
             //now check for between, but with strings
-            $filter->operator                    = 'between';
+            $filter->operator                    = OperatorRules::TYPE_BETWEEN;
             $filter->value                       = 'test';
             $filter->secondValue                 = 'test2';
             $validated                           = $filter->validate();
@@ -322,8 +333,8 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('valueType' => array('Type cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'),
+                                                         'valueType' => array('Type cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
             //value is expected to be a date
@@ -377,8 +388,8 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('valueType' => array('Type cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'),
+                                                         'valueType' => array('Type cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
             //value is expected to be a date
@@ -434,10 +445,8 @@
             $errors = $filter->getErrors();
             $compareErrors                       = array('value'     => array('Value cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $filter->operator                    = 'Equals';
 
             //value is expected to be either 0 or 1
-            $filter->operator                    = 'Equals';
             $filter->value                       = 'Zurmo';
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
@@ -466,10 +475,9 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $filter->operator                    = 'Equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
 
             //Test equals (non-array) and it is empty
             $filter->value                       = '';
@@ -485,7 +493,7 @@
             $this->assertTrue($validated);
 
             //Test oneOf (array) and it is null
-            $filter->operator                    = 'OneOf';
+            $filter->operator                    = OperatorRules::TYPE_ONE_OF;
             $filter->value                       = null;
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
@@ -522,10 +530,9 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $filter->operator                    = 'Equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
 
             //Test equals (non-array) and it is empty
             $filter->value                       = '';
@@ -541,7 +548,7 @@
             $this->assertTrue($validated);
 
             //Test oneOf (array) and it is null
-            $filter->operator                    = 'OneOf';
+            $filter->operator                    = OperatorRules::TYPE_ONE_OF;
             $filter->value                       = null;
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
@@ -575,12 +582,11 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
             //value is expected to be an currency
-            $filter->operator                    = 'Equals';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = 'Zurmo';
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
@@ -594,7 +600,7 @@
             $this->assertTrue($validated);
 
             //now check for between, but with strings
-            $filter->operator                    = 'between';
+            $filter->operator                    = OperatorRules::TYPE_BETWEEN;
             $filter->value                       = 'test';
             $filter->secondValue                 = 'test2';
             $validated                           = $filter->validate();
@@ -641,10 +647,8 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $filter->operator                    = 'Equals';
             $filter->value                       = '5';
             $filter->stringifiedModelForValue    = 'Jason';
             $validated = $filter->validate();
