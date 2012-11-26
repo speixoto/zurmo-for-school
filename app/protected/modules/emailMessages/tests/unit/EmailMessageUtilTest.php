@@ -229,21 +229,32 @@
                                 ZurmoHtml::ID_PREFIX . (ZurmoHtml::$count - 1) . '">a@zurmo.com</a>', $content);
         }
 
-        public function testCreateTextContent()
+        public function testResolveTextContent()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $emailMessage = new EmailMessage();
-            $emailContent = new EmailMessageContent();
-            $emailContent->htmlContent = "<br> <b>Message</b>: <br/> <p>I'm here to test a html email content</p><p><hr><font color='#1f497d'>Billy Jean</font><br></p>";
-            $emailMessage->content = $emailContent;
-            EmailMessageUtil::createTextContent($emailMessage);
-            $this->assertNotContains("<br>", $emailMessage->content->textContent);
-            $this->assertNotContains("<br/>", $emailMessage->content->textContent);
-            $this->assertNotContains("<p>", $emailMessage->content->textContent);
-            $this->assertNotContains("</p>", $emailMessage->content->textContent);
-            $this->assertNotContains("</font>", $emailMessage->content->textContent);
-            $this->assertNotContains("<hr>", $emailMessage->content->textContent);
-            $this->assertNotContains("<font color='#1f497d'>", $emailMessage->content->textContent);
+            $htmlContent = "<br>A test message.";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\nA test message.", $textContent);
+            $htmlContent = "<p>A new test message.</p>";
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\nA test message.", $textContent);
+            $htmlContent = "<p>A test message.</p>";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\n\nA test message.", $textContent);
+            $htmlContent = "<u>A test</u> <b>message</b>.";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("A test message.", $textContent);
+            $htmlContent = "<u><p>A test</p></u> <b>message</b>.";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\n\nA test message.", $textContent);
+            $htmlContent = "<br /><p>A test</p> <p>message</p>.";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\n\n\nA test \n\nmessage.", $textContent);
         }
     }
 ?>
