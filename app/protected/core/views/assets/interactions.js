@@ -116,16 +116,9 @@ $(window).ready(function(){
    1000 );
 
     /*Docking the save/cancel button in create view*/
-    $(window).scroll(function(){
-        var windowTop, diff;
-        windowTop = $(window).scrollTop();
-        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
-        if( windowTop > diff ) {
-            $('#float-bar .view-toolbar-container').addClass('dock');
-        } else {
-            $('#float-bar .view-toolbar-container').removeClass('dock');
-        }
-    });
+    $(window).scroll( dockFloatingBar );
+    dockFloatingBar();
+    
     
     /*Spinner*/
    $( '.loading', '#stickyListLoadingArea' ).spin({
@@ -146,6 +139,21 @@ $(window).ready(function(){
     });
 
 });
+
+/*
+ * this function takes care of the save/cancel buttons' position in long forms, ie. edit account.
+ */
+
+function dockFloatingBar(){
+    var windowTop, diff;
+    windowTop = $(window).scrollTop();
+    diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
+    if( windowTop > diff ) {
+        $('#float-bar .view-toolbar-container').addClass('dock');
+    } else {
+        $('#float-bar .view-toolbar-container').removeClass('dock');
+    }
+}
 
 /*
  * Checkboxes

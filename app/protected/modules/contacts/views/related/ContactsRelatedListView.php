@@ -46,12 +46,8 @@
                             array('type'                      => 'CreateEmailMessageFromRelatedListLink',
                                   'modelClassName'            => 'EmailMessage',
                                   'routeParameters'           =>
-                                    array(  'relatedModelClassName'  => 'Contact',
-                                            'relatedId'        =>
-                                                'eval:$this->params["relationModel"]->id',
-                                            'toAddress'        =>
-                                                'eval:$this->params["relationModel"]->primaryEmail->emailAddress')
-                        ),
+                                    array('relatedModelClassName'  => 'Contact')
+                            ),
                             array('type'                      => 'RelatedDeleteLink'),
                             array('type'                      => 'RelatedUnlink',
                                   'relationModelClassName'    => 'eval:get_class($this->params["relationModel"])',

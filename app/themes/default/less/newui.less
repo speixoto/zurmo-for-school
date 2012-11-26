@@ -1168,7 +1168,8 @@ footer, header, hgroup, menu, nav, section {
     height: 40px;
     display: block;
     .view-toolbar-container{
-        position:fixed;
+        z-index:222222;
+        position:fixed !important;
         .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5)");
         #gradient > .vertical-three-colors( #f5f5f5, #f5f5f5, 80%, #ffffff );
         padding-bottom:15px;
@@ -1176,23 +1177,26 @@ footer, header, hgroup, menu, nav, section {
         left: 50%;
         bottom: 0;
         float: left;
+        width: auto;
         &.dock{
             background:none;
-            position:relative;
+            position:relative !important;
             font-size:11px;
             bottom:0;
             left:0;
             width: 100%;
-           .unstyle-panel();
-           border-top:1px solid #CCC;
+            .unstyle-panel();
+            border-top:1px solid #CCC;
         }
     }
 }
+
 .view-toolbar-container{
-    z-index:222222;
     width:auto;
     display:inline-block;
     font-size:11px;
+    width: 100%;
+    position: relative;
 }
 
 form,

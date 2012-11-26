@@ -30,18 +30,18 @@
     // DON'T MAKE A MESS!
     return array(
         'Access Social Items'
-            => '??',
+            => 'Zugang zu sozialen Objekte',
         'Post'
-            => '??',
+            => 'Beitrag',
         'Social Item'
-            => '??',
+            => 'Social Artikel',
         'Social Items'
-            => '??',
+            => 'Social Artikeln',
         'What\'s going on?'
-            => '??',
+            => 'Was ist los?',
         '{n} Post created|{n} Posts created'
-            => '??',
+            => '{n} Beitrag erstellt|{n} Beiträge erstellten',
         '{postedFromUser} to {postedToUser}'
-            => '??',
+            => '{postedFromUser} zu {postedToUser}',
     );
 ?>

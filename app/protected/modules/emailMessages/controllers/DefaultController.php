@@ -427,6 +427,10 @@
             $emailMessageForm = new CreateEmailMessageForm($emailMessage);
             $emailMessageForm->setScenario('createNonDraft');
             $postVariableName = get_class($emailMessageForm);
+            if($toAddress == null && $personOrAccount != null && $personOrAccount->primaryEmail->emailAddress != null)
+            {
+                $toAddress = $personOrAccount->primaryEmail->emailAddress;
+            }
             if (isset($postData[$postVariableName]))
             {
                 if($relatedId != null && $relatedModelClassName != null && $toAddress != null)

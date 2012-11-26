@@ -34,14 +34,14 @@
             {
                 throw new NotSupportedException();
             }
-            DesignerTestHelper::createCheckBoxAttribute           ('CheckBox', false, 'Opportunity');
-            DesignerTestHelper::createDateTimeAttribute           ('DateTime', false, 'Opportunity');
-            DesignerTestHelper::createIntegerAttribute            ('Integers', false, 'Opportunity');
-            DesignerTestHelper::createMultiSelectDropDownAttribute('MultiSelectDropDown', false, 'Opportunity');
-            DesignerTestHelper::createTagCloudAttribute           ('TagCloud', false, 'Opportunity');
-            DesignerTestHelper::createPhoneAttribute              ('Phone', false, 'Opportunity');
-            DesignerTestHelper::createRadioDropDownAttribute      ('RadioDropDown', false, 'Opportunity');
-            DesignerTestHelper::createUrlAttribute                ('URL', false, 'Opportunity');
+            DesignerTestHelper::createCheckBoxAttribute           ('checkBox', false, 'Opportunity');
+            DesignerTestHelper::createDateTimeAttribute           ('dateTime', false, 'Opportunity');
+            DesignerTestHelper::createIntegerAttribute            ('integers', false, 'Opportunity');
+            DesignerTestHelper::createMultiSelectDropDownAttribute('multiSelectDropDown', false, 'Opportunity');
+            DesignerTestHelper::createTagCloudAttribute           ('tagCloud', false, 'Opportunity');
+            DesignerTestHelper::createPhoneAttribute              ('phone', false, 'Opportunity');
+            DesignerTestHelper::createRadioDropDownAttribute      ('radioDropDown', false, 'Opportunity');
+            DesignerTestHelper::createUrlAttribute                ('url', false, 'Opportunity');
         }
 
     }
