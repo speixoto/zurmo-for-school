@@ -68,9 +68,9 @@
             $emailMessageForm->sender               = $sender;
             $emailMessageForm->account              = $emailAccount;
             $emailMessageForm->content->textContent = EmailMessageUtil::resolveTextContent(
-                        ArrayUtil::getArrayValue($postData[$postVariableName]['content'], 'htmlContent'),
-                        null
-                    );
+                                                        ArrayUtil::getArrayValue(
+                                                            $postData[$postVariableName]['content'], 'htmlContent'),
+                                                            null);
             $box                                    = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessageForm->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
             return $emailMessageForm;
@@ -230,7 +230,7 @@
            if($htmlContent != null && $textContent == null)
            {
                $purifier = new CHtmlPurifier;
-               $purifier->options = array('HTML.Allowed'=> 'p,br');
+               $purifier->options = array('HTML.Allowed'=> 'p,br'); //Not Coding Standard
                $textContent = $purifier->purify($htmlContent);
                $textContent = preg_replace('#<br\s*?/?>#i', "\n"  , $textContent);
                $textContent = preg_replace('#<p\s*?/?>#i',  "\n\n", $textContent);
