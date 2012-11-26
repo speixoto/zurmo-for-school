@@ -24,38 +24,25 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Represents a message source that stores translated messages in database.
-     *
-     * The ZurmoMessageSource::installSchema() method must be called to create
-     * the tables with required indexes
-     */
-    class ZurmoMessageSource extends CDbMessageSource
+    class MessageTranslation extends RedBeanModel
     {
-        const CACHE_KEY_PREFIX='ZurmoMessageSource';
-
-        protected function loadMessagesFromDb($category,$language)
+        public static function getDefaultMetadata()
         {
-            $sql = <<<EOD
-SELECT ms.source, mt.translation
-FROM messagesource as ms, messagetranslation as mt
-WHERE
-    mt.messagesource_id = ms.id
-    AND ms.category = :category
-    AND mt.language = :language
-EOD;
-            $rows = R::getAll($sql,
-                              array(
-                                    ':category' => $category,
-                                    ':language' => $language
-                                    ));
-
-            $messages = array();
-            foreach ($rows as $row) {
-                $messages[$row['source']] = $row['translation'];
-            }
-
-            return $messages;
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'translation',
+                    'language',
+                ),
+                'rules' => array(
+                    array('translation',        'required'),
+                    array('translation',        'type', 'type' => 'blob'),
+                    array('language',           'required'),
+                    array('language',           'type', 'type' => 'string'),
+                    array('language',           'length',  'min'  => 1, 'max' => 255),
+                )
+            );
+            return $metadata;
         }
     }
 ?>

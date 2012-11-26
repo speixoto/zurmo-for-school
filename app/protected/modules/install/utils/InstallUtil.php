@@ -605,7 +605,6 @@
             }
             RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
-            ZurmoMessageSource::installSchema();
         }
 
         /**
