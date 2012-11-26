@@ -280,7 +280,7 @@
             $this->assertTrue($validated);
 
             //now check for between, but with strings
-            $filter->operator                    = 'Between';
+            $filter->operator                    = 'between';
             $filter->value                       = 'test';
             $filter->secondValue                 = 'test2';
             $validated                           = $filter->validate();
@@ -322,12 +322,12 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+            $compareErrors                       = array('valueType' => array('Type cannot be blank.'),
                                                          'value'     => array('Value cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
             //value is expected to be a date
-            $filter->operator                    = 'Equals';
+            $filter->valueType                   = 'On';
             $filter->value                       = 'Zurmo';
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
@@ -341,7 +341,7 @@
             $this->assertTrue($validated);
 
             //now check for between, but with strings
-            $filter->operator                    = 'Between';
+            $filter->valueType                    = 'Between';
             $filter->value                       = 'test';
             $filter->secondValue                 = 'test2';
             $validated                           = $filter->validate();
@@ -351,7 +351,7 @@
                                                          'secondValue'  => array('Second Value must be date.'));
             $this->assertEquals($compareErrors, $errors);
 
-            //Now check with integers. but missing the second value
+            //Now check with dates. but missing the second value
             $filter->value                       = '2011-05-05';
             $filter->secondValue                 = null;
             $validated                           = $filter->validate();
@@ -377,12 +377,12 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
+            $compareErrors                       = array('valueType' => array('Type cannot be blank.'),
                                                          'value'     => array('Value cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
             //value is expected to be a date
-            $filter->operator                    = 'Equals';
+            $filter->valueType                   = 'On';
             $filter->value                       = 'Zurmo';
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
@@ -396,7 +396,7 @@
             $this->assertTrue($validated);
 
             //now check for between, but with strings
-            $filter->operator                    = 'Between';
+            $filter->valueType                   = 'Between';
             $filter->value                       = 'test';
             $filter->secondValue                 = 'test2';
             $validated                           = $filter->validate();
@@ -432,8 +432,7 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors = $filter->getErrors();
-            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'),
-                                                         'value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
             $filter->operator                    = 'Equals';
 
@@ -595,7 +594,7 @@
             $this->assertTrue($validated);
 
             //now check for between, but with strings
-            $filter->operator                    = 'Between';
+            $filter->operator                    = 'between';
             $filter->value                       = 'test';
             $filter->secondValue                 = 'test2';
             $validated                           = $filter->validate();

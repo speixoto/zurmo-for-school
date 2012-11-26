@@ -35,6 +35,30 @@
             parent::__construct($model, $attribute, $form, $params);
         }
 
+        protected function renderEditableValueTypeContent()
+        {
+            $content = parent::renderEditableValueTypeContent();
+            $error   = $this->form->error($this->model, 'valueType',
+                                          array('inputID' => $this->getValueTypeEditableInputId()));
+            return $content . $error;
+        }
+
+        protected function renderEditableFirstDateContent()
+        {
+            $content = parent::renderEditableFirstDateContent();
+            $error   = $this->form->error($this->model, 'value',
+                                          array('inputID' => $this->getValueFirstDateEditableInputId()));
+            return $content . $error;
+        }
+
+        protected function renderEditableSecondDateContent()
+        {
+            $content = parent::renderEditableSecondDateContent();
+            $error   = $this->form->error($this->model, 'secondValue',
+                                          array('inputID' => $this->getValueSecondDateEditableInputId()));
+            return $content . $error;
+        }
+
         protected function getValueTypeEditableInputId()
         {
             return $this->getEditableInputId('valueType');

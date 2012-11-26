@@ -145,8 +145,8 @@
                 ),
             ));
             $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['EditableDateElement'];
-            return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
+            $content =  $cClipWidget->getController()->clips['EditableDateElement'];
+            return      ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
         }
 
         protected function renderEditableSecondDateContent()
@@ -210,6 +210,15 @@
                 return $label;
             }
             return ZurmoHtml::label($label, false);
+        }
+
+        /**
+         * Render during the Editable render
+         * (non-PHPdoc)
+         * @see Element::renderError()
+         */
+        protected function renderError()
+        {
         }
     }
 ?>

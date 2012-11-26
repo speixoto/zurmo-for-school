@@ -37,13 +37,20 @@
         {
             $firstValueSpanAreaId               = $this->getFirstValueEditableInputId() . '-first-value-area';
             $secondValueSpanAreaId              = $this->getSecondValueEditableInputId() . '-second-value-area';
+            $startingDivStyleFirstValue  = null;
             $startingDivStyleSecondValue  = null;
+            if (in_array($this->getOperator(), array('isNull', 'isNotNull')))
+            {
+                $startingDivStyleFirstValue = "display:none;";
+            }
+
             if ($this->getOperator() != 'between')
             {
                 $startingDivStyleSecondValue = "display:none;";
             }
             $content  = ZurmoHtml::tag('span', array('id'    => $firstValueSpanAreaId,
-                                                     'class' => 'first-value-area'),
+                                                     'class' => 'first-value-area',
+                                                     'style' => $startingDivStyleFirstValue),
                                        '&#160;' . $this->renderEditableFirstValueContent());
             $content .= ZurmoHtml::tag('span', array('id'    => $secondValueSpanAreaId,
                                                      'class' => 'second-value-area',
@@ -60,7 +67,8 @@
                 'encode' => false,
             );
             $textField   = $this->form->textField($this->model, 'value', $htmlOptions);
-            $error       = $this->form->error    ($this->model, 'value');
+            $error       = $this->form->error($this->model, 'value',
+                           array('inputID' => $this->getFirstValueEditableInputId()));
             return $textField . $error;
         }
 
@@ -72,7 +80,8 @@
                 'encode' => false,
             );
             $textField   = $this->form->textField($this->model, 'secondValue', $htmlOptions);
-            $error       = $this->form->error    ($this->model, 'secondValue');
+            $error       = $this->form->error($this->model, 'secondValue',
+                           array('inputID' => $this->getSecondValueEditableInputId()));
             return $textField . $error;
         }
 
@@ -100,14 +109,23 @@
             return $this->model->operator;
         }
 
+        /**
+         * Render during the Editable render
+         * (non-PHPdoc)
+         * @see Element::renderError()
+         */
+        protected function renderError()
+        {
+        }
+
         protected function getFirstValueEditableInputId()
         {
-            return $this->getEditableInputName('value');
+            return $this->getEditableInputId('value');
         }
 
         protected function getSecondValueEditableInputId()
         {
-            return $this->getEditableInputName('secondValue');
+            return $this->getEditableInputId('secondValue');
         }
 
         protected function getFirstValueEditableInputName()

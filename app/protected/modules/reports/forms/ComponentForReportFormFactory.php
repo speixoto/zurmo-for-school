@@ -24,24 +24,38 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class used by reporting or workflow to show available operator types in a dropdown.
-     */
-    class OperatorStaticDropDownElement extends StaticDropDownElement
+    class ComponentForReportFormFactory
     {
-        protected function getDropDownArray()
+        public static function makeByTreeType($moduleClassName, $modelClassName, $type, $treeType)
         {
-            return $this->model->getOperatorValuesAndLabels();
-        }
-
-        public function getIdForSelectInput()
-        {
-            return $this->getEditableInputId($this->attribute);
-        }
-
-        protected function getNameForSelectInput()
-        {
-            return $this->getEditableInputName($this->attribute);
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($type)');
+            assert('is_string($treeType)');
+            if($treeType == ComponentForReportForm::TYPE_FILTERS)
+            {
+                return new FilterForReportForm($moduleClassName, $modelClassName, $type);
+            }
+            elseif($treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
+            {
+                return new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $type);
+            }
+            elseif($treeType == ComponentForReportForm::TYPE_ORDER_BYS)
+            {
+                return new OrderByForReportForm($moduleClassName, $modelClassName, $type);
+            }
+            elseif($treeType == ComponentForReportForm::TYPE_GROUP_BYS)
+            {
+                return new GroupByrForReportForm($moduleClassName, $modelClassName, $type);
+            }
+            elseif($treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
+            {
+                return new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $type);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

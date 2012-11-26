@@ -128,7 +128,7 @@
             $content                                = $this->renderAttributeIndexOrDerivedType();
             self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
             self::resolveDivWrapperForContent($operatorContent,                $content);
-            self::resolveDivWrapperForContent($valueContent,                   $content);
+            self::resolveDivWrapperForContent($valueContent,                   $content, 'value-data');
             self::resolveDivWrapperForContent($runTimeContent,                 $content);
             return $content;
         }
@@ -196,11 +196,19 @@
             return $this->getContentForDisplayAttribute();
         }
 
-        protected static function resolveDivWrapperForContent($innerContent, & $content)
+        protected static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
         {
+            if($class != null)
+            {
+                $htmlOptions = array('class' => $class);
+            }
+            else
+            {
+                $htmlOptions = array();
+            }
             if($innerContent != null)
             {
-                $content .= ZurmoHtml::tag('div', array(), $innerContent);
+                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
             }
         }
     }

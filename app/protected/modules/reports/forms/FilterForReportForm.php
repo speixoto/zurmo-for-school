@@ -59,7 +59,7 @@
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('operator',                    'required'),
+                array('operator',  	 				 'validateOperator'),
                 array('operator',                    'type', 'type' => 'string'),
                 array('value',  	                 'required'),
                 array('value',  	 				 'safe'),
@@ -70,8 +70,16 @@
                 array('stringifiedModelForValue',  	 'safe'),
                 array('availableAtRunTime',          'boolean'),
                 array('valueType',                   'type', 'type' => 'string'),
-                array('valueType',                   'required', 'on' => 'something'),
+                array('valueType',                   'validateValueType'),
             ));
+        }
+
+        public function validateOperator()
+        {
+            if($this->getAvailableOperatorsType() != null && $this->operator == null)
+            {
+                $this->addError('operator', Yii::t('yii', 'Operator cannot be blank.'));
+            }
         }
 
         public function validateValue()
@@ -107,7 +115,7 @@
             $rules            = array();
             if(!is_array($this->secondValue))
             {
-                if($this->operator == 'Between' || $this->valueType == 'Between')
+                if($this->operator == 'between' || $this->valueType == 'Between')
                 {
                     $rules[] = array('secondValue', 'required');
                 }
@@ -118,6 +126,14 @@
                 throw new NotSupportedException();
             }
             return $passedValidation;
+        }
+
+        public function validateValueType()
+        {
+            if($this->getValueElementType() == 'MixedDateTypesForReport' && $this->valueType == null)
+            {
+                $this->addError('valueType', Yii::t('yii', 'Type cannot be blank.'));
+            }
         }
 
         private function createValueValidatorsByRules(Array $rules)
@@ -194,10 +210,10 @@
             }
             $type = $this->getAvailableOperatorsType();
             $data = array();
-            $data['equals']       = Yii::t('Default', 'Equals');
-            $data['doesNotEqual'] = Yii::t('Default', 'Does Not Equals');
-            $data['isNull']       = Yii::t('Default', 'Is Null');
-            $data['isNotNull']    = Yii::t('Default', 'Is Not Null');
+            $data['equals']                    = Yii::t('Default', 'Equals');
+            $data['doesNotEqual']              = Yii::t('Default', 'Does Not Equals');
+            $data['isNull']                    = Yii::t('Default', 'Is Null');
+            $data['isNotNull']                 = Yii::t('Default', 'Is Not Null');
             if($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)
             {
                 $data['startsWith']            = Yii::t('Default', 'Starts With');

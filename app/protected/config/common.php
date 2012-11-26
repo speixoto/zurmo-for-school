@@ -118,7 +118,6 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.cookie.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.treeview.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.treeview.edit.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.treeview.async.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/qtip/assets/jquery.qtip-2.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/extendedGridView/jquery.yiigridview.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fusionChart/jquery.fusioncharts.js',
@@ -137,6 +136,7 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fileUpload/jquery.fileupload-ui.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fileUpload/jquery.tmpl.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fileUpload/jquery.iframe-transport.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/treeView/jquery.treeview.async.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js'
                     )
@@ -152,7 +152,6 @@
                     array('system.web.js.source',                                       '/jquery.jquery.cookie.js'),
                     array('system.web.js.source',                                       '/jquery.jquery.treeview.js'),
                     array('system.web.js.source',                                       '/jquery.treeview.edit.js'),
-                    array('system.web.js.source',                                       '/jquery.treeview.async.js'),
                     array('application.extensions.qtip.assets',                         '/jquery.qtip-2.min.js'),
                     array('application.core.widgets.assets',   '/extendedGridView/jquery.yiigridview.js'),
                     array('application.core.widgets.assets',   '/fusionChart/jquery.fusioncharts.js'),
@@ -170,6 +169,7 @@
                     array('application.core.widgets.assets',   '/fileUpload/jquery.fileupload-ui.js'),
                     array('application.core.widgets.assets',   '/fileUpload/jquery.tmpl.min.js'),
                     array('application.core.widgets.assets',   '/fileUpload/jquery.iframe-transport.js'),
+                    array('application.core.widgets.assets',   '/treeView/jquery.treeview.async.js'),
                     array('application.extensions.timepicker.assets',                   '/jquery-ui-timepicker-addon.min.js'),
                     array('application.core.widgets.assets',   '/calendar/Calendar.js')
                 ),

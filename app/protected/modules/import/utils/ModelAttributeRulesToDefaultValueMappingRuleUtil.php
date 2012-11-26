@@ -33,7 +33,8 @@
         public static function getApplicableRulesByModelClassNameAndAttributeName($modelClassName, $attributeName,
                                                                                   $ruleAttributeName,
                                                                                   $requiredRuleIsApplicable = false,
-                                                                                  $treatDateTimeAsDate = false)
+                                                                                  $treatDateTimeAsDate = false,
+                                                                                  $readOnlyRuleIsApplicable = true)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
@@ -76,6 +77,13 @@
                                 continue;
                             case 'required':
                                if ($requiredRuleIsApplicable)
+                               {
+                                   $rule[0] = $ruleAttributeName;
+                                   $applicableRules[] = $rule;
+                               }
+                               continue;
+                            case 'readOnly':
+                               if ($readOnlyRuleIsApplicable)
                                {
                                    $rule[0] = $ruleAttributeName;
                                    $applicableRules[] = $rule;
