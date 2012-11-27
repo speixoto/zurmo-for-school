@@ -53,7 +53,8 @@
                     $(document).ready(
                         function()
                         {
-                            $('#{$id}').redactor({
+                            $('#{$id}').redactor(
+                            {
                                 buttons:    {$this->buttons},
                                 source:     {$this->source},
                                 paragraphy: {$this->paragraphy},

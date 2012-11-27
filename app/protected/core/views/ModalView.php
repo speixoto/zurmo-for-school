@@ -82,7 +82,7 @@
             {
                 $heightContent = $height;
             }
-            if(is_array($position))
+            if (is_array($position))
             {
                 $position = CJSON::encode($position);
             }
