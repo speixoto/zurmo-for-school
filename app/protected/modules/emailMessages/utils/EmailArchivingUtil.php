@@ -230,8 +230,7 @@
             $personsAndAccounts    = array();
             if ($userCanAccessContacts || $userCanAccessLeads)
             {
-                $stateMetadataAdapterClassName =
-                    LeadsStateMetadataAdapter::
+                $stateMetadataAdapterClassName = LeadsStateMetadataAdapter::
                     resolveStateMetadataAdapterClassNameByAccess($userCanAccessContacts, $userCanAccessLeads);
                 $personsAndAccounts = ContactSearch::
                                       getContactsByAnyEmailAddress($emailAddress, 1, $stateMetadataAdapterClassName);
@@ -273,13 +272,12 @@
             $contactsOrLeads   = array();
             if ($userCanAccessContacts || $userCanAccessLeads)
             {
-                $stateMetadataAdapterClassName =
-                    LeadsStateMetadataAdapter::
+                $stateMetadataAdapterClassName = LeadsStateMetadataAdapter::
                     resolveStateMetadataAdapterClassNameByAccess($userCanAccessContacts, $userCanAccessLeads);
-                $contactsOrLeads = ContactSearch::getContactsByAnyEmailAddress($emailAddress, true, $stateMetadataAdapterClassName);
+                $contactsOrLeads = ContactSearch::getContactsByAnyEmailAddress($emailAddress, null, $stateMetadataAdapterClassName);
             }
 
-            if(!empty($contactsOrLeads))
+            if (!empty($contactsOrLeads))
             {
                 $personOrAccount = $contactsOrLeads[0];
             }
@@ -289,7 +287,7 @@
                 // Check if email belongs to account
                 if ($userCanAccessAccounts)
                 {
-                    $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress, true);
+                    $accounts = AccountSearch::getAccountsByAnyEmailAddress($emailAddress);
                 }
 
                 if (count($accounts))

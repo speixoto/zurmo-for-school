@@ -24,24 +24,20 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    // KEEP these in alphabetical order.
-    // KEEP them indented correctly.
-    // KEEP all the language files up-to-date with each other.
-    // DON'T MAKE A MESS!
-    return array(
-        'Access Social Items'
-            => 'Zugang zu sozialen Objekte',
-        'Post'
-            => 'Beitrag',
-        'Social Item'
-            => 'Social Artikel',
-        'Social Items'
-            => 'Social Artikeln',
-        'What\'s going on?'
-            => 'Was ist los?',
-        '{n} Post created|{n} Posts created'
-            => '{n} Beitrag erstellt|{n} Beiträge erstellten',
-        '{postedFromUser} to {postedToUser}'
-            => '{postedFromUser} zu {postedToUser}',
-    );
+    /**
+     * Display either the sent date time or a message saying it is in queue.
+     */
+    class EmailMessageSentDateTimeElement extends DateTimeElement
+    {
+        protected function renderControlNonEditable()
+        {
+            assert('$this->model instanceof EmailMessage');
+            if ($this->model->folder->type == EmailFolder::TYPE_SENT)
+            {
+                return parent::renderControlNonEditable();
+            }
+            return Yii::t('Default', 'Currently in the {folderType} folder',
+                                     array('{folderType}' => EmailFolder::getTranslatedFolderNameByType($this->model->folder->type)));
+        }
+    }
 ?>

@@ -33,17 +33,20 @@
         protected function renderControlNonEditable()
         {
             assert('$this->model instanceof Item || $this->model->getModel() instanceof Item');
-            $content = '<ul class="attachments">';
-            $content .= '<li><strong>' . Yii::t('Default', 'Attachments'). '</strong></li>';
-            foreach ($this->model->files as $fileModel)
+            $content = null;
+            if ($this->model->files->count() > 0)
             {
-                $content .= '<li><span class="icon-attachment"></span>';
-                $content .= FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($this->model,
-                                                                                                       $fileModel);
-                $content .= ' ' . FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int)$fileModel->size);
-                $content .= '</li>';
+                $content  .= '<ul class="attachments">';
+                foreach ($this->model->files as $fileModel)
+                {
+                    $content .= '<li><span class="icon-attachment"></span>';
+                    $content .= FileModelDisplayUtil::renderDownloadLinkContentByRelationModelAndFileModel($this->model,
+                                                                                                           $fileModel);
+                    $content .= ' ' . FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int)$fileModel->size);
+                    $content .= '</li>';
+                }
+                $content .= '</ul>';
             }
-            $content .= '</ul>';
             return $content;
         }
 
@@ -73,7 +76,7 @@
                 'existingFiles'        => $existingFilesInformation,
                 'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize(),
                 'showMaxSize'          => $this->getShowMaxSize(),
-                'id'				   => $this->getId(),
+                'id'                   => $this->getId(),
             ));
 
             $cClipWidget->endClip();
@@ -137,6 +140,7 @@
         {
             return get_class($this->model);
         }
+
         /**
          * @return string content
          */

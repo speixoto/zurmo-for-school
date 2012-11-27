@@ -133,7 +133,7 @@
             $existingPeople = array();
             foreach ($this->model->recipients as $recipient)
             {
-                if($recipient->type == constant('EmailMessageRecipient::TYPE_' . strtoupper($prefix)))
+                if ($recipient->type == constant('EmailMessageRecipient::TYPE_' . strtoupper($prefix)))
                 {
                     $existingPeople[] = array('id'   => $recipient->toAddress,
                                               'name' => $recipient->toName . ' (' . $recipient->toAddress . ')');

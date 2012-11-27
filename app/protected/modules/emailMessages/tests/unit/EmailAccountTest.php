@@ -33,7 +33,6 @@
             UserTestHelper::createBasicUser('billy');
         }
 
-
         public function testResolveAndGetByUserAndName()
         {
             //Test a user that not have a Primary Email Address
@@ -63,7 +62,6 @@
             $this->assertEquals(0, $emailAccount->useCustomOutboundSettings);
             $this->assertEquals('smtp', $emailAccount->outboundType);
         }
-
 
         /**
          * @depends testResolveAndGetByUserAndName

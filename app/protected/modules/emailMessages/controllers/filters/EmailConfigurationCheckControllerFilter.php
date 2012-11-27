@@ -38,7 +38,7 @@
             {
                 return true;
             }
-            if(Yii::app()->emailHelper->outboundHost != null)
+            if (Yii::app()->emailHelper->outboundHost != null)
             {
                 return true;
             }

@@ -31,7 +31,6 @@
     {
         const DEFAULT_THEME_COLOR = 'blue';
 
-
         public function resolveAndGetThemeColorValue(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
@@ -60,7 +59,7 @@
 
         public function getActiveThemeColor()
         {
-            if(Yii::app()->user->userModel == null)
+            if (Yii::app()->user->userModel == null)
             {
                 return $this->getDefaultThemeColor();
             }
@@ -72,7 +71,7 @@
 
         public function getActiveBackgroundTexture()
         {
-            if(Yii::app()->user->userModel == null)
+            if (Yii::app()->user->userModel == null)
             {
                 return null;
             }
@@ -90,7 +89,7 @@
 
         public function setBackgroundTextureValue(User $user, $value)
         {
-            assert('is_string($value)');
+            assert('is_string($value) || $value == null');
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'backgroundTexture', $value);
         }
 

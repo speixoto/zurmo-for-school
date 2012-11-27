@@ -70,7 +70,7 @@
         public function run()
         {
             self::$jobOwnerUserModel = Yii::app()->user->userModel;
-            if(Yii::app()->imap->connect())
+            if (Yii::app()->imap->connect())
             {
                 $lastImapCheckTime     = EmailMessagesModule::getLastImapDropboxCheckTime();
                 if (isset($lastImapCheckTime) && $lastImapCheckTime != '')
