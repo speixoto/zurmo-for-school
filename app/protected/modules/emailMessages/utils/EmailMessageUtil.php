@@ -48,14 +48,20 @@
             static::attachRecipientsToMessage($toRecipients,
                                               $emailMessageForm->getModel(),
                                               EmailMessageRecipient::TYPE_TO);
-            $ccRecipients = explode(",", $postData[$postVariableName]['recipientsData']['cc']);
-            static::attachRecipientsToMessage($ccRecipients,
+            if(ArrayUtil::getArrayValue($postData[$postVariableName]['recipientsData'], 'cc') != null)
+            {
+                $ccRecipients = explode(",", $postData[$postVariableName]['recipientsData']['cc']);
+                static::attachRecipientsToMessage($ccRecipients,
                                               $emailMessageForm->getModel(),
                                               EmailMessageRecipient::TYPE_CC);
-            $bccRecipients = explode(",", $postData[$postVariableName]['recipientsData']['bcc']);
-            static::attachRecipientsToMessage($bccRecipients,
-                                              $emailMessageForm->getModel(),
-                                              EmailMessageRecipient::TYPE_BCC);
+            }
+            if(ArrayUtil::getArrayValue($postData[$postVariableName]['recipientsData'], 'bcc') != null)
+            {
+                $bccRecipients = explode(",", $postData[$postVariableName]['recipientsData']['bcc']);
+                static::attachRecipientsToMessage($bccRecipients,
+                                                  $emailMessageForm->getModel(),
+                                                  EmailMessageRecipient::TYPE_BCC);
+            }
             if (isset($postData['filesIds']))
             {
                 static::attachFilesToMessage($postData['filesIds'], $emailMessageForm->getModel());
