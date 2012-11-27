@@ -24,16 +24,32 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailAddressInformationListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Element to edit and display an email signature content for a user.
+     */
+    class EmailSignatureElement extends Element
     {
-        public function renderGridViewData()
+        protected function renderControlNonEditable()
         {
-            return array(
-                'name'  => $this->attribute,
-                'value' => 'Yii::app()->format->email($data->' . $this->attribute . '->emailAddress)',
-                'type'  => 'raw',
-                'htmlOptions' => array( 'class' => 'email')
-            );
+            throw new NotSupportedException();
+        }
+
+        protected function renderControlEditable()
+        {
+            assert('$this->model instanceof EmailSignature || $this->model instanceof ModelForm');
+            $id                      = $this->getEditableInputId  ();
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $id;
+            $htmlOptions['name']     = $this->getEditableInputName();
+            $cClipWidget   = new CClipWidget();
+            $cClipWidget->beginClip("Redactor");
+            $cClipWidget->widget('application.core.widgets.Redactor', array(
+                                        'htmlOptions' => $htmlOptions,
+                                        'content'     => $this->model->{$this->attribute},
+            ));
+            $cClipWidget->endClip();
+            $content  = $cClipWidget->getController()->clips['Redactor'];
+            return $content;
         }
     }
 ?>
