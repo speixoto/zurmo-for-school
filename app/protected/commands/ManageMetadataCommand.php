@@ -135,9 +135,8 @@ EOD;
                 $viewClassNames  = $module::getViewClassNames();
                 if (count($viewClassNames))
                 {
-                    foreach($viewClassNames as $className)
+                    foreach ($viewClassNames as $className)
                     {
-
                         $classToEvaluate     = new ReflectionClass($className);
                         if (is_subclass_of($className, 'MetadataView') &&
                             !$classToEvaluate->isAbstract() &&

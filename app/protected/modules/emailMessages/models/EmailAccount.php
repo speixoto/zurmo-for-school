@@ -94,7 +94,7 @@
                 $emailAccount->user              = $user;
                 $emailAccount->name              = self::DEFAULT_NAME;
                 $emailAccount->fromName          = $user->getFullName();
-                if($user->primaryEmail->id > 0 && $user->primaryEmail->emailAddress != null)
+                if ($user->primaryEmail->id > 0 && $user->primaryEmail->emailAddress != null)
                 {
                     $emailAccount->fromAddress       = $user->primaryEmail->emailAddress;
                 }
@@ -128,27 +128,27 @@
                     'user'     => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules'     => array(
-                                  array('fromName',             	 'required'),
-                                  array('fromAddress',          	 'required'),
-                                  array('name',                 	 'type',      'type' => 'string'),
-                                  array('fromName',             	 'type',      'type' => 'string'),
-                                  array('replyToName',          	 'type',      'type' => 'string'),
-                                  array('outboundHost',         	 'type',      'type' => 'string'),
-                                  array('outboundUsername',     	 'type',      'type' => 'string'),
-                                  array('outboundPassword',     	 'type',      'type' => 'string'),
-                                  array('outboundSecurity',     	 'type',      'type' => 'string'),
-                                  array('outboundType',         	 'type',      'type' => 'string'),
-                                  array('outboundPort',         	 'type',      'type' => 'integer'),
+                                  array('fromName',                  'required'),
+                                  array('fromAddress',               'required'),
+                                  array('name',                      'type',      'type' => 'string'),
+                                  array('fromName',                  'type',      'type' => 'string'),
+                                  array('replyToName',               'type',      'type' => 'string'),
+                                  array('outboundHost',              'type',      'type' => 'string'),
+                                  array('outboundUsername',          'type',      'type' => 'string'),
+                                  array('outboundPassword',          'type',      'type' => 'string'),
+                                  array('outboundSecurity',          'type',      'type' => 'string'),
+                                  array('outboundType',              'type',      'type' => 'string'),
+                                  array('outboundPort',              'type',      'type' => 'integer'),
                                   array('useCustomOutboundSettings', 'type',      'type' => 'boolean'),
-                                  array('fromName',             	 'length',    'max' => 64),
-                                  array('replyToName',          	 'length',    'max' => 64),
-                                  array('outboundType',         	 'length',    'max' => 4),
-                                  array('outboundHost',         	 'length',    'max' => 64),
-                                  array('outboundUsername',     	 'length',    'max' => 64),
-                                  array('outboundPassword',     	 'length',    'max' => 64),
-                                  array('outboundSecurity',     	 'length',    'max' => 3),
-                                  array('fromAddress',          	 'email'),
-                                  array('replyToAddress',       	 'email'),
+                                  array('fromName',                  'length',    'max' => 64),
+                                  array('replyToName',               'length',    'max' => 64),
+                                  array('outboundType',              'length',    'max' => 4),
+                                  array('outboundHost',              'length',    'max' => 64),
+                                  array('outboundUsername',          'length',    'max' => 64),
+                                  array('outboundPassword',          'length',    'max' => 64),
+                                  array('outboundSecurity',          'length',    'max' => 3),
+                                  array('fromAddress',               'email'),
+                                  array('replyToAddress',            'email'),
                                   array('useCustomOutboundSettings', 'validateCustomOutboundSettings',
                                                                      'requiredAttributes' => array(   'outboundHost',
                                                                                                       'outboundPort',
@@ -169,7 +169,7 @@
          * @param string $attribute
          * @param array $params
          */
-        public function validateCustomOutboundSettings($attribute,$params)
+        public function validateCustomOutboundSettings($attribute, $params)
         {
             if ($this->$attribute)
             {

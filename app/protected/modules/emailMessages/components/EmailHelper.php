@@ -30,6 +30,7 @@
     class EmailHelper extends CApplicationComponent
     {
         const OUTBOUND_TYPE_SMTP = 'smtp';
+
         /**
          * Currently supports smtp.
          * @var string
@@ -139,7 +140,6 @@
                 foreach ($settingsToLoad as $keyName)
                 {
                     $this->$keyName = $userEmailAccount->$keyName;
-
                 }
             }
             else

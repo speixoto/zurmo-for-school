@@ -25,36 +25,19 @@
      ********************************************************************************/
 
     /**
-     * Model for user's email signatures
+     * Display either the sent date time or a message saying it is in queue.
      */
-    class EmailSignature extends OwnedModel
+    class EmailMessageSentDateTimeElement extends DateTimeElement
     {
-        public static function getDefaultMetadata()
+        protected function renderControlNonEditable()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'textContent',
-                    'htmlContent'
-                ),
-                'relations' => array(
-                    'user'     => array(RedBeanModel::HAS_ONE,  'User'),
-                ),
-                'rules' => array(
-                     array('htmlContent', 'type', 'type' => 'string'),
-                     array('textContent', 'type', 'type' => 'string')
-                ),
-                'elements' => array(
-                    'htmlContent'     => 'TextArea',
-                    'textContent'     => 'TextArea',
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            assert('$this->model instanceof EmailMessage');
+            if ($this->model->folder->type == EmailFolder::TYPE_SENT)
+            {
+                return parent::renderControlNonEditable();
+            }
+            return Yii::t('Default', 'Currently in the {folderType} folder',
+                                     array('{folderType}' => EmailFolder::getTranslatedFolderNameByType($this->model->folder->type)));
         }
     }
 ?>

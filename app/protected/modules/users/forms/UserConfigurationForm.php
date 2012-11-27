@@ -83,7 +83,7 @@
             return array(
                 'listPageSize'              => Yii::t('Default', 'List page size'),
                 'subListPageSize'           => Yii::t('Default', 'Sublist page size'),
-                'themeColor'				=> Yii::t('Default', 'Theme'),
+                'themeColor'                => Yii::t('Default', 'Theme'),
                 'backgroundTexture'         => Yii::t('Default', 'Texture'),
                 'hideWelcomeView'           => Yii::t('Default', 'Hide welcome page'),
                 'turnOffEmailNotifications' => Yii::t('Default', 'Turn off email notifications')

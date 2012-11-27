@@ -25,36 +25,19 @@
      ********************************************************************************/
 
     /**
-     * Model for user's email signatures
+     * Extended class to support attachments
      */
-    class EmailSignature extends OwnedModel
+    class MissionZurmoControllerUtil extends ZurmoControllerUtil
     {
-        public static function getDefaultMetadata()
+       /**
+         * (non-PHPdoc)
+         * @see ModelHasRelatedItemsZurmoControllerUtil::afterSetAttributesDuringSave()
+         */
+        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'textContent',
-                    'htmlContent'
-                ),
-                'relations' => array(
-                    'user'     => array(RedBeanModel::HAS_ONE,  'User'),
-                ),
-                'rules' => array(
-                     array('htmlContent', 'type', 'type' => 'string'),
-                     array('textContent', 'type', 'type' => 'string')
-                ),
-                'elements' => array(
-                    'htmlContent'     => 'TextArea',
-                    'textContent'     => 'TextArea',
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            assert('$model instanceof Item');
+            parent::afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
+            FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'filesIds');
         }
     }
 ?>
