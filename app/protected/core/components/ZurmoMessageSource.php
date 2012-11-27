@@ -36,23 +36,16 @@
 
         protected function loadMessagesFromDb($category,$language)
         {
-            $sql = <<<EOD
-SELECT ms.source, mt.translation
-FROM messagesource as ms, messagetranslation as mt
-WHERE
-    mt.messagesource_id = ms.id
-    AND ms.category = :category
-    AND mt.language = :language
-EOD;
-            $rows = R::getAll($sql,
-                              array(
-                                    ':category' => $category,
-                                    ':language' => $language
-                                    ));
+            $sourceTableName = RedBeanModel::getTableName('MessageSource');
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
+            $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
+            $where =  " messagesource.`category` = '$category' AND messagetranslation.`language` = '$language' ";
+
+            $beans = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
 
             $messages = array();
-            foreach ($rows as $row) {
-                $messages[$row['source']] = $row['translation'];
+            foreach ($beans as $bean) {
+                $messages[$bean->messagesource->source] = $bean->translation;
             }
 
             return $messages;
