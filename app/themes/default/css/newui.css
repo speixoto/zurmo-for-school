@@ -759,16 +759,13 @@ body.blue .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.blue #HeaderView {
-  background-color: #282a76;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#222363), to(#282a76));
-  background-image: -moz-linear-gradient(top, #222363, #282a76);
-  background-image: -ms-linear-gradient(top, #222363, #282a76);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #222363), color-stop(100%, #282a76));
-  background-image: -webkit-linear-gradient(top, #222363, #282a76);
-  background-image: -o-linear-gradient(top, #222363, #282a76);
-  background-image: linear-gradient(top, #222363, #282a76);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222363', endColorstr='#282a76', GradientType=0);
+  /*  */
+  background: #1b1c50;
+  -webkit-box-shadow: inset 0 10px 50px 0 #282a76;
+  -moz-box-shadow: inset 0 10px 50px 0 #282a76;
+  -o-box-shadow: inset 0 10px 50px 0 #282a76;
+  -ms-box-shadow: inset 0 10px 50px 0 #282a76;
+  box-shadow: inset 0 10px 50px 0 #282a76;
 }
 body.blue #HeaderLinksView + div {
   background-color: #333535;
@@ -839,6 +836,7 @@ body.blue #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #acd064;
   text-shadow: 0px 1px 0 #acd064;
 }
+body.blue .dashboard-link .z-label,
 body.blue .green-button .z-label,
 body.blue .attachLoading .z-label {
   color: #fff;
@@ -858,7 +856,6 @@ body.blue .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.blue .dashboard-link:hover .z-label,
 body.blue .zButton:hover .z-label,
 body.blue .z-button:hover .z-label,
 body.blue .zButton:active .z-label,
@@ -914,7 +911,7 @@ body.blue .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.blue .dashboard-link {
+body.blue .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -1161,16 +1158,13 @@ body.brown .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.brown #HeaderView {
-  background-color: #547980;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#4a6a71), to(#547980));
-  background-image: -moz-linear-gradient(top, #4a6a71, #547980);
-  background-image: -ms-linear-gradient(top, #4a6a71, #547980);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4a6a71), color-stop(100%, #547980));
-  background-image: -webkit-linear-gradient(top, #4a6a71, #547980);
-  background-image: -o-linear-gradient(top, #4a6a71, #547980);
-  background-image: linear-gradient(top, #4a6a71, #547980);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4a6a71', endColorstr='#547980', GradientType=0);
+  /*  */
+  background: #405c61;
+  -webkit-box-shadow: inset 0 10px 50px 0 #547980;
+  -moz-box-shadow: inset 0 10px 50px 0 #547980;
+  -o-box-shadow: inset 0 10px 50px 0 #547980;
+  -ms-box-shadow: inset 0 10px 50px 0 #547980;
+  box-shadow: inset 0 10px 50px 0 #547980;
 }
 body.brown #HeaderLinksView + div {
   background-color: #4f4646;
@@ -1241,6 +1235,7 @@ body.brown #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #64c1bd;
   text-shadow: 0px 1px 0 #64c1bd;
 }
+body.brown .dashboard-link .z-label,
 body.brown .green-button .z-label,
 body.brown .attachLoading .z-label {
   color: #fff;
@@ -1260,7 +1255,6 @@ body.brown .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.brown .dashboard-link:hover .z-label,
 body.brown .zButton:hover .z-label,
 body.brown .z-button:hover .z-label,
 body.brown .zButton:active .z-label,
@@ -1316,7 +1310,7 @@ body.brown .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.brown .dashboard-link {
+body.brown .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -1563,16 +1557,13 @@ body.lime .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.lime #HeaderView {
-  background-color: #638270;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#587464), to(#638270));
-  background-image: -moz-linear-gradient(top, #587464, #638270);
-  background-image: -ms-linear-gradient(top, #587464, #638270);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #587464), color-stop(100%, #638270));
-  background-image: -webkit-linear-gradient(top, #587464, #638270);
-  background-image: -o-linear-gradient(top, #587464, #638270);
-  background-image: linear-gradient(top, #587464, #638270);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#587464', endColorstr='#638270', GradientType=0);
+  /*  */
+  background: #4d6557;
+  -webkit-box-shadow: inset 0 10px 50px 0 #638270;
+  -moz-box-shadow: inset 0 10px 50px 0 #638270;
+  -o-box-shadow: inset 0 10px 50px 0 #638270;
+  -ms-box-shadow: inset 0 10px 50px 0 #638270;
+  box-shadow: inset 0 10px 50px 0 #638270;
 }
 body.lime #HeaderLinksView + div {
   background-color: #333535;
@@ -1643,6 +1634,7 @@ body.lime #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #d0d9b1;
   text-shadow: 0px 1px 0 #d0d9b1;
 }
+body.lime .dashboard-link .z-label,
 body.lime .green-button .z-label,
 body.lime .attachLoading .z-label {
   color: #fff;
@@ -1662,7 +1654,6 @@ body.lime .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.lime .dashboard-link:hover .z-label,
 body.lime .zButton:hover .z-label,
 body.lime .z-button:hover .z-label,
 body.lime .zButton:active .z-label,
@@ -1718,7 +1709,7 @@ body.lime .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.lime .dashboard-link {
+body.lime .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -1965,16 +1956,13 @@ body.cherry .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.cherry #HeaderView {
-  background-color: #6c8092;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#617383), to(#6c8092));
-  background-image: -moz-linear-gradient(top, #617383, #6c8092);
-  background-image: -ms-linear-gradient(top, #617383, #6c8092);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #617383), color-stop(100%, #6c8092));
-  background-image: -webkit-linear-gradient(top, #617383, #6c8092);
-  background-image: -o-linear-gradient(top, #617383, #6c8092);
-  background-image: linear-gradient(top, #617383, #6c8092);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#617383', endColorstr='#6c8092', GradientType=0);
+  /*  */
+  background: #566675;
+  -webkit-box-shadow: inset 0 10px 50px 0 #6c8092;
+  -moz-box-shadow: inset 0 10px 50px 0 #6c8092;
+  -o-box-shadow: inset 0 10px 50px 0 #6c8092;
+  -ms-box-shadow: inset 0 10px 50px 0 #6c8092;
+  box-shadow: inset 0 10px 50px 0 #6c8092;
 }
 body.cherry #HeaderLinksView + div {
   background-color: #333535;
@@ -2045,6 +2033,7 @@ body.cherry #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b93e51;
   text-shadow: 0px 1px 0 #b93e51;
 }
+body.cherry .dashboard-link .z-label,
 body.cherry .green-button .z-label,
 body.cherry .attachLoading .z-label {
   color: #fff;
@@ -2064,7 +2053,6 @@ body.cherry .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.cherry .dashboard-link:hover .z-label,
 body.cherry .zButton:hover .z-label,
 body.cherry .z-button:hover .z-label,
 body.cherry .zButton:active .z-label,
@@ -2120,7 +2108,7 @@ body.cherry .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.cherry .dashboard-link {
+body.cherry .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -2367,16 +2355,13 @@ body.turquoise .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.turquoise #HeaderView {
-  background-color: #447799;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#3c6987), to(#447799));
-  background-image: -moz-linear-gradient(top, #3c6987, #447799);
-  background-image: -ms-linear-gradient(top, #3c6987, #447799);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3c6987), color-stop(100%, #447799));
-  background-image: -webkit-linear-gradient(top, #3c6987, #447799);
-  background-image: -o-linear-gradient(top, #3c6987, #447799);
-  background-image: linear-gradient(top, #3c6987, #447799);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3c6987', endColorstr='#447799', GradientType=0);
+  /*  */
+  background: #345c76;
+  -webkit-box-shadow: inset 0 10px 50px 0 #447799;
+  -moz-box-shadow: inset 0 10px 50px 0 #447799;
+  -o-box-shadow: inset 0 10px 50px 0 #447799;
+  -ms-box-shadow: inset 0 10px 50px 0 #447799;
+  box-shadow: inset 0 10px 50px 0 #447799;
 }
 body.turquoise #HeaderLinksView + div {
   background-color: #333535;
@@ -2447,6 +2432,7 @@ body.turquoise #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
 }
+body.turquoise .dashboard-link .z-label,
 body.turquoise .green-button .z-label,
 body.turquoise .attachLoading .z-label {
   color: #fff;
@@ -2466,7 +2452,6 @@ body.turquoise .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.turquoise .dashboard-link:hover .z-label,
 body.turquoise .zButton:hover .z-label,
 body.turquoise .z-button:hover .z-label,
 body.turquoise .zButton:active .z-label,
@@ -2522,7 +2507,7 @@ body.turquoise .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.turquoise .dashboard-link {
+body.turquoise .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -2769,16 +2754,13 @@ body.violet .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.violet #HeaderView {
-  background-color: #4a3970;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#3f305f), to(#4a3970));
-  background-image: -moz-linear-gradient(top, #3f305f, #4a3970);
-  background-image: -ms-linear-gradient(top, #3f305f, #4a3970);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3f305f), color-stop(100%, #4a3970));
-  background-image: -webkit-linear-gradient(top, #3f305f, #4a3970);
-  background-image: -o-linear-gradient(top, #3f305f, #4a3970);
-  background-image: linear-gradient(top, #3f305f, #4a3970);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3f305f', endColorstr='#4a3970', GradientType=0);
+  /*  */
+  background: #34284e;
+  -webkit-box-shadow: inset 0 10px 50px 0 #4a3970;
+  -moz-box-shadow: inset 0 10px 50px 0 #4a3970;
+  -o-box-shadow: inset 0 10px 50px 0 #4a3970;
+  -ms-box-shadow: inset 0 10px 50px 0 #4a3970;
+  box-shadow: inset 0 10px 50px 0 #4a3970;
 }
 body.violet #HeaderLinksView + div {
   background-color: #333535;
@@ -2849,6 +2831,7 @@ body.violet #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b8c2e8;
   text-shadow: 0px 1px 0 #b8c2e8;
 }
+body.violet .dashboard-link .z-label,
 body.violet .green-button .z-label,
 body.violet .attachLoading .z-label {
   color: #fff;
@@ -2868,7 +2851,6 @@ body.violet .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.violet .dashboard-link:hover .z-label,
 body.violet .zButton:hover .z-label,
 body.violet .z-button:hover .z-label,
 body.violet .zButton:active .z-label,
@@ -2924,7 +2906,7 @@ body.violet .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.violet .dashboard-link {
+body.violet .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -3171,16 +3153,13 @@ body.honey .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.honey #HeaderView {
-  background-color: #a15c31;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#8d512b), to(#a15c31));
-  background-image: -moz-linear-gradient(top, #8d512b, #a15c31);
-  background-image: -ms-linear-gradient(top, #8d512b, #a15c31);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8d512b), color-stop(100%, #a15c31));
-  background-image: -webkit-linear-gradient(top, #8d512b, #a15c31);
-  background-image: -o-linear-gradient(top, #8d512b, #a15c31);
-  background-image: linear-gradient(top, #8d512b, #a15c31);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8d512b', endColorstr='#a15c31', GradientType=0);
+  /*  */
+  background: #7a4625;
+  -webkit-box-shadow: inset 0 10px 50px 0 #a15c31;
+  -moz-box-shadow: inset 0 10px 50px 0 #a15c31;
+  -o-box-shadow: inset 0 10px 50px 0 #a15c31;
+  -ms-box-shadow: inset 0 10px 50px 0 #a15c31;
+  box-shadow: inset 0 10px 50px 0 #a15c31;
 }
 body.honey #HeaderLinksView + div {
   background-color: #582823;
@@ -3251,6 +3230,7 @@ body.honey #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #bcca67;
   text-shadow: 0px 1px 0 #bcca67;
 }
+body.honey .dashboard-link .z-label,
 body.honey .green-button .z-label,
 body.honey .attachLoading .z-label {
   color: #fff;
@@ -3270,7 +3250,6 @@ body.honey .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.honey .dashboard-link:hover .z-label,
 body.honey .zButton:hover .z-label,
 body.honey .z-button:hover .z-label,
 body.honey .zButton:active .z-label,
@@ -3326,7 +3305,7 @@ body.honey .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.honey .dashboard-link {
+body.honey .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -3688,6 +3667,45 @@ section {
 #HeaderLinksView li a:hover {
   color: #fff !important;
 }
+#HeaderLinksView ul ul {
+  min-width: 110px;
+  display: none;
+  position: absolute;
+  top: 37px;
+  border: 1px solid #444;
+  background: #252525;
+  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#HeaderLinksView ul ul li {
+  line-height: 100%;
+  position: relative;
+  z-index: 9999;
+}
+#HeaderLinksView ul ul li:first-child a {
+  border-top: none;
+}
+#HeaderLinksView ul ul li:last-child a {
+  border-bottom: none;
+}
+#HeaderLinksView ul ul a {
+  position: relative;
+  z-index: 9999;
+  border-top: 1px solid #323232;
+  border-bottom: 1px solid #181818;
+  color: #EFEFEF;
+  font-size: 11px;
+  font-weight: normal;
+  display: block;
+  padding: 6px 10px 6px 10px;
+  margin: 0;
+}
 #HeaderLinksView + div {
   -webkit-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -moz-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
@@ -3747,47 +3765,44 @@ section {
 .edit-row-menu ul a:hover {
   color: #fff !important;
 }
-.headerDropDownSpecial,
-#HeaderLinksView ul ul {
-  z-index: 1;
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  top: 37px;
-  border: 1px solid #444;
-  background: #252525;
-  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+/*
+.headerDropDownSpecial{
+    zoom:1;
+    z-index:100;
+    min-width:110px;
+    width:100%;
+    // /*display:none;
+    position:absolute;
+    top:37px;    
+    border:1px solid #444;
+    background: #252525;
+    .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
+    .box-sizing();
+    li{
+         line-height: 100%;
+         position:relative;
+         width:100%;
+    }
+    li:first-child a{
+         border-top:none;
+    }
+    li:last-child a{
+         border-bottom:none;
+    }
+    a{
+        width:100%;
+        position:relative;
+        border-top:1px solid lighten(#252525, 5%);
+        border-bottom: 1px solid darken(#252525, 5%);
+        color:#EFEFEF;
+        font-size:11px;
+        font-weight:normal;
+        display:block;
+        padding:6px 10px 6px 10px;
+        margin:0;
+    }
 }
-.headerDropDownSpecial li,
-#HeaderLinksView ul ul li {
-  line-height: 100%;
-}
-.headerDropDownSpecial li:first-child a,
-#HeaderLinksView ul ul li:first-child a {
-  border-top: none;
-}
-.headerDropDownSpecial li:last-child a,
-#HeaderLinksView ul ul li:last-child a {
-  border-bottom: none;
-}
-.headerDropDownSpecial a,
-#HeaderLinksView ul ul a {
-  border-top: 1px solid #323232;
-  border-bottom: 1px solid #181818;
-  color: #EFEFEF;
-  font-size: 11px;
-  font-weight: normal;
-  display: block;
-  padding: 6px 10px 6px 10px;
-  margin: 0;
-}
+*/
 #notifications {
   float: left;
   display: block;
@@ -4256,12 +4271,13 @@ section {
   -ms-border-radius: 0 0 5px 5px;
   -o-border-radius: 0 0 5px 5px;
   border-radius: 0 0 5px 5px;
-  z-index: 0;
+  z-index: -100;
   position: relative;
 }
 #HeaderView {
   position: relative;
-  z-index: 9999;
+  z-index: 1000;
+  overflow: visible;
 }
 .TitleBarView {
   margin-bottom: 15px;

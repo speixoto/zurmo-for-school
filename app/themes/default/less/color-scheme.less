@@ -158,7 +158,10 @@
     }
 
     #HeaderView{
-        #gradient > .vertical( darken(@headerBarColor, 5%), @headerBarColor );
+        /*  */@headerBarColor2 : #ff0000;
+        background: darken(@headerBarColor, 10%);
+        .b-shadow( ~"inset 0 10px 50px 0 @{headerBarColor}");
+        //#gradient > .vertical( darken(@headerBarColor, 5%), @headerBarColor );
     }
     #HeaderLinksView + div{
         #gradient > .vertical( @themeColorHeader, @themeColorHeader2 );
@@ -197,6 +200,7 @@
     @themeColorBtnDefault     : #97c43d;
     @themeColorBtn2Default    : darken(@themeColorBtnDefault, 10%);
 
+    .dashboard-link .z-label,
     .green-button .z-label,
     .attachLoading .z-label{
         color:#fff;
@@ -204,7 +208,6 @@
         .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
     }
     
-    .dashboard-link:hover .z-label,
     .zButton:hover .z-label, .z-button:hover .z-label,
     .zButton:active .z-label, .z-button:active .z-label{
         color: darken(@themeColorBtnDefault, 40%) !important;
@@ -230,7 +233,7 @@
         .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
     }
     
-    .dashboard-link{
+    .dashboard-link .z-label{
         color:#fff !important;
         #gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default ) !important;
         .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
