@@ -25,13 +25,36 @@
      ********************************************************************************/
 
     /**
-     * Model for storing email attachments.
+     * Model for user's email signatures
      */
-    class EmailFileModel extends FileModel
+    class EmailSignature extends OwnedModel
     {
-        public static function getModuleClassName()
+        public static function getDefaultMetadata()
         {
-            return 'EmailMessagesModule';
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'textContent',
+                    'htmlContent'
+                ),
+                'relations' => array(
+                    'user'     => array(RedBeanModel::HAS_ONE,  'User'),
+                ),
+                'rules' => array(
+                     array('htmlContent', 'type', 'type' => 'string'),
+                     array('textContent', 'type', 'type' => 'string')
+                ),
+                'elements' => array(
+                    'htmlContent'     => 'TextArea',
+                    'textContent'     => 'TextArea',
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
         }
     }
 ?>
