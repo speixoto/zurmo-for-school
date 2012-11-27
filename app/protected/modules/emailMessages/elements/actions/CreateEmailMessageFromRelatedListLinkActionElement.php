@@ -64,7 +64,6 @@
 
         protected function getDefaultRoute()
         {
-
             return Yii::app()->createUrl('/emailMessages/default/createEmailMessage', $this->resolveRouteParamters());
         }
 
@@ -75,7 +74,7 @@
         protected function resolveRouteParamters()
         {
             $routeParameters = $this->getRouteParameters();
-            if(!isset($routeParameters['relatedId']))
+            if (!isset($routeParameters['relatedId']))
             {
                 $routeParameters['relatedId'] = $this->modelId;
             }

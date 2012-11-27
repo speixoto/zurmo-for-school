@@ -34,7 +34,7 @@
         {
             assert('$this->model instanceof Item || $this->model->getModel() instanceof Item');
             $content = null;
-            if($this->model->files->count() > 0)
+            if ($this->model->files->count() > 0)
             {
                 $content  .= '<ul class="attachments">';
                 foreach ($this->model->files as $fileModel)
@@ -76,7 +76,7 @@
                 'existingFiles'        => $existingFilesInformation,
                 'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize(),
                 'showMaxSize'          => $this->getShowMaxSize(),
-                'id'				   => $this->getId(),
+                'id'                   => $this->getId(),
             ));
 
             $cClipWidget->endClip();
@@ -140,6 +140,7 @@
         {
             return get_class($this->model);
         }
+
         /**
          * @return string content
          */

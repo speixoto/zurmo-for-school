@@ -42,7 +42,7 @@
                                           Yii::app()->user->userModel); //So the email is configured
             $emailAccount->fromAddress  = 'super@test.zurmo.com';
             $saved                      = $emailAccount->save();
-            assert($saved);
+            assert($saved);  // Not Coding Standard
 
             //Setup test data owned by the super user.
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
@@ -50,7 +50,7 @@
             $contact->primaryEmail = new Email();
             $contact->primaryEmail->emailAddress = 'test@contact.com';
             $saved = $contact->save();
-            assert($saved);
+            assert($saved); // Not Coding Standard
         }
 
         public function testSuperUserCreateMessageAndViewDetails()

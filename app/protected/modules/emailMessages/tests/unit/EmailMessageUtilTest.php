@@ -40,7 +40,7 @@
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_CREATE_CONTACTS);
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_DELETE_CONTACTS);
-            assert($billy->save());
+            assert($billy->save()); // Not Coding Standard
 
             $contact = ContactTestHelper::createContactByNameForOwner('sally', Yii::app()->user->userModel);
             $contact->primaryEmail = new Email();
@@ -65,9 +65,9 @@
             $emailMessage     = new EmailMessage();
             $emailMessageForm = new CreateEmailMessageForm($emailMessage);
             $postVariableName = get_class($emailMessageForm);
-            $postData = array($postVariableName => array ('recipientsData' => array('to'  => 'a@zurmo.com,b@zurmo.com',
-                                                                          'cc'  => 'c@zurmo.com,d@zurmo.com',
-                                                                          'bcc' => 'e@zurmo.com,f@zurmo.com'),
+            $postData = array($postVariableName => array ('recipientsData' => array('to'  => 'a@zurmo.com,b@zurmo.com', // Not Coding Standard
+                                                                          'cc'  => 'c@zurmo.com,d@zurmo.com',           // Not Coding Standard
+                                                                          'bcc' => 'e@zurmo.com,f@zurmo.com'),          // Not Coding Standard
                                                     'subject' => 'Test Email From Post',
                                                     'content' => array('htmlContent' => 'This is a test email')
                 ));

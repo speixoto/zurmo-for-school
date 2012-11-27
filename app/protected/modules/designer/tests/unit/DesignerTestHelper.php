@@ -58,7 +58,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -91,7 +91,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -128,7 +128,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -169,10 +169,9 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
-
 
         public static function createDecimalAttribute($attributeName, $withDefaultData, $modelClassName)
         {
@@ -209,10 +208,9 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
-
 
         public static function createDropDownAttribute($attributeName, $withDefaultData, $modelClassName)
         {
@@ -259,10 +257,9 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
-
 
         public static function createIntegerAttribute($attributeName, $withDefaultData, $modelClassName)
         {
@@ -301,7 +298,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -359,7 +356,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -414,7 +411,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -453,7 +450,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -498,10 +495,9 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
-
 
        public static function createTextAttribute($attributeName, $withDefaultData, $modelClassName)
         {
@@ -537,7 +533,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -574,7 +570,7 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
 
@@ -612,9 +608,8 @@
             catch (FailedDatabaseSchemaChangeException $e)
             {
                 echo $e->getMessage();
-                Yii::app()->end(0,false);
+                Yii::app()->end(0, false);
             }
         }
     }
-
 ?>

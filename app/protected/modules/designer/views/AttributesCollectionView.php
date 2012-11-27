@@ -101,10 +101,9 @@
          */
         protected function isAttributeOnModelOrCastedUp($attributeName)
         {
-
             assert('is_string($attributeName)');
             $attributeAdapter = new RedBeanModelAttributeToDataProviderAdapter($this->modelClassName, $attributeName);
-            if(!$attributeAdapter->getModel()->isAttribute($attributeName))
+            if (!$attributeAdapter->getModel()->isAttribute($attributeName))
             {
                 return false;
             }

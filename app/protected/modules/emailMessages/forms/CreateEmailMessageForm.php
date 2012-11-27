@@ -57,12 +57,11 @@
          */
         public function validateMinimumToRecipients($attribute, $params)
         {
-            if(isset($this->recipientsData['to']) && $this->recipientsData['to'] != null)
+            if (isset($this->recipientsData['to']) && $this->recipientsData['to'] != null)
             {
                 return;
             }
             $this->addError($attribute . '_to', Yii::t('Default', 'To address cannot be blank'));
         }
-
     }
 ?>

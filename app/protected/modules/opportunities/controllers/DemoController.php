@@ -43,6 +43,5 @@
             DesignerTestHelper::createRadioDropDownAttribute      ('radioDropDown', false, 'Opportunity');
             DesignerTestHelper::createUrlAttribute                ('url', false, 'Opportunity');
         }
-
     }
 ?>

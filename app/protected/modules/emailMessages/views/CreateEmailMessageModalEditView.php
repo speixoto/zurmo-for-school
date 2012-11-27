@@ -112,7 +112,7 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            if($element->getAttribute() == 'subject')
+            if ($element->getAttribute() == 'subject')
             {
                 $label = ZurmoHtml::tag('label',
                                         array('for' => get_class($this->model) . '_subject'),
@@ -162,7 +162,8 @@
                     'url'  => Yii::app()->createUrl($moduleId . '/' . $controllerId . '/' . $actionSave, GetUtil::getData()),
                     'complete' => "function(XMLHttpRequest, textStatus){\$('#modalContainer').dialog('close');
                         //find if there is a latest activities portlet
-                        $('.LatestActivtiesForPortletView').each(function(){
+                        $('.LatestActivtiesForPortletView').each(function()
+                        {
                             $(this).find('.pager').find('.refresh').find('a').click();
                         });}"
                 ));

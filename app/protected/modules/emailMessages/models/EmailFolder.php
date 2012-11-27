@@ -75,31 +75,31 @@
         public static function getTranslatedFolderNameByType($type)
         {
             assert('is_string($type)');
-            if($type == self::TYPE_INBOX)
+            if ($type == self::TYPE_INBOX)
             {
                 return self::getDefaultInboxName();
             }
-            elseif($type == self::TYPE_SENT)
+            elseif ($type == self::TYPE_SENT)
             {
                 return self::getDefaultSentName();
             }
-            elseif($type == self::TYPE_OUTBOX)
+            elseif ($type == self::TYPE_OUTBOX)
             {
                 return self::getDefaultOutboxName();
             }
-            elseif($type == self::TYPE_DRAFT)
+            elseif ($type == self::TYPE_DRAFT)
             {
                 return self::getDefaultDraftName();
             }
-            elseif($type == self::TYPE_OUTBOX_ERROR)
+            elseif ($type == self::TYPE_OUTBOX_ERROR)
             {
                 return self::getDefaultOutboxErrorName();
             }
-            elseif($type == self::TYPE_ARCHIVED)
+            elseif ($type == self::TYPE_ARCHIVED)
             {
                 return self::getDefaultArchivedName();
             }
-            elseif($type == self::TYPE_ARCHIVED_UNMATCHED)
+            elseif ($type == self::TYPE_ARCHIVED_UNMATCHED)
             {
                 return self::getDefaultArchivedUnmatchedName();
             }
