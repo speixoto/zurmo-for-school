@@ -28,7 +28,8 @@
     {
         public function render()
         {
-            return ZurmoHtml::link($this->getLabel(), $this->route, $this->getHtmlOptions());
+            //return ZurmoHtml::link($this->getLabel(), $this->route, $this->getHtmlOptions());
+            return ZurmoHtml::link( ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getLabel()), $this->route, $this->getHtmlOptions());
         }
 
         public function renderMenuItem()

@@ -15,12 +15,6 @@
 a.zButton,
 a.z-button,
 .z-label,
-#NoUserEmailConfigurationYetView a,
-#NoGlobalEmailConfigurationYetView a,
-.ZeroModelsYetView a,
-a#NoUserEmailConfigurationYetView a,
-a#NoGlobalEmailConfigurationYetView a,
-a.ZeroModelsYetView a,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 #progressBar-links a,
@@ -47,12 +41,6 @@ a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton .z-button,
 .AppContent.ImportWizardView #addExtraColumnButton a.zButton,
 .AppContent.ImportWizardView #addExtraColumnButton a.z-button,
-.AppContent.ImportWizardView #addExtraColumnButton #NoUserEmailConfigurationYetView a,
-.AppContent.ImportWizardView #addExtraColumnButton #NoGlobalEmailConfigurationYetView a,
-.AppContent.ImportWizardView #addExtraColumnButton .ZeroModelsYetView a,
-.AppContent.ImportWizardView #addExtraColumnButton a#NoUserEmailConfigurationYetView a,
-.AppContent.ImportWizardView #addExtraColumnButton a#NoGlobalEmailConfigurationYetView a,
-.AppContent.ImportWizardView #addExtraColumnButton a.ZeroModelsYetView a,
 .AppContent.ImportWizardView #addExtraColumnButton .search-form-tools input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton a.search-form-tools input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton #progressBar-links a,
@@ -84,12 +72,6 @@ a.file-upload-box .ui-icon-plusthick,
 .addfileinput-button span .z-button,
 .addfileinput-button span a.zButton,
 .addfileinput-button span a.z-button,
-.addfileinput-button span #NoUserEmailConfigurationYetView a,
-.addfileinput-button span #NoGlobalEmailConfigurationYetView a,
-.addfileinput-button span .ZeroModelsYetView a,
-.addfileinput-button span a#NoUserEmailConfigurationYetView a,
-.addfileinput-button span a#NoGlobalEmailConfigurationYetView a,
-.addfileinput-button span a.ZeroModelsYetView a,
 .addfileinput-button span .search-form-tools input[type="submit"],
 .addfileinput-button span a.search-form-tools input[type="submit"],
 .addfileinput-button span #progressBar-links a,
@@ -207,12 +189,6 @@ a.ModalGameNotification a,
 .z-button,
 a.zButton,
 a.z-button,
-#NoUserEmailConfigurationYetView a,
-#NoGlobalEmailConfigurationYetView a,
-.ZeroModelsYetView a,
-a#NoUserEmailConfigurationYetView a,
-a#NoGlobalEmailConfigurationYetView a,
-a.ZeroModelsYetView a,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 #progressBar-links a,
@@ -283,12 +259,6 @@ a.ModalGameNotification a {
 .z-button:before,
 a.zButton:before,
 a.z-button:before,
-#NoUserEmailConfigurationYetView a:before,
-#NoGlobalEmailConfigurationYetView a:before,
-.ZeroModelsYetView a:before,
-a#NoUserEmailConfigurationYetView a:before,
-a#NoGlobalEmailConfigurationYetView a:before,
-a.ZeroModelsYetView a:before,
 .search-form-tools input[type="submit"]:before,
 a.search-form-tools input[type="submit"]:before,
 #progressBar-links a:before,
@@ -334,12 +304,6 @@ a.ModalGameNotification a:before {
 .z-button:after,
 a.zButton:after,
 a.z-button:after,
-#NoUserEmailConfigurationYetView a:after,
-#NoGlobalEmailConfigurationYetView a:after,
-.ZeroModelsYetView a:after,
-a#NoUserEmailConfigurationYetView a:after,
-a#NoGlobalEmailConfigurationYetView a:after,
-a.ZeroModelsYetView a:after,
 .search-form-tools input[type="submit"]:after,
 a.search-form-tools input[type="submit"]:after,
 #progressBar-links a:after,
@@ -386,12 +350,6 @@ a.ModalGameNotification a:after {
 .z-button.attachLoading.z-button,
 a.zButton.attachLoading.z-button,
 a.z-button.attachLoading.z-button,
-#NoUserEmailConfigurationYetView a.attachLoading.z-button,
-#NoGlobalEmailConfigurationYetView a.attachLoading.z-button,
-.ZeroModelsYetView a.attachLoading.z-button,
-a#NoUserEmailConfigurationYetView a.attachLoading.z-button,
-a#NoGlobalEmailConfigurationYetView a.attachLoading.z-button,
-a.ZeroModelsYetView a.attachLoading.z-button,
 .search-form-tools input[type="submit"].attachLoading.z-button,
 a.search-form-tools input[type="submit"].attachLoading.z-button,
 #progressBar-links a.attachLoading.z-button,
@@ -436,12 +394,6 @@ a.ModalGameNotification a.attachLoading.z-button {
 .z-button:not(.attachLoading) span,
 a.zButton:not(.attachLoading) span,
 a.z-button:not(.attachLoading) span,
-#NoUserEmailConfigurationYetView a:not(.attachLoading) span,
-#NoGlobalEmailConfigurationYetView a:not(.attachLoading) span,
-.ZeroModelsYetView a:not(.attachLoading) span,
-a#NoUserEmailConfigurationYetView a:not(.attachLoading) span,
-a#NoGlobalEmailConfigurationYetView a:not(.attachLoading) span,
-a.ZeroModelsYetView a:not(.attachLoading) span,
 .search-form-tools input[type="submit"]:not(.attachLoading) span,
 a.search-form-tools input[type="submit"]:not(.attachLoading) span,
 #progressBar-links a:not(.attachLoading) span,
@@ -499,11 +451,11 @@ a.ModalGameNotification a:not(.attachLoading) span {
   -o-border-radius: 3px;
   border-radius: 3px;
 }
+.z-label-smaller {
+  padding: 0 15px;
+}
 .zButton.loading .z-spinner,
 .z-button.loading .z-spinner,
-#NoUserEmailConfigurationYetView a.loading .z-spinner,
-#NoGlobalEmailConfigurationYetView a.loading .z-spinner,
-.ZeroModelsYetView a.loading .z-spinner,
 .search-form-tools input[type="submit"].loading .z-spinner,
 #progressBar-links a.loading .z-spinner,
 #InstallPageView .AppContainer a.loading .z-spinner,
@@ -526,9 +478,6 @@ table.configuration-list tr td:last-child a.loading .z-spinner,
 }
 .zButton.loading .z-icon,
 .z-button.loading .z-icon,
-#NoUserEmailConfigurationYetView a.loading .z-icon,
-#NoGlobalEmailConfigurationYetView a.loading .z-icon,
-.ZeroModelsYetView a.loading .z-icon,
 .search-form-tools input[type="submit"].loading .z-icon,
 #progressBar-links a.loading .z-icon,
 #InstallPageView .AppContainer a.loading .z-icon,
@@ -693,7 +642,6 @@ body.blue .view-toolbar a:hover,
 body.blue .view-toolbar a:active,
 body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
-body.blue .ZeroModelsYetView a:before,
 body.blue #StickyListMenu > li > a:hover > span,
 body.blue .addfileinput-button:hover span .pager a:hover:before,
 body.blue .pager a:hover:after,
@@ -836,6 +784,7 @@ body.blue #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #acd064;
   text-shadow: 0px 1px 0 #acd064;
 }
+body.blue .ZeroModelsYetView .z-label,
 body.blue .dashboard-link .z-label,
 body.blue .green-button .z-label,
 body.blue .attachLoading .z-label {
@@ -856,6 +805,7 @@ body.blue .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.blue .ZeroModelsYetView a:hover .z-label,
 body.blue .zButton:hover .z-label,
 body.blue .z-button:hover .z-label,
 body.blue .zButton:active .z-label,
@@ -877,6 +827,7 @@ body.blue .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.blue .ZeroModelsYetView a:active .z-label,
 body.blue .zButton:active .z-label,
 body.blue .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1092,7 +1043,6 @@ body.brown .view-toolbar a:hover,
 body.brown .view-toolbar a:active,
 body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
-body.brown .ZeroModelsYetView a:before,
 body.brown #StickyListMenu > li > a:hover > span,
 body.brown .addfileinput-button:hover span .pager a:hover:before,
 body.brown .pager a:hover:after,
@@ -1235,6 +1185,7 @@ body.brown #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #64c1bd;
   text-shadow: 0px 1px 0 #64c1bd;
 }
+body.brown .ZeroModelsYetView .z-label,
 body.brown .dashboard-link .z-label,
 body.brown .green-button .z-label,
 body.brown .attachLoading .z-label {
@@ -1255,6 +1206,7 @@ body.brown .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.brown .ZeroModelsYetView a:hover .z-label,
 body.brown .zButton:hover .z-label,
 body.brown .z-button:hover .z-label,
 body.brown .zButton:active .z-label,
@@ -1276,6 +1228,7 @@ body.brown .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.brown .ZeroModelsYetView a:active .z-label,
 body.brown .zButton:active .z-label,
 body.brown .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1491,7 +1444,6 @@ body.lime .view-toolbar a:hover,
 body.lime .view-toolbar a:active,
 body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
-body.lime .ZeroModelsYetView a:before,
 body.lime #StickyListMenu > li > a:hover > span,
 body.lime .addfileinput-button:hover span .pager a:hover:before,
 body.lime .pager a:hover:after,
@@ -1634,6 +1586,7 @@ body.lime #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #d0d9b1;
   text-shadow: 0px 1px 0 #d0d9b1;
 }
+body.lime .ZeroModelsYetView .z-label,
 body.lime .dashboard-link .z-label,
 body.lime .green-button .z-label,
 body.lime .attachLoading .z-label {
@@ -1654,6 +1607,7 @@ body.lime .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.lime .ZeroModelsYetView a:hover .z-label,
 body.lime .zButton:hover .z-label,
 body.lime .z-button:hover .z-label,
 body.lime .zButton:active .z-label,
@@ -1675,6 +1629,7 @@ body.lime .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.lime .ZeroModelsYetView a:active .z-label,
 body.lime .zButton:active .z-label,
 body.lime .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1890,7 +1845,6 @@ body.cherry .view-toolbar a:hover,
 body.cherry .view-toolbar a:active,
 body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
-body.cherry .ZeroModelsYetView a:before,
 body.cherry #StickyListMenu > li > a:hover > span,
 body.cherry .addfileinput-button:hover span .pager a:hover:before,
 body.cherry .pager a:hover:after,
@@ -2033,6 +1987,7 @@ body.cherry #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b93e51;
   text-shadow: 0px 1px 0 #b93e51;
 }
+body.cherry .ZeroModelsYetView .z-label,
 body.cherry .dashboard-link .z-label,
 body.cherry .green-button .z-label,
 body.cherry .attachLoading .z-label {
@@ -2053,6 +2008,7 @@ body.cherry .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.cherry .ZeroModelsYetView a:hover .z-label,
 body.cherry .zButton:hover .z-label,
 body.cherry .z-button:hover .z-label,
 body.cherry .zButton:active .z-label,
@@ -2074,6 +2030,7 @@ body.cherry .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.cherry .ZeroModelsYetView a:active .z-label,
 body.cherry .zButton:active .z-label,
 body.cherry .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -2289,7 +2246,6 @@ body.turquoise .view-toolbar a:hover,
 body.turquoise .view-toolbar a:active,
 body.turquoise .portlet-toolbar .icon-delete:before,
 body.turquoise .portlet-toolbar .icon-edit:before,
-body.turquoise .ZeroModelsYetView a:before,
 body.turquoise #StickyListMenu > li > a:hover > span,
 body.turquoise .addfileinput-button:hover span .pager a:hover:before,
 body.turquoise .pager a:hover:after,
@@ -2432,6 +2388,7 @@ body.turquoise #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
 }
+body.turquoise .ZeroModelsYetView .z-label,
 body.turquoise .dashboard-link .z-label,
 body.turquoise .green-button .z-label,
 body.turquoise .attachLoading .z-label {
@@ -2452,6 +2409,7 @@ body.turquoise .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.turquoise .ZeroModelsYetView a:hover .z-label,
 body.turquoise .zButton:hover .z-label,
 body.turquoise .z-button:hover .z-label,
 body.turquoise .zButton:active .z-label,
@@ -2473,6 +2431,7 @@ body.turquoise .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.turquoise .ZeroModelsYetView a:active .z-label,
 body.turquoise .zButton:active .z-label,
 body.turquoise .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -2688,7 +2647,6 @@ body.violet .view-toolbar a:hover,
 body.violet .view-toolbar a:active,
 body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
-body.violet .ZeroModelsYetView a:before,
 body.violet #StickyListMenu > li > a:hover > span,
 body.violet .addfileinput-button:hover span .pager a:hover:before,
 body.violet .pager a:hover:after,
@@ -2831,6 +2789,7 @@ body.violet #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b8c2e8;
   text-shadow: 0px 1px 0 #b8c2e8;
 }
+body.violet .ZeroModelsYetView .z-label,
 body.violet .dashboard-link .z-label,
 body.violet .green-button .z-label,
 body.violet .attachLoading .z-label {
@@ -2851,6 +2810,7 @@ body.violet .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.violet .ZeroModelsYetView a:hover .z-label,
 body.violet .zButton:hover .z-label,
 body.violet .z-button:hover .z-label,
 body.violet .zButton:active .z-label,
@@ -2872,6 +2832,7 @@ body.violet .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.violet .ZeroModelsYetView a:active .z-label,
 body.violet .zButton:active .z-label,
 body.violet .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -3087,7 +3048,6 @@ body.honey .view-toolbar a:hover,
 body.honey .view-toolbar a:active,
 body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
-body.honey .ZeroModelsYetView a:before,
 body.honey #StickyListMenu > li > a:hover > span,
 body.honey .addfileinput-button:hover span .pager a:hover:before,
 body.honey .pager a:hover:after,
@@ -3230,6 +3190,7 @@ body.honey #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #bcca67;
   text-shadow: 0px 1px 0 #bcca67;
 }
+body.honey .ZeroModelsYetView .z-label,
 body.honey .dashboard-link .z-label,
 body.honey .green-button .z-label,
 body.honey .attachLoading .z-label {
@@ -3250,6 +3211,7 @@ body.honey .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.honey .ZeroModelsYetView a:hover .z-label,
 body.honey .zButton:hover .z-label,
 body.honey .z-button:hover .z-label,
 body.honey .zButton:active .z-label,
@@ -3271,6 +3233,7 @@ body.honey .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.honey .ZeroModelsYetView a:active .z-label,
 body.honey .zButton:active .z-label,
 body.honey .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -3667,45 +3630,6 @@ section {
 #HeaderLinksView li a:hover {
   color: #fff !important;
 }
-#HeaderLinksView ul ul {
-  min-width: 110px;
-  display: none;
-  position: absolute;
-  top: 37px;
-  border: 1px solid #444;
-  background: #252525;
-  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#HeaderLinksView ul ul li {
-  line-height: 100%;
-  position: relative;
-  z-index: 9999;
-}
-#HeaderLinksView ul ul li:first-child a {
-  border-top: none;
-}
-#HeaderLinksView ul ul li:last-child a {
-  border-bottom: none;
-}
-#HeaderLinksView ul ul a {
-  position: relative;
-  z-index: 9999;
-  border-top: 1px solid #323232;
-  border-bottom: 1px solid #181818;
-  color: #EFEFEF;
-  font-size: 11px;
-  font-weight: normal;
-  display: block;
-  padding: 6px 10px 6px 10px;
-  margin: 0;
-}
 #HeaderLinksView + div {
   -webkit-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -moz-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
@@ -3765,44 +3689,47 @@ section {
 .edit-row-menu ul a:hover {
   color: #fff !important;
 }
-/*
-.headerDropDownSpecial{
-    zoom:1;
-    z-index:100;
-    min-width:110px;
-    width:100%;
-    // /*display:none;
-    position:absolute;
-    top:37px;    
-    border:1px solid #444;
-    background: #252525;
-    .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
-    .box-sizing();
-    li{
-         line-height: 100%;
-         position:relative;
-         width:100%;
-    }
-    li:first-child a{
-         border-top:none;
-    }
-    li:last-child a{
-         border-bottom:none;
-    }
-    a{
-        width:100%;
-        position:relative;
-        border-top:1px solid lighten(#252525, 5%);
-        border-bottom: 1px solid darken(#252525, 5%);
-        color:#EFEFEF;
-        font-size:11px;
-        font-weight:normal;
-        display:block;
-        padding:6px 10px 6px 10px;
-        margin:0;
-    }
+.headerDropDownSpecial,
+#HeaderLinksView ul ul {
+  z-index: 1;
+  min-width: 110px;
+  display: none;
+  position: absolute;
+  top: 37px;
+  border: 1px solid #444;
+  background: #252525;
+  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
-*/
+.headerDropDownSpecial li,
+#HeaderLinksView ul ul li {
+  line-height: 100%;
+}
+.headerDropDownSpecial li:first-child a,
+#HeaderLinksView ul ul li:first-child a {
+  border-top: none;
+}
+.headerDropDownSpecial li:last-child a,
+#HeaderLinksView ul ul li:last-child a {
+  border-bottom: none;
+}
+.headerDropDownSpecial a,
+#HeaderLinksView ul ul a {
+  border-top: 1px solid #323232;
+  border-bottom: 1px solid #181818;
+  color: #EFEFEF;
+  font-size: 11px;
+  font-weight: normal;
+  display: block;
+  padding: 6px 10px 6px 10px;
+  margin: 0;
+}
 #notifications {
   float: left;
   display: block;
@@ -4271,13 +4198,12 @@ section {
   -ms-border-radius: 0 0 5px 5px;
   -o-border-radius: 0 0 5px 5px;
   border-radius: 0 0 5px 5px;
-  z-index: -100;
+  z-index: 0;
   position: relative;
 }
 #HeaderView {
   position: relative;
-  z-index: 1000;
-  overflow: visible;
+  z-index: 9999;
 }
 .TitleBarView {
   margin-bottom: 15px;
@@ -4823,6 +4749,11 @@ form .view-toolbar-container,
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+}
+.view-toolbar .z-label {
+  float: none;
+  padding: 0;
+  display: inline;
 }
 #ActionBarForGroupsTreeListView .view-toolbar,
 #ActionBarSearchAndListView .view-toolbar {
@@ -5883,12 +5814,12 @@ div.wide.form label.hasCheckBox {
 #NoGlobalEmailConfigurationYetView a,
 .ZeroModelsYetView a {
   margin-left: 30px;
-  margin-top: 15px;
+  margin-top: 30px;
   float: left;
 }
-#NoUserEmailConfigurationYetView a:before,
-#NoGlobalEmailConfigurationYetView a:before,
-.ZeroModelsYetView a:before {
+#NoUserEmailConfigurationYetView a span:before,
+#NoGlobalEmailConfigurationYetView a span:before,
+.ZeroModelsYetView a span:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
@@ -9189,7 +9120,10 @@ a.remove .icon:after {
   top: 14px;
   vertical-align: middle;
 }
-.configuration-list li a:before {
+.configuration-list li a .z-label {
+  padding: 0 15px;
+}
+.configuration-list li a .z-label:before {
   content: "n";
   font-weight: normal;
   font-size: 20px;

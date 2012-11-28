@@ -77,7 +77,7 @@
     .view-toolbar a:active,
     .portlet-toolbar .icon-delete:before,
     .portlet-toolbar .icon-edit:before,
-    .ZeroModelsYetView a:before,
+    //.ZeroModelsYetView a span:before,
     #StickyListMenu  > li > a:hover > span,
     .addfileinput-button:hover span
     .pager a:hover:before,
@@ -200,6 +200,7 @@
     @themeColorBtnDefault     : #97c43d;
     @themeColorBtn2Default    : darken(@themeColorBtnDefault, 10%);
 
+    .ZeroModelsYetView .z-label,
     .dashboard-link .z-label,
     .green-button .z-label,
     .attachLoading .z-label{
@@ -208,14 +209,19 @@
         .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
     }
     
-    .zButton:hover .z-label, .z-button:hover .z-label,
-    .zButton:active .z-label, .z-button:active .z-label{
+    .ZeroModelsYetView a:hover .z-label,
+    .zButton:hover .z-label,
+    .z-button:hover .z-label,
+    .zButton:active .z-label,
+    .z-button:active .z-label{
         color: darken(@themeColorBtnDefault, 40%) !important;
         #gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) );
         .t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
     }
     
-    .zButton:active .z-label, .z-button:active .z-label{
+    .ZeroModelsYetView a:active .z-label,
+    .zButton:active .z-label,
+    .z-button:active .z-label{
         .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
     }
 
