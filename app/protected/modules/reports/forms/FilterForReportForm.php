@@ -42,6 +42,11 @@
 
         private $_availableOperatorsType;
 
+        public function attributeNames()
+        {
+            return array_merge(parent::attributeNames(), array('operator'));
+        }
+
         /**
          * Reset availabelOperatorsType cache whenever a new attribute is set
          * (non-PHPdoc)
@@ -58,7 +63,7 @@
 
         public function setOperator($value)
         {
-            if(!in_array($value, OperatorRules::availableTypes()))
+            if(!in_array($value, OperatorRules::availableTypes()) && $value != null)
             {
                 throw new NotSupportedException();
             }

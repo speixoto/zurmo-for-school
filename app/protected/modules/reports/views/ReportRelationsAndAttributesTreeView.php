@@ -26,16 +26,6 @@
 
     class ReportRelationsAndAttributesTreeView extends View
     {
-        const TREE_TYPE_FILTERS                       = 'Filters';
-
-        const TREE_TYPE_DISPLAY_ATTRIBUTES            = 'DisplayAttributes';
-
-        const TREE_TYPE_ORDER_BYS                     = 'OrderBys';
-
-        const TREE_TYPE_GROUP_BYS                     = 'GroupBys';
-
-        const TREE_TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES = 'DrillDownDisplayAttributes';
-
         protected $treeType;
 
         protected $formName;

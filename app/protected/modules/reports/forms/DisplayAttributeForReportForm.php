@@ -28,6 +28,23 @@
     {
         public $label;
 
+        /**
+         * Makes sure the attributeIndexOrDerivedType always populates first before label otherwise any
+         * custom label gets wiped out.
+         * (non-PHPdoc)
+         * @see ComponentForReportForm::attributeNames()
+         */
+        public function attributeNames()
+        {
+            $attributeNames = parent::attributeNames();
+            if(count($attributeNames) != 2)
+            {
+                throw new NotSupportedException();
+            }
+            array_unshift( $attributeNames, array_pop( $attributeNames ) );
+            return $attributeNames;
+        }
+
         public function rules()
         {
             return array_merge(parent::rules(), array(

@@ -207,7 +207,7 @@
 
         public function getOrderBys()
         {
-            return $this->groupBys;
+            return $this->orderBys;
         }
 
         public function addOrderBy(OrderByForReportForm $orderBy)

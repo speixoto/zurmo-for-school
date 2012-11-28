@@ -50,6 +50,11 @@
 
         private   $_attributeIndexOrDerivedType;
 
+        public function attributeNames()
+        {
+            return array_merge(parent::attributeNames(), array('attributeIndexOrDerivedType'));
+        }
+
         public function __set($name, $value)
         {
             if ($name == 'attributeIndexOrDerivedType')

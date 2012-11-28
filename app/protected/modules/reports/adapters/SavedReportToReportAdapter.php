@@ -26,13 +26,6 @@
 
     class SavedReportToReportAdapter
     {
-        protected $report;
-
-        public function __construct(Report $report)
-        {
-            $this->report = $report;
-        }
-
         public static function makeReportBySavedReport($savedReport)
         {
             $report = new Report();
@@ -47,6 +40,22 @@
             $report->setType($savedReport->type);
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($savedReport);
             $report->setExplicitReadWriteModelPermissions($explicitReadWriteModelPermissions);
+            if($savedReport->serializedData != null)
+            {
+                $unserializedData = unserialize($savedReport->serializedData);
+                self::makeComponentFormAndPopulateReportFromData(
+                        $unserializedData[ComponentForReportForm::TYPE_FILTERS],   $report, 'Filter');
+                self::makeComponentFormAndPopulateReportFromData(
+                        $unserializedData[ComponentForReportForm::TYPE_ORDER_BYS], $report, 'OrderBy');
+                self::makeComponentFormAndPopulateReportFromData(
+                        $unserializedData[ComponentForReportForm::TYPE_GROUP_BYS], $report, 'GroupBy');
+                self::makeComponentFormAndPopulateReportFromData(
+                        $unserializedData[ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES],
+                        $report, 'DisplayAttribute');
+                self::makeComponentFormAndPopulateReportFromData(
+                        $unserializedData[ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES],
+                        $report, 'DrillDownDisplayAttribute');
+            }
             return $report;
         }
 
@@ -57,6 +66,48 @@
             $savedReport->name            = $report->getName();
             $savedReport->owner           = $report->getOwner();
             $savedReport->type            = $report->getType();
+
+            $data = array();
+            $data[ComponentForReportForm::TYPE_FILTERS]                      =
+                self::makeArrayFromComponentFormsAttributesData($report->getFilters());
+            $data[ComponentForReportForm::TYPE_ORDER_BYS]                    =
+                self::makeArrayFromComponentFormsAttributesData($report->getOrderBys());
+            $data[ComponentForReportForm::TYPE_GROUP_BYS]                    =
+                self::makeArrayFromComponentFormsAttributesData($report->getGroupBys());
+            $data[ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES]           =
+                self::makeArrayFromComponentFormsAttributesData($report->getDisplayAttributes());
+            $data[ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES] =
+                self::makeArrayFromComponentFormsAttributesData($report->getDrillDownDisplayAttributes());
+            $savedReport->serializedData   = serialize($data);
+        }
+
+        protected static function makeArrayFromComponentFormsAttributesData(Array $componentFormsData)
+        {
+            $data = array();
+            foreach($componentFormsData as $key => $componentForm)
+            {
+                assert('$componentForm instanceof $componentForm');
+                foreach($componentForm->getAttributes() as $attribute => $value)
+                {
+                    $data[$key][$attribute] = $value;
+                }
+            }
+            return $data;
+        }
+
+        protected static function makeComponentFormAndPopulateReportFromData($componentFormsData, $report, $componentPrefix)
+        {
+            $moduleClassName    = $report->getModuleClassName();
+            $addMethodName      = 'add' . $componentPrefix;
+            $componentClassName = $componentPrefix . 'ForReportForm';
+            foreach($componentFormsData as $componentFormData)
+            {
+                $component      = new $componentClassName($moduleClassName,
+                                                          $moduleClassName::getPrimaryModelName(),
+                                                          $report->getType());
+                $component->setAttributes($componentFormData);
+                $report->{$addMethodName}($component);
+            }
         }
     }
 ?>
