@@ -145,7 +145,7 @@
                 $('#createLeadCancel').click( function()
                     {
                         $('.LeadInlineCreateForArchivedEmailCreateView').hide();
-                        $('.contact-select-title').show();
+                        $('.select-title').show();
                         $('.lead-create-title').hide();
                         return false;
                     }

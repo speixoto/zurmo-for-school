@@ -29,7 +29,7 @@
      */
     class ContactLatestActivtiesForPortletView extends LatestActivtiesForPortletView
     {
-            public static function getDefaultMetadata()
+        public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
             return array_merge($metadata, array(
@@ -49,6 +49,7 @@
                 ),
             )));
         }
+
         public function getLatestActivitiesViewClassName()
         {
             return 'LatestActivitiesForContactListView';

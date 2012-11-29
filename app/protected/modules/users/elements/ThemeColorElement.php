@@ -67,15 +67,17 @@
         public function registerScript()
         {
             $removeScript = null;
-            foreach(Yii::app()->themeManager->getThemeColorNamesAndLabels() as $value => $notUsed)
+            foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $value => $notUsed)
             {
                 $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
             }
+            // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName() . "\"]').live('change', function(){
                           $removeScript
                           $(document.body).addClass(this.value);
                           });
                       ";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('changeThemeColor', $script);
         }
     }
