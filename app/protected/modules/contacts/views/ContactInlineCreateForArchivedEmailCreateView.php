@@ -152,7 +152,7 @@
                 $('#createContactCancel').click( function()
                     {
                         $('.ContactInlineCreateForArchivedEmailCreateView').hide();
-                        $('.contact-select-title').show();
+                        $('.select-title').show();
                         $('.contact-create-title').hide();
                         return false;
                     }
