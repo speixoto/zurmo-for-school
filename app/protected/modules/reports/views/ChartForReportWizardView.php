@@ -28,12 +28,13 @@
     {
         protected function renderFormContent()
         {
-            return 'ChartForReportWizardView form content';
+            $content           = 'todo'; //based on general data
+            return $content;
         }
 
         public static function getWizardStepTitle()
         {
-            return 'todo';
+            return Yii::t('Default', 'Select a Chart');
         }
 
         public static function getPreviousPageLinkId()
@@ -44,6 +45,16 @@
         public static function getNextPageLinkId()
         {
             return 'chartNextLink';
+        }
+
+        protected function isListContentSortable()
+        {
+            return true;
+        }
+
+        protected function getItems(& $rowCount)
+        {
+            return $this->renderItems($rowCount, $this->model->displayAttributes);
         }
     }
 ?>

@@ -46,7 +46,7 @@
             }
             elseif($treeType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
-                return new GroupByrForReportForm($moduleClassName, $modelClassName, $type);
+                return new GroupByForReportForm($moduleClassName, $modelClassName, $type);
             }
             elseif($treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {

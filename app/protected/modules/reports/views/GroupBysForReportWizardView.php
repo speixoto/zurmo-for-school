@@ -33,7 +33,7 @@
 
         public static function getWizardStepTitle()
         {
-            return 'todo';
+            return Yii::t('Default', 'Select Groupings');
         }
 
         public static function getPreviousPageLinkId()

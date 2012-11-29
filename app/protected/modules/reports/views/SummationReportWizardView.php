@@ -32,18 +32,21 @@
             $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);
             $groupBysForReportWizardView          = new GroupBysForReportWizardView($this->model, $form, true);
             $displayAttributesForReportWizardView = new DisplayAttributesForReportWizardView($this->model, $form, true);
+            $drillDownDisplayAttributesForReportWizardView =
+                                           new DrillDownDisplayAttributesForReportWizardView($this->model, $form, true);
             $orderBysForReportWizardView          = new OrderBysForReportWizardView($this->model, $form, true);
             $chartForReportWizardView             = new ChartForReportWizardView($this->model, $form, true);
             $generalDataForReportWizardView       = new GeneralDataForReportWizardView($this->model, $form, true);
 
-            $gridView = new GridView(7,1);
+            $gridView = new GridView(8,1);
             $gridView->setView($moduleForReportWizardView, 0, 0);
             $gridView->setView($filtersForReportWizardView, 1, 0);
             $gridView->setView($groupBysForReportWizardView, 2, 0);
             $gridView->setView($displayAttributesForReportWizardView, 3, 0);
-            $gridView->setView($orderBysForReportWizardView, 4, 0);
-            $gridView->setView($chartForReportWizardView, 5, 0);
-            $gridView->setView($generalDataForReportWizardView, 6, 0);
+            $gridView->setView($drillDownDisplayAttributesForReportWizardView, 4, 0);
+            $gridView->setView($orderBysForReportWizardView, 5, 0);
+            $gridView->setView($chartForReportWizardView, 6, 0);
+            $gridView->setView($generalDataForReportWizardView, 7, 0);
             return $gridView->render();
         }
 
@@ -80,9 +83,16 @@
                         if(linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
-                                ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
+                                ReportWizardForm::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#DisplayAttributesForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
+                            " . $this->renderTreeViewAjaxScriptContent($formName, 'DrillDownDisplayAttributesForReportWizardView') . "
+                            $('#DrillDownDisplayAttributesForReportWizardView').show();
+                        }
+                        if(linkId == '" . DrillDownDisplayAttributesForReportWizardView::getNextPageLinkId() . "')
+                        {
+                            $('#" . static::getValidationScenarioInputId() . "').val('" .
+                                ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
+                            $('#DrillDownDisplayAttributesForReportWizardView').hide();
                             $('#OrderBysForReportWizardView').show();
                         }
                         if(linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
@@ -126,7 +136,8 @@
                 $('#" . FiltersForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . FiltersForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::MODULE_VALIDATION_SCENARIO . "');
+                        $('#" . static::getValidationScenarioInputId() . "').val('" .
+                        ReportWizardForm::MODULE_VALIDATION_SCENARIO . "');
                         $('#ModuleForReportWizardView').show();
                         $('#FiltersForReportWizardView').hide();
                         return false;
@@ -135,7 +146,8 @@
                 $('#" . GroupBysForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . GroupBysForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
+                        $('#" . static::getValidationScenarioInputId() . "').val('" .
+                        ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                         $('#FiltersForReportWizardView').show();
                         $('#GroupBysForReportWizardView').hide();
                         return false;
@@ -144,25 +156,38 @@
                 $('#" . DisplayAttributesForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . DisplayAttributesForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
+                        $('#" . static::getValidationScenarioInputId() . "').val('" .
+                        ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
                         $('#GroupBysForReportWizardView').show();
                         $('#DisplayAttributesForReportWizardView').hide();
+                        return false;
+                    }
+                );
+                $('#" . DrillDownDisplayAttributesForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . DrillDownDisplayAttributesForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                    {
+                        $('#" . static::getValidationScenarioInputId() . "').val('" .
+                        ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
+                        $('#DisplayAttributesForReportWizardView').show();
+                        $('#DrillDownDisplayAttributesForReportWizardView').hide();
                         return false;
                     }
                 );
                 $('#" . OrderBysForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . OrderBysForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
-                        $('#DisplayAttributesForReportWizardView').show();
+                        $('#" . static::getValidationScenarioInputId() . "').val('" .
+                        ReportWizardForm::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
+                        $('#DrillDownDisplayAttributesForReportWizardView').show();
                         $('#OrderBysForReportWizardView').hide();
                         return false;
                     }
                 );
-                $('#" . GeneralDataForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
-                $('#" . GeneralDataForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                $('#" . ChartForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . ChartForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
+                        $('#" . static::getValidationScenarioInputId() . "').val('" .
+                        ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                         $('#OrderBysForReportWizardView').show();
                         $('#ChartForReportWizardView').hide();
                         return false;
@@ -171,7 +196,8 @@
                 $('#" . GeneralDataForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . GeneralDataForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
+                        $('#" . static::getValidationScenarioInputId() . "').val('" .
+                        ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
                         $('#ChartForReportWizardView').show();
                         $('#GeneralDataForReportWizardView').hide();
                         return false;

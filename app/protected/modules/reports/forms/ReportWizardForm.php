@@ -35,7 +35,7 @@
 
         const DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
 
-        const DRILLDOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
+        const DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
 
         const ORDER_BYS_VALIDATION_SCENARIO          = 'ValidateForOrderBys';
 
@@ -127,7 +127,7 @@
                 array('displayAttributes',   'validateDisplayAttributes',
                                              'on' => self::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
                 array('drillDownAttributes', 'validateDrillDownDisplayAttributes',
-                                             'on' => self::DRILLDOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
+                                             'on' => self::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
                 array('orderBys', 		     'validateOrderBys',   'on' => self::ORDER_BYS_VALIDATION_SCENARIO),
                 array('groupBys', 		     'validateGroupBys',   'on' => self::GROUP_BYS_VALIDATION_SCENARIO),
                 array('chart', 		         'validateChart',      'on' => self::CHART_VALIDATION_SCENARIO),

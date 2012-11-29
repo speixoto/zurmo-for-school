@@ -33,12 +33,17 @@
 
         public static function getWizardStepTitle()
         {
-            return 'todo';
+            return Yii::t('Default', 'Select Drill Down Columns');
         }
 
-        protected function renderPreviousPageLinkContent()
+        public static function getPreviousPageLinkId()
         {
-            return 'what button here';
+            return 'drillDownDisplayAttributesPreviousLink';
+        }
+
+        public static function getNextPageLinkId()
+        {
+            return 'drillDownDisplayAttributesNextLink';
         }
 
         protected function isListContentSortable()
