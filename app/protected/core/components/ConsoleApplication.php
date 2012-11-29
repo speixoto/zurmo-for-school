@@ -120,9 +120,9 @@
             $this->_theme = $value;
         }
 
-        public function createAbsoluteUrl($route,$params=array(),$schema='',$ampersand='&')
+        public function createAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&')
         {
-            $url = $this->createUrl($route,$params,$ampersand);
+            $url = $this->createUrl($route, $params, $ampersand);
             if(strpos($url, 'http') === 0)
             {
                 return $url;
