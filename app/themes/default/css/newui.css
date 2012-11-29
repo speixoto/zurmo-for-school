@@ -156,6 +156,18 @@ a.ModalGameNotification a,
 #NoUserEmailConfigurationYetView {
   zoom: 1;
 }
+.clearfix {
+  zoom: 1;
+}
+.clearfix:before {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .flyout,
 #ModalView .search-view-1,
 .ui-multiselect-menu,
@@ -246,8 +258,8 @@ a.ModalGameNotification a {
   cursor: pointer;
   margin: 0 10px;
   text-indent: 0;
-  zoom: 1;
   display: inline-block;
+  zoom: 1;
 }
 .modal-view-toolbar a:before,
 .modal-view-toolbar input[type="submit"]:before,
@@ -668,8 +680,6 @@ body.blue #filter-latest-activities-link:hover,
 body.blue .badge-message h3 {
   color: #7cb830 !important;
 }
-body.blue .upload-actions button.start,
-body.blue .upload-actions button.cancel,
 body.blue #InstallAccessFailurePageView a,
 body.blue #ErrorPageView a,
 body.blue .ui-tooltip-default .ui-tooltip-icon,
@@ -1069,8 +1079,6 @@ body.brown #filter-latest-activities-link:hover,
 body.brown .badge-message h3 {
   color: #b88f30 !important;
 }
-body.brown .upload-actions button.start,
-body.brown .upload-actions button.cancel,
 body.brown #InstallAccessFailurePageView a,
 body.brown #ErrorPageView a,
 body.brown .ui-tooltip-default .ui-tooltip-icon,
@@ -1470,8 +1478,6 @@ body.lime #filter-latest-activities-link:hover,
 body.lime .badge-message h3 {
   color: #bcc98e !important;
 }
-body.lime .upload-actions button.start,
-body.lime .upload-actions button.cancel,
 body.lime #InstallAccessFailurePageView a,
 body.lime #ErrorPageView a,
 body.lime .ui-tooltip-default .ui-tooltip-icon,
@@ -1871,8 +1877,6 @@ body.cherry #filter-latest-activities-link:hover,
 body.cherry .badge-message h3 {
   color: #933140 !important;
 }
-body.cherry .upload-actions button.start,
-body.cherry .upload-actions button.cancel,
 body.cherry #InstallAccessFailurePageView a,
 body.cherry #ErrorPageView a,
 body.cherry .ui-tooltip-default .ui-tooltip-icon,
@@ -2272,8 +2276,6 @@ body.turquoise #filter-latest-activities-link:hover,
 body.turquoise .badge-message h3 {
   color: #44bbcc !important;
 }
-body.turquoise .upload-actions button.start,
-body.turquoise .upload-actions button.cancel,
 body.turquoise #InstallAccessFailurePageView a,
 body.turquoise #ErrorPageView a,
 body.turquoise .ui-tooltip-default .ui-tooltip-icon,
@@ -2673,8 +2675,6 @@ body.violet #filter-latest-activities-link:hover,
 body.violet .badge-message h3 {
   color: #91a1dc !important;
 }
-body.violet .upload-actions button.start,
-body.violet .upload-actions button.cancel,
 body.violet #InstallAccessFailurePageView a,
 body.violet #ErrorPageView a,
 body.violet .ui-tooltip-default .ui-tooltip-icon,
@@ -3074,8 +3074,6 @@ body.honey #filter-latest-activities-link:hover,
 body.honey .badge-message h3 {
   color: #abbc42 !important;
 }
-body.honey .upload-actions button.start,
-body.honey .upload-actions button.cancel,
 body.honey #InstallAccessFailurePageView a,
 body.honey #ErrorPageView a,
 body.honey .ui-tooltip-default .ui-tooltip-icon,
@@ -3388,20 +3386,7 @@ body.light-toast,
 .strong {
   font-weight: bold;
 }
-/*=For modern browsers */
-.clearfix {
-  zoom: 1;
-}
-.clearfix:before {
-  content: "";
-  display: table;
-}
-.clearfix:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.hidden-element {
+® .hidden-element {
   display: none !important;
   visibility: hidden !important;
 }
@@ -5369,6 +5354,11 @@ td.empty {
   text-align: center;
   border-top: 1px solid #fff;
 }
+.modal-view-toolbar a,
+.form-toolbar a {
+  display: inline-block;
+  margin: 0 10px;
+}
 .action-take {
   background-color: #ffad43;
   background-repeat: repeat-x;
@@ -5451,6 +5441,11 @@ td.empty {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
+.portlet-toolbar .icon-create .z-label,
+.portlet-toolbar a .z-label {
+  padding: 0 0 0 5px;
+  float: none;
+}
 .portlet-toolbar .icon-create:not(.attachLoading),
 .portlet-toolbar a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -5478,7 +5473,7 @@ td.empty {
   position: relative;
   top: -1px;
   color: #fff;
-  margin-left: 0;
+  margin: 0;
 }
 .portlet-toolbar .icon-delete:before {
   content: "_";
@@ -6147,13 +6142,16 @@ div.wide.form label.hasCheckBox {
 }
 .select-list-attributes-view #cancel-advanced-search,
 .search-view-1 #cancel-advanced-search {
-  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   color: #656565;
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
   -o-text-shadow: none;
   -ms-text-shadow: none;
   text-shadow: none;
+}
+.select-list-attributes-view #cancel-advanced-search .z-label,
+.search-view-1 #cancel-advanced-search .z-label {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .select-list-attributes-view .view-toolbar-container,
 .search-view-1 .view-toolbar-container {
@@ -6273,6 +6271,12 @@ div.wide.form label.hasCheckBox {
 .add-fields-container .z-spinner {
   display: block !important;
   margin-top: -5px;
+}
+.add-fields-container .z-label {
+  font-weight: normal;
+  padding: 0;
+  line-height: 1;
+  float: none;
 }
 #show-dynamic-search-structure-wrapper-search-form {
   display: block;
@@ -9241,10 +9245,19 @@ table.configuration-list tr td:last-child a:before {
 }
 .multiselect-holder input[type="button"] {
   display: block !important;
-  margin-bottom: 15px !important;
+  margin: 0 0 15px 0 !important;
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+  padding: 0 15px;
+  line-height: 25px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 .multiselect-holder .select-arrow {
   display: none !important;
@@ -9569,6 +9582,10 @@ table.configuration-list tr td:last-child a:before {
   text-align: center;
   border-top: 1px solid #fff;
 }
+#currency-collection-form .portlet-toolbar a {
+  display: inline-block;
+  margin: 0 10px;
+}
 #currency-collection-form .portlet-toolbar a:before {
   content: "";
 }
@@ -9801,8 +9818,8 @@ table.configuration-list tr td:last-child a:before {
   cursor: pointer;
   margin: 0 10px;
   text-indent: 0;
-  zoom: 1;
   display: inline-block;
+  zoom: 1;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:before {
   content: "";
@@ -10361,6 +10378,9 @@ div.wide.form .errorMessage {
   font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
+.add-label {
+  font-weight: normal !important;
+}
 .show-file-upload-box {
   position: relative;
   bottom: -18px;
@@ -10428,17 +10448,15 @@ div.wide.form .errorMessage {
 .upload-actions button.cancel {
   cursor: pointer;
   border: none;
-  font-size: 10px !important;
-  padding: 2px;
-  line-height: 1;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   margin: 0 0 0 4px;
   color: #fff;
   font-weight: normal;
+  background: none;
 }
 .upload-actions button.start:hover,
 .upload-actions button.cancel:hover {
@@ -10448,7 +10466,14 @@ div.wide.form .errorMessage {
   -ms-box-shadow: 0 0 1px 0 #333333;
   box-shadow: 0 0 1px 0 #333333;
 }
-.upload-actions button.start {
+.upload-actions button.start span,
+.upload-actions button.cancel span {
+  display: block;
+  padding: 2px;
+  font-size: 10px !important;
+  line-height: 1;
+}
+.upload-actions button.start span {
   background-color: #6fa82d;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
@@ -10459,9 +10484,8 @@ div.wide.form .errorMessage {
   background-image: -o-linear-gradient(top, #97c43d, #6fa82d);
   background-image: linear-gradient(top, #97c43d, #6fa82d);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#6fa82d', GradientType=0);
-  display: none;
 }
-.upload-actions button.cancel {
+.upload-actions button.cancel span {
   background-color: #a82d31;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31));
@@ -10511,8 +10535,8 @@ div.wide.form .errorMessage {
   cursor: pointer;
   margin: 0 10px;
   text-indent: 0;
-  zoom: 1;
   display: inline-block;
+  zoom: 1;
   -webkit-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
@@ -10523,7 +10547,7 @@ div.wide.form .errorMessage {
   font-family: "ZurmoGamificationSymblyReguRg";
   font-size: 24px;
   padding: 0 6px !important;
-  margin-right: 5px;
+  margin: 0 5px 0 0 !important;
   position: relative;
   top: 2px;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -13603,6 +13627,7 @@ a.user-link {
 #social-item-inline-edit-form .form-toolbar a {
   color: #fff;
   margin-right: 0;
+  float: right;
 }
 #comment-inline-edit-form table.files,
 #social-item-inline-edit-form table.files {

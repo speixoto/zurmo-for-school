@@ -27,21 +27,7 @@
 .strong{
     font-weight: bold;
 }
-
-/*=For modern browsers */
-.clearfix{
-    &:before{
-        content:"";
-        display:table;
-    }
-    &:after{
-        content:"";
-        display:table;
-        clear:both;
-    }
-    zoom:1;
-}
-
+®
 .hidden-element{
     display:none !important;
     visibility:hidden !important;
@@ -1668,6 +1654,10 @@ td.empty{
     padding-top:13px;
     text-align:center;
     border-top:1px solid #fff;
+    a{
+        display:inline-block;
+        margin:0 10px;
+    }
 }
     
 .action-take{
@@ -1690,7 +1680,8 @@ td.empty{
     position: absolute;
     top:-35px;
     right:8px;
-    .icon-create, a {
+    .icon-create,
+    a {
         .smaller();
         padding:0 10px 0 10px;
         line-height:25px;
@@ -1705,6 +1696,10 @@ td.empty{
         color:#656565;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
+        .z-label{
+           padding:0 0 0 5px; 
+           float:none;
+        }
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         }
@@ -1721,7 +1716,7 @@ td.empty{
         .view-toolbar-icons();
         top:-1px;
         color:#fff;
-        margin-left:0;
+        margin:0;
         //++.themeColor2-important;
     }
     .icon-delete:before{
@@ -2275,9 +2270,12 @@ div.wide.form{
 		text-align:left;
     }
     #cancel-advanced-search{
-        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+        //background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         color:#656565;
         .t-shadow(none);
+        .z-label{
+            background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+        }
     }
     .view-toolbar-container{
         border-top:1px solid #CCCCCC;
@@ -2391,6 +2389,12 @@ div.wide.form{
     .z-spinner{
         display: block !important;
         margin-top: -5px;
+    }
+    .z-label{
+        font-weight:normal;
+        padding:0;
+        line-height:1;
+        float:none;
     }
 }
 

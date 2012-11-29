@@ -61,7 +61,6 @@
             transition: all @time ease-out;
 }
 
-
 .cf:before,
 .cf:after{
     content:"";
@@ -71,6 +70,19 @@
     clear:both;
 }
 .cf{
+    zoom:1;
+}
+
+.clearfix{
+    &:before{
+        content:"";
+        display:table;
+    }
+    &:after{
+        content:"";
+        display:table;
+        clear:both;
+    }
     zoom:1;
 }
 
@@ -115,10 +127,9 @@ a.z-button {
     cursor:pointer;
     margin:0 10px;
     text-indent:0;
+    display:inline-block;
     ++.border-box;
     .clearfix();
-    display:inline-block;
-    
     &.attachLoading.z-button{
         color: #fff;
     }
@@ -126,6 +137,7 @@ a.z-button {
         background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
     }
 }
+
 
 /*
 .zButton:not(.attacheLoading),
@@ -176,9 +188,6 @@ a.z-button {
 .z-spinner.loading{
     display:block !important;
 }
-
-
-
 
 .zLink, .z-link{
     padding:1px 4px;

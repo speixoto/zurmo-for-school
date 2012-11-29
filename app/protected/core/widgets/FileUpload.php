@@ -144,12 +144,12 @@
             if ($this->allowMultipleUpload)
             {
                 $sendAction = null;
-                $addLabel   = Yii::t('Default', 'Add Files');
+                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Yii::t('Default', 'Add Files'));
             }
             else
             {
                 $sendAction = "\$('#{$this->formName}').find('.files > tbody').children().remove();";
-                $addLabel = Yii::t('Default', 'Add File');
+                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Yii::t('Default', 'Add Files'));
             }
             // Begin Not Coding Standard
             $javaScript = <<<EOD
@@ -246,7 +246,7 @@ $scriptContent = <<<EOD
             <td class="name" title="\${size}">
                 \${name} <span class="file-size">(\${size})</span>
                 <span class="upload-actions delete">
-                    <button class="icon-delete" data-url="{$this->deleteUrl}?id=\${id}"><!--{$deleteLabel}--></button>
+                    <button class="icon-delete" data-url="{$this->deleteUrl}?id=\${id}"><span><!--{$deleteLabel}--><span></button>
                 </span>
                 <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
             </td>
@@ -272,10 +272,9 @@ $scriptContent = <<<EOD
                 <span class="upload-error">\${error}</span>
             {{else}}
                 <span class="upload-actions cancel">
-                    <button class="cancel">{$cancelLabel}</button>
+                    <button class="cancel"><span>{$cancelLabel}</span></button>
                 </span>
             {{/if}}
-
         </td>
     </tr>
 </script>
