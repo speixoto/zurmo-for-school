@@ -52,7 +52,7 @@
                                                                      $source
                                                                     );
             } catch (NotFoundException $e) {
-                $sourceModel = MessageSource::model();
+                $sourceModel = new MessageSource();
                 $sourceModel->category = $category;
                 $sourceModel->source = $source;
                 if (!$sourceModel->save()) {
@@ -66,7 +66,7 @@
                                         $langCode
                                     );
             } catch (NotFoundException $e) {
-                $translationModel = MessageTranslation::model();
+                $translationModel = new MessageTranslation();
                 $translationModel->language = $langCode;
                 $translationModel->messagesource = $sourceModel;
             }
