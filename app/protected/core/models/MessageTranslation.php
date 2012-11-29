@@ -34,12 +34,22 @@
                     'translation',
                     'language',
                 ),
+                'relations' => array(
+                    'messagesource'   => array(
+                                               RedBeanModel::HAS_ONE,
+                                               'MessageSource',
+                                               RedBeanModel::OWNED
+                                               ),
+                ),
                 'rules' => array(
                     array('translation',        'required'),
                     array('translation',        'type', 'type' => 'blob'),
                     array('language',           'required'),
                     array('language',           'type', 'type' => 'string'),
                     array('language',           'length',  'min'  => 1, 'max' => 255),
+                ),
+                'elements' => array(
+                    'messagesource' => 'MessageSource',
                 )
             );
             return $metadata;

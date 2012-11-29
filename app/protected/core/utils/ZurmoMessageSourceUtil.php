@@ -47,7 +47,10 @@
             }
 
             try {
-                $sourceModel = MessageSource::getByCategoryAndSource($category, $source);
+                $sourceModel = MessageSource::getByCategoryAndSource(
+                                                                     $category,
+                                                                     $source
+                                                                    );
             } catch (NotFoundException $e) {
                 $sourceModel = MessageSource::model();
                 $sourceModel->category = $category;
