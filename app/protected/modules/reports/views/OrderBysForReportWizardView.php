@@ -45,5 +45,10 @@
         {
             return 'orderBysDataNextLink';
         }
+
+        protected function getItems(& $rowCount)
+        {
+            return $this->renderItems($rowCount, $this->model->orderBys);
+        }
     }
 ?>

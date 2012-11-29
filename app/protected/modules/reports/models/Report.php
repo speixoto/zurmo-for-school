@@ -50,6 +50,8 @@
 
         private $type;
 
+        private $filtersStructure;
+
         private $filters                    = array();
 
         private $orderBys                   = array();
@@ -120,6 +122,17 @@
         {
             assert('is_string($description)');
             $this->description = $description;
+        }
+
+        public function setFiltersStructure($filtersStructure)
+        {
+            assert('is_string($filtersStructure)');
+            $this->filtersStructure = $filtersStructure;
+        }
+
+        public function getFiltersStructure()
+        {
+            return $this->filtersStructure;
         }
 
         public function getId()

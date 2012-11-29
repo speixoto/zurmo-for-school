@@ -42,6 +42,10 @@
             {
                 $report->setName($data['name']);
             }
+            if(isset($data['filtersStructure']))
+            {
+                $report->setFiltersStructure($data['filtersStructure']);
+            }
             if(null != ArrayUtil::getArrayValue($data, 'ownerId'))
             {
                 $owner = User::getById((int)$data['ownerId']);
@@ -60,6 +64,7 @@
 
         protected static function resolveFilters($data, Report $report)
         {
+            $report->removeAllFilters();
             $moduleClassName = $report->getModuleClassName();
             if(count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
             {
@@ -79,6 +84,7 @@
 
         protected static function resolveOrderBys($data, Report $report)
         {
+            $report->removeAllOrderBys();
             $moduleClassName = $report->getModuleClassName();
             if(count($orderBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_ORDER_BYS)) > 0)
             {
@@ -98,6 +104,7 @@
 
         protected static function resolveDisplayAttributes($data, Report $report)
         {
+            $report->removeAllDisplayAttributes();
             $moduleClassName = $report->getModuleClassName();
             if(count($displayAttributesData =
                      ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)) > 0)
@@ -119,6 +126,7 @@
 
         protected static function resolveDrillDownDisplayAttributes($data, Report $report)
         {
+            $report->removeAllDrillDownDisplayAttributes();
             $moduleClassName = $report->getModuleClassName();
             if(count($drillDownDisplayAttributesData =
                      ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)) > 0)
@@ -140,6 +148,7 @@
 
         protected static function resolveGroupBys($data, Report $report)
         {
+            $report->removeAllGroupBys();
             $moduleClassName = $report->getModuleClassName();
             if(count($groupBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_GROUP_BYS)) > 0)
             {

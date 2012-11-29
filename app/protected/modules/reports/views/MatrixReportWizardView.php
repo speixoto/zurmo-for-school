@@ -26,7 +26,7 @@
 
     class MatrixReportWizardView extends ReportWizardView
     {
-            protected function renderContainingViews(ZurmoActiveForm $form)
+            protected function renderContainingViews(ReportActiveForm $form)
         {
             $moduleForReportWizardView            = new ModuleForReportWizardView ($this->model, $form);
             $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);
@@ -52,7 +52,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
-                            " . static::renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
+                            " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
                             $('#FiltersForReportWizardView').show();
 
                         }
@@ -61,7 +61,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
                             $('#FiltersForReportWizardView').hide();
-                            " . static::renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView') . "
+                            " . $this->renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView') . "
                             $('#GroupBysForReportWizardView').show();
 
                         }
@@ -70,7 +70,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#GroupBysForReportWizardView').hide();
-                            " . static::renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
+                            " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
                             $('#DisplayAttributesForReportWizardView').show();
                         }
                         if(linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')

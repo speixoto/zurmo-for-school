@@ -24,31 +24,32 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DrillDownDisplayAttributesForReportWizardView extends ComponentWithTreeForReportWizardView
+    class ReportActiveForm extends ZurmoActiveForm
     {
-        public static function getTreeType()
+        /**
+         * @var array
+         */
+        protected $inputPrefixData;
+
+        protected function resolveId($model, $attribute)
         {
-            return ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+            $id = CHtml::activeId($model, $attribute);
+            if($this->inputPrefixData == null)
+            {
+                return $id;
+            }
+            $inputIdPrefix  = Element::resolveInputIdPrefixIntoString($this->inputPrefixData);
+            return str_replace(get_class($model), $inputIdPrefix, $id);
         }
 
-        public static function getWizardStepTitle()
+        public function setInputPrefixData(Array $inputPrefixData)
         {
-            return 'todo';
+            $this->inputPrefixData = $inputPrefixData;
         }
 
-        protected function renderPreviousPageLinkContent()
+        public function clearInputPrefixData()
         {
-            return 'what button here';
-        }
-
-        protected function isListContentSortable()
-        {
-            return true;
-        }
-
-        protected function getItems(& $rowCount)
-        {
-            return $this->renderItems($rowCount, $this->model->drillDownDisplayAttributes);
+            $this->inputPrefixData = null;
         }
     }
 ?>

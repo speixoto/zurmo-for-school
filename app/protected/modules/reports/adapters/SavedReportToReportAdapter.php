@@ -43,6 +43,10 @@
             if($savedReport->serializedData != null)
             {
                 $unserializedData = unserialize($savedReport->serializedData);
+                if(isset($unserializedData['filtersStructure']))
+                {
+                    $report->setFiltersStructure($unserializedData['filtersStructure']);
+                }
                 self::makeComponentFormAndPopulateReportFromData(
                         $unserializedData[ComponentForReportForm::TYPE_FILTERS],   $report, 'Filter');
                 self::makeComponentFormAndPopulateReportFromData(
@@ -68,6 +72,7 @@
             $savedReport->type            = $report->getType();
 
             $data = array();
+            $data['filtersStructure'] = $report->getFiltersStructure();
             $data[ComponentForReportForm::TYPE_FILTERS]                      =
                 self::makeArrayFromComponentFormsAttributesData($report->getFilters());
             $data[ComponentForReportForm::TYPE_ORDER_BYS]                    =

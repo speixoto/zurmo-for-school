@@ -56,7 +56,8 @@
         protected function getAddAttributeUrl()
         {
             return  Yii::app()->createUrl('reports/default/addAttributeFromTree',
-                        array_merge($_GET, array('treeType'                   => static::getTreeType(),
+                        array_merge($_GET, array('type'                       => $this->model->type,
+                                                 'treeType'                   => static::getTreeType(),
                                                  'trackableStructurePosition' => true)));
         }
 
@@ -121,6 +122,11 @@
         protected function getReportAttributeRowAddOrRemoveExtraScript()
         {
             return 'rebuildReportFiltersAttributeRowNumbersAndStructureInput("' . get_class($this) . '");';
+        }
+
+        protected function getItems(& $rowCount)
+        {
+            return $this->renderItems($rowCount, $this->model->filters, true);
         }
     }
 ?>

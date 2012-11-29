@@ -47,6 +47,7 @@
             $report->setName           ('myFirstReport');
             $report->setType           (Report::TYPE_ROWS_AND_COLUMNS);
             $report->setOwner          ($billy);
+            $report->setFiltersStructure('1 and 2 or 3');
 
             $filter = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $filter->attributeIndexOrDerivedType = 'string';
@@ -112,6 +113,7 @@
             $this->assertEquals('myFirstReport',               $savedReport->name);
             $this->assertEquals('aDescription',                $savedReport->description);
             $this->assertEquals(Report::TYPE_ROWS_AND_COLUMNS, $savedReport->type);
+            $this->assertEquals('1 and 2 or 3',                $report->getFiltersStructure());
             $this->assertTrue($savedReport->owner->isSame($billy));
             $compareData = array('Filters' => array(
                 array(
@@ -208,6 +210,7 @@
             $this->assertEquals           ('myFirstReport',               $report->getName());
             $this->assertEquals           ('aDescription',                $report->getDescription());
             $this->assertEquals           (Report::TYPE_ROWS_AND_COLUMNS, $report->getType());
+            $this->assertEquals           ('1 and 2 or 3',                $report->getFiltersStructure());
             $this->assertTrue             ($report->getOwner()->isSame($billy));
             $this->assertCount            (4, $filters);
             $this->assertCount            (1, $groupBys);

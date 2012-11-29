@@ -26,6 +26,8 @@
 
     class AttributeRowForReportComponentView extends View
     {
+        public    $addWrapper = true;
+
         protected $elementAdapter;
 
         protected $rowNumber;
@@ -60,21 +62,15 @@
          * add a filter, the inputs need to be added to the yiiactiveform so that validation handling can work
          * properly.  This method replaces the id and model elements with the correctly needed values.
          * Only adds inputs that have not been added already
-         * @param ZurmoActiveForm $form
+         * @param ReportActiveForm $form
          */
-        public function renderAddAttributeErrorSettingsScript(ZurmoActiveForm $form, $wizardFormClassName,
+        public function renderAddAttributeErrorSettingsScript(ReportActiveForm $form, $wizardFormClassName,
                                                               $componentFormClassName, $inputPrefixData)
         {
             assert('is_string($wizardFormClassName)');
             assert('is_string($componentFormClassName)');
             assert('is_array($inputPrefixData)');
-            $attributes = $form->getAttributes();
-            foreach($attributes as $key => $attribute)
-            {
-                $attributes[$key]['id']    = str_replace($componentFormClassName,
-                                             Element::resolveInputIdPrefixIntoString($inputPrefixData), $attribute['id']);
-                $attributes[$key]['model'] = $wizardFormClassName;
-            }
+            $attributes             = $form->getAttributes();
             $encodedErrorAttributes = CJSON::encode(array_values($attributes));
             $script = "
                 var settings = $('#" . ReportWizardView::getFormId() . "').data('settings');
@@ -111,7 +107,11 @@
             $content .= '</div>';
             $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-report-attribute-row-link'));
             $content  =  ZurmoHtml::tag('div', array('class' => 'report-attribute-row'), $content);
-            return ZurmoHtml::tag('li', array(), $content);
+            if($this->addWrapper)
+            {
+                return ZurmoHtml::tag('li', array(), $content);
+            }
+            return $content;
         }
 
         protected function renderReportAttributeRowNumberLabel()

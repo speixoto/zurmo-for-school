@@ -93,7 +93,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_FILTERS;
             $model                = new FilterForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -416,7 +416,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -437,7 +437,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -459,7 +459,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -482,7 +482,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -503,7 +503,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test a boolean attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -525,7 +525,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -547,7 +547,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -569,7 +569,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -591,7 +591,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test a boolean attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -614,7 +614,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -635,7 +635,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -658,7 +658,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ZurmoActiveForm();
+            $form                 = new ReportActiveForm();
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';

@@ -70,64 +70,12 @@
         {
             if (count($this->dynamicClauses) > 0)
             {
-                $formula = strtolower($this->$attribute);
-                if (!$this->validateParenthesis($formula))
+                if(null != $errorMessage = SQLOperatorUtil::
+                           resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->$attribute,
+                          count($this->dynamicClauses)))
                 {
-                    $errorContent = Yii::t('Default', 'Please fix your parenthesis.');
+                    $this->addError('dynamicStructure', $errorMessage);
                 }
-                else
-                {
-                    $formula = str_replace("(", "", $formula);
-                    $formula = str_replace(")", "", $formula);
-                    $arguments = preg_split("/or|and/", $formula);
-                    foreach ($arguments as $argument)
-                    {
-                        $argument = trim($argument);
-                        if (!is_numeric($argument) ||
-                            !(intval($argument) <= count($this->dynamicClauses)) ||
-                            !(intval($argument) > 0) ||
-                            !(preg_match("/\./", $argument) === 0) )
-                        {
-                            $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));
-                        }
-                    }
-                }
-                if (isset($errorContent))
-                {
-                    $this->addError('dynamicStructure', Yii::t('Default', 'The structure is invalid. {error}', array('{error}' => $errorContent)));
-                }
-            }
-        }
-
-        /*
-         * Function for validation of parenthesis in a formula
-         */
-        protected function  validateParenthesis($formula)
-        {
-            $val = 0;
-            for ($i = 0; $i <= strlen($formula); $i++)
-            {
-                $char = substr($formula, $i, 1);
-                if ($char === "(")
-                {
-                    $val += 1;
-                }
-                elseif ($char === ")")
-                {
-                    $val -= 1;
-                }
-                if ($val < 0)
-                {
-                    return false;
-                }
-            }
-            if ($val !== 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
             }
         }
 

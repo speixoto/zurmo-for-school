@@ -26,14 +26,18 @@
 
     class ReportRelationsAndAttributesTreeView extends View
     {
+        protected $type;
+
         protected $treeType;
 
         protected $formName;
 
-        public function __construct($treeType, $formName)
+        public function __construct($type, $treeType, $formName)
         {
+            assert('is_string($type)');
             assert('is_string($treeType)');
             assert('is_string($formName)');
+            $this->type     = $type;
             $this->treeType = $treeType;
             $this->formName = $formName;
         }
@@ -63,7 +67,7 @@
         protected function getDataUrl()
         {
             return  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
-                        array_merge($_GET, array('treeType' => $this->treeType)));
+                        array_merge($_GET, array('type' => $this->type, 'treeType' => $this->treeType)));
         }
 
         protected function getTreeId()

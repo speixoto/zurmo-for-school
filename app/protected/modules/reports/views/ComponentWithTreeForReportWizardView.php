@@ -24,8 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ComponentWithTreeForReportWizardView extends ComponentForReportWizardView
+    abstract class ComponentWithTreeForReportWizardView extends ComponentForReportWizardView
     {
+        abstract protected function getItems(& $rowCount);
+
         public static function getTreeType()
         {
             throw new NotImplementedException();
@@ -65,11 +67,30 @@
             return $content;
         }
 
-        protected function getItems(& $rowCount)
+        protected function renderItems(& $rowCount, $componentData, $trackableStructurePosition = false)
         {
             assert('is_int($rowCount)');
-            //todo: render existing rows...
-            $items       = array();
+            assert('is_array($componentData)');
+            assert('is_bool($trackableStructurePosition)');
+            $items                      = array();
+            $wizardFormClassName        = get_class($this->model);
+            foreach($componentData as $component)
+            {
+                $nodeIdWithoutTreeType      = $component->attributeIndexOrDerivedType;
+                $inputPrefixData            = ReportRelationsAndAttributesToTreeAdapter::
+                                              resolveInputPrefixData($nodeIdWithoutTreeType, $wizardFormClassName,
+                                              $this->getTreeType(), $rowCount);
+                $adapter                    = new ReportAttributeToElementAdapter($inputPrefixData, $component,
+                                              $this->form, $this->getTreeType());
+                $view                       = new AttributeRowForReportComponentView($adapter,
+                                              $rowCount, $inputPrefixData,
+                                              ReportRelationsAndAttributesToTreeAdapter::
+                                              resolveAttributeByNodeId($nodeIdWithoutTreeType),
+                                              (bool)$trackableStructurePosition);
+                $view->addWrapper           = false;
+                $items[]                    = array('content' => $view->render());
+                $rowCount ++;
+            }
             return $items;
         }
 
@@ -78,7 +99,7 @@
             $content = null;
             foreach($items as $item)
             {
-                $content .= ZurmoHtml::tag('ul', array(), $item['content']);
+                $content .= ZurmoHtml::tag('li', array(), $item['content']);
             }
             return ZurmoHtml::tag('ul', array(), $content);
         }
@@ -89,7 +110,7 @@
             $cClipWidget->beginClip(static::getTreeType() . 'ReportComponentSortable');
             $cClipWidget->widget('application.core.widgets.JuiSortable', array(
                 'items' => $items,
-                'itemTemplate' => '<li>{content}</li>',
+                'itemTemplate' => '<li>content</li>',
                 'htmlOptions' =>
                 array(
                     'id'    => static::getTreeType() . 'attributeRowsUl',
@@ -129,7 +150,8 @@
         protected function getAddAttributeUrl()
         {
             return  Yii::app()->createUrl('reports/default/addAttributeFromTree',
-                        array_merge($_GET, array('treeType' => static::getTreeType())));
+                        array_merge($_GET, array('type'     => $this->model->type,
+                                                 'treeType' => static::getTreeType())));
         }
 
         protected function getAjaxForDroppedAttribute()

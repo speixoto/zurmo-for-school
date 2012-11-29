@@ -256,7 +256,7 @@
                 echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
                 Yii::app()->end(0, false);
             }
-            $view        = new ReportRelationsAndAttributesTreeView($treeType, 'edit-form');
+            $view        = new ReportRelationsAndAttributesTreeView($type, $treeType, 'edit-form');
             $content     = $view->render();
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
@@ -273,11 +273,13 @@
                                                      removeTreeTypeFromNodeId($nodeId, $treeType);
             $moduleClassName                    = $report->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
-            $form                               = new ZurmoActiveForm();
+            $form                               = new ReportActiveForm();
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
+
             $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
             $model                              = ComponentForReportFormFactory::makeByTreeType($moduleClassName,
                                                       $modelClassName, $report->getType(), $treeType);
+            $form->modelClassNameForError       = $wizardFormClassName;
             $attribute                          = ReportRelationsAndAttributesToTreeAdapter::
                                                       resolveAttributeByNodeId($nodeIdWithoutTreeType);
             $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::

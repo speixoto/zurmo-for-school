@@ -97,16 +97,17 @@
 
         protected function setCommonAttributes(ReportWizardForm $formModel)
         {
-            $formModel->id              = $this->report->getId();
-            $formModel->description     = $this->report->getDescription();
-            $formModel->moduleClassName = $this->report->getModuleClassName();
+            $formModel->id               = $this->report->getId();
+            $formModel->description      = $this->report->getDescription();
+            $formModel->moduleClassName  = $this->report->getModuleClassName();
             if($this->report->getOwner()->id > 0)
             {
-                $formModel->ownerId     = (int)$this->report->getOwner()->id;
-                $formModel->ownerName   = strval($this->report->getOwner());
+                $formModel->ownerId      = (int)$this->report->getOwner()->id;
+                $formModel->ownerName    = strval($this->report->getOwner());
             }
-            $formModel->name            = $this->report->getName();
-            $formModel->type            = $this->report->getType();
+            $formModel->name             = $this->report->getName();
+            $formModel->type             = $this->report->getType();
+            $formModel->filtersStructure = $this->report->getFiltersStructure();
             if($this->report->isNew())
             {
                 $formModel->setIsNew();

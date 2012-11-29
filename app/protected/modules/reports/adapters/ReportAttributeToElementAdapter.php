@@ -40,7 +40,7 @@
         {
             assert('count($inputPrefixData) > 1');
             assert('$model instanceof ComponentForReportForm');
-            assert('$form instanceof ZurmoActiveForm');
+            assert('$form instanceof ReportActiveForm');
             assert('is_string($treeType)');
             $this->inputPrefixData      = $inputPrefixData;
             $this->model                = $model;
@@ -50,30 +50,33 @@
 
         public function getContent()
         {
+            $this->form->setInputPrefixData($this->inputPrefixData);
             if($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
-                return $this->getContentForFilter();
+                $content = $this->getContentForFilter();
             }
             elseif($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {
-                return $this->getContentForDisplayAttribute();
+                $content = $this->getContentForDisplayAttribute();
             }
             elseif($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
-                return $this->getContentForOrderBy();
+                $content = $this->getContentForOrderBy();
             }
             elseif($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
-                return $this->getContentForGroupBy();
+                $content = $this->getContentForGroupBy();
             }
             elseif($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
-                return $this->getContentForDrillDownDisplayAttribute();
+                $content = $this->getContentForDrillDownDisplayAttribute();
             }
             else
             {
                 throw new NotSupportedException();
             }
+            $this->form->clearInputPrefixData();
+            return $content;
         }
 
         protected function renderAttributeIndexOrDerivedType()

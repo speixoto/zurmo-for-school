@@ -44,7 +44,7 @@
             throw new NotImplementedException();
         }
 
-        public function __construct(ReportWizardForm $model, ZurmoActiveForm $form, $hideView = false)
+        public function __construct(ReportWizardForm $model, ReportActiveForm $form, $hideView = false)
         {
             assert('is_bool($hideView)');
             $this->model    = $model;

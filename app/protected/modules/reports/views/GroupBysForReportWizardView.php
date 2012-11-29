@@ -45,5 +45,10 @@
         {
             return 'groupBysNextLink';
         }
+
+        protected function getItems(& $rowCount)
+        {
+            return $this->renderItems($rowCount, $this->model->groupBys);
+        }
     }
 ?>

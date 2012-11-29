@@ -122,6 +122,8 @@
                 array('ownerName', 		     'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('filters', 		     'validateFilters',
                                              'on' => self::FILTERS_VALIDATION_SCENARIO),
+                array('filtersStructure', 	 'validateFiltersStructure',
+                                             'on' => self::FILTERS_VALIDATION_SCENARIO),
                 array('displayAttributes',   'validateDisplayAttributes',
                                              'on' => self::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
                 array('drillDownAttributes', 'validateDrillDownDisplayAttributes',
@@ -154,6 +156,19 @@
         public function validateFilters()
         {
             return $this->validateComponent(ComponentForReportForm::TYPE_FILTERS, 'filters');
+        }
+
+        public function validateFiltersStructure()
+        {
+            if(count($this->filters) > 0)
+            {
+                if(null != $errorMessage = SQLOperatorUtil::
+                           resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->filtersStructure,
+                           count($this->filters)))
+                {
+                    $this->addError('filtersStructure', $errorMessage);
+                }
+            }
         }
 
         public function validateOrderBys()

@@ -30,7 +30,7 @@
 
         abstract protected function registerClickFlowScript();
 
-        abstract protected function renderContainingViews(ZurmoActiveForm $form);
+        abstract protected function renderContainingViews(ReportActiveForm $form);
 
         abstract protected function renderConfigSaveAjax($formName);
 
@@ -64,12 +64,13 @@
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                                'ZurmoActiveForm',
-                                                                array('id'                   => static::getFormId(),
-                                                                      'action'               => $this->getFormActionUrl(),
-                                                                      'enableAjaxValidation' => true,
-                                                                      'clientOptions'        => $this->getClientOptions())
-                                                                );
+                                                            'ReportActiveForm',
+                                                            array('id'                      => static::getFormId(),
+                                                                  'action'                  => $this->getFormActionUrl(),
+                                                                  'enableAjaxValidation'    => true,
+                                                                  'clientOptions'           => $this->getClientOptions(),
+                                                                  'modelClassNameForError'  => get_class($this->model))
+                                                            );
             $content .= $formStart;
             $content .= static::renderValidationScenarioInputContent();
             $content .= $this->renderContainingViews($form);
@@ -151,12 +152,13 @@
                                           ));
         }
 
-        protected static function renderTreeViewAjaxScriptContent($formName, $componentViewClassName)
+        protected function renderTreeViewAjaxScriptContent($formName, $componentViewClassName)
         {
             assert('is_string($formName)');
             assert('is_string($componentViewClassName)');
             $url    =  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
-                       array_merge($_GET, array('treeType' => $componentViewClassName::getTreeType())));
+                       array_merge($_GET, array('type' => $this->model->type,
+                                                'treeType' => $componentViewClassName::getTreeType())));
             $script = "
                 $('#" . FiltersForReportWizardView::getTreeDivId() . "').addClass('loading');
                 makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
