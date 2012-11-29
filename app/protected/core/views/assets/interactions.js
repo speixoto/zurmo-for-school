@@ -258,10 +258,10 @@ function makeLargeLoadingSpinner(id){
 function makeGlobalSearchSpinner(id, state){
     if ( state === true ){
         $( '.z-spinner', '#' + id ).spin({
-            lines : 9, // The number of lines to draw
-            length : 3, // The length of each line
-            width : 2, // The line thickness
-            radius : 4, // The radius of the inner circle
+            lines : 8, // The number of lines to draw
+            length : 2, // The length of each line
+            width : 1.5, // The line thickness
+            radius : 3, // The radius of the inner circle
             rotate : 0, // The rotation offset
             color : '#999', // #rgb or #rrggbb
             speed : 2, // Rounds per second

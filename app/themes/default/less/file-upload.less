@@ -35,8 +35,13 @@
     .smaller();
 }
 
-.fileupload-content{
-    width: 100%;
+#CommentInlineEditForModelView{
+    .fileupload-content{
+        width: 100%;
+        td.name{
+            padding:5px 0 0 0 !important;
+        }
+    }
 }
 
 .files{
@@ -54,6 +59,7 @@
     }
     .z-spinner{
         display: inline-block;
+        margin-top:-3px
     }
 }
 
@@ -103,10 +109,18 @@
             .b-shadow(0 0 1px 0 #333);
         }
         span{
-            display:block;
+            display:none;
             padding:2px;
             font-size: 10px !important;
             line-height: 1;
+        }
+        .ui-button-text{
+            display:block;
+            .radius(4px);
+            span{
+                display:block;
+                padding:1px;
+            }
         }
     }
     button.start span{

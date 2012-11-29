@@ -646,7 +646,8 @@ body.blue a.more-panels-link,
 body.blue a.simple-select,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
-body.blue .show-file-upload-box {
+body.blue .show-file-upload-box,
+body.blue #clear-search-linkmodal {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -1045,7 +1046,8 @@ body.brown a.more-panels-link,
 body.brown a.simple-select,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
-body.brown .show-file-upload-box {
+body.brown .show-file-upload-box,
+body.brown #clear-search-linkmodal {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -1444,7 +1446,8 @@ body.lime a.more-panels-link,
 body.lime a.simple-select,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
-body.lime .show-file-upload-box {
+body.lime .show-file-upload-box,
+body.lime #clear-search-linkmodal {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -1843,7 +1846,8 @@ body.cherry a.more-panels-link,
 body.cherry a.simple-select,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
-body.cherry .show-file-upload-box {
+body.cherry .show-file-upload-box,
+body.cherry #clear-search-linkmodal {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -2242,7 +2246,8 @@ body.turquoise a.more-panels-link,
 body.turquoise a.simple-select,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
-body.turquoise .show-file-upload-box {
+body.turquoise .show-file-upload-box,
+body.turquoise #clear-search-linkmodal {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -2641,7 +2646,8 @@ body.violet a.more-panels-link,
 body.violet a.simple-select,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
-body.violet .show-file-upload-box {
+body.violet .show-file-upload-box,
+body.violet #clear-search-linkmodal {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -3040,7 +3046,8 @@ body.honey a.more-panels-link,
 body.honey a.simple-select,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
-body.honey .show-file-upload-box {
+body.honey .show-file-upload-box,
+body.honey #clear-search-linkmodal {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -5811,6 +5818,15 @@ div.wide.form label.hasCheckBox {
   margin-left: 30px;
   margin-top: 30px;
   float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
 }
 #NoUserEmailConfigurationYetView a span:before,
 #NoGlobalEmailConfigurationYetView a span:before,
@@ -6109,10 +6125,18 @@ div.wide.form label.hasCheckBox {
   padding: 20px 20px 20px 20px;
   font-size: 11px;
 }
-#ModalView .search-view-1 input,
-#ModalView .search-view-1 select {
+#ModalView .search-view-1 input {
   position: relative;
   z-index: 5000;
+}
+#ModalView .search-view-1 td {
+  padding-bottom: 15px;
+}
+#ModalView .search-view-1 th {
+  width: 25%;
+}
+#ModalView .search-view-1 label {
+  padding-top: 0;
 }
 #ModalView #clear-search-linkmodal {
   margin-left: 10px;
@@ -10388,8 +10412,11 @@ div.wide.form .errorMessage {
   font-weight: normal;
   font-size: 11px;
 }
-.fileupload-content {
+#CommentInlineEditForModelView .fileupload-content {
   width: 100%;
+}
+#CommentInlineEditForModelView .fileupload-content td.name {
+  padding: 5px 0 0 0 !important;
 }
 .files {
   font-size: 11px;
@@ -10407,6 +10434,7 @@ div.wide.form .errorMessage {
 }
 .files .z-spinner {
   display: inline-block;
+  margin-top: -3px;
 }
 .file-size {
   font-size: 10px;
@@ -10468,10 +10496,24 @@ div.wide.form .errorMessage {
 }
 .upload-actions button.start span,
 .upload-actions button.cancel span {
-  display: block;
+  display: none;
   padding: 2px;
   font-size: 10px !important;
   line-height: 1;
+}
+.upload-actions button.start .ui-button-text,
+.upload-actions button.cancel .ui-button-text {
+  display: block;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+.upload-actions button.start .ui-button-text span,
+.upload-actions button.cancel .ui-button-text span {
+  display: block;
+  padding: 1px;
 }
 .upload-actions button.start span {
   background-color: #6fa82d;
