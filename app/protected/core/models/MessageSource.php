@@ -46,14 +46,14 @@
         }
 
         /**
-         * Gets a model Gets a model from the database by source message
+         * Gets a model from the database by category and source message
          * @param $category String Category fo the source
          * @param $source String The source message
          * @param $modelClassName Pass only when getting it at runtime
          *                        gets the wrong name.
          * @return A model of the type of the extending model.
          */
-        public static function getIdBySource($category, $source, $modelClassName = null)
+        public static function getByCategoryAndSource($category, $source, $modelClassName = null)
         {
             assert('!empty($category)');
             assert('!empty($source)');
@@ -64,7 +64,7 @@
             }
             $tableName = self::getTableName($modelClassName);
             $bean = R::findOne(
-                               '$tableName',
+                               $tableName,
                                ' category = :category AND source = :source',
                                array(
                                      ':category'=>$category,

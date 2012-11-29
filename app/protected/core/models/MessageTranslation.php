@@ -44,5 +44,38 @@
             );
             return $metadata;
         }
+
+        /**
+         * Gets a model from the database by source message id and langcode
+         * @param $sourceId Integer Id of the source message
+         * @param $langCode String Language code of the translation
+         * @param $modelClassName Pass only when getting it at runtime
+         *                        gets the wrong name.
+         * @return A model of the type of the extending model.
+         */
+        public static function getBySourceIdAndLangCode($sourceId, $langCode, $modelClassName = null)
+        {
+            assert('!intval($sourceId) && $sourceId > 0');
+            assert('!empty($langCode)');
+            assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+            if ($modelClassName === null)
+            {
+                $modelClassName = get_called_class();
+            }
+            $tableName = self::getTableName($modelClassName);
+            $bean = R::findOne(
+                               $tableName,
+                               ' messagesource_id = :source_id AND language = :langCode',
+                               array(
+                                     ':source_id'=>$sourceId,
+                                     ':language'=>$langCode
+                                     )
+                               );
+            assert('is_object($bean)');
+            if (!is_object($bean)) {
+                throw new NotFoundException();
+            }
+            return RedBeanModel::makeModel($bean, $modelClassName);
+        }
     }
 ?>

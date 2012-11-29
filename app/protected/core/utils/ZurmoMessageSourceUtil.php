@@ -29,6 +29,52 @@
      */
     class ZurmoMessageSourceUtil
     {
-        
+        /**
+         * Imports one message string to the database
+         *
+         * @param $langCode String The language code
+         * @param $category String The category of the translation
+         * @param $source String Message source
+         * @param $translation String Message translation
+         *
+         * @return Integer Id of the added translation
+         */
+        public static function importOneMessageToDb($langCode, $category, $source, $translation) {
+            assert('!empty($category)');
+            assert('!empty($source)');
+            if (empty($category) || empty($source)) {
+                return false;
+            }
+
+            try {
+                $sourceModel = MessageSource::getByCategoryAndSource($category, $source);
+            } catch (NotFoundException $e) {
+                $sourceModel = MessageSource::model();
+                $sourceModel->category = $category;
+                $sourceModel->source = $source;
+                if (!$sourceModel->save()) {
+                    throw new FailedToSaveModelException();
+                }
+            }
+
+            try {
+                $translationModel = MessageTranslation::getBySourceIdAndLangCode(
+                                        $sourceModel->id,
+                                        $langCode
+                                    );
+            } catch (NotFoundException $e) {
+                $translationModel = MessageTranslation::model();
+                $translationModel->language = $langCode;
+                $translationModel->messagesource = $sourceModel;
+            }
+
+            $translationModel->translation = $translation;
+
+            if (!$translationModel->save()) {
+                throw new FailedToSaveModelException();
+            }
+
+            return true;
+        }
     }
 ?>
