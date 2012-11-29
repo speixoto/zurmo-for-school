@@ -17,11 +17,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>1000</td>
-	<td></td>
-</tr>
-<tr>
 	<td>open</td>
 	<td>index.php/accounts/default?clearingSearch=1</td>
 	<td></td>
@@ -30,6 +25,11 @@
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
@@ -57,6 +57,11 @@
 	<td>\10</td>
 </tr>
 <tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>waitForText</td>
 	<td>//div[@id='AccountsListView']/div/table/tbody/tr/td[2]/a</td>
 	<td>Changing The Account ${randomSuffix}</td>
@@ -77,8 +82,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>verifyValue</td>
-	<td>AccountsSearchForm_anyMixedAttributes</td>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
 	<td></td>
 </tr>
 </tbody></table>

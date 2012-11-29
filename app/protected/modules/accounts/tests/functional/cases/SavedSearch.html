@@ -12,6 +12,11 @@
 <tr><td rowspan="1" colspan="3">New Test</td></tr>
 </thead><tbody>
 <tr>
+	<td>setTimeout</td>
+	<td>45000</td>
+	<td></td>
+</tr>
+<tr>
 	<td>open</td>
 	<td>index.php/accounts/default?clearingSearch=1</td>
 	<td></td>
@@ -20,6 +25,11 @@
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <!--Creating saved search-->
 <tr>
@@ -97,6 +107,11 @@
 	<td></td>
 	<td>30000</td>
 </tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
 <!-- changing name immediately of saved search-->
 <tr>
 	<td>click</td>
@@ -167,6 +182,11 @@
 <tr>
 	<td>waitForPageToLoad</td>
 	<td></td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
 <tr>
@@ -273,8 +293,13 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>waitForTextPresent</td>
-	<td>Criteria Selected </td>
+	<td>Criteria Selected</td>
 	<td></td>
 </tr>
 <tr>
@@ -306,6 +331,11 @@
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 </tbody></table>
 </body>
