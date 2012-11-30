@@ -149,11 +149,9 @@
         protected function renderScriptsContent()
         {
             return Yii::app()->clientScript->registerScript('contactInlineCreateCollapseActions', "
-                $('#createContactCancel').click( function()
+                $('#createContactCancel').live('click', function()
                     {
                         $('.ContactInlineCreateForArchivedEmailCreateView').hide();
-                        $('.select-title').show();
-                        $('.contact-create-title').hide();
                         return false;
                     }
                 );

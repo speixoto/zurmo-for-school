@@ -146,11 +146,9 @@
         protected function renderScriptsContent()
         {
             Yii::app()->clientScript->registerScript('anyContactSelectFormCollapseActions', "
-                $('#anyContactCancel').click( function()
+                $('#anyContactCancel').live('click', function()
                     {
                         $('.AnyContactSelectForEmailMatchingView').hide();
-                        $('.select-title').show();
-                        $('.contact-select-title').hide();
                         return false;
                     }
                 );

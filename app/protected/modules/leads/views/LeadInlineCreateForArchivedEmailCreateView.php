@@ -142,11 +142,9 @@
         protected function renderScriptsContent()
         {
             return Yii::app()->clientScript->registerScript('LeadInlineCreateCollapseActions', "
-                $('#createLeadCancel').click( function()
+                $('#createLeadCancel').live('click', function()
                     {
                         $('.LeadInlineCreateForArchivedEmailCreateView').hide();
-                        $('.select-title').show();
-                        $('.lead-create-title').hide();
                         return false;
                     }
                 );
