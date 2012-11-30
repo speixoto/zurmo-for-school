@@ -32,18 +32,26 @@
         /**
          * Imports one message string to the database
          *
-         * @param $langCode String The language code
-         * @param $category String The category of the translation
-         * @param $source String Message source
-         * @param $translation String Message translation
+         * @param String $langCode The language code
+         * @param String $category The category of the translation
+         * @param String $source Message source
+         * @param String $translation Message translation
          *
          * @return Integer Id of the added translation
          */
-        public static function importOneMessageToDb($langCode, $category, $source, $translation)
+        public static function importOneMessage($langCode, $category, $source, $translation)
         {
-            assert('!empty($category)');
-            assert('!empty($source)');
-            if (empty($category) || empty($source)) {
+            assert('is_string($langCode) && !empty($langCode)');
+            assert('is_string($category) && !empty($category)');
+            assert('is_string($source) && !empty($source)');
+            assert('is_string($translation) && !empty($translation)');
+            if (
+                !is_string($langCode) || empty($langCode) ||
+                !is_string($category) || empty($category) ||
+                !is_string($source) || empty($source) ||
+                !is_string($translation) || empty($translation)
+                )
+            {
                 return false;
             }
 
@@ -71,6 +79,38 @@
             }
 
             return true;
+        }
+
+        /**
+         * Imports messages array to the database
+         *
+         * @param $langCode String The language code
+         * @param $category String The category of the translation
+         * @param Array 
+         */
+        public static function importMessagesArray($langCode, $category, $messages)
+        {
+            
+            assert('is_string($langCode) && !empty($langCode)');
+            assert('is_string($category) && !empty($category)');
+            assert('is_array($messages) && !empty($messages)');
+            if (
+                !is_string($langCode) || empty($langCode) ||
+                !is_string($category) || empty($category) ||
+                !is_array($messages) || empty($messages)
+                )
+            {
+                return false;
+            }
+
+            foreach ($messages as $source=>$translation) {
+                self::importOneMessage(
+                                       $langCode,
+                                       $category,
+                                       $source,
+                                       $translation
+                                       );
+            }
         }
     }
 ?>
