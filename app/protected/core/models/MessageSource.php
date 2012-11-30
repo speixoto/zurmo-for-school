@@ -78,8 +78,16 @@
             return self::makeModel($bean, $modelClassName);
         }
 
+        /**
+         * Adds new message source to the database
+         *
+         * @param String $category Category of the source message
+         * @param String $source The source message
+         */
         public static function addNewSource($category, $source)
         {
+            assert('is_string($category) && !empty($category)');
+            assert('is_string($source) && !empty($source)');
             $model = new MessageSource();
             $model->category = $category;
             $model->source = $source;

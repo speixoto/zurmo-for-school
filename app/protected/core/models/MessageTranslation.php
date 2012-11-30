@@ -88,8 +88,20 @@
             return self::makeModel($bean, $modelClassName);
         }
 
+        /**
+         * Adds new message translation to the database
+         *
+         * @param String $langCode Languagecode of the translation
+         * @param MessageSource $sourceModel MessageSource model for the relation
+         * @param String $translation The translation
+         *
+         * @return Instance of the MessageTranslation model for created translation
+         */
         public static function addNewTranslation($langCode, $sourceModel, $translation)
         {
+            assert('is_string($langCode) && !empty($langCode)');
+            assert('$sourceModel instanceof MessageSource');
+            assert('is_string($translation) && !empty($translation)');
             $model = new MessageTranslation();
             $model->language = $langCode;
             $model->messagesource = $sourceModel;
@@ -101,6 +113,13 @@
             return $model;
         }
 
+        /**
+         * Updates the translation of the current model
+         *
+         * @param String $translation The translation
+         *
+         * @return The updated model
+         */
         public function updateTranslation($translation)
         {
             assert('!empty($translation)');
