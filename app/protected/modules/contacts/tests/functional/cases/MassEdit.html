@@ -12,8 +12,13 @@
 <tr><td rowspan="1" colspan="3">Mass Edit</td></tr>
 </thead><tbody>
 <tr>
+	<td>setTimeout</td>
+	<td>45000</td>
+	<td></td>
+</tr>
+<tr>
 	<td>open</td>
-	<td>index.php/contacts/default</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>
@@ -52,23 +57,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
 	<td>assertEditable</td>
 	<td>list-view-rowSelector_0</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEditable</td>
-	<td>list-view-rowSelector_1</td>
 	<td></td>
 </tr>
 <tr>
@@ -105,6 +95,16 @@
 	<td>clickAndWait</td>
 	<td>//li[@id='list-view-massActionSelected']/a/span[2]</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
