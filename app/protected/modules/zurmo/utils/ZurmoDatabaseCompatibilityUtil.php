@@ -1699,7 +1699,23 @@
 
         public static function createIndexes()
         {
-            self::createUniqueIndex('messagesource', 'source_category_Index', array('category', 'source(767)'));
+            self::createUniqueIndex(
+                                    'messagesource',
+                                    'source_category_Index',
+                                    array(
+                                          'category',
+                                          'source(767)'
+                                          )
+                                    );
+            self::createUniqueIndex(
+                                    'messagetranslation',
+                                    'source_language_translation_Index',
+                                    array(
+                                          'messagesource_id',
+                                          'language',
+                                          'translation(767)'
+                                          )
+                                    );
         }
 
         protected static function createUniqueIndex($tableName, $indexName, $columns = array())
