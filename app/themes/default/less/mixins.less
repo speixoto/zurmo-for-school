@@ -20,6 +20,22 @@
             box-shadow: @style;
 }
 
+.ie-shadow(@color:0, @blur:0, @alpha:0){
+    /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+    zoom: 1;
+    filter:progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=0),
+           progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=90),
+           progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=180),
+           progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=270);
+}
+
+.no-ie-shadow(){
+    filter: progid:DXImageTransform.Microsoft.Shadow(enabled = false);
+}
+
+
+
+
 .text-overflow(){
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
