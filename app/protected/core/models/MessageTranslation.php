@@ -75,17 +75,41 @@
             $tableName = self::getTableName($modelClassName);
             $bean = R::findOne(
                                $tableName,
-                               ' messagesource_id = :source_id AND language = :langCode',
+                               ' messagesource_id = :sourceId AND language = :langCode',
                                array(
-                                     ':source_id'=>$sourceId,
-                                     ':language'=>$langCode
+                                     ':sourceId'=>$sourceId,
+                                     ':langCode'=>$langCode
                                      )
                                );
-            assert('is_object($bean)');
+            assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if (!is_object($bean)) {
                 throw new NotFoundException();
             }
-            return RedBeanModel::makeModel($bean, $modelClassName);
+            return self::makeModel($bean, $modelClassName);
+        }
+
+        public static function addNewTranslation($langCode, $sourceModel, $translation)
+        {
+            $model = new MessageTranslation();
+            $model->language = $langCode;
+            $model->messagesource = $sourceModel;
+            $model->translation = $translation;
+            if (!$model->save()) {
+                throw new FailedToSaveModelException();
+            }
+
+            return $model;
+        }
+
+        public function updateTranslation($translation)
+        {
+            assert('!empty($translation)');
+            $this->translation = $translation;
+            if (!$this->save()) {
+                throw new FailedToSaveModelException();
+            }
+
+            return $this;
         }
     }
 ?>

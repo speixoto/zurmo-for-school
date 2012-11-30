@@ -71,11 +71,23 @@
                                      ':source'=>$source
                                      )
                                );
-            assert('is_object($bean)');
+            assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if (!is_object($bean)) {
                 throw new NotFoundException();
             }
-            return RedBeanModel::makeModel($bean, $modelClassName);
+            return self::makeModel($bean, $modelClassName);
+        }
+
+        public static function addNewSource($category, $source)
+        {
+            $model = new MessageSource();
+            $model->category = $category;
+            $model->source = $source;
+            if (!$model->save()) {
+                throw new FailedToSaveModelException();
+            }
+
+            return $model;
         }
     }
 ?>

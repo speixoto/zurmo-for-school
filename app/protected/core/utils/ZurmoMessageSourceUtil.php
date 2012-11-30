@@ -39,7 +39,8 @@
          *
          * @return Integer Id of the added translation
          */
-        public static function importOneMessageToDb($langCode, $category, $source, $translation) {
+        public static function importOneMessageToDb($langCode, $category, $source, $translation)
+        {
             assert('!empty($category)');
             assert('!empty($source)');
             if (empty($category) || empty($source)) {
@@ -52,12 +53,7 @@
                                                                      $source
                                                                     );
             } catch (NotFoundException $e) {
-                $sourceModel = new MessageSource();
-                $sourceModel->category = $category;
-                $sourceModel->source = $source;
-                if (!$sourceModel->save()) {
-                    throw new FailedToSaveModelException();
-                }
+                $sourceModel = MessageSource::addNewSource($category, $source);
             }
 
             try {
@@ -65,16 +61,13 @@
                                         $sourceModel->id,
                                         $langCode
                                     );
+                $translationModel->updateTranslation($translation);
             } catch (NotFoundException $e) {
-                $translationModel = new MessageTranslation();
-                $translationModel->language = $langCode;
-                $translationModel->messagesource = $sourceModel;
-            }
-
-            $translationModel->translation = $translation;
-
-            if (!$translationModel->save()) {
-                throw new FailedToSaveModelException();
+                MessageTranslation::addNewTranslation(
+                                                      $langCode,
+                                                      $sourceModel,
+                                                      $translation
+                                                      );
             }
 
             return true;
