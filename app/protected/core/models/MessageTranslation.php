@@ -104,9 +104,9 @@
             assert('$sourceModel instanceof MessageSource');
             assert('is_string($translation) && !empty($translation)');
             $model = new MessageTranslation();
-            $model->language = $languageCode;
+            $model->language      = $languageCode;
             $model->messagesource = $sourceModel;
-            $model->translation = $translation;
+            $model->translation   = $translation;
             if (!$model->save())
             {
                 throw new FailedToSaveModelException();

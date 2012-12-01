@@ -91,7 +91,7 @@
             assert('is_string($source) && !empty($source)');
             $model = new MessageSource();
             $model->category = $category;
-            $model->source = $source;
+            $model->source   = $source;
             if (!$model->save())
             {
                 throw new FailedToSaveModelException();
