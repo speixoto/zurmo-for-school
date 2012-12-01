@@ -65,7 +65,7 @@
          */
         public static function getBySourceIdAndLangCode($sourceId, $languageCode, $modelClassName = null)
         {
-            assert('!intval($sourceId) && $sourceId > 0');
+            assert('intval($sourceId) && $sourceId > 0');
             assert('!empty($languageCode)');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
