@@ -42,7 +42,7 @@
                                     'message6-source'=>'message6-translation'
         );
 
-        public function setupBeforeClass()
+        public static function setupBeforeClass()
         {
             foreach (self::$testMessages as $source=>$translation)
             {
