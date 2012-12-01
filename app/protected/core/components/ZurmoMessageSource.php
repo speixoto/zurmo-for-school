@@ -40,8 +40,6 @@
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
             $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
 
-            $category          = DatabaseCompatibilityUtil::quoteString($category);
-            $languageCode      = DatabaseCompatibilityUtil::quoteString($languageCode);
             $where             =  " messagesource.`category` = '$category' AND"
                                 . " messagetranslation.`language` = '$languageCode' ";
 
