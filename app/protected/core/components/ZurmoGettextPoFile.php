@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * 
+     * Represents a PO Gettext message file
      */
     class ZurmoGettextPoFile extends CGettextPoFile
     {
