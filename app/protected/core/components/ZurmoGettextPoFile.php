@@ -36,6 +36,18 @@
          */
         public function loadWithContext($file)
         {
+            assert('is_string($file)');
+            if (!is_string($file))
+            {
+                throw new NotSupportedException();
+            }
+
+            assert('is_readable($file)');
+            if (!is_readable($file))
+            {
+                throw new FileNotReadableException();
+            }
+
             $pattern='/(msgctxt\s+"(.*?(?<!\\\\))")?'
                     . '\s+msgid\s+"(.*?(?<!\\\\))"'
                     . '\s+msgstr\s+"(.*?(?<!\\\\))"/';
