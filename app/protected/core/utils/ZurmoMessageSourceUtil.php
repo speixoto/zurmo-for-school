@@ -103,7 +103,8 @@
                 return false;
             }
 
-            foreach ($messages as $source=>$translation) {
+            foreach ($messages as $source=>$translation)
+            {
                 self::importOneMessage(
                                        $langCode,
                                        $category,

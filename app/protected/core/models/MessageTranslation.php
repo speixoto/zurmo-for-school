@@ -82,7 +82,8 @@
                                      )
                                );
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
-            if (!is_object($bean)) {
+            if (!is_object($bean))
+            {
                 throw new NotFoundException();
             }
             return self::makeModel($bean, $modelClassName);
@@ -106,7 +107,8 @@
             $model->language = $langCode;
             $model->messagesource = $sourceModel;
             $model->translation = $translation;
-            if (!$model->save()) {
+            if (!$model->save())
+            {
                 throw new FailedToSaveModelException();
             }
 
@@ -124,7 +126,8 @@
         {
             assert('!empty($translation)');
             $this->translation = $translation;
-            if (!$this->save()) {
+            if (!$this->save())
+            {
                 throw new FailedToSaveModelException();
             }
 

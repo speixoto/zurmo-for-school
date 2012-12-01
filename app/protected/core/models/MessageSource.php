@@ -91,7 +91,8 @@
             $model = new MessageSource();
             $model->category = $category;
             $model->source = $source;
-            if (!$model->save()) {
+            if (!$model->save())
+            {
                 throw new FailedToSaveModelException();
             }
 
