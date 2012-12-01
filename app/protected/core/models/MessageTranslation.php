@@ -58,15 +58,15 @@
         /**
          * Gets a model from the database by source message id and langcode
          * @param $sourceId Integer Id of the source message
-         * @param $langCode String Language code of the translation
+         * @param $languageCode String Language code of the translation
          * @param $modelClassName Pass only when getting it at runtime
          *                        gets the wrong name.
          * @return A model of the type of the extending model.
          */
-        public static function getBySourceIdAndLangCode($sourceId, $langCode, $modelClassName = null)
+        public static function getBySourceIdAndLangCode($sourceId, $languageCode, $modelClassName = null)
         {
             assert('!intval($sourceId) && $sourceId > 0');
-            assert('!empty($langCode)');
+            assert('!empty($languageCode)');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
             {
@@ -75,10 +75,10 @@
             $tableName = self::getTableName($modelClassName);
             $bean = R::findOne(
                                $tableName,
-                               ' messagesource_id = :sourceId AND language = :langCode',
+                               ' messagesource_id = :sourceId AND language = :languageCode',
                                array(
                                      ':sourceId'=>$sourceId,
-                                     ':langCode'=>$langCode
+                                     ':languageCode'=>$languageCode
                                      )
                                );
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
@@ -92,19 +92,19 @@
         /**
          * Adds new message translation to the database
          *
-         * @param String $langCode Languagecode of the translation
+         * @param String $languageCode Languagecode of the translation
          * @param MessageSource $sourceModel MessageSource model for the relation
          * @param String $translation The translation
          *
          * @return Instance of the MessageTranslation model for created translation
          */
-        public static function addNewTranslation($langCode, $sourceModel, $translation)
+        public static function addNewTranslation($languageCode, $sourceModel, $translation)
         {
-            assert('is_string($langCode) && !empty($langCode)');
+            assert('is_string($languageCode) && !empty($languageCode)');
             assert('$sourceModel instanceof MessageSource');
             assert('is_string($translation) && !empty($translation)');
             $model = new MessageTranslation();
-            $model->language = $langCode;
+            $model->language = $languageCode;
             $model->messagesource = $sourceModel;
             $model->translation = $translation;
             if (!$model->save())

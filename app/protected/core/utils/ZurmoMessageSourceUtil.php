@@ -32,21 +32,21 @@
         /**
          * Imports one message string to the database
          *
-         * @param String $langCode The language code
+         * @param String $languageCode The language code
          * @param String $category The category of the translation
          * @param String $source Message source
          * @param String $translation Message translation
          *
-         * @return Integer Id of the added translation
+         * @return Integer Id of the added translation or false
          */
-        public static function importOneMessage($langCode, $category, $source, $translation)
+        public static function importOneMessage($languageCode, $category, $source, $translation)
         {
-            assert('is_string($langCode) && !empty($langCode)');
+            assert('is_string($languageCode) && !empty($languageCode)');
             assert('is_string($category) && !empty($category)');
             assert('is_string($source) && !empty($source)');
             assert('is_string($translation) && !empty($translation)');
             if (
-                !is_string($langCode) || empty($langCode) ||
+                !is_string($languageCode) || empty($languageCode) ||
                 !is_string($category) || empty($category) ||
                 !is_string($source) || empty($source) ||
                 !is_string($translation) || empty($translation)
@@ -67,35 +67,37 @@
             try {
                 $translationModel = MessageTranslation::getBySourceIdAndLangCode(
                                         $sourceModel->id,
-                                        $langCode
+                                        $languageCode
                                     );
                 $translationModel->updateTranslation($translation);
             } catch (NotFoundException $e) {
-                MessageTranslation::addNewTranslation(
-                                                      $langCode,
-                                                      $sourceModel,
-                                                      $translation
-                                                      );
+                $translationModel = MessageTranslation::addNewTranslation(
+                                        $languageCode,
+                                        $sourceModel,
+                                        $translation
+                                    );
             }
 
-            return true;
+            return $translationModel->id;
         }
 
         /**
          * Imports messages array to the database
          *
-         * @param $langCode String The language code
+         * @param $languageCode String The language code
          * @param $category String The category of the translation
-         * @param Array 
+         * @param Array $messages Array with the messages
+         *
+         * @return Boolean Status of the import process
          */
-        public static function importMessagesArray($langCode, $category, $messages)
+        public static function importMessagesArray($languageCode, $category, $messages)
         {
             
-            assert('is_string($langCode) && !empty($langCode)');
+            assert('is_string($languageCode) && !empty($languageCode)');
             assert('is_string($category) && !empty($category)');
             assert('is_array($messages) && !empty($messages)');
             if (
-                !is_string($langCode) || empty($langCode) ||
+                !is_string($languageCode) || empty($languageCode) ||
                 !is_string($category) || empty($category) ||
                 !is_array($messages) || empty($messages)
                 )
@@ -106,11 +108,37 @@
             foreach ($messages as $source=>$translation)
             {
                 self::importOneMessage(
-                                       $langCode,
+                                       $languageCode,
                                        $category,
                                        $source,
                                        $translation
                                        );
+            }
+
+            return true;
+        }
+
+        /**
+         * Loads all messages with context from PO file and impots them to the database
+         *
+         * @param String $languageCode The language code
+         * @param String $messageFile Path to the PO file to import.
+         *
+         * @return Boolean Status of the import
+         */
+        public static function importPoFile($languageCode, $messageFile) {
+            assert('is_string($languageCode) && !empty($languageCode)');
+            if (!is_string($languageCode) || !empty($languageCode))
+            {
+                return false;
+            }
+
+            $file = new ZurmoGettextPoFile();
+            $contexts = $file->loadWithContext($messageFile);
+
+            foreach ($contexts as $context=>$messages)
+            {
+                self::importMessagesArray($languageCode, $context, $messages);
             }
         }
     }
