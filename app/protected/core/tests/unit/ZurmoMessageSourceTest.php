@@ -29,11 +29,11 @@
      */
     class ZurmoMessageSourceTest extends BaseTest
     {
-        protected $testLanguageCode = 'de';
+        protected static $testLanguageCode = 'de';
 
-        protected $testCategory = 'test';
+        protected static $testCategory = 'test';
 
-        protected $testMessages = array(
+        protected static $testMessages = array(
                                     'message1-source'=>'message1-translation',
                                     'message2-source'=>'message2-translation',
                                     'message3-source'=>'message3-translation',
@@ -44,14 +44,14 @@
 
         public function setupBeforeClass()
         {
-            foreach ($this->testMessages as $source=>$translation)
+            foreach (self::$testMessages as $source=>$translation)
             {
                 $sourceModel = MessageSource::addNewSource(
-                                                           $this->testCategory,
+                                                           self::$testCategory,
                                                            $source
                                                            );
                 MessageTranslation::addNewTranslation(
-                                                      $this->testLanguageCode,
+                                                      self::$testLanguageCode,
                                                       $sourceModel,
                                                       $translation
                                                       );
@@ -62,9 +62,9 @@
         {
             $messageSource = new ZurmoMessageSource();
 
-            foreach ($this->testMessages as $source=>$compairTranslation)
+            foreach (self::$testMessages as $source=>$compairTranslation)
             {
-                $translation = Yii::t($this->testCategory, $source);
+                $translation = Yii::t(self::$testCategory, $source);
                 $this->assertEquals($translation, $compairTranslation);
             }
         }
