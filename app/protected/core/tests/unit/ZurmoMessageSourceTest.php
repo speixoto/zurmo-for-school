@@ -44,6 +44,8 @@
 
         public static function setupBeforeClass()
         {
+            parent::setUpBeforeClass();
+
             foreach (self::$testMessages as $source=>$translation)
             {
                 $sourceModel = MessageSource::addNewSource(
@@ -62,10 +64,14 @@
         {
             $messageSource = new ZurmoMessageSource();
 
-            foreach (self::$testMessages as $source=>$compairTranslation)
+            foreach (self::$testMessages as $source=>$compareTranslation)
             {
-                $translation = Yii::t(self::$testCategory, $source);
-                $this->assertEquals($translation, $compairTranslation);
+                $translation = $messageSource->translate(
+                                                         self::$testCategory,
+                                                         $source,
+                                                         self::$testLanguageCode
+                                                         );
+                $this->assertEquals($translation, $compareTranslation);
             }
         }
     }
