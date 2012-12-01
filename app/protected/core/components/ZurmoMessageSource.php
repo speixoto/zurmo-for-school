@@ -34,12 +34,16 @@
     {
         const CACHE_KEY_PREFIX='ZurmoMessageSource';
 
-        protected function loadMessagesFromDb($category,$language)
+        protected function loadMessagesFromDb($category,$languageCode)
         {
-            $sourceTableName = RedBeanModel::getTableName('MessageSource');
+            $sourceTableName   = RedBeanModel::getTableName('MessageSource');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
             $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
-            $where =  " messagesource.`category` = '$category' AND messagetranslation.`language` = '$language' ";
+
+            $category          = DatabaseCompatibilityUtil::quoteString($category);
+            $languageCode      = DatabaseCompatibilityUtil::quoteString($languageCode);
+            $where             =  " messagesource.`category` = '$category' AND"
+                                . " messagetranslation.`language` = '$languageCode' ";
 
             $beans = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
 
