@@ -33,6 +33,12 @@
 
         protected static $testCategory = 'UtilTest';
 
+        protected static $testMessageSource = 'messageUtilOne-source';
+
+        protected static $testMessageNewTranslation = 'messageUtilOne-translation';
+
+        protected static $testMessageUpdatedTranslation = 'messageUtilOne-updatedTranslation';
+
         protected static $testMessagesNew = array(
                     'messageUtil1-source'=>'messageUtil1-translation',
                     'messageUtil2-source'=>'messageUtil2-translation',
@@ -43,14 +49,58 @@
         );
 
         protected static $testMessagesUpdated = array(
-                    'messageUtil1-source'=>'messageUtil1-Updatedtranslation',
-                    'messageUtil2-source'=>'messageUtil2-Updatedtranslation',
-                    'messageUtil3-source'=>'messageUtil3-Updatedtranslation',
-                    'messageUtil4-source'=>'messageUtil4-Updatedtranslation',
-                    'messageUtil5-source'=>'messageUtil5-Updatedtranslation',
-                    'messageUtil6-source'=>'messageUtil6-Updatedtranslation'
+                    'messageUtil1-source'=>'messageUtil1-updatedTranslation',
+                    'messageUtil2-source'=>'messageUtil2-updatedTranslation',
+                    'messageUtil3-source'=>'messageUtil3-updatedTranslation',
+                    'messageUtil4-source'=>'messageUtil4-updatedTranslation',
+                    'messageUtil5-source'=>'messageUtil5-updatedTranslation',
+                    'messageUtil6-source'=>'messageUtil6-updatedTranslation'
         );
 
+        public function testImportOneMessageNew() {
+            ZurmoMessageSourceUtil::importOneMessage(
+                                                self::$testLanguageCode,
+                                                self::$testCategory,
+                                                self::$testMessageSource,
+                                                self::$testMessageNewTranslation
+            );
+
+            $messageSource = new ZurmoMessageSource();
+
+            $translation = $messageSource->translate(
+                                                     self::$testCategory,
+                                                     self::$testMessageSource,
+                                                     self::$testLanguageCode
+                                                     );
+
+            $this->assertEquals($translation, self::$testMessageNewTranslation);
+        }
+
+        /**
+         * @depends testImportOneMessageNew
+         */
+        public function testImportOneMessageUpdated() {
+            ZurmoMessageSourceUtil::importOneMessage(
+                                            self::$testLanguageCode,
+                                            self::$testCategory,
+                                            self::$testMessageSource,
+                                            self::$testMessageUpdatedTranslation
+            );
+
+            $messageSource = new ZurmoMessageSource();
+
+            $translation = $messageSource->translate(
+                                                     self::$testCategory,
+                                                     self::$testMessageSource,
+                                                     self::$testLanguageCode
+                                                     );
+
+            $this->assertEquals($translation, self::$testMessageUpdatedTranslation);
+        }
+
+        /**
+         * @depends testImportOneMessageUpdated
+         */
         public function testImportMessagesArrayNew()
         {
             ZurmoMessageSourceUtil::importMessagesArray(
@@ -72,6 +122,9 @@
             }
         }
 
+        /**
+         * @depends testImportMessagesArrayNew
+         */
         public function testImportMessagesArrayUpdated()
         {
             ZurmoMessageSourceUtil::importMessagesArray(
