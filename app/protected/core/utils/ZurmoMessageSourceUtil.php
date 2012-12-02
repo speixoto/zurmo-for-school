@@ -128,7 +128,7 @@
          */
         public static function importPoFile($languageCode, $messageFile) {
             assert('is_string($languageCode) && !empty($languageCode)');
-            if (!is_string($languageCode) || !empty($languageCode))
+            if (!is_string($languageCode) || empty($languageCode))
             {
                 return false;
             }
