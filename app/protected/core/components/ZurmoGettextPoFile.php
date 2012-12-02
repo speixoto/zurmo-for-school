@@ -66,6 +66,8 @@
                 if ($skipEmptyContext && empty($context)) continue;
 
                 $id=$this->decode($matches[3][$i]);
+                if (empty($id)) continue;
+
                 $message=$this->decode($matches[4][$i]);
 
                 if (!isset($messages[$context]))
