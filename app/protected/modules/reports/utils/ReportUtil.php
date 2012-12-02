@@ -46,6 +46,14 @@
             }
         }
 
-
+        public static function makeDataAndLabelsForSeriesOrRange(Array $attributesData)
+        {
+            $dataAndLabels = array();
+            foreach($attributesData as $attribute => $data)
+            {
+                $dataAndLabels[$attribute] = $data['label'];
+            }
+            return $dataAndLabels;
+        }
     }
 ?>

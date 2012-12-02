@@ -100,6 +100,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
                             $('#OrderBysForReportWizardView').hide();
+                            " . $this->renderLoadChartSeriesAndRangesScriptContent($formName) . "
                             $('#ChartForReportWizardView').show();
                         }
                         if(linkId == '" . ChartForReportWizardView::getNextPageLinkId() . "')
@@ -119,7 +120,7 @@
                             $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading-ajax-submit');
                             $('#" . $formName . "').find('.attachLoadingTarget').removeClass('attachLoadingTarget');
                         }
-                        ";
+            ";
         }
 
         protected function registerClickFlowScript()
@@ -204,6 +205,46 @@
                     }
                 );
             ");
+        }
+
+        protected function renderLoadChartSeriesAndRangesScriptContent($formName)
+        {
+            assert('is_string($formName)');
+            $url    =  Yii::app()->createUrl('reports/default/getAvailableSeriesAndRangesForChart',
+                       array_merge($_GET, array('type' => $this->model->type)));
+            $script = "
+                $.ajax({
+                    url : '" . $url . "',
+                    type : 'POST',
+                    data : $('#" . $formName . "').serialize(),
+                    dataType: 'json',
+                    success : function(data)
+                    {
+                        rebuildSelectInputFromDataAndLabels
+                        ('SummationReportWizardForm_ChartForReportForm_firstSeries', data.firstSeriesDataAndLabels);
+                        rebuildSelectInputFromDataAndLabels
+                        ('SummationReportWizardForm_ChartForReportForm_firstRange', data.firstRangeDataAndLabels);
+                        rebuildSelectInputFromDataAndLabels
+                        ('SummationReportWizardForm_ChartForReportForm_secondSeries', data.secondSeriesDataAndLabels);
+                        rebuildSelectInputFromDataAndLabels
+                        ('SummationReportWizardForm_ChartForReportForm_secondRange', data.secondRangeDataAndLabels);
+                    },
+                    error : function()
+                    {
+                        //todo: error call
+                    }
+                });
+            ";
+            return $script;
+        }
+
+        protected function registerScripts()
+        {
+            parent::registerScripts();
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.elements.assets')) . '/SelectInputUtils.js', CClientScript::POS_END);
+
         }
     }
 ?>

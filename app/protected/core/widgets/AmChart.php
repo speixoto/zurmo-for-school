@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Render a fusion chart that can be formatted.
+     * Renders a zurmo chart that can be formatted.
      */
     class AmChart extends ZurmoWidget
     {

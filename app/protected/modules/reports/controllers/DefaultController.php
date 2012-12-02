@@ -299,6 +299,40 @@
             echo $content;
         }
 
+        public function actionGetAvailableSeriesAndRangesForChart($type, $id = null)
+        {
+            $postData                           = PostUtil::getData();
+            $savedReport                        = null;
+            $report                             = null;
+            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
+            $moduleClassName                    = $report->getModuleClassName();
+            $modelClassName                     = $moduleClassName::getPrimaryModelName();
+            $modelToReportAdapter               = ModelRelationsAndAttributesToReportAdapter::
+                                                  make($moduleClassName, $modelClassName, $report->getType());
+            if(!$modelToReportAdapter instanceof ModelRelationsAndAttributesToSummationReportAdapter)
+            {
+                throw new NotSupportedException();
+            }
+            $seriesAttributesData                       = $modelToReportAdapter->
+                                                          getAttributesForChartSeries($report->getGroupBys());
+            $rangeAttributesData  =                       $modelToReportAdapter->
+                                                          getAttributesForChartRange ($report->getDisplayAttributes());
+            $dataAndLabels                              = array();
+            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Yii::t('Default', '(None)'));
+            $dataAndLabels['firstSeriesDataAndLabels']  = array_merge($dataAndLabels['firstSeriesDataAndLabels'],
+                                                          ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
+            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Yii::t('Default', '(None)'));
+            $dataAndLabels['firstRangeDataAndLabels']   = array_merge($dataAndLabels['firstRangeDataAndLabels'],
+                                                          ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
+            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Yii::t('Default', '(None)'));
+            $dataAndLabels['secondSeriesDataAndLabels'] = array_merge($dataAndLabels['secondSeriesDataAndLabels'],
+                                                          ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
+            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Yii::t('Default', '(None)'));
+            $dataAndLabels['secondRangeDataAndLabels']  = array_merge($dataAndLabels['secondRangeDataAndLabels'],
+                                                          ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
+            echo CJSON::encode($dataAndLabels);
+        }
+
         protected function resolveAfterSaveHasPermissionsProblem(SavedReport $savedReport, $modelToStringValue)
         {
             assert('is_string($modelToStringValue)');

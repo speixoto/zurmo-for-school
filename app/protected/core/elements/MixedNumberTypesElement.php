@@ -39,12 +39,12 @@
             $secondValueSpanAreaId              = $this->getSecondValueEditableInputId() . '-second-value-area';
             $startingDivStyleFirstValue  = null;
             $startingDivStyleSecondValue  = null;
-            if (in_array($this->getOperator(), array('isNull', 'isNotNull')))
+            if (in_array($this->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL)))
             {
                 $startingDivStyleFirstValue = "display:none;";
             }
 
-            if ($this->getOperator() != 'between')
+            if ($this->getOperator() != OperatorRules::TYPE_BETWEEN)
             {
                 $startingDivStyleSecondValue = "display:none;";
             }

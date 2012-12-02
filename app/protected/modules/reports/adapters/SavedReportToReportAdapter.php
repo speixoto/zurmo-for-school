@@ -59,6 +59,12 @@
                 self::makeComponentFormAndPopulateReportFromData(
                         $unserializedData[ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES],
                         $report, 'DrillDownDisplayAttribute');
+                if(isset($unserializedData['chart']))
+                {
+                    $chart      = new ChartForReportForm();
+                    $chart->setAttributes($unserializedData['chart']);
+                    $report->setChart($chart);
+                }
             }
             return $report;
         }
@@ -83,6 +89,7 @@
                 self::makeArrayFromComponentFormsAttributesData($report->getDisplayAttributes());
             $data[ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES] =
                 self::makeArrayFromComponentFormsAttributesData($report->getDrillDownDisplayAttributes());
+            $data['chart'] = self::makeArrayFromComponentFormsAttributesData(array($report->getChart()));
             $savedReport->serializedData   = serialize($data);
         }
 
@@ -91,7 +98,6 @@
             $data = array();
             foreach($componentFormsData as $key => $componentForm)
             {
-                assert('$componentForm instanceof $componentForm');
                 foreach($componentForm->getAttributes() as $attribute => $value)
                 {
                     $data[$key][$attribute] = $value;

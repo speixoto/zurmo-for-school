@@ -60,6 +60,7 @@
             self::resolveDisplayAttributes          ($data, $report);
             self::resolveDrillDownDisplayAttributes ($data, $report);
             self::resolveGroupBys                   ($data, $report);
+            self::resolveChart                      ($data, $report);
         }
 
         protected static function resolveFilters($data, Report $report)
@@ -164,6 +165,17 @@
             {
                 $report->removeAllGroupBys();
             }
+        }
+
+        protected static function resolveChart($data, Report $report)
+        {
+            $moduleClassName = $report->getModuleClassName();
+            $chart           = new ChartForReportForm();
+            if(null != $chartData = ArrayUtil::getArrayValue($data, 'ChartForReportForm'))
+            {
+                $chart->setAttributes($chartData);
+            }
+            $report->setChart($chart);
         }
     }
 ?>

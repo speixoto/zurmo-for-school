@@ -75,6 +75,8 @@
 
         public $drillDownDisplayAttributes = array();
 
+        public $chart;
+
         protected $isNew = false;
 
         /**
@@ -188,12 +190,30 @@
 
         public function validateGroupBys()
         {
-            return $this->validateComponent(ComponentForReportForm::TYPE_GROUP_BYS, 'groupBys');
+            $validated = $this->validateComponent(ComponentForReportForm::TYPE_GROUP_BYS, 'groupBys');
+            if($validated)
+            {
+                //$this->addError( 'groupBys', Yii::t('Default', 'You')); //todo: fix also the hidden we added make it better
+            }
+            return $validated;
         }
 
         public function validateChart()
         {
-            //todo:
+            $passedValidation = true;
+            if($this->chart != null)
+            {
+                $validated = $this->chart->validate();
+                if(!$validated)
+                {
+                    foreach($this->chart->getErrors() as $attribute => $error)
+                    {
+                        $this->addError( 'ChartForReportForm_' . $attribute, $error);
+                    }
+                    $passedValidation = false;
+                }
+            }
+            return $passedValidation;
         }
 
         protected function validateComponent($componentType, $componentName)

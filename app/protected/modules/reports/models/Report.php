@@ -62,6 +62,8 @@
 
         private $groupBys                   = array();
 
+        private $chart;
+
         public static function getTypeDropDownArray()
         {
             return array(self::TYPE_ROWS_AND_COLUMNS  => Yii::t('Default', 'Rows and Columns'),
@@ -261,6 +263,20 @@
         public function removeAllDrillDownDisplayAttributes()
         {
             $this->drillDownDisplayAttributes   = array();
+        }
+
+        public function getChart()
+        {
+            if($this->chart == null)
+            {
+                $this->chart     = new ChartForReportForm();
+            }
+            return $this->chart;
+        }
+
+        public function setChart(ChartForReportForm $chart)
+        {
+            $this->chart = $chart;
         }
 
         public function getExplicitReadWriteModelPermissions()

@@ -81,5 +81,30 @@
             $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
             return $attributes;
         }
+
+        public function getAttributesForChartSeries($existingGroupBys = array())
+        {
+            $attributes = array();
+            foreach($existingGroupBys as $groupBy)
+            {
+                $attributes[$groupBy->getAttributeIndexOrDerivedType()] = array('label' => $groupBy->getDisplayLabel());
+            }
+            return $attributes;
+        }
+
+        public function getAttributesForChartRange ($existingDisplayAttributes = array())
+        {
+            $attributes = array();
+            foreach($existingDisplayAttributes as $displayAttribute)
+            {
+                if(static::
+                   isAttributeIndexOrDerivedTypeADisplayCalculation($displayAttribute->getAttributeIndexOrDerivedType()))
+                {
+                    $attributes[$displayAttribute->getAttributeIndexOrDerivedType()] =
+                        array('label' => $displayAttribute->getDisplayLabel());
+                }
+            }
+            return $attributes;
+        }
     }
 ?>

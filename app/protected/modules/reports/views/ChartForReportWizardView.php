@@ -28,8 +28,56 @@
     {
         protected function renderFormContent()
         {
-            $content           = 'todo'; //based on general data
+            $inputPrefixData   = array(get_class($this->model), get_class($this->model->chart));
+            $this->form->setInputPrefixData($inputPrefixData);
+            $params            = array('inputPrefix' => $inputPrefixData);
+            $content           = '<div class="attributesContainer">';
+            $element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
+                                 array_merge($params, array('addBlank' => true)));
+            $leftSideContent   = $element->render();
+            $element           = new MixedChartRangeAndSeriesElement($this->model->chart, null, $this->form, $params);
+            $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
+            $rightSideContent  = ZurmoHtml::tag('div', array(), $element->render());
+            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
+            $content          .= ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $rightSideContent);
+            $content          .= '</div>';
+            $this->form->clearInputPrefixData();
+            $this->registerScripts();
             return $content;
+        }
+
+        public function registerScripts()
+        {
+            parent::registerScripts();
+            $chartTypesRequiringSecondInputs = ChartRules::getChartTypesRequiringSecondInputs();
+            $script = '
+                $(".chart-selector").live("change", function()
+                    {
+                        arr = ' . CJSON::encode($chartTypesRequiringSecondInputs) . ';
+                        if($(this).val() == "")
+                        {
+                            $(".first-series-and-range-area").hide();
+                            $(".first-series-and-range-area").find("input:select").prop("disabled", true);
+                        }
+                        else
+                        {
+                            $(".first-series-and-range-area").show();
+                            $(".first-series-and-range-area").find("input:select").prop("disabled", false);
+                        }
+                        if ($.inArray($(this).val(), arr) != -1)
+                        {
+                            $(".second-series-and-range-area").show();
+                            $(".second-series-and-range-area").find("input:select").prop("disabled", false);
+                        }
+                        else
+                        {
+                            $(".second-series-and-range-area").hide();
+                            $(".second-series-and-range-area").find("input:select").prop("disabled", true);
+                        }
+                    }
+                );
+            ';
+            Yii::app()->getClientScript()->registerScript('ChartChangingScript', $script);
         }
 
         public static function getWizardStepTitle()

@@ -118,6 +118,7 @@
             $formModel->groupBys                      = $this->report->getGroupBys();
             $formModel->displayAttributes             = $this->report->getDisplayAttributes();
             $formModel->drillDownDisplayAttributes    = $this->report->getDrillDownDisplayAttributes();
+            $formModel->chart                         = $this->report->getChart();
         }
     }
 ?>

@@ -53,6 +53,17 @@
             return $labels[$type];
         }
 
+        protected static function getDisplayCalculationTypes()
+        {
+            return array(
+                self::DISPLAY_CALCULATION_COUNT,
+                self::DISPLAY_CALCULATION_SUMMMATION,
+                self::DISPLAY_CALCULATION_AVERAGE,
+                self::DISPLAY_CALCULATION_MINIMUM,
+                self::DISPLAY_CALCULATION_MAXIMUM,
+            );
+        }
+
         protected static function translatedDisplayCalculationShortLabels()
         {
             return array(
@@ -228,6 +239,17 @@
             assert('is_string($type)');
             return $this->model->getAttributeLabel($attribute) .
                    ' -(' . static::getTranslatedGroupByCalculationShortLabel($type) . ')';
+        }
+
+        public function isAttributeIndexOrDerivedTypeADisplayCalculation($attributeIndexOrDerivedType)
+        {
+            assert('is_string($attributeIndexOrDerivedType)');
+            $parts = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
+            if(count($parts) > 1 && in_array(array_pop($parts), static::getDisplayCalculationTypes()))
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

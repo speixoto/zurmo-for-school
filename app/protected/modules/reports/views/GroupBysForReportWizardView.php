@@ -26,6 +26,14 @@
 
     class GroupBysForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+        protected function renderRightSideContent()
+        {
+            $content  = 'XYZ<input name = "SummationReportWizardForm_groupBys"  id = "SummationReportWizardForm_groupBys" type = "hidden" value = "">';
+            $content .= $this->form->error($this->model, 'groupBys', array('inputID' => 'SummationReportWizardForm_groupBys'));
+            $content .= parent::renderRightSideContent();
+            return $content;
+        }
+
         public static function getTreeType()
         {
             return ComponentForReportForm::TYPE_GROUP_BYS;
