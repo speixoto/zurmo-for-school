@@ -32,9 +32,12 @@
         /**
          * Loads messages from a PO file.
          * @param string $file file path
-         * @return array message translations with context: context => array(source message => translated message)
+         * @param bool $skipEmptyContext If set to true, then all messages without
+         *                               or wirh empty context will be skiped
+         * @return array message translations with context:
+         *              context => array(source message => translated message)
          */
-        public function loadWithContext($file)
+        public function loadWithContext($file, $skipEmptyContext=true)
         {
             assert('is_string($file)');
             if (!is_string($file))
@@ -60,6 +63,8 @@
             for($i=0;$i<$n;++$i)
             {
                 $context = $matches[2][$i];
+                if ($skipEmptyContext && empty($context)) continue;
+
                 $id=$this->decode($matches[3][$i]);
                 $message=$this->decode($matches[4][$i]);
 
