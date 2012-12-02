@@ -145,5 +145,32 @@
                 $this->assertEquals($translation, $compareTranslation);
             }
         }
+
+        public function testImportPoFile()
+        {
+            $testLanguageCode = 'po';
+
+            $pathToFiles = Yii::getPathOfAlias('application.tests.unit.files');
+            $filePath = $pathToFiles . DIRECTORY_SEPARATOR . 'messages-test.po';
+
+            ZurmoMessageSourceUtil::importPoFile($testLanguageCode, $filePath);
+
+            $file = new ZurmoGettextPoFile();
+            $contexts = $file->loadWithContext($filePath);
+
+            $messageSource = new ZurmoMessageSource();
+
+            foreach ($contexts as $category=>$messages) {
+                foreach ($messages as $source=>$compareTranslation) {
+                    $translation = $messageSource->translate(
+                                                  $category,
+                                                  $source,
+                                                  $testLanguageCode
+                                                  );
+
+                    $this->assertEquals($translation, $compareTranslation);
+                }
+            }
+        }
     }
 ?>
