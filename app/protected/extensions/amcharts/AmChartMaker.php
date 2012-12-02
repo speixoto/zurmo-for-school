@@ -128,6 +128,7 @@
                 $this->addChartProperties('startDuration',          2);
                 $this->addChartProperties('labelRadius',            15);
                 $this->addChartProperties('usePrefixes',            true);
+                $this->addChartProperties('radius',                 "'40%'");
                 $this->chartIsPie = true;
             }
             elseif ($this->type === "Pie2D")
@@ -136,6 +137,7 @@
                 $this->addChartProperties('outlineAlpha',           0.8);
                 $this->addChartProperties('outlineThickness',       2);
                 $this->addChartProperties('usePrefixes',            true);
+                $this->addChartProperties('radius',                 "'40%'");
                 $this->chartIsPie = true;
             }
             elseif ($this->type === "Pie3D")
@@ -144,6 +146,7 @@
                 $this->addChartProperties('outlineAlpha',           0.8);
                 $this->addChartProperties('outlineThickness',       2);
                 $this->addChartProperties('usePrefixes',            true);
+                $this->addChartProperties('radius',                 "'40%'");
                 $this->makeChart3d();
                 $this->chartIsPie = true;
             }
