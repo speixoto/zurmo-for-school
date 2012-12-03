@@ -74,12 +74,14 @@
                     }
                     else
                     {
-                        $linkContent = ZurmoHtml::link(Yii::t('Default', 'Configure'), Yii::app()->createUrl($route,
-                                                            array('moduleClassName' => $this->moduleClassName,
-                                                                  'attributeTypeName' => $information['elementType'],
-                                                                  'attributeName' => $attributeName)
-                                                          ),
-                                                          array('id' => 'edit-link-' . $attributeName)
+                        $linkContent = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Configure')),
+                                                       Yii::app()->createUrl($route,
+                                                        array(
+                                                            'moduleClassName' => $this->moduleClassName,
+                                                            'attributeTypeName' => $information['elementType'],
+                                                            'attributeName' => $attributeName)
+                                                        ),
+                                                        array('id' => 'edit-link-' . $attributeName)
                                                   );
                     }
                     $content .= '<li>';

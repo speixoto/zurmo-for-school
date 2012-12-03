@@ -663,7 +663,10 @@ body.blue .ui-datepicker-header a:hover:after,
 body.blue input[type="button"]:hover,
 body.blue input[type="button"]:hover:before,
 body.blue input[type="button"]:hover:after,
-body.blue .configuration-list li a:hover:before,
+body.blue .configuration-list li a:hover,
+body.blue .configuration-list li a:hover span:before,
+body.blue .configuration-list td:last-child a:hover,
+body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span {
   color: #7cb830;
 }
@@ -1063,7 +1066,10 @@ body.brown .ui-datepicker-header a:hover:after,
 body.brown input[type="button"]:hover,
 body.brown input[type="button"]:hover:before,
 body.brown input[type="button"]:hover:after,
-body.brown .configuration-list li a:hover:before,
+body.brown .configuration-list li a:hover,
+body.brown .configuration-list li a:hover span:before,
+body.brown .configuration-list td:last-child a:hover,
+body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span {
   color: #b88f30;
 }
@@ -1463,7 +1469,10 @@ body.lime .ui-datepicker-header a:hover:after,
 body.lime input[type="button"]:hover,
 body.lime input[type="button"]:hover:before,
 body.lime input[type="button"]:hover:after,
-body.lime .configuration-list li a:hover:before,
+body.lime .configuration-list li a:hover,
+body.lime .configuration-list li a:hover span:before,
+body.lime .configuration-list td:last-child a:hover,
+body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span {
   color: #bcc98e;
 }
@@ -1863,7 +1872,10 @@ body.cherry .ui-datepicker-header a:hover:after,
 body.cherry input[type="button"]:hover,
 body.cherry input[type="button"]:hover:before,
 body.cherry input[type="button"]:hover:after,
-body.cherry .configuration-list li a:hover:before,
+body.cherry .configuration-list li a:hover,
+body.cherry .configuration-list li a:hover span:before,
+body.cherry .configuration-list td:last-child a:hover,
+body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span {
   color: #933140;
 }
@@ -2263,7 +2275,10 @@ body.turquoise .ui-datepicker-header a:hover:after,
 body.turquoise input[type="button"]:hover,
 body.turquoise input[type="button"]:hover:before,
 body.turquoise input[type="button"]:hover:after,
-body.turquoise .configuration-list li a:hover:before,
+body.turquoise .configuration-list li a:hover,
+body.turquoise .configuration-list li a:hover span:before,
+body.turquoise .configuration-list td:last-child a:hover,
+body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span {
   color: #44bbcc;
 }
@@ -2663,7 +2678,10 @@ body.violet .ui-datepicker-header a:hover:after,
 body.violet input[type="button"]:hover,
 body.violet input[type="button"]:hover:before,
 body.violet input[type="button"]:hover:after,
-body.violet .configuration-list li a:hover:before,
+body.violet .configuration-list li a:hover,
+body.violet .configuration-list li a:hover span:before,
+body.violet .configuration-list td:last-child a:hover,
+body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span {
   color: #91a1dc;
 }
@@ -3063,7 +3081,10 @@ body.honey .ui-datepicker-header a:hover:after,
 body.honey input[type="button"]:hover,
 body.honey input[type="button"]:hover:before,
 body.honey input[type="button"]:hover:after,
-body.honey .configuration-list li a:hover:before,
+body.honey .configuration-list li a:hover,
+body.honey .configuration-list li a:hover span:before,
+body.honey .configuration-list td:last-child a:hover,
+body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span {
   color: #abbc42;
 }
@@ -3475,8 +3496,6 @@ section {
   box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   /*999*/
 
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=12, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=12, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=12, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=12, Direction=270);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -3528,7 +3547,6 @@ section {
   -o-box-shadow: none !important;
   -ms-box-shadow: none !important;
   box-shadow: none !important;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   /*
             input[type="submit"]{
@@ -3631,8 +3649,6 @@ section {
   -o-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   -ms-box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
   box-shadow: 0 0 10px 2px rgba(102, 102, 102, 0.5);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a6a6a6, Strength=10, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a6a6a6, Strength=10, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a6a6a6, Strength=10, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a6a6a6, Strength=10, Direction=270);
 }
 .headerDropDown,
 #ShortcutsMenu ul,
@@ -3654,8 +3670,6 @@ section {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=270);
   z-index: 9999;
   min-width: 110px;
   display: none;
@@ -3702,8 +3716,6 @@ section {
   -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#757575, Strength=10, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#757575, Strength=10, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#757575, Strength=10, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#757575, Strength=10, Direction=270);
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -3824,8 +3836,6 @@ section {
   -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#757575, Strength=10, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#757575, Strength=10, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#757575, Strength=10, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#757575, Strength=10, Direction=270);
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -4196,6 +4206,8 @@ section {
   box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   /*999*/
 
+  /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+
   zoom: 1;
   filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=12, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=12, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=12, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=12, Direction=270);
   -webkit-border-radius: 0 0 5px 5px;
@@ -4250,8 +4262,6 @@ section {
   -o-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08);
   -ms-box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08);
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#0a0a0a, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#0a0a0a, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#0a0a0a, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#0a0a0a, Strength=1, Direction=270);
   background-color: #c6c6c6;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#e0e0e0), to(#c6c6c6));
@@ -4322,8 +4332,6 @@ section {
   -o-box-shadow: 0 0 5px 5px rgba(153, 153, 153, 0.25);
   -ms-box-shadow: 0 0 5px 5px rgba(153, 153, 153, 0.25);
   box-shadow: 0 0 5px 5px rgba(153, 153, 153, 0.25);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#b8b8b8, Strength=5, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#b8b8b8, Strength=5, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#b8b8b8, Strength=5, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#b8b8b8, Strength=5, Direction=270);
   z-index: 9999;
 }
 #MenuView .parent > ul a span {
@@ -4692,8 +4700,6 @@ section {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=270);
   background-color: #ffffff ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), color-stop(80%, #f5f5f5), to(#ffffff)) ;
@@ -4759,8 +4765,6 @@ form .view-toolbar-container,
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=270);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 .view-toolbar .z-label {
@@ -5280,6 +5284,9 @@ td.empty {
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  /*  */
+  /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+
   zoom: 1;
   filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=270);
 }
@@ -5312,6 +5319,8 @@ td.empty {
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+
   zoom: 1;
   filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=270);
   width: 100%;
@@ -5362,8 +5371,6 @@ td.empty {
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   /*999*/
 
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=270);
   background: #ffffff;
   background-color: #f5f5f5;
   background-repeat: repeat-x;
@@ -5463,8 +5470,6 @@ td.empty {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=270);
   border-top: 1px solid #e7e7e7;
   border-left: 1px solid #d7d7d7;
   border-right: 1px solid #d7d7d7;
@@ -5494,8 +5499,6 @@ td.empty {
   -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#ffffff, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#ffffff, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#ffffff, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#ffffff, Strength=1, Direction=270);
 }
 .portlet-toolbar .icon-create:before {
   content: "Y";
@@ -5553,7 +5556,6 @@ a.simple-select {
   -o-box-shadow: none  !important;
   -ms-box-shadow: none  !important;
   box-shadow: none  !important;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
   -webkit-border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   -ms-border-radius: 0 !important;
@@ -5584,8 +5586,6 @@ a.simple-select:before {
   box-shadow: 0 0 11px 5px rgba(51, 51, 51, 0.4);
   /*33*/
 
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#666666, Strength=11, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#666666, Strength=11, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#666666, Strength=11, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#666666, Strength=11, Direction=270);
 }
 .ui-dialog .wide.form {
   padding: 0;
@@ -5596,7 +5596,6 @@ a.simple-select:before {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 .ui-dialog .wide.form form {
   border: none;
@@ -5605,7 +5604,6 @@ a.simple-select:before {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 .ui-dialog .wide.form label {
   font-size: 12px !important;
@@ -5778,8 +5776,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
   -ms-box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
   box-shadow: 0 0 30px 0 rgba(100, 100, 100, 0.7);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bdbdbd, Strength=20, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bdbdbd, Strength=20, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bdbdbd, Strength=20, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bdbdbd, Strength=20, Direction=270);
   position: absolute;
   top: 40px;
   left: 50%;
@@ -5957,8 +5953,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=270);
   float: left;
   width: 100%;
 }
@@ -5982,7 +5976,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
   box-shadow: inset 0 1px 0 0 #ffffff;
   zoom: 1;
 }
@@ -6010,8 +6003,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=20, Direction=270);
   position: relative;
 }
 .juiportlet-widget-content .cgrid-view {
@@ -6021,7 +6012,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
   zoom: 1;
 }
 .juiportlet-widget-content .cgrid-view:before {
@@ -6074,7 +6064,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
   font-style: italic;
   color: #999;
   text-indent: 10px;
@@ -6886,8 +6875,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=270);
   background-color: #f5f5f5 ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
@@ -6914,8 +6901,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=270);
   background-color: #f5f5f5 ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
@@ -7007,7 +6992,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 .toolbar-mbmenu ul {
   list-style: none;
@@ -7033,8 +7017,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=270);
   -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
@@ -7151,7 +7133,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 #NoteInlineEditView td {
   width: 100%;
@@ -7170,7 +7151,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 #NoteInlineEditView form table {
   border-bottom: none;
@@ -7205,8 +7185,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=270);
   border-top: 1px solid #e7e7e7;
   border-left: 1px solid #d7d7d7;
   border-right: 1px solid #d7d7d7;
@@ -7227,8 +7205,6 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   -ms-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#ffffff, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#ffffff, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#ffffff, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#ffffff, Strength=1, Direction=270);
 }
 #NoteInlineEditView form input[type="submit"]:before {
   content: "Y";
@@ -7819,7 +7795,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 #ModalView #list-view .pager {
   -webkit-box-shadow: inset 0 1px 0 #dfdfdf;
@@ -8189,7 +8164,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
   zoom: 1;
 }
 #search-formmodal:before {
@@ -8271,8 +8245,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
   -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
   box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.5);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#d9d9d9, Strength=9, Direction=270);
 }
 #FlashMessageView .jnotify-item p,
 #FlashMessageView .jnotify-item ul {
@@ -8372,8 +8344,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=270);
   outline: none !important;
   cursor: pointer;
   position: relative;
@@ -8415,7 +8385,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
 }
 #LeadConvertView .panel {
   width: 100% !important;
@@ -8428,7 +8397,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
   padding-bottom: 0 !important;
 }
 #LeadConvertView #edit-form table {
@@ -8511,8 +8479,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#a8a8a8, Strength=9, Direction=270);
   background-color: #f5f5f5 ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
@@ -8660,7 +8626,6 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: none !important;
   -ms-box-shadow: none !important;
   box-shadow: none !important;
-  filter: progid:DXImageTransform.Microsoft.Shadow(enabled=false);
   border: 1px solid #DFDFDF;
   border-top: none;
 }
@@ -9254,14 +9219,20 @@ table.configuration-list tbody > tr > td {
 table.configuration-list tr td:last-child a {
   float: right;
 }
-table.configuration-list tr td:last-child a:before {
+table.configuration-list tr td:last-child a .z-label {
+  padding: 0 15px;
+}
+table.configuration-list tr td:last-child a .z-label:before {
   content: "n";
   font-weight: normal;
-  font-size: 16px;
+  font-size: 20px;
   font-family: "ZurmoGamificationSymblyReguRg";
+  color: #666;
   margin-right: 5px;
   position: relative;
-  top: 0px;
+  top: -2px;
+  font-weight: normal !important;
+  vertical-align: middle;
 }
 #DevelopmentMenuView .configuration-list li a:before {
   content: "";
