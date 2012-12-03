@@ -61,7 +61,16 @@
                         $report, 'DrillDownDisplayAttribute');
                 if(isset($unserializedData['chart']))
                 {
-                    $chart      = new ChartForReportForm();
+                    $moduleClassName = $report->getModuleClassName();
+                    $modelClassName  = $moduleClassName::getPrimaryModelName();
+                    $adapter         = ModelRelationsAndAttributesToSummationReportAdapter::
+                                       make($moduleClassName, $modelClassName, $report->getType());
+                    $attributes      = $adapter->getAttributesForChartSeries($report->getGroupBys());
+                    $chart           = new ChartForReportForm(
+                                            ReportUtil::makeDataAndLabelsForSeriesOrRange(
+                                            $adapter->getAttributesForChartSeries($report->getGroupBys())),
+                                            ReportUtil::makeDataAndLabelsForSeriesOrRange(
+                                            $adapter->getAttributesForChartRange($report->getDisplayAttributes())));
                     $chart->setAttributes($unserializedData['chart']);
                     $report->setChart($chart);
                 }
@@ -89,8 +98,21 @@
                 self::makeArrayFromComponentFormsAttributesData($report->getDisplayAttributes());
             $data[ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES] =
                 self::makeArrayFromComponentFormsAttributesData($report->getDrillDownDisplayAttributes());
-            $data['chart'] = self::makeArrayFromComponentFormsAttributesData(array($report->getChart()));
+            if($report->getChart()->type != null)
+            {
+                $data['chart'] = self::makeArrayFromChartForReportFormAttributesData($report->getChart());
+            }
             $savedReport->serializedData   = serialize($data);
+        }
+
+        protected static function makeArrayFromChartForReportFormAttributesData(ChartForReportForm $chartForReportForm)
+        {
+            $data = array();
+            foreach($chartForReportForm->getAttributes() as $attribute => $value)
+            {
+                $data[$attribute] = $value;
+            }
+            return $data;
         }
 
         protected static function makeArrayFromComponentFormsAttributesData(Array $componentFormsData)

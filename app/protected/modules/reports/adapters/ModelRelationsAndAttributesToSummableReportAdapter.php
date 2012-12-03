@@ -101,6 +101,27 @@
             return $sortedAttributes;
         }
 
+        /**
+         *
+         * Enter description here ...
+         * @param string $attribute
+         */
+        public function getAttributeLabel($attribute)
+        {
+            assert('is_string($attribute)');
+            $calculatedDisplayAttributes = $this->getDisplayCalculationAttributes();
+            $groupByModifierAttributes   = $this->getGroupByModifierAttributes();
+            if(isset($calculatedDisplayAttributes[$attribute]))
+            {
+                return $calculatedDisplayAttributes[$attribute]['label'];
+            }
+            elseif(isset($groupByModifierAttributes[$attribute]))
+            {
+                return $groupByModifierAttributes[$attribute]['label'];
+            }
+            return parent::getAttributeLabel($attribute);
+        }
+
         public function getAttributesForDisplayAttributes($existingGroupBys = array(),
                                                           RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
@@ -114,9 +135,17 @@
             {
                 return array();
             }
-            $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));
+            $attributes       = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));
             $this->resolveGroupByAttributesForDisplayAttributes($precedingModel, $precedingRelation, $attributes,
                                                                 $existingGroupBys);
+            $attributes       = array_merge($attributes, $this->getDisplayCalculationAttributes());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
+        }
+
+        protected function getDisplayCalculationAttributes()
+        {
+            $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
@@ -141,8 +170,7 @@
                     $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
                 }
             }
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
+            return $attributes;
         }
 
         protected function resolveGroupByAttributesForDisplayAttributes(RedBeanModel $precedingModel = null,
@@ -203,7 +231,16 @@
 
         public function getAttributesForGroupBys()
         {
-            $attributes = array('id' => array('label' => Yii::t('Default', 'Id')));
+            $attributes       = array('id' => array('label' => Yii::t('Default', 'Id')));
+            $attributes       = array_merge($attributes, $this->getGroupByModifierAttributes());
+            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
+        }
+
+        protected function getGroupByModifierAttributes()
+        {
+            $attributes = array();
             foreach ($this->getAttributesNotIncludingDerivedAttributesData() as $attribute => $data)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
@@ -220,9 +257,7 @@
                     $attributes[$attribute] = $data;
                 }
             }
-            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
+            return $attributes;
         }
 
         protected function resolveGroupByCalculationAttributeData(& $attributes, $attribute, $type)

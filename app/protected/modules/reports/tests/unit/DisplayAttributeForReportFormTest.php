@@ -38,7 +38,17 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testSetAndGetGroupBy()
+        public function testGetDisplayLabelForCalculations()
+        {
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                  Report::TYPE_SUMMATION);
+            $this->assertNull($displayAttribute->label);
+            $displayAttribute->attributeIndexOrDerivedType = 'float__Summation';
+            $this->assertEquals('Float -(Sum)',    $displayAttribute->label);
+            $this->assertEquals('Float -(Sum)',    $displayAttribute->getDisplayLabel());
+        }
+
+        public function testSetAndGetDisplayAttribute()
         {
             $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                   Report::TYPE_SUMMATION);

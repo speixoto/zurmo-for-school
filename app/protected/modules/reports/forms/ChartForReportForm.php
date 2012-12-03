@@ -61,7 +61,7 @@
             return array();
         }
 
-        public function __construct($availableSeriesDataAndLabels = null, $availableRangeDataAndLabels = null)
+        public function __construct($availableSeriesDataAndLabels = array(), $availableRangeDataAndLabels = array())
         {
             assert('is_array($availableSeriesDataAndLabels) || $availableSeriesDataAndLabels == null');
             assert('is_array($availableRangeDataAndLabels) || $availableRangeDataAndLabels == null');
@@ -131,22 +131,22 @@
 
         public function getAvailableFirstSeriesDataAndLabels()
         {
-            return array();
+            return $this->availableSeriesDataAndLabels;
         }
 
         public function getAvailableFirstRangeDataAndLabels()
         {
-            return array();
+            return $this->availableRangeDataAndLabels;
         }
 
         public function getAvailableSecondSeriesDataAndLabels()
         {
-            return array();
+            return $this->availableSeriesDataAndLabels;
         }
 
         public function getAvailableSecondRangeDataAndLabels()
         {
-            return array();
+            return $this->availableRangeDataAndLabels;
         }
     }
 ?>

@@ -48,11 +48,10 @@
             }
             $content  = ZurmoHtml::tag('span', array('class' => 'first-series-and-range-area',
                                                      'style' => $startingDivStyleFirstValue),
-                                       '&#160;' . $this->renderEditableFirstSeriesContent() .
-                                                  $this->renderEditableFirstRangeContent());
+                                       $this->renderEditableFirstSeriesContent() .
+                                       $this->renderEditableFirstRangeContent());
             $content .= ZurmoHtml::tag('span', array('class' => 'second-series-and-range-area',
                                                      'style' => $startingDivStyleSecondValue),
-                                       '&#160;' . Yii::t('Default', 'and') .
                                        $this->renderEditableSecondSeriesContent() .
                                        $this->renderEditableSecondRangeContent());
             return $content;
@@ -64,6 +63,8 @@
                 'empty' => Yii::t('Default', '(None)'),
                 'id'    => $this->getFirstSeriesEditableInputId(),
            );
+           $label        = $this->form->labelEx($this->model, 'firstSeries',
+                                                array('for' => $this->getFirstSeriesEditableInputId()));
            $content      = ZurmoHtml::dropDownList($this->getFirstSeriesEditableInputName(),
                                                    $this->model->firstSeries,
                                                    $this->model->getAvailableFirstSeriesDataAndLabels(),
@@ -71,7 +72,7 @@
                                                    );
             $error       = $this->form->error($this->model, 'firstSeries',
                            array('inputID' => $this->getFirstSeriesEditableInputId()));
-            return $content . $error;
+            return $label . $content . $error;
         }
 
         protected function renderEditableFirstRangeContent()
@@ -80,6 +81,8 @@
                 'empty' => Yii::t('Default', '(None)'),
                 'id'    => $this->getFirstRangeEditableInputId(),
            );
+           $label        = $this->form->labelEx($this->model, 'firstRange',
+                                                array('for' => $this->getFirstRangeEditableInputId()));
            $content      = ZurmoHtml::dropDownList($this->getFirstRangeEditableInputName(),
                                                    $this->model->firstRange,
                                                    $this->model->getAvailableFirstRangeDataAndLabels(),
@@ -87,7 +90,7 @@
                                                    );
             $error       = $this->form->error($this->model, 'firstRange',
                            array('inputID' => $this->getFirstRangeEditableInputId()));
-            return $content . $error;
+            return $label . $content . $error;
         }
 
         protected function renderEditableSecondSeriesContent()
@@ -96,6 +99,8 @@
                 'empty' => Yii::t('Default', '(None)'),
                 'id'    => $this->getSecondSeriesEditableInputId(),
            );
+           $label        = $this->form->labelEx($this->model, 'secondSeries',
+                                                array('for' => $this->getSecondSeriesEditableInputId()));
            $content      = ZurmoHtml::dropDownList($this->getSecondSeriesEditableInputName(),
                                                    $this->model->secondSeries,
                                                    $this->model->getAvailableSecondSeriesDataAndLabels(),
@@ -103,7 +108,7 @@
                                                    );
             $error       = $this->form->error($this->model, 'secondSeries',
                            array('inputID' => $this->getSecondSeriesEditableInputId()));
-            return $content . $error;
+            return $label . $content . $error;
         }
 
         protected function renderEditableSecondRangeContent()
@@ -112,6 +117,8 @@
                 'empty' => Yii::t('Default', '(None)'),
                 'id'    => $this->getSecondRangeEditableInputId(),
            );
+           $label        = $this->form->labelEx($this->model, 'secondRange',
+                                                array('for' => $this->getSecondRangeEditableInputId()));
            $content      = ZurmoHtml::dropDownList($this->getSecondRangeEditableInputName(),
                                                    $this->model->firstRange,
                                                    $this->model->getAvailableSecondRangeDataAndLabels(),
@@ -119,7 +126,7 @@
                                                    );
             $error       = $this->form->error($this->model, 'firstRange',
                            array('inputID' => $this->getSecondRangeEditableInputId()));
-            return $content . $error;
+            return $label . $content . $error;
         }
 
 

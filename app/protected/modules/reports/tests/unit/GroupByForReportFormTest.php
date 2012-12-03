@@ -38,6 +38,14 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testGetDisplayLabelForAModifier()
+        {
+            $groupBy = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                      Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType = 'createdDateTime__Quarter';
+            $this->assertEquals('Created Date Time -(Quarter)',    $groupBy->getDisplayLabel());
+        }
+
         public function testSetAndGetGroupBy()
         {
             $groupBy                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
