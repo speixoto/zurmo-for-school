@@ -25,8 +25,8 @@ a#InstallPageView .AppContainer a,
 a#InstallPageView #install-form input[type="submit"],
 .configuration-list li a,
 a.configuration-list li a,
-table.configuration-list tr td:last-child a,
-atable.configuration-list tr td:last-child a,
+table.configuration-list td:last-child a,
+atable.configuration-list td:last-child a,
 .multiselect-holder input[type="button"],
 a.multiselect-holder input[type="button"],
 .EmailTestingButton,
@@ -51,8 +51,8 @@ a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton a#InstallPageView #install-form input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton .configuration-list li a,
 .AppContent.ImportWizardView #addExtraColumnButton a.configuration-list li a,
-.AppContent.ImportWizardView #addExtraColumnButton table.configuration-list tr td:last-child a,
-.AppContent.ImportWizardView #addExtraColumnButton atable.configuration-list tr td:last-child a,
+.AppContent.ImportWizardView #addExtraColumnButton table.configuration-list td:last-child a,
+.AppContent.ImportWizardView #addExtraColumnButton atable.configuration-list td:last-child a,
 .AppContent.ImportWizardView #addExtraColumnButton .multiselect-holder input[type="button"],
 .AppContent.ImportWizardView #addExtraColumnButton a.multiselect-holder input[type="button"],
 .AppContent.ImportWizardView #addExtraColumnButton .EmailTestingButton,
@@ -82,8 +82,8 @@ a.file-upload-box .ui-icon-plusthick,
 .addfileinput-button span a#InstallPageView #install-form input[type="submit"],
 .addfileinput-button span .configuration-list li a,
 .addfileinput-button span a.configuration-list li a,
-.addfileinput-button span table.configuration-list tr td:last-child a,
-.addfileinput-button span atable.configuration-list tr td:last-child a,
+.addfileinput-button span table.configuration-list td:last-child a,
+.addfileinput-button span atable.configuration-list td:last-child a,
 .addfileinput-button span .multiselect-holder input[type="button"],
 .addfileinput-button span a.multiselect-holder input[type="button"],
 .addfileinput-button span .EmailTestingButton,
@@ -211,8 +211,8 @@ a#InstallPageView .AppContainer a,
 a#InstallPageView #install-form input[type="submit"],
 .configuration-list li a,
 a.configuration-list li a,
-table.configuration-list tr td:last-child a,
-atable.configuration-list tr td:last-child a,
+table.configuration-list td:last-child a,
+atable.configuration-list td:last-child a,
 .multiselect-holder input[type="button"],
 a.multiselect-holder input[type="button"],
 .EmailTestingButton,
@@ -281,8 +281,8 @@ a#InstallPageView .AppContainer a:before,
 a#InstallPageView #install-form input[type="submit"]:before,
 .configuration-list li a:before,
 a.configuration-list li a:before,
-table.configuration-list tr td:last-child a:before,
-atable.configuration-list tr td:last-child a:before,
+table.configuration-list td:last-child a:before,
+atable.configuration-list td:last-child a:before,
 .multiselect-holder input[type="button"]:before,
 a.multiselect-holder input[type="button"]:before,
 .EmailTestingButton:before,
@@ -326,8 +326,8 @@ a#InstallPageView .AppContainer a:after,
 a#InstallPageView #install-form input[type="submit"]:after,
 .configuration-list li a:after,
 a.configuration-list li a:after,
-table.configuration-list tr td:last-child a:after,
-atable.configuration-list tr td:last-child a:after,
+table.configuration-list td:last-child a:after,
+atable.configuration-list td:last-child a:after,
 .multiselect-holder input[type="button"]:after,
 a.multiselect-holder input[type="button"]:after,
 .EmailTestingButton:after,
@@ -372,8 +372,8 @@ a#InstallPageView .AppContainer a.attachLoading.z-button,
 a#InstallPageView #install-form input[type="submit"].attachLoading.z-button,
 .configuration-list li a.attachLoading.z-button,
 a.configuration-list li a.attachLoading.z-button,
-table.configuration-list tr td:last-child a.attachLoading.z-button,
-atable.configuration-list tr td:last-child a.attachLoading.z-button,
+table.configuration-list td:last-child a.attachLoading.z-button,
+atable.configuration-list td:last-child a.attachLoading.z-button,
 .multiselect-holder input[type="button"].attachLoading.z-button,
 a.multiselect-holder input[type="button"].attachLoading.z-button,
 .EmailTestingButton.attachLoading.z-button,
@@ -416,8 +416,8 @@ a#InstallPageView .AppContainer a:not(.attachLoading) span,
 a#InstallPageView #install-form input[type="submit"]:not(.attachLoading) span,
 .configuration-list li a:not(.attachLoading) span,
 a.configuration-list li a:not(.attachLoading) span,
-table.configuration-list tr td:last-child a:not(.attachLoading) span,
-atable.configuration-list tr td:last-child a:not(.attachLoading) span,
+table.configuration-list td:last-child a:not(.attachLoading) span,
+atable.configuration-list td:last-child a:not(.attachLoading) span,
 .multiselect-holder input[type="button"]:not(.attachLoading) span,
 a.multiselect-holder input[type="button"]:not(.attachLoading) span,
 .EmailTestingButton:not(.attachLoading) span,
@@ -473,7 +473,7 @@ a.ModalGameNotification a:not(.attachLoading) span {
 #InstallPageView .AppContainer a.loading .z-spinner,
 #InstallPageView #install-form input[type="submit"].loading .z-spinner,
 .configuration-list li a.loading .z-spinner,
-table.configuration-list tr td:last-child a.loading .z-spinner,
+table.configuration-list td:last-child a.loading .z-spinner,
 .multiselect-holder input[type="button"].loading .z-spinner,
 .EmailTestingButton.loading .z-spinner,
 .file-upload-box .ui-icon-plusthick.loading .z-spinner,
@@ -495,7 +495,7 @@ table.configuration-list tr td:last-child a.loading .z-spinner,
 #InstallPageView .AppContainer a.loading .z-icon,
 #InstallPageView #install-form input[type="submit"].loading .z-icon,
 .configuration-list li a.loading .z-icon,
-table.configuration-list tr td:last-child a.loading .z-icon,
+table.configuration-list td:last-child a.loading .z-icon,
 .multiselect-holder input[type="button"].loading .z-icon,
 .EmailTestingButton.loading .z-icon,
 .file-upload-box .ui-icon-plusthick.loading .z-icon,
@@ -798,9 +798,8 @@ body.blue #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #acd064;
   text-shadow: 0px 1px 0 #acd064;
 }
-body.blue .ZeroModelsYetView .z-label,
+body.blue .ZeroModelsYetView a .z-label,
 body.blue .dashboard-link .z-label,
-body.blue .green-button .z-label,
 body.blue .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
@@ -819,7 +818,6 @@ body.blue .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.blue .ZeroModelsYetView a:hover .z-label,
 body.blue .zButton:hover .z-label,
 body.blue .z-button:hover .z-label,
 body.blue .zButton:active .z-label,
@@ -841,7 +839,6 @@ body.blue .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.blue .ZeroModelsYetView a:active .z-label,
 body.blue .zButton:active .z-label,
 body.blue .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -876,6 +873,7 @@ body.blue .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
+body.blue .green-button .z-label,
 body.blue .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -894,6 +892,7 @@ body.blue .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.blue .green-button:not(.attachLoading):hover .z-label,
 body.blue .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
@@ -912,6 +911,7 @@ body.blue .dashboard-link:not(.attachLoading):hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.blue .green-button:active .z-label,
 body.blue .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -1201,9 +1201,8 @@ body.brown #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #64c1bd;
   text-shadow: 0px 1px 0 #64c1bd;
 }
-body.brown .ZeroModelsYetView .z-label,
+body.brown .ZeroModelsYetView a .z-label,
 body.brown .dashboard-link .z-label,
-body.brown .green-button .z-label,
 body.brown .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
@@ -1222,7 +1221,6 @@ body.brown .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.brown .ZeroModelsYetView a:hover .z-label,
 body.brown .zButton:hover .z-label,
 body.brown .z-button:hover .z-label,
 body.brown .zButton:active .z-label,
@@ -1244,7 +1242,6 @@ body.brown .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.brown .ZeroModelsYetView a:active .z-label,
 body.brown .zButton:active .z-label,
 body.brown .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1279,6 +1276,7 @@ body.brown .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
+body.brown .green-button .z-label,
 body.brown .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -1297,6 +1295,7 @@ body.brown .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.brown .green-button:not(.attachLoading):hover .z-label,
 body.brown .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
@@ -1315,6 +1314,7 @@ body.brown .dashboard-link:not(.attachLoading):hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.brown .green-button:active .z-label,
 body.brown .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -1604,9 +1604,8 @@ body.lime #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #d0d9b1;
   text-shadow: 0px 1px 0 #d0d9b1;
 }
-body.lime .ZeroModelsYetView .z-label,
+body.lime .ZeroModelsYetView a .z-label,
 body.lime .dashboard-link .z-label,
-body.lime .green-button .z-label,
 body.lime .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
@@ -1625,7 +1624,6 @@ body.lime .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.lime .ZeroModelsYetView a:hover .z-label,
 body.lime .zButton:hover .z-label,
 body.lime .z-button:hover .z-label,
 body.lime .zButton:active .z-label,
@@ -1647,7 +1645,6 @@ body.lime .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.lime .ZeroModelsYetView a:active .z-label,
 body.lime .zButton:active .z-label,
 body.lime .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -1682,6 +1679,7 @@ body.lime .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
+body.lime .green-button .z-label,
 body.lime .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -1700,6 +1698,7 @@ body.lime .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.lime .green-button:not(.attachLoading):hover .z-label,
 body.lime .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
@@ -1718,6 +1717,7 @@ body.lime .dashboard-link:not(.attachLoading):hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.lime .green-button:active .z-label,
 body.lime .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -2007,9 +2007,8 @@ body.cherry #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b93e51;
   text-shadow: 0px 1px 0 #b93e51;
 }
-body.cherry .ZeroModelsYetView .z-label,
+body.cherry .ZeroModelsYetView a .z-label,
 body.cherry .dashboard-link .z-label,
-body.cherry .green-button .z-label,
 body.cherry .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
@@ -2028,7 +2027,6 @@ body.cherry .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.cherry .ZeroModelsYetView a:hover .z-label,
 body.cherry .zButton:hover .z-label,
 body.cherry .z-button:hover .z-label,
 body.cherry .zButton:active .z-label,
@@ -2050,7 +2048,6 @@ body.cherry .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.cherry .ZeroModelsYetView a:active .z-label,
 body.cherry .zButton:active .z-label,
 body.cherry .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -2085,6 +2082,7 @@ body.cherry .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
+body.cherry .green-button .z-label,
 body.cherry .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -2103,6 +2101,7 @@ body.cherry .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.cherry .green-button:not(.attachLoading):hover .z-label,
 body.cherry .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
@@ -2121,6 +2120,7 @@ body.cherry .dashboard-link:not(.attachLoading):hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.cherry .green-button:active .z-label,
 body.cherry .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -2410,9 +2410,8 @@ body.turquoise #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
 }
-body.turquoise .ZeroModelsYetView .z-label,
+body.turquoise .ZeroModelsYetView a .z-label,
 body.turquoise .dashboard-link .z-label,
-body.turquoise .green-button .z-label,
 body.turquoise .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
@@ -2431,7 +2430,6 @@ body.turquoise .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.turquoise .ZeroModelsYetView a:hover .z-label,
 body.turquoise .zButton:hover .z-label,
 body.turquoise .z-button:hover .z-label,
 body.turquoise .zButton:active .z-label,
@@ -2453,7 +2451,6 @@ body.turquoise .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.turquoise .ZeroModelsYetView a:active .z-label,
 body.turquoise .zButton:active .z-label,
 body.turquoise .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -2488,6 +2485,7 @@ body.turquoise .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
+body.turquoise .green-button .z-label,
 body.turquoise .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -2506,6 +2504,7 @@ body.turquoise .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.turquoise .green-button:not(.attachLoading):hover .z-label,
 body.turquoise .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
@@ -2524,6 +2523,7 @@ body.turquoise .dashboard-link:not(.attachLoading):hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.turquoise .green-button:active .z-label,
 body.turquoise .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -2813,9 +2813,8 @@ body.violet #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b8c2e8;
   text-shadow: 0px 1px 0 #b8c2e8;
 }
-body.violet .ZeroModelsYetView .z-label,
+body.violet .ZeroModelsYetView a .z-label,
 body.violet .dashboard-link .z-label,
-body.violet .green-button .z-label,
 body.violet .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
@@ -2834,7 +2833,6 @@ body.violet .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.violet .ZeroModelsYetView a:hover .z-label,
 body.violet .zButton:hover .z-label,
 body.violet .z-button:hover .z-label,
 body.violet .zButton:active .z-label,
@@ -2856,7 +2854,6 @@ body.violet .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.violet .ZeroModelsYetView a:active .z-label,
 body.violet .zButton:active .z-label,
 body.violet .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -2891,6 +2888,7 @@ body.violet .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
+body.violet .green-button .z-label,
 body.violet .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -2909,6 +2907,7 @@ body.violet .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.violet .green-button:not(.attachLoading):hover .z-label,
 body.violet .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
@@ -2927,6 +2926,7 @@ body.violet .dashboard-link:not(.attachLoading):hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.violet .green-button:active .z-label,
 body.violet .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -3216,9 +3216,8 @@ body.honey #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #bcca67;
   text-shadow: 0px 1px 0 #bcca67;
 }
-body.honey .ZeroModelsYetView .z-label,
+body.honey .ZeroModelsYetView a .z-label,
 body.honey .dashboard-link .z-label,
-body.honey .green-button .z-label,
 body.honey .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
@@ -3237,7 +3236,6 @@ body.honey .attachLoading .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
-body.honey .ZeroModelsYetView a:hover .z-label,
 body.honey .zButton:hover .z-label,
 body.honey .z-button:hover .z-label,
 body.honey .zButton:active .z-label,
@@ -3259,7 +3257,6 @@ body.honey .z-button:active .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
-body.honey .ZeroModelsYetView a:active .z-label,
 body.honey .zButton:active .z-label,
 body.honey .z-button:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
@@ -3294,6 +3291,7 @@ body.honey .configuration-list li a:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
+body.honey .green-button .z-label,
 body.honey .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -3312,6 +3310,7 @@ body.honey .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.honey .green-button:not(.attachLoading):hover .z-label,
 body.honey .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
@@ -3330,6 +3329,7 @@ body.honey .dashboard-link:not(.attachLoading):hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.honey .green-button:active .z-label,
 body.honey .dashboard-link:active .z-label {
   -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
   -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF !important;
@@ -9216,13 +9216,13 @@ table.configuration-list h4 {
 table.configuration-list tbody > tr > td {
   position: relative !important;
 }
-table.configuration-list tr td:last-child a {
+table.configuration-list td:last-child a {
   float: right;
 }
-table.configuration-list tr td:last-child a .z-label {
+table.configuration-list td:last-child a .z-label {
   padding: 0 15px;
 }
-table.configuration-list tr td:last-child a .z-label:before {
+table.configuration-list td:last-child a .z-label:before {
   content: "n";
   font-weight: normal;
   font-size: 20px;
