@@ -209,8 +209,9 @@
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/jquery.truncateText.js');
-            return '<!doctype html>' .
-                   '<html lang="en">';
+            return '<!DOCTYPE html>' .
+                   '<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->' .
+                   '<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->';
         }
 
         /**

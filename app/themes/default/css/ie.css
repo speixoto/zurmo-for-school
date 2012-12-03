@@ -296,7 +296,7 @@ input[type="button"] {
 .form-toolbar input[type="button"] span {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-#ie-8 .AppContainer {
+.ie8 .AppContainer {
   top: -12px;
   left: -12px;
 }

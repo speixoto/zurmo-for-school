@@ -147,12 +147,18 @@ table.configuration-list{
     tr td:last-child a{
         ++.z-button;
         float:right;
-        &:before{
+        .z-label{
+            .z-label-smaller();
+        }
+        .z-label:before{
             content: "n";
-            .symbly(16px);
+            .symbly(20px);
+            color: #666;
             margin-right:5px;
             position:relative;
-            top:0px;
+            top:-2px;
+            font-weight: normal !important;
+            vertical-align: middle;
         }
     }
 }
