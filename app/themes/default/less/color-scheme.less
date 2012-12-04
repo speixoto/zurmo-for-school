@@ -288,6 +288,58 @@
     #layout-container .ui-widget-header .ui-state-active{
         .b-shadow(0 0 1px 1px @themeColor);
     }
+
+    .action-take{
+        @topColor: #ffa660;
+        @bottomColor: #ffad43;
+        .z-label{
+            #gradient > .vertical(@topColor, @bottomColor ) !important; //yellow
+        }
+        &:hover .z-label{
+            color: darken(@topColor, 40%) !important;
+            #gradient > .vertical( @topColor, darken(@bottomColor, 10%) ) !important;
+            .t-shadow( 0px 1px 0 lighten(@topColor, 15%) ) !important;
+        }
+    }
+
+    .action-complete{
+        @topColor: #97c43d;
+        @bottomColor: #6fa82d;
+        .z-label{
+            #gradient > .vertical(@topColor, @bottomColor ) !important; //green
+        }
+        &:hover .z-label{
+            color: darken(@topColor, 40%) !important;
+            #gradient > .vertical( @topColor, darken(@bottomColor, 10%) ) !important;
+            .t-shadow( 0px 1px 0 lighten(@topColor, 15%) ) !important;
+        }
+    }
+
+    .action-accept{
+        @topColor: #97c43d;
+        @bottomColor: #6fa82d;
+        .z-label{
+            #gradient > .vertical(@topColor, @bottomColor ) !important; //green
+        }
+        &:hover .z-label{
+            color: darken(@topColor, 40%) !important;
+            #gradient > .vertical( @topColor, darken(@bottomColor, 10%) ) !important;
+            .t-shadow( 0px 1px 0 lighten(@topColor, 15%) ) !important;
+        }
+    }
+
+    .action-reject{
+        @topColor: #c43d53;
+        @bottomColor: #a82d31;
+        .z-label{
+            #gradient > .vertical(@topColor, @bottomColor ) !important; //red
+        }
+        &:hover .z-label{
+            color: darken(@topColor, 40%) !important;
+            #gradient > .vertical( @topColor, darken(@bottomColor, 10%) ) !important;
+            .t-shadow( 0px 1px 0 lighten(@topColor, 15%) ) !important;
+        }
+    }
 }
 
 body.blue{
