@@ -136,14 +136,6 @@ a.ui-datepicker .ui-datepicker-close,
 .AppContent.ImportWizardView #addExtraColumnButton a.ui-datepicker .ui-datepicker-close,
 .addfileinput-button span .ui-datepicker .ui-datepicker-close,
 .addfileinput-button span a.ui-datepicker .ui-datepicker-close,
-.add-custom-field .configure-custom-field-button,
-a.add-custom-field .configure-custom-field-button,
-.default-btn .add-custom-field .configure-custom-field-button,
-.default-btn a.add-custom-field .configure-custom-field-button,
-.AppContent.ImportWizardView #addExtraColumnButton .add-custom-field .configure-custom-field-button,
-.AppContent.ImportWizardView #addExtraColumnButton a.add-custom-field .configure-custom-field-button,
-.addfileinput-button span .add-custom-field .configure-custom-field-button,
-.addfileinput-button span a.add-custom-field .configure-custom-field-button,
 .designer-toolbar input[type="submit"],
 a.designer-toolbar input[type="submit"],
 .default-btn .designer-toolbar input[type="submit"],
@@ -266,8 +258,6 @@ a.file-upload-box .ui-icon-plusthick,
 a.ui-datepicker .ui-datepicker-current,
 .ui-datepicker .ui-datepicker-close,
 a.ui-datepicker .ui-datepicker-close,
-.add-custom-field .configure-custom-field-button,
-a.add-custom-field .configure-custom-field-button,
 .designer-toolbar input[type="submit"],
 a.designer-toolbar input[type="submit"],
 .AttributeEditView form div table #customFieldDataData_AddInputButton,
@@ -336,8 +326,6 @@ a.file-upload-box .ui-icon-plusthick:before,
 a.ui-datepicker .ui-datepicker-current:before,
 .ui-datepicker .ui-datepicker-close:before,
 a.ui-datepicker .ui-datepicker-close:before,
-.add-custom-field .configure-custom-field-button:before,
-a.add-custom-field .configure-custom-field-button:before,
 .designer-toolbar input[type="submit"]:before,
 a.designer-toolbar input[type="submit"]:before,
 .AttributeEditView form div table #customFieldDataData_AddInputButton:before,
@@ -381,8 +369,6 @@ a.file-upload-box .ui-icon-plusthick:after,
 a.ui-datepicker .ui-datepicker-current:after,
 .ui-datepicker .ui-datepicker-close:after,
 a.ui-datepicker .ui-datepicker-close:after,
-.add-custom-field .configure-custom-field-button:after,
-a.add-custom-field .configure-custom-field-button:after,
 .designer-toolbar input[type="submit"]:after,
 a.designer-toolbar input[type="submit"]:after,
 .AttributeEditView form div table #customFieldDataData_AddInputButton:after,
@@ -427,8 +413,6 @@ a.file-upload-box .ui-icon-plusthick.attachLoading.z-button,
 a.ui-datepicker .ui-datepicker-current.attachLoading.z-button,
 .ui-datepicker .ui-datepicker-close.attachLoading.z-button,
 a.ui-datepicker .ui-datepicker-close.attachLoading.z-button,
-.add-custom-field .configure-custom-field-button.attachLoading.z-button,
-a.add-custom-field .configure-custom-field-button.attachLoading.z-button,
 .designer-toolbar input[type="submit"].attachLoading.z-button,
 a.designer-toolbar input[type="submit"].attachLoading.z-button,
 .AttributeEditView form div table #customFieldDataData_AddInputButton.attachLoading.z-button,
@@ -471,8 +455,6 @@ a.file-upload-box .ui-icon-plusthick:not(.attachLoading) span,
 a.ui-datepicker .ui-datepicker-current:not(.attachLoading) span,
 .ui-datepicker .ui-datepicker-close:not(.attachLoading) span,
 a.ui-datepicker .ui-datepicker-close:not(.attachLoading) span,
-.add-custom-field .configure-custom-field-button:not(.attachLoading) span,
-a.add-custom-field .configure-custom-field-button:not(.attachLoading) span,
 .designer-toolbar input[type="submit"]:not(.attachLoading) span,
 a.designer-toolbar input[type="submit"]:not(.attachLoading) span,
 .AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading) span,
@@ -569,7 +551,6 @@ table.configuration-list td:last-child a.loading .z-spinner,
 .file-upload-box .ui-icon-plusthick.loading .z-spinner,
 .ui-datepicker .ui-datepicker-current.loading .z-spinner,
 .ui-datepicker .ui-datepicker-close.loading .z-spinner,
-.add-custom-field .configure-custom-field-button.loading .z-spinner,
 .designer-toolbar input[type="submit"].loading .z-spinner,
 .AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-spinner,
 #customFieldDataData_AddInputButton.loading .z-spinner,
@@ -591,7 +572,6 @@ table.configuration-list td:last-child a.loading .z-icon,
 .file-upload-box .ui-icon-plusthick.loading .z-icon,
 .ui-datepicker .ui-datepicker-current.loading .z-icon,
 .ui-datepicker .ui-datepicker-close.loading .z-icon,
-.add-custom-field .configure-custom-field-button.loading .z-icon,
 .designer-toolbar input[type="submit"].loading .z-icon,
 .AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-icon,
 #customFieldDataData_AddInputButton.loading .z-icon,
@@ -11204,7 +11184,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding-right: 15px;
 }
 .add-custom-field > div {
-  padding: 15px 15px 15px 15px;
+  width: 100%;
+  padding: 15px 15px 30px 15px;
   position: relative;
 }
 .add-custom-field .hasDropDown {
@@ -11729,6 +11710,23 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .field-instructions table {
   border-top: none !important;
 }
+#available-fields {
+  margin-top: 15px;
+  border: 1px solid #DFDFDF;
+  border-collapse: collapse;
+  border-spacing: 1px;
+  margin-bottom: 10px;
+}
+#available-fields th {
+  font-weight: bold;
+  background: url(../images/table-items-header.png) left top repeat-x;
+}
+#available-fields th,
+#available-fields td {
+  border: 1px solid #DFDFDF;
+  vertical-align: middle;
+  padding: 10px 5px !important;
+}
 /*Picklist Creation*/
 #picklist-values {
   margin: 15px 0;
@@ -11841,6 +11839,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-align: left;
   word-wrap: break-word;
   overflow: hidden;
+  line-height: 140%;
 }
 .ui-tooltip-titlebar {
   position: relative;

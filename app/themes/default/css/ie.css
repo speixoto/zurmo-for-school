@@ -224,6 +224,7 @@ a.z-button:not(.attachLoading) span {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
+  font-size: 11px;
 }
 .z-label-smaller {
   padding: 0 15px;
