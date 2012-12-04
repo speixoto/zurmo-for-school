@@ -11226,15 +11226,19 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding-left: 15px;
   padding-right: 15px;
 }
-.add-custom-field > div {
+.panel-buffer {
+  padding: 15px;
+}
+.add-custom-field .panel-buffer {
+  height: 30px;
+}
+.add-custom-field .panel-buffer > div {
   width: 100%;
-  padding: 15px 15px 30px 15px;
-  position: relative;
+  float: left;
 }
 .add-custom-field .hasDropDown {
-  width: 86%;
-  margin-right: 15px;
-  float: left;
+  margin-right: 130px;
+  width: auto;
 }
 .add-custom-field .configure-custom-field-button {
   position: relative;
@@ -11248,6 +11252,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   margin-right: 5px;
   position: relative;
   top: 0px;
+}
+#attributeTypeNameButton {
+  margin: 0 0 0 -115px;
+  float: right;
+  clear: right;
 }
 .lead-conversion-radiobutton {
   display: block;

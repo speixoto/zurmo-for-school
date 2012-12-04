@@ -87,7 +87,7 @@
         {
             $content  = '<table>';
             $content .= '<colgroup>';
-            $content .= '<col style="width:20%" /><col style="width:20%" /><col style="width:40%" /><col style="width:20%" />';
+            $content .= '<col style="width:15%" /><col style="width:15%" /><col style="width:50%" /><col style="width:20%" />';
             $content .= '</colgroup>';
             $content .= '<tbody>';
             $content .= '<tr><th>' . $this->renderActiveHeaderContent() . '</th>';
