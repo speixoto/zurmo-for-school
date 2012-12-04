@@ -9742,6 +9742,9 @@ table.configuration-list td:last-child a .z-label:before {
 #currency-collection-form .view-toolbar-container {
   margin-bottom: 5px;
 }
+#currency-collection-form .checkbox-column {
+  padding-left: 15px !important;
+}
 #CurrenciesCollectionView .form form {
   padding: 0;
 }

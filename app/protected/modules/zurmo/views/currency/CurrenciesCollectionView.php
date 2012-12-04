@@ -100,7 +100,7 @@
             {
                 $route = $this->moduleId . '/' . $this->controllerId . '/delete/';
                 $content .= '<tr>';
-                $content .= '<td>' . self::renderActiveCheckBoxContent($form, $currency) . '</td>';
+                $content .= '<td class="checkbox-column">' . self::renderActiveCheckBoxContent($form, $currency) . '</td>';
                 $content .= '<td>' . $currency->code . '</td>';
                 $content .= '<td>' . $currency->rateToBase . '</td>';
                 $content .= '<td>';
@@ -110,8 +110,8 @@
                 }
                 else
                 {
-                    $content .= ZurmoHtml::link(Yii::t('Default', 'Remove'), Yii::app()->createUrl($route,
-                                            array('id' => $currency->id)));
+                    $content .= ZurmoHtml::link(Yii::t('Default', 'Remove'),
+                      Yii::app()->createUrl($route, array('id' => $currency->id)), array('class' => 'z-link'));
                 }
                 $content .= '</td>';
                 $content .= '</tr>';
