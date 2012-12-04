@@ -534,6 +534,8 @@ a.ModalGameNotification a:not(.attachLoading) span {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
+  position: relative;
+  z-index: 1;
 }
 .z-label-smaller {
   padding: 0 15px;
@@ -557,7 +559,7 @@ table.configuration-list td:last-child a.loading .z-spinner,
 .ModalGameNotification a.loading .z-spinner {
   display: inline-block;
   position: absolute;
-  margin: 2px 0 0 6px;
+  margin: 1px 0 0 4px;
 }
 .zButton.loading .z-icon,
 .z-button.loading .z-icon,
@@ -579,10 +581,12 @@ table.configuration-list td:last-child a.loading .z-icon,
   display: none;
 }
 .z-spinner {
+  z-index: 10;
   width: 23px;
   height: 23px;
   display: none;
-  float: left;
+  position: absolute;
+  left: 0px;
 }
 .z-spinner.loading {
   display: block !important;
@@ -723,6 +727,7 @@ body.blue #clear-search-linkmodal {
 body.blue #notifications-flyout .single-notification h4,
 body.blue .view-toolbar a:hover,
 body.blue .view-toolbar a:active,
+body.blue .view-toolbar a.active,
 body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
 body.blue #StickyListMenu > li > a:hover > span,
@@ -744,7 +749,8 @@ body.blue .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.blue #AboutView p a,
 body.blue #AboutView ul a,
 body.blue .back-to-app-menu-item span,
-body.blue .breadcrumbs a {
+body.blue .breadcrumbs a,
+body.blue #clear-search-link {
   color: #282a76 !important;
 }
 body.blue .portlet-toolbar .icon-create:hover,
@@ -759,8 +765,7 @@ body.blue #ErrorPageView a,
 body.blue .ui-tooltip-default .ui-tooltip-icon,
 body.blue .zLink,
 body.blue .z-link,
-body.blue .lead-conversion-actions a,
-body.blue #clear-search-link {
+body.blue .lead-conversion-actions a {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1125,6 +1130,7 @@ body.brown #clear-search-linkmodal {
 body.brown #notifications-flyout .single-notification h4,
 body.brown .view-toolbar a:hover,
 body.brown .view-toolbar a:active,
+body.brown .view-toolbar a.active,
 body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
 body.brown #StickyListMenu > li > a:hover > span,
@@ -1146,7 +1152,8 @@ body.brown .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.brown #AboutView p a,
 body.brown #AboutView ul a,
 body.brown .back-to-app-menu-item span,
-body.brown .breadcrumbs a {
+body.brown .breadcrumbs a,
+body.brown #clear-search-link {
   color: #547980 !important;
 }
 body.brown .portlet-toolbar .icon-create:hover,
@@ -1161,8 +1168,7 @@ body.brown #ErrorPageView a,
 body.brown .ui-tooltip-default .ui-tooltip-icon,
 body.brown .zLink,
 body.brown .z-link,
-body.brown .lead-conversion-actions a,
-body.brown #clear-search-link {
+body.brown .lead-conversion-actions a {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -1527,6 +1533,7 @@ body.lime #clear-search-linkmodal {
 body.lime #notifications-flyout .single-notification h4,
 body.lime .view-toolbar a:hover,
 body.lime .view-toolbar a:active,
+body.lime .view-toolbar a.active,
 body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
 body.lime #StickyListMenu > li > a:hover > span,
@@ -1548,7 +1555,8 @@ body.lime .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.lime #AboutView p a,
 body.lime #AboutView ul a,
 body.lime .back-to-app-menu-item span,
-body.lime .breadcrumbs a {
+body.lime .breadcrumbs a,
+body.lime #clear-search-link {
   color: #2b434f !important;
 }
 body.lime .portlet-toolbar .icon-create:hover,
@@ -1563,8 +1571,7 @@ body.lime #ErrorPageView a,
 body.lime .ui-tooltip-default .ui-tooltip-icon,
 body.lime .zLink,
 body.lime .z-link,
-body.lime .lead-conversion-actions a,
-body.lime #clear-search-link {
+body.lime .lead-conversion-actions a {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -1929,6 +1936,7 @@ body.cherry #clear-search-linkmodal {
 body.cherry #notifications-flyout .single-notification h4,
 body.cherry .view-toolbar a:hover,
 body.cherry .view-toolbar a:active,
+body.cherry .view-toolbar a.active,
 body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
 body.cherry #StickyListMenu > li > a:hover > span,
@@ -1950,7 +1958,8 @@ body.cherry .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.cherry #AboutView p a,
 body.cherry #AboutView ul a,
 body.cherry .back-to-app-menu-item span,
-body.cherry .breadcrumbs a {
+body.cherry .breadcrumbs a,
+body.cherry #clear-search-link {
   color: #6c8092 !important;
 }
 body.cherry .portlet-toolbar .icon-create:hover,
@@ -1965,8 +1974,7 @@ body.cherry #ErrorPageView a,
 body.cherry .ui-tooltip-default .ui-tooltip-icon,
 body.cherry .zLink,
 body.cherry .z-link,
-body.cherry .lead-conversion-actions a,
-body.cherry #clear-search-link {
+body.cherry .lead-conversion-actions a {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -2331,6 +2339,7 @@ body.turquoise #clear-search-linkmodal {
 body.turquoise #notifications-flyout .single-notification h4,
 body.turquoise .view-toolbar a:hover,
 body.turquoise .view-toolbar a:active,
+body.turquoise .view-toolbar a.active,
 body.turquoise .portlet-toolbar .icon-delete:before,
 body.turquoise .portlet-toolbar .icon-edit:before,
 body.turquoise #StickyListMenu > li > a:hover > span,
@@ -2352,7 +2361,8 @@ body.turquoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.turquoise #AboutView p a,
 body.turquoise #AboutView ul a,
 body.turquoise .back-to-app-menu-item span,
-body.turquoise .breadcrumbs a {
+body.turquoise .breadcrumbs a,
+body.turquoise #clear-search-link {
   color: #447799 !important;
 }
 body.turquoise .portlet-toolbar .icon-create:hover,
@@ -2367,8 +2377,7 @@ body.turquoise #ErrorPageView a,
 body.turquoise .ui-tooltip-default .ui-tooltip-icon,
 body.turquoise .zLink,
 body.turquoise .z-link,
-body.turquoise .lead-conversion-actions a,
-body.turquoise #clear-search-link {
+body.turquoise .lead-conversion-actions a {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -2733,6 +2742,7 @@ body.violet #clear-search-linkmodal {
 body.violet #notifications-flyout .single-notification h4,
 body.violet .view-toolbar a:hover,
 body.violet .view-toolbar a:active,
+body.violet .view-toolbar a.active,
 body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
 body.violet #StickyListMenu > li > a:hover > span,
@@ -2754,7 +2764,8 @@ body.violet .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.violet #AboutView p a,
 body.violet #AboutView ul a,
 body.violet .back-to-app-menu-item span,
-body.violet .breadcrumbs a {
+body.violet .breadcrumbs a,
+body.violet #clear-search-link {
   color: #4a3970 !important;
 }
 body.violet .portlet-toolbar .icon-create:hover,
@@ -2769,8 +2780,7 @@ body.violet #ErrorPageView a,
 body.violet .ui-tooltip-default .ui-tooltip-icon,
 body.violet .zLink,
 body.violet .z-link,
-body.violet .lead-conversion-actions a,
-body.violet #clear-search-link {
+body.violet .lead-conversion-actions a {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -3135,6 +3145,7 @@ body.honey #clear-search-linkmodal {
 body.honey #notifications-flyout .single-notification h4,
 body.honey .view-toolbar a:hover,
 body.honey .view-toolbar a:active,
+body.honey .view-toolbar a.active,
 body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
 body.honey #StickyListMenu > li > a:hover > span,
@@ -3156,7 +3167,8 @@ body.honey .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.honey #AboutView p a,
 body.honey #AboutView ul a,
 body.honey .back-to-app-menu-item span,
-body.honey .breadcrumbs a {
+body.honey .breadcrumbs a,
+body.honey #clear-search-link {
   color: #46201c !important;
 }
 body.honey .portlet-toolbar .icon-create:hover,
@@ -3171,8 +3183,7 @@ body.honey #ErrorPageView a,
 body.honey .ui-tooltip-default .ui-tooltip-icon,
 body.honey .zLink,
 body.honey .z-link,
-body.honey .lead-conversion-actions a,
-body.honey #clear-search-link {
+body.honey .lead-conversion-actions a {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -3645,6 +3656,9 @@ section {
 }
 #LoginView .error {
   margin-bottom: 40px !important;
+}
+#Login {
+  margin-left: 0;
 }
 .background-1 {
   background: #ffffff url(../images/landscape-1.png) left bottom repeat-x;
@@ -7507,6 +7521,11 @@ div.wide.form label.hasCheckBox {
   -ms-text-shadow: none;
   text-shadow: none;
 }
+/*=Madlib*/
+.mad-lib input {
+  width: auto !important;
+  margin: auto 10px !important;
+}
 /*=Temp Addreess Fields*/
 div.overlay-label-field {
   position: relative;
@@ -9246,6 +9265,7 @@ a.remove .icon:after {
   right: 15px;
   top: 14px;
   vertical-align: middle;
+  margin: 0;
 }
 .configuration-list li a .z-label {
   padding: 0 15px;
@@ -9283,6 +9303,7 @@ table.configuration-list tbody > tr > td {
 }
 table.configuration-list td:last-child a {
   float: right;
+  margin: 0;
 }
 table.configuration-list td:last-child a .z-label {
   padding: 0 15px;
@@ -9299,11 +9320,11 @@ table.configuration-list td:last-child a .z-label:before {
   font-weight: normal !important;
   vertical-align: middle;
 }
-#DevelopmentMenuView .configuration-list li a:before {
+#DevelopmentMenuView .configuration-list li span:before {
   content: "";
   margin-right: 0px;
 }
-#DevelopmentMenuView .configuration-list li a:after {
+#DevelopmentMenuView .configuration-list li span:after {
   content: "7";
   font-weight: normal;
   font-size: 18px;
@@ -9626,6 +9647,9 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #LanguagesCollectionView tr:last-child td {
   border-bottom: none !important;
+}
+#LanguagesCollectionView .checkbox-column {
+  padding-left: 15px !important;
 }
 /*Jobs*/
 #JobsCollectionView .form form {

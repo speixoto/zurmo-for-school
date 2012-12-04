@@ -177,7 +177,8 @@ a.z-button {
     line-height:25px;
     display: inline-block;
     .radius( 3px );
-    .smaller();
+    position:relative;
+    z-index:1;
 }
 
 .z-label-smaller{
@@ -189,7 +190,7 @@ a.z-button {
     .z-spinner{
         display:inline-block;
         position: absolute;
-        margin: 2px 0 0 6px;
+        margin: 1px 0 0 4px;
     }
     .z-icon{
         display:none;
@@ -197,10 +198,12 @@ a.z-button {
 }
 
 .z-spinner{
-	 width:23px;
-	 height:23px;
-	 display:none;
-	 float:left;
+    z-index:10;
+	width:23px;
+	height:23px;
+    display:none;
+    position:absolute;
+    left:0px;
 }
 
 .z-spinner.loading{
