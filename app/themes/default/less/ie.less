@@ -9,11 +9,12 @@
         height:26px;
     }
 }
-
+/*
 input[type="submit"],
 input[type="button"]{
 	height:26px;
 }
+*/
 
 /*Top Right Create New Menu*/
 #ShortcutsMenu > li > a {
@@ -30,7 +31,7 @@ input[type="button"]{
 	span{
 		font-size:38px !important;
 		letter-spacing: -25px !important;
-		:before{
+		&:before{
 			top:10px !important;
 		}
 	}
@@ -46,7 +47,7 @@ input[type="button"]{
     }
     select{
         z-index: 5;
-        padding-right:5px;
+        padding-right:15px;
         background: #fff url(../images/dropdown-arrow.png) 100% 0 no-repeat;
     }
 }
@@ -81,9 +82,6 @@ input[type="button"]{
     margin:0 10px;
     text-indent:0;
     display:inline-block;
-    span{
-        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-    }
 }
 
 .ie8{

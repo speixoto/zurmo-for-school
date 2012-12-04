@@ -6,6 +6,8 @@
 /*Imports*/
 @import 'color-scheme.less';
 
+//@import 'ie.less';
+
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
     src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -1580,7 +1582,7 @@ td.empty{
     input[type="checkbox"]{
         margin:0 0 10px 0 !important;
         .b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
-        /*  */.ie-shadow(#999999, 1, 15);
+        //.ie-shadow(#999999, 1, 15);
     }
     input[type="text"],
     input[type="password"],
@@ -1600,6 +1602,7 @@ td.empty{
         color:#666 !important;
         text-indent:6px;
         line-height: 24px;
+        height:26px;
         .b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
         .ie-shadow(#999999, 1, 15);
         width:100%;

@@ -30,17 +30,13 @@
         {
             return 'Create';
         }
-
-        public function render()
-        {
-            return ZurmoHtml::link($this->getDefaultLabel(), $this->route, array('class' => 'z-button green-button'));
-        }
-
+        
         protected function getDefaultLabel()
         {
-            return ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Create'));
+            //return ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Create'));
+            return Yii::t('Default', 'Create');
         }
-
+        
         protected function getDefaultRoute()
         {
             $params = array();

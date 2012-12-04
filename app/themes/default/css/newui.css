@@ -14,23 +14,50 @@
 .z-button,
 a.zButton,
 a.z-button,
+.default-btn .modal-view-toolbar a,
+.default-btn .modal-view-toolbar input[type="submit"],
+.default-btn .modal-view-toolbar input[type="button"],
+.default-btn .form-toolbar a,
+.default-btn .form-toolbar input[type="submit"],
+.default-btn .form-toolbar input[type="button"],
+.default-btn .zButton,
+.default-btn .z-button,
+.default-btn a.zButton,
+.default-btn a.z-button,
+.default-btn,
 .z-label,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
+.default-btn .search-form-tools input[type="submit"],
+.default-btn a.search-form-tools input[type="submit"],
 #progressBar-links a,
 a#progressBar-links a,
+.default-btn #progressBar-links a,
+.default-btn a#progressBar-links a,
 #InstallPageView .AppContainer a,
 a#InstallPageView .AppContainer a,
+.default-btn #InstallPageView .AppContainer a,
+.default-btn a#InstallPageView .AppContainer a,
 #InstallPageView #install-form input[type="submit"],
 a#InstallPageView #install-form input[type="submit"],
+.default-btn #InstallPageView #install-form input[type="submit"],
+.default-btn a#InstallPageView #install-form input[type="submit"],
 .configuration-list li a,
 a.configuration-list li a,
+.default-btn .configuration-list li a,
+.default-btn a.configuration-list li a,
 table.configuration-list td:last-child a,
 atable.configuration-list td:last-child a,
+.default-btn table.configuration-list td:last-child a,
+.default-btn atable.configuration-list td:last-child a,
 .multiselect-holder input[type="button"],
 a.multiselect-holder input[type="button"],
+.default-btn .multiselect-holder input[type="button"],
+.default-btn a.multiselect-holder input[type="button"],
 .EmailTestingButton,
 a.EmailTestingButton,
+.default-btn .EmailTestingButton,
+.default-btn a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton .modal-view-toolbar a,
 .AppContent.ImportWizardView #addExtraColumnButton .modal-view-toolbar input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton .modal-view-toolbar input[type="button"],
@@ -60,6 +87,8 @@ a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton,
 .file-upload-box .ui-icon-plusthick,
 a.file-upload-box .ui-icon-plusthick,
+.default-btn .file-upload-box .ui-icon-plusthick,
+.default-btn a.file-upload-box .ui-icon-plusthick,
 .AppContent.ImportWizardView #addExtraColumnButton .file-upload-box .ui-icon-plusthick,
 .AppContent.ImportWizardView #addExtraColumnButton a.file-upload-box .ui-icon-plusthick,
 .addfileinput-button span .modal-view-toolbar a,
@@ -93,42 +122,56 @@ a.file-upload-box .ui-icon-plusthick,
 .addfileinput-button span,
 .ui-datepicker .ui-datepicker-current,
 a.ui-datepicker .ui-datepicker-current,
+.default-btn .ui-datepicker .ui-datepicker-current,
+.default-btn a.ui-datepicker .ui-datepicker-current,
 .AppContent.ImportWizardView #addExtraColumnButton .ui-datepicker .ui-datepicker-current,
 .AppContent.ImportWizardView #addExtraColumnButton a.ui-datepicker .ui-datepicker-current,
 .addfileinput-button span .ui-datepicker .ui-datepicker-current,
 .addfileinput-button span a.ui-datepicker .ui-datepicker-current,
 .ui-datepicker .ui-datepicker-close,
 a.ui-datepicker .ui-datepicker-close,
+.default-btn .ui-datepicker .ui-datepicker-close,
+.default-btn a.ui-datepicker .ui-datepicker-close,
 .AppContent.ImportWizardView #addExtraColumnButton .ui-datepicker .ui-datepicker-close,
 .AppContent.ImportWizardView #addExtraColumnButton a.ui-datepicker .ui-datepicker-close,
 .addfileinput-button span .ui-datepicker .ui-datepicker-close,
 .addfileinput-button span a.ui-datepicker .ui-datepicker-close,
 .add-custom-field .configure-custom-field-button,
 a.add-custom-field .configure-custom-field-button,
+.default-btn .add-custom-field .configure-custom-field-button,
+.default-btn a.add-custom-field .configure-custom-field-button,
 .AppContent.ImportWizardView #addExtraColumnButton .add-custom-field .configure-custom-field-button,
 .AppContent.ImportWizardView #addExtraColumnButton a.add-custom-field .configure-custom-field-button,
 .addfileinput-button span .add-custom-field .configure-custom-field-button,
 .addfileinput-button span a.add-custom-field .configure-custom-field-button,
 .designer-toolbar input[type="submit"],
 a.designer-toolbar input[type="submit"],
+.default-btn .designer-toolbar input[type="submit"],
+.default-btn a.designer-toolbar input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton .designer-toolbar input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton a.designer-toolbar input[type="submit"],
 .addfileinput-button span .designer-toolbar input[type="submit"],
 .addfileinput-button span a.designer-toolbar input[type="submit"],
 .AttributeEditView form div table #customFieldDataData_AddInputButton,
 a.AttributeEditView form div table #customFieldDataData_AddInputButton,
+.default-btn .AttributeEditView form div table #customFieldDataData_AddInputButton,
+.default-btn a.AttributeEditView form div table #customFieldDataData_AddInputButton,
 .AppContent.ImportWizardView #addExtraColumnButton .AttributeEditView form div table #customFieldDataData_AddInputButton,
 .AppContent.ImportWizardView #addExtraColumnButton a.AttributeEditView form div table #customFieldDataData_AddInputButton,
 .addfileinput-button span .AttributeEditView form div table #customFieldDataData_AddInputButton,
 .addfileinput-button span a.AttributeEditView form div table #customFieldDataData_AddInputButton,
 #customFieldDataData_AddInputButton,
 a#customFieldDataData_AddInputButton,
+.default-btn #customFieldDataData_AddInputButton,
+.default-btn a#customFieldDataData_AddInputButton,
 .AppContent.ImportWizardView #addExtraColumnButton #customFieldDataData_AddInputButton,
 .AppContent.ImportWizardView #addExtraColumnButton a#customFieldDataData_AddInputButton,
 .addfileinput-button span #customFieldDataData_AddInputButton,
 .addfileinput-button span a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
 a.ModalGameNotification a,
+.default-btn .ModalGameNotification a,
+.default-btn a.ModalGameNotification a,
 .AppContent.ImportWizardView #addExtraColumnButton .ModalGameNotification a,
 .AppContent.ImportWizardView #addExtraColumnButton a.ModalGameNotification a,
 .addfileinput-button span .ModalGameNotification a,
@@ -440,6 +483,53 @@ a#customFieldDataData_AddInputButton:not(.attachLoading) span,
 a.ModalGameNotification a:not(.attachLoading) span {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
+.default-btn {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(200, 200, 200, 0.4);
+  border-left: 1px solid rgba(185, 185, 185, 0.4);
+  border-right: 1px solid rgba(185, 185, 185, 0.4);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.4);
+  color: #666;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  margin: 0 10px;
+  text-indent: 0;
+  display: inline-block;
+  zoom: 1;
+}
+.default-btn:before {
+  content: "";
+  display: table;
+}
+.default-btn:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.default-btn.attachLoading.z-button {
+  color: #fff;
+}
+.default-btn:not(.attachLoading) span {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
 /*
 .zButton:not(.attacheLoading),
 .z-button:not(.attachLoading){
@@ -721,7 +811,6 @@ body.blue .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.blue #HeaderView {
-  /*  */
   background: #1b1c50;
   -webkit-box-shadow: inset 0 10px 50px 0 #282a76;
   -moz-box-shadow: inset 0 10px 50px 0 #282a76;
@@ -1124,7 +1213,6 @@ body.brown .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.brown #HeaderView {
-  /*  */
   background: #405c61;
   -webkit-box-shadow: inset 0 10px 50px 0 #547980;
   -moz-box-shadow: inset 0 10px 50px 0 #547980;
@@ -1527,7 +1615,6 @@ body.lime .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.lime #HeaderView {
-  /*  */
   background: #4d6557;
   -webkit-box-shadow: inset 0 10px 50px 0 #638270;
   -moz-box-shadow: inset 0 10px 50px 0 #638270;
@@ -1930,7 +2017,6 @@ body.cherry .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.cherry #HeaderView {
-  /*  */
   background: #566675;
   -webkit-box-shadow: inset 0 10px 50px 0 #6c8092;
   -moz-box-shadow: inset 0 10px 50px 0 #6c8092;
@@ -2333,7 +2419,6 @@ body.turquoise .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.turquoise #HeaderView {
-  /*  */
   background: #345c76;
   -webkit-box-shadow: inset 0 10px 50px 0 #447799;
   -moz-box-shadow: inset 0 10px 50px 0 #447799;
@@ -2736,7 +2821,6 @@ body.violet .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.violet #HeaderView {
-  /*  */
   background: #34284e;
   -webkit-box-shadow: inset 0 10px 50px 0 #4a3970;
   -moz-box-shadow: inset 0 10px 50px 0 #4a3970;
@@ -3139,7 +3223,6 @@ body.honey .edit-row-menu ul a:hover {
   color: #fff !important;
 }
 body.honey #HeaderView {
-  /*  */
   background: #7a4625;
   -webkit-box-shadow: inset 0 10px 50px 0 #a15c31;
   -moz-box-shadow: inset 0 10px 50px 0 #a15c31;
@@ -5284,11 +5367,6 @@ td.empty {
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
-  /*  */
-  /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
-
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=270);
 }
 .form input[type="text"],
 .form input[type="password"],
@@ -5314,6 +5392,7 @@ td.empty {
   color: #666 !important;
   text-indent: 6px;
   line-height: 24px;
+  height: 26px;
   -webkit-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
@@ -12992,6 +13071,7 @@ a.close-ModalGameNotification.simple-select {
   background: none !important;
   margin-right: 10px;
   margin-left: -5px;
+  top: -10px;
   font-size: 11px;
 }
 /*=User Profile Page*/
