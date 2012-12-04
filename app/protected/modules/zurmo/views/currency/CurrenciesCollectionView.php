@@ -65,10 +65,16 @@
                 $content .= $this->messageBoxContent;
                 $content .= '<br/>';
             }
-            $content .= $this->renderFormLayout($form);
-            $content .= $this->renderViewToolBar();
-            $content .= $clipWidget->renderEndWidget();
-            $content .= '</div></div>';
+            $content     .= $this->renderFormLayout($form);
+            $actionContent = $this->renderActionElementBar(true);
+            if ($actionContent != null)
+            {
+                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
+                $content .= $actionContent;
+                $content .= '</div></div>';
+            }
+            $content     .= $clipWidget->renderEndWidget();
+            $content     .= '</div></div>';
             return $content;
         }
 
