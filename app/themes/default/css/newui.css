@@ -5585,9 +5585,9 @@ td.empty {
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
-  top: -1px;
+  top: -2px;
   color: #fff;
-  margin: 0;
+  margin: 0 5px 0 0 !important;
 }
 .portlet-toolbar .icon-delete:before {
   content: "_";
@@ -9724,7 +9724,7 @@ table.configuration-list td:last-child a .z-label:before {
 }
 /*Currency*/
 #currency-collection-form {
-  padding-bottom: 10px;
+  padding-bottom: 10px !important;
 }
 #currency-collection-form .portlet-toolbar {
   position: relative;
@@ -9744,6 +9744,23 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #currency-collection-form .checkbox-column {
   padding-left: 15px !important;
+}
+#CurrenciesCollectionView,
+#CurrencyCreateView {
+  float: left;
+  width: 100%;
+}
+#CurrenciesCollectionView {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #CurrenciesCollectionView .form form {
   padding: 0;
@@ -13645,6 +13662,11 @@ a.close-ModalGameNotification.simple-select {
   padding: 0;
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#ModelDetailsSummaryView h2,
+#CommentInlineEditForModelView h2,
+#CommentsForRelatedModelView h2 {
+  font-size: 15px;
 }
 #CommentInlineEditForModelView {
   margin-top: 15px;

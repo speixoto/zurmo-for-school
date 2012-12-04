@@ -512,7 +512,7 @@ table.configuration-list{
 /*Currency*/
 
 #currency-collection-form{
-    padding-bottom: 10px;
+    padding-bottom: 10px !important;
     .portlet-toolbar{
         position: relative;
         top:auto;
@@ -528,7 +528,14 @@ table.configuration-list{
     }
 }
 
+#CurrenciesCollectionView,
+#CurrencyCreateView{
+    float:left;
+    width:100%;
+}
+
 #CurrenciesCollectionView{
+    .unstyle-panel();
     .form form{
         padding: 0;
     }
