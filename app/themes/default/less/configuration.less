@@ -118,6 +118,7 @@
             right:15px;
             top:14px;
             vertical-align: middle;
+            margin:0;
             .z-label{
                 .z-label-smaller();
             }
@@ -147,6 +148,7 @@ table.configuration-list{
     td:last-child a{
         ++.z-button;
         float:right;
+        margin:0;
         .z-label{
             .z-label-smaller();
         }
@@ -165,7 +167,7 @@ table.configuration-list{
 
 #DevelopmentMenuView{
     .configuration-list{
-        li a{
+        li span{
             &:before{
                 content: "";
                 margin-right:0px;
@@ -402,6 +404,9 @@ table.configuration-list{
         td{
             border-bottom: none !important;
         }
+    }
+    .checkbox-column{
+        padding-left:15px !important;
     }
 }
 

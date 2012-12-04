@@ -224,7 +224,8 @@ a.z-button:not(.attachLoading) span {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  font-size: 11px;
+  position: relative;
+  z-index: 1;
 }
 .z-label-smaller {
   padding: 0 15px;
@@ -233,17 +234,19 @@ a.z-button:not(.attachLoading) span {
 .z-button.loading .z-spinner {
   display: inline-block;
   position: absolute;
-  margin: 2px 0 0 6px;
+  margin: 1px 0 0 4px;
 }
 .zButton.loading .z-icon,
 .z-button.loading .z-icon {
   display: none;
 }
 .z-spinner {
+  z-index: 10;
   width: 23px;
   height: 23px;
   display: none;
-  float: left;
+  position: absolute;
+  left: 0px;
 }
 .z-spinner.loading {
   display: block !important;
