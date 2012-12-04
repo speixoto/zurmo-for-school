@@ -74,15 +74,13 @@
                     }
                     else
                     {
-                        $linkContent = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Configure')),
-                                                       Yii::app()->createUrl($route,
-                                                        array(
-                                                            'moduleClassName' => $this->moduleClassName,
-                                                            'attributeTypeName' => $information['elementType'],
-                                                            'attributeName' => $attributeName)
-                                                        ),
-                                                        array('id' => 'edit-link-' . $attributeName)
-                                                  );
+                        $url         = Yii::app()->createUrl($route,
+                                            array(
+                                                'moduleClassName' => $this->moduleClassName,
+                                                'attributeTypeName' => $information['elementType'],
+                                                'attributeName' => $attributeName)
+                                            );
+                        $linkContent = static::renderConfigureLinkContent($url, 'edit-link-' . $attributeName);
                     }
                     $content .= '<li>';
                     $content .= '<h4>' . $information['attributeLabel'] . '</h4>';
@@ -119,6 +117,14 @@
 
         protected function renderBeforeTableContent()
         {
+        }
+
+        protected static function renderConfigureLinkContent($url, $id)
+        {
+            assert('is_string($url) || $url == null');
+            assert('is_string($id)');
+            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Configure')),
+                                                  $url, array('id' => $id));
         }
     }
 ?>
