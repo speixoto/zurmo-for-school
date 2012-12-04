@@ -5529,7 +5529,6 @@ td.empty {
 }
 .portlet-toolbar .icon-create,
 .portlet-toolbar a {
-  font-size: 11px;
   padding: 0 10px 0 10px;
   line-height: 25px;
   margin: 0;
@@ -9739,9 +9738,6 @@ table.configuration-list td:last-child a .z-label:before {
 #currency-collection-form .portlet-toolbar a {
   display: inline-block;
   margin: 0 10px;
-}
-#currency-collection-form .portlet-toolbar a:before {
-  content: "";
 }
 #currency-collection-form .view-toolbar-container {
   margin-bottom: 5px;

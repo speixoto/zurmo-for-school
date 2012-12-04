@@ -168,9 +168,8 @@
         protected static function renderActiveHeaderContent()
         {
             $title       = Yii::t('Default', 'Active currencies can be used when creating new records and as a default currency for a user.');
-            $content     = Yii::t('Default', 'Active') . '&#160;';
-            $content    .= '<span id="active-currencies-tooltip" class="tooltip"  title="' . $title . '">';
-            $content    .= '?</span>';
+            $content     = Yii::t('Default', 'Active');
+            $content    .= '<span id="active-currencies-tooltip" class="tooltip"  title="' . $title . '">?</span>';
             $qtip = new ZurmoTip();
             $qtip->addQTip("#active-currencies-tooltip");
             return $content;
