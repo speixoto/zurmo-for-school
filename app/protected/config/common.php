@@ -89,6 +89,11 @@
             'gamificationObserver' => array(
                 'class' => 'application.modules.gamification.observers.GamificationObserver',
             ),
+            /* Will be enabled later
+            'messages' => array(
+                'class' => 'application.core.components.ZurmoMessageSource',
+            ),
+            */
             'minScript' => array(
                 'class' => 'application.core.components.ZurmoExtMinScript',
                 'groupMap' => array(
@@ -164,13 +169,6 @@
                         'class'  => 'CFileLogRoute',
                         'levels' => 'error, warning',
                     ),
-                        /*
-                    array(
-                        'class'=>'application.extensions.sentrylog.RSentryLog',
-                        'dsn' => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
-                        'levels'=>'error',
-                    ),
-                    */
                 ),
             ),
             'mappingHelper' => array(

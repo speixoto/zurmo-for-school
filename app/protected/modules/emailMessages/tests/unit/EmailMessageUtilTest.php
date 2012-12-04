@@ -40,7 +40,7 @@
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_CREATE_CONTACTS);
             $billy->setRight('ContactsModule', ContactsModule::RIGHT_DELETE_CONTACTS);
-            assert($billy->save());
+            assert($billy->save()); // Not Coding Standard
 
             $contact = ContactTestHelper::createContactByNameForOwner('sally', Yii::app()->user->userModel);
             $contact->primaryEmail = new Email();
@@ -65,9 +65,9 @@
             $emailMessage     = new EmailMessage();
             $emailMessageForm = new CreateEmailMessageForm($emailMessage);
             $postVariableName = get_class($emailMessageForm);
-            $postData = array($postVariableName => array ('recipientsData' => array('to'  => 'a@zurmo.com,b@zurmo.com',
-                                                                          'cc'  => 'c@zurmo.com,d@zurmo.com',
-                                                                          'bcc' => 'e@zurmo.com,f@zurmo.com'),
+            $postData = array($postVariableName => array ('recipientsData' => array('to'  => 'a@zurmo.com,b@zurmo.com', // Not Coding Standard
+                                                                          'cc'  => 'c@zurmo.com,d@zurmo.com',           // Not Coding Standard
+                                                                          'bcc' => 'e@zurmo.com,f@zurmo.com'),          // Not Coding Standard
                                                     'subject' => 'Test Email From Post',
                                                     'content' => array('htmlContent' => 'This is a test email')
                 ));
@@ -227,6 +227,34 @@
             $content = EmailMessageUtil::renderEmailAddressAsMailToOrModalLinkStringContent($emailAddress, $contact);
             $this->assertEquals('<a href="#" id="' .
                                 ZurmoHtml::ID_PREFIX . (ZurmoHtml::$count - 1) . '">a@zurmo.com</a>', $content);
+        }
+
+        public function testResolveTextContent()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $htmlContent = "<br>A test message.";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\nA test message.", $textContent);
+            $htmlContent = "<p>A new test message.</p>";
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\nA test message.", $textContent);
+            $htmlContent = "<p>A test message.</p>";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\n\nA test message.", $textContent);
+            $htmlContent = "<u>A test</u> <b>message</b>.";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("A test message.", $textContent);
+            $htmlContent = "<u><p>A test</p></u> <b>message</b>.";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\n\nA test message.", $textContent);
+            $htmlContent = "<br /><p>A test</p> <p>message</p>.";
+            $textContent = '';
+            $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
+            $this->assertEquals("\n\n\nA test \n\nmessage.", $textContent);
         }
     }
 ?>

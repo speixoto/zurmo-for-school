@@ -311,7 +311,7 @@
         {
             $classContent      = Yii::app()->themeManager->getActiveThemeColor();
             $backgroundTexture = Yii::app()->themeManager->getActiveBackgroundTexture();
-            if($backgroundTexture != null)
+            if ($backgroundTexture != null)
             {
                 $classContent .= ' ' . $backgroundTexture;
             }

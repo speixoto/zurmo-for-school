@@ -28,6 +28,7 @@
     {
         const EMAIL_CONFIGURATION_FILTER_PATH =
               'application.modules.emailMessages.controllers.filters.EmailConfigurationCheckControllerFilter';
+
         /**
          * Override to exclude modalSearchList and autoComplete
          * since these are available to all users regardless
