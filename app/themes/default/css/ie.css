@@ -80,7 +80,7 @@ a.z-button {
   border-left: 1px solid rgba(185, 185, 185, 0.4);
   border-right: 1px solid rgba(185, 185, 185, 0.4);
   border-bottom: 1px solid rgba(170, 170, 170, 0.4);
-  color: #666;
+  color: #666 !important;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
@@ -163,7 +163,7 @@ a.z-button:not(.attachLoading) span {
   border-left: 1px solid rgba(185, 185, 185, 0.4);
   border-right: 1px solid rgba(185, 185, 185, 0.4);
   border-bottom: 1px solid rgba(170, 170, 170, 0.4);
-  color: #666;
+  color: #666 !important;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
   -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);

@@ -50,9 +50,8 @@
             $content = null;
             $content .= '<div class="add-custom-field">';
             $content .= '<h1>' . Yii::t('Default', 'Create Field') . '</h1>';
-            $content .= '<div>';
-            $content .= $dropDownContent . $linkContent;
-            $content .= '</div></div>';
+            $content .= '<div class="panel-buffer"><div>' . $dropDownContent . '</div>' . $linkContent . '</div>';
+            $content .= '</div>';
             return $content;
         }
 
