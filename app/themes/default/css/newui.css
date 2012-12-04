@@ -8684,6 +8684,10 @@ div.hasHalfs .twoThirds {
   border-bottom: none;
 }
 /*=Search Results - Mixed Search Results*/
+#MixedModelsSearchView {
+  position: relative;
+  z-index: 5;
+}
 #MixedModelsSearchView h1 {
   margin-bottom: 15px;
 }
@@ -8691,6 +8695,8 @@ div.hasHalfs .twoThirds {
   float: none;
 }
 #MixedModelsMultipleListsView {
+  position: relative;
+  z-index: 1;
   margin-top: 15px;
 }
 #MixedModelsMultipleListsView h1 {
