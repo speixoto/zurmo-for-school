@@ -10051,6 +10051,9 @@ table.configuration-list td:last-child a .z-label:before {
   right: 0 !important;
 }
 /*=Step 4,Mapping view*/
+#ImportWizardMappingView > .wrapper {
+  padding-bottom: 10px;
+}
 #ImportWizardMappingView #edit-form {
   padding: 0;
 }
@@ -10136,16 +10139,16 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardDataAnalysisCompleteView .attributesContainer {
   padding-bottom: 0;
 }
-#ImportWizardImportRulesView span {
-  text-align: left;
-  display: block;
-  margin-bottom: 20px;
-}
 #ImportWizardImportRulesView .radio-input {
   margin-bottom: 10px !important;
 }
 #ImportWizardImportRulesView table {
   margin-bottom: 0 !important;
+}
+#ImportWizardImportRulesView table span {
+  text-align: left;
+  display: block;
+  margin-bottom: 20px;
 }
 .process-container-view {
   padding: 15px 15px 0 15px;
@@ -10174,6 +10177,7 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportSequentialProcessContainerView h3 + span {
   margin-bottom: 15px;
   display: block;
+  position: relative;
 }
 #ImportSequentialProcessContainerView .process-container-view {
   zoom: 1;
@@ -10221,19 +10225,27 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .import-summary {
   margin: 0 0 15px 15px;
+  line-height: 150%;
 }
 .import-summary li {
   margin-bottom: 3px;
-}
-.ui-progressbar {
-  background: url(../images/ajax-loader.gif) left top no-repeat;
 }
 #SequentialProcessView .process-container-view {
   margin: 0;
   padding: 0;
 }
+#SequentialProcessView h3 {
+  text-indent: 30px;
+}
 #ImportErrorsListView {
   margin-bottom: 15px;
+}
+#ImportErrorsListView > #list-view {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
 }
 /*Theme Chooser*/
 .color-swatch,
@@ -10467,7 +10479,7 @@ div.form select.error {
 }
 div.form .errorSummary {
   position: relative;
-  margin: 15px 0;
+  margin: 15px;
   padding: 10px;
   border-radius: 5px !important;
   border: 1px solid #cc0000;

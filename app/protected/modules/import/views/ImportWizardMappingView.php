@@ -207,7 +207,8 @@
                                    array('id' => $this->model->id));
             $content             = ZurmoHtml::hiddenField($hiddenInputName, $columnCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
-            $content            .= ZurmoHtml::ajaxButton(Yii::t('Default', 'Add Field'), $ajaxOnChangeUrl,
+            $content            .= ZurmoHtml::ajaxLink(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Add Field')),
+                                    $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'columnCount=\' + $(\'#columnCounter\').val()',
                                           'success' => 'js:function(data){

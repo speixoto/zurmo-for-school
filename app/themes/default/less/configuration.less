@@ -806,6 +806,9 @@ table.configuration-list{
 
 /*=Step 4,Mapping view*/
 #ImportWizardMappingView{
+    > .wrapper{
+        padding-bottom:10px;
+    }
 	#edit-form{
 		padding:0;
 	}
@@ -907,16 +910,16 @@ table.configuration-list{
 }
 
 #ImportWizardImportRulesView{
-    span{
-        text-align: left;
-        display: block;
-        margin-bottom: 20px;
-    }
     .radio-input{
         margin-bottom:10px !important;
     }
     table{
         margin-bottom: 0 !important;
+        span{
+            text-align: left;
+            display: block;
+            margin-bottom: 20px;
+        }
     }
 }
 
@@ -945,6 +948,7 @@ table.configuration-list{
     h3, h3 + span{
         margin-bottom:15px;
         display:block;
+        position:relative;
     }
     .process-container-view{
         .clearfix();
@@ -986,6 +990,7 @@ table.configuration-list{
 
 .import-summary{
     margin:0 0 15px 15px;
+    line-height:150%;
     li{
         margin-bottom: 3px;
     }
@@ -993,7 +998,7 @@ table.configuration-list{
 
 
 .ui-progressbar{
-     background: url(../images/ajax-loader.gif) left top no-repeat;
+     //background: url(../images/ajax-loader.gif) left top no-repeat;
 }
 
 #SequentialProcessView{
@@ -1001,10 +1006,16 @@ table.configuration-list{
         margin:0;
         padding:0;
     }
+    h3{
+        text-indent:30px;
+    }
 }
 
 #ImportErrorsListView{
     margin-bottom:15px;
+    > #list-view{
+        .b-shadow(none);
+    }
 }
 
 /*Theme Chooser*/
