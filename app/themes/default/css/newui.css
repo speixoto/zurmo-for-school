@@ -11227,6 +11227,12 @@ table.configuration-list td:last-child a .z-label:before {
 #MyMissionsForPortletView .actions-column {
   width: 200px;
 }
+#MyMissionsForPortletView td:first-child {
+  border-top: none;
+}
+#MyMissionsForPortletView .mission-status {
+  font-size: 11px;
+}
 div.form input,
 div.form textarea,
 div.form select {
@@ -11405,17 +11411,19 @@ div.wide.form .errorMessage {
   color: #CC0000;
   font-weight: bold;
 }
-.files .z-spinner {
-  display: inline-block;
-  margin-top: -3px;
-}
 .file-size {
   font-size: 10px;
   margin-left: 5px;
   color: #999;
 }
-.upload-spinner {
-  display: inline-block;
+.template-upload .name {
+  position: relative;
+}
+.template-upload .z-spinner {
+  position: relative;
+  float: left;
+  display: block;
+  margin-top: -1px;
 }
 .upload-actions {
   float: right;
