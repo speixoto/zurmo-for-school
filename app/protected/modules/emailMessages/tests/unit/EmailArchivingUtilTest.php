@@ -517,6 +517,5 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $personOrAccount = EmailArchivingUtil::getPersonsAndAccountsByEmailAddressForUser($emailAddress, $user);
             $this->assertEmpty($personOrAccount);
         }
-
     }
 ?>

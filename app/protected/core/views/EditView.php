@@ -86,7 +86,7 @@
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= '</div>';
-            if($this->wrapContentInWrapperDiv)
+            if ($this->wrapContentInWrapperDiv)
             {
                 return ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
             }

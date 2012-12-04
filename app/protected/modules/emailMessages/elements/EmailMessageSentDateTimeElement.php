@@ -32,7 +32,7 @@
         protected function renderControlNonEditable()
         {
             assert('$this->model instanceof EmailMessage');
-            if($this->model->folder->type == EmailFolder::TYPE_SENT)
+            if ($this->model->folder->type == EmailFolder::TYPE_SENT)
             {
                 return parent::renderControlNonEditable();
             }

@@ -29,7 +29,6 @@
      */
     class EmailSignature extends OwnedModel
     {
-
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();

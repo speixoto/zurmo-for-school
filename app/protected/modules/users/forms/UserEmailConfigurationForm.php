@@ -59,7 +59,7 @@
          */
         public function save($runValidation = true, array $attributeNames = null)
         {
-            if(parent::save())
+            if (parent::save())
             {
                 $emailSignature              = $this->model->user->getEmailSignature();
                 $emailSignature->htmlContent = $this->emailSignatureHtmlContent;

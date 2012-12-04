@@ -143,7 +143,6 @@ EOD;
                 $confirm = true;
             }
 
-
             if ($confirm)
             {
                 UpgradeUtil::runPart1($messageStreamer);
