@@ -25,26 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Test class to test the StringUtil class.
+     * Exception thrown when file is not readable.
      */
-    class StringUtilTest extends BaseTest
+    class FileNotReadableException extends CException
     {
-        public function testGetChoppedStringContentFromString()
-        {
-            $testString   = 'This is a test string to test the getchoppedstringcontent method for stringutil class.';
-            $compareSting = 'This is a test string to test the getchoppedstringcontent...';
-            $newSting     = StringUtil::getChoppedStringContent($testString, 60);
-            $this->assertEquals($compareSting, $newSting);
-
-            $testString   = 'This is a test string to test the getchoppedstringcontent method for stringutil class.';
-            $compareSting = 'This is a test string to test the getchoppedstringcontent method for stringutil class.';
-            $newSting     = StringUtil::getChoppedStringContent($testString, 100);
-            $this->assertEquals($compareSting, $newSting);
-
-            $testString   = 'This is a test string to test the getchoppedstringcontent method for stringutil class. This is a test string to test the getchoppedstringcontent method for stringutil class.';
-            $compareSting = 'This is a test string to test the getchoppedstringcontent method for stringutil class. This is a test string to test...';
-            $newSting     = StringUtil::getChoppedStringContent($testString, 119);
-            $this->assertEquals($compareSting, $newSting);
-        }
     }
 ?>

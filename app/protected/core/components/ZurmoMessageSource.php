@@ -25,26 +25,32 @@
      ********************************************************************************/
 
     /**
-     * Test class to test the StringUtil class.
+     * Represents a message source that stores translated messages in database.
+     *
+     * The ZurmoMessageSource::installSchema() method must be called to create
+     * the tables with required indexes
      */
-    class StringUtilTest extends BaseTest
+    class ZurmoMessageSource extends CDbMessageSource
     {
-        public function testGetChoppedStringContentFromString()
+        const CACHE_KEY_PREFIX='ZurmoMessageSource';
+
+        protected function loadMessagesFromDb($category,$languageCode)
         {
-            $testString   = 'This is a test string to test the getchoppedstringcontent method for stringutil class.';
-            $compareSting = 'This is a test string to test the getchoppedstringcontent...';
-            $newSting     = StringUtil::getChoppedStringContent($testString, 60);
-            $this->assertEquals($compareSting, $newSting);
+            $sourceTableName   = RedBeanModel::getTableName('MessageSource');
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
+            $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
 
-            $testString   = 'This is a test string to test the getchoppedstringcontent method for stringutil class.';
-            $compareSting = 'This is a test string to test the getchoppedstringcontent method for stringutil class.';
-            $newSting     = StringUtil::getChoppedStringContent($testString, 100);
-            $this->assertEquals($compareSting, $newSting);
+            $where             =  " messagesource.`category` = '$category' AND"
+                                . " messagetranslation.`language` = '$languageCode' ";
 
-            $testString   = 'This is a test string to test the getchoppedstringcontent method for stringutil class. This is a test string to test the getchoppedstringcontent method for stringutil class.';
-            $compareSting = 'This is a test string to test the getchoppedstringcontent method for stringutil class. This is a test string to test...';
-            $newSting     = StringUtil::getChoppedStringContent($testString, 119);
-            $this->assertEquals($compareSting, $newSting);
+            $beans = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
+
+            $messages = array();
+            foreach ($beans as $bean) {
+                $messages[$bean->messagesource->source] = $bean->translation;
+            }
+
+            return $messages;
         }
     }
 ?>
