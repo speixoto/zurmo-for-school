@@ -563,7 +563,6 @@
                 if (!$joinTablesAdapter->isTableInFromTables('person'))
                 {
                     $personTableName = $attributeTableName;
-
                     $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id",
                                                                     $modelTableName);
                 }
@@ -576,24 +575,42 @@
                 while (get_parent_class($modelClassName) !=
                        $modelAttributeToDataProviderAdapter->getAttributeModelClassName())
                 {
-                    $castedDownModelClassName   = $modelClassName;
-                    $modelClassName             = get_parent_class($modelClassName);
+                    $castedDownFurtherModelClassName = $castedDownModelClassName;
+                    $castedDownModelClassName        = $modelClassName;
+                    $modelClassName                  = get_parent_class($modelClassName);
                     if($modelClassName::getCanHaveBean())
                     {
                         $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
                         if (!$joinTablesAdapter->isTableInFromTables($castedUpAttributeTableName))
                         {
+                            if($castedDownModelClassName::getCanHaveBean())
+                            {
+                                $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
+                            }
+                            elseif($castedDownFurtherModelClassName::getCanHaveBean())
+                            {
+                                $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                            }
+                            else
+                            {
+                                throw new NotSupportedException();
+                            }
                             $joinTablesAdapter->addFromTableAndGetAliasName(
                                                                     $castedUpAttributeTableName,
                                                                     "{$castedUpAttributeTableName}_id",
-                                                                    $castedDownModelClassName::getTableName($castedDownModelClassName));
+                                                                    $resolvedTableJoinIdName);
                         }
                     }
+
                 }
                 if (!$joinTablesAdapter->isTableInFromTables($attributeTableName))
                 {
                     if(!$modelClassName::getCanHaveBean())
                     {
+                        if(!$castedDownModelClassName::getCanHaveBean())
+                        {
+                            throw new NotSupportedException();
+                        }
                         $modelClassName = $castedDownModelClassName;
                     }
                     $tableAliasName             = $joinTablesAdapter->addFromTableAndGetAliasName(
