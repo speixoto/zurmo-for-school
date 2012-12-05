@@ -215,7 +215,7 @@
                                             $(\'#columnCounter\').val(parseInt($(\'#columnCounter\').val()) + 1)
                                             $(\'#addExtraColumnButton\').parent().parent().prev().after(data);
                                           }'),
-                                    array('id' => 'addExtraColumnButton'));
+                                    array('id' => 'addExtraColumnButton', 'class' => 'z-button'));
             // End Not Coding Standard
             return $content;
         }

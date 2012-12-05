@@ -10935,7 +10935,10 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .remove-extra-column-link {
   display: inline-block;
-  margin-top: 5px;
+  position: absolute;
+  top: 20px;
+  right: -90px;
+  z-index: 99999;
 }
 /*=Step 5, process details*/
 #sequential-process-spinner .z-spinner {
