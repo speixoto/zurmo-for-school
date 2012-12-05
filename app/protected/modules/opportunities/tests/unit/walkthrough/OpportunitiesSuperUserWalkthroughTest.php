@@ -238,7 +238,7 @@
 			
             //save Model MassEdit for selected Ids
             //Test that the 2 contacts do not have the closed date populating them with.
-			//Test that closed dates are properly updated
+            //Test that closed dates are properly updated
             $opportunity1 = Opportunity::getById($superOpportunityId);
             $opportunity2 = Opportunity::getById($superOpportunityId2);
             $opportunity3 = Opportunity::getById($superOpportunityId3);
@@ -260,7 +260,7 @@
             Yii::app()->pagination->setForCurrentUserByType('massEditProgressPageSize', 20);
             $content = $this->runControllerWithRedirectExceptionAndGetContent('opportunities/default/massEdit');
             
-			$opportunity1 = Opportunity::getById($superOpportunityId);
+            $opportunity1 = Opportunity::getById($superOpportunityId);
             $opportunity2 = Opportunity::getById($superOpportunityId2);
             $opportunity3 = Opportunity::getById($superOpportunityId3);
             $opportunity4 = Opportunity::getById($superOpportunityId4);
