@@ -409,6 +409,12 @@ footer, header, hgroup, menu, nav, section {
     .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
     //.ie-shadow(#353535, 10, 25);
     .box-sizing();
+    .z-spinner{
+        left:50%;
+        top:5px;
+        margin-left:-12px;
+    }
+
     .single-notification{
         line-height:125%;
         padding:9px 0;
@@ -426,9 +432,6 @@ footer, header, hgroup, menu, nav, section {
             margin-bottom:2px;
             color:#fff;
             .t-shadow(none);
-        }
-        h4{
-           // ++.themeColor2;
         }
         div{
             padding-right:40px;
@@ -584,7 +587,7 @@ footer, header, hgroup, menu, nav, section {
         float:none;
         display:block !important;
         left:auto;
-        right:0;
+        right:2px;
     }
 }
 
@@ -1595,10 +1598,8 @@ td.empty{
     textarea{
         font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
-        /* @doubtful_existance: I don’t think these even exist? Can’t hurt much, I guess. */
         -moz-font-smoothing: antialiased;
         -o-font-smoothing: antialiased;
-        /* end @doubtful_existance */
         font-smoothing: antialiased;
         display:inline-block;
         border:1px solid #ccc;
@@ -4079,7 +4080,8 @@ div.hasHalfs{
         z-index: 3;
         cursor:pointer;
     }
-    span:hover, .over-dd{
+    span:hover,
+    .over-dd{
         background-position: 100% 100%;
     }
     select{
@@ -4113,6 +4115,9 @@ div.hasHalfs{
     }
     &:hover select{
         outline: none;
+    }
+    + input{
+        margin-top:15px;
     }
 }
 

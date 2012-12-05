@@ -4757,6 +4757,11 @@ section {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+#notifications-flyout .z-spinner {
+  left: 50%;
+  top: 5px;
+  margin-left: -12px;
+}
 #notifications-flyout .single-notification {
   line-height: 125%;
   padding: 9px 0;
@@ -4949,7 +4954,7 @@ section {
   float: none;
   display: block !important;
   left: auto;
-  right: 0;
+  right: 2px;
 }
 #globalSearchInput {
   font-style: italic;
@@ -6210,12 +6215,8 @@ td.empty {
 .form textarea {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  /* @doubtful_existance: I don’t think these even exist? Can’t hurt much, I guess. */
-
   -moz-font-smoothing: antialiased;
   -o-font-smoothing: antialiased;
-  /* end @doubtful_existance */
-
   font-smoothing: antialiased;
   display: inline-block;
   border: 1px solid #ccc;
@@ -9226,6 +9227,9 @@ div.hasHalfs .twoThirds {
 .hasDropDown:hover select {
   outline: none;
 }
+.hasDropDown + input {
+  margin-top: 15px;
+}
 /*=Mass Edit + DELETE view*/
 .AppContent.MassEditView #edit-form table {
   width: 100%;
@@ -10639,6 +10643,12 @@ table.configuration-list td:last-child a .z-label:before {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  font-size: 11px;
+  -webkit-border-radius: 1px 0 0 1px;
+  -moz-border-radius: 1px 0 0 1px;
+  -ms-border-radius: 1px 0 0 1px;
+  -o-border-radius: 1px 0 0 1px;
+  border-radius: 1px 0 0 1px;
 }
 .has-lang-label .errorMessage {
   margin-bottom: 15px;
@@ -11235,10 +11245,10 @@ table.configuration-list td:last-child a .z-label:before {
   border-top: none;
 }
 #MyMissionsForPortletView .missionStatusChangeArea a:first-child {
-  margin-left: 0;
+  margin-left: 0 !important;
 }
 #MyMissionsForPortletView .missionStatusChangeArea a:last-child {
-  margin-right: 0;
+  margin-right: 0 !important;
 }
 #MyMissionsForPortletView .actions-column {
   width: 200px;
@@ -11248,11 +11258,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #MyMissionsForPortletView .mission-status {
   font-size: 11px;
-}
-div.form input,
-div.form textarea,
-div.form select {
-  margin: 0 0 0 0;
 }
 div.form fieldset {
   border: 1px solid #DDD;
@@ -14246,11 +14251,11 @@ a.close-ModalGameNotification.simple-select {
   width: 100%;
   height: 100%;
   background-color: transparent !important;
-  background-image: -o-linear-gradient(0deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
-  background-image: -moz-linear-gradient(0deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
-  background-image: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
-  background-image: -ms-linear-gradient(0deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
-  background-image: linear-gradient(0deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
+  background-image: -o-linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
+  background-image: -moz-linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
+  background-image: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
+  background-image: -ms-linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
 }
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
   #LoginView,
@@ -14585,7 +14590,14 @@ a.close-ModalGameNotification.simple-select {
   width: 100% !important;
 }
 .mission-change-status-link {
-  margin-right: 10px;
+  margin: 0 5px !important;
+}
+#MissionDetailsView .missionStatusChangeArea {
+  margin-bottom: 10px;
+}
+#MissionDetailsView .mission-change-status-link {
+  position: relative;
+  top: 9px;
 }
 .missionStatusChangeArea {
   margin-top: 10px;
@@ -14616,8 +14628,9 @@ a.user-link {
   text-align: right;
 }
 .actions-column .mission-status {
-  vertical-align: 50%;
+  vertical-align: 60%;
   font-weight: normal;
+  font-style: italic;
 }
 #MissionDetailsView .files,
 #ConversationDetailsView .files {
