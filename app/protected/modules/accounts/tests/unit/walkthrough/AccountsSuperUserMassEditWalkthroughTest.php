@@ -60,20 +60,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Test all default controller actions that do not require any POST/GET variables to be passed.
-            //This does not include portlet controller actions.
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default');
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/index');
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/create');
-
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
-            $this->assertFalse(strpos($content, 'anyMixedAttributes') === false);
-            //Test the search or paging of the listview.
-            Yii::app()->clientScript->reset(); //to make sure old js doesn't make it to the UI
-            $this->setGetArray(array('ajax' => 'list-view'));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
-            $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
-            $this->resetGetArray();
+            
 
             //Default Controller actions requiring some sort of parameter via POST or GET
             //Load Model Edit Views

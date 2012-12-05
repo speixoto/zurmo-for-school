@@ -37,7 +37,7 @@
                 'rules' => array(
                     array('category',           'required'),
                     array('category',           'type', 'type' => 'string'),
-                    array('category',           'length',  'min'  => 1, 'max' => 255),
+                    array('category',           'length',  'min'  => 1, 'max' => 30),
                     array('source',             'required'),
                     array('source',             'type', 'type' => 'blob')
                 )
