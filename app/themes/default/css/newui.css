@@ -7214,7 +7214,7 @@ div.wide.form label.hasCheckBox {
 }
 #save-search-area {
   width: 50%;
-  margin-top: 10px;
+  margin-top: 0;
   border-top: none;
 }
 #save-search-area input,
@@ -9645,7 +9645,15 @@ a.remove {
   position: relative;
   z-index: 9999;
 }
+a.remove .icon {
+  line-height: 1;
+  position: relative;
+  float: right;
+}
 a.remove .icon:after {
+  position: absolute;
+  top: 6px;
+  right: 0;
   content: "_";
   font-weight: normal;
   font-size: 24px;
@@ -9670,7 +9678,15 @@ a.remove .icon:after {
   outline: none;
   position: relative;
 }
+.juiportlet-widget-head a.edit .icon {
+  line-height: 1;
+  position: relative;
+  float: right;
+}
 .juiportlet-widget-head a.edit .icon:after {
+  position: absolute;
+  top: 6px;
+  right: 0;
   content: "n";
   font-weight: normal;
   font-size: 24px;
@@ -11605,6 +11621,9 @@ div.wide.form .errorMessage {
   height: 30px;
   width: auto;
 }
+.fileupload-buttonbar {
+  position: relative;
+}
 .max-upload-size {
   margin-top: 5px;
   font-size: 11px;
@@ -11613,9 +11632,9 @@ div.wide.form .errorMessage {
   display: inline-block;
   color: #999;
   margin-top: 0;
-  position: relative;
-  top: 10px;
-  left: 10px;
+  position: absolute;
+  bottom: 3px;
+  left: 100px;
 }
 .ImportWizardView .files {
   margin-top: 15px;

@@ -224,7 +224,7 @@ EOD;
 
             $htmlOptions = array('id' => $this->inputId);
             $html  = '<div id="fileUpload' . $id . '">';
-            $html .= '<div class="fileupload-buttonbar">';
+            $html .= '<div class="fileupload-buttonbar clearfix">';
             $html .= '<div class="addfileinput-button"><span>Y</span>' . $addLabel;
             $html .= ZurmoHtml::fileField($this->inputName, null, $htmlOptions);
             $html .= '</div>' . self::renderMaxSizeContent($this->maxSize, $this->showMaxSize);
