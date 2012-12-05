@@ -17,11 +17,6 @@
     <td></td>
 </tr>
 <tr>
-    <td>setSpeed</td>
-    <td>1000</td>
-    <td></td>
-</tr>
-<tr>
     <td>store</td>
     <td>javascript{Math.floor(Math.random()*11000)}</td>
     <td>randomSuffix</td>
@@ -37,14 +32,39 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>clickAndWait</td>
     <td>//div[@id='TitleBarAndDesignerPageMenuView']/div/ul/li[1]/a/span</td>
     <td></td>
 </tr>
 <tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>clickAndWait</td>
     <td>link=Fields</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>verifyTextPresent</td>
@@ -67,9 +87,24 @@
     <td>label=Text Area</td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>clickAndWait</td>
     <td>attributeTypeNameButton</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>type</td>
@@ -97,6 +132,11 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>verifyValue</td>
     <td>TextAreaAttributeForm_isRequired</td>
     <td>on</td>
@@ -112,6 +152,11 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>verifyValue</td>
     <td>TextAreaAttributeForm_isAudited</td>
     <td>on</td>
@@ -120,6 +165,16 @@
     <td>clickAndWait</td>
     <td>save</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>waitForTextNotPresent</td>
@@ -157,6 +212,11 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>waitForText</td>
     <td>//div[@id='TextAreaAttributeEditView']/div/h1</td>
     <td>exact:Edit Field: txta${randomSuffix}</td>
@@ -185,6 +245,16 @@
     <td>clickAndWait</td>
     <td>save</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>waitForTextNotPresent</td>

@@ -17,11 +17,6 @@
     <td></td>
 </tr>
 <tr>
-    <td>setSpeed</td>
-    <td>1000</td>
-    <td></td>
-</tr>
-<tr>
     <td>store</td>
     <td>javascript{Math.floor(Math.random()*11000)}</td>
     <td>randomSuffix</td>
@@ -37,14 +32,39 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>clickAndWait</td>
     <td>//div[@id='TitleBarAndDesignerPageMenuView']/div/ul/li[1]/a/span</td>
     <td></td>
 </tr>
 <tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>clickAndWait</td>
     <td>link=Fields</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>verifyTextPresent</td>
@@ -67,9 +87,24 @@
     <td>label=Tag Cloud</td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>clickAndWait</td>
     <td>attributeTypeNameButton</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>type</td>
@@ -92,6 +127,11 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>type</td>
     <td>customFieldDataData_AddInput</td>
     <td>test2</td>
@@ -100,6 +140,11 @@
     <td>click</td>
     <td>customFieldDataData_AddInputButton</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>type</td>
@@ -112,9 +157,19 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>select</td>
     <td>TagCloudAttributeForm_defaultValueOrder</td>
     <td>label=test3</td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>verifyValue</td>
@@ -125,6 +180,11 @@
     <td>click</td>
     <td>TagCloudAttributeForm_isRequired</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>verifyValue</td>
@@ -140,6 +200,11 @@
     <td>click</td>
     <td>TagCloudAttributeForm_isAudited</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>verifyValue</td>
@@ -150,6 +215,16 @@
     <td>clickAndWait</td>
     <td>save</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>waitForTextNotPresent</td>
@@ -187,6 +262,11 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>waitForText</td>
     <td>//div[@id='TagCloudAttributeEditView']/div/h1</td>
     <td>exact:Edit Field: tag${randomSuffix}</td>
@@ -200,6 +280,11 @@
     <td>click</td>
     <td>customFieldDataData_AddInputButton</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>select</td>
@@ -217,6 +302,11 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>verifyValue</td>
     <td>TagCloudAttributeForm_isAudited</td>
     <td>off</td>
@@ -232,6 +322,11 @@
     <td></td>
 </tr>
 <tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
     <td>verifyValue</td>
     <td>TagCloudAttributeForm_isRequired</td>
     <td>off</td>
@@ -240,6 +335,16 @@
     <td>clickAndWait</td>
     <td>save</td>
     <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>waitForTextNotPresent</td>
