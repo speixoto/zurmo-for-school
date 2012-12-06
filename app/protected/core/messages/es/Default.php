@@ -69,6 +69,10 @@
             => 'Antes',
         'Between'
             => 'Entre',
+        'Blue'
+            => '??',
+        'Brown'
+            => '??',
         'Bulk insert failed. There was a row with an incorrect column quantity'
             => 'Error en la operación BULK INSERT. Una línea contiene una serie de columnas malas',
         'by'
@@ -89,6 +93,8 @@
             => 'Auditoría se ha completado.',
         'Checking permissions, files, upgrade version....'
             => 'Verificación de permisos, archivos, versión actualizada...',
+        'Cherry'
+            => '??',
         'Clear'
             => 'Borrar',
         'Clearing assets and runtime folders.'
@@ -145,6 +151,8 @@
             => 'Error', // Same Word Translated
         'Error during upgrade!'
             => 'Error durante la actualización!',
+        'Exclusive Paper'
+            => '??',
         'Export'
             => 'Exportar',
         'Fahrenheit'
@@ -165,6 +173,8 @@
             => 'firstDateTime debe ocurrir antes secondDateTime',
         'Float'
             => 'Float', // Same Word Translated
+        'French Stucco'
+            => '??',
         'from'
             => 'de',
         'Full Name'
@@ -173,6 +183,8 @@
             => 'Ir a detalles',
         'Hidden Columns'
             => 'Columnas Ocultas',
+        'Honey'
+            => '??',
         'Hour'
             => 'Hora',
         'Info'
@@ -193,6 +205,12 @@
             => 'Última Modificación',
         'Last Modified Date and User'
             => 'Última modificación fecha y usuario',
+        'Light Noise'
+            => '??',
+        'Light Toast'
+            => '??',
+        'Lime'
+            => '??',
         'List'
             => 'Lista',
         'Loading'
@@ -241,6 +259,8 @@
             => 'Ningún procesos de importación encontrado',
         'No {moduleLabelPluralLowerCase} found'
             => 'No se encontraron resultados',
+        'Noise'
+            => '??',
         'None'
             => 'Ninguno',
         'Not all files and folders are writeable by upgrade user. Please make these files or folders writeable:'
@@ -267,6 +287,8 @@
             => 'Configuración de panel',
         'Panel Title'
             => 'Título de panel',
+        'Paper'
+            => '??',
         'Part 1 complete.'
             => 'Parte 1 es completa.',
         'Please check if the file is a valid zip archive.'
@@ -369,6 +391,8 @@
             => 'Mañana',
         'total'
             => 'total', // Same Word Translated
+        'Turquoise'
+            => '??',
         'Type'
             => 'Tipo',
         'Type to find a tag'
@@ -395,6 +419,8 @@
             => 'Usuario',
         'Users'
             => 'Usuarios',
+        'Violet'
+            => '??',
         'Visible Columns'
             => 'Columnas Visibles',
         'Yes'

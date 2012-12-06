@@ -47,14 +47,24 @@
             => 'Crear Usuario',
         'Create Users'
             => 'Crear Usuario',
+        'Custom Outbound Email Settings'
+            => '??',
         'day(s)'
             => 'día(s)',
+        'Email Configuration'
+            => '??',
+        'Email Signature'
+            => '??',
         'Enforce Strong Passwords'
             => 'Forzar contraseñas robustas',
+        'General'
+            => '??',
         'Hash'
             => 'Almohadilla',
         'Hide welcome page'
             => 'Ocultar la página de inicio',
+        'If unchecked, will use system SMTP settings.'
+            => '??',
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Los usuarios inactivos no pueden iniciar sesión en el uso de la web, móvil o web API. Inicio de sesión de usuarios activos es controlado por los derechos de grupo.',
         'Inherited Value:'
@@ -85,6 +95,8 @@
             => 'Conexión Web',
         'Sign in Via Web API'
             => 'Conexión Web API',
+        'Texture'
+            => '??',
         'The password is too short. Minimum length is {minimumLength}.'
             => 'La contraseña es demasiado corta. Largo mínimo es {minimumLength}.',
         'The password must have at least one lowercase letter'
@@ -97,6 +109,8 @@
             => 'La zona horaria es inválido',
         'The username is too short. Minimum length is {minimumLength}.'
             => 'El nombre de usuario es demasiado corto. Longitud mínima es de {minimumLength}.',
+        'Theme'
+            => '??',
         'Time Zone'
             => 'Zona horaria',
         'Turn off email notifications'
@@ -109,6 +123,8 @@
             => 'Usuario',
         'User configuration saved successfully.'
             => 'Configuración de usuario guardado con éxito.',
+        'User email configuration saved successfully.'
+            => '??',
         'User Search'
             => 'Busqueda de Usuarios',
         'Users'

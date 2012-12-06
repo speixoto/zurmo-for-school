@@ -29,6 +29,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>Not so fast</h2></i><div class="large-icon"></div><p>Configure your email settings before you can send emails.</p>'
+            => '??',
+        '<h2>Not so fast</h2></i><div class="large-icon"></div><p>The administrator must first configure the system outbound email settings.</p>'
+            => '??',
         '<span class="email-from"><strong>From:</strong> {senderContent}</span>'
             => '<span class="email-von"><strong>Von:</strong> {senderContent}</span>',
         '<span class="email-to"><strong>To:</strong> {recipientContent}</span>'
@@ -49,6 +53,10 @@
             => 'Archivierte Artikel Unvergleichliche',
         'At least one archived email message does not match any records in the system. <a href="{url}">Click here</a> to manually match them.'
             => 'Mindestens eine archivierte E-Mail-Nachricht entsprecht keiner der Datensätze in das System. <a href="{url}">Klicken Sie hier</a> zu manuell entsprechen.',
+        'Bcc'
+            => '??',
+        'Bcc Recipients'
+            => '??',
         'Body'
             => 'Körper',
         'Cc'
@@ -57,10 +65,14 @@
             => 'CC-Empfänger',
         'Clear Old Sent Notifications Email Job'
             => 'Löschen die alten Benachrichtigungen',
+        'Compose Email'
+            => '??',
         'Could not connect to IMAP server.'
             => 'IMAP-Konto fehlgeschlagen.',
         'Create Emails'
             => 'Emails erstellen',
+        'Currently in the {folderType} folder'
+            => '??',
         'Data Cleanup'
             => 'Datenbereinigung',
         'Delete Emails'
@@ -143,6 +155,8 @@
             => 'Ausgehende E-Mail Prozess starten',
         'Recipient info can\'t be extracted from email message'
             => 'Empfänger Info kann nicht von E-Mail-Nachricht extrahiert werden',
+        'Recipients'
+            => '??',
         'Response from Server'
             => 'Server Response',
         'Select ContactsModuleSingularLabel'
@@ -151,8 +165,8 @@
             => 'Wähle ContactsModuleSingularLabel / LeadsModuleSingularLabel',
         'Select LeadsModuleSingularLabel'
             => 'Wähle LeadsModuleSingularLabel',
-        'Send a test email to'
-            => 'Senden eine Testnachricht  zu',
+        'Send'
+            => '??',
         'Send system notifications from'
             => 'Senden System-Meldungen von',
         'Send Test Email'
@@ -175,18 +189,26 @@
             => 'Prüfparameter für die E-Mail Konto',
         'Text Content'
             => 'Nachricht',
+        'There is no primary email associated with {contactName}. Please add one to continue.'
+            => '??',
+        'This field is required'
+            => '??',
         'This message sent from Zurmo'
             => 'Diese Meldung ist aus Zurmo geschickt',
         'To'
             => 'An',
         'To Address'
             => 'Zieladresse',
+        'To address cannot be blank'
+            => '??',
         'To Name'
             => 'Name des Empfängers',
         'To Recipients'
             => 'An Empfänger',
         'to: {recipientContent}'
             => 'an: {recipientContent}',
+        'Type name or email'
+            => '??',
         'Unmatched Archived Emails'
             => 'Unvergleichliche Archivierte E-Mails',
         'You do not have rights to access, create, or connect emails in the system'
