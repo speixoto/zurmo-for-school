@@ -123,13 +123,13 @@
         public function createAbsoluteUrl($route, $params = array(), $schema = '', $ampersand = '&')
         {
             $url = $this->createUrl($route, $params, $ampersand);
-            if(strpos($url, 'http') === 0)
+            if (strpos($url, 'http') === 0)
             {
                 return $url;
             }
             else
             {
-                return Yii::app()->getRequest()->getHostInfo($schema).$url;
+                return Yii::app()->getRequest()->getHostInfo($schema) . $url;
             }
         }
     }
