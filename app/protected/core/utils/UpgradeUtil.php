@@ -38,7 +38,7 @@
          * - Copy, add and remove files
          * @param MessageStreamer $messageStreamer
          */
-        public static function runPart1(MessageStreamer $messageStreamer)
+        public static function runPart1(MessageStreamer $messageStreamer, $doNotlAlterFiles = false)
         {
             try
             {
@@ -68,10 +68,14 @@
                 self::processConfigFiles($pathToConfigurationFolder);
                 self::processAfterConfigFiles();
 
-                $messageStreamer->add(Yii::t('Default', 'Copying files.'));
-                self::processBeforeFiles();
-                self::processFiles($upgradeExtractPath, $configuration);
-                self::processAfterFiles();
+                if (!$doNotlAlterFiles)
+                {
+                    $messageStreamer->add(Yii::t('Default', 'Copying files.'));
+                    self::processBeforeFiles();
+                    self::processFiles($upgradeExtractPath, $configuration);
+                    self::processAfterFiles();
+                }
+
                 self::clearCache();
                 $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
                 $messageStreamer->add(Yii::t('Default', 'Part 1 complete.'));
