@@ -133,14 +133,20 @@
     .missionStatusChangeArea{
         a{
             &:first-child{
-                margin-left: 0;
+                margin-left: 0 !important;
             }
             &:last-child{
-                margin-right: 0;
+                margin-right: 0 !important;
             }
         }
     }
     .actions-column{
         width: 200px;
+    }
+    td:first-child{
+        border-top:none;
+    }
+    .mission-status{
+        .smaller();
     }
 }

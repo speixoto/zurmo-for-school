@@ -1,21 +1,21 @@
+.panel-buffer{
+    padding:15px;
+}
 .add-custom-field{
-    //.clearfix();
-    > div{
-        //width: 100%;
-        //float: left;
-        padding:15px 15px 15px 15px;
-        position:relative;
+    .panel-buffer{
+        height:30px;
+    }
+    .panel-buffer > div{
+        width: 100%;
+        float:left;
     }
     .hasDropDown{
-        //margin-right: 130px;
-        width: 86%;
-        margin-right: 15px;
-        float: left;
+        margin-right:130px;
+        width:auto;
     }
     .configure-custom-field-button{
         position: relative;
         top: 1px;
-        ++.z-button;
         &:before{
             content: "n";
             .symbly(16px);
@@ -24,6 +24,12 @@
             top:0px;
         }
     }
+}
+
+#attributeTypeNameButton{
+    margin:0 0 0 -115px;
+    float:right;
+    clear:right;
 }
 
 
@@ -485,6 +491,23 @@
 	table{
 		border-top:none !important;
 	}
+}
+
+#available-fields{
+    margin-top:15px;
+    border: 1px solid #DFDFDF;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    margin-bottom:10px;
+    th{
+        font-weight:bold;
+        background: url(../images/table-items-header.png) left top repeat-x;
+    }
+    th, td{
+        border: 1px solid #DFDFDF;
+        vertical-align:middle;
+        padding:10px 5px !important;
+    }
 }
 
 
