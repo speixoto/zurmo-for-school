@@ -144,14 +144,6 @@ a.designer-toolbar input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton a.designer-toolbar input[type="submit"],
 .addfileinput-button span .designer-toolbar input[type="submit"],
 .addfileinput-button span a.designer-toolbar input[type="submit"],
-.AttributeEditView form div table #customFieldDataData_AddInputButton,
-a.AttributeEditView form div table #customFieldDataData_AddInputButton,
-.default-btn .AttributeEditView form div table #customFieldDataData_AddInputButton,
-.default-btn a.AttributeEditView form div table #customFieldDataData_AddInputButton,
-.AppContent.ImportWizardView #addExtraColumnButton .AttributeEditView form div table #customFieldDataData_AddInputButton,
-.AppContent.ImportWizardView #addExtraColumnButton a.AttributeEditView form div table #customFieldDataData_AddInputButton,
-.addfileinput-button span .AttributeEditView form div table #customFieldDataData_AddInputButton,
-.addfileinput-button span a.AttributeEditView form div table #customFieldDataData_AddInputButton,
 #customFieldDataData_AddInputButton,
 a#customFieldDataData_AddInputButton,
 .default-btn #customFieldDataData_AddInputButton,
@@ -260,8 +252,6 @@ a.ui-datepicker .ui-datepicker-current,
 a.ui-datepicker .ui-datepicker-close,
 .designer-toolbar input[type="submit"],
 a.designer-toolbar input[type="submit"],
-.AttributeEditView form div table #customFieldDataData_AddInputButton,
-a.AttributeEditView form div table #customFieldDataData_AddInputButton,
 #customFieldDataData_AddInputButton,
 a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
@@ -328,8 +318,6 @@ a.ui-datepicker .ui-datepicker-current:before,
 a.ui-datepicker .ui-datepicker-close:before,
 .designer-toolbar input[type="submit"]:before,
 a.designer-toolbar input[type="submit"]:before,
-.AttributeEditView form div table #customFieldDataData_AddInputButton:before,
-a.AttributeEditView form div table #customFieldDataData_AddInputButton:before,
 #customFieldDataData_AddInputButton:before,
 a#customFieldDataData_AddInputButton:before,
 .ModalGameNotification a:before,
@@ -371,8 +359,6 @@ a.ui-datepicker .ui-datepicker-current:after,
 a.ui-datepicker .ui-datepicker-close:after,
 .designer-toolbar input[type="submit"]:after,
 a.designer-toolbar input[type="submit"]:after,
-.AttributeEditView form div table #customFieldDataData_AddInputButton:after,
-a.AttributeEditView form div table #customFieldDataData_AddInputButton:after,
 #customFieldDataData_AddInputButton:after,
 a#customFieldDataData_AddInputButton:after,
 .ModalGameNotification a:after,
@@ -415,8 +401,6 @@ a.ui-datepicker .ui-datepicker-current.attachLoading.z-button,
 a.ui-datepicker .ui-datepicker-close.attachLoading.z-button,
 .designer-toolbar input[type="submit"].attachLoading.z-button,
 a.designer-toolbar input[type="submit"].attachLoading.z-button,
-.AttributeEditView form div table #customFieldDataData_AddInputButton.attachLoading.z-button,
-a.AttributeEditView form div table #customFieldDataData_AddInputButton.attachLoading.z-button,
 #customFieldDataData_AddInputButton.attachLoading.z-button,
 a#customFieldDataData_AddInputButton.attachLoading.z-button,
 .ModalGameNotification a.attachLoading.z-button,
@@ -457,8 +441,6 @@ a.ui-datepicker .ui-datepicker-current:not(.attachLoading) span,
 a.ui-datepicker .ui-datepicker-close:not(.attachLoading) span,
 .designer-toolbar input[type="submit"]:not(.attachLoading) span,
 a.designer-toolbar input[type="submit"]:not(.attachLoading) span,
-.AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading) span,
-a.AttributeEditView form div table #customFieldDataData_AddInputButton:not(.attachLoading) span,
 #customFieldDataData_AddInputButton:not(.attachLoading) span,
 a#customFieldDataData_AddInputButton:not(.attachLoading) span,
 .ModalGameNotification a:not(.attachLoading) span,
@@ -554,7 +536,6 @@ table.configuration-list td:last-child a.loading .z-spinner,
 .ui-datepicker .ui-datepicker-current.loading .z-spinner,
 .ui-datepicker .ui-datepicker-close.loading .z-spinner,
 .designer-toolbar input[type="submit"].loading .z-spinner,
-.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-spinner,
 #customFieldDataData_AddInputButton.loading .z-spinner,
 .ModalGameNotification a.loading .z-spinner {
   display: inline-block;
@@ -575,7 +556,6 @@ table.configuration-list td:last-child a.loading .z-icon,
 .ui-datepicker .ui-datepicker-current.loading .z-icon,
 .ui-datepicker .ui-datepicker-close.loading .z-icon,
 .designer-toolbar input[type="submit"].loading .z-icon,
-.AttributeEditView form div table #customFieldDataData_AddInputButton.loading .z-icon,
 #customFieldDataData_AddInputButton.loading .z-icon,
 .ModalGameNotification a.loading .z-icon {
   display: none;
@@ -12600,11 +12580,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .AttributeEditView form div table td {
   padding-left: 0 !important;
 }
-.AttributeEditView form div table #customFieldDataData_AddInputButton {
-  margin: 15px 0 0 0;
-  float: left;
-  clear: both;
-}
 #DropDownDependencyMappingData table {
   border-top: none;
   padding: top:none;
@@ -12655,6 +12630,11 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 #customFieldDataData_ul li {
   position: relative;
+}
+#customFieldDataData_AddInputButton {
+  margin: 15px 0 0 0 !important;
+  float: left;
+  clear: both;
 }
 /*Target only Mozilla/Gecko Browsers*/
 @-moz-document url-prefix() {
@@ -14255,8 +14235,8 @@ a.close-ModalGameNotification.simple-select {
   height: 100%;
   background-color: transparent !important;
   background-image: -o-linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
-  background-image: -moz-linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
-  background-image: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
+  background-image: -moz-linear-gradient(0deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
+  background-image: -webkit-linear-gradient(0deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
   background-image: -ms-linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
   background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 55%, #ffffff 100%);
 }
