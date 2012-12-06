@@ -494,7 +494,7 @@
                 $onTableJoinIdName  = $modelAttributeToDataProviderAdapter->getColumnName();
                 $tableJoinIdName    = 'id';
             }
-            if(!$modelAttributeToDataProviderAdapter->canRelationHaveTable())
+            if (!$modelAttributeToDataProviderAdapter->canRelationHaveTable())
             {
                 $relationTableAliasName          = $onTableAliasName;
             }
@@ -578,16 +578,16 @@
                     $castedDownFurtherModelClassName = $castedDownModelClassName;
                     $castedDownModelClassName        = $modelClassName;
                     $modelClassName                  = get_parent_class($modelClassName);
-                    if($modelClassName::getCanHaveBean())
+                    if ($modelClassName::getCanHaveBean())
                     {
                         $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
                         if (!$joinTablesAdapter->isTableInFromTables($castedUpAttributeTableName))
                         {
-                            if($castedDownModelClassName::getCanHaveBean())
+                            if ($castedDownModelClassName::getCanHaveBean())
                             {
                                 $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
                             }
-                            elseif($castedDownFurtherModelClassName::getCanHaveBean())
+                            elseif ($castedDownFurtherModelClassName::getCanHaveBean())
                             {
                                 $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
                             }
@@ -601,13 +601,12 @@
                                                                     $resolvedTableJoinIdName);
                         }
                     }
-
                 }
                 if (!$joinTablesAdapter->isTableInFromTables($attributeTableName))
                 {
-                    if(!$modelClassName::getCanHaveBean())
+                    if (!$modelClassName::getCanHaveBean())
                     {
-                        if(!$castedDownModelClassName::getCanHaveBean())
+                        if (!$castedDownModelClassName::getCanHaveBean())
                         {
                             throw new NotSupportedException();
                         }

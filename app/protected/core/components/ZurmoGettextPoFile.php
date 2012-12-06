@@ -37,7 +37,7 @@
          * @return array message translations with context:
          *              context => array(source message => translated message)
          */
-        public function loadWithContext($file, $skipEmptyContext=true)
+        public function loadWithContext($file, $skipEmptyContext = true)
         {
             assert('is_string($file)');
             if (!is_string($file))
@@ -51,24 +51,24 @@
                 throw new FileNotReadableException();
             }
 
-            $pattern='/(msgctxt\s+"(.*?(?<!\\\\))")?'
-                    . '\s+msgid\s+"(.*?(?<!\\\\))"'
-                    . '\s+msgstr\s+"(.*?(?<!\\\\))"/';
+            $pattern = '/(msgctxt\s+"(.*?(?<!\\\\))")?' // Not Coding Standard
+                    . '\s+msgid\s+"(.*?(?<!\\\\))"'     // Not Coding Standard
+                    . '\s+msgstr\s+"(.*?(?<!\\\\))"/';  // Not Coding Standard
 
-            $content=file_get_contents($file);
+            $content = file_get_contents($file);
 
-            $n=preg_match_all($pattern,$content,$matches);
+            $n = preg_match_all($pattern, $content, $matches);
 
-            $messages=array();
-            for($i=0;$i<$n;++$i)
+            $messages = array();
+            for ($i = 0; $i < $n; ++$i)
             {
                 $context = $matches[2][$i];
                 if ($skipEmptyContext && empty($context)) continue;
 
-                $id=$this->decode($matches[3][$i]);
+                $id = $this->decode($matches[3][$i]);
                 if (empty($id)) continue;
 
-                $message=$this->decode($matches[4][$i]);
+                $message = $this->decode($matches[4][$i]);
 
                 if (!isset($messages[$context]))
                 {

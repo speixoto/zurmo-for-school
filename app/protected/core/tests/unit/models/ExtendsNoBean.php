@@ -30,6 +30,7 @@
         {
             return true;
         }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -45,6 +46,5 @@
         {
             return true;
         }
-
     }
 ?>

@@ -77,8 +77,8 @@
                                $tableName,
                                ' messagesource_id = :sourceId AND language = :languageCode',
                                array(
-                                     ':sourceId'=>$sourceId,
-                                     ':languageCode'=>$languageCode
+                                     ':sourceId'     => $sourceId,
+                                     ':languageCode' => $languageCode
                                      )
                                );
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
