@@ -24,35 +24,34 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AAA extends CustomFieldsModel
+    /**
+     * Represents a message source that stores translated messages in database.
+     *
+     * The ZurmoMessageSource::installSchema() method must be called to create
+     * the tables with required indexes
+     */
+    class ZurmoMessageSource extends CDbMessageSource
     {
-        public static function getDefaultMetadata()
+        const CACHE_KEY_PREFIX = 'ZurmoMessageSource';
+
+        protected function loadMessagesFromDb($category, $languageCode)
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'aaaMember',
-                    'aaaMember2',
-                    'aaaBoolean',
-                ),
-                'relations' => array(
-                    'bbb'                => array(RedBeanModel::HAS_ONE, 'BBB'),
-                    'hhh'                => array(RedBeanModel::HAS_ONE, 'HHH'),
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
-                    'noBean'             => array(RedBeanModel::HAS_ONE, 'NoBean'),
-                ),
-                'rules' => array(
-                    array('aaaMember',  'type', 'type' => 'string'),
-                    array('aaaMember2', 'type', 'type' => 'string'),
-                    array('aaaBoolean', 'boolean'),
-                ),
-                'customFields' => array(
-                    'industry'           => 'Industries',
-                    'multipleIndustries' => 'MultipleIndustries',
-                ),
-            );
-            return $metadata;
+            $sourceTableName   = RedBeanModel::getTableName('MessageSource');
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
+            $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
+
+            $where             =  " messagesource.`category` = '$category' AND"
+                                . " messagetranslation.`language` = '$languageCode' ";
+
+            $beans = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
+
+            $messages = array();
+            foreach ($beans as $bean)
+            {
+                $messages[$bean->messagesource->source] = $bean->translation;
+            }
+
+            return $messages;
         }
     }
 ?>

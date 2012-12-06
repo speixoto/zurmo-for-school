@@ -24,35 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AAA extends CustomFieldsModel
+    class ExtendsNoBean extends NoBean
     {
+        public static function canSaveMetadata()
+        {
+            return true;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'aaaMember',
-                    'aaaMember2',
-                    'aaaBoolean',
-                ),
-                'relations' => array(
-                    'bbb'                => array(RedBeanModel::HAS_ONE, 'BBB'),
-                    'hhh'                => array(RedBeanModel::HAS_ONE, 'HHH'),
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
-                    'noBean'             => array(RedBeanModel::HAS_ONE, 'NoBean'),
-                ),
-                'rules' => array(
-                    array('aaaMember',  'type', 'type' => 'string'),
-                    array('aaaMember2', 'type', 'type' => 'string'),
-                    array('aaaBoolean', 'boolean'),
-                ),
-                'customFields' => array(
-                    'industry'           => 'Industries',
-                    'multipleIndustries' => 'MultipleIndustries',
+                    'name',
                 ),
             );
             return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
         }
     }
 ?>
