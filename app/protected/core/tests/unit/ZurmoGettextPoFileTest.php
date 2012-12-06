@@ -100,7 +100,7 @@
             return $pathToFiles . DIRECTORY_SEPARATOR . $fileName;
         }
 
-        protected static function getCompareArray($withoutEmptyContext=true)
+        protected static function getCompareArray($withoutEmptyContext = true)
         {
             $array =  self::$compareArray;
             if ($withoutEmptyContext)
@@ -111,7 +111,8 @@
             return $array;
         }
 
-        public function testLoadWithContextWithoutEmpty() {
+        public function testLoadWithContextWithoutEmpty()
+        {
             $filePath = self::getFilePath(self::$poFileName);
             $compareArray = self::getCompareArray();
 
@@ -123,7 +124,8 @@
                                 );
         }
 
-        public function testLoadWithContextWithEmpty() {
+        public function testLoadWithContextWithEmpty()
+        {
             $filePath = self::getFilePath(self::$poFileName);
             $compareArray = self::getCompareArray(false);
 

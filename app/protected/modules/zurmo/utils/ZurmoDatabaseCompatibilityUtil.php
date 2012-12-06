@@ -1744,7 +1744,7 @@
                             }
                         }
                     }
-                    $columnsString = implode(",", $columns);
+                    $columnsString = implode(",", $columns); // Not Coding Standard
                     R::exec("ALTER TABLE $tableName  ADD  UNIQUE INDEX $indexName ($columnsString);");
                 }
                 catch (Exception $e)

@@ -32,9 +32,9 @@
      */
     class ZurmoMessageSource extends CDbMessageSource
     {
-        const CACHE_KEY_PREFIX='ZurmoMessageSource';
+        const CACHE_KEY_PREFIX = 'ZurmoMessageSource';
 
-        protected function loadMessagesFromDb($category,$languageCode)
+        protected function loadMessagesFromDb($category, $languageCode)
         {
             $sourceTableName   = RedBeanModel::getTableName('MessageSource');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
@@ -46,7 +46,8 @@
             $beans = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
 
             $messages = array();
-            foreach ($beans as $bean) {
+            foreach ($beans as $bean)
+            {
                 $messages[$bean->messagesource->source] = $bean->translation;
             }
 

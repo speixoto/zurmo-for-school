@@ -76,7 +76,7 @@
                 {
                     $firstDateValue        = static::resolveValueDataForBetweenIntoUsableFirstDateValue($value);
                     $secondDateValue       = static::resolveValueDataForBetweenIntoUsableSecondDateValue($value);
-                    if($firstDateValue == null)
+                    if ($firstDateValue == null)
                     {
                         $greaterThanValue  = null;
                     }
@@ -84,7 +84,7 @@
                     {
                         $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
                     }
-                    if($secondDateValue == null)
+                    if ($secondDateValue == null)
                     {
                         $lessThanValue     = null;
                     }

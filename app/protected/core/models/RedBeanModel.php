@@ -421,7 +421,7 @@
             {
                 foreach (array_reverse(RuntimeUtil::getClassHierarchy(get_class($this), static::$lastClassInBeanHeirarchy)) as $modelClassName)
                 {
-                    if($modelClassName::getCanHaveBean())
+                    if ($modelClassName::getCanHaveBean())
                     {
                         $tableName = self::getTableName($modelClassName);
                         $newBean = R::dispense($tableName);
@@ -446,7 +446,7 @@
                 $first = true;
                 foreach (RuntimeUtil::getClassHierarchy(get_class($this), static::$lastClassInBeanHeirarchy) as $modelClassName)
                 {
-                    if($modelClassName::getCanHaveBean())
+                    if ($modelClassName::getCanHaveBean())
                     {
                         if ($first)
                         {
@@ -926,7 +926,7 @@
                 $metadata = array();
                 foreach (array_reverse(RuntimeUtil::getClassHierarchy($className, static::$lastClassInBeanHeirarchy)) as $modelClassName)
                 {
-                    if($modelClassName::getCanHaveBean())
+                    if ($modelClassName::getCanHaveBean())
                     {
                         if ($modelClassName::canSaveMetadata())
                         {
@@ -988,7 +988,7 @@
             $className = get_called_class();
             foreach (array_reverse(RuntimeUtil::getClassHierarchy($className, static::$lastClassInBeanHeirarchy)) as $modelClassName)
             {
-                if($modelClassName::getCanHaveBean())
+                if ($modelClassName::getCanHaveBean())
                 {
                     if ($modelClassName::canSaveMetadata())
                     {
@@ -1032,7 +1032,7 @@
             $className = get_called_Class();
             foreach (RuntimeUtil::getClassHierarchy($className, static::$lastClassInBeanHeirarchy) as $modelClassName)
             {
-                if($modelClassName::getCanHaveBean())
+                if ($modelClassName::getCanHaveBean())
                 {
                     if (isset($metadata[$modelClassName]['members']))
                     {
@@ -1996,8 +1996,6 @@
                                                                                                 $modelClassName);
                                 $baseModelClassName = $modelClassName;
                             }
-
-
                         }
                         $this->modified = false;
                         $this->afterSave();
@@ -2244,7 +2242,7 @@
             // not on links. So for now at least they are done the slow way.
             foreach (RuntimeUtil::getClassHierarchy(get_class($this), static::$lastClassInBeanHeirarchy) as $modelClassName)
             {
-                if($modelClassName::getCanHaveBean())
+                if ($modelClassName::getCanHaveBean())
                 {
                     $this->deleteOwnedRelatedModels  ($modelClassName);
                     $this->deleteForeignRelatedModels($modelClassName);
@@ -3117,10 +3115,10 @@
         protected static function resolveModelClassNameForClassesWithoutBeans(& $modelClassName)
         {
             assert('is_string($modelClassName)');
-            if(!$modelClassName::getCanHaveBean())
+            if (!$modelClassName::getCanHaveBean())
             {
                 $modelClassName = get_parent_class($modelClassName);
-                if(!$modelClassName::getCanHaveBean())
+                if (!$modelClassName::getCanHaveBean())
                 {
                     //For the moment, only support a single class in a chain of classes not having a bean.
                     //Expand this support as needed.

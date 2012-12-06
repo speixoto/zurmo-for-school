@@ -67,7 +67,7 @@
             $parentAttributeName            = null;
             foreach ($mappingData as $dependencyData)
             {
-                if($dependencyData['attributeName'] == null)
+                if ($dependencyData['attributeName'] == null)
                 {
                      break;
                 }
