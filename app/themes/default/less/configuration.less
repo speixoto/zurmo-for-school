@@ -17,7 +17,7 @@
         }
     }
 }
-//.configuration-list li a:before,
+
 .back-to-app-menu-item span{
     vertical-align:middle;
     &:before{
@@ -26,67 +26,66 @@
         margin-right:6px;
     }
 }
+
 .back-to-app-menu-item a:hover span, .back-to-app-menu-item a:hover span:before{
     color: #fff !important;
 }
 
 #ConfigurationPageView{
-        table{
-            border: 1px solid #DFDFDF;
-            border-collapse: collapse;
-            border-spacing: 1px;
-            width:100%;
-        }
-        table th,
-        table td{
-            border: 1px solid #DFDFDF;
-            vertical-align:middle;
-            padding:10px;
-            overflow: hidden;
-        }
-        table tbody,
-        table tbody tr:last-child,
-        table tbody tr:last-child td{
-            border-bottom: none;
-        }
-        table thead tr th:last-child,
-        table tbody tr td:last-child{}
-        table th{
-            font-weight:bold !important;
-            height:35px;
-            line-height: 35px;
-            background: url(../images/table-items-header.png) left top repeat-x;
-            padding:0 0 0 10px !important;
-        }
-        .checkbox-column{
-            width:35px;
-            text-align:center;
-        }
-        .button-column{
-            width:25px;
-            text-align:center;
-            vertical-align:top !important;
-        }
-        tr.odd{
+    table{
+        border: 1px solid #DFDFDF;
+        border-collapse: collapse;
+        border-spacing: 1px;
+        width:100%;
+    }
+    table th,
+    table td{
+        border: 1px solid #DFDFDF;
+        vertical-align:middle;
+        padding:10px;
+        overflow: hidden;
+    }
+    table tbody,
+    table tbody tr:last-child,
+    table tbody tr:last-child td{
+        border-bottom: none;
+    }
+    table thead tr th:last-child,
+    table tbody tr td:last-child{}
+    table th{
+        font-weight:bold !important;
+        height:35px;
+        line-height: 35px;
+        background: url(../images/table-items-header.png) left top repeat-x;
+        padding:0 0 0 10px !important;
+    }
+    .checkbox-column{
+        width:35px;
+        text-align:center;
+    }
+    .button-column{
+        width:25px;
+        text-align:center;
+        vertical-align:top !important;
+    }
+    tr.odd{
 
+    }
+    tr.even{
+        background:#fafafa;
+    }
+    table tr:hover{
+        background-color:#D4E7BC;
+        .pencil{
+            visibility:visible;
         }
-        tr.even{
-            background:#fafafa;
-        }
-        table tr:hover{
-            background-color:#D4E7BC;
-            ++.themeColor;
-            .pencil{
-                visibility:visible;
-                ++.themeColor;
-            }
-        }
-        table thead{
-            #gradient > .vertical(#f9f9f9, #f4f4f4);
-        }
-        table thead tr:hover{
-            #gradient > .vertical(#f9f9f9, #f4f4f4);
-        }
+    }
+    table thead{
+        #gradient > .vertical(#f9f9f9, #f4f4f4);
+    }
+    table thead tr:hover{
+        #gradient > .vertical(#f9f9f9, #f4f4f4);
+    }
 }
 
 .configuration-list{
@@ -216,16 +215,6 @@ table.configuration-list{
         text-align:left;
         padding-left:15px;
     }
-    th{
-        /*text-align:left;
-        font-size: 12px !important;
-        color: #666;
-        font-weight: 400 !important;*/
-    }
-}
-
-.AdministrativeArea.AppContent{
-    //padding-right:0;
 }
 
 #GroupUserMembershipEditView td{
@@ -435,16 +424,11 @@ table.configuration-list{
             text-align:left;
             font-weight: bold !important;
             height: auto  !important;
-            //line-height: 100%  !important;
             background: url(../images/table-items-header.png) left top repeat-x;
             padding: 0 0 0 10px !important;
         }
     }
-    .tooltip{
-        //margin-top:9px;
-    }
     a{
-        .zLink();
         margin-right:5px;
     }
     table{
@@ -457,11 +441,10 @@ table.configuration-list{
         border-top:none;
     }
 }
-
-#active-monitor-job-tooltip{
-    //position: absolute;
-    //margin-top:-9px;
-    //float:left;
+.reset-job-link{
+    //#gradient > .vertical(#c43d53, #a82d31 );
+    margin:0 !important;
+    float:right;
 }
 
 #JobLogsModalListView{
