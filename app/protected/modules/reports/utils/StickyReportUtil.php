@@ -25,33 +25,27 @@
      ********************************************************************************/
 
     /**
-     * Base class used for wrapping a view of a report results grid
+     * Help with working with sticky report results.  This is needed when using runtime filters
      */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class StickyReportUtil extends StickyUtil
     {
-        public function getTitle()
-        {
-            $title  = Yii::t('Default', 'ReportResultsGridTitleNeeded');
-            return $title;
-        }
 
-        public function renderContent()
+        public static function resolveStickyDataToReport(Report $report, array $stickyData)
         {
+            if(!isset($stickyData[ComponentForReportForm::TYPE_FILTERS]))
 
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
-        }
-
-        protected function makeViewAndRender()
-        {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']))
             {
-                $dataProvider = $this->params['dataProvider'];
+                return;
             }
-            $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
-            return $view->render();
+            $moduleClassName = $report->getModuleClassName();
+            $filters         = $report->getFilters();
+            foreach($stickyData[ComponentForReportForm::TYPE_FILTERS] as $filterKey => $filterData)
+            {
+                if(isset($filters[$filterKey]))
+                {
+                    $filters[$filterKey]->setAttributes($filterData);
+                }
+            }
         }
     }
 ?>

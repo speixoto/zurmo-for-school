@@ -63,13 +63,14 @@
             self::resolveChart                      ($data, $report);
         }
 
-        protected static function resolveFilters($data, Report $report)
+        public static function resolveFilters($data, Report $report)
         {
             $report->removeAllFilters();
             $moduleClassName = $report->getModuleClassName();
             if(count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
             {
-                foreach($filtersData as $filterData)
+                $sanitizedFiltersData = self::sanitizeFiltersData($moduleClassName, $report->getType(), $filtersData);
+                foreach($sanitizedFiltersData as $filterData)
                 {
                     $filter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                       $report->getType());
@@ -81,6 +82,47 @@
             {
                 $report->removeAllFilters();
             }
+        }
+
+        public static function sanitizeFiltersData($moduleClassName, $reportType, array $filtersData)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($reportType)');
+            $sanitizedFiltersData = array();
+            foreach($filtersData as $filterData)
+            {
+                $sanitizedFiltersData[] = static::sanitizeFilterData($moduleClassName,
+                                                                     $moduleClassName::getPrimaryModelName(),
+                                                                     $reportType,
+                                                                     $filterData);
+            }
+            return $sanitizedFiltersData;
+        }
+
+        protected static function sanitizeFilterData($moduleClassName, $modelClassName, $reportType, $filterData)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($reportType)');
+            assert('is_array($filterData)');
+            $filterForSanitizing = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                           $reportType);
+
+            $filterForSanitizing->setAttributes($filterData);
+            $valueElementType = null;
+            $valueElementType    = $filterForSanitizing->getValueElementType();
+            if($valueElementType == 'MixedDateTypesForReport')
+            {
+                if(isset($filterData['value']) && $filterData['value'] !== null)
+                {
+                    $filterData['value']       = DateTimeUtil::resolveValueForDateDBFormatted($filterData['value']);
+                }
+                if(isset($filterData['secondValue']) && $filterData['secondValue'] !== null)
+                {
+                    $filterData['secondValue'] = DateTimeUtil::resolveValueForDateDBFormatted($filterData['secondValue']);
+                }
+            }
+            return $filterData;
         }
 
         protected static function resolveOrderBys($data, Report $report)
@@ -169,6 +211,10 @@
 
         protected static function resolveChart($data, Report $report)
         {
+            if($report->getType() != Report::TYPE_SUMMATION)
+            {
+                return;
+            }
             $moduleClassName = $report->getModuleClassName();
             $modelClassName  = $moduleClassName::getPrimaryModelName();
             $adapter         = ModelRelationsAndAttributesToSummationReportAdapter::

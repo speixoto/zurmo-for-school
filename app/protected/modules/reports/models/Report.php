@@ -295,8 +295,14 @@
 
         public function areRuntimeFiltersPresent()
         {
-            //todo:
-            return true;
+            foreach($this->getFilters() as $filter)
+            {
+                if($filter->availableAtRunTime)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 ?>

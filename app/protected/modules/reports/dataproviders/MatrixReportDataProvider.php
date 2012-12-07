@@ -24,34 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping a view of a report results grid
-     */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class MatrixReportDataProvider extends ReportDataProvider
     {
-        public function getTitle()
+        protected function isReportValidType()
         {
-            $title  = Yii::t('Default', 'ReportResultsGridTitleNeeded');
-            return $title;
-        }
-
-        public function renderContent()
-        {
-
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
-        }
-
-        protected function makeViewAndRender()
-        {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']))
+            if($this->report->getType() != Report::TYPE_MATRIX)
             {
-                $dataProvider = $this->params['dataProvider'];
+                throw new NotSupportedException();
             }
-            $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
-            return $view->render();
         }
     }
 ?>

@@ -26,18 +26,18 @@
 
     class ReportsDefaultPortletController extends ZurmoPortletController
     {
-        public function actionDetails($id)
+        public function actionDetails($id, $runReport = false)
         {
             $savedReport             = SavedReport::getById((int)$id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport, true);
             $report                  = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $portlet                 = Portlet::getById(intval($_GET['portletId']));
             $portlet->params = array(
-                    'controllerId' => 'default',
+                    'controllerId'     => 'default',
                     'relationModuleId' => $this->getModule()->getId(),
                     'relationModel'    => $report,
                     'redirectUrl'      => Yii::app()->request->getRequestUri(),
-                    //add some signal to indicate to actually run dataProvider.
+                    'dataProvider'	   => $this->getDataProvider($report, $report->getId(), (bool)$runReport),
             );
             $portletView = $portlet->getView();
             if (!RightsUtil::canUserAccessModule($portletView::getModuleClassName(), Yii::app()->user->userModel))
@@ -49,6 +49,27 @@
             }
             $view            = new AjaxPageView($portletView);
             echo $view->render();
+        }
+
+        protected function getDataProvider(Report $report, $stickyKey, $runReport)
+        {
+            assert('is_string($stickyKey) || is_int($stickyKey)');
+            assert('is_bool($runReport)');
+            $getData   = GetUtil::getData();
+            if (isset($getData['clearRuntimeFilters']) && $getData['clearRuntimeFilters'])
+            {
+                StickyReportUtil::clearDataByKey($stickyKey);
+            }
+            if (null != $stickyData = StickyReportUtil::getDataByKey($stickyKey))
+            {
+                StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
+            }
+            $dataProvider = ReportDataProviderFactory::makeByReport($report);
+            if($runReport)
+            {
+                $dataProvider->setRunReport($runReport);
+            }
+            return $dataProvider;
         }
     }
 ?>

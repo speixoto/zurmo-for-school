@@ -53,14 +53,15 @@
             $metadata = self::getMetadata();
             $leftBottomMetadataForPortlets['global'] = $metadata['global']['leftBottomView'];
             $leftTopView    = $this->makeLeftTopView($metadata);
-            $leftBottomView = new ModelRelationsSecuredPortletFrameView($this->controllerId,
-                                                                        $this->moduleId,
-                                                                        $this->uniqueLayoutId . 'LeftBottomView',
-                                                                        $this->params,
-                                                                        $leftBottomMetadataForPortlets,
-                                                                        false,
-                                                                        false,
-                                                                        $metadata['global']['leftBottomView']['showAsTabbed']);
+            $viewClassName  = static::getModelRelationsSecuredPortletFrameViewClassName();
+            $leftBottomView = new $viewClassName(   $this->controllerId,
+                                                    $this->moduleId,
+                                                    $this->uniqueLayoutId . 'LeftBottomView',
+                                                    $this->params,
+                                                    $leftBottomMetadataForPortlets,
+                                                    false,
+                                                    false,
+                                                    $metadata['global']['leftBottomView']['showAsTabbed']);
             if (isset($metadata['global']['rightTopView']))
             {
                 $renderRightSide                         = true;

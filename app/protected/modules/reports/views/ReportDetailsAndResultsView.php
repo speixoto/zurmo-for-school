@@ -60,7 +60,6 @@
             // Begin Not Coding Standard
             //On page ready load the chart and grid with data
             $script = "$(document).ready(function () {
-                            console.log('we need to call something in charts and result grid to load data');
                             $('#ReportChartForPortletView').find('.refreshPortletLink').click();
                             $('#ReportResultsGridForPortletView').find('.refreshPortletLink').click();
                        });";

@@ -81,7 +81,8 @@
                                                         array_merge(GetUtil::getData(), array(
                                                             'portletId'      => $this->params['portletId'],
                                                             'uniqueLayoutId' => $this->uniqueLayoutId,
-                                                            'id'             => $this->params['relationModel']->getId())));
+                                                            'id'             => $this->params['relationModel']->getId(),
+                                                            'runReport'      => true)));
         }
 
         /**

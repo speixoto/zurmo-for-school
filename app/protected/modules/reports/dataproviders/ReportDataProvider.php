@@ -24,34 +24,48 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping a view of a report results grid
-     */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    abstract class ReportDataProvider extends CDataProvider
     {
-        public function getTitle()
+        protected $report;
+
+        protected $runReport = false;
+
+        abstract protected function isReportValidType();
+
+        public function __construct(Report $report)
         {
-            $title  = Yii::t('Default', 'ReportResultsGridTitleNeeded');
-            return $title;
+            $this->report = $report;
+            $this->isReportValidType();
         }
 
-        public function renderContent()
+        public function setRunReport($runReport)
         {
-
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
+            assert('is_bool($runReport)');
+            $this->runReport = $runReport;
         }
 
-        protected function makeViewAndRender()
+        protected function fetchData()
         {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']))
+        }
+
+        /**
+         * See the yii documentation. This function is made public for unit testing.
+         */
+        public function calculateTotalItemCount()
+        {
+        }
+
+        /**
+         * See the yii documentation.
+         */
+        protected function fetchKeys()
+        {
+            $keys = array();
+            foreach ($this->getData() as $model)
             {
-                $dataProvider = $this->params['dataProvider'];
+                $keys[] = $model->id;
             }
-            $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
-            return $view->render();
+            return $keys;
         }
     }
 ?>

@@ -24,34 +24,39 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping a view of a report results grid
-     */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class RuntimeReportAttributeToElementAdapter extends ReportAttributeToElementAdapter
     {
-        public function getTitle()
+        protected $showAvailableRuntimeFilter = false;
+
+        protected function renderAttributeIndexOrDerivedType()
         {
-            $title  = Yii::t('Default', 'ReportResultsGridTitleNeeded');
-            return $title;
+            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
+                                            array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
+            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
+                                            array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
+            $idInputHtmlOptions  = array('id' => $hiddenInputId);
+            return ZurmoHtml::hiddenField($hiddenInputName, $this->model->getAttributeIndexOrDerivedType(),
+                                          $idInputHtmlOptions);
         }
 
-        public function renderContent()
+        protected function getContentForGroupBy()
         {
-
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
+            throw new NotSupportedException();
         }
 
-        protected function makeViewAndRender()
+        protected function getContentForOrderBy()
         {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']))
-            {
-                $dataProvider = $this->params['dataProvider'];
-            }
-            $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
-            return $view->render();
+            throw new NotSupportedException();
+        }
+
+        protected function getContentForDisplayAttribute()
+        {
+            throw new NotSupportedException();
+        }
+
+        protected function getContentForDrillDownDisplayAttribute()
+        {
+            throw new NotSupportedException();
         }
     }
 ?>

@@ -82,7 +82,7 @@
                             $(this).parent().parent().parent().find('.value-data').find('.second-value-area')
                             .find(':input, select').prop('disabled', true);
                         }
-                        if($(this).val() == 'oneOf')
+                        if($(this).val() == '" . OperatorRules::TYPE_ONE_OF . "')
                         {
                             var newName = $(this).parent().parent().parent().find('.value-data')
                                           .find('.flexible-drop-down').attr('name') + '[]';
@@ -108,13 +108,19 @@
 
         public static function getValueTypesRequiringFirstDateInput()
         {
-            return array('equals',   'doesNotEqual', 'greaterThanOrEqualTo', 'lessThanOrEqualTo', 'greaterThan',
-                         'lessThan', 'oneOf', 'between');
+            return array(OperatorRules::TYPE_EQUALS,
+                         OperatorRules::TYPE_DOES_NOT_EQUAL,
+                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
+                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
+                         OperatorRules::TYPE_GREATER_THAN,
+                         OperatorRules::TYPE_LESS_THAN,
+                         OperatorRules::TYPE_ONE_OF,
+                         OperatorRules::TYPE_BETWEEN);
         }
 
         public static function getValueTypesRequiringSecondDateInput()
         {
-            return array('between');
+            return array(OperatorRules::TYPE_BETWEEN);
         }
     }
 ?>

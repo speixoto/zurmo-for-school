@@ -118,7 +118,7 @@
             $breadCrumbView          = new ReportBreadCrumbView($this->getId(), $this->getModule()->getId(), $breadcrumbLinks);
             $detailsAndRelationsView = $this->makeReportDetailsAndRelationsView($savedReport, Yii::app()->request->getRequestUri(),
                                                                                 $breadCrumbView);
-            $view = new AccountsPageView(ZurmoDefaultViewUtil::
+            $view = new ReportsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();
         }
@@ -331,6 +331,53 @@
             $dataAndLabels['secondRangeDataAndLabels']  = array_merge($dataAndLabels['secondRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
             echo CJSON::encode($dataAndLabels);
+        }
+
+        public function actionApplyRuntimeFilters($id)
+        {
+            $postData             = PostUtil::getData();
+            $savedReport          = SavedReport::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
+            $breadcrumbLinks      = array(strval($savedReport));
+            $report               = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $wizardFormClassName  = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
+            if(!isset($postData[$wizardFormClassName]))
+            {
+                throw new NotSupportedException();
+            }
+            DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report);
+            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            {
+                $adapter          = new ReportToWizardFormAdapter($report);
+                $reportWizardForm = $adapter->makeFormByType();
+                $reportWizardForm->setScenario(reportWizardForm::FILTERS_VALIDATION_SCENARIO);
+                if(!$reportWizardForm->validate())
+                {
+                    $errorData = array();
+                    foreach ($reportWizardForm->getErrors() as $attribute => $errors)
+                    {
+                            $errorData[ZurmoHtml::activeId($reportWizardForm, $attribute)] = $errors;
+                    }
+                    echo CJSON::encode($errorData);
+                    Yii::app()->end(0, false);
+                }
+            }
+            $filtersData          = ArrayUtil::getArrayValue($postData[$wizardFormClassName],
+                                    ComponentForReportForm::TYPE_FILTERS);
+            $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
+                                                                          $report->getType(),
+                                                                          $filtersData);
+            StickyReportUtil::setDataByKeyAndData($report->getId(), $sanitizedFiltersData);
+        }
+
+        public function actionResetRuntimeFilters($id)
+        {
+            $postData         = PostUtil::getData();
+            $savedReport      = SavedReport::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
+            $breadcrumbLinks  = array(strval($savedReport));
+            $report           = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            StickyReportUtil::clearDataByKey($report->getId());
         }
 
         protected function resolveAfterSaveHasPermissionsProblem(SavedReport $savedReport, $modelToStringValue)

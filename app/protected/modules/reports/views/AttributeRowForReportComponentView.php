@@ -38,18 +38,23 @@
 
         protected $hasTrackableStructurePosition;
 
-        public function __construct($elementAdapter, $rowNumber, $inputPrefixData, $attribute, $hasTrackableStructurePosition)
+        protected $showRemoveLink;
+
+        public function __construct($elementAdapter, $rowNumber, $inputPrefixData, $attribute,
+                                    $hasTrackableStructurePosition, $showRemoveLink = true)
         {
             assert('$elementAdapter instanceof ReportAttributeToElementAdapter');
             assert('is_int($rowNumber)');
             assert('is_array($inputPrefixData)');
             assert('is_string($attribute)');
             assert('is_bool($hasTrackableStructurePosition)');
+            assert(is_bool($showRemoveLink));
             $this->elementAdapter                     = $elementAdapter;
             $this->rowNumber                          = $rowNumber;
             $this->inputPrefixData                    = $inputPrefixData;
             $this->attribute                          = $attribute;
             $this->hasTrackableStructurePosition      = $hasTrackableStructurePosition;
+            $this->showRemoveLink                     = $showRemoveLink;
         }
 
         public function render()
@@ -105,7 +110,10 @@
             }
             $content .= $this->renderAttributeContent();
             $content .= '</div>';
-            $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-report-attribute-row-link'));
+            if($this->showRemoveLink)
+            {
+                $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-report-attribute-row-link'));
+            }
             $content  =  ZurmoHtml::tag('div', array('class' => 'report-attribute-row'), $content);
             if($this->addWrapper)
             {

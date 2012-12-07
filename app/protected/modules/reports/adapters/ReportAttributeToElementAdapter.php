@@ -36,6 +36,8 @@
 
         protected $treeType;
 
+        protected $showAvailableRuntimeFilter = true;
+
         public function __construct(Array $inputPrefixData, $model, $form, $treeType)
         {
             assert('count($inputPrefixData) > 1');
@@ -124,15 +126,18 @@
             {
                 throw new NotSupportedException();
             }
-            $runTimeElement                         = new CheckBoxElement($this->model, 'availableAtRunTime',
-                                                                $this->form, $params);
-            $runTimeElement->editableTemplate       = '{label}{content}{error}';
-            $runTimeContent                         = $runTimeElement->render();
             $content                                = $this->renderAttributeIndexOrDerivedType();
             self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
             self::resolveDivWrapperForContent($operatorContent,                $content);
             self::resolveDivWrapperForContent($valueContent,                   $content, 'value-data');
-            self::resolveDivWrapperForContent($runTimeContent,                 $content);
+            if($this->showAvailableRuntimeFilter)
+            {
+                $runTimeElement                         = new CheckBoxElement($this->model, 'availableAtRunTime',
+                                                                    $this->form, $params);
+                $runTimeElement->editableTemplate       = '{label}{content}{error}';
+                $runTimeContent                         = $runTimeElement->render();
+                self::resolveDivWrapperForContent($runTimeContent,                 $content);
+            }
             return $content;
         }
 

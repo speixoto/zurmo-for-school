@@ -24,15 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SelectFromRelatedListAjaxLinkActionElement extends AjaxLinkActionElement
+    class RefreshRuntimeFiltersAjaxLinkActionElement extends AjaxLinkActionElement
     {
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
-            if (!isset($params['htmlOptions']))
-            {
-                $params['htmlOptions'] = array();
-            }
-            $params['htmlOptions'] = array_merge(array('class' => 'simple-select'), $params['htmlOptions']);
+            $params['htmlOptions'] = array('id' => 'reset-runtime-filters', 'class'  => 'attachLoading z-button');
             parent::__construct($controllerId, $moduleId, $modelId, $params);
         }
 
@@ -43,38 +39,43 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Select');
+            return Yii::t('Default', 'Reset');
         }
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/default/relectFromRelatedList/',
-                    array(
-                    'uniqueLayoutId'          => $this->getUniqueLayoutId(),
-                    'portletId'               => $this->getPortletId(),
-                    'relationAttributeName'   => $this->params['relationAttributeName'],
-                    'relationModelId'         => $this->params['relationModelId'],
-                    'relationModuleId'        => $this->params['relationModuleId'],
-                    )
+            return Yii::app()->createUrl('reports/default/resetRuntimeFilters/',
+                                         array('id' => $this->modelId )
             );
         }
 
-        protected function getUniqueLayoutId()
+        protected function getLabel()
         {
-            if (isset($this->params['uniqueLayoutId']))
-            {
-                return $this->params['uniqueLayoutId'];
-            }
-            return null;
+            $content  = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            $content .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
+            $content .= ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getDefaultLabel());
+            return $content;
         }
 
-        protected function getPortletId()
+        protected function getAjaxOptions()
         {
-            if (isset($this->params['portletId']))
-            {
-                return $this->params['portletId'];
-            }
-            return null;
+            return array(
+                    'beforeSend' => 'js:function(){
+                                        attachLoadingSpinner("reset-runtime-filters", true);
+                                        $("#reset-runtime-filters").addClass("attachLoadingTarget");
+                                        $("#reset-runtime-filters").addClass("loading");
+                                        $("#reset-runtime-filters").addClass("loading-ajax-submit");
+                                    } ',
+                    'success'    => 'js:function(){
+                                        $("#RuntimeFiltersForPortletView").find(".refreshPortletLink").click();
+                                        $("#ReportChartForPortletView").find(".refreshPortletLink").click();
+                                        $("#ReportResultsGridForPortletView").find(".refreshPortletLink").click();
+                                    }');
+            //beforeSend attach loading...
+            //success
+                //refresh runtime area.
+                //refresh chart area
+                //refresh main results area
         }
     }
 ?>
