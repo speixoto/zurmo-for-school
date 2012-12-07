@@ -91,7 +91,6 @@
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' . $action . '/',
                                            array('id' => $this->model->id));
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Previous')), $route);
-            
         }
 
         /**
