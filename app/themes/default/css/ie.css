@@ -253,12 +253,12 @@ a.z-button:not(.attachLoading) span {
 }
 .zLink,
 .z-link {
-  padding: 1px 4px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
+  padding: 2px 4px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
   color: #fff !important;
   font-size: 11px;
 }
@@ -351,8 +351,4 @@ input[type="button"]{
   margin: 0 10px;
   text-indent: 0;
   display: inline-block;
-}
-.ie8 .AppContainer {
-  top: -12px;
-  left: -12px;
 }

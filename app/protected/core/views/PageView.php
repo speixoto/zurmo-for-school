@@ -253,7 +253,7 @@
                     Yii::app()->minScript->generateScriptMap('js');
                 }
             }
-            if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 8)
+            if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 9)
             {
                 $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css' . '/ie.css', 'screen, projection');
             }
