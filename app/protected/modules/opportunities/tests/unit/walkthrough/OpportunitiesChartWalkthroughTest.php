@@ -46,40 +46,5 @@
             //Setup default dashboard.
             Dashboard::getByLayoutIdAndUser                                  (Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
         }
-
-        public function testCharts()
-        {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
-            //Test OpportunitiesByStage
-            $portlet = new Portlet();
-            $portlet->column    = 1;
-            $portlet->position  = 1;
-            $portlet->layoutId  = 'TestLayout';
-            $portlet->collapsed = false;
-            $portlet->viewType  = 'OpportunitiesByStageChart';
-            $portlet->user      = $super;
-            $this->assertTrue($portlet->save());
-            $this->setGetArray(array('chartLibraryName' => 'Fusion', 'portletId' => $portlet->id));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/makeChartXML');
-            $this->assertFalse(strpos($content, '<graph') === false);
-            $this->assertEquals(0, strpos($content, chr(239) . chr(187) . chr(191) . '<?xml version="1.0" encoding="UTF-8"?><graph'));
-
-            //Test OpportunitiesBySource
-            $portlet = new Portlet();
-            $portlet->column    = 1;
-            $portlet->position  = 2;
-            $portlet->layoutId  = 'TestLayout';
-            $portlet->collapsed = false;
-            $portlet->viewType  = 'OpportunitiesByStageChart';
-            $portlet->user      = $super;
-            $this->assertTrue($portlet->save());
-            $this->setGetArray(array('chartLibraryName' => 'Fusion', 'portletId' => $portlet->id));
-            $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/makeChartXML');
-            $this->assertFalse(strpos($content, '<graph') === false);
-            $this->assertEquals(0, strpos($content, chr(239) . chr(187) . chr(191) . '<?xml version="1.0" encoding="UTF-8"?><graph'));
-        }
     }
 ?>
