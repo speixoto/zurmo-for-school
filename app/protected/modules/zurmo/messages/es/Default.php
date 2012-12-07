@@ -248,7 +248,7 @@
         'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
             => 'Haga clic en el icono de configuración en la parte superior derecha de cada portlet para editar gráficos en el salpicadero.',
         'Email'
-            => '??',
+            => 'Email', // Same Word Translated
         'Email Address'
             => 'Dirección de email',
         'Enable game notification popup'

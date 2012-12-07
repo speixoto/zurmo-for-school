@@ -48,23 +48,23 @@
         'Create Users'
             => 'Benutzern erstellen',
         'Custom Outbound Email Settings'
-            => '??',
+            => 'Benutzerdefinierte Outbound Email Einstellungen',
         'day(s)'
             => 'Tag(e)',
         'Email Configuration'
-            => '??',
+            => 'E-Mail-Konfiguration',
         'Email Signature'
-            => '??',
+            => 'E-Mail Signatur',
         'Enforce Strong Passwords'
             => 'Erzwingen sicherer Kennwörter',
         'General'
-            => '??',
+            => 'General', // Same Word Translated
         'Hash'
             => 'Hash', // Same Word Translated
         'Hide welcome page'
             => 'Startseite verstecken',
         'If unchecked, will use system SMTP settings.'
-            => '??',
+            => 'Wenn nicht gegengesteuert wird, wird bedienendes System SMTP-Einstellungen.',
         'Inactive users cannot log in using the web, mobile or web API. Login for active users is controlled by group rights.'
             => 'Inaktive Benutzer können sich nicht anmelden über die Web-, Mobil-oder Web-API. Anmeldung für aktive Benutzer wird durch Gruppenrechte kontrolliert.',
         'Inherited Value:'
@@ -96,7 +96,7 @@
         'Sign in Via Web API'
             => 'Anmelden via Web API',
         'Texture'
-            => '??',
+            => 'Textur',
         'The password is too short. Minimum length is {minimumLength}.'
             => 'Das Kennwort ist zu kurz. Minimale Länge ist {minimumLength}.',
         'The password must have at least one lowercase letter'
@@ -110,7 +110,7 @@
         'The username is too short. Minimum length is {minimumLength}.'
             => 'Der Benutzername ist zu kurz. Minimale Länge ist {minimumLength}.',
         'Theme'
-            => '??',
+            => 'Thema',
         'Time Zone'
             => 'Zeitzone',
         'Turn off email notifications'
@@ -124,7 +124,7 @@
         'User configuration saved successfully.'
             => 'Benutzerkonfiguration erfolgreich gespeichert.',
         'User email configuration saved successfully.'
-            => '??',
+            => 'Benutzer E-Mail-Konfiguration erfolgreich gespeichert.',
         'User Search'
             => 'Benutzer Suche',
         'Users'
