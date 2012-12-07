@@ -208,6 +208,9 @@
                     Yii::getPathOfAlias('application.core.views.assets')) . '/interactions.js');
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.views.assets')) . '/mobile-interactions.js');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/jquery.truncateText.js');
             return '<!DOCTYPE html>' .
                    '<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->' .
@@ -280,6 +283,7 @@
             return '<head>' .
                    '<meta charset="utf-8">' .
                    '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' . // Not Coding Standard
+                   '<meta name="viewport"  content="initial-scale=1, width=device-width">' . // Not Coding Standard
                    $specialCssContent .
                    '<title>' . $title . '</title>'  .
                    '</head>';

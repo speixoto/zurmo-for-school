@@ -14,3 +14,92 @@
         right:0 !important;
     }
 }
+
+/*
+min-width: … px Used when the viewport’s width is bigger or equal to width
+max-width: … px Used when the viewport’s width is smaller or equal to width
+min-device-width: … px  Used when the device’s width is bigger or equal to width
+max-device-width: … px  Used when the device’s width is smaller or equal to width
+orientation : portrait // orientation: landscape    Target orientation
+-webkit-min-device-pixel-ratio : 1.5
+    
+    http://bennettfeely.com/flexplorer/
+*/
+
+#nav-trigger{
+    display:none;
+    float: left;
+    text-align:left;
+    padding:0 10px 0 0;
+    margin-right:15px;
+    line-height: 36px;
+    font-size: 24px;
+    font-weight: bold;
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    .b-shadow(1px 0 0 0 rgba(255, 255, 255, 0.2));
+    color:rgba(255, 255, 255, 0.7);
+    .t-shadow(0 0 1 rgba(130, 130, 130, 0.5));
+}
+
+@media all and (max-width: 640px) {
+    body{
+        padding-bottom:160px;
+    }
+    #nav-trigger{
+        display:block;
+    }
+    #HeaderView{
+        position:fixed;
+        width:100%;
+    }
+    #HeaderLinksView + div{
+        height:0;
+    }
+    #GlobalSearchAndShortcutsCreateMenuView{
+        display:none;
+    }
+    #FooterView {
+        margin: 10px 10px 0 10px;
+        padding-bottom: 10px;
+    }
+    .AppContainer{
+        min-width:auto;
+        /*background-image:none;*/
+        margin:0 10px;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    .AppContent{
+        padding-top:50px;
+        padding-left:10px;
+        margin-left:0;
+        
+        -webkit-transition: all 0.22s ease-in 0;
+
+        transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+    }
+    .nav-open{
+        transform: translate3d(170px, 0, 0);
+        -webkit-transform: translate3d(170px, 0, 0);
+    }
+    .AppNavigation{
+        position:fixed;
+        padding-top:35px;
+    }
+    #HomeDashboardView{
+        .juiportlet-column{
+            width:100%;
+            float:none;
+        }
+        .juiportlet-widget{
+            min-width:auto;
+            margin-right:10px;
+        }
+    }
+    #credit-link {
+        line-height: 17px;
+        font-size: 10px;
+    }
+
+}
