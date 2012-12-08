@@ -135,7 +135,7 @@
             {
                 return array();
             }
-            $attributes       = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));
+            $attributes       = array();
             $this->resolveGroupByAttributesForDisplayAttributes($precedingModel, $precedingRelation, $attributes,
                                                                 $existingGroupBys);
             $attributes       = array_merge($attributes, $this->getDisplayCalculationAttributes());
@@ -145,7 +145,7 @@
 
         protected function getDisplayCalculationAttributes()
         {
-            $attributes = array();
+            $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);

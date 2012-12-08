@@ -216,15 +216,23 @@
                 return;
             }
             $moduleClassName = $report->getModuleClassName();
-            $modelClassName  = $moduleClassName::getPrimaryModelName();
-            $adapter         = ModelRelationsAndAttributesToSummationReportAdapter::
-                               make($moduleClassName, $modelClassName, $report->getType());
-            $attributes      = $adapter->getAttributesForChartSeries($report->getGroupBys());
-            $chart           = new ChartForReportForm(
-                               ReportUtil::makeDataAndLabelsForSeriesOrRange(
-                               $adapter->getAttributesForChartSeries($report->getGroupBys())),
-                               ReportUtil::makeDataAndLabelsForSeriesOrRange(
-                               $adapter->getAttributesForChartRange($report->getDisplayAttributes())));
+            if($moduleClassName != null)
+            {
+                $modelClassName      = $moduleClassName::getPrimaryModelName();
+                $adapter             = ModelRelationsAndAttributesToSummationReportAdapter::
+                                       make($moduleClassName, $modelClassName, $report->getType());
+                $seriesDataAndLabels = ReportUtil::makeDataAndLabelsForSeriesOrRange(
+                                       $adapter->getAttributesForChartSeries($report->getGroupBys()));
+                $rangeDataAndLabels  = ReportUtil::makeDataAndLabelsForSeriesOrRange(
+                                       $adapter->getAttributesForChartRange($report->getDisplayAttributes()));
+            }
+            else
+            {
+                $seriesDataAndLabels = array();
+                $rangeDataAndLabels  = array();
+            }
+
+            $chart           = new ChartForReportForm($seriesDataAndLabels, $rangeDataAndLabels);
             if(null != $chartData = ArrayUtil::getArrayValue($data, 'ChartForReportForm'))
             {
                 $chart->setAttributes($chartData);

@@ -93,6 +93,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                             $('#DrillDownDisplayAttributesForReportWizardView').hide();
+                            " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
                             $('#OrderBysForReportWizardView').show();
                         }
                         if(linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
@@ -244,7 +245,36 @@
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.elements.assets')) . '/SelectInputUtils.js', CClientScript::POS_END);
+            $this->registerLinkedRemovalScript();
+        }
 
+        protected function registerLinkedRemovalScript()
+        {
+            Yii::app()->clientScript->registerScript('linkedRemovalScript', "
+                //When a group by is removed, remove the corresponding display column and/or order by column if
+                //necessary
+                $('#GroupBysForReportWizardView').find('.remove-report-attribute-row-link').live('click', function()
+                    {
+                        var inputIdBeingRemoved = $(this).prev().find('input').first().val();
+                        $('#DisplayAttributesForReportWizardView').find('.report-attribute-row').each(function()
+                            {
+                                if(inputIdBeingRemoved == $(this).find('input').first().val())
+                                {
+                                    $(this).parent().remove();
+                                }
+                            }
+                        );
+                        $('#OrderBysForReportWizardView').find('.report-attribute-row').each(function()
+                            {
+                                if(inputIdBeingRemoved == $(this).find('input').first().val())
+                                {
+                                    $(this).parent().remove();
+                                }
+                            }
+                        );                        
+                    }
+                );
+            ");
         }
     }
 ?>

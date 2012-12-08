@@ -140,7 +140,7 @@
         {
             if($this->hideView)
             {
-                return 'style="display:none;"';
+                return ' style="display:none;"';
             }
         }
 
