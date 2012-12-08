@@ -28,9 +28,14 @@
     {
         protected function renderRightSideContent()
         {
-            $content  = 'XYZ<input name = "SummationReportWizardForm_groupBys"  id = "SummationReportWizardForm_groupBys" type = "hidden" value = "">';
-            $content .= $this->form->error($this->model, 'groupBys', array('inputID' => 'SummationReportWizardForm_groupBys'));
-            $content .= parent::renderRightSideContent();
+            $hiddenInputId       = get_class($this->model) . '_groupBys';
+            $hiddenInputName     = get_class($this->model) . '[groupBys]';
+            $idInputHtmlOptions  = array('id' => $hiddenInputId);
+            $content             = ZurmoHtml::hiddenField($hiddenInputName, null,
+                                   $idInputHtmlOptions);
+            $content            .= $this->form->error($this->model, 'groupBys',
+                                        array('inputID' => $hiddenInputId));
+            $content            .= parent::renderRightSideContent();
             return $content;
         }
 

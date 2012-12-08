@@ -180,7 +180,13 @@
 
         public function validateDisplayAttributes()
         {
-            return $this->validateComponent(ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES, 'displayAttributes');
+            $validated = $this->validateComponent(ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES, 'displayAttributes');
+            if(count($this->displayAttributes) == 0)
+            {
+                $this->addError( 'displayAttributes', Yii::t('Default', 'At least one display column must be selected'));
+                $validated = false;
+            }
+            return $validated;
         }
 
         public function validateDrillDownDisplayAttributes()
@@ -191,9 +197,23 @@
         public function validateGroupBys()
         {
             $validated = $this->validateComponent(ComponentForReportForm::TYPE_GROUP_BYS, 'groupBys');
-            if($validated)
+            $existingGroupByAttributeIndexOrDerivedTypes = array();
+            $duplicateGroupByFound                       = false;
+            foreach($this->groupBys as $groupBy)
             {
-                //$this->addError( 'groupBys', Yii::t('Default', 'You')); //todo: fix also the hidden we added make it better
+                if(in_array($groupBy->attributeIndexOrDerivedType, $existingGroupByAttributeIndexOrDerivedTypes))
+                {
+                    $duplicateGroupByFound = true;
+                }
+                else
+                {
+                    $existingGroupByAttributeIndexOrDerivedTypes[] = $groupBy->attributeIndexOrDerivedType;
+                }
+            }
+            if($duplicateGroupByFound)
+            {
+                $this->addError( 'groupBys', Yii::t('Default', 'Each grouping must be unique'));
+                $validated = false;
             }
             return $validated;
         }

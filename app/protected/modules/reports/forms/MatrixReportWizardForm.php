@@ -26,5 +26,29 @@
 
     class MatrixReportWizardForm extends ReportWizardForm
     {
+        public function validateGroupBys()
+        {
+            $validated  = parent::validateGroupBys();
+            $xAxisFound = false;
+            $yAxisFound = false;
+            foreach($this->groupBys as $groupBy)
+            {
+                if($groupBy->axis == 'x')
+                {
+                    $xAxisFound = true;
+                }
+                if($groupBy->axis == 'y')
+                {
+                    $yAxisFound = true;
+                }
+            }
+            if(!$xAxisFound || !$yAxisFound)
+            {
+                $this->addError( 'groupBys',
+                                    Yii::t('Default', 'At least one x-axis and one y-axis grouping must be selected'));
+                $validated = false;
+            }
+            return $validated;
+        }
     }
 ?>

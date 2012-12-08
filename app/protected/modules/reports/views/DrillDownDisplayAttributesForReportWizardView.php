@@ -33,7 +33,7 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select Drill Down Columns');
+            return Yii::t('Default', 'Select Drill Down Display Columns');
         }
 
         public static function getPreviousPageLinkId()

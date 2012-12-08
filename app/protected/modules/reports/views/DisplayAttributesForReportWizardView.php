@@ -26,6 +26,19 @@
 
     class DisplayAttributesForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+        protected function renderRightSideContent()
+        {
+            $hiddenInputId       = get_class($this->model) . '_displayAttributes';
+            $hiddenInputName     = get_class($this->model) . '[displayAttributes]';
+            $idInputHtmlOptions  = array('id' => $hiddenInputId);
+            $content             = ZurmoHtml::hiddenField($hiddenInputName, null,
+                $idInputHtmlOptions);
+            $content            .= $this->form->error($this->model, 'displayAttributes',
+                array('inputID' => $hiddenInputId));
+            $content            .= parent::renderRightSideContent();
+            return $content;
+        }
+
         public static function getTreeType()
         {
             return ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
@@ -33,7 +46,7 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select Columns');
+            return Yii::t('Default', 'Select Display Columns');
         }
 
         public static function getPreviousPageLinkId()
