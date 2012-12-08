@@ -31,7 +31,7 @@
     {
         const TYPE_BAR_2D                = 'Bar2D';
 
-        const TYPE_BAR_3D                = 'Bar2D';
+        const TYPE_BAR_3D                = 'Bar3D';
 
         const TYPE_COLUMN_2D             = 'Column2D';
 
@@ -75,10 +75,10 @@
 
         public static function translatedTypeLabels()
         {
-            return array(ChartRules::TYPE_BAR_2D             => Yii::t('Default', 'Bar 2D'),
-                         ChartRules::TYPE_BAR_3D             => Yii::t('Default', 'Bar 3D'),
-                         ChartRules::TYPE_COLUMN_2D          => Yii::t('Default', 'Column 2D'),
-                         ChartRules::TYPE_COLUMN_3D          => Yii::t('Default', 'Column 3D'),
+            return array(ChartRules::TYPE_BAR_2D             => Yii::t('Default', '2D Horizontal Bar Graph'),
+                         ChartRules::TYPE_BAR_3D             => Yii::t('Default', '3D Horizontal Bar Graph'),
+                         ChartRules::TYPE_COLUMN_2D          => Yii::t('Default', '2D Vertical Bar Graph'),
+                         ChartRules::TYPE_COLUMN_3D          => Yii::t('Default', '3D Vertical Bar Graph'),
                          ChartRules::TYPE_DONUT_2D           => Yii::t('Default', 'Donut 2D'),
                          ChartRules::TYPE_DONUT_3D           => Yii::t('Default', 'Donut 3D'),
                          ChartRules::TYPE_PIE_2D             => Yii::t('Default', 'Pie 2D'),
@@ -104,6 +104,21 @@
                          ChartRules::TYPE_STACKED_BAR_3D,
                          ChartRules::TYPE_STACKED_COLUMN_2D,
                          ChartRules::TYPE_STACKED_COLUMN_3D,
+            );
+        }
+
+        public static function getSingleSeriesDataAndLabels()
+        {
+            $translatedLabels = static::translatedTypeLabels();
+            return array(
+                ChartRules::TYPE_COLUMN_2D => $translatedLabels[ChartRules::TYPE_COLUMN_2D],
+                ChartRules::TYPE_COLUMN_3D => $translatedLabels[ChartRules::TYPE_COLUMN_3D],
+                ChartRules::TYPE_BAR_2D    => $translatedLabels[ChartRules::TYPE_BAR_2D],
+                ChartRules::TYPE_BAR_3D    => $translatedLabels[ChartRules::TYPE_BAR_3D],
+                ChartRules::TYPE_DONUT_2D  => $translatedLabels[ChartRules::TYPE_DONUT_2D],
+                ChartRules::TYPE_DONUT_3D  => $translatedLabels[ChartRules::TYPE_DONUT_3D],
+                ChartRules::TYPE_PIE_2D    => $translatedLabels[ChartRules::TYPE_PIE_2D],
+                ChartRules::TYPE_PIE_3D    => $translatedLabels[ChartRules::TYPE_PIE_3D],
             );
         }
     }

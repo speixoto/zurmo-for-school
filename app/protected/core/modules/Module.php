@@ -542,7 +542,10 @@
                 foreach ($directoryFiles as $filePath)
                 {
                     $filePathInfo = pathinfo($filePath);
-                    $classNames[] = $filePathInfo['filename'];
+                    if($filePathInfo['extension'] == 'php')
+                    {
+                        $classNames[] = $filePathInfo['filename'];
+                    }
                 }
             }
             return $classNames;

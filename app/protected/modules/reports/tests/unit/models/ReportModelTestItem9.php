@@ -24,11 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SingleSeriesChartTypeStaticDropDownElement extends StaticDropDownFormElement
+    class ReportModelTestItem9 extends OwnedSecurableItem
     {
-        protected function getDropDownArray()
+        public static function getDefaultMetadata()
         {
-            return ChartRules::getSingleSeriesDataAndLabels();
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'relations' => array(
+                    'reportModelTestItem9'          => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'ReportModelTestItem9'),
+                    'reportModelTestItem9s'         => array(RedBeanModel::HAS_MANY,             'ReportModelTestItem9'),
+                ),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'ReportsTestModule';
         }
     }
 ?>

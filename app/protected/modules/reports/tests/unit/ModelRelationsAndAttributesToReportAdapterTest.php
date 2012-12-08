@@ -60,6 +60,27 @@
 
         /**
          * @depends testGetAllRelations
+         * Make sure HAS_MANY_BELONGS_TO relations show up
+         */
+        public function testGetHasManyBelongsToRelations()
+        {
+            $model              = new ReportModelTestItem9();
+            $rules              = new ReportsTestReportRules(); //ReportsTestModule rules
+            $report             = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter            = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules,
+                                  $report->getType());
+            $relations          = $adapter->getSelectableRelationsData();
+            $this->assertEquals(5, count($relations));
+            $compareData        = array('label' => 'Report Model Test Item 9');
+            $this->assertEquals($compareData, $relations['reportModelTestItem9']);
+            $compareData        = array('label' => 'Report Model Test Item 9s');
+            $this->assertEquals($compareData, $relations['reportModelTestItem9s']);
+        }
+
+        /**
+         * @depends testGetHasManyBelongsToRelations
          */
         public function testPassingPrecedingRelationThatHasAssumptiveLinkIsProperlyHandled()
         {
