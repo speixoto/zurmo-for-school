@@ -41,9 +41,8 @@
                                                               RedBeanModelJoinTablesQueryAdapter
                                                               $joinTablesAdapter)
         {
-            $builder = new JoinAndWhereClauseBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
-            if ($modelAttributeToDataProviderAdapter->isRelation() &&
-                $modelAttributeToDataProviderAdapter->getRelationType() != RedBeanModel::MANY_MANY)
+            $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+            if ($modelAttributeToDataProviderAdapter->isRelation())
             {
                 if (!$modelAttributeToDataProviderAdapter->hasRelatedAttribute())
                 {
@@ -52,11 +51,6 @@
                 }
                 $tableAliasName             = $builder->resolveJoinsForRelatedAttribute();
                 $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
-            }
-            elseif($modelAttributeToDataProviderAdapter->isRelation() &&
-                   $modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
-            {
-                throw new NotSupportedException();
             }
             else
             {
@@ -117,22 +111,21 @@
                 {
                     throw new NotSupportedException();
                 }
-                $tableAliasAndColumnNames = self::makeTableAliasAndColumnNamesForNonRelatedConcatedAttributes
-                     ($modelClassName, $clauseInformation['concatedAttributeNames'], $joinTablesAdapter);
-                self::addWherePartByClauseInformationForConcatedAttributes( $clauseInformation['operatorType'],
-                    $clauseInformation['value'], $where, $clausePosition, $tableAliasAndColumnNames);
+                $tableAliasAndColumnNames = self::makeTableAliasAndColumnNamesForNonRelatedConcatedAttributes(
+                                            $modelClassName, $clauseInformation['concatedAttributeNames'],
+                                            $joinTablesAdapter);
+                self::addWherePartByClauseInformationForConcatedAttributes($clauseInformation['operatorType'],
+                                            $clauseInformation['value'], $where, $clausePosition,
+                                            $tableAliasAndColumnNames);
             }
             elseif (!isset($clauseInformation['relatedAttributeName']))
             {
                 $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
-                                                               $modelClassName,
-                                                               $clauseInformation['attributeName']);
-                $builder = new JoinAndWhereClauseBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                                                       $modelClassName,
+                                                       $clauseInformation['attributeName']);
+                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
                 $builder->buildJoinAndWhereForNonRelatedAttribute($clauseInformation['operatorType'],
-                                                              $clauseInformation['value'],
-                                                              $clausePosition,
-
-                                                              $where);
+                                                       $clauseInformation['value'], $clausePosition, $where);
             }
             else
             {
@@ -140,7 +133,7 @@
                                                                $modelClassName,
                                                                $clauseInformation['attributeName'],
                                                                $clauseInformation["relatedAttributeName"]);
-                $builder = new JoinAndWhereClauseBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
                 $builder->resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute(
                     $clauseInformation['operatorType'],
                     $clauseInformation['value'], $clausePosition, $where);
@@ -163,30 +156,26 @@
                                                    $modelClassName,
                                                    $clauseInformation['attributeName'],
                                                    $clauseInformation['relatedModelData']['attributeName']);
-            $builder                             = new JoinAndWhereClauseBuilder($modelAttributeToDataProviderAdapter,
+            $builder                             = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter,
                                                                                  $joinTablesAdapter);
+            $builder->resolveJoinsForRelatedAttribute();
+            $relationModelClassName = $modelAttributeToDataProviderAdapter->getRelationModelClassName();
             //if there is no more relatedModelData then we know this is the end of the nested information.
             if (isset($clauseInformation['relatedModelData']['relatedModelData']))
             {
-                $relationModelClassName = $builder->resolveRelatedAttributeJoinAndGetRelationModelClassName();
-                static::processMetadataClause($relationModelClassName,
-                                              $clausePosition,
-                                              $clauseInformation['relatedModelData'],
-                                              $where,
-                                              $joinTablesAdapter);
-                return;
+                return static::processMetadataClause($relationModelClassName, $clausePosition,
+                                                     $clauseInformation['relatedModelData'], $where, $joinTablesAdapter);
             }
             //Supporting the use of relatedAttributeName. Alternatively you can use relatedModelData to produce the same results.
             if (isset($clauseInformation['relatedModelData']['relatedAttributeName']))
             {
-                $relationModelClassName = $builder->resolveRelatedAttributeJoinAndGetRelationModelClassName();
                 //Two adapters are created, because the first adapter gives us the proper modelClassName
                 //to use when using relatedAttributeName
                 $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
                                                            $relationModelClassName,
                                                            $clauseInformation['relatedModelData']['attributeName'],
                                                            $clauseInformation['relatedModelData']['relatedAttributeName']);
-                $builder = new JoinAndWhereClauseBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
             }
             $builder->resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute(
                 $clauseInformation['relatedModelData']['operatorType'],
@@ -205,7 +194,7 @@
             {
                 $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
                                                        $modelClassName, $attributeName);
-                $builder                             = new JoinAndWhereClauseBuilder(
+                $builder                             = new ModelWhereAndJoinBuilder(
                                                        $modelAttributeToDataProviderAdapter, $joinTablesAdapter);
                 $tableAliasName                      = $builder->resolveShouldAddFromTable();
                 $tableAliasAndColumnNames[]          = array($tableAliasName,
@@ -228,9 +217,9 @@
             $quote = DatabaseCompatibilityUtil::getQuote();
             if (is_string($value) || (is_array($value) && count($value) > 0) || $value !== null)
             {
-                $first            = JoinAndWhereClauseBuilder::makeColumnNameWithTableAlias(
+                $first            = ModelJoinBuilder::makeColumnNameWithTableAlias(
                                     $tableAliasAndColumnNames[0][0], $tableAliasAndColumnNames[0][1]);
-                $second           = JoinAndWhereClauseBuilder::makeColumnNameWithTableAlias(
+                $second           = ModelJoinBuilder::makeColumnNameWithTableAlias(
                                     $tableAliasAndColumnNames[1][0], $tableAliasAndColumnNames[1][1]);
                 $concatedSqlPart  = DatabaseCompatibilityUtil::concat(array($first, '\' \'', $second));
                 $where[$whereKey] = "($concatedSqlPart " . // Not Coding Standard

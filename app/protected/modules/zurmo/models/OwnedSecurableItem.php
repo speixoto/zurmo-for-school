@@ -236,7 +236,7 @@
                     $quote                               = DatabaseCompatibilityUtil::getQuote();
                     $modelAttributeToDataProviderAdapter = new OwnedSecurableItemIdToDataProviderAdapter(
                                                                $modelClassName, null);
-                    $builder           = new JoinAndWhereClauseBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                    $builder           = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
                     $ownedTableAliasName = $builder->resolveShouldAddFromTable();
                     $ownerColumnName = RedBeanModel::getForeignKeyName('OwnedSecurableItem', 'owner');
                     $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($user);
