@@ -48,7 +48,7 @@
          *
          * This method assumes if the attribute is not on the base model, that it is casted up not down from it.
          */
-        public function resolveShouldAddFromTableAndGetAliasName()
+        public function resolveShouldAddFromTable()
         {
             //If the attribute table is the same as the model table then there is nothing to add.
             if (!$this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
@@ -112,9 +112,9 @@
             return $tableAliasName;
         }
 
-        public function resolveJoinsForRelatedAttributeAndGetRelationAttributeTableAliasName()
+        public function resolveJoinsForRelatedAttribute()
         {
-            $onTableAliasName = $this->resolveShouldAddFromTableAndGetAliasName();
+            $onTableAliasName = $this->resolveShouldAddFromTable();
             if($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
             {
                 throw new NotSupportedException();
@@ -188,16 +188,12 @@
          * @see RedBeanModelDataProvider::makeWhere
          * @see addWherePartByClauseInformation
          */
-        public function buildJoinAndWhereForNonRelatedAttribute(
-                                                                          $operatorType,
-                                                                          $value,
-                                                                          $whereKey,
-                                                                          & $where)
+        public function buildJoinAndWhereForNonRelatedAttribute($operatorType, $value, $whereKey, & $where)
         {
             assert('is_string($operatorType)');
             assert('is_int($whereKey)');
             assert('is_array($where)');
-            $tableAliasName = $this->resolveShouldAddFromTableAndGetAliasName();
+            $tableAliasName = $this->resolveShouldAddFromTable();
             self::addWherePartByClauseInformation($operatorType, $value,
                 $where, $whereKey, $tableAliasName,
                 $this->modelAttributeToDataProviderAdapter->getColumnName());
@@ -243,11 +239,11 @@
         {
             assert('$this->modelAttributeToDataProviderAdapter->getRelatedAttribute() != null');
             $relationTableName               = $this->modelAttributeToDataProviderAdapter->getRelationTableName();
-            $onTableAliasName                = $this->resolveShouldAddFromTableAndGetAliasName();
+            $onTableAliasName                = $this->resolveShouldAddFromTable();
             $relationJoiningTableAliasName   = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                 $this->modelAttributeToDataProviderAdapter->getManyToManyTableName(),
                 "id",
-                $this->resolveShouldAddFromTableAndGetAliasName(),
+                $this->resolveShouldAddFromTable(),
                 self::resolveForeignKey($this->modelAttributeToDataProviderAdapter->getAttributeTableName()));
             //if this is not the id column, then add an additional left join.
             if ($this->modelAttributeToDataProviderAdapter->getRelatedAttribute() != 'id')
@@ -375,7 +371,7 @@
             if ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_ONE ||
                 $this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO)
             {
-                $tableAliasName = $this->resolveShouldAddFromTableAndGetAliasName();
+                $tableAliasName = $this->resolveShouldAddFromTable();
                 self::addWherePartByClauseInformation(  $operatorType,
                     $value,
                     $where, $whereKey, $tableAliasName,

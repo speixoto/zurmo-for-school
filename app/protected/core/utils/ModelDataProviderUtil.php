@@ -60,7 +60,7 @@
             }
             else
             {
-                $tableAliasName             = $builder->resolveShouldAddFromTableAndGetAliasName();
+                $tableAliasName             = $builder->resolveShouldAddFromTable();
                 $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getColumnName();
             }
             $sort  = DatabaseCompatibilityUtil::quoteString($tableAliasName);
@@ -207,7 +207,7 @@
                                                        $modelClassName, $attributeName);
                 $builder                             = new JoinAndWhereClauseBuilder(
                                                        $modelAttributeToDataProviderAdapter, $joinTablesAdapter);
-                $tableAliasName                      = $builder->resolveShouldAddFromTableAndGetAliasName();
+                $tableAliasName                      = $builder->resolveShouldAddFromTable();
                 $tableAliasAndColumnNames[]          = array($tableAliasName,
                                                        $modelAttributeToDataProviderAdapter->getColumnName());
             }

@@ -39,11 +39,12 @@
         }
 
 
-        public function testResolveShouldAddFromTableAndGetAliasNameWithAttributeCastedUpSeveralLevels()
+        public function testResolveShouldAddFromTableWithAttributeCastedUpSeveralLevels()
         {
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('Account', 'createdDateTime');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $tableAliasName    = ModelDataProviderUtil::resolveShouldAddFromTableAndGetAliasName($adapter, $joinTablesAdapter);
+            $builder           = new JoinAndWhereClauseBuilder($adapter, $joinTablesAdapter);
+            $tableAliasName    = $builder->resolveShouldAddFromTable();
             $fromTables        = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
@@ -53,43 +54,46 @@
         }
 
         /**
-         * @depends testResolveShouldAddFromTableAndGetAliasNameWithAttributeCastedUpSeveralLevels
+         * @depends testResolveShouldAddFromTableWithAttributeCastedUpSeveralLevels
          */
-        public function testResolveShouldAddFromTableAndGetAliasNameWithUserModelAndPersonAttribute()
+        public function testResolveShouldAddFromTableWithUserModelAndPersonAttribute()
         {
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('User', 'firstName');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
-            $tableAliasName    = ModelDataProviderUtil::resolveShouldAddFromTableAndGetAliasName($adapter, $joinTablesAdapter);
+            $builder           = new JoinAndWhereClauseBuilder($adapter, $joinTablesAdapter);
+            $tableAliasName    = $builder->resolveShouldAddFromTable();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         /**
-         * @depends testResolveShouldAddFromTableAndGetAliasNameWithUserModelAndPersonAttribute
+         * @depends testResolveShouldAddFromTableWithUserModelAndPersonAttribute
          */
-        public function testResolveShouldAddFromTableAndGetAliasNameWithAttribtueOnModelSameTable()
+        public function testResolveShouldAddFromTableWithAttributeOnModelSameTable()
         {
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('Account', 'name');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $tableAliasName    = ModelDataProviderUtil::resolveShouldAddFromTableAndGetAliasName($adapter, $joinTablesAdapter);
+            $builder           = new JoinAndWhereClauseBuilder($adapter, $joinTablesAdapter);
+            $tableAliasName    = $builder->resolveShouldAddFromTable();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         /**
-         * @depends testResolveShouldAddFromTableAndGetAliasNameWithAttribtueOnModelSameTable
+         * @depends testResolveShouldAddFromTableWithAttributeOnModelSameTable
          */
-        public function testResolveShouldAddFromTableAndGetAliasNameWithOwnedCustomFieldAttribute()
+        public function testResolveShouldAddFromTableWithOwnedCustomFieldAttribute()
         {
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('Account', 'industry');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $tableAliasName    = ModelDataProviderUtil::resolveShouldAddFromTableAndGetAliasName($adapter, $joinTablesAdapter);
+            $builder           = new JoinAndWhereClauseBuilder($adapter, $joinTablesAdapter);
+            $tableAliasName    = $builder->resolveShouldAddFromTable();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         /**
-         * @depends testResolveShouldAddFromTableAndGetAliasNameWithOwnedCustomFieldAttribute
+         * @depends testResolveShouldAddFromTableWithOwnedCustomFieldAttribute
          */
         public function testResolveSortAttributeColumnName()
         {
