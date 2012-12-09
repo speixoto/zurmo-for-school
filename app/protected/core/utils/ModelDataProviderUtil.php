@@ -91,6 +91,14 @@
             return;
         }
 
+        /**
+         * @param string $modelClassName
+         * @param integer $clausePosition
+         * @param array $clauseInformation
+         * @param array $where
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @throws NotSupportedException
+         */
         protected static function processMetadataClause($modelClassName, $clausePosition, $clauseInformation, & $where, & $joinTablesAdapter)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
@@ -140,6 +148,13 @@
             }
         }
 
+        /**
+         * @param string $modelClassName
+         * @param integer $clausePosition
+         * @param array $clauseInformation
+         * @param array $where
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         */
         protected static function processMetadataContainingRelatedModelDataClause($modelClassName,
                                                                                   $clausePosition,
                                                                                   $clauseInformation,
@@ -182,6 +197,12 @@
                 $clauseInformation['relatedModelData']['value'], $clausePosition, $where);
         }
 
+        /**
+         * @param string $modelClassName
+         * @param array $concatedAttributeNames
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return array
+         */
         protected static function makeTableAliasAndColumnNamesForNonRelatedConcatedAttributes( $modelClassName,
                                                                                     $concatedAttributeNames,
                                                                                     $joinTablesAdapter)
@@ -206,6 +227,11 @@
         /**
          * Add a sql string to the where array base on the $operatorType, $value and $tableAliasAndColumnNames concated
          * together.  How the sql string is built depends on if the value is a string or not.
+         * @param string $operatorType
+         * @param mixed $value
+         * @param array $where
+         * @param integer $whereKey
+         * @param array $tableAliasAndColumnNames
          */
         protected static function addWherePartByClauseInformationForConcatedAttributes($operatorType, $value, &$where,
                                                                     $whereKey, $tableAliasAndColumnNames)

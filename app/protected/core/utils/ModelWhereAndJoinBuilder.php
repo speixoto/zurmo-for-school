@@ -24,12 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Builder for creating where clauses and making sure the appropriate joins are added to facilitate these clauses.
+      */
     class ModelWhereAndJoinBuilder extends ModelJoinBuilder
     {
         /**
          * Given a non-related attribute on a model, build the join and where sql string information.
-         * @see RedBeanModelDataProvider::makeWhere
-         * @see addWherePartByClauseInformation
+         * @param integer $operatorType
+         * @param mixed $value
+         * @param integer $whereKey
+         * @param array $where
          */
         public function buildJoinAndWhereForNonRelatedAttribute($operatorType, $value, $whereKey, & $where)
         {
@@ -41,7 +46,16 @@
                                                   $this->modelAttributeToDataProviderAdapter->getColumnName());
         }
 
-        public function resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute($operatorType, $value, & $clausePosition, & $where)
+        /**
+         * Given a related attribute on a model, build the join and where sql string information.  Handles when the
+         * related attribute is an 'id'.
+         * @param $operatorType
+         * @param $value
+         * @param $clausePosition
+         * @param $where
+         */
+        public function resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute($operatorType, $value, & $clausePosition,
+                                                                             & $where)
         {
             if ($this->modelAttributeToDataProviderAdapter->getRelatedAttribute() == 'id')
             {
@@ -62,9 +76,11 @@
         }
 
         /**
-         * Given a related attribute on a model, build the jion and where sql string information.
-         * @see RedBeanModelDataProvider::makeWhere
-         * @see addWherePartByClauseInformation
+         * Given a related attribute on a model, build the join and where sql string information.
+         * @param $operatorType
+         * @param $value
+         * @param $whereKey
+         * @param $where
          */
         protected function buildJoinAndWhereForRelatedAttribute($operatorType, $value, $whereKey, &$where)
         {
@@ -108,6 +124,16 @@
             }
         }
 
+        /**
+         * Given a related attribute on a model and the related attribute is a has_many relation,
+         * build the join and where sql string information.
+         * @param $relationAttributeTableAliasName
+         * @param $operatorType
+         * @param $value
+         * @param $where
+         * @param $whereKey
+         * @throws NotSupportedException
+         */
         protected function buildWhereForRelatedAttributeThatIsItselfAHasManyRelation(
                                                                                             $relationAttributeTableAliasName,
                                                                                             $operatorType,
@@ -150,9 +176,10 @@
         /**
          * When the attributeName is 'id', this method determines if we need to join any tables or we can just
          * add where clauses on the column in the base table that corresponds to the id.
-         * @see RedBeanModelDataProvider::makeWhere
-         * @see addWherePartByClauseInformation
-         *
+         * @param $operatorType
+         * @param $value
+         * @param $whereKey
+         * @param $where
          */
         protected function buildJoinAndWhereForRelatedId($operatorType,
                                                                 $value,
@@ -186,11 +213,13 @@
         }
 
         /**
-         * Given a RedBeanModel::MANY_MANY related attribute on a model, build the join and where sql string information.
+         * iven a RedBeanModel::MANY_MANY related attribute on a model, build the join and where sql string information.
          * In this scenario with a many-to-many relation, you only need to join the joining table, since this method
          * currently only supports where the relatedAttributeName = 'id'.
-         * @see RedBeanModelDataProvider::makeWhere
-         * @see addWherePartByClauseInformation
+         * @param $operatorType
+         * @param $value
+         * @param $whereKey
+         * @param $where
          */
         protected function buildJoinAndWhereForManyToManyRelatedAttribute($operatorType, $value, $whereKey, & $where)
         {
@@ -208,8 +237,17 @@
         }
 
         /**
-         * Add a sql string to the where array base on the $operatorType, $value, $tableAliasName, and $columnName
-         * parameters.  How the sql string is built depends on if the value is a string or not.
+         *
+         */
+
+        /**
+         * Add a sql string to the where array. How the sql string is built depends on if the value is a string or not.
+         * @param $operatorType
+         * @param $value
+         * @param $where
+         * @param $whereKey
+         * @param $tableAliasName
+         * @param $columnName
          */
         protected static function addWherePartByClauseInformation(  $operatorType, $value, &$where,
                                                                     $whereKey, $tableAliasName, $columnName)
