@@ -67,7 +67,7 @@
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
                     'hasOneAgain'         => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOneAgain'),
-                    'hasMany'             => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem3'),
+                    'hasMany'             => array(RedBeanModel::HAS_MANY,  'ReportModelTestItem3'),
                     'hasOneAlso'          => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem4', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOneAlso'),
                     'primaryEmail'        => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,

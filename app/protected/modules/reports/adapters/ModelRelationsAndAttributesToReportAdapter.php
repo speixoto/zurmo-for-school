@@ -50,6 +50,11 @@
             return $this->model;
         }
 
+        public function getModelClassName()
+        {
+            return get_class($this->model);
+        }
+
         public static function make($moduleClassName, $modelClassName, $reportType)
         {
             assert('is_string($moduleClassName)');
@@ -487,6 +492,49 @@
             return $rules;
         }
 
+        public function relationIsReportedAsAttribute($relation)
+        {
+            assert('is_string($relation)');
+            if($this->model->isAttribute($relation) && !$this->isRelation($relation))
+            {
+                return false;
+            }
+            return $this->rules->relationIsReportedAsAttribute($this->model, $relation);
+        }
+
+        public function isDerivedRelationsViaCastedUpModelRelation($relation)
+        {
+            assert('is_string($relation)');
+            $relationsData = $this->getDerivedRelationsViaCastedUpModelData();
+            if(isset($relationsData[$relation]))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function isInferredRelation($relation)
+        {
+            assert('is_string($relation)');
+            $relationsData = $this->getInferredRelationsData();
+            if(isset($relationsData[$relation]))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function isDynamicallyDerivedAttribute($attribute)
+        {
+            assert('is_string($attribute)');
+            $dynamicallyDerivedAttributes = $this->getDynamicallyDerivedAttributesData();
+            if(isset($dynamicallyDerivedAttributes[$attribute]))
+            {
+                return true;
+            }
+            return false;
+        }
+
         protected static function resolveAttributeNameToUseForRelationWithModuleConnection($attribute, $moduleClassName)
         {
             assert('is_string($attribute)');
@@ -644,17 +692,6 @@
                 }
             }
             return $attributes;
-        }
-
-        protected function isDynamicallyDerivedAttribute($attribute)
-        {
-            assert('is_string($attribute)');
-            $dynamicallyDerivedAttributes = $this->getDynamicallyDerivedAttributesData();
-            if(isset($dynamicallyDerivedAttributes[$attribute]))
-            {
-                return true;
-            }
-            return false;
         }
 
         protected function getInferredRelationModelClassNamesForRelation($relation)

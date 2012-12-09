@@ -186,5 +186,35 @@
             }
             return null;
         }
+
+
+        public function getSortAttributeForRelationReportedAsAttribute(RedBeanModel $model, $attribute)
+        {
+            assert('is_string($relation)');
+            $modelClassName = $model->getAttributeModelClassName($relation);
+            $metadata       = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
+                in_array($relation, $metadata[$modelClassName]['relationsReportedAsAttributes']))
+            {
+                if(isset($metadata[$modelClassName]['relationsReportedAsAttributesSortAttributes'][$relation]))
+                {
+                    return $metadata[$modelClassName]['relationsReportedAsAttributesSortAttributes'][$relation];
+                }
+                else
+                {
+                    throw new NotSupportedException('Relations that report as attributes must also have a defined sort attribute');
+                }
+            }
+            if(in_array($model->getRelationModelClassName($relation),
+                array('OwnedCustomField',
+                    'CustomField',
+                    'OwnedMultipleValuesCustomField',
+                    'MultipleValuesCustomField',
+                    'CurrencyValue')))
+            {
+                return 'value';
+            }
+            throw new NotSupportedException();
+        }
     }
 ?>

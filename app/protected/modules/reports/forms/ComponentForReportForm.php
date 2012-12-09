@@ -93,6 +93,11 @@
             return $this->modelClassName;
         }
 
+        public function getModuleClassName()
+        {
+            return $this->moduleClassName;
+        }
+
         public function getReportType()
         {
             return $this->reportType;

@@ -37,6 +37,9 @@
                     'relationsReportedAsAttributes' =>
                         array('reportedAsAttribute',
                               'likeContactState'),
+                    'relationsReportedAsAttributesSortAttributes' =>
+                        array('reportedAsAttribute' => 'name'),
+                        array('likeContactState'    => 'name'),
                     'nonReportable' =>
                         array('nonReportable',
                               'nonReportable2'),

@@ -30,24 +30,37 @@
      */
     class ModelDataProviderUtil
     {
+
         /**
+         * If the $onTableAliasName is used (not null):
+         * Special use of sort attribute resolution. If you are resolving a sort attribute against a relation then
+         * the joins must utilize a left join in the case of casting up.  Does not support when the attribute is a
+         * relation itself as this expects any relation processing to be done before this is called.
+         *
          * @param RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter
          * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null | string $onTableAliasName
          * @return string
          * @throws NotSupportedException
          */
         public static function resolveSortAttributeColumnName(RedBeanModelAttributeToDataProviderAdapter
                                                               $modelAttributeToDataProviderAdapter,
                                                               RedBeanModelJoinTablesQueryAdapter
-                                                              $joinTablesAdapter)
+                                                              $joinTablesAdapter,
+                                                              $onTableAliasName = null)
         {
-            $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
-            if ($modelAttributeToDataProviderAdapter->isRelation())
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
+            $builder = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+            if($onTableAliasName != null)
+            {
+                $tableAliasName             = $builder->resolveShouldAddLeftTable($onTableAliasName);
+                $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getColumnName();
+            }
+            elseif ($modelAttributeToDataProviderAdapter->isRelation())
             {
                 if (!$modelAttributeToDataProviderAdapter->hasRelatedAttribute())
                 {
                     throw new NotSupportedException();
-
                 }
                 $tableAliasName             = $builder->resolveJoinsForRelatedAttribute();
                 $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();

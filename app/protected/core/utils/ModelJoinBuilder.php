@@ -141,6 +141,75 @@
         }
 
         /**
+         * This method exists for scenarios where an attribute is casted up but because it is on a relation
+         * that is joined with a left join, the cast up must use left joins as well since a from table, table will not
+         * work properly.
+         * @see resolveShouldAddFromTable
+         * @return string
+         * @throws NotSupportedException
+         */
+        public function resolveShouldAddLeftTable($onTableAliasName = null)
+        {
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
+            //If the attribute table is the same as the model table then there is nothing to add.
+            if (!$this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
+            {
+                return $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            }
+            $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $attributeTableName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            $tableAliasName     = $attributeTableName;
+            //If attribute is casted up
+            if(!$this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
+            {
+                $castedDownModelClassName   = $modelClassName;
+                while (get_parent_class($modelClassName) !=
+                    $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName())
+                {
+                    $castedDownFurtherModelClassName = $castedDownModelClassName;
+                    $castedDownModelClassName        = $modelClassName;
+                    $modelClassName                  = get_parent_class($modelClassName);
+                    if ($modelClassName::getCanHaveBean())
+                    {
+                        $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+                            if ($castedDownModelClassName::getCanHaveBean())
+                            {
+                                $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
+                            }
+                            elseif ($castedDownFurtherModelClassName::getCanHaveBean())
+                            {
+                                $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                            }
+                            else
+                            {
+                                throw new NotSupportedException();
+                            }
+                        $onTableAliasName =     $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                                                $castedUpAttributeTableName,
+                                                self::resolveForeignKey($castedUpAttributeTableName),
+                                                $onTableAliasName,
+                                                $resolvedTableJoinIdName);
+                    }
+                }
+            }
+            //Add left table if it is not already added
+            if (!$modelClassName::getCanHaveBean())
+            {
+                if (!$castedDownModelClassName::getCanHaveBean())
+                {
+                    throw new NotSupportedException();
+                }
+                $modelClassName = $castedDownModelClassName;
+            }
+            $tableAliasName =   $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                                $attributeTableName,
+                                self::resolveForeignKey($attributeTableName),
+                                $onTableAliasName,
+                                $modelClassName::getTableName($modelClassName));
+            return $tableAliasName;
+        }
+
+        /**
          * @return null|string
          */
         public function resolveJoinsForRelatedAttribute()
@@ -183,7 +252,8 @@
             $relationAttributeTableAliasName = $relationTableAliasName;
             //the second left join check being performed is if you
             //are in a contact filtering on related account email as an example.
-            if ($this->modelAttributeToDataProviderAdapter->getRelatedAttributeModelClassName() !=
+            if ($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute() &&
+                $this->modelAttributeToDataProviderAdapter->getRelatedAttributeModelClassName() !=
                 $this->modelAttributeToDataProviderAdapter->getRelationModelClassName())
             {
                 $relationAttributeTableName  = $this->modelAttributeToDataProviderAdapter->getRelatedAttributeTableName();
@@ -219,7 +289,6 @@
          */
         protected function resolveJoinForManyToManyRelatedAttribute()
         {
-            assert('$this->modelAttributeToDataProviderAdapter->getRelatedAttribute() != null');
             $relationTableName               = $this->modelAttributeToDataProviderAdapter->getRelationTableName();
             $onTableAliasName                = $this->resolveShouldAddFromTable();
             $relationJoiningTableAliasName   = $this->joinTablesAdapter->addLeftTableAndGetAliasName(

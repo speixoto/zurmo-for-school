@@ -41,6 +41,8 @@
                         array('state' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'filterValueElementTypes' =>
                         array('state' => 'ContactStateStaticDropDownForReport'),
+                    'relationsReportedAsAttributesSortAttributes' =>
+                        array('state' => 'name')
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
