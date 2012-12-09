@@ -302,5 +302,21 @@
             }
             return true;
         }
+
+        /**
+         * Resolve which column to use when querying a many to many relation.
+         * @return string
+         */
+        public function resolveManyToManyColumnName()
+        {
+            if ($this->getRelatedAttribute() != 'id')
+            {
+               return $this->getRelatedAttributeColumnName();
+            }
+            else
+            {
+                return $this->getRelationTableName() . '_id';
+            }
+        }
     }
 ?>
