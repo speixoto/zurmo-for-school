@@ -62,7 +62,8 @@
          * @param $tableName - table to add in from clause.
          * @param $onTableJoinIdName - The joining id on the baseTable.
          */
-        public function addFromTableAndGetAliasName($tableName, $onTableJoinIdName, $onTableAliasName = null, $tableJoinIdName = 'id')
+        public function addFromTableAndGetAliasName($tableName, $onTableJoinIdName, $onTableAliasName = null,
+                                                    $tableJoinIdName = 'id')
         {
             assert('is_string($tableName)');
             assert('is_string($onTableJoinIdName)');
@@ -158,7 +159,8 @@
                     }
                     else
                     {
-                        $joinTableStrings[] = $quote . $information['tableName'] . $quote . ' ' . $information['tableAliasName'];
+                        $joinTableStrings[] = $quote . $information['tableName'] . $quote . ' ' .
+                                              $information['tableAliasName'];
                     }
                 }
                 return implode(', ', $joinTableStrings);
@@ -187,10 +189,13 @@
                     }
                     else
                     {
-                        $queryPart .= 'left join ' . $quote . $information['tableName'] . $quote . ' ' . $information['tableAliasName'] . ' ';
+                        $queryPart .= 'left join ' . $quote . $information['tableName'] . $quote . ' ' .
+                                      $information['tableAliasName'] . ' ';
                     }
-                    $queryPart .= 'on ' . $quote . $information['tableAliasName'] . $quote . '.' . $quote . $information['tableJoinIdName']   . $quote .' = ';
-                    $queryPart .= $quote . $information['onTableAliasName']       . $quote . '.' . $quote . $information['onTableJoinIdName'] . $quote;
+                    $queryPart .= 'on ' . $quote . $information['tableAliasName'] . $quote . '.' . $quote .
+                                  $information['tableJoinIdName']   . $quote .' = ';
+                    $queryPart .= $quote . $information['onTableAliasName']       . $quote . '.' . $quote .
+                                  $information['onTableJoinIdName'] . $quote;
                     $queryPart .= $information['extraOnQueryPart'];
                 }
                 return $queryPart . ' ';
@@ -213,8 +218,10 @@
                     {
                         $queryPart .= ' and ';
                     }
-                    $queryPart .= $quote . $information['tableAliasName']   . $quote . '.' . $quote . $information['tableJoinIdName']   . $quote . ' = ';
-                    $queryPart .= $quote . $information['onTableAliasName'] . $quote . '.' . $quote . $information['onTableJoinIdName'] . $quote;
+                    $queryPart .= $quote . $information['tableAliasName']   . $quote . '.' . $quote .
+                                  $information['tableJoinIdName']   . $quote . ' = ';
+                    $queryPart .= $quote . $information['onTableAliasName'] . $quote . '.' . $quote .
+                                  $information['onTableJoinIdName'] . $quote;
                 }
                 return $queryPart;
             }

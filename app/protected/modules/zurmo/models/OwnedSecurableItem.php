@@ -210,6 +210,13 @@
                                                          $quotedExtraSelectColumnNameAndAliases);
         }
 
+        /**
+         * @param User $user
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param $where
+         * @param $selectDistinct
+         * @throws NotSupportedException
+         */
         public static function resolveReadPermissionsOptimizationToSqlQuery(User $user,
                                     RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                     & $where,

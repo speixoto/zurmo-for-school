@@ -251,6 +251,10 @@
             return $this->getRelationModel()->getRelationType($this->relatedAttribute);
         }
 
+        /**
+         * @return mixed
+         * @throws NotSupportedException
+         */
         public function getRelatedAttributeRelationModelClassName()
         {
             if (!$this->isRelatedAttributeRelation())
@@ -260,6 +264,10 @@
             return $this->getRelationModel()->getRelationModelClassName($this->relatedAttribute);
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
         public function getManyToManyTableName()
         {
             if($this->getRelationType() != RedBeanModel::MANY_MANY)
@@ -268,6 +276,31 @@
             }
             $attributeName = $this->getAttribute();
             return $this->getModel()->{$attributeName}->getTableName();
+        }
+
+        /**
+         * @return bool
+         */
+        public function isAttributeMixedIn()
+        {
+            if ($this->getModelClassName() == 'User' &&
+                $this->getAttributeModelClassName() == 'Person')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isAttributeOnDifferentModel()
+        {
+            if($this->getAttributeModelClassName() == $this->getModelClassName())
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>
