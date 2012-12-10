@@ -758,6 +758,7 @@ table.configuration-list{
     }
     #addExtraColumnButton{
         .zButton;
+        margin:0;
     }
     .required-fields{
         font-size:12px;
@@ -864,9 +865,10 @@ table.configuration-list{
 
 .remove-extra-column-link{
     display: inline-block;
-    position:absolute;
-    top: 20px;
-    right: -90px;
+    position:relative;
+    top: -21px;
+    left: 100%;
+    margin-left: 15px;
     z-index: 99999;
     ++.z-link;
 }
