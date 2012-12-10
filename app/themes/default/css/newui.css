@@ -729,8 +729,7 @@ body.blue .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.blue #AboutView p a,
 body.blue #AboutView ul a,
 body.blue .back-to-app-menu-item span,
-body.blue .breadcrumbs a,
-body.blue #clear-search-link {
+body.blue .breadcrumbs a {
   color: #282a76 !important;
 }
 body.blue .portlet-toolbar .icon-create:hover,
@@ -751,7 +750,8 @@ body.blue .lead-conversion-actions a {
 body.blue .latest-activity-toolbar label:hover,
 body.blue .filter-portlet-model-bar label:hover,
 body.blue .latest-activity-toolbar .ui-state-active,
-body.blue .filter-portlet-model-bar .ui-state-active {
+body.blue .filter-portlet-model-bar .ui-state-active,
+body.blue #clear-search-link {
   background-color: #282a76 !important;
 }
 body.blue #HomeDashboardPortletSelectionView li span,
@@ -1252,8 +1252,7 @@ body.brown .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.brown #AboutView p a,
 body.brown #AboutView ul a,
 body.brown .back-to-app-menu-item span,
-body.brown .breadcrumbs a,
-body.brown #clear-search-link {
+body.brown .breadcrumbs a {
   color: #547980 !important;
 }
 body.brown .portlet-toolbar .icon-create:hover,
@@ -1274,7 +1273,8 @@ body.brown .lead-conversion-actions a {
 body.brown .latest-activity-toolbar label:hover,
 body.brown .filter-portlet-model-bar label:hover,
 body.brown .latest-activity-toolbar .ui-state-active,
-body.brown .filter-portlet-model-bar .ui-state-active {
+body.brown .filter-portlet-model-bar .ui-state-active,
+body.brown #clear-search-link {
   background-color: #547980 !important;
 }
 body.brown #HomeDashboardPortletSelectionView li span,
@@ -1775,8 +1775,7 @@ body.lime .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.lime #AboutView p a,
 body.lime #AboutView ul a,
 body.lime .back-to-app-menu-item span,
-body.lime .breadcrumbs a,
-body.lime #clear-search-link {
+body.lime .breadcrumbs a {
   color: #2b434f !important;
 }
 body.lime .portlet-toolbar .icon-create:hover,
@@ -1797,7 +1796,8 @@ body.lime .lead-conversion-actions a {
 body.lime .latest-activity-toolbar label:hover,
 body.lime .filter-portlet-model-bar label:hover,
 body.lime .latest-activity-toolbar .ui-state-active,
-body.lime .filter-portlet-model-bar .ui-state-active {
+body.lime .filter-portlet-model-bar .ui-state-active,
+body.lime #clear-search-link {
   background-color: #2b434f !important;
 }
 body.lime #HomeDashboardPortletSelectionView li span,
@@ -2298,8 +2298,7 @@ body.cherry .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.cherry #AboutView p a,
 body.cherry #AboutView ul a,
 body.cherry .back-to-app-menu-item span,
-body.cherry .breadcrumbs a,
-body.cherry #clear-search-link {
+body.cherry .breadcrumbs a {
   color: #6c8092 !important;
 }
 body.cherry .portlet-toolbar .icon-create:hover,
@@ -2320,7 +2319,8 @@ body.cherry .lead-conversion-actions a {
 body.cherry .latest-activity-toolbar label:hover,
 body.cherry .filter-portlet-model-bar label:hover,
 body.cherry .latest-activity-toolbar .ui-state-active,
-body.cherry .filter-portlet-model-bar .ui-state-active {
+body.cherry .filter-portlet-model-bar .ui-state-active,
+body.cherry #clear-search-link {
   background-color: #6c8092 !important;
 }
 body.cherry #HomeDashboardPortletSelectionView li span,
@@ -2821,8 +2821,7 @@ body.turquoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.turquoise #AboutView p a,
 body.turquoise #AboutView ul a,
 body.turquoise .back-to-app-menu-item span,
-body.turquoise .breadcrumbs a,
-body.turquoise #clear-search-link {
+body.turquoise .breadcrumbs a {
   color: #447799 !important;
 }
 body.turquoise .portlet-toolbar .icon-create:hover,
@@ -2843,7 +2842,8 @@ body.turquoise .lead-conversion-actions a {
 body.turquoise .latest-activity-toolbar label:hover,
 body.turquoise .filter-portlet-model-bar label:hover,
 body.turquoise .latest-activity-toolbar .ui-state-active,
-body.turquoise .filter-portlet-model-bar .ui-state-active {
+body.turquoise .filter-portlet-model-bar .ui-state-active,
+body.turquoise #clear-search-link {
   background-color: #447799 !important;
 }
 body.turquoise #HomeDashboardPortletSelectionView li span,
@@ -3344,8 +3344,7 @@ body.violet .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.violet #AboutView p a,
 body.violet #AboutView ul a,
 body.violet .back-to-app-menu-item span,
-body.violet .breadcrumbs a,
-body.violet #clear-search-link {
+body.violet .breadcrumbs a {
   color: #4a3970 !important;
 }
 body.violet .portlet-toolbar .icon-create:hover,
@@ -3366,7 +3365,8 @@ body.violet .lead-conversion-actions a {
 body.violet .latest-activity-toolbar label:hover,
 body.violet .filter-portlet-model-bar label:hover,
 body.violet .latest-activity-toolbar .ui-state-active,
-body.violet .filter-portlet-model-bar .ui-state-active {
+body.violet .filter-portlet-model-bar .ui-state-active,
+body.violet #clear-search-link {
   background-color: #4a3970 !important;
 }
 body.violet #HomeDashboardPortletSelectionView li span,
@@ -3867,8 +3867,7 @@ body.honey .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.honey #AboutView p a,
 body.honey #AboutView ul a,
 body.honey .back-to-app-menu-item span,
-body.honey .breadcrumbs a,
-body.honey #clear-search-link {
+body.honey .breadcrumbs a {
   color: #46201c !important;
 }
 body.honey .portlet-toolbar .icon-create:hover,
@@ -3889,7 +3888,8 @@ body.honey .lead-conversion-actions a {
 body.honey .latest-activity-toolbar label:hover,
 body.honey .filter-portlet-model-bar label:hover,
 body.honey .latest-activity-toolbar .ui-state-active,
-body.honey .filter-portlet-model-bar .ui-state-active {
+body.honey .filter-portlet-model-bar .ui-state-active,
+body.honey #clear-search-link {
   background-color: #46201c !important;
 }
 body.honey #HomeDashboardPortletSelectionView li span,
@@ -15031,6 +15031,13 @@ orientation : portrait // orientation: landscape    Target orientation
   #nav-trigger {
     display: block;
   }
+  #corp-logo span {
+    display: none;
+  }
+  #corp-logo img {
+    max-width: 50px;
+    margin-top: 10px;
+  }
   #HeaderView {
     position: fixed;
     width: 100%;
@@ -15046,7 +15053,7 @@ orientation : portrait // orientation: landscape    Target orientation
     padding-bottom: 10px;
   }
   .AppContainer {
-    min-width: auto !important;
+    min-width: 0 !important;
     /* should be 100% but i need to put box-sizing on top level nodes */
   
     /*background-image:none;*/
