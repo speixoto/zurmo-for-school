@@ -15046,7 +15046,9 @@ orientation : portrait // orientation: landscape    Target orientation
     padding-bottom: 10px;
   }
   .AppContainer {
-    min-width: auto;
+    min-width: auto !important;
+    /* should be 100% but i need to put box-sizing on top level nodes */
+  
     /*background-image:none;*/
   
     margin: 0 10px;
