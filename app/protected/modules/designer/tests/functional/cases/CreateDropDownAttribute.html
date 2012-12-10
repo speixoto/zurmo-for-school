@@ -211,6 +211,11 @@
     <td>DropDownAttributeForm_isAudited</td>
     <td>on</td>
 </tr>
+<!--tr>
+  <td>setSpeed</td>
+  <td>3000</td>
+  <td></td>
+</tr-->
 <tr>
     <td>clickAndWait</td>
     <td>save</td>
@@ -232,12 +237,12 @@
     <td>Create Field:</td>
 </tr>
 <tr>
-    <td>assertText</td>
+    <td>waitForText</td>
     <td>//div[@id='StandardAndCustomAttributesListView']/div[2]/div/h1</td>
     <td>Create Field</td>
 </tr>
 <tr>
-    <td>assertText</td>
+    <td>waitForText</td>
     <td>//div[@id='StandardAndCustomAttributesListView']/div[2]/div[2]/h1</td>
     <td>Accounts: Custom Fields</td>
 </tr>
@@ -252,10 +257,15 @@
     <td></td>
 </tr>
 <tr>
-    <td>click</td>
+    <td>clickAndWait</td>
     <td>id=edit-link-ddwn${randomSuffix}Cstm</td>
     <td></td>
 </tr>
+<!--tr>
+  <td>setSpeed</td>
+  <td>1</td>
+  <td></td>
+</tr-->
 <tr>
     <td>waitForPageToLoad</td>
     <td></td>
@@ -352,7 +362,7 @@
     <td>Edit Field:</td>
 </tr>
 <tr>
-    <td>assertText</td>
+    <td>waitForText</td>
     <td>//div[@id='StandardAndCustomAttributesListView']/div[2]/div[2]/h1</td>
     <td>Accounts: Custom Fields</td>
 </tr>
