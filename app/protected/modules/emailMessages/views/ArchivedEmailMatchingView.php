@@ -222,7 +222,6 @@
                                     $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
                                     $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
                                    }
-                                   
                             })
                         return false;
                     }

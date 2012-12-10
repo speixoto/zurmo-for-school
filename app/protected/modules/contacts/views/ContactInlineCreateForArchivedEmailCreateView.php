@@ -47,8 +47,9 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'CancelLinkForEmailsMatchingList', 'htmlOptions' => array (
-                                    'id'   => 'eval:"createContactCancel"',
-                                    'name' => 'eval:"createContactCancel" . $this->uniqueId')),
+                                    'id'   => 'eval:"createContactCancel" . $this->uniqueId',
+                                    'name' => 'eval:"createContactCancel" . $this->uniqueId',
+                                    'class' => 'eval:"createContactCancel"')),
                             array('type' => 'SaveButton', 'htmlOptions' => array (
                                     'id'   => 'eval:"save-contact-" . $this->uniqueId',
                                     'name' => 'eval:"save-contact-" . $this->uniqueId')),
@@ -149,7 +150,7 @@
         protected function renderScriptsContent()
         {
             return Yii::app()->clientScript->registerScript('contactInlineCreateCollapseActions', "
-                $('#createContactCancel').live('click', function()
+                $('.createContactCancel').live('click', function()
                     {
                         $('.ContactInlineCreateForArchivedEmailCreateView').hide();
                         return false;
