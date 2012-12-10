@@ -125,8 +125,7 @@
         {
             $expires = $this->getExpiryAttributeName();
             $expiry = $this->getExpiresAttributeName();
-            if ($this->model->{$expiry} == null &&
-            $expires != Policy::YES)
+            if ($this->model->{$expiry} == null && $expires != Policy::YES)
             {
                 return 'disabled';
             }
