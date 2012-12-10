@@ -60,7 +60,7 @@
             $htmlOptions = array(
                 'id'       => $inputId,
                 'name'     => $this->getEditableInputName($this->getExpiryAttributeName()),
-                'readonly' => $this->getReadOnlyValue(),
+                'class'    => 'disabled',            
             );
             $content .= $this->form->textField($this->model, $this->getExpiryAttributeName(), $htmlOptions);
             $content .= Yii::t('Default', 'days') . '</span>';

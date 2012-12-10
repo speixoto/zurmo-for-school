@@ -61,7 +61,7 @@
                                 $htmlOptions);
             $htmlOptions   = array(
                                 'id'       => $inputId,
-                                'readonly' => $this->getReadOnlyValue());
+                                'class'    => 'disabled');
             $content      .= $this->form->textField($this->model, $this->attribute, $htmlOptions);
             return $content;
         }
