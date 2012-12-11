@@ -249,7 +249,7 @@
          * @return string
          * @throws NotSupportedException
          */
-        protected function addFromJoinsForAttributeThatIsCastedUp($addFinalJoin = true)
+        protected function addFromJoinsForAttributeThatIsCastedUp()
         {
             //todo: explain what addFinalJoin is for.. when doing query on id field you don't necessary need that final item joined
             $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
@@ -287,7 +287,7 @@
                     }
                 }
             }
-            if ($addFinalJoin && !$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
+            if (!$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
             {
                 $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
                 $tableAliasName   = $this->joinTablesAdapter->addFromTableAndGetAliasName(

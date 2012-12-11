@@ -147,25 +147,15 @@
                                             $clauseInformation['value'], $where, $clausePosition,
                                             $tableAliasAndColumnNames);
             }
-            elseif (!isset($clauseInformation['relatedAttributeName']))
-            {
-                $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
-                                                       $modelClassName,
-                                                       $clauseInformation['attributeName']);
-                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
-                $builder->buildJoinAndWhereForNonRelatedAttribute($clauseInformation['operatorType'],
-                                                       $clauseInformation['value'], $clausePosition, $where);
-            }
             else
             {
-                $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
-                                                               $modelClassName,
-                                                               $clauseInformation['attributeName'],
-                                                               $clauseInformation["relatedAttributeName"]);
+                $modelAttributeToDataProviderAdapter =  new RedBeanModelAttributeToDataProviderAdapter(
+                                                        $modelClassName,
+                                                        $clauseInformation['attributeName'],
+                                                        ArrayUtil::getArrayValue($clauseInformation, 'relatedAttributeName'));
                 $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
-                $builder->resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute(
-                    $clauseInformation['operatorType'],
-                    $clauseInformation['value'], $clausePosition, $where);
+                $builder->resolveJoinsAndBuildWhere(    $clauseInformation['operatorType'],
+                                                        $clauseInformation['value'], $clausePosition, $where);
             }
         }
 
@@ -213,7 +203,7 @@
                                                            $clauseInformation['relatedModelData']['relatedAttributeName']);
                 $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
             }
-            $builder->resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute(
+            $builder->resolveJoinsAndBuildWhere(
                 $clauseInformation['relatedModelData']['operatorType'],
                 $clauseInformation['relatedModelData']['value'], $clausePosition, $where);
         }

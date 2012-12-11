@@ -30,48 +30,31 @@
     class ModelWhereAndJoinBuilder extends ModelJoinBuilder
     {
         /**
-         * Given a non-related attribute on a model, build the join and where sql string information.
-         * @param integer $operatorType
-         * @param mixed $value
-         * @param integer $whereKey
-         * @param array $where
-         */
-        public function buildJoinAndWhereForNonRelatedAttribute($operatorType, $value, $whereKey, & $where)
-        {
-            assert('is_string($operatorType)');
-            assert('is_int($whereKey)');
-            assert('is_array($where)');
-            $tableAliasName = $this->resolveJoins();
-            self::addWherePartByClauseInformation($operatorType, $value, $where, $whereKey, $tableAliasName,
-                                                  $this->modelAttributeToDataProviderAdapter->getColumnName());
-        }
-
-        /**
-         * Given a related attribute on a model, build the join and where sql string information.  Handles when the
-         * related attribute is an 'id'.
          * @param $operatorType
          * @param $value
          * @param $clausePosition
          * @param $where
          */
-        public function resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute($operatorType, $value, & $clausePosition,
-                                                                             & $where)
+        public function resolveJoinsAndBuildWhere($operatorType, $value, & $clausePosition, & $where)
         {
-            if ($this->modelAttributeToDataProviderAdapter->getRelatedAttribute() == 'id')
+            assert('is_string($operatorType)');
+            assert('is_array($where)');
+            if(!$this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
-                $this->buildJoinAndWhereForRelatedId(
-                    $operatorType,
-                    $value,
-                    $clausePosition,
-                    $where);
+                $tableAliasName = $this->resolveJoins();
+                self::addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition, $tableAliasName,
+                                                      $this->modelAttributeToDataProviderAdapter->getColumnName());
+            }
+            elseif ($this->modelAttributeToDataProviderAdapter->isRelationTypeAHasOneVariant() &&
+                    $this->modelAttributeToDataProviderAdapter->getRelatedAttribute() == 'id')
+            {
+                self::addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition,
+                                                      $this->resolveJoinsForRelatedId(),
+                                                      $this->modelAttributeToDataProviderAdapter->getColumnName());
             }
             else
             {
-                self::buildJoinAndWhereForRelatedAttribute(
-                    $operatorType,
-                    $value,
-                    $clausePosition,
-                    $where);
+                $this->buildJoinAndWhereForRelatedAttribute($operatorType, $value, $clausePosition, $where);
             }
         }
 
@@ -85,176 +68,97 @@
         protected function buildJoinAndWhereForRelatedAttribute($operatorType, $value, $whereKey, &$where)
         {
             assert('is_string($operatorType)');
-            assert('$this->modelAttributeToDataProviderAdapter->getRelatedAttribute() != null');
             assert('is_int($whereKey)');
             assert('is_array($where)');
+            $relationWhere                          = array();
             if ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
             {
-                $this->buildJoinAndWhereForManyToManyRelatedAttribute(
-                    $operatorType,
-                    $value,
-                    $whereKey,
-                    $where);
+                $relationAttributeTableAliasName    = $this->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
+                self::addWherePartByClauseInformation($operatorType, $value, $relationWhere, 1,
+                                                      $relationAttributeTableAliasName,
+                                                      $this->modelAttributeToDataProviderAdapter->resolveManyToManyColumnName());
+            }
+            elseif ($this->modelAttributeToDataProviderAdapter->isRelatedAttributeRelation() &&
+                    $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationType() == RedBeanModel::HAS_MANY)
+            {
+                $relationAttributeTableAliasName    = $this->resolveOnlyAttributeJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
+                $this->buildWhereForRelatedAttributeThatIsItselfAHasManyRelation(
+                                                      $relationAttributeTableAliasName,
+                                                      $operatorType,
+                                                      $value,
+                                                      $relationWhere,
+                                                      1);
             }
             else
             {
-                //this is a problem because is actually not the alias we need to retrieve.
-                $relationWhere                       = array();
-                if ($this->modelAttributeToDataProviderAdapter->isRelatedAttributeRelation() &&
-                    $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationType() == RedBeanModel::HAS_MANY)
-                {
-                    $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
-                        $this->modelAttributeToDataProviderAdapter->getModelClassName(),
-                        $this->modelAttributeToDataProviderAdapter->getAttribute());
-                    $builder                             = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
-                    $relationAttributeTableAliasName = $builder->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
-                    $this->buildWhereForRelatedAttributeThatIsItselfAHasManyRelation(
-                        $relationAttributeTableAliasName,
-                        $operatorType,
-                        $value,
-                        $relationWhere,
-                        1);
-                }
-                else
-                {
-                    $relationAttributeTableAliasName = $this->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
-                    self::addWherePartByClauseInformation($operatorType,
-                        $value,
-                        $relationWhere,
-                        1,
-                        $relationAttributeTableAliasName,
-                        $this->modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName());
-                }
-                $where[$whereKey] = strtr('1', $relationWhere);
+                $relationAttributeTableAliasName    = $this->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
+                self::addWherePartByClauseInformation($operatorType,
+                                                      $value,
+                                                      $relationWhere,
+                                                      1,
+                                                      $relationAttributeTableAliasName,
+                                                      $this->modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName());
             }
+            $where[$whereKey] = strtr('1', $relationWhere);
         }
 
         /**
          * Given a related attribute on a model and the related attribute is a has_many relation,
          * build the join and where sql string information.
-         * @param $relationAttributeTableAliasName
+         * @param $onTableAliasName
          * @param $operatorType
          * @param $value
          * @param $where
          * @param $whereKey
          * @throws NotSupportedException
          */
-        protected function buildWhereForRelatedAttributeThatIsItselfAHasManyRelation(
-                                                                                            $relationAttributeTableAliasName,
-                                                                                            $operatorType,
-                                                                                            $value,
-                                                                                            & $where,
-                                                                                            $whereKey
+        protected function buildWhereForRelatedAttributeThatIsItselfAHasManyRelation($onTableAliasName,
+                                                                                     $operatorType,
+                                                                                     $value,
+                                                                                     & $where,
+                                                                                     $whereKey
         )
         {
-            assert('is_string($relationAttributeTableAliasName)');
+            assert('is_string($onTableAliasName)');
             assert('is_string($operatorType)');
             assert('is_array($value) && count($value) > 0');
             assert('is_array($where)');
             assert('is_int($whereKey)');
-            $relationAttributeName           = $this->modelAttributeToDataProviderAdapter->getRelatedAttribute();
             $relationAttributeModelClassName = $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationModelClassName();
-            if ($relationAttributeModelClassName != 'CustomFieldValue')
+            if ($relationAttributeModelClassName != 'CustomFieldValue' || $operatorType != 'oneOf')
             {
                 //Until we can add a third parameter to the search adapter metadata, we have to assume we are only doing
                 //this for CustomFieldValue searches. Below we have $joinColumnName, since we don't have any other way
                 //of ascertaining this information for now.
-                throw new NotSupportedException();
-            }
-            if ($operatorType != 'oneOf')
-            {
+
                 //only support oneOf for the moment.  Once we add allOf, need to have an alternative sub-query
                 //below that uses if/else logic to compare count against how many possibles. then return 1 or 0.
+                throw new NotSupportedException();
             }
             $relationAttributeTableName      = RedBeanModel::getTableName($relationAttributeModelClassName);
             $tableAliasName                  = $relationAttributeTableName;
             $joinColumnName                  = 'value';
-            $relationColumnName              = self::resolveForeignKey(RedBeanModel::getTableName($this->modelAttributeToDataProviderAdapter->getRelatedAttributeModelClassName()));
+            $relationColumnName              = self::resolveForeignKey(RedBeanModel::getTableName(
+                                               $this->modelAttributeToDataProviderAdapter->
+                                                   getRelatedAttributeModelClassName()));
             $quote                           = DatabaseCompatibilityUtil::getQuote();
-            $where[$whereKey]   = "(1 = (select 1 from $quote$relationAttributeTableName$quote $tableAliasName " . // Not Coding Standard
-                "where $quote$tableAliasName$quote.$quote$relationColumnName$quote = " . // Not Coding Standard
-                "$quote$relationAttributeTableAliasName$quote.id " . // Not Coding Standard
-                "and $quote$tableAliasName$quote.$quote$joinColumnName$quote " . // Not Coding Standard
-                DatabaseCompatibilityUtil::getOperatorAndValueWherePart($operatorType, $value) . " limit 1))";
+            $where[$whereKey]                = "(1 = (select 1 from $quote$relationAttributeTableName$quote $tableAliasName " . // Not Coding Standard
+                                               "where $quote$tableAliasName$quote.$quote$relationColumnName$quote = " . // Not Coding Standard
+                                               "$quote$onTableAliasName$quote.id " . // Not Coding Standard
+                                               "and $quote$tableAliasName$quote.$quote$joinColumnName$quote " . // Not Coding Standard
+                                               DatabaseCompatibilityUtil::getOperatorAndValueWherePart($operatorType, $value) . " limit 1))";
         }
 
-        /**
-         * When the attributeName is 'id', this method determines if we need to join any tables or we can just
-         * add where clauses on the column in the base table that corresponds to the id.
-         * @param $operatorType
-         * @param $value
-         * @param $whereKey
-         * @param $where
-         */
-        protected function buildJoinAndWhereForRelatedId($operatorType,
-                                                                $value,
-                                                                $whereKey,
-                                                                &$where)
+        protected function resolveJoinsForRelatedId()
         {
-            assert('is_string($operatorType)');
-            assert('$this->modelAttributeToDataProviderAdapter->getRelatedAttribute() == "id"');
-            assert('is_int($whereKey)');
-            assert('is_array($where)');
-            //Is the relation type HAS_ONE or HAS_MANY_BELONGS_TO
-            if ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_ONE ||
-                $this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO)
+            if($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
             {
-                //todo: begin reqfactor
-
-                //$this->resolveOnlyAttributeJoins(); //in case it is casted up todo: leave this here? if it is casted up we need that from join.
-
-                //hmm. we only need to cast up, but not join the attribute's table. not sure exactly how to do that...
-                //$tableAliasName = $this->modelAttributeToDataProviderAdapter->getModelTableName();
-                if($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
-                {
-                    //todo: that false/true thing pasesed into casted up is actually not needed i think. so we can remove that param and its logic
-                     $tableAliasName = $this->addFromJoinsForAttributeThatIsCastedUp(true); //todo: this might be what we have to call instead... dont need to call mixin i think ever. because it is person directly on user not casteed up
-                }
-                else
-                {
-                    $tableAliasName = $this->modelAttributeToDataProviderAdapter->getModelTableName();
-                }
-                //todo: end refactor
-
-                self::addWherePartByClauseInformation(  $operatorType,
-                    $value,
-                    $where, $whereKey, $tableAliasName,
-                    $this->modelAttributeToDataProviderAdapter->getColumnName());
-            }
-            elseif ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
-            {
-                $this->buildJoinAndWhereForManyToManyRelatedAttribute( $operatorType, $value,
-                    $whereKey, $where);
+                return $this->addFromJoinsForAttributeThatIsCastedUp();
             }
             else
             {
-                $this->buildJoinAndWhereForRelatedAttribute($operatorType, $value,
-                    $whereKey, $where);
+                return $this->modelAttributeToDataProviderAdapter->getModelTableName();
             }
-        }
-
-        /**
-         * iven a RedBeanModel::MANY_MANY related attribute on a model, build the join and where sql string information.
-         * In this scenario with a many-to-many relation, you only need to join the joining table, since this method
-         * currently only supports where the relatedAttributeName = 'id'.
-         * @param $operatorType
-         * @param $value
-         * @param $whereKey
-         * @param $where
-         */
-        protected function buildJoinAndWhereForManyToManyRelatedAttribute($operatorType, $value, $whereKey, & $where)
-        {
-            assert('is_string($operatorType)');
-            assert('$this->modelAttributeToDataProviderAdapter->getRelatedAttribute() != null');
-            assert('is_int($whereKey)');
-            assert('is_array($where)');
-            assert('$this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY');
-            $relationAttributeTableAliasName    = $this->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
-            $relationWhere                      = array();
-            self::addWherePartByClauseInformation($operatorType, $value, $relationWhere, 1,
-                  $relationAttributeTableAliasName,
-                  $this->modelAttributeToDataProviderAdapter->resolveManyToManyColumnName());
-            $where[$whereKey] = strtr('1', $relationWhere);
         }
 
         /**

@@ -164,6 +164,19 @@
         }
 
         /**
+         * @return bool
+         */
+        public function isRelationTypeAHasOneVariant()
+        {
+            if($this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               $this->getRelationType() == RedBeanModel::HAS_ONE)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
          * @return true/false if the $relatedAttribute was specified in the construcor.
          */
         public function hasRelatedAttribute()
