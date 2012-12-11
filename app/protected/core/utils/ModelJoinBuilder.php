@@ -154,6 +154,10 @@
             //If the attribute table is the same as the model table then there is nothing to add.
             if (!$this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
             {
+                if($onTableAliasName != null)
+                {
+                    return $onTableAliasName;
+                }
                 return $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
             }
             $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
@@ -212,9 +216,13 @@
         /**
          * @return null|string
          */
-        public function resolveJoinsForRelatedAttribute()
+        public function resolveJoinsForRelatedAttribute($onTableAliasName = null)
         {
-            $onTableAliasName = $this->resolveShouldAddFromTable();
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
+            if($onTableAliasName == null)
+            {
+                $onTableAliasName = $this->resolveShouldAddFromTable();
+            }
             if($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
             {
                 return $this->resolveJoinForManyToManyRelatedAttribute();
@@ -313,6 +321,392 @@
             else
             {
                 return $relationJoiningTableAliasName;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public function resolveJoins($onTableAliasName = null, $canUseFromJoins = true)
+        {
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
+            assert('is_bool($canUseFromJoins)');
+            $onTableAliasName = $this->resolveOnTableAliasName($onTableAliasName);
+            $onTableAliasName = $this->resolveJoinsForAttribute($onTableAliasName, $canUseFromJoins);
+            if($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            {
+                $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
+                                                       $this->modelAttributeToDataProviderAdapter->
+                                                       getRelationModelClassNameThatCanHaveATable(),
+                                                       $this->modelAttributeToDataProviderAdapter->
+                                                       getRelatedAttribute());
+                $builder                             = new ModelJoinBuilder($modelAttributeToDataProviderAdapter,
+                                                       $this->joinTablesAdapter);
+                $onTableAliasName                    = $builder->resolveJoinsForAttribute($onTableAliasName, false);
+            }
+            return $onTableAliasName;
+        }
+
+        protected function resolveOnTableAliasName($onTableAliasName = null)
+        {
+            if($onTableAliasName == null)
+            {
+                $onTableAliasName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            }
+            return $onTableAliasName;
+        }
+
+        protected function resolveJoinsForAttribute($onTableAliasName, $canUseFromJoins = true)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_bool($canUseFromJoins)');
+            if($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
+            {
+                return $this->resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins);
+            }
+            elseif($this->modelAttributeToDataProviderAdapter->isRelation())
+            {
+                return $this->resolveJoinsForAttributeOnSameModelThatIsARelation($onTableAliasName);
+            }
+            else
+            {
+                return $this->resolveJoinsForAttributeOnSameModelThatIsNotARelation($onTableAliasName);
+            }
+        }
+
+        protected function resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins = true)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_bool($canUseFromJoins)');
+            if($this->modelAttributeToDataProviderAdapter->isRelation())
+            {
+                return $this->resolveJoinsForAttributeOnDifferentModelThatIsARelation($onTableAliasName, $canUseFromJoins);
+            }
+            else
+            {
+                return $this->resolveJoinsForAttributeOnDifferentModelThatIsNotARelation($onTableAliasName,
+                                                                                         $canUseFromJoins);
+            }
+        }
+
+        protected function resolveJoinsForAttributeOnSameModelThatIsARelation($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
+        }
+
+        protected function resolveJoinsForAttributeOnSameModelThatIsNotARelation($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            return $onTableAliasName;
+        }
+
+        protected function resolveJoinsForAttributeOnDifferentModelThatIsARelation($onTableAliasName, $canUseFromJoins = true)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_bool($canUseFromJoins)');
+            //todo: this clause can resolve into its own method. could share same internal signature as the next method, assumming hte internals are rewritten to be nammed properly.
+            if($canUseFromJoins)
+            {
+                $onTableAliasName = $this->addFromJoinsForNonRelationAttribute($onTableAliasName); //todo: make its own method since this is relation not nonRelation
+            }
+            else
+            {
+                $onTableAliasName = $this->addLeftJoinsForNonRelationAttribute($onTableAliasName); //todo: make its own method since this is relation not nonRelation
+            }
+            return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
+        }
+
+        protected function
+                  resolveJoinsForAttributeOnDifferentModelThatIsNotARelation($onTableAliasName, $canUseFromJoins = true)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_bool($canUseFromJoins)');
+            if($canUseFromJoins)
+            {
+                return $this->addFromJoinsForNonRelationAttribute($onTableAliasName);
+            }
+            else
+            {
+                return $this->addLeftJoinsForNonRelationAttribute($onTableAliasName);
+            }
+        }
+
+        protected function addFromJoinsForNonRelationAttribute($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            if($this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
+            {
+                return $this->addFromJoinsForNonRelationAttributeThatIsMixedIn($onTableAliasName);
+            }
+            else
+            {
+                return $this->addFromJoinsForNonRelationAttributeThatIsCastedUp();
+            }
+        }
+
+        protected function addLeftJoinsForNonRelationAttribute($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            if($this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
+            {
+                return $this->addLeftJoinsForNonRelationAttributeThatIsMixedIn($onTableAliasName);
+            }
+            else
+            {
+                return $this->addLeftJoinsForNonRelationAttributeThatIsCastedUp($onTableAliasName);
+            }
+        }
+
+        protected function addFromJoinsForNonRelationAttributeThatIsMixedIn($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $attributeTableName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            if (!$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
+            {
+                $onTableAliasName = $this->joinTablesAdapter->addFromTableAndGetAliasName(
+                    $attributeTableName,
+                    self::resolveForeignKey($attributeTableName),
+                    $modelClassName::getTableName($modelClassName));
+            }
+            return $onTableAliasName;
+        }
+
+        protected function addFromJoinsForNonRelationAttributeThatIsCastedUp()
+        {
+            $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $attributeTableName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            $tableAliasName     = $attributeTableName;
+            $castedDownModelClassName = $modelClassName;
+            while (get_parent_class($modelClassName) !=
+                   $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName() &&
+                   get_parent_class($modelClassName) != 'RedBeanModel')
+            {
+                $castedDownFurtherModelClassName = $castedDownModelClassName;
+                $castedDownModelClassName        = $modelClassName;
+                $modelClassName                  = get_parent_class($modelClassName);
+                if ($modelClassName::getCanHaveBean())
+                {
+                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+                    if (!$this->joinTablesAdapter->isTableInFromTables($castedUpAttributeTableName))
+                    {
+                        if ($castedDownModelClassName::getCanHaveBean())
+                        {
+                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownModelClassName);
+                        }
+                        elseif ($castedDownFurtherModelClassName::getCanHaveBean())
+                        {
+                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
+                        $onTableAliasName = $this->joinTablesAdapter->addFromTableAndGetAliasName(
+                            $castedUpAttributeTableName,
+                            self::resolveForeignKey($castedUpAttributeTableName),
+                            $onTableAliasName);
+                    }
+                }
+            }
+            if (!$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
+            {
+                $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
+                $tableAliasName   = $this->joinTablesAdapter->addFromTableAndGetAliasName(
+                                    $attributeTableName,
+                                    self::resolveForeignKey($attributeTableName),
+                                    $modelClassName::getTableName($modelClassName));
+            }
+            return $tableAliasName;
+        }
+
+        protected function addLeftJoinsForNonRelationAttributeThatIsMixedIn($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            $attributeTableName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            return $this->addLeftJoinForMixedInAttribute($onTableAliasName, $attributeTableName, $modelClassName);
+        }
+
+        protected function addLeftJoinForMixedInAttribute($onTableAliasName, $attributeTableName, $modelClassName)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_string($attributeTableName)');
+            assert('is_string($modelClassName)');
+            if (!$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
+            {
+                $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                    $attributeTableName,
+                    self::resolveForeignKey($attributeTableName),
+                    $onTableAliasName);
+            }
+            return $onTableAliasName;
+        }
+
+        protected function addLeftJoinsForNonRelationAttributeThatIsCastedUp($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            $modelClassName           = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $attributeTableName       = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            $castedDownModelClassName = $modelClassName;
+            while (get_parent_class($modelClassName) !=
+                   $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName() &&
+                   get_parent_class($modelClassName) != 'RedBeanModel')
+            {
+                $castedDownFurtherModelClassName = $castedDownModelClassName;
+                $castedDownModelClassName        = $modelClassName;
+                $modelClassName                  = get_parent_class($modelClassName);
+                if ($modelClassName::getCanHaveBean())
+                {
+                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+                    if ($castedDownModelClassName::getCanHaveBean())
+                    {
+                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
+                    }
+                    elseif ($castedDownFurtherModelClassName::getCanHaveBean())
+                    {
+                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
+                    $onTableAliasName =     $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                        $castedUpAttributeTableName,
+                        self::resolveForeignKey($castedUpAttributeTableName),
+                        $onTableAliasName,
+                        $resolvedTableJoinIdName);
+                }
+            }
+            //Add left table if it is not already added
+            $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
+            $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                $attributeTableName,
+                self::resolveForeignKey($attributeTableName),
+                $onTableAliasName,
+                $modelClassName::getTableName($modelClassName));
+            return $onTableAliasName;
+        }
+
+        protected function addLeftJoinsForARelationAttribute($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            if($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
+            {
+                return $this->resolveJoinsForForARelationAttributeThatIsManyToMany($onTableAliasName);
+            }
+            elseif ($this->modelAttributeToDataProviderAdapter->isRelationTypeAHasManyVariant())
+            {
+                return $this->resolveJoinsForForARelationAttributeThatIsAHasManyVariant($onTableAliasName);
+                //todo: this is probably needed when not doing reporting.  need way to flag this..
+                //HAS_MANY have the potential to produce more than one row per model, so we need
+                //to signal the query to be distinct.
+                /**
+                if ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_MANY)
+                {
+                    $this->joinTablesAdapter->setSelectDistinctToTrue();
+                }
+                 * **/
+            }
+            elseif($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_ONE)
+            {
+                return $this->resolveJoinsForForARelationAttributeThatIsAHasOne($onTableAliasName);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        protected function resolveJoinsForForARelationAttributeThatIsManyToMany($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            $relationTableName               = $this->modelAttributeToDataProviderAdapter->getRelationTableName();
+            $attributeTableName              = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            $relationJoiningTableAliasName   = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                                               $this->modelAttributeToDataProviderAdapter->getManyToManyTableName(),
+                                               "id",
+                                               $this->resolveShouldAddFromTable(),
+                                               self::resolveForeignKey($attributeTableName));
+            //if this is not the id column, then add an additional left join.
+            if ($this->modelAttributeToDataProviderAdapter->getRelatedAttribute() != 'id')
+            {
+                //todo: $this->joinTablesAdapter->setSelectDistinctToTrue(); //needed when not using reporting... need way to flag this.
+                return  $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                        $relationTableName,
+                        self::resolveForeignKey($relationTableName),
+                        $relationJoiningTableAliasName,
+                        'id');
+
+            }
+            else
+            {
+                return $relationJoiningTableAliasName;
+            }
+        }
+
+        protected function resolveJoinsForForARelationAttributeThatIsAHasManyVariant($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            $onTableJoinIdName  = 'id';
+            $tableJoinIdName    = self::resolveForeignKey($onTableAliasName);
+            $onTableAliasName   = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                                  $this->modelAttributeToDataProviderAdapter->getRelationTableName(),
+                                  $onTableJoinIdName,
+                                  $onTableAliasName,
+                                  $tableJoinIdName);
+            return $onTableAliasName;
+        }
+
+        protected function resolveJoinsForForARelationAttributeThatIsAHasOne($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            $tableJoinIdName    = 'id';
+            $onTableJoinIdName  = $this->modelAttributeToDataProviderAdapter->getColumnName();
+            $onTableAliasName   = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                                  $this->modelAttributeToDataProviderAdapter->getRelationTableName(),
+                                  $onTableJoinIdName,
+                                  $onTableAliasName,
+                                  $tableJoinIdName);
+            return $onTableAliasName;
+        }
+
+        protected static function resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($castedDownModelClassName)');
+            if (!$modelClassName::getCanHaveBean())
+            {
+                if (!$castedDownModelClassName::getCanHaveBean())
+                {
+                    throw new NotSupportedException();
+                }
+                return $castedDownModelClassName;
+            }
+            else
+            {
+                return $modelClassName;
             }
         }
 

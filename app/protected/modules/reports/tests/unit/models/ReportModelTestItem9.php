@@ -34,12 +34,28 @@
                     'name',
                 ),
                 'relations' => array(
+                    'dropDown'       => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                       RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDown'),
+                    'hasOne'         => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem', RedBeanModel::NOT_OWNED,
+                                                       RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
+                    'hasOne2'        => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem8', RedBeanModel::NOT_OWNED,
+                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne2'),
+                    'hasMany'        => array(RedBeanModel::HAS_MANY,   'ReportModelTestItem', RedBeanModel::NOT_OWNED,
+                                                       RedBeanModel::LINK_TYPE_SPECIFIC, 'hasMany'),
+                    'manyMany'       => array(RedBeanModel::MANY_MANY,   'ReportModelTestItem', RedBeanModel::NOT_OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'manyMany'),
                     'reportModelTestItem9'          => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'ReportModelTestItem9'),
                     'reportModelTestItem9s'         => array(RedBeanModel::HAS_MANY,             'ReportModelTestItem9'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),
                     array('name',  'length', 'max' => 32),
+                ),
+                'customFields' => array(
+                    'dropDown'        => 'ReportTestDropDown',
+                ),
+                'elements' => array(
+                    'dropDown'            => 'DropDown',
                 ),
             );
             return $metadata;

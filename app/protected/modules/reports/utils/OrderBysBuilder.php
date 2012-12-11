@@ -91,6 +91,7 @@
             $count                    = 0;
             $moduleClassName          = $orderBy->getModuleClassName();
             $modelClassName           = $orderBy->getModelClassName();
+            $onTableAliasName         = null;
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
@@ -115,7 +116,7 @@
                     }
                     $builder          = new ModelJoinBuilder($modelAttributeToDataProviderAdapter,
                                         $this->joinTablesAdapter);
-                    $onTableAliasName = $builder->resolveJoinsForRelatedAttribute();
+                    $onTableAliasName = $builder->resolveJoins($onTableAliasName);
                 }
                 else
                 {
@@ -144,12 +145,14 @@
             //Example: createdUser__User
             if($modelToReportAdapter->isDynamicallyDerivedAttribute($attribute))
             {
-                return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
-                                                                      $attribute, 'lastName');
+                return new RedBeanModelAttributeToDataProviderAdapter(
+                                $modelToReportAdapter->getModelClassName(),
+                                $modelToReportAdapter->resolveRealAttributeName($attribute), 'lastName');
             }
             //Example: CustomField, CurrencyValue, OwnedCustomField, or likeContactState
             elseif($modelToReportAdapter->relationIsReportedAsAttribute($attribute))
             {
+
                 $sortAttribute = $modelToReportAdapter->getRules()->
                                  getSortAttributeForRelationReportedAsAttribute(
                                  $modelToReportAdapter->getModel(), $attribute);

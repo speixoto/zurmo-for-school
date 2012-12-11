@@ -51,25 +51,33 @@
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
             $builder = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
-            if($onTableAliasName != null)
+            if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
-                $tableAliasName             = $builder->resolveShouldAddLeftTable($onTableAliasName);
-                $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getColumnName();
-            }
-            elseif ($modelAttributeToDataProviderAdapter->isRelation())
-            {
-                if (!$modelAttributeToDataProviderAdapter->hasRelatedAttribute())
-                {
-                    throw new NotSupportedException();
-                }
-                $tableAliasName             = $builder->resolveJoinsForRelatedAttribute();
+                $tableAliasName             = $builder->resolveJoins($onTableAliasName, self::resolveCanUseFromJoins($onTableAliasName));
                 $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
             }
             else
             {
-                $tableAliasName             = $builder->resolveShouldAddFromTable();
+                $tableAliasName             = $builder->resolveJoins($onTableAliasName, self::resolveCanUseFromJoins($onTableAliasName));
                 $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getColumnName();
             }
+            return self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
+        }
+
+        protected static function resolveCanUseFromJoins($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
+            if($onTableAliasName != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        protected static function resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName)
+        {
+            assert('is_string($tableAliasName)');
+            assert('is_string($resolvedSortColumnName)');
             $sort  = DatabaseCompatibilityUtil::quoteString($tableAliasName);
             $sort .= '.';
             $sort .= DatabaseCompatibilityUtil::quoteString($resolvedSortColumnName);

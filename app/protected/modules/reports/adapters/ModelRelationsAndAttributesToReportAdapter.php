@@ -45,16 +45,6 @@
 
         protected $moduleClassName;
 
-        public function getModel()
-        {
-            return $this->model;
-        }
-
-        public function getModelClassName()
-        {
-            return get_class($this->model);
-        }
-
         public static function make($moduleClassName, $modelClassName, $reportType)
         {
             assert('is_string($moduleClassName)');
@@ -82,6 +72,21 @@
                 throw new NotSupportedException();
             }
             return $adapter;
+        }
+
+        public function getModel()
+        {
+            return $this->model;
+        }
+
+        public function getModelClassName()
+        {
+            return get_class($this->model);
+        }
+
+        public function getRules()
+        {
+            return $this->rules;
         }
 
         /**
@@ -495,7 +500,11 @@
         public function relationIsReportedAsAttribute($relation)
         {
             assert('is_string($relation)');
-            if($this->model->isAttribute($relation) && !$this->isRelation($relation))
+            if($this->model->isAttribute($relation) && $this->isRelation($relation))
+            {
+                return false;
+            }
+            if($this->model->isAttribute($relation) && !$this->model->isRelation($relation))
             {
                 return false;
             }
@@ -739,7 +748,7 @@
         /**
          * @return real model attribute name.  Parses for Inferred, Inferred__Via, and Via.
          */
-        private function resolveRealAttributeName($attribute)
+        public function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
             $delimiter                       = FormModelUtil::DELIMITER;

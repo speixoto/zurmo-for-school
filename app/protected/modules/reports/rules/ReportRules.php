@@ -103,6 +103,7 @@
             {
                 return true;
             }
+
             if(in_array($model->getRelationModelClassName($relation),
                         array('OwnedCustomField',
                               'CustomField',
@@ -188,7 +189,7 @@
         }
 
 
-        public function getSortAttributeForRelationReportedAsAttribute(RedBeanModel $model, $attribute)
+        public function getSortAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
             $modelClassName = $model->getAttributeModelClassName($relation);

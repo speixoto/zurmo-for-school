@@ -80,6 +80,7 @@
             $sort                                = ModelDataProviderUtil::
                                                    resolveSortAttributeColumnName(
                                                    $modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+
             $this->assertEquals("{$quote}g{$quote}.{$quote}g{$quote}", $sort);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());

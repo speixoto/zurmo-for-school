@@ -34,6 +34,8 @@
                     'name',
                 ),
                 'relations' => array(
+                    'dropDownX'       => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDownX'),
                     'reportModelTestItems' => array(RedBeanModel::HAS_MANY, 'ReportModelTestItem'),
                 ),
                 'relationsModuleConnections' =>
@@ -41,6 +43,12 @@
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),
                     array('name',  'length', 'max' => 32),
+                ),
+                'customFields' => array(
+                    'dropDownX'        => 'ReportTestDropDown',
+                ),
+                'elements' => array(
+                    'dropDownX'            => 'DropDown',
                 ),
             );
             return $metadata;

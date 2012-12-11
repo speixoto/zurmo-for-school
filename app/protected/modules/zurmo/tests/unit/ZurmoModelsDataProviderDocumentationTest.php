@@ -144,7 +144,6 @@
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
             $orderByColumnName = RedBeanModelDataProvider::resolveSortAttributeColumnName('Account', $joinTablesAdapter, 'owner');
             $this->assertEquals("{$quote}person{$quote}.{$quote}lastname{$quote}", $orderByColumnName);
-
             $leftTablesAndAliases = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals('person',    $leftTablesAndAliases[1]['tableName']);
             $this->assertEquals('person',    $leftTablesAndAliases[1]['tableAliasName']);

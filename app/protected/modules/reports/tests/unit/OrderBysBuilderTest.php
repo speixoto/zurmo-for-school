@@ -341,16 +341,16 @@
             $orderBy->attributeIndexOrDerivedType  = 'createdDateTime';
             $orderBy2                              = new OrderByForReportForm('AccountsModule', 'Account',
                 Report::TYPE_ROWS_AND_COLUMNS);
-            $orderBy2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $orderBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
             $orderBy2->order                       = 'desc';
             $orderBy3                              = new OrderByForReportForm('AccountsModule', 'Account',
                 Report::TYPE_ROWS_AND_COLUMNS);
             $orderBy3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
             $orderBy3->order                       = 'desc';
-            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2, $orderBy3));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} desc" .
-                                                     "{$q}item1{$q}.{$q}modifieddatetime{$q} desc" .
+                                                     "{$q}item1{$q}.{$q}createddatetime{$q} desc, " .
+                                                     "{$q}item1{$q}.{$q}modifieddatetime{$q} desc";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
@@ -382,19 +382,279 @@
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
+        public function testTwoCustomFieldsWhenOneIsOnRelatedModelAndOneIsOnSelf()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //2 custom fields attributes with 1 on relation and one on self
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'dropDown';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'hasOne___dropDown';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}customfield{$q}.{$q}value{$q} asc, " .
+                                                     "{$q}customfield1{$q}.{$q}value{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModelButDifferentRelations()
+        {
+
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //2 custom fields attributes with both on a related model, but the links are different
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'hasOne___dropDown';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'hasMany___dropDown';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}customfield{$q}.{$q}value{$q} asc, " .
+                                                     "{$q}customfield1{$q}.{$q}value{$q} asc";
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('reportmodeltestitem1', $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem1', $leftTablesAndAliases[3]['onTableAliasName']);
+        }
+
+        public function testTwoCustomFieldsWhenBothAreOnRelatedModelsThatAreDifferent()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //2 custom fields attributes with both on 2 different related models
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'hasOne___dropDown';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'hasOne2___dropDownX';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}customfield{$q}.{$q}value{$q} asc, " .
+                                                     "{$q}customfield1{$q}.{$q}value{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('reportmodeltestitem', $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem', $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('reportmodeltestitem8', $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem8', $leftTablesAndAliases[3]['onTableAliasName']);
+        }
+
+        public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModel()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //2 custom fields attributes with both on a related model, but 2 different dropdowns
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'hasOne___dropDown';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'hasOne___dropDown2';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}customfield{$q}.{$q}value{$q} asc, " .
+                                                     "{$q}customfield1{$q}.{$q}value{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testDynamicallyDerivedAttributeOnSelf()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //2 __User attributes on the same model
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'createdByUser__User';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'modifiedByUser__User';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
+                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('_user',   $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('_user',   $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('_user1',  $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('_user1',  $leftTablesAndAliases[3]['onTableAliasName']);
+
+            //2 __User attributes on the same model, one is owned, so not originating both from Item
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'createdByUser__User';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'owner__User';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
+                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('_user',               $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('_user',               $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('_user1',              $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',  $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('_user1',              $leftTablesAndAliases[3]['onTableAliasName']);
+        }
+
+        public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereSameAttribute()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //2 createdByUser__User attributes. One of self, one on related.
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'createdByUser__User';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'hasOne___createdByUser__User';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
+                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('_user',   $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('_user',   $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('_user1',  $leftTablesAndAliases[6]['tableAliasName']);
+            $this->assertEquals('_user1',  $leftTablesAndAliases[7]['onTableAliasName']);
+        }
+
+        public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereDifferentAttributes()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //Self createdByUser__User, related owner__User
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'createdByUser__User';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'hasOne___owner__User';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
+                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('_user',                 $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item',                  $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('person',                $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('_user',                 $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('reportmodeltestitem',   $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem9',  $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem',   $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('_user1',                $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('person1',               $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('_user1',                $leftTablesAndAliases[5]['onTableAliasName']);
+        }
+
+        public function testDynamicallyDerivedAttributeBothOnRelatedModelWhereDifferentAttributes()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //Related createdByUser__User and related owner__User. On same related model
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'hasOne___createdByUser__User';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType = 'hasOne___owner__User';
+            $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
+                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('reportmodeltestitem',  $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem9', $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem',  $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('_user',                $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('person',               $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('_user',                $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('_user1',               $leftTablesAndAliases[6]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[6]['onTableAliasName']);
+            $this->assertEquals('person1',              $leftTablesAndAliases[7]['tableAliasName']);
+            $this->assertEquals('_user1',               $leftTablesAndAliases[7]['onTableAliasName']);
+        }
+
+        public function testNestedRelationsThatComeBackOnTheBaseModel()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //Base model is Account.  Get related contact's opportunity's account's name
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $builder                               = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('AccountsModule', 'Account',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType  = 'contacts___opportunities___account___name';
+            $content                               = $builder->makeQueryContent(array($orderBy));
+            $compareContent                        = "{$q}account1{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testTwoTestedRelationsWhereTheyBothGoToTheSameModelButAtDifferentNestingPoints()
+        {
+            //todo: acc -> opps, but also acc-> con -> opps
+        }
+
 /**
  *             echo "<pre>";
 print_r($joinTablesAdapter->getFromTablesAndAliases());
 print_r($joinTablesAdapter->getLeftTablesAndAliases());
 echo "</pre>";
  */
-        //todo: casted up on 2 custom fields cause you ahve the canHaveBeans situation. good to test
-        //todo: test derived like __User, via self and related, via doubles too
-        //todo: link-specific 2 relations of the same model classes. testing this out various ways. good to test
-        //todo: derived dynamics - 1 level, then 2 levels deep
+
+
+
+        //todo: can go back over existing ones and do second set of tests in test for further layering deeper nesting.
+        //todo: derived dynamics (opposites of activityItems, not __User) - 1 level, then 2 levels deep
         //todo: derived inferreds - 1 level, then 2 levels deep
-        //todo: Acc -> con -> opp -> acc? i dont think will work but maybe it will.
-        //todo: acc -> opps, but also acc-> con -> opps
         //todo: with stuff already joined from filter? - seperate test class?? we can just fill in join with existing stuff.
         //tdod
     }
