@@ -120,6 +120,20 @@
                 $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
                 $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
             }
+            elseif ($this->type === "Bar3D")
+            {
+                $this->addChartProperties('rotate',                 true);
+                $this->addChartProperties('usePrefixes',            true);
+                $this->addGraphProperties('plotAreaBorderAlpha',    0);
+                $this->addGraphProperties('lineAlpha',              0);
+                $this->addGraphProperties('fillAlphas',             1);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                $this->addGraphProperties('gradientOrientation',    "'vertical'");
+                $this->addGraphProperties('labelPosition',          "'right'");
+                $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
+                $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
+                $this->makeChart3d();
+            }
             elseif ($this->type === "Donut2D")
             {
                 $this->addChartProperties('color',                  "'#A39595'");
@@ -135,6 +149,23 @@
                 $this->addChartProperties('pullOutRadius',          "'0%'");
                 $this->addChartProperties('startDuration',          0);
                 $this->chartIsPie = true;
+            }
+            elseif ($this->type === "Donut3D")
+            {
+                $this->addChartProperties('color',                  "'#A39595'");
+                $this->addChartProperties('sequencedAnimation',     true);
+                $this->addChartProperties('startEffect',            "'elastic'");
+                $this->addChartProperties('innerRadius',            "'30%'");
+                $this->addChartProperties('startDuration',          2);
+                $this->addChartProperties('labelRadius',            15);
+                $this->addChartProperties('usePrefixes',            true);
+                $this->addChartProperties('radius',                 "'45%'");
+                $this->addChartProperties('labelRadius',            -55);
+                $this->addChartProperties('labelText',              "'[[title]]<br>[[percents]]%'");
+                $this->addChartProperties('pullOutRadius',          "'0%'");
+                $this->addChartProperties('startDuration',          0);
+                $this->chartIsPie = true;
+                $this->makeChart3d();
             }
             elseif ($this->type === "Pie2D")
             {
