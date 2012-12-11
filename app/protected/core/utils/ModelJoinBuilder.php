@@ -425,14 +425,13 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_bool($canUseFromJoins)');
-            //todo: this clause can resolve into its own method. could share same internal signature as the next method, assumming hte internals are rewritten to be nammed properly.
             if($canUseFromJoins)
             {
-                $onTableAliasName = $this->addFromJoinsForNonRelationAttribute($onTableAliasName); //todo: make its own method since this is relation not nonRelation
+                $onTableAliasName = $this->addMixedInOrCastedUpFromJoinsForAttribute($onTableAliasName);
             }
             else
             {
-                $onTableAliasName = $this->addLeftJoinsForNonRelationAttribute($onTableAliasName); //todo: make its own method since this is relation not nonRelation
+                $onTableAliasName = $this->addMixedInOrCastedUpLeftJoinsForAttribute($onTableAliasName);
             }
             return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
         }
@@ -444,41 +443,41 @@
             assert('is_bool($canUseFromJoins)');
             if($canUseFromJoins)
             {
-                return $this->addFromJoinsForNonRelationAttribute($onTableAliasName);
+                return $this->addMixedInOrCastedUpFromJoinsForAttribute($onTableAliasName);
             }
             else
             {
-                return $this->addLeftJoinsForNonRelationAttribute($onTableAliasName);
+                return $this->addMixedInOrCastedUpLeftJoinsForAttribute($onTableAliasName);
             }
         }
 
-        protected function addFromJoinsForNonRelationAttribute($onTableAliasName)
+        protected function addMixedInOrCastedUpFromJoinsForAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
             if($this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
             {
-                return $this->addFromJoinsForNonRelationAttributeThatIsMixedIn($onTableAliasName);
+                return $this->addFromJoinsForAttributeThatIsMixedIn($onTableAliasName);
             }
             else
             {
-                return $this->addFromJoinsForNonRelationAttributeThatIsCastedUp();
+                return $this->addFromJoinsForAttributeThatIsCastedUp();
             }
         }
 
-        protected function addLeftJoinsForNonRelationAttribute($onTableAliasName)
+        protected function addMixedInOrCastedUpLeftJoinsForAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
             if($this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
             {
-                return $this->addLeftJoinsForNonRelationAttributeThatIsMixedIn($onTableAliasName);
+                return $this->addLeftJoinsForAttributeThatIsMixedIn($onTableAliasName);
             }
             else
             {
-                return $this->addLeftJoinsForNonRelationAttributeThatIsCastedUp($onTableAliasName);
+                return $this->addLeftJoinsForAttributeThatIsCastedUp($onTableAliasName);
             }
         }
 
-        protected function addFromJoinsForNonRelationAttributeThatIsMixedIn($onTableAliasName)
+        protected function addFromJoinsForAttributeThatIsMixedIn($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
             $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
@@ -493,7 +492,7 @@
             return $onTableAliasName;
         }
 
-        protected function addFromJoinsForNonRelationAttributeThatIsCastedUp()
+        protected function addFromJoinsForAttributeThatIsCastedUp()
         {
             $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
             $attributeTableName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
@@ -541,7 +540,7 @@
             return $tableAliasName;
         }
 
-        protected function addLeftJoinsForNonRelationAttributeThatIsMixedIn($onTableAliasName)
+        protected function addLeftJoinsForAttributeThatIsMixedIn($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
             $attributeTableName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
@@ -564,7 +563,7 @@
             return $onTableAliasName;
         }
 
-        protected function addLeftJoinsForNonRelationAttributeThatIsCastedUp($onTableAliasName)
+        protected function addLeftJoinsForAttributeThatIsCastedUp($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
             $modelClassName           = $this->modelAttributeToDataProviderAdapter->getModelClassName();
