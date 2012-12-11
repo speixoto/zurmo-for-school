@@ -9653,7 +9653,7 @@ a.remove .icon:after {
   position: absolute;
   top: 6px;
   right: 0;
-  content: "_";
+  content: "—";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
