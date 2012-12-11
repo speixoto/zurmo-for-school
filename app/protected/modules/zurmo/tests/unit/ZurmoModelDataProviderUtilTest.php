@@ -40,8 +40,8 @@
         {
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('Account', 'createdDateTime');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter);
-            $tableAliasName    = $builder->resolveShouldAddFromTable();
+            $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter, true);
+            $tableAliasName    = $builder->resolveJoins();
             $fromTables        = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
@@ -57,8 +57,8 @@
         {
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('User', 'firstName');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
-            $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter);
-            $tableAliasName    = $builder->resolveShouldAddFromTable();
+            $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter, true);
+            $tableAliasName    = $builder->resolveJoins();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -70,8 +70,8 @@
         {
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('Account', 'name');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter);
-            $tableAliasName    = $builder->resolveShouldAddFromTable();
+            $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter, true);
+            $tableAliasName    = $builder->resolveJoins();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -83,10 +83,10 @@
         {
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('Account', 'industry');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter);
-            $tableAliasName    = $builder->resolveShouldAddFromTable();
+            $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter, true);
+            $tableAliasName    = $builder->resolveJoins();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
     }
 ?>

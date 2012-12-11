@@ -41,7 +41,7 @@
             assert('is_string($operatorType)');
             assert('is_int($whereKey)');
             assert('is_array($where)');
-            $tableAliasName = $this->resolveShouldAddFromTable();
+            $tableAliasName = $this->resolveJoins();
             self::addWherePartByClauseInformation($operatorType, $value, $where, $whereKey, $tableAliasName,
                                                   $this->modelAttributeToDataProviderAdapter->getColumnName());
         }
@@ -94,16 +94,20 @@
                     $operatorType,
                     $value,
                     $whereKey,
-
                     $where);
             }
             else
             {
-                $relationAttributeTableAliasName     = $this->resolveJoinsForRelatedAttribute();
+                //this is a problem because is actually not the alias we need to retrieve.
                 $relationWhere                       = array();
                 if ($this->modelAttributeToDataProviderAdapter->isRelatedAttributeRelation() &&
                     $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationType() == RedBeanModel::HAS_MANY)
                 {
+                    $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
+                        $this->modelAttributeToDataProviderAdapter->getModelClassName(),
+                        $this->modelAttributeToDataProviderAdapter->getAttribute());
+                    $builder                             = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
+                    $relationAttributeTableAliasName = $builder->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
                     $this->buildWhereForRelatedAttributeThatIsItselfAHasManyRelation(
                         $relationAttributeTableAliasName,
                         $operatorType,
@@ -113,6 +117,7 @@
                 }
                 else
                 {
+                    $relationAttributeTableAliasName = $this->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
                     self::addWherePartByClauseInformation($operatorType,
                         $value,
                         $relationWhere,
@@ -194,7 +199,23 @@
             if ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_ONE ||
                 $this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO)
             {
-                $tableAliasName = $this->resolveShouldAddFromTable();
+                //todo: begin reqfactor
+
+                //$this->resolveOnlyAttributeJoins(); //in case it is casted up todo: leave this here? if it is casted up we need that from join.
+
+                //hmm. we only need to cast up, but not join the attribute's table. not sure exactly how to do that...
+                //$tableAliasName = $this->modelAttributeToDataProviderAdapter->getModelTableName();
+                if($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
+                {
+                    //todo: that false/true thing pasesed into casted up is actually not needed i think. so we can remove that param and its logic
+                     $tableAliasName = $this->addFromJoinsForAttributeThatIsCastedUp(true); //todo: this might be what we have to call instead... dont need to call mixin i think ever. because it is person directly on user not casteed up
+                }
+                else
+                {
+                    $tableAliasName = $this->modelAttributeToDataProviderAdapter->getModelTableName();
+                }
+                //todo: end refactor
+
                 self::addWherePartByClauseInformation(  $operatorType,
                     $value,
                     $where, $whereKey, $tableAliasName,
@@ -228,17 +249,13 @@
             assert('is_int($whereKey)');
             assert('is_array($where)');
             assert('$this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY');
-            $relationAttributeTableAliasName    = $this->resolveJoinsForRelatedAttribute();
+            $relationAttributeTableAliasName    = $this->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
             $relationWhere                      = array();
             self::addWherePartByClauseInformation($operatorType, $value, $relationWhere, 1,
                   $relationAttributeTableAliasName,
                   $this->modelAttributeToDataProviderAdapter->resolveManyToManyColumnName());
             $where[$whereKey] = strtr('1', $relationWhere);
         }
-
-        /**
-         *
-         */
 
         /**
          * Add a sql string to the where array. How the sql string is built depends on if the value is a string or not.

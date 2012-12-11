@@ -377,6 +377,7 @@
             $compareWhere = "({$quote}i{$quote}.{$quote}hasonerelation_customfield_id{$quote} = 3)";
             $this->assertEquals($compareWhere, $where);
             //Now test that the joinTablesAdapter has correct information.
+
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 

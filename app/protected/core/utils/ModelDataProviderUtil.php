@@ -152,7 +152,7 @@
                 $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
                                                        $modelClassName,
                                                        $clauseInformation['attributeName']);
-                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
                 $builder->buildJoinAndWhereForNonRelatedAttribute($clauseInformation['operatorType'],
                                                        $clauseInformation['value'], $clausePosition, $where);
             }
@@ -162,7 +162,7 @@
                                                                $modelClassName,
                                                                $clauseInformation['attributeName'],
                                                                $clauseInformation["relatedAttributeName"]);
-                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
                 $builder->resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute(
                     $clauseInformation['operatorType'],
                     $clauseInformation['value'], $clausePosition, $where);
@@ -193,8 +193,8 @@
                                                    $clauseInformation['attributeName'],
                                                    $clauseInformation['relatedModelData']['attributeName']);
             $builder                             = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter,
-                                                                                 $joinTablesAdapter);
-            $builder->resolveJoinsForRelatedAttribute();
+                                                                                $joinTablesAdapter, true);
+            $builder->resolveJoins(null, false);
             $relationModelClassName = $modelAttributeToDataProviderAdapter->getRelationModelClassName();
             //if there is no more relatedModelData then we know this is the end of the nested information.
             if (isset($clauseInformation['relatedModelData']['relatedModelData']))
@@ -211,7 +211,7 @@
                                                            $relationModelClassName,
                                                            $clauseInformation['relatedModelData']['attributeName'],
                                                            $clauseInformation['relatedModelData']['relatedAttributeName']);
-                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
             }
             $builder->resolveWhenIdAndBuildJoinAndWhereForRelatedAttribute(
                 $clauseInformation['relatedModelData']['operatorType'],
@@ -237,8 +237,8 @@
                 $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
                                                        $modelClassName, $attributeName);
                 $builder                             = new ModelWhereAndJoinBuilder(
-                                                       $modelAttributeToDataProviderAdapter, $joinTablesAdapter);
-                $tableAliasName                      = $builder->resolveShouldAddFromTable();
+                                                       $modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
+                $tableAliasName                      = $builder->resolveJoins();
                 $tableAliasAndColumnNames[]          = array($tableAliasName,
                                                        $modelAttributeToDataProviderAdapter->getColumnName());
             }
