@@ -37,8 +37,9 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'CancelLinkForEmailsMatchingList', 'htmlOptions' => array (
-                                    'id'   => 'eval:"createLeadCancel"',
-                                    'name' => 'eval:"createLeadCancel" . $this->uniqueId')),
+                                    'id'    => 'eval:"createLeadCancel" . $this->uniqueId',
+                                    'name'  => 'eval:"createLeadCancel" . $this->uniqueId',
+                                    'class' => 'eval:"createLeadCancel"')),
                             array('type' => 'SaveButton', 'htmlOptions' => array (
                                     'id'   => 'eval:"save-lead-" . $this->uniqueId',
                                     'name' => 'eval:"save-lead-" . $this->uniqueId')),
@@ -142,12 +143,14 @@
         protected function renderScriptsContent()
         {
             return Yii::app()->clientScript->registerScript('LeadInlineCreateCollapseActions', "
-                $('#createLeadCancel').live('click', function()
-                    {
-                        $('.LeadInlineCreateForArchivedEmailCreateView').hide();
-                        return false;
-                    }
-                );
+                        $('.createLeadCancel').each(function()
+                        {
+                                 $('.createLeadCancel').live('click', function()
+                                 {
+                                 $(this).parent().parent().parent().parent().parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                $(this).parent().parent().parent().parent().parent().parent().parent().find('.lead-create-link').addClass('z-link');
+                                  });
+                        });
             ");
         }
     }

@@ -130,7 +130,8 @@
                                                       null,
                                                       array('htmlOptions' =>
                                                           array('name'   => 'anyContactCancel-' . $this->uniqueId,
-                                                                'id'     => 'anyContactCancel')));
+                                                                'id'     => 'anyContactCancel-' . $this->uniqueId,
+                                                                 'class' => 'anyContactCancel')));
             $content .= $elementCancel->render();
             $element  =   new SaveButtonActionElement($this->controllerId, $this->moduleId,
                                                       null,
@@ -146,12 +147,14 @@
         protected function renderScriptsContent()
         {
             Yii::app()->clientScript->registerScript('anyContactSelectFormCollapseActions', "
-                $('#anyContactCancel').live('click', function()
-                    {
-                        $('.AnyContactSelectForEmailMatchingView').hide();
-                        return false;
-                    }
-                );
+                        $('.anyContactCancel').each(function()
+                        {
+                                 $('.anyContactCancel').live('click', function()
+                                 {
+                                 $(this).parent().parent().parent().parent().parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
+                                $(this).parent().parent().parent().parent().parent().parent().parent().find('.select-contact-link').addClass('z-link');
+                                  });
+                        });
             ");
         }
         protected function getFormId()
@@ -176,6 +179,11 @@
                 ));
             // End Not Coding Standard
         }
+
+        protected static function getMatchingListUrl()
+       {
+           return Yii::app()->createUrl('emailMessages/default/matchingList');
+       }
 
         public function isUniqueToAPage()
         {
