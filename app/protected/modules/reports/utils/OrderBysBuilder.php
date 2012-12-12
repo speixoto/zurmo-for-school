@@ -100,11 +100,7 @@
                 {
                     $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                     $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
-                    if($modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($relationOrAttribute))
-                    {
-                        //Todo:
-                    }
-                    elseif($modelToReportAdapter->isInferredRelation($relationOrAttribute))
+                    if($modelToReportAdapter->isInferredRelation($relationOrAttribute))
                     {
                         //Todo:
                     }

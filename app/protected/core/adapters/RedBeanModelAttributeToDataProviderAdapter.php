@@ -268,7 +268,6 @@
             }
             else
             {
-                $count = 0;
                 while (get_parent_class($modelClassName) != 'RedBeanModel')
                 {
                     $modelClassName = get_parent_class($modelClassName);
@@ -276,7 +275,6 @@
                     {
                         return $modelClassName;
                     }
-                    $count ++;
                 }
                 throw new NotSupportedException();
             }
@@ -386,6 +384,81 @@
             {
                 return $this->getRelationTableName() . '_id';
             }
+        }
+
+        public function isAttributeDerivedRelationViaCastedUpModel()
+        {
+            if($this->getModel()->isADerivedRelationViaCastedUpModel($this->attribute))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function getCastedUpModelClassNameForDerivedRelation()
+        {
+            if(!$this->isAttributeDerivedRelationViaCastedUpModel())
+            {
+                throw new NotSupportedException();
+            }
+            $relationModelClassName = $this->getModel()->getDerivedRelationModelClassName($this->attribute);
+            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $relationModel          = new $relationModelClassName();
+            return $relationModel->getRelationModelClassName($opposingRelationName);
+        }
+
+
+        public function getManyToManyTableNameForDerivedRelationViaCastedUpModel()
+        {
+            $relationModelClassName = $this->getModel()->getDerivedRelationModelClassName($this->attribute);
+            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $relationModel          = new $relationModelClassName();
+
+            if($this->getModel()->getDerivedRelationType($this->attribute) != RedBeanModel::MANY_MANY)
+            {
+                throw new NotSupportedException();
+            }
+            $attributeName = $this->getAttribute();
+            return $relationModel->{$opposingRelationName}->getTableName();
+        }
+
+        /**
+         * In the case of account -> meeting, this method returns 'Activity' since 'Activity' is the model that the
+         * opposing relation rests on.  This is different than getDerivedRelationModelClassName which would be 'Meeting'.
+         * Sometimes both are the same model, it just depends if the final model class is casted down or not
+         * @return mixed
+         */
+        public function getOpposingRelationModelClassName()
+        {
+            $relationModelClassName = $this->getDerivedRelationViaCastedUpModelClassName();
+            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $relationModel          = new $relationModelClassName();
+            return $relationModel->getAttributeModelClassName($opposingRelationName);
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDerivedRelationViaCastedUpModelClassName()
+        {
+            return $this->getModel()->getDerivedRelationModelClassName($this->getAttribute());
+        }
+
+        public function getOpposingRelationTableName()
+        {
+            $opposingRelationModelClassName  = $this->getOpposingRelationModelClassName();
+            return $opposingRelationModelClassName::getTableName($opposingRelationModelClassName);
+        }
+
+        public function isDerivedRelationViaCastedUpModelDifferentThanOpposingModelClassName()
+        {
+            $opposingRelationModelClassName  = $this->getOpposingRelationModelClassName();
+            $derivedRelationModelClassName   = $this->getDerivedRelationViaCastedUpModelClassName();
+            if($opposingRelationModelClassName != $derivedRelationModelClassName)
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

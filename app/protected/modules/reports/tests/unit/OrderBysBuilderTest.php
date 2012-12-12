@@ -37,7 +37,7 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
         }
-
+/**
         public function testNonRelatedNonDerivedAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
@@ -638,10 +638,130 @@
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
-        public function testTwoTestedRelationsWhereTheyBothGoToTheSameModelButAtDifferentNestingPoints()
+
+        public function testThreeTestedRelationsWhereTheyBothGoToTheSameModelButAtDifferentNestingPoints()
         {
-            //todo: acc -> opps, but also acc-> con -> opps
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            //Accounts -> Opportunities, but also Accounts -> Contacts -> Opportunities,
+            //and a third to go to Accounts again.
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'opportunities___name';
+            $orderBy2                               = new OrderByForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType  = 'contacts___opportunities___name';
+            $orderBy3                               = new OrderByForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy3->attributeIndexOrDerivedType  = 'contacts___opportunities___account___name';
+            $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2, $orderBy3));
+            $compareContent                         = "{$q}opportunity{$q}.{$q}name{$q} asc, " .
+                                                      "{$q}opportunity1{$q}.{$q}name{$q} asc, " .
+                                                      "{$q}account1{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
         }
+**/
+        public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelOne()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Accounts -> Opportunities, but also Account -> Meeting -> category
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'meetings___category';
+            $content                                = $builder->makeQueryContent(array($orderBy));
+            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc";
+            $this->assertEquals($compareContent, $content);
+
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('activity_id',    $leftTablesAndAliases[2]['tableJoinIdName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('customfield',    $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[3]['onTableAliasName']);
+        }
+
+        public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelTwo()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Accounts -> Opportunities, but also Account -> Meeting -> name
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'meetings___name';
+            $content                                = $builder->makeQueryContent(array($orderBy));
+            $compareContent                         = "{$q}meeting{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('activity_id',    $leftTablesAndAliases[2]['tableJoinIdName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[2]['onTableAliasName']);
+        }
+
+        public function testTwoAttributesDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModel()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Accounts -> Opportunities, but also Account -> Meeting -> category and name.
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'meetings___category';
+            $orderBy2                               = new OrderByForReportForm('AccountsModule', 'Account',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType  = 'meetings___name';
+            $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
+                                                      "{$q}meeting{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('activity_id',    $leftTablesAndAliases[2]['tableJoinIdName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('customfield',    $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[3]['onTableAliasName']);
+        }
+
+        //todo: test cross over acc -> opps -> activities -> meeting - >name, tests left join instead of from
+        //todo: test no cast down, model5ViaItem will test this out.
+
+        public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
+        {
+            //todo: test casting down more than one level. not sure how to test this.. since meetings is only one skip past activity not really testing that castDown fully
+            $this->fail();
+        }
+
 
 /**
  *             echo "<pre>";
@@ -651,11 +771,12 @@ echo "</pre>";
  */
 
 
-
-        //todo: can go back over existing ones and do second set of tests in test for further layering deeper nesting.
-        //todo: derived dynamics (opposites of activityItems, not __User) - 1 level, then 2 levels deep
         //todo: derived inferreds - 1 level, then 2 levels deep
-        //todo: with stuff already joined from filter? - seperate test class?? we can just fill in join with existing stuff.
-        //tdod
+        //todo: test polymorphics too? maybe we wouldnt have any for now? but we should still mark fail test here...
+        //make the outline at least of the documetnation test class explaining what needs to be tested etc etc.
+
+        //todo: can go back over existing ones and do second set of tests in test for further layering deeper nesting. can do this in documentation test class or series of test classes
+        //todo: with stuff already joined from filter? - seperate test class?? we can just fill in join with existing stuff. make part of a documentation test.... for reporting queryies.
+        //todo: unrem any remmed out tests
     }
 ?>

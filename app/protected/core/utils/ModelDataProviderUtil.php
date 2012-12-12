@@ -50,15 +50,14 @@
                                                               $onTableAliasName = null)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            $builder = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+            $builder        = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+            $tableAliasName = $builder->resolveJoins($onTableAliasName, self::resolveCanUseFromJoins($onTableAliasName));
             if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
-                $tableAliasName             = $builder->resolveJoins($onTableAliasName, self::resolveCanUseFromJoins($onTableAliasName));
                 $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
             }
             else
             {
-                $tableAliasName             = $builder->resolveJoins($onTableAliasName, self::resolveCanUseFromJoins($onTableAliasName));
                 $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getColumnName();
             }
             return self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);

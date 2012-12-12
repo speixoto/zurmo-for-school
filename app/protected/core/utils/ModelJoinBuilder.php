@@ -123,6 +123,19 @@
         {
             if($onTableAliasName == null)
             {
+                $onTableAliasName = $this->resolveOnTableAliasNameForDerivedRelationViaCastedUpModel();
+            }
+            return $onTableAliasName;
+        }
+
+        private function resolveOnTableAliasNameForDerivedRelationViaCastedUpModel()
+        {
+            if($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
+            {
+                $onTableAliasName = $this->modelAttributeToDataProviderAdapter->getModelTableName();
+            }
+            else
+            {
                 $onTableAliasName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
             }
             return $onTableAliasName;
@@ -132,7 +145,11 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_bool($canUseFromJoins)');
-            if($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
+            if($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
+            {
+                return $this->resolveJoinsForDerivedRelationViaCastedUpModel($onTableAliasName, $canUseFromJoins);
+            }
+            elseif($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
             {
                 return $this->resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins);
             }
@@ -144,6 +161,62 @@
             {
                 return $this->resolveJoinsForAttributeOnSameModelThatIsNotARelation($onTableAliasName);
             }
+        }
+
+        protected function resolveJoinsForDerivedRelationViaCastedUpModel($onTableAliasName, $canUseFromJoins = true)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_bool($canUseFromJoins)');
+            //First cast up
+            $onTableAliasName        = $this->resolveJoinsForDerivedRelationViaCastedUpModelThatIsCastedUp(
+                $onTableAliasName, $canUseFromJoins);
+            //Second build relation across to the opposing model
+            $onTableAliasName        = $this->resolveJoinsForDerivedRelationViaCastedUpModelThatIsManyToMany(
+                $onTableAliasName);
+            //Third cast down if necessary
+            if($this->modelAttributeToDataProviderAdapter->isDerivedRelationViaCastedUpModelDifferentThanOpposingModelClassName())
+            {
+                $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->
+                    getOpposingRelationModelClassName();
+                $derivedRelationModelClassName   = $this->modelAttributeToDataProviderAdapter->
+                    getDerivedRelationViaCastedUpModelClassName();
+                $onTableAliasName =$this->processLeftJoinsForAttributeThatIsCastedDown($opposingRelationModelClassName,
+                    $derivedRelationModelClassName, $onTableAliasName);
+            }
+            return $onTableAliasName;
+        }
+
+        protected function resolveJoinsForDerivedRelationViaCastedUpModelThatIsCastedUp($onTableAliasName, $canUseFromJoins = true)
+        {
+            $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $attributeModelClassName = $this->modelAttributeToDataProviderAdapter->
+                                       getCastedUpModelClassNameForDerivedRelation();
+            if($canUseFromJoins)
+            {
+                return $this->processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName);
+            }
+            else
+            {
+                return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
+            }
+        }
+
+        protected function resolveJoinsForDerivedRelationViaCastedUpModelThatIsManyToMany($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->getOpposingRelationModelClassName();
+            $opposingRelationTableName       = $this->modelAttributeToDataProviderAdapter->getOpposingRelationTableName();
+            $relationJoiningTableAliasName   = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                $this->modelAttributeToDataProviderAdapter->getManyToManyTableNameForDerivedRelationViaCastedUpModel(),
+                "id",
+                $onTableAliasName,
+                self::resolveForeignKey($opposingRelationTableName));
+            $onTableAliasName                = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                                               $opposingRelationTableName,
+                                               self::resolveForeignKey($opposingRelationModelClassName),
+                                               $relationJoiningTableAliasName,
+                                               'id');
+            return $onTableAliasName;
         }
 
         protected function resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins = true)
@@ -245,19 +318,23 @@
         }
 
         /**
-         * @param bool $addFinalJoin
          * @return string
-         * @throws NotSupportedException
          */
         protected function addFromJoinsForAttributeThatIsCastedUp()
         {
-            //todo: explain what addFinalJoin is for.. when doing query on id field you don't necessary need that final item joined
-            $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
-            $attributeTableName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $attributeModelClassName = $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName();
+            return $this->processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName);
+        }
+
+        private function processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($attributeModelClassName)');
+            $attributeTableName = $attributeModelClassName::getTableName($attributeModelClassName);
             $tableAliasName     = $attributeTableName;
             $castedDownModelClassName = $modelClassName;
-            while (get_parent_class($modelClassName) !=
-                   $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName() &&
+            while (get_parent_class($modelClassName) != $attributeModelClassName &&
                    get_parent_class($modelClassName) != 'RedBeanModel')
             {
                 $castedDownFurtherModelClassName = $castedDownModelClassName;
@@ -291,9 +368,9 @@
             {
                 $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
                 $tableAliasName   = $this->joinTablesAdapter->addFromTableAndGetAliasName(
-                                    $attributeTableName,
-                                    self::resolveForeignKey($attributeTableName),
-                                    $modelClassName::getTableName($modelClassName));
+                    $attributeTableName,
+                    self::resolveForeignKey($attributeTableName),
+                    $modelClassName::getTableName($modelClassName));
             }
             return $tableAliasName;
         }
@@ -323,12 +400,19 @@
 
         protected function addLeftJoinsForAttributeThatIsCastedUp($onTableAliasName)
         {
+            $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $attributeModelClassName = $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName();
+            return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
+        }
+
+        private function processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName)
+        {
             assert('is_string($onTableAliasName)');
-            $modelClassName           = $this->modelAttributeToDataProviderAdapter->getModelClassName();
-            $attributeTableName       = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            assert('is_string($attributeTableName)');
+            assert('is_string($modelClassName)');
+            $attributeTableName       = $attributeModelClassName::getTableName($attributeModelClassName);
             $castedDownModelClassName = $modelClassName;
-            while (get_parent_class($modelClassName) !=
-                   $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName() &&
+            while (get_parent_class($modelClassName) != $attributeModelClassName &&
                    get_parent_class($modelClassName) != 'RedBeanModel')
             {
                 $castedDownFurtherModelClassName = $castedDownModelClassName;
@@ -456,6 +540,45 @@
                                   $onTableAliasName,
                                   $tableJoinIdName);
             return $onTableAliasName;
+        }
+
+        protected function processLeftJoinsForAttributeThatIsCastedDown($modelClassName, $castedDownModelClassName,
+                                                                        $onTableAliasName)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($castedDownModelClassName)');
+            assert('is_string($onTableAliasName)');
+            $modelDerivationPathToItem = $this->resolveModelDerivationPathToItemForCastingDown($modelClassName, $castedDownModelClassName);
+            foreach($modelDerivationPathToItem as $modelClassNameToCastDownTo)
+            {
+                if ($modelClassNameToCastDownTo::getCanHaveBean())
+                {
+                    $castedDownTableName = $modelClassNameToCastDownTo::getTableName($modelClassNameToCastDownTo);
+                    $onTableAliasName    = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                                           $castedDownTableName,
+                                           'id',
+                                           $onTableAliasName,
+                                           self::resolveForeignKey($modelClassName::getTableName($modelClassName)));
+                    $modelClassName      = $modelClassNameToCastDownTo;
+                }
+            }
+            return $onTableAliasName;
+        }
+
+        protected function resolveModelDerivationPathToItemForCastingDown($modelClassName, $castedDownModelClassName)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($castedDownModelClassName)');
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($castedDownModelClassName);
+            foreach($modelDerivationPathToItem as $key => $modelClassNameToCastDown)
+            {
+                unset($modelDerivationPathToItem[$key]);
+                if($modelClassName == $modelClassNameToCastDown)
+                {
+                    break;
+                }
+            }
+            return $modelDerivationPathToItem;
         }
 
         protected static function resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName)
