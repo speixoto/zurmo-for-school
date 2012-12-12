@@ -6811,6 +6811,9 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 60%;
 }
+#NoUserEmailConfigurationYetView .z-label {
+  z-index: auto;
+}
 .ZurmoSearchView {
   padding: 0;
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
