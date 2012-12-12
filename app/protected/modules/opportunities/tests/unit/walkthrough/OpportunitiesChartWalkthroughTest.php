@@ -26,7 +26,7 @@
 
     class OpportunitiesChartWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-            public static function setUpBeforeClass()
+        public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
@@ -45,6 +45,12 @@
             OpportunityTestHelper::createOpportunityWithAccountByNameForOwner('superOpp4',     $super, $account);
             //Setup default dashboard.
             Dashboard::getByLayoutIdAndUser                                  (Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
+        }
+
+        public function testOpportunitiesChart()
+        {
+            // To-Do: Add real test here
+            $this->assertTrue(true);
         }
     }
 ?>

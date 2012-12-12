@@ -48,6 +48,7 @@
                 'htmlOptions' => array(
                     'id'              => $this->getEditableInputId(),
                     'name'            => $this->getEditableInputName(),
+                    'disabled'        => $this->getDisabledValue(),
                     'style'           => 'position:relative;z-index:10000;'
                 ),
                 'options'    => array(
@@ -56,8 +57,6 @@
                     'hourText'        => Yii::t('Default', 'Hour'),
                     'minuteText'      => Yii::t('Default', 'Minute'),
                     'secondText'      => Yii::t('Default', 'Second'),
-                    'currentText'     => Yii::t('Default', 'Now'),
-                    'closeText'       => Yii::t('Default', 'Done'),
                     'showOn'          => 'both',
                     'buttonImageOnly' => false,
                     'buttonText'      => ZurmoHtml::tag('span', array(), '<!--Date-->'),

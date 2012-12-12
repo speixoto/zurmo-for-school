@@ -29,9 +29,9 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-        '<h2>Not so fast</h2></i><div class="large-icon"></div><p>Configure your email settings before you can send emails.</p>'
+        '<h2>Not so fast</h2><div class="large-icon"></div><p>Configure your email settings before you can send emails.</p>'
             => '<h2>Pas si vite</h2></i><div class="large-icon"></div><p>Il faut configurer votre compte e-mail avant de pouvoir envoyer des emails.</p>',
-        '<h2>Not so fast</h2></i><div class="large-icon"></div><p>The administrator must first configure the system outbound email settings.</p>'
+        '<h2>Not so fast</h2><div class="large-icon"></div><p>The administrator must first configure the system outbound email settings.</p>'
             => '<h2>Pas si vite</h2></i><div class="large-icon"></div><p>L\'administrateur doit d\'abord configurer le serveur de courrier sortant (SMTP).</p>',
         '<span class="email-from"><strong>From:</strong> {senderContent}</span>'
             => '<span class="email-de"><strong>De:</strong> {senderContent}</span>',

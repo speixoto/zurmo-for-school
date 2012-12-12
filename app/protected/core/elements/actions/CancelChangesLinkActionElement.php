@@ -35,7 +35,10 @@
             {
                 return Yii::t('Default', 'Cancel Changes');
             }
-            return Yii::t('Default', 'Cancel');
+            else
+            {
+                return Yii::t('Default', 'Cancel');
+            }
         }
     }
 ?>

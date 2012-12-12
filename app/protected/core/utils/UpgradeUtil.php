@@ -255,7 +255,7 @@
         {
             // Remove extracted files, if they already exists.
             $fileInfo = pathinfo($upgradeZipFilePath);
-            FileUtil::deleteDirectoryRecoursive($fileInfo['dirname'], false, array($fileInfo['basename'], 'index.html'));
+            FileUtil::deleteDirectoryRecursive($fileInfo['dirname'], false, array($fileInfo['basename'], 'index.html'));
 
             $isExtracted = false;
             $zip = new ZipArchive();
@@ -440,7 +440,7 @@
 
         protected static function removeUpgradeFiles($upgradeExtractPath)
         {
-            FileUtil::deleteDirectoryRecoursive($upgradeExtractPath, true);
+            FileUtil::deleteDirectoryRecursive($upgradeExtractPath, true);
         }
 
         /**

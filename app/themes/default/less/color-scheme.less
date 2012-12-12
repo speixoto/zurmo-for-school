@@ -69,7 +69,6 @@
     .ui-dialog-title,
     .show-file-upload-box,
     #clear-search-linkmodal
-
     {
         color: @themeColor;
     }
@@ -94,7 +93,9 @@
     .configuration-list li a:hover span:before,
     .configuration-list td:last-child a:hover,
     .configuration-list td:last-child a:hover span:before,
-    .addfileinput-button:hover span
+    .addfileinput-button:hover span,
+    #HomeDashboardPortletSelectionView li span,
+    .hide-welcome span
     {
         color: @themeColor2;
     }
@@ -122,7 +123,8 @@
     .ui-tooltip-default .ui-tooltip-icon,
     .zLink,
     .z-link,
-    .lead-conversion-actions a
+    .lead-conversion-actions a,
+    #clear-search-link
     {
         background-color: @themeColor;
     }
@@ -136,14 +138,12 @@
         background-color: @themeColor !important;
     }
     
-    #HomeDashboardPortletSelectionView li span,
     #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
     #MyMissionsForPortletView .filter-portlet-model-bar  .ui-state-active,
     .points,
     .ranking,
     .badge-grade,
-    li.token-input-selected-token,
-    .hide-welcome span
+    li.token-input-selected-token
     {
         background-color: @themeColor2;   
     }
@@ -212,7 +212,8 @@
     .zButton:hover .z-label,
     .z-button:hover .z-label,
     .zButton:active .z-label,
-    .z-button:active .z-label{
+    .z-button:active .z-label,
+    {
         color: darken(@themeColorBtnDefault, 40%) !important;
         #gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) );
         .t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
@@ -223,6 +224,10 @@
         .b-shadow(~"inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF");
     }
 
+    .ui-datepicker-current:hover .z-label,
+    .ui-datepicker-close:hover .z-label,
+    .ui-datepicker-current:active .z-label,
+    .ui-datepicker-close:active .z-label,
     .zButton:not(.attachLoading):hover .z-label,
     .z-button:not(.attachLoading):hover .z-label,
     .zButton:not(.attachLoading):active .z-label,

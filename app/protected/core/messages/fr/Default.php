@@ -73,8 +73,8 @@
             => 'Bleu',
         'Brown'
             => 'Brun',
-        'Bulk insert failed. There was a row with an incorrect column quantity'
-            => 'Erreur avec l\'opération BULK INSERT.  Une ligne contient une mauvaise quantité de colonnes',
+        'Bulk insert failed. There was a row with an incorrect column quantity.'
+            => 'Erreur avec l\'opération BULK INSERT.  Une ligne contient une mauvaise quantité de colonnes.',
         'by'
             => 'par',
         'Cancel'
@@ -323,6 +323,8 @@
             => 'Retour à la liste',
         'Row'
             => '[Ajouter une ligne]',
+        'Row Counter: {rowNumber} Serialized row data: {serializedRowData}'
+            => 'Row Counter: {rowNumber} Serialized row data: {serializedRowData}', // Same Word Translated
         'Running tasks after schema is updated.'
             => 'Tâches en cours d\'exécution (après la mise a jour du schéma).',
         'Running tasks before updating schema.'
