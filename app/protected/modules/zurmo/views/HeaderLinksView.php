@@ -51,7 +51,7 @@
             $imagePath = Yii::app()->baseUrl . '/themes/default/images/';
             $homeUrl   = Yii::app()->createUrl('home/default');
             $content   = '<div class="clearfix">';
-            $content  .= '<a href="#" id="nav-trigger" title="Toggle Navigation">&#9776;</a>';
+            $content  .= '<a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>';
             $content  .= '<div id="corp-logo">';
             $content  .= '<a href="' . $homeUrl . '"><img src="' . $imagePath . 'Zurmo_logo.png" alt="Zurmo Logo"/></a>';
             if ($this->applicationName != null)

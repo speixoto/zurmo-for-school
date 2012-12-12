@@ -611,6 +611,22 @@ a:visited {
   color: #545454;
   cursor: pointer;
 }
+body.blue #nav-trigger {
+  border-right: 1px solid #191a48;
+  -webkit-box-shadow: 1px 0 0 0 #292b7a;
+  -moz-box-shadow: 1px 0 0 0 #292b7a;
+  -o-box-shadow: 1px 0 0 0 #292b7a;
+  -ms-box-shadow: 1px 0 0 0 #292b7a;
+  box-shadow: 1px 0 0 0 #292b7a;
+  color: #ffffff;
+}
+body.blue #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #575ac6;
+  -moz-text-shadow: 0 1px 0 #575ac6;
+  -o-text-shadow: 0 1px 0 #575ac6;
+  -ms-text-shadow: 0 1px 0 #575ac6;
+  text-shadow: 0 1px 0 #575ac6;
+}
 body.blue .textColor {
   color: #545454;
 }
@@ -1138,6 +1154,22 @@ body.blue .action-reject:hover .z-label {
 }
 .color-swatch.blue .theme-color-3 {
   background: #464646;
+}
+body.brown #nav-trigger {
+  border-right: 1px solid #3c565b;
+  -webkit-box-shadow: 1px 0 0 0 #567c83;
+  -moz-box-shadow: 1px 0 0 0 #567c83;
+  -o-box-shadow: 1px 0 0 0 #567c83;
+  -ms-box-shadow: 1px 0 0 0 #567c83;
+  box-shadow: 1px 0 0 0 #567c83;
+  color: #ffffff;
+}
+body.brown #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #98b6bb;
+  -moz-text-shadow: 0 1px 0 #98b6bb;
+  -o-text-shadow: 0 1px 0 #98b6bb;
+  -ms-text-shadow: 0 1px 0 #98b6bb;
+  text-shadow: 0 1px 0 #98b6bb;
 }
 body.brown .textColor {
   color: #545454;
@@ -1667,6 +1699,22 @@ body.brown .action-reject:hover .z-label {
 .color-swatch.brown .theme-color-3 {
   background: #594f4f;
 }
+body.lime #nav-trigger {
+  border-right: 1px solid #152127;
+  -webkit-box-shadow: 1px 0 0 0 #2d4652;
+  -moz-box-shadow: 1px 0 0 0 #2d4652;
+  -o-box-shadow: 1px 0 0 0 #2d4652;
+  -ms-box-shadow: 1px 0 0 0 #2d4652;
+  box-shadow: 1px 0 0 0 #2d4652;
+  color: #ffffff;
+}
+body.lime #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #5889a2;
+  -moz-text-shadow: 0 1px 0 #5889a2;
+  -o-text-shadow: 0 1px 0 #5889a2;
+  -ms-text-shadow: 0 1px 0 #5889a2;
+  text-shadow: 0 1px 0 #5889a2;
+}
 body.lime .textColor {
   color: #545454;
 }
@@ -2194,6 +2242,22 @@ body.lime .action-reject:hover .z-label {
 }
 .color-swatch.lime .theme-color-3 {
   background: #464646;
+}
+body.cherry #nav-trigger {
+  border-right: 1px solid #52616f;
+  -webkit-box-shadow: 1px 0 0 0 #6f8394;
+  -moz-box-shadow: 1px 0 0 0 #6f8394;
+  -o-box-shadow: 1px 0 0 0 #6f8394;
+  -ms-box-shadow: 1px 0 0 0 #6f8394;
+  box-shadow: 1px 0 0 0 #6f8394;
+  color: #ffffff;
+}
+body.cherry #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #b5bfc8;
+  -moz-text-shadow: 0 1px 0 #b5bfc8;
+  -o-text-shadow: 0 1px 0 #b5bfc8;
+  -ms-text-shadow: 0 1px 0 #b5bfc8;
+  text-shadow: 0 1px 0 #b5bfc8;
 }
 body.cherry .textColor {
   color: #545454;
@@ -2723,6 +2787,22 @@ body.cherry .action-reject:hover .z-label {
 .color-swatch.cherry .theme-color-3 {
   background: #464646;
 }
+body.turquoise #nav-trigger {
+  border-right: 1px solid #31566f;
+  -webkit-box-shadow: 1px 0 0 0 #467a9d;
+  -moz-box-shadow: 1px 0 0 0 #467a9d;
+  -o-box-shadow: 1px 0 0 0 #467a9d;
+  -ms-box-shadow: 1px 0 0 0 #467a9d;
+  box-shadow: 1px 0 0 0 #467a9d;
+  color: #ffffff;
+}
+body.turquoise #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #8fb4cd;
+  -moz-text-shadow: 0 1px 0 #8fb4cd;
+  -o-text-shadow: 0 1px 0 #8fb4cd;
+  -ms-text-shadow: 0 1px 0 #8fb4cd;
+  text-shadow: 0 1px 0 #8fb4cd;
+}
 body.turquoise .textColor {
   color: #545454;
 }
@@ -3251,6 +3331,22 @@ body.turquoise .action-reject:hover .z-label {
 .color-swatch.turquoise .theme-color-3 {
   background: #464646;
 }
+body.violet #nav-trigger {
+  border-right: 1px solid #2f2447;
+  -webkit-box-shadow: 1px 0 0 0 #4c3b73;
+  -moz-box-shadow: 1px 0 0 0 #4c3b73;
+  -o-box-shadow: 1px 0 0 0 #4c3b73;
+  -ms-box-shadow: 1px 0 0 0 #4c3b73;
+  box-shadow: 1px 0 0 0 #4c3b73;
+  color: #ffffff;
+}
+body.violet #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #8772b7;
+  -moz-text-shadow: 0 1px 0 #8772b7;
+  -o-text-shadow: 0 1px 0 #8772b7;
+  -ms-text-shadow: 0 1px 0 #8772b7;
+  text-shadow: 0 1px 0 #8772b7;
+}
 body.violet .textColor {
   color: #545454;
 }
@@ -3778,6 +3874,22 @@ body.violet .action-reject:hover .z-label {
 }
 .color-swatch.violet .theme-color-3 {
   background: #464646;
+}
+body.honey #nav-trigger {
+  border-right: 1px solid #1a0c0b;
+  -webkit-box-shadow: 1px 0 0 0 #4a221d;
+  -moz-box-shadow: 1px 0 0 0 #4a221d;
+  -o-box-shadow: 1px 0 0 0 #4a221d;
+  -ms-box-shadow: 1px 0 0 0 #4a221d;
+  box-shadow: 1px 0 0 0 #4a221d;
+  color: #ffffff;
+}
+body.honey #nav-trigger:active {
+  -webkit-text-shadow: 0 1px 0 #a14a40;
+  -moz-text-shadow: 0 1px 0 #a14a40;
+  -o-text-shadow: 0 1px 0 #a14a40;
+  -ms-text-shadow: 0 1px 0 #a14a40;
+  text-shadow: 0 1px 0 #a14a40;
 }
 body.honey .textColor {
   color: #545454;
@@ -15033,21 +15145,12 @@ orientation : portrait // orientation: landscape    Target orientation
   text-align: left;
   padding: 0 10px 0 0;
   margin-right: 15px;
-  line-height: 36px;
+  line-height: 38px;
+  height: 38px;
   font-size: 24px;
-  font-weight: bold;
-  border-right: 1px solid rgba(255, 255, 255, 0.5);
-  -webkit-box-shadow: 1px 0 0 0 rgba(255, 255, 255, 0.2);
-  -moz-box-shadow: 1px 0 0 0 rgba(255, 255, 255, 0.2);
-  -o-box-shadow: 1px 0 0 0 rgba(255, 255, 255, 0.2);
-  -ms-box-shadow: 1px 0 0 0 rgba(255, 255, 255, 0.2);
-  box-shadow: 1px 0 0 0 rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.7);
-  -webkit-text-shadow: 0 0 1 rgba(130, 130, 130, 0.5);
-  -moz-text-shadow: 0 0 1 rgba(130, 130, 130, 0.5);
-  -o-text-shadow: 0 0 1 rgba(130, 130, 130, 0.5);
-  -ms-text-shadow: 0 0 1 rgba(130, 130, 130, 0.5);
-  text-shadow: 0 0 1 rgba(130, 130, 130, 0.5);
+  font-weight: normal;
+  font-size: 30px;
+  font-family: "ZurmoGamificationSymblyReguRg";
 }
 @media all and (max-width: 640px) {
   body {
@@ -15090,14 +15193,23 @@ orientation : portrait // orientation: landscape    Target orientation
   .AppContent {
     padding-top: 50px;
     padding-left: 10px;
+    padding-right: 10px;
     margin-left: 0;
     -webkit-transition: all 0.22s ease-in 0;
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0);
   }
+  #HomePageView .AppContent {
+    padding-right: 10px;
+  }
   .nav-open {
     transform: translate3d(170px, 0, 0);
     -webkit-transform: translate3d(170px, 0, 0);
+    -webkit-box-shadow: -1px 0 15px 0 #cccccc;
+    -moz-box-shadow: -1px 0 15px 0 #cccccc;
+    -o-box-shadow: -1px 0 15px 0 #cccccc;
+    -ms-box-shadow: -1px 0 15px 0 #cccccc;
+    box-shadow: -1px 0 15px 0 #cccccc;
   }
   .AppNavigation {
     position: fixed;
@@ -15114,5 +15226,15 @@ orientation : portrait // orientation: landscape    Target orientation
   #credit-link {
     line-height: 17px;
     font-size: 10px;
+  }
+  .BreadCrumbView + div > div {
+    float: none;
+    width: 100% !important;
+  }
+  .details-table {
+    margin-right: 0;
+  }
+  .juiportlet-widget {
+    margin-right: 0 !important;
   }
 }
