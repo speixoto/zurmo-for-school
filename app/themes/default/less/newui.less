@@ -3,10 +3,7 @@
     padding:0;
 }
 
-/*Imports*/
 @import 'color-scheme.less';
-
-//@import 'ie.less';
 
 @font-face {
     font-family: 'ZurmoGamificationSymblyReguRg';
@@ -96,17 +93,11 @@ footer, header, hgroup, menu, nav, section {
 }
 
 /*=Login*/
-#LoginPageView > .GridView{
-    //background: url(../images/header-bar-1.png) left top repeat-x;
-    //padding-top:38px;
-}
-
 #LoginView{
     min-width:900px;
     height:100%;
     margin:30px;
     .b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
-    //.ie-shadow(#999999, 12, 15);
     .radius(5px);
     padding:0;
     .remember-me{
@@ -170,11 +161,6 @@ footer, header, hgroup, menu, nav, section {
                 margin-top:1px !important;
                 clear:both;
             }
-            /*
-            input[type="submit"]{
-                ++.z-button;
-            }
-            */
             .errorMessage{
                 font-size:11px;
                 padding-top:4px
@@ -251,16 +237,13 @@ footer, header, hgroup, menu, nav, section {
 }
 
 #HeaderLinksView + div{
-    //background: url(../images/header-bar-2.png) left top repeat-x;
     .b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.5));
-    //.ie-shadow(#666666, 10, 25);
 }
 
 .headerDropDown{
     border:1px solid #b6b6b6;
     #gradient > .vertical( #f5f5f5, #ebebeb );
     .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-    //.ie-shadow(#999999, 9, 6);
     z-index:9999;
     min-width:110px;
     display:none;
@@ -295,7 +278,6 @@ footer, header, hgroup, menu, nav, section {
     border:1px solid #444;
     background: #252525;
     .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
-    //.ie-shadow(#353535, 10, 25);
     .box-sizing();
     li{
         line-height: 100%;
@@ -407,7 +389,6 @@ footer, header, hgroup, menu, nav, section {
     border:1px solid #444;
     background: #252525;
     .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
-    //.ie-shadow(#353535, 10, 25);
     .box-sizing();
     .z-spinner{
         left:50%;
@@ -792,7 +773,6 @@ footer, header, hgroup, menu, nav, section {
             font-weight:bold;
             border:1px solid #DCDCDC;
             .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
-            //.ie-shadow(#000000, 1, 4);
             #gradient > .vertical(#e0e0e0, #c6c6c6);
             :after{
                 content: "▾";
@@ -845,7 +825,6 @@ footer, header, hgroup, menu, nav, section {
     border:1px solid #ccc;
     width:160px;
     .b-shadow(0 0 5px 5px rgba(153, 153, 153, 0.25));
-    //.ie-shadow(#999999, 5, 12);
     z-index:9999;
     a span{
         margin-left:0;
@@ -911,7 +890,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-/*#MenuView .parent >*/
 #MenuView li.active > a > span,
 #MenuView a:hover > span{
     background-image: url(../images/main-nav-selected.png);
@@ -1120,6 +1098,7 @@ footer, header, hgroup, menu, nav, section {
 		}
 	}
 }
+
 .DynamicSearchView{
     position: relative;
     z-index: 9999;
@@ -1149,9 +1128,6 @@ footer, header, hgroup, menu, nav, section {
     }
 }
 
-
-
-
 /*=dashboard*/
 #HomePageView .AppContent{
     padding-right:0;
@@ -1174,7 +1150,6 @@ footer, header, hgroup, menu, nav, section {
         z-index:222222;
         position:fixed !important;
         .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5)");
-        //.ie-shadow(#999999, 9, 25);
         #gradient > .vertical-three-colors( #f5f5f5, #f5f5f5, 80%, #ffffff );
         padding-bottom:15px;
         margin-left: -20px;
@@ -1252,9 +1227,7 @@ form,
     display:inline-block;
     border-left:1px solid #bababa;
 }
-.view-toolbar-link:hover, .view-toolbar-link:active{
-    //++.themeColor2;
-}
+
 .view-toolbar-link:active{
     color:#656565;
     box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -1308,7 +1281,7 @@ form,
 }
 
 .icon-create:before{
-    content: "Y"; //w
+    content: "Y";
     .view-toolbar-icons();
     top:-2px;
 }
@@ -1341,7 +1314,7 @@ form,
 }
 
 #ListViewDeleteMassActionMenu .parent > a:before{
-    content: "_";
+    content: "—";
     .view-toolbar-icons(22px);
     top:-2px;
 }
@@ -1371,7 +1344,7 @@ form,
 }
 
 .icon-delete:before{
-    content: "_";
+    content: "—";
     .view-toolbar-icons();
     top:-2px;
 }
@@ -1442,7 +1415,6 @@ form,
     margin-top: -38px;
     margin-right: 50px;
     font-style: italic;
-    //++.themeColor;
 }
 
 #credit-link{
@@ -1500,12 +1472,8 @@ table.items{
     
     tr:hover{
         #gradient > .vertical(#efefef, #eeeeee);
-        td{
-            //.t-shadow(0 1px 0 #fff);
-        }
         .pencil{
             visibility:visible;
-            //++.themeColor;
         }
     }
     > thead{
@@ -1540,8 +1508,6 @@ tr.even{
 .checkbox-column{
     width:30px;
     text-align:center;
-    //padding-right:0 !important;
-    //padding-left: 0 !important;
     .hasCheckBox{
         margin:-4px auto 0 auto;
     }
@@ -1551,11 +1517,6 @@ tr.even{
     width:35px;
     text-align:center;
     vertical-align:middle !important;
-}
-
-.juiportlet-widget table.items thead tr th:first-child,
-.juiportlet-widget table.items tbody tr td:first-child{
-    //padding-left:15px;
 }
 
 .pencil{
@@ -1589,7 +1550,6 @@ td.empty{
     input[type="checkbox"]{
         margin:0 0 10px 0 !important;
         .b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
-        //.ie-shadow(#999999, 1, 15);
     }
     input[type="text"],
     input[type="password"],
@@ -1651,7 +1611,6 @@ td.empty{
         padding:0 15px 15px 15px;
         border:1px solid #CCC;
         .b-shadow(0 0 20px 5px rgba(153, 153, 153, 0.12)); /*999*/
-        //.ie-shadow(#999999, 20, 6);
         background: #ffffff;
         #gradient > .vertical(#ffffff, #F5F5F5);
     }
@@ -1661,10 +1620,6 @@ td.empty{
     font-size:12px !important;
     color:#666;
     font-weight:400 !important;
-    //margin:5px 0;
-}
-.panel label{
-    //margin-top:5px;
 }
 
 /*=Form Edit Account*/
@@ -1718,7 +1673,7 @@ td.empty{
         margin:0 5px 0 0 !important;
     }
     .icon-delete:before{
-    	content: "_";
+        content: "—";
         .view-toolbar-icons();
         top:-1px;
         color:#fff;
@@ -1761,17 +1716,14 @@ a.simple-select{
     border:1px solid #CCCCCC;
     background:#fff;
     .b-shadow(0 0 11px 5px rgba(51, 51, 51, 0.40)); /*33*/
-    //.ie-shadow(#333333, 11, 20);
     .wide.form{
         padding:0;
         margin:0;
         border:none;
         .b-shadow(none);
-        //.no-ie-shadow();
         form{
             border:none;
             .b-shadow(none);
-            //.no-ie-shadow();
         }
         label{
             font-size: 12px !important;
@@ -1842,7 +1794,7 @@ a.simple-select{
 }
 
 .ui-corner-all{
-    border-radius: 0 !important;
+    border-radius: 0;
 }
 
 .ui-widget-header{
@@ -1867,7 +1819,6 @@ label.hasCheckBox{
     height:20px;
     padding:0;
     margin:0;
-    //margin:0 0 0 15px;
     &.c_on {
         background: url(../images/checkbox.png) left -21px no-repeat;
     }
@@ -1891,9 +1842,6 @@ div.wide.form{
     label.hasCheckBox{
         margin-top:0 !important; //was !important
     }
-    a{
-        //++.themeColor;
-    }
 }
 
 .ui-multiselect-checkboxes label {
@@ -1913,7 +1861,6 @@ div.wide.form{
 
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
-
 .list-item-details{
     display: block;
     font-weight: normal;
@@ -1941,7 +1888,6 @@ div.wide.form{
     display:none;
     background: rgba(0, 0, 0, 0.5);
     .b-shadow(  0 0 30px 0 rgba(100, 100, 100, 0.7) );
-    //.ie-shadow(#646464, 20, 35);
     position:absolute;
     top:40px;
     left:50%;
@@ -1956,6 +1902,7 @@ div.wide.form{
         margin:4px 0 0 4px;
    }
 }
+
 .juiportlet-widget{
     .list-preloader{
         top:50%;
@@ -1973,7 +1920,6 @@ div.wide.form{
         width:auto;
         height:auto;
         display:block;
-        //margin:4px 0 0 4px;
    }
 }
 
@@ -1986,6 +1932,7 @@ div.wide.form{
         display:block;
     }
 }
+
 #NoUserEmailConfigurationYetView,
 #NoGlobalEmailConfigurationYetView,
 .ZeroModelsYetView{
@@ -2079,7 +2026,6 @@ div.wide.form{
 .ZurmoSearchView{
     padding:0;
     .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );
-    //.ie-shadow(#999999, 20, 6);
     float:left;
     width:100%;
     #search-form{
@@ -2089,7 +2035,6 @@ div.wide.form{
         border-bottom:none;
         #gradient > .vertical(#f6f6f6, #ededed);
         .b-shadow(none);
-        //.no-ie-shadow();
         box-shadow:inset 0 1px 0 0 #ffffff;
         .clearfix();
         table{
@@ -2107,14 +2052,12 @@ div.wide.form{
 
 .cgrid-view{
     .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );
-    //.ie-shadow(#999999, 20, 6);
     position:relative;
 }
 
 .juiportlet-widget-content .cgrid-view{
     width: 100%;
     .b-shadow(none);
-    //.no-ie-shadow();
     .clearfix();
 }
 
@@ -2122,8 +2065,6 @@ div.wide.form{
     margin:15px 0 0 0;
     display: block;
     position: relative;
-    //.clearfix();
-    //height:25px;
     float: left;
     width: 100%;
     z-index: 0;
@@ -2180,18 +2121,12 @@ div.wide.form{
     .box-sizing();
     .clearfix();
 }
-/*
-#search-form:after{content:" ";display:block;height:0;clear:both;visibility:hidden;font-size:0;}
-#search-form{height:1%;}
-*:first-child+html #search-form{min-height:1px;}
-*/
 
 .search-form-tools{
     position: absolute;
     top:16px;
     left:265px;
     line-height:25px;
-    //++.themeColor;
     .smaller();
     input[type="submit"]{
         ++.z-button;
@@ -2210,7 +2145,6 @@ div.wide.form{
 
 #select-list-attributes-link{
     margin-left:25px;
-    //++.themeColor;
     &:after{
         content: "▾";
         margin-left:5px;
@@ -2259,9 +2193,6 @@ div.wide.form{
     #clear-search-linkmodal{
         margin-left:10px;
     }
-    .view-toolbar-container{
-        //margin-top:15px;
-    }
     .items{
         border: none;
         thead tr:first-child th{
@@ -2286,7 +2217,6 @@ div.wide.form{
 		text-align:left;
     }
     #cancel-advanced-search{
-        //background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         color:#656565;
         .t-shadow(none);
         .z-label{
@@ -2349,7 +2279,7 @@ div.wide.form{
     float: left;
     width: 100%;
     display: block;
-    margin:10px 0;
+    margin:15px 0 0 0;
     > div{
         float: left;
         width: 100%;
@@ -2396,13 +2326,18 @@ div.wide.form{
 
 .dynamic-search-row + .add-fields-container,
 .dynamic-search-row + .add-fields-container + .search-save-container{
-    margin:5px 3px 10px 0;
+    margin:10px 3px 10px 0;
 }
 
 .add-fields-container{
+    a{
+        margin-left:23px;
+        position:relative;
+    }
     .z-spinner{
         display: block !important;
         margin-top: -5px;
+        margin-left:-20px;
     }
     .z-label{
         font-weight:normal;
@@ -2475,7 +2410,6 @@ div.wide.form{
     }
 }
 
-
 /*=Edit + Add Account View*/
 .buffer{
 	.clearfix();
@@ -2496,10 +2430,6 @@ div.wide.form{
         width:100% !important;
         table{
             width:100% !important;
-            //margin-top: 10px;
-        }
-        a{
-            ++.themeColor;
         }
     }
     #right-side-edit-view-panel{
@@ -2556,10 +2486,6 @@ div.wide.form{
     }
     table{
         border-bottom:none;
-        //margin-bottom:15px;
-        br{
-            //display:none;
-        }
     }
     td, th{
         vertical-align: top;
@@ -2614,7 +2540,6 @@ div.wide.form{
        margin-left: 10px;
     }
 }
-
 
 #right-side-edit-view-panel{
     position:absolute;
@@ -2690,7 +2615,6 @@ div.wide.form{
         width:100%;
     }
 }
-
 
 .has-model-select{
 	clear:left;
@@ -2839,10 +2763,7 @@ div.wide.form{
     td, th{
         font-weight: bold;
         .box-sizing();
-        padding:5px 5px 5px 5px; //was !important
-        //border-top: 1px solid  #fff;
-        //.b-shadow(inset 0 -1px 0 0 #fff);
-        //border-bottom: 1px solid  #efefef;
+        padding:5px 5px 5px 5px; 
     }
     th{
         vertical-align:top;
@@ -2857,7 +2778,6 @@ div.wide.form{
         word-break: break-all;
     }
     td + th{
-        //border-left: 1px solid  #dfdfdf;
         padding-left:15px !important;
     }
     p{
@@ -2902,9 +2822,6 @@ div.wide.form{
     font-style:italic;
     text-align:center;
     margin-bottom:10px;
-    a{
-        //++.themeColo2-important;
-    }
 }
 
 .mapcanvas{
@@ -2935,7 +2852,6 @@ div.wide.form{
     margin-bottom:20px;
     border:1px solid #ccc;
     .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-    //.ie-shadow(#999999, 9, 6);
     #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
     .box-sizing();
 }
@@ -2950,7 +2866,6 @@ div.wide.form{
        margin-bottom:20px;
        border:1px solid #ccc;
        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-       //.ie-shadow(#999999, 9, 6);
        #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
        .form form{
             border:none;
@@ -2967,16 +2882,6 @@ div.wide.form{
         .b-shadow(inset 0 1px 0 0 #ffffff);
         border-bottom:1px solid #ccc;
         overflow: hidden;
-    }
-    th{
-        //color:#999;
-        //text-align:right;
-    }
-    td a, td a{
-        //color:#525252;
-    }
-    th, td{
-        //font-weight:600;
     }
      //for opt in email checkboxes
     input[type="checkbox"] + label{
@@ -3009,7 +2914,6 @@ div.wide.form{
         top:0;
         border:none;
         .b-shadow(none);
-        //.no-ie-shadow();
     }
     ul{
         list-style: none;
@@ -3027,7 +2931,6 @@ div.wide.form{
         .smaller();
         .radius(4px);
         .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
-        //.ie-shadow(#999999, 9, 6);
         .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
         background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
         span{
@@ -3049,7 +2952,6 @@ div.wide.form{
         font-weight:normal !important;
         a{
             text-indent:0;
-            //color: #666;
             .smaller();
             font-weight: normal;
             display: block;
@@ -3057,10 +2959,6 @@ div.wide.form{
             margin: 0 2px;
             line-height: normal;
             .t-shadow(none);
-        }
-        a:hover{
-            //++.themeBackgroundColor2-important;
-            //color:#fff !important;
         }
     }
 }
@@ -3100,9 +2998,6 @@ div.wide.form{
     }
     .GridView + .GridView{
         width:35%;
-        .juiportlet-widget{
-            //margin-right:20px;
-        }
     }
     .UserLatestActivtiesForPortletView{
         margin-right:20px !important;
@@ -3121,7 +3016,6 @@ div.wide.form{
         margin:0;
         border:none;
         .b-shadow(none);
-        //.no-ie-shadow();
     }
     td {
         width:100%;
@@ -3136,7 +3030,6 @@ div.wide.form{
         background:none;
         border:none;
         .b-shadow(none);
-        //.no-ie-shadow();
         table{
             border-bottom:none;
             td{
@@ -3160,7 +3053,6 @@ div.wide.form{
             font-weight:bold;
             .radius( 4px );
             .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
-            //.ie-shadow(#999999, 9, 6);
             border-top:1px solid #e7e7e7;
             border-left: 1px solid #d7d7d7;
             border-right:1px solid #d7d7d7;
@@ -3172,7 +3064,6 @@ div.wide.form{
             &:active{
                 color:#656565;
                 .b-shadow(~"inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF");
-                //.ie-shadow(#ffffff, 1, 0);
             }
             &:before{
                 content: "Y";
@@ -3208,7 +3099,6 @@ div.wide.form{
     }
     > table{
         td > a{
-            //++.themeColor;
             &:after{
                 content: "▾";
                 margin-left: 5px;
@@ -3345,7 +3235,6 @@ div.wide.form{
     }
     > div{
         display: inline-block;
-        //margin-right: 4px;
     }
     #StickyListMenu{
         list-style: none;
@@ -3367,10 +3256,6 @@ div.wide.form{
             .radius(3px);
             #gradient > .vertical(#e8e8e8, #f5f5f5);
         } 
-        > li > a:hover > span{
-            //++.themeColor2;
-        }
-        
         ul{
             ++.flyout;
             display: none;
@@ -3396,10 +3281,6 @@ div.wide.form{
                 margin: 0 2px;
                 line-height: normal;
                 .t-shadow(none);
-            }
-            a:hover{
-                //color:#fff !important;
-                //++.themeBackgroundColor2-important;
             }
         }
     }
@@ -3508,11 +3389,6 @@ div.hasHalfs{
             float:left;
         }
     }
-    .email,
-    .phone{
-        //font-size:11px;
-        ///margin-top:3px;
-    }
 }
 
 .juiportlet-widget.OpportunitiesForAccountRelatedListView,
@@ -3565,12 +3441,10 @@ div.hasHalfs{
         }
         > a:before{
             content: "n";
-            //++.themeColor;
             .symbly(24px);
         }
         > a:after{
             content: "▾";
-            //++.themeColor;
             position: relative;
             top:-2px;
             left:2px;
@@ -3591,7 +3465,6 @@ div.hasHalfs{
 }
 
 /*Upcoming Meeting Pager*/
-
 .pager{
     .box-sizing();
     width:100%;
@@ -3679,7 +3552,6 @@ div.hasHalfs{
             color:#ccc;
         }
     }
-    
    //doesnt work in IE
     &:empty{
         display:none;
@@ -3692,8 +3564,8 @@ div.hasHalfs{
 
 #list-view .pager{
     .b-shadow(none);
-    //.no-ie-shadow();
 }
+
 #ModalView #list-view .pager{
     .b-shadow(inset 0 1px 0 #DFDFDF );
 }
@@ -3780,9 +3652,6 @@ div.hasHalfs{
             margin-left:20px;
             text-decoration: underline;
             .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
-        }
-        #filter-latest-activities-link:hover{
-          //  ++.themeColor2-important;
         }
     }
     .latest-activity-toolbar,
@@ -3904,6 +3773,7 @@ div.hasHalfs{
     margin-bottom:3px;
     display: block;
 }
+
 .LatestActivtiesForPortletView{
 	position:relative;
 	.toolbar-mbmenu{
@@ -3936,7 +3806,6 @@ div.hasHalfs{
     #gradient > .vertical(#f6f6f6, #ededed);
     .b-shadow(none);
     .b-shadow(inset 0 1px 0 0 #ffffff);
-    //.no-ie-shadow();
     .clearfix();
     table{
         border-bottom:none;
@@ -3980,7 +3849,6 @@ div.hasHalfs{
             margin: 0 2px;
         }
         a:hover, a#ui-active-menuitem, a.ui-state-hover{
-            //++.themeBackgroundColor2-important;
             color:#fff !important;
             cursor:pointer !important;
         }
@@ -3996,7 +3864,6 @@ div.hasHalfs{
 /*=Flash Message View*/
 #FlashMessageView{
     position: fixed;
-    //margin-left:192px;
     top:100px;
     width: 25%;
     right: 3%;
@@ -4010,7 +3877,6 @@ div.hasHalfs{
         background:#FFFCB5;
         font-weight: bold;
         .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.5) );
-        //.ie-shadow(#999999, 9, 25);
         p, ul{
             margin-bottom: 5px;
             line-height: 1;
@@ -4093,7 +3959,6 @@ div.hasHalfs{
         line-height: 26px;
         line-height: 1;
         width: 100%;
-        //background: #fff url(../images/dropdown-arrow.png) 100% 0 no-repeat;
         border: 1px solid #ccc;
         .radius(3px);
         font-size: 12px;
@@ -4102,12 +3967,9 @@ div.hasHalfs{
         vertical-align: middle;
         .box-sizing();
         .b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
-        //.ie-shadow(#999999, 1, 15);
         outline: none !important;
         cursor: pointer;
         position: relative;
-        // for IE z-index: 5;
-        // for IE padding-right: 5px;
         &:focus, &:hover{
             outline: none;
         }
@@ -4119,7 +3981,6 @@ div.hasHalfs{
         margin-top:15px;
     }
 }
-
 
 /*=Mass Edit + DELETE view*/
 .AppContent.MassEditView{
@@ -4152,7 +4013,6 @@ div.hasHalfs{
         border:none !important;
         background:none !important;
         .b-shadow(none);
-        //.no-ie-shadow();
     }
     .panel{
         width: 100% !important;
@@ -4161,7 +4021,6 @@ div.hasHalfs{
         border:none !important;
         background:none !important;
         .b-shadow(none);
-        //.no-ie-shadow();
         padding-bottom: 0 !important;
         table{
             width:100%;
@@ -4172,7 +4031,6 @@ div.hasHalfs{
     form table{
         padding-bottom: 15px !important;
     }
-    
     #account-skip-form{
         th{
             text-align:center !important;
@@ -4231,7 +4089,6 @@ div.hasHalfs{
         margin-bottom:20px;
         border:1px solid #ccc;
         .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-        //.ie-shadow(#999999, 9, 6);
         #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
     }
     #aboutText{
@@ -4275,7 +4132,6 @@ div.hasHalfs{
         line-height: 21px;
         font-weight:normal;
         a{
-            //++.themeColor-important;
             text-decoration:underline !important;
         }
     }
@@ -4330,15 +4186,6 @@ div.hasHalfs{
 }
 .pivotal span{
     background-position: 100% bottom !important;
-}
-
-/*=tasks portlet on dashboard*/
-.TasksMyListView{
-    .checkbox-column{
-        .hasCheckBox{
-            //margin-left:0;
-        }
-    }
 }
 
 /*=RSS Widget*/

@@ -73,8 +73,8 @@
             => 'Blau',
         'Brown'
             => 'Braun',
-        'Bulk insert failed. There was a row with an incorrect column quantity'
-            => 'Fehler bei der BULK INSERT-Operation. Eine Zeile enthält eine Reihe von schlechten Säulen',
+        'Bulk insert failed. There was a row with an incorrect column quantity.'
+            => 'Fehler bei der BULK INSERT-Operation. Eine Zeile enthält eine Reihe von schlechten Säulen.',
         'by'
             => 'Von',
         'Cancel'
@@ -323,6 +323,8 @@
             => 'Zurück zur Liste',
         'Row'
             => 'Reihe',
+        'Row Counter: {rowNumber} Serialized row data: {serializedRowData}'
+            => 'Row Counter: {rowNumber} Serialized row data: {serializedRowData}', // Same Word Translated
         'Running tasks after schema is updated.'
             => 'Laufende Aufgaben nach dem Schema wird aktualisiert.',
         'Running tasks before updating schema.'

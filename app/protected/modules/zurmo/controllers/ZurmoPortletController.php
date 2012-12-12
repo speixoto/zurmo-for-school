@@ -192,7 +192,6 @@
             Yii::app()->end(0, false);
         }
 
-
         public function resolveAndGetModuleId()
         {
             return $this->getModule()->getId();
