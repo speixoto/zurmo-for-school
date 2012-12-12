@@ -37,7 +37,7 @@
             'onEndRequest' => array(
                 'class' => 'application.modules.zurmo.components.EndRequestBehavior'
             )
-        ), 
+        ),
 
         'components' => array(
             'apiRequest' => array(
