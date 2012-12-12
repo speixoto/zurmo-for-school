@@ -112,7 +112,8 @@
                     }
                     $builder          = new ModelJoinBuilder($modelAttributeToDataProviderAdapter,
                                         $this->joinTablesAdapter);
-                    $onTableAliasName = $builder->resolveJoins($onTableAliasName);
+                    $onTableAliasName = $builder->resolveJoins($onTableAliasName,
+                                        ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
                 }
                 else
                 {

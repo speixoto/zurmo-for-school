@@ -666,11 +666,11 @@
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
         }
-**/
+
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelOne()
         {
             $q                                      = DatabaseCompatibilityUtil::getQuote();
-            //Accounts -> Opportunities, but also Account -> Meeting -> category
+
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new OrderBysBuilder($joinTablesAdapter);
             $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
@@ -698,7 +698,7 @@
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelTwo()
         {
             $q                                      = DatabaseCompatibilityUtil::getQuote();
-            //Accounts -> Opportunities, but also Account -> Meeting -> name
+
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new OrderBysBuilder($joinTablesAdapter);
             $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
@@ -724,14 +724,14 @@
         public function testTwoAttributesDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModel()
         {
             $q                                      = DatabaseCompatibilityUtil::getQuote();
-            //Accounts -> Opportunities, but also Account -> Meeting -> category and name.
+
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new OrderBysBuilder($joinTablesAdapter);
             $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $orderBy->attributeIndexOrDerivedType   = 'meetings___category';
             $orderBy2                               = new OrderByForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $orderBy2->attributeIndexOrDerivedType  = 'meetings___name';
             $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2));
             $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
@@ -753,8 +753,64 @@
             $this->assertEquals('meeting',        $leftTablesAndAliases[3]['onTableAliasName']);
         }
 
-        //todo: test cross over acc -> opps -> activities -> meeting - >name, tests left join instead of from
-        //todo: test no cast down, model5ViaItem will test this out.
+        public function testDerivedRelationViaCastedUpModelAttributeThatDoesNotCastDown()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'model5ViaItem___name';
+            $content                                = $builder->makeQueryContent(array($orderBy));
+            $compareContent                         = "{$q}reportmodeltestitem5{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+ **/
+        public function testDerivedRelationViaCastedUpModelAttributeWhenThroughARelation()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Tests derivedRelation when going through a relation already before doing the derived relation
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'opportunities___meetings___category';
+            $orderBy2                               = new OrderByForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType  = 'opportunities___meetings___name';
+            $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
+                                                      "{$q}meeting{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('item',           $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[6]['tableAliasName']);
+            $this->assertEquals('activity_id',    $leftTablesAndAliases[6]['tableJoinIdName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[6]['onTableAliasName']);
+            $this->assertEquals('customfield',    $leftTablesAndAliases[7]['tableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[7]['onTableAliasName']);
+        }
+
+
+        /**
+         *             echo "<pre>";
+        print_r($joinTablesAdapter->getFromTablesAndAliases());
+        print_r($joinTablesAdapter->getLeftTablesAndAliases());
+        echo "</pre>";
+         */
+
+
+        //todo: derived inferreds - 1 level, then 2 levels deep
+        //todo: unrem any remmed out tests
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
         {
@@ -762,21 +818,10 @@
             $this->fail();
         }
 
-
-/**
- *             echo "<pre>";
-print_r($joinTablesAdapter->getFromTablesAndAliases());
-print_r($joinTablesAdapter->getLeftTablesAndAliases());
-echo "</pre>";
- */
-
-
-        //todo: derived inferreds - 1 level, then 2 levels deep
-        //todo: test polymorphics too? maybe we wouldnt have any for now? but we should still mark fail test here...
-        //make the outline at least of the documetnation test class explaining what needs to be tested etc etc.
-
-        //todo: can go back over existing ones and do second set of tests in test for further layering deeper nesting. can do this in documentation test class or series of test classes
-        //todo: with stuff already joined from filter? - seperate test class?? we can just fill in join with existing stuff. make part of a documentation test.... for reporting queryies.
-        //todo: unrem any remmed out tests
+        public function testPolymorphic()
+        {
+            //todo: test polymorphics too? maybe we wouldnt have any for now? but we should still mark fail test here...
+            $this->fail();
+        }
     }
 ?>

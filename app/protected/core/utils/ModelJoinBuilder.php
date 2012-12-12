@@ -408,8 +408,8 @@
         private function processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName)
         {
             assert('is_string($onTableAliasName)');
-            assert('is_string($attributeTableName)');
             assert('is_string($modelClassName)');
+            assert('is_string($attributeModelClassName)');
             $attributeTableName       = $attributeModelClassName::getTableName($attributeModelClassName);
             $castedDownModelClassName = $modelClassName;
             while (get_parent_class($modelClassName) != $attributeModelClassName &&

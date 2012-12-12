@@ -63,7 +63,7 @@
             return self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
         }
 
-        protected static function resolveCanUseFromJoins($onTableAliasName)
+        public static function resolveCanUseFromJoins($onTableAliasName)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
             if($onTableAliasName != null)
