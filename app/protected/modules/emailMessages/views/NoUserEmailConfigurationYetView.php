@@ -54,7 +54,7 @@
 
         protected function getMessageContent()
         {
-            return Yii::t('Default', '<h2>Not so fast</h2><i></i>' .
+            return Yii::t('Default', '<h2>Not so fast</h2>' .
                                      '<div class="large-icon"></div><p>Configure your email settings before you can send emails.</p>');
         }
     }

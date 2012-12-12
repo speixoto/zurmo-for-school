@@ -29,9 +29,9 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
-        '<h2>Not so fast</h2></i><div class="large-icon"></div><p>Configure your email settings before you can send emails.</p>'
+        '<h2>Not so fast</h2><div class="large-icon"></div><p>Configure your email settings before you can send emails.</p>'
             => '<h2>Nicht so schnell</h2></i><div class="large-icon"></div><p>Du muss deine E-Mail-Einstellungen Konfigurieren, bevor du E-Mails senden kanst.</p>',
-        '<h2>Not so fast</h2></i><div class="large-icon"></div><p>The administrator must first configure the system outbound email settings.</p>'
+        '<h2>Not so fast</h2><div class="large-icon"></div><p>The administrator must first configure the system outbound email settings.</p>'
             => '<h2>Nicht so schnell</h2></i><div class="large-icon"></div><p>Der Administrator muss zunächst das System so konfigurieren ausgehenden E-Mail-Einstellungen.</p>',
         '<span class="email-from"><strong>From:</strong> {senderContent}</span>'
             => '<span class="email-von"><strong>Von:</strong> {senderContent}</span>',
