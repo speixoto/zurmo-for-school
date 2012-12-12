@@ -134,12 +134,6 @@
                                 $params = array_slice($elementInformation, 2);
                                 if (empty($this->activeAttributes[$elementInformation['attributeName']]))
                                 {   
-                                    // to disable date type element
-                                    if($elementclassname == 'DateElement')
-                                    {
-                                      $oid = $this->modelClassName.'_'.$elementInformation['attributeName'];
-                                      Yii::app()->clientScript->registerScript("dateFieldDisableScript","$('#" . $oid . "').attr('disabled', 'disabled');"); 
-                                    }
                                     $params['disabled'] = true;
                                     $checked = false;
                                 }
