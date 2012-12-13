@@ -149,6 +149,10 @@
             {
                 return $this->resolveJoinsForDerivedRelationViaCastedUpModel($onTableAliasName, $canUseFromJoins);
             }
+            elseif($this->modelAttributeToDataProviderAdapter->isInferredRelation())
+            {
+                return $this->resolveJoinsForInferredRelation($onTableAliasName, $canUseFromJoins);
+            }
             elseif($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
             {
                 return $this->resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins);
@@ -217,6 +221,41 @@
                                                $relationJoiningTableAliasName,
                                                'id');
             return $onTableAliasName;
+        }
+
+        protected function resolveJoinsForInferredRelation($onTableAliasName, $canUseFromJoins = true)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_bool($canUseFromJoins)');
+            //First cast up
+            $onTableAliasName        = $this->resolveJoinsForInferredRelationThatIsCastedUp(
+                                       $onTableAliasName, $canUseFromJoins);
+            //Second build relation across to the opposing model
+            $onTableAliasName        = $this->resolveJoinsForForARelationAttributeThatIsManyToMany($onTableAliasName);
+            //Casting down should always be necessary since that is the whole point of using a referred relation - not necessarily depends on where the
+            $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->getRelationModelClassName();
+            if($opposingRelationModelClassName != 'Item')
+            {
+                throw new NotImplementedException();
+            }
+            $derivedRelationModelClassName   = $this->modelAttributeToDataProviderAdapter->getInferredRelationModelClassName();
+            $onTableAliasName =$this->processLeftJoinsForAttributeThatIsCastedDown($opposingRelationModelClassName,
+                $derivedRelationModelClassName, $onTableAliasName);
+            return $onTableAliasName;
+        }
+
+        protected function resolveJoinsForInferredRelationThatIsCastedUp($onTableAliasName, $canUseFromJoins = true)
+        {
+            $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $attributeModelClassName = $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName();
+            if($canUseFromJoins)
+            {
+                return $this->processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName);
+            }
+            else
+            {
+                return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
+            }
         }
 
         protected function resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins = true)

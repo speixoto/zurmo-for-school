@@ -92,6 +92,7 @@
             $moduleClassName          = $orderBy->getModuleClassName();
             $modelClassName           = $orderBy->getModelClassName();
             $onTableAliasName         = null;
+
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
@@ -102,7 +103,11 @@
                     $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
                     if($modelToReportAdapter->isInferredRelation($relationOrAttribute))
                     {
-                        //Todo:
+                        $modelAttributeToDataProviderAdapter = new InferredRedBeanModelAttributeToDataProviderAdapter(
+                                        $modelToReportAdapter->getModelClassName(),
+                                        $modelToReportAdapter->resolveRealAttributeName($relationOrAttribute),
+                                        $modelToReportAdapter->getRelationModelClassName($relationOrAttribute),
+                                        $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute));
                     }
                     else
                     {

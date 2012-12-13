@@ -460,5 +460,15 @@
             }
             return false;
         }
+
+        /**
+         * Extend as needed to support inferred relations
+         * @see InferredRedBeanModelAttributeToDataProviderAdapter
+         * @return bool
+         */
+        public function isInferredRelation()
+        {
+            return false;
+        }
     }
 ?>

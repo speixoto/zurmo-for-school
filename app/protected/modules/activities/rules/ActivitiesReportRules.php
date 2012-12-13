@@ -36,9 +36,9 @@
                     'nonReportable' =>
                         array('activityItems'),
                     'inferredModuleConnections' =>
-                        array('activtiyItems' =>
+                        array('activityItems' =>
                             array('Contact' =>
-                                array('ContactsTestModule', 'LeadstModule'))),
+                                array('ContactsModule', 'LeadsModule'))),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);

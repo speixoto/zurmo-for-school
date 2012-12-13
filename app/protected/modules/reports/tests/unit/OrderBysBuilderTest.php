@@ -768,7 +768,7 @@
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
         }
- **/
+
         public function testDerivedRelationViaCastedUpModelAttributeWhenThroughARelation()
         {
             $q                                      = DatabaseCompatibilityUtil::getQuote();
@@ -799,8 +799,48 @@
             $this->assertEquals('customfield',    $leftTablesAndAliases[7]['tableAliasName']);
             $this->assertEquals('meeting',        $leftTablesAndAliases[7]['onTableAliasName']);
         }
+ **/
+        public function testInferredRelationModelAttributeWithTwoAttributes()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Tests inferredRelation with 2 attributes on the opposing model. Only one declares the module specifically
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___industry';
+            $orderBy2                               = new OrderByForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
+            $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
+                "{$q}meeting{$q}.{$q}name{$q} asc";
+
+            echo "<pre>";
+            print_r($joinTablesAdapter->getFromTablesAndAliases());
+            print_r($joinTablesAdapter->getLeftTablesAndAliases());
+            echo "</pre>";
 
 
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('item',           $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[6]['tableAliasName']);
+            $this->assertEquals('activity_id',    $leftTablesAndAliases[6]['tableJoinIdName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[6]['onTableAliasName']);
+            $this->assertEquals('customfield',    $leftTablesAndAliases[7]['tableAliasName']);
+            $this->assertEquals('meeting',        $leftTablesAndAliases[7]['onTableAliasName']);
+        }
+
+       //todo: test 2 levels deep
+       //todo: test reportmodelitem5 to item. good test think i don't think it casts down...
+        //todo: test reportmodelitem5 can also test VIA since we use via i think.
         /**
          *             echo "<pre>";
         print_r($joinTablesAdapter->getFromTablesAndAliases());
@@ -809,7 +849,12 @@
          */
 
 
-        //todo: derived inferreds - 1 level, then 2 levels deep
+
+        //todo: fix for inferred - we need a hint in order for this to work since we don't utilize the relatedAttribute. and it might be another relation not an attribute ugh...
+        //todo: what if the attribute is not in fact on account, but on ownedsecurableitem. then we don't need to cast all the way down. not sure how to deal with this as this is also an
+        //todo: issue on derivedRelationViaCastedUp. similar problem
+        //todo: we havent dealt with state adapter which matters here...
+        //todo: we need to deal with state adapter, we should probably deal with this back in orderBysBuilder. then orderBysbuilder can extend something so groupBysBuilder can use it
         //todo: unrem any remmed out tests
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
