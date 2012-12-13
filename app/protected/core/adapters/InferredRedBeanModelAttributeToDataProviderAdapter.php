@@ -48,8 +48,9 @@
             assert('is_string($inferredRelationModuleClassName)');
             $this->modelClassName                   = $modelClassName;
             $this->attribute                        = $attribute;
-            $this->$inferredRelationModelClassName  = $inferredRelationModelClassName;
-            $this->$inferredRelationModuleClassName = $inferredRelationModuleClassName;
+            $this->inferredRelationModelClassName  = $inferredRelationModelClassName;
+            $this->inferredRelationModuleClassName = $inferredRelationModuleClassName;
+
         }
 
         public function isInferredRelation()

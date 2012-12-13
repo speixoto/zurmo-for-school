@@ -232,15 +232,16 @@
                                        $onTableAliasName, $canUseFromJoins);
             //Second build relation across to the opposing model
             $onTableAliasName        = $this->resolveJoinsForForARelationAttributeThatIsManyToMany($onTableAliasName);
-            //Casting down should always be necessary since that is the whole point of using a referred relation - not necessarily depends on where the
+            //Casting down should always be necessary since that is the whole point of using a referred relation //todo: adding hinting and cast down might not always be the case
             $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->getRelationModelClassName();
             if($opposingRelationModelClassName != 'Item')
             {
                 throw new NotImplementedException();
             }
-            $derivedRelationModelClassName   = $this->modelAttributeToDataProviderAdapter->getInferredRelationModelClassName();
-            $onTableAliasName =$this->processLeftJoinsForAttributeThatIsCastedDown($opposingRelationModelClassName,
-                $derivedRelationModelClassName, $onTableAliasName);
+            $inferredRelationModelClassName = $this->modelAttributeToDataProviderAdapter->getInferredRelationModelClassName();
+            $onTableAliasName               = $this->processLeftJoinsForAttributeThatIsCastedDown(
+                                              $opposingRelationModelClassName,
+                                              $inferredRelationModelClassName, $onTableAliasName);
             return $onTableAliasName;
         }
 
@@ -248,6 +249,10 @@
         {
             $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
             $attributeModelClassName = $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName();
+            if($modelClassName == $attributeModelClassName)
+            {
+                return $onTableAliasName;
+            }
             if($canUseFromJoins)
             {
                 return $this->processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName);
@@ -609,6 +614,10 @@
             assert('is_string($modelClassName)');
             assert('is_string($castedDownModelClassName)');
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($castedDownModelClassName);
+            if($modelClassName == 'Item')
+            {
+                return $modelDerivationPathToItem;
+            }
             foreach($modelDerivationPathToItem as $key => $modelClassNameToCastDown)
             {
                 unset($modelDerivationPathToItem[$key]);

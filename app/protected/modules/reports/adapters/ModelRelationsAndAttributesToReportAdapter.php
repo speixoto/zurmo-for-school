@@ -758,6 +758,11 @@
                 list($notUsed, $attribute, $notUsed2, $notUsed3) = $attributeAndInferredOrViaData;
                 return $attribute;
             }
+            elseif(count($attributeAndInferredOrViaData) == 3)
+            {
+                list($modelClassName, $attribute, $notUsed) = $attributeAndInferredOrViaData;
+                return $attribute;
+            }
             elseif(count($attributeAndInferredOrViaData) == 2)
             {
                 list($attribute, $notUsed) = $attributeAndInferredOrViaData;

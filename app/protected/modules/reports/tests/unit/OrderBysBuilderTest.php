@@ -37,7 +37,7 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
         }
-/**
+
         public function testNonRelatedNonDerivedAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
@@ -799,7 +799,7 @@
             $this->assertEquals('customfield',    $leftTablesAndAliases[7]['tableAliasName']);
             $this->assertEquals('meeting',        $leftTablesAndAliases[7]['onTableAliasName']);
         }
- **/
+
         public function testInferredRelationModelAttributeWithTwoAttributes()
         {
             $q                                      = DatabaseCompatibilityUtil::getQuote();
@@ -814,33 +814,60 @@
             $orderBy2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2));
             $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                "{$q}meeting{$q}.{$q}name{$q} asc";
+                                                      "{$q}account{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+        }
 
-            echo "<pre>";
-            print_r($joinTablesAdapter->getFromTablesAndAliases());
-            print_r($joinTablesAdapter->getLeftTablesAndAliases());
-            echo "</pre>";
+        public function testInferredRelationModelAttributeWithTwoAttributesNestedTwoLevelsDeep()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
 
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___opportunities___stage';
+            $orderBy2                               = new OrderByForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___opportunities___name';
+            $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
+                                                      "{$q}opportunity{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+        }
 
+        public function testInferredRelationModelAttributeWithTwoAttributesComingAtItFromANestedPoint()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Also declaring Via modules
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem7');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem7',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'model5___ReportModelTestItem__reportItems__Inferred___phone';
+            $orderBy2                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem7',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType  = 'model5___ReportModelTestItem__reportItems__Inferred___dropDown';
+            $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                         = "{$q}reportmodeltestitem{$q}.{$q}phone{$q} asc, " .
+                                                      "{$q}customfield{$q}.{$q}value{$q} asc";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[4]['tableAliasName']);
-            $this->assertEquals('item',           $leftTablesAndAliases[4]['onTableAliasName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[5]['tableAliasName']);
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[5]['onTableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[6]['tableAliasName']);
-            $this->assertEquals('activity_id',    $leftTablesAndAliases[6]['tableJoinIdName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[6]['onTableAliasName']);
-            $this->assertEquals('customfield',    $leftTablesAndAliases[7]['tableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[7]['onTableAliasName']);
+            $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct tables.
         }
 
-       //todo: test 2 levels deep
-       //todo: test reportmodelitem5 to item. good test think i don't think it casts down...
-        //todo: test reportmodelitem5 can also test VIA since we use via i think.
+
         /**
          *             echo "<pre>";
         print_r($joinTablesAdapter->getFromTablesAndAliases());
@@ -850,11 +877,9 @@
 
 
 
-        //todo: fix for inferred - we need a hint in order for this to work since we don't utilize the relatedAttribute. and it might be another relation not an attribute ugh...
+        //todo: Hinting.  For Inferred derivedRelationViaCastedUp
         //todo: what if the attribute is not in fact on account, but on ownedsecurableitem. then we don't need to cast all the way down. not sure how to deal with this as this is also an
-        //todo: issue on derivedRelationViaCastedUp. similar problem
-        //todo: we havent dealt with state adapter which matters here...
-        //todo: we need to deal with state adapter, we should probably deal with this back in orderBysBuilder. then orderBysbuilder can extend something so groupBysBuilder can use it
+        //todo: what if you are querying latestDateTime which is not casted all the way down on meeting.
         //todo: unrem any remmed out tests
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
