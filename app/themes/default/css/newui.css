@@ -15180,6 +15180,42 @@ orientation : portrait // orientation: landscape    Target orientation
     margin: 10px 10px 0 10px;
     padding-bottom: 10px;
   }
+  .view-toolbar {
+    display: -ms-flex;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: row;
+    -ms-flex-wrap: wrap;
+    -moz-flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    width: 100% !important;
+  }
+  .view-toolbar .nav,
+  .view-toolbar > a {
+    float: none;
+    -ms-flex: 1 auto;
+    -moz-flex: 1 auto;
+    -webkit-flex: 1 auto;
+    flex: 1 auto;
+  }
+  .view-toolbar .parent > a,
+  .view-toolbar > a {
+    padding: 0 5px;
+    text-align: center;
+  }
+  .view-toolbar .parent > a {
+    width: 100%;
+  }
+  .view-toolbar .parent a:before,
+  .view-toolbar > a:before {
+    display: none;
+  }
+  .view-toolbar .parent a:after {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
   .AppContainer {
     min-width: 0 !important;
     /* should be 100% but i need to put box-sizing on top level nodes */
@@ -15234,7 +15270,48 @@ orientation : portrait // orientation: landscape    Target orientation
   .details-table {
     margin-right: 0;
   }
+  .details-table .toolbar-mbmenu {
+    right: 10px;
+  }
+  .details-table .toolbar-mbmenu .view-toolbar {
+    position: relative;
+    clear: both;
+  }
+  .LatestActivtiesForPortletView .toolbar-mbmenu {
+    right: 10px;
+  }
+  .LatestActivtiesForPortletView .toolbar-mbmenu .view-toolbar {
+    position: relative;
+    clear: both;
+  }
+  .juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
+  .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
+  .juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
+  .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
+    text-indent: 0;
+    top: 5px;
+  }
   .juiportlet-widget {
     margin-right: 0 !important;
+  }
+  /*Edit View*/
+  #modal-edit-form .panel,
+  #edit-form .panel,
+  #delete-form .panel {
+    float: none;
+    width: 100%;
+  }
+  #right-side-edit-view-panel {
+    float: none;
+    width: 100%;
+    position: relative;
+    right: 0;
+    top: 0;
+  }
+  #right-side-edit-view-panel .buffer {
+    padding-left: 0;
+  }
+  #right-side-edit-view-panel .buffer > div {
+    padding: 0;
   }
 }
