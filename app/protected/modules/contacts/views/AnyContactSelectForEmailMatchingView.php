@@ -180,11 +180,6 @@
             // End Not Coding Standard
         }
 
-        protected static function getMatchingListUrl()
-       {
-           return Yii::app()->createUrl('emailMessages/default/matchingList');
-       }
-
         public function isUniqueToAPage()
         {
             return false;
