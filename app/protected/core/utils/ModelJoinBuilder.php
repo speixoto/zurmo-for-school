@@ -181,11 +181,12 @@
             if($this->modelAttributeToDataProviderAdapter->isDerivedRelationViaCastedUpModelDifferentThanOpposingModelClassName())
             {
                 $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->
-                    getOpposingRelationModelClassName();
+                                                   getOpposingRelationModelClassName();
                 $derivedRelationModelClassName   = $this->modelAttributeToDataProviderAdapter->
-                    getDerivedRelationViaCastedUpModelClassName();
-                $onTableAliasName =$this->processLeftJoinsForAttributeThatIsCastedDown($opposingRelationModelClassName,
-                    $derivedRelationModelClassName, $onTableAliasName);
+                                                   getDerivedRelationViaCastedUpModelClassName();
+                $onTableAliasName                = $this->resolveAndProcessLeftJoinsForAttributeThatIsCastedDown(
+                                                   $opposingRelationModelClassName,
+                                                   $derivedRelationModelClassName, $onTableAliasName);
             }
             return $onTableAliasName;
         }
@@ -232,14 +233,14 @@
                                        $onTableAliasName, $canUseFromJoins);
             //Second build relation across to the opposing model
             $onTableAliasName        = $this->resolveJoinsForForARelationAttributeThatIsManyToMany($onTableAliasName);
-            //Casting down should always be necessary since that is the whole point of using a referred relation //todo: adding hinting and cast down might not always be the case
+            //Casting down should always be necessary since that is the whole point of using a referred relation
             $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->getRelationModelClassName();
             if($opposingRelationModelClassName != 'Item')
             {
                 throw new NotImplementedException();
             }
             $inferredRelationModelClassName = $this->modelAttributeToDataProviderAdapter->getInferredRelationModelClassName();
-            $onTableAliasName               = $this->processLeftJoinsForAttributeThatIsCastedDown(
+            $onTableAliasName               = $this->resolveAndProcessLeftJoinsForAttributeThatIsCastedDown(
                                               $opposingRelationModelClassName,
                                               $inferredRelationModelClassName, $onTableAliasName);
             return $onTableAliasName;
@@ -261,6 +262,16 @@
             {
                 return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
             }
+        }
+
+        protected function resolveAttributeModelClassNameWithCastingHintForCastingDown($attributeModelClassName)
+        {
+            assert('is_string($attributeModelClassName)');
+            if($this->modelAttributeToDataProviderAdapter->getCastingHintModelClassNameForAttribute() != null)
+            {
+                return $this->modelAttributeToDataProviderAdapter->getCastingHintModelClassNameForAttribute();
+            }
+            return $attributeModelClassName;
         }
 
         protected function resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins = true)
@@ -444,8 +455,20 @@
 
         protected function addLeftJoinsForAttributeThatIsCastedUp($onTableAliasName)
         {
-            $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
+            $modelClassName          = $this->modelAttributeToDataProviderAdapter->getResolvedModelClassName();
             $attributeModelClassName = $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName();
+            return $this->resolveAndProcessLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
+        }
+
+        private function resolveAndProcessLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($attributeModelClassName)');
+            if($modelClassName == $attributeModelClassName)
+            {
+                return $onTableAliasName;
+            }
             return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
         }
 
@@ -583,6 +606,24 @@
                                   $onTableJoinIdName,
                                   $onTableAliasName,
                                   $tableJoinIdName);
+            return $onTableAliasName;
+        }
+
+        protected function resolveAndProcessLeftJoinsForAttributeThatIsCastedDown($modelClassName, $castedDownModelClassName,
+                                                                                  $onTableAliasName)
+
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($castedDownModelClassName)');
+            assert('is_string($onTableAliasName)');
+            $resolvedCastedDownModelClassName   = $this->resolveAttributeModelClassNameWithCastingHintForCastingDown(
+                                                  $castedDownModelClassName);
+            if($modelClassName != $resolvedCastedDownModelClassName)
+            {
+                return $this->processLeftJoinsForAttributeThatIsCastedDown($modelClassName,
+                                                                           $resolvedCastedDownModelClassName,
+                                                                           $onTableAliasName);
+            }
             return $onTableAliasName;
         }
 

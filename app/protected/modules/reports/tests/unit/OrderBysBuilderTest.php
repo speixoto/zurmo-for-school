@@ -864,23 +864,97 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct tables.
+            //todo: validate the correct table information.
+        }
+
+        public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithItemAttribute()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime';
+            $content                                = $builder->makeQueryContent(array($orderBy));
+            $compareContent                         = "{$q}item{$q}.{$q}createddatetime{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
+
+        public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithMixedInAttribute()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___owner__User';
+            $content                                = $builder->makeQueryContent(array($orderBy));
+            $compareContent                         = "{$q}person{$q}.{$q}lastname{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
+
+        public function testInferredRelationModelAttributeWithCastingHintToNotCastDowButAlsoWithFullCastDown()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime';
+            $orderBy2                               = new OrderByForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
+            $content                                = $builder->makeQueryContent(array($orderBy, $orderBy2));
+            $compareContent                         = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
+                                                      "{$q}account{$q}.{$q}name{$q} asc";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
         }
 
 
+        public function testDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFar()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $builder                                = new OrderBysBuilder($joinTablesAdapter);
+            $orderBy                                = new OrderByForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $orderBy->attributeIndexOrDerivedType   = 'meetings___latestDateTime';
+            $content                                = $builder->makeQueryContent(array($orderBy));
+            $compareContent                         = "{$q}activity{$q}.{$q}latestdatetime{$q} asc";
+            $this->assertEquals($compareContent, $content);
+
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
+
         /**
-         *             echo "<pre>";
+         * echo "<pre>";
         print_r($joinTablesAdapter->getFromTablesAndAliases());
         print_r($joinTablesAdapter->getLeftTablesAndAliases());
         echo "</pre>";
          */
-
-
-
-        //todo: Hinting.  For Inferred derivedRelationViaCastedUp
-        //todo: what if the attribute is not in fact on account, but on ownedsecurableitem. then we don't need to cast all the way down. not sure how to deal with this as this is also an
-        //todo: what if you are querying latestDateTime which is not casted all the way down on meeting.
-        //todo: unrem any remmed out tests
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
         {

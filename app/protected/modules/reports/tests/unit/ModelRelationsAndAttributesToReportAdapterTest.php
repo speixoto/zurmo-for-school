@@ -55,7 +55,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations          = $adapter->getAllRelationsData();
-            $this->assertEquals(19, count($relations));
+            $this->assertEquals(20, count($relations));
         }
 
         /**
@@ -72,7 +72,7 @@
             $adapter            = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules,
                                   $report->getType());
             $relations          = $adapter->getSelectableRelationsData();
-            $this->assertEquals(5, count($relations));
+            $this->assertEquals(9, count($relations));
             $compareData        = array('label' => 'Report Model Test Item 9');
             $this->assertEquals($compareData, $relations['reportModelTestItem9']);
             $compareData        = array('label' => 'Report Model Test Item 9s');
@@ -189,7 +189,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getAttributesIncludingDerivedAttributesData();
-            $this->assertEquals(26, count($attributes));
+            $this->assertEquals(27, count($attributes));
             $compareData        = array('label' => 'Id');
             $this->assertEquals($compareData, $attributes['id']);
             $compareData        = array('label' => 'Created Date Time');
@@ -220,6 +220,8 @@
             $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Multi Drop Down');
@@ -268,22 +270,18 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getInferredRelationsData();
-            $this->assertEquals(3, count($relations));
-            $compareData        = array('label' => 'Reports Test');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule']);
-            $compareData        = array('label' => 'Reports Alternate State Test');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule']);
+            $this->assertEquals(2, count($relations));
+            $compareData        = array('label' => 'ReportModelTestItems');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
 
             //Getting all selectable relations. Should yield all 3 relations
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
-            $this->assertEquals(7, count($relations));
-            $compareData        = array('label' => 'Reports Test');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule']);
-            $compareData        = array('label' => 'Reports Alternate State Test');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule']);
+            $this->assertEquals(6, count($relations));
+            $compareData        = array('label' => 'ReportModelTestItems');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
             $compareData        = array('label' => 'Report Items');
@@ -342,11 +340,9 @@
             //Test calling on model 5 with a preceding model that is NOT part of reportItems
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'model5');
-            $this->assertEquals(7, count($relations));
-            $compareData        = array('label' => 'Reports Test');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule']);
-            $compareData        = array('label' => 'Reports Alternate State Test');
-            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule']);
+            $this->assertEquals(6, count($relations));
+            $compareData        = array('label' => 'ReportModelTestItems');
+            $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
             $compareData        = array('label' => 'Report Items');
@@ -457,7 +453,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getAttributesForFilters();
-            $this->assertEquals(23, count($attributes));
+            $this->assertEquals(24, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
@@ -487,6 +483,8 @@
             $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Multi Drop Down');
@@ -523,7 +521,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getAttributesForDisplayAttributes();
-            $this->assertEquals(25, count($attributes));
+            $this->assertEquals(26, count($attributes));
 
             //Includes derived attributes as well
             $compareData        = array('label' => 'Test Calculated');
@@ -544,7 +542,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getAttributesForOrderBys();
-            $this->assertEquals(23, count($attributes));
+            $this->assertEquals(21, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
@@ -568,18 +566,14 @@
             $this->assertEquals($compareData, $attributes['phone']);
             $compareData        = array('label' => 'String');
             $this->assertEquals($compareData, $attributes['string']);
-            $compareData        = array('label' => 'Text Area');
-            $this->assertEquals($compareData, $attributes['textArea']);
             $compareData        = array('label' => 'Url');
             $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
-            $compareData        = array('label' => 'Multi Drop Down');
-            $this->assertEquals($compareData, $attributes['multiDropDown']);
-            $compareData        = array('label' => 'Tag Cloud');
-            $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Reported As Attribute');
             $this->assertEquals($compareData, $attributes['reportedAsAttribute']);
             //Currency is treated as a relation reported as an attribute just like drop downs
@@ -610,7 +604,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getAttributesForFilters();
-            $this->assertEquals(23, count($attributes));
+            $this->assertEquals(24, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
@@ -640,6 +634,8 @@
             $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Multi Drop Down');
@@ -903,7 +899,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
             $attributes         = $adapter->getAttributesForGroupBys();
-            $this->assertEquals(39, count($attributes));
+            $this->assertEquals(38, count($attributes));
 
             //Date/DateTime columns first...
             $compareData        = array('label' => 'Date -(Year)');
@@ -969,12 +965,10 @@
             $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
-            $compareData        = array('label' => 'Multi Drop Down');
-            $this->assertEquals($compareData, $attributes['multiDropDown']);
-            $compareData        = array('label' => 'Tag Cloud');
-            $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Reported As Attribute');
             $this->assertEquals($compareData, $attributes['reportedAsAttribute']);
             $compareData        = array('label' => 'Currency Value');
@@ -1006,7 +1000,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getForDrillDownAttributes();
-            $this->assertEquals(25, count($attributes));
+            $this->assertEquals(26, count($attributes));
 
             //Includes derived attributes as well
             $compareData        = array('label' => 'Test Calculated');
@@ -1027,7 +1021,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
             $attributes         = $adapter->getAttributesForFilters();
-            $this->assertEquals(23, count($attributes));
+            $this->assertEquals(24, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
@@ -1057,6 +1051,8 @@
             $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Multi Drop Down');
@@ -1093,7 +1089,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
             $attributes         = $adapter->getAttributesForGroupBys();
-            $this->assertEquals(39, count($attributes));
+            $this->assertEquals(38, count($attributes));
 
             //Date/DateTime columns first...
             $compareData        = array('label' => 'Date -(Year)');
@@ -1159,12 +1155,10 @@
             $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
-            $compareData        = array('label' => 'Multi Drop Down');
-            $this->assertEquals($compareData, $attributes['multiDropDown']);
-            $compareData        = array('label' => 'Tag Cloud');
-            $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Reported As Attribute');
             $this->assertEquals($compareData, $attributes['reportedAsAttribute']);
             $compareData        = array('label' => 'Currency Value');
@@ -1268,15 +1262,15 @@
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
-            $this->assertTrue($adapter->isRelation('hasOne'));
-            $this->assertFalse($adapter->isRelation('garbage'));
-            $this->assertFalse($adapter->isRelation('float'));
-            $this->assertFalse($adapter->isRelation('firstname'));
-            $this->assertFalse($adapter->isRelation('createdByUser__User'));
-            $this->assertTrue($adapter->isRelation('modifiedByUser'));
-            $this->assertTrue($adapter->isRelation('model5ViaItem'));
-            $this->assertTrue($adapter->isRelation('primaryEmail'));
-            $this->assertFalse($adapter->isRelation('dropDown'));
+            $this->assertTrue($adapter->isReportedOnAsARelation('hasOne'));
+            $this->assertFalse($adapter->isReportedOnAsARelation('garbage'));
+            $this->assertFalse($adapter->isReportedOnAsARelation('float'));
+            $this->assertFalse($adapter->isReportedOnAsARelation('firstname'));
+            $this->assertFalse($adapter->isReportedOnAsARelation('createdByUser__User'));
+            $this->assertTrue($adapter->isReportedOnAsARelation('modifiedByUser'));
+            $this->assertTrue($adapter->isReportedOnAsARelation('model5ViaItem'));
+            $this->assertTrue($adapter->isReportedOnAsARelation('primaryEmail'));
+            $this->assertFalse($adapter->isReportedOnAsARelation('dropDown'));
 
             $model              = new ReportModelTestItem5();
             $rules              = new ReportsTestReportRules();
@@ -1284,10 +1278,9 @@
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
-            $this->assertFalse($adapter->isRelation('ReportModelTestItem__reportItems__Inferred'));
-            $this->assertTrue ($adapter->isRelation('ReportModelTestItem2__reportItems__Inferred'));
-            $this->assertTrue ($adapter->isRelation('ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule'));
-            $this->assertTrue ($adapter->isRelation('ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule'));
+            $this->assertTrue ($adapter->isReportedOnAsARelation('ReportModelTestItem2__reportItems__Inferred'));
+            $this->assertTrue ($adapter->isReportedOnAsARelation('ReportModelTestItem__reportItems__Inferred'));
+            $this->assertTrue ($adapter->isReportedOnAsARelation('ReportModelTestItem__reportItems__Inferred'));
         }
 
         /**
@@ -1311,8 +1304,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
             $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem2__reportItems__Inferred'));
-            $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule'));
-            $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule'));
+            $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem__reportItems__Inferred'));
         }
 
         /**

@@ -252,7 +252,7 @@
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_QUARTER);
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_YEAR);
                 }
-                elseif($attributeType != 'TextArea')
+                elseif(!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea')))
                 {
                     $attributes[$attribute] = $data;
                 }

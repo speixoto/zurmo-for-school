@@ -156,7 +156,7 @@
          * a dropDown is not considered a relation because it is reported on as a regular attribute.
          * @param string $relationOrAttribute
          */
-        public function isRelation($relationOrAttribute)
+        public function isReportedOnAsARelation($relationOrAttribute)
         {
             assert('is_string($relationOrAttribute)');
             $relations = $this->getSelectableRelationsData();
@@ -500,7 +500,7 @@
         public function relationIsReportedAsAttribute($relation)
         {
             assert('is_string($relation)');
-            if($this->model->isAttribute($relation) && $this->isRelation($relation))
+            if($this->model->isAttribute($relation) && $this->isReportedOnAsARelation($relation))
             {
                 return false;
             }

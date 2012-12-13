@@ -92,12 +92,12 @@
             $moduleClassName          = $orderBy->getModuleClassName();
             $modelClassName           = $orderBy->getModelClassName();
             $onTableAliasName         = null;
-
-            foreach($attributeAndRelationData as $relationOrAttribute)
+            $startingModelClassName   = null;
+            foreach($attributeAndRelationData as $key => $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $orderBy->getReportType());
-                if($modelToReportAdapter->isRelation($relationOrAttribute))
+                if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                     $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
@@ -108,6 +108,18 @@
                                         $modelToReportAdapter->resolveRealAttributeName($relationOrAttribute),
                                         $modelToReportAdapter->getRelationModelClassName($relationOrAttribute),
                                         $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute));
+                        static::resolveCastingHintForAttribute($modelAttributeToDataProviderAdapter, $modelClassName,
+                                                               $modelToReportAdapter->resolveRealAttributeName(
+                                                               $attributeAndRelationData[$key + 1]));
+                    }
+                    elseif($modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($relationOrAttribute))
+                    {
+                        $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
+                                                               $modelToReportAdapter->getModelClassName(),
+                                                               $relationOrAttribute);
+                        static::resolveCastingHintForAttribute($modelAttributeToDataProviderAdapter, $modelClassName,
+                                                               $modelToReportAdapter->resolveRealAttributeName(
+                                                               $attributeAndRelationData[$key + 1]));
                     }
                     else
                     {
@@ -115,10 +127,12 @@
                                                                $modelToReportAdapter->getModelClassName(),
                                                                $relationOrAttribute);
                     }
-                    $builder          = new ModelJoinBuilder($modelAttributeToDataProviderAdapter,
-                                        $this->joinTablesAdapter);
-                    $onTableAliasName = $builder->resolveJoins($onTableAliasName,
-                                        ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
+                    $modelAttributeToDataProviderAdapter->setCastingHintStartingModelClassName($startingModelClassName);
+                    $builder                = new ModelJoinBuilder($modelAttributeToDataProviderAdapter,
+                                              $this->joinTablesAdapter);
+                    $onTableAliasName       = $builder->resolveJoins($onTableAliasName,
+                                              ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
+                    $startingModelClassName = $modelAttributeToDataProviderAdapter->getCastingHintModelClassNameForAttribute();
                 }
                 else
                 {
@@ -134,6 +148,7 @@
                                                     make($moduleClassName, $modelClassName, $orderBy->getReportType());
             $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
                                                     $modelToReportAdapter, $attribute);
+            $modelAttributeToDataProviderAdapter->setCastingHintStartingModelClassName($startingModelClassName);
             $content                              = ModelDataProviderUtil::resolveSortAttributeColumnName(
                                                     $modelAttributeToDataProviderAdapter, $this->joinTablesAdapter,
                                                     $onTableAliasName);
@@ -162,7 +177,7 @@
                                                                       $attribute, $sortAttribute);
             }
             //Example: name or phone
-            elseif(!$modelToReportAdapter->isRelation($attribute) &&
+            elseif(!$modelToReportAdapter->isReportedOnAsARelation($attribute) &&
                    !$modelToReportAdapter->relationIsReportedAsAttribute($attribute))
             {
                 return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
@@ -172,6 +187,14 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function resolveCastingHintForAttribute($modelAttributeToDataProviderAdapter, $modelClassName,
+                                                          $realAttributeName)
+        {
+            $hintAdapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $realAttributeName);
+            $hintModelClassName = $hintAdapter->getAttributeModelClassName();
+            $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);
         }
     }
 ?>

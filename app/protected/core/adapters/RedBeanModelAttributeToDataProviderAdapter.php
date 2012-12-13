@@ -52,6 +52,16 @@
          */
         protected $model;
 
+        /**
+         * @var string|null
+         */
+        protected $castingHintAttributeModelClassName;
+
+        /**
+         * @var string|null
+         */
+        protected $castingHintStartingModelClassName;
+
         private $relatedModel;
 
         /**
@@ -67,6 +77,52 @@
             $this->modelClassName   = $modelClassName;
             $this->attribute        = $attribute;
             $this->relatedAttribute = $relatedAttribute;
+        }
+
+        /**
+         * Utilizing casting hint to ensure a castUp or castDown procedure done in ModelJoinBuilder for example
+         * does not cast too far down or up when looking for the end node of a relation.  For example, if you are
+         * coming from meeting into account via activityItems, but the final attribute is owner, then you don't need
+         * to cast all the way down to account.
+         *
+         * @param string $castingHintAttributeModelClassName
+         */
+        public function setCastingHintModelClassNameForAttribute($castingHintAttributeModelClassName)
+        {
+            assert('is_string($castingHintAttributeModelClassName)');
+            $this->castingHintAttributeModelClassName = $castingHintAttributeModelClassName;
+        }
+
+        /**
+         * @return string
+         */
+        public function getCastingHintModelClassNameForAttribute()
+        {
+            return $this->castingHintAttributeModelClassName;
+        }
+
+        /**
+         * @param string|null $castingHintStartingModelClassName
+         */
+        public function setCastingHintStartingModelClassName($castingHintStartingModelClassName)
+        {
+            assert('is_string($castingHintStartingModelClassName) || $castingHintStartingModelClassName == null');
+            $this->castingHintStartingModelClassName = $castingHintStartingModelClassName;
+        }
+
+        /**
+         * Resolves what the model class name is to use as the starting point.  For cast hinting it is possible
+         * the starting model class name is already casted up, therefore casting up further is not required.
+         * @see setCastingHintModelClassNameForAttribute
+         * @return string
+         */
+        public function getResolvedModelClassName()
+        {
+            if($this->castingHintStartingModelClassName != null)
+            {
+                return $this->castingHintStartingModelClassName;
+            }
+            return $this->getModelClassName();
         }
 
         public function getModelClassName()

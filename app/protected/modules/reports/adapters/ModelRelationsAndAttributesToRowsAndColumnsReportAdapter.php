@@ -46,9 +46,24 @@
         public function getAttributesForOrderBys()
         {
             $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes       = $this->resolveAttributesForOrderBys($attributes);
             $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
             $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
             return $sortedAttributes;
+        }
+
+        protected function resolveAttributesForOrderBys(Array $attributes)
+        {
+            $resolvedAttributes = array();
+            foreach($attributes as $attribute => $data)
+            {
+                $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
+                if(!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea')))
+                {
+                    $resolvedAttributes[$attribute] = $data;
+                }
+            }
+            return $resolvedAttributes;
         }
     }
 ?>

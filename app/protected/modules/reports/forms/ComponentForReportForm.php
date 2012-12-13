@@ -193,7 +193,7 @@
                     }
                     $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                             make($moduleClassName, $modelClassName, $this->reportType);
-                    if($modelToReportAdapter->isRelation($relationOrAttribute))
+                    if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                     {
                         $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                         $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
@@ -251,7 +251,7 @@
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $this->reportType);
-                if($modelToReportAdapter->isRelation($relationOrAttribute))
+                if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
                     $modelClassName    = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
@@ -268,7 +268,7 @@
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $this->reportType);
-                if($modelToReportAdapter->isRelation($relationOrAttribute))
+                if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
                     $modelClassName    = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
@@ -286,7 +286,7 @@
                 $lastModelClassName = $modelClassName;
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
-                if($modelToReportAdapter->isRelation($relationOrAttribute))
+                if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $modelClassName     = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                 }
