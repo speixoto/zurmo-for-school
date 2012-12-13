@@ -40,9 +40,92 @@ orientation : portrait // orientation: landscape    Target orientation
 }
 
 @media all and (max-width: 640px) {
-    body{
-        padding-bottom:160px;
+    html, body {
+        margin: 0;
+        width: 100%;
+        height: 100% !important;
     }
+    body{
+        //padding-bottom:160px;
+        > div{
+            height:100%;
+        }
+    }
+
+    #LoginPageView{
+        > div{
+            .box-sizing();
+            padding:10px;
+
+            display: -ms-flex;
+            display: -moz-flex;
+            display: -webkit-flex;
+            display: flex;
+            -ms-flex-direction: column;
+            -ms-flex-wrap: wrap;
+            -moz-flex-flow: column wrap;
+            -webkit-flex-flow: column wrap;
+            flex-flow: column wrap;
+            -ms-flex-pack: start;
+            -moz-justify-content: flex-start;
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+
+            width:100% !important; 
+            height:100% !important; 
+            display:block;
+        }
+        #FooterView{
+            -ms-flex: 1 0 auto;
+            -moz-flex: 1 0 auto;
+            -webkit-flex: 1 0 auto;
+            flex: 1 0 auto;
+            margin:10px 0 0 0;
+        }
+        #credit-link{
+            margin-left:0;
+        }
+    }
+
+    #LoginView{
+        min-width:0 !important;
+        margin:0;
+        background-image:none;
+        height:auto;
+         -ms-flex: 1 0 auto;
+        -moz-flex: 1 0 auto;
+        -webkit-flex: 1 0 auto;
+        flex: 1 0 auto;
+    }
+    
+    #login-box{
+        width:100%;
+        height:auto;
+        float:none;
+        margin:10px 0 0 0;
+        top:0;
+        left:0;
+        .form{
+            float:none;
+            width:100%;
+            form{
+                border:none;
+                padding:0 10px 10px 10px;
+            }
+        }
+        #LoginLogo{
+            float:none;
+            width:100%;
+            height:80px;
+            padding:0;
+            background-position:50% 50%;
+        }
+    }
+
+    #login-form{
+        padding:0 20px !important;
+    }
+
     #nav-trigger{
         display:block;
     }
@@ -64,8 +147,14 @@ orientation : portrait // orientation: landscape    Target orientation
         display:none;
     }
     #FooterView {
-        margin: 10px 10px 0 10px;
-        padding-bottom: 10px;
+        margin: 10px 0 0 0;
+        padding-bottom: 5px;
+    }
+    #credit-link{
+        margin-left:0;
+        span{
+            margin-left:65px;
+        }
     }
 
 
@@ -150,6 +239,8 @@ orientation : portrait // orientation: landscape    Target orientation
             margin-right:10px;
         }
     }
+
+
     #credit-link {
         line-height: 17px;
         font-size: 10px;
