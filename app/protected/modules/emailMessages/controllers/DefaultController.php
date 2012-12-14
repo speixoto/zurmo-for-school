@@ -289,7 +289,7 @@
             $selectForm            = self::makeSelectForm($userCanAccessLeads, $userCanAccessContacts);
 
             if (isset($_POST[get_class($selectForm)]))
-            { print_r($_POST[get_class($selectForm)]);
+            { 
                 if (isset($_POST['ajax']) && $_POST['ajax'] === 'select-contact-form-' . $id)
                 {
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);
@@ -309,7 +309,7 @@
                     ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($emailMessage, $contact);
                     ArchivedEmailMatchingUtil::resolveEmailAddressToContactIfEmailRelationAvailable($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
-                                                                         EmailFolder::TYPE_ARCHIVED_UNMATCHED);
+                                                                         EmailFolder::TYPE_ARCHIVED);
                     if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
@@ -352,7 +352,7 @@
                     }
                     ArchivedEmailMatchingUtil::resolveContactToSenderOrRecipient($emailMessage, $contact);
                     $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
-                                                                         EmailFolder::TYPE_ARCHIVED_UNMATCHED);
+                                                                         EmailFolder::TYPE_ARCHIVED);
                     if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
@@ -588,7 +588,6 @@
             $emailMessage = EmailMessage::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailMessage);
             $emailMessage->delete();
-            //$this->redirect(array($this->getId() . '/matchingList'));
         }
     }
 ?>
