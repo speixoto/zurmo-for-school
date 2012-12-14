@@ -223,7 +223,7 @@ orientation : portrait // orientation: landscape    Target orientation
     .nav-open{
         transform: translate3d(170px, 0, 0);
         -webkit-transform: translate3d(170px, 0, 0);
-        .b-shadow(-1px 0 15px 0 #ccc);
+        //.b-shadow(-1px 0 15px 0 #ccc);
     }
     .AppNavigation{
         position:fixed;
@@ -309,6 +309,27 @@ orientation : portrait // orientation: landscape    Target orientation
         }
     }
 
+    /*Thread View*/
+    #ModelDetailsSummaryView,
+    #CommentInlineEditForModelView,
+    #CommentsForRelatedModelView{
+        width:100%;
+        margin-right:0;
+        float:none;
+        padding:0 10px;
+    }
+    #ConversationDetailsView{
+        #right-side-edit-view-panel{
+            display:none;
+        }
+    }
+
+    .CommentList{
+        margin-left:0;
+    }
+    #CommentInlineEditForModelView{
+        padding:0 10px;
+    }
 }
 
 
