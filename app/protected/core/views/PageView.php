@@ -329,6 +329,24 @@
          */
         protected function renderXHtmlBodyEnd()
         {
+            if (Yii::app()->userInterface->getDefaultUserInterfaceType() != UserInterface::DESKTOP)
+            {
+                if (Yii::app()->userInterface->getType() == UserInterface::DESKTOP)
+                {
+                    if (Yii::app()->userInterface->getDefaultUserInterfaceType() == UserInterface::MOBILE)
+                    {
+                        echo "<a href='#' >Show mobile</a>";
+                    }
+                    elseif (Yii::app()->userInterface->getDefaultUserInterfaceType() == UserInterface::TABLET)
+                    {
+                        echo "<a href='#' >Show tablet</a>";
+                    }
+                }
+                else
+                {
+                    echo "<a href='#' >Show desktop</a>";
+                }
+            }
             return '</body>';
         }
 

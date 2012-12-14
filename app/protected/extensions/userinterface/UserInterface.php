@@ -30,21 +30,16 @@
         const MOBILE      = 'Mobile';
         const TABLET      = 'Tablet';
         const DESKTOP     = 'Desktop';
-        const COOKIE_NAME = "UserInterfaceType";
+        const DEFAULT_USER_INTERFACE_COOKIE_NAME  = "UserInterfaceType";
+        const SELECTED_USER_INTERFACE_COOKIE_NAME = "UserInterfaceType";
 
-        protected $userInterfaceType  = null;
+        protected $defaultUserInterfaceType   = null;
+        protected $selectedUserInterfaceType  = null;
 
         public function init()
         {
-            if (!isset(Yii::app()->request->cookies[self::COOKIE_NAME]))
-            {
-                $userInterfaceType = $this->detectUserInterfaceType();
-                $this->setType($userInterfaceType);
-            }
-            else
-            {
-                $this->userInterfaceType = Yii::app()->request->cookies[self::COOKIE_NAME]->value;
-            }
+            $this->setType();
+            $this->setDefaultUserInterfaceType();
         }
 
         /**
@@ -53,7 +48,32 @@
          */
         public function getType()
         {
-            return $this->userInterfaceType;
+            return $this->selectedUserInterfaceType;
+        }
+
+        public function getDefaultUserInterfaceType()
+        {
+            return $this->defaultUserInterfaceType;
+        }
+
+        /**
+         * Set default interface type, based only on user device
+         * User can't change this option.
+         * @param $userInterfaceType
+         */
+        public function setDefaultUserInterfaceType()
+        {
+            if (!isset(Yii::app()->request->cookies[self::DEFAULT_USER_INTERFACE_COOKIE_NAME]))
+            {
+                $userInterfaceType = $this->detectUserInterfaceType();
+                Yii::app()->request->cookies[self::DEFAULT_USER_INTERFACE_COOKIE_NAME] =
+                    new CHttpCookie(self::DEFAULT_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
+                $this->defaultUserInterfaceType = $userInterfaceType;
+            }
+            else
+            {
+                $this->defaultUserInterfaceType = Yii::app()->request->cookies[self::DEFAULT_USER_INTERFACE_COOKIE_NAME]->value;
+            }
         }
 
         /**
@@ -61,10 +81,23 @@
          * User can set different interface type, no matter of device he is using.
          * @param $userInterfaceType
          */
-        public function setType($userInterfaceType)
+        public function setType($userInterfaceType = null)
         {
-            $this->userInterfaceType = $userInterfaceType;
-            Yii::app()->request->cookies[self::COOKIE_NAME] =  new CHttpCookie(self::COOKIE_NAME, $userInterfaceType);
+            if (!isset(Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME]))
+            {
+                if (!isset($userInterfaceType))
+                {
+                    $userInterfaceType = $this->detectUserInterfaceType();
+                }
+
+                Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME] =
+                    new CHttpCookie(self::SELECTED_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
+                $this->selectedUserInterfaceType = $userInterfaceType;
+            }
+            else
+            {
+                $this->selectedUserInterfaceType = Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME]->value;
+            }
         }
 
         /**
@@ -73,7 +106,7 @@
          */
         public function isMobile()
         {
-            return $this->userInterfaceType == self::MOBILE;
+            return $this->selectedUserInterfaceType == self::MOBILE;
         }
 
         /**
@@ -82,7 +115,7 @@
          */
         public function isTablet()
         {
-            return $this->userInterfaceType == self::TABLET;
+            return $this->selectedUserInterfaceType == self::TABLET;
         }
 
         /**
@@ -91,7 +124,7 @@
          */
         public function isDesktop()
         {
-            return ($this->userInterfaceType != self::MOBILE && $this->userInterfaceType != self::TABLET);
+            return ($this->selectedUserInterfaceType != self::MOBILE && $this->selectedUserInterfaceType != self::TABLET);
         }
 
         /**
