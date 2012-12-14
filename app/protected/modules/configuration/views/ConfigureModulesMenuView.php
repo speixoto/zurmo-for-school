@@ -35,9 +35,15 @@
             $categoryLabels = $this->getCategoriesArray();
             foreach ($categoryData as $category => $categoryItems)
             {
-                $content .= $this->renderMenu($categoryItems);
+                $categoryItems   = static::sortCategoryItems($categoryItems);
+                $content        .= $this->renderMenu($categoryItems);
             }
             return $content;
+        }
+
+        protected static function sortCategoryItems($categoryItems)
+        {
+            return ArrayUtil::subValueSort($categoryItems, 'titleLabel', 'asort');
         }
 
         public function getTitle()
