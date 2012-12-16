@@ -25,10 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Helper functionality for finding the filter value element
-     * associated with a model's attribute
+     * Base class for working with report components to build the necessary query parts to make a full report query
      */
-    class OrderBysBuilder
+    abstract class ReportQueryBuilder
     {
         /**
          * @var RedBeanModelJoinTablesQueryAdapter
@@ -40,31 +39,20 @@
             $this->joinTablesAdapter = $joinTablesAdapter;
         }
 
-        public function makeQueryContent(Array $orderBys)
-        {
-            $content = null;
-            foreach($orderBys as $orderBy)
-            {
-                $orderByContent = $this->resolveSortAttributeColumnNameAndOrder($orderBy);
-                if($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content       .= $orderByContent;
-            }
-            return $content;
-        }
+        abstract public function makeQueryContent(Array $components);
 
-        protected function resolveSortAttributeColumnNameAndOrder(OrderByForReportForm $orderBy)
+        abstract protected function resolveFinalContent($content, ComponentForReportForm $componentForm);
+
+        protected function resolveComponentAttributeStringContent(ComponentForReportForm $componentForm)
         {
-            $attributeAndRelationData = $orderBy->getAttributeAndRelationData();
+            $attributeAndRelationData = $componentForm->getAttributeAndRelationData();
             if(!is_array($attributeAndRelationData))
             {
-                return $this->resolveSortAttributeColumnNameAndOrderForNonNestedAttribute($orderBy);
+                return $this->resolveComponentAttributeStringContentForNonNestedAttribute($componentForm);
             }
             elseif(count($attributeAndRelationData) > 1)
             {
-                return $this->resolveSortAttributeColumnNameAndOrderForNestedAttribute($orderBy);
+                return $this->resolveComponentAttributeStringContentForNestedAttribute($componentForm);
             }
             else
             {
@@ -72,31 +60,29 @@
             }
         }
 
-        protected function resolveSortAttributeColumnNameAndOrderForNonNestedAttribute(OrderByForReportForm $orderBy)
+        protected function resolveComponentAttributeStringContentForNonNestedAttribute(ComponentForReportForm $componentForm)
         {
-            $attribute                           = $orderBy->getAttributeAndRelationData();
+            $attribute                           = $componentForm->getAttributeAndRelationData();
             $modelToReportAdapter                = ModelRelationsAndAttributesToReportAdapter::make(
-                                                   $orderBy->getModuleClassName(),
-                                                   $orderBy->getModelClassName(), $orderBy->getReportType());
+                $componentForm->getModuleClassName(),
+                $componentForm->getModelClassName(), $componentForm->getReportType());
             $modelAttributeToDataProviderAdapter = $this->makeModelAttributeToDataProviderAdapter(
-                                                   $modelToReportAdapter, $attribute);
-            $content                             = ModelDataProviderUtil::resolveSortAttributeColumnName(
-                                                   $modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
-            return $content . ' ' . $orderBy->order;
+                $modelToReportAdapter, $attribute);
+            return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $componentForm);
         }
 
-        protected function resolveSortAttributeColumnNameAndOrderForNestedAttribute(OrderByForReportForm $orderBy)
+        protected function resolveComponentAttributeStringContentForNestedAttribute(ComponentForReportForm $componentForm)
         {
-            $attributeAndRelationData = $orderBy->getAttributeAndRelationData();
+            $attributeAndRelationData = $componentForm->getAttributeAndRelationData();
             $count                    = 0;
-            $moduleClassName          = $orderBy->getModuleClassName();
-            $modelClassName           = $orderBy->getModelClassName();
+            $moduleClassName          = $componentForm->getModuleClassName();
+            $modelClassName           = $componentForm->getModelClassName();
             $onTableAliasName         = null;
             $startingModelClassName   = null;
             foreach($attributeAndRelationData as $key => $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                        make($moduleClassName, $modelClassName, $orderBy->getReportType());
+                                        make($moduleClassName, $modelClassName, $componentForm->getReportType());
                 if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
@@ -145,14 +131,11 @@
                 $count ++;
             }
             $modelToReportAdapter                 = ModelRelationsAndAttributesToReportAdapter::
-                                                    make($moduleClassName, $modelClassName, $orderBy->getReportType());
+                                                    make($moduleClassName, $modelClassName, $componentForm->getReportType());
             $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
                                                     $modelToReportAdapter, $attribute);
             $modelAttributeToDataProviderAdapter->setCastingHintStartingModelClassName($startingModelClassName);
-            $content                              = ModelDataProviderUtil::resolveSortAttributeColumnName(
-                                                    $modelAttributeToDataProviderAdapter, $this->joinTablesAdapter,
-                                                    $onTableAliasName);
-            return $content . ' ' . $orderBy->order;
+            return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $componentForm, $onTableAliasName);
         }
 
         protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)

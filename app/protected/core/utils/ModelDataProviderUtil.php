@@ -84,6 +84,48 @@
         }
 
         /**
+         * If the $onTableAliasName is used (not null):
+         * Special use of group by attribute resolution. If you are resolving a group by attribute against a relation then
+         * the joins must utilize a left join in the case of casting up.  Does not support when the attribute is a
+         * relation itself as this expects any relation processing to be done before this is called.
+         *
+         * @param RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null | string $onTableAliasName
+         * @return string
+         * @throws NotSupportedException
+         */
+        public static function resolveGroupByAttributeColumnName(RedBeanModelAttributeToDataProviderAdapter
+                                                                 $modelAttributeToDataProviderAdapter,
+                                                                 RedBeanModelJoinTablesQueryAdapter
+                                                                 $joinTablesAdapter,
+                                                                 $onTableAliasName = null)
+        {
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
+            $builder        = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+            $tableAliasName = $builder->resolveJoins($onTableAliasName, self::resolveCanUseFromJoins($onTableAliasName));
+            if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            {
+                $resolvedGroupByColumnName = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
+            }
+            else
+            {
+                $resolvedGroupByColumnName = $modelAttributeToDataProviderAdapter->getColumnName();
+            }
+            return self::resolveGroupByColumnNameString($tableAliasName, $resolvedGroupByColumnName);
+        }
+
+        protected static function resolveGroupByColumnNameString($tableAliasName, $resolvedSortColumnName)
+        {
+            assert('is_string($tableAliasName)');
+            assert('is_string($resolvedSortColumnName)');
+            $groupBy  = DatabaseCompatibilityUtil::quoteString($tableAliasName);
+            $groupBy .= '.';
+            $groupBy .= DatabaseCompatibilityUtil::quoteString($resolvedSortColumnName);
+            return $groupBy;
+        }
+
+        /**
          * Override from RedBeanModelDataProvider to support multiple
          * where clauses for the same attribute and operatorTypes
          * @param $modelClassName
@@ -184,7 +226,7 @@
             $builder                             = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter,
                                                                                 $joinTablesAdapter, true);
             $builder->resolveJoins(null, false);
-            $relationModelClassName = $modelAttributeToDataProviderAdapter->getRelationModelClassName();
+            $relationModelClassName              = $modelAttributeToDataProviderAdapter->getRelationModelClassName();
             //if there is no more relatedModelData then we know this is the end of the nested information.
             if (isset($clauseInformation['relatedModelData']['relatedModelData']))
             {
@@ -194,8 +236,6 @@
             //Supporting the use of relatedAttributeName. Alternatively you can use relatedModelData to produce the same results.
             if (isset($clauseInformation['relatedModelData']['relatedAttributeName']))
             {
-                //Two adapters are created, because the first adapter gives us the proper modelClassName
-                //to use when using relatedAttributeName
                 $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
                                                            $relationModelClassName,
                                                            $clauseInformation['relatedModelData']['attributeName'],

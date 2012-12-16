@@ -24,27 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class QueryBuilderDocumentationTest extends ZurmoBaseTest
+    /**
+     * Create the query string part for the SQL group by
+     */
+    class GroupBysReportQueryBuilder extends ReportQueryBuilder
     {
-        public static function setUpBeforeClass()
+        public function makeQueryContent(Array $components)
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            $content = null;
+            foreach($components as $groupBy)
+            {
+                $groupByContent = $this->resolveComponentAttributeStringContent($groupBy);
+                if($content != null)
+                {
+                    $content .= ', ';
+                }
+                $content       .= $groupByContent;
+            }
+            return $content;
         }
 
-        public function setup()
+        protected function resolveComponentAttributeStringContent(ComponentForReportForm $componentForm)
         {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
+            assert('$componentForm instanceof GroupByForReportForm');
+            return parent::resolveComponentAttributeStringContent($componentForm);
         }
 
-        public function testSomething()
+        protected function resolveFinalContent($modelAttributeToDataProviderAdapter,
+                                               ComponentForReportForm $componentForm, $onTableAliasName = null)
         {
-            //This class should serve as documentation for all various scenarios that occur in the various builders
-            //Additionally deeper nesting should be tested for all scenarios. In OrderBysReportQueryBuilderTest we are not
-            //testing beyond one layer deep and we should in this class.
-            //Also test when existing filters have nestings and you are getting orderBys or groupBys generated.
+            return ModelDataProviderUtil::resolveSortAttributeColumnName(
+                   $modelAttributeToDataProviderAdapter, $this->joinTablesAdapter, $onTableAliasName);
         }
-
     }
 ?>
