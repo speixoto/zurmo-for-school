@@ -59,10 +59,9 @@
                                 $this->getHelperValue(),
                                 $dropDownArray,
                                 $htmlOptions);
-            $content      .= '&#160;';
             $htmlOptions   = array(
                                 'id'       => $inputId,
-                                'readonly' => $this->getReadOnlyValue());
+                                'class'    => $this->resolveInputClassDisabled());
             $content      .= $this->form->textField($this->model, $this->attribute, $htmlOptions);
             return $content;
         }
@@ -100,8 +99,7 @@
             if ($policyDefault != null)
             {
                 $title    = Yii::t('Default', 'The default value is {policyDefault}', array('{policyDefault}' => $policyDefault));
-                $content  = '<span class="tooltip policy-default-tooltip" title="' . $title . '">';
-                $content .= '?</span>';
+                $content  = '<span class="tooltip policy-default-tooltip" title="' . $title . '">?</span>';
                 $qtip     = new ZurmoTip();
                 $qtip->addQTip(".policy-default-tooltip");
                 return $content;
@@ -144,12 +142,12 @@
             return $helperValue;
         }
 
-        protected function getReadOnlyValue()
+        protected function resolveInputClassDisabled()
         {
             if ($this->model->{$this->attribute} == null &&
             $this->getHelperValue() != PolicyIntegerAndStaticDropDownElement::HELPER_DROPDOWN_VALUE_YES)
             {
-                return 'readonly';
+                return 'disabled';
             }
             return null;
         }

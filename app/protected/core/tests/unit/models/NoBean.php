@@ -36,7 +36,7 @@
          */
         public static function getCanHaveBean()
         {
-            if(get_called_class() == 'NoBean')
+            if (get_called_class() == 'NoBean')
             {
                 return self::$canHaveBean;
             }

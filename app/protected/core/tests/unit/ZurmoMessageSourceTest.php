@@ -34,19 +34,19 @@
         protected static $testCategory = 'test';
 
         protected static $testMessages = array(
-                                    'message1-source'=>'message1-translation',
-                                    'message2-source'=>'message2-translation',
-                                    'message3-source'=>'message3-translation',
-                                    'message4-source'=>'message4-translation',
-                                    'message5-source'=>'message5-translation',
-                                    'message6-source'=>'message6-translation'
+                                    'message1-source' => 'message1-translation',
+                                    'message2-source' => 'message2-translation',
+                                    'message3-source' => 'message3-translation',
+                                    'message4-source' => 'message4-translation',
+                                    'message5-source' => 'message5-translation',
+                                    'message6-source' => 'message6-translation'
         );
 
         public static function setupBeforeClass()
         {
             parent::setUpBeforeClass();
 
-            foreach (self::$testMessages as $source=>$translation)
+            foreach (self::$testMessages as $source => $translation)
             {
                 $sourceModel = MessageSource::addNewSource(
                                                            self::$testCategory,
@@ -64,7 +64,7 @@
         {
             $messageSource = new ZurmoMessageSource();
 
-            foreach (self::$testMessages as $source=>$compareTranslation)
+            foreach (self::$testMessages as $source => $compareTranslation)
             {
                 $translation = $messageSource->translate(
                                                          self::$testCategory,
