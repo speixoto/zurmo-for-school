@@ -30,7 +30,7 @@
         const MOBILE      = 'Mobile';
         const TABLET      = 'Tablet';
         const DESKTOP     = 'Desktop';
-        const DEFAULT_USER_INTERFACE_COOKIE_NAME  = "UserInterfaceType";
+        const DEFAULT_USER_INTERFACE_COOKIE_NAME  = "DefaultUserInterfaceType";
         const SELECTED_USER_INTERFACE_COOKIE_NAME = "UserInterfaceType";
 
         protected $defaultUserInterfaceType   = null;
@@ -38,19 +38,21 @@
 
         public function init()
         {
-            $this->setType();
             $this->setDefaultUserInterfaceType();
+            $this->setSelectedUserInterfaceType();
         }
 
         /**
-         * Get user interface type
-         * @return string
+         * Get selected user interface type
          */
-        public function getType()
+        public function getSelectedUserInterfaceType()
         {
             return $this->selectedUserInterfaceType;
         }
 
+        /**
+         * Get default user interface type
+         */
         public function getDefaultUserInterfaceType()
         {
             return $this->defaultUserInterfaceType;
@@ -77,13 +79,16 @@
         }
 
         /**
-         * Set interface type.
-         * User can set different interface type, no matter of device he is using.
+         * Set interface type, selected by user
+         * For example if user is using mobile device, he should be able to switch to desktop interface.
+         * If user is using desktop interface, there are no sense to switch to mobile interface, except is user is using
+         * mobile device and selected desktop interface.
+         * Same ideas are implemented tor tablet devices.
          * @param $userInterfaceType
          */
-        public function setType($userInterfaceType = null)
+        public function setSelectedUserInterfaceType($userInterfaceType = null)
         {
-            if (!isset(Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME]))
+            if (!isset(Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME]) || isset($userInterfaceType))
             {
                 if (!isset($userInterfaceType))
                 {

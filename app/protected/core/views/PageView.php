@@ -63,6 +63,7 @@
                        $this->renderXHtmlHead()      .
                        $this->renderXHtmlBodyStart() .
                        parent::render()              .
+                       $this->renderInterfaceTypeSelector() .
                        $this->renderXHtmlBodyEnd()   .
                        $this->renderXHtmlEnd();
             Yii::app()->getClientScript()->render($content);
@@ -329,25 +330,35 @@
          */
         protected function renderXHtmlBodyEnd()
         {
+            return '</body>';
+        }
+
+        /**
+         * Render section for selection user interface type.
+         * Show only if user is using mobile and tablet devices.
+         */
+        protected function renderInterfaceTypeSelector()
+        {
+            $content = '';
             if (Yii::app()->userInterface->getDefaultUserInterfaceType() != UserInterface::DESKTOP)
             {
-                if (Yii::app()->userInterface->getType() == UserInterface::DESKTOP)
+                if (Yii::app()->userInterface->getSelectedUserInterfaceType() == UserInterface::DESKTOP)
                 {
                     if (Yii::app()->userInterface->getDefaultUserInterfaceType() == UserInterface::MOBILE)
                     {
-                        echo "<a href='#' >Show mobile</a>";
+                        $content = ZurmoHtml::link(Yii::t('Default', 'Show mobile'), Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::MOBILE)));
                     }
                     elseif (Yii::app()->userInterface->getDefaultUserInterfaceType() == UserInterface::TABLET)
                     {
-                        echo "<a href='#' >Show tablet</a>";
+                        $content = ZurmoHtml::link(Yii::t('Default', 'Show tablet'), Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::TABLET)));
                     }
                 }
                 else
                 {
-                    echo "<a href='#' >Show desktop</a>";
+                    $content = ZurmoHtml::link(Yii::t('Default', 'Show desktop'), Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::DESKTOP)));
                 }
             }
-            return '</body>';
+            return $content;
         }
 
         /**
