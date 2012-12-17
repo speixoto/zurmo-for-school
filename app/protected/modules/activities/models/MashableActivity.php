@@ -42,7 +42,7 @@
          */
         public static function getCanHaveBean()
         {
-            if(get_called_class() == 'MashableActivity')
+            if (get_called_class() == 'MashableActivity')
             {
                 return self::$canHaveBean;
             }

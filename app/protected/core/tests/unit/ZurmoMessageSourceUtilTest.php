@@ -40,24 +40,25 @@
         protected static $testMessageUpdatedTranslation = 'messageUtilOne-updatedTranslation';
 
         protected static $testMessagesNew = array(
-                    'messageUtil1-source'=>'messageUtil1-translation',
-                    'messageUtil2-source'=>'messageUtil2-translation',
-                    'messageUtil3-source'=>'messageUtil3-translation',
-                    'messageUtil4-source'=>'messageUtil4-translation',
-                    'messageUtil5-source'=>'messageUtil5-translation',
-                    'messageUtil6-source'=>'messageUtil6-translation'
+                    'messageUtil1-source' => 'messageUtil1-translation',
+                    'messageUtil2-source' => 'messageUtil2-translation',
+                    'messageUtil3-source' => 'messageUtil3-translation',
+                    'messageUtil4-source' => 'messageUtil4-translation',
+                    'messageUtil5-source' => 'messageUtil5-translation',
+                    'messageUtil6-source' => 'messageUtil6-translation'
         );
 
         protected static $testMessagesUpdated = array(
-                    'messageUtil1-source'=>'messageUtil1-updatedTranslation',
-                    'messageUtil2-source'=>'messageUtil2-updatedTranslation',
-                    'messageUtil3-source'=>'messageUtil3-updatedTranslation',
-                    'messageUtil4-source'=>'messageUtil4-updatedTranslation',
-                    'messageUtil5-source'=>'messageUtil5-updatedTranslation',
-                    'messageUtil6-source'=>'messageUtil6-updatedTranslation'
+                    'messageUtil1-source' => 'messageUtil1-updatedTranslation',
+                    'messageUtil2-source' => 'messageUtil2-updatedTranslation',
+                    'messageUtil3-source' => 'messageUtil3-updatedTranslation',
+                    'messageUtil4-source' => 'messageUtil4-updatedTranslation',
+                    'messageUtil5-source' => 'messageUtil5-updatedTranslation',
+                    'messageUtil6-source' => 'messageUtil6-updatedTranslation'
         );
 
-        public function testImportOneMessageNew() {
+        public function testImportOneMessageNew()
+        {
             ZurmoMessageSourceUtil::importOneMessage(
                                                 self::$testLanguageCode,
                                                 self::$testCategory,
@@ -79,7 +80,8 @@
         /**
          * @depends testImportOneMessageNew
          */
-        public function testImportOneMessageUpdated() {
+        public function testImportOneMessageUpdated()
+        {
             ZurmoMessageSourceUtil::importOneMessage(
                                             self::$testLanguageCode,
                                             self::$testCategory,
@@ -108,10 +110,10 @@
                                                         self::$testCategory,
                                                         self::$testMessagesNew
                                                         );
-            
+
             $messageSource = new ZurmoMessageSource();
 
-            foreach (self::$testMessagesNew as $source=>$compareTranslation)
+            foreach (self::$testMessagesNew as $source => $compareTranslation)
             {
                 $translation = $messageSource->translate(
                                                          self::$testCategory,
@@ -132,10 +134,10 @@
                                                         self::$testCategory,
                                                         self::$testMessagesUpdated
                                                         );
-            
+
             $messageSource = new ZurmoMessageSource();
 
-            foreach (self::$testMessagesUpdated as $source=>$compareTranslation)
+            foreach (self::$testMessagesUpdated as $source => $compareTranslation)
             {
                 $translation = $messageSource->translate(
                                                          self::$testCategory,
@@ -160,8 +162,10 @@
 
             $messageSource = new ZurmoMessageSource();
 
-            foreach ($contexts as $category=>$messages) {
-                foreach ($messages as $source=>$compareTranslation) {
+            foreach ($contexts as $category => $messages)
+            {
+                foreach ($messages as $source => $compareTranslation)
+                {
                     $translation = $messageSource->translate(
                                                   $category,
                                                   $source,

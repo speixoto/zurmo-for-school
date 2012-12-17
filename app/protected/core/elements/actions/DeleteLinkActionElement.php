@@ -43,7 +43,7 @@
                 $htmlOptions = $this->getHtmlOptions();
                 $htmlOptions = $this->resolveConfirmAlertInHtmlOptions($htmlOptions);
                 return ZurmoHtml::link(
-                    $this->getLabel(),
+                    $this->resolveLabelAndWrap(),
                     $this->route,
                     $htmlOptions
                 );

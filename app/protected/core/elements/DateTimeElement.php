@@ -48,6 +48,7 @@
                 'htmlOptions' => array(
                     'id'              => $this->getEditableInputId(),
                     'name'            => $this->getEditableInputName(),
+                    'disabled'        => $this->getDisabledValue(),
                     'style'           => 'position:relative;z-index:10000;'
                 ),
                 'options'    => array(
@@ -56,8 +57,6 @@
                     'hourText'        => Zurmo::t('Core', 'Hour'),
                     'minuteText'      => Zurmo::t('Core', 'Minute'),
                     'secondText'      => Zurmo::t('Core', 'Second'),
-                    'currentText'     => Zurmo::t('Core', 'Now'),
-                    'closeText'       => Zurmo::t('Core', 'Done'),
                     'showOn'          => 'both',
                     'buttonImageOnly' => false,
                     'buttonText'      => ZurmoHtml::tag('span', array(), '<!--Date-->'),

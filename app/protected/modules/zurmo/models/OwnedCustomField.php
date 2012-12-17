@@ -51,7 +51,7 @@
          */
         public static function getCanHaveBean()
         {
-            if(get_called_class() == 'OwnedCustomField')
+            if (get_called_class() == 'OwnedCustomField')
             {
                 return self::$canHaveBean;
             }

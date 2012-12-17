@@ -52,7 +52,8 @@
 
         protected function renderContent()
         {
-            $params             = array('label' => $this->getCreateLinkDisplayLabel());
+            $label              = $this->getCreateLinkDisplayLabel();
+            $params             = array('htmlOptions' => array('class' => 'z-button green-button'), 'label' => $label);
             $createLinkElement  = new CreateLinkActionElement($this->controllerId, $this->moduleId, null, $params);
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();

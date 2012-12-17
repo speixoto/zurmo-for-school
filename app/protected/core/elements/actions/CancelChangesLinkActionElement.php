@@ -35,7 +35,10 @@
             {
                 return Zurmo::t('Core', 'Cancel Changes');
             }
-            return Zurmo::t('Core', 'Cancel');
+            else
+            {
+                return Zurmo::t('Core', 'Cancel');
+            }
         }
     }
 ?>

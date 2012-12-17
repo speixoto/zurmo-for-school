@@ -35,7 +35,7 @@
             assert('is_string($partialTerm)');
             assert('$module::getGlobalSearchFormClassName() != null');
             $metadata                   = $module::getMetadata();
-            if(null == $globalSearchAttributeNames = $metadata['global']['globalSearchAttributeNames'])
+            if (null == $globalSearchAttributeNames = $metadata['global']['globalSearchAttributeNames'])
             {
                 return array();
             }

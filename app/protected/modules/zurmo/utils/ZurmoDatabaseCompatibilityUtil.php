@@ -631,6 +631,7 @@
         // MySQL functions cannot be recursive so we have
         // to do recursive functions with procedures.
 
+        // Begin Not Coding Standard
         private static $storedProcedures = array(
 
             // Users - Rights
@@ -1544,6 +1545,7 @@
             end;',
         );
 
+        // End Not Coding Standard
         public static function callFunction($sql)
         {
             try
@@ -1744,7 +1746,7 @@
                             }
                         }
                     }
-                    $columnsString = implode(",", $columns);
+                    $columnsString = implode(",", $columns); // Not Coding Standard
                     R::exec("ALTER TABLE $tableName  ADD  UNIQUE INDEX $indexName ($columnsString);");
                 }
                 catch (Exception $e)

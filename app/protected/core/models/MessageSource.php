@@ -67,8 +67,8 @@
                                $tableName,
                                ' category = :category AND source = :source',
                                array(
-                                     ':category'=>$category,
-                                     ':source'=>$source
+                                     ':category' => $category,
+                                     ':source'   => $source
                                      )
                                );
             assert('$bean === false || $bean instanceof RedBean_OODBBean');

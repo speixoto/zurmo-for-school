@@ -55,22 +55,28 @@
                 return false;
             }
 
-            try {
+            try
+            {
                 $sourceModel = MessageSource::getByCategoryAndSource(
                                                                      $category,
                                                                      $source
                                                                     );
-            } catch (NotFoundException $e) {
+            }
+            catch (NotFoundException $e)
+            {
                 $sourceModel = MessageSource::addNewSource($category, $source);
             }
 
-            try {
+            try
+            {
                 $translationModel = MessageTranslation::getBySourceIdAndLangCode(
                                         $sourceModel->id,
                                         $languageCode
                                     );
                 $translationModel->updateTranslation($translation);
-            } catch (NotFoundException $e) {
+            }
+            catch (NotFoundException $e)
+            {
                 $translationModel = MessageTranslation::addNewTranslation(
                                         $languageCode,
                                         $sourceModel,
@@ -92,7 +98,6 @@
          */
         public static function importMessagesArray($languageCode, $category, $messages)
         {
-            
             assert('is_string($languageCode) && !empty($languageCode)');
             assert('is_string($category) && !empty($category)');
             assert('is_array($messages) && !empty($messages)');
@@ -105,7 +110,7 @@
                 return false;
             }
 
-            foreach ($messages as $source=>$translation)
+            foreach ($messages as $source => $translation)
             {
                 self::importOneMessage(
                                        $languageCode,
@@ -126,7 +131,8 @@
          *
          * @return Boolean Status of the import
          */
-        public static function importPoFile($languageCode, $messageFile) {
+        public static function importPoFile($languageCode, $messageFile)
+        {
             assert('is_string($languageCode) && !empty($languageCode)');
             if (!is_string($languageCode) || empty($languageCode))
             {
@@ -136,7 +142,7 @@
             $file = new ZurmoGettextPoFile();
             $contexts = $file->loadWithContext($messageFile);
 
-            foreach ($contexts as $context=>$messages)
+            foreach ($contexts as $context => $messages)
             {
                 self::importMessagesArray($languageCode, $context, $messages);
             }
