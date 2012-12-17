@@ -1166,7 +1166,7 @@
          */
         public function __toString()
         {
-            return Yii::t('Default', '(None)');
+            return Zurmo::t('Core', '(None)');
         }
 
         /**

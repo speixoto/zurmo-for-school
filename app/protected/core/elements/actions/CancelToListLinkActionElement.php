@@ -33,7 +33,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Return to List');
+            return Zurmo::t('Core', 'Return to List');
         }
 
         protected function getDefaultRoute()
