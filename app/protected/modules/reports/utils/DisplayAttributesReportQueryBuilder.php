@@ -103,31 +103,21 @@
             assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
             assert('$componentForm instanceof DisplayAttributeForReportForm');
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-
-
-
-                //todo: When we cast down... we don't always cast down all the way which means the $onTableAliasName coming
-                //todo: into resolveDisplayAttributeColumnName is not always the correct tableAlias to use
-                //todo: So this has to be dealt with accordingly. and tested accordingly.  Currently inferred/derived relation tests
-                //todo: should fail since it wil show select like ownedsecurableitem.id which is wrong.
-
-
-
             $modelToReportAdapter           = ModelRelationsAndAttributesToReportAdapter::make(
                                               $componentForm->getModuleClassName(),
                                               $componentForm->getModelClassName(),
                                               $componentForm->getReportType());
+            $tableAliasName                 = $builder->resolveJoins($onTableAliasName,
+                                              ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
             if(static::isDisplayAttributeMadeViaSelect($componentForm))
             {
                 if(!$modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter)
                 {
                     throw new NotSupportedException();
                 }
-                $tableAliasName = $builder->resolveJoins($onTableAliasName,
-                                  ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
                 $modelToReportAdapter->resolveDisplayAttributeTypeAndAddSelectClause(
                                   $this->selectQueryAdapter,
-                                  $componentForm->attributeIndexOrDerivedType,
+                                  $componentForm->getResolvedAttribute(),
                                   $tableAliasName,
                                   $this->resolveColumnName($modelAttributeToDataProviderAdapter),
                                   $componentForm->columnAliasName);
@@ -199,8 +189,18 @@
             {
                 return false;
             }
+            if($modelAttributeToDataProviderAdapter instanceof
+               DerivedRelationViaCastedUpRedBeanModelAttributeToDataProviderAdapter)
+            {
+                return false;
+            }
+            elseif($modelAttributeToDataProviderAdapter instanceof
+                   InferredRedBeanModelAttributeToDataProviderAdapter)
+            {
+                return false;
+            }
             //If casted up non-relation
-            if($modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel() &&
+            elseif($modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel() &&
                !$modelAttributeToDataProviderAdapter->isRelation())
             {
                 return true;
@@ -226,13 +226,24 @@
                                     $componentForm->getModuleClassName(),
                                     $componentForm->getModelClassName(),
                                     $componentForm->getReportType());
-            if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($componentForm->attributeIndexOrDerivedType))
+            if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($componentForm->getResolvedAttribute()))
             {
                 return true;
             }
             else
             {
                 return false;
+            }
+        }
+
+        protected function resolveCastingHintForAttribute(ComponentForReportForm  $componentForm,
+                                                          $modelAttributeToDataProviderAdapter, $modelClassName,
+                                                          $realAttributeName)
+        {
+            if(static::isDisplayAttributeMadeViaSelect($componentForm))
+            {
+                return parent::resolveCastingHintForAttribute($componentForm, $modelAttributeToDataProviderAdapter,
+                                                              $modelClassName, $realAttributeName);
             }
         }
     }

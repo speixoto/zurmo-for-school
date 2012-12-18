@@ -36,8 +36,9 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+            DisplayAttributeForReportForm::resetCount();
         }
-/**
+
         public function testNonRelatedNonDerivedAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
@@ -261,7 +262,7 @@
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
-**/
+
 
         public function testDisplayCalculationAttributes()
         {
@@ -299,7 +300,7 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                Report::TYPE_SUMMATION);
+                                                     Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Maximum';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
             $this->assertEquals("select max({$q}item{$q}.{$q}createddatetime{$q}) col0 ", $content);
@@ -313,7 +314,7 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                Report::TYPE_SUMMATION);
+                                                     Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'integer__Average';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
             $this->assertEquals("select avg({$q}reportmodeltestitem{$q}.{$q}integer{$q}) col0 ", $content);
@@ -327,7 +328,7 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                Report::TYPE_SUMMATION);
+                                                     Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'integer__Summation';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
             $this->assertEquals("select sum({$q}reportmodeltestitem{$q}.{$q}integer{$q}) col0 ", $content);
@@ -341,24 +342,174 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                Report::TYPE_SUMMATION);
+                                                     Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Day';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
             $this->assertEquals("select day({$q}item{$q}.{$q}createddatetime{$q}) col0 ", $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            DisplayAttributeForReportForm::resetCount();
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //A single display attribute that is casted up several levels
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Week';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $this->assertEquals("select week({$q}item{$q}.{$q}createddatetime{$q}) col0 ", $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            DisplayAttributeForReportForm::resetCount();
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //A single display attribute that is casted up several levels
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Month';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $this->assertEquals("select month({$q}item{$q}.{$q}createddatetime{$q}) col0 ", $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            DisplayAttributeForReportForm::resetCount();
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //A single display attribute that is casted up several levels
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Quarter';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $this->assertEquals("select quarter({$q}item{$q}.{$q}createddatetime{$q}) col0 ", $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            DisplayAttributeForReportForm::resetCount();
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //A single display attribute that is casted up several levels
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Year';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $this->assertEquals("select year({$q}item{$q}.{$q}createddatetime{$q}) col0 ", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testDisplayCalculationMoreThanOneAttribute()
         {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //A single display attribute that is casted up several levels
+            $joinTablesAdapter                     =  new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    =  new RedBeanModelSelectQueryAdapter();
+            $builder                               =  new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      =  new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'Count';
+            $displayAttribute2                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'createdDateTime__Minimum';
+            $displayAttribute3                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute3->attributeIndexOrDerivedType  = 'createdDateTime__Maximum';
+            $displayAttribute4                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute4->attributeIndexOrDerivedType  = 'integer__Average';
+            $displayAttribute5                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute5->attributeIndexOrDerivedType  = 'integer__Summation';
+            $displayAttribute6                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute6->attributeIndexOrDerivedType  = 'createdDateTime__Day';
+            $displayAttribute7                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute7->attributeIndexOrDerivedType  = 'createdDateTime__Week';
+            $displayAttribute8                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute8->attributeIndexOrDerivedType  = 'createdDateTime__Month';
+            $displayAttribute9                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute9->attributeIndexOrDerivedType  = 'createdDateTime__Quarter';
+            $displayAttribute10                     = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute10->attributeIndexOrDerivedType  = 'createdDateTime__Year';
 
+            $content = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3,
+                                                        $displayAttribute4, $displayAttribute5, $displayAttribute6,
+                                                        $displayAttribute7, $displayAttribute8, $displayAttribute9,
+                                                        $displayAttribute10));
+            $compareContent  = "select count({$q}reportmodeltestitem{$q}.{$q}id{$q}) col0, ";
+            $compareContent .= "min({$q}item{$q}.{$q}createddatetime{$q}) col1, ";
+            $compareContent .= "max({$q}item{$q}.{$q}createddatetime{$q}) col2, ";
+            $compareContent .= "avg({$q}reportmodeltestitem{$q}.{$q}integer{$q}) col3, ";
+            $compareContent .= "sum({$q}reportmodeltestitem{$q}.{$q}integer{$q}) col4, ";
+            $compareContent .= "day({$q}item{$q}.{$q}createddatetime{$q}) col5, ";
+            $compareContent .= "week({$q}item{$q}.{$q}createddatetime{$q}) col6, ";
+            $compareContent .= "month({$q}item{$q}.{$q}createddatetime{$q}) col7, ";
+            $compareContent .= "quarter({$q}item{$q}.{$q}createddatetime{$q}) col8, ";
+            $compareContent .= "year({$q}item{$q}.{$q}createddatetime{$q}) col9 ";
+
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
-        public function testDisplayCalculationAttributesThatAreNested()
+
+        public function testASingleDisplayCalculationAttributesThatIsNested()
         {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //A single display attribute that is casted up several levels
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'hasOne___createdDateTime__Maximum';
+
+            $content        = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent = "select max({$q}item{$q}.{$q}createddatetime{$q}) col0 ";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testMultipleDisplayCalculationAttributesThatAreNested()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            //A single display attribute that is casted up several levels
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'hasOne___Count';
+            $displayAttribute2                     = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'createdDateTime__Minimum';
+            $displayAttribute3                     = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute3->attributeIndexOrDerivedType  = 'hasOne___createdDateTime__Maximum';
+
+            $content = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
+            $compareContent  = "select count({$q}reportmodeltestitem2{$q}.{$q}id{$q}) col0, ";
+            $compareContent .= "min({$q}item{$q}.{$q}createddatetime{$q}) col1, ";
+            $compareContent .= "max({$q}item1{$q}.{$q}createddatetime{$q}) col2 ";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
 
         }
-/**
+
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAHasOneRelation()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
@@ -367,18 +518,18 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
-            $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $displayAttribute2                     = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} desc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem2{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAHasManyRelation()
@@ -389,18 +540,18 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
-            $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $displayAttribute2                     = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} desc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem3{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAHasManyBelongsToRelation()
@@ -411,18 +562,18 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                      = new DisplayAttributeForReportForm('AccountsModule', 'Account',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
-            $displayAttribute2                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute2                     = new DisplayAttributeForReportForm('AccountsModule', 'Account',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'account___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} desc";
+            $compareContent  = "select {$q}account{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}account1{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAManyManyRelation()
@@ -440,11 +591,11 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany1___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} desc";
+            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithBothOnAHasOneRelation()
@@ -462,11 +613,10 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item{$q}.{$q}modifieddatetime{$q} desc";
+            $compareContent  = "select {$q}reportmodeltestitem2{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithBothOnAHasManyRelation()
@@ -484,11 +634,10 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item{$q}.{$q}modifieddatetime{$q} desc";
+            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithBothOnAHasManyBelongsToRelation()
@@ -506,11 +655,10 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item{$q}.{$q}modifieddatetime{$q} desc";
+            $compareContent  = "select {$q}account1{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithBothOnAManyManyRelation()
@@ -528,11 +676,10 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany1___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item{$q}.{$q}modifieddatetime{$q} desc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testThreeNonRelatedNonDerivedCastedUpAttributeWithTwoOnAHasOneRelationAndOneOnSelf()
@@ -544,21 +691,20 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'modifiedDateTime';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___createdDateTime';
             $displayAttribute3                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'hasOne___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent                        = "{$q}item{$q}.{$q}modifieddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}modifieddatetime{$q} desc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem2{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testThreeNonRelatedNonDerivedCastedUpAttributeWithTwoOnAHasManyRelationAndOneOnSelf()
@@ -570,21 +716,20 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'modifiedDateTime';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany___createdDateTime';
             $displayAttribute3                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'hasMany___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent                        = "{$q}item{$q}.{$q}modifieddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}modifieddatetime{$q} desc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem3{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testThreeNonRelatedNonDerivedCastedUpAttributeWithTwoOnAHasManyBelongsToRelationAndOneOnSelf()
@@ -596,21 +741,20 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
             $displayAttribute2                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'account___createdDateTime';
             $displayAttribute3                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} desc, " .
-                                                     "{$q}item1{$q}.{$q}modifieddatetime{$q} desc";
+            $compareContent  = "select {$q}account{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}account1{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testThreeNonRelatedNonDerivedCastedUpAttributeWithTwoOnAManyManyRelationAndOneOnSelf()
@@ -622,21 +766,21 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'modifiedDateTime';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany1___createdDateTime';
             $displayAttribute3                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'hasMany1___modifiedDateTime';
-            $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent                        = "{$q}item{$q}.{$q}modifieddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}createddatetime{$q} asc, " .
-                                                     "{$q}item1{$q}.{$q}modifieddatetime{$q} desc";
+            $content                                        = $builder->makeQueryContent(array($displayAttribute,
+                                                              $displayAttribute2, $displayAttribute3));
+            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoCustomFieldsWhenOneIsOnRelatedModelAndOneIsOnSelf()
@@ -648,17 +792,17 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'dropDown';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___dropDown';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                                                     "{$q}customfield1{$q}.{$q}value{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModelButDifferentRelations()
@@ -671,20 +815,18 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'hasOne___dropDown';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany___dropDown';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                                                     "{$q}customfield1{$q}.{$q}value{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem1{$q}.{$q}id{$q} ";
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('reportmodeltestitem1', $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem1', $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoCustomFieldsWhenBothAreOnRelatedModelsThatAreDifferent()
@@ -696,23 +838,19 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'hasOne___dropDown';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne2___dropDownX';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                                                     "{$q}customfield1{$q}.{$q}value{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem8{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('reportmodeltestitem', $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem', $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('reportmodeltestitem8', $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem8', $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModel()
@@ -730,11 +868,10 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___dropDown2';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                                                     "{$q}customfield1{$q}.{$q}value{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testDynamicallyDerivedAttributeOnSelf()
@@ -751,18 +888,13 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'modifiedByUser__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('_user',   $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('_user',   $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
             //2 __User attributes on the same model, one is owned, so not originating both from Item
+            DisplayAttributeForReportForm::resetCount();
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
@@ -773,17 +905,10 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'owner__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('_user',               $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('_user',               $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('_user1',              $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('ownedsecurableitem',  $leftTablesAndAliases[2]['onTableAliasName']);
-            $this->assertEquals('_user1',              $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereSameAttribute()
@@ -794,22 +919,17 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdByUser__User';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___createdByUser__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('_user',   $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('_user',   $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[6]['tableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[7]['onTableAliasName']);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereDifferentAttributes()
@@ -826,25 +946,11 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q}, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('_user',                 $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('item',                  $leftTablesAndAliases[0]['onTableAliasName']);
-            $this->assertEquals('person',                $leftTablesAndAliases[1]['tableAliasName']);
-            $this->assertEquals('_user',                 $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('reportmodeltestitem',   $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem9',  $leftTablesAndAliases[2]['onTableAliasName']);
-            $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[3]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem',   $leftTablesAndAliases[3]['onTableAliasName']);
-            $this->assertEquals('_user1',                $leftTablesAndAliases[4]['tableAliasName']);
-            $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[4]['onTableAliasName']);
-            $this->assertEquals('person1',               $leftTablesAndAliases[5]['tableAliasName']);
-            $this->assertEquals('_user1',                $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testDynamicallyDerivedAttributeBothOnRelatedModelWhereDifferentAttributes()
@@ -861,29 +967,10 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q} asc, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q} asc";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('reportmodeltestitem',  $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem9', $leftTablesAndAliases[0]['onTableAliasName']);
-            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[1]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem',  $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[2]['onTableAliasName']);
-            $this->assertEquals('item',                 $leftTablesAndAliases[3]['tableAliasName']);
-            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
-            $this->assertEquals('_user',                $leftTablesAndAliases[4]['tableAliasName']);
-            $this->assertEquals('item',                 $leftTablesAndAliases[4]['onTableAliasName']);
-            $this->assertEquals('person',               $leftTablesAndAliases[5]['tableAliasName']);
-            $this->assertEquals('_user',                $leftTablesAndAliases[5]['onTableAliasName']);
-            $this->assertEquals('_user1',               $leftTablesAndAliases[6]['tableAliasName']);
-            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[6]['onTableAliasName']);
-            $this->assertEquals('person1',              $leftTablesAndAliases[7]['tableAliasName']);
-            $this->assertEquals('_user1',               $leftTablesAndAliases[7]['onTableAliasName']);
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testNestedRelationsThatComeBackOnTheBaseModel()
@@ -897,10 +984,8 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'contacts___opportunities___account___name';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                        = "{$q}account1{$q}.{$q}name{$q} asc";
+            $compareContent                        = "select {$q}account1{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -925,12 +1010,10 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType  = 'contacts___opportunities___account___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent                         = "{$q}opportunity{$q}.{$q}name{$q} asc, " .
-                                                      "{$q}opportunity1{$q}.{$q}name{$q} asc, " .
-                                                      "{$q}account1{$q}.{$q}name{$q} asc";
+            $compareContent                         = "select {$q}opportunity{$q}.{$q}id{$q}, " .
+                                                      "{$q}opportunity1{$q}.{$q}id{$q}, " .
+                                                      "{$q}account1{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -946,49 +1029,28 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'meetings___category';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('activity_id',    $leftTablesAndAliases[2]['tableJoinIdName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[2]['onTableAliasName']);
-            $this->assertEquals('customfield',    $leftTablesAndAliases[3]['tableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelTwo()
         {
+            //This test tests name instead of category which is an attribute on the meeting model.
             $q                                      = DatabaseCompatibilityUtil::getQuote();
 
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                                = new DisplayAttributeForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'meetings___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "{$q}meeting{$q}.{$q}name{$q} asc";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('activity_id',    $leftTablesAndAliases[2]['tableJoinIdName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[2]['onTableAliasName']);
         }
 
         public function testTwoAttributesDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModel()
@@ -996,32 +1058,19 @@
             $q                                      = DatabaseCompatibilityUtil::getQuote();
 
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                       = new DisplayAttributeForReportForm('AccountsModule', 'Account',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'meetings___category';
             $displayAttribute2                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'meetings___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                                                      "{$q}meeting{$q}.{$q}name{$q} asc";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('activity_id',    $leftTablesAndAliases[2]['tableJoinIdName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[2]['onTableAliasName']);
-            $this->assertEquals('customfield',    $leftTablesAndAliases[3]['tableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatDoesNotCastDown()
@@ -1029,13 +1078,13 @@
             $q                                      = DatabaseCompatibilityUtil::getQuote();
 
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
-            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $displayAttribute                       = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'model5ViaItem___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "{$q}reportmodeltestitem5{$q}.{$q}name{$q} asc";
+            $compareContent                         = "select {$q}reportmodeltestitem5{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1046,31 +1095,40 @@
             $q                                      = DatabaseCompatibilityUtil::getQuote();
             //Tests derivedRelation when going through a relation already before doing the derived relation
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                       = new DisplayAttributeForReportForm('AccountsModule', 'Account',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'opportunities___meetings___category';
-            $displayAttribute2                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute2                      = new DisplayAttributeForReportForm('AccountsModule', 'Account',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'opportunities___meetings___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                                                      "{$q}meeting{$q}.{$q}name{$q} asc";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFar()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType   = 'meetings___latestDateTime';
+            $content                                = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
+            $this->assertEquals($compareContent, $content);
+
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
-            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[4]['tableAliasName']);
-            $this->assertEquals('item',           $leftTablesAndAliases[4]['onTableAliasName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[5]['tableAliasName']);
-            $this->assertEquals('activity_item',  $leftTablesAndAliases[5]['onTableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[6]['tableAliasName']);
-            $this->assertEquals('activity_id',    $leftTablesAndAliases[6]['tableJoinIdName']);
-            $this->assertEquals('activity',       $leftTablesAndAliases[6]['onTableAliasName']);
-            $this->assertEquals('customfield',    $leftTablesAndAliases[7]['tableAliasName']);
-            $this->assertEquals('meeting',        $leftTablesAndAliases[7]['onTableAliasName']);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributes()
@@ -1078,22 +1136,19 @@
             $q                                      = DatabaseCompatibilityUtil::getQuote();
             //Tests inferredRelation with 2 attributes on the opposing model. Only one declares the module specifically
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
-            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___industry';
-            $displayAttribute2                               = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+            $displayAttribute2                      = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                                                      "{$q}account{$q}.{$q}name{$q} asc";
+            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributesNestedTwoLevelsDeep()
@@ -1103,20 +1158,20 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___opportunities___stage';
-            $displayAttribute2                               = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+            $displayAttribute2                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___opportunities___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "{$q}customfield{$q}.{$q}value{$q} asc, " .
-                                                      "{$q}opportunity{$q}.{$q}name{$q} asc";
+            $compareContent                         = "select {$q}opportunity{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributesComingAtItFromANestedPoint()
@@ -1126,20 +1181,20 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem7');
             $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem7',
+            $displayAttribute                       = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem7',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'model5___ReportModelTestItem__reportItems__Inferred___phone';
-            $displayAttribute2                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem7',
+            $displayAttribute2                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem7',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'model5___ReportModelTestItem__reportItems__Inferred___dropDown';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "{$q}reportmodeltestitem{$q}.{$q}phone{$q} asc, " .
-                                                      "{$q}customfield{$q}.{$q}value{$q} asc";
+            $compareContent                         = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $this->assertEquals($compareContent, $content);
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
             //todo: validate the correct table information.
         }
 
@@ -1150,16 +1205,16 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "{$q}item{$q}.{$q}createddatetime{$q} asc";
+            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
             //todo: validate the correct table information.
         }
 
@@ -1170,16 +1225,16 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___owner__User';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "{$q}person{$q}.{$q}lastname{$q} asc";
+            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
             //todo: validate the correct table information.
         }
 
@@ -1190,15 +1245,14 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
             $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime';
             $displayAttribute2                               = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
-                                                      "{$q}account{$q}.{$q}name{$q} asc";
+            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
@@ -1208,27 +1262,7 @@
         }
 
 
-        public function testDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFar()
-        {
-            $q                                      = DatabaseCompatibilityUtil::getQuote();
 
-            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
-            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                                = new DisplayAttributeForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute->attributeIndexOrDerivedType   = 'meetings___latestDateTime';
-            $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "{$q}activity{$q}.{$q}latestdatetime{$q} asc";
-            $this->assertEquals($compareContent, $content);
-
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
-        }
-**/
         /**
          * echo "<pre>";
         print_r($joinTablesAdapter->getFromTablesAndAliases());

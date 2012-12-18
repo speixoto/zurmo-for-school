@@ -96,15 +96,12 @@
                 {
                     $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                     $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
-                    if($modelToReportAdapter->isInferredRelation($relationOrAttribute))
+                    if($modelToReportAdapter->isInferredRelation($relationOrAttribute) ||
+                       $modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($relationOrAttribute))
                     {
-                        static::resolveCastingHintForAttribute($modelAttributeToDataProviderAdapter, $modelClassName,
-                                                               $modelToReportAdapter->resolveRealAttributeName(
-                                                               $attributeAndRelationData[$key + 1]));
-                    }
-                    elseif($modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($relationOrAttribute))
-                    {
-                        static::resolveCastingHintForAttribute($modelAttributeToDataProviderAdapter, $modelClassName,
+                        static::resolveCastingHintForAttribute($componentForm,
+                                                               $modelAttributeToDataProviderAdapter,
+                                                               $modelClassName,
                                                                $modelToReportAdapter->resolveRealAttributeName(
                                                                $attributeAndRelationData[$key + 1]));
                     }
@@ -142,7 +139,7 @@
             }
             elseif($modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($attribute))
             {
-                return new RedBeanModelAttributeToDataProviderAdapter(
+                return new DerivedRelationViaCastedUpRedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
                     $attribute);
             }
@@ -178,11 +175,14 @@
             }
         }
 
-        protected function resolveCastingHintForAttribute($modelAttributeToDataProviderAdapter, $modelClassName,
+        protected function resolveCastingHintForAttribute(ComponentForReportForm  $componentForm,
+                                                          $modelAttributeToDataProviderAdapter,
+                                                          $modelClassName,
                                                           $realAttributeName)
         {
             $hintAdapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $realAttributeName);
             $hintModelClassName = $hintAdapter->getAttributeModelClassName();
+            echo 'bleco' . $hintModelClassName . "\n";
             $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);
         }
 

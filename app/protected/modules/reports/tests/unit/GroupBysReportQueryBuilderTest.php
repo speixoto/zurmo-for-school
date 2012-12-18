@@ -786,6 +786,26 @@
             $this->assertEquals('meeting',        $leftTablesAndAliases[7]['onTableAliasName']);
         }
 
+        public function testDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFar()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                                = new GroupByForReportForm('AccountsModule', 'Account',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $groupBy->attributeIndexOrDerivedType   = 'meetings___latestDateTime';
+            $content                                = $builder->makeQueryContent(array($groupBy));
+            $compareContent                         = "{$q}activity{$q}.{$q}latestdatetime{$q}";
+            $this->assertEquals($compareContent, $content);
+
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
+
         public function testInferredRelationModelAttributeWithTwoAttributes()
         {
             $q                                      = DatabaseCompatibilityUtil::getQuote();
@@ -911,27 +931,6 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
-        }
-
-
-        public function testDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFar()
-        {
-            $q                                      = DatabaseCompatibilityUtil::getQuote();
-
-            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
-            $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
-            $groupBy                                = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $groupBy->attributeIndexOrDerivedType   = 'meetings___latestDateTime';
-            $content                                = $builder->makeQueryContent(array($groupBy));
-            $compareContent                         = "{$q}activity{$q}.{$q}latestdatetime{$q}";
-            $this->assertEquals($compareContent, $content);
-
-            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
-            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
-            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
             //todo: validate the correct table information.
         }
 

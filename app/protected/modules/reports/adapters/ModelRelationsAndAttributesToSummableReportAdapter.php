@@ -387,7 +387,7 @@
                 $parts = explode(FormModelUtil::DELIMITER, $attribute);
                 return $parts[1];
             }
-            throw new NotSupportedException();
+            throw new NotSupportedException($attribute);
         }
     }
 ?>
