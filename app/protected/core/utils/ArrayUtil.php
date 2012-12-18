@@ -115,7 +115,7 @@
                 $finalArray = array();
                 foreach ($newArray as $newKey => $unused)
                 {
-                    $finalArray[] = $array[$newKey];
+                    $finalArray[$newKey] = $array[$newKey];
                 }
                 return $finalArray;
             }
