@@ -15141,8 +15141,8 @@ min-device-width: … px  Used when the device’s width is bigger or equal to w
 max-device-width: … px  Used when the device’s width is smaller or equal to width
 orientation : portrait // orientation: landscape    Target orientation
 -webkit-min-device-pixel-ratio : 1.5
-    
-    http://bennettfeely.com/flexplorer/
+	
+	http://bennettfeely.com/flexplorer/
 */
 .ui-chooser {
   padding: 10px;
