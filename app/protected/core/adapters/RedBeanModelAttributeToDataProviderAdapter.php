@@ -205,6 +205,15 @@
             return $this->getModel()->getRelationType($this->attribute);
         }
 
+        public function isOwnedRelation()
+        {
+            if(!$this->getModel()->isRelation($this->attribute))
+            {
+                return false;
+            }
+            return $this->getModel()->isOwnedRelation($this->attribute);
+        }
+
         /**
          * @return bool
          */

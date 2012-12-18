@@ -64,10 +64,10 @@
         {
             $attribute                           = $componentForm->getAttributeAndRelationData();
             $modelToReportAdapter                = ModelRelationsAndAttributesToReportAdapter::make(
-                $componentForm->getModuleClassName(),
-                $componentForm->getModelClassName(), $componentForm->getReportType());
+                                                   $componentForm->getModuleClassName(),
+                                                   $componentForm->getModelClassName(), $componentForm->getReportType());
             $modelAttributeToDataProviderAdapter = $this->makeModelAttributeToDataProviderAdapter(
-                $modelToReportAdapter, $attribute);
+                                                   $modelToReportAdapter, $attribute);
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $componentForm);
         }
 
@@ -83,35 +83,30 @@
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $componentForm->getReportType());
-                if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
+                $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
+                                        $modelToReportAdapter, $relationOrAttribute);
+                if($this->shouldPrematurelyStopBuildingJoinsForAttribute($componentForm, $modelAttributeToDataProviderAdapter))
+                {
+                    $attribute                            = 'id';
+                    $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
+                                                            $modelToReportAdapter, $attribute);
+                    break;
+                }
+                elseif($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                     $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
                     if($modelToReportAdapter->isInferredRelation($relationOrAttribute))
                     {
-                        $modelAttributeToDataProviderAdapter = new InferredRedBeanModelAttributeToDataProviderAdapter(
-                                        $modelToReportAdapter->getModelClassName(),
-                                        $modelToReportAdapter->resolveRealAttributeName($relationOrAttribute),
-                                        $modelToReportAdapter->getRelationModelClassName($relationOrAttribute),
-                                        $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute));
                         static::resolveCastingHintForAttribute($modelAttributeToDataProviderAdapter, $modelClassName,
                                                                $modelToReportAdapter->resolveRealAttributeName(
                                                                $attributeAndRelationData[$key + 1]));
                     }
                     elseif($modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($relationOrAttribute))
                     {
-                        $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
-                                                               $modelToReportAdapter->getModelClassName(),
-                                                               $relationOrAttribute);
                         static::resolveCastingHintForAttribute($modelAttributeToDataProviderAdapter, $modelClassName,
                                                                $modelToReportAdapter->resolveRealAttributeName(
                                                                $attributeAndRelationData[$key + 1]));
-                    }
-                    else
-                    {
-                        $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
-                                                               $modelToReportAdapter->getModelClassName(),
-                                                               $relationOrAttribute);
                     }
                     $modelAttributeToDataProviderAdapter->setCastingHintStartingModelClassName($startingModelClassName);
                     $builder                = new ModelJoinBuilder($modelAttributeToDataProviderAdapter,
@@ -122,7 +117,6 @@
                 }
                 else
                 {
-                    $attribute = $relationOrAttribute;
                     if($count + 1 != count($attributeAndRelationData))
                     {
                         throw new NotSupportedException('The final element in array must be an attribute, not a relation');
@@ -130,10 +124,6 @@
                 }
                 $count ++;
             }
-            $modelToReportAdapter                 = ModelRelationsAndAttributesToReportAdapter::
-                                                    make($moduleClassName, $modelClassName, $componentForm->getReportType());
-            $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
-                                                    $modelToReportAdapter, $attribute);
             $modelAttributeToDataProviderAdapter->setCastingHintStartingModelClassName($startingModelClassName);
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $componentForm, $onTableAliasName);
         }
@@ -142,8 +132,22 @@
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
+            if($modelToReportAdapter->isInferredRelation($attribute))
+            {
+                return new InferredRedBeanModelAttributeToDataProviderAdapter(
+                    $modelToReportAdapter->getModelClassName(),
+                    $modelToReportAdapter->resolveRealAttributeName($attribute),
+                    $modelToReportAdapter->getRelationModelClassName($attribute),
+                    $modelToReportAdapter->getRelationModuleClassName($attribute));
+            }
+            elseif($modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($attribute))
+            {
+                return new RedBeanModelAttributeToDataProviderAdapter(
+                    $modelToReportAdapter->getModelClassName(),
+                    $attribute);
+            }
             //Example: createdUser__User
-            if($modelToReportAdapter->isDynamicallyDerivedAttribute($attribute))
+            elseif($modelToReportAdapter->isDynamicallyDerivedAttribute($attribute))
             {
                 return new RedBeanModelAttributeToDataProviderAdapter(
                                 $modelToReportAdapter->getModelClassName(),
@@ -152,7 +156,7 @@
             //Example: CustomField, CurrencyValue, OwnedCustomField, or likeContactState
             elseif($modelToReportAdapter->relationIsReportedAsAttribute($attribute))
             {
-
+//todo: this is sort specific which is wrong.
                 $sortAttribute = $modelToReportAdapter->getRules()->
                                  getSortAttributeForRelationReportedAsAttribute(
                                  $modelToReportAdapter->getModel(), $attribute);
@@ -168,7 +172,9 @@
             }
             else
             {
-                throw new NotSupportedException();
+                return new RedBeanModelAttributeToDataProviderAdapter(
+                    $modelToReportAdapter->getModelClassName(),
+                    $attribute);
             }
         }
 
@@ -178,6 +184,13 @@
             $hintAdapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $realAttributeName);
             $hintModelClassName = $hintAdapter->getAttributeModelClassName();
             $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);
+        }
+
+        protected function shouldPrematurelyStopBuildingJoinsForAttribute(ComponentForReportForm $componentForm,
+                                                                          $modelAttributeToDataProviderAdapter)
+        {
+            assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
+            return false;
         }
     }
 ?>

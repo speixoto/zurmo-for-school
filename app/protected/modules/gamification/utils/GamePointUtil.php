@@ -81,9 +81,8 @@
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('GamePointTransaction');
             static::resolveLeaderboardWhereClausesByType($type, $joinTablesAdapter, $where);
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
-            $sumPart                   = "{$quote}gamepointtransaction{$quote}.{$quote}value{$quote} ";
             $selectQueryAdapter->addClause('_user', 'id', 'userid');
-            $selectQueryAdapter->addSummationClause($sumPart, 'points');
+            $selectQueryAdapter->addSummationClause('gamepointtransaction', 'value', 'points');
             $joinTablesAdapter->addFromTableAndGetAliasName('gamepoint', 'gamepoint_id', 'gamepointtransaction');
             $joinTablesAdapter->addFromTableAndGetAliasName('permitable', 'person_item_id', 'gamepoint', 'item_id');
             $joinTablesAdapter->addFromTableAndGetAliasName('_user', 'id', 'permitable', 'permitable_id');

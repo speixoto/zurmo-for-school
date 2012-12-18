@@ -773,5 +773,17 @@
                 return $attribute;
             }
         }
+
+        /**
+         * Override when some attributes can be made via select and not via the model.
+         * @param $attribute
+         * @return bool
+         */
+        public function isDisplayAttributeMadeViaSelect($attribute)
+        {
+            //todo: document this more
+            assert('is_string($attribute)');
+            return false;
+        }
     }
 ?>

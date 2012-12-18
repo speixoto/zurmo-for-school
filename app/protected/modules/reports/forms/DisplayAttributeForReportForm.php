@@ -26,8 +26,21 @@
 
     class DisplayAttributeForReportForm extends ComponentForReportForm
     {
+        const COLUMN_ALIAS_PREFIX = 'col';
+        /**
+         * @var integer the counter for generating automatic column alias names
+         */
+        public static $count = 0;
+
         public $label;
 
+        public $columnAliasName;
+
+        public function __construct($moduleClassName, $modelClassName, $reportType)
+        {
+            parent::__construct($moduleClassName, $modelClassName, $reportType);
+            $this->columnAliasName = self::COLUMN_ALIAS_PREFIX . self::$count++;
+        }
         /**
          * Makes sure the attributeIndexOrDerivedType always populates first before label otherwise any
          * custom label gets wiped out.
@@ -60,6 +73,11 @@
             {
                 $this->label = $this->getDisplayLabel();
             }
+        }
+
+        public static function resetCount()
+        {
+            self::$count = 0;
         }
     }
 ?>

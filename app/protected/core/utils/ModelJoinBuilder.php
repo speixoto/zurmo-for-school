@@ -50,6 +50,22 @@
         protected $resolvedOnTableAliasName;
 
         /**
+         * This is set during resolveJoins as the tableAliasName for the base model class.  This can then be accessed
+         * outside this class for querying purposes.
+         * Base model class is represented by $modelAttributeToDataProviderAdapter->getModelClassName();
+         * @var string
+         */
+        protected $tableAliasNameForBaseModel;
+
+        /**
+         * This is set during resolveJoins as the tableAliasName for the related model class.  This can then be accessed
+         * outside this class for querying purposes.
+         * Related model class is represented by $modelAttributeToDataProviderAdapter->getRelatedModelClassName();
+         * @var string
+         */
+        protected $tableAliasNameForRelatedModel;
+
+        /**
          * @param string $tableAliasName
          * @param string $columnName
          * @return string
@@ -88,13 +104,35 @@
             $this->setDistinct                         = $setDistinct;
         }
 
+        /**
+         * @return string
+         */
+        public function getTableAliasNameForBaseModel()
+        {
+            return $this->tableAliasNameForBaseModel;
+        }
+
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
+        public function getTableAliasNameForRelatedModel()
+        {
+            if(!$this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            {
+                throw new NotSupportedException();
+            }
+            return $this->tableAliasNameForRelatedModel;
+        }
+
         public function resolveJoins($onTableAliasName = null, $canUseFromJoins = true)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
             assert('is_bool($canUseFromJoins)');
-            $onTableAliasName = $this->resolveOnTableAliasName($onTableAliasName);
-            $onTableAliasName = $this->resolveJoinsForAttribute($onTableAliasName, $canUseFromJoins);
-            $this->resolvedOnTableAliasName = $onTableAliasName;
+            $onTableAliasName                 = $this->resolveOnTableAliasName($onTableAliasName);
+            $this->tableAliasNameForBaseModel = $onTableAliasName;
+            $onTableAliasName                 = $this->resolveJoinsForAttribute($onTableAliasName, $canUseFromJoins);
+            $this->resolvedOnTableAliasName   = $onTableAliasName;
             if($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
@@ -104,6 +142,7 @@
                                                        getRelatedAttribute());
                 $builder                             = new ModelJoinBuilder($modelAttributeToDataProviderAdapter,
                                                        $this->joinTablesAdapter);
+                $this->tableAliasNameForRelatedModel = $onTableAliasName;
                 $onTableAliasName                    = $builder->resolveJoinsForAttribute($onTableAliasName, false);
             }
             return $onTableAliasName;
@@ -119,7 +158,7 @@
             return $onTableAliasName;
         }
 
-        protected function resolveOnTableAliasName($onTableAliasName = null)
+        public function resolveOnTableAliasName($onTableAliasName = null)
         {
             if($onTableAliasName == null)
             {

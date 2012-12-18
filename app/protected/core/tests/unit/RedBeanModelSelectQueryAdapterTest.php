@@ -96,16 +96,16 @@
             $quote   = DatabaseCompatibilityUtil::getQuote();
             $adapter = new RedBeanModelSelectQueryAdapter();
             $this->assertEquals(0, $adapter->getClausesCount());
-            $adapter->addSummationClause('abc', 'c');
+            $adapter->addSummationClause('table', 'abc', 'c');
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select sum(abc) c ";
+            $compareString = "select sum(table.abc) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
 
             $adapter = new RedBeanModelSelectQueryAdapter(true);
             $this->assertEquals(0, $adapter->getClausesCount());
-            $adapter->addSummationClause('def', 'c');
+            $adapter->addSummationClause('table', 'def', 'c');
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select distinct sum(def) c ";
+            $compareString = "select distinct sum(table.def) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
     }

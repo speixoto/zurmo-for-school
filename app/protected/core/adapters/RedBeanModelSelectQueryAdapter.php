@@ -111,11 +111,7 @@
                 $distinctPart = 'distinct ';
             }
             $clause = "count({$distinctPart}{$quote}$tableName{$quote}.{$quote}$columnName{$quote})";
-            if ($aliasName != null)
-            {
-                $clause .= " $aliasName";
-            }
-            $this->clauses[]          = $clause;
+            $this->clauses[] = self::resolveForAliasName($clause, $aliasName);
             $this->countClausePresent = true;
             $this->increaseClausesCountByOne();
         }
@@ -125,15 +121,19 @@
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
-            $quote  = DatabaseCompatibilityUtil::getQuote();
-            $clause = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if ($aliasName != null)
-            {
-                $clause .= " $aliasName";
-            }
-            $this->clauses[] = $clause;
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $this->clauses[] = self::resolveForAliasName("{$quote}$tableName{$quote}.{$quote}$columnName{$quote}", $aliasName);
             $this->increaseClausesCountByOne();
         }
+
+        public function addClauseByQueryString($queryString, $aliasName = null)
+        {
+            assert('is_string($queryString)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
 
         public function addClauseWithColumnNameOnlyAndNoEnclosure($columnName, $aliasName = null)
         {
@@ -144,21 +144,129 @@
             {
                 $clause .= " $aliasName";
             }
-            $this->clauses[] = $clause;
+            $this->clauses[] = self::resolveForAliasName("$columnName", $aliasName);
             $this->increaseClausesCountByOne();
         }
 
-        public function addSummationClause($summationQueryPart, $aliasName = null)
+        public function addSummationClause($tableName, $columnName, $aliasName = null)
         {
-            assert('is_string($summationQueryPart)');
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
-            $clause = "sum({$summationQueryPart})";
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("sum({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function addAverageClause($tableName, $columnName, $aliasName = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("avg({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function addMinimumClause($tableName, $columnName, $aliasName = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("min({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function addMaximumClause($tableName, $columnName, $aliasName = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("max({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function addDayClause($tableName, $columnName, $aliasName = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("day({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function addWeekClause($tableName, $columnName, $aliasName = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("week({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function addMonthClause($tableName, $columnName, $aliasName = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("month({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function addQuarterClause($tableName, $columnName, $aliasName = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("quarter({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function addYearClause($tableName, $columnName, $aliasName = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($aliasName) || $aliasName == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $this->clauses[] = self::resolveForAliasName("year({$queryString})", $aliasName);
+            $this->increaseClausesCountByOne();
+        }
+
+        public function resolveIdClause($modelClassName, $tableAliasName)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($tableAliasName)');
+            if(!isset($this->idTableAliasesAndModelClassNames[$tableAliasName]))
+            {
+                $this->idTableAliasesAndModelClassNames[$tableAliasName] = $modelClassName;
+                $this->addClause($tableAliasName, 'id');
+            }
+        }
+
+        public static function resolveForAliasName($clause, $aliasName = null)
+        {
+            assert('is_string($clause)');
+            assert('is_string($aliasName) || $aliasName == null');
             if ($aliasName != null)
             {
                 $clause .= " $aliasName";
             }
-            $this->clauses[] = $clause;
-            $this->increaseClausesCountByOne();
+            return $clause;
         }
     }
 ?>
