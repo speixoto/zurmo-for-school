@@ -26,6 +26,12 @@ orientation : portrait // orientation: landscape    Target orientation
     http://bennettfeely.com/flexplorer/
 */
 
+.ui-chooser{
+    padding: 10px;
+    display: block;
+    text-align: center;
+}
+
 #nav-trigger{
     display:none;
     float: left;
@@ -207,12 +213,13 @@ orientation : portrait // orientation: landscape    Target orientation
         -webkit-overflow-scrolling: touch;
     }
     .AppContent{
+        position:relative;
         top:20px;
         padding-top:30px;
         padding-left:10px;
         padding-right:10px;
         margin-left:0;
-        
+        .radius(0 0 5px 5px);
         -webkit-transition: all 0.22s ease-in 0;
 
         transform: translate3d(0, 0, 0);
@@ -236,6 +243,7 @@ orientation : portrait // orientation: landscape    Target orientation
         #gradient > .vertical(#f6f6f6, #f4f4f4);
         border-right:1px solid #eee;
         border-left:1px solid #eee;
+        .radius(0 0 0 5px);
     }
 
     #RecentlyViewedView{
@@ -384,6 +392,51 @@ orientation : portrait // orientation: landscape    Target orientation
             right:0;
             margin-top:-8px;
         }
+    }
+
+    #NoUserEmailConfigurationYetView,
+    #NoGlobalEmailConfigurationYetView,
+    .ZeroModelsYetView{
+        > div{
+           display: -webkit-box;
+    display: -moz-box;
+    display: box;
+
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+        }
+       
+        h2{
+            font-size:20px;
+            line-height:28px;
+            padding:0 0 15px 0;
+            text-align:center;
+        }
+        i{
+            margin-left:0;
+             text-align:center;
+        }
+        .large-icon{
+            display:none;
+        }
+        p{
+            width:100%;
+            font-size:12px;
+            line-height:19px;
+            margin-left:0;
+            margin-top:15px;
+            float:none;
+        }
+        a{
+            margin:15px auto;
+            padding:0;
+        }
+
     }
 
    

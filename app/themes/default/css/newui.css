@@ -15144,6 +15144,11 @@ orientation : portrait // orientation: landscape    Target orientation
     
     http://bennettfeely.com/flexplorer/
 */
+.ui-chooser {
+  padding: 10px;
+  display: block;
+  text-align: center;
+}
 #nav-trigger {
   display: none;
   float: left;
@@ -15314,11 +15319,17 @@ orientation : portrait // orientation: landscape    Target orientation
     -webkit-overflow-scrolling: touch;
   }
   .AppContent {
+    position: relative;
     top: 20px;
     padding-top: 30px;
     padding-left: 10px;
     padding-right: 10px;
     margin-left: 0;
+    -webkit-border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -ms-border-radius: 0 0 5px 5px;
+    -o-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
     -webkit-transition: all 0.22s ease-in 0;
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0);
@@ -15357,6 +15368,11 @@ orientation : portrait // orientation: landscape    Target orientation
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#f4f4f4', GradientType=0);
     border-right: 1px solid #eee;
     border-left: 1px solid #eee;
+    -webkit-border-radius: 0 0 0 5px;
+    -moz-border-radius: 0 0 0 5px;
+    -ms-border-radius: 0 0 0 5px;
+    -o-border-radius: 0 0 0 5px;
+    border-radius: 0 0 0 5px;
   }
   #RecentlyViewedView ul {
     max-height: 200px;
@@ -15476,6 +15492,54 @@ orientation : portrait // orientation: landscape    Target orientation
   .toolbar-mbmenu .options-menu ul {
     right: 0;
     margin-top: -8px;
+  }
+  #NoUserEmailConfigurationYetView > div,
+  #NoGlobalEmailConfigurationYetView > div,
+  .ZeroModelsYetView > div {
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+  }
+  #NoUserEmailConfigurationYetView h2,
+  #NoGlobalEmailConfigurationYetView h2,
+  .ZeroModelsYetView h2 {
+    font-size: 20px;
+    line-height: 28px;
+    padding: 0 0 15px 0;
+    text-align: center;
+  }
+  #NoUserEmailConfigurationYetView i,
+  #NoGlobalEmailConfigurationYetView i,
+  .ZeroModelsYetView i {
+    margin-left: 0;
+    text-align: center;
+  }
+  #NoUserEmailConfigurationYetView .large-icon,
+  #NoGlobalEmailConfigurationYetView .large-icon,
+  .ZeroModelsYetView .large-icon {
+    display: none;
+  }
+  #NoUserEmailConfigurationYetView p,
+  #NoGlobalEmailConfigurationYetView p,
+  .ZeroModelsYetView p {
+    width: 100%;
+    font-size: 12px;
+    line-height: 19px;
+    margin-left: 0;
+    margin-top: 15px;
+    float: none;
+  }
+  #NoUserEmailConfigurationYetView a,
+  #NoGlobalEmailConfigurationYetView a,
+  .ZeroModelsYetView a {
+    margin: 15px auto;
+    padding: 0;
   }
   /*closing media query bracket*/
 }
