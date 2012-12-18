@@ -44,9 +44,9 @@
             {
                 throw new NotSupportedException();
             }
-            $usercandelete = UserTestHelper::createBasicUser('usercandelete');
-            $usercandelete->primaryEmail->emailAddress = 'usercandelete@supertest.com';
-            if (!$usercandelete->save())
+            $userCanDelete = UserTestHelper::createBasicUser('usercandelete');
+            $userCanDelete->primaryEmail->emailAddress = 'usercandelete@supertest.com';
+            if (!$userCanDelete->save())
             {
                 throw new NotSupportedException();
             }
@@ -186,16 +186,16 @@
 
         public function testDeleteAction()
         {
-            $usercandelete = $this->logoutCurrentUserLoginNewUserAndGetByUsername('usercandelete');
-            $usercandelete->setRight('EmailMessagesModule', EmailMessagesModule::RIGHT_DELETE_EMAIL_MESSAGES);
-            $this->assertTrue($usercandelete->save());
-            $usercandelete->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
-            $usercandelete->setRight('ContactsModule', ContactsModule::RIGHT_CREATE_CONTACTS);
-            $usercandelete->setRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS);
-            $contact              = ContactTestHelper::createContactByNameForOwner('gail', $usercandelete);
+            $userCanDelete = $this->logoutCurrentUserLoginNewUserAndGetByUsername('usercandelete');
+            $userCanDelete->setRight('EmailMessagesModule', EmailMessagesModule::RIGHT_DELETE_EMAIL_MESSAGES);
+            $this->assertTrue($userCanDelete->save());
+            $userCanDelete->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
+            $userCanDelete->setRight('ContactsModule', ContactsModule::RIGHT_CREATE_CONTACTS);
+            $userCanDelete->setRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS);
+            $contact              = ContactTestHelper::createContactByNameForOwner('gail', $userCanDelete);
             $startingContactState = ContactsUtil::getStartingState();
             $startingLeadState    = LeadsUtil::getStartingState();
-            $message1 = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($usercandelete);
+            $message1 = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($userCanDelete);
             $this->setGetArray(array('id' => $message1->id));
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/delete', true);
        }
