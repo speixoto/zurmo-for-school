@@ -52,28 +52,31 @@ $(window).ready(function(){
         var bufferHeight = 0;
         var recentlyViewedHeight = 0;
 
-        //if login
-        if ( $('#LoginPageView').length > 0 ) {
-            appChromeHeight = 40 + $('#FooterView').outerHeight(true);
-            if ( wrapperDivHeight < viewportHeight  ){
-                bufferHeight = viewportHeight - appChromeHeight;
-                $('#LoginView').height(  bufferHeight   );
-            }
-           //if admin area
-        } else if ( $('.AdministrativeArea').length > 0 ) {
-            appChromeHeight = 80 + $('#FooterView').outerHeight(true);
-            if ( wrapperDivHeight < viewportHeight  ){
-                bufferHeight = viewportHeight - appChromeHeight;
-                $('.AppContainer').height(  bufferHeight   );
-            }
-        //rest of app
-        } else {
-            recentlyViewedHeight = $('#RecentlyViewedView').outerHeight(true);
-            appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
-            if ( wrapperDivHeight < viewportHeight  ){
-                bufferHeight = viewportHeight - appChromeHeight;
-                $('#RecentlyViewedView').height( $('#RecentlyViewedView').height() + bufferHeight   );
-            }
+        if($(window).width() > 960 ){
+        	console.log('resizing white area');
+        	//if login
+         	if ( $('#LoginPageView').length > 0 ) {
+             	appChromeHeight = 40 + $('#FooterView').outerHeight(true);
+              	if ( wrapperDivHeight < viewportHeight  ){
+                  	bufferHeight = viewportHeight - appChromeHeight;
+                  	$('#LoginView').height(  bufferHeight   );
+              	}
+            //if admin area
+          	} else if ( $('.AdministrativeArea').length > 0 ) {
+              	appChromeHeight = 80 + $('#FooterView').outerHeight(true);
+              	if ( wrapperDivHeight < viewportHeight  ){
+                 	bufferHeight = viewportHeight - appChromeHeight;
+                  	$('.AppContainer').height(  bufferHeight   );
+              	}
+          	//rest of app
+          	} else {
+            	recentlyViewedHeight = $('#RecentlyViewedView').outerHeight(true);
+            	appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
+             	if ( wrapperDivHeight < viewportHeight  ){
+                  	bufferHeight = viewportHeight - appChromeHeight;
+                  	$('#RecentlyViewedView').height( $('#RecentlyViewedView').height() + bufferHeight   );
+              	}
+          	}
         }
     }
 

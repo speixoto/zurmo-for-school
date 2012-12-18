@@ -3675,6 +3675,7 @@ div.hasHalfs{
     .filter-portlet-model-bar{
         .smaller();
         padding-left:8px;
+        white-space:nowrap;
         label{
             cursor:pointer;
             border:none;
@@ -3682,10 +3683,8 @@ div.hasHalfs{
             font-size:11px !important;
             padding:3px;
             margin:0 3px;
-            ++.themeColor;
         }
         label:hover{
-            ++.themeBackgroundColor;
             color:#FFF;
             .radius(3px) !important;
             border:none;
@@ -3695,7 +3694,6 @@ div.hasHalfs{
             display:none;
         }
         .ui-state-active{
-            ++.themeBackgroundColor;
             color:#FFF;
             .radius(3px) !important;
             border:none;
@@ -3713,6 +3711,9 @@ div.hasHalfs{
         #gradient > .vertical(#f6f6f6, #ededed);
         .b-shadow(inset 0 1px 0 0 #ffffff);
         position:relative;
+        label{
+            margin:0 3px 0 0;
+        }
     }
     .items{
         border-top:none !important;

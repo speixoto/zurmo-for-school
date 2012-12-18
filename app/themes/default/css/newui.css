@@ -4552,7 +4552,7 @@ section {
   top: -4px;
   left: 6px;
 }
-#LoginView #login-box {
+#login-box {
   float: left;
   width: 500px;
   margin: -100px auto 0 -250px;
@@ -4561,21 +4561,11 @@ section {
   top: 40%;
   left: 50%;
 }
-#LoginView #LoginLogo {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 100%;
-  width: 50%;
-  padding-right: 10px;
-  float: left;
-  background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
-}
-#LoginView .form {
+#login-box .form {
   width: 50%;
   float: right;
 }
-#LoginView .form form {
+#login-box .form form {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   background: none !important;
@@ -4589,33 +4579,43 @@ section {
   box-shadow: none !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
-#LoginView .form form > div {
+#login-box .form form > div {
   margin-bottom: 15px;
 }
-#LoginView .form form > div.clearfix {
+#login-box .form form > div.clearfix {
   margin-bottom: 0;
 }
-#LoginView .form form label {
+#login-box .form form label {
   display: inline-block;
   margin-bottom: 5px;
 }
-#LoginView .form form input[type="password"],
-#LoginView .form form input[type="text"] {
+#login-box .form form input[type="password"],
+#login-box .form form input[type="text"] {
   background: #fff !important;
   margin: 0 !important;
 }
-#LoginView .form form input[type="checkbox"] {
+#login-box .form form input[type="checkbox"] {
   float: left;
   margin-right: 10px !important;
   margin-top: 1px !important;
   clear: both;
 }
-#LoginView .form form .errorMessage {
+#login-box .form form .errorMessage {
   font-size: 11px;
   padding-top: 4px;
 }
-#LoginView .error {
+#login-box .error {
   margin-bottom: 40px !important;
+}
+#LoginLogo {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  width: 50%;
+  padding-right: 10px;
+  float: left;
+  background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
 }
 #Login {
   margin-left: 0;
@@ -8921,6 +8921,7 @@ div.hasHalfs .twoThirds {
 .LatestActivitiesView .filter-portlet-model-bar {
   font-size: 11px;
   padding-left: 8px;
+  white-space: nowrap;
 }
 .LatestActivitiesListView .latest-activity-toolbar label,
 .LatestActivitiesView .latest-activity-toolbar label,
@@ -8997,6 +8998,10 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
   position: relative;
+}
+.LatestActivitiesListView .filter-portlet-model-bar label,
+.LatestActivitiesView .filter-portlet-model-bar label {
+  margin: 0 3px 0 0;
 }
 .LatestActivitiesListView .items,
 .LatestActivitiesView .items {
@@ -15153,8 +15158,84 @@ orientation : portrait // orientation: landscape    Target orientation
   font-family: "ZurmoGamificationSymblyReguRg";
 }
 @media all and (max-width: 640px) {
+  html,
   body {
-    padding-bottom: 160px;
+    margin: 0;
+    width: 100%;
+  }
+  body {
+    height: 100%;
+  }
+  body > div {
+    height: 100%;
+  }
+  #LoginPageView > div {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    display: -ms-flex;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: column;
+    -ms-flex-wrap: wrap;
+    -moz-flex-flow: column wrap;
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+    -ms-flex-pack: start;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+  #LoginPageView #FooterView {
+    -ms-flex: 1 0 auto;
+    -moz-flex: 1 0 auto;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+    margin: 10px 10px 5px 10px;
+  }
+  #LoginPageView #credit-link {
+    margin-left: 0;
+  }
+  #LoginView {
+    min-width: 0 !important;
+    margin: 0;
+    background-image: none;
+    height: auto;
+    -ms-flex: 1 0 auto;
+    -moz-flex: 1 0 auto;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+  }
+  #login-box {
+    width: 100%;
+    height: auto;
+    float: none;
+    margin: 10px 0 0 0;
+    top: 0;
+    left: 0;
+  }
+  #login-box .form {
+    float: none;
+    width: 100%;
+  }
+  #login-box .form form {
+    border: none;
+    padding: 0 10px 10px 10px;
+  }
+  #login-box #LoginLogo {
+    float: none;
+    width: 100%;
+    height: 80px;
+    padding: 0;
+    background-position: 50% 50%;
+  }
+  #login-form {
+    padding: 0 20px !important;
   }
   #nav-trigger {
     display: block;
@@ -15177,8 +15258,14 @@ orientation : portrait // orientation: landscape    Target orientation
     display: none;
   }
   #FooterView {
-    margin: 10px 10px 0 10px;
-    padding-bottom: 10px;
+    margin: 10px 10px 5px 10px;
+    padding-bottom: 5px;
+  }
+  #credit-link {
+    margin-left: 0;
+  }
+  #credit-link span {
+    margin-left: 65px;
   }
   .view-toolbar {
     display: -ms-flex;
@@ -15227,7 +15314,8 @@ orientation : portrait // orientation: landscape    Target orientation
     -webkit-overflow-scrolling: touch;
   }
   .AppContent {
-    padding-top: 50px;
+    top: 20px;
+    padding-top: 30px;
     padding-left: 10px;
     padding-right: 10px;
     margin-left: 0;
@@ -15241,15 +15329,38 @@ orientation : portrait // orientation: landscape    Target orientation
   .nav-open {
     transform: translate3d(170px, 0, 0);
     -webkit-transform: translate3d(170px, 0, 0);
-    -webkit-box-shadow: -1px 0 15px 0 #cccccc;
-    -moz-box-shadow: -1px 0 15px 0 #cccccc;
-    -o-box-shadow: -1px 0 15px 0 #cccccc;
-    -ms-box-shadow: -1px 0 15px 0 #cccccc;
-    box-shadow: -1px 0 15px 0 #cccccc;
   }
   .AppNavigation {
+    background: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    -ms-box-shadow: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    border: none;
     position: fixed;
     padding-top: 35px;
+  }
+  #MenuView {
+    background-color: #f4f4f4;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#f4f4f4));
+    background-image: -moz-linear-gradient(top, #f6f6f6, #f4f4f4);
+    background-image: -ms-linear-gradient(top, #f6f6f6, #f4f4f4);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #f4f4f4));
+    background-image: -webkit-linear-gradient(top, #f6f6f6, #f4f4f4);
+    background-image: -o-linear-gradient(top, #f6f6f6, #f4f4f4);
+    background-image: linear-gradient(top, #f6f6f6, #f4f4f4);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#f4f4f4', GradientType=0);
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
+  }
+  #RecentlyViewedView ul {
+    max-height: 200px;
+    overflow: scroll;
   }
   #HomeDashboardView .juiportlet-column {
     width: 100%;
@@ -15266,6 +15377,12 @@ orientation : portrait // orientation: landscape    Target orientation
   .BreadCrumbView + div > div {
     float: none;
     width: 100% !important;
+  }
+  .breadcrumbs {
+    padding-bottom: 10px;
+  }
+  .BreadCrumbView #StickyListMenu > li > a > span {
+    top: 2px;
   }
   .details-table {
     margin-right: 0;
@@ -15314,4 +15431,51 @@ orientation : portrait // orientation: landscape    Target orientation
   #right-side-edit-view-panel .buffer > div {
     padding: 0;
   }
+  /*Thread View*/
+  #ModelDetailsSummaryView,
+  #CommentInlineEditForModelView,
+  #CommentsForRelatedModelView {
+    width: 100%;
+    margin-right: 0;
+    float: none;
+    padding: 0 10px;
+  }
+  #ConversationDetailsView #right-side-edit-view-panel {
+    display: none;
+  }
+  .model-details-summary {
+    padding-left: 65px;
+    padding-top: 10px;
+  }
+  .model-details-summary .gravatar {
+    margin-left: -65px;
+    max-width: 50px;
+    max-height: 50px;
+  }
+  #CommentList,
+  .CommentList {
+    margin-left: 0;
+  }
+  #CommentInlineEditForModelView {
+    padding: 0 10px 0 0;
+  }
+  .toolbar-mbmenu .options-menu > li > a {
+    text-indent: -9999px;
+    width: auto;
+    padding: 0;
+  }
+  .toolbar-mbmenu .options-menu > li > a:after {
+    content: "n";
+    font-weight: normal;
+    font-size: 24px;
+    font-family: "ZurmoGamificationSymblyReguRg";
+  }
+  .toolbar-mbmenu .options-menu > li > a span {
+    display: none;
+  }
+  .toolbar-mbmenu .options-menu ul {
+    right: 0;
+    margin-top: -8px;
+  }
+  /*closing media query bracket*/
 }

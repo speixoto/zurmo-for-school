@@ -43,10 +43,10 @@ orientation : portrait // orientation: landscape    Target orientation
     html, body {
         margin: 0;
         width: 100%;
-        height: 100% !important;
     }
     body{
         //padding-bottom:160px;
+        height: 100%;
         > div{
             height:100%;
         }
@@ -80,7 +80,7 @@ orientation : portrait // orientation: landscape    Target orientation
             -moz-flex: 1 0 auto;
             -webkit-flex: 1 0 auto;
             flex: 1 0 auto;
-            margin:10px 0 0 0;
+            margin:10px 10px 5px 10px;
         }
         #credit-link{
             margin-left:0;
@@ -147,7 +147,7 @@ orientation : portrait // orientation: landscape    Target orientation
         display:none;
     }
     #FooterView {
-        margin: 10px 0 0 0;
+        margin:10px 10px 5px 10px;
         padding-bottom: 5px;
     }
     #credit-link{
@@ -207,7 +207,8 @@ orientation : portrait // orientation: landscape    Target orientation
         -webkit-overflow-scrolling: touch;
     }
     .AppContent{
-        padding-top:50px;
+        top:20px;
+        padding-top:30px;
         padding-left:10px;
         padding-right:10px;
         margin-left:0;
@@ -226,9 +227,27 @@ orientation : portrait // orientation: landscape    Target orientation
         //.b-shadow(-1px 0 15px 0 #ccc);
     }
     .AppNavigation{
+        .unstyle-panel();
+        border:none;
         position:fixed;
         padding-top:35px;
     }
+    #MenuView{
+        #gradient > .vertical(#f6f6f6, #f4f4f4);
+        border-right:1px solid #eee;
+        border-left:1px solid #eee;
+    }
+
+    #RecentlyViewedView{
+        h3, ul{
+            //display:none;
+        }
+        ul{
+            max-height:200px;
+            overflow:scroll;
+        }
+    }
+
     #HomeDashboardView{
         .juiportlet-column{
             width:100%;
@@ -245,11 +264,19 @@ orientation : portrait // orientation: landscape    Target orientation
         line-height: 17px;
         font-size: 10px;
     }
+
     .BreadCrumbView + div{
         > div{
             float:none;
             width:100% !important;
         }
+    }
+
+    .breadcrumbs{
+        padding-bottom:10px;
+    }
+    .BreadCrumbView #StickyListMenu > li > a > span{
+        top:2px;
     }
 
     .details-table{
@@ -323,13 +350,45 @@ orientation : portrait // orientation: landscape    Target orientation
             display:none;
         }
     }
+    .model-details-summary {
+        padding-left: 65px;
+        padding-top: 10px;
+        .gravatar{
+            margin-left:-65px;
+            max-width:50px;
+            max-height:50px;
+        }
+    }
 
-    .CommentList{
+    #CommentList, .CommentList{
         margin-left:0;
     }
     #CommentInlineEditForModelView{
-        padding:0 10px;
+        padding:0 10px 0 0;
     }
+
+    .toolbar-mbmenu .options-menu{
+        > li > a{
+            text-indent:-9999px;
+            width:auto;
+            padding:0;
+            &:after{
+                content: "n";
+                .symbly(24px);
+            }
+            span{
+                display:none;
+            }
+        }
+        ul{
+            right:0;
+            margin-top:-8px;
+        }
+    }
+
+   
+
+   /*closing media query bracket*/ 
 }
 
 
