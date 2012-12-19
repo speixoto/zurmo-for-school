@@ -4525,10 +4525,13 @@ section {
   line-height: 150%;
 }
 /*=Login*/
+#LoginPageView {
+  padding-top: 30px;
+}
 #LoginView {
   min-width: 900px;
   height: 100%;
-  margin: 30px;
+  margin: 0 30px 30px 30px;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -15173,6 +15176,9 @@ orientation : portrait // orientation: landscape    Target orientation
   }
   body > div {
     height: 100%;
+  }
+  #LoginPageView {
+    padding-top: 0;
   }
   #LoginPageView > div {
     -moz-box-sizing: border-box;
