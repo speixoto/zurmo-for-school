@@ -86,7 +86,7 @@
             );
             $searchAttributeData['structure'] = '((1 and 2) or (3 and 4))';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Conversation');
-            $where  = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
+            $where             = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
             return self::getCount($joinTablesAdapter, $where, null, true);
         }
 

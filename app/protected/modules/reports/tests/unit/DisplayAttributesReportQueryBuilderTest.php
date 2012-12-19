@@ -1131,6 +1131,65 @@
             //todo: validate the correct table information.
         }
 
+        public function testDisplayCalculationDerivedRelationViaCastedUpModelAttributeThatDoesNotCastDown()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType   = 'model5ViaItem___integer__Average';
+            $content                                = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent                         = "select avg({$q}reportmodeltestitem5{$q}.{$q}integer{$q}) col0 ";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testDisplayCalculationDerivedRelationViaCastedUpModelAttributeWhenThroughARelation()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Tests derivedRelation when going through a relation already before doing the derived relation
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType   = 'opportunities___meetings___startDateTime__Maximum';
+            $displayAttribute2                      = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'opportunities___meetings___name';
+            $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
+            $compareContent                         = "select max({$q}meeting{$q}.{$q}startdatetime{$q}) col0, " .
+                                                      "{$q}meeting{$q}.{$q}id{$q} ";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testDisplayCalculationDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFar()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType   = 'meetings___latestDateTime__Maximum';
+            $content                                = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent                         = "select max({$q}activity{$q}.{$q}latestdatetime{$q}) col0 ";
+            $this->assertEquals($compareContent, $content);
+
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
+
         public function testInferredRelationModelAttributeWithTwoAttributes()
         {
             $q                                      = DatabaseCompatibilityUtil::getQuote();
@@ -1262,6 +1321,119 @@
         }
 
 
+        public function testDisplayCalculationInferredRelationModelAttributeWithTwoAttributes()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Tests inferredRelation with 2 attributes on the opposing model. Only one declares the module specifically
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___employees__Average';
+            $displayAttribute2                      = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
+            $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
+            $compareContent                         = "select avg({$q}account{$q}.{$q}employees{$q}) col0, " .
+                                                      "{$q}account{$q}.{$q}id{$q} ";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testDisplayCalculationInferredRelationModelAttributeWithTwoAttributesNestedTwoLevelsDeep()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___opportunities___amount__Average';
+            $displayAttribute2                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___opportunities___closeDate';
+            $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
+            $compareContent                         = "select avg({$q}currencyvalue{$q}.{$q}value{$q}) col0, " .
+                                                      "{$q}opportunity{$q}.{$q}id{$q} ";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
+
+        public function testDisplayCalculationInferredRelationModelAttributeWithTwoAttributesComingAtItFromANestedPoint()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            //Also declaring Via modules
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem7');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem7',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType   = 'model5___ReportModelTestItem__reportItems__Inferred___integer__Average';
+            $displayAttribute2                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem7',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'model5___ReportModelTestItem__reportItems__Inferred___dropDown';
+            $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
+            $compareContent                         = "select avg({$q}reportmodeltestitem{$q}.{$q}integer{$q}) col0, " .
+                                                      "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
+
+        public function testDisplayCalculationInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithItemAttribute()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime__Maximum';
+            $content                                = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent                         = "select max({$q}item{$q}.{$q}createddatetime{$q}) col0 ";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
+
+        public function testDisplayCalculationInferredRelationModelAttributeWithCastingHintToNotCastDowButAlsoWithFullCastDown()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime__Maximum';
+            $displayAttribute2                      = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+                                                      Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
+            $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
+            $compareContent                         = "select max({$q}item{$q}.{$q}createddatetime{$q}) col0, " .
+                                                      "{$q}account{$q}.{$q}id{$q} ";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: validate the correct table information.
+        }
 
         /**
          * echo "<pre>";

@@ -153,12 +153,8 @@
             //Example: CustomField, CurrencyValue, OwnedCustomField, or likeContactState
             elseif($modelToReportAdapter->relationIsReportedAsAttribute($attribute))
             {
-//todo: this is sort specific which is wrong.
-                $sortAttribute = $modelToReportAdapter->getRules()->
-                                 getSortAttributeForRelationReportedAsAttribute(
-                                 $modelToReportAdapter->getModel(), $attribute);
-                return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
-                                                                      $attribute, $sortAttribute);
+                return static::makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
+                               $modelToReportAdapter, $attribute);
             }
             //Example: name or phone
             elseif(!$modelToReportAdapter->isReportedOnAsARelation($attribute) &&
@@ -175,6 +171,15 @@
             }
         }
 
+        protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
+                                  $modelToReportAdapter, $attribute)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
+                       $attribute);
+        }
+
         protected function resolveCastingHintForAttribute(ComponentForReportForm  $componentForm,
                                                           $modelAttributeToDataProviderAdapter,
                                                           $modelClassName,
@@ -182,7 +187,6 @@
         {
             $hintAdapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $realAttributeName);
             $hintModelClassName = $hintAdapter->getAttributeModelClassName();
-            echo 'bleco' . $hintModelClassName . "\n";
             $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);
         }
 

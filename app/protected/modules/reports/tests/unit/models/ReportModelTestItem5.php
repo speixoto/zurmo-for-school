@@ -32,13 +32,15 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'name',
+                    'integer',
                 ),
                 'relations' => array(
                     'reportItems' => array(RedBeanModel::MANY_MANY, 'Item'),
                 ),
                 'rules' => array(
-                    array('name',  'type',   'type' => 'string'),
-                    array('name',  'length', 'max' => 32),
+                    array('name',    'type',   'type' => 'string'),
+                    array('name',    'length', 'max' => 32),
+                    array('integer', 'type',    'type' => 'integer'),
                 ),
                 'reportItemsModelClassNames' => array(
                     'ReportModelTestItem',

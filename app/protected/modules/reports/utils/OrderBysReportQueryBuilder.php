@@ -57,5 +57,17 @@
                        $modelAttributeToDataProviderAdapter, $this->joinTablesAdapter, $onTableAliasName);
             return $content . ' ' . $componentForm->order;
         }
+
+        protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
+            $modelToReportAdapter, $attribute)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            $sortAttribute = $modelToReportAdapter->getRules()->
+                getSortAttributeForRelationReportedAsAttribute(
+                $modelToReportAdapter->getModel(), $attribute);
+            return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
+                $attribute, $sortAttribute);
+        }
     }
 ?>

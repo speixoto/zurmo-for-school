@@ -48,6 +48,7 @@
             elseif ($this->modelAttributeToDataProviderAdapter->isRelationTypeAHasOneVariant() &&
                     $this->modelAttributeToDataProviderAdapter->getRelatedAttribute() == 'id')
             {
+
                 self::addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition,
                                                       $this->resolveJoinsForRelatedId(),
                                                       $this->modelAttributeToDataProviderAdapter->getColumnName());
@@ -185,6 +186,23 @@
                                     DatabaseCompatibilityUtil::getOperatorAndValueWherePart($operatorType,
                                     $value) . ")";
             }
+        }
+
+        //todo: test because i am not sure we need this always. needed this for owner part of Conversation query where there was no related attribute, otherwise it didn't work right.
+        //todo: need an actual test just on owner for example. and run more search tests to make sure this is ok.
+        //todo: the way we have this reporting can't use this builder override since you dont always have a related attribute but that doesn't necessarily mean anything
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
+        protected function resolveLeftJoinsForARelationAttribute($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
+            if($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            {
+                return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
+            }
+            return $onTableAliasName;
         }
     }
 ?>

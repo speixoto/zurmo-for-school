@@ -140,7 +140,8 @@
                                                        getRelationModelClassNameThatCanHaveATable(),
                                                        $this->modelAttributeToDataProviderAdapter->
                                                        getRelatedAttribute());
-                $builder                             = new ModelJoinBuilder($modelAttributeToDataProviderAdapter,
+                $builderClassName                    = get_class($this);
+                $builder                             = new $builderClassName($modelAttributeToDataProviderAdapter,
                                                        $this->joinTablesAdapter);
                 $this->tableAliasNameForRelatedModel = $onTableAliasName;
                 $onTableAliasName                    = $builder->resolveJoinsForAttribute($onTableAliasName, false);
@@ -331,7 +332,7 @@
         protected function resolveJoinsForAttributeOnSameModelThatIsARelation($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
-            return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
+            return $this->resolveLeftJoinsForARelationAttribute($onTableAliasName);
         }
 
         protected function resolveJoinsForAttributeOnSameModelThatIsNotARelation($onTableAliasName)
@@ -352,6 +353,12 @@
             {
                 $onTableAliasName = $this->addMixedInOrCastedUpLeftJoinsForAttribute($onTableAliasName);
             }
+            return $this->resolveLeftJoinsForARelationAttribute($onTableAliasName);
+        }
+
+        protected function resolveLeftJoinsForARelationAttribute($onTableAliasName)
+        {
+            assert('is_string($onTableAliasName)');
             return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
         }
 

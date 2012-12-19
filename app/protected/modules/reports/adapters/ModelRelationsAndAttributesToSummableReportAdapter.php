@@ -244,6 +244,20 @@
             foreach ($this->getAttributesNotIncludingDerivedAttributesData() as $attribute => $data)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
+                if(!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea')))
+                {
+                    $attributes[$attribute] = $data;
+                }
+            }
+            return array_merge($this->getGroupByCalculatedModifierAttributes(), $attributes);
+        }
+
+        protected function getGroupByCalculatedModifierAttributes()
+        {
+            $attributes = array();
+            foreach ($this->getAttributesNotIncludingDerivedAttributesData() as $attribute => $data)
+            {
+                $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
                 if($attributeType == 'Date' || $attributeType == 'DateTime')
                 {
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_DAY);
@@ -252,13 +266,10 @@
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_QUARTER);
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_YEAR);
                 }
-                elseif(!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea')))
-                {
-                    $attributes[$attribute] = $data;
-                }
             }
             return $attributes;
         }
+
 
         protected function resolveGroupByCalculationAttributeData(& $attributes, $attribute, $type)
         {
@@ -290,7 +301,7 @@
         public function isDisplayAttributeMadeViaSelect($attribute)
         {
             $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
-            $groupByModifiersAttributes   = $this->getGroupByModifierAttributes();
+            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
             if(isset($displayCalculationAttributes[$attribute]) ||
                isset($groupByModifiersAttributes[$attribute]))
             {
@@ -355,7 +366,7 @@
         {
             assert('is_string($attribute)');
             $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
-            $groupByModifiersAttributes   = $this->getGroupByModifierAttributes();
+            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
             if(isset($displayCalculationAttributes[$attribute]) || isset($groupByModifiersAttributes[$attribute]))
             {
                 return true;
@@ -377,7 +388,7 @@
         {
             assert('is_string($attribute)');
             $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
-            $groupByModifiersAttributes   = $this->getGroupByModifierAttributes();
+            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
             if($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
             {
                 return ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT;

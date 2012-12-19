@@ -103,14 +103,14 @@
             assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
             assert('$componentForm instanceof DisplayAttributeForReportForm');
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            $modelToReportAdapter           = ModelRelationsAndAttributesToReportAdapter::make(
-                                              $componentForm->getModuleClassName(),
-                                              $componentForm->getModelClassName(),
-                                              $componentForm->getReportType());
             $tableAliasName                 = $builder->resolveJoins($onTableAliasName,
                                               ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
             if(static::isDisplayAttributeMadeViaSelect($componentForm))
             {
+                $modelToReportAdapter           = ModelRelationsAndAttributesToReportAdapter::make(
+                                                  $componentForm->getResolvedAttributeModuleClassName(),
+                                                  $componentForm->getResolvedAttributeModelClassName(),
+                                                  $componentForm->getReportType());
                 if(!$modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter)
                 {
                     throw new NotSupportedException();
@@ -174,9 +174,20 @@
             if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
                $modelToReportAdapter->isDisplayAttributeACalculationOrModifier($attribute))
             {
+                //todo: should we utilize someting similar to getSortAttributeForRelationReportedAsAttribute so we aren't specifically calling out CurrencyValue? we arent exactly so that
+                //is a little wierd too
+                if($modelToReportAdapter->relationIsReportedAsAttribute(
+                   $modelToReportAdapter->resolveRealAttributeName($attribute)))
+                {
+                    $relatedAttribute = 'value';
+                }
+                else
+                {
+                    $relatedAttribute = null;
+                }
                 return new RedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
-                    $modelToReportAdapter->resolveRealAttributeName($attribute));
+                    $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
             }
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }
@@ -223,8 +234,8 @@
         protected static function isDisplayAttributeMadeViaSelect(ComponentForReportForm $componentForm)
         {
             $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::make(
-                                    $componentForm->getModuleClassName(),
-                                    $componentForm->getModelClassName(),
+                                    $componentForm->getResolvedAttributeModuleClassName(),
+                                    $componentForm->getResolvedAttributeModelClassName(),
                                     $componentForm->getReportType());
             if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($componentForm->getResolvedAttribute()))
             {
