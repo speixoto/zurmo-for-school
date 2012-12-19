@@ -83,7 +83,16 @@
                 }
             }
             $tipContent                = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
-            $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
+
+            if (Yii::app()->userInterface->getSelectedUserInterfaceType() == UserInterface::MOBILE ||
+                Yii::app()->userInterface->getSelectedUserInterfaceType() == UserInterface::TABLET)
+            {
+                $welcomeView               = new MobileWelcomeView($tipContent, $hasDashboardAccess);
+            }
+            else
+            {
+                $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
+            }
             $view                      = new HomePageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $welcomeView));
             echo $view->render();

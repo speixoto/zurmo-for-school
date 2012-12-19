@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * View to display to users upon login.  Shows informatin such as tips, helpful links and ideas of what to do.
+     * View to display to users upon login.  Shows information such as tips, helpful links and ideas of what to do.
      */
     class WelcomeView extends View
     {
