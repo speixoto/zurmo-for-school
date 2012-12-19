@@ -145,7 +145,7 @@
                                                                     $this->saveActionId,
                                                                     $this->urlParameters), 0, 0);
             $row = 1;
-            $content = $this->renderEmailMessageContentAndResolveLink();
+           // $content = $this->renderEmailMessageContentAndResolveLink();
             if ($this->userCanCreateContact)
             {
                 $this->setView(new ContactInlineCreateForArchivedEmailCreateView(
@@ -173,39 +173,23 @@
             $selectContent         = $this->renderSelectContent();
             $createContactLink     = ZurmoHtml::link(Yii::t('Default', 'Create ContactsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
-                                     array('class' => 'contact-create-link'));
+                                     array('class' => 'create-link contact-create-link z-link'));
             $createContactContent  = Yii::t('Default', 'Create ContactsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
             $createLeadLink        = ZurmoHtml::link(Yii::t('Default', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
-                                     array('class' => 'lead-create-link'));
+                                     array('class' => 'create-link lead-create-link z-link'));
             $createLeadContent     = Yii::t('Default', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
-
-            $content .= '<div class="matching-actions-and-content" style="display:none;"><div class="email-matching-actions">';
-            $content .= $this->renderContactSelectTitleDivContent($selectContent, $createLeadLink,    $createContactLink);
-            $content .= $this->renderLeadCreateTitleDivContent($selectLink,       $createLeadContent, $createContactLink);
-            $content .= $this->renderContactCreateTitleDivContent($selectLink,    $createLeadLink,    $createContactContent);
+            $deleteLink            = $this->renderDeleteLink();
+            $rules    = new EmailMessageMashableActivityRules();
+            $content = $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
+            $content .= ZurmoHtml::tag('span', array(), strval($this->emailMessage));
+            $content .= '<div class="matching-actions-and-content"><div class="email-matching-actions">';
+            $content .= $this->renderTitleDivContent($selectLink, $createLeadLink, $createContactLink, $deleteLink);
             $content .= '</div>';
             $content .= parent::renderContent() . '</div>';
             return '<div id="wrapper-' . $this->uniqueId . '" class="email-archive-item">' . $content .  '</div>';
-        }
-
-        protected function renderEmailMessageContentAndResolveLink()
-        {
-            $rules    = new EmailMessageMashableActivityRules();
-
-            $content  = '<div class="email-matching-summary-content">';
-            $content .= $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
-            $content .= ZurmoHtml::tag('span', array(), strval($this->emailMessage));
-            $content .= '</div>';
-            $content .= '<div class="email-matching-show-more">';
-            $content .= '<span class="icon-down-arrow"></span>Expand';
-            $content .= '</div>';
-            $content .= '<div class="email-matching-show-less" style="display:none;">';
-            $content .= '<span class="icon-up-arrow"></span>Collapse';
-            $content .= '</div>';
-            return $content;
         }
 
         public function isUniqueToAPage()
@@ -216,57 +200,33 @@
         protected function renderScriptsContent()
         {
             Yii::app()->clientScript->registerScript('emailMatchingActions', "
-                $('.email-matching-show-more').click( function()
-                    {
-                        $(this).hide();
-                        $(this).parent().find('.email-matching-show-less').show();
-                        $(this).parent().find('.matching-actions-and-content').show();
-                        $(this).parents('tr').addClass('expanded');
-                        return false;
-                    }
-                );
-                $('.email-matching-show-less').click( function()
-                    {
-                        $(this).hide();
-                        $(this).parent().find('.email-matching-show-more').show();
-                        $(this).parent().find('.matching-actions-and-content').hide();
-                        $(this).parents('tr').removeClass('expanded');
-                        return false;
-                    }
-                );
-                $('.contact-select-link').click( function()
-                    {
-                        $(this).parent().parent().find('.contact-select-title').show();
-                        $(this).parent().parent().find('.lead-create-title').hide();
-                        $(this).parent().parent().find('.contact-create-title').hide();
-                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').show();
-                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
-                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
-                        return false;
-                    }
-                );
-                $('.lead-create-link').click( function()
-                    {
-                        $(this).parent().parent().find('.contact-select-title').hide();
-                        $(this).parent().parent().find('.lead-create-title').show();
-                        $(this).parent().parent().find('.contact-create-title').hide();
-                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
-                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
-                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').show();
-                        return false;
-                    }
-                );
-                $('.contact-create-link').click( function()
-                    {
-                        $(this).parent().parent().find('.contact-select-title').hide();
-                        $(this).parent().parent().find('.lead-create-title').hide();
-                        $(this).parent().parent().find('.contact-create-title').show();
-                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
-                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
-                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
-                        return false;
-                    }
-                );
+                                  $('.select-contact-link').live('click', function ()
+                                   {
+                                        $(this).removeClass('z-link');
+                                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').show();
+                                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
+                                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                        $(this).parent().find('.contact-create-link').addClass('z-link');
+                                        $(this).parent().find('.lead-create-link').addClass('z-link');
+                                   })
+                                   $('.contact-create-link').live('click', function ()
+                                   {
+                                        $(this).removeClass('z-link');
+                                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
+                                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
+                                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                        $(this).parent().find('.select-contact-link').addClass('z-link');
+                                        $(this).parent().find('.lead-create-link').addClass('z-link');
+                                   })
+                                   $('.lead-create-link').live('click', function ()
+                                   {
+                                        $(this).removeClass('z-link');
+                                        $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
+                                        $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
+                                        $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').show();
+                                        $(this).parent().find('.contact-create-link').addClass('z-link');
+                                        $(this).parent().find('.select-contact-link').addClass('z-link');
+                                   })
             ");
         }
 
@@ -276,19 +236,19 @@
             {
                 return ZurmoHtml::link(Yii::t('Default', 'Select ContactsModuleSingularLabel / LeadsModuleSingularLabel',
                                 LabelUtil::getTranslationParamsForAllModules()), '#',
-                                    array('class' => 'contact-select-link'));
+                                    array('class' => 'create-link select-contact-link z-link'));
             }
             if ($this->userCanAccessContacts)
             {
                 return ZurmoHtml::link(Yii::t('Default', 'Select ContactsModuleSingularLabel',
                                 LabelUtil::getTranslationParamsForAllModules()), '#',
-                                    array('class' => 'contact-select-link'));
+                                    array('class' => 'create-link select-contact-link z-link'));
             }
             else
             {
                 return ZurmoHtml::link(Yii::t('Default', 'Select LeadsModuleSingularLabel',
                                 LabelUtil::getTranslationParamsForAllModules()), '#',
-                                    array('class' => 'contact-select-link'));
+                                    array('class' => 'create-link select-contact-link z-link'));
             }
         }
 
@@ -311,13 +271,13 @@
             }
         }
 
-        protected function renderContactSelectTitleDivContent($selectContent, $createLeadLink, $createContactLink)
+        protected function renderTitleDivContent($selectLink, $createLeadLink, $createContactLink, $deleteLink)
         {
             assert('is_string($selectContent)');
             assert('is_string($createLeadLink)');
             assert('is_string($createContactLink)');
-            $content  = '<div id="contact-select-title-' . $this->uniqueId . '" class="contact-select-title">';
-            $content .= $selectContent .  ' ' . Yii::t('Default', 'or') . ' ';
+            $content  = '<div id="select-title-' . $this->uniqueId . '" class="select-title">';
+            $content .= $selectLink . ' ' . Yii::t('Default', 'or') . ' ';
             if ($this->userCanCreateContact && $this->userCanCreateLead)
             {
                 $content .= $createLeadLink . ' ' . Yii::t('Default', 'or') . ' ' . $createContactLink;
@@ -330,40 +290,57 @@
             {
                 $content .= $createLeadLink;
             }
+            $content .= $deleteLink;
             $content .= '</div>';
             return $content;
         }
 
-        protected function renderLeadCreateTitleDivContent($selectContent, $createLeadContent, $createContactLink)
+        protected function renderDeleteLink()
         {
-            assert('is_string($selectContent)');
-            assert('is_string($createLeadContent)');
-            assert('is_string($createContactLink)');
-            $content  = '<div id="lead-create-title-' . $this->uniqueId . '" class="lead-create-title" style="display:none">';
-            $content .= $selectContent . Yii::t('Default', 'or') . ' ';
-            $content .= $createLeadContent;
-            if ($this->userCanCreateContact)
-            {
-                $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createContactLink;
-            }
-            $content .= '</div>';
+            $htmlOptions = $this->getHtmlOptionsForDelete();
+            $route = $this->getDefaultRouteForDelete();
+            $ajaxOptions = $this->getAjaxOptionsForDelete();
+            $content = Yii::t('Default', 'or') . ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete'),$route, $ajaxOptions, 
+                                     $htmlOptions);
             return $content;
         }
 
-        protected function renderContactCreateTitleDivContent($selectContent, $createLeadLink, $createContactContent)
+        protected function getDefaultRouteForDelete()
         {
-            assert('is_string($selectContent)');
-            assert('is_string($createLeadLink)');
-            assert('is_string($createContactContent)');
-            $content  = '<div id="contact-create-title-' . $this->uniqueId . '" class="contact-create-title" style="display:none">';
-            $content .= $selectContent . Yii::t('Default', 'or') . ' ';
-            if ($this->userCanCreateLead)
-            {
-                $content .= ' ' . $createLeadLink;
-            }
-            $content .= ' ' . Yii::t('Default', 'or') . ' ' . $createContactContent;
-            $content .= '</div>';
-            return $content;
+            $params = array('id' => $this->uniqueId);
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/delete/', $params);
         }
+
+        protected function getAjaxOptionsForDelete()
+        { 
+            return array('type'     => 'GET',
+                         'success' => "function(){
+                                       window.location = '" . $this->getMatchingListUrl() . "';
+                                       $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                       {
+                                          text: '" . Yii::t('Default', 'Deleted successfully') . "',
+                                          permanent: false,
+                                          showIcon: true,
+                                       })}");
+        }
+
+        protected function getHtmlOptionsForDelete()
+        {
+            $htmlOptions['id']      = 'delete-link-' . $this->uniqueId;
+            $htmlOptions['class']   = 'z-link';
+            $htmlOptions['confirm'] = Yii::t('Default', 'Are you sure you want to delete?');
+            return $htmlOptions;
+        }
+
+        protected static function getMatchingListUrl()
+       {
+           return Yii::app()->createUrl('emailMessages/default/matchingList');
+       }
+
+        protected static function getNotificationBarId()
+        {
+            return 'FlashMessageBar';
+        }
+
     }
 ?>
