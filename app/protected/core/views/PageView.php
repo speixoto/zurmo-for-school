@@ -63,7 +63,6 @@
                        $this->renderXHtmlHead()      .
                        $this->renderXHtmlBodyStart() .
                        parent::render()              .
-                       $this->renderInterfaceTypeSelector() .
                        $this->renderXHtmlBodyEnd()   .
                        $this->renderXHtmlEnd();
             Yii::app()->getClientScript()->render($content);
@@ -331,35 +330,6 @@
         protected function renderXHtmlBodyEnd()
         {
             return '</body>';
-        }
-
-        /**
-         * Render section for selection user interface type.
-         * Show only if user is using mobile and tablet devices.
-         */
-        protected function renderInterfaceTypeSelector()
-        {
-            $content = '';
-            $htmlOptions = array('class' => 'ui-chooser');
-            if (Yii::app()->userInterface->getDefaultUserInterfaceType() != UserInterface::DESKTOP)
-            {
-                if (Yii::app()->userInterface->getSelectedUserInterfaceType() == UserInterface::DESKTOP)
-                {
-                    if (Yii::app()->userInterface->getDefaultUserInterfaceType() == UserInterface::MOBILE)
-                    {
-                        $content = ZurmoHtml::link(Yii::t('Default', 'Show mobile'), Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::MOBILE)), $htmlOptions);
-                    }
-                    elseif (Yii::app()->userInterface->getDefaultUserInterfaceType() == UserInterface::TABLET)
-                    {
-                        $content = ZurmoHtml::link(Yii::t('Default', 'Show tablet'), Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::TABLET)), $htmlOptions);
-                    }
-                }
-                else
-                {
-                    $content = ZurmoHtml::link(Yii::t('Default', 'Show desktop'), Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::DESKTOP)), $htmlOptions);
-                }
-            }
-            return $content;
         }
 
         /**
