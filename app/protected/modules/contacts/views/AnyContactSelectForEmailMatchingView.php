@@ -151,8 +151,8 @@
                         {
                                  $('.anyContactCancel').live('click', function()
                                  {
-                                 $(this).parentsUntil('#list-view').find('.AnyContactSelectForEmailMatchingView').hide();
-                                 $(this).parentsUntil('#list-view').find('.select-contact-link').addClass('z-link');
+                                 $(this).parentsUntil('.email-archive-item').find('.AnyContactSelectForEmailMatchingView').hide();
+                                 $(this).parentsUntil('.email-archive-item').find('.select-contact-link').addClass('z-link');
                                   });
                         });
             ");

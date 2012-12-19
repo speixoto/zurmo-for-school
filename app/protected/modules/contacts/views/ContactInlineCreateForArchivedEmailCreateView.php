@@ -154,8 +154,8 @@
                         {
                                  $('.createContactCancel').live('click', function()
                                  {
-                                 $(this).parentsUntil('#list-view').find('.ContactInlineCreateForArchivedEmailCreateView').hide();
-                                $(this).parentsUntil('#list-view').find('.contact-create-link').addClass('z-link');
+                                 $(this).parentsUntil('.email-archive-item').find('.ContactInlineCreateForArchivedEmailCreateView').hide();
+                                $(this).parentsUntil('.email-archive-item').find('.contact-create-link').addClass('z-link');
                                   });
                         });
             ");

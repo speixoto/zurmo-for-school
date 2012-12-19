@@ -200,10 +200,6 @@
         protected function renderScriptsContent()
         {
             Yii::app()->clientScript->registerScript('emailMatchingActions', "
-                $('.create-link').live('click', function () 
-                    { 
-                        $(this).each(function()
-                            {
                                   $('.select-contact-link').live('click', function ()
                                    {
                                         $(this).removeClass('z-link');
@@ -231,10 +227,6 @@
                                         $(this).parent().find('.contact-create-link').addClass('z-link');
                                         $(this).parent().find('.select-contact-link').addClass('z-link');
                                    })
-                            })
-                        return false;
-                    }
-                );
             ");
         }
 
