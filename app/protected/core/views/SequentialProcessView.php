@@ -82,7 +82,7 @@
             $content .= '<h3><span id="sequential-process-spinner"><span class="z-spinner"></span></span>' . $this->message . '</h3>';
             $content .= "<span id='" . $this->getProgressBarId() . "-msg'></span>";
             $content .= '</div>';
-            //$this->registerAjaxScript();
+            $this->registerAjaxScript();
             return $content;
         }
 
