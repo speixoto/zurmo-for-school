@@ -197,5 +197,52 @@
             $this->assertEquals($billy->getFullName(), $emailHelper->fromName);
             $this->assertEquals('user@zurmo.com', $emailHelper->fromAddress);
         }
+
+        /**
+         * @depends testSend
+         */
+        public function testSendRealEmail()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            Yii::app()->emailHelper->sendEmailThroughTransport = true;
+
+            Yii::app()->emailHelper->outboundHost     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundHost'];
+            Yii::app()->emailHelper->outboundPort     = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'];
+            Yii::app()->emailHelper->outboundUsername = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundUsername'];
+            Yii::app()->emailHelper->outboundPassword = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPassword'];
+            Yii::app()->emailHelper->outboundSecurity = Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundSecurity'];
+            Yii::app()->emailHelper->sendEmailThroughTransport = true;
+            Yii::app()->emailHelper->setOutboundSettings();
+            Yii::app()->emailHelper->init();
+
+            $steve = UserTestHelper::createBasicUser('steve');
+            EmailMessageTestHelper::createEmailAccount($steve);
+
+            if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $user = User::getByUsername('steve');
+                $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+                $this->assertTrue($user->save());
+            }
+
+
+            $emailMessage = EmailMessageTestHelper::createOutboxEmail($super, 'Test email',
+                'Raw content', ',b>html content</b>end.',
+                'Zurmo', Yii::app()->emailHelper->outboundUsername,
+                'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
+
+
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(3, Yii::app()->emailHelper->getSentCount());
+            Yii::app()->emailHelper->sendQueued($emailMessage);
+            $job = new ProcessOutboundEmailJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
+
+            Yii::app()->emailHelper->sendEmailThroughTransport = false;
+        }
     }
 ?>
