@@ -6681,9 +6681,11 @@ div.wide.form label.hasCheckBox {
 .cgrid-view.loading .list-preloader {
   display: block;
 }
-#NoUserEmailConfigurationYetView h2,
-#NoGlobalEmailConfigurationYetView h2,
-.ZeroModelsYetView h2 {
+/*
+#NoUserEmailConfigurationYetView,
+#NoGlobalEmailConfigurationYetView,
+.ZeroModelsYetView*/
+.splash-view h2 {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
   font-size: 48px;
@@ -6691,18 +6693,14 @@ div.wide.form label.hasCheckBox {
   font-weight: normal;
   padding: 15px 50px 15px 30px;
 }
-#NoUserEmailConfigurationYetView i,
-#NoGlobalEmailConfigurationYetView i,
-.ZeroModelsYetView i {
+.splash-view i {
   font-size: 13px;
   color: #555;
   font-weight: bold;
   display: block;
   margin-left: 30px;
 }
-#NoUserEmailConfigurationYetView p,
-#NoGlobalEmailConfigurationYetView p,
-.ZeroModelsYetView p {
+.splash-view p {
   font-size: 16px;
   line-height: 24px;
   color: #555;
@@ -6711,9 +6709,7 @@ div.wide.form label.hasCheckBox {
   width: 70%;
   margin: 45px 0 0 30px;
 }
-#NoUserEmailConfigurationYetView a,
-#NoGlobalEmailConfigurationYetView a,
-.ZeroModelsYetView a {
+.splash-view a {
   margin-left: 30px;
   margin-top: 30px;
   float: left;
@@ -6727,9 +6723,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
   cursor: pointer;
 }
-#NoUserEmailConfigurationYetView a span:before,
-#NoGlobalEmailConfigurationYetView a span:before,
-.ZeroModelsYetView a span:before {
+.splash-view a span:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
@@ -6739,72 +6733,56 @@ div.wide.form label.hasCheckBox {
   left: -5px;
   margin-right: 3px;
 }
-#NoUserEmailConfigurationYetView .large-icon,
-#NoGlobalEmailConfigurationYetView .large-icon,
-.ZeroModelsYetView .large-icon {
+.splash-view .large-icon {
   width: 25%;
   text-align: center;
   margin-top: 30px;
   border-right: 1px solid #ccc;
   float: left;
 }
-#NoUserEmailConfigurationYetView .Contact .large-icon:after,
-#NoGlobalEmailConfigurationYetView .Contact .large-icon:after,
-.ZeroModelsYetView .Contact .large-icon:after {
+.splash-view .Contact .large-icon:after {
   content: "y";
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 50%;
 }
-#NoUserEmailConfigurationYetView .Account .large-icon:after,
-#NoGlobalEmailConfigurationYetView .Account .large-icon:after,
-.ZeroModelsYetView .Account .large-icon:after {
+.splash-view .Account .large-icon:after {
   content: "P";
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
-#NoUserEmailConfigurationYetView .Lead .large-icon:after,
-#NoGlobalEmailConfigurationYetView .Lead .large-icon:after,
-.ZeroModelsYetView .Lead .large-icon:after {
+.splash-view .Lead .large-icon:after {
   content: ".";
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
-#NoUserEmailConfigurationYetView .Opportunity .large-icon:after,
-#NoGlobalEmailConfigurationYetView .Opportunity .large-icon:after,
-.ZeroModelsYetView .Opportunity .large-icon:after {
+.splash-view .Opportunity .large-icon:after {
   content: "9";
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
-#NoUserEmailConfigurationYetView .Conversation .large-icon:after,
-#NoGlobalEmailConfigurationYetView .Conversation .large-icon:after,
-.ZeroModelsYetView .Conversation .large-icon:after {
+.splash-view .Conversation .large-icon:after {
   content: "b";
   font-weight: normal;
   font-size: 230px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 90%;
 }
-#NoUserEmailConfigurationYetView .Mission .large-icon:after,
-#NoGlobalEmailConfigurationYetView .Mission .large-icon:after,
-.ZeroModelsYetView .Mission .large-icon:after {
+.splash-view .Mission .large-icon:after {
   content: "Q";
   font-weight: normal;
   font-size: 230px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
-#NoUserEmailConfigurationYetView .EmailMessage .large-icon:after,
-#NoGlobalEmailConfigurationYetView .EmailMessage .large-icon:after,
-.ZeroModelsYetView .EmailMessage .large-icon:after {
+.splash-view .EmailMessage .large-icon:after {
   content: "g";
   font-weight: normal;
   font-size: 250px;
