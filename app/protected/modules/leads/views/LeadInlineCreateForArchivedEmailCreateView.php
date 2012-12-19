@@ -36,6 +36,10 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
+                            array('type' => 'CancelLinkForEmailsMatchingList', 'htmlOptions' => array (
+                                    'id'    => 'eval:"createLeadCancel" . $this->uniqueId',
+                                    'name'  => 'eval:"createLeadCancel" . $this->uniqueId',
+                                    'class' => 'eval:"createLeadCancel"')),
                             array('type' => 'SaveButton', 'htmlOptions' => array (
                                     'id'   => 'eval:"save-lead-" . $this->uniqueId',
                                     'name' => 'eval:"save-lead-" . $this->uniqueId')),
@@ -129,6 +133,25 @@
         public static function getDisplayDescription()
         {
             return Yii::t('Default', 'Matching Archived Emails');
+        }
+
+        public function renderAfterFormLayout($form)
+       {
+           $this->renderScriptsContent();
+        }
+
+        protected function renderScriptsContent()
+        {
+            return Yii::app()->clientScript->registerScript('LeadInlineCreateCollapseActions', "
+                        $('.createLeadCancel').each(function()
+                        {
+                                 $('.createLeadCancel').live('click', function()
+                                 {
+                                 $(this).parentsUntil('.email-archive-item').find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                 $(this).parentsUntil('.email-archive-item').find('.lead-create-link').addClass('z-link');
+                                  });
+                        });
+            ");
         }
     }
 ?>

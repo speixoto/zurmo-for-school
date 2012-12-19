@@ -46,6 +46,10 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
+                            array('type' => 'CancelLinkForEmailsMatchingList', 'htmlOptions' => array (
+                                    'id'   => 'eval:"createContactCancel" . $this->uniqueId',
+                                    'name' => 'eval:"createContactCancel" . $this->uniqueId',
+                                    'class' => 'eval:"createContactCancel"')),
                             array('type' => 'SaveButton', 'htmlOptions' => array (
                                     'id'   => 'eval:"save-contact-" . $this->uniqueId',
                                     'name' => 'eval:"save-contact-" . $this->uniqueId')),
@@ -138,6 +142,24 @@
             // End Not Coding Standard
         }
 
+        public function renderAfterFormLayout($form)
+       {
+           $this->renderScriptsContent();
+        }
+
+        protected function renderScriptsContent()
+        {
+            return Yii::app()->clientScript->registerScript('contactInlineCreateCollapseActions', "
+                        $('.createContactCancel').each(function()
+                        {
+                                 $('.createContactCancel').live('click', function()
+                                 {
+                                 $(this).parentsUntil('.email-archive-item').find('.ContactInlineCreateForArchivedEmailCreateView').hide();
+                                $(this).parentsUntil('.email-archive-item').find('.contact-create-link').addClass('z-link');
+                                  });
+                        });
+            ");
+        }
         protected function doesLabelHaveOwnCell()
         {
             return false;
@@ -160,7 +182,7 @@
          */
         protected function getViewStyle()
         {
-            return " style=' display:none;'";
+            return " style='display:none;'";
         }
 
         /**

@@ -121,5 +121,19 @@
             }
             return array();
         }
+
+        public static function arrayUniqueRecursive($array)
+        {
+            $result = array_map("unserialize", array_unique(array_map("serialize", $array)));
+
+            foreach ($result as $key => $value)
+            {
+                if (is_array($value))
+                {
+                    $result[$key] = ArrayUtil::arrayUniqueRecursive($value);
+                }
+            }
+            return $result;
+        }
     }
 ?>
