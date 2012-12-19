@@ -147,8 +147,8 @@
                         {
                                  $('.createLeadCancel').live('click', function()
                                  {
-                                 $(this).parent().parent().parent().parent().parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
-                                $(this).parent().parent().parent().parent().parent().parent().parent().find('.lead-create-link').addClass('z-link');
+                                 $(this).parentsUntil('#list-view').find('.LeadInlineCreateForArchivedEmailCreateView').hide();
+                                 $(this).parentsUntil('#list-view').find('.lead-create-link').addClass('z-link');
                                   });
                         });
             ");

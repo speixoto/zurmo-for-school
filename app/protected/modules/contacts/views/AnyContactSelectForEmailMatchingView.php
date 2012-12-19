@@ -126,13 +126,13 @@
             $content .= '</tbody>';
             $content .= '</table>';
             $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
-            $elementCancel  =   new CancelLinkForEmailsMatchingListActionElement($this->controllerId, $this->moduleId,
+            $cancelElement  =   new CancelLinkForEmailsMatchingListActionElement($this->controllerId, $this->moduleId,
                                                       null,
                                                       array('htmlOptions' =>
                                                           array('name'   => 'anyContactCancel-' . $this->uniqueId,
                                                                 'id'     => 'anyContactCancel-' . $this->uniqueId,
                                                                  'class' => 'anyContactCancel')));
-            $content .= $elementCancel->render();
+            $content .= $cancelElement->render();
             $element  =   new SaveButtonActionElement($this->controllerId, $this->moduleId,
                                                       null,
                                                       array('htmlOptions' =>
@@ -151,8 +151,8 @@
                         {
                                  $('.anyContactCancel').live('click', function()
                                  {
-                                 $(this).parent().parent().parent().parent().parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').hide();
-                                $(this).parent().parent().parent().parent().parent().parent().parent().find('.select-contact-link').addClass('z-link');
+                                 $(this).parentsUntil('#list-view').find('.AnyContactSelectForEmailMatchingView').hide();
+                                 $(this).parentsUntil('#list-view').find('.select-contact-link').addClass('z-link');
                                   });
                         });
             ");
