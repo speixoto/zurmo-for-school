@@ -4065,8 +4065,14 @@ div.hasHalfs{
 }
 
 /*=Progress*/
-.AppContent.ProgressView{
-    padding-right:0;
+.ProgressView{
+    h3{
+        position:relative;
+    }
+    #sequential-process-spinner + #progressBar-msg{
+        display:block;
+        text-indent:30px;
+    }
 }
 
 .progress-counter{
@@ -4077,6 +4083,7 @@ div.hasHalfs{
     margin-top:15px;
     a{
         ++.z-button;
+        margin-left:0;
     }
 }
 

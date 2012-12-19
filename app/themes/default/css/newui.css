@@ -9311,14 +9311,21 @@ div.hasHalfs .twoThirds {
   font-size: 11px;
 }
 /*=Progress*/
-.AppContent.ProgressView {
-  padding-right: 0;
+.ProgressView h3 {
+  position: relative;
+}
+.ProgressView #sequential-process-spinner + #progressBar-msg {
+  display: block;
+  text-indent: 30px;
 }
 .progress-counter {
   padding: 15px;
 }
 #progressBar-links {
   margin-top: 15px;
+}
+#progressBar-links a {
+  margin-left: 0;
 }
 /*=About*/
 #AboutView {
