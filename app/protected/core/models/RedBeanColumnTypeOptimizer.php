@@ -34,11 +34,12 @@
         * @param string  $columnName name of the column
         * @param string  $datatype
         */
-        public static function optimize($table, $columnName, $datatype)
+        public static function optimize($table, $columnName, $datatype, $length = null)
         {
             try
             {
-                $databaseColumnType = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($datatype);
+                $databaseColumnType = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($datatype, $length);
+
                 if (isset(self::$optimizedTableColumns[$table]))
                 {
                     $fields = self::$optimizedTableColumns[$table];
