@@ -6082,6 +6082,22 @@ td {
   font-weight: normal;
   text-align: left;
 }
+#list-view {
+  overflow-x: auto;
+  position: relative;
+  background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
+  background-repeat: no-repeat;
+  background-size: 40px 100%,
+        40px 100%, 
+        20px 100%,
+        20px 100%;
+  /* Opera doesn't support this in the shorthand */
+
+  background-attachment: local,
+        local,
+        scroll,
+        scroll;
+}
 table.items {
   width: 100%;
   border: 1px solid #DFDFDF;
@@ -6100,7 +6116,6 @@ table.items > thead > tr > td {
   vertical-align: middle;
   padding: 10px 5px;
   word-wrap: break-word;
-  word-break: break-all;
 }
 table.items > tbody > tr > th,
 table.items > thead > tr > th {
@@ -6855,11 +6870,8 @@ div.wide.form label.hasCheckBox {
   position: relative;
 }
 .cgrid-view {
-  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  /*.b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );*/
+
   position: relative;
 }
 .juiportlet-widget-content .cgrid-view {

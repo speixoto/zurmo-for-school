@@ -78,6 +78,10 @@ $(window).ready(function(){
     }
 
     resizeWhiteArea();
+    $(window).resize(function(){
+      console.log('resizing');
+      resizeWhiteArea();
+    });
 
     /*Autogrow text areas*/
     $('textarea').autogrow();
