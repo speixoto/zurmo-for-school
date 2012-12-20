@@ -175,7 +175,7 @@
             $metadata['Account']['rules'][] = $rules;
 
             $metadata['Account']['members'][] = 'textField';
-            $rules = array('newField', 'type', 'type' => 'text');
+            $rules = array('textField', 'type', 'type' => 'text');
             $metadata['Account']['rules'][] = $rules;
 
             $metadata['Account']['members'][] = 'longTextField';
@@ -240,7 +240,7 @@
             $this->assertEquals('varchar(128)',     $columns['string128']);
             $this->assertEquals('text',             $columns['string555']);
             $this->assertEquals('longtext',         $columns['string100000']);
-
+            $this->assertEquals('text',             $columns['textfield']);
             $this->assertEquals('date',             $columns['datefield']);
             $this->assertEquals('tinyint(1)',       $columns['booleanfield']);
             $this->assertEquals('int(11) unsigned', $columns['integerfield']);
