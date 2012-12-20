@@ -149,49 +149,75 @@
                 RedBeanDatabase::unfreeze();
                 $unfreezeWhenDone = true;
             }
+
             // adding Text Field
             $metadata = Account::getMetadata();
             $metadata['Account']['members'][] = 'newField';
             $rules = array('newField', 'type', 'type' => 'string');
             $metadata['Account']['rules'][] = $rules;
-            // adding Date Field
-            $metadata['Account']['members'][] = 'dateField';
-            $rules = array('dateField', 'type', 'type' => 'date');
+
+            $metadata['Account']['members'][] = 'string128';
+            $rules = array('string128', 'type', 'type' => 'string');
             $metadata['Account']['rules'][] = $rules;
-            // adding Boolean Field
-            $metadata['Account']['members'][] = 'booleanField';
-            $rules = array('booleanField', 'boolean');
+            $rules = array('string128', 'length', 'min' => 3, 'max' => 128);
             $metadata['Account']['rules'][] = $rules;
-            // adding Integer Field
-            $metadata['Account']['members'][] = 'integerField';
-            $rules = array('integerField', 'type', 'type' => 'integer');
+
+            $metadata['Account']['members'][] = 'string555';
+            $rules = array('string555', 'type', 'type' => 'string');
             $metadata['Account']['rules'][] = $rules;
-            // adding DateTime Field
-            $metadata['Account']['members'][] = 'dateTimeField';
-            $rules = array('dateTimeField', 'type', 'type' => 'datetime');
+            $rules = array('string555', 'length', 'min' => 1, 'max' => 555);
             $metadata['Account']['rules'][] = $rules;
-            // adding URL Field
-            $metadata['Account']['members'][] = 'urlField';
-            $rules = array('urlField', 'url');
+
+            $metadata['Account']['members'][] = 'string100000';
+            $rules = array('string100000', 'type', 'type' => 'string');
             $metadata['Account']['rules'][] = $rules;
-            // adding float Field
-            $metadata['Account']['members'][] = 'floatField';
-            $rules = array('floatField', 'type', 'type' => 'float');
+            $rules = array('string100000', 'length', 'min' => 1, 'max' => 100000);
             $metadata['Account']['rules'][] = $rules;
-            // adding longText Field
+
+            $metadata['Account']['members'][] = 'textField';
+            $rules = array('newField', 'type', 'type' => 'text');
+            $metadata['Account']['rules'][] = $rules;
+
             $metadata['Account']['members'][] = 'longTextField';
             $rules = array('longTextField', 'type', 'type' => 'longtext');
             $metadata['Account']['rules'][] = $rules;
-            // adding Blob Field
+
+            $metadata['Account']['members'][] = 'dateField';
+            $rules = array('dateField', 'type', 'type' => 'date');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'booleanField';
+            $rules = array('booleanField', 'boolean');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'integerField';
+            $rules = array('integerField', 'type', 'type' => 'integer');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'dateTimeField';
+            $rules = array('dateTimeField', 'type', 'type' => 'datetime');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'urlField';
+            $rules = array('urlField', 'url');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'floatField';
+            $rules = array('floatField', 'type', 'type' => 'float');
+            $metadata['Account']['rules'][] = $rules;
+
+            $metadata['Account']['members'][] = 'longTextField';
+            $rules = array('longTextField', 'type', 'type' => 'longtext');
+            $metadata['Account']['rules'][] = $rules;
+
             $metadata['Account']['members'][] = 'blobField';
             $rules = array('blobField', 'type', 'type' => 'blob');
             $metadata['Account']['rules'][] = $rules;
-            // adding longBlob Field
+
             $metadata['Account']['members'][] = 'longBlobField';
             $rules = array('longBlobField', 'type', 'type' => 'longblob');
             $metadata['Account']['rules'][] = $rules;
 
-            //print_r($accountMetadata);
             Account::setMetadata($metadata);
 
             $super                      = User::getByUsername('super');
@@ -209,15 +235,21 @@
             //Check Account fields
             $tableName = RedBeanModel::getTableName('Account');
             $columns   = R::$writer->getColumns($tableName);
+
             $this->assertEquals('text',             $columns['newfield']);
+            $this->assertEquals('varchar(128)',     $columns['string128']);
+            $this->assertEquals('text',             $columns['string555']);
+            $this->assertEquals('longtext',         $columns['string100000']);
+
             $this->assertEquals('date',             $columns['datefield']);
             $this->assertEquals('tinyint(1)',       $columns['booleanfield']);
             $this->assertEquals('int(11) unsigned', $columns['integerfield']);
             $this->assertEquals('datetime',         $columns['datetimefield']);
-            $this->assertEquals('blob',             $columns['blobfield']);
-            $this->assertEquals('longblob',         $columns['longblobfield']);
             $this->assertEquals('varchar(255)',     $columns['urlfield']);
             $this->assertEquals('double',           $columns['floatfield']);
+            $this->assertEquals('longtext',         $columns['longtextfield']);
+            $this->assertEquals('blob',             $columns['blobfield']);
+            $this->assertEquals('longblob',         $columns['longblobfield']);
         }
 
         /**

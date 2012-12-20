@@ -765,7 +765,7 @@
                                 {
                                     unset($hints[$columnName]);
                                 }
-                                if (in_array($validator->type, array('date', 'datetime', 'blob', 'longblob', 'string')))
+                                if (in_array($validator->type, array('date', 'datetime', 'blob', 'longblob', 'string', 'text', 'longtext')))
                                 {
                                     $hints[$columnName] = $validator->type;
                                 }
