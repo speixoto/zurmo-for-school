@@ -4887,7 +4887,10 @@ section {
   left: auto;
 }
 #user-header-menu > li > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal !important;
+  font-size: 12px !important;
+  font-family: "ZurmoGamificationSymblyReguRg" !important;
   color: #ddd;
   position: relative;
   top: 0;
@@ -5196,7 +5199,10 @@ section {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e0e0e0', endColorstr='#c6c6c6', GradientType=0);
 }
 #ShortcutsMenu > li > a :after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 16px;
+  font-family: "ZurmoGamificationSymblyReguRg";
   margin-left: 10px;
 }
 #ShortcutsMenu ul {
@@ -5723,8 +5729,13 @@ form .view-toolbar-container,
   vertical-align: middle;
 }
 .view-toolbar .parent > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
   margin-left: 10px;
+  position: relative;
+  top: 1px;
 }
 .view-toolbar > ul,
 .view-toolbar > a {
@@ -6971,14 +6982,24 @@ div.wide.form label.hasCheckBox {
 }
 #more-search-linkmodal:after,
 #more-search-link:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  top: 1px;
   margin-left: 5px;
 }
 #select-list-attributes-link {
   margin-left: 25px;
 }
 #select-list-attributes-link:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  top: 1px;
   margin-left: 5px;
 }
 #mixed-models-form-search {
@@ -7887,7 +7908,11 @@ div.wide.form label.hasCheckBox {
   font-size: 11px;
 }
 .toolbar-mbmenu .options-menu > li > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  top: 0;
   margin-left: 5px;
 }
 .toolbar-mbmenu .options-menu ul {
@@ -8090,7 +8115,10 @@ div.wide.form label.hasCheckBox {
   padding-bottom: 15px;
 }
 #inline-edit-form > table td > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
   margin-left: 5px;
 }
 #inline-edit-form > table label {
@@ -8242,8 +8270,6 @@ div.wide.form label.hasCheckBox {
   height: 13px;
   text-align: center;
   vertical-align: middle;
-  font-size: 11px;
-  line-height: 12px;
   color: #666;
   border: 1px solid #fff;
   -webkit-box-shadow: inset 0 0 0 1px #dddddd;
@@ -8271,6 +8297,9 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #e8e8e8, #f5f5f5);
   background-image: linear-gradient(top, #e8e8e8, #f5f5f5);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8e8e8', endColorstr='#f5f5f5', GradientType=0);
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
 }
 .BreadCrumbView #StickyListMenu ul {
   display: none;
@@ -8495,11 +8524,13 @@ div.hasHalfs .twoThirds {
   font-family: "ZurmoGamificationSymblyReguRg";
 }
 .edit-row-menu > li > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 12px;
+  font-family: "ZurmoGamificationSymblyReguRg";
   position: relative;
   top: -2px;
   left: 2px;
-  font-size: 10px;
 }
 .edit-row-menu > li a {
   -webkit-text-shadow: none !important;
