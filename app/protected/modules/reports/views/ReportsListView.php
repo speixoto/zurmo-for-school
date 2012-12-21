@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportsListView extends ListView
+    class ReportsListView extends SecuredListView
     {
         public static function getDefaultMetadata()
         {
