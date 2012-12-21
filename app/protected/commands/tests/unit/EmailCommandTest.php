@@ -94,7 +94,7 @@ class EmailCommandTest extends ZurmoBaseTest
             {
                 $command .= ' 2>&1';
             }
-echo $command;
+
             exec($command, $output);
 
             // Check if user got email
