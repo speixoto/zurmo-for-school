@@ -60,7 +60,7 @@
         }
 
         public function renderAfterFormLayout($form)
-       {
+        {
            $this->renderScriptsContent();
         }
 
