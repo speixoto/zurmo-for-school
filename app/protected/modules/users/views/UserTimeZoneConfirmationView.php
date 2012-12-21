@@ -109,10 +109,6 @@
                    $('#UserTimeZoneConfirmationForm_timeZone_value').val(userLocalTimeZone);
                    return false;
                }
-               else
-              {
-                  $('#UserTimeZoneConfirmationForm_timeZone_value').val('UTC');
-              }
             });
          ");
         }
