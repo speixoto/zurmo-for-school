@@ -46,6 +46,17 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testIsDisplayAttributeMadeViaSelect()
+        {
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules(); //ReportsTestModule rules
+            $report             = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
+            $this->assertFalse($adapter->isDisplayAttributeMadeViaSelect('something'));
+        }
+
         public function testGetAllRelations()
         {
             $model              = new ReportModelTestItem();

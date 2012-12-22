@@ -98,14 +98,144 @@
             $this->assertEquals(0, $adapter->getClausesCount());
             $adapter->addSummationClause('table', 'abc', 'c');
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select sum(table.abc) c ";
+            $compareString = "select sum({$quote}table{$quote}.{$quote}abc{$quote}) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
 
             $adapter = new RedBeanModelSelectQueryAdapter(true);
             $this->assertEquals(0, $adapter->getClausesCount());
             $adapter->addSummationClause('table', 'def', 'c');
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select distinct sum(table.def) c ";
+            $compareString = "select distinct sum({$quote}table{$quote}.{$quote}def{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddAverageClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addAverageClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select avg({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddMinimumClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addMinimumClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select min({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddMaximumClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addMaximumClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select max({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddDayClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addDayClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select day({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddWeekClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addWeekClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select week({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddMonthClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addMonthClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select month({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddQuarterClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addQuarterClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select quarter({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddYearClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addYearClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select year({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testResolveIdClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->resolveIdClause('xModel', 'yTableAlias');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $adapter->resolveIdClause('xModel', 'yTableAlias');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $adapter->resolveIdClause('xModel', 'zTableAlias');
+            $this->assertEquals(2, $adapter->getClausesCount());
+        }
+
+        public function testResolveForAliasName()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $content = $adapter->resolveForAliasName('abc');
+            $this->assertEquals('abc', $content);
+            $content = $adapter->resolveForAliasName('abc', 'def');
+            $this->assertEquals('abc def', $content);
+        }
+
+        public function testAddClauseByQueryString()
+        {
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addClauseByQueryString('querystring');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select querystring ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+
+            //Test with aliasName
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addClauseByQueryString('querystring', 'aliasName');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select querystring aliasName ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
     }

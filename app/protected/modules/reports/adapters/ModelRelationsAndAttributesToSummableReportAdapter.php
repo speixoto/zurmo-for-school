@@ -143,6 +143,133 @@
             return $sortedAttributes;
         }
 
+        public function resolveDisplayAttributeTypeAndAddSelectClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter,
+                                                                      $attribute, $tableName, $columnName, $columnAliasName)
+        {
+            assert('is_string($attribute)');
+            assert('is_string($columnAliasName)');
+            $type = $this->getDisplayAttributeForMakingViaSelectType($attribute);
+            if($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
+            {
+                $selectQueryAdapter->addCountClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_SUMMMATION)
+            {
+                $selectQueryAdapter->addSummationClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_AVERAGE)
+            {
+                $selectQueryAdapter->addAverageClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MINIMUM)
+            {
+                $selectQueryAdapter->addMinimumClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MAXIMUM)
+            {
+                $selectQueryAdapter->addMaximumClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
+            {
+                $selectQueryAdapter->addDayClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_WEEK)
+            {
+                $selectQueryAdapter->addWeekClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_MONTH)
+            {
+                $selectQueryAdapter->addMonthClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_QUARTER)
+            {
+                $selectQueryAdapter->addQuarterClause($tableName, $columnName, $columnAliasName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_YEAR)
+            {
+                $selectQueryAdapter->addYearClause($tableName, $columnName, $columnAliasName);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public function isDisplayAttributeACalculationOrModifier($attribute)
+        {
+            assert('is_string($attribute)');
+            $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
+            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
+            if(isset($displayCalculationAttributes[$attribute]) || isset($groupByModifiersAttributes[$attribute]))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function isGroupByAttributeACalculatedModifier($attribute)
+        {
+            assert('is_string($attribute)');
+            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
+            if(isset($groupByModifiersAttributes[$attribute]))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function resolveRealAttributeName($attribute)
+        {
+            assert('is_string($attribute)');
+            if($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
+            {
+                return 'id';
+            }
+            return parent::resolveRealAttributeName($attribute);
+        }
+
+        public function getGroupByCalculatedModifierAttributeType($attribute)
+        {
+            $parts = explode(FormModelUtil::DELIMITER, $attribute);
+            if($parts > 1)
+            {
+                return $parts[1];
+            }
+        }
+
+
+        public function getAttributesForGroupBys()
+        {
+            $attributes       = array('id' => array('label' => Yii::t('Default', 'Id')));
+            $attributes       = array_merge($attributes, $this->getGroupByModifierAttributes());
+            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
+        }
+
+        public function isAttributeIndexOrDerivedTypeADisplayCalculation($attributeIndexOrDerivedType)
+        {
+            assert('is_string($attributeIndexOrDerivedType)');
+            $parts = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
+            if(count($parts) > 1 && in_array(array_pop($parts), static::getDisplayCalculationTypes()))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function isDisplayAttributeMadeViaSelect($attribute)
+        {
+            $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
+            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
+            if(isset($displayCalculationAttributes[$attribute]) ||
+                isset($groupByModifiersAttributes[$attribute]))
+            {
+                return true;
+            }
+            return parent::isDisplayAttributeMadeViaSelect($attribute);
+        }
+
         protected function getDisplayCalculationAttributes()
         {
             $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));
@@ -229,15 +356,6 @@
                    ' -(' . static::getTranslatedDisplayCalculationShortLabel($type) . ')';
         }
 
-        public function getAttributesForGroupBys()
-        {
-            $attributes       = array('id' => array('label' => Yii::t('Default', 'Id')));
-            $attributes       = array_merge($attributes, $this->getGroupByModifierAttributes());
-            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
-        }
-
         protected function getGroupByModifierAttributes()
         {
             $attributes = array();
@@ -287,114 +405,6 @@
                    ' -(' . static::getTranslatedGroupByCalculationShortLabel($type) . ')';
         }
 
-        public function isAttributeIndexOrDerivedTypeADisplayCalculation($attributeIndexOrDerivedType)
-        {
-            assert('is_string($attributeIndexOrDerivedType)');
-            $parts = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
-            if(count($parts) > 1 && in_array(array_pop($parts), static::getDisplayCalculationTypes()))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public function isDisplayAttributeMadeViaSelect($attribute)
-        {
-            $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
-            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
-            if(isset($displayCalculationAttributes[$attribute]) ||
-               isset($groupByModifiersAttributes[$attribute]))
-            {
-                return true;
-            }
-            return parent::isDisplayAttributeMadeViaSelect($attribute);
-        }
-
-        public function resolveDisplayAttributeTypeAndAddSelectClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter,
-                                                                      $attribute, $tableName, $columnName, $columnAliasName)
-        {
-            assert('is_string($attribute)');
-            assert('is_string($columnAliasName)');
-            $type = $this->getDisplayAttributeForMakingViaSelectType($attribute);
-            if($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
-            {
-                $selectQueryAdapter->addCountClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_SUMMMATION)
-            {
-                $selectQueryAdapter->addSummationClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_AVERAGE)
-            {
-                $selectQueryAdapter->addAverageClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MINIMUM)
-            {
-                $selectQueryAdapter->addMinimumClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MAXIMUM)
-            {
-                $selectQueryAdapter->addMaximumClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
-            {
-                $selectQueryAdapter->addDayClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_WEEK)
-            {
-                $selectQueryAdapter->addWeekClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_MONTH)
-            {
-                $selectQueryAdapter->addMonthClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_QUARTER)
-            {
-                $selectQueryAdapter->addQuarterClause($tableName, $columnName, $columnAliasName);
-            }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_YEAR)
-            {
-                $selectQueryAdapter->addYearClause($tableName, $columnName, $columnAliasName);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        public function isDisplayAttributeACalculationOrModifier($attribute)
-        {
-            assert('is_string($attribute)');
-            $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
-            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
-            if(isset($displayCalculationAttributes[$attribute]) || isset($groupByModifiersAttributes[$attribute]))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public function isGroupByAttributeACalculatedModifier($attribute)
-        {
-            assert('is_string($attribute)');
-            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
-            if(isset($groupByModifiersAttributes[$attribute]))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public function resolveRealAttributeName($attribute)
-        {
-            assert('is_string($attribute)');
-            if($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
-            {
-                return 'id';
-            }
-            return parent::resolveRealAttributeName($attribute);
-        }
-
         protected function getDisplayAttributeForMakingViaSelectType($attribute)
         {
             assert('is_string($attribute)');
@@ -410,15 +420,6 @@
                 return $parts[1];
             }
             throw new NotSupportedException($attribute);
-        }
-
-        public function getGroupByCalculatedModifierAttributeType($attribute)
-        {
-            $parts = explode(FormModelUtil::DELIMITER, $attribute);
-            if($parts > 1)
-            {
-                return $parts[1];
-            }
         }
     }
 ?>

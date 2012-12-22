@@ -140,6 +140,9 @@
             $this->assertEquals($compareData, $attributes['float__Average']);
         }
 
+        /**
+         * @depends testGetAttributesForChartRange
+         */
         public function testIsAttributeIndexOrDerivedTypeADisplayCalculation()
         {
             $model   = new ReportModelTestItem();
@@ -152,6 +155,62 @@
             $this->assertTrue  ($adapter->isAttributeIndexOrDerivedTypeADisplayCalculation('float__Summation'));
         }
 
+        /**
+         * @depends testIsAttributeIndexOrDerivedTypeADisplayCalculation
+         */
+        public function testIsDisplayAttributeMadeViaSelect()
+        {
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules(); //ReportsTestModule rules
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $this->assertFalse($adapter->isDisplayAttributeMadeViaSelect('date'));
+            $this->assertFalse($adapter->isDisplayAttributeMadeViaSelect('phone'));
 
+            $this->assertTrue($adapter->isDisplayAttributeMadeViaSelect('date__Day'));
+            $this->assertTrue($adapter->isDisplayAttributeMadeViaSelect('integer__Maximum'));
+        }
+
+        /**
+         * @depends testIsDisplayAttributeMadeViaSelect
+         */
+        public function testIsDisplayAttributeACalculationOrModifier()
+        {
+            $this->fail(); //todo:
+        }
+
+        /**
+         * @depends testIsDisplayAttributeACalculationOrModifier
+         */
+        public function testIsGroupByAttributeACalculatedModifier()
+        {
+            $this->fail(); //todo:
+        }
+
+        /**
+         * @depends testIsGroupByAttributeACalculatedModifier
+         */
+        public function testResolveRealAttributeName()
+        {
+            $this->fail(); //todo:
+        }
+
+        /**
+         * @depends testResolveRealAttributeName
+         */
+        public function testGetGroupByCalculatedModifierAttributeType()
+        {
+            $this->fail(); //todo:
+        }
+
+        /**
+         * @depends testGetGroupByCalculatedModifierAttributeType
+         */
+        public function testResolveDisplayAttributeTypeAndAddSelectClause()
+        {
+            $this->fail(); //todo:
+        }
     }
 ?>
