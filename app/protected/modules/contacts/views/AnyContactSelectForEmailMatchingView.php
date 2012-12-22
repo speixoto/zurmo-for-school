@@ -73,6 +73,7 @@
          */
         protected function renderContent()
         {
+            $this->renderScriptsContent();
             $content = '<div class="wide form">';
             $clipWidget = new ClipWidget();
             $afterValidateAjax = $this->renderConfigSaveAjax($this->getFormId());
@@ -125,6 +126,13 @@
             $content .= '</tbody>';
             $content .= '</table>';
             $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
+            $cancelElement  =   new CancelLinkForEmailsMatchingListActionElement($this->controllerId, $this->moduleId,
+                                                      null,
+                                                      array('htmlOptions' =>
+                                                          array('name'   => 'anyContactCancel-' . $this->uniqueId,
+                                                                'id'     => 'anyContactCancel-' . $this->uniqueId,
+                                                                 'class' => 'anyContactCancel')));
+            $content .= $cancelElement->render();
             $element  =   new SaveButtonActionElement($this->controllerId, $this->moduleId,
                                                       null,
                                                       array('htmlOptions' =>
@@ -135,6 +143,20 @@
             return $content;
         }
 
+
+        protected function renderScriptsContent()
+        {
+            Yii::app()->clientScript->registerScript('anyContactSelectFormCollapseActions', "
+                        $('.anyContactCancel').each(function()
+                        {
+                                 $('.anyContactCancel').live('click', function()
+                                 {
+                                 $(this).parentsUntil('.email-archive-item').find('.AnyContactSelectForEmailMatchingView').hide();
+                                 $(this).parentsUntil('.email-archive-item').find('.select-contact-link').addClass('z-link');
+                                  });
+                        });
+            ");
+        }
         protected function getFormId()
         {
             return 'select-contact-form-' . $this->uniqueId;
@@ -161,6 +183,11 @@
         public function isUniqueToAPage()
         {
             return false;
+        }
+
+        protected function getViewStyle()
+        {
+            return " style=' display:none;'";
         }
     }
 ?>

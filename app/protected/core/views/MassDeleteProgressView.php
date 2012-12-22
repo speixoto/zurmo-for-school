@@ -97,12 +97,14 @@
                 'options'    => array(
                     'create' => 'js:function(event, ui)
                     {
-                        ' . $this->getCreateProgressBarAjax($this->progressBarId) . '
+                        ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
+                        makeSmallLoadingSpinner("sequential-process-spinner", "dark");
                     }',
                     'complete' => 'js:function(event, ui)
                     {
                         $(\'#' . $this->progressBarId . '\').hide();
                         $(\'#' . $this->progressBarId . '-links\').show();
+                        $(\'#sequential-process-spinner\').remove();
                     }',
                 ),
                 'htmlOptions' => array(
@@ -113,7 +115,8 @@
             $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
             $content = "<div><h1>" . Yii::t('Default', 'Mass Delete') . '&#160;' . $this->title . '</h1>';
             $content .= '<div class="progress-counter">' . "\n";
-            $content .= "<h2><span id='" . $this->progressBarId . "-msg'>" . $this->getMessage() . "</span></h2>";
+            $content .= '<h3><span id="sequential-process-spinner"><span class="z-spinner"></span></span>' . 
+                        '<span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
             $content .= $progressBarContent;
             $content .= $this->renderFormLinks();
             $content .= '</div>';
