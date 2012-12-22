@@ -104,7 +104,7 @@
                 $relationModuleClassName      = $relationModelClassName::getModuleClassName();
                 if($relationModuleClassName == null)
                 {
-                    throw new NotSupportedException();
+                    throw new NotSupportedException($relationModelClassName);
                 }
                 $relationNode                 = array('id'		    => self::makeNodeId($relation, $nodeIdPrefix),
                                                       'text'        => $relationData['label'],

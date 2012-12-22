@@ -35,16 +35,26 @@
                 'Item' => array(
                     'nonReportable' =>
                         array(  'createdByUser',
-                                'modifiedByUser'),
+                                'createdDateTime',
+                                'modifiedByUser',
+                                'modifiedDateTime'),
+                ),
+                'Person' => array(
+                    'nonReportable' =>
+                    array(      'primaryAddress',
+                                'primaryEmail'),
                 ),
                 'User' => array(
                     'nonReportable' =>
                         array(  'currency',
+                                'emailAccounts',
                                 'emailBoxes',
+                                'emailSignatures',
                                 'hash',
                                 'groups',
                                 'language',
                                 'manager',
+
                                 'role',
                                 'serializedAvatarData',
                                 'timeZone'),

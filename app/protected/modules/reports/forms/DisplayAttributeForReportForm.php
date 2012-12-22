@@ -50,7 +50,7 @@
         public function attributeNames()
         {
             $attributeNames = parent::attributeNames();
-            if(count($attributeNames) != 2)
+            if(count($attributeNames) != 3)
             {
                 throw new NotSupportedException();
             }
