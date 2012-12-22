@@ -27,9 +27,9 @@
     // Application component that helps to determine are visitors are using mobile, tablet or desktop computer.
     class UserInterface extends CApplicationComponent
     {
-        const MOBILE      = 'Mobile';
-        const TABLET      = 'Tablet';
-        const DESKTOP     = 'Desktop';
+        const MOBILE                              = 'Mobile';
+        const TABLET                              = 'Tablet';
+        const DESKTOP                             = 'Desktop';
         const DEFAULT_USER_INTERFACE_COOKIE_NAME  = "DefaultUserInterfaceType";
         const SELECTED_USER_INTERFACE_COOKIE_NAME = "UserInterfaceType";
 
