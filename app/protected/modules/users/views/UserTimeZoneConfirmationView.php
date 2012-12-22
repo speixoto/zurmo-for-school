@@ -76,7 +76,7 @@
              '-9': 'America/Juneau',
              '-8': 'America/Los_Angeles',
              '-7': 'America/Denver',
-             '-6': 'America/Mexico_City',
+             '-6': 'America/Chicago',
              '-5': 'America/New_York',
              '-4': 'America/Caracas',
              '-3.5': 'America/St_Johns',
