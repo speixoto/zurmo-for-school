@@ -38,6 +38,114 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testModifierGroupBys()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single modifier
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'date__Day';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}date{$q})", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'date__Week';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("week({$q}reportmodeltestitem{$q}.{$q}date{$q})", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'date__Month';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("month({$q}reportmodeltestitem{$q}.{$q}date{$q})", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'date__Quarter';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("quarter({$q}reportmodeltestitem{$q}.{$q}date{$q})", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'date__Year';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("year({$q}reportmodeltestitem{$q}.{$q}date{$q})", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testModifierGroupBysWhenRelated()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single modifier
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem2');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'hasMany2___date__Day';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}date{$q})", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        /**
+         * Technically likeContactState doesn't need to join the reportModelTestItem7 table and could just group on the
+         * foreign id column on reportmodeltestitem. Unfortunetely this will require some additional refactoring in
+         * GroupBysReportQueryBuilder to make a custom ModelJoinBuilder. The only advantage of this would be potential
+         * performance gains since a join would not be used.
+         */
+        public function testLikeContactStateGroupBy()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'likeContactState';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("{$q}reportmodeltestitem7{$q}.{$q}name{$q}", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testLikeContactStateGroupByWhenRelated()
+        {
+        $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+        $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem2');
+        $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+        $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            Report::TYPE_SUMMATION);
+        $groupBy->attributeIndexOrDerivedType  = 'hasMany2___likeContactState';
+        $content                               = $builder->makeQueryContent(array($groupBy));
+        $this->assertEquals("{$q}reportmodeltestitem7{$q}.{$q}name{$q}", $content);
+        $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+        $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
         public function testNonRelatedNonDerivedAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
@@ -46,7 +154,7 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'phone';
             $content                               = $builder->makeQueryContent(array($groupBy));
             $this->assertEquals("{$q}reportmodeltestitem{$q}.{$q}phone{$q}", $content);
@@ -57,7 +165,7 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'integer';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}reportmodeltestitem{$q}.{$q}phone{$q}, " .
@@ -75,7 +183,7 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy));
             $this->assertEquals("{$q}item{$q}.{$q}createddatetime{$q}", $content);
@@ -86,10 +194,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -108,10 +216,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___createdDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -129,10 +237,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasMany___createdDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -150,10 +258,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
             $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -171,10 +279,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem3');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasMany1___createdDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -192,10 +300,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'hasOne___createdDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -213,10 +321,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'hasMany___createdDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasMany___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -234,10 +342,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'account___createdDateTime';
             $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -255,10 +363,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem3');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'hasMany1___createdDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasMany1___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -276,13 +384,13 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'modifiedDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___createdDateTime';
             $groupBy3                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy3->attributeIndexOrDerivedType = 'hasOne___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2, $groupBy3));
             $compareContent                        = "{$q}item{$q}.{$q}modifieddatetime{$q}, " .
@@ -301,13 +409,13 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'modifiedDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasMany___createdDateTime';
             $groupBy3                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy3->attributeIndexOrDerivedType = 'hasMany___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2, $groupBy3));
             $compareContent                        = "{$q}item{$q}.{$q}modifieddatetime{$q}, " .
@@ -326,13 +434,13 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
             $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
             $groupBy3                              = new GroupByForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2, $groupBy3));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
@@ -351,13 +459,13 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem3');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'modifiedDateTime';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasMany1___createdDateTime';
             $groupBy3                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem3',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy3->attributeIndexOrDerivedType = 'hasMany1___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2, $groupBy3));
             $compareContent                        = "{$q}item{$q}.{$q}modifieddatetime{$q}, " .
@@ -376,10 +484,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'dropDown';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___dropDown';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}customfield{$q}.{$q}value{$q}, " .
@@ -398,10 +506,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'hasOne___dropDown';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasMany___dropDown';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}customfield{$q}.{$q}value{$q}, " .
@@ -422,10 +530,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'hasOne___dropDown';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne2___dropDownX';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}customfield{$q}.{$q}value{$q}, " .
@@ -449,10 +557,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'hasOne___dropDown';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___dropDown2';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}customfield{$q}.{$q}value{$q}, " .
@@ -469,10 +577,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdByUser__User';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'modifiedByUser__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
@@ -490,10 +598,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdByUser__User';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'owner__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
@@ -516,10 +624,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdByUser__User';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___createdByUser__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
@@ -541,10 +649,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdByUser__User';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
@@ -575,10 +683,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'hasOne___createdByUser__User';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
@@ -613,7 +721,7 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'contacts___opportunities___account___name';
             $content                               = $builder->makeQueryContent(array($groupBy));
             $compareContent                        = "{$q}account1{$q}.{$q}name{$q}";
@@ -634,13 +742,13 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'opportunities___name';
             $groupBy2                               = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType  = 'contacts___opportunities___name';
             $groupBy3                               = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy3->attributeIndexOrDerivedType  = 'contacts___opportunities___account___name';
             $content                                = $builder->makeQueryContent(array($groupBy, $groupBy2, $groupBy3));
             $compareContent                         = "{$q}opportunity{$q}.{$q}name{$q}, " .
@@ -660,7 +768,7 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'meetings___category';
             $content                                = $builder->makeQueryContent(array($groupBy));
             $compareContent                         = "{$q}customfield{$q}.{$q}value{$q}";
@@ -688,7 +796,7 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'meetings___name';
             $content                                = $builder->makeQueryContent(array($groupBy));
             $compareContent                         = "{$q}meeting{$q}.{$q}name{$q}";
@@ -714,10 +822,10 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'meetings___category';
             $groupBy2                               = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType  = 'meetings___name';
             $content                                = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                         = "{$q}customfield{$q}.{$q}value{$q}, " .
@@ -746,7 +854,7 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'model5ViaItem___name';
             $content                                = $builder->makeQueryContent(array($groupBy));
             $compareContent                         = "{$q}reportmodeltestitem5{$q}.{$q}name{$q}";
@@ -762,10 +870,10 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'opportunities___meetings___category';
             $groupBy2                               = new GroupByForReportForm('AccountsModule', 'Account',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType  = 'opportunities___meetings___name';
             $content                                = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                         = "{$q}customfield{$q}.{$q}value{$q}, " .
@@ -793,7 +901,7 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('AccountsModule', 'Account',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'meetings___latestDateTime';
             $content                                = $builder->makeQueryContent(array($groupBy));
             $compareContent                         = "{$q}activity{$q}.{$q}latestdatetime{$q}";
@@ -813,10 +921,10 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___industry';
             $groupBy2                               = new GroupByForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                         = "{$q}customfield{$q}.{$q}value{$q}, " .
@@ -835,10 +943,10 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___opportunities___stage';
             $groupBy2                               = new GroupByForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___opportunities___name';
             $content                                = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                         = "{$q}customfield{$q}.{$q}value{$q}, " .
@@ -857,10 +965,10 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem7');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem7',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'model5___ReportModelTestItem__reportItems__Inferred___phone';
             $groupBy2                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem7',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType  = 'model5___ReportModelTestItem__reportItems__Inferred___dropDown';
             $content                                = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                         = "{$q}reportmodeltestitem{$q}.{$q}phone{$q}, " .
@@ -880,7 +988,7 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime';
             $content                                = $builder->makeQueryContent(array($groupBy));
             $compareContent                         = "{$q}item{$q}.{$q}createddatetime{$q}";
@@ -899,7 +1007,7 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___owner__User';
             $content                                = $builder->makeQueryContent(array($groupBy));
             $compareContent                         = "{$q}person{$q}.{$q}lastname{$q}";
@@ -918,10 +1026,10 @@
             $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Meeting');
             $builder                                = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                                = new GroupByForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime';
             $groupBy2                               = new GroupByForReportForm('MeetingsModule', 'Meeting',
-                                                      Report::TYPE_ROWS_AND_COLUMNS);
+                                                      Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                         = "{$q}item{$q}.{$q}createddatetime{$q}, " .

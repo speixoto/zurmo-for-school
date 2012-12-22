@@ -38,8 +38,9 @@
                         array('reportedAsAttribute',
                               'likeContactState'),
                     'relationsReportedAsAttributesSortAttributes' =>
-                        array('reportedAsAttribute' => 'name'),
-                        array('likeContactState'    => 'name'),
+                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
+                    'relationsReportedAsAttributesGroupByAttributes' =>
+                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
                     'nonReportable' =>
                         array('nonReportable',
                               'nonReportable2'),

@@ -53,8 +53,71 @@
         protected function resolveFinalContent($modelAttributeToDataProviderAdapter,
                                                ComponentForReportForm $componentForm, $onTableAliasName = null)
         {
-            return ModelDataProviderUtil::resolveSortAttributeColumnName(
-                   $modelAttributeToDataProviderAdapter, $this->joinTablesAdapter, $onTableAliasName);
+
+
+            $columnContent = ModelDataProviderUtil::resolveGroupByAttributeColumnName(
+                             $modelAttributeToDataProviderAdapter, $this->joinTablesAdapter, $onTableAliasName);
+            return $this->resolveColumnContentForCalculatedModifier($componentForm, $columnContent);
+        }
+
+        protected function resolveColumnContentForCalculatedModifier(GroupByForReportForm $componentForm, $columnContent)
+        {
+            assert('is_string($columnContent)');
+            $resolvedAttribute              = $componentForm->getResolvedAttribute();
+            $modelToReportAdapter           = ModelRelationsAndAttributesToReportAdapter::make(
+                $componentForm->getResolvedAttributeModuleClassName(),
+                $componentForm->getResolvedAttributeModelClassName(),
+                $componentForm->getReportType());
+            if($modelToReportAdapter->isGroupByAttributeACalculatedModifier($resolvedAttribute) &&
+               $modelToReportAdapter->getGroupByCalculatedModifierAttributeType($resolvedAttribute))
+            {
+                $sqlReadyType = strtolower($modelToReportAdapter->
+                                           getGroupByCalculatedModifierAttributeType($resolvedAttribute));
+                return $sqlReadyType . '(' . $columnContent . ')';
+            }
+            return $columnContent;
+        }
+
+        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
+                $modelToReportAdapter->isGroupByAttributeACalculatedModifier($attribute))
+            {
+                $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
+                return new RedBeanModelAttributeToDataProviderAdapter(
+                    $modelToReportAdapter->getModelClassName(),
+                    $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
+            }
+            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
+        }
+
+        protected static function resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            if($modelToReportAdapter->relationIsReportedAsAttribute(
+                $modelToReportAdapter->resolveRealAttributeName($attribute)))
+            {
+                return 'value';
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
+            $modelToReportAdapter, $attribute)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            $groupByAttribute = $modelToReportAdapter->getRules()->
+                getGroupByRelatedAttributeForRelationReportedAsAttribute(
+                $modelToReportAdapter->getModel(), $attribute);
+            return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
+                $attribute, $groupByAttribute);
         }
     }
 ?>

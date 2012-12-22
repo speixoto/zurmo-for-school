@@ -208,10 +208,39 @@
             }
             if(in_array($model->getRelationModelClassName($relation),
                 array('OwnedCustomField',
-                    'CustomField',
-                    'OwnedMultipleValuesCustomField',
-                    'MultipleValuesCustomField',
-                    'CurrencyValue')))
+                      'CustomField',
+                      'OwnedMultipleValuesCustomField',
+                      'MultipleValuesCustomField',
+                      'CurrencyValue')))
+            {
+                return 'value';
+            }
+            throw new NotSupportedException();
+        }
+
+        public function getGroupByRelatedAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
+        {
+            assert('is_string($relation)');
+            $modelClassName = $model->getAttributeModelClassName($relation);
+            $metadata       = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
+                in_array($relation, $metadata[$modelClassName]['relationsReportedAsAttributes']))
+            {
+                if(isset($metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation]))
+                {
+                    return $metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            if(in_array($model->getRelationModelClassName($relation),
+                array(  'OwnedCustomField',
+                        'CustomField',
+                        'OwnedMultipleValuesCustomField',
+                        'MultipleValuesCustomField',
+                        'CurrencyValue')))
             {
                 return 'value';
             }

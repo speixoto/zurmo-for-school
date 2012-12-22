@@ -65,8 +65,9 @@
                                                              $onTableAliasName = null)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            $builder        = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
-            if($this->shouldPrematurelyStopBuildingJoinsForAttribute($componentForm, $modelAttributeToDataProviderAdapter))
+            $builder              = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
+            $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($componentForm);
+            if($this->shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter, $componentForm, $modelAttributeToDataProviderAdapter))
             {
                 $this->resolveDisplayAttributeForPrematurelyStoppingJoins($builder,
                                                                           $modelAttributeToDataProviderAdapter,
@@ -75,6 +76,7 @@
             else
             {
                 $this->resolveDisplayAttributeForProcessingAllJoins(      $builder,
+                                                                          $modelToReportAdapter,
                                                                           $modelAttributeToDataProviderAdapter,
                                                                           $componentForm,
                                                                           $onTableAliasName);
@@ -96,10 +98,12 @@
         }
 
         protected function resolveDisplayAttributeForProcessingAllJoins(ModelJoinBuilder $builder,
+                                                                        $modelToReportAdapter,
                                                                         $modelAttributeToDataProviderAdapter,
                                                                         $componentForm,
                                                                         $onTableAliasName = null)
         {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
             assert('$componentForm instanceof DisplayAttributeForReportForm');
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
@@ -107,10 +111,6 @@
                                               ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
             if(static::isDisplayAttributeMadeViaSelect($componentForm))
             {
-                $modelToReportAdapter           = ModelRelationsAndAttributesToReportAdapter::make(
-                                                  $componentForm->getResolvedAttributeModuleClassName(),
-                                                  $componentForm->getResolvedAttributeModelClassName(),
-                                                  $componentForm->getReportType());
                 if(!$modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter)
                 {
                     throw new NotSupportedException();
@@ -174,17 +174,7 @@
             if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
                $modelToReportAdapter->isDisplayAttributeACalculationOrModifier($attribute))
             {
-                //todo: should we utilize someting similar to getSortAttributeForRelationReportedAsAttribute so we aren't specifically calling out CurrencyValue? we arent exactly so that
-                //is a little wierd too
-                if($modelToReportAdapter->relationIsReportedAsAttribute(
-                   $modelToReportAdapter->resolveRealAttributeName($attribute)))
-                {
-                    $relatedAttribute = 'value';
-                }
-                else
-                {
-                    $relatedAttribute = null;
-                }
+                $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
                 return new RedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
                     $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
@@ -192,7 +182,23 @@
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }
 
-        protected function shouldPrematurelyStopBuildingJoinsForAttribute(ComponentForReportForm $componentForm,
+        protected static function resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            if($modelToReportAdapter->relationIsReportedAsAttribute(
+                $modelToReportAdapter->resolveRealAttributeName($attribute)))
+            {
+                return 'value';
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected function shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter,
+                                                                          ComponentForReportForm $componentForm,
                                                                           $modelAttributeToDataProviderAdapter)
         {
             assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
@@ -221,22 +227,24 @@
             {
                 return true;
             }
+            //likeContactState for example. It is not covered by ownedRelation above but should stop prematurely
+            elseif($modelToReportAdapter->relationIsReportedAsAttribute($modelAttributeToDataProviderAdapter->getAttribute()))
+            {
+                return true;
+            }
             //if a User relation
             elseif($modelAttributeToDataProviderAdapter->isRelation() &&
                    $modelAttributeToDataProviderAdapter->getRelationModelClassName() == 'User')
             {
                 return true;
             }
-            return parent::shouldPrematurelyStopBuildingJoinsForAttribute($componentForm,
+            return parent::shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter, $componentForm,
                                                                           $modelAttributeToDataProviderAdapter);
         }
 
         protected static function isDisplayAttributeMadeViaSelect(ComponentForReportForm $componentForm)
         {
-            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::make(
-                                    $componentForm->getResolvedAttributeModuleClassName(),
-                                    $componentForm->getResolvedAttributeModelClassName(),
-                                    $componentForm->getReportType());
+            $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($componentForm);
             if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($componentForm->getResolvedAttribute()))
             {
                 return true;
@@ -256,6 +264,15 @@
                 return parent::resolveCastingHintForAttribute($componentForm, $modelAttributeToDataProviderAdapter,
                                                               $modelClassName, $realAttributeName);
             }
+        }
+
+        protected static function makeModelToReportAdapterByComponentForm(ComponentForReportForm $componentForm)
+        {
+            assert('$componentForm instanceof DisplayAttributeForReportForm');
+            return ModelRelationsAndAttributesToReportAdapter::make(
+                        $componentForm->getResolvedAttributeModuleClassName(),
+                        $componentForm->getResolvedAttributeModelClassName(),
+                        $componentForm->getReportType());
         }
     }
 ?>

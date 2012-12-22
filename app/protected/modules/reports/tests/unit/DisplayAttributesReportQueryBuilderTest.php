@@ -39,6 +39,40 @@
             DisplayAttributeForReportForm::resetCount();
         }
 
+        public function testLikeContactState()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single display attribute
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType  = 'likeContactState';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testLikeContactStateWhenRelated()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single display attribute
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem2');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType  = 'hasMany2___likeContactState';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
         public function testNonRelatedNonDerivedAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();

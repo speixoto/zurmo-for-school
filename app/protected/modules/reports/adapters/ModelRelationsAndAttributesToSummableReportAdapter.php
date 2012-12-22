@@ -374,6 +374,17 @@
             return false;
         }
 
+        public function isGroupByAttributeACalculatedModifier($attribute)
+        {
+            assert('is_string($attribute)');
+            $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
+            if(isset($groupByModifiersAttributes[$attribute]))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
@@ -399,6 +410,15 @@
                 return $parts[1];
             }
             throw new NotSupportedException($attribute);
+        }
+
+        public function getGroupByCalculatedModifierAttributeType($attribute)
+        {
+            $parts = explode(FormModelUtil::DELIMITER, $attribute);
+            if($parts > 1)
+            {
+                return $parts[1];
+            }
         }
     }
 ?>

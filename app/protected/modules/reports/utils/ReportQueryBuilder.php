@@ -85,7 +85,8 @@
                                         make($moduleClassName, $modelClassName, $componentForm->getReportType());
                 $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
                                         $modelToReportAdapter, $relationOrAttribute);
-                if($this->shouldPrematurelyStopBuildingJoinsForAttribute($componentForm, $modelAttributeToDataProviderAdapter))
+                if($this->shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter, $componentForm,
+                                                                         $modelAttributeToDataProviderAdapter))
                 {
                     $attribute                            = 'id';
                     $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
@@ -190,9 +191,11 @@
             $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);
         }
 
-        protected function shouldPrematurelyStopBuildingJoinsForAttribute(ComponentForReportForm $componentForm,
+        protected function shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter,
+                                                                          ComponentForReportForm $componentForm,
                                                                           $modelAttributeToDataProviderAdapter)
         {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
             return false;
         }

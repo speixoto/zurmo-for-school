@@ -42,7 +42,9 @@
                     'filterValueElementTypes' =>
                         array('state' => 'ContactStateStaticDropDownForReport'),
                     'relationsReportedAsAttributesSortAttributes' =>
-                        array('state' => 'name')
+                        array('state' => 'name'),
+                    'relationsReportedAsAttributesGroupByAttributes' =>
+                        array('state' => 'name'),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
