@@ -30,6 +30,8 @@
      */
     class NoUserEmailConfigurationYetView extends View
     {
+        public $cssClasses = array('splash-view');
+
         protected function renderContent()
         {
             $params  = array('label' => $this->getCreateLinkDisplayLabel());

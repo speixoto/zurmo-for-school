@@ -304,7 +304,7 @@
             $dataList   = $dataProvider->getData();
             if (count($dataList) > 0)
             {
-                $menuItems = array('label' => '▾'); //char code is &#9662;
+                $menuItems = array('label' => '÷'); //char code is &#247;
                 foreach ($dataList as $row => $data)
                 {
                     $url = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/details',
