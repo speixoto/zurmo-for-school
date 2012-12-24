@@ -24,59 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Utilized by module views that extend ListView
-     * to provide abstracted column element information
-     * that can be translated into one of the available
-     * GridView widgets in Yii.
-     */
-    abstract class ListViewColumnAdapter
+    class FullNameForReportResultsListViewColumnAdapter extends ListViewColumnAdapter
     {
-        protected $attribute;
-
-        protected $view;
-
-        protected $params;
-
-        public function __construct($attribute, $view, $params)
-        {
-            assert('self::isValidView($view) == true');
-            $this->attribute = $attribute;
-            $this->view      = $view;
-            $this->params    = $params;
-        }
-
         public function renderGridViewData()
         {
-            throw NotImplementedException();
-        }
-
-        public function renderJQGridData()
-        {
-            throw NotImplementedException();
-        }
-
-        /**
-         * True/False, if true will
-         * render as link
-         */
-        protected function getIsLink()
-        {
-            if (isset($this->params['isLink']))
+            if ($this->getIsLink())
             {
-                return $this->params['isLink'];
+                return null; //todo:
             }
-            return false;
-        }
-
-        private static function isValidView($view)
-        {
-            $class = new ReflectionClass(get_class($view));
-            if (!$class->implementsInterface('ListViewInterface'))
+            else
             {
-                return false;
+                return array(
+                    'name' => 'lastName',
+                    'header' => Yii::t('Default', 'Name'),
+                    'value'  => 'strval($data->getModel("' . $this->attribute . '"))',
+                );
             }
-            return true;
         }
     }
 ?>

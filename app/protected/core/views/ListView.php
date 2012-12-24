@@ -27,7 +27,7 @@
     /**
      * The base View for a module's list view.
      */
-    abstract class ListView extends ModelView
+    abstract class ListView extends ModelView implements ListViewInterface
     {
         protected $controllerId;
 

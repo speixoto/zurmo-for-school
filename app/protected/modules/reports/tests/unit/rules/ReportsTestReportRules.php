@@ -45,7 +45,7 @@
                         array('nonReportable',
                               'nonReportable2'),
                     'derivedAttributeTypes' =>
-                        array('FullName'),
+                        array('FullNameForReportResults'),
                     'availableOperatorsTypes' =>
                         array('likeContactState' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'filterValueElementTypes' =>

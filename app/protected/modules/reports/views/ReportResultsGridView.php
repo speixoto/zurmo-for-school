@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    abstract class ReportResultsGridView extends View
+    abstract class ReportResultsGridView extends View implements ListViewInterface
     {
         protected $controllerId;
 
@@ -56,12 +56,13 @@
         public function __construct(
             $controllerId,
             $moduleId,
-            ReportDataProvider $dataProvider,
+            $dataProvider,
             $gridIdSuffix = null,
             $gridViewPagerParams = array()
         )
         {
-            assert('is_array($this->gridViewPagerParams)');
+            assert('$dataProvider instanceof ReportDataProvider  || $dataProvider == null');
+            assert('is_array($gridViewPagerParams)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->dataProvider           = $dataProvider;
@@ -90,8 +91,7 @@
             $cClipWidget->beginClip("ReportResultsGridView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content = $this->renderViewToolBar();
-            $content .= $cClipWidget->getController()->clips['ReportResultsGridView'] . "\n";
+            $content  = $cClipWidget->getController()->clips['ReportResultsGridView'] . "\n";
             $content .= $this->renderScripts();
             return $content;
         }
@@ -113,7 +113,6 @@
                 ),
                 'loadingCssClass'      => 'loading',
                 'dataProvider'         => $this->dataProvider,
-                'selectableRows'       => $this->getCGridViewSelectableRowsCount(),
                 'pager'                => $this->getCGridViewPagerParams(),
                 'beforeAjaxUpdate'     => $this->getCGridViewBeforeAjaxUpdate(),
                 'afterAjaxUpdate'      => $this->getCGridViewAfterAjaxUpdate(),
@@ -194,10 +193,12 @@
             $columns = array();
             foreach ($this->dataProvider->getReport()->getDisplayAttributes() as $key => $displayAttribute)
             {
-                $columnClassName = $displayAttribute->getDisplayElementType() . 'ListViewColumnAdapter';
-                $attributeName   = ReportResultsRowData::resolveAttributeNameByKey($key);
-                $columnAdapter   = new $columnClassName($attributeName, $this, array_slice($columnInformation, 1));
-                $column          = $columnAdapter->renderGridViewData();
+                $columnClassName  = $displayAttribute->getDisplayElementType() . 'ListViewColumnAdapter';
+                $attributeName    = ReportResultsRowData::resolveAttributeNameByKey($key);
+                $params           = array();
+                $columnAdapter    = new $columnClassName($attributeName, $this, $params);
+                $column           = $columnAdapter->renderGridViewData();
+                $column['header'] = $displayAttribute->label;
                 if (!isset($column['class']))
                 {
                     $column['class'] = 'DataColumn';
@@ -247,14 +248,6 @@
                 $this->getGridViewActionRoute('details') . '", array("id" => $data->id))';
             $string .= ')';
             return $string;
-        }
-
-        /**
-         * Module class name for models linked from rows in the grid view.
-         */
-        protected function getActionModuleClassName()
-        {
-            return get_class(Yii::app()->getModule($this->moduleId));
         }
 
         protected function renderScripts()

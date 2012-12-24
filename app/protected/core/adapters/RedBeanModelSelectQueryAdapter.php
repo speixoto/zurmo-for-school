@@ -51,6 +51,8 @@
 
         private $countClausePresent = false;
 
+        private $idTableAliasesAndModelClassNames = array();
+
         public function __construct($distinct = false)
         {
             $this->distinct = $distinct;
@@ -74,6 +76,17 @@
         public function getClauses()
         {
             return $this->clauses;
+        }
+
+        public function getIdTableAliasesAndModelClassNames()
+        {
+            return $this->idTableAliasesAndModelClassNames;
+        }
+
+        public function getIdColumNameByTableAlias($tableAliasName)
+        {
+            assert('is_string($tableAliasName)');
+            return $tableAliasName . 'id';
         }
 
         public function getSelect()

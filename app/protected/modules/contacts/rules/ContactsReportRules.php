@@ -36,7 +36,7 @@
                     'relationsReportedAsAttributes' =>
                         array('state'),
                     'derivedAttributeTypes' =>
-                        array('FullName'),
+                        array('FullNameForReportResults'),
                     'availableOperatorsTypes' =>
                         array('state' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'filterValueElementTypes' =>

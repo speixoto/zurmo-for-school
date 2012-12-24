@@ -164,7 +164,7 @@
             return null;
         }
 
-        public function getFilterValueElementTypes(RedBeanModel $model, $attribute)
+        public function getFilterValueElementType(RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
             $modelClassName = $model->getAttributeModelClassName($attribute);

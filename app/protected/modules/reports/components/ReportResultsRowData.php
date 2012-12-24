@@ -48,10 +48,11 @@
 
         public function __get($name)
         {
-            list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $name);
-            if($displayAttributeKey != null)
+            $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $name);
+
+            if(count($parts) == 2 && $parts[1] != null)
             {
-                return $this->resolveValueFromModel($displayAttributeKey);
+                return $this->resolveValueFromModel($parts[1]);
             }
             if(isset($selectedColumnNamesAndValues[$name]))
             {
@@ -79,12 +80,55 @@
             $this->selectedColumnNamesAndValues[$columnName] = $value;
         }
 
+        public function getModel($attribute)
+        {
+            list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attribute);
+            if($displayAttributeKey != null)
+            {
+                return $this->resolveModel($displayAttributeKey);
+            }
+            throw new NotSupportedException();
+        }
+
+        protected function resolveModel($displayAttributeKey)
+        {
+            if(!isset($this->displayAttributes[$displayAttributeKey]))
+            {
+                throw new NotSupportedException();
+            }
+            $displayAttribute = $this->displayAttributes[$displayAttributeKey];
+            $modelAlias       = $displayAttribute->getModelAliasUsingTableAliasName();
+            if(!isset($this->modelsByAliases[$modelAlias]))
+            {
+                return null;
+            }
+            return $this->getModelByAlias($modelAlias);
+        }
+
         protected function resolveValueFromModel($displayAttributeKey)
         {
             if(!isset($this->displayAttributes[$displayAttributeKey]))
             {
                 throw new NotSupportedException();
             }
+            $displayAttribute = $this->displayAttributes[$displayAttributeKey];
+            $modelAlias       = $displayAttribute->getModelAliasUsingTableAliasName();
+            if(!isset($this->modelsByAliases[$modelAlias]))
+            {
+                return null;
+            }
+            $attribute        = $displayAttribute->getResolvedAttribute();
+            $model            = $this->getModelByAlias($modelAlias);
+            return $model->$attribute;
+        }
+
+        protected function getModelByAlias($alias)
+        {
+            if(!isset($this->modelsByAliases[$alias]))
+            {
+                throw new NotSupportedException();
+            }
+            return $this->modelsByAliases[$alias];
         }
     }
 ?>

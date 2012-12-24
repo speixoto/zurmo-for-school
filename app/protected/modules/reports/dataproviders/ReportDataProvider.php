@@ -46,6 +46,11 @@
             $this->runReport = $runReport;
         }
 
+        public function getReport()
+        {
+            return $this->report;
+        }
+
         protected function fetchData()
         {
             $pagination = $this->getPagination();
@@ -93,25 +98,30 @@
                                                $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
             echo $sql;
             //todo below resolve this into making something
-            $rows       = R::getAll($sql);
-            $somethings = array();
+            $rows         = R::getAll($sql);
+            $resultsData  = array();
+            $offsetRowId  = $offset; //todo: rename or note or resolve via new method, this is what makes our rows unique...
             foreach ($rows as $key => $row)
             {
                 $reportResultsRowData = new ReportResultsRowData($this->report->getDisplayAttributes());
-                foreach($selectQueryAdapter->getIdTableAliasesAndModelClassNames as $tableAlias => $modelClassName)
+                foreach($selectQueryAdapter->getIdTableAliasesAndModelClassNames() as $tableAlias => $modelClassName)
                 {
                     $idColumnName = $selectQueryAdapter->getIdColumNameByTableAlias($tableAlias);
-                    $id = (int)$row[$idColumnName];
-                    $reportResultsRowData->addModelAndAlias($modelClassName::getById($id), $tableAlias);
+                    $id           = (int)$row[$idColumnName];
+                    if($id != null)
+                    {
+                        $reportResultsRowData->addModelAndAlias($modelClassName::getById($id), $tableAlias);
+                    }
                     unset($row[$idColumnName]);
                 }
                 foreach($row as $columnName => $value)
                 {
                     $reportResultsRowData->addSelectedColumnNameAndValue($columnName, $value);
                 }
-                $somethings[] = $something;
+                $resultsData[$offsetRowId] = $reportResultsRowData;
+                $offsetRowId ++;
             }
-            return $somethings;
+            return $resultsData;
         }
 
         /**
@@ -119,8 +129,10 @@
          */
         public function calculateTotalItemCount()
         {
-            //todo: fix
-            return 5;
+            //todo: fix, just have a new select Query adapter, or just use a simple count instead of any of the select query.. watchout cause i think keep distinct even
+            //todo: though we arent currently using that we should throw execpetion or something so we are aware of it.\
+            //todo: test it out too. at some point
+            return 12;
         }
 
         /**
@@ -128,11 +140,10 @@
          */
         protected function fetchKeys()
         {
-            //todo: this probably has to be changed. not even sure where this isued for reporting
             $keys = array();
-            foreach ($this->getData() as $model)
+            foreach ($this->getData() as $key => $unused)
             {
-                $keys[] = $model->id;
+                $keys[] = $key;
             }
             return $keys;
         }

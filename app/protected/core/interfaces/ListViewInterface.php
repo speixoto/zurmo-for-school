@@ -25,58 +25,11 @@
      ********************************************************************************/
 
     /**
-     * Utilized by module views that extend ListView
-     * to provide abstracted column element information
-     * that can be translated into one of the available
-     * GridView widgets in Yii.
+     * A view should implement this interface if
+     * it can be shown using ListView components and adapters
      */
-    abstract class ListViewColumnAdapter
+    interface ListViewInterface
     {
-        protected $attribute;
-
-        protected $view;
-
-        protected $params;
-
-        public function __construct($attribute, $view, $params)
-        {
-            assert('self::isValidView($view) == true');
-            $this->attribute = $attribute;
-            $this->view      = $view;
-            $this->params    = $params;
-        }
-
-        public function renderGridViewData()
-        {
-            throw NotImplementedException();
-        }
-
-        public function renderJQGridData()
-        {
-            throw NotImplementedException();
-        }
-
-        /**
-         * True/False, if true will
-         * render as link
-         */
-        protected function getIsLink()
-        {
-            if (isset($this->params['isLink']))
-            {
-                return $this->params['isLink'];
-            }
-            return false;
-        }
-
-        private static function isValidView($view)
-        {
-            $class = new ReflectionClass(get_class($view));
-            if (!$class->implementsInterface('ListViewInterface'))
-            {
-                return false;
-            }
-            return true;
-        }
+        public function getLinkString($attributeString);
     }
 ?>

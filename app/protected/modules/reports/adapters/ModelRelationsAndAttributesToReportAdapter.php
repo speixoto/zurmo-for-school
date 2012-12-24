@@ -319,8 +319,8 @@
                 return 'UserNameId';
             }
             $resolvedAttribute = $this->resolveRealAttributeName($attribute);
-            if(null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementTypes($this->model,
-                                                                                                  $resolvedAttribute))
+            if(null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementType($this->model,
+                                                                                                 $resolvedAttribute))
             {
                 return $filterValueElementTypeFromRule;
             }

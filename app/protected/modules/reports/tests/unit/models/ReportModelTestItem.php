@@ -26,6 +26,37 @@
 
     class ReportModelTestItem extends OwnedSecurableItem
     {
+        public function __toString()
+        {
+            try
+            {
+                $fullName = $this->getFullName();
+                if ($fullName == '')
+                {
+                    return Yii::t('Default', '(Unnamed)');
+                }
+                return $fullName;
+            }
+            catch (AccessDeniedSecurityException $e)
+            {
+                return '';
+            }
+        }
+
+        public function getFullName()
+        {
+            $fullName = array();
+            if ($this->firstName != '')
+            {
+                $fullName[] = $this->firstName;
+            }
+            if ($this->lastName != '')
+            {
+                $fullName[] = $this->lastName;
+            }
+            return join(' ' , $fullName);
+        }
+
         protected function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
