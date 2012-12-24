@@ -225,10 +225,7 @@
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             InstallUtil::autoBuildDatabase($messageLogger);
-            if ($unfreezeWhenDone)
-            {
-                RedBeanDatabase::freeze();
-            }
+
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             $this->assertEquals($beforeRowCount, $afterRowCount);
 
@@ -250,6 +247,42 @@
             $this->assertEquals('longtext',         $columns['longtextfield']);
             $this->assertEquals('blob',             $columns['blobfield']);
             $this->assertEquals('longblob',         $columns['longblobfield']);
+
+
+            $account = new Account();
+            $account->name  = 'Test Name';
+            $account->owner = $super;
+            $randomString = str_repeat("Aa", 64);;
+            $account->string128 = $randomString;
+            $saved = $account->save();
+            assert('$saved');
+
+            $metadata = Account::getMetadata();
+
+            foreach($metadata['Account']['rules'] as $key => $rule)
+            {
+                if ($rule[0] == 'string128' && $rule[1] == 'length')
+                {
+                    $metadata['Account']['rules'][$key]['max'] = 64;
+                }
+            }
+            Account::setMetadata($metadata);
+            InstallUtil::autoBuildDatabase($messageLogger);
+
+            RedBeanModel::forgetAll();
+            $modifiedAccount = Account::getById($account->id);
+
+            $this->assertEquals($randomString, $modifiedAccount->string128);
+
+            //Check Account fields
+            $tableName = RedBeanModel::getTableName('Account');
+            $columns   = R::$writer->getColumns($tableName);
+            $this->assertEquals('varchar(128)',     $columns['string128']);
+
+            if ($unfreezeWhenDone)
+            {
+                RedBeanDatabase::freeze();
+            }
         }
 
         /**

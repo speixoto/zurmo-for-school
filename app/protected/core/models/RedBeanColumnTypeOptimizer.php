@@ -59,7 +59,18 @@
                     $columnType = $fields[$columnName];
                     if (strtolower($columnType) != strtolower($databaseColumnType))
                     {
-                        R::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
+                        if (strtolower($datatype) == 'string' && isset($length) && $length > 0)
+                        {
+                            $maxLength = R::getCell("SELECT MAX(LENGTH($columnName)) FROM $table");
+                            if ($maxLength <= $length)
+                            {
+                                R::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
+                            }
+                        }
+                        else
+                        {
+                            R::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
+                        }
                     }
                 }
                 else

@@ -1137,5 +1137,10 @@
             }
             return $databaseColumnType;
         }
+
+        public function getCharLimits()
+        {
+
+        }
     }
 ?>
