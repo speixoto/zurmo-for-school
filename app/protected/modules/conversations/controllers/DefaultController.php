@@ -60,6 +60,10 @@
             {
                 $activeActionElementType = 'ConversationsParticipantLink';
             }
+            elseif ($type == ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CLOSED)
+            {
+                $activeActionElementType = 'ConversationsClosedLink';
+            }
             else
             {
                 throw new NotSupportedException();

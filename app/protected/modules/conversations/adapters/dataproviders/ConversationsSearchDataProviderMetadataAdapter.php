@@ -42,6 +42,12 @@
          */
         const LIST_TYPE_PARTICIPANT = 2;
 
+        /**
+         * Filter by conversations that are marked as closed
+         * @var integer
+         */
+        const LIST_TYPE_CLOSED = 3;
+
         protected $type;
 
         /**
@@ -69,26 +75,55 @@
             if ($this->type == self::LIST_TYPE_CREATED)
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
-                    'attributeName' => 'owner',
+                    'attributeName' => 'isClosed',
                     'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->id
-                );
-                $structure .= $startingCount;
-            }
-            else
-            {
-                $adaptedMetadata['clauses'][$startingCount] = array(
-                    'attributeName'        => 'conversationParticipants',
-                    'relatedAttributeName' => 'person',
-                    'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->getClassId('Item')
+                    'value'         => 0
                 );
                 $adaptedMetadata['clauses'][$startingCount + 1] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->id
                 );
-                $structure .= $startingCount . ' or ' . ($startingCount + 1);
+                $structure .= $startingCount . ' and ' . ($startingCount + 1);
+            }
+            elseif ($this->type == self::LIST_TYPE_PARTICIPANT)
+            {
+                $adaptedMetadata['clauses'][$startingCount] = array(
+                    'attributeName' => 'isClosed',
+                    'operatorType'  => 'equals',
+                    'value'         => 0
+                );
+                $adaptedMetadata['clauses'][$startingCount + 1] = array(
+                    'attributeName'        => 'conversationParticipants',
+                    'relatedAttributeName' => 'person',
+                    'operatorType'  => 'equals',
+                    'value'         => Yii::app()->user->userModel->getClassId('Item')
+                );
+                $adaptedMetadata['clauses'][$startingCount + 2] = array(
+                    'attributeName' => 'owner',
+                    'operatorType'  => 'equals',
+                    'value'         => Yii::app()->user->userModel->id
+                );
+                $structure .= $startingCount . ' and (' . ($startingCount + 1) . ' or ' . ($startingCount + 2) . ')';
+            }
+            elseif ($this->type == self::LIST_TYPE_CLOSED) {
+                $adaptedMetadata['clauses'][$startingCount] = array(
+                    'attributeName' => 'isClosed',
+                    'operatorType'  => 'equals',
+                    'value'         => true
+                );
+                $adaptedMetadata['clauses'][$startingCount + 1] = array(
+                    'attributeName'        => 'conversationParticipants',
+                    'relatedAttributeName' => 'person',
+                    'operatorType'  => 'equals',
+                    'value'         => Yii::app()->user->userModel->getClassId('Item')
+                );
+                $adaptedMetadata['clauses'][$startingCount + 2] = array(
+                    'attributeName' => 'owner',
+                    'operatorType'  => 'equals',
+                    'value'         => Yii::app()->user->userModel->id
+                );
+                $structure .= $startingCount . ' and (' . ($startingCount + 1) . ' or ' . ($startingCount + 2) . ')';
             }
             if (empty($metadata['structure']))
             {

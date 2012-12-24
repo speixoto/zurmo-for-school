@@ -24,34 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ConversationsActionBarForListView extends ActionBarForSearchAndListView
+    class ConversationsClosedLinkActionElement extends EditLinkActionElement
     {
-        public static function getDefaultMetadata()
+        protected function getDefaultLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'CreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ConversationsCreatedLink',
-                                'htmlOptions'     => array( 'class' => 'icon-conversations-created' )
-                            ),
-                            array(
-                                'type'            => 'ConversationsParticipantLink',
-                                'htmlOptions'     => array( 'class' => 'icon-conversations-participant' )
-                            ),
-                            array(
-                                'type'            => 'ConversationsClosedLink',
-                                'htmlOptions'     => array( 'class' => 'icon-conversations-closed' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return Yii::t('Default', 'Closed');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl(
+                $this->moduleId . '/' . $this->controllerId . '/list/',
+                array('type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CLOSED));
         }
     }
 ?>
