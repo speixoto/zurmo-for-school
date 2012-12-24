@@ -34,15 +34,30 @@
 
         protected $selectedColumnNamesAndValues = array();
 
+        public static function resolveAttributeNameByKey($key)
+        {
+            assert('is_numeric($key) || is_string($key)');
+            return self::ATTRIBUTE_NAME_PREFIX . $key;
+        }
+
+
         public function __construct(array $displayAttributes)
         {
             $this->displayAttributes = $displayAttributes;
         }
 
-        public static function resolveAttributeNameByKey($key)
+        public function __get($name)
         {
-            assert('is_numeric($key) || is_string($key)');
-            return self::ATTRIBUTE_NAME_PREFIX . $key;
+            list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $name);
+            if($displayAttributeKey != null)
+            {
+                return $this->resolveValueFromModel($displayAttributeKey);
+            }
+            if(isset($selectedColumnNamesAndValues[$name]))
+            {
+                return $selectedColumnNamesAndValues[$name];
+            }
+            return parent::__get($name);
         }
 
         public function addModelAndAlias(RedBeanModel $model, $alias)
@@ -62,6 +77,14 @@
                 throw new NotSupportedException();
             }
             $this->selectedColumnNamesAndValues[$columnName] = $value;
+        }
+
+        protected function resolveValueFromModel($displayAttributeKey)
+        {
+            if(!isset($this->displayAttributes[$displayAttributeKey]))
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>
