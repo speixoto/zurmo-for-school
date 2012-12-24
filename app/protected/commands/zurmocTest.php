@@ -24,39 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * View  for showing in the user interface when there the global email configuration is not yet set up.
-     * This needs to be configured first before a user's email configuration can be setup.
-     */
-    class NoGlobalEmailConfigurationYetView extends View
+    if (!defined('IS_TEST'))
     {
-        public $cssClasses = array('splash-view');
-
-        protected function renderContent()
-        {
-            $params   = array('label' => $this->getCreateLinkDisplayLabel());
-            $url      = Yii::app()->createUrl('/emailMessages/default/configurationEditOutbound');
-            $content  = '<div class="' . $this->getIconName() . '">';
-            $content .= $this->getMessageContent();
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
-            $content .= '</div>';
-            return $content;
-        }
-
-        protected function getIconName()
-        {
-            return 'EmailMessage';
-        }
-
-        protected function getCreateLinkDisplayLabel()
-        {
-            return Yii::t('Default', 'Configure');
-        }
-
-        protected function getMessageContent()
-        {
-            return Yii::t('Default', '<h2>Not so fast</h2><div class="large-icon"></div>' .
-                                     '<p>The administrator must first configure the system outbound email settings.</p>');
-        }
+        define('IS_TEST', true);
     }
-?>
+    //Console Application loader.
+    require_once('bootstrap.php');
