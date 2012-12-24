@@ -57,6 +57,8 @@
             $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
             $content .= "<h3>".Yii::t('Default', 'Participants') . '</h3>';
             $content .= $this->renderConversationParticipantsContent();
+            $content .= '</div></div><div class="buffer"><div>';
+            $content .= $this->renderConversationDetailsOfRelatedAndAttachments();
             $content .= '</div></div></div>';
             return $content;
         }
@@ -88,6 +90,22 @@
             return $content;
         }
 
+        protected function renderConversationDetailsOfRelatedAndAttachments()
+        {
+            $element  = new ConversationStatusElement($this->model, 'isClosed');
+            $content  = $element->render();
+            $content .= '<div><strong>' . Yii::t('Default', 'Related Info'). '</strong></div>';
+            $element  = new ConversationItemsElement($this->model, 'null');
+            $contentForTable = $element->render();
+            if ($this->model->files->count() > 0)
+            {
+                $element  = new FilesElement($this->model, 'null');
+                $contentForTable .= $element->render();
+            }
+            $content .= ZurmoHtml::tag('table', array(), $contentForTable);
+            return $content;
+        }
+
         protected function renderConversationContent()
         {
             $userUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $this->model->createdByUser->id));
@@ -111,16 +129,6 @@
             $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $this->model->createdDateTime, 'long', null) . '</strong></span>';
             $content .= $date;
-            if ($this->model->files->count() > 0)
-            {
-                $element  = new FilesElement($this->model, 'null');
-                $element->nonEditableTemplate = '<div>{content}</div>';
-                $content .= '<div><strong>' . Yii::t('Default', 'Attachments'). '</strong></div>';
-                $content .= $element->render();
-            }
-            $element  = new ConversationItemsElement($this->model, 'null');
-            $element->nonEditableTemplate = '<div>{content}</div>';
-            $content .= $element->render();
             $content .= '</div>';
             return ZurmoHtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);
         }

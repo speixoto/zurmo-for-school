@@ -248,5 +248,25 @@
             $view          = new AjaxPageView($inlineView);
             echo $view->render();
         }
+
+        public function actionAjaxChangeStatus($id)
+        {
+            $content         = null;
+            $conversation    = Conversation::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($conversation);
+            $conversation->isClosed = !($conversation->isClosed);
+            $saved           = $conversation->save();
+            if (!$saved)
+            {
+                throw new NotSupportedException();
+            }
+            $statusAction      = ConversationStatusElement::renderStatusActionContent($conversation, ConversationStatusElement::getStatusChangeDivId($conversation->id));
+            $content .= $statusAction;
+            $content = ZurmoHtml::tag('div', array('id'    => ConversationStatusElement::getStatusChangeDivId($conversation->id),
+                                                   'class' => 'conversationStatusChangeArea'), $content);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
     }
 ?>
