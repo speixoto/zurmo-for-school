@@ -42,18 +42,18 @@
         {
             $content = '';
             $htmlOptions = array('class' => 'ui-chooser');
-            if (Yii::app()->userInterface->getDefaultUserInterfaceType() != UserInterface::DESKTOP)
+            if (!Yii::app()->userInterface->isResolvedToDesktop())
             {
-                if (Yii::app()->userInterface->getSelectedUserInterfaceType() == UserInterface::DESKTOP)
+                if (Yii::app()->userInterface->isDesktop())
                 {
-                    if (Yii::app()->userInterface->getDefaultUserInterfaceType() == UserInterface::MOBILE)
+                    if (Yii::app()->userInterface->isResolvedToMobile())
                     {
                         $content = ZurmoHtml::link(Yii::t('Default', 'Show mobile'),
                                                    Yii::app()->createUrl('zurmo/default/userInterface',
                                                                          array('userInterface' => UserInterface::MOBILE)),
                                                    $htmlOptions);
                     }
-                    elseif (Yii::app()->userInterface->getDefaultUserInterfaceType() == UserInterface::TABLET)
+                    elseif (Yii::app()->userInterface->isResolvedToTablet())
                     {
                         $content = ZurmoHtml::link(Yii::t('Default', 'Show tablet'),
                                                    Yii::app()->createUrl('zurmo/default/userInterface',

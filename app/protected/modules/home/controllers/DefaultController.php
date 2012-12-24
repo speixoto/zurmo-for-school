@@ -84,8 +84,7 @@
             }
             $tipContent                = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
 
-            if (Yii::app()->userInterface->getSelectedUserInterfaceType() == UserInterface::MOBILE ||
-                Yii::app()->userInterface->getSelectedUserInterfaceType() == UserInterface::TABLET)
+            if (Yii::app()->userInterface->isMobile())
             {
                 $welcomeView               = new MobileWelcomeView($tipContent, $hasDashboardAccess);
             }

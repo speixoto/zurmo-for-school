@@ -133,6 +133,33 @@
         }
 
         /**
+         * Does user use mobile
+         * @return bool
+         */
+        public function isResolvedToMobile()
+        {
+            return $this->defaultUserInterfaceType == self::MOBILE;
+        }
+
+        /**
+         * Does user using tablet
+         * @return bool
+         */
+        public function isResolvedToTablet()
+        {
+            return $this->defaultUserInterfaceType == self::TABLET;
+        }
+
+        /**
+         * Does user use desktop computer
+         * @return bool
+         */
+        public function isResolvedToDesktop()
+        {
+            return ($this->defaultUserInterfaceType != self::MOBILE && $this->defaultUserInterfaceType != self::TABLET);
+        }
+
+        /**
          * Determine user interface type, based on device signature.
          * @return string
          */
