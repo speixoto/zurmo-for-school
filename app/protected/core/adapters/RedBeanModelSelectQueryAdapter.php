@@ -254,7 +254,7 @@
             if(!isset($this->idTableAliasesAndModelClassNames[$tableAliasName]))
             {
                 $this->idTableAliasesAndModelClassNames[$tableAliasName] = $modelClassName;
-                $this->addClause($tableAliasName, 'id');
+                $this->addClause($tableAliasName, 'id', $tableAliasName . 'id');
             }
         }
 

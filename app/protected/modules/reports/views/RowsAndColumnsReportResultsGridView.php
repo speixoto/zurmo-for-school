@@ -26,9 +26,13 @@
 
     class RowsAndColumnsReportResultsGridView extends ReportResultsGridView
     {
-        public function __construct(RowsAndColumnsReportDataProvider $dataProvider = null)
+        protected function isDataProviderValid()
         {
-            $this->dataProvider = $dataProvider;
+            if(!$this->dataProvider instanceof RowsAndColumnsReportDataProvider)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

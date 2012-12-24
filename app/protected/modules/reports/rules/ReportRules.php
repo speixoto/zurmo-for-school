@@ -141,8 +141,10 @@
                     foreach($metadata[$modelClassName]['derivedAttributeTypes'] as $derivedAttributeType)
                     {
 
-                        $elementClassName = $derivedAttributeType . 'Element';
-                        $derivedAttributeTypesData[$derivedAttributeType] = array('label' => $elementClassName::getDisplayName());
+                        $elementClassName          = $derivedAttributeType . 'Element';
+                        $derivedAttributeTypesData
+                        [$derivedAttributeType]    = array('label'                => $elementClassName::getDisplayName(),
+                                                           'derivedAttributeType' => $derivedAttributeType);
                     }
                 }
             }

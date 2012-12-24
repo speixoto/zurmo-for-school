@@ -31,20 +31,20 @@
 
             if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
-                $view = new RowsAndColumnsReportResultsGridView($dataProvider);
+                $className = 'RowsAndColumnsReportResultsGridView';
             }
             elseif($report->getType() == Report::SUMMATION)
             {
-                $view = new SummationReportResultsGridView($dataProvider);
+                $className = 'SummationReportResultsGridView';
             }
             elseif($report->getType() == Report::MATRIX)
             {
-                $view = new MatrixReportResultsGridView($dataProvider);
+                $className = 'MatrixReportResultsGridView';
             }
             else
             {
                 throw new NotSupportedException();
             }
-            return $view;
+            return new $className('default', 'reports', $dataProvider); //todo: maybe pass moduleId and controllerId in from controller or at least class calling this class?
         }
     }

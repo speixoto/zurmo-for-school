@@ -30,6 +30,14 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            $attributeName = 'calculated';
+            $attributeForm = new CalculatedNumberAttributeForm();
+            $attributeForm->attributeName    = $attributeName;
+            $attributeForm->attributeLabels  = array('en' => 'Test Calculated');
+            $attributeForm->formula          = 'integer + float';
+            $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new ReportModelTestItem());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
         public function setup()
@@ -87,6 +95,64 @@
             $errors                              = $displayAttribute->getErrors();
             $compareErrors                       = array('label'     => array('Label cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
+        }
+
+        public function testGetDisplayElementType()
+        {
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'boolean';
+            $this->assertEquals('CheckBox',                  $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'date';
+            $this->assertEquals('Date',                      $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dateTime';
+            $this->assertEquals('DateTime',                  $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'float';
+            $this->assertEquals('Decimal',                   $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'integer';
+            $this->assertEquals('Integer',                   $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'phone';
+            $this->assertEquals('Phone',                     $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'textArea';
+            $this->assertEquals('TextArea',                  $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'url';
+            $this->assertEquals('Url',                       $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'currencyValue';
+            $this->assertEquals('CurrencyValue',             $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dropDown';
+            $this->assertEquals('DropDown',                  $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'radioDropDown';
+            $this->assertEquals('RadioDropDown',             $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'multiDropDown';
+            $this->assertEquals('MultiSelectDropDown',       $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'tagCloud';
+            $this->assertEquals('TagCloud',                  $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'primaryEmail___emailAddress';
+            $this->assertEquals('Email',                     $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'FullName';
+            $this->assertEquals('FullName',                  $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'likeContactState';
+            $this->assertEquals('ContactState',              $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'calculated';
+            $this->assertEquals('CalculatedNumber',          $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'createdByUser__User';
+            $this->assertEquals('User',                      $displayAttribute->getDisplayElementType());
+        }
+
+        public function testGetDisplayElementTypeDisplayCalculationsAndGroupModifiers()
+        {
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'integer__Minimum';
+            $this->assertEquals('Decimal',                   $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'float__Minimum';
+            $this->assertEquals('Decimal',                   $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'date__Minimum';
+            $this->assertEquals('Date',                      $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dateTime__Minimum';
+            $this->assertEquals('DateTime',                  $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'currencyValue__Minimum';
+            $this->assertEquals('CalculatedCurrencyValue',   $displayAttribute->getDisplayElementType());
         }
     }
 ?>

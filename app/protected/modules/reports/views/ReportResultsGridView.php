@@ -26,9 +26,50 @@
 
     abstract class ReportResultsGridView extends View
     {
+        protected $controllerId;
+
+        protected $moduleId;
+
         protected $dataProvider;
 
-        abstract public function __construct(ReportDataProvider $dataProvider);
+        protected $rowsAreExpandable = false;
+
+        /**
+         * Unique identifier of the list view widget. Allows for multiple list view
+         * widgets on a single page.
+         */
+        protected $gridId;
+
+        /**
+         * Additional unique identifier.
+         * @see $gridId
+         */
+        protected $gridIdSuffix;
+
+        /**
+         * Array containing CGridViewPagerParams
+         */
+        protected $gridViewPagerParams = array();
+
+        protected $emptyText = null;
+
+        public function __construct(
+            $controllerId,
+            $moduleId,
+            ReportDataProvider $dataProvider,
+            $gridIdSuffix = null,
+            $gridViewPagerParams = array()
+        )
+        {
+            assert('is_array($this->gridViewPagerParams)');
+            $this->controllerId           = $controllerId;
+            $this->moduleId               = $moduleId;
+            $this->dataProvider           = $dataProvider;
+            $this->rowsAreSelectable      = true;
+            $this->gridIdSuffix           = $gridIdSuffix;
+            $this->gridViewPagerParams    = $gridViewPagerParams;
+            $this->gridId                 = 'report-results-grid-view';
+        }
 
         protected function renderContent()
         {
@@ -36,7 +77,191 @@
             {
                 return 'should call to refresh because no dataprovider is present. this actually just renders null since only temporary';
             }
-            return 'some content - a data provider is present so render';
+            if(!$this->isDataProviderValid())
+            {
+                throw new NotSupportedException();
+            }
+            return $this->renderResultsGridContent();
+        }
+
+        protected function renderResultsGridContent()
+        {
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ReportResultsGridView");
+            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
+            $cClipWidget->endClip();
+            $content = $this->renderViewToolBar();
+            $content .= $cClipWidget->getController()->clips['ReportResultsGridView'] . "\n";
+            $content .= $this->renderScripts();
+            return $content;
+        }
+
+        protected function getGridViewWidgetPath()
+        {
+            return 'application.core.widgets.ExtendedGridView';
+        }
+
+        protected function getCGridViewParams()
+        {
+            $columns = $this->getCGridViewColumns();
+            assert('is_array($columns)');
+
+            return array(
+                'id' => $this->getGridViewId(),
+                'htmlOptions' => array(
+                    'class' => 'cgrid-view'
+                ),
+                'loadingCssClass'      => 'loading',
+                'dataProvider'         => $this->dataProvider,
+                'selectableRows'       => $this->getCGridViewSelectableRowsCount(),
+                'pager'                => $this->getCGridViewPagerParams(),
+                'beforeAjaxUpdate'     => $this->getCGridViewBeforeAjaxUpdate(),
+                'afterAjaxUpdate'      => $this->getCGridViewAfterAjaxUpdate(),
+                'columns'              => $columns,
+                'nullDisplay'          => '&#160;',
+                'pagerCssClass'        => static::getPagerCssClass(),
+                'showTableOnEmpty'     => $this->getShowTableOnEmpty(),
+                'emptyText'            => $this->getEmptyText(),
+                'template'             => static::getGridTemplate(),
+                'summaryText'          => static::getSummaryText(),
+                'summaryCssClass'      => static::getSummaryCssClass(),
+            );
+        }
+
+        protected static function getGridTemplate()
+        {
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>'; //todo: do we need this , maybe it is for pagination?
+            return "{summary}\n{items}\n{pager}" . $preloader;
+        }
+
+        protected static function getPagerCssClass()
+        {
+            return 'pager horizontal';
+        }
+
+        protected static function getSummaryText()
+        {
+            return Yii::t('Default', '{count} result(s)');
+        }
+
+        protected static function getSummaryCssClass()
+        {
+            return 'summary';
+        }
+
+        protected function getCGridViewPagerParams()
+        {
+            $defaultGridViewPagerParams = array(
+                'firstPageLabel'   => '<span>first</span>',
+                'prevPageLabel'    => '<span>previous</span>',
+                'nextPageLabel'    => '<span>next</span>',
+                'lastPageLabel'    => '<span>last</span>',
+                'class'            => 'SimpleListLinkPager',
+                'paginationParams' => GetUtil::getData(),
+                'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
+            );
+            if (empty($this->gridViewPagerParams))
+            {
+                return $defaultGridViewPagerParams;
+            }
+            else
+            {
+                return array_merge($defaultGridViewPagerParams, $this->gridViewPagerParams);
+            }
+        }
+
+        protected function getShowTableOnEmpty()
+        {
+            return true;
+        }
+
+        protected function getEmptyText()
+        {
+            return $this->emptyText;
+        }
+
+        public function getGridViewId()
+        {
+            return $this->gridId . $this->gridIdSuffix;
+        }
+
+        /**
+         * Get the meta data and merge with standard CGridView column elements
+         * to create a column array that fits the CGridView columns API
+         */
+        protected function getCGridViewColumns()
+        {
+            $columns = array();
+            foreach ($this->dataProvider->getReport()->getDisplayAttributes() as $key => $displayAttribute)
+            {
+                $columnClassName = $displayAttribute->getDisplayElementType() . 'ListViewColumnAdapter';
+                $attributeName   = ReportResultsRowData::resolveAttributeNameByKey($key);
+                $columnAdapter   = new $columnClassName($attributeName, $this, array_slice($columnInformation, 1));
+                $column          = $columnAdapter->renderGridViewData();
+                if (!isset($column['class']))
+                {
+                    $column['class'] = 'DataColumn';
+                }
+                array_push($columns, $column);
+            }
+            return $columns;
+        }
+
+        protected function getCGridViewBeforeAjaxUpdate()
+        {
+            if ($this->rowsAreSelectable)
+            {
+                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); addListViewSelectedIdsToUrl(id, options); }';
+            }
+            else
+            {
+                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
+            }
+        }
+
+        protected function getCGridViewAfterAjaxUpdate()
+        {
+            // Begin Not Coding Standard
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                        var $data = $(data);
+                        jQuery.globalEval($data.filter("script").last().text());
+                    }';
+            // End Not Coding Standard
+        }
+
+        protected function getGridViewActionRoute($action, $moduleId = null)
+        {
+            if ($moduleId == null)
+            {
+                $moduleId = $this->moduleId;
+            }
+            return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
+        }
+
+        public function getLinkString($attributeString)
+        {
+            $string  = 'ZurmoHtml::link(';
+            $string .=  $attributeString . ', ';
+            $string .= 'Yii::app()->createUrl("' .
+                $this->getGridViewActionRoute('details') . '", array("id" => $data->id))';
+            $string .= ')';
+            return $string;
+        }
+
+        /**
+         * Module class name for models linked from rows in the grid view.
+         */
+        protected function getActionModuleClassName()
+        {
+            return get_class(Yii::app()->getModule($this->moduleId));
+        }
+
+        protected function renderScripts()
+        {
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.views.assets')) . '/ListViewUtils.js');
         }
     }
 ?>

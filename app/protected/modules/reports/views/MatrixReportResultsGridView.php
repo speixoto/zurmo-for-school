@@ -26,9 +26,13 @@
 
     class MatrixReportResultsGridView extends ReportResultsGridView
     {
-        public function __construct(MatrixReportDataProvider $dataProvider = null)
+        protected function isDataProviderValid()
         {
-            $this->dataProvider = $dataProvider;
+            if(!$this->dataProvider instanceof MatrixReportDataProvider)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

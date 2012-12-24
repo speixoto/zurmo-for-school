@@ -144,6 +144,12 @@
                     $modelToReportAdapter->getModelClassName(),
                     $attribute);
             }
+            //Example is full name or calculated number
+            elseif($modelToReportAdapter->isDerivedAttribute($attribute))
+            {
+                //todo: assumes that the derived attribute (since derived attributes are display only? that we just call for id?
+                return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(), 'id');
+            }
             //Example: createdUser__User
             elseif($modelToReportAdapter->isDynamicallyDerivedAttribute($attribute))
             {

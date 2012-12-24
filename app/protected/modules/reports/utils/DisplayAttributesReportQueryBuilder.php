@@ -69,8 +69,8 @@
             $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($componentForm);
             if($this->shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter, $componentForm, $modelAttributeToDataProviderAdapter))
             {
-                $this->resolveDisplayAttributeForPrematurelyStoppingJoins($builder,
-                                                                          $modelAttributeToDataProviderAdapter,
+                $this->resolveDisplayAttributeForPrematurelyStoppingJoins($modelAttributeToDataProviderAdapter,
+                                                                          $componentForm,
                                                                           $onTableAliasName);
             }
             else
@@ -83,8 +83,8 @@
             }
         }
 
-        protected function resolveDisplayAttributeForPrematurelyStoppingJoins(ModelJoinBuilder $builder,
-                                                                              $modelAttributeToDataProviderAdapter,
+        protected function resolveDisplayAttributeForPrematurelyStoppingJoins($modelAttributeToDataProviderAdapter,
+                                                                              DisplayAttributeForReportForm $componentForm,
                                                                               $onTableAliasName = null)
         {
             assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
@@ -95,12 +95,13 @@
                 $onTableAliasName     = $modelAttributeToDataProviderAdapter->getModelTableName();
             }
             $this->selectQueryAdapter->resolveIdClause($resolvedModelClassName, $onTableAliasName);
+            $componentForm->setModelAliasUsingTableAliasName($onTableAliasName);
         }
 
         protected function resolveDisplayAttributeForProcessingAllJoins(ModelJoinBuilder $builder,
                                                                         $modelToReportAdapter,
                                                                         $modelAttributeToDataProviderAdapter,
-                                                                        $componentForm,
+                                                                        DisplayAttributeForReportForm $componentForm,
                                                                         $onTableAliasName = null)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
@@ -124,9 +125,11 @@
             }
             else
             {
+                $tableAliasName = $this->resolvedTableAliasName($modelAttributeToDataProviderAdapter, $builder);
                 $this->selectQueryAdapter->resolveIdClause(
                     $this->resolvedModelClassName($modelAttributeToDataProviderAdapter),
-                    $this->resolvedTableAliasName($modelAttributeToDataProviderAdapter, $builder));
+                    $tableAliasName);
+                $componentForm->setModelAliasUsingTableAliasName($tableAliasName);
             }
         }
 

@@ -307,9 +307,11 @@
             if(!is_array($attributeOrRelationAndAttributeData))
             {
                 $this->attribute                = $attributeOrRelationAndAttributeData;
+                $this->attributeAndRelationData = null;
             }
             else
             {
+                $this->attribute                = null;
                 $this->attributeAndRelationData = $attributeOrRelationAndAttributeData;
             }
         }

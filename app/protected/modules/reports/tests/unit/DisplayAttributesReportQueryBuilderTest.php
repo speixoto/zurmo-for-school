@@ -39,6 +39,23 @@
             DisplayAttributeForReportForm::resetCount();
         }
 
+        public function testAConcatedDerivedAttribute()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single display attribute
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType  = 'FullName';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
         public function testLikeContactState()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();

@@ -26,9 +26,13 @@
 
     class SummationReportResultsGridView extends ReportResultsGridView
     {
-        public function __construct(SummationReportDataProvider $dataProvider = null)
+        protected function isDataProviderValid()
         {
-            $this->dataProvider = $dataProvider;
+            if(!$this->dataProvider instanceof SummationReportDataProvider)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

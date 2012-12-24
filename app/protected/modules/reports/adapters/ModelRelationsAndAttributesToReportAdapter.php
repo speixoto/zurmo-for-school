@@ -327,7 +327,28 @@
             return ModeAttributeToReportFilterValueElementTypeUtil::getType($this->model, $resolvedAttribute);
         }
 
-            public function getAllRelationsData()
+        public function getDisplayElementType($attribute)
+        {
+            assert('is_string($attribute)');
+            $derivedAttributes = $this->getDerivedAttributesData();
+            if(isset($derivedAttributes[$attribute]))
+            {
+                return $derivedAttributes[$attribute]['derivedAttributeType'];
+            }
+            if($this->isDynamicallyDerivedAttribute($attribute))
+            {
+                $parts = explode(FormModelUtil::DELIMITER, $attribute);
+                if($parts[1] != 'User')
+                {
+                    throw new NotSupportedException();
+                }
+                return 'User';
+            }
+            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            return ModelAttributeToMixedTypeUtil::getType($this->model, $resolvedAttribute);
+        }
+
+        public function getAllRelationsData()
         {
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
@@ -339,7 +360,6 @@
             }
             return $attributes;
         }
-
         /**
          * Returns the array of selectable relations for creating a report.  Does not include relations that are
          * marked as nonReportable in the rules and also excludes relations that are marked as relations
@@ -508,6 +528,10 @@
             {
                 return false;
             }
+            if($this->isDerivedAttribute($relation))
+            {
+                return false;
+            }
             return $this->rules->relationIsReportedAsAttribute($this->model, $relation);
         }
 
@@ -672,12 +696,13 @@
             $calculatedAttributes = CalculatedDerivedAttributeMetadata::getAllByModelClassName(get_class($this->model));
             foreach ($calculatedAttributes as $attribute)
             {
-                $attributes[$attribute->name] = array('label' => $attribute->getLabelByLanguage(Yii::app()->language));
+                $attributes[$attribute->name] = array('label' => $attribute->getLabelByLanguage(Yii::app()->language),
+                                                      'derivedAttributeType' => 'CalculatedNumber');
             }
             return array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
         }
 
-        protected function isDerivedAttribute($attribute)
+        public function isDerivedAttribute($attribute)
         {
             assert('is_string($attribute)');
             $derivedAttributes = $this->getDerivedAttributesData();

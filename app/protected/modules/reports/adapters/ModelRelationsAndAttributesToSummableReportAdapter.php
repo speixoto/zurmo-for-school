@@ -270,6 +270,38 @@
             return parent::isDisplayAttributeMadeViaSelect($attribute);
         }
 
+        public function getDisplayElementType($attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->isAttributeIndexOrDerivedTypeADisplayCalculation($attribute))
+            {
+                list($realAttribute, $notUsed) = explode(FormModelUtil::DELIMITER, $attribute);
+                $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $realAttribute);
+                if ($attributeType == 'Decimal' || $attributeType == 'Integer')
+                {
+                    return 'Decimal';
+                }
+                elseif($attributeType == 'Date')
+                {
+                    return 'Date';
+                }
+                elseif($attributeType == 'DateTime')
+                {
+                    return 'DateTime';
+                }
+                elseif($this->model->isRelation($realAttribute) &&
+                       $this->model->getRelationModelClassName($realAttribute) == 'CurrencyValue')
+                {
+                    return 'CalculatedCurrencyValue';
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+            }
+            return parent::getDisplayElementType($attribute);
+        }
+
         protected function getDisplayCalculationAttributes()
         {
             $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));

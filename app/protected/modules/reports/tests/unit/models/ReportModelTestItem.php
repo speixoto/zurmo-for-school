@@ -115,6 +115,7 @@
                     'dropDown2'           => 'DropDown',
                     'hasOne'              => 'ImportModelTestItem2',
                     'hasOneAlso'          => 'ImportModelTestItem4',
+                    'likeContactState'    => 'ContactState',
                     'phone'               => 'Phone',
                     'primaryEmail'        => 'EmailAddressInformation',
                     'secondaryEmail'      => 'EmailAddressInformation',

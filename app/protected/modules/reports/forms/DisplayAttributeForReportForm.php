@@ -36,6 +36,14 @@
 
         public $columnAliasName;
 
+        /**
+         * Indicates the model alias for working with the resultsRowData. Sometimes there can be the same related model
+         * more than once via different relations.  This makes sure the resultsRowData knows which model to use. Only applies
+         * when the display attribute is made via the model and not via the select
+         * @var string
+         */
+        protected $modelAliasUsingTableAliasName;
+
         public function __construct($moduleClassName, $modelClassName, $reportType)
         {
             parent::__construct($moduleClassName, $modelClassName, $reportType);
@@ -78,6 +86,30 @@
         public static function resetCount()
         {
             self::$count = 0;
+        }
+
+        public function setModelAliasUsingTableAliasName($modelAliasUsingTableAliasName)
+        {
+            assert('is_string($modelAliasUsingTableAliasName)');
+            $this->modelAliasUsingTableAliasName = $modelAliasUsingTableAliasName;
+        }
+
+        public function getModelAliasUsingTableAliasName()
+        {
+            return $this->modelAliasUsingTableAliasName;
+        }
+
+        public function getDisplayElementType()
+        {
+            if($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
+            $modelClassName       = $this->getResolvedAttributeModelClassName();
+            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
+                                    make($moduleClassName, $modelClassName, $this->reportType);
+            return $modelToReportAdapter->getDisplayElementType($this->getResolvedAttribute());
         }
     }
 ?>

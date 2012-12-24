@@ -26,11 +26,13 @@
 
     abstract class ReportDataProvider extends CDataProvider
     {
+        abstract protected function isReportValidType();
+
         protected $report;
 
         protected $runReport = false;
 
-        abstract protected function isReportValidType();
+        private $offset;
 
         public function __construct(Report $report)
         {
@@ -46,6 +48,70 @@
 
         protected function fetchData()
         {
+            $pagination = $this->getPagination();
+            if (isset($pagination))
+            {
+                $totalItemCount = $this->getTotalItemCount();
+                $pagination->setItemCount($totalItemCount);
+                $offset = $pagination->getOffset();
+                $limit  = $pagination->getLimit();
+            }
+            else
+            {
+                $offset = 0;
+                $limit  = null;
+            }
+            if ($this->offset != null)
+            {
+                $offset = $this->offset;
+            }
+            if ($totalItemCount == 0)
+            {
+                return array();
+            }
+
+            //todo: move the construction into another method probably
+            $moduleClassName        = $this->report->getModuleClassName();
+            $modelClassName         = $moduleClassName::getPrimaryModelName();
+            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+
+            $builder = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $builder->makeQueryContent($this->report->getDisplayAttributes());
+
+            $where   = null; //todo:
+
+            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $orderBy = $builder->makeQueryContent($this->report->getOrderBys());
+
+            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $groupBy = $builder->makeQueryContent($this->report->getGroupBys());
+
+            //todo: end what we need to move. or maybe put this after data is retrieved
+
+            $sql     = SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName), $selectQueryAdapter,
+                                               $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
+            echo $sql;
+            //todo below resolve this into making something
+            $rows       = R::getAll($sql);
+            $somethings = array();
+            foreach ($rows as $key => $row)
+            {
+                $reportResultsRowData = new ReportResultsRowData($this->report->getDisplayAttributes());
+                foreach($selectQueryAdapter->getIdTableAliasesAndModelClassNames as $tableAlias => $modelClassName)
+                {
+                    $idColumnName = $selectQueryAdapter->getIdColumNameByTableAlias($tableAlias);
+                    $id = (int)$row[$idColumnName];
+                    $reportResultsRowData->addModelAndAlias($modelClassName::getById($id), $tableAlias);
+                    unset($row[$idColumnName]);
+                }
+                foreach($row as $columnName => $value)
+                {
+                    $reportResultsRowData->addSelectedColumnNameAndValue($columnName, $value);
+                }
+                $somethings[] = $something;
+            }
+            return $somethings;
         }
 
         /**
@@ -53,6 +119,8 @@
          */
         public function calculateTotalItemCount()
         {
+            //todo: fix
+            return 5;
         }
 
         /**
@@ -60,6 +128,7 @@
          */
         protected function fetchKeys()
         {
+            //todo: this probably has to be changed. not even sure where this isued for reporting
             $keys = array();
             foreach ($this->getData() as $model)
             {
@@ -67,5 +136,9 @@
             }
             return $keys;
         }
+
+        protected function getBaseTableName()
+        {}
+
     }
 ?>
