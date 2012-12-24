@@ -33,11 +33,11 @@
             {
                 $className = 'RowsAndColumnsReportResultsGridView';
             }
-            elseif($report->getType() == Report::SUMMATION)
+            elseif($report->getType() == Report::TYPE_SUMMATION)
             {
                 $className = 'SummationReportResultsGridView';
             }
-            elseif($report->getType() == Report::MATRIX)
+            elseif($report->getType() == Report::TYPE_MATRIX)
             {
                 $className = 'MatrixReportResultsGridView';
             }

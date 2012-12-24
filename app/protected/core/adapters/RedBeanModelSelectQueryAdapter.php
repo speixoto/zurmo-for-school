@@ -112,6 +112,13 @@
             return $selectQuery;
         }
 
+        public function addNonSpecificCountClause()
+        {
+            $this->clauses[] = "count(*)";
+            $this->countClausePresent = true;
+            $this->increaseClausesCountByOne();
+        }
+
         public function addCountClause($tableName, $columnName = 'id', $aliasName = null)
         {
             assert('is_string($tableName)');

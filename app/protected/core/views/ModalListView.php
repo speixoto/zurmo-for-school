@@ -89,7 +89,7 @@
             // End Not Coding Standard
         }
 
-        public function getLinkString($attributeString)
+        public function getLinkString($attributeString, $attribute)
         {
             return $this->modalListLinkProvider->getLinkString($attributeString);
         }

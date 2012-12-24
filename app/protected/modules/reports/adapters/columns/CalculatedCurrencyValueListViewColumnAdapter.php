@@ -29,10 +29,10 @@ class CalculatedCurrencyValueListViewColumnAdapter extends ListViewColumnAdapter
     public function renderGridViewData()
     {
         return array(
-            'name'   => 'moduleClassName',
+            'name'   => $this->attribute,
             'header' => Yii::t('Default', 'Module'),
             'type'   => 'raw',
-            'value'  => 'todo: xyz',
+            'value'  => '"todo something"',
         );
     }
 }

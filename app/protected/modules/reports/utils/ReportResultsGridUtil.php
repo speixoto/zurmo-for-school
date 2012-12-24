@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -24,24 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class TextListViewColumnAdapter extends ListViewColumnAdapter
+    class ReportResultsGridUtil
     {
-        public function renderGridViewData()
+        public static function makeUrlForLink($attribute, ReportResultsRowData $data)
         {
-            if ($this->getIsLink())
+            assert('is_string($attribute)');
+            if(null == $model = $data->getModel($attribute))
             {
-                return array(
-                    'name' => $this->attribute,
-                    'type' => 'raw',
-                    'value' => $this->view->getLinkString('$data->' . $this->attribute, $this->attribute),
-                );
+                return null;
             }
-            else
-            {
-                return array(
-                    'name'  => $this->attribute,
-                );
-            }
+            $moduleClassName = $data->getModel($attribute)->getModuleClassName();
+            return Yii::app()->createUrl('/' . $moduleClassName::getDirectoryName() . '/default/details',
+                                         array('id' => $data->getModel($attribute)->id));
         }
     }
-?>

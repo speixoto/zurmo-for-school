@@ -40,7 +40,6 @@
             return self::ATTRIBUTE_NAME_PREFIX . $key;
         }
 
-
         public function __construct(array $displayAttributes)
         {
             $this->displayAttributes = $displayAttributes;
@@ -49,14 +48,13 @@
         public function __get($name)
         {
             $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $name);
-
             if(count($parts) == 2 && $parts[1] != null)
             {
                 return $this->resolveValueFromModel($parts[1]);
             }
-            if(isset($selectedColumnNamesAndValues[$name]))
+            if(isset($this->selectedColumnNamesAndValues[$name]))
             {
-                return $selectedColumnNamesAndValues[$name];
+                return $this->selectedColumnNamesAndValues[$name];
             }
             return parent::__get($name);
         }

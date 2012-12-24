@@ -30,14 +30,6 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            $attributeName = 'calculated';
-            $attributeForm = new CalculatedNumberAttributeForm();
-            $attributeForm->attributeName    = $attributeName;
-            $attributeForm->attributeLabels  = array('en' => 'Test Calculated');
-            $attributeForm->formula          = 'integer + float';
-            $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
-            $adapter = new $modelAttributesAdapterClassName(new ReportModelTestItem());
-            $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
         public function setup()
@@ -75,23 +67,45 @@
             $this->assertEquals('yFirst yLast', strval($model2));
         }
 
-        public function testGettingAttributesOfDifferentTypes()
+        public function testGettingAttributeForString()
         {
-            $reportModelTestItemX = new ReportModelTestItem();
+            $reportModelTestItemX         = new ReportModelTestItem();
             $reportModelTestItemX->string = 'someString';
-            $displayAttributeX    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                    Report::TYPE_SUMMATION);
+            $displayAttributeX            = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                            Report::TYPE_SUMMATION);
             $displayAttributeX->setModelAliasUsingTableAliasName('abc');
             $displayAttributeX->attributeIndexOrDerivedType = 'string';
             $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX));
             $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');
 
             $this->assertEquals('someString', $reportResultsRowData->attribute0);
+        }
 
-            //todo: split this into mulitple methods since it will be easier to read
-            //todo: oinly if you want to so for contactState it can conitue to look at type in model.. this would be acceptable solution
-            //todo: also test all other types including calcualted
-            //todo: other list view adapter useage..
+        public function testGettingAttributeForLikeContactState()
+        {
+            $reportModelTestItem7         = new ReportModelTestItem7;
+            $reportModelTestItem7->name   = 'someName';
+            $reportModelTestItemX         = new ReportModelTestItem();
+            $reportModelTestItemX->likeContactState = $reportModelTestItem7;
+            $displayAttributeX            = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                            Report::TYPE_SUMMATION);
+            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
+            $displayAttributeX->attributeIndexOrDerivedType = 'likeContactState';
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX));
+            $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');
+
+            $this->assertEquals('someName', $reportResultsRowData->attribute0);
+        }
+
+        public function testGettingAttributeWhenMadeViaSelect()
+        {
+            $displayAttributeX = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                     Report::TYPE_SUMMATION);
+            $displayAttributeX->attributeIndexOrDerivedType = 'integer__Maximum';
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX));
+            $reportResultsRowData->addSelectedColumnNameAndValue('col5', 55);
+
+            $this->assertEquals(55, $reportResultsRowData->col5);
         }
     }
 ?>

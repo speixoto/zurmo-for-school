@@ -30,7 +30,12 @@
         {
             if ($this->getIsLink())
             {
-                return null; //todo:
+                return array(
+                    'name' => 'lastName',
+                    'header' => Yii::t('Default', 'Name'),
+                    'type' => 'raw',
+                    'value' => $this->view->getLinkString('$data->getModel("' . $this->attribute . '")', $this->attribute),
+                );
             }
             else
             {

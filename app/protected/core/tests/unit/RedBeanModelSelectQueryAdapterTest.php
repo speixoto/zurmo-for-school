@@ -91,6 +91,16 @@
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
+        public function testAddNonSpecificCountClause()
+        {
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addNonSpecificCountClause();
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select count(*) ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
         public function testAddSummationClause()
         {
             $quote   = DatabaseCompatibilityUtil::getQuote();

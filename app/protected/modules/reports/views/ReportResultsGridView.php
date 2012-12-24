@@ -157,7 +157,7 @@
                 'lastPageLabel'    => '<span>last</span>',
                 'class'            => 'SimpleListLinkPager',
                 'paginationParams' => GetUtil::getData(),
-                'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
+                'route'            => 'defaultPortlet/details',
             );
             if (empty($this->gridViewPagerParams))
             {
@@ -194,8 +194,8 @@
             foreach ($this->dataProvider->getReport()->getDisplayAttributes() as $key => $displayAttribute)
             {
                 $columnClassName  = $displayAttribute->getDisplayElementType() . 'ListViewColumnAdapter';
-                $attributeName    = ReportResultsRowData::resolveAttributeNameByKey($key);
-                $params           = array();
+                $attributeName    = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                $params           = $this->resolveParamsForColumnElement($displayAttribute);
                 $columnAdapter    = new $columnClassName($attributeName, $this, $params);
                 $column           = $columnAdapter->renderGridViewData();
                 $column['header'] = $displayAttribute->label;
@@ -208,16 +208,20 @@
             return $columns;
         }
 
+        protected function resolveParamsForColumnElement($displayAttribute)
+        {
+            $params  = array();
+            if($displayAttribute->getResolvedAttribute() == 'name' ||
+               $displayAttribute->getResolvedAttribute() == 'FullNameForReportResults')
+            {
+                $params['isLink'] = true;
+            }
+            return $params;
+        }
+
         protected function getCGridViewBeforeAjaxUpdate()
         {
-            if ($this->rowsAreSelectable)
-            {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); addListViewSelectedIdsToUrl(id, options); }';
-            }
-            else
-            {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
-            }
+            return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
         }
 
         protected function getCGridViewAfterAjaxUpdate()
@@ -231,22 +235,12 @@
             // End Not Coding Standard
         }
 
-        protected function getGridViewActionRoute($action, $moduleId = null)
-        {
-            if ($moduleId == null)
-            {
-                $moduleId = $this->moduleId;
-            }
-            return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
-        }
-
-        public function getLinkString($attributeString)
+        public function getLinkString($attributeString, $attribute)
         {
             $string  = 'ZurmoHtml::link(';
             $string .=  $attributeString . ', ';
-            $string .= 'Yii::app()->createUrl("' .
-                $this->getGridViewActionRoute('details') . '", array("id" => $data->id))';
-            $string .= ')';
+            $string .= 'ReportResultsGridUtil::makeUrlForLink("' . $attribute . '", $data)';
+            $string .= ', array("target" => "new"))';
             return $string;
         }
 

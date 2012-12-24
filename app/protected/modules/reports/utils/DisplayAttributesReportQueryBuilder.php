@@ -126,6 +126,7 @@
             else
             {
                 $tableAliasName = $this->resolvedTableAliasName($modelAttributeToDataProviderAdapter, $builder);
+                echo 'gengis' . $tableAliasName . "<BR>";
                 $this->selectQueryAdapter->resolveIdClause(
                     $this->resolvedModelClassName($modelAttributeToDataProviderAdapter),
                     $tableAliasName);

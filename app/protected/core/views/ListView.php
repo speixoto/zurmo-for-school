@@ -411,7 +411,7 @@
             return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
         }
 
-        public function getLinkString($attributeString)
+        public function getLinkString($attributeString, $attribute)
         {
             $string  = 'ZurmoHtml::link(';
             $string .=  $attributeString . ', ';

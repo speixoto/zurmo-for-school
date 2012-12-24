@@ -32,11 +32,11 @@
             {
                 $dataProvider = new RowsAndColumnsReportDataProvider($report);
             }
-            elseif($report->getType() == Report::SUMMATION)
+            elseif($report->getType() == Report::TYPE_SUMMATION)
             {
                 $dataProvider = new SummationReportDataProvider($report);
             }
-            elseif($report->getType() == Report::MATRIX)
+            elseif($report->getType() == Report::TYPE_MATRIX)
             {
                 $dataProvider = new MatrixReportDataProvider($report);
             }

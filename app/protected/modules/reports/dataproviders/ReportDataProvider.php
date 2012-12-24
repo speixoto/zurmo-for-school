@@ -74,33 +74,11 @@
             {
                 return array();
             }
-
-            //todo: move the construction into another method probably
-            $moduleClassName        = $this->report->getModuleClassName();
-            $modelClassName         = $moduleClassName::getPrimaryModelName();
-            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-
-            $builder = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $builder->makeQueryContent($this->report->getDisplayAttributes());
-
-            $where   = null; //todo:
-
-            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $orderBy = $builder->makeQueryContent($this->report->getOrderBys());
-
-            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $groupBy = $builder->makeQueryContent($this->report->getGroupBys());
-
-            //todo: end what we need to move. or maybe put this after data is retrieved
-
-            $sql     = SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName), $selectQueryAdapter,
-                                               $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
-            echo $sql;
-            //todo below resolve this into making something
+            $sql          = $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
+            echo $sql . "<BR>";
             $rows         = R::getAll($sql);
             $resultsData  = array();
-            $offsetRowId  = $offset; //todo: rename or note or resolve via new method, this is what makes our rows unique...
             foreach ($rows as $key => $row)
             {
                 $reportResultsRowData = new ReportResultsRowData($this->report->getDisplayAttributes());
@@ -118,8 +96,7 @@
                 {
                     $reportResultsRowData->addSelectedColumnNameAndValue($columnName, $value);
                 }
-                $resultsData[$offsetRowId] = $reportResultsRowData;
-                $offsetRowId ++;
+                $resultsData[$key] = $reportResultsRowData;
             }
             return $resultsData;
         }
@@ -129,10 +106,16 @@
          */
         public function calculateTotalItemCount()
         {
-            //todo: fix, just have a new select Query adapter, or just use a simple count instead of any of the select query.. watchout cause i think keep distinct even
-            //todo: though we arent currently using that we should throw execpetion or something so we are aware of it.\
-            //todo: test it out too. at some point
-            return 12;
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
+            echo $sql . "<BR>";
+            $count = R::getCell($sql);
+            if ($count === null || empty($count))
+            {
+                $count = 0;
+            }
+            echo 'the count ' . $count . "<BR>";
+            return $count;
         }
 
         /**
@@ -140,7 +123,7 @@
          */
         protected function fetchKeys()
         {
-            $keys = array();
+            $keys = array(); //todo: this isnt unique, so we need a way to reference the offset instead... we could pass the offset into reportResultsRowData and have it retrievable as the unique id...
             foreach ($this->getData() as $key => $unused)
             {
                 $keys[] = $key;
@@ -148,8 +131,45 @@
             return $keys;
         }
 
-        protected function getBaseTableName()
-        {}
+        protected function makeSqlQueryForFetchingData(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $offset, $limit)
+        {
+            assert('is_int($offset) || $offset == null');
+            assert('is_int($limit) || $limit == null');
+            $moduleClassName        = $this->report->getModuleClassName();
+            $modelClassName         = $moduleClassName::getPrimaryModelName();
+            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $builder->makeQueryContent($this->report->getDisplayAttributes());
 
+            $where   = null; //todo:
+            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $orderBy = $builder->makeQueryContent($this->report->getOrderBys());
+            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $groupBy = $builder->makeQueryContent($this->report->getGroupBys());
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
+                                      $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
+        }
+
+        protected function makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter)
+        {
+            $moduleClassName        = $this->report->getModuleClassName();
+            $modelClassName         = $moduleClassName::getPrimaryModelName();
+            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $builder->makeQueryContent($this->report->getDisplayAttributes());
+
+            $where   = null; //todo:
+            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $orderBy = $builder->makeQueryContent($this->report->getOrderBys());
+            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $groupBy = $builder->makeQueryContent($this->report->getGroupBys());
+
+            //Make a fresh selectQueryAdapter that only has a count clause
+            //todo: if distinct we shouldn't actually do a NonSpecificCountClause, but this means distinct should know what table/col it is distincting on... so we need to add that
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectQueryAdapter->isDistinct());
+            $selectQueryAdapter->addNonSpecificCountClause();
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
+                                      $selectQueryAdapter, $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
+        }
     }
 ?>

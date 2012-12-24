@@ -111,5 +111,19 @@
                                     make($moduleClassName, $modelClassName, $this->reportType);
             return $modelToReportAdapter->getDisplayElementType($this->getResolvedAttribute());
         }
+
+        public function resolveAttributeNameForGridViewColumn($key)
+        {
+            assert('is_int($key)');
+            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
+            $modelClassName       = $this->getResolvedAttributeModelClassName();
+            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
+                                    make($moduleClassName, $modelClassName, $this->reportType);
+            if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($this->getResolvedAttribute()))
+            {
+                return $this->columnAliasName;
+            }
+            return ReportResultsRowData::resolveAttributeNameByKey($key);
+        }
     }
 ?>

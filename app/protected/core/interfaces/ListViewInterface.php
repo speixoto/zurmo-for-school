@@ -30,6 +30,6 @@
      */
     interface ListViewInterface
     {
-        public function getLinkString($attributeString);
+        public function getLinkString($attributeString, $attribute);
     }
 ?>

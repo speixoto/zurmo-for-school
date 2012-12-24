@@ -26,6 +26,15 @@
 
     class ReportModelTestItem7 extends OwnedSecurableItem
     {
+        public function __toString()
+        {
+            if (trim($this->name) == '')
+            {
+                return Yii::t('Default', '(Unnamed)');
+            }
+            return $this->name;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
