@@ -58,7 +58,7 @@
             {
                 $label = Yii::t('Default', 'Cancel Changes');
             }
-            return ZurmoHtml::link($label, '#', array('id' => static::getPreviousPageLinkId()));
+            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
         }
 
         public static function getPreviousPageLinkId()

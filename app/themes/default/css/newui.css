@@ -7436,12 +7436,17 @@ div.wide.form label.hasCheckBox {
   position: absolute;
   right: 15px;
   top: 15px;
+}
+.right-side-edit-view-panel,
+#right-side-edit-view-panel {
   width: 30%;
   float: right;
 }
+.right-side-edit-view-panel h3,
 #right-side-edit-view-panel h3 {
   margin-bottom: 8px;
 }
+.right-side-edit-view-panel label,
 #right-side-edit-view-panel label {
   width: 100%;
   display: block;
@@ -7449,44 +7454,55 @@ div.wide.form label.hasCheckBox {
   padding-top: 0;
   margin-bottom: 5px;
 }
+.right-side-edit-view-panel #owner-box,
 #right-side-edit-view-panel #owner-box {
   margin-bottom: 15px;
   position: relative;
 }
+.right-side-edit-view-panel #owner-box label,
 #right-side-edit-view-panel #owner-box label,
+.right-side-edit-view-panel #owner-box + label,
 #right-side-edit-view-panel #owner-box + label {
   font-size: 12px;
   font-weight: 600;
 }
+.right-side-edit-view-panel #owner-box input,
 #right-side-edit-view-panel #owner-box input {
   position: relative;
   z-index: 0;
 }
+.right-side-edit-view-panel .ui-autocomplete,
 #right-side-edit-view-panel .ui-autocomplete {
   width: auto !important;
 }
+.right-side-edit-view-panel input[type="text"],
 #right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
 }
+.right-side-edit-view-panel #owner-box + label,
 #right-side-edit-view-panel #owner-box + label {
   margin-bottom: 15px;
 }
+.right-side-edit-view-panel .radio-input,
 #right-side-edit-view-panel .radio-input {
   margin-bottom: 10px;
   width: 100%;
   float: left;
   display: block;
 }
+.right-side-edit-view-panel .radio-input label,
 #right-side-edit-view-panel .radio-input label {
   width: auto;
   float: left;
   vertical-align: middle;
 }
+.right-side-edit-view-panel .radio-input input[type="radio"],
 #right-side-edit-view-panel .radio-input input[type="radio"] {
   float: left;
   margin: 0 8px 0 10px;
   vertical-align: middle;
 }
+.right-side-edit-view-panel .radio-input .hasDropDown,
 #right-side-edit-view-panel .radio-input .hasDropDown {
   float: left;
   margin-top: 8px;
@@ -7496,6 +7512,7 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.right-side-edit-view-panel input[type="text"],
 #right-side-edit-view-panel input[type="text"] {
   margin-top: 6px;
 }
@@ -7741,6 +7758,7 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.wrapper,
 .TitleBarAndDetailsView > div,
 .ProgressView > div,
 #MetadataViewEditView > div,
@@ -7764,6 +7782,7 @@ div.wide.form label.hasCheckBox {
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
+.wrapper .form form,
 .TitleBarAndDetailsView > div .form form,
 .ProgressView > div .form form,
 #MetadataViewEditView > div .form form,
@@ -7778,12 +7797,13 @@ div.wide.form label.hasCheckBox {
   -ms-box-shadow: none;
   box-shadow: none;
 }
-.TitleBarAndDetailsView h1,
-.ProgressView h1,
-#MetadataViewEditView h1,
-.TableOfContentsView h1,
-.DetailsView h1,
-.EditAndDetailsView h1 {
+.wrapper h1,
+.TitleBarAndDetailsView > div h1,
+.ProgressView > div h1,
+#MetadataViewEditView > div h1,
+.TableOfContentsView > div h1,
+.DetailsView > div h1,
+.EditAndDetailsView > div h1 {
   text-indent: 15px;
   font-size: 15px;
   height: 40px;
@@ -7806,21 +7826,23 @@ div.wide.form label.hasCheckBox {
   border-bottom: 1px solid #ccc;
   overflow: hidden;
 }
-.TitleBarAndDetailsView input[type="checkbox"] + label,
-.ProgressView input[type="checkbox"] + label,
-#MetadataViewEditView input[type="checkbox"] + label,
-.TableOfContentsView input[type="checkbox"] + label,
-.DetailsView input[type="checkbox"] + label,
-.EditAndDetailsView input[type="checkbox"] + label {
+.wrapper input[type="checkbox"] + label,
+.TitleBarAndDetailsView > div input[type="checkbox"] + label,
+.ProgressView > div input[type="checkbox"] + label,
+#MetadataViewEditView > div input[type="checkbox"] + label,
+.TableOfContentsView > div input[type="checkbox"] + label,
+.DetailsView > div input[type="checkbox"] + label,
+.EditAndDetailsView > div input[type="checkbox"] + label {
   width: 60px;
   margin-top: 0;
 }
-.TitleBarAndDetailsView td + th,
-.ProgressView td + th,
-#MetadataViewEditView td + th,
-.TableOfContentsView td + th,
-.DetailsView td + th,
-.EditAndDetailsView td + th {
+.wrapper td + th,
+.TitleBarAndDetailsView > div td + th,
+.ProgressView > div td + th,
+#MetadataViewEditView > div td + th,
+.TableOfContentsView > div td + th,
+.DetailsView > div td + th,
+.EditAndDetailsView > div td + th {
   padding-left: 30px;
 }
 .SecuredEditAndDetailsView,
@@ -14973,6 +14995,86 @@ a.user-link {
 }
 .outbound-settings label {
   margin-bottom: 5px;
+}
+#ModuleForReportWizardView table span {
+  text-align: left;
+  display: block;
+  margin-bottom: 20px;
+}
+#ModuleForReportWizardView table td {
+  padding-left: 0;
+}
+#ModuleForReportWizardView .radio-input {
+  margin-bottom: 10px !important;
+}
+#GeneralDataForReportWizardView .panel {
+  width: 70%;
+  float: left;
+}
+#GeneralDataForReportWizardView .right-side-edit-view-panel {
+  width: 30%;
+  float: right;
+}
+#FiltersTreeArea {
+  width: 25%;
+  float: left;
+  border: 1px solid green;
+}
+#FiltersTreeArea + div {
+  width: 70%;
+  float: right;
+  border: 1px solid red;
+}
+.attribute-rows ul,
+.attribute-rows li {
+  list-style: none;
+}
+.report-attribute-row {
+  float: left;
+  width: 100%;
+  display: block;
+  margin: 8px 0;
+}
+.report-attribute-row > div {
+  float: left;
+  width: 100%;
+}
+.report-attribute-row > div > span:first-child + div {
+  margin-right: 0 !important;
+  width: 45%;
+  float: left;
+}
+.report-attribute-row > div .criteria-value-container {
+  margin-right: 30px !important;
+  width: 45%;
+  float: right;
+}
+.report-attribute-row > div .has-model-select {
+  float: left;
+}
+.report-attribute-row label.hasCheckBox {
+  margin-left: 0 !important;
+}
+.report-attribute-row .remove-extra-dynamic-search-row-link {
+  float: right;
+  margin: 4px 0 0 -30px !important;
+  position: relative;
+  display: block;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  color: #a7a7a7 !important;
+}
+.report-attribute-row .report-attribute-row-number-label {
+  float: left;
+  line-height: 26px;
+  margin-right: 15px;
+  font-weight: bold;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {

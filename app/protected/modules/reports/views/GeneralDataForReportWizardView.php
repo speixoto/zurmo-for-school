@@ -30,9 +30,9 @@
         {
             $content           = '<div class="attributesContainer">';
             $element           = new TextElement($this->model, 'name', $this->form);
-            $leftSideContent   = $element->render();
+            $leftSideContent   = '<table><colgroup><col class="col-0"><col class="col-1"></colgroup><tr>' . $element->render() . '</tr>';
             $element           = new TextAreaElement($this->model, 'description', $this->form, array('rows' => 2));
-            $leftSideContent  .= $element->render();
+            $leftSideContent  .= '<tr>' . $element->render() . '</tr></table>';
             $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
             $rightSideContent  = ZurmoHtml::tag('div', array(), $this->renderRightSideFormLayout());
             $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
@@ -43,7 +43,7 @@
 
         protected function renderRightSideFormLayout()
         {
-            $content  = "<h3>".Yii::t('Default', 'Rights and Permissions') . '</h3><div id="owner-box">';
+            $content  = '<h3>' . Yii::t('Default', 'Rights and Permissions') . '</h3><div id="owner-box">';
             $element  = new OwnerNameIdElement($this->model, 'null', $this->form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render().'</div>';
