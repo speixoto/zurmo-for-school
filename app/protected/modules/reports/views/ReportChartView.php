@@ -37,6 +37,8 @@
 
         protected $uniqueLayoutId;
 
+        protected $maximumGroupsPerChart = 100;
+
         public function __construct($controllerId, $moduleId, SummationReportDataProvider $dataProvider, $uniqueLayoutId)
         {
             assert('is_string($controllerId)');
@@ -50,12 +52,15 @@
 
         public function renderContent()
         {
+            if($this->dataProvider->calculateTotalItemCount() > $this->maximumGroupsPerChart)
+            {
+                return $this->renderMaximumGroupsContent();
+            }
             return $this->renderChartContent();
         }
 
         protected function renderChartContent()
         {
-            //calculateTotalItemCount(), use for error check on too many
             $chartData = $this->dataProvider->getChartData();
             Yii::import('ext.amcharts.AmChartMaker');
             $amChart = new AmChartMaker();
@@ -72,6 +77,16 @@
             $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $this->uniqueLayoutId));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Chart' . $this->uniqueLayoutId];
+        }
+
+        protected function renderMaximumGroupsContent()
+        {
+            $content  = '<div class="a-class-we-can-call-something-else">';
+            $content .= Yii::t('Default', 'Your report has too many groups to plot. ' .
+                                          'Please adjust the filters to reduce the number below {maximum}.',
+                        array('{maximum}' => $this->maximumGroupsPerChart));
+            $content .= '</div>';
+            return $content;
         }
     }
 ?>

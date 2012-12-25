@@ -49,6 +49,11 @@
             return 'edit-form';
         }
 
+        public function getTitle()
+        {
+            return Yii::t('Default', 'Report Wizard');
+        }
+
         protected function renderContent()
         {
             $content  = $this->renderForm();
@@ -60,7 +65,7 @@
         protected function renderForm()
         {
             $content  = '<div class="wrapper">';
-            $content .= '<h1>Report Wizard' . $this->renderTitleContent() . '</h1>';
+            $content .= $this->renderTitleContent();
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
