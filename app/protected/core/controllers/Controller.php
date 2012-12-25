@@ -236,7 +236,7 @@
             $alertMessage          = $this->getMassEditAlertMessage(get_class($model));
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
-            $title                 = Zurmo::t('Core', 'Mass Update: {title}', array('{title}' => $title));
+            $title                 = Zurmo::t('Core', 'Mass Update') . ': ' . $title;
             $massEditViewClassName = $moduleName . 'MassEditView';
             $view  = new $massEditViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
                                                       $selectedRecordCount, $title, $alertMessage);
@@ -252,7 +252,7 @@
         {
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
-            $title                 = Zurmo::t('Core', 'Mass Delete: {title}', array('{title}' => $title));
+            $title                 = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
             $massDeleteViewClassName = 'MassDeleteView';
             $selectedIds = GetUtil::getData();
             $view  = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
