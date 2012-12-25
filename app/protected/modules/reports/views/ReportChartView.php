@@ -55,6 +55,7 @@
 
         protected function renderChartContent()
         {
+            //calculateTotalItemCount(), use for error check on too many
             $chartData = $this->dataProvider->getChartData();
             Yii::import('ext.amcharts.AmChartMaker');
             $amChart = new AmChartMaker();

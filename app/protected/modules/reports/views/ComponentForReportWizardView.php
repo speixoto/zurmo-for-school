@@ -111,7 +111,7 @@
         protected function renderPreviousPageLinkContent()
         {
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
-                Yii::t('Default', 'Previous'), '#', array('id' => static::getPreviousPageLinkId())));
+                   Yii::t('Default', 'Previous')), '#', array('id' => static::getPreviousPageLinkId()));
         }
 
         /**
