@@ -45,6 +45,7 @@
         public  $yAxisName              = null;
 
         private $serial                 = array();
+
         private $chartProperties        = array();
 
         private $graphProperties        = array();

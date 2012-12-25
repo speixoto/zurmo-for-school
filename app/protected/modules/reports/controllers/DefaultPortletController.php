@@ -64,7 +64,9 @@
             {
                 StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
             }
-            $dataProvider = ReportDataProviderFactory::makeByReport($report);
+            $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'listPageSize', get_class($this->getModule()));
+            $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
             if($runReport)
             {
                 $dataProvider->setRunReport($runReport);

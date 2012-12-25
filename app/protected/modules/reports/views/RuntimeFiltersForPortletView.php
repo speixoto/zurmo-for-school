@@ -137,8 +137,8 @@
         {
             return     "$('#apply-runtime-filters').removeClass('loading');
                         $('#apply-runtime-filters').removeClass('loading-ajax-submit');
-                        $('#ReportChartForPortletView').find('.refreshPortletLink').click();
                         $('#ReportResultsGridForPortletView').find('.refreshPortletLink').click();
+                        $('#ReportChartForPortletView').find('.refreshPortletLink').click();
                        ";
         }
 

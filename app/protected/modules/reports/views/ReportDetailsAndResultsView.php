@@ -60,8 +60,8 @@
             // Begin Not Coding Standard
             //On page ready load the chart and grid with data
             $script = "$(document).ready(function () {
-                            $('#ReportChartForPortletView').find('.refreshPortletLink').click();
-                            $('#ReportResultsGridForPortletView').find('.refreshPortletLink').click();
+                           $('#ReportResultsGridForPortletView').find('.refreshPortletLink').click();
+                           $('#ReportChartForPortletView').find('.refreshPortletLink').click();
                        });";
             Yii::app()->clientScript->registerScript('loadReportResults', $script);
             // End Not Coding Standard

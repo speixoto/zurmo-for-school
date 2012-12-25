@@ -37,9 +37,21 @@
 
         public function renderContent()
         {
-            $content   = $this->renderRefreshLink();
-            $content  .= 'the content for report chart for portlet content' . mt_rand(1,1000);
+            $content  = $this->renderRefreshLink();
+            $content .= $this->makeChartViewAndRender();
             return $content;
+        }
+
+        protected function makeChartViewAndRender()
+        {
+            $dataProvider = null;
+            if(isset($this->params['dataProvider']) &&
+                $this->params['dataProvider']->getReport()->getChart()->type != null)
+            {
+                $dataProvider = $this->params['dataProvider'];
+                $view      = new ReportChartView('default', 'reports', $dataProvider, $this->uniqueLayoutId);
+                return $view->render();
+            }
         }
     }
 ?>

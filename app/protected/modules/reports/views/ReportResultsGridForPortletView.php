@@ -49,9 +49,9 @@
             if(isset($this->params['dataProvider']))
             {
                 $dataProvider = $this->params['dataProvider'];
+                $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
+                return $view->render();
             }
-            $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
-            return $view->render();
         }
     }
 ?>

@@ -33,5 +33,81 @@
                 throw new NotSupportedException();
             }
         }
+
+        public function calculateTotalItemCount()
+        {
+        $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+        $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
+        echo $sql . "<BR>";
+        $rows                   = R::getAll($sql);
+        $count                  = count($rows);
+        echo 'the count ' . $count . "<BR>";
+        return $count;
+        }
+
+        public function getChartData()
+        {
+
+            $resultsData              = $this->fetchChartData();
+            $firstSeriesAttributeName = $this->resolveChartFirstSeriesAttributeNameForReportResultsRowData();
+            $firstRangeAttributeName  = $this->resolveChartFirstRangeAttributeNameForReportResultsRowData();
+            $chartData = array();
+            foreach ($resultsData as $data)
+            {
+                $chartData[] = array('value'        => $data->$firstRangeAttributeName, //todo: still need to resolve for currency for this.
+                                     'displayLabel' => strval($data->$firstSeriesAttributeName));
+            }
+            return $chartData;
+        }
+
+        protected function fetchChartData()
+        {
+            //todO: $totalItemCount = $this->getTotalItemCount(); if too many rows over 100? then we should block or limit or something not sure...
+            return $this->runQueryAndGetResolveResultsData(null, null);
+        }
+
+        public function resolveFirstSeriesLabel()
+        {
+            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            {
+                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstSeries)
+                {
+                    return $displayAttribute->label;
+                }
+            }
+        }
+
+        public function resolveFirstRangeLabel()
+        {
+            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            {
+                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstRange)
+                {
+                    return $displayAttribute->label;
+                }
+            }
+        }
+
+        protected function resolveChartFirstSeriesAttributeNameForReportResultsRowData()
+        {
+            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            {
+                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstSeries)
+                {
+                    return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                }
+            }
+        }
+
+        protected function resolveChartFirstRangeAttributeNameForReportResultsRowData()
+        {
+            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            {
+                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstRange)
+                {
+                    return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                }
+            }
+        }
     }
 ?>

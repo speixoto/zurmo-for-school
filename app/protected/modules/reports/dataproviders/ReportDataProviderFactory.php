@@ -26,19 +26,23 @@
 
     class ReportDataProviderFactory
     {
-        public static function makeByReport(Report $report)
+        public static function makeByReport(Report $report, $pageSize)
         {
+            $config   = array(
+                'pagination' => array(
+                    'pageSize' => $pageSize
+                ));
             if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
-                $dataProvider = new RowsAndColumnsReportDataProvider($report);
+                $dataProvider = new RowsAndColumnsReportDataProvider($report, $config);
             }
             elseif($report->getType() == Report::TYPE_SUMMATION)
             {
-                $dataProvider = new SummationReportDataProvider($report);
+                $dataProvider = new SummationReportDataProvider($report, $config);
             }
             elseif($report->getType() == Report::TYPE_MATRIX)
             {
-                $dataProvider = new MatrixReportDataProvider($report);
+                $dataProvider = new MatrixReportDataProvider($report, $config);
             }
             else
             {

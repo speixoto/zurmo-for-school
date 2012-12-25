@@ -68,7 +68,6 @@
                                     } ',
                     'success'    => 'js:function(){
                                         $("#RuntimeFiltersForPortletView").find(".refreshPortletLink").click();
-                                        $("#ReportChartForPortletView").find(".refreshPortletLink").click();
                                         $("#ReportResultsGridForPortletView").find(".refreshPortletLink").click();
                                     }');
             //beforeSend attach loading...

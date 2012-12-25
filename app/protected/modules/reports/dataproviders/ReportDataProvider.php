@@ -32,12 +32,16 @@
 
         protected $runReport = false;
 
-        private $offset;
+        protected $offset;
 
-        public function __construct(Report $report)
+        public function __construct(Report $report, array $config = array())
         {
             $this->report = $report;
             $this->isReportValidType();
+            foreach ($config as $key => $value)
+            {
+                $this->$key = $value;
+            }
         }
 
         public function setRunReport($runReport)
@@ -74,6 +78,13 @@
             {
                 return array();
             }
+            return $this->runQueryAndGetResolveResultsData($offset, $limit);
+        }
+
+        protected function runQueryAndGetResolveResultsData($offset, $limit)
+        {
+            assert('is_int($offset) || $offset == null');
+            assert('is_int($limit) || $limit == null');
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $sql          = $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
             echo $sql . "<BR>";
@@ -107,7 +118,7 @@
         public function calculateTotalItemCount()
         {
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-            $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
+            $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
             echo $sql . "<BR>";
             $count = R::getCell($sql);
             if ($count === null || empty($count))
@@ -150,7 +161,7 @@
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
 
-        protected function makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter)
+        protected function makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, $selectJustCount = false)
         {
             $moduleClassName        = $this->report->getModuleClassName();
             $modelClassName         = $moduleClassName::getPrimaryModelName();
@@ -165,9 +176,12 @@
             $groupBy = $builder->makeQueryContent($this->report->getGroupBys());
 
             //Make a fresh selectQueryAdapter that only has a count clause
-            //todo: if distinct we shouldn't actually do a NonSpecificCountClause, but this means distinct should know what table/col it is distincting on... so we need to add that
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectQueryAdapter->isDistinct());
-            $selectQueryAdapter->addNonSpecificCountClause();
+            if($selectJustCount)
+            {
+                //todo: if distinct we shouldn't actually do a NonSpecificCountClause, but this means distinct should know what table/col it is distincting on... so we need to add that
+                $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectQueryAdapter->isDistinct());
+                $selectQueryAdapter->addNonSpecificCountClause();
+            }
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
         }

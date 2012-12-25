@@ -61,7 +61,7 @@
             $gridViewPagerParams = array()
         )
         {
-            assert('$dataProvider instanceof ReportDataProvider  || $dataProvider == null');
+            assert('$dataProvider instanceof ReportDataProvider');
             assert('is_array($gridViewPagerParams)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
@@ -74,10 +74,6 @@
 
         protected function renderContent()
         {
-            if($this->dataProvider == null)
-            {
-                return 'should call to refresh because no dataprovider is present. this actually just renders null since only temporary';
-            }
             if(!$this->isDataProviderValid())
             {
                 throw new NotSupportedException();
