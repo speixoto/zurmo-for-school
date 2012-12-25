@@ -48,14 +48,15 @@
             {
                 $startingDivStyleSecondValue = "display:none;";
             }
-            $content  = ZurmoHtml::tag('span', array('id'    => $firstValueSpanAreaId,
+            $content  = ZurmoHtml::tag('div', array('id'    => $firstValueSpanAreaId,
                                                      'class' => 'first-value-area',
                                                      'style' => $startingDivStyleFirstValue),
-                                       '&#160;' . $this->renderEditableFirstValueContent());
-            $content .= ZurmoHtml::tag('span', array('id'    => $secondValueSpanAreaId,
+                                                     $this->renderEditableFirstValueContent());
+            $content .= ZurmoHtml::tag('div', array('id'    => $secondValueSpanAreaId,
                                                      'class' => 'second-value-area',
                                                      'style' => $startingDivStyleSecondValue),
-                                       '&#160;' . Yii::t('Default', 'and') . $this->renderEditableSecondValueContent());
+                                                     ZurmoHtml::Tag('span', array('class' => 'report-and'), Yii::t('Default', 'and')) .
+                                                     $this->renderEditableSecondValueContent());
             return $content;
         }
 

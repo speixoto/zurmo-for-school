@@ -112,7 +112,7 @@
             $content .= '</div>';
             if($this->showRemoveLink)
             {
-                $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-report-attribute-row-link'));
+                $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-report-attribute-row-link'));
             }
             $content  =  ZurmoHtml::tag('div', array('class' => 'report-attribute-row'), $content);
             if($this->addWrapper)
