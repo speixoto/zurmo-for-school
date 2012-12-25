@@ -127,8 +127,8 @@
                 throw new NotSupportedException();
             }
             $content                                = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($operatorContent,                $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'report-filter-label');
+            self::resolveDivWrapperForContent($operatorContent,                $content, 'report-attribute-operator');
             self::resolveDivWrapperForContent($valueContent,                   $content, 'value-data');
             if($this->showAvailableRuntimeFilter)
             {
@@ -136,7 +136,7 @@
                                                                     $this->form, $params);
                 $runTimeElement->editableTemplate       = '{label}{content}{error}';
                 $runTimeContent                         = $runTimeElement->render();
-                self::resolveDivWrapperForContent($runTimeContent,                 $content);
+                self::resolveDivWrapperForContent($runTimeContent,                 $content, 'report-runtime-availability');
             }
             return $content;
         }

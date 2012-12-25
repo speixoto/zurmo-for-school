@@ -110,7 +110,8 @@
          */
         protected function renderPreviousPageLinkContent()
         {
-            return ZurmoHtml::link(Yii::t('Default', 'Previous'), '#', array('id' => static::getPreviousPageLinkId()));
+            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
+                Yii::t('Default', 'Previous'), '#', array('id' => static::getPreviousPageLinkId())));
         }
 
         /**
@@ -146,7 +147,7 @@
 
         protected function renderTitleContent()
         {
-            return ZurmoHtml::tag('h1',   array(), $this->getTitle());
+            return ZurmoHtml::tag('h3',   array(), $this->getTitle());
         }
 
         protected function renderAttributesAndRelationsTreeContent()

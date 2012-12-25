@@ -105,11 +105,12 @@
             $content .= ZurmoHtml::tag('span', array('id'    => $firstDateSpanAreaId,
                                                      'class' => 'first-date-area',
                                                      'style' => $startingDivStyleFirstDate),
-                                       '&#160;' . $this->renderEditableFirstDateContent());
+                                                     $this->renderEditableFirstDateContent());
             $content .= ZurmoHtml::tag('span', array('id'    => $secondDateSpanAreaId,
                                                      'class' => 'second-date-area',
                                                      'style' => $startingDivStyleSecondDate),
-                                       '&#160;' . Yii::t('Default', 'and') . $this->renderEditableSecondDateContent());
+                                                     ZurmoHtml::Tag('span', array('class' => 'report-and'), Yii::t('Default', 'and')) .
+                                                     $this->renderEditableSecondDateContent());
             return $content;
         }
 

@@ -60,7 +60,7 @@
         protected function renderForm()
         {
             $content  = '<div class="wrapper">';
-            $content .= $this->renderTitleContent();
+            $content .= '<h1>Report Wizard' . $this->renderTitleContent() . '</h1>';
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
