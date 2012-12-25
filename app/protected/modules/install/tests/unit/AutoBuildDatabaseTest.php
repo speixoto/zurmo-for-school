@@ -32,6 +32,8 @@
      */
     class AutoBuildDatabaseTest extends ZurmoBaseTest
     {
+        protected $unfreezeWhenDone = false;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -45,23 +47,28 @@
             parent::tearDownAfterClass();
         }
 
+        public function teardown()
+        {
+            if ($this->unfreezeWhenDone)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
+        }
+
         public function testAutoBuildDatabase()
         {
-            $unfreezeWhenDone     = false;
+            $this->unfreezeWhenDone     = false;
             if (RedBeanDatabase::isFrozen())
             {
                 RedBeanDatabase::unfreeze();
-                $unfreezeWhenDone = true;
+                $this->unfreezeWhenDone = true;
             }
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             InstallUtil::autoBuildDatabase($messageLogger);
-            if ($unfreezeWhenDone)
-            {
-                RedBeanDatabase::freeze();
-            }
 
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             //There are only 1 extra rows that are not being removed during the autobuild process.
@@ -143,11 +150,11 @@
          */
         public function testAutoBuildUpgrade()
         {
-            $unfreezeWhenDone     = false;
+            $this->unfreezeWhenDone = false;
             if (RedBeanDatabase::isFrozen())
             {
                 RedBeanDatabase::unfreeze();
-                $unfreezeWhenDone = true;
+                $this->unfreezeWhenDone = true;
             }
 
             // adding Text Field
@@ -278,11 +285,6 @@
             $tableName = RedBeanModel::getTableName('Account');
             $columns   = R::$writer->getColumns($tableName);
             $this->assertEquals('varchar(128)',     $columns['string128']);
-
-            if ($unfreezeWhenDone)
-            {
-                RedBeanDatabase::freeze();
-            }
         }
 
         /**
