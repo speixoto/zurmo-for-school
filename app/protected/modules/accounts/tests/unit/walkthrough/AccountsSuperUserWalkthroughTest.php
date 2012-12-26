@@ -514,7 +514,7 @@
             //Run Mass Delete using progress save for page1.
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDeleteProgress');
+            $this->runControllerWithExitExceptionAndGetContent('accounts/default/massDelete');
           
             //check for previous mass delete progress
             $accounts = Account::getAll();
