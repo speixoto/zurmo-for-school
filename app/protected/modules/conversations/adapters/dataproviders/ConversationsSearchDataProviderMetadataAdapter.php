@@ -76,24 +76,34 @@
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'isClosed',
+                    'operatorType'  => 'isNull',
+                    'value'         => null
+                );
+                $adaptedMetadata['clauses'][$startingCount + 1] = array(
+                    'attributeName' => 'isClosed',
                     'operatorType'  => 'equals',
                     'value'         => 0
                 );
-                $adaptedMetadata['clauses'][$startingCount + 1] = array(
+                $adaptedMetadata['clauses'][$startingCount + 2] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->id
                 );
-                $structure .= $startingCount . ' and ' . ($startingCount + 1);
+                $structure .= '( ' . $startingCount . ' or ' . ($startingCount + 1) . ' ) and ' . ($startingCount + 2);
             }
             elseif ($this->type == self::LIST_TYPE_PARTICIPANT)
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'isClosed',
+                    'operatorType'  => 'isNull',
+                    'value'         => null
+                );
+                $adaptedMetadata['clauses'][$startingCount + 1] = array(
+                    'attributeName' => 'isClosed',
                     'operatorType'  => 'equals',
                     'value'         => 0
                 );
-                $adaptedMetadata['clauses'][$startingCount + 1] = array(
+                $adaptedMetadata['clauses'][$startingCount + 2] = array(
                     'attributeName'        => 'conversationParticipants',
                     'relatedAttributeName' => 'person',
                     'operatorType'  => 'equals',
@@ -104,7 +114,7 @@
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->id
                 );
-                $structure .= $startingCount . ' and (' . ($startingCount + 1) . ' or ' . ($startingCount + 2) . ')';
+                $structure .= '( ' . $startingCount . ' or ' . ($startingCount + 1) . ' ) and (' . ($startingCount + 2) . ' or ' . ($startingCount + 3) . ')';
             }
             elseif ($this->type == self::LIST_TYPE_CLOSED) {
                 $adaptedMetadata['clauses'][$startingCount] = array(
