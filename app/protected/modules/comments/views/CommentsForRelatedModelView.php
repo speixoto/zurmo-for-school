@@ -98,7 +98,7 @@
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/ajaxListForRelatedModel',
                             array_merge($this->getParams, array('noPaging' => true)));
-            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Show older comments'), $url,
+            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Show older comments'), $url,
                          array('type' => 'GET',
                                'success' => 'function(data){$("#CommentsForRelatedModelView' . $this->uniquePageId . '").replaceWith(data)}'),
                          array('id'         => 'showAllCommentsLink' . $this->uniquePageId,
@@ -159,7 +159,7 @@
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
                             array_merge($this->getParams, array('id' => $comment->id)));
             // Begin Not Coding Standard
-            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete'), $url,
+            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Delete'), $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
                                               $('#deleteCommentLink" . $comment->id . "').parent().parent().parent().remove();}"),
@@ -174,7 +174,7 @@
         {
             $url     =   '';
             // Begin Not Coding Standard
-            return       ZurmoHtml::ajaxLink(Yii::t('Default', 'Edit'), $url);
+            return       ZurmoHtml::ajaxLink(Zurmo::t('CommentsModule', 'Edit'), $url);
             // End Not Coding Standard
         }
 
