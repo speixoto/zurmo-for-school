@@ -55,7 +55,7 @@
          */
         public function __construct($model, $userId, $metadata, $type)
         {
-            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_PARTICIPANT');
+            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_PARTICIPANT || $type == self::LIST_TYPE_CLOSED');
             parent::__construct($model, $userId, $metadata);
             $this->type = $type;
         }

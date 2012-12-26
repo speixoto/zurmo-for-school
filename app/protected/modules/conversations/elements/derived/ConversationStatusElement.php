@@ -79,7 +79,7 @@
 
         protected static function renderAjaxStatusActionChangeLink($newStatus, $conversationId, $label, $updateDivId)
         {
-            assert('is_int($newStatus)');
+            assert('is_bool($newStatus)');
             assert('is_int($conversationId)');
             assert('is_string($label)');
             assert('is_string($updateDivId)');
@@ -102,7 +102,7 @@
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
         {
-            assert('is_boolean($status)');
+            assert('is_bool($status)');
             if ($status)
             {
                 return 'action-close';

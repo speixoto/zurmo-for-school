@@ -421,6 +421,10 @@
                 'type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertfalse(strpos($content, 'Conversations') === false);
+            $this->setGetArray(array(
+                'type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CLOSED));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertfalse(strpos($content, 'Conversations') === false);
         }
 
         /**
@@ -481,6 +485,46 @@
                                      'relatedModelRelationName' => 'comments'));
             $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $content = $this->runControllerWithNoExceptionsAndGetContent('comments/default/ajaxListForRelatedModel');
+        }
+
+        /**
+         * @depends testCommentsAjaxListForRelatedModel
+         */
+        public function testClosingConversations()
+        {
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            {
+                return;
+            }
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $conversations  = Conversation::getAll();
+            $this->assertEquals(1, count($conversations));
+            $this->assertEquals($super->id, $conversations[0]->owner->id);
+            //Conversation is opened
+            $this->setGetArray(array('type' => 1));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->setGetArray(array('type' => 3));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/ajaxChangeStatus');
+            //Conversation is closed
+            $this->setGetArray(array('type' => 1));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->setGetArray(array('type' => 3));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/ajaxChangeStatus');
+            //Conversation is opened
+            $this->setGetArray(array('type' => 1));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->setGetArray(array('type' => 3));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
         }
     }
 ?>
