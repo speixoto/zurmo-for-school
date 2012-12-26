@@ -152,7 +152,7 @@
 
         protected function renderAttributesAndRelationsTreeContent()
         {
-            $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId()), '');
+            $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId(), 'class' => 'hasTree loading'), '');
             return $content;
         }
     }

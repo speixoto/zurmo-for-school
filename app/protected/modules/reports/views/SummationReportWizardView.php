@@ -253,10 +253,10 @@
             Yii::app()->clientScript->registerScript('linkedRemovalScript', "
                 //When a group by is removed, remove the corresponding display column and/or order by column if
                 //necessary
-                $('#GroupBysForReportWizardView').find('.remove-report-attribute-row-link').live('click', function()
+                $('#GroupBysForReportWizardView').find('.remove-dynamic-attribute-row-link').live('click', function()
                     {
                         var inputIdBeingRemoved = $(this).prev().find('input').first().val();
-                        $('#DisplayAttributesForReportWizardView').find('.report-attribute-row').each(function()
+                        $('#DisplayAttributesForReportWizardView').find('.dynamic-attribute-row').each(function()
                             {
                                 if(inputIdBeingRemoved == $(this).find('input').first().val())
                                 {
@@ -264,7 +264,7 @@
                                 }
                             }
                         );
-                        $('#OrderBysForReportWizardView').find('.report-attribute-row').each(function()
+                        $('#OrderBysForReportWizardView').find('.dynamic-attribute-row').each(function()
                             {
                                 if(inputIdBeingRemoved == $(this).find('input').first().val())
                                 {

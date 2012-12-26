@@ -2,8 +2,30 @@
     .view-toolbar-container{
         margin-top:30px;
     }
-    .treeview ul{
-        background: none;
+    .treeview{
+        ul{
+            background: none;
+        }
+        li:hover{
+            cursor:pointer;
+        }
+        li:active{
+            cursor: move;
+        }
+        .ui-draggable-dragging{
+            background:none;
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+            line-height:30px;
+            min-width: 120px;
+            height: 30px;
+            border:1px solid #ccc;
+            #gradient > .vertical(#f6f6f6, #ededed);
+            .b-shadow(inset 0 1px 0 0 #ffffff);
+        }
     }
 }
 
@@ -35,20 +57,26 @@
     }
 }
 
-#DisplayAttributesTreeArea,
-#FiltersTreeArea{
+.hasTree{
     width:20%;
     float: left;
     ++.border-box;
     padding: 8px 10px;
     background: #F4F4F4;
+    max-height:600px;
+    overflow: auto;
+    margin-top:10px;
 }
-#DisplayAttributesTreeArea + div,
-#FiltersTreeArea + div{
+
+.report-droppable-area{
     width: 80%;
     float: right;
     ++.border-box;
     padding-left: 30px;
+    margin-top:10px;
+    &.error{
+        
+    }
 }
 
 .attribute-rows{
@@ -56,13 +84,13 @@
         list-style: none;
     }
     li + li{
-        .report-attribute-row{
+        .dynamic-attribute-row{
             border-top: none;
         }
     }
 }
 
-.report-attribute-row{
+.dynamic-attribute-row{
     float: left;
     width: 100%;
     display: block;
@@ -93,7 +121,7 @@
     label.hasCheckBox{
         margin-left:0 !important;
     }
-    .remove-report-attribute-row-link{
+    .remove-dynamic-attribute-row-link{
         float: right;
         margin: 1px 0 0 -30px !important;
         position: relative;
@@ -101,7 +129,7 @@
         .symbly(24px);
         color:#a7a7a7 !important;
     }
-    .report-attribute-row-number-label{
+    .dynamic-attribute-row-number-label{
         float: left;
         line-height: 26px;
         margin-right:15px;
@@ -113,12 +141,12 @@
     }
 }
 
-.report-filter-label{
+.dynamic-attribute-label{
     float: left;
     line-height: 26px;
     width:20%;
 }
-.report-attribute-operator{
+.dynamic-attribute-operator{
     float: left;
     width:25%;
     ++.border-box;
@@ -152,8 +180,23 @@
     }
 }
 
-.report-and{
+.dynamic-and-for-mixed{
     display: inline-block;
     padding:5px 0;
     font-weight: bold;
+}
+
+#show-filters-structure-wrapper{
+    width:100%;
+    float: left;
+    margin-top:15px;
+    span{
+        width:120px;
+    }
+    input{
+        text-indent: 50px;
+    }
+}
+#show-filters-structure-div-link{
+    ++.z-link;
 }

@@ -127,8 +127,8 @@
                 throw new NotSupportedException();
             }
             $content                                = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'report-filter-label');
-            self::resolveDivWrapperForContent($operatorContent,                $content, 'report-attribute-operator');
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
+            self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-attribute-operator');
             self::resolveDivWrapperForContent($valueContent,                   $content, 'value-data');
             if($this->showAvailableRuntimeFilter)
             {

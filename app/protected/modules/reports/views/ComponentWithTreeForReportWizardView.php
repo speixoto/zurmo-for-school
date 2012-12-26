@@ -41,7 +41,7 @@
         protected function renderFormContent()
         {
             $content              = $this->renderAttributesAndRelationsTreeContent();
-            $content             .= ZurmoHtml::tag('div', array(), $this->renderRightSideContent());
+            $content             .= ZurmoHtml::tag('div', array('class' => 'report-droppable-area'), $this->renderRightSideContent());
             return $content;
         }
 
@@ -137,7 +137,7 @@
                 $(".droppable-attributes-container.' . static::getTreeType() . '").live("drop",function(event, ui){
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-                $(".remove-report-attribute-row-link").live("click", function()
+                $(".remove-dynamic-attribute-row-link").live("click", function()
                     {
                         $(this).parent().parent().remove(); //removes the <li>
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
