@@ -69,7 +69,7 @@
             $emailContent  = new EmailMessageContent();
             $url           = static::getUrlToEmail($model);
             $textContent = Yii::t('Default', "Hello, {lineBreak} {updaterName} added a new comment to the " .
-                                             "{strongStartTag}{modelString}{strongEndTag}: {lineBreak}" .
+                                             "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
                                              "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} " .
                                              "{lineBreak} --------------------------------------- {lineBreak} " .
                                              "This message was sent automaticaly by the ZurmoCRM",
@@ -77,13 +77,13 @@
                                      '{strongStartTag}'      => null,
                                      '{strongEndTag}'        => null,
                                      '{updaterName}'         => strval($updater),
-                                     '{modelString}'         => strtolower(get_class($model)) . ' ' . strval($model),
+                                     '{modelName}'           => strtolower(get_class($model)),
                                      '{commentDescription}'  => strval($comment),
                                      '{url}'                 => ZurmoHtml::link($url, $url)
                                    ));
             $emailContent->textContent  = $textContent;
             $htmlContent = Yii::t('Default', "Hello, {lineBreak} {updaterName} added a new comment to the " .
-                                             "{strongStartTag}{modelString}{strongEndTag}: {lineBreak}" .
+                                             "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
                                              "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} " .
                                              "{lineBreak} --------------------------------------- {lineBreak} " .
                                              "This message was sent automaticaly by the ZurmoCRM",
@@ -91,7 +91,7 @@
                                      '{strongStartTag}'      => '<strong>',
                                      '{strongEndTag}'        => '</strong>',
                                      '{updaterName}'         => strval($updater),
-                                     '{modelString}'         => strtolower(get_class($model)) . ' ' . strval($model),
+                                     '{modelName}'           => strtolower(get_class($model)),
                                      '{commentDescription}'  => strval($comment),
                                      '{url}'                 => ZurmoHtml::link($url, $url)
                                    ));
@@ -99,11 +99,25 @@
             return $emailContent;
         }
 
+        public static function getEmailSubject($model)
+        {
+            if ($model instanceof Conversation || $model instanceof Mission)
+            {
+                return Yii::t('Default', 'New comment on {modelName}: {subject}',
+                                    array('{subject}'   => strval($model),
+                                          '{modelName}' => strtolower(get_class($model))));
+            }
+        }
+
         protected static function getUrlToEmail($model)
         {
             if ($model instanceof Conversation)
             {
                 return Yii::app()->createAbsoluteUrl('conversations/default/details/', array('id' => $model->id));
+            }
+            elseif ($model instanceof Mission)
+            {
+                return Yii::app()->createAbsoluteUrl('missions/default/details/', array('id' => $model->id));
             }
         }
     }

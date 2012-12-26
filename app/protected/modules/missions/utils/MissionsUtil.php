@@ -181,5 +181,25 @@
             $rules->addUser($userToReceiveMessage);
             NotificationsUtil::submit($message, $rules);
         }
+
+        public static function getConversationParticipantsForSendEmail(Mission $mission, $updater)
+        {
+            assert('$mission->id > 0');
+            assert('$updater instanceof User');
+            $existingPeople = array();
+            if ($updater->getClassId('Item') != $mission->owner->getClassId('Item') &&
+                $mission->owner->primaryEmail->emailAddress !== null &&
+                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($mission->owner))
+            {
+                $existingPeople[] = $mission->owner;
+            }
+            if ($updater->getClassId('Item') != $mission->takenByUser->getClassId('Item') &&
+                $mission->takenByUser->primaryEmail->emailAddress !== null &&
+                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($mission->takenByUser))
+            {
+                $existingPeople[] = $mission->takenByUser;
+            }
+            return $existingPeople;
+        }
     }
 ?>

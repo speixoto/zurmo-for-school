@@ -81,21 +81,14 @@
             if ($this->relatedModel instanceof Conversation)
             {
                 $participants = ConversationParticipantsUtil::getConversationParticipantsForSendEmail($this->relatedModel, $updater);
-                $subject = Yii::t('Default', 'New comment on conversation: {subject}',
-                                    array('{subject}' => $this->relatedModel->subject));
+                $subject = CommentsUtil::getEmailSubject($this->relatedModel);
                 $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $updater);
             }
             elseif ($this->relatedModel instanceof Mission)
             {
-                throw new NotSupportedException();
-            }
-            elseif ($this->relatedModel instanceof SocialItem)
-            {
-                throw new NotSupportedException();
-            }
-            else
-            {
-                throw new NotSupportedException();
+                $participants = MissionsUtil::getConversationParticipantsForSendEmail($this->relatedModel, $updater);
+                $subject = CommentsUtil::getEmailSubject($this->relatedModel);
+                $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $updater);
             }
             CommentsUtil::resolveEmailNewComment($updater, $participants, $subject, $content);
         }
