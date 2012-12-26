@@ -144,12 +144,12 @@
             if ($this->allowMultipleUpload)
             {
                 $sendAction = null;
-                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Yii::t('Default', 'Add Files'));
+                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
             }
             else
             {
                 $sendAction = "\$('#{$this->formName}').find('.files > tbody').children().remove();";
-                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Yii::t('Default', 'Add Files'));
+                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
             }
             // Begin Not Coding Standard
             $javaScript = <<<EOD
@@ -260,8 +260,8 @@ EOD;
 
         private function makeUploadRowScriptContent()
         {
-            $startLabel  = Yii::t('Default', 'Start');
-            $cancelLabel = Yii::t('Default', 'Cancel');
+            $startLabel  = Zurmo::t('Core', 'Start');
+            $cancelLabel = Zurmo::t('Core', 'Cancel');
 $scriptContent = <<<EOD
 <script id="template-upload" type="text/x-jquery-tmpl">
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">
@@ -290,7 +290,7 @@ EOD;
             {
                 return;
             }
-            $content = '<span class="max-upload-size">' . Yii::t('Default', 'Max upload size: {maxSize}',
+            $content = '<span class="max-upload-size">' . Zurmo::t('Core', 'Max upload size: {maxSize}',
                        array('{maxSize}' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($maxSize))) . '</span>';
             return $content;
         }

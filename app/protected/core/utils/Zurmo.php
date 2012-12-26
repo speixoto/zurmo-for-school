@@ -25,36 +25,21 @@
      ********************************************************************************/
 
     /**
-     * Helper class to load default data for each module in the application.
+     * Helper class.
      */
-    class DefaultDataUtil
+    class Zurmo extends Yii
     {
-        public static function load(& $messageLogger)
+        /**
+         * Temporary override. Adds a fallback to the old message category naming.
+         */
+        public static function t($category,$message,$params=array(),$source=null,$language=null)
         {
-            assert('$messageLogger instanceof MessageLogger');
-            Yii::import('application.core.data.*');
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                $parentModule = $module->getParentModule();
-                if ($parentModule != null)
-                {
-                    Yii::import('application.modules.' . $parentModule::getDirectoryName() . '.data.*');
-                }
-                else
-                {
-                    Yii::import('application.modules.' . $module::getDirectoryName() . '.data.*');
-                }
-                $defaultDataMakerClassName = $module::getDefaultDataMakerClassName();
-                if ($defaultDataMakerClassName != null)
-                {
-                    $dataMaker = new $defaultDataMakerClassName();
-                    $dataMaker->make();
-                    $messageLogger->addInfoMessage(Zurmo::t('Core', 'Default data loaded for {moduleName}',
-                                                   array('{moduleName}' =>
-                                                   $module::getModuleLabelByTypeAndLanguage('Plural'))));
-                }
+            $translation = parent::t($category,$message,$params,$source,$language);
+            if ($translation == $message) {
+                $translation = parent::t('Default',$message,$params,$source,$language);
             }
+
+            return $translation;
         }
     }
 ?>

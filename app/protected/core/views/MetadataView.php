@@ -178,7 +178,7 @@
         {
             if ($title == null)
             {
-                $title = Yii::t('Default', 'Options');
+                $title = Zurmo::t('Core', 'Options');
             }
             $metadata  = $this::getMetadata();
             $menuItems = array('label' => $title, 'items' => array());

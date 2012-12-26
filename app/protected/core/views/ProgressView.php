@@ -132,7 +132,7 @@
             ));
             $cClipWidget->endClip();
             $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content = "<div><h1>" . Yii::t('Default', 'Mass Update') . ' ' . $this->title . '</h1>';
+            $content = "<div><h1>" . Zurmo::t('Core', 'Mass Update') . ' ' . $this->title . '</h1>';
             $content .= '<div class="progress-counter">' . "\n";
             $content .= '<h3><span id="sequential-process-spinner"><span class="z-spinner"></span></span>' . 
                         '<span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
