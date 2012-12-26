@@ -177,8 +177,8 @@
             $directionElement->editableTemplate = '{content}{error}';
             $directionElement                   = $directionElement->render();
             $content                            = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($directionElement,               $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
+            self::resolveDivWrapperForContent($directionElement,               $content, 'dynamic-attribute-field');
             return $content;
         }
 
@@ -189,8 +189,8 @@
             $displayLabelElement->editableTemplate = '{content}{error}';
             $displayLabelElement                   = $displayLabelElement->render();
             $content                               = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($displayLabelElement,            $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
+            self::resolveDivWrapperForContent($displayLabelElement,            $content, 'dynamic-attribute-field');
             return $content;
         }
 

@@ -160,7 +160,7 @@ a.ModalGameNotification a,
 .addfileinput-button span .ModalGameNotification a,
 .addfileinput-button span a.ModalGameNotification a,
 .hasTree,
-.report-droppable-area,
+.dynamic-droppable-area,
 .dynamic-attribute-row,
 .dynamic-attribute-operator,
 .value-data {
@@ -15087,12 +15087,15 @@ a.user-link {
   max-height: 600px;
   overflow: auto;
   margin-top: 10px;
+  z-index: 1;
 }
-.report-droppable-area {
+.dynamic-droppable-area {
   width: 80%;
   float: right;
   padding-left: 30px;
   margin-top: 10px;
+  position: relative;
+  z-index: 5;
 }
 .attribute-rows ul,
 .attribute-rows li {
@@ -15102,6 +15105,7 @@ a.user-link {
   border-top: none;
 }
 .dynamic-attribute-row {
+  position: relative;
   float: left;
   width: 100%;
   display: block;
@@ -15121,7 +15125,7 @@ a.user-link {
   background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
-  padding: 15px 10px 10px 10px;
+  padding: 15px 30px 15px 10px;
 }
 .dynamic-attribute-row > div {
   float: left;
@@ -15144,9 +15148,9 @@ a.user-link {
   margin-left: 0 !important;
 }
 .dynamic-attribute-row .remove-dynamic-attribute-row-link {
-  float: right;
-  margin: 1px 0 0 -30px !important;
-  position: relative;
+  position: absolute;
+  right: 10px;
+  top: 15px;
   display: block;
   font-weight: normal;
   font-size: 24px;
@@ -15177,11 +15181,14 @@ a.user-link {
   width: 25%;
   padding-left: 15px;
 }
+.dynamic-attribute-field {
+  float: right;
+  width: 80%;
+}
 .value-data {
-  float: left;
+  float: right;
   width: 50%;
   padding-left: 15px;
-  padding-right: 5px;
 }
 .value-data > div:first-child {
   margin-bottom: 10px;
@@ -15190,7 +15197,6 @@ a.user-link {
   clear: left;
   display: block;
   float: left;
-  margin-top: 5px;
   margin-left: 25px;
   line-height: 26px;
   font-size: 11px;

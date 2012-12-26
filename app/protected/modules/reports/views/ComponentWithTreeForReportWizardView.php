@@ -41,7 +41,7 @@
         protected function renderFormContent()
         {
             $content              = $this->renderAttributesAndRelationsTreeContent();
-            $content             .= ZurmoHtml::tag('div', array('class' => 'report-droppable-area'), $this->renderRightSideContent());
+            $content             .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area'), $this->renderRightSideContent());
             return $content;
         }
 
