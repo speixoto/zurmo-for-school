@@ -198,7 +198,7 @@
 
         public static function getDisplayDescription()
         {
-            return Yii::t('Default', 'Matching Archived Emails');
+            return Zurmo::t('ContactsModule', 'Matching Archived Emails');
         }
     }
 ?>

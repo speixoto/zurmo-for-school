@@ -39,7 +39,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('ContactsModule', '(Unnamed)');
             }
             return $this->name;
         }
