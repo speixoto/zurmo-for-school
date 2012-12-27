@@ -51,7 +51,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'FullName';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -68,10 +68,55 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'likeContactState';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
+
+        public function testCurrencyValueAttributeWithDifferentConversionTypes()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+
+            //Test currencyValue using no conversion
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'currencyValue__Average';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent                         = "select avg({$q}currencyvalue{$q}.{$q}value{$q}) col0 ";
+            $this->assertEquals($compareContent, $content);
+
+            //Test currencyValue using base conversion
+            DisplayAttributeForReportForm::resetCount();
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter,
+                                                     $selectQueryAdapter, Report::CURRENCY_CONVERSION_TYPE_BASE);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'currencyValue__Average';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent                         = "select avg({$q}currencyvalue{$q}.{$q}value{$q} * " .
+                                                      "{$q}currencyvalue{$q}.{$q}ratetobase{$q}) col0 ";
+            $this->assertEquals($compareContent, $content);
+
+            //Test currencyValue using spot conversion
+            DisplayAttributeForReportForm::resetCount();
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter,
+                                                     $selectQueryAdapter, Report::CURRENCY_CONVERSION_TYPE_SPOT);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType  = 'currencyValue__Average';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent                        = "select avg({$q}currencyvalue{$q}.{$q}value{$q} * " .
+                                                     "{$q}currencyvalue{$q}.{$q}ratetobase{$q}) col0 ";
+            $this->assertEquals($compareContent, $content);
+        }
+
 
         public function testLikeContactStateWhenRelated()
         {
@@ -85,7 +130,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'hasMany2___likeContactState';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -102,7 +147,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'phone';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -114,7 +159,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'integer';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -131,7 +176,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'primaryAddress___street1';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -148,7 +193,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'dropDown';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -165,7 +210,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -180,7 +225,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -197,7 +242,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'owner___lastName';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -212,7 +257,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'modifiedByUser___lastName';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -229,7 +274,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'hasOne___phone';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem2{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -241,7 +286,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'integer';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent = "select {$q}reportmodeltestitem2{$q}.{$q}id{$q}, {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent = "select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id, {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -259,7 +304,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'hasMany2___primaryAddress___street1';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -276,7 +321,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'hasOne___owner___lastName';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem2{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -291,7 +336,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___modifiedByUser___lastName';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $this->assertEquals("select {$q}reportmodeltestitem2{$q}.{$q}id{$q} ", $content);
+            $this->assertEquals("select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
             //Add third display attribute on the base model
@@ -308,7 +353,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'modifiedByUser___lastName';
             $content        = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent = "select {$q}reportmodeltestitem2{$q}.{$q}id{$q}, {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent = "select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id, {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -576,8 +621,8 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem2{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid, ";
+            $compareContent .= "{$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -598,8 +643,8 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem3{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid, ";
+            $compareContent .= "{$q}reportmodeltestitem3{$q}.{$q}id{$q} reportmodeltestitem3id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -620,8 +665,8 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'account___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}account{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}account1{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}account{$q}.{$q}id{$q} accountid, ";
+            $compareContent .= "{$q}account1{$q}.{$q}id{$q} account1id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -642,8 +687,8 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany1___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q} reportmodeltestitem3id, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
@@ -664,7 +709,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem2{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -685,7 +730,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q} reportmodeltestitem3id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -706,7 +751,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}account1{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}account1{$q}.{$q}id{$q} account1id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -727,7 +772,7 @@
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany1___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
@@ -751,8 +796,8 @@
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'hasOne___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem2{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid, ";
+            $compareContent .= "{$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -776,8 +821,8 @@
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'hasMany___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem3{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid, ";
+            $compareContent .= "{$q}reportmodeltestitem3{$q}.{$q}id{$q} reportmodeltestitem3id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -801,8 +846,8 @@
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent  = "select {$q}account{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}account1{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}account{$q}.{$q}id{$q} accountid, ";
+            $compareContent .= "{$q}account1{$q}.{$q}id{$q} account1id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -827,8 +872,8 @@
             $displayAttribute3->attributeIndexOrDerivedType = 'hasMany1___modifiedDateTime';
             $content                                        = $builder->makeQueryContent(array($displayAttribute,
                                                               $displayAttribute2, $displayAttribute3));
-            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem3{$q}.{$q}id{$q} reportmodeltestitem3id, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
@@ -849,8 +894,8 @@
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___dropDown';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -872,8 +917,8 @@
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany___dropDown';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem1{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid, ";
+            $compareContent .= "{$q}reportmodeltestitem1{$q}.{$q}id{$q} reportmodeltestitem1id ";
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
@@ -895,8 +940,8 @@
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne2___dropDownX';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem8{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid, ";
+            $compareContent .= "{$q}reportmodeltestitem8{$q}.{$q}id{$q} reportmodeltestitem8id ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals($compareContent, $content);
@@ -919,7 +964,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___dropDown2';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -939,7 +984,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'modifiedByUser__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
@@ -956,7 +1001,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'owner__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
@@ -976,8 +1021,8 @@
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___createdByUser__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -997,8 +1042,8 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q}, ";
-            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id, ";
+            $compareContent .= "{$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1018,7 +1063,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent  = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1035,7 +1080,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'contacts___opportunities___account___name';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                        = "select {$q}account1{$q}.{$q}id{$q} ";
+            $compareContent                        = "select {$q}account1{$q}.{$q}id{$q} account1id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1061,9 +1106,9 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType  = 'contacts___opportunities___account___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent                         = "select {$q}opportunity{$q}.{$q}id{$q}, " .
-                                                      "{$q}opportunity1{$q}.{$q}id{$q}, " .
-                                                      "{$q}account1{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}opportunity{$q}.{$q}id{$q} opportunityid, " .
+                                                      "{$q}opportunity1{$q}.{$q}id{$q} opportunity1id , " .
+                                                      "{$q}account1{$q}.{$q}id{$q} account1id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1080,7 +1125,7 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'meetings___category';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} meetingid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1098,7 +1143,7 @@
                                                                Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'meetings___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} meetingid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1118,7 +1163,7 @@
                                                                Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'meetings___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} meetingid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1135,7 +1180,7 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'model5ViaItem___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "select {$q}reportmodeltestitem5{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}reportmodeltestitem5{$q}.{$q}id{$q} reportmodeltestitem5id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1155,7 +1200,7 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'opportunities___meetings___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} meetingid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1172,7 +1217,7 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'meetings___latestDateTime';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} meetingid ";
             $this->assertEquals($compareContent, $content);
 
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
@@ -1214,7 +1259,7 @@
             $displayAttribute2->attributeIndexOrDerivedType  = 'opportunities___meetings___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
             $compareContent                         = "select max({$q}meeting{$q}.{$q}startdatetime{$q}) col0, " .
-                                                      "{$q}meeting{$q}.{$q}id{$q} ";
+                                                      "{$q}meeting{$q}.{$q}id{$q} meetingid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1255,7 +1300,7 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} accountid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1275,7 +1320,7 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___opportunities___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "select {$q}opportunity{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}opportunity{$q}.{$q}id{$q} opportunityid ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
@@ -1298,7 +1343,7 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'model5___ReportModelTestItem__reportItems__Inferred___dropDown';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
@@ -1319,7 +1364,7 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___createdDateTime';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} accountid ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
@@ -1339,7 +1384,7 @@
                                                       Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___owner__User';
             $content                                = $builder->makeQueryContent(array($displayAttribute));
-            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} accountid ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
@@ -1362,7 +1407,7 @@
                                                                Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} ";
+            $compareContent                         = "select {$q}account{$q}.{$q}id{$q} accountid ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
@@ -1387,7 +1432,7 @@
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
             $compareContent                         = "select avg({$q}account{$q}.{$q}employees{$q}) col0, " .
-                                                      "{$q}account{$q}.{$q}id{$q} ";
+                                                      "{$q}account{$q}.{$q}id{$q} accountid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
@@ -1408,7 +1453,7 @@
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___opportunities___closeDate';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
             $compareContent                         = "select avg({$q}currencyvalue{$q}.{$q}value{$q}) col0, " .
-                                                      "{$q}opportunity{$q}.{$q}id{$q} ";
+                                                      "{$q}opportunity{$q}.{$q}id{$q} opportunityid ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
@@ -1432,7 +1477,7 @@
             $displayAttribute2->attributeIndexOrDerivedType  = 'model5___ReportModelTestItem__reportItems__Inferred___dropDown';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
             $compareContent                         = "select avg({$q}reportmodeltestitem{$q}.{$q}integer{$q}) col0, " .
-                                                      "{$q}reportmodeltestitem{$q}.{$q}id{$q} ";
+                                                      "{$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
@@ -1477,7 +1522,7 @@
             $displayAttribute2->attributeIndexOrDerivedType  = 'Account__activityItems__Inferred___name';
             $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
             $compareContent                         = "select max({$q}item{$q}.{$q}createddatetime{$q}) col0, " .
-                                                      "{$q}account{$q}.{$q}id{$q} ";
+                                                      "{$q}account{$q}.{$q}id{$q} accountid ";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();

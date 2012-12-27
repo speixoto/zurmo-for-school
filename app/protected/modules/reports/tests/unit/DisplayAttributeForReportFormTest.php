@@ -129,8 +129,8 @@
             $this->assertEquals('TagCloud',                  $displayAttribute->getDisplayElementType());
             $displayAttribute->attributeIndexOrDerivedType = 'primaryEmail___emailAddress';
             $this->assertEquals('Email',                     $displayAttribute->getDisplayElementType());
-            $displayAttribute->attributeIndexOrDerivedType = 'FullNameForReportResults';
-            $this->assertEquals('FullNameForReportResults',  $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'FullName';
+            $this->assertEquals('FullName',                  $displayAttribute->getDisplayElementType());
             $displayAttribute->attributeIndexOrDerivedType = 'likeContactState';
             $this->assertEquals('ContactState',              $displayAttribute->getDisplayElementType());
             $displayAttribute->attributeIndexOrDerivedType = 'calculated';

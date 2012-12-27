@@ -24,27 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class FullNameForReportResultsListViewColumnAdapter extends ListViewColumnAdapter
+    class CurrencyValueForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
         public function renderGridViewData()
         {
-            if ($this->getIsLink())
+            if($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
             {
-                return array(
-                    'name' => 'lastName',
-                    'header' => Yii::t('Default', 'Name'),
-                    'type' => 'raw',
-                    'value' => $this->view->getLinkString('$data->getModel("' . $this->attribute . '")', $this->attribute),
-                );
+                $value  = 'Yii::app()->numberFormatter->formatCurrency($data->' . $this->attribute;
+                $value .= '->value, $data->' . $this->attribute . '->currency->code)';
+            }
+            elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
+            {
+                $value  = 'Yii::app()->numberFormatter->formatCurrency($data->' . $this->attribute;
+                $value .= '->value * $data->' . $this->attribute . '->rateToBase, "' .
+                          Yii::app()->currencyHelper->getBaseCode() . '")';
+            }
+            elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
+            {
+                //Assumes base conversion is done using sql math
+                $value  = 'Yii::app()->numberFormatter->formatCurrency($data->' . $this->attribute;
+                $value .= '->value * $data->' . $this->attribute . '->rateToBase * ' . $this->getFromBaseToSpotRate() .
+                          ', "' . $this->getSpotConversionCurrencyCode() . '")';
             }
             else
             {
-                return array(
-                    'name' => 'lastName',
-                    'header' => Yii::t('Default', 'Name'),
-                    'value'  => 'strval($data->getModel("' . $this->attribute . '"))',
-                );
+                throw new NotSupportedException();
             }
+            return array(
+                'name'  => $this->attribute,
+                'value' => $value,
+                'type'  => 'raw',
+            );
         }
     }
 ?>

@@ -27,7 +27,7 @@
     /**
      *
     */
-    class ChartTypeRadioStaticDropDownForReportElement extends StaticDropDownElement
+    class ChartTypeRadioStaticDropDownForReportElement extends DataFromFormStaticDropDownFormElement
     {
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
@@ -61,18 +61,14 @@
             return array_merge($data, $this->getDropDownArray());
         }
 
-        public function getIdForSelectInput()
+        protected function getDataAndLabelsModelPropertyName()
         {
-            return $this->getEditableInputId($this->attribute);
+            return 'getTypeDataAndLabels';
         }
 
-        protected function getNameForSelectInput()
+        public function getDropDownArrayX()
         {
-            return $this->getEditableInputName($this->attribute);
-        }
 
-        public function getDropDownArray()
-        {
             return $this->model->getTypeDataAndLabels();
         }
 

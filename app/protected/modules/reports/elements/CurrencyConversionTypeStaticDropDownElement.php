@@ -25,34 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Report rules to be used with the ReportModelTestItems.  Rules are module based and should store the rules
-     * for all the module's models.
+     * Class used by reporting to show group by axis.  Can choose either X or Y
      */
-    class ReportsTestReportRules extends SecuredReportRules
+    class CurrencyConversionTypeStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
-        public static function getDefaultMetadata()
+        protected function getDataAndLabelsModelPropertyName()
         {
-            $metadata = array(
-                'ReportModelTestItem' => array(
-                    'relationsReportedAsAttributes' =>
-                        array('reportedAsAttribute',
-                              'likeContactState'),
-                    'relationsReportedAsAttributesSortAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
-                    'relationsReportedAsAttributesGroupByAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
-                    'nonReportable' =>
-                        array('nonReportable',
-                              'nonReportable2'),
-                    'derivedAttributeTypes' =>
-                        array('FullName'),
-                    'availableOperatorsTypes' =>
-                        array('likeContactState' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'filterValueElementTypes' =>
-                        array('likeContactState' => 'ContactStateStaticDropDownForReport'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            return 'getCurrencyConversionTypeDataAndLabels';
         }
     }
 ?>

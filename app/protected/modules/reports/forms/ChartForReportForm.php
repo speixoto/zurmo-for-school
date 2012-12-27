@@ -81,41 +81,41 @@
 
         public function validateSeriesAndRange()
         {
-            $passedVaidation = true;
+            $passedValidation = true;
             if($this->type != null)
             {
                 if($this->firstSeries == null)
                 {
                     $this->addError('firstSeries', Yii::t('Default', 'First Series cannot be blank.'));
-                    $passedVaidation = false;
+                    $passedValidation = false;
                 }
                 if($this->firstRange == null)
                 {
                     $this->addError('firstRange', Yii::t('Default', 'First Range cannot be blank.'));
-                    $passedVaidation = false;
+                    $passedValidation = false;
                 }
                 if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondSeries == null)
                 {
                     $this->addError('secondSeries', Yii::t('Default', 'Second Series cannot be blank.'));
-                    $passedVaidation = false;
+                    $passedValidation = false;
                 }
                 if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondRange == null)
                 {
                     $this->addError('secondRange', Yii::t('Default', 'Second Range cannot be blank.'));
-                    $passedVaidation = false;
+                    $passedValidation = false;
                 }
                 if($this->firstSeries != null && $this->secondSeries != null && $this->firstSeries == $this->secondSeries)
                 {
                     $this->addError('secondSeries', Yii::t('Default', 'Second Series must be unique.'));
-                    $passedVaidation = false;
+                    $passedValidation = false;
                 }
                 if($this->firstRange != null && $this->secondRange != null && $this->firstRange == $this->secondRange)
                 {
                     $this->addError('secondRange', Yii::t('Default', 'Second Range must be unique.'));
-                    $passedVaidation = false;
+                    $passedValidation = false;
                 }
             }
-            return $passedVaidation;
+            return $passedValidation;
         }
 
         public function getTypeDataAndLabels()

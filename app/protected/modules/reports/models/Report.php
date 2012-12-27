@@ -26,11 +26,17 @@
 
     class Report
     {
-        const TYPE_ROWS_AND_COLUMNS = 'RowsAndColumns';
+        const TYPE_ROWS_AND_COLUMNS           = 'RowsAndColumns';
 
-        const TYPE_SUMMATION        = 'Summation';
+        const TYPE_SUMMATION                  = 'Summation';
 
-        const TYPE_MATRIX           = 'Matrix';
+        const TYPE_MATRIX                     = 'Matrix';
+
+        const CURRENCY_CONVERSION_TYPE_ACTUAL = 1;
+
+        const CURRENCY_CONVERSION_TYPE_BASE   = 2;
+
+        const CURRENCY_CONVERSION_TYPE_SPOT   = 3;
 
         private $description;
 
@@ -63,6 +69,10 @@
         private $groupBys                   = array();
 
         private $chart;
+
+        private $currencyConversionType;
+
+        private $spotConversionCurrencyCode;
 
         public static function getTypeDropDownArray()
         {
@@ -168,6 +178,28 @@
         {
             assert('is_string($type)');
             $this->type = $type;
+        }
+
+        public function getCurrencyConversionType()
+        {
+            return $this->currencyConversionType;
+        }
+
+        public function setCurrencyConversionType($currencyConversionType)
+        {
+            assert('is_int($currencyConversionType)');
+            $this->currencyConversionType = $currencyConversionType;
+        }
+
+        public function getSpotConversionCurrencyCode()
+        {
+            return $this->spotConversionCurrencyCode;
+        }
+
+        public function setSpotConversionCurrencyCode($spotConversionCurrencyCode)
+        {
+            assert('is_string($spotConversionCurrencyCode)');
+            $this->spotConversionCurrencyCode = $spotConversionCurrencyCode;
         }
 
         public function isNew()

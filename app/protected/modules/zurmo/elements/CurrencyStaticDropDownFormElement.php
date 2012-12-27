@@ -25,34 +25,24 @@
      ********************************************************************************/
 
     /**
-     * Report rules to be used with the ReportModelTestItems.  Rules are module based and should store the rules
-     * for all the module's models.
+     * Displays the list of currencies from the currency model for use with a form model where the model->attribute
+     * is not a currency model and only active currencies can be selected.
+     * @see CurrencyDropDownFormElement for alternative useage
      */
-    class ReportsTestReportRules extends SecuredReportRules
+    class CurrencyStaticDropDownFormElement extends StaticDropDownFormElement
     {
-        public static function getDefaultMetadata()
+        public function getIdForSelectInput()
         {
-            $metadata = array(
-                'ReportModelTestItem' => array(
-                    'relationsReportedAsAttributes' =>
-                        array('reportedAsAttribute',
-                              'likeContactState'),
-                    'relationsReportedAsAttributesSortAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
-                    'relationsReportedAsAttributesGroupByAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
-                    'nonReportable' =>
-                        array('nonReportable',
-                              'nonReportable2'),
-                    'derivedAttributeTypes' =>
-                        array('FullName'),
-                    'availableOperatorsTypes' =>
-                        array('likeContactState' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'filterValueElementTypes' =>
-                        array('likeContactState' => 'ContactStateStaticDropDownForReport'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            return $this->getEditableInputId($this->attribute);
+        }
+
+        /**
+         * (non-PHPdoc)
+         * @see DropDownElement::getDropDownArray()
+         */
+        protected function getDropDownArray()
+        {
+           return Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(null);
         }
     }
 ?>

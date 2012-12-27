@@ -28,21 +28,11 @@
     /**
      * Class used by reporting to show available ordering either ascending or descending
      */
-    class OrderByStaticDropDownElement extends StaticDropDownElement
+    class OrderByStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
-        protected function getDropDownArray()
+        protected function getDataAndLabelsModelPropertyName()
         {
-            return $this->model->getOrderValuesAndLabels();
-        }
-
-        public function getIdForSelectInput()
-        {
-            return $this->getEditableInputId($this->attribute);
-        }
-
-        protected function getNameForSelectInput()
-        {
-            return $this->getEditableInputName($this->attribute);
+            return 'getOrderValuesAndLabels';
         }
     }
 ?>

@@ -120,6 +120,7 @@
                 'template'             => static::getGridTemplate(),
                 'summaryText'          => static::getSummaryText(),
                 'summaryCssClass'      => static::getSummaryCssClass(),
+                'enableSorting'        => false,
             );
         }
 
@@ -189,7 +190,7 @@
             $columns = array();
             foreach ($this->dataProvider->getReport()->getDisplayAttributes() as $key => $displayAttribute)
             {
-                $columnClassName  = $displayAttribute->getDisplayElementType() . 'ListViewColumnAdapter';
+                $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
                 $attributeName    = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 $params           = $this->resolveParamsForColumnElement($displayAttribute);
                 $columnAdapter    = new $columnClassName($attributeName, $this, $params);
@@ -204,13 +205,30 @@
             return $columns;
         }
 
+        protected function resolveColumnClassNameForListViewColumnAdapter($displayAttribute)
+        {
+            $displayElementType = $displayAttribute->getDisplayElementType();
+            if(@class_exists($displayElementType . 'ForReportListViewColumnAdapter'))
+            {
+                return $displayElementType . 'ForReportListViewColumnAdapter';
+            }
+            else
+            {
+                return $displayElementType . 'ListViewColumnAdapter';
+            }
+        }
+
         protected function resolveParamsForColumnElement($displayAttribute)
         {
             $params  = array();
-            if($displayAttribute->getResolvedAttribute() == 'name' ||
-               $displayAttribute->getResolvedAttribute() == 'FullNameForReportResults')
+            if($displayAttribute->isALinkableAttribute() == 'name')
             {
                 $params['isLink'] = true;
+            }
+            elseif($displayAttribute->isATypeOfCurrencyValue())
+            {
+                $params['currencyValueConversionType'] = $this->dataProvider->getReport()->getCurrencyConversionType();
+                $params['spotConversionCurrencyCode']  = $this->dataProvider->getReport()->getSpotConversionCurrencyCode();
             }
             return $params;
         }

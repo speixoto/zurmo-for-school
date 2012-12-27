@@ -144,10 +144,12 @@
         }
 
         public function resolveDisplayAttributeTypeAndAddSelectClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter,
-                                                                      $attribute, $tableName, $columnName, $columnAliasName)
+                                                                      $attribute, $tableName, $columnName,
+                                                                      $columnAliasName, $queryStringExtraPart = null)
         {
             assert('is_string($attribute)');
             assert('is_string($columnAliasName)');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
             $type = $this->getDisplayAttributeForMakingViaSelectType($attribute);
             if($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
             {
@@ -155,19 +157,19 @@
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_SUMMMATION)
             {
-                $selectQueryAdapter->addSummationClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addSummationClause($tableName, $columnName, $columnAliasName, $queryStringExtraPart);
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_AVERAGE)
             {
-                $selectQueryAdapter->addAverageClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addAverageClause($tableName, $columnName, $columnAliasName, $queryStringExtraPart);
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MINIMUM)
             {
-                $selectQueryAdapter->addMinimumClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addMinimumClause($tableName, $columnName, $columnAliasName, $queryStringExtraPart);
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MAXIMUM)
             {
-                $selectQueryAdapter->addMaximumClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addMaximumClause($tableName, $columnName, $columnAliasName, $queryStringExtraPart);
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
             {
@@ -394,7 +396,7 @@
             foreach ($this->getAttributesNotIncludingDerivedAttributesData() as $attribute => $data)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
-                if(!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea')))
+                if(!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea', 'Date', 'DateTime')))
                 {
                     $attributes[$attribute] = $data;
                 }

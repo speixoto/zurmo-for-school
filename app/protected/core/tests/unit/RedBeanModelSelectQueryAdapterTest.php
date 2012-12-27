@@ -117,6 +117,14 @@
             $this->assertEquals(1, $adapter->getClausesCount());
             $compareString = "select distinct sum({$quote}table{$quote}.{$quote}def{$quote}) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
+
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addSummationClause('table', 'abc', 'c', ' extra stuff');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select sum({$quote}table{$quote}.{$quote}abc{$quote} extra stuff) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
         }
 
         public function testAddAverageClause()
@@ -127,6 +135,14 @@
             $adapter->addAverageClause('table', 'abc', 'c');
             $this->assertEquals(1, $adapter->getClausesCount());
             $compareString = "select avg({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addAverageClause('table', 'abc', 'c', ' extra stuff');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select avg({$quote}table{$quote}.{$quote}abc{$quote} extra stuff) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
@@ -139,6 +155,14 @@
             $this->assertEquals(1, $adapter->getClausesCount());
             $compareString = "select min({$quote}table{$quote}.{$quote}abc{$quote}) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
+
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addMinimumClause('table', 'abc', 'c', ' extra stuff');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select min({$quote}table{$quote}.{$quote}abc{$quote} extra stuff) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
         }
 
         public function testAddMaximumClause()
@@ -149,6 +173,14 @@
             $adapter->addMaximumClause('table', 'abc', 'c');
             $this->assertEquals(1, $adapter->getClausesCount());
             $compareString = "select max({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addMaximumClause('table', 'abc', 'c', ' extra stuff');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select max({$quote}table{$quote}.{$quote}abc{$quote} extra stuff) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 

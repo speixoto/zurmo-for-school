@@ -24,10 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Display the fullName of a person specifically for report results
-     */
-    class FullNameForReportResultsElement extends FullNameElement
+    class FullNameForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
+        public function renderGridViewData()
+        {
+            if ($this->getIsLink())
+            {
+                return array(
+                    'name' => 'lastName',
+                    'header' => Yii::t('Default', 'Name'),
+                    'type' => 'raw',
+                    'value' => $this->view->getLinkString('$data->getModel("' . $this->attribute . '")', $this->attribute),
+                );
+            }
+            else
+            {
+                return array(
+                    'name' => 'lastName',
+                    'header' => Yii::t('Default', 'Name'),
+                    'value'  => 'strval($data->getModel("' . $this->attribute . '"))',
+                );
+            }
+        }
     }
 ?>

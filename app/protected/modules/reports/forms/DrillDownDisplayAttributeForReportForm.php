@@ -26,5 +26,6 @@
 
     class DrillDownDisplayAttributeForReportForm extends DisplayAttributeForReportForm
     {
+        protected static $count = 0;
     }
 ?>

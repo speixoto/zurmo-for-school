@@ -28,7 +28,7 @@
     {
         public function testValidation()
         {
-            $this->fail(); //todo: test various validation scenarios
+            $this->fail(); //todo: test various validation scenarios, including required on/off for spot currency
         }
     }
 ?>

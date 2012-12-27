@@ -77,6 +77,10 @@
 
         public $chart;
 
+        public $currencyConversionType;
+
+        public $spotConversionCurrencyCode;
+
         protected $isNew = false;
 
         /**
@@ -133,15 +137,21 @@
                 array('orderBys', 		     'validateOrderBys',   'on' => self::ORDER_BYS_VALIDATION_SCENARIO),
                 array('groupBys', 		     'validateGroupBys',   'on' => self::GROUP_BYS_VALIDATION_SCENARIO),
                 array('chart', 		         'validateChart',      'on' => self::CHART_VALIDATION_SCENARIO),
+                array('currencyConversionType',      'type',       'type' => 'integer'),
+                array('currencyConversionType',      'required',   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('spotConversionCurrencyCode',  'type',       'type' => 'string'),
+                array('spotConversionCurrencyCode',  'validateSpotConversionCurrencyCode', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'name'           => Yii::t('Default', 'Name'),
-                'ownerId'        => Yii::t('Default', 'Owner Id'),
-                'ownerName'      => Yii::t('Default', 'Owner Name'),
+                'name'                       => Yii::t('Default', 'Name'),
+                'ownerId'                    => Yii::t('Default', 'Owner Id'),
+                'ownerName'                  => Yii::t('Default', 'Owner Name'),
+                'currencyConversionType'     => Yii::t('Default', 'Currency Conversion'),
+                'spotConversionCurrencyCode' => Yii::t('Default', 'Spot Currency'),
             );
         }
 
@@ -236,6 +246,18 @@
             return $passedValidation;
         }
 
+        public function validateSpotConversionCurrencyCode()
+        {
+            $passedValidation = true;
+            if($this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_SPOT &&
+               $this->spotConversionCurrencyCode == null)
+            {
+                $this->addError('spotConversionCurrencyCode', Yii::t('Default', 'Spot Currency cannot be blank.'));
+                $passedValidation = false;
+            }
+            return $passedValidation;
+        }
+
         protected function validateComponent($componentType, $componentName)
         {
             assert('is_string($componentType)');
@@ -263,6 +285,32 @@
             assert('is_string($treeType)');
             assert('is_int($count)');
             return $treeType . '_' . $count . '_';
+        }
+
+        public function getTypeDataAndLabels()
+        {
+            $data  = array();
+            $types = ChartRules::availableTypes();
+            foreach($types as $type)
+            {
+                $data[$type] = ChartRules::getTranslatedTypeLabel($type);
+            }
+            return $data;
+        }
+
+        public function getCurrencyConversionTypeDataAndLabels()
+        {
+            $baseCurrencyCode = Yii::app()->currencyHelper->getBaseCode();
+            return array(
+                Report::CURRENCY_CONVERSION_TYPE_ACTUAL =>
+                    Yii::t('Default', 'Convert to base currency ({baseCurrencyCode})',
+                                      array('{baseCurrencyCode}' => $baseCurrencyCode)),
+                Report::CURRENCY_CONVERSION_TYPE_BASE   =>
+                    Yii::t('Default', 'Do not convert (Can produce mixed results)'),
+                Report::CURRENCY_CONVERSION_TYPE_SPOT   =>
+                    Yii::t('Default', 'Convert to base currency ({baseCurrencyCode}) and then to a spot currency',
+                                      array('{baseCurrencyCode}' => $baseCurrencyCode))
+            );
         }
     }
 ?>

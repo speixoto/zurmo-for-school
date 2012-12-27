@@ -1,7 +1,7 @@
 <?php
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
- * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
+ * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
  *
  * Zurmo is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License version 3 as published by the
@@ -24,16 +24,23 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-class CalculatedCurrencyValueListViewColumnAdapter extends ListViewColumnAdapter
-{
-    public function renderGridViewData()
+    /**
+     * Base class for working with DropDowns where the data comes from the model already as data and labels. Also
+     * the id and name are both specific attributes on the model itself and not a related model.
+     */
+    abstract class DataFromFormStaticDropDownFormElement extends StaticDropDownFormElement
     {
-        return array(
-            'name'   => $this->attribute,
-            'header' => Yii::t('Default', 'Module'),
-            'type'   => 'raw',
-            'value'  => '"todo something"',
-        );
+        abstract protected function getDataAndLabelsModelPropertyName();
+
+        public function getIdForSelectInput()
+        {
+            return $this->getEditableInputId($this->attribute);
+        }
+
+        public function getDropDownArray()
+        {
+            $dataAndLabelsModelPropertyName = $this->getDataAndLabelsModelPropertyName();
+            return $this->model->{$dataAndLabelsModelPropertyName}();
+        }
     }
-}
 ?>

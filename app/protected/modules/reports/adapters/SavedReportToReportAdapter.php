@@ -47,6 +47,14 @@
                 {
                     $report->setFiltersStructure($unserializedData['filtersStructure']);
                 }
+                if(isset($unserializedData['currencyConversionType']))
+                {
+                    $report->setCurrencyConversionType($unserializedData['currencyConversionType']);
+                }
+                if(isset($unserializedData['spotConversionCurrencyCode']))
+                {
+                    $report->setSpotConversionCurrencyCode($unserializedData['spotConversionCurrencyCode']);
+                }
                 self::makeComponentFormAndPopulateReportFromData(
                         $unserializedData[ComponentForReportForm::TYPE_FILTERS],   $report, 'Filter');
                 self::makeComponentFormAndPopulateReportFromData(
@@ -87,7 +95,9 @@
             $savedReport->type            = $report->getType();
 
             $data = array();
-            $data['filtersStructure'] = $report->getFiltersStructure();
+            $data['filtersStructure']           = $report->getFiltersStructure();
+            $data['currencyConversionType']     = $report->getCurrencyConversionType();
+            $data['spotConversionCurrencyCode'] = $report->getSpotConversionCurrencyCode();
             $data[ComponentForReportForm::TYPE_FILTERS]                      =
                 self::makeArrayFromComponentFormsAttributesData($report->getFilters());
             $data[ComponentForReportForm::TYPE_ORDER_BYS]                    =

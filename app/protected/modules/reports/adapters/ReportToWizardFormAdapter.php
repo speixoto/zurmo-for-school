@@ -108,6 +108,10 @@
             $formModel->name             = $this->report->getName();
             $formModel->type             = $this->report->getType();
             $formModel->filtersStructure = $this->report->getFiltersStructure();
+
+            $formModel->currencyConversionType     = $this->report->getCurrencyConversionType();
+            $formModel->spotConversionCurrencyCode = $this->report->getSpotConversionCurrencyCode();
+
             if($this->report->isNew())
             {
                 $formModel->setIsNew();

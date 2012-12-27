@@ -30,7 +30,7 @@
         /**
          * @var integer the counter for generating automatic column alias names
          */
-        public static $count = 0;
+        protected static $count = 0;
 
         public $label;
 
@@ -47,7 +47,7 @@
         public function __construct($moduleClassName, $modelClassName, $reportType)
         {
             parent::__construct($moduleClassName, $modelClassName, $reportType);
-            $this->columnAliasName = self::COLUMN_ALIAS_PREFIX . self::$count++;
+            $this->columnAliasName = self::COLUMN_ALIAS_PREFIX . static::$count++;
         }
         /**
          * Makes sure the attributeIndexOrDerivedType always populates first before label otherwise any
@@ -124,6 +124,27 @@
                 return $this->columnAliasName;
             }
             return ReportResultsRowData::resolveAttributeNameByKey($key);
+        }
+
+        public function isALinkableAttribute()
+        {
+            $resolvedAttribute = $this->getResolvedAttribute();
+            if($resolvedAttribute == 'name' || $resolvedAttribute == 'FullName')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function isATypeOfCurrencyValue()
+        {
+            $displayElementType = $this->getDisplayElementType();
+            if($displayElementType == 'CalculatedCurrencyValue' ||
+                $displayElementType == 'CurrencyValue')
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

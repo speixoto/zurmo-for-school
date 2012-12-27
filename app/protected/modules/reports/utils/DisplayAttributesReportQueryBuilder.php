@@ -31,11 +31,16 @@
     {
         protected $selectQueryAdapter;
 
+        protected $currencyConversionType;
+
         public function __construct(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                    RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+                                    RedBeanModelSelectQueryAdapter $selectQueryAdapter,
+                                    $currencyConversionType = null)
         {
+            assert('is_int($currencyConversionType) || $currencyConversionType == null');
             parent::__construct($joinTablesAdapter);
-            $this->selectQueryAdapter = $selectQueryAdapter;
+            $this->selectQueryAdapter     = $selectQueryAdapter;
+            $this->currencyConversionType = $currencyConversionType;
         }
 
         public function makeQueryContent(Array $components)
@@ -121,12 +126,14 @@
                                   $componentForm->getResolvedAttribute(),
                                   $tableAliasName,
                                   $this->resolveColumnName($modelAttributeToDataProviderAdapter),
-                                  $componentForm->columnAliasName);
+                                  $componentForm->columnAliasName,
+                                  $this->getSelectClauseQueryStringExtraPart($componentForm, $tableAliasName));
+                //todo: actually make getSelectClauseQueryStringExtraPart here in this class. then in constructor need to pass the conversion info param in.
+                //todo: then we can do it all here and scrap that method in displayAttribute.
             }
             else
             {
                 $tableAliasName = $this->resolvedTableAliasName($modelAttributeToDataProviderAdapter, $builder);
-                echo 'gengis' . $tableAliasName . "<BR>";
                 $this->selectQueryAdapter->resolveIdClause(
                     $this->resolvedModelClassName($modelAttributeToDataProviderAdapter),
                     $tableAliasName);
@@ -277,6 +284,20 @@
                         $componentForm->getResolvedAttributeModuleClassName(),
                         $componentForm->getResolvedAttributeModelClassName(),
                         $componentForm->getReportType());
+        }
+
+        protected function getSelectClauseQueryStringExtraPart(DisplayAttributeForReportForm $componentForm, $tableAliasName)
+        {
+            assert('is_string($tableAliasName)');
+            if($componentForm->isATypeOfCurrencyValue() &&
+               ($this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_BASE ||
+                $this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_SPOT))
+            {
+                $quote = DatabaseCompatibilityUtil::getQuote();
+                $currencyValue = new CurrencyValue();
+                return " * {$quote}{$tableAliasName}{$quote}." .
+                    "{$quote}" . $currencyValue->getColumnNameByAttribute('rateToBase') . "{$quote}";
+            }
         }
     }
 ?>

@@ -138,6 +138,7 @@
             elseif($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
                 return $modelToReportAdapter->getAttributesForOrderBys($this->report->getGroupBys(),
+                                                                       $this->report->getDisplayAttributes(),
                                                                        $precedingModel, $precedingRelation);
             }
             elseif($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)

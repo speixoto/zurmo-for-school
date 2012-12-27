@@ -27,21 +27,11 @@
     /**
      * Class used by reporting to show group by axis.  Can choose either X or Y
      */
-    class GroupByAxisStaticDropDownElement extends StaticDropDownElement
+    class GroupByAxisStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
-        protected function getDropDownArray()
+        protected function getDataAndLabelsModelPropertyName()
         {
-            return $this->model->getAxisValuesAndLabels();
-        }
-
-        public function getIdForSelectInput()
-        {
-            return $this->getEditableInputId($this->attribute);
-        }
-
-        protected function getNameForSelectInput()
-        {
-            return $this->getEditableInputName($this->attribute);
+            return 'getAxisValuesAndLabels';
         }
     }
 ?>

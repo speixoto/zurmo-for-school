@@ -168,46 +168,50 @@
             $this->increaseClausesCountByOne();
         }
 
-        public function addSummationClause($tableName, $columnName, $aliasName = null)
+        public function addSummationClause($tableName, $columnName, $aliasName = null, $queryStringExtraPart = null)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
             $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}" . $queryStringExtraPart;
             $this->clauses[] = self::resolveForAliasName("sum({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }
 
-        public function addAverageClause($tableName, $columnName, $aliasName = null)
+        public function addAverageClause($tableName, $columnName, $aliasName = null, $queryStringExtraPart = null)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
             $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}". $queryStringExtraPart;
             $this->clauses[] = self::resolveForAliasName("avg({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }
 
-        public function addMinimumClause($tableName, $columnName, $aliasName = null)
+        public function addMinimumClause($tableName, $columnName, $aliasName = null, $queryStringExtraPart = null)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
             $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}". $queryStringExtraPart;
             $this->clauses[] = self::resolveForAliasName("min({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }
 
-        public function addMaximumClause($tableName, $columnName, $aliasName = null)
+        public function addMaximumClause($tableName, $columnName, $aliasName = null, $queryStringExtraPart = null)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
             $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}". $queryStringExtraPart;
             $this->clauses[] = self::resolveForAliasName("max({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }

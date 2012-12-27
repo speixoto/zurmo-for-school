@@ -26,7 +26,7 @@
 
     class ModelRelationsAndAttributesToSummationReportAdapter extends ModelRelationsAndAttributesToSummableReportAdapter
     {
-        public function getAttributesForOrderBys($existingGroupBys = array(),
+        public function getAttributesForOrderBys($existingGroupBys = array(), $existingDisplayAttributes = array(),
                                                  RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             assert('is_array($existingGroupBys)');
@@ -35,7 +35,7 @@
             {
                 throw new NotSupportedException();
             }
-            if(empty($existingGroupBys))
+            if(empty($existingGroupBys) && empty($existingDisplayAttributes))
             {
                 return array();
             }
@@ -68,7 +68,25 @@
                 if($addAttribute)
                 {
                     $resolvedAttribute = $groupBy->getResolvedAttribute();
-                    $attributes[$resolvedAttribute] = array('label' => $this->model->getAttributeLabel($resolvedAttribute));
+                    $attributes[$groupBy->attributeIndexOrDerivedType] =
+                        array('label' => $this->model->getAttributeLabel($resolvedAttribute));
+                }
+            }
+            foreach($existingDisplayAttributes as $displayAttribute)
+            {
+                $resolvedAttribute    = $displayAttribute->getResolvedAttribute();
+                if($this->isDisplayAttributeACalculationOrModifier($resolvedAttribute))
+                {
+                    //We don't have to check penultimate information like GroupBys, because all display calculations are
+                    //valid
+                    //if the displayAttribute is part of a related data chain, ignore,
+                    //since must be at the wrong spot in the chain.
+                    if(!$displayAttribute->hasRelatedData() &&
+                        $displayAttribute->getResolvedAttributeModelClassName() == get_class($this->model))
+                    {
+                        $attributes[$resolvedAttribute] = array('label' =>
+                            $this->model->getAttributeLabel($resolvedAttribute));
+                    }
                 }
             }
             return $attributes;

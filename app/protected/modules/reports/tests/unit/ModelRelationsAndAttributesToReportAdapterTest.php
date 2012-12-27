@@ -249,9 +249,9 @@
             $compareData        = array('label' => 'A name for a state');
             $this->assertEquals($compareData, $attributes['likeContactState']);
             //Includes derived attributes as well
-            $compareData        = array('label' => 'Test Calculated');
+            $compareData        = array('label' => 'Test Calculated', 'derivedAttributeType' => 'CalculatedNumber');
             $this->assertEquals($compareData, $attributes['calculated']);
-            $compareData        = array('label' => 'Full Name');
+            $compareData        = array('label' => 'Full Name',       'derivedAttributeType' => 'FullName');
             $this->assertEquals($compareData, $attributes['FullName']);
             //Add Dynamically Derived Attributes
             $compareData        = array('label' => 'Owner');
@@ -535,9 +535,9 @@
             $this->assertEquals(26, count($attributes));
 
             //Includes derived attributes as well
-            $compareData        = array('label' => 'Test Calculated');
+            $compareData        = array('label' => 'Test Calculated', 'derivedAttributeType' => 'CalculatedNumber');
             $this->assertEquals($compareData, $attributes['calculated']);
-            $compareData        = array('label' => 'Full Name');
+            $compareData        = array('label' => 'Full Name',       'derivedAttributeType' => 'FullName');
             $this->assertEquals($compareData, $attributes['FullName']);
         }
 
@@ -879,10 +879,10 @@
             $model              = new ReportModelTestItem2();
             $report->addGroupBy($groupBy);
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
-            $attributes = $adapter->getAttributesForOrderBys($report->getGroupBys(), new ReportModelTestItem(), 'hasOne');
+            $attributes = $adapter->getAttributesForOrderBys($report->getGroupBys(), array(), new ReportModelTestItem(), 'hasOne');
             $this->assertEquals(1, count($attributes));
             $compareData        = array('label' => 'Phone');
-            $this->assertEquals($compareData, $attributes['phone']);
+            $this->assertEquals($compareData, $attributes['hasOne___phone']);
 
             //Now test a third group by on the base model ReportModelTestItem
             $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
@@ -900,6 +900,54 @@
 
         /**
          * @depends testGetAvailableAttributesForSummationOrderBys
+         */
+        public function testGetAvailableAttributesForSummationOrderBysThatAreDisplayCalculations()
+        {
+            //You can only order what is grouped on or a display calculation attribute
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules();
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes());
+            $this->assertEquals(0, count($attributes));
+
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_SUMMATION);
+            $this->assertNull($displayAttribute->label);
+            $displayAttribute->attributeIndexOrDerivedType = 'createdDateTime__Minimum';
+            $report->addDisplayAttribute($displayAttribute);
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes());
+            $this->assertEquals(1, count($attributes));
+            $this->assertTrue(isset($attributes['createdDateTime__Minimum']));
+
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_SUMMATION);
+            $this->assertNull($displayAttribute->label);
+            $displayAttribute->attributeIndexOrDerivedType = 'integer__Minimum';
+            $report->addDisplayAttribute($displayAttribute);
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes());
+            $this->assertEquals(2, count($attributes));
+            $this->assertTrue(isset($attributes['integer__Minimum']));
+
+            //This should not add because we are at the wrong point in the chain
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_SUMMATION);
+            $this->assertNull($displayAttribute->label);
+            $displayAttribute->attributeIndexOrDerivedType = 'hasOne___createdDateTime__Minimum';
+            $report->addDisplayAttribute($displayAttribute);
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes());
+            $this->assertEquals(2, count($attributes));
+            $this->assertFalse(isset($attributes['hasOne___createdDateTime__Minimum']));
+        }
+
+
+        /**
+         * @depends testGetAvailableAttributesForSummationOrderBysThatAreDisplayCalculations
          */
         public function testGetAvailableAttributesForSummationGroupBys()
         {
@@ -1014,9 +1062,9 @@
             $this->assertEquals(26, count($attributes));
 
             //Includes derived attributes as well
-            $compareData        = array('label' => 'Test Calculated');
+            $compareData        = array('label' => 'Test Calculated', 'derivedAttributeType' => 'CalculatedNumber');
             $this->assertEquals($compareData, $attributes['calculated']);
-            $compareData        = array('label' => 'Full Name');
+            $compareData        = array('label' => 'Full Name',       'derivedAttributeType' => 'FullName');
             $this->assertEquals($compareData, $attributes['FullName']);
         }
 

@@ -55,6 +55,14 @@
             {
                 $report->setOwner(new User());
             }
+            if(isset($data['currencyConversionType']))
+            {
+                $report->setCurrencyConversionType($data['currencyConversionType']);
+            }
+            if(isset($data['spotConversionCurrencyCode']))
+            {
+                $report->setSpotConversionCurrencyCode($data['spotConversionCurrencyCode']);
+            }
             self::resolveFilters                    ($data, $report);
             self::resolveOrderBys                   ($data, $report);
             self::resolveDisplayAttributes          ($data, $report);

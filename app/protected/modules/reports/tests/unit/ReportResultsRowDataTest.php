@@ -47,7 +47,7 @@
             $displayAttributeX    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_SUMMATION);
             $displayAttributeX->setModelAliasUsingTableAliasName('abc');
-            $displayAttributeX->attributeIndexOrDerivedType = 'FullNameForReportResults';
+            $displayAttributeX->attributeIndexOrDerivedType = 'FullName';
 
             $reportModelTestItemY = new ReportModelTestItem();
             $reportModelTestItemY->firstName = 'yFirst';
@@ -55,7 +55,7 @@
             $displayAttributeY    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_SUMMATION);
             $displayAttributeY->setModelAliasUsingTableAliasName('def');
-            $displayAttributeY->attributeIndexOrDerivedType = 'FullNameForReportResults';
+            $displayAttributeY->attributeIndexOrDerivedType = 'FullName';
 
             $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX, $displayAttributeY));
             $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');

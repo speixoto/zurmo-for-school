@@ -26,7 +26,7 @@
 
     /**
     */
-    class StaticDropDownForReportElement extends StaticDropDownElement
+    class StaticDropDownForReportElement extends DataFromFormStaticDropDownFormElement
     {
         protected function renderControlEditable()
         {
@@ -39,19 +39,9 @@
             parent::__construct($model, $attribute, $form, $params);
         }
 
-        public function getIdForSelectInput()
+        protected function getDataAndLabelsModelPropertyName()
         {
-            return $this->getEditableInputId($this->attribute);
-        }
-
-        protected function getNameForSelectInput()
-        {
-            return $this->getEditableInputName($this->attribute);
-        }
-
-        public function getDropDownArray()
-        {
-            return $this->model->getCustomFieldDataAndLabels();
+            return 'getCustomFieldDataAndLabels';
         }
 
         protected function getEditableHtmlOptions()

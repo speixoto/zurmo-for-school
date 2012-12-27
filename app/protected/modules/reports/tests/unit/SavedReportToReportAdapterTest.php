@@ -35,7 +35,9 @@
 
         public function setup()
         {
+            parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+            DisplayAttributeForReportForm::resetCount();
         }
 
         public function testResolveReportToSavedReport()
@@ -48,6 +50,8 @@
             $report->setType           (Report::TYPE_ROWS_AND_COLUMNS);
             $report->setOwner          ($billy);
             $report->setFiltersStructure('1 and 2 or 3');
+            $report->setCurrencyConversionType(Report::CURRENCY_CONVERSION_TYPE_SPOT);
+            $report->setSpotConversionCurrencyCode('CAD');
 
             $filter = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $filter->attributeIndexOrDerivedType = 'string';
@@ -173,12 +177,14 @@
                 array(
                     'label'						  => 'someNewLabel',
                     'attributeIndexOrDerivedType' => 'phone',
+                    'columnAliasName'             => 'col0',
                 )
             ),
             'DrillDownDisplayAttributes' => array(
                 array(
                     'label'                       => 'someNewLabel',
                     'attributeIndexOrDerivedType' => 'firstName',
+                    'columnAliasName'             => 'col0',
                 )
             ));
             $unserializedData = unserialize($savedReport->serializedData);
@@ -187,6 +193,9 @@
             $this->assertEquals($compareData['GroupBys'],                    $unserializedData['GroupBys']);
             $this->assertEquals($compareData['DisplayAttributes'],           $unserializedData['DisplayAttributes']);
             $this->assertEquals($compareData['DrillDownDisplayAttributes'],  $unserializedData['DrillDownDisplayAttributes']);
+            $this->assertEquals('1 and 2 or 3',                              $unserializedData['filtersStructure']);
+            $this->assertEquals(Report::CURRENCY_CONVERSION_TYPE_SPOT,       $unserializedData['currencyConversionType']);
+            $this->assertEquals('CAD',                                       $unserializedData['spotConversionCurrencyCode']);
             $saved = $savedReport->save();
             $this->assertTrue($saved);
         }

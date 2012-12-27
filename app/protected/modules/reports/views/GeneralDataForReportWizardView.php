@@ -30,8 +30,16 @@
         {
             $content           = '<div class="attributesContainer">';
             $element           = new TextElement($this->model, 'name', $this->form);
-            $leftSideContent   = '<table><colgroup><col class="col-0"><col class="col-1"></colgroup><tr>' . $element->render() . '</tr>';
-            $element           = new TextAreaElement($this->model, 'description', $this->form, array('rows' => 2));
+            $leftSideContent   = '<table><colgroup><col class="col-0"><col class="col-1">' .
+                                 '</colgroup><tr>' . $element->render() . '</tr>';
+            $element           = new TextAreaElement(
+                                 $this->model, 'description', $this->form, array('rows' => 2));
+            $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
+            $element           = new CurrencyConversionTypeStaticDropDownElement(
+                                 $this->model, 'currencyConversionType', $this->form);
+            $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
+            $element           = new CurrencyStaticDropDownFormElement($this->model, 'spotConversionCurrencyCode',
+                                 $this->form, array('addBlank' => true));
             $leftSideContent  .= '<tr>' . $element->render() . '</tr></table>';
             $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
             $rightSideContent  = ZurmoHtml::tag('div', array(), $this->renderRightSideFormLayout());
@@ -78,6 +86,33 @@
             return 'generalDataSaveAndRunLink';
         }
 
-
+        protected function registerScripts()
+        {
+            $currencyConversionTypeSelectId     = CurrencyConversionTypeStaticDropDownElement::
+                                                  resolveInputIdPrefixIntoString(
+                                                  array(get_class($this->model), 'currencyConversionType'));
+            $spotConversionCurrencyCodeSelectId = CurrencyStaticDropDownFormElement::
+                                                  resolveInputIdPrefixIntoString(
+                                                  array(get_class($this->model), 'spotConversionCurrencyCode'));
+            Yii::app()->clientScript->registerScript('currencyConversionTypeHelper', "
+                if($('#" . $currencyConversionTypeSelectId . "').val() != " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
+                {
+                    $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').hide();
+                }
+                $('#" . $currencyConversionTypeSelectId . "').change( function()
+                    {
+                        if($(this).val() == " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
+                        {
+                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').show();
+                        }
+                        else
+                        {
+                            $('#" . $spotConversionCurrencyCodeSelectId . "').val('');
+                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').hide();
+                        }
+                    }
+                );
+            ");
+        }
     }
 ?>

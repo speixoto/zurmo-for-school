@@ -27,7 +27,7 @@
     /**
      * Class used by reporting or workflow to show available operator types in a dropdown.
      */
-    class OperatorStaticDropDownElement extends StaticDropDownElement
+    class OperatorStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
         protected function renderControlEditable()
         {
@@ -36,19 +36,9 @@
             return $content;
         }
 
-        protected function getDropDownArray()
+        protected function getDataAndLabelsModelPropertyName()
         {
-            return $this->model->getOperatorValuesAndLabels();
-        }
-
-        public function getIdForSelectInput()
-        {
-            return $this->getEditableInputId($this->attribute);
-        }
-
-        protected function getNameForSelectInput()
-        {
-            return $this->getEditableInputName($this->attribute);
+            return 'getOperatorValuesAndLabels';
         }
 
         protected function renderChangeScript()
