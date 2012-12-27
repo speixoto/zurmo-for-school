@@ -673,10 +673,10 @@
             $this->setPostArray(array('selectedRecordCount' => 8));
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
-            $content = $this->runControllerWithExitExceptionAndGetContent('leads/default/massDelete');
+            $content = $this->runControllerWithExitExceptionAndGetContent('leads/default/massDelete');                     
             $leads = Contact::getAll();
             $this->assertEquals(3, count($leads));
-
+         
            //Run Mass Delete using progress save for page2
             $this->setGetArray(array(
                 'selectAll' => '1',
@@ -684,9 +684,12 @@
             $this->setPostArray(array('selectedRecordCount' => 8));
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
-            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDeleteProgress');
-            $leads = Contact::getAll();
-            $this->assertEquals(0, count($leads));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDeleteProgress');            
+            
+            $leads = Contact::getAll();    
+            //BelinaLead1 was converted to a contact, so she is not removed
+            $this->assertFalse(strpos(serialize($leads),'BelinaLead1') === false);
+            $this->assertEquals(1, count($leads));
         }
     }
 ?>
