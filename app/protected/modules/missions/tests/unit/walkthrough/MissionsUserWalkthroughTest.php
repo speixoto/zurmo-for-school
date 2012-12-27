@@ -352,5 +352,38 @@
             $this->assertEquals(Mission::STATUS_ACCEPTED,        $missions[0]->status);
             $this->assertTrue($missions[0]->takenByUser->isSame($mary));
         }
+
+        /**
+         * @depends testAjaxChangeStatus
+         */
+        public function testSendEmailInNewComment()
+        {
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $mary           = User::getByUsername('mary');
+            $missions       = Mission::getAll();
+            $this->assertEquals(1, count($missions));
+            $mission        = $missions[0];
+            $this->assertEquals(0, $mission->comments->count());
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+
+            //Save new comment.
+            $this->setGetArray(array('relatedModelId'             => $mission->id,
+                                     'relatedModelClassName'      => 'Mission',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'redirectUrl'                => 'someRedirect'));
+            $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name')));
+            $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
+            $this->assertEquals(1, $mission->comments->count());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $emailMessages  = EmailMessage::getAll();
+            $emailMessage   = $emailMessages[0];
+            $this->assertEquals(1, count($emailMessage->recipients));
+            $this->assertContains('mission', $emailMessage->subject);
+            $this->assertContains(strval($mission), $emailMessage->subject);
+            $this->assertContains(strval($mission->comments[0]), $emailMessage->content->htmlContent);
+            $this->assertContains(strval($mission->comments[0]), $emailMessage->content->textContent);
+        }
     }
 ?>
