@@ -18,7 +18,12 @@
     .themeBackgroundColor-important{ background-color: @themeColor !important; }
     .themeBackgroundColor2-important{ background-color: @themeColor2 !important; }
     .themeColor-focus{ .b-shadow(0 0 1px 1px @themeColor); }
-
+    
+    .juiportlet-widget-placeholder,
+    .drop-zone{
+        border:2px dashed @themeColor;
+    }
+    
     h1, h2, h3, h4, h5, h6{
         color: @themeColor;
         .t-shadow(  0 1px 0 rgba( 255, 255, 255, 0.8 ) );
