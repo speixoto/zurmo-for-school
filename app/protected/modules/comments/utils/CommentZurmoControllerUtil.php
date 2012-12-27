@@ -86,7 +86,7 @@
             }
             elseif ($this->relatedModel instanceof Mission)
             {
-                $participants = MissionsUtil::getConversationParticipantsForSendEmail($this->relatedModel, $updater);
+                $participants = MissionsUtil::getMissionParticipantsForSendEmail($this->relatedModel, $updater);
                 $subject = CommentsUtil::getEmailSubject($this->relatedModel);
                 $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $updater);
             }

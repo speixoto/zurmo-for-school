@@ -182,7 +182,7 @@
             NotificationsUtil::submit($message, $rules);
         }
 
-        public static function getConversationParticipantsForSendEmail(Mission $mission, $updater)
+        public static function getMissionParticipantsForSendEmail(Mission $mission, $updater)
         {
             assert('$mission->id > 0');
             assert('$updater instanceof User');

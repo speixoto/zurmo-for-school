@@ -120,5 +120,32 @@
             $dataProvider = MissionsUtil::makeDataProviderByType($mission, null, 55);
             $this->assertTrue($dataProvider instanceof RedBeanModelDataProvider);
         }
+
+        public function testGetMissionParticipantsForSendEmail()
+        {
+            $super                              = User::getByUsername('super');
+            Yii::app()->user->userModel         = $super;
+            $steven                             = User::getByUsername('steven');
+            $missions                           = Mission::getAll();
+            $mission                            = $missions[0];
+            $super->primaryEmail->emailAddress  = 'super@zurmo.org';
+            $this->assertTrue($super->save());
+            $steven->primaryEmail->emailAddress = 'steven@zurmo.org';
+            $this->assertTrue($steven->save());
+            // super updated mission
+            $participants                       = MissionsUtil::
+                    getMissionParticipantsForSendEmail($mission, $super);
+            $this->assertEquals(1, count($participants));
+            $this->assertEquals($participants[0], $steven);
+            UserConfigurationFormAdapter::setTurnOffEmailNotificationsValue($steven, true);
+            $participants                       = MissionsUtil::
+                    getMissionParticipantsForSendEmail($mission, $super);
+            $this->assertEquals(0, count($participants));
+            // steven updated mission
+            $participants                       = MissionsUtil::
+                    getMissionParticipantsForSendEmail($mission, $steven);
+            $this->assertEquals(1, count($participants));
+            $this->assertEquals($participants[0], $super);
+        }
     }
 ?>
