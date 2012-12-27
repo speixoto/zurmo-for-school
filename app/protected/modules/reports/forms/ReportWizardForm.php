@@ -303,10 +303,10 @@
             $baseCurrencyCode = Yii::app()->currencyHelper->getBaseCode();
             return array(
                 Report::CURRENCY_CONVERSION_TYPE_ACTUAL =>
-                    Yii::t('Default', 'Convert to base currency ({baseCurrencyCode})',
-                                      array('{baseCurrencyCode}' => $baseCurrencyCode)),
-                Report::CURRENCY_CONVERSION_TYPE_BASE   =>
                     Yii::t('Default', 'Do not convert (Can produce mixed results)'),
+                Report::CURRENCY_CONVERSION_TYPE_BASE   =>
+                    Yii::t('Default', 'Convert to base currency ({baseCurrencyCode})',
+                        array('{baseCurrencyCode}' => $baseCurrencyCode)),
                 Report::CURRENCY_CONVERSION_TYPE_SPOT   =>
                     Yii::t('Default', 'Convert to base currency ({baseCurrencyCode}) and then to a spot currency',
                                       array('{baseCurrencyCode}' => $baseCurrencyCode))

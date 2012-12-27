@@ -70,6 +70,8 @@
             $amChart->addSerialGraph('value', 'column');
             $amChart->xAxisName = $this->dataProvider->resolveFirstSeriesLabel();
             $amChart->yAxisName = $this->dataProvider->resolveFirstRangeLabel();
+            $amChart->yAxisUnitContent = $this->resolveYAxisUnitContent();
+
             $scriptContent      = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->uniqueLayoutId, $scriptContent);
             $cClipWidget        = new CClipWidget();
@@ -87,6 +89,32 @@
                         array('{maximum}' => $this->maximumGroupsPerChart));
             $content .= '</div>';
             return $content;
+        }
+
+        protected function resolveYAxisUnitContent()
+        {
+            if($this->dataProvider->getReport()->getCurrencyConversionType() ==
+                Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
+            {
+                return null;
+            }
+            elseif($this->dataProvider->getReport()->getCurrencyConversionType() ==
+                Report::CURRENCY_CONVERSION_TYPE_BASE)
+            {
+                //Assumes base conversion is done using sql math
+                return Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getBaseCode());
+            }
+            elseif($this->dataProvider->getReport()->getCurrencyConversionType() ==
+                Report::CURRENCY_CONVERSION_TYPE_SPOT)
+            {
+                //Assumes base conversion is done using sql math
+                return Yii::app()->locale->getCurrencySymbol(
+                           $this->dataProvider->getReport()->getSpotConversionCurrencyCode());
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>
