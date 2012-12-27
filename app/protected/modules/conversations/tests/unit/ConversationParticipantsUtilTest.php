@@ -135,5 +135,50 @@
             $this->assertEquals(0, count($readWritePermitables));
             $this->assertEquals(0, $conversation->conversationParticipants->count());
         }
+
+        /**
+         * @depends testIsUserAParticipant
+         */
+        public function testGetConversationParticipantsForSendEmail()
+        {
+            $super                                  = Yii::app()->user->userModel;
+            $jack                                   = UserTestHelper::createBasicUser('jack');
+            $steven                                 = User::getByUsername('steven');
+            $conversation                           = new Conversation();
+            $conversation->owner                    = Yii::app()->user->userModel;
+            $conversation->subject                  = 'Test Send Email';
+            $conversation->description              = 'This is for testing that new comments send emails to users.';
+            $conversationParticipant                = new ConversationParticipant();
+            $conversationParticipant->person        = $jack;
+            $conversation->conversationParticipants->add($conversationParticipant);
+            $conversationParticipant                = new ConversationParticipant();
+            $conversationParticipant->person        = $steven;
+            $conversation->conversationParticipants->add($conversationParticipant);
+            $this->assertTrue($conversation->save());
+            $participants                           = ConversationParticipantsUtil::
+                    getConversationParticipantsForSendEmail($conversation, $super);
+            $this->assertEquals(0, count($participants));
+            $super->primaryEmail->emailAddress = 'super@zurmo.org';
+            $this->assertTrue($super->save());
+            $steven->primaryEmail->emailAddress = 'steven@zurmo.org';
+            $this->assertTrue($steven->save());
+            $jack->primaryEmail->emailAddress = 'steven@zurmo.org';
+            $this->assertTrue($jack->save());
+            // super updated conversation
+            $participants                           = ConversationParticipantsUtil::
+                    getConversationParticipantsForSendEmail($conversation, $super);
+            $this->assertEquals(2, count($participants));
+            UserConfigurationFormAdapter::setTurnOffEmailNotificationsValue($steven, true);
+            $participants                           = ConversationParticipantsUtil::
+                    getConversationParticipantsForSendEmail($conversation, $super);
+            $this->assertEquals(1, count($participants));
+            $this->assertEquals($participants[0], $jack);
+            // steven updated conversation
+            $participants                           = ConversationParticipantsUtil::
+                    getConversationParticipantsForSendEmail($conversation, $steven);
+            $this->assertEquals(2, count($participants));
+            $this->assertEquals($participants[0], $super);
+            $this->assertEquals($participants[1], $jack);
+        }
     }
 ?>
