@@ -127,8 +127,8 @@
                 throw new NotSupportedException();
             }
             $content                                = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'report-filter-label');
-            self::resolveDivWrapperForContent($operatorContent,                $content, 'report-attribute-operator');
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
+            self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-attribute-operator');
             self::resolveDivWrapperForContent($valueContent,                   $content, 'value-data');
             if($this->showAvailableRuntimeFilter)
             {
@@ -177,8 +177,8 @@
             $directionElement->editableTemplate = '{content}{error}';
             $directionElement                   = $directionElement->render();
             $content                            = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($directionElement,               $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
+            self::resolveDivWrapperForContent($directionElement,               $content, 'dynamic-attribute-field');
             return $content;
         }
 
@@ -189,8 +189,8 @@
             $displayLabelElement->editableTemplate = '{content}{error}';
             $displayLabelElement                   = $displayLabelElement->render();
             $content                               = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($displayLabelElement,            $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
+            self::resolveDivWrapperForContent($displayLabelElement,            $content, 'dynamic-attribute-field');
             return $content;
         }
 

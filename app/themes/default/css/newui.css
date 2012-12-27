@@ -159,12 +159,10 @@ a.ModalGameNotification a,
 .AppContent.ImportWizardView #addExtraColumnButton a.ModalGameNotification a,
 .addfileinput-button span .ModalGameNotification a,
 .addfileinput-button span a.ModalGameNotification a,
-#DisplayAttributesTreeArea,
-#FiltersTreeArea,
-#DisplayAttributesTreeArea + div,
-#FiltersTreeArea + div,
-.report-attribute-row,
-.report-attribute-operator,
+.hasTree,
+.dynamic-droppable-area,
+.dynamic-attribute-row,
+.dynamic-attribute-operator,
 .value-data {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -176,21 +174,21 @@ a.ModalGameNotification a,
 .recipient:after,
 #NoUserEmailConfigurationYetView:before,
 #NoUserEmailConfigurationYetView:after,
-.report-attribute-row > div:before,
-.report-attribute-row > div:after {
+.dynamic-attribute-row > div:before,
+.dynamic-attribute-row > div:after {
   content: "";
   display: table;
 }
 .cf:after,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
-.report-attribute-row > div:after {
+.dynamic-attribute-row > div:after {
   clear: both;
 }
 .cf,
 .recipient,
 #NoUserEmailConfigurationYetView,
-.report-attribute-row > div {
+.dynamic-attribute-row > div {
   zoom: 1;
 }
 .clearfix {
@@ -584,7 +582,8 @@ table.configuration-list td:last-child a.loading .z-icon,
 .zLink,
 .z-link,
 #ImportWizardMappingView #sample-column-header a,
-.remove-extra-column-link {
+.remove-extra-column-link,
+#show-filters-structure-div-link {
   padding: 2px 4px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -597,13 +596,17 @@ table.configuration-list td:last-child a.loading .z-icon,
 .zLink:hover,
 .z-link:hover,
 #ImportWizardMappingView #sample-column-header a:hover,
-.remove-extra-column-link:hover {
+.remove-extra-column-link:hover,
+#show-filters-structure-div-link:hover {
   color: #fff !important;
   text-decoration: underline;
 }
 .unstyle-panel,
 #NoteInlineEditForPortletView .wide.form,
-#inline-edit-form {
+#inline-edit-form,
+#RuntimeFiltersForPortletView .wrapper,
+#RuntimeFiltersForPortletView #edit-form,
+#RuntimeFiltersForPortletView .dynamic-attribute-row {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -711,7 +714,8 @@ body.blue a.simple-select,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
-body.blue #clear-search-linkmodal {
+body.blue #clear-search-linkmodal,
+body.blue .treeview span:hover {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -757,7 +761,8 @@ body.blue .ui-tooltip-default .ui-tooltip-icon,
 body.blue .zLink,
 body.blue .z-link,
 body.blue .lead-conversion-actions a,
-body.blue #clear-search-link {
+body.blue #clear-search-link,
+body.blue #show-filters-structure-div-link {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1238,7 +1243,8 @@ body.brown a.simple-select,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
-body.brown #clear-search-linkmodal {
+body.brown #clear-search-linkmodal,
+body.brown .treeview span:hover {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -1284,7 +1290,8 @@ body.brown .ui-tooltip-default .ui-tooltip-icon,
 body.brown .zLink,
 body.brown .z-link,
 body.brown .lead-conversion-actions a,
-body.brown #clear-search-link {
+body.brown #clear-search-link,
+body.brown #show-filters-structure-div-link {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -1765,7 +1772,8 @@ body.lime a.simple-select,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
-body.lime #clear-search-linkmodal {
+body.lime #clear-search-linkmodal,
+body.lime .treeview span:hover {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -1811,7 +1819,8 @@ body.lime .ui-tooltip-default .ui-tooltip-icon,
 body.lime .zLink,
 body.lime .z-link,
 body.lime .lead-conversion-actions a,
-body.lime #clear-search-link {
+body.lime #clear-search-link,
+body.lime #show-filters-structure-div-link {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -2292,7 +2301,8 @@ body.cherry a.simple-select,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
-body.cherry #clear-search-linkmodal {
+body.cherry #clear-search-linkmodal,
+body.cherry .treeview span:hover {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -2338,7 +2348,8 @@ body.cherry .ui-tooltip-default .ui-tooltip-icon,
 body.cherry .zLink,
 body.cherry .z-link,
 body.cherry .lead-conversion-actions a,
-body.cherry #clear-search-link {
+body.cherry #clear-search-link,
+body.cherry #show-filters-structure-div-link {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -2819,7 +2830,8 @@ body.turquoise a.simple-select,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
-body.turquoise #clear-search-linkmodal {
+body.turquoise #clear-search-linkmodal,
+body.turquoise .treeview span:hover {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -2865,7 +2877,8 @@ body.turquoise .ui-tooltip-default .ui-tooltip-icon,
 body.turquoise .zLink,
 body.turquoise .z-link,
 body.turquoise .lead-conversion-actions a,
-body.turquoise #clear-search-link {
+body.turquoise #clear-search-link,
+body.turquoise #show-filters-structure-div-link {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -3346,7 +3359,8 @@ body.violet a.simple-select,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
-body.violet #clear-search-linkmodal {
+body.violet #clear-search-linkmodal,
+body.violet .treeview span:hover {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -3392,7 +3406,8 @@ body.violet .ui-tooltip-default .ui-tooltip-icon,
 body.violet .zLink,
 body.violet .z-link,
 body.violet .lead-conversion-actions a,
-body.violet #clear-search-link {
+body.violet #clear-search-link,
+body.violet #show-filters-structure-div-link {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -3873,7 +3888,8 @@ body.honey a.simple-select,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
-body.honey #clear-search-linkmodal {
+body.honey #clear-search-linkmodal,
+body.honey .treeview span:hover {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -3919,7 +3935,8 @@ body.honey .ui-tooltip-default .ui-tooltip-icon,
 body.honey .zLink,
 body.honey .z-link,
 body.honey .lead-conversion-actions a,
-body.honey #clear-search-link {
+body.honey #clear-search-link,
+body.honey #show-filters-structure-div-link {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -5556,10 +5573,6 @@ section {
   width: 70%;
   float: left;
   position: relative;
-}
-.AppContent .single-column .panel td,
-.AppContent .single-column .panel th {
-  padding-bottom: 10px !important;
 }
 .AppContent .single-column .juiportlet-widget,
 .AppContent .single-column .details-table {
@@ -15013,6 +15026,39 @@ a.user-link {
 .ComponentForReportWizardView .treeview ul {
   background: none;
 }
+.ComponentForReportWizardView .treeview li:hover {
+  cursor: pointer;
+}
+.ComponentForReportWizardView .treeview li:active {
+  cursor: move;
+}
+.ComponentForReportWizardView .treeview .ui-draggable-dragging {
+  background: none;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+  line-height: 30px;
+  min-width: 120px;
+  height: 30px;
+  border: 1px solid #ccc;
+  background-color: #ededed;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
+  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: linear-gradient(top, #f6f6f6, #ededed);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
+}
 #ModuleForReportWizardView table span {
   text-align: left;
   display: block;
@@ -15032,27 +15078,37 @@ a.user-link {
   width: 30%;
   float: right;
 }
-#DisplayAttributesTreeArea,
-#FiltersTreeArea {
+.hasTree {
   width: 20%;
   float: left;
   padding: 8px 10px;
   background: #F4F4F4;
+  max-height: 600px;
+  overflow: auto;
+  margin-top: 10px;
+  z-index: 1;
 }
-#DisplayAttributesTreeArea + div,
-#FiltersTreeArea + div {
+.dynamic-droppable-area {
   width: 80%;
   float: right;
   padding-left: 30px;
+  margin-top: 10px;
+  position: relative;
+  z-index: 5;
+}
+.attribute-rows {
+  position: relative;
+  z-index: 1000;
 }
 .attribute-rows ul,
 .attribute-rows li {
   list-style: none;
 }
-.attribute-rows li + li .report-attribute-row {
+.attribute-rows li + li .dynamic-attribute-row {
   border-top: none;
 }
-.report-attribute-row {
+.dynamic-attribute-row {
+  position: relative;
   float: left;
   width: 100%;
   display: block;
@@ -15072,39 +15128,39 @@ a.user-link {
   background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
-  padding: 15px 10px 10px 10px;
+  padding: 15px 30px 15px 10px;
 }
-.report-attribute-row > div {
+.dynamic-attribute-row > div {
   float: left;
   width: 100%;
 }
-.report-attribute-row > div > span:first-child + div {
+.dynamic-attribute-row > div > span:first-child + div {
   margin-right: 0 !important;
   width: 45%;
   float: left;
 }
-.report-attribute-row > div .criteria-value-container {
+.dynamic-attribute-row > div .criteria-value-container {
   margin-right: 30px !important;
   width: 45%;
   float: right;
 }
-.report-attribute-row > div .has-model-select {
+.dynamic-attribute-row > div .has-model-select {
   float: left;
 }
-.report-attribute-row label.hasCheckBox {
+.dynamic-attribute-row label.hasCheckBox {
   margin-left: 0 !important;
 }
-.report-attribute-row .remove-report-attribute-row-link {
-  float: right;
-  margin: 1px 0 0 -30px !important;
-  position: relative;
+.dynamic-attribute-row .remove-dynamic-attribute-row-link {
+  position: absolute;
+  right: 10px;
+  top: 15px;
   display: block;
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   color: #a7a7a7 !important;
 }
-.report-attribute-row .report-attribute-row-number-label {
+.dynamic-attribute-row .dynamic-attribute-row-number-label {
   float: left;
   line-height: 26px;
   margin-right: 15px;
@@ -15115,33 +15171,32 @@ a.user-link {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-.report-attribute-row .hasDropDown {
+.dynamic-attribute-row .hasDropDown {
   width: auto !important;
 }
-.report-filter-label {
+.dynamic-attribute-label {
   float: left;
   line-height: 26px;
   width: 20%;
 }
-.report-attribute-operator {
+.dynamic-attribute-operator {
   float: left;
   width: 25%;
   padding-left: 15px;
 }
+.dynamic-attribute-field {
+  float: right;
+  width: 80%;
+}
 .value-data {
-  float: left;
+  float: right;
   width: 50%;
   padding-left: 15px;
-  padding-right: 5px;
-}
-.value-data > div:first-child {
-  margin-bottom: 10px;
 }
 .report-runtime-availability {
   clear: left;
   display: block;
   float: left;
-  margin-top: 5px;
   margin-left: 25px;
   line-height: 26px;
   font-size: 11px;
@@ -15154,10 +15209,34 @@ a.user-link {
   margin-left: 0;
   margin-right: 8px !important;
 }
-.report-and {
+.dynamic-and-for-mixed {
   display: inline-block;
   padding: 5px 0;
   font-weight: bold;
+}
+#show-filters-structure-wrapper {
+  width: 100%;
+  float: left;
+  margin-top: 15px;
+}
+#show-filters-structure-wrapper span {
+  width: 120px;
+}
+#show-filters-structure-wrapper input {
+  text-indent: 50px;
+}
+#RuntimeFiltersForPortletView {
+  float: left;
+  width: 100%;
+}
+#RuntimeFiltersForPortletView .dynamic-attribute-row {
+  padding: 0 0 15px 0;
+}
+#RuntimeFiltersForPortletView .value-data {
+  width: 55%;
+}
+#RuntimeFiltersForPortletView .attribute-rows {
+  margin: 0 15px;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {

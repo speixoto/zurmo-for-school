@@ -30,7 +30,7 @@ function rebuildReportFiltersAttributeRowNumbersAndStructureInput(divId)
 {
     rowCount = 1;
     structure = '';
-    $('#' + divId).find('.report-attribute-row-number-label').each(function()
+    $('#' + divId).find('.dynamic-attribute-row-number-label').each(function()
     {
         $(this).html(rowCount + '.');
         if(structure != '')

@@ -48,29 +48,27 @@
                     {
                         arr  = " . CJSON::encode($this->getValueTypesRequiringFirstDateInput()) . ";
                         arr2 = " . CJSON::encode($this->getValueTypesRequiringSecondDateInput()) . ";
+                        var firstValueArea  = $(this).parent().parent().parent().find('.value-data').find('.first-value-area');
+                        var secondValueArea = $(this).parent().parent().parent().find('.value-data').find('.second-value-area');
                         if ($.inArray($(this).val(), arr) != -1)
                         {
-                            $(this).parent().parent().parent().find('.value-data').find('.first-value-area').show();
-                            $(this).parent().parent().parent().find('.value-data').find('.first-value-area')
-                            .find(':input, select').prop('disabled', false);
+                            firstValueArea.show();
+                            firstValueArea.find(':input, select').prop('disabled', false);
                         }
                         else
                         {
-                            $(this).parent().parent().parent().find('.value-data').find('.first-value-area').hide();
-                            $(this).parent().parent().parent().find('.value-data').find('.first-value-area')
-                            .find(':input, select').prop('disabled', true);
+                            firstValueArea.hide();
+                            firstValueArea.find(':input, select').prop('disabled', true);
                         }
                         if ($.inArray($(this).val(), arr2) != -1)
                         {
-                            $(this).parent().parent().parent().find('.value-data').find('.second-value-area').show();
-                            $(this).parent().parent().parent().find('.value-data').find('.second-value-area')
-                            .find(':input, select').prop('disabled', false);
+                            secondValueArea.show();
+                            secondValueArea.find(':input, select').prop('disabled', false);
                         }
                         else
                         {
-                            $(this).parent().parent().parent().find('.value-data').find('.second-value-area').hide();
-                            $(this).parent().parent().parent().find('.value-data').find('.second-value-area')
-                            .find(':input, select').prop('disabled', true);
+                            secondValueArea.hide();
+                            secondValueArea.find(':input, select').prop('disabled', true);
                         }
                         if($(this).val() == '" . OperatorRules::TYPE_ONE_OF . "')
                         {
