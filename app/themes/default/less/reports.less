@@ -83,6 +83,8 @@
 }
 
 .attribute-rows{
+    position: relative;
+    z-index: 1000;
     ul, li{
         list-style: none;
     }
@@ -164,7 +166,7 @@
 
 .value-data{
     > div:first-child{
-        margin-bottom: 10px;
+        //margin-bottom: 10px;
     }
     float: right;
     width:50%;
@@ -207,4 +209,23 @@
 }
 #show-filters-structure-div-link{
     ++.z-link;
+}
+
+#RuntimeFiltersForPortletView{
+    float: left;
+    width: 100%;
+    .wrapper,
+    #edit-form,
+    .dynamic-attribute-row{
+        ++.unstyle-panel;
+    }
+    .dynamic-attribute-row{
+        padding: 0 0 15px 0;
+    }
+    .value-data{
+        width: 55%;
+    }
+    .attribute-rows{
+        margin: 0 15px;
+    }
 }

@@ -603,7 +603,10 @@ table.configuration-list td:last-child a.loading .z-icon,
 }
 .unstyle-panel,
 #NoteInlineEditForPortletView .wide.form,
-#inline-edit-form {
+#inline-edit-form,
+#RuntimeFiltersForPortletView .wrapper,
+#RuntimeFiltersForPortletView #edit-form,
+#RuntimeFiltersForPortletView .dynamic-attribute-row {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -5570,10 +5573,6 @@ section {
   width: 70%;
   float: left;
   position: relative;
-}
-.AppContent .single-column .panel td,
-.AppContent .single-column .panel th {
-  padding-bottom: 10px !important;
 }
 .AppContent .single-column .juiportlet-widget,
 .AppContent .single-column .details-table {
@@ -15097,6 +15096,10 @@ a.user-link {
   position: relative;
   z-index: 5;
 }
+.attribute-rows {
+  position: relative;
+  z-index: 1000;
+}
 .attribute-rows ul,
 .attribute-rows li {
   list-style: none;
@@ -15190,9 +15193,6 @@ a.user-link {
   width: 50%;
   padding-left: 15px;
 }
-.value-data > div:first-child {
-  margin-bottom: 10px;
-}
 .report-runtime-availability {
   clear: left;
   display: block;
@@ -15224,6 +15224,19 @@ a.user-link {
 }
 #show-filters-structure-wrapper input {
   text-indent: 50px;
+}
+#RuntimeFiltersForPortletView {
+  float: left;
+  width: 100%;
+}
+#RuntimeFiltersForPortletView .dynamic-attribute-row {
+  padding: 0 0 15px 0;
+}
+#RuntimeFiltersForPortletView .value-data {
+  width: 55%;
+}
+#RuntimeFiltersForPortletView .attribute-rows {
+  margin: 0 15px;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {
