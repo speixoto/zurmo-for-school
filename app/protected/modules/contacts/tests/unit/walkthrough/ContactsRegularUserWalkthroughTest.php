@@ -513,7 +513,7 @@
          /**
          * @deletes selected contacts. 
          */
-        public function testMassDeleteActionsForSelectedIds()
+        public function testRegularMassDeleteActionsForSelectedIds()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $confused = User::getByUsername('confused');
@@ -575,7 +575,7 @@
          /**
          *Test Bug with mass delete and multiple pages when using select all
          */
-        public function testMassDeletePagesProperlyAndRemovesAllSelected()
+        public function testRegularMassDeletePagesProperlyAndRemovesAllSelected()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $confused = User::getByUsername('confused');
