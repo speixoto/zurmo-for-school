@@ -35,27 +35,30 @@
          * @param $clausePosition
          * @param $where
          */
-        public function resolveJoinsAndBuildWhere($operatorType, $value, & $clausePosition, & $where)
+        public function resolveJoinsAndBuildWhere($operatorType, $value, & $clausePosition, & $where,
+                                                  $onTableAliasName = null)
         {
             assert('is_string($operatorType)');
             assert('is_array($where)');
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
             if(!$this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
-                $tableAliasName = $this->resolveJoins();
+                $tableAliasName = $this->resolveJoins($onTableAliasName,
+                                                      ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
                 self::addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition, $tableAliasName,
                                                       $this->modelAttributeToDataProviderAdapter->getColumnName());
             }
             elseif ($this->modelAttributeToDataProviderAdapter->isRelationTypeAHasOneVariant() &&
                     $this->modelAttributeToDataProviderAdapter->getRelatedAttribute() == 'id')
             {
-
                 self::addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition,
-                                                      $this->resolveJoinsForRelatedId(),
+                                                      $this->resolveJoinsForRelatedId($onTableAliasName),
                                                       $this->modelAttributeToDataProviderAdapter->getColumnName());
             }
             else
             {
-                $this->buildJoinAndWhereForRelatedAttribute($operatorType, $value, $clausePosition, $where);
+                $this->buildJoinAndWhereForRelatedAttribute($operatorType, $value, $clausePosition, $where,
+                                                            $onTableAliasName);
             }
         }
 
@@ -66,15 +69,18 @@
          * @param $whereKey
          * @param $where
          */
-        protected function buildJoinAndWhereForRelatedAttribute($operatorType, $value, $whereKey, &$where)
+        protected function buildJoinAndWhereForRelatedAttribute($operatorType, $value, $whereKey, &$where,
+                                                                $onTableAliasName = null)
         {
             assert('is_string($operatorType)');
             assert('is_int($whereKey)');
             assert('is_array($where)');
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
             $relationWhere                          = array();
             if ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
             {
-                $relationAttributeTableAliasName    = $this->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
+                $relationAttributeTableAliasName    = $this->resolveJoins($onTableAliasName,
+                                                      ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
                 self::addWherePartByClauseInformation($operatorType, $value, $relationWhere, 1,
                                                       $relationAttributeTableAliasName,
                                                       $this->modelAttributeToDataProviderAdapter->resolveManyToManyColumnName());
@@ -82,7 +88,8 @@
             elseif ($this->modelAttributeToDataProviderAdapter->isRelatedAttributeRelation() &&
                     $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationType() == RedBeanModel::HAS_MANY)
             {
-                $relationAttributeTableAliasName    = $this->resolveOnlyAttributeJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
+                $relationAttributeTableAliasName    = $this->resolveOnlyAttributeJoins($onTableAliasName,
+                                                      ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
                 $this->buildWhereForRelatedAttributeThatIsItselfAHasManyRelation(
                                                       $relationAttributeTableAliasName,
                                                       $operatorType,
@@ -92,7 +99,8 @@
             }
             else
             {
-                $relationAttributeTableAliasName    = $this->resolveJoins(null, true); //todo: pass onTableAlias somehow from outside so we know to set true/false
+                $relationAttributeTableAliasName    = $this->resolveJoins($onTableAliasName,
+                                                      ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
                 self::addWherePartByClauseInformation($operatorType,
                                                       $value,
                                                       $relationWhere,
@@ -150,15 +158,22 @@
                                                DatabaseCompatibilityUtil::getOperatorAndValueWherePart($operatorType, $value) . " limit 1))";
         }
 
-        protected function resolveJoinsForRelatedId()
+        protected function resolveJoinsForRelatedId($onTableAliasName = null)
         {
-            if($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
+            assert('is_string($onTableAliasName) || $onTableAliasName == null');
+            if($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel() && $onTableAliasName == null)
             {
                 return $this->addFromJoinsForAttributeThatIsCastedUp();
             }
+            elseif($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel() &&
+                   $onTableAliasName != null)
+            {
+                return $this->addLeftJoinsForAttributeThatIsCastedUp($onTableAliasName);
+            }
             else
             {
-                return $this->modelAttributeToDataProviderAdapter->getModelTableName();
+                return $this->resolveOnTableAliasName($onTableAliasName);
+                //return $this->modelAttributeToDataProviderAdapter->getModelTableName();
             }
         }
 

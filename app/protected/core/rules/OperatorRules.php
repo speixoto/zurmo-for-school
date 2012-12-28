@@ -29,31 +29,31 @@
      */
     class OperatorRules
     {
-        const TYPE_EQUALS                         = 'Equals';
+        const TYPE_EQUALS                         = 'equals';
 
-        const TYPE_DOES_NOT_EQUAL                 = 'Does Not Equal';
+        const TYPE_DOES_NOT_EQUAL                 = 'doesNotEqual';
 
-        const TYPE_STARTS_WITH                    = 'Starts With';
+        const TYPE_STARTS_WITH                    = 'startsWith';
 
-        const TYPE_ENDS_WITH                      = 'Ends With';
+        const TYPE_ENDS_WITH                      = 'endsWith';
 
-        const TYPE_CONTAINS                       = 'Contains';
+        const TYPE_CONTAINS                       = 'contains';
 
-        const TYPE_GREATER_THAN_OR_EQUAL_TO       = 'Greater Than Or Equal To';
+        const TYPE_GREATER_THAN_OR_EQUAL_TO       = 'greaterThanOrEqualTo';
 
-        const TYPE_LESS_THAN_OR_EQUAL_TO          = 'Less Than Or Equal To';
+        const TYPE_LESS_THAN_OR_EQUAL_TO          = 'lessThanOrEqualTo';
 
-        const TYPE_GREATER_THAN                   = 'Greater Than';
+        const TYPE_GREATER_THAN                   = 'greaterThan';
 
-        const TYPE_LESS_THAN                      = 'Less Than';
+        const TYPE_LESS_THAN                      = 'lessThan';
 
-        const TYPE_ONE_OF                         = 'One Of';
+        const TYPE_ONE_OF                         = 'oneOf';
 
-        const TYPE_BETWEEN                        = 'Between';
+        const TYPE_BETWEEN                        = 'between';
 
-        const TYPE_IS_NULL                        = 'Is Null';
+        const TYPE_IS_NULL                        = 'isNull';
 
-        const TYPE_IS_NOT_NULL                    = 'Is Not Null';
+        const TYPE_IS_NOT_NULL                    = 'isNotNull';
 
         public static function getTranslatedTypeLabel($type)
         {

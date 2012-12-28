@@ -109,7 +109,7 @@
             $content .= ZurmoHtml::tag('span', array('id'    => $secondDateSpanAreaId,
                                                      'class' => 'second-date-area',
                                                      'style' => $startingDivStyleSecondDate),
-                                                     ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed''), Yii::t('Default', 'and')) .
+                                                     ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Yii::t('Default', 'and')) .
                                                      $this->renderEditableSecondDateContent());
             return $content;
         }
