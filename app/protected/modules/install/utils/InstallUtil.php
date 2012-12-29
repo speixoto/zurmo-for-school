@@ -940,15 +940,24 @@
             $form->databasePort      = $args[4];
             $form->superUserPassword = $args[5];
 
+            if (!empty($args[6]))
+            {
+                $form->hostInfo = $args[6];
+            }
+            if (!empty($args[7]))
+            {
+                $form->scriptUrl = $args[7];
+            }
+
             InstallUtil::runInstallation($form, $messageStreamer);
-            if (isset($args[6]))
+            if (isset($args[8]))
             {
                 $messageStreamer->add(Yii::t('Default', 'Starting to load demo data.'));
                 $messageLogger = new MessageLogger($messageStreamer);
 
-                if (isset($args[7]))
+                if (isset($args[9]))
                 {
-                    DemoDataUtil::load($messageLogger, intval($args[7]));
+                    DemoDataUtil::load($messageLogger, intval($args[9]));
                 }
                 else
                 {
@@ -956,13 +965,17 @@
                 }
                 $messageStreamer->add(Yii::t('Default', 'Finished loading demo data.'));
             }
-            // Send notification to super admin that need to setup hostInfo and scriptUrl params in perInstance.php
-            $message                    = new NotificationMessage();
-            $message->textContent       = Yii::t('Default', 'The system has detected that the hostInfo and/or scriptUrl are ' .
-                                                            'not set up. Please open the perInstance.php config file and ' .
-                                                            'set up these parameters.');
-            $rules                      = new HostInfoAndScriptUrlNotSetupNotificationRules();
-            NotificationsUtil::submit($message, $rules);
+
+            if (empty($args[6]) || empty($args[7]))
+            {
+                // Send notification to super admin that need to setup hostInfo and scriptUrl params in perInstance.php
+                $message                    = new NotificationMessage();
+                $message->textContent       = Yii::t('Default', 'The system has detected that the hostInfo and/or scriptUrl are ' .
+                                                                'not set up. Please open the perInstance.php config file and ' .
+                                                                'set up these parameters.');
+                $rules                      = new HostInfoAndScriptUrlNotSetupNotificationRules();
+                NotificationsUtil::submit($message, $rules);
+            }
 
             $messageStreamer->add(Yii::t('Default', 'Locking Installation.'));
             InstallUtil::writeInstallComplete(INSTANCE_ROOT);

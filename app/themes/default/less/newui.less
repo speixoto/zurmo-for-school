@@ -509,7 +509,9 @@ footer, header, hgroup, menu, nav, section {
         left:auto;
     }
     > li > a:after{
-        content:"▾";
+        content: "÷";
+        .symbly(12px) !important;
+        
         color:#ddd;
         position: relative;
         top: 0;
@@ -775,7 +777,8 @@ footer, header, hgroup, menu, nav, section {
             .b-shadow(~"inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08)");
             #gradient > .vertical(#e0e0e0, #c6c6c6);
             :after{
-                content: "▾";
+                content: "÷";
+                .symbly(16px);
                 margin-left:10px;
             }
         }
@@ -1245,8 +1248,11 @@ form,
         vertical-align:middle;
     }
     .parent > a:after{
-        content: "▾";
+        content: "÷";
+        .symbly(14px);
         margin-left:10px;
+        position:relative;
+        top:1px;
     }
     > ul, > a{
         display:inline-block;
@@ -1438,6 +1444,33 @@ caption, th, td {
     font-weight: normal;
     text-align: left;
 }
+#list-view{
+    overflow-x:auto;
+    position:relative;
+    
+    background:
+        -webkit-linear-gradient( left, #fff 30%, rgba(255,255,255,0) ),
+        -webkit-linear-gradient( left, rgba(255,255,255,0), #fff 70% ) 100%,        
+        -webkit-radial-gradient( 0    50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ),
+        -webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
+        
+
+    background-repeat: no-repeat;
+    //background-color: white;
+    background-size:
+        40px 100%,
+        40px 100%, 
+        20px 100%,
+        20px 100%;
+    
+    /* Opera doesn't support this in the shorthand */
+    background-attachment:
+        local,
+        local,
+        scroll,
+        scroll;
+
+}
 
 table.items{
     width:100%;
@@ -1455,7 +1488,7 @@ table.items{
             vertical-align:middle;
             padding:10px 5px;
             word-wrap: break-word;
-            word-break: break-all;
+            //word-break: break-all;
         }   
     }
     > tbody,
@@ -2061,7 +2094,7 @@ div.wide.form{
 }
 
 .cgrid-view{
-    .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );
+    /*.b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );*/
     position:relative;
 }
 
@@ -2151,7 +2184,10 @@ div.wide.form{
     margin-left:0;
     ++.themeColor;
     &:after{
-        content: "▾";
+        content: "÷";
+        .symbly(14px);
+        position:relative;
+        top:1px;
         margin-left:5px;
     }
 }
@@ -2159,7 +2195,10 @@ div.wide.form{
 #select-list-attributes-link{
     margin-left:25px;
     &:after{
-        content: "▾";
+        content: "÷";
+        .symbly(14px);
+        position:relative;
+        top:1px;
         margin-left:5px;
     }
 }
@@ -2959,7 +2998,9 @@ div.wide.form{
             .smaller();
         }
         &:after{
-            content: "▾";
+            content: "÷";
+            .symbly(14px);
+            top:0;
             margin-left:5px;
         }
     }
@@ -3120,7 +3161,8 @@ div.wide.form{
     > table{
         td > a{
             &:after{
-                content: "▾";
+                content: "÷";
+                .symbly(14px);
                 margin-left: 5px;
             }
         }
@@ -3267,14 +3309,13 @@ div.wide.form{
             height: 13px;
             text-align: center;
             vertical-align: middle;
-            font-size: 11px;
-            line-height: 12px;
             color: #666;
             border:1px solid #fff;
             .b-shadow(inset 0 0 0 1px #ddd);
             .t-shadow(0 1px 0 #fff);
             .radius(3px);
             #gradient > .vertical(#e8e8e8, #f5f5f5);
+            .symbly(14px);
         } 
         ul{
             ++.flyout;
@@ -3464,11 +3505,11 @@ div.hasHalfs{
             .symbly(24px);
         }
         > a:after{
-            content: "▾";
+            content: "÷";
+            .symbly(12px);
             position: relative;
             top:-2px;
             left:2px;
-            font-size: 10px;
         }
         a{
             .t-shadow(none) !important;

@@ -4950,7 +4950,10 @@ section {
   left: auto;
 }
 #user-header-menu > li > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal !important;
+  font-size: 12px !important;
+  font-family: "ZurmoGamificationSymblyReguRg" !important;
   color: #ddd;
   position: relative;
   top: 0;
@@ -5259,7 +5262,10 @@ section {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e0e0e0', endColorstr='#c6c6c6', GradientType=0);
 }
 #ShortcutsMenu > li > a :after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 16px;
+  font-family: "ZurmoGamificationSymblyReguRg";
   margin-left: 10px;
 }
 #ShortcutsMenu ul {
@@ -5782,8 +5788,13 @@ form .view-toolbar-container,
   vertical-align: middle;
 }
 .view-toolbar .parent > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
   margin-left: 10px;
+  position: relative;
+  top: 1px;
 }
 .view-toolbar > ul,
 .view-toolbar > a {
@@ -6130,6 +6141,22 @@ td {
   font-weight: normal;
   text-align: left;
 }
+#list-view {
+  overflow-x: auto;
+  position: relative;
+  background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
+  background-repeat: no-repeat;
+  background-size: 40px 100%,
+        40px 100%, 
+        20px 100%,
+        20px 100%;
+  /* Opera doesn't support this in the shorthand */
+
+  background-attachment: local,
+        local,
+        scroll,
+        scroll;
+}
 table.items {
   width: 100%;
   border: 1px solid #DFDFDF;
@@ -6148,7 +6175,6 @@ table.items > thead > tr > td {
   vertical-align: middle;
   padding: 10px 5px;
   word-wrap: break-word;
-  word-break: break-all;
 }
 table.items > tbody > tr > th,
 table.items > thead > tr > th {
@@ -6903,11 +6929,8 @@ div.wide.form label.hasCheckBox {
   position: relative;
 }
 .cgrid-view {
-  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  /*.b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );*/
+
   position: relative;
 }
 .juiportlet-widget-content .cgrid-view {
@@ -7030,14 +7053,24 @@ div.wide.form label.hasCheckBox {
 }
 #more-search-linkmodal:after,
 #more-search-link:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  top: 1px;
   margin-left: 5px;
 }
 #select-list-attributes-link {
   margin-left: 25px;
 }
 #select-list-attributes-link:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  top: 1px;
   margin-left: 5px;
 }
 #mixed-models-form-search {
@@ -7968,7 +8001,11 @@ div.wide.form label.hasCheckBox {
   font-size: 11px;
 }
 .toolbar-mbmenu .options-menu > li > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  top: 0;
   margin-left: 5px;
 }
 .toolbar-mbmenu .options-menu ul {
@@ -8171,7 +8208,10 @@ div.wide.form label.hasCheckBox {
   padding-bottom: 15px;
 }
 #inline-edit-form > table td > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
   margin-left: 5px;
 }
 #inline-edit-form > table label {
@@ -8323,8 +8363,6 @@ div.wide.form label.hasCheckBox {
   height: 13px;
   text-align: center;
   vertical-align: middle;
-  font-size: 11px;
-  line-height: 12px;
   color: #666;
   border: 1px solid #fff;
   -webkit-box-shadow: inset 0 0 0 1px #dddddd;
@@ -8352,6 +8390,9 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #e8e8e8, #f5f5f5);
   background-image: linear-gradient(top, #e8e8e8, #f5f5f5);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8e8e8', endColorstr='#f5f5f5', GradientType=0);
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
 }
 .BreadCrumbView #StickyListMenu ul {
   display: none;
@@ -8576,11 +8617,13 @@ div.hasHalfs .twoThirds {
   font-family: "ZurmoGamificationSymblyReguRg";
 }
 .edit-row-menu > li > a:after {
-  content: "▾";
+  content: "÷";
+  font-weight: normal;
+  font-size: 12px;
+  font-family: "ZurmoGamificationSymblyReguRg";
   position: relative;
   top: -2px;
   left: 2px;
-  font-size: 10px;
 }
 .edit-row-menu > li a {
   -webkit-text-shadow: none !important;
