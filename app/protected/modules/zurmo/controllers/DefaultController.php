@@ -332,5 +332,24 @@
         {
             StickySearchUtil::clearDataByKey($key);
         }
+
+        public function actionGetUpdatesForRefresh($uconv, $unoti)
+        {
+            header('Content-Type: text/event-stream');
+            header('Cache-Control: no-cache');
+            $data = array();
+            $unreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
+            if ($unreadConversations > $uconv)
+            {
+                $data['unreadConversations'] = $unreadConversations;
+            }
+            if (!empty($data))
+            {
+                echo "retry: 10000\n"; // retry in 10 seconds
+                echo "data: " . CJSON::encode($data) . "\n";
+                echo "\n";
+                flush();
+            }
+        }
     }
 ?>
