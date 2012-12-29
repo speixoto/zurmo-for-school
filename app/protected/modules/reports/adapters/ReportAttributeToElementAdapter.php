@@ -109,8 +109,7 @@
             if($valueElementType != null)
             {
                 $valueElementClassName              = $valueElementType . 'Element';
-                $valueElement                       = new $valueElementClassName($this->model, 'value',
-                                                                                     $this->form, $params);
+                $valueElement                       = new $valueElementClassName($this->model, 'value', $this->form, $params);
 
                 //todo: make sure you check NameIdElement (instanceof) to override the id/name pairings.
                 if($valueElement instanceof NameIdElement)
@@ -136,7 +135,7 @@
                                                                     $this->form, $params);
                 $runTimeElement->editableTemplate       = '{label}{content}{error}';
                 $runTimeContent                         = $runTimeElement->render();
-                self::resolveDivWrapperForContent($runTimeContent,                 $content, 'report-runtime-availability');
+                self::resolveDivWrapperForContent($runTimeContent, $content, 'report-runtime-availability');
             }
             return $content;
         }

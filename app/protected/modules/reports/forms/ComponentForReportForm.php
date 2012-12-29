@@ -26,7 +26,7 @@
 
     abstract class ComponentForReportForm extends ConfigurableMetadataModel
     {
-        const DISPLAY_LABEL_RELATION_DIVIDER     = '>>';
+        const DISPLAY_LABEL_RELATION_DIVIDER     = ' &rarr; ';
 
         const TYPE_FILTERS                       = 'Filters';
 

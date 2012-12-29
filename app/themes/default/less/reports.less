@@ -62,7 +62,7 @@
     float: left;
     ++.border-box;
     padding: 8px 10px;
-    background: #F4F4F4;
+    background: #f0f0f0;
     max-height:600px;
     overflow: auto;
     margin-top:10px;
@@ -70,19 +70,40 @@
 }
 
 .dynamic-droppable-area{
+    ++.border-box;
     width: 80%;
     float: right;
-    ++.border-box;
-    padding-left: 30px;
+    padding-left: 15px;
     margin-top:10px;
     position: relative;
     z-index: 5;
     &.error{
         
     }
+    .ui-droppable{
+        float: left;
+        width: 100%;
+        z-index: 0;
+        &.ui-state-active{
+            .drop-zone{
+                .opacity(100);
+            }
+        }
+    }
+}
+.drop-zone{
+    .animateAll(0.25s);
+    display: block;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+    clear: left;
+    .opacity(25);
 }
 
 .attribute-rows{
+    float: left;
+    width:100%;
     position: relative;
     z-index: 1000;
     ul, li{
@@ -90,23 +111,23 @@
     }
     li + li{
         .dynamic-attribute-row{
-            border-top: none;
+            //border-top: none;
         }
     }
 }
 
 .dynamic-attribute-row{
+    ++.cf;
     position: relative;
-    float: left;
     width: 100%;
     display: block;
-    margin:0 0 0 0;
-    border:1px solid #ccc;
-    .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-    #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-    padding:15px 30px 15px 10px;
+    margin:0 0 5px 0;
+    background: #f0f0f0;
+    .radius(3px);
+    padding:15px 30px 15px 15px;
     ++.border-box;
     > div{
+        position: relative;
         float: left;
         width: 100%;
         ++.cf;
@@ -134,8 +155,15 @@
         display: block;
         .symbly(24px);
         color:#a7a7a7 !important;
+        .opacity(0);
+        .animateAll(0.2s);
     }
     .dynamic-attribute-row-number-label{
+        position: absolute;
+        width: 25px;
+        text-align: right;
+        left:-32px;
+        top:0;
         float: left;
         line-height: 26px;
         margin-right:15px;
@@ -145,16 +173,40 @@
     .hasDropDown{
         width: auto !important;
     }
+    &:hover{
+        .remove-dynamic-attribute-row-link{
+            .opacity(100);
+        }
+    }
+}
+
+.Filters{
+    .dynamic-attribute-row{
+        padding:15px 30px;
+    }
+}
+
+.sortable{
+    .dynamic-attribute-row:hover{
+        .radius(0 3px 3px 0);
+        background: #f0f0f0 url(../images/drag-handle.png) left top repeat-y;
+    }
+    .dynamic-attribute-row:active{
+        cursor: move;
+        background-color: #f5f5f5;
+    }
 }
 
 .dynamic-attribute-label{
     float: left;
     line-height: 26px;
     width:20%;
+    ++.border-box;
 }
+
 .dynamic-attribute-operator{
     float: left;
-    width:25%;
+    width:20%;
     ++.border-box;
     padding-left: 15px;
 }
@@ -162,22 +214,21 @@
 .dynamic-attribute-field{
     float: right;
     width: 80%;
+    ++.border-box;
 }
 
 .value-data{
-    > div:first-child{
-        //margin-bottom: 10px;
-    }
     float: right;
-    width:50%;
+    width:80%;
     ++.border-box;
-    padding-left: 15px;
 }
+
 .report-runtime-availability{
-    clear: left;
+    ++.border-box;
+    min-width: 145px;
+    position: relative;
     display: block;
     float: left;
-    margin-left: 25px;
     line-height: 26px;
     .smaller();
     label{
@@ -188,7 +239,30 @@
         margin-left:0;
         margin-right:8px !important;
     }
+    margin:0 -15px 0 -160px;
 }
+
+.hasFilter{
+    .dynamic-attribute-label{
+        width:100%;
+    }
+    .dynamic-attribute-operator{
+        padding-left:0;
+    }
+    .value-data{
+        float: left;
+        width: 100%;
+        padding-right: 180px;
+    }
+    .dynamic-attribute-operator + .value-data{
+        padding-left: 15px;
+        width:80%;
+    }    
+    .remove-dynamic-attribute-row-link{
+        top:42px;
+    }
+}
+
 
 .dynamic-and-for-mixed{
     display: inline-block;
@@ -197,6 +271,8 @@
 }
 
 #show-filters-structure-wrapper{
+    position: relative;
+    z-index: 500;
     width:100%;
     float: left;
     margin-top:15px;
@@ -223,9 +299,29 @@
         padding: 0 0 15px 0;
     }
     .value-data{
-        width: 55%;
+        width: 60%;
+        padding-left: 15px;
     }
     .attribute-rows{
-        margin: 0 15px;
+        float: none;
+        ul{
+            padding: 10px 15px 5px 15px;
+        }
+    }
+    .view-toolbar-container{
+        clear: left;
+        margin:0 15px 15px 15px;
+        .box-sizing();
+        width: auto;
+    }
+}
+
+.ReportResultsComponentForPortletView{
+    min-height: 100px;
+    .big-spinner{
+        float: left;
+        position: relative;
+        left: 50%;
+        margin:30px 0 0 -21px;
     }
 }

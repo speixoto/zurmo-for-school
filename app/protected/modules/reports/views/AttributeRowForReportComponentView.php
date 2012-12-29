@@ -103,10 +103,12 @@
         protected function renderContent()
         {
             $content  = '<div>';
+            $isHasFilterClass = null;
             if($this->hasTrackableStructurePosition)
             {
                 $content .= $this->renderReportAttributeRowNumberLabel();
                 $content .= $this->renderHiddenStructurePositionInput();
+                $isHasFilterClass = ' hasFilter';
             }
             $content .= $this->renderAttributeContent();
             $content .= '</div>';
@@ -114,7 +116,7 @@
             {
                 $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-attribute-row-link'));
             }
-            $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-attribute-row'), $content);
+            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-attribute-row{$isHasFilterClass}"), $content);
             if($this->addWrapper)
             {
                 return ZurmoHtml::tag('li', array(), $content);
