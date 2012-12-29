@@ -30,7 +30,6 @@
      */
     class ModelDataProviderUtil
     {
-
         /**
          * If the $onTableAliasName is used (not null):
          * Special use of sort attribute resolution. If you are resolving a sort attribute against a relation then

@@ -42,21 +42,20 @@
         public function makeQueryContent(Array $components)
         {
             $content = null;
+            $whereContent = array();
             foreach($components as $key => $filter)
             {
-                $filterContent = $this->resolveComponentAttributeStringContent($filter);
-                if($content != null)
-                {
-                    $content .= ', ';
-                }
-                $content       .= $filterContent;
+                $whereContent[$key + 1] = $this->resolveComponentAttributeStringContent($filter);
             }
-            return $content;
+        //    echo "<pre>"; //todo: remove
+        //    print_r($whereContent);
+        //   echo "</pre>";
+            return strtr(strtolower($this->filtersStructure), $whereContent);
         }
 
         protected function resolveComponentAttributeStringContent(ComponentForReportForm $componentForm)
         {
-            assert('$componentForm instanceof OrderByForReportForm');
+            assert('$componentForm instanceof FilterForReportForm');
             return parent::resolveComponentAttributeStringContent($componentForm);
         }
 
@@ -64,10 +63,10 @@
                                                ComponentForReportForm $componentForm, $onTableAliasName = null)
         {
             $modelClassName  = $modelAttributeToDataProviderAdapter->getResolvedModelClassName();
-            $metadataAdapter = new FilterForReportFormToDataProviderMetadataAdapter($filter);
+            $metadataAdapter = new FilterForReportFormToDataProviderMetadataAdapter($componentForm);
             $attributeData   = $metadataAdapter->getAdaptedMetadata();
             return ModelDataProviderUtil::makeWhere($modelClassName, $attributeData, $this->joinTablesAdapter,
-                                                        $onTableAliasName);
+                                                    $onTableAliasName);
         }
 
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
@@ -83,7 +82,6 @@
         }
 
         //todo: do we need to resolve casting hint for where clause too? need to test, not sure how this would work
-
-        //todo: test multi because multi is sub-select so in fact we do use sub-select for multiple dropdown..
+        //todo: test multi because multi is sub-select so in fact we do use sub-select for multiple dropdown.. multiples need to be sub-query
     }
 ?>
