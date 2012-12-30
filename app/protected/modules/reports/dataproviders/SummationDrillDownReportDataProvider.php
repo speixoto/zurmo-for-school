@@ -24,40 +24,38 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportDataProviderFactory
+    class SummationDrillDownReportDataProvider extends RowsAndColumnsReportDataProvider
     {
-        public static function makeByReport(Report $report, $pageSize)
+        protected function isReportValidType()
         {
-            $config   = array(
-                'pagination' => array(
-                    'pageSize' => $pageSize
-                ));
-            if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
-            {
-                $dataProvider = new RowsAndColumnsReportDataProvider($report, $config);
-            }
-            elseif($report->getType() == Report::TYPE_SUMMATION)
-            {
-                $dataProvider = new SummationReportDataProvider($report, $config);
-            }
-            elseif($report->getType() == Report::TYPE_MATRIX)
-            {
-                $dataProvider = new MatrixReportDataProvider($report, $config);
-            }
-            else
+            if($this->report->getType() != Report::TYPE_SUMMATION)
             {
                 throw new NotSupportedException();
             }
-            return $dataProvider;
         }
 
-        public static function makeForSummationDrillDown(Report $report, $pageSize)
+        protected function resolveDisplayAttributesToUse()
         {
-            $config   = array(
-                'pagination' => array(
-                    'pageSize' => $pageSize
-                ));
-            return new SummationDrillDownReportDataProvider($report, $config);
+            return $this->report->getDrillDownDisplayAttributes();
+        }
+
+        protected function makeDisplayAttributes(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                                 RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $builder->makeQueryContent($this->report->getDrillDownDisplayAttributes());
+        }
+
+        protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                               RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            return null;
+        }
+
+        protected function makeGroupBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                               RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            return null;
         }
     }
 ?>

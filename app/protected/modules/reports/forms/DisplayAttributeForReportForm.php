@@ -36,6 +36,10 @@
 
         public $columnAliasName;
 
+        public $queryOnly = false;
+
+        public $valueUsedAsDrillDownFilter = false;
+
         /**
          * Indicates the model alias for working with the resultsRowData. Sometimes there can be the same related model
          * more than once via different relations.  This makes sure the resultsRowData knows which model to use. Only applies
@@ -58,7 +62,7 @@
         public function attributeNames()
         {
             $attributeNames = parent::attributeNames();
-            if(count($attributeNames) != 3)
+            if(count($attributeNames) != 5)
             {
                 throw new NotSupportedException();
             }

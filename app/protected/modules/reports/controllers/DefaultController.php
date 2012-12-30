@@ -91,7 +91,7 @@
                     $searchForm,
                     $dataProvider
                 );
-                $view = new UsersPageView($mixedView);
+                $view = new ReportsPageView($mixedView);
             }
             else
             {
@@ -437,6 +437,23 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($report);
             $report->delete();
             $this->redirect(array($this->getId() . '/index'));
+        }
+
+        public function actionDrillDownDetails($id, $rowId)
+        {
+            $savedReport  = SavedReport::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport, true);
+            $report       = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $report->resolveGroupBysAsFilters(GetUtil::getData());
+            $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'listPageSize', get_class($this->getModule()));
+            $dataProvider = ReportDataProviderFactory::makeForSummationDrillDown($report, $pageSize);
+            $dataProvider->setRunReport(true);
+            $view         = new SummationDrillDownReportResultsGridView('default', 'reports', $dataProvider, $rowId);
+            $content = $view->render();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
         }
     }
 ?>

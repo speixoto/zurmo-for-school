@@ -26,11 +26,12 @@
 
     class SummationReportDataProvider extends ReportDataProvider
     {
-        protected function isReportValidType()
+        public function __construct(Report $report, array $config = array())
         {
-            if($this->report->getType() != Report::TYPE_SUMMATION)
+            parent::__construct($report, $config);
+            if(($this->report->getDrillDownDisplayAttributes()) > 0)
             {
-                throw new NotSupportedException();
+                return $this->resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes();
             }
         }
 
@@ -60,6 +61,14 @@
             return $chartData;
         }
 
+        protected function isReportValidType()
+        {
+            if($this->report->getType() != Report::TYPE_SUMMATION)
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         protected function fetchChartData()
         {
             //todO: $totalItemCount = $this->getTotalItemCount(); if too many rows over 100? then we should block or limit or something not sure...
@@ -86,6 +95,30 @@
                     return $displayAttribute->label;
                 }
             }
+        }
+
+        protected function resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes()
+        {
+            foreach($this->report->getGroupBys() as $groupBy)
+            {
+                if(null === $index = $this->report->getDisplayAttributeIndex($groupBy->attributeIndexOrDerivedType))
+                {
+                    $displayAttribute                              = new DisplayAttributeForReportForm(
+                                                                     $groupBy->getModuleClassName(),
+                                                                     $groupBy->getModelClassName(),
+                                                                     $this->report->getType());
+                    $displayAttribute->attributeIndexOrDerivedType = $groupBy->attributeIndexOrDerivedType;
+                    $displayAttribute->queryOnly                   = true;
+                    $displayAttribute->valueUsedAsDrillDownFilter  = true;
+                    $this->report->addDisplayAttribute($displayAttribute);
+                }
+                else
+                {
+                    $displayAttributes = $this->report->getDisplayAttributes();
+                    $displayAttributes[$index]->valueUsedAsDrillDownFilter = true;
+                }
+            }
+
         }
 
         protected function resolveChartFirstSeriesAttributeNameForReportResultsRowData()

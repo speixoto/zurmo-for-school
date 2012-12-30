@@ -57,7 +57,7 @@
             }
             if(isset($data['currencyConversionType']))
             {
-                $report->setCurrencyConversionType($data['currencyConversionType']);
+                $report->setCurrencyConversionType((int)$data['currencyConversionType']);
             }
             if(isset($data['spotConversionCurrencyCode']))
             {

@@ -154,6 +154,15 @@
             return $this->resolveAttributeModelClassNameFromData($this->attributeAndRelationData, $this->moduleClassName, $this->modelClassName);
         }
 
+        public function getResolvedAttributeRealAttributeName()
+        {
+            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
+            $modelClassName       = $this->getResolvedAttributeModelClassName();
+            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
+                                    make($moduleClassName, $modelClassName, $this->reportType);
+            return $modelToReportAdapter->resolveRealAttributeName($this->getResolvedAttribute());
+        }
+
         public function getPenultimateModelClassName()
         {
             if($this->attribute != null)

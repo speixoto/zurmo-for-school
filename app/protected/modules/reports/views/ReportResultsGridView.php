@@ -66,7 +66,6 @@
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->dataProvider           = $dataProvider;
-            $this->rowsAreSelectable      = true;
             $this->gridIdSuffix           = $gridIdSuffix;
             $this->gridViewPagerParams    = $gridViewPagerParams;
             $this->gridId                 = 'report-results-grid-view';
@@ -94,7 +93,7 @@
 
         protected function getGridViewWidgetPath()
         {
-            return 'application.core.widgets.ExtendedGridView';
+            return 'application.modules.reports.widgets.ReportResultsExtendedGridView';
         }
 
         protected function getCGridViewParams()
@@ -121,6 +120,7 @@
                 'summaryText'          => static::getSummaryText(),
                 'summaryCssClass'      => static::getSummaryCssClass(),
                 'enableSorting'        => false,
+                'expandableRows'       => $this->rowsAreExpandable(),
             );
         }
 
@@ -156,6 +156,11 @@
                 'paginationParams' => GetUtil::getData(),
                 'route'            => 'defaultPortlet/details',
             );
+            return $this->resolveDefaultGridViewPagerParams($defaultGridViewPagerParams);
+        }
+
+        protected function resolveDefaultGridViewPagerParams($defaultGridViewPagerParams)
+        {
             if (empty($this->gridViewPagerParams))
             {
                 return $defaultGridViewPagerParams;
@@ -188,21 +193,39 @@
         protected function getCGridViewColumns()
         {
             $columns = array();
-            foreach ($this->dataProvider->getReport()->getDisplayAttributes() as $key => $displayAttribute)
+
+            if($this->rowsAreExpandable())
             {
-                $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
-                $attributeName    = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
-                $params           = $this->resolveParamsForColumnElement($displayAttribute);
-                $columnAdapter    = new $columnClassName($attributeName, $this, $params);
-                $column           = $columnAdapter->renderGridViewData();
-                $column['header'] = $displayAttribute->label;
-                if (!isset($column['class']))
+                $firstColumn = array(
+                    'class'               => 'DrillDownColumn',
+                    'id'                  => $this->gridId . $this->gridIdSuffix . '-rowDrillDown',
+                );
+                array_push($columns, $firstColumn);
+            }
+
+            foreach ($this->resolveDisplayAttributesToUse() as $key => $displayAttribute)
+            {
+                if(!$displayAttribute->queryOnly)
                 {
-                    $column['class'] = 'DataColumn';
+                    $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
+                    $attributeName    = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                    $params           = $this->resolveParamsForColumnElement($displayAttribute);
+                    $columnAdapter    = new $columnClassName($attributeName, $this, $params);
+                    $column           = $columnAdapter->renderGridViewData();
+                    $column['header'] = $displayAttribute->label;
+                    if (!isset($column['class']))
+                    {
+                        $column['class'] = 'DataColumn';
+                    }
+                    array_push($columns, $column);
                 }
-                array_push($columns, $column);
             }
             return $columns;
+        }
+
+        protected function resolveDisplayAttributesToUse()
+        {
+            return $this->dataProvider->getReport()->getDisplayAttributes();
         }
 
         protected function resolveColumnClassNameForListViewColumnAdapter($displayAttribute)
@@ -238,13 +261,16 @@
             return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
         }
 
+        /**
+         * Do not run global eval, since it causes doubling up of ajax requests on the pager.
+         * (non-PHPdoc)
+         * @see ListView::getCGridViewAfterAjaxUpdate()
+         */
         protected function getCGridViewAfterAjaxUpdate()
         {
             // Begin Not Coding Standard
             return 'js:function(id, data) {
                         processAjaxSuccessError(id, data);
-                        var $data = $(data);
-                        jQuery.globalEval($data.filter("script").last().text());
                     }';
             // End Not Coding Standard
         }
@@ -263,6 +289,15 @@
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/ListViewUtils.js');
+        }
+
+        protected function rowsAreExpandable()
+        {
+            if(count($this->dataProvider->getReport()->getDrillDownDisplayAttributes()) > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

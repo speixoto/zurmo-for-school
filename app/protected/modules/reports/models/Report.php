@@ -336,5 +336,50 @@
             }
             return false;
         }
+
+        public function getDisplayAttributeIndex($attribute)
+        {
+            foreach($this->displayAttributes as $key => $displayAttribute)
+            {
+                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                {
+                    return $key;
+                }
+            }
+            return null;
+        }
+
+        public function resolveGroupBysAsFilters(Array $getData)
+        {
+            $newStartingStructurePosition = count($this->filters) + 1;
+            $structure = null;
+            foreach($this->getGroupBys() as $groupBy)
+            {
+                $index = ReportResultsRowData::resolveDataParamKeyForDrillDown($groupBy->attributeIndexOrDerivedType);
+                $value = $getData[$index];
+                $filter                              = new FilterForReportForm($groupBy->getModuleClassName(),
+                                                       $groupBy->getModelClassName(),
+                                                       $this->type);
+                $filter->attributeIndexOrDerivedType = $groupBy->attributeIndexOrDerivedType;
+                //todO: not sure how this will work when doing group modifiers... its not exactly value type but not even sure it will resolve at all.
+                //todo: hmm. do we make it resolve as a between the range? or just use the where YEAR(createddatetime) = '2001', hmm. the other problem is this is not timezone sensitive.. but then
+                //todo: again the grouping is not timezone sensitive, too bad for now.
+                $filter->operator                    = OperatorRules::TYPE_EQUALS;
+                $filter->value                       = $value;
+                $this->addFilter($filter);
+                if($structure != null)
+                {
+                    $structure .= ' AND ';
+                }
+                $structure .= $newStartingStructurePosition;
+                $newStartingStructurePosition ++;
+            }
+            $structure = '(' . $structure . ')';
+            if($this->filtersStructure != null)
+            {
+                $this->filtersStructure .= ' AND ';
+            }
+            $this->filtersStructure .= $structure;
+        }
     }
 ?>

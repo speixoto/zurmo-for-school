@@ -41,16 +41,17 @@
 
         public function makeQueryContent(Array $components)
         {
-            $content = null;
             $whereContent = array();
             foreach($components as $key => $filter)
             {
                 $whereContent[$key + 1] = $this->resolveComponentAttributeStringContent($filter);
             }
-        //    echo "<pre>"; //todo: remove
-        //    print_r($whereContent);
-        //   echo "</pre>";
-            return strtr(strtolower($this->filtersStructure), $whereContent);
+            $content = strtr(strtolower($this->filtersStructure), $whereContent);
+            if(empty($content))
+            {
+                return null;
+            }
+            return $content;
         }
 
         protected function resolveComponentAttributeStringContent(ComponentForReportForm $componentForm)

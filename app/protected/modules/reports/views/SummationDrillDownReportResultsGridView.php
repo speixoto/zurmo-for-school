@@ -24,40 +24,49 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportDataProviderFactory
+    class SummationDrillDownReportResultsGridView extends ReportResultsGridView
     {
-        public static function makeByReport(Report $report, $pageSize)
+        protected function isDataProviderValid()
         {
-            $config   = array(
-                'pagination' => array(
-                    'pageSize' => $pageSize
-                ));
-            if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            if(!$this->dataProvider instanceof SummationDrillDownReportDataProvider)
             {
-                $dataProvider = new RowsAndColumnsReportDataProvider($report, $config);
+                return false;
             }
-            elseif($report->getType() == Report::TYPE_SUMMATION)
-            {
-                $dataProvider = new SummationReportDataProvider($report, $config);
-            }
-            elseif($report->getType() == Report::TYPE_MATRIX)
-            {
-                $dataProvider = new MatrixReportDataProvider($report, $config);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $dataProvider;
+            return true;
         }
 
-        public static function makeForSummationDrillDown(Report $report, $pageSize)
+        public function isUniqueToAPage()
         {
-            $config   = array(
-                'pagination' => array(
-                    'pageSize' => $pageSize
-                ));
-            return new SummationDrillDownReportDataProvider($report, $config);
+            return false;
+        }
+
+        protected function rowsAreExpandable()
+        {
+            return false;
+        }
+
+        protected function resolveDisplayAttributesToUse()
+        {
+            return $this->dataProvider->getReport()->getDrillDownDisplayAttributes();
+        }
+
+        protected static function getPagerCssClass()
+        {
+            return 'pager horizontalX'; //todo: change to something else. needed so it doesnt cause doulbe up on pager requests.
+        }
+
+        protected function getCGridViewPagerParams()
+        {
+            $defaultGridViewPagerParams = array(
+                'firstPageLabel'   => '<span>first</span>',
+                'prevPageLabel'    => '<span>previous</span>',
+                'nextPageLabel'    => '<span>next</span>',
+                'lastPageLabel'    => '<span>last</span>',
+                'class'            => 'SimpleListLinkPager',
+                'paginationParams' => GetUtil::getData(),
+                'route'            => 'default/drillDownDetails',
+            );
+            return $this->resolveDefaultGridViewPagerParams($defaultGridViewPagerParams);
         }
     }
 ?>

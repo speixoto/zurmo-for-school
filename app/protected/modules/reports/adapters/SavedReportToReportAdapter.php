@@ -49,7 +49,7 @@
                 }
                 if(isset($unserializedData['currencyConversionType']))
                 {
-                    $report->setCurrencyConversionType($unserializedData['currencyConversionType']);
+                    $report->setCurrencyConversionType((int)$unserializedData['currencyConversionType']);
                 }
                 if(isset($unserializedData['spotConversionCurrencyCode']))
                 {

@@ -24,40 +24,47 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportDataProviderFactory
+    Yii::import('zii.widgets.grid.CGridView');
+
+    /**
+     * Extends the yii CGridView to provide additional functionality.
+     * @see CGridView class
+     */
+    class ReportResultsExtendedGridView extends ExtendedGridView
     {
-        public static function makeByReport(Report $report, $pageSize)
+        public $expandableRows = false;
+
+        public function renderTableBody()
         {
-            $config   = array(
-                'pagination' => array(
-                    'pageSize' => $pageSize
-                ));
-            if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            $data = $this->dataProvider->getData();
+            $n    = count($data);
+            echo "<tbody>\n";
+
+            if($n > 0)
             {
-                $dataProvider = new RowsAndColumnsReportDataProvider($report, $config);
-            }
-            elseif($report->getType() == Report::TYPE_SUMMATION)
-            {
-                $dataProvider = new SummationReportDataProvider($report, $config);
-            }
-            elseif($report->getType() == Report::TYPE_MATRIX)
-            {
-                $dataProvider = new MatrixReportDataProvider($report, $config);
+                for($row = 0; $row < $n; ++$row)
+                {
+                    $this->renderTableRow($row);
+                    if($this->expandableRows)
+                    {
+                        $this->renderExpandableRow($this->dataProvider->data[$row]->getId());
+                    }
+                }
             }
             else
             {
-                throw new NotSupportedException();
+                echo '<tr><td colspan="' . count($this->columns) . '" class="empty">';
+                $this->renderEmptyText();
+                echo "</td></tr>\n";
             }
-            return $dataProvider;
+            echo "</tbody>\n";
         }
 
-        public static function makeForSummationDrillDown(Report $report, $pageSize)
+        protected function renderExpandableRow($id)
         {
-            $config   = array(
-                'pagination' => array(
-                    'pageSize' => $pageSize
-                ));
-            return new SummationDrillDownReportDataProvider($report, $config);
+            echo '<tr style="display:none;"><td></td><td colspan="' . (count($this->columns) - 1) . '">';
+            echo '<div class="drillDownContent" id="drillDownContentFor-' . $id . '"></div>';
+            echo "</td></tr>\n";
         }
     }
 ?>

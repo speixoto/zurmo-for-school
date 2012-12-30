@@ -90,9 +90,10 @@
             echo $sql . "<BR>";
             $rows         = R::getAll($sql);
             $resultsData  = array();
+            $idByOffset   = $offset;
             foreach ($rows as $key => $row)
             {
-                $reportResultsRowData = new ReportResultsRowData($this->report->getDisplayAttributes());
+                $reportResultsRowData = new ReportResultsRowData($this->resolveDisplayAttributesToUse(), $idByOffset);
                 foreach($selectQueryAdapter->getIdTableAliasesAndModelClassNames() as $tableAlias => $modelClassName)
                 {
                     $idColumnName = $selectQueryAdapter->getIdColumNameByTableAlias($tableAlias);
@@ -108,8 +109,14 @@
                     $reportResultsRowData->addSelectedColumnNameAndValue($columnName, $value);
                 }
                 $resultsData[$key] = $reportResultsRowData;
+                $idByOffset ++;
             }
             return $resultsData;
+        }
+
+        protected function resolveDisplayAttributesToUse()
+        {
+            return $this->report->getDisplayAttributes();
         }
 
         /**
@@ -134,10 +141,10 @@
          */
         protected function fetchKeys()
         {
-            $keys = array(); //todo: this isnt unique, so we need a way to reference the offset instead... we could pass the offset into reportResultsRowData and have it retrievable as the unique id...
-            foreach ($this->getData() as $key => $unused)
+            $keys = array();
+            foreach ($this->getData() as $data)
             {
-                $keys[] = $key;
+                $keys[] = $data->getId();
             }
             return $keys;
         }
@@ -149,14 +156,11 @@
             $moduleClassName        = $this->report->getModuleClassName();
             $modelClassName         = $moduleClassName::getPrimaryModelName();
             $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
-            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $builder->makeQueryContent($this->report->getDisplayAttributes());
+            $this->makeDisplayAttributes($joinTablesAdapter, $selectQueryAdapter);
+            $where                  = $this->makeFiltersContent($joinTablesAdapter);
+            $orderBy                = $this->makeOrderBysContent($joinTablesAdapter, $selectQueryAdapter);
+            $groupBy                = $this->makeGroupBysContent($joinTablesAdapter, $selectQueryAdapter);
 
-            $where   = null; //todo:
-            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $orderBy = $builder->makeQueryContent($this->report->getOrderBys());
-            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $groupBy = $builder->makeQueryContent($this->report->getGroupBys());
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
@@ -166,15 +170,10 @@
             $moduleClassName        = $this->report->getModuleClassName();
             $modelClassName         = $moduleClassName::getPrimaryModelName();
             $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
-            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $builder->makeQueryContent($this->report->getDisplayAttributes());
-
-            $where   = null; //todo:
-            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $orderBy = $builder->makeQueryContent($this->report->getOrderBys());
-            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $groupBy = $builder->makeQueryContent($this->report->getGroupBys());
-
+            $this->makeDisplayAttributes($joinTablesAdapter, $selectQueryAdapter);
+            $where                  = $this->makeFiltersContent($joinTablesAdapter);
+            $orderBy                = $this->makeOrderBysContent($joinTablesAdapter, $selectQueryAdapter);
+            $groupBy                = $this->makeGroupBysContent($joinTablesAdapter, $selectQueryAdapter);
             //Make a fresh selectQueryAdapter that only has a count clause
             if($selectJustCount)
             {
@@ -184,6 +183,33 @@
             }
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
+        }
+
+        protected function makeDisplayAttributes(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                                 RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $builder->makeQueryContent($this->report->getDisplayAttributes());
+        }
+
+        protected function makeFiltersContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
+        {
+            $builder = new FiltersReportQueryBuilder($joinTablesAdapter, $this->report->getFiltersStructure());
+            return $builder->makeQueryContent($this->report->getFilters());
+        }
+
+        protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                               RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            return $builder->makeQueryContent($this->report->getOrderBys());
+        }
+
+        protected function makeGroupBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                               RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            return $builder->makeQueryContent($this->report->getGroupBys());
         }
     }
 ?>

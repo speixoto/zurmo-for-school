@@ -28,6 +28,10 @@
     {
         const ATTRIBUTE_NAME_PREFIX = 'attribute';
 
+        const DRILL_DOWN_GROUP_BY_VALUE_PREFIX = 'groupByRowValue';
+
+        protected $id;
+
         protected $displayAttributes;
 
         protected $modelsByAliases  = array();
@@ -40,9 +44,11 @@
             return self::ATTRIBUTE_NAME_PREFIX . $key;
         }
 
-        public function __construct(array $displayAttributes)
+        public function __construct(array $displayAttributes, $id)
         {
+            assert('is_int($id)');
             $this->displayAttributes = $displayAttributes;
+            $this->id                = $id;
         }
 
         public function __get($name)
@@ -88,6 +94,50 @@
             throw new NotSupportedException();
         }
 
+        public function getId()
+        {
+            return $this->id;
+        }
+
+        public function getDataParamsForDrillDownAjaxCall()
+        {
+            $dataParams = array();
+            foreach($this->displayAttributes as $key => $displayAttribute)
+            {
+                if($displayAttribute->valueUsedAsDrillDownFilter)
+                {
+                    $attributeAlias = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                    if($this->shouldResolveValueFromModel($attributeAlias))
+                    {
+                        list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);
+                        $model = $this->resolveModel($displayAttributeKey);
+                        $value = $this->resolveRawValueByModel($displayAttribute, $model);
+                    }
+                    else
+                    {
+                        $value = $this->selectedColumnNamesAndValues[$attributeAlias];
+                    }
+                    $dataParams[self::resolveDataParamKeyForDrillDown($displayAttribute->attributeIndexOrDerivedType)] = $value;
+                }
+            }
+            return $dataParams;
+        }
+
+        public static function resolveDataParamKeyForDrillDown($attributeIndexOrDerivedType)
+        {
+            return self::DRILL_DOWN_GROUP_BY_VALUE_PREFIX . $attributeIndexOrDerivedType;
+        }
+
+        protected function shouldResolveValueFromModel($attributeAlias)
+        {
+            $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);
+            if(count($parts) == 2 && $parts[1] != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         protected function resolveModel($displayAttributeKey)
         {
             if(!isset($this->displayAttributes[$displayAttributeKey]))
@@ -115,9 +165,47 @@
             {
                 return null;
             }
-            $attribute        = $displayAttribute->getResolvedAttribute();
-            $model            = $this->getModelByAlias($modelAlias);
-            return $model->$attribute;
+            $attribute           = $displayAttribute->getResolvedAttribute();
+            $model               = $this->getModelByAlias($modelAlias);
+            return $this->resolveModelAttributeValueForPenultimateRelation($model, $attribute, $displayAttribute);
+        }
+
+        protected function resolveModelAttributeValueForPenultimateRelation(RedBeanModel $model, $attribute,
+                                                                            DisplayAttributeForReportForm $displayAttribute)
+        {
+            if($model->isAttribute($attribute))
+            {
+                return $model->$attribute;
+            }
+            $penultimateRelation = $displayAttribute->getPenultimateRelation();
+            if(!$model->isAttribute($penultimateRelation))
+            {
+                throw new NotSupportedException();
+            }
+            return $model->$penultimateRelation->$attribute;
+        }
+
+        protected function resolveRawValueByModel(DisplayAttributeForReportForm $displayAttribute, RedBeanModel $model)
+        {
+            $type = $displayAttribute->getDisplayElementType();
+            $attribute = $displayAttribute->getResolvedAttribute();
+            if($type == 'CalculatedCurrencyValue')
+            {
+                return $model->{$attribute}->value;
+            }
+            elseif($type == 'User')
+            {
+                $realAttributeName = $displayAttribute->getResolvedAttributeRealAttributeName();
+                return $model->{$realAttributeName}->id;
+            }
+            elseif($type == 'DropDown')
+            {
+                return $model->{$attribute}->value;
+            }
+            else
+            {
+                return $this->resolveModelAttributeValueForPenultimateRelation($model, $attribute, $displayAttribute);
+            }
         }
 
         protected function getModelByAlias($alias)
