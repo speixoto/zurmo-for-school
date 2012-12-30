@@ -57,7 +57,7 @@
 
         public function getAllStepsMessage()
         {
-            return Yii::t('Default', 'Analyzing the import data...');
+            return Zurmo::t('ImportModule', 'Analyzing the import data...');
         }
 
         protected function steps()
@@ -67,7 +67,7 @@
 
         protected function stepMessages()
         {
-            return array('processColumns' => Yii::t('Default', 'Processing'));
+            return array('processColumns' => Zurmo::t('ImportModule', 'Processing'));
         }
 
         protected function processColumns($params)

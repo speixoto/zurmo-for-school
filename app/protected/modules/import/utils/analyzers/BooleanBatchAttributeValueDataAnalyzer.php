@@ -57,7 +57,7 @@
             {
                 $label   = '{count} value(s) have invalid check box values. ';
                 $label  .= 'These values will be set to false upon import.';
-                $this->addMessage(Yii::t('Default', $label, array('{count}' => $invalid)));
+                $this->addMessage(Zurmo::t('ImportModule', $label, array('{count}' => $invalid)));
             }
         }
     }
