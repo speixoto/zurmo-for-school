@@ -113,13 +113,13 @@
             assert('$jobLog instanceof JobLog || $jobLog == null');
             if ($jobLog == null)
             {
-                return ZurmoHtml::tag('span', array('class' => 'jobHasNeverRun'), Yii::t('Default', 'Never'));
+                return ZurmoHtml::tag('span', array('class' => 'jobHasNeverRun'), Zurmo::t('JobsManagerModule', 'Never'));
             }
             if ($jobLog != null && $jobLog->status == JobLog::STATUS_COMPLETE_WITH_ERROR)
             {
                 $content  = DateTimeUtil::
                            convertDbFormattedDateTimeToLocaleFormattedDisplay($jobLog->createdDateTime);
-                $content .= ' ' . Yii::t('Default', '[with errors]');
+                $content .= ' ' . Zurmo::t('JobsManagerModule', '[with errors]');
                 $content  = ZurmoHtml::tag('span', array('class' => 'jobHasErrors'), $content);
             }
             else
@@ -136,18 +136,18 @@
             assert('$jobInProcess instanceof JobInProcess || $jobInProcess == null');
             if ($jobInProcess != null && JobsManagerUtil::isJobInProcessOverThreashold($jobInProcess, $jobInProcess->type))
             {
-                return Yii::t('Default', 'In Process (Stuck)');
+                return Zurmo::t('JobsManagerModule', 'In Process (Stuck)');
             }
             elseif ($jobInProcess != null)
             {
                 $startedDateTimeContent = DateTimeUtil::
                                           convertDbFormattedDateTimeToLocaleFormattedDisplay($jobInProcess->createdDateTime);
-                return Yii::t('Default', 'In Process [Started: {startedDateTime}]',
+                return Zurmo::t('JobsManagerModule', 'In Process [Started: {startedDateTime}]',
                        array('{startedDateTime}' => $startedDateTimeContent));
             }
             else
             {
-                return Yii::t('Default', 'Not Running');
+                return Zurmo::t('JobsManagerModule', 'Not Running');
             }
         }
 
