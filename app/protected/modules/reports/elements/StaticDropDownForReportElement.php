@@ -28,11 +28,6 @@
     */
     class StaticDropDownForReportElement extends DataFromFormStaticDropDownFormElement
     {
-        protected function renderControlEditable()
-        {
-            return ZurmoHtml::tag('div', array('class' => 'first-value-area'), parent::renderControlEditable());
-        }
-
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
             assert('$model instanceof FilterForReportForm');

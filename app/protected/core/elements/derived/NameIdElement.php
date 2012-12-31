@@ -65,7 +65,7 @@
 
         protected function renderError()
         {
-            return $this->form->error($this->model, $this->nameAttributeName, array('inputID' => $this->getIdForTextField()));
+            return $this->form->error($this->model, $this->idAttributeId, array('inputID' => $this->getIdForHiddenField()));
         }
 
         protected function getIdForHiddenField()

@@ -115,8 +115,14 @@
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
                 }
-
-                $valueElement->editableTemplate = '{content}{error}';
+                if($valueElement instanceof MixedNumberTypesElement)
+                {
+                    $valueElement->editableTemplate = '{content}{error}';
+                }
+                else
+                {
+                    $valueElement->editableTemplate = '<div class="first-value-area">{content}{error}</div>';
+                }
                 $valueContent                   = $valueElement->render();
             }
             else

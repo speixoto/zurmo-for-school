@@ -26,7 +26,7 @@
 
     abstract class ComponentForReportForm extends ConfigurableMetadataModel
     {
-        const DISPLAY_LABEL_RELATION_DIVIDER     = ' &rarr; ';
+        const DISPLAY_LABEL_RELATION_DIVIDER     = '>>';
 
         const TYPE_FILTERS                       = 'Filters';
 
@@ -206,7 +206,6 @@
                     {
                         $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                         $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
-                        $relationsData    = $modelToReportAdapter->getSelectableRelationsData();
                         $typeToUse = 'Plural';
                         if($modelToReportAdapter->isRelationASingularRelation($relationOrAttribute))
                         {
