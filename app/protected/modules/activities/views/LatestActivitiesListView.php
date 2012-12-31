@@ -271,7 +271,9 @@
                     'url'        =>  $urlScript,
                     'update'     => '#' . $this->uniquePageId,
                     'beforeSend' => 'js:function(){makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
-                    'complete'   => 'js:function(){$("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");}'
+                    'complete'   => 'js:function(){
+                                        $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
+                                        $("#filter-portlet-model-bar-' . $this->uniquePageId . '").show();}'
             ));
             Yii::app()->clientScript->registerScript($this->uniquePageId, "
             $('#LatestActivitiesConfigurationForm_rollup_area').buttonset();
