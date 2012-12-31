@@ -170,17 +170,12 @@
                                         $this->urlParameters), $row, 0);
             }
             $selectLink            = $this->renderSelectLinkContent();
-            $selectContent         = $this->renderSelectContent();
             $createContactLink     = ZurmoHtml::link(Yii::t('Default', 'Create ContactsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
                                      array('class' => 'create-link contact-create-link z-link'));
-            $createContactContent  = Yii::t('Default', 'Create ContactsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
             $createLeadLink        = ZurmoHtml::link(Yii::t('Default', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
                                      array('class' => 'create-link lead-create-link z-link'));
-            $createLeadContent     = Yii::t('Default', 'Create LeadsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
             $deleteLink            = $this->renderDeleteLink();
             $rules    = new EmailMessageMashableActivityRules();
             $content = $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
@@ -314,8 +309,8 @@
         protected function getAjaxOptionsForDelete()
         { 
             return array('type'     => 'GET',
-                         'success' => "function(){
-                                       window.location = '" . $this->getMatchingListUrl() . "';
+                         'success'  => "function(){
+                                       $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
                                        $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
                                           text: '" . Yii::t('Default', 'Deleted successfully') . "',
