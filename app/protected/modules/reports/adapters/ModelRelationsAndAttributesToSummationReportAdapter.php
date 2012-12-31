@@ -75,7 +75,7 @@
             foreach($existingDisplayAttributes as $displayAttribute)
             {
                 $resolvedAttribute    = $displayAttribute->getResolvedAttribute();
-                if($this->isDisplayAttributeACalculationOrModifier($resolvedAttribute))
+                if($this->isAttributeACalculationOrModifier($resolvedAttribute))
                 {
                     //We don't have to check penultimate information like GroupBys, because all display calculations are
                     //valid

@@ -72,7 +72,7 @@
 
         /**
          * Constructs a list view specifying the controller as
-         * well as the model that will have its details displayed.
+         * well as the model that will have its details displayed.isDisplayAttributeACalculationOrModifier
          */
         public function __construct(
             $controllerId,

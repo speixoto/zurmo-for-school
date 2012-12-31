@@ -187,21 +187,19 @@
 
         private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName)
         {
-                $modelClassName       = $this->getResolvedAttributeModelClassName();
-                $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                        make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
-                $rules                = array_merge($rules,
-                                        $modelToReportAdapter->getFilterRulesByAttribute(
-                                        $this->getResolvedAttribute(), $ruleAttributeName));
-                $validators           = $this->createValueValidatorsByRules($rules);
-                foreach($validators as $validator)
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
+            $rules                = array_merge($rules,
+                                    $modelToReportAdapter->getFilterRulesByAttribute(
+                                    $this->getResolvedAttribute(), $ruleAttributeName));
+            $validators           = $this->createValueValidatorsByRules($rules);
+            foreach($validators as $validator)
+            {
+                $validated = $validator->validate($this);
+                if(!$validated)
                 {
-                    $validated = $validator->validate($this);
-                    if(!$validated)
-                    {
-                        $passedValidation = false;
-                    }
+                    $passedValidation = false;
                 }
+            }
         }
 
         public function hasAvailableOperatorsType()
@@ -223,10 +221,7 @@
             {
                 return $this->_availableOperatorsType;
             }
-            $moduleClassName               = $this->getResolvedAttributeModuleClassName();
-            $modelClassName                = $this->getResolvedAttributeModelClassName();
-            $modelToReportAdapter          = ModelRelationsAndAttributesToReportAdapter::
-                                             make($moduleClassName, $modelClassName, $this->reportType);
+            $modelToReportAdapter          = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
             $availableOperatorsType        = $modelToReportAdapter->getAvailableOperatorsType($this->getResolvedAttribute());
             $this->_availableOperatorsType = $availableOperatorsType;
             return $availableOperatorsType;
@@ -288,10 +283,7 @@
             {
                 throw new NotSupportedException();
             }
-            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
-            $modelClassName       = $this->getResolvedAttributeModelClassName();
-            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                    make($moduleClassName, $modelClassName, $this->reportType);
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
             return $modelToReportAdapter->getFilterValueElementType($this->getResolvedAttribute());
         }
 

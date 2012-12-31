@@ -153,6 +153,16 @@
             $this->assertEquals('DateTime',                  $displayAttribute->getDisplayElementType());
             $displayAttribute->attributeIndexOrDerivedType = 'currencyValue__Minimum';
             $this->assertEquals('CalculatedCurrencyValue',   $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dateTime__Day';
+            $this->assertEquals('Text',                      $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dateTime__Week';
+            $this->assertEquals('Text',                      $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dateTime__Month';
+            $this->assertEquals('Text',                      $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dateTime__Quarter';
+            $this->assertEquals('Text',                      $displayAttribute->getDisplayElementType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dateTime__Year';
+            $this->assertEquals('Text',                      $displayAttribute->getDisplayElementType());
         }
     }
 ?>

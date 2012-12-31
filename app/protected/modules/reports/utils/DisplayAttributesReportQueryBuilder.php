@@ -183,7 +183,7 @@
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
             if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
-               $modelToReportAdapter->isDisplayAttributeACalculationOrModifier($attribute))
+               $modelToReportAdapter->isAttributeACalculationOrModifier($attribute))
             {
                 $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
                 return new RedBeanModelAttributeToDataProviderAdapter(

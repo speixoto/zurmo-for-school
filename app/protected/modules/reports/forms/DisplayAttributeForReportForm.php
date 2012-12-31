@@ -109,20 +109,14 @@
             {
                 throw new NotSupportedException();
             }
-            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
-            $modelClassName       = $this->getResolvedAttributeModelClassName();
-            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                    make($moduleClassName, $modelClassName, $this->reportType);
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
             return $modelToReportAdapter->getDisplayElementType($this->getResolvedAttribute());
         }
 
         public function resolveAttributeNameForGridViewColumn($key)
         {
             assert('is_int($key)');
-            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
-            $modelClassName       = $this->getResolvedAttributeModelClassName();
-            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                    make($moduleClassName, $modelClassName, $this->reportType);
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
             if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($this->getResolvedAttribute()))
             {
                 return $this->columnAliasName;
@@ -149,6 +143,12 @@
                 return true;
             }
             return false;
+        }
+
+        public function getRawValueRelatedAttribute()
+        {
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
+            return $modelToReportAdapter->getRawValueRelatedAttribute($this->getResolvedAttribute());
         }
     }
 ?>

@@ -187,9 +187,9 @@
 
         protected function resolveRawValueByModel(DisplayAttributeForReportForm $displayAttribute, RedBeanModel $model)
         {
-            $type = $displayAttribute->getDisplayElementType();
-            $attribute = $displayAttribute->getResolvedAttribute();
-            if($type == 'CalculatedCurrencyValue')
+            $type                 = $displayAttribute->getDisplayElementType();
+            $attribute            = $displayAttribute->getResolvedAttribute();
+            if($type == 'CurrencyValue')
             {
                 return $model->{$attribute}->value;
             }
@@ -201,6 +201,10 @@
             elseif($type == 'DropDown')
             {
                 return $model->{$attribute}->value;
+            }
+            elseif(null != $rawValueRelatedAttribute = $displayAttribute->getRawValueRelatedAttribute())
+            {
+                return $model->{$attribute}->{$rawValueRelatedAttribute};
             }
             else
             {

@@ -176,13 +176,13 @@
         /**
          * @depends testIsDisplayAttributeMadeViaSelect
          */
-        public function testIsDisplayAttributeACalculationOrModifier()
+        public function testIsAttributeACalculationOrModifier()
         {
             $this->fail(); //todo:
         }
 
         /**
-         * @depends testIsDisplayAttributeACalculationOrModifier
+         * @depends testIsAttributeACalculationOrModifier
          */
         public function testIsAttributeACalculatedGroupByModifier()
         {

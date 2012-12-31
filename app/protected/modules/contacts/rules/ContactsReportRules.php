@@ -45,6 +45,8 @@
                         array('state' => 'name'),
                     'relationsReportedAsAttributesGroupByAttributes' =>
                         array('state' => 'name'),
+                    'relationsReportedAsAttributesRawValueAttributes' =>
+                        array('state'    => 'name'),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);

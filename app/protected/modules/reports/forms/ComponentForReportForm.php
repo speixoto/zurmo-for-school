@@ -230,6 +230,13 @@
             return $content;
         }
 
+        public function makeResolvedAttributeModelRelationsAndAttributesToReportAdapter()
+        {
+            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
+            $modelClassName       = $this->getResolvedAttributeModelClassName();
+            return ModelRelationsAndAttributesToReportAdapter::make($moduleClassName, $modelClassName, $this->reportType);
+        }
+
         /**
          * Passing in attributeIndexOrDerivedType, return an array representing the attribute and relation data or
          * if there is just a single attribute, then return a string representing the attribute

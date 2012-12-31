@@ -110,8 +110,6 @@
             {
                 $valueElementClassName              = $valueElementType . 'Element';
                 $valueElement                       = new $valueElementClassName($this->model, 'value', $this->form, $params);
-
-                //todo: make sure you check NameIdElement (instanceof) to override the id/name pairings.
                 if($valueElement instanceof NameIdElement)
                 {
                     $valueElement->setIdAttributeId('value');

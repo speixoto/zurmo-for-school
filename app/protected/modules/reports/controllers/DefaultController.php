@@ -31,7 +31,7 @@
             return array_merge(parent::filters(),
                 array(
                     array(
-                        ZurmoBaseController::RIGHTS_FILTER_PATH,
+                        self::getRightsFilterPath() . ' + drillDownDetails',
                         'moduleClassName' => 'ReportsModule',
                         'rightName' => ReportsModule::RIGHT_ACCESS_REPORTS,
                    ),

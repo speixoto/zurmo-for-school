@@ -38,6 +38,27 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public function testUsingOnTableAliasCorrectlyResolves()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'iMember',
+                    'operatorType'         => 'equals',
+                    'value'                => 'somevalue1',
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('I');
+
+            $quote         = DatabaseCompatibilityUtil::getQuote();
+            $where         = ModelDataProviderUtil::makeWhere('I', $searchAttributeData, $joinTablesAdapter, 'analias');
+            $compareWhere  = "({$quote}analias{$quote}.{$quote}imember{$quote} = 'somevalue1')";
+            $this->assertEquals($compareWhere, $where);
+        }
+
         public function testResolveSortAttributeColumnName()
         {
             $quote = DatabaseCompatibilityUtil::getQuote();

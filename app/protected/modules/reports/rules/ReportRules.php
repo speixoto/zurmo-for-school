@@ -248,5 +248,20 @@
             }
             throw new NotSupportedException();
         }
+
+        public function getRawValueRelatedAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
+        {
+            assert('is_string($relation)');
+            $modelClassName = $model->getAttributeModelClassName($relation);
+            $metadata       = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
+                in_array($relation, $metadata[$modelClassName]['relationsReportedAsAttributes']))
+            {
+                if(isset($metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation]))
+                {
+                    return $metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation];
+                }
+            }
+        }
     }
 ?>

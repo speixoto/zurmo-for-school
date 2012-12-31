@@ -29,8 +29,6 @@
     {
         public function init()
         {
-            //todo: why are we using async false in the ajax call below?
-            //todo: remove console.logs
             // Begin Not Coding Standard
             $script = <<<END
 jQuery('.drillDownExpandAndLoadLink').live('click', function()
@@ -39,13 +37,13 @@ jQuery('.drillDownExpandAndLoadLink').live('click', function()
     $(this).parent().find('.drillDownCollapseLink').first().show();
     $(this).parentsUntil('tr').parent().next().show();
     var loadDivId = $(this).parentsUntil('tr').parent().next().find('.drillDownContent').attr('id');
-    console.log(loadDivId);
-    console.log($(this).data('url'));
     $.ajax({
         url      : $(this).data('url'),
-        async    : false,
         type     : 'GET',
-        beforeSend : function(){ makeSmallLoadingSpinner(loadDivId);},
+        beforeSend : function()
+        {
+            makeLargeLoadingSpinner(loadDivId);
+        },
         success  : function(data)
         {
             jQuery('#' + loadDivId).html(data)

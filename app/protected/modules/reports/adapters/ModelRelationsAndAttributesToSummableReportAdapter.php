@@ -213,7 +213,7 @@
         }
 
 
-        public function isDisplayAttributeACalculationOrModifier($attribute)
+        public function isAttributeACalculationOrModifier($attribute)
         {
             assert('is_string($attribute)');
             $displayCalculationAttributes = $this->getDisplayCalculationAttributes();

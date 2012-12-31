@@ -55,7 +55,7 @@
             $chartData = array();
             foreach ($resultsData as $data)
             {
-                $chartData[] = array('value'        => $data->$firstRangeAttributeName, //todo: still need to resolve for currency for this.
+                $chartData[] = array('value'        => $data->$firstRangeAttributeName,
                                      'displayLabel' => strval($data->$firstSeriesAttributeName));
             }
             return $chartData;

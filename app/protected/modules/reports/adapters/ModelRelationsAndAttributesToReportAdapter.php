@@ -574,6 +574,15 @@
             return false;
         }
 
+        public function getRawValueRelatedAttribute($attribute)
+        {
+            if($this->relationIsReportedAsAttribute($attribute))
+            {
+                return $this->getRules()->getRawValueRelatedAttributeForRelationReportedAsAttribute(
+                       $this->getModel(), $attribute);
+            }
+        }
+
         protected static function resolveAttributeNameToUseForRelationWithModuleConnection($attribute, $moduleClassName)
         {
             assert('is_string($attribute)');
