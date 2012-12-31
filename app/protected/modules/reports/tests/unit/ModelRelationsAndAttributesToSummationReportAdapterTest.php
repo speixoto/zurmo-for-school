@@ -184,13 +184,13 @@
         /**
          * @depends testIsDisplayAttributeACalculationOrModifier
          */
-        public function testIsGroupByAttributeACalculatedModifier()
+        public function testIsAttributeACalculatedGroupByModifier()
         {
             $this->fail(); //todo:
         }
 
         /**
-         * @depends testIsGroupByAttributeACalculatedModifier
+         * @depends testIsAttributeACalculatedGroupByModifier
          */
         public function testResolveRealAttributeName()
         {

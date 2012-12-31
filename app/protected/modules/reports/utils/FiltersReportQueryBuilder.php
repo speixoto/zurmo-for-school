@@ -82,6 +82,21 @@
                 $attribute, $sortAttribute);
         }
 
+        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
+                $modelToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
+            {
+                //todO: document that we dont have to do like displayAttributeBuilder where it resolves for related attribute, since really this can only be date/datetime coluumns. at least for now
+                return new RedBeanModelAttributeToDataProviderAdapter(
+                    $modelToReportAdapter->getModelClassName(),
+                    $modelToReportAdapter->resolveRealAttributeName($attribute));
+            }
+            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
+        }
+
         //todo: do we need to resolve casting hint for where clause too? need to test, not sure how this would work
         //todo: test multi because multi is sub-select so in fact we do use sub-select for multiple dropdown.. multiples need to be sub-query
     }

@@ -26,6 +26,19 @@
 
     class RedBeanModelSelectQueryAdapterTest extends BaseTest
     {
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setup()
+        {
+            parent::setup();
+            Yii::app()->user->userModel           = User::getByUsername('super');
+            Yii::app()->user->userModel->timeZone = 'America/Chicago';
+        }
+
         public function testIsDistinct()
         {
             $adapter = new RedBeanModelSelectQueryAdapter();
@@ -195,6 +208,17 @@
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
+        public function testAddDayClauseWithTimeZoneAdjustment()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addDayClause('table', 'abc', 'c', true);
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select day({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
         public function testAddWeekClause()
         {
             $quote   = DatabaseCompatibilityUtil::getQuote();
@@ -203,6 +227,17 @@
             $adapter->addWeekClause('table', 'abc', 'c');
             $this->assertEquals(1, $adapter->getClausesCount());
             $compareString = "select week({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddWeekClauseWithTimeZoneAdjustment()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addWeekClause('table', 'abc', 'c', true);
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select week({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
@@ -217,6 +252,17 @@
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
+        public function testAddMonthClauseWithTimeZoneAdjustment()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addMonthClause('table', 'abc', 'c', true);
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select month({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
         public function testAddQuarterClause()
         {
             $quote   = DatabaseCompatibilityUtil::getQuote();
@@ -228,6 +274,17 @@
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
+        public function testAddQuarterClauseWithTimeZoneAdjustment()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addQuarterClause('table', 'abc', 'c', true);
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select quarter({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
         public function testAddYearClause()
         {
             $quote   = DatabaseCompatibilityUtil::getQuote();
@@ -236,6 +293,17 @@
             $adapter->addYearClause('table', 'abc', 'c');
             $this->assertEquals(1, $adapter->getClausesCount());
             $compareString = "select year({$quote}table{$quote}.{$quote}abc{$quote}) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddYearClauseWithTimeZoneAdjustment()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addYearClause('table', 'abc', 'c', true);
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select year({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 

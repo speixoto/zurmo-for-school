@@ -64,6 +64,17 @@
             {
                 $this->resolveDynamicallyDerivedAttributeClauseAndStructure();
             }
+            elseif($this->modelRelationsAndAttributesToReportAdapter instanceof
+                   ModelRelationsAndAttributesToSummableReportAdapter &&
+                   $this->modelRelationsAndAttributesToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
+            {
+                $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
+                                          'operatorType'         => $this->filter->getOperator(),
+                                          'value'                => $this->filter->value,
+                                          'modifierType'         => $this->modelRelationsAndAttributesToReportAdapter->
+                                                                    getGroupByCalculatedModifierAttributeType($attribute));
+                $this->structure  = '1';
+            }
             //likeContactState, a variation of dropDown, or currencyValue
             elseif($this->modelRelationsAndAttributesToReportAdapter->relationIsReportedAsAttribute($attribute))
             {
@@ -73,17 +84,6 @@
             {
                 $this->resolveNonRelationNonDerivedAttributeClauseAndStructure();
             }
-
-
-            //applies to multiple scenarios---
-
-            //has an operator?
-
-            //has an operator with required second value
-
-            //has a valueType?
-
-            //has a valueType with required second value
         }
 
         protected function resolveDynamicallyDerivedAttributeClauseAndStructure()

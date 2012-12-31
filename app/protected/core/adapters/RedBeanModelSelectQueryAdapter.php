@@ -216,57 +216,82 @@
             $this->increaseClausesCountByOne();
         }
 
-        public function addDayClause($tableName, $columnName, $aliasName = null)
+        public function addDayClause($tableName, $columnName, $aliasName = null, $adjustForTimeZone = false)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
             $this->clauses[] = self::resolveForAliasName("day({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }
 
-        public function addWeekClause($tableName, $columnName, $aliasName = null)
+        public function addWeekClause($tableName, $columnName, $aliasName = null, $adjustForTimeZone = false)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
             $this->clauses[] = self::resolveForAliasName("week({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }
 
-        public function addMonthClause($tableName, $columnName, $aliasName = null)
+        public function addMonthClause($tableName, $columnName, $aliasName = null, $adjustForTimeZone = false)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
             $this->clauses[] = self::resolveForAliasName("month({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }
 
-        public function addQuarterClause($tableName, $columnName, $aliasName = null)
+        public function addQuarterClause($tableName, $columnName, $aliasName = null, $adjustForTimeZone = false)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
             $this->clauses[] = self::resolveForAliasName("quarter({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }
 
-        public function addYearClause($tableName, $columnName, $aliasName = null)
+        public function addYearClause($tableName, $columnName, $aliasName = null, $adjustForTimeZone = false)
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
+            assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
             $this->clauses[] = self::resolveForAliasName("year({$queryString})", $aliasName);
             $this->increaseClausesCountByOne();
         }

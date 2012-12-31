@@ -361,9 +361,6 @@
                                                        $groupBy->getModelClassName(),
                                                        $this->type);
                 $filter->attributeIndexOrDerivedType = $groupBy->attributeIndexOrDerivedType;
-                //todO: not sure how this will work when doing group modifiers... its not exactly value type but not even sure it will resolve at all.
-                //todo: hmm. do we make it resolve as a between the range? or just use the where YEAR(createddatetime) = '2001', hmm. the other problem is this is not timezone sensitive.. but then
-                //todo: again the grouping is not timezone sensitive, too bad for now.
                 $filter->operator                    = OperatorRules::TYPE_EQUALS;
                 $filter->value                       = $value;
                 $this->addFilter($filter);

@@ -57,7 +57,7 @@
             $displayAttributeY->setModelAliasUsingTableAliasName('def');
             $displayAttributeY->attributeIndexOrDerivedType = 'FullName';
 
-            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX, $displayAttributeY));
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX, $displayAttributeY), 4);
             $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');
             $reportResultsRowData->addModelAndAlias($reportModelTestItemY, 'def');
 
@@ -75,7 +75,21 @@
                                             Report::TYPE_SUMMATION);
             $displayAttributeX->setModelAliasUsingTableAliasName('abc');
             $displayAttributeX->attributeIndexOrDerivedType = 'string';
-            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX));
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 4);
+            $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');
+
+            $this->assertEquals('someString', $reportResultsRowData->attribute0);
+        }
+
+        public function testGettingAttributeForOwnedString()
+        {
+            $reportModelTestItemX         = new ReportModelTestItem();
+            $reportModelTestItemX->primaryAddress->street1 = 'someString';
+            $displayAttributeX            = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_SUMMATION);
+            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
+            $displayAttributeX->attributeIndexOrDerivedType = 'primaryAddress___street1';
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 4);
             $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');
 
             $this->assertEquals('someString', $reportResultsRowData->attribute0);
@@ -91,7 +105,7 @@
                                             Report::TYPE_SUMMATION);
             $displayAttributeX->setModelAliasUsingTableAliasName('abc');
             $displayAttributeX->attributeIndexOrDerivedType = 'likeContactState';
-            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX));
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 4);
             $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');
 
             $this->assertEquals('someName', $reportResultsRowData->attribute0);
@@ -102,10 +116,75 @@
             $displayAttributeX = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_SUMMATION);
             $displayAttributeX->attributeIndexOrDerivedType = 'integer__Maximum';
-            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX));
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 4);
             $reportResultsRowData->addSelectedColumnNameAndValue('col5', 55);
 
             $this->assertEquals(55, $reportResultsRowData->col5);
+        }
+
+        public function testGetDataParamsForDrillDownAjaxCall()
+        {
+            $reportModelTestItem                  = new ReportModelTestItem();
+            $reportModelTestItem->dropDown->value = 'dropDownValue';
+            $reportModelTestItem->currencyValue->value = 45.05;
+
+            $reportModelTestItem7         = new ReportModelTestItem7;
+            $reportModelTestItem7->name   = 'someName';
+            $reportModelTestItemX         = new ReportModelTestItem();
+            $reportModelTestItemX->likeContactState = $reportModelTestItem7;
+
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'dropDown';
+            $displayAttribute->valueUsedAsDrillDownFilter;
+            $displayAttribute->setModelAliasUsingTableAliasName('abc');
+
+            $displayAttribute2 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType = 'integer';
+
+            $displayAttribute3 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                 Report::TYPE_SUMMATION);
+            $displayAttribute3->attributeIndexOrDerivedType = 'currencyValue';
+            $displayAttribute3->valueUsedAsDrillDownFilter;
+            $displayAttribute3->setModelAliasUsingTableAliasName('abc');
+
+            $displayAttribute4 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                 Report::TYPE_SUMMATION);
+            $displayAttribute4->attributeIndexOrDerivedType = 'createdDateTime__Day';
+            $displayAttribute4->valueUsedAsDrillDownFilter;
+
+
+            $displayAttribute5 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                 Report::TYPE_SUMMATION);
+            $displayAttribute5->attributeIndexOrDerivedType = 'createdByUser__User';
+            $displayAttribute5->valueUsedAsDrillDownFilter;
+            $displayAttribute5->setModelAliasUsingTableAliasName('abc');
+
+            $displayAttribute6 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                 Report::TYPE_SUMMATION);
+            $displayAttribute6->attributeIndexOrDerivedType = 'likeContactState';
+            $displayAttribute6->valueUsedAsDrillDownFilter;
+            $displayAttribute6->setModelAliasUsingTableAliasName('abc');
+
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttribute1, $displayAttribute2,
+                                                                   $displayAttribute3, $displayAttribute4,
+                                                                   $displayAttribute5, $displayAttribute6), 4);
+            $reportResultsRowData->addModelAndAlias($reportModelTestItem, 'abc');
+            $reportResultsRowData->addSelectedColumnNameAndValue('col4', 15);
+            $data = $reportResultsRowData->getDataParamsForDrillDownAjaxCall();
+            $this->assertEquals('dropDownValue',                 $data['dropDown']);
+            $this->assertEquals(45.05,                           $data['currencyValue']);
+            $this->assertEquals(15,                              $data['createdDateTime__Day']);
+            $this->assertEquals(Yii::app()->user->userModel->id, $data['createdByUser__User']);
+            $this->assertEquals('someName',                      $data['likeContactState']);
+            $this->fail();
+        }
+
+        public function testResolveDataParamKeyForDrillDown()
+        {
+            $this->assertEquals(ReportResultsRowData::DRILL_DOWN_GROUP_BY_VALUE_PREFIX . 'abc',
+                                ReportResultsRowData::resolveDataParamKeyForDrillDown('abc'));
         }
     }
 ?>

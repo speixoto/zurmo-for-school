@@ -29,6 +29,20 @@
       */
     class ModelWhereAndJoinBuilder extends ModelJoinBuilder
     {
+        protected $wherePartColumnModifierType;
+
+        public function __construct(RedBeanModelAttributeToDataProviderAdapter
+                                    $modelAttributeToDataProviderAdapter,
+                                    RedBeanModelJoinTablesQueryAdapter
+                                    $joinTablesAdapter,
+                                    $setDistinct = false,
+                                    $wherePartColumnModifierType = null)
+        {
+            assert('is_string($wherePartColumnModifierType) || $wherePartColumnModifierType == null');
+            parent::__construct($modelAttributeToDataProviderAdapter, $joinTablesAdapter, $setDistinct);
+            $this->wherePartColumnModifierType = $wherePartColumnModifierType;
+        }
+
         /**
          * @param $operatorType
          * @param $value
@@ -45,13 +59,13 @@
             {
                 $tableAliasName = $this->resolveJoins($onTableAliasName,
                                                       ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
-                self::addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition, $tableAliasName,
+                $this->addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition, $tableAliasName,
                                                       $this->modelAttributeToDataProviderAdapter->getColumnName());
             }
             elseif ($this->modelAttributeToDataProviderAdapter->isRelationTypeAHasOneVariant() &&
                     $this->modelAttributeToDataProviderAdapter->getRelatedAttribute() == 'id')
             {
-                self::addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition,
+                $this->addWherePartByClauseInformation($operatorType, $value, $where, $clausePosition,
                                                       $this->resolveJoinsForRelatedId($onTableAliasName),
                                                       $this->modelAttributeToDataProviderAdapter->getColumnName());
             }
@@ -81,7 +95,7 @@
             {
                 $relationAttributeTableAliasName    = $this->resolveJoins($onTableAliasName,
                                                       ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
-                self::addWherePartByClauseInformation($operatorType, $value, $relationWhere, 1,
+                $this->addWherePartByClauseInformation($operatorType, $value, $relationWhere, 1,
                                                       $relationAttributeTableAliasName,
                                                       $this->modelAttributeToDataProviderAdapter->resolveManyToManyColumnName());
             }
@@ -101,7 +115,7 @@
             {
                 $relationAttributeTableAliasName    = $this->resolveJoins($onTableAliasName,
                                                       ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
-                self::addWherePartByClauseInformation($operatorType,
+                $this->addWherePartByClauseInformation($operatorType,
                                                       $value,
                                                       $relationWhere,
                                                       1,
@@ -186,7 +200,7 @@
          * @param $tableAliasName
          * @param $columnName
          */
-        protected static function addWherePartByClauseInformation(  $operatorType, $value, &$where,
+        protected function addWherePartByClauseInformation(  $operatorType, $value, &$where,
                                                                     $whereKey, $tableAliasName, $columnName)
         {
             assert('is_string($operatorType)');
@@ -197,10 +211,23 @@
             if (is_string($value) || (is_array($value) && count($value) > 0) || $value !== null  ||
                 ($value === null && SQLOperatorUtil::doesOperatorTypeAllowNullValues($operatorType)))
             {
-                $where[$whereKey] = "(" . self::makeColumnNameWithTableAlias($tableAliasName, $columnName) . " " .
+                $where[$whereKey] = "(" . self::resolveWhereColumnContentForModifier($tableAliasName, $columnName) . " " .
                                     DatabaseCompatibilityUtil::getOperatorAndValueWherePart($operatorType,
                                     $value) . ")";
             }
+        }
+
+        protected function resolveWhereColumnContentForModifier($tableAliasName, $columnName)
+        {
+            assert('is_string($tableAliasName)');
+            assert('is_string($columnName)');
+            $content  = self::makeColumnNameWithTableAlias($tableAliasName, $columnName);
+            if($this->wherePartColumnModifierType != null)
+            {
+                $content .= $this->resolveTimeZoneAdjustmentForACalculatedDateTimeModifier();
+                $content  = strtolower($this->wherePartColumnModifierType) . '(' . $content . ')';
+            }
+            return $content;
         }
 
         //todo: test because i am not sure we need this always. needed this for owner part of Conversation query where there was no related attribute, otherwise it didn't work right.
@@ -218,6 +245,17 @@
                 return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
             }
             return $onTableAliasName;
+        }
+
+        protected function resolveTimeZoneAdjustmentForACalculatedDateTimeModifier()
+        {
+            $attributeType = ModelAttributeToMixedTypeUtil::getType(
+                             $this->modelAttributeToDataProviderAdapter->getModel(),
+                             $this->modelAttributeToDataProviderAdapter->getAttribute());
+            if($attributeType == 'DateTime')
+            {
+                return DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
         }
     }
 ?>

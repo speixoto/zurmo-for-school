@@ -36,9 +36,10 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+            Yii::app()->user->userModel->timeZone = 'America/Chicago';
         }
 
-        public function testModifierGroupBys()
+        public function testModifierGroupBysWhenDate()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
@@ -94,7 +95,7 @@
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
-        public function testModifierGroupBysWhenRelated()
+        public function testModifierGroupBysWhenRelatedDate()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
@@ -106,6 +107,78 @@
             $groupBy->attributeIndexOrDerivedType  = 'hasMany2___date__Day';
             $content                               = $builder->makeQueryContent(array($groupBy));
             $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}date{$q})", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testModifierGroupBysWhenDateTime()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single modifier
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'dateTime__Day';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'dateTime__Week';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("week({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'dateTime__Month';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("month({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'dateTime__Quarter';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("quarter({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'dateTime__Year';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("year({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testModifierGroupBysWhenRelatedDateTime()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single modifier
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem2');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'hasMany2___dateTime__Day';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }

@@ -36,6 +36,7 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+            Yii::app()->user->userModel->timeZone = 'America/Chicago';
             DisplayAttributeForReportForm::resetCount();
         }
 
@@ -53,6 +54,23 @@
             $content                               = $builder->makeQueryContent(array($filter));
             $this->assertEquals("({$q}reportmodeltestitem{$q}.{$q}string{$q} = 'a value')", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testASingleAttributeThatHasAModifier()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1');
+            $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $filter->attributeIndexOrDerivedType   = 'createdDateTime__Day';
+            $filter->value                         = 'a value';
+            $filter->operator                      = OperatorRules::TYPE_EQUALS;
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) = 'a value')", $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 

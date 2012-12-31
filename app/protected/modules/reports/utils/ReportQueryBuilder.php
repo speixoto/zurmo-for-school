@@ -66,6 +66,7 @@
             $modelToReportAdapter                = ModelRelationsAndAttributesToReportAdapter::make(
                                                    $componentForm->getModuleClassName(),
                                                    $componentForm->getModelClassName(), $componentForm->getReportType());
+            //todO: if the method cal below is to a static method, then make it static here too.
             $modelAttributeToDataProviderAdapter = $this->makeModelAttributeToDataProviderAdapter(
                                                    $modelToReportAdapter, $attribute);
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $componentForm);

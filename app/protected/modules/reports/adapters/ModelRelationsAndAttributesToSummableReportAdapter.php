@@ -173,29 +173,45 @@
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
             {
-                $selectQueryAdapter->addDayClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addDayClause($tableName, $columnName, $columnAliasName,
+                                                  $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_WEEK)
             {
-                $selectQueryAdapter->addWeekClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addWeekClause($tableName, $columnName, $columnAliasName,
+                                                   $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_MONTH)
             {
-                $selectQueryAdapter->addMonthClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addMonthClause($tableName, $columnName, $columnAliasName,
+                                                    $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_QUARTER)
             {
-                $selectQueryAdapter->addQuarterClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addQuarterClause($tableName, $columnName, $columnAliasName,
+                                                      $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
             elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_YEAR)
             {
-                $selectQueryAdapter->addYearClause($tableName, $columnName, $columnAliasName);
+                $selectQueryAdapter->addYearClause($tableName, $columnName, $columnAliasName,
+                                                   $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
             else
             {
                 throw new NotSupportedException();
             }
         }
+//todo: should we really call resolveReal in here? or have that outside and then call this method? make it a bit cleaner
+        private function shouldDoTimeZoneAdjustmentOnModifierClause($attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->getRealModelAttributeType($this->resolveRealAttributeName($attribute)) == 'DateTime')
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public function isDisplayAttributeACalculationOrModifier($attribute)
         {
@@ -209,7 +225,7 @@
             return false;
         }
 
-        public function isGroupByAttributeACalculatedModifier($attribute)
+        public function isAttributeACalculatedGroupByModifier($attribute)
         {
             assert('is_string($attribute)');
             $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
@@ -300,6 +316,10 @@
                 {
                     throw new NotSupportedException();
                 }
+            }
+            elseif($this->isAttributeACalculatedGroupByModifier($attribute))
+            {
+                return 'Text';
             }
             return parent::getDisplayElementType($attribute);
         }

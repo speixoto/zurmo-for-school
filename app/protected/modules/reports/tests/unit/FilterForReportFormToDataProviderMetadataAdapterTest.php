@@ -38,6 +38,50 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testDateAttributeWithModifier()
+        {
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_SUMMATION);
+            $filter->attributeIndexOrDerivedType = 'date__Day';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter->value                       = 'Zurmo';
+            $metadataAdapter                     = new FilterForReportFormToDataProviderMetadataAdapter($filter);
+            $metadata                            = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'date',
+                    'operatorType'         => 'equals',
+                    'value'                => 'Zurmo',
+                    'modifierType'         => 'Day',
+                ),
+            );
+            $compareStructure = '1';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        public function testDateTimeAttributeWithModifier()
+        {
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_SUMMATION);
+            $filter->attributeIndexOrDerivedType = 'dateTime__Week';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter->value                       = 'Zurmo';
+            $metadataAdapter                     = new FilterForReportFormToDataProviderMetadataAdapter($filter);
+            $metadata                            = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'dateTime',
+                    'operatorType'         => 'equals',
+                    'value'                => 'Zurmo',
+                    'modifierType'         => 'Week',
+                ),
+            );
+            $compareStructure = '1';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
         public function testNonRelatedNonDerivedStringAttribute()
         {
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',

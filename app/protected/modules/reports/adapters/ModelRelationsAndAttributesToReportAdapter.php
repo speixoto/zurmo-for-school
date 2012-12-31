@@ -345,7 +345,13 @@
                 return 'User';
             }
             $resolvedAttribute = $this->resolveRealAttributeName($attribute);
-            return ModelAttributeToMixedTypeUtil::getType($this->model, $resolvedAttribute);
+            return $this->getRealModelAttributeType($resolvedAttribute);
+        }
+
+        public function getRealModelAttributeType($attribute)
+        {
+            assert('is_string($attribute)');
+            return ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
         }
 
         public function getAllRelationsData()

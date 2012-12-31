@@ -197,7 +197,8 @@
                                                         $modelClassName,
                                                         $clauseInformation['attributeName'],
                                                         ArrayUtil::getArrayValue($clauseInformation, 'relatedAttributeName'));
-                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
+                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true,
+                                                        ArrayUtil::getArrayValue($clauseInformation, 'modifierType'));
                 $builder->resolveJoinsAndBuildWhere(    $clauseInformation['operatorType'],
                                                         $clauseInformation['value'], $clausePosition,
                                                         $where, $onTableAliasName);
@@ -228,7 +229,7 @@
                                                    $clauseInformation['attributeName'],
                                                    $clauseInformation['relatedModelData']['attributeName']);
             $builder                             = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter,
-                                                                                $joinTablesAdapter, true);
+                                                   $joinTablesAdapter, true);
                                                    $builder->resolveJoins($onTableAliasName,
                                                    self::resolveCanUseFromJoins($onTableAliasName)); //todo: when we used the onTableAliasName returned value things broke in tests which i think makes sense...
             $relationModelClassName              = $modelAttributeToDataProviderAdapter->getRelationModelClassName();
@@ -246,7 +247,8 @@
                                                            $relationModelClassName,
                                                            $clauseInformation['relatedModelData']['attributeName'],
                                                            $clauseInformation['relatedModelData']['relatedAttributeName']);
-                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true);
+                $builder = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter, true,
+                               ArrayUtil::getArrayValue($clauseInformation['relatedModelData'], 'modifierType'));
             }
             $builder->resolveJoinsAndBuildWhere(
                         $clauseInformation['relatedModelData']['operatorType'],

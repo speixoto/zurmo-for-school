@@ -68,22 +68,34 @@
                 $componentForm->getResolvedAttributeModuleClassName(),
                 $componentForm->getResolvedAttributeModelClassName(),
                 $componentForm->getReportType());
-            if($modelToReportAdapter->isGroupByAttributeACalculatedModifier($resolvedAttribute) &&
+            if($modelToReportAdapter->isAttributeACalculatedGroupByModifier($resolvedAttribute) &&
                $modelToReportAdapter->getGroupByCalculatedModifierAttributeType($resolvedAttribute))
             {
-                $sqlReadyType = strtolower($modelToReportAdapter->
-                                           getGroupByCalculatedModifierAttributeType($resolvedAttribute));
-                return $sqlReadyType . '(' . $columnContent . ')';
+                $sqlReadyType              = strtolower($modelToReportAdapter->
+                                             getGroupByCalculatedModifierAttributeType($resolvedAttribute));
+                $timeZoneAdjustmentContent = $this->resolveTimeZoneAdjustmentForACalculatedDateTimeModifier(
+                                             $modelToReportAdapter, $resolvedAttribute);
+                return $sqlReadyType . '(' . $columnContent . $timeZoneAdjustmentContent . ')';
             }
             return $columnContent;
         }
+
+        protected function resolveTimeZoneAdjustmentForACalculatedDateTimeModifier($modelToReportAdapter, $attribute)
+        {
+            $resolvedAttribute = $modelToReportAdapter->resolveRealAttributeName($attribute);
+            if($modelToReportAdapter->getRealModelAttributeType($resolvedAttribute) == 'DateTime')
+            {
+                return DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
+        }
+
 
         protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
             if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
-                $modelToReportAdapter->isGroupByAttributeACalculatedModifier($attribute))
+                $modelToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
             {
                 $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
                 return new RedBeanModelAttributeToDataProviderAdapter(

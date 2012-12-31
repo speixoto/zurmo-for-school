@@ -165,7 +165,7 @@
             {
                 return null;
             }
-            $attribute           = $displayAttribute->getResolvedAttribute();
+            $attribute           = $displayAttribute->getResolvedAttributeRealAttributeName();
             $model               = $this->getModelByAlias($modelAlias);
             return $this->resolveModelAttributeValueForPenultimateRelation($model, $attribute, $displayAttribute);
         }
