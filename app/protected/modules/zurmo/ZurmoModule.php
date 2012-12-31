@@ -94,6 +94,13 @@
                         'route'            => '/zurmo/development/',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'Authentication Configuration',
+                        'descriptionLabel' => 'Manage Authentication Configuration',
+                        'route'            => '/zurmo/Ldap/',
+                        'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
+                    ),
                 ),
                 'headerMenuItems' => array(
                     array(
