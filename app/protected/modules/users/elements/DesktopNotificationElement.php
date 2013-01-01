@@ -56,9 +56,22 @@
          */
         protected function renderButton()
         {
-            $content = ZurmoHtml::link(Yii::t('Default', 'Activate Desktop Notifications'),
+            $content  = ZurmoHtml::link(Yii::t('Default', 'Activate Desktop Notifications'),
                                               '',
                                               array('onClick' => 'js:desktopNotifications.requestAutorization(); return false;'));
+            $content .= $this->renderTooltipContent();
+            return $content;
+        }
+
+        protected static function renderTooltipContent()
+        {
+            $title       = Yii::t('Default', 'Desktop Notifications is a pop-up to warn you when new events occurs in Zurmo. </br>' .
+                                             'The pop-up will appear as a Desktop Notification but you need to use a browser' .
+                                             ' that can show this notifications, like Chrome.');
+            $content     = '<span id="user-desktop-notifications-tooltip" class="tooltip"  title="' . $title . '">';
+            $content    .= '?</span>';
+            $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
+            $qtip->addQTip("#user-desktop-notifications-tooltip");
             return $content;
         }
     }
