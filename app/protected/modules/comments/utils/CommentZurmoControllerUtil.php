@@ -51,6 +51,11 @@
             assert('$model instanceof Item');
             parent::afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
             FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'filesIds');
+            if ($this->relatedModel instanceof Conversation && $this->relatedModel->isClosed)
+            {
+                //Can't creat new comments ins a closed conversation
+                throw new NotSupportedException();
+            }
             if ($this->relatedModel->getRelationType($this->relationName) == RedBeanModel::HAS_MANY)
             {
                 if (!$this->relatedModel->{$this->relationName}->contains($model))

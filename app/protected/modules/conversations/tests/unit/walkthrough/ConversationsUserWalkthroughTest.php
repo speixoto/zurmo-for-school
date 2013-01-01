@@ -574,5 +574,30 @@
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->htmlContent);
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->textContent);
         }
+
+        /**
+         * @depends testSendEmailInNewComment
+         */
+        public function testCreateComentInClosedConversation()
+        {
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            {
+                return;
+            }
+            $super                                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $conversations                          = Conversation::getAll();
+            $conversation                           = $conversations[0];
+            $conversation->isClosed                 = true;
+            $conversation->save();
+            $this->assertEquals(1, count($conversations));
+            $this->assertEquals(1, $conversation->comments->count());
+            $this->setGetArray(array('relatedModelId'             => $conversation->id,
+                                     'relatedModelClassName'      => 'Conversation',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'redirectUrl'                => 'someRedirect'));
+            $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name')));
+            $content = $this->runControllerWithNotSupportedExceptionAndGetContent('comments/default/inlineCreateSave');
+            $this->assertEquals(1, $conversation->comments->count());
+        }
     }
 ?>
