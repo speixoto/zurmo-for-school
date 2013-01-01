@@ -162,7 +162,12 @@
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
             $content      .= $inlineView->render();
-            return ZurmoHtml::tag('div', array('id' => 'CommentInlineEditForModelView'), $content);
+            $htmlOptions = array('id' => 'CommentInlineEditForModelView');
+            if ($this->model->isClosed)
+            {
+                $htmlOptions['style'] = 'display: none;';
+            }
+            return ZurmoHtml::tag('div', $htmlOptions, $content);
         }
 
         protected function getPortletDetailsUrl()

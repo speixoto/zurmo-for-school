@@ -90,7 +90,7 @@
             $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
             return       ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'       => 'GET',
-                               'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'
+                               'success'    => self::resolveOnSucessSctipt($updateDivId)
                              ),
                          array('id'        => 'ConversationStatusChange',
                                'class'     => 'conversation-change-status-link attachLoading z-button ' .
@@ -133,6 +133,16 @@
             return array(
                 'isClosed',
             );
+        }
+
+        protected static function resolveOnSucessSctipt($updateDivId)
+        {
+            $script = '
+                function(data){
+                    $("#' . $updateDivId . '").replaceWith(data);
+                    $("#CommentInlineEditForModelView").toggle();
+                 }';
+            return $script;
         }
     }
 ?>
