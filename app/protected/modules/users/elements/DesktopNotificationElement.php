@@ -24,20 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ZurmoDefaultView extends View
+    /**
+     * Display a button to activate the browser's desktop notifications
+     */
+    class DesktopNotificationElement extends Element
     {
-        private $verticalGridView;
-        protected $controller;
-
-        public function __construct(View $view)
+        /**
+         * Renders the button.
+         * @return A string containing the element's content.
+         */
+        protected function renderControlEditable()
         {
-            $this->verticalGridView = $view;
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $this->getEditableInputId();
+            $htmlOptions['name']     = $this->getEditableInputName();
+            $htmlOptions['disabled'] = $this->getDisabledValue();
+            $htmlOptions             = array_merge($this->getHtmlOptions(), $htmlOptions);
+            $content                 = $this->renderButton();
+            return $content;
         }
 
-        protected function renderContent()
+        protected function renderControlNonEditable()
         {
-            ZurmoNotificationUtil::renderAutoUpdaterScript();
-            return $this->verticalGridView->render();
+            throw new NotImplementedException();
+        }
+
+       /**
+         * Render a button.
+         * popup.
+         * @return The element's content as a string.
+         */
+        protected function renderButton()
+        {
+            $content = ZurmoHtml::link(Yii::t('Default', 'Activate Desktop Notifications'),
+                                              '',
+                                              array('onClick' => 'js:desktopNotifications.requestAutorization(); return false;'));
+            return $content;
         }
     }
 ?>

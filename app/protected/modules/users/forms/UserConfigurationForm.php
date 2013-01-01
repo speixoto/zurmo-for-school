@@ -46,6 +46,8 @@
 
         public $turnOffEmailNotifications = false;
 
+        public $activateDesktopNotifications = false;
+
         public function __construct($userId)
         {
             assert('is_int($userId) && $userId > 0');
@@ -74,19 +76,21 @@
                 array('themeColor',                'type',      'type' => 'string'),
                 array('backgroundTexture',         'type',      'type' => 'string'),
                 array('hideWelcomeView',           'boolean'),
-                array('turnOffEmailNotifications', 'boolean')
+                array('turnOffEmailNotifications', 'boolean'),
+                array('activateDesktopNotifications', 'boolean')
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'listPageSize'              => Yii::t('Default', 'List page size'),
-                'subListPageSize'           => Yii::t('Default', 'Sublist page size'),
-                'themeColor'                => Yii::t('Default', 'Theme'),
-                'backgroundTexture'         => Yii::t('Default', 'Texture'),
-                'hideWelcomeView'           => Yii::t('Default', 'Hide welcome page'),
-                'turnOffEmailNotifications' => Yii::t('Default', 'Turn off email notifications')
+                'listPageSize'                  => Yii::t('Default', 'List page size'),
+                'subListPageSize'               => Yii::t('Default', 'Sublist page size'),
+                'themeColor'                    => Yii::t('Default', 'Theme'),
+                'backgroundTexture'             => Yii::t('Default', 'Texture'),
+                'hideWelcomeView'               => Yii::t('Default', 'Hide welcome page'),
+                'turnOffEmailNotifications'     => Yii::t('Default', 'Turn off email notifications'),
+                'activateDesktopNotifications'  => Yii::t('Default', 'Activate desktop notifications')
             );
         }
     }

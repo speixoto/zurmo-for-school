@@ -29,15 +29,6 @@
      */
     class ZurmoNotificationUtil
     {
-        /**
-         * Button to ask user's autorization to provide desktop notifications
-         */
-        public static function renderRequestNotificationButton()
-        {
-            //TODO: Should this be in an element?
-
-        }
-
         public static function renderAutoUpdaterScript()
         {
             $script = "
@@ -46,13 +37,11 @@
                     var uconv      = convPlacer.text();
                     var unoti      = notiPlacer.text();
                     var url        = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
-
                     if(typeof(EventSource) !== 'undefined') {
                         var source = new EventSource(url + '?uconv=' + uconv + '&unoti=' + unoti);
                         source.onmessage = function(e) {
                             var data = JSON.parse(e.data);
                             if (typeof(data.unreadConversations) != 'undefined' && uconv != data.unreadConversations) {
-                                console.log('Starting updates....');
                                 uconv = data.unreadConversations;
                                 convPlacer.html(uconv);
                                 if (desktopNotifications.isSupported()) {
@@ -67,32 +56,6 @@
                     }
                 ";
             Yii::app()->clientScript->registerScript('AutoUpdater', $script, CClientScript::POS_READY);
-        }
-
-        public static function renderDesktopNotificationJavascriptClass()
-        {
-            $script = "
-                    var desktopNotifications = {
-                        notify:function(image,title,body) {
-                            if (window.webkitNotifications.checkPermission() == 0) {
-                                window.webkitNotifications.createNotification(image, title, body).show();
-                                return true;
-                            }
-                            return false;
-                        },
-                        isSupported:function() {
-                            if (window.webkitNotifications != 'undefined') {
-                                return true
-                            } else {
-                                return false
-                            }
-                        },
-                        requestAutorization:function() {
-                            window.webkitNotifications.requestPermission();
-                        }
-                    }
-                ";
-            Yii::app()->clientScript->registerScript('DesktopNotifications', $script, CClientScript::POS_READY);
         }
     }
 ?>
