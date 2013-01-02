@@ -33,6 +33,7 @@ a.search-form-tools input[type="submit"],
 a#progressBar-links a,
 .default-btn #progressBar-links a,
 .default-btn a#progressBar-links a,
+.ui-progressbar,
 #InstallPageView .AppContainer a,
 a#InstallPageView .AppContainer a,
 .default-btn #InstallPageView .AppContainer a,
@@ -9361,7 +9362,6 @@ div.hasHalfs .twoThirds {
 }
 .ProgressView #sequential-process-spinner + #progressBar-msg {
   display: block;
-  text-indent: 30px;
 }
 .progress-counter {
   padding: 15px;
@@ -9371,6 +9371,40 @@ div.hasHalfs .twoThirds {
 }
 #progressBar-links a {
   margin-left: 0;
+}
+.progressbar-wrapper {
+  width: 100%;
+  position: relative;
+  margin-top: 15px;
+}
+#progress-percent {
+  width: 50px;
+  display: inline-block;
+  font-weight: bold;
+}
+.ui-progressbar {
+  padding-left: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+}
+.ui-widget-header.ui-progressbar-value {
+  background-color: transparent !important;
+  height: 5px;
+  background-image: -webkit-linear-gradient(0deg, #969696 0%, #afafaf 100%) !important;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  -ms-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+  margin: 5px 0 0 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
 }
 /*=About*/
 #AboutView {

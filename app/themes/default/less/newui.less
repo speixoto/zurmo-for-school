@@ -4122,7 +4122,7 @@ div.hasHalfs{
     }
     #sequential-process-spinner + #progressBar-msg{
         display:block;
-        text-indent:30px;
+        //text-indent:30px;
     }
 }
 
@@ -4136,6 +4136,37 @@ div.hasHalfs{
         ++.z-button;
         margin-left:0;
     }
+}
+
+.progressbar-wrapper{
+    width:100%;
+    position: relative;
+    margin-top: 15px;
+}
+
+#progress-percent{
+    width:50px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.ui-progressbar{
+    ++.border-box;
+    padding-left:35px;
+    position: absolute;
+    top:0;
+    left: 0;
+    height:5px;
+    width:100%;
+}
+
+.ui-widget-header.ui-progressbar-value{
+    background-color: transparent !important;
+    height:5px;
+    background-image: -webkit-linear-gradient(0deg, rgb(150, 150, 150) 0%, rgb(175, 175, 175) 100%) !important;
+    .animateAll(0.2s);
+    margin:5px 0 0 0;
+    .radius(3px);
 }
 
 /*=About*/

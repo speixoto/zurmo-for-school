@@ -120,23 +120,23 @@
                     'create' => 'js:function(event, ui)
                     {
                         ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
-                        makeSmallLoadingSpinner("sequential-process-spinner", "dark");
+                    }',
+                    'change' => 'js:function(event, ui){
+                        $("#progress-percent").html( $(\'#' . $this->progressBarId . '\').progressbar("value") + "%");
                     }',
                     'complete' => 'js:function(event, ui)
                     {
-                        $(\'#' . $this->progressBarId . '\').hide();
+                        $(".progressbar-wrapper").fadeOut(250);
                         $(\'#' . $this->progressBarId . '-links\').show();
-                        $(\'#sequential-process-spinner\').remove();
                     }',
                 ),
             ));
             $cClipWidget->endClip();
             $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content = "<div><h1>" . Yii::t('Default', 'Mass Update') . ' ' . $this->title . '</h1>';
-            $content .= '<div class="progress-counter">' . "\n";
-            $content .= '<h3><span id="sequential-process-spinner"><span class="z-spinner"></span></span>' . 
-                        '<span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
-            $content .= $progressBarContent;
+            $content  = "<div><h1>" . Yii::t('Default', 'Mass Update') . ' ' . $this->title . '</h1>';
+            $content .= '<div class="progress-counter">';
+            $content .= '<h3><span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
+            $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0%</span>' . $progressBarContent . '</div>';
             $content .= $this->renderFormLinks();
             $content .= '</div>';
             $content .= '</div>';
