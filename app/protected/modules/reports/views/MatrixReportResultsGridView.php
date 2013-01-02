@@ -39,6 +39,20 @@
         {
             $columns        = array();
             $attributeKey   = 0;
+
+            foreach($this->dataProvider->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
+            {
+                $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
+                $attributeName    = MatrixReportDataProvider::resolveHeaderColumnAliasName(
+                                    $displayAttribute->columnAliasName);
+                $params           = $this->resolveParamsForColumnElement($displayAttribute);
+                $columnAdapter    = new $columnClassName($attributeName, $this, $params);
+                $column           = $columnAdapter->renderGridViewData();
+                $column['header'] = $displayAttribute->label;
+                $column['class']  = 'YAxisHeaderColumn';
+                array_push($columns, $column);
+            }
+
             for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)
             {
                 foreach($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)

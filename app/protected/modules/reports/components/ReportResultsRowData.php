@@ -38,6 +38,8 @@
 
         protected $selectedColumnNamesAndValues = array();
 
+        protected $selectedColumnNamesAndRowSpans = array();
+
         public static function resolveAttributeNameByKey($key)
         {
             assert('is_numeric($key) || is_string($key)');
@@ -79,6 +81,19 @@
         {
             $this->selectedColumnNamesAndValues[$columnName] = $value;
         }
+
+        public function addSelectedColumnNameAndRowSpan($columnName, $value)
+        {
+            assert('is_int($value)');
+            $this->selectedColumnNamesAndRowSpans[$columnName] = $value;
+        }
+
+        public function getSelectedColumnRowSpan($columnName)
+        {
+            assert('is_string($columnName)');
+            return $this->selectedColumnNamesAndRowSpans[$columnName];
+        }
+
 
         public function getModel($attribute)
         {

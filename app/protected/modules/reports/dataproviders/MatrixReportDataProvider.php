@@ -26,6 +26,8 @@
 
     class MatrixReportDataProvider extends ReportDataProvider
     {
+        const HEADER_COLUMN_ALIAS_SUFFIX = 'Header';
+
         /**
          * Resolved to include the groupBys as query only display attributes
          * @var null | array of DisplayAttributesForReportForms
@@ -46,6 +48,12 @@
         {
             assert('is_int($index)');
             return DisplayAttributeForReportForm::COLUMN_ALIAS_PREFIX . $index;
+        }
+
+        public static function resolveHeaderColumnAliasName($columnAliasName)
+        {
+            assert('is_int($index)');
+            return $columnAliasName . self::HEADER_COLUMN_ALIAS_SUFFIX;
         }
 
         public function calculateTotalItemCount()
@@ -203,10 +211,17 @@
                 $tempData = $xAxisGroupingsColumnNamesData;
                 foreach($this->resolveDisplayAttributes() as $displayAttribute)
                 {
+                    $value    = $row[$displayAttribute->columnAliasName];
                     if($this->isDisplayAttributeAnXAxisGroupBy($displayAttribute))
                     {
-                        $value = $row[$displayAttribute->columnAliasName];
+
                         $tempData = $tempData[$value];
+                    }
+                    elseif($this->isDisplayAttributeAnYAxisGroupBy($displayAttribute))
+                    {
+                        //todo: deal with translation, but we can't here because later we are using the rawValue, unless we expand addSelectedColumnNameAndValue or have a new method
+                        $resultsData[$idByOffset]->addSelectedColumnNameAndValue(
+                            static::resolveHeaderColumnAliasName($displayAttribute->columnAliasName), $value);
                     }
                 }
                 //At this point $tempData is at the final level, where the actual display calculations are located
@@ -221,7 +236,63 @@
                 }
                 $previousYAxisDisplayAttributesUniqueIndex = $currentYAxisDisplayAttributesUniqueIndex;
             }
+            $this->resolveRowSpansForResultsData($resultsData);
             return $resultsData;
+        }
+
+        protected function resolveRowSpansForResultsData(& $resultsData)
+        {
+            $previousLeadingUniqueIndexData = array();
+            foreach($resultsData as $dataKey => $reportResultsRowData)
+            {
+                $leadingUniqueIndexData = array();
+                $leadingUniqueIndex     = null;
+                foreach($this->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
+                {
+                    $attributeName = static::resolveHeaderColumnAliasName($displayAttribute->columnAliasName);
+                    if($leadingUniqueIndex != null)
+                    {
+                        $leadingUniqueIndex .= FormModelUtil::DELIMITER;
+                    }
+                    $leadingUniqueIndex .= $reportResultsRowData->{$attributeName};
+                    $leadingUniqueIndexData[$displayAttribute->columnAliasName] = $leadingUniqueIndex;
+                    $rowSpan = 0;
+                    if($dataKey == 0 ||
+                       $previousLeadingUniqueIndexData[$displayAttribute->columnAliasName] !=
+                       $leadingUniqueIndexData[$displayAttribute->columnAliasName])
+                    {
+                        $rowSpan = 1;
+                        for ($i = ($dataKey + 1); $i < count($resultsData); $i++)
+                        {
+                            $nextLeadingUniqueIndex     = null;
+                            foreach($this->getDisplayAttributesThatAreYAxisGroupBys() as $nextDisplayAttribute)
+                            {
+                                if($nextLeadingUniqueIndex != null)
+                                {
+                                    $nextLeadingUniqueIndex .= FormModelUtil::DELIMITER;
+                                }
+                                $nextAttributeName = static::resolveHeaderColumnAliasName($nextDisplayAttribute->columnAliasName);
+                                $nextLeadingUniqueIndex .= $resultsData[$i]->$nextAttributeName;
+                                if($nextDisplayAttribute->attributeIndexOrDerivedType == $displayAttribute->attributeIndexOrDerivedType)
+                                {
+                                    break;
+                                }
+                            }
+                            if($nextLeadingUniqueIndex == $leadingUniqueIndexData[$displayAttribute->columnAliasName])
+                            {
+                                $rowSpan ++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    $resultsData[$dataKey]->addSelectedColumnNameAndRowSpan(static::resolveHeaderColumnAliasName(
+                        $displayAttribute->columnAliasName), $rowSpan);
+                }
+                $previousLeadingUniqueIndexData = $leadingUniqueIndexData;
+            }
         }
 
         protected function getDisplayCalculationsCount()
@@ -343,7 +414,7 @@
             return end($yAxisGroupBys);
         }
 
-        protected function getDisplayAttributesThatAreYAxisGroupBys()
+        public function getDisplayAttributesThatAreYAxisGroupBys()
         {
             $displayAttributes = array();
             foreach($this->resolveDisplayAttributes() as $displayAttribute)
@@ -374,12 +445,25 @@
             return false;
         }
 
+    protected function isDisplayAttributeAnYAxisGroupBy($displayAttribute)
+    {
+        foreach($this->getYAxisGroupBys() as $groupBy)
+        {
+            if($displayAttribute->attributeIndexOrDerivedType ==
+                $groupBy->attributeIndexOrDerivedType)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
         protected function addDefaultColumnNamesAndValuesToReportResultsRowData(ReportResultsRowData $reportResultsRowData, $totalCount)
         {
             for ($i = 0; $i < $totalCount; $i++)
             {
                 $columnAliasName = DisplayAttributeForReportForm::COLUMN_ALIAS_PREFIX . $i;
-                $value = 0;
+                $value           = 0;
                 $reportResultsRowData->addSelectedColumnNameAndValue($columnAliasName, $value);
             }
         }

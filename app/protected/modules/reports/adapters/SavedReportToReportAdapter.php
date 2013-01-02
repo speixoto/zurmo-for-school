@@ -55,6 +55,7 @@
                 {
                     $report->setSpotConversionCurrencyCode($unserializedData['spotConversionCurrencyCode']);
                 }
+
                 self::makeComponentFormAndPopulateReportFromData(
                         $unserializedData[ComponentForReportForm::TYPE_FILTERS],   $report, 'Filter');
                 self::makeComponentFormAndPopulateReportFromData(
@@ -67,6 +68,7 @@
                 self::makeComponentFormAndPopulateReportFromData(
                         $unserializedData[ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES],
                         $report, 'DrillDownDisplayAttribute');
+
                 if(isset($unserializedData['chart']))
                 {
                     $moduleClassName = $report->getModuleClassName();

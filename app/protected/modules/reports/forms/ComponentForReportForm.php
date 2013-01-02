@@ -200,6 +200,7 @@
                     {
                         $content .= ' ' . self::DISPLAY_LABEL_RELATION_DIVIDER . ' ';
                     }
+
                     $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                             make($moduleClassName, $modelClassName, $this->reportType);
                     if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
@@ -224,6 +225,7 @@
                     {
                         $content   .= $modelToReportAdapter->getAttributeLabel($relationOrAttribute);
                     }
+
                 }
             }
             return $content;

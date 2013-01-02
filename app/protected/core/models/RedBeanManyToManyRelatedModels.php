@@ -55,8 +55,15 @@
             $tableName                   = RedBeanModel::getTableName($modelClassName);
             $this->bean                  = $bean;
             $this->linkName              = $linkName;
-            $this->relatedBeansAndModels = array_values(R::related($this->bean, $tableName, null, array(),
-                                                        $this->getTableName(R::dispense($tableName))));
+            if ($this->bean->id > 0)
+            {
+                $this->relatedBeansAndModels = array_values(R::related($this->bean, $tableName, null, array(),
+                    $this->getTableName(R::dispense($tableName))));
+            }
+            else
+            {
+                $this->relatedBeansAndModels = array();
+            }
         }
 
         public function getModelClassName()

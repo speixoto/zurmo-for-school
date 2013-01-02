@@ -37,6 +37,10 @@
 
         const RELATION_VIA_MODULE_DELIMITER  = '_';
 
+        private static $derivedAttributesData;
+
+        private static $adaptersByModelClassNameAndType;
+
         protected $model;
 
         protected $rules;
@@ -50,28 +54,32 @@
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
             assert('is_string($reportType)');
-            $rules                     = ReportRules::makeByModuleClassName($moduleClassName);
-            $model                     = new $modelClassName(false);
-            if($reportType == Report::TYPE_ROWS_AND_COLUMNS)
+            if(!isset(self::$adaptersByModelClassNameAndType[$modelClassName . $reportType]))
             {
-                $adapter       = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules,
-                                                                                         $reportType, $moduleClassName);
+                $rules                     = ReportRules::makeByModuleClassName($moduleClassName);
+                $model                     = new $modelClassName(false);
+                if($reportType == Report::TYPE_ROWS_AND_COLUMNS)
+                {
+                    $adapter       = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules,
+                                                                                             $reportType, $moduleClassName);
+                }
+                elseif($reportType == Report::TYPE_SUMMATION)
+                {
+                    $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules,
+                                                                                             $reportType, $moduleClassName);
+                }
+                elseif($reportType == Report::TYPE_MATRIX)
+                {
+                    $adapter       = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules,
+                                                                                             $reportType, $moduleClassName);
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+                self::$adaptersByModelClassNameAndType[$modelClassName . $reportType] = $adapter;
             }
-            elseif($reportType == Report::TYPE_SUMMATION)
-            {
-                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules,
-                                                                                         $reportType, $moduleClassName);
-            }
-            elseif($reportType == Report::TYPE_MATRIX)
-            {
-                $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules,
-                                                                                         $reportType, $moduleClassName);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $adapter;
+            return self::$adaptersByModelClassNameAndType[$modelClassName . $reportType];
         }
 
         public function getModel()
@@ -707,14 +715,19 @@
 
         protected function getDerivedAttributesData()
         {
-            $attributes = array();
-            $calculatedAttributes = CalculatedDerivedAttributeMetadata::getAllByModelClassName(get_class($this->model));
-            foreach ($calculatedAttributes as $attribute)
+            if (!isset(self::$derivedAttributesData[get_class($this->model)]))
             {
-                $attributes[$attribute->name] = array('label' => $attribute->getLabelByLanguage(Yii::app()->language),
-                                                      'derivedAttributeType' => 'CalculatedNumber');
+                $attributes = array();
+                $calculatedAttributes = CalculatedDerivedAttributeMetadata::getAllByModelClassName(get_class($this->model));
+                foreach ($calculatedAttributes as $attribute)
+                {
+                    $attributes[$attribute->name] = array('label' => $attribute->getLabelByLanguage(Yii::app()->language),
+                                                          'derivedAttributeType' => 'CalculatedNumber');
+                }
+                self::$derivedAttributesData[get_class($this->model)] =
+                    array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
             }
-            return array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
+            return self::$derivedAttributesData[get_class($this->model)];
         }
 
         public function isDerivedAttribute($attribute)
