@@ -71,7 +71,7 @@
         }
 
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
-            $modelToReportAdapter, $attribute)
+            $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
@@ -82,7 +82,8 @@
                 $attribute, $sortAttribute);
         }
 
-        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
+        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute,
+                                                                   ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
@@ -94,7 +95,7 @@
                     $modelToReportAdapter->getModelClassName(),
                     $modelToReportAdapter->resolveRealAttributeName($attribute));
             }
-            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
+            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute, $componentForm);
         }
 
         //todo: do we need to resolve casting hint for where clause too? need to test, not sure how this would work

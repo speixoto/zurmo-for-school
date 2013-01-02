@@ -29,7 +29,6 @@ class ReportTest extends ZurmoBaseTest
     public function tesSomeMethodsInReportModel()
     {
         //todo: areRuntimeFiltersPresent()
-        //todO: getDisplayAttributeIndex($attribute)
         //todo: resolveGroupBysAsFilters(Array $getData)
         $this->fail();
     }

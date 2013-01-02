@@ -26,13 +26,16 @@
 
     class SummationReportDataProvider extends ReportDataProvider
     {
+        /**
+         * Resolved to include the groupBys as query only display attributes, and mark all display attributes that are
+         * also groupBys as used by the drillDown.
+         * @var null | array of DisplayAttributesForReportForms
+         */
+        private $resolvedDisplayAttributes;
+
         public function __construct(Report $report, array $config = array())
         {
             parent::__construct($report, $config);
-            if(($this->report->getDrillDownDisplayAttributes()) > 0)
-            {
-                return $this->resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes();
-            }
         }
 
         public function calculateTotalItemCount()
@@ -59,6 +62,24 @@
                                      'displayLabel' => strval($data->$firstSeriesAttributeName));
             }
             return $chartData;
+        }
+
+        public function resolveDisplayAttributesToUse()
+        {
+            if($this->resolvedDisplayAttributes != null)
+            {
+                return $this->resolvedDisplayAttributes;
+            }
+            $this->resolvedDisplayAttributes = array();
+            foreach($this->report->getDisplayAttributes() as $displayAttribute)
+            {
+                $this->resolvedDisplayAttributes[] = $displayAttribute;
+            }
+            if(($this->report->getDrillDownDisplayAttributes()) > 0)
+            {
+                $this->resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes();
+            }
+            return $this->resolvedDisplayAttributes;
         }
 
         protected function isReportValidType()
@@ -97,30 +118,6 @@
             }
         }
 
-        protected function resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes()
-        {
-            foreach($this->report->getGroupBys() as $groupBy)
-            {
-                if(null === $index = $this->report->getDisplayAttributeIndex($groupBy->attributeIndexOrDerivedType))
-                {
-                    $displayAttribute                              = new DisplayAttributeForReportForm(
-                                                                     $groupBy->getModuleClassName(),
-                                                                     $groupBy->getModelClassName(),
-                                                                     $this->report->getType());
-                    $displayAttribute->attributeIndexOrDerivedType = $groupBy->attributeIndexOrDerivedType;
-                    $displayAttribute->queryOnly                   = true;
-                    $displayAttribute->valueUsedAsDrillDownFilter  = true;
-                    $this->report->addDisplayAttribute($displayAttribute);
-                }
-                else
-                {
-                    $displayAttributes = $this->report->getDisplayAttributes();
-                    $displayAttributes[$index]->valueUsedAsDrillDownFilter = true;
-                }
-            }
-
-        }
-
         protected function resolveChartFirstSeriesAttributeNameForReportResultsRowData()
         {
             foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
@@ -141,6 +138,29 @@
                     return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 }
             }
+        }
+
+        private function resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes()
+        {
+            foreach($this->resolveGroupBys() as $groupBy)
+            {
+                if(null === $index = $this->report->getDisplayAttributeIndex($groupBy->attributeIndexOrDerivedType))
+                {
+                    $displayAttribute                              = new DisplayAttributeForReportForm(
+                                                                     $groupBy->getModuleClassName(),
+                                                                     $groupBy->getModelClassName(),
+                                                                     $this->report->getType());
+                    $displayAttribute->attributeIndexOrDerivedType = $groupBy->attributeIndexOrDerivedType;
+                    $displayAttribute->queryOnly                   = true;
+                    $displayAttribute->valueUsedAsDrillDownFilter  = true;
+                    $this->resolvedDisplayAttributes[]             = $displayAttribute;
+                }
+                else
+                {
+                    $this->resolvedDisplayAttributes[$index]->valueUsedAsDrillDownFilter = true;
+                }
+            }
+
         }
     }
 ?>

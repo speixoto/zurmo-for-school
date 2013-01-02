@@ -178,7 +178,8 @@
             }
         }
 
-        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
+        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute,
+                                                                   ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
@@ -190,7 +191,7 @@
                     $modelToReportAdapter->getModelClassName(),
                     $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
             }
-            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
+            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute, $componentForm);
         }
 
         protected static function resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute)
@@ -255,6 +256,10 @@
 
         protected static function isDisplayAttributeMadeViaSelect(ComponentForReportForm $componentForm)
         {
+            if($componentForm->madeViaSelectInsteadOfViaModel)
+            {
+                return true;
+            }
             $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($componentForm);
             if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($componentForm->getResolvedAttribute()))
             {
@@ -298,6 +303,25 @@
                 return " * {$quote}{$tableAliasName}{$quote}." .
                     "{$quote}" . $currencyValue->getColumnNameByAttribute('rateToBase') . "{$quote}";
             }
+        }
+//todo: this is lame because it knows that madeViaSelectInsteadOfViaModel true, means it is a group by. try to decouple.
+        protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
+            $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            if($componentForm->madeViaSelectInsteadOfViaModel)
+            {
+                $resolvedRelatedAttribute = $modelToReportAdapter->getRules()->
+                    getGroupByRelatedAttributeForRelationReportedAsAttribute(
+                    $modelToReportAdapter->getModel(), $attribute);
+            }
+            else
+            {
+                $resolvedRelatedAttribute = null;
+            }
+            return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
+                $attribute, $resolvedRelatedAttribute);
         }
     }
 ?>

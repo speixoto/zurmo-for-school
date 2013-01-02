@@ -68,7 +68,7 @@
                                                    $componentForm->getModelClassName(), $componentForm->getReportType());
             //todO: if the method cal below is to a static method, then make it static here too.
             $modelAttributeToDataProviderAdapter = $this->makeModelAttributeToDataProviderAdapter(
-                                                   $modelToReportAdapter, $attribute);
+                                                   $modelToReportAdapter, $attribute, $componentForm);
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $componentForm);
         }
 
@@ -85,13 +85,13 @@
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $componentForm->getReportType());
                 $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
-                                        $modelToReportAdapter, $relationOrAttribute);
+                                        $modelToReportAdapter, $relationOrAttribute, $componentForm);
                 if($this->shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter, $componentForm,
                                                                          $modelAttributeToDataProviderAdapter))
                 {
                     $attribute                            = 'id';
                     $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
-                                                            $modelToReportAdapter, $attribute);
+                                                            $modelToReportAdapter, $attribute, $componentForm);
                     break;
                 }
                 elseif($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
@@ -127,7 +127,8 @@
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $componentForm, $onTableAliasName);
         }
 
-        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
+        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute,
+                                                                   ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
@@ -162,7 +163,7 @@
             elseif($modelToReportAdapter->relationIsReportedAsAttribute($attribute))
             {
                 return static::makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
-                               $modelToReportAdapter, $attribute);
+                               $modelToReportAdapter, $attribute, $componentForm);
             }
             //Example: name or phone
             elseif(!$modelToReportAdapter->isReportedOnAsARelation($attribute) &&
@@ -180,7 +181,7 @@
         }
 
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
-                                  $modelToReportAdapter, $attribute)
+                                  $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');

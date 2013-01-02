@@ -34,6 +34,8 @@
 
         protected $offset;
 
+        private $_rowsData;
+
         public function __construct(Report $report, array $config = array())
         {
             $this->report = $report;
@@ -50,9 +52,36 @@
             $this->runReport = $runReport;
         }
 
-        public function getReport()
+        public function getReport() //todo: can we avoid needing this from the outside? just have wrapper methods here in the data provider? would be cleaner
         {
             return $this->report;
+        }
+
+        public function resolveDisplayAttributes()
+        {
+            return $this->report->getDisplayAttributes();
+        }
+
+        public function resolveGroupBys()
+        {
+            return $this->report->getGroupBys();
+        }
+
+        /**
+         * See the yii documentation. This function is made public for unit testing.
+         */
+        public function calculateTotalItemCount()
+        {
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
+            echo $sql . "<BR>";
+            $count = R::getCell($sql);
+            if ($count === null || empty($count))
+            {
+                $count = 0;
+            }
+            echo 'the count ' . $count . "<BR>";
+            return $count;
         }
 
         protected function fetchData()
@@ -67,7 +96,7 @@
             }
             else
             {
-                $offset = 0;
+                $offset = null;
                 $limit  = null;
             }
             if ($this->offset != null)
@@ -88,12 +117,12 @@
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $sql          = $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
             echo $sql . "<BR>";
-            $rows         = R::getAll($sql);
+            $rows         = $this->getRowsData($sql);
             $resultsData  = array();
             $idByOffset   = $offset;
             foreach ($rows as $key => $row)
             {
-                $reportResultsRowData = new ReportResultsRowData($this->resolveDisplayAttributesToUse(), $idByOffset);
+                $reportResultsRowData = new ReportResultsRowData($this->resolveDisplayAttributes(), $idByOffset);
                 foreach($selectQueryAdapter->getIdTableAliasesAndModelClassNames() as $tableAlias => $modelClassName)
                 {
                     $idColumnName = $selectQueryAdapter->getIdColumNameByTableAlias($tableAlias);
@@ -114,26 +143,14 @@
             return $resultsData;
         }
 
-        protected function resolveDisplayAttributesToUse()
+        protected function getRowsData($sql)
         {
-            return $this->report->getDisplayAttributes();
-        }
-
-        /**
-         * See the yii documentation. This function is made public for unit testing.
-         */
-        public function calculateTotalItemCount()
-        {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-            $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
-            echo $sql . "<BR>";
-            $count = R::getCell($sql);
-            if ($count === null || empty($count))
+            assert('is_string($sql)');
+            if($this->_rowsData == null)
             {
-                $count = 0;
+                $this->_rowsData = R::getAll($sql);
             }
-            echo 'the count ' . $count . "<BR>";
-            return $count;
+            return $this->_rowsData;
         }
 
         /**
@@ -189,7 +206,7 @@
                                                  RedBeanModelSelectQueryAdapter $selectQueryAdapter)
         {
             $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $builder->makeQueryContent($this->report->getDisplayAttributes());
+            $builder->makeQueryContent($this->resolveDisplayAttributes());
         }
 
         protected function makeFiltersContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
@@ -209,7 +226,7 @@
                                                RedBeanModelSelectQueryAdapter $selectQueryAdapter)
         {
             $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            return $builder->makeQueryContent($this->report->getGroupBys());
+            return $builder->makeQueryContent($this->resolveGroupBys());
         }
     }
 ?>

@@ -90,7 +90,8 @@
         }
 
 
-        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
+        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute,
+                                                                   ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
@@ -102,7 +103,7 @@
                     $modelToReportAdapter->getModelClassName(),
                     $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
             }
-            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
+            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute, $componentForm);
         }
 
         protected static function resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute)
@@ -121,7 +122,7 @@
         }
 
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
-            $modelToReportAdapter, $attribute)
+            $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');

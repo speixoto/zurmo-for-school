@@ -77,10 +77,6 @@
 
         public function addSelectedColumnNameAndValue($columnName, $value)
         {
-            if(isset($this->selectedColumnNamesAndValues[$columnName]))
-            {
-                throw new NotSupportedException();
-            }
             $this->selectedColumnNamesAndValues[$columnName] = $value;
         }
 

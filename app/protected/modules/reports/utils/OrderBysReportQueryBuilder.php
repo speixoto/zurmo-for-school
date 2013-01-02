@@ -59,7 +59,7 @@
         }
 
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
-            $modelToReportAdapter, $attribute)
+            $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');

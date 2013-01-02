@@ -42,7 +42,7 @@
             }
             elseif($report->getType() == Report::TYPE_MATRIX)
             {
-                $dataProvider = new MatrixReportDataProvider($report, $config);
+                $dataProvider = new MatrixReportDataProvider($report);
             }
             else
             {

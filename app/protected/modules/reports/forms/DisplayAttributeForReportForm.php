@@ -40,6 +40,8 @@
 
         public $valueUsedAsDrillDownFilter = false;
 
+        public $madeViaSelectInsteadOfViaModel = false;
+
         /**
          * Indicates the model alias for working with the resultsRowData. Sometimes there can be the same related model
          * more than once via different relations.  This makes sure the resultsRowData knows which model to use. Only applies

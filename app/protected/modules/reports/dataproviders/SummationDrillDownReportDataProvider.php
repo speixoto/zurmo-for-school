@@ -26,24 +26,17 @@
 
     class SummationDrillDownReportDataProvider extends RowsAndColumnsReportDataProvider
     {
+        public function resolveDisplayAttributes()
+        {
+            return $this->report->getDrillDownDisplayAttributes();
+        }
+
         protected function isReportValidType()
         {
             if($this->report->getType() != Report::TYPE_SUMMATION)
             {
                 throw new NotSupportedException();
             }
-        }
-
-        protected function resolveDisplayAttributesToUse()
-        {
-            return $this->report->getDrillDownDisplayAttributes();
-        }
-
-        protected function makeDisplayAttributes(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                                 RedBeanModelSelectQueryAdapter $selectQueryAdapter)
-        {
-            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $builder->makeQueryContent($this->report->getDrillDownDisplayAttributes());
         }
 
         protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,

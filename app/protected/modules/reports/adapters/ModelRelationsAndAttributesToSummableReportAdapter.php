@@ -198,7 +198,7 @@
             }
             else
             {
-                throw new NotSupportedException();
+                $selectQueryAdapter->addClause($tableName, $columnName, $columnAliasName);
             }
         }
 //todo: should we really call resolveReal in here? or have that outside and then call this method? make it a bit cleaner
@@ -473,7 +473,6 @@
                 $parts = explode(FormModelUtil::DELIMITER, $attribute);
                 return $parts[1];
             }
-            throw new NotSupportedException($attribute);
         }
     }
 ?>

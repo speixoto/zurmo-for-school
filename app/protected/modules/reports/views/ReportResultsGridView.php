@@ -202,8 +202,7 @@
                 );
                 array_push($columns, $firstColumn);
             }
-
-            foreach ($this->resolveDisplayAttributesToUse() as $key => $displayAttribute)
+            foreach ($this->dataProvider->resolveDisplayAttributes() as $key => $displayAttribute)
             {
                 if(!$displayAttribute->queryOnly)
                 {
@@ -221,11 +220,6 @@
                 }
             }
             return $columns;
-        }
-
-        protected function resolveDisplayAttributesToUse()
-        {
-            return $this->dataProvider->getReport()->getDisplayAttributes();
         }
 
         protected function resolveColumnClassNameForListViewColumnAdapter($displayAttribute)

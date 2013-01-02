@@ -34,5 +34,33 @@
             }
             return true;
         }
+
+        protected function getCGridViewColumns()
+        {
+            $columns        = array();
+            $attributeKey   = 0;
+            for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)
+            {
+                foreach($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
+                {
+                    if(!$displayAttribute->queryOnly)
+                    {
+                        $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
+                        $attributeName    = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);
+                        $params           = $this->resolveParamsForColumnElement($displayAttribute);
+                        $columnAdapter    = new $columnClassName($attributeName, $this, $params);
+                        $column           = $columnAdapter->renderGridViewData();
+                        $column['header'] = $displayAttribute->label;
+                        if (!isset($column['class']))
+                        {
+                            $column['class'] = 'DataColumn';
+                        }
+                        array_push($columns, $column);
+                        $attributeKey ++;
+                    }
+                }
+            }
+            return $columns;
+        }
     }
 ?>
