@@ -132,8 +132,6 @@
                     array('subject',            'type',    'type' => 'string'),
                     array('subject',            'length',  'min'  => 3, 'max' => 255),
                     array('ownerHasReadLatest', 'boolean'),
-                    array('isClosed',           'type',    'type' => 'boolean'),
-                    array('isClosed',           'default', 'value'=> false),
                 ),
                 'elements' => array(
                     'conversationItems' => 'ConversationItem',

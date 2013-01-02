@@ -121,7 +121,7 @@
             $this->assertTrue($dataProvider instanceof RedBeanModelDataProvider);
         }
 
-        public function testGetMissionParticipantsForSendEmail()
+        public function testResolvePeopleToSendNotificationToOnNewComment()
         {
             $super                              = User::getByUsername('super');
             Yii::app()->user->userModel         = $super;
@@ -134,16 +134,12 @@
             $this->assertTrue($steven->save());
             // super updated mission
             $participants                       = MissionsUtil::
-                    getMissionParticipantsForSendEmail($mission, $super);
+                    resolvePeopleToSendNotificationToOnNewComment($mission, $super);
             $this->assertEquals(1, count($participants));
             $this->assertEquals($participants[0], $steven);
-            UserConfigurationFormAdapter::setTurnOffEmailNotificationsValue($steven, true);
-            $participants                       = MissionsUtil::
-                    getMissionParticipantsForSendEmail($mission, $super);
-            $this->assertEquals(0, count($participants));
             // steven updated mission
             $participants                       = MissionsUtil::
-                    getMissionParticipantsForSendEmail($mission, $steven);
+                    resolvePeopleToSendNotificationToOnNewComment($mission, $steven);
             $this->assertEquals(1, count($participants));
             $this->assertEquals($participants[0], $super);
         }

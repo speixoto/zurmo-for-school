@@ -232,63 +232,20 @@
             return $content;
         }
 
-        protected static function getUrlToConversationDetailAndRelationsView($id)
+        public static function getUrlToConversationDetailAndRelationsView($id)
         {
             assert('is_int($id)');
             return Yii::app()->createAbsoluteUrl('conversations/default/details/', array('id' => $id));
         }
 
-        public static function getConversationParticipantsForSendEmail(Conversation $conversation, $updater)
+        public static function getConversationParticipants(Conversation $conversation)
         {
-            assert('$conversation->id > 0');
-            assert('$updater instanceof User');
-            $existingPeople = array();
-            if ($updater->getClassId('Item') != $conversation->owner->getClassId('Item') &&
-                $conversation->owner->primaryEmail->emailAddress !== null &&
-                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($conversation->owner))
-            {
-                $existingPeople[] = $conversation->owner;
-            }
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Contact');
+            $participants = array();
             foreach ($conversation->conversationParticipants as $participant)
             {
-                try
-                {
-                    $contact = $participant->person->castDown(array($modelDerivationPathToItem));
-                    if (get_class($contact) == 'Contact' &&
-                        $updater->getClassId('Item') != $contact->getClassId('Item') &&
-                        $contact->primaryEmail->emailAddress !== null)
-                    {
-                        $existingPeople[] = $contact;
-                    }
-                    else
-                    {
-                        throw new NotFoundException();
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
-                    try
-                    {
-                        $user = $participant->person->castDown(array($modelDerivationPathToItem));
-                        //Owner is always added first.
-                        if (get_class($user) == 'User' &&
-                            $updater->getClassId('Item') != $user->getClassId('Item') &&
-                            $user->primaryEmail->emailAddress !== null &&
-                            !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($user))
-                        {
-                            $existingPeople[] = $user;
-                        }
-                    }
-                    catch (NotFoundException $e)
-                    {
-                        //This means the item is not a recognized or expected supported model.
-                        throw new NotSupportedException();
-                    }
-                }
+                $participants[] = static::castDownItem($participant->person);
             }
-            return $existingPeople;
+            return $participants;
         }
     }
 ?>

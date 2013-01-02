@@ -496,9 +496,15 @@
             {
                 return;
             }
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $conversations  = Conversation::getAll();
-            $this->assertEquals(1, count($conversations));
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $conversation               = new Conversation();
+            $conversation->owner        = $super;
+            $conversation->isClosed     = true;
+            $conversation->subject      = "Test closed";
+            $conversation->description  = "This is just to make the isClosed column in conversations table";
+            $conversation->save();
+            $conversations              = Conversation::getAll();
+            $this->assertEquals(2, count($conversations));
             $this->assertEquals($super->id, $conversations[0]->owner->id);
             //Conversation is opened
             $this->setGetArray(array('type' => 1));
@@ -518,7 +524,7 @@
             $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
             $this->setGetArray(array('id' => $conversations[0]->id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/ajaxChangeStatus');
-            //Conversation is opened
+            //Conversation is Re-opened
             $this->setGetArray(array('type' => 1));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
@@ -541,10 +547,9 @@
             $sally                                  = User::getByUsername('sally');
             $mary                                   = User::getByUsername('mary');
             $conversations                          = Conversation::getAll();
-            $this->assertEquals(1, count($conversations));
+            $this->assertEquals(2, count($conversations));
             $this->assertEquals(0, $conversations[0]->comments->count());
-            $this->assertEquals(6, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $initalQueued                           = Yii::app()->emailHelper->getQueuedCount();
             $conversation                           = $conversations[0];
             $conversationParticipant                = new ConversationParticipant();
             $conversationParticipant->person        = $steven;
@@ -564,10 +569,10 @@
             $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name')));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
             $this->assertEquals(1, $conversation->comments->count());
-            $this->assertEquals(7, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals($initalQueued + 1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages                          = EmailMessage::getAll();
-            $emailMessage                           = $emailMessages[6];
+            $emailMessage                           = $emailMessages[$initalQueued];
             $this->assertEquals(2, count($emailMessage->recipients));
             $this->assertContains('conversation', $emailMessage->subject);
             $this->assertContains(strval($conversation), $emailMessage->subject);
@@ -589,7 +594,7 @@
             $conversation                           = $conversations[0];
             $conversation->isClosed                 = true;
             $conversation->save();
-            $this->assertEquals(1, count($conversations));
+            $this->assertEquals(2, count($conversations));
             $this->assertEquals(1, $conversation->comments->count());
             $this->setGetArray(array('relatedModelId'             => $conversation->id,
                                      'relatedModelClassName'      => 'Conversation',

@@ -182,24 +182,26 @@
             NotificationsUtil::submit($message, $rules);
         }
 
-        public static function getMissionParticipantsForSendEmail(Mission $mission, $updater)
+        /**
+         * Given a Mission and the User that created the new comment
+         * return the people on the mission to send new notification to
+         * @param Mission $mission
+         * @param User $user
+         * @return Array $peopleToSendNotification
+         */
+        public static function resolvePeopleToSendNotificationToOnNewComment(Mission $mission, User $user)
         {
             assert('$mission->id > 0');
-            assert('$updater instanceof User');
-            $existingPeople = array();
-            if ($updater->getClassId('Item') != $mission->owner->getClassId('Item') &&
-                $mission->owner->primaryEmail->emailAddress !== null &&
-                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($mission->owner))
+            $peopleToSendNotification = array();
+            if ($user->getClassId('Item') != $mission->owner->getClassId('Item'))
             {
-                $existingPeople[] = $mission->owner;
+                $peopleToSendNotification[] = $mission->owner;
             }
-            if ($updater->getClassId('Item') != $mission->takenByUser->getClassId('Item') &&
-                $mission->takenByUser->primaryEmail->emailAddress !== null &&
-                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($mission->takenByUser))
+            if ($user->getClassId('Item') != $mission->takenByUser->getClassId('Item'))
             {
-                $existingPeople[] = $mission->takenByUser;
+                $peopleToSendNotification[] = $mission->takenByUser;
             }
-            return $existingPeople;
+            return $peopleToSendNotification;
         }
     }
 ?>

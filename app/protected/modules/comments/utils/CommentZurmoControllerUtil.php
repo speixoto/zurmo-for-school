@@ -82,20 +82,24 @@
         {
             assert('$model instanceof Item');
             parent::afterSuccessfulSave($model);
-            $updater = Yii::app()->user->userModel;
+            $participants = array();
+            $user = Yii::app()->user->userModel;
             if ($this->relatedModel instanceof Conversation)
             {
-                $participants = ConversationParticipantsUtil::getConversationParticipantsForSendEmail($this->relatedModel, $updater);
+                $participants = ConversationsUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
                 $subject = CommentsUtil::getEmailSubject($this->relatedModel);
-                $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $updater);
+                $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $user);
+                CommentsUtil::sendNotificationOnNewComment
+                    ($this->relatedModel, $model, $user, $participants);
             }
             elseif ($this->relatedModel instanceof Mission)
             {
-                $participants = MissionsUtil::getMissionParticipantsForSendEmail($this->relatedModel, $updater);
+                $participants = MissionsUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
                 $subject = CommentsUtil::getEmailSubject($this->relatedModel);
-                $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $updater);
-            }
-            CommentsUtil::resolveEmailNewComment($updater, $participants, $subject, $content);
+                $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $user);
+                CommentsUtil::sendNotificationOnNewComment
+                    ($this->relatedModel, $model, $user, $participants);
+            }   
         }
     }
 ?>

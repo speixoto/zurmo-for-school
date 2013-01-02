@@ -29,14 +29,43 @@
      */
     class CommentsUtil
     {
+        public static function sendNotificationOnNewComment(RedBeanModel $relatedModel, Comment $comment, $senderPerson, $peopleToSendNotification)
+        {
+            if (count($peopleToSendNotification) > 0)
+            {
+                $emailRecipients = array();
+                foreach ($peopleToSendNotification as $people)
+                {
+                    if ($people->primaryEmail->emailAddress !== null &&
+                    !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($people))
+                    {
+                        $emailRecipients[] = $people;
+                    }
+                }
+                $subject = self::getEmailSubject($relatedModel);
+                $content = self::getEmailContent($relatedModel, $comment, $senderPerson);
+                if ($emailRecipients > 0)
+                {
+                    self::resolveEmailNewComment($senderPerson, $emailRecipients, $subject, $content);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
 
-        public static function resolveEmailNewComment($senderPerson, $participants, $subject, $content)
+        public static function resolveEmailNewComment($senderPerson, $recipients, $subject, $content)
         {
             assert('$senderPerson instanceof User');
-            assert('is_array($participants)');
+            assert('is_array($recipients)');
             assert('is_string($subject)');
             assert('$content instanceof EmailMessageContent');
-            if (count($participants) == 0)
+            if (count($recipients) == 0)
             {
                 return;
             }
@@ -50,7 +79,7 @@
             $sender->fromName           = strval($userToSendMessagesFrom);
             $sender->personOrAccount    = $userToSendMessagesFrom;
             $emailMessage->sender       = $sender;
-            foreach ($participants as $recipientPerson)
+            foreach ($recipients as $recipientPerson)
             {
                 $recipient                  = new EmailMessageRecipient();
                 $recipient->toAddress       = $recipientPerson->primaryEmail->emailAddress;
@@ -64,38 +93,35 @@
             Yii::app()->emailHelper->send($emailMessage);
         }
 
-        public static function getEmailContent($model, $comment, $updater)
+        public static function getEmailContent(RedBeanModel $model, Comment $comment, User $user)
         {
             $emailContent  = new EmailMessageContent();
             $url           = static::getUrlToEmail($model);
-            $textContent = Yii::t('Default', "Hello, {lineBreak} {updaterName} added a new comment to the " .
+            $textContent   = Yii::t('Default', "Hello, {lineBreak} {updaterName} added a new comment to the " .
                                              "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
-                                             "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} " .
-                                             "{lineBreak} --------------------------------------- {lineBreak} " .
-                                             "This message was sent automaticaly by the ZurmoCRM",
-                               array('{lineBreak}'           => "\n",
-                                     '{strongStartTag}'      => null,
-                                     '{strongEndTag}'        => null,
-                                     '{updaterName}'         => strval($updater),
-                                     '{modelName}'           => strtolower(get_class($model)),
-                                     '{commentDescription}'  => strval($comment),
-                                     '{url}'                 => ZurmoHtml::link($url, $url)
-                                   ));
-            $emailContent->textContent  = $textContent;
+                                             "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} ",
+                                    array('{lineBreak}'           => "\n",
+                                          '{strongStartTag}'      => null,
+                                          '{strongEndTag}'        => null,
+                                          '{updaterName}'         => strval($user),
+                                          '{modelName}'           => $model->getModelLabelByTypeAndLanguage('SingularLowerCase'),
+                                          '{commentDescription}'  => strval($comment),
+                                          '{url}'                 => ZurmoHtml::link($url, $url)
+                                        ));
+            $emailContent->textContent  = $emailContent->htmlContent  = EmailNotificationUtil::
+                                                resolveNotificationTextTemplate($textContent);
             $htmlContent = Yii::t('Default', "Hello, {lineBreak} {updaterName} added a new comment to the " .
-                                             "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
-                                             "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} " .
-                                             "{lineBreak} --------------------------------------- {lineBreak} " .
-                                             "This message was sent automaticaly by the ZurmoCRM",
+                                             "{strongStartTag}{url}{strongEndTag}: {lineBreak}" .
+                                             "\"{commentDescription}.\"",
                                array('{lineBreak}'           => "<br/>",
                                      '{strongStartTag}'      => '<strong>',
                                      '{strongEndTag}'        => '</strong>',
-                                     '{updaterName}'         => strval($updater),
-                                     '{modelName}'           => strtolower(get_class($model)),
+                                     '{updaterName}'         => strval($user),
                                      '{commentDescription}'  => strval($comment),
-                                     '{url}'                 => ZurmoHtml::link($url, $url)
+                                     '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage('SingularLowerCase'), $url)
                                    ));
-            $emailContent->htmlContent  = $htmlContent;
+            $emailContent->htmlContent  = EmailNotificationUtil::
+                                                resolveNotificationHtmlTemplate($htmlContent);
             return $emailContent;
         }
 
@@ -105,7 +131,7 @@
             {
                 return Yii::t('Default', 'New comment on {modelName}: {subject}',
                                     array('{subject}'   => strval($model),
-                                          '{modelName}' => strtolower(get_class($model))));
+                                          '{modelName}' => $model->getModelLabelByTypeAndLanguage('SingularLowerCase')));
             }
         }
 
@@ -113,7 +139,7 @@
         {
             if ($model instanceof Conversation)
             {
-                return Yii::app()->createAbsoluteUrl('conversations/default/details/', array('id' => $model->id));
+                return ConversationParticipantsUtil::getUrlToConversationDetailAndRelationsView($model->id);
             }
             elseif ($model instanceof Mission)
             {
