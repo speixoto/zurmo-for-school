@@ -120,6 +120,15 @@
                         'order' => 9,
                     ),
                 ),
+                'configureSubMenuItems' => array(
+                    array(
+                        'category'         => self::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => 'LDAP Configuration',
+                        'descriptionLabel' => 'Manage LDAP Authentication',
+                        'route'            => '/zurmo/ldap/configurationEditLdap',
+                        'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
+                    ),
+                ),
                 'adminTabMenuItemsModuleOrdering' => array(
                     'home',
                     'designer',
