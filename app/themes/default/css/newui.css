@@ -723,7 +723,9 @@ body.blue .configuration-list td:last-child a:hover,
 body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
 body.blue #HomeDashboardPortletSelectionView li span,
-body.blue .hide-welcome span {
+body.blue .hide-welcome span,
+body.blue #more-search-link:hover,
+body.blue #select-list-attributes-link:hover {
   color: #7cb830;
 }
 body.blue .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -1250,7 +1252,9 @@ body.brown .configuration-list td:last-child a:hover,
 body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
 body.brown #HomeDashboardPortletSelectionView li span,
-body.brown .hide-welcome span {
+body.brown .hide-welcome span,
+body.brown #more-search-link:hover,
+body.brown #select-list-attributes-link:hover {
   color: #b88f30;
 }
 body.brown .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -1777,7 +1781,9 @@ body.lime .configuration-list td:last-child a:hover,
 body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
 body.lime #HomeDashboardPortletSelectionView li span,
-body.lime .hide-welcome span {
+body.lime .hide-welcome span,
+body.lime #more-search-link:hover,
+body.lime #select-list-attributes-link:hover {
   color: #bcc98e;
 }
 body.lime .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -2304,7 +2310,9 @@ body.cherry .configuration-list td:last-child a:hover,
 body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
 body.cherry #HomeDashboardPortletSelectionView li span,
-body.cherry .hide-welcome span {
+body.cherry .hide-welcome span,
+body.cherry #more-search-link:hover,
+body.cherry #select-list-attributes-link:hover {
   color: #933140;
 }
 body.cherry .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -2831,7 +2839,9 @@ body.turquoise .configuration-list td:last-child a:hover,
 body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
 body.turquoise #HomeDashboardPortletSelectionView li span,
-body.turquoise .hide-welcome span {
+body.turquoise .hide-welcome span,
+body.turquoise #more-search-link:hover,
+body.turquoise #select-list-attributes-link:hover {
   color: #44bbcc;
 }
 body.turquoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -3358,7 +3368,9 @@ body.violet .configuration-list td:last-child a:hover,
 body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
 body.violet #HomeDashboardPortletSelectionView li span,
-body.violet .hide-welcome span {
+body.violet .hide-welcome span,
+body.violet #more-search-link:hover,
+body.violet #select-list-attributes-link:hover {
   color: #91a1dc;
 }
 body.violet .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -3885,7 +3897,9 @@ body.honey .configuration-list td:last-child a:hover,
 body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
 body.honey #HomeDashboardPortletSelectionView li span,
-body.honey .hide-welcome span {
+body.honey .hide-welcome span,
+body.honey #more-search-link:hover,
+body.honey #select-list-attributes-link:hover {
   color: #abbc42;
 }
 body.honey .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
@@ -8805,12 +8819,22 @@ div.hasHalfs .twoThirds {
 .LatestActivitiesListView .latest-activity-toolbar #filter-latest-activities-link,
 .LatestActivitiesView .latest-activity-toolbar #filter-latest-activities-link {
   margin-left: 20px;
-  text-decoration: underline;
+  text-decoration: none;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+}
+.LatestActivitiesListView .latest-activity-toolbar #filter-latest-activities-link:after,
+.LatestActivitiesView .latest-activity-toolbar #filter-latest-activities-link:after {
+  content: "÷";
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  top: 1px;
+  margin-left: 5px;
 }
 .LatestActivitiesListView .latest-activity-toolbar,
 .LatestActivitiesView .latest-activity-toolbar,
