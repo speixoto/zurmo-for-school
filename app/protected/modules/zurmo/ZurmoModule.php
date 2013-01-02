@@ -98,7 +98,7 @@
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
                         'titleLabel'       => 'Authentication Configuration',
                         'descriptionLabel' => 'Manage Authentication Configuration',
-                        'route'            => '/zurmo/ldap/',
+                        'route'            => '/zurmo/ldap/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                 ),

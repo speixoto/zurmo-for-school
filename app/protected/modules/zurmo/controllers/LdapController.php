@@ -28,8 +28,18 @@
      * Controller Class for managing Ldap authentication.
      *
      */
-    class LdapController extends ZurmoModuleController
+    class ZurmoLdapController extends ZurmoModuleController
     {
-             echo 'Ldap Controller';
+        public function actionIndex()
+        {
+            echo 'LDAP TEST';
+        } 
+        
+        public function actionConfigurationEdit()
+        {
+            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                                  makeStandardViewForCurrentUser($this, new LdapConfigurationListView()));
+            echo $view->render();
+        }
     }
 ?>
