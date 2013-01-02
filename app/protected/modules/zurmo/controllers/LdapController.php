@@ -41,5 +41,32 @@
                                                   makeStandardViewForCurrentUser($this, new LdapConfigurationListView()));
             echo $view->render();
         }
+        
+        public function actionConfigurationEditLdap()
+        {
+            $configurationForm = LdapConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $postVariableName   = get_class($configurationForm);
+            if (isset($_POST[$postVariableName]))
+            {
+                $configurationForm->setAttributes($_POST[$postVariableName]);
+                if ($configurationForm->validate())
+                {
+                    LdapConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
+                    Yii::app()->user->setFlash('notification',
+                        Yii::t('Default', 'Ldap configuration saved successfully.')
+                    );
+                    $this->redirect(Yii::app()->createUrl('configuration/default/index'));
+                }
+            }
+            $editView = new EmailSmtpConfigurationEditAndDetailsView(
+                                    'Edit',
+                                    $this->getId(),
+                                    $this->getModule()->getId(),
+                                    $configurationForm);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                         makeStandardViewForCurrentUser($this, $editView));
+            echo $view->render();
+        }
     }
 ?>
