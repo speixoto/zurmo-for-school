@@ -126,16 +126,6 @@
 
             ModulesSearchWithDataProviderTestHelper::createDateAttribute(new Account(), 'date');
             ModulesSearchWithDataProviderTestHelper::createDateTimeAttribute(new Account(), 'dateTime');
-            ModulesSearchWithDataProviderTestHelper::createCheckBoxAttribute(new Account(), 'checkbox');
-            ModulesSearchWithDataProviderTestHelper::createCurrencyValueAttribute(new Account(), 'currencyValue');
-            ModulesSearchWithDataProviderTestHelper::createDecimalAttribute(new Account(), 'decimal');
-            ModulesSearchWithDataProviderTestHelper::createDropDownAttribute(new Account(), 'dropdown');
-            ModulesSearchWithDataProviderTestHelper::createIntegerAttribute(new Account(), 'integer');
-            ModulesSearchWithDataProviderTestHelper::createPhoneAttribute(new Account(), 'phone');
-            ModulesSearchWithDataProviderTestHelper::createRadioDropDownAttribute(new Account(), 'radioDropDown');
-            ModulesSearchWithDataProviderTestHelper::createTextAttribute(new Account(), 'text');
-            ModulesSearchWithDataProviderTestHelper::createTextAreaAttribute(new Account(), 'textArea');
-            ModulesSearchWithDataProviderTestHelper::createUrlAttribute(new Account(), 'url');
 
             //Test All custom created types since their rules could vary
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
@@ -146,47 +136,6 @@
                      getApplicableRulesByModelClassNameAndAttributeName('Account', 'dateTimeCstm', 'defaultValue');
             $compareData = array(array('defaultValue',  'TypeValidator', 'type' => 'datetime'));
             $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'checkboxCstm', 'defaultValue');
-            $compareData = array(array('defaultValue', 'boolean'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'currencyValueCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'currencyValue'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'decimalCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'decimal'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'dropdownCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'dropdown'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'integerCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'integer'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'phoneCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'phone'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'radioDropDownCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'radioDropDown'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'textCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'text'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'textAreaCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'textArea'));
-            $this->assertEquals($compareData, $rules);
-            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'urlCstm', 'defaultValue');
-            $compareData = array(array('defaultValue',  'type', 'type' => 'url'));
-            $this->assertEquals($compareData, $rules);
-
             //todo: add the rest of the custom field types that are importable
         }
     }

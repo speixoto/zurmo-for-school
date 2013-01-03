@@ -71,7 +71,7 @@
             $this->createDateTimeCustomFieldByModule            ('AccountsModule', 'datetimetest');
             $this->createCheckBoxCustomFieldByModule            ('AccountsModule', 'checkboxtest');
             $this->createCurrencyValueCustomFieldByModule       ('AccountsModule', 'currencytest');
-           // $this->createDecimalCustomFieldByModule             ('AccountsModule', 'decimaltest');
+            $this->createDecimalCustomFieldByModule             ('AccountsModule', 'decimaltest');
             $this->createIntegerCustomFieldByModule             ('AccountsModule', 'integertest');
             $this->createPhoneCustomFieldByModule               ('AccountsModule', 'phonetest');
             $this->createTextCustomFieldByModule                ('AccountsModule', 'stringtest');
@@ -87,7 +87,7 @@
             $this->runMappingRulesEditAction($import->id, 'datetimetestCstm');
             $this->runMappingRulesEditAction($import->id, 'checkboxtestCstm');
             $this->runMappingRulesEditAction($import->id, 'currencytestCstm');
-           // $this->runMappingRulesEditAction($import->id, 'decimaltestCstm');
+            $this->runMappingRulesEditAction($import->id, 'decimaltestCstm');
             $this->runMappingRulesEditAction($import->id, 'integertestCstm');
             $this->runMappingRulesEditAction($import->id, 'phonetestCstm');
             $this->runMappingRulesEditAction($import->id, 'stringtestCstm');
