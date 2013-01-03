@@ -71,6 +71,9 @@
             'emailHelper' => array(
                 'class'       => 'application.modules.emailMessages.components.EmailHelper',
             ),
+            'ldapHelper' => array(
+                'class'       => 'application.modules.zurmo.components.ZurmoLdapHelper',
+            ),
             'errorHandler' => array(
                 'errorAction' => 'zurmo/default/error',
             ),
