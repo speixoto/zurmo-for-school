@@ -132,7 +132,7 @@
             $peopleOnConversation     = self::resolvePeopleOnConversation($conversation);
             foreach ($peopleOnConversation as $people)
             {
-                if ($people != $user)
+                if (!$people->isSame($user))
                 {
                     $peopleToSendNotification[] = $people;
                 }
