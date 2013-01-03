@@ -74,10 +74,10 @@
                 'value'       => $hintMessage,
                 'source'      => $this->sourceUrl,
                 'htmlOptions' => $htmlOptions,
-                'options'     => array('select' => 'js: function(event, ui) {if (ui.item.href.length > 0)' .
-                                                   '{window.location = ui.item.href;} return false;}',
-                                       'search' => 'js: function(event, ui) { makeGlobalSearchSpinner("app-search", true) }',
-                                       'open' => 'js: function(event, ui) { makeGlobalSearchSpinner("app-search", false) }',
+                'options'     => array('select'   => 'js: function(event, ui) {if (ui.item.href.length > 0)' .
+                                                     '{window.location = ui.item.href;} return false;}',
+                                       'search'   => 'js: function(event, ui) { makeToggableSpinner("#app-search", true) }',
+                                       'open'     => 'js: function(event, ui) { makeToggableSpinner("#app-search", false) }',
                                        'position' => array('my' =>  'right top', 'at' => 'right bottom')
             )));
             $cClipWidget->endClip();

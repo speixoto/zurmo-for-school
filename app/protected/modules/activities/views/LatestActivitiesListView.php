@@ -238,7 +238,7 @@
             {
                 $content .= '<div class="horizontal-line latest-activity-toolbar">';
                 $content .= $innerContent;
-                $content .= ZurmoHtml::link(Yii::t('Default', 'All Activities'), '#', array('id' => 'filter-latest-activities-link'));
+                $content .= ZurmoHtml::link(Yii::t('Default', 'Filters'), '#', array('id' => 'filter-latest-activities-link'));
                 $content .= '</div>' . "\n";
             }
             if ($innerContent != null &&
