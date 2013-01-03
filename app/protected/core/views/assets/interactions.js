@@ -293,9 +293,9 @@ function makeLargeLoadingSpinner(id){
     });
 }
 
-function makeGlobalSearchSpinner(id, state){
+function makeToggableSpinner(context, state){
     if ( state === true ){
-        $( '.z-spinner', '#' + id ).spin({
+        $( '.z-spinner', context ).spin({
             lines : 10, // The number of lines to draw
             length : 3, // The length of each line
             width : 2, // The line thickness
@@ -312,7 +312,7 @@ function makeGlobalSearchSpinner(id, state){
             left : 0 // Left position relative to parent in px
         });
     } else {
-        $( '.z-spinner', '#' + id ).spin(false);
+        $( '.z-spinner', context ).spin(false);
     }
 }
 

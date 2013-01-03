@@ -7577,7 +7577,7 @@ div.wide.form label.hasCheckBox {
 .has-model-select a:hover:before {
   color: #525252 !important;
 }
-.has-model-select a .icon {
+.has-model-select a .model-select-icon {
   width: 100%;
   height: 100%;
   line-height: 24px;
@@ -7585,14 +7585,13 @@ div.wide.form label.hasCheckBox {
   text-align: center;
   vertical-align: center;
 }
-.has-model-select a .icon:before {
-  content: "Y";
+.has-model-select a .model-select-icon:before {
+  content: "f";
   font-weight: normal;
-  font-size: 24px;
+  font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
   color: #8b8b8b;
   text-align: center;
-  vertical-align: bottom;
 }
 .has-model-select .z-spinner {
   z-index: 999999;

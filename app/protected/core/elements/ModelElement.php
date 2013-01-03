@@ -142,9 +142,9 @@
                 'options' => array(
                     'select'   => 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]);}', // Not Coding Standard
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
-                    'search'   => 'js: function(event, ui) { $("#owner-box .icon").fadeOut(100); makeGlobalSearchSpinner("owner-box", true); }',
-                    'open'     => 'js: function(event, ui) { $("#owner-box .icon").fadeIn(250); makeGlobalSearchSpinner("owner-box", false); }',
-                    'close'    => 'js: function(event, ui) { $("#owner-box .icon").fadeIn(250); makeGlobalSearchSpinner("owner-box", false); }'
+                    'search'   => 'js: function(event, ui) { $(".model-select-icon").fadeOut(100); makeToggableSpinner($(".model-select-icon").parent(), true); }',
+                    'open'     => 'js: function(event, ui) { $(".model-select-icon").fadeIn(250);  makeToggableSpinner($(".model-select-icon").parent(), false); }',
+                    'close'    => 'js: function(event, ui) { $(".model-select-icon").fadeIn(250);  makeToggableSpinner($(".model-select-icon").parent(), false); }'
                 ),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
@@ -168,7 +168,7 @@
         protected function renderSelectLink()
         {
             $id = $this->getIdForSelectLink();
-            $content = ZurmoHtml::ajaxLink('<span class="icon"></span><span class="z-spinner"></span>',
+            $content = ZurmoHtml::ajaxLink('<span class="model-select-icon"></span><span class="z-spinner"></span>',
                 Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'. static::$modalActionId .'/', array(
                 'modalTransferInformation' => $this->getModalTransferInformation(),
                 )),
