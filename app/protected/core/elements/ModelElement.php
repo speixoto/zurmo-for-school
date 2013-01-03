@@ -143,7 +143,8 @@
                     'select'   => 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]);}', // Not Coding Standard
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
                     'search'   => 'js: function(event, ui) { $("#owner-box .icon").fadeOut(100); makeGlobalSearchSpinner("owner-box", true); }',
-                    'open'     => 'js: function(event, ui) { $("#owner-box .icon").fadeIn(250); makeGlobalSearchSpinner("owner-box", false); }'
+                    'open'     => 'js: function(event, ui) { $("#owner-box .icon").fadeIn(250); makeGlobalSearchSpinner("owner-box", false); }',
+                    'close'    => 'js: function(event, ui) { $("#owner-box .icon").fadeIn(250); makeGlobalSearchSpinner("owner-box", false); }'
                 ),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
