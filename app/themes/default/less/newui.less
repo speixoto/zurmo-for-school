@@ -1068,7 +1068,7 @@ footer, header, hgroup, menu, nav, section {
 
 /*=Content*/
 .AppContent{
-	.radius(0 0 5px 5px);
+    .radius(0 0 5px 5px);
     padding:20px 20px 0 20px;
     margin-left:172px;
     margin-bottom:20px;
@@ -1076,30 +1076,27 @@ footer, header, hgroup, menu, nav, section {
     .clearfix();
     .single-column{
     	padding-right:0 !important;
-		> .GridView{
-			display:block;
-			width:100% !important;
-		}
-		.panel{
-			width:70%;
-			float:left;
+        > .GridView{
+            display:block;
+            width:100% !important;
+        }
+        .panel{
+            width:70%;
+            float:left;
             position: relative;
-			td, th{
-				//padding-bottom:10px !important;
-			}
-		}
-		.juiportlet-widget,
-		.details-table{
-			margin-right:0 !important;
+        }
+        .juiportlet-widget,
+        .details-table{
+            margin-right:0 !important;
             .clearfix();
-		}
-		#right-side-edit-view-panel{
-			top:55px;
-		}
-		#inline-edit-form .panel{
-			width:100%;
-		}
 	}
+        #right-side-edit-view-panel{
+            top:55px;
+        }
+        #inline-edit-form .panel{
+            width:100%;
+        }
+    }
 }
 
 .DynamicSearchView{
@@ -2632,7 +2629,7 @@ div.wide.form{
         }
     }
     .ui-autocomplete{
-        width:auto !important;
+        //width:auto !important;
     }
     input[type="text"]{
         margin-bottom: 4px;
@@ -3895,7 +3892,7 @@ div.hasHalfs{
     padding-bottom:2px;
     text-align:left;
     z-index:9999999;
-    position:relative;
+    position:absolute;
     li{
         list-style:none;
         a{

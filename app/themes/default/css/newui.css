@@ -7563,10 +7563,6 @@ div.wide.form label.hasCheckBox {
   position: relative;
   z-index: 0;
 }
-.right-side-edit-view-panel .ui-autocomplete,
-#right-side-edit-view-panel .ui-autocomplete {
-  width: auto !important;
-}
 .right-side-edit-view-panel input[type="text"],
 #right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
@@ -9178,7 +9174,7 @@ div.hasHalfs .twoThirds {
   padding-bottom: 2px;
   text-align: left;
   z-index: 9999999;
-  position: relative;
+  position: absolute;
 }
 .ui-autocomplete li {
   list-style: none;
@@ -15184,6 +15180,12 @@ a.user-link {
   -moz-opacity: 1;
   opacity: 1;
 }
+.activate-drop-zone .drop-zone {
+  filter: alpha(opacity=75);
+  -khtml-opacity: 0.75;
+  -moz-opacity: 0.75;
+  opacity: 0.75;
+}
 .drop-zone {
   -webkit-transition: all 0.25s ease-out;
   -moz-transition: all 0.25s ease-out;
@@ -15195,10 +15197,16 @@ a.user-link {
   text-align: center;
   font-weight: bold;
   clear: left;
-  filter: alpha(opacity=25);
-  -khtml-opacity: 0.25;
-  -moz-opacity: 0.25;
-  opacity: 0.25;
+  filter: alpha(opacity=0);
+  -khtml-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+}
+.drop-zone-clue {
+  filter: alpha(opacity=10);
+  -khtml-opacity: 0.1;
+  -moz-opacity: 0.1;
+  opacity: 0.1;
 }
 .attribute-rows {
   float: left;
@@ -15325,13 +15333,14 @@ a.user-link {
   min-width: 145px;
   position: relative;
   display: block;
-  float: left;
+  float: right;
   line-height: 26px;
   font-size: 11px;
-  margin: 0 -15px 0 -160px;
+  margin: 0 0 0 -160px;
 }
 .report-runtime-availability label {
   float: right !important;
+  margin-right: 5px;
 }
 .report-runtime-availability .hasCheckBox {
   float: left !important;
@@ -15347,7 +15356,7 @@ a.user-link {
 .hasFilter .value-data {
   float: left;
   width: 100%;
-  padding-right: 180px;
+  padding-right: 160px;
 }
 .hasFilter .dynamic-attribute-operator + .value-data {
   padding-left: 15px;
