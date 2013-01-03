@@ -138,6 +138,14 @@
                 $(".droppable-attributes-container.' . static::getTreeType() . '").live("drop",function(event, ui){
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
+               
+                $(".attribute-to-place").live("dblclick",function(event){
+                    //console.log( $(this).parentsUntil(".treeview").parent().attr("id") );
+                    var treeType = "'.static::getTreeType().'";
+                    if(treeType === "Filters"){
+                        ' . $this->getAjaxForDoubleClickedAttribute() . '
+                    }
+                });
                 $(".remove-dynamic-attribute-row-link").live("click", function()
                     {
                         $(this).parent().parent().remove(); //removes the <li>
@@ -172,6 +180,25 @@
                     $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     //attachLoadingSpinner("' . $this->form->getId() . '", false); - remove spinner
+                }'
+            ));
+        }
+        
+        protected function getAjaxForDoubleClickedAttribute()
+        {
+            return ZurmoHtml::ajax(array(
+                    'type'     => 'POST',
+                    'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
+                    'url'      => 'js:$.param.querystring("' . $this->getAddAttributeUrl() . '",
+                                        "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $this->getRowCounterInputId(). '\').val())',
+                    'beforeSend' => 'js:function(){
+                       // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
+                    }',
+                    'success' => 'js:function(data){
+                        $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
+                        $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
+                        ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
+                        //attachLoadingSpinner("' . $this->form->getId() . '", false); - remove spinner
                 }'
             ));
         }

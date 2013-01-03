@@ -91,6 +91,13 @@
         }
     }
 }
+
+.activate-drop-zone{
+    .drop-zone{
+        .opacity(75);
+    }
+}
+
 .drop-zone{
     .animateAll(0.25s);
     display: block;
@@ -98,7 +105,11 @@
     text-align: center;
     font-weight: bold;
     clear: left;
-    .opacity(25);
+    .opacity(0);
+}
+
+.drop-zone-clue{
+    .opacity(10);
 }
 
 .attribute-rows{
@@ -228,18 +239,19 @@
     min-width: 145px;
     position: relative;
     display: block;
-    float: left;
+    float: right;
     line-height: 26px;
     .smaller();
     label{
         float: right !important;
+        margin-right:5px;
     }
     .hasCheckBox{
         float: left !important;
         margin-left:0;
         margin-right:8px !important;
     }
-    margin:0 -15px 0 -160px;
+    margin:0 0 0 -160px;
 }
 
 .hasFilter{
@@ -252,7 +264,7 @@
     .value-data{
         float: left;
         width: 100%;
-        padding-right: 180px;
+        padding-right: 160px;
     }
     .dynamic-attribute-operator + .value-data{
         padding-left: 15px;
