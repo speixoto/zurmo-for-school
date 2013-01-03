@@ -7586,7 +7586,7 @@ div.wide.form label.hasCheckBox {
   vertical-align: center;
 }
 .has-model-select a .model-select-icon:before {
-  content: "f";
+  content: "Y";
   font-weight: normal;
   font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
