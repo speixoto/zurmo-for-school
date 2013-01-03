@@ -749,8 +749,9 @@
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
-                if ($this->model->isRelation($attribute) &&
-                    $this->model->getRelationModelClassName($attribute) == 'User')
+                if (!$this->model instanceof User &&
+                     $this->model->isRelation($attribute) &&
+                     $this->model->getRelationModelClassName($attribute) == 'User')
                 {
                     $attributes[$attribute . FormModelUtil::DELIMITER . self::DYNAMIC_ATTRIBUTE_USER] =
                         array('label' => $this->model->getAttributeLabel($attribute));
