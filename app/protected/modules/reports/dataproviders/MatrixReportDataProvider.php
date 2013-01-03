@@ -147,6 +147,36 @@
             return $data;
         }
 
+        public function makeAxisCrossingColumnCountAndLeadingHeaderRowsData()
+        {
+            $headerData    = array();
+            $headerData['axisCrossingColumnCount'] = count($this->getYAxisGroupBys());
+            $lastSpanCount = $this->getDisplayCalculationsCount();
+            foreach(array_reverse($this->getXAxisGroupByDataValues()) as $attributeIndexOrDerivedType => $groupByValues)
+            {
+                $xAxisDisplayAttribute = $this->getDisplayAttributeByAttribute($attributeIndexOrDerivedType);
+                foreach($groupByValues as $key => $value)
+                {
+                    $groupByValues[$key] = $xAxisDisplayAttribute->resolveValueAsLabelForHeaderCell($value);
+                }
+                $headerData['rows'][]  = array('groupByValues' => $groupByValues, 'colSpan' => $lastSpanCount);
+                $lastSpanCount = count($groupByValues) * $lastSpanCount;
+            }
+            $headerData['rows'] = array_reverse($headerData['rows']);
+            return $headerData;
+        }
+
+        public function getDisplayAttributeByAttribute($attribute)
+        {
+            foreach($this->resolveDisplayAttributes() as $displayAttribute)
+            {
+                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                {
+                    return $displayAttribute;
+                }
+            }
+        }
+
         protected function resolveXAxisGroupingsForColumnNames(& $data, $indexedXAxisGroupByDataValues, & $attributeKey,
                                                                $xAxisGroupBysCount, $startingIndex)
         {
@@ -219,9 +249,9 @@
                     }
                     elseif($this->isDisplayAttributeAnYAxisGroupBy($displayAttribute))
                     {
-                        //todo: deal with translation, but we can't here because later we are using the rawValue, unless we expand addSelectedColumnNameAndValue or have a new method
-                        $resultsData[$idByOffset]->addSelectedColumnNameAndValue(
-                            static::resolveHeaderColumnAliasName($displayAttribute->columnAliasName), $value);
+                        $resolvedColumnAliasName = static::resolveHeaderColumnAliasName($displayAttribute->columnAliasName);
+                        $resultsData[$idByOffset]->addSelectedColumnNameAndValue($resolvedColumnAliasName, $value);
+                        $resultsData[$idByOffset]->addSelectedColumnNameAndLabel($resolvedColumnAliasName, $displayAttribute->resolveValueAsLabelForHeaderCell($value));
                     }
                 }
                 //At this point $tempData is at the final level, where the actual display calculations are located
@@ -445,18 +475,18 @@
             return false;
         }
 
-    protected function isDisplayAttributeAnYAxisGroupBy($displayAttribute)
-    {
-        foreach($this->getYAxisGroupBys() as $groupBy)
+        protected function isDisplayAttributeAnYAxisGroupBy($displayAttribute)
         {
-            if($displayAttribute->attributeIndexOrDerivedType ==
-                $groupBy->attributeIndexOrDerivedType)
+            foreach($this->getYAxisGroupBys() as $groupBy)
             {
-                return true;
+                if($displayAttribute->attributeIndexOrDerivedType ==
+                    $groupBy->attributeIndexOrDerivedType)
+                {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
-    }
 
         protected function addDefaultColumnNamesAndValuesToReportResultsRowData(ReportResultsRowData $reportResultsRowData, $totalCount)
         {
@@ -481,5 +511,18 @@
             }
             return $uniqueIndex;
         }
+
+        /**
+         * Only query on y-axis group bys to get a proper row count
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @return null|string
+         */
+        protected function makeGroupBysContentForCount(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                                           RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+            {
+                $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+                return $builder->makeQueryContent($this->getYAxisGroupBys());
+            }
     }
 ?>

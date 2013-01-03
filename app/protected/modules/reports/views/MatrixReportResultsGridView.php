@@ -74,7 +74,15 @@
                     }
                 }
             }
+
+
+
             return $columns;
+        }
+
+        protected function getLeadingHeaders()
+        {
+            return $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();
         }
     }
 ?>

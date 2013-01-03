@@ -190,7 +190,7 @@
             $this->makeDisplayAttributes($joinTablesAdapter, $selectQueryAdapter);
             $where                  = $this->makeFiltersContent($joinTablesAdapter);
             $orderBy                = $this->makeOrderBysContent($joinTablesAdapter, $selectQueryAdapter);
-            $groupBy                = $this->makeGroupBysContent($joinTablesAdapter, $selectQueryAdapter);
+            $groupBy                = $this->makeGroupBysContentForCount($joinTablesAdapter, $selectQueryAdapter);
             //Make a fresh selectQueryAdapter that only has a count clause
             if($selectJustCount)
             {
@@ -227,6 +227,12 @@
         {
             $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             return $builder->makeQueryContent($this->resolveGroupBys());
+        }
+
+        protected function makeGroupBysContentForCount(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                                       RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            return $this->makeGroupBysContent($joinTablesAdapter, $selectQueryAdapter);
         }
     }
 ?>

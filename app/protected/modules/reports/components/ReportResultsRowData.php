@@ -36,9 +36,11 @@
 
         protected $modelsByAliases  = array();
 
-        protected $selectedColumnNamesAndValues = array();
+        protected $selectedColumnNamesAndValues   = array();
 
         protected $selectedColumnNamesAndRowSpans = array();
+
+        protected $selectedColumnNamesAndLabels   = array();
 
         public static function resolveAttributeNameByKey($key)
         {
@@ -80,6 +82,18 @@
         public function addSelectedColumnNameAndValue($columnName, $value)
         {
             $this->selectedColumnNamesAndValues[$columnName] = $value;
+        }
+
+        public function addSelectedColumnNameAndLabel($columnName, $label)
+        {
+            assert('is_string($label)');
+            $this->selectedColumnNamesAndLabels[$columnName] = $label;
+        }
+
+        public function getLabel($columnName)
+        {
+            assert('is_string($label)');
+            return $this->selectedColumnNamesAndLabels[$columnName];
         }
 
         public function addSelectedColumnNameAndRowSpan($columnName, $value)

@@ -39,6 +39,22 @@
             Yii::app()->user->userModel->timeZone = 'America/Chicago';
         }
 
+        public function testDynamicUserOnClassThatExtendsPerson()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Contact');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ContactsModule', 'Contact',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'createdByUser__User';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $compareContent                        = "{$q}person1{$q}.{$q}lastname{$q}";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(4, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
         public function testModifierGroupBysWhenDate()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();

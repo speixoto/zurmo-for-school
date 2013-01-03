@@ -23,51 +23,54 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-    Yii::import('zii.widgets.grid.CGridColumn');
 
-    class YAxisHeaderColumn extends CGridColumn
+    class MatrixReportDataProviderTest extends ZurmoBaseTest
     {
-        public $name;
-
-        /**
-         * Override because.. //todo: document
-         */
-        public function renderDataCell($row)
+        public static function setUpBeforeClass()
         {
-            $data    = $this->grid->dataProvider->data[$row];
-            $options = $this->htmlOptions;
-            if($this->cssClassExpression !== null)
-            {
-                $class = $this->evaluateExpression($this->cssClassExpression,array('row' => $row, 'data' => $data));
-                if(!empty($class))
-                {
-                    if(isset($options['class']))
-                    {
-                        $options['class'].=' '.$class;
-                    }
-                    else
-                    {
-                        $options['class']=$class;
-                    }
-                }
-            }
-            $rowSpan = $data->getSelectedColumnRowSpan($this->name);
-            $options['rowSpan'] = $rowSpan;
-            if($rowSpan > 0)
-            {
-                echo ZurmoHtml::openTag('th',$options);
-                $this->renderDataCellContent($row,$data);
-                echo '</th>';
-            }
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        /**
-         * (non-PHPdoc)
-         * @see CCheckBoxColumn::renderDataCellContent()
-         */
-        protected function renderDataCellContent($row, $data)
+        public function setup()
         {
-            echo $data->getLabel($this->name);
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testResolveDisplayAttributes()
+        {
+            $this->fail();
+        }
+
+        public function testResolveGroupBys()
+        {
+            $this->fail();
+        }
+
+        public function testGetXAxisGroupByDataValuesCount()
+        {
+            $this->fail();
+        }
+
+        public function testGetYAxisGroupByDataValuesCount()
+        {
+            $this->fail();
+        }
+
+        public function testMakeXAxisGroupingsForColumnNamesData()
+        {
+            $this->fail();
+        }
+
+        public function testMakeAxisCrossingColumnCountAndLeadingHeaderRowsData()
+        {
+            $this->fail();
+        }
+
+        public function testGetDisplayAttributeByAttribute()
+        {
+            $this->fail();
         }
     }
 ?>

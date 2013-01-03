@@ -155,9 +155,9 @@
             //Example: createdUser__User
             elseif($modelToReportAdapter->isDynamicallyDerivedAttribute($attribute))
             {
-                return new RedBeanModelAttributeToDataProviderAdapter(
-                                $modelToReportAdapter->getModelClassName(),
-                                $modelToReportAdapter->resolveRealAttributeName($attribute), 'lastName');
+                return static::makeModelAttributeToDataProviderAdapterForDynamicallyDerivedAttribute(
+                                $modelToReportAdapter, $attribute);
+
             }
             //Example: CustomField, CurrencyValue, OwnedCustomField, or likeContactState
             elseif($modelToReportAdapter->relationIsReportedAsAttribute($attribute))
@@ -178,6 +178,14 @@
                     $modelToReportAdapter->getModelClassName(),
                     $attribute);
             }
+        }
+
+        protected static function makeModelAttributeToDataProviderAdapterForDynamicallyDerivedAttribute(
+                                  $modelToReportAdapter, $attribute)
+        {
+            return new RedBeanModelAttributeToDataProviderAdapter(
+                $modelToReportAdapter->getModelClassName(),
+                $modelToReportAdapter->resolveRealAttributeName($attribute), 'id');
         }
 
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(

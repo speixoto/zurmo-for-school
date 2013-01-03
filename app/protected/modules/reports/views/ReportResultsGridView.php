@@ -121,6 +121,7 @@
                 'summaryCssClass'      => static::getSummaryCssClass(),
                 'enableSorting'        => false,
                 'expandableRows'       => $this->rowsAreExpandable(),
+                'leadingHeaders'       => $this->getLeadingHeaders(),
             );
         }
 
@@ -292,6 +293,11 @@
                 return true;
             }
             return false;
+        }
+
+        protected function getLeadingHeaders()
+        {
+
         }
     }
 ?>

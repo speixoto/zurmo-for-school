@@ -37,8 +37,6 @@
 
         const RELATION_VIA_MODULE_DELIMITER  = '_';
 
-        private static $derivedAttributesData;
-
         private static $adaptersByModelClassNameAndType;
 
         protected $model;
@@ -48,6 +46,12 @@
         protected $reportType;
 
         protected $moduleClassName;
+
+        /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private $derivedAttributesData;
 
         public static function make($moduleClassName, $modelClassName, $reportType)
         {
@@ -715,7 +719,7 @@
 
         protected function getDerivedAttributesData()
         {
-            if (!isset(self::$derivedAttributesData[get_class($this->model)]))
+            if ($this->derivedAttributesData == null)
             {
                 $attributes = array();
                 $calculatedAttributes = CalculatedDerivedAttributeMetadata::getAllByModelClassName(get_class($this->model));
@@ -724,10 +728,9 @@
                     $attributes[$attribute->name] = array('label' => $attribute->getLabelByLanguage(Yii::app()->language),
                                                           'derivedAttributeType' => 'CalculatedNumber');
                 }
-                self::$derivedAttributesData[get_class($this->model)] =
-                    array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
+                $this->derivedAttributesData = array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
             }
-            return self::$derivedAttributesData[get_class($this->model)];
+            return $this->derivedAttributesData;
         }
 
         public function isDerivedAttribute($attribute)

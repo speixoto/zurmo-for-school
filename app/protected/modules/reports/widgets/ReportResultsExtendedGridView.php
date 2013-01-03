@@ -34,6 +34,27 @@
     {
         public $expandableRows = false;
 
+        public $leadingHeaders;
+
+        public function renderTableHeader()
+        {
+            if(!$this->hideHeader)
+            {
+                echo "<thead>\n";
+                if($this->leadingHeaders != null)
+                {
+                    $this->renderLeadingHeaders();
+                }
+                echo "<tr>\n";
+                foreach($this->columns as $column)
+                {
+                    $column->renderHeaderCell();
+                }
+                echo "</tr>\n";
+                echo "</thead>\n";
+            }
+        }
+
         public function renderTableBody()
         {
             $data = $this->dataProvider->getData();
@@ -65,6 +86,29 @@
             echo '<tr style="display:none;"><td></td><td colspan="' . (count($this->columns) - 1) . '">';
             echo '<div class="drillDownContent" id="drillDownContentFor-' . $id . '"></div>';
             echo "</td></tr>\n";
+        }
+
+        protected function renderLeadingHeaders()
+        {
+            $previousGroupByValuesCount = 1;
+            for ($i = 0; $i < count($this->leadingHeaders['rows']); $i++)
+            {
+                echo ZurmoHtml::openTag('tr');
+                for ($j = 0; $j < $this->leadingHeaders['axisCrossingColumnCount']; $j++)
+                {
+                    echo ZurmoHtml::tag('th', array(), null);
+                }
+                for($k = 0; $k < $previousGroupByValuesCount; $k++)
+                {
+                    foreach($this->leadingHeaders['rows'][$i]['groupByValues'] as $value)
+                    {
+                        echo ZurmoHtml::tag('th',
+                             array('colspan' => $this->leadingHeaders['rows'][$i]['colSpan']), $value);
+                    }
+                }
+                $previousGroupByValuesCount = count($this->leadingHeaders['rows'][$i]['groupByValues']);
+                echo '</tr>';
+            }
         }
     }
 ?>

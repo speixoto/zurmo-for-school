@@ -46,6 +46,8 @@
 
         const GROUP_BY_CALCULATION_YEAR      = 'Year';
 
+        protected $shouldIncludeIdAsGroupByAttribute = true;
+
         protected static function getTranslatedDisplayCalculationShortLabel($type)
         {
             assert('is_string($type)');
@@ -258,7 +260,11 @@
 
         public function getAttributesForGroupBys()
         {
-            $attributes       = array('id' => array('label' => Yii::t('Default', 'Id')));
+            $attributes       = array();
+            if($this->shouldIncludeIdAsGroupByAttribute)
+            {
+                $attributes['id'] = array('label' => Yii::t('Default', 'Id'));
+            }
             $attributes       = array_merge($attributes, $this->getGroupByModifierAttributes());
             $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
             $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
@@ -416,12 +422,17 @@
             foreach ($this->getAttributesNotIncludingDerivedAttributesData() as $attribute => $data)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
-                if(!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea', 'Date', 'DateTime')))
+                if(!in_array($attributeType, static::getAttributeTypesToExcludeAsGroupByModifiers()))
                 {
                     $attributes[$attribute] = $data;
                 }
             }
             return array_merge($this->getGroupByCalculatedModifierAttributes(), $attributes);
+        }
+
+        protected static function getAttributeTypesToExcludeAsGroupByModifiers()
+        {
+            return array('MultiSelectDropDown', 'TagCloud', 'TextArea', 'Date', 'DateTime');
         }
 
         protected function getGroupByCalculatedModifierAttributes()

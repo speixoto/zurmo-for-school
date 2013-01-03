@@ -164,5 +164,11 @@
             $displayAttribute->attributeIndexOrDerivedType = 'dateTime__Year';
             $this->assertEquals('Text',                      $displayAttribute->getDisplayElementType());
         }
+
+        public function testResolveValueAsLabelForHeaderCell()
+        {
+            //todO:
+            $this->fail();
+        }
     }
 ?>

@@ -1148,7 +1148,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
             $attributes         = $adapter->getAttributesForGroupBys();
-            $this->assertEquals(38, count($attributes));
+            $this->assertEquals(29, count($attributes));
 
             //Date/DateTime columns first...
             $compareData        = array('label' => 'Date -(Year)');
@@ -1196,22 +1196,8 @@
             $this->assertEquals($compareData, $attributes['modifiedDateTime__Day']);
 
             //and then the rest of the attributes... (exclude text area)
-            $compareData        = array('label' => 'First Name');
-            $this->assertEquals($compareData, $attributes['firstName']);
-            $compareData        = array('label' => 'Last Name');
-            $this->assertEquals($compareData, $attributes['lastName']);
             $compareData        = array('label' => 'Boolean');
             $this->assertEquals($compareData, $attributes['boolean']);
-            $compareData        = array('label' => 'Float');
-            $this->assertEquals($compareData, $attributes['float']);
-            $compareData        = array('label' => 'Integer');
-            $this->assertEquals($compareData, $attributes['integer']);
-            $compareData        = array('label' => 'Phone');
-            $this->assertEquals($compareData, $attributes['phone']);
-            $compareData        = array('label' => 'String');
-            $this->assertEquals($compareData, $attributes['string']);
-            $compareData        = array('label' => 'Url');
-            $this->assertEquals($compareData, $attributes['url']);
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
             $compareData        = array('label' => 'Drop Down 2');
@@ -1220,13 +1206,8 @@
             $this->assertEquals($compareData, $attributes['radioDropDown']);
             $compareData        = array('label' => 'Reported As Attribute');
             $this->assertEquals($compareData, $attributes['reportedAsAttribute']);
-            $compareData        = array('label' => 'Currency Value');
-            $this->assertEquals($compareData, $attributes['currencyValue']);
             $compareData        = array('label' => 'A name for a state');
             $this->assertEquals($compareData, $attributes['likeContactState']);
-            //Add Id field
-            $compareData        = array('label' => 'Id');
-            $this->assertEquals($compareData, $attributes['id']);
             //Add Dynamically Derived Attributes
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $attributes['owner__User']);

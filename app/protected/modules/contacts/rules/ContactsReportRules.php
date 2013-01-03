@@ -44,9 +44,9 @@
                     'relationsReportedAsAttributesSortAttributes' =>
                         array('state' => 'name'),
                     'relationsReportedAsAttributesGroupByAttributes' =>
-                        array('state' => 'name'),
+                        array('state' => 'id'),
                     'relationsReportedAsAttributesRawValueAttributes' =>
-                        array('state'    => 'name'),
+                        array('state'    => 'id'),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);

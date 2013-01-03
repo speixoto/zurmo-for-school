@@ -40,9 +40,9 @@
                     'relationsReportedAsAttributesSortAttributes' =>
                         array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
                     'relationsReportedAsAttributesGroupByAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
+                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'id'),
                     'relationsReportedAsAttributesRawValueAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
+                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'id'),
                     'nonReportable' =>
                         array('nonReportable',
                               'nonReportable2'),

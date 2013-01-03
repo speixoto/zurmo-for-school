@@ -64,7 +64,7 @@
         public function attributeNames()
         {
             $attributeNames = parent::attributeNames();
-            if(count($attributeNames) != 5)
+            if(count($attributeNames) != 6)
             {
                 throw new NotSupportedException();
             }
@@ -151,6 +151,62 @@
         {
             $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
             return $modelToReportAdapter->getRawValueRelatedAttribute($this->getResolvedAttribute());
+        }
+
+        /**
+         * Raw values such as those used by the header x-axis or y-axis rows/columns need to be translated. An example
+         * is a dropdown where the value is the raw database value and needs to be properly translated for display.
+         * Another example is dynamic __User, where the value is the user id, and needs to be stringified to the User
+         * model.
+         * @param $value
+         * @return string
+         */
+        public function resolveValueAsLabelForHeaderCell($value)
+        {
+            $tContent             = null;
+            $translatedValue      = $value;
+            $resolvedAttribute    = $this->getResolvedAttribute();
+            $displayElementType   = $this->getDisplayElementType();
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
+            if($modelToReportAdapter->getModel()->isAttribute($resolvedAttribute) &&
+               $modelToReportAdapter->getModel()->isRelation($resolvedAttribute) &&
+               !$modelToReportAdapter->getModel()->isOwnedRelation($resolvedAttribute))
+            {
+                $relationModelClassName = $modelToReportAdapter->getModel()->getRelationModelClassName($resolvedAttribute);
+                $relatedModel = $relationModelClassName::getById((int)$value);
+                if($relatedModel->isAttribute('serializedLabels'))
+                {
+                    $translatedValue     = $relatedModel->resolveTranslatedNameByLanguage(Yii::app()->language);
+                }
+            }
+            elseif($displayElementType == 'User')
+            {
+                $user            = User::getById((int)$value);
+                $translatedValue = strval($user);
+            }
+            elseif($displayElementType == 'DropDown')
+            {
+                $customFieldData = CustomFieldDataModelUtil::getDataByModelClassNameAndAttributeName(
+                                   $this->getResolvedAttributeModelClassName(), $this->getResolvedAttribute());
+                $dataAndLabels   = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage(
+                                   $customFieldData, Yii::app()->language);
+                if(isset($dataAndLabels[$value]))
+                {
+                    $translatedValue = $dataAndLabels[$value];
+                }
+            }
+            elseif($displayElementType == 'CheckBox')
+            {
+                if($value)
+                {
+                    $translatedValue = Yii::t('Default', 'Yes');
+                }
+                elseif($value == false && $value != '')
+                {
+                    $translatedValue = Yii::t('Default', 'No');
+                }
+            }
+            return $translatedValue;
         }
     }
 ?>

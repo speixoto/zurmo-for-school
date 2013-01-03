@@ -58,6 +58,14 @@
             return $content . ' ' . $componentForm->order;
         }
 
+        protected static function makeModelAttributeToDataProviderAdapterForDynamicallyDerivedAttribute(
+            $modelToReportAdapter, $attribute)
+        {
+            return new RedBeanModelAttributeToDataProviderAdapter(
+                $modelToReportAdapter->getModelClassName(),
+                $modelToReportAdapter->resolveRealAttributeName($attribute), 'lastName');
+        }
+
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
             $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
         {

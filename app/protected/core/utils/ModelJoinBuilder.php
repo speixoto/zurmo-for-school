@@ -481,22 +481,18 @@
         {
             assert('is_string($onTableAliasName)');
             $attributeTableName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
-            $modelClassName     = $this->modelAttributeToDataProviderAdapter->getModelClassName();
-            return $this->addLeftJoinForMixedInAttribute($onTableAliasName, $attributeTableName, $modelClassName);
+            return $this->addLeftJoinForMixedInAttribute($onTableAliasName, $attributeTableName);
         }
 
-        protected function addLeftJoinForMixedInAttribute($onTableAliasName, $attributeTableName, $modelClassName)
+        protected function addLeftJoinForMixedInAttribute($onTableAliasName, $attributeTableName)
         {
             assert('is_string($onTableAliasName)');
             assert('is_string($attributeTableName)');
             assert('is_string($modelClassName)');
-            if (!$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
-            {
-                $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
-                    $attributeTableName,
-                    self::resolveForeignKey($attributeTableName),
-                    $onTableAliasName);
-            }
+            $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                $attributeTableName,
+                self::resolveForeignKey($attributeTableName),
+                $onTableAliasName);
             return $onTableAliasName;
         }
 
