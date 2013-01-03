@@ -104,7 +104,8 @@
                                           '{strongStartTag}'      => null,
                                           '{strongEndTag}'        => null,
                                           '{updaterName}'         => strval($user),
-                                          '{modelName}'           => $model->getModelLabelByTypeAndLanguage('SingularLowerCase'),
+                                          '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
+                                                                     'SingularLowerCase'),
                                           '{commentDescription}'  => strval($comment),
                                           '{url}'                 => ZurmoHtml::link($url, $url)
                                         ));
@@ -118,10 +119,10 @@
                                      '{strongEndTag}'        => '</strong>',
                                      '{updaterName}'         => strval($user),
                                      '{commentDescription}'  => strval($comment),
-                                     '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage('SingularLowerCase'), $url)
+                                     '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage(
+                                                                'SingularLowerCase'), $url)
                                    ));
-            $emailContent->htmlContent  = EmailNotificationUtil::
-                                                resolveNotificationHtmlTemplate($htmlContent);
+            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent);
             return $emailContent;
         }
 

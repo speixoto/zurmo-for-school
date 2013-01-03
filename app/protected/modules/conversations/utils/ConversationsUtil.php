@@ -129,7 +129,7 @@
         public static function  resolvePeopleToSendNotificationToOnNewComment(Conversation $conversation, User $user)
         {
             $peopleToSendNotification = array();
-            $peopleOnConversation = self::resolvePeopleOnConversation($conversation);
+            $peopleOnConversation     = self::resolvePeopleOnConversation($conversation);
             foreach ($peopleOnConversation as $people)
             {
                 if ($people != $user)

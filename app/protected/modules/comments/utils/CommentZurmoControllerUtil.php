@@ -82,23 +82,16 @@
         {
             assert('$model instanceof Item');
             parent::afterSuccessfulSave($model);
-            $participants = array();
             $user = Yii::app()->user->userModel;
             if ($this->relatedModel instanceof Conversation)
             {
                 $participants = ConversationsUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
-                $subject = CommentsUtil::getEmailSubject($this->relatedModel);
-                $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $user);
-                CommentsUtil::sendNotificationOnNewComment
-                    ($this->relatedModel, $model, $user, $participants);
+                CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
             }
             elseif ($this->relatedModel instanceof Mission)
             {
                 $participants = MissionsUtil::resolvePeopleToSendNotificationToOnNewComment($this->relatedModel, $user);
-                $subject = CommentsUtil::getEmailSubject($this->relatedModel);
-                $content = CommentsUtil::getEmailContent($this->relatedModel, $model, $user);
-                CommentsUtil::sendNotificationOnNewComment
-                    ($this->relatedModel, $model, $user, $participants);
+                CommentsUtil::sendNotificationOnNewComment($this->relatedModel, $model, $user, $participants);
             }   
         }
     }
