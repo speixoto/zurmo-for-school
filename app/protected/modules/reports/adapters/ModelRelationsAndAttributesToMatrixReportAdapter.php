@@ -58,6 +58,5 @@
             return array_merge(array('CurrencyValue', 'Decimal', 'Integer', 'Phone', 'Text',  'Url'),
                    parent::getAttributeTypesToExcludeAsGroupByModifiers());
         }
-
     }
 ?>

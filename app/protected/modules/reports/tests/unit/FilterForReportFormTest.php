@@ -376,6 +376,22 @@
                                                          'valueType' => array('Type cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
+
+            //check Today
+            $filter->valueType                   = 'Today';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //check Yesterday
+            $filter->valueType                   = 'Yesterday';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //check Tomorrow
+            $filter->valueType                   = 'Tomorrow';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
             //value is expected to be a date
             $filter->valueType                   = 'On';
             $filter->value                       = 'Zurmo';

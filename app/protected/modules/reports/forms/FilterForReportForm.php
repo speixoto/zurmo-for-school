@@ -107,7 +107,7 @@
                in_array($this->valueType, self::getValueTypesWhereValueIsRequired()) ||
                ($this->getValueElementType() == 'BooleanForReportStaticDropDown' ||
                $this->getValueElementType()  == 'UserNameId' ||
-               $this->getValueElementType()  == 'MixedDateTypesForReport')) &&
+               ($this->getValueElementType()  == 'MixedDateTypesForReport' && $this->valueType == null))) &&
                $this->value == null)
             {
                 $this->addError('value', Yii::t('yii', 'Value cannot be blank.'));
