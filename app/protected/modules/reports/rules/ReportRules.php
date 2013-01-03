@@ -263,5 +263,17 @@
                 }
             }
         }
+
+        public static function getVariableStateModuleLabel(User $user)
+        {
+            assert('$user->id > 0');
+            throw new NotImplementedException();
+        }
+
+        public static function canUserAccessModuleInAVariableState(User $user)
+        {
+            assert('$user->id > 0');
+            throw new NotImplementedException();
+        }
     }
 ?>

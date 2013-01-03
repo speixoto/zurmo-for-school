@@ -92,7 +92,19 @@
             $modules = Module::getModuleObjects();
             foreach (self::getReportableModulesClassNamesCurrentUserHasAccessTo() as $moduleClassName)
             {
-                $moduleClassNamesAndLabels[$moduleClassName] = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
+                if($moduleClassName::getStateMetadataAdapterClassName() != null)
+                {
+                    $reportRules = ReportRules::makeByModuleClassName($moduleClassName);
+                    $label       = $reportRules->getVariableStateModuleLabel(Yii::app()->user->userModel);
+                }
+                else
+                {
+                    $label = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
+                }
+                if($label != null)
+                {
+                    $moduleClassNamesAndLabels[$moduleClassName] = $label;
+                }
             }
             return $moduleClassNamesAndLabels;
         }
@@ -105,7 +117,17 @@
             {
                 if($module::isReportable())
                 {
-                    if (RightsUtil::canUserAccessModule(get_class($module), Yii::app()->user->userModel))
+                    $moduleClassName = get_class($module);
+                    if($moduleClassName::getStateMetadataAdapterClassName() != null)
+                    {
+                        $reportRules     = ReportRules::makeByModuleClassName($moduleClassName);
+                        $canAccessModule = $reportRules->canUserAccessModuleInAVariableState(Yii::app()->user->userModel);
+                    }
+                    else
+                    {
+                        $canAccessModule = RightsUtil::canUserAccessModule(get_class($module), Yii::app()->user->userModel);
+                    }
+                    if ($canAccessModule)
                     {
                         $moduleClassNames[] = get_class($module);
                     }

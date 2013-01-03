@@ -74,10 +74,9 @@
             $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)');
-            $sortAttribute = $modelToReportAdapter->getRules()->
-                getSortAttributeForRelationReportedAsAttribute(
-                $modelToReportAdapter->getModel(), $attribute);
+            assert('is_string($attribute)'); //todo: why is this also using a sortAttribute from the rule. seems strange
+            $sortAttribute = $modelToReportAdapter->getRules()->getSortAttributeForRelationReportedAsAttribute(
+                             $modelToReportAdapter->getModel(), $attribute);
             return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
                 $attribute, $sortAttribute);
         }

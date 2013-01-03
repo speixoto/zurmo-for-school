@@ -214,10 +214,10 @@
             assert('is_bool($canUseFromJoins)');
             //First cast up
             $onTableAliasName        = $this->resolveJoinsForDerivedRelationViaCastedUpModelThatIsCastedUp(
-                $onTableAliasName, $canUseFromJoins);
+                                       $onTableAliasName, $canUseFromJoins);
             //Second build relation across to the opposing model
             $onTableAliasName        = $this->resolveJoinsForDerivedRelationViaCastedUpModelThatIsManyToMany(
-                $onTableAliasName);
+                                       $onTableAliasName);
             //Third cast down if necessary
             if($this->modelAttributeToDataProviderAdapter->isDerivedRelationViaCastedUpModelDifferentThanOpposingModelClassName())
             {

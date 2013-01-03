@@ -51,5 +51,44 @@
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
+
+        public static function getVariableStateModuleLabel(User $user)
+        {
+            assert('$user->id > 0');
+            $adapterName  = ContactsUtil::resolveContactStateAdapterByModulesUserHasAccessTo('LeadsModule',
+                                                                                             'ContactsModule', $user);
+            if($adapterName === false)
+            {
+                return null;
+            }
+            elseif($adapterName == 'LeadsStateMetadataAdapter')
+            {
+                return Yii::t('Default', 'LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            }
+            elseif($adapterName == 'ContactsStateMetadataAdapter')
+            {
+                return Yii::t('Default', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            }
+            elseif($adapterName === null)
+            {
+                return Yii::t('Default', 'ContactsModulePluralLabel and LeadsModulePluralLabel',
+                       LabelUtil::getTranslationParamsForAllModules());
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public static function canUserAccessModuleInAVariableState(User $user)
+        {
+            assert('$user->id > 0');
+            if(RightsUtil::canUserAccessModule('ContactsModule', $user) ||
+               RightsUtil::canUserAccessModule('LeadsModule', $user))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 ?>
