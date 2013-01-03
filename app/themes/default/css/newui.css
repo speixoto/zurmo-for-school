@@ -7511,7 +7511,7 @@ div.wide.form label.hasCheckBox {
   z-index: 0;
 }
 #right-side-edit-view-panel .ui-autocomplete {
-  width: auto !important;
+  width: auto;
 }
 #right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
@@ -7577,7 +7577,7 @@ div.wide.form label.hasCheckBox {
 .has-model-select a:hover:before {
   color: #525252 !important;
 }
-.has-model-select a span {
+.has-model-select a .icon {
   width: 100%;
   height: 100%;
   line-height: 24px;
@@ -7585,7 +7585,7 @@ div.wide.form label.hasCheckBox {
   text-align: center;
   vertical-align: center;
 }
-.has-model-select a span:before {
+.has-model-select a .icon:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
@@ -7593,6 +7593,13 @@ div.wide.form label.hasCheckBox {
   color: #8b8b8b;
   text-align: center;
   vertical-align: bottom;
+}
+.has-model-select .z-spinner {
+  z-index: 999999;
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  display: block !important;
 }
 .has-date-select {
   clear: left;
@@ -9122,7 +9129,7 @@ div.hasHalfs .twoThirds {
   padding-bottom: 2px;
   text-align: left;
   z-index: 9999999;
-  position: relative;
+  position: absolute;
 }
 .ui-autocomplete li {
   list-style: none;
