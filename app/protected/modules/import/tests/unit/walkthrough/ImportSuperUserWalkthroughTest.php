@@ -79,7 +79,7 @@
             $this->createUrlCustomFieldByModule                 ('AccountsModule', 'urltest');
             $this->createDropDownCustomFieldByModule            ('AccountsModule', 'dropdowntest');
             $this->createRadioDropDownCustomFieldByModule       ('AccountsModule', 'radiotest');
-            //Test All custom created types since their rules could vary
+            //Test all custom created types since their rules could vary
             $import = new Import();
             $import->serializedData = serialize(array('importRulesType' => 'Accounts'));
             $this->assertTrue($import->save());
