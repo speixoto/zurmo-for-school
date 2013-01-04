@@ -132,7 +132,7 @@
 
         public static function getDisplayDescription()
         {
-            return Yii::t('Default', 'Matching Archived Emails');
+            return Zurmo::t('LeadsModule', 'Matching Archived Emails');
         }
 
         public function renderAfterFormLayout($form)
