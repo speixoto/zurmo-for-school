@@ -4975,6 +4975,9 @@ section {
   left: auto;
   right: 2px;
 }
+body > .ui-autocomplete {
+  width: 335px;
+}
 #globalSearchInput {
   font-style: italic;
   color: #999;
@@ -9123,7 +9126,7 @@ div.hasHalfs .twoThirds {
 /*=Auto Complete*/
 .ui-autocomplete {
   margin-top: 2px;
-  width: 335px;
+  width: auto;
   padding-top: 2px;
   padding-bottom: 2px;
   text-align: left;
