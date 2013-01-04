@@ -44,7 +44,7 @@
             assert('$this->name === null || is_string($this->name)');
             if ($this->name === null)
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('ZurmoModule', '(Unnamed)');
             }
             return $this->name;
         }
