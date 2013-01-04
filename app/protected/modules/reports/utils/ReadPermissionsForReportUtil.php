@@ -26,27 +26,50 @@
 
     class ReadPermissionsForReportUtil
     {
-        public static function resolveAttributeIndexesByComponent(ComponentForReportForm $componentForm)
+        public static function resolveAttributeIndexesByComponents(array & $attributeIndexes, Array $componentForms)
         {
-            $attributeIndexes = array();
+            foreach($componentForms as $componentForm)
+            {
+                $attributeIndexesToResolve = self::resolveAttributeIndexesByComponent($componentForm);
+                self::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
+            }
+        }
+
+        /**
+         * Public for testing purposes only
+         */
+        public static function resolveIndexesTogether(array & $attributeIndexes, array $attributeIndexesToResolve)
+        {
+            foreach($attributeIndexesToResolve as $key => $indexes)
+            {
+                if(!isset($attributeIndexes[$key]))
+                {
+                    $attributeIndexes[$key]= $indexes;
+                }
+            }
+        }
+
+        /**
+         * Public primarily for testing purposes
+         * @see resolveAttributeIndexesByComponents
+         * @param ComponentForReportForm $componentForm
+         * @return array
+         */
+        protected static function resolveAttributeIndexesByComponent(ComponentForReportForm $componentForm)
+        {
+            $attributeIndexes     = array();
             $modelClassName       = $componentForm->getModelClassName();
             $moduleClassName      = $componentForm->getModuleClassName();
             if(!$componentForm->hasRelatedData())
             {
-                if(is_subclass_of($modelClassName, 'OwnedSecurableItem'))
-                {
-                    $attributeIndexes[] = 'ReadOptimization';
-                }
+                self::resolveAttributeIndexes($modelClassName, $attributeIndexes);
             }
             else
             {
                 $attributeIndexPrefix = null;
                 foreach($componentForm->attributeAndRelationData as $relationOrAttribute)
                 {
-                    if(is_subclass_of($modelClassName, 'OwnedSecurableItem'))
-                    {
-                        $attributeIndexes[] = $attributeIndexPrefix . 'ReadOptimization';
-                    }
+                    self::resolveAttributeIndexes($modelClassName, $attributeIndexes, $attributeIndexPrefix);
                     $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                             make($moduleClassName, $modelClassName, $componentForm->getReportType());
                     if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
@@ -58,6 +81,29 @@
                 }
             }
             return $attributeIndexes;
+        }
+
+        protected static function resolveAttributeIndexes($modelClassName, & $attributeIndexes, $attributeIndexPrefix = null)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($attributeIndexPrefix) || $attributeIndexPrefix == null');
+            $moduleClassName = $modelClassName::getModuleClassName();
+            if ($modelClassName::hasReadPermissionsOptimization() &&$moduleClassName != null &&
+                is_subclass_of($moduleClassName, 'SecurableModule'))
+            {
+                $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName);
+                if ($permission == Permission::NONE || $permission == Permission::DENY)
+                {
+                    $indexes   = array();
+                    $indexes[] = 'owner__User';
+                    $mungeIds           = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
+                    if (count($mungeIds) > 0 && $permission == Permission::NONE)
+                    {
+                        $indexes[] = 'ReadOptimization';
+                    }
+                    $attributeIndexes[$attributeIndexPrefix] = $indexes;
+                }
+            }
         }
     }
 ?>

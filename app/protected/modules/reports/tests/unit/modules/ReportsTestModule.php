@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportsTestModule extends Module
+    class ReportsTestModule extends SecurableModule
     {
         public function getDependencies()
         {
@@ -57,6 +57,11 @@
         public static function getGlobalSearchFormClassName()
         {
             return 'ReportModelTestItem';
+        }
+
+        public static function hasPermissions()
+        {
+            return true;
         }
     }
 ?>

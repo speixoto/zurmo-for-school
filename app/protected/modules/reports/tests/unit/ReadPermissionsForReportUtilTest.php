@@ -30,88 +30,195 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            $sally = UserTestHelper::createBasicUser('sally');
+            $sally->setRight('AccountsModule',      AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+            $sally->setRight('MeetingsModule',      AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+            $sally->setRight('OpportunitiesModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+            $sally->setRight('ReportsTestModule',   AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+            if(!$sally->save())
+            {
+                throw new FailedToSaveModelException();
+            }
         }
 
-        public function setUp()
+        public function testThatArrayMergeProperlyResolvesIndexes()
         {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
+            $attributeIndexes          = array('anExistingOne' => array('a', 'b'));
+            $attributeIndexesToResolve = array();
+            ReadPermissionsForReportUtil::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
+            $this->assertEquals(serialize(array('anExistingOne' => array('a', 'b'))), serialize($attributeIndexes));
+            $attributeIndexes          = array('anExistingOne' => array('a', 'b'));
+            $attributeIndexesToResolve = array('aNewOne' => array('a', 'b'));
+            ReadPermissionsForReportUtil::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
+            $this->assertEquals(serialize(array('anExistingOne' => array('a', 'b'),
+                                                'aNewOne' => array('a', 'b'))), serialize($attributeIndexes));
+            $attributeIndexes          = array('anExistingOne'=> array('a', 'b'));
+            $attributeIndexesToResolve = array('aNewOne' => array('a', 'b'), 'anExistingOne' => array('a', 'b'));
+            ReadPermissionsForReportUtil::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
+            $this->assertEquals(serialize(array('anExistingOne' => array('a', 'b'),
+                                                'aNewOne' => array('a', 'b'))), serialize($attributeIndexes));
+            $attributeIndexes          = array('anExistingOne' => array('a', 'b'));
+            $attributeIndexesToResolve = array('aNewOne' => array('a', 'b'),
+                                               'anExistingOne' => array('a', 'b'),
+                                               'anotherNewOne' => array('a', 'b'));
+            ReadPermissionsForReportUtil::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
+            $this->assertEquals(serialize(array('anExistingOne' => array('a', 'b'),
+                                                'aNewOne' => array('a', 'b'),
+                                                'anotherNewOne' => array('a', 'b'))), serialize($attributeIndexes));
         }
 
         public function testResolveReadPermissionAttributeIndexesForComponentWithNoNesting()
         {
+            Yii::app()->user->userModel = User::getByUsername('sally');
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                    Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType = 'name';
-            $indexes                             = ReadPermissionsForReportUtil::resolveAttributeIndexesByComponent($filter);
-            $this->assertEquals(array('ReadOptimization'), $indexes);
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array('' => array('owner__User', 'ReadOptimization')), $indexes);
+
+            //Test with the super user.  There shouldn't be any read permission data
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'name';
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array(), $indexes);
         }
 
         public function testResolveReadPermissionAttributeIndexesForComponentWithSingleNesting()
         {
+            Yii::app()->user->userModel = User::getByUsername('sally');
             $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'hasOne___name';
-            $indexes                               = ReadPermissionsForReportUtil::resolveAttributeIndexesByComponent($filter);
-            $this->assertEquals(array('ReadOptimization', 'hasOne___ReadOptimization'), $indexes);
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array(''          => array('owner__User', 'ReadOptimization'),
+                                      'hasOne___' => array('owner__User', 'ReadOptimization')), $indexes);
+
+            //Test with the super user.  There shouldn't be any read permission data
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType   = 'hasOne___name';
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array(), $indexes);
         }
 
         public function testResolveReadPermissionAttributeIndexesForComponentWithDoubleNesting()
         {
+            Yii::app()->user->userModel = User::getByUsername('sally');
             $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'hasOne___hasMany3___name';
-            $indexes                               = ReadPermissionsForReportUtil::resolveAttributeIndexesByComponent($filter);
-            $compareIndexes = array('ReadOptimization',
-                                    'hasOne___ReadOptimization',
-                                    'hasOne___hasMany3___ReadOptimization');
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $compareIndexes = array(''                     => array('owner__User', 'ReadOptimization'),
+                                    'hasOne___'            => array('owner__User', 'ReadOptimization'),
+                                    'hasOne___hasMany3___' => array('owner__User', 'ReadOptimization'));
             $this->assertEquals($compareIndexes, $indexes);
+
+            //Test with the super user.  There shouldn't be any read permission data
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType   = 'hasOne___hasMany3___name';
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array(), $indexes);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelOne()
         {
+            Yii::app()->user->userModel = User::getByUsername('sally');
             $filter                                = new FilterForReportForm('AccountsModule', 'Account',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'meetings___name';
-            $indexes                               = ReadPermissionsForReportUtil::resolveAttributeIndexesByComponent($filter);
-            $compareIndexes                        = array('ReadOptimization',
-                                                           'meetings___ReadOptimization');
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $compareIndexes = array(''            => array('owner__User', 'ReadOptimization'),
+                                    'meetings___' => array('owner__User', 'ReadOptimization'));
             $this->assertEquals($compareIndexes, $indexes);
+
+            //Test with the super user.  There shouldn't be any read permission data
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $filter                                = new FilterForReportForm('AccountsModule', 'Account',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType   = 'meetings___name';
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array(), $indexes);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeWhenThroughARelation()
         {
+            Yii::app()->user->userModel = User::getByUsername('sally');
             $filter                                = new FilterForReportForm('AccountsModule', 'Account',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'opportunities___meetings___name';
-            $indexes                               = ReadPermissionsForReportUtil::resolveAttributeIndexesByComponent($filter);
-            $compareIndexes                        = array('ReadOptimization',
-                                                           'opportunities___ReadOptimization',
-                                                           'opportunities___meetings___ReadOptimization');
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $compareIndexes = array(''                            => array('owner__User', 'ReadOptimization'),
+                                    'opportunities___'            => array('owner__User', 'ReadOptimization'),
+                                    'opportunities___meetings___' => array('owner__User', 'ReadOptimization'));
             $this->assertEquals($compareIndexes, $indexes);
+
+            //Test with the super user.  There shouldn't be any read permission data
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $filter                                = new FilterForReportForm('AccountsModule', 'Account',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType   = 'opportunities___meetings___name';
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array(), $indexes);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithItemAttribute()
         {
+            Yii::app()->user->userModel = User::getByUsername('sally');
             $filter                                = new FilterForReportForm('MeetingsModule', 'Meeting',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___name';
-            $indexes                               = ReadPermissionsForReportUtil::resolveAttributeIndexesByComponent($filter);
-            $compareIndexes                        = array('ReadOptimization',
-                                                           'Account__activityItems__Inferred___ReadOptimization');
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $compareIndexes = array(''                                    => array('owner__User', 'ReadOptimization'),
+                                    'Account__activityItems__Inferred___' => array('owner__User', 'ReadOptimization'));
             $this->assertEquals($compareIndexes, $indexes);
+
+            //Test with the super user.  There shouldn't be any read permission data
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $filter                                = new FilterForReportForm('MeetingsModule', 'Meeting',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___name';
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array(), $indexes);
         }
 
         public function testInferredRelationModelAttributeWithYetAnotherRelation()
         {
+            Yii::app()->user->userModel = User::getByUsername('sally');
             $filter                                = new FilterForReportForm('MeetingsModule', 'Meeting',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___opportunities___name';
-            $indexes                               = ReadPermissionsForReportUtil::resolveAttributeIndexesByComponent($filter);
-            $compareIndexes                        = array('ReadOptimization',
-                                                           'Account__activityItems__Inferred___ReadOptimization',
-                                                           'Account__activityItems__Inferred___opportunities___ReadOptimization');
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $compareIndexes = array(''                                                    => array('owner__User', 'ReadOptimization'),
+                                    'Account__activityItems__Inferred___'                 => array('owner__User', 'ReadOptimization'),
+                                    'Account__activityItems__Inferred___opportunities___' => array('owner__User', 'ReadOptimization'));
             $this->assertEquals($compareIndexes, $indexes);
+
+            //Test with the super user.  There shouldn't be any read permission data
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $filter                                = new FilterForReportForm('MeetingsModule', 'Meeting',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___opportunities___name';
+            $indexes = array();
+            ReadPermissionsForReportUtil::resolveAttributeIndexesByComponents($indexes, array($filter));
+            $this->assertEquals(array(), $indexes);
         }
     }
 ?>

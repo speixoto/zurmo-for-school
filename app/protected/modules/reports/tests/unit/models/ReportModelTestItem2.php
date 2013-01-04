@@ -64,5 +64,10 @@
         {
             return 'ReportsTestModule';
         }
+
+        public static function hasReadPermissionsOptimization()
+        {
+            return true;
+        }
     }
 ?>
