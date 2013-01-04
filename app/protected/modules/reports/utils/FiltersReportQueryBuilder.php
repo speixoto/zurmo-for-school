@@ -63,11 +63,25 @@
         protected function resolveFinalContent($modelAttributeToDataProviderAdapter,
                                                ComponentForReportForm $componentForm, $onTableAliasName = null)
         {
-            $modelClassName  = $modelAttributeToDataProviderAdapter->getResolvedModelClassName();
-            $metadataAdapter = new FilterForReportFormToDataProviderMetadataAdapter($componentForm);
-            $attributeData   = $metadataAdapter->getAdaptedMetadata();
-            return ModelDataProviderUtil::makeWhere($modelClassName, $attributeData, $this->joinTablesAdapter,
-                                                    $onTableAliasName);
+            //todo: split if /else into 2 sub methods
+            if($modelAttributeToDataProviderAdapter instanceof ReadOptimizationDerivedAttributeToDataProviderAdapter)
+            {
+                $builder        = new ReadOptimizationModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
+                $clausePosition = 1;
+                $where          = null;
+                $builder->resolveJoinsAndBuildWhere(null, null, $clausePosition, $where, $onTableAliasName);
+                return $where[1];
+            }
+            else
+            {
+                $modelClassName  = $modelAttributeToDataProviderAdapter->getResolvedModelClassName();
+                $metadataAdapter = new FilterForReportFormToDataProviderMetadataAdapter($componentForm);
+                $attributeData   = $metadataAdapter->getAdaptedMetadata();
+                //todO: we need a way to not setDistinct from here. right now that just defaults to true in ModelDataProviderUtil::makeWhere, so maybe we need
+                //todo: override util that we then dont set it or something. also need test, that requires data  provider tests to work right. or we can test distinct is still false on all existing builder tests..
+                return ModelDataProviderUtil::makeWhere($modelClassName, $attributeData, $this->joinTablesAdapter,
+                                                        $onTableAliasName);
+            }
         }
 
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
@@ -86,6 +100,11 @@
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
+            if($modelToReportAdapter->isAttributeReadOptimization($attribute))
+            {
+                return new ReadOptimizationDerivedAttributeToDataProviderAdapter(
+                           $modelToReportAdapter->getModelClassName(), null);
+            }
             if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
                 $modelToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
             {
@@ -97,7 +116,26 @@
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute, $componentForm);
         }
 
-        //todo: do we need to resolve casting hint for where clause too? need to test, not sure how this would work
+        protected function resolveCastingHintForAttribute($modelToReportAdapter, ComponentForReportForm  $componentForm,
+                                                          $modelAttributeToDataProviderAdapter,
+                                                          $modelClassName,
+                                                          $realAttributeName)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            if($modelToReportAdapter->isAttributeReadOptimization($realAttributeName))
+            {
+                $hintAdapter        = new ReadOptimizationDerivedAttributeToDataProviderAdapter(
+                                      $modelToReportAdapter->getModelClassName(), null);
+                $hintModelClassName = $hintAdapter->getAttributeModelClassName();
+                $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);
+            }
+            else
+            {
+                return parent::resolveCastingHintForAttribute($modelToReportAdapter, $componentForm,
+                                                              $modelAttributeToDataProviderAdapter,
+                                                              $modelClassName, $realAttributeName);
+            }
+        }
         //todo: test multi because multi is sub-select so in fact we do use sub-select for multiple dropdown.. multiples need to be sub-query
     }
 ?>

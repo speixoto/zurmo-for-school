@@ -271,13 +271,14 @@
             }
         }
 
-        protected function resolveCastingHintForAttribute(ComponentForReportForm  $componentForm,
+        protected function resolveCastingHintForAttribute($modelToReportAdapter, ComponentForReportForm  $componentForm,
                                                           $modelAttributeToDataProviderAdapter, $modelClassName,
                                                           $realAttributeName)
         {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             if(static::isDisplayAttributeMadeViaSelect($componentForm))
             {
-                return parent::resolveCastingHintForAttribute($componentForm, $modelAttributeToDataProviderAdapter,
+                return parent::resolveCastingHintForAttribute($modelToReportAdapter, $componentForm, $modelAttributeToDataProviderAdapter,
                                                               $modelClassName, $realAttributeName);
             }
         }

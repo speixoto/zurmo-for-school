@@ -101,7 +101,8 @@
                     if($modelToReportAdapter->isInferredRelation($relationOrAttribute) ||
                        $modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($relationOrAttribute))
                     {
-                        static::resolveCastingHintForAttribute($componentForm,
+                        static::resolveCastingHintForAttribute($modelToReportAdapter,
+                                                               $componentForm,
                                                                $modelAttributeToDataProviderAdapter,
                                                                $modelClassName,
                                                                $modelToReportAdapter->resolveRealAttributeName(
@@ -197,11 +198,12 @@
                        $attribute);
         }
 
-        protected function resolveCastingHintForAttribute(ComponentForReportForm  $componentForm,
+        protected function resolveCastingHintForAttribute($modelToReportAdapter, ComponentForReportForm  $componentForm,
                                                           $modelAttributeToDataProviderAdapter,
                                                           $modelClassName,
                                                           $realAttributeName)
         {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             $hintAdapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $realAttributeName);
             $hintModelClassName = $hintAdapter->getAttributeModelClassName();
             $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);

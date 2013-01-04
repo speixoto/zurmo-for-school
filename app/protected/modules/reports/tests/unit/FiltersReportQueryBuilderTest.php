@@ -36,10 +36,9 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
-            Yii::app()->user->userModel->timeZone = 'America/Chicago';
             DisplayAttributeForReportForm::resetCount();
         }
-
+//ResolveReadPermissionsForReportDataProviderUtil
         public function testASingleAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
@@ -59,6 +58,8 @@
 
         public function testASingleAttributeThatHasAModifier()
         {
+            $tempTimeZone = Yii::app()->user->userModel->timeZone;
+            Yii::app()->user->userModel->timeZone = 'America/Chicago';
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -72,6 +73,7 @@
             $this->assertEquals("(day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) = 'a value')", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            Yii::app()->user->userModel->timeZone = $tempTimeZone;
         }
 
         public function testTwoAttributes()
@@ -1113,6 +1115,8 @@
         //todo: fix this test it is broken. because latest activity time is on activity, it gets confused, because it doesnt cast all the way up to meeting model.. so activity is abstract
         //todo: it can easily be making Activity not abstract, but not sure this really makes sense. We should really be able to figure things out like isRelation etc without having to instantiate a model.
         //todo: this type of information should be availble statically somehow. that would be a major improvement and could improve performance too.
+        //todO: also add test for ReadOptimizationFiltersReportQueryBuilderTest once this is fixed
+        //todO: test meetings___createdDateTime
         public function testDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFar()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();

@@ -595,6 +595,15 @@
             }
         }
 
+        public function isAttributeReadOptimization($attribute)
+        {
+            if($attribute == 'ReadOptimization')
+            {
+                return true;
+            }
+            return false;
+        }
+
         protected static function resolveAttributeNameToUseForRelationWithModuleConnection($attribute, $moduleClassName)
         {
             assert('is_string($attribute)');

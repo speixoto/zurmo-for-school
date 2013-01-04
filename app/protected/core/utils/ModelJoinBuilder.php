@@ -225,7 +225,7 @@
                                                    getOpposingRelationModelClassName();
                 $derivedRelationModelClassName   = $this->modelAttributeToDataProviderAdapter->
                                                    getDerivedRelationViaCastedUpModelClassName();
-                $onTableAliasName                = $this->resolveAndProcessLeftJoinsForAttributeThatIsCastedDown(
+                $onTableAliasName                = $this->resolveAndProcessLeftJoinsForAttributeThatIsCastedDownOrUp(
                                                    $opposingRelationModelClassName,
                                                    $derivedRelationModelClassName, $onTableAliasName);
             }
@@ -281,7 +281,7 @@
                 throw new NotImplementedException();
             }
             $inferredRelationModelClassName = $this->modelAttributeToDataProviderAdapter->getInferredRelationModelClassName();
-            $onTableAliasName               = $this->resolveAndProcessLeftJoinsForAttributeThatIsCastedDown(
+            $onTableAliasName               = $this->resolveAndProcessLeftJoinsForAttributeThatIsCastedDownOrUp(
                                               $opposingRelationModelClassName,
                                               $inferredRelationModelClassName, $onTableAliasName);
             return $onTableAliasName;
@@ -652,8 +652,9 @@
             return $onTableAliasName;
         }
 
-        protected function resolveAndProcessLeftJoinsForAttributeThatIsCastedDown($modelClassName, $castedDownModelClassName,
-                                                                                  $onTableAliasName)
+        protected function resolveAndProcessLeftJoinsForAttributeThatIsCastedDownOrUp($modelClassName,
+                                                                                      $castedDownModelClassName,
+                                                                                      $onTableAliasName)
 
         {
             assert('is_string($modelClassName)');
@@ -663,9 +664,21 @@
                                                   $castedDownModelClassName);
             if($modelClassName != $resolvedCastedDownModelClassName)
             {
-                return $this->processLeftJoinsForAttributeThatIsCastedDown($modelClassName,
-                                                                           $resolvedCastedDownModelClassName,
-                                                                           $onTableAliasName);
+                //If the resolvedCastedDownModelClassName is actually casted up
+                $modelDerivationPathToItem = $this->resolveModelDerivationPathToItemForCastingDown(
+                                             $modelClassName, $resolvedCastedDownModelClassName);
+                if(empty($modelDerivationPathToItem))
+                {
+                    return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName,
+                           $resolvedCastedDownModelClassName);
+                }
+                else
+                {
+                    return $this->processLeftJoinsForAttributeThatIsCastedDown($modelClassName,
+                        $resolvedCastedDownModelClassName,
+                        $onTableAliasName);
+                }
+
             }
             return $onTableAliasName;
         }
