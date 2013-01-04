@@ -174,7 +174,7 @@ $(function () {
                 .appendTo($(this).find('.files')).fadeIn(function () {
                     // Fix for IE7 and lower:
                     $(this).show();
-                    makeGlobalSearchSpinner('fileUpload{$id}', true);
+                    makeToggableSpinner('#'+'fileUpload{$id}', true);
                 }).data('data', data);
             if ((that.options.autoUpload || data.autoUpload) &&
                     data.isValidated) {
